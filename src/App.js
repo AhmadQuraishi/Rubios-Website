@@ -2,14 +2,12 @@ import './App.css';
 import RootRoutes from './routes';
 import { connect } from 'react-redux';
 import Header from "./components/header.component";
+import Login from './pages/login/login.component';
 
 
 const App = (props) => {
-  const { currentUser } = props;
  return (
-   <div>
-    <Header />
-    { currentUser && <div>User is Logged-In</div> }
+   <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", height: 100 + "vh", width: 100 + "%"}}>
     <RootRoutes />
    </div>   
  );

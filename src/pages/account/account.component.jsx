@@ -2,14 +2,16 @@
 import { Navigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { setCurrentUser } from "../../redux/user/user.action";
+import { Button } from "@mui/material";
 
 const Account = (props) => {
     const { currentUser, setCurrentUser } = props;
-    return (<div>
+    return (<div style={{padding: 30 + "px"}}>
        {
-           !currentUser && <Navigate to="/Login" />
+           !currentUser && <Navigate to="/" />
        }
-       <button type="button" onClick={() => {setCurrentUser(false)}}></button> 
+       {currentUser &&
+       <Button  variant="contained" color="success" onClick={() => {setCurrentUser(false)}}>Logout</Button>}
     </div>);
 }
 

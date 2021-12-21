@@ -6,13 +6,12 @@ import Account from "./pages/account/account.component";
 
 const RootRoutes = () => {
 return (
-    <div>
         <Routes>
         <Route exact path="/" element={<Home />}/>
         <Route path="/login" element={<Login />}/>
         <Route path="/account" element={<Account />}/>
         </Routes>
-    </div>);
+    );
 }
 
 export default RootRoutes;

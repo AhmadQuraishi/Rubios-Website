@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import { setCurrentUser } from "../redux/user/user.action"
+import { setCurrentUser } from "../redux/user/user.action";
 
 const Header = (props) => {
     const { setCurrentUser } = props;
