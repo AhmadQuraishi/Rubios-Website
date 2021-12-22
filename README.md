@@ -78,9 +78,9 @@ _This information will update future or might be with the completion of differen
 OS: Linux (recommended) or Windows
 
 ## Conventions
-- All file and folder names must be in rubios_app.
-- All variable names must be in rubiosApp.
-- All constants must be in RubiosApp.
+- All file and folder names must be in snake casing e.g. rubios_app.
+- All variable names must be in camel casing e.g. rubiosApp.
+- All constants must be in pascal casing e.g. RubiosApp.
 - Developer must adhere to .editorconfig and .eslintrc.json configurations, to have a consistent coding standard.
 - According to the type of change being pushed, a commit message must contain [major], [minor], [refactor] or [fix] keyword.
 --> [major] for any breaking change.
