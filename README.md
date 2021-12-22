@@ -3,8 +3,8 @@
 
 An application used for taking online orders of Rubio's Coastal Frill, built with 
 - React, 
-- Redux, 
-- JavaScript
+- TypeScript,
+- Redux-Saga, 
 - CSS
 - HTML
 
@@ -26,11 +26,13 @@ Rubios uses a number of open source projects to work properly:
 - **Reactjs** - HTML enhanced for web apps!
 - **Material UI** - For using buildin controls and responsivness
 - **Nodejs** - ented I/O for the backend
+- **FORMIK** - For Form Inputs validation
+- **Redux-Saga** - For State Management
 
 
 ## Installation
 
-Rubios requires [Node.js](https://nodejs.org/) v10+ to run.
+Rubios requires [Node.js](https://nodejs.org/) v14.0.0 is required to run.
 
 Install the dependencies and devDependencies and start the server.
 
