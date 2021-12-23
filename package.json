@@ -31,37 +31,10 @@
     "styled-components"
   ],
   "scripts": {
-    "// ---DEFAULT CRA---": "",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "// ---TEMPLATE---": "Scripts will be also in the template",
-    "start:prod": "yarn run build && serve -s build",
-    "test:generators": "ts-node --project=./internals/ts-node.tsconfig.json ./internals/testing/generators/test-generators.ts",
-    "checkTs": "tsc --noEmit",
-    "eslint": "eslint --ext js,ts,tsx",
-    "lint": "yarn run eslint src",
-    "lint:fix": "yarn run eslint --fix src",
-    "lint:css": "stylelint src/**/*.css",
-    "generate": "cross-env TS_NODE_PROJECT='./internals/ts-node.tsconfig.json' plop --plopfile internals/generators/plopfile.ts",
-    "cleanAndSetup": "ts-node --project=./internals/ts-node.tsconfig.json ./internals/scripts/clean.ts",
-    "prettify": "prettier --write",
-    "extract-messages": "i18next-scanner --config=internals/extractMessages/i18next-scanner.config.js",
-    "// ---TESTING TEMPLATE---": "",
-    "test:internals": "yarn run test:extract-messages && yarn run test:generators",
-    "test:extract-messages": "jest --config=internals/extractMessages/jest.config.js",
-    "verify-startingTemplate-changes": "ts-node --project=./internals/ts-node.tsconfig.json ./internals/scripts/verify-startingTemplate-changes.ts",
-    "test:coverage": "yarn run test --watchAll=false --coverage",
-    "test:cra": "yarn run create:cra-app && cd generated-cra-app && yarn run test:generators && yarn run lint && yarn run checkTs && yarn run cleanAndSetup && yarn run lint && yarn run checkTs",
-    "// ---BUILDING TEMPLATE---": "",
-    "create:npm-package": "ts-node --project=./internals/ts-node.tsconfig.json ./internals/scripts/create-npm-package.script.ts",
-    "create:cra-app": "ts-node --project=./internals/ts-node.tsconfig.json ./internals/scripts/create-cra-app.script.ts",
-    "// ---PUBLISHING---": "",
-    "publish:github": "cross-env PUBLIC_URL='/react-boilerplate-cra-template' yarn build && gh-pages -d build",
-    "changelog": "ts-node --project=./internals/ts-node.tsconfig.json ./internals/scripts/create-changelog.script.ts",
-    "release": "standard-version",
-    "publish:npm": "yarn run create:npm-package && yarn publish .cra-template-rb --non-interactive",
-    "prepare": "npm install husky --save-dev"
+    "eject": "react-scripts eject"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx}": [
