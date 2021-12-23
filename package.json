@@ -1,6 +1,6 @@
 {
-  "name": "cra-template-rb",
-  "description": "The official React Boilerplate template for Create React App",
+  "name": "Snapshot",
+  "description": "Rubios Website",
   "version": "0.0.0",
   "repository": {
     "type": "git",
@@ -92,6 +92,8 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "1.6.0",
+    "@types/jest": "27.0.3",
+    "@types/webpack": "5.28.0",
     "fontfaceobserver": "2.1.0",
     "i18next": "20.3.2",
     "i18next-browser-languagedetector": "6.1.2",
