@@ -1,0 +1,634 @@
+# Test Event
+Test:
+  post:
+    summary: Test Event
+    description: Sent during the self-service webhook creation process to validate a Destination URL.
+    operationId: test
+    tags:
+      - testEvents
+    parameters:
+      - in: header
+        name: X-Olo-Event-Type
+        description: Webhook event type.
+        schema:
+          type: string
+          enum:
+            - Test
+        required: true
+      - $ref: '#/components/schemas/X-Olo-Message-Id'
+      - $ref: '#/components/schemas/X-Olo-Timestamp'
+      - $ref: '#/components/schemas/X-Olo-Signature'
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Test'
+    responses:
+      '200':
+        description: Return a 200 status to Olo to indicate that the data was received successfully.
+
+# Menu Events
+MenuItemAvailabilityChanged:
+  post:
+    summary: Menu Item Availability Changed
+    description: Menu item availability has changed (i.e. 86'd or 68'd).
+    operationId: menuItemAvailabilityChanged
+    tags:
+      - menuEvents
+    parameters:
+      - in: header
+        name: X-Olo-Event-Type
+        description: Webhook event type.
+        schema:
+          type: string
+          enum:
+            - MenuItemAvailabilityChanged
+        required: true
+      - $ref: '#/components/schemas/X-Olo-Message-Id'
+      - $ref: '#/components/schemas/X-Olo-Timestamp'
+      - $ref: '#/components/schemas/X-Olo-Signature'
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MenuItemAvailabilityChanged'
+    responses:
+      200:
+        $ref: 'webhooks-schemas-10.yaml#/200'
+MenuSyncComplete:
+  post:
+    summary: Menu Sync Complete
+    description: A menu sync has been completed for the brand.
+    operationId: menuSyncComplete
+    tags:
+      - menuEvents
+    parameters:
+      - in: header
+        name: X-Olo-Event-Type
+        description: Webhook event type.
+        schema:
+          type: string
+          enum:
+            - MenuSyncComplete
+        required: true
+      - $ref: '#/components/schemas/X-Olo-Message-Id'
+      - $ref: '#/components/schemas/X-Olo-Timestamp'
+      - $ref: '#/components/schemas/X-Olo-Signature'
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MenuSyncComplete'
+    responses:
+      200:
+        $ref: 'webhooks-schemas-10.yaml#/200'
+VendorMenuExportComplete:
+  post:
+    summary: Vendor Menu Export Complete
+    description: An updated Vendor Export file has been generated and is available for retrieval via the Ordering API. Please reference the change boolean fields in the message payload to determine what was updated.
+    operationId: vendorMenuExportComplete
+    tags:
+      - menuEvents
+    parameters:
+      - in: header
+        name: X-Olo-Event-Type
+        description: Webhook event type.
+        schema:
+          type: string
+          enum:
+            - VendorMenuExportComplete
+        required: true
+      - $ref: '#/components/schemas/X-Olo-Message-Id'
+      - $ref: '#/components/schemas/X-Olo-Timestamp'
+      - $ref: '#/components/schemas/X-Olo-Signature'
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/VendorMenuExportComplete'
+    responses:
+      200:
+        $ref: 'webhooks-schemas-10.yaml#/200'
+
+# Order Events
+BasketSubmitFailed:
+  post:
+    summary: Basket Submit Failed
+    description: A basket submission attempt has failed (currently scoped to POS-origin failures only). Subscribers can retrieve additional details about the error by passing the basket id in the [Basket Submit Details endpoint](/docs/load/ops-api#operation/basket-submit-details) in the [Olo Operations API](/docs/load/ops-api).
+    operationId: basketSubmitFailed
+    tags:
+      - orderEvents
+    parameters:
+      - in: header
+        name: X-Olo-Event-Type
+        description: Webhook event type.
+        schema:
+          type: string
+          enum:
+            - BasketSubmitFailed
+        required: true
+      - $ref: '#/components/schemas/X-Olo-Message-Id'
+      - $ref: '#/components/schemas/X-Olo-Timestamp'
+      - $ref: '#/components/schemas/X-Olo-Signature'
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BasketSubmitFailed'
+    responses:
+      200:
+        $ref: 'webhooks-schemas-10.yaml#/200'
+DispatchStatusUpdate:
+  post:
+    summary: Dispatch Status Update
+    description: Dispatch delivery status has been updated. This event will only be sent for orders using the Dispatch handoff method. Please note that the frequency of these updates may vary depending on the Dispatch service provider handling the delivery.
+    operationId: dispatchStatusUpdate
+    tags:
+      - orderEvents
+    parameters:
+      - in: header
+        name: X-Olo-Event-Type
+        description: Webhook event type.
+        schema:
+          type: string
+          enum:
+            - DispatchStatusUpdate
+        required: true
+      - $ref: '#/components/schemas/X-Olo-Message-Id'
+      - $ref: '#/components/schemas/X-Olo-Timestamp'
+      - $ref: '#/components/schemas/X-Olo-Signature'
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DispatchStatusUpdate'
+    responses:
+      200:
+        $ref: 'webhooks-schemas-10.yaml#/200'
+ExternalOrderEvent:
+  post:
+    summary: External Order Event
+    description: Olo has a received a notification about a Rails order from the marketplace. Currently only order cancellation events are supported.
+    operationId: externalOrderEvent
+    tags:
+      - orderEvents
+    parameters:
+      - in: header
+        name: X-Olo-Event-Type
+        description: Webhook event type.
+        schema:
+          type: string
+          enum:
+            - ExternalOrderEvent
+        required: true
+      - $ref: '#/components/schemas/X-Olo-Message-Id'
+      - $ref: '#/components/schemas/X-Olo-Timestamp'
+      - $ref: '#/components/schemas/X-Olo-Signature'
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ExternalOrderEvent'
+    responses:
+      200:
+        $ref: 'webhooks-schemas-10.yaml#/200'
+OrderAdjusted:
+  post:
+    summary: Order Adjusted
+    description: An order has been fully or partially adjusted or refunded.
+    operationId: orderAdjusted
+    tags:
+      - orderEvents
+    parameters:
+      - in: header
+        name: X-Olo-Event-Type
+        description: Webhook event type.
+        schema:
+          type: string
+          enum:
+            - OrderAdjusted
+        required: true
+      - $ref: '#/components/schemas/X-Olo-Message-Id'
+      - $ref: '#/components/schemas/X-Olo-Timestamp'
+      - $ref: '#/components/schemas/X-Olo-Signature'
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OrderAdjusted'
+    responses:
+      200:
+        $ref: 'webhooks-schemas-10.yaml#/200'
+OrderCancelled:
+  post:
+    summary: Order Cancelled
+    description: An order was cancelled by a user or by the system. This does not include orders cancelled due to modifications as our system refers to those as 'rescheduled' orders. Rescheduled orders will result in a separate [OrderPlaced](#operation/orderPlaced) webhook with the original order guid in the "replacementdetails" object.
+    operationId: orderCancelled
+    tags:
+      - orderEvents
+    parameters:
+      - in: header
+        name: X-Olo-Event-Type
+        description: Webhook event type.
+        schema:
+          type: string
+          enum:
+            - OrderCancelled
+        required: true
+      - $ref: '#/components/schemas/X-Olo-Message-Id'
+      - $ref: '#/components/schemas/X-Olo-Timestamp'
+      - $ref: '#/components/schemas/X-Olo-Signature'
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OrderCancelled'
+    responses:
+      200:
+        $ref: 'webhooks-schemas-10.yaml#/200'
+OrderClosed:
+  post:
+    summary: Order Closed
+    description: An order has reached its estimated ready time and is considered complete in Olo.
+    operationId: orderClosed
+    tags:
+      - orderEvents
+    parameters:
+      - in: header
+        name: X-Olo-Event-Type
+        description: Webhook event type.
+        schema:
+          type: string
+          enum:
+            - OrderClosed
+        required: true
+      - $ref: '#/components/schemas/X-Olo-Message-Id'
+      - $ref: '#/components/schemas/X-Olo-Timestamp'
+      - $ref: '#/components/schemas/X-Olo-Signature'
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OrderClosed'
+    responses:
+      200:
+        $ref: 'webhooks-schemas-10.yaml#/200'
+OrderPlaced:
+  post:
+    summary: Order Placed
+    description: An order was placed (submitted).
+    operationId: orderPlaced
+    tags:
+      - orderEvents
+    parameters:
+      - in: header
+        name: X-Olo-Event-Type
+        description: Webhook event type.
+        schema:
+          type: string
+          enum:
+            - OrderPlaced
+        required: true
+      - $ref: '#/components/schemas/X-Olo-Message-Id'
+      - $ref: '#/components/schemas/X-Olo-Timestamp'
+      - $ref: '#/components/schemas/X-Olo-Signature'
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OrderPlaced'
+    responses:
+      200:
+        $ref: 'webhooks-schemas-10.yaml#/200'
+CustomerArrived:
+  post:
+    summary: Customer Arrived
+    description: |
+      The CustomerArrived event enables creation of notifications via 3rd party POS or KDS systems when a customer has arrived to pick up their order. The primary use case for this webhook is for curbside orders, but it is not limited to curbside handoff specifically, and can be utilized for other handoff modes such as pickup as well.
+      
+      For orders submitted via the Ordering API, this event is triggered when calling the following endpoint&#58;
+      - [Submit Customer Arrival Notification](/docs/load/ordering-api#operation/SubmitCustomerArrivalNotification)
+    operationId: customerArrived
+    tags:
+      - orderEvents
+    parameters:
+      - in: header
+        name: X-Olo-Event-Type
+        description: Webhook event type.
+        schema:
+          type: string
+          enum:
+            - CustomerArrived
+        required: true
+      - $ref: '#/components/schemas/X-Olo-Message-Id'
+      - $ref: '#/components/schemas/X-Olo-Timestamp'
+      - $ref: '#/components/schemas/X-Olo-Signature'
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CustomerArrived'
+    responses:
+      200:
+        $ref: 'webhooks-schemas-10.yaml#/200'
+ScheduledOrderFailed:
+  post:
+    summary: Scheduled Order Failed
+    description: A scheduled order has failed to fire to the restaurant's POS. This event will be sent for advance orders that use Olo's scheduler and manual fire orders if the order firing is unsuccessful.
+    operationId: scheduledOrderFailed
+    tags:
+      - orderEvents
+    parameters:
+      - in: header
+        name: X-Olo-Event-Type
+        description: Webhook event type.
+        schema:
+          type: string
+          enum:
+            - ScheduledOrderFailed
+        required: true
+      - $ref: '#/components/schemas/X-Olo-Message-Id'
+      - $ref: '#/components/schemas/X-Olo-Timestamp'
+      - $ref: '#/components/schemas/X-Olo-Signature'
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ScheduledOrderFailed'
+    responses:
+      200:
+        $ref: 'webhooks-schemas-10.yaml#/200'
+ScheduledOrderFired:
+  post:
+    summary: Scheduled Order Fired
+    description: A scheduled order has successfully been fired to the restaurant's POS. This event will be sent for advance orders that use Olo's scheduler and manual fire orders if the order firing is successful.
+    operationId: scheduledOrderFired
+    tags:
+      - orderEvents
+    parameters:
+      - in: header
+        name: X-Olo-Event-Type
+        description: Webhook event type.
+        schema:
+          type: string
+          enum:
+            - ScheduledOrderFired
+        required: true
+      - $ref: '#/components/schemas/X-Olo-Message-Id'
+      - $ref: '#/components/schemas/X-Olo-Timestamp'
+      - $ref: '#/components/schemas/X-Olo-Signature'
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ScheduledOrderFired'
+    responses:
+      200:
+        $ref: 'webhooks-schemas-10.yaml#/200'
+StandingOrderInstantiationFailed:
+  post:
+    summary: Standing Order Instantiation Failed
+    description: A recurring standing order instantiation has failed.
+    operationId: standingOrderInstantiationFailed
+    tags:
+      - orderEvents
+    parameters:
+      - in: header
+        name: X-Olo-Event-Type
+        description: Webhook event type.
+        schema:
+          type: string
+          enum:
+            - StandingOrderInstantiationFailed
+        required: true
+      - $ref: '#/components/schemas/X-Olo-Message-Id'
+      - $ref: '#/components/schemas/X-Olo-Timestamp'
+      - $ref: '#/components/schemas/X-Olo-Signature'
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/StandingOrderInstantiationFailed'
+    responses:
+      200:
+        $ref: 'webhooks-schemas-10.yaml#/200'
+
+# User Events
+GuestOptIn:
+  post:
+    summary: Guest Opt In
+    description: | 
+      A guest user has opted in to receive marketing emails from the brand. This event is triggered when a user without a registered account submits an order and opts in.
+      
+      For orders submtited via the Ordering API, this would occur when the "guestoptin" field is sent as true in either of the basket submit endpoints&#58;
+      - [Submit Order with Single Payment](/docs/load/ordering-api#operation/SubmitOrderwithSinglePayment)
+      - [Submit Order with Multiple Payments](/docs/load/ordering-api#operation/SubmitOrderwithMultiplePayments)
+    operationId: guestOptIn
+    tags:
+      - userEvents
+    parameters:
+      - in: header
+        name: X-Olo-Event-Type
+        description: Webhook event type.
+        schema:
+          type: string
+          enum:
+            - GuestOptIn
+        required: true
+      - $ref: '#/components/schemas/X-Olo-Message-Id'
+      - $ref: '#/components/schemas/X-Olo-Timestamp'
+      - $ref: '#/components/schemas/X-Olo-Signature'
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GuestOptIn'
+    responses:
+      200:
+        $ref: 'webhooks-schemas-10.yaml#/200'
+UserOptOut:
+  post:
+    summary: User Opt Out
+    description: A user with a registered account has opted out of marketing emails. This event can be triggered via the Ordering API by the [Update User Communication Preferences](/docs/load/ordering-api#operation/UpdateUserCommunicationPreferences) endpoint.
+    operationId: userOptOut
+    tags:
+      - userEvents
+    parameters:
+      - in: header
+        name: X-Olo-Event-Type
+        description: Webhook event type.
+        schema:
+          type: string
+          enum:
+            - UserOptOut
+        required: true
+      - $ref: '#/components/schemas/X-Olo-Message-Id'
+      - $ref: '#/components/schemas/X-Olo-Timestamp'
+      - $ref: '#/components/schemas/X-Olo-Signature'
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserOptOut'
+    responses:
+      200:
+        $ref: 'webhooks-schemas-10.yaml#/200'
+UserSignedUp:
+  post:
+    summary: User Signed Up
+    description: |
+      A user has created an account in Olo (not applicable to guests).
+        
+      This event can be triggered via the Ordering API by the following endpoints&#58;
+      - [Create Olo User](/docs/load/ordering-api#operation/CreateOloUser)
+      - [Create or Get SSO-Linked Olo User](/docs/load/ordering-api#operation/CreateorGetSSOLinkedOloUser)
+      - [Create Olo User from Guest Order](/docs/load/ordering-api#operation/CreateOloUserfromGuestOrder)
+    operationId: userSignedUp
+    tags:
+      - userEvents
+    parameters:
+      - in: header
+        name: X-Olo-Event-Type
+        description: Webhook event type.
+        schema:
+          type: string
+          enum:
+            - UserSignedUp
+        required: true
+      - $ref: '#/components/schemas/X-Olo-Message-Id'
+      - $ref: '#/components/schemas/X-Olo-Timestamp'
+      - $ref: '#/components/schemas/X-Olo-Signature'
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserSignedUp'
+    responses:
+      200:
+        $ref: 'webhooks-schemas-10.yaml#/200'
+UserUpdated:
+  post:
+    summary: User Updated
+    description: |
+      A user has updated their information in Olo.
+        
+      This event can be triggered via the Ordering API by the following endpoints&#58;
+      - [Update User Details](/docs/load/ordering-api#operation/UpdateUserDetails)
+      - [Update User Contact Number](/docs/load/ordering-api#operation/UpdateUserContactNumber)
+      - [Update User Communication Preferences](/docs/load/ordering-api#operation/UpdateUserCommunicationPreferences)
+    operationId: userUpdated
+    tags:
+      - userEvents
+    parameters:
+      - in: header
+        name: X-Olo-Event-Type
+        description: Webhook event type.
+        schema:
+          type: string
+          enum:
+            - UserUpdated
+        required: true
+      - $ref: '#/components/schemas/X-Olo-Message-Id'
+      - $ref: '#/components/schemas/X-Olo-Timestamp'
+      - $ref: '#/components/schemas/X-Olo-Signature'
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserUpdated'
+    responses:
+      200:
+        $ref: 'webhooks-schemas-10.yaml#/200'
+
+#Restaurant Events
+VendorAvailabilityChanged:
+  post:
+    summary: Vendor Availability Changed
+    description: |
+      A restaurant has gone online or offline for ordering, typically due to POS connection issues. This event is sometimes referred to as the Vendor POS Health Check. Olo delays triggering offline events for five minutes after detecting the POS is offline as many POS systems are able to self correct. If the POS is able to successfully reconnect, the offline webhook will not be sent. Updates to a restaurant's hours do not trigger this event.
+        
+      > If your integration monitors these events to determine if a restaurant is able to accept orders, please take note of the following:
+      > - A restaurant can be [disabled or enabled](#operation/vendorTemporarilyDisabled) while the POS is offline. Your integration needs to ensure that it accounts for scenarios where the POS is online but the restaurant is disabled and vice versa.
+      > - It is important to reference the "changeTime" field as resends could cause events to be received out of order. For example, if a restaurant's POS goes offline and Olo is unable to deliver the webhook successfully to your listener, we will requeue the offline event on a time delay. If the restaurant comes online in the interim, you'll need to ensure that your integration does not take the restaurant offline when the resent event comes through.
+    operationId: vendorAvailabilityChanged
+    tags:
+      - vendorEvents
+    parameters:
+      - in: header
+        name: X-Olo-Event-Type
+        description: Webhook event type.
+        schema:
+          type: string
+          enum:
+            - VendorAvailabilityChanged
+        required: true
+      - $ref: '#/components/schemas/X-Olo-Message-Id'
+      - $ref: '#/components/schemas/X-Olo-Timestamp'
+      - $ref: '#/components/schemas/X-Olo-Signature'
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/VendorAvailabilityChanged'
+    responses:
+      200:
+        $ref: 'webhooks-schemas-10.yaml#/200'
+VendorTemporarilyDisabled:
+  post:
+    summary: Vendor Temporarily Disabled
+    description: |
+      A restaurant has been temporarily disabled or re-enabled for ordering in Olo.
+        
+      > If your integration monitors these events to determine if a restaurant is able to accept orders, please note that a restaurant's POS can go [online or offline](#operation/vendorAvailabilityChanged) while it is disabled in Olo. Your integration needs to ensure that it accounts for scenarios where the POS is online but the restaurant is disabled and vice versa.
+    operationId: vendorTemporarilyDisabled
+    tags:
+      - vendorEvents
+    parameters:
+      - in: header
+        name: X-Olo-Event-Type
+        description: Webhook event type.
+        schema:
+          type: string
+          enum:
+            - VendorTemporarilyDisabled
+        required: true
+      - $ref: '#/components/schemas/X-Olo-Message-Id'
+      - $ref: '#/components/schemas/X-Olo-Timestamp'
+      - $ref: '#/components/schemas/X-Olo-Signature'
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/VendorTemporarilyDisabled'
+    responses:
+      200:
+        $ref: 'webhooks-schemas-10.yaml#/200'
+LocationParticipationChanged:
+  post:
+    summary: Location Participation Changed
+    description: |
+      A restaurant has been added or removed from your Rails API project.
+      > RAILS ONLY
+    operationId: locationParticipationChanged
+    tags:
+      - vendorEvents
+    parameters:
+      - in: header
+        name: X-Olo-Event-Type
+        description: Webhook event type.
+        schema:
+          type: string
+          enum:
+            - LocationParticipationChanged
+        required: true
+      - $ref: '#/components/schemas/X-Olo-Message-Id'
+      - $ref: '#/components/schemas/X-Olo-Timestamp'
+      - $ref: '#/components/schemas/X-Olo-Signature'
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/LocationParticipationChanged'
+    responses:
+      200:
+        $ref: 'webhooks-schemas-10.yaml#/200'
