@@ -1,8 +1,8 @@
+import { LoyaltyScheme } from "./LoyaltyScheme";
+
 export interface ResponseLoyaltySchemes {
 
-    schemes: string[],
+    schemes: LoyaltyScheme[],
     //ist of loyalty schemes.
-    // items:
-    //$ref: '#/LoyaltyScheme'
 
 }

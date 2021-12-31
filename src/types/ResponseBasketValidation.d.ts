@@ -1,24 +1,25 @@
+import { BasketDonation } from "./BasketDonation";
+import { BasketFee } from "./BasketFee";
+import { ContextualPricing } from "./ContextualPricing";
+import { TaxResult } from "./TaxResult";
+import { UpsellGroup } from "./UpsellGroup";
+
 export interface ResponseBasketValidation {
 
     basketid: string,
     //Olo basket id (guid).
 
-    contextualpricing: string,
-    //$ref: '#/ContextualPricing'
+    contextualpricing: ContextualPricing,
 
     customerhandoffcharge: number,
     //Delivery/Dispatch fee for the basket.
 
-    fees: string[],
+    fees: BasketFee[],
     //List of fees that apply to the basket.
     //A fee is added if the basket meets the conditions for the fee defined by the brand.
-    //items:
-    //$ref: '#/BasketFee'
 
-    donations: string[],
+    donations: BasketDonation[],
     // List of donations that apply to the basket. A donation is added if the basket meets the conditions for the donation defined by the brand.
-    //items:
-    //$ref: '#/BasketDonation'
 
     posreferenceresponse: string,     //deprecated: true
 
@@ -34,12 +35,10 @@ export interface ResponseBasketValidation {
     tax: number,
     //Total amount of tax. This is the actual amount as determined by the POS, not an estimate.
 
-    taxes: string[],
+    taxes: TaxResult[],
     //type: array
     //List of all taxes applicable to the basket. 
     //These are the actual amounts as determined by the POS, not estimates.
-    //items:
-    //$ref: '#/TaxResult'
 
     total: number,
     //Basket total including taxes.
@@ -50,9 +49,7 @@ export interface ResponseBasketValidation {
     totaldonations: number,
     //Total of all donations applied to the basket.
 
-    upsellgroups?: string[]
+    upsellgroups?: UpsellGroup[]
     // List of upsell groups with items that can optionally be added to the basket.
-    //items:
-    //$ref: '#/UpsellGroup'
 
 }

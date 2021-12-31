@@ -1,3 +1,5 @@
+import { Image } from "./Image";
+
 export interface RestaurantDisclaimer {
 
 
@@ -10,12 +12,12 @@ export interface RestaurantDisclaimer {
     //Name of the disclaimer.
     // nullable: true
     // example: FDA Statement
+
     disclaimer: string,
     //Disclaimer text.
     //nullable: false
     //example: FDA guideline statement.
-    images: array
+
+    images: Image[]
     // List of images associated with the disclaimer.
-    //items:
-    //$ref: '#/Image'
 }

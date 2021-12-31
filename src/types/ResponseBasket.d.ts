@@ -1,4 +1,14 @@
 import { DeliveryMode, TimeMode } from 'enums';
+import { BasketCoupon } from './BasketCoupon';
+import { BasketCustomField } from './BasketCustomField';
+import { BasketDonation } from './BasketDonation';
+import { BasketFee } from './BasketFee';
+import { BasketProduct } from './BasketProduct';
+import { ContextualPricing } from './ContextualPricing';
+import { Discount } from './Discount';
+import { LoyaltyReward } from './LoyaltyReward';
+import { ResponseDeliveryAddress } from './ResponseDeliveryAddress';
+import { ValidationMessage } from './ValidationMessage';
 
 export interface ResponseBasket {
 
@@ -9,13 +19,10 @@ export interface ResponseBasket {
     //In order for this to be true, the restaurant must support tipping and
     // the selected handoff mode must support tipping.
 
-    appliedrewards: string[],
+    appliedrewards: LoyaltyReward[],
     // List of loyalty rewards applied to the basket.
-    //items:
-    //$ref: '#/LoyaltyReward'
 
-    contextualpricing: string,
-    // $ref: '#/ContextualPricing'
+    contextualpricing: ContextualPricing,
 
     coupondiscount: number,
     //Total discount provided by the applied coupon.
@@ -26,16 +33,13 @@ export interface ResponseBasket {
     customerhandoffcharge: number,
     //Estimated delivery/Dispatch fee for the basket.
 
-    customfields: string[],
+    customfields: BasketCustomField[],
     //type: array
     //List of custom fields for the restaurant that are tied to the basket. 
     //Please pay attention to the `isrequired` and `scope` fields on each custom field 
     //to determine whether or not a value is necessary.
-    //items:
-    //$ref: '#/BasketCustomField'
 
-    deliveryaddress: string,
-    //$ref: '#/ResponseDeliveryAddress'
+    deliveryaddress: ResponseDeliveryAddress,
 
     deliverymode: DeliveryMode
     // Handoff mode for the basket.
@@ -43,16 +47,12 @@ export interface ResponseBasket {
     discount: number,
     //Total sum of all discounts applied to the basket. This value cannot be greater than the subtotal.
 
-    discounts: string[],
+    discounts: Discount[],
     //type: array
     // List of discounts applied to the basket.
-    // items:
-    //$ref: '#/Discount'
 
-    donations: string[],
+    donations: BasketDonation[],
     //List of all donations that apply to the basket.
-    //items:
-    //$ref: '#/BasketDonation'
 
     earliestreadytime: string,
     ///format: date-time
@@ -62,11 +62,9 @@ export interface ResponseBasket {
     //basket is received back from the API. 
     //As time goes on, it can become out of date.
 
-    fees: string[],
+    fees: BasketFee[],
     //List of fees that apply to the basket. 
     //A fee is added if the basket meets the conditions for the fee defined by the brand.
-    //items:
-    //$ref: '#/BasketFee
 
     isupsellenabled: boolean,
     //Whether or not the basket has upsell enabled. 
@@ -87,11 +85,9 @@ export interface ResponseBasket {
     //example: orderahead
     //deprecated: true
 
-    products: string[],
+    products: BasketProduct[],
     //type: array
     //List of products that have already been added to the basket.
-    //items:
-    //$ref: '#/BasketProduct'
 
     salestax: number,
     //Total of all taxes applicable to the basket. Prior to calling basket validation,
@@ -139,12 +135,10 @@ export interface ResponseBasket {
     totalfees: number,
     //Total of all fees applied to the basket.
 
-    validationmessages: string[],
+    validationmessages: ValidationMessage[],
     // type: array
     //List of validation messages for the basket, generally used to inform about any potential issues with the basket. 
     //These messages are not persisted across requests.
-    //items:
-    //$ref: '#/ValidationMessage'
 
     vendorid: number,
     //Restaurant id the basket is tied to.
@@ -160,8 +154,7 @@ export interface ResponseBasket {
     //Whether or not a collection of eligible upsell items has already been returned for the specified basket.
 
 
-    coupon?: string
-    //$ref: '#/BasketCoupon'
+    coupon?: BasketCoupon,
 
     contactnumber?: string,
     //User's contact number. This will only be populated if the basket is associated with a user.

@@ -1,25 +1,23 @@
 import { TypeOfBillingScheme } from "enums";
+import { BillingAccount } from "./BillingAccount";
+import { BillingFieldInput } from "./BillingFieldInput";
 
 export interface ResponseBillingScheme {
 
     id: number,
     //Olo billing scheme id. Used when submitting an order with a new gift card as payment.
 
-    accounts: string[],
+    accounts: BillingAccount[],
     //type: array
     // List of accounts the user has for the billing scheme that are supported at the restaurant tied to the basket.
-    //items:
-    //$ref: '#/BillingAccount'
 
 
     cancheckbalance: boolean,
     //Indicates whether the billing scheme supports balance checks.
 
-    fields: string[],
+    fields: BillingFieldInput[],
     //type: array
     //List of billing fields that can be provided for this billing scheme.
-    //items:
-    //$ref: '#/BillingFieldInput'
 
     name: string,
     //Name of the billing scheme.   example: Kitchen Sink Gift Card

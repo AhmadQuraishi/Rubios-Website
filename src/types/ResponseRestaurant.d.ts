@@ -1,3 +1,10 @@
+import { ContextualPricing } from "./ContextualPricing";
+import { DeliveryFeeTier } from "./DeliveryFeeTier";
+import { MetadataItem } from "./MetadataItem";
+import { RestaurantCalendar } from "./RestaurantCalendar";
+import { RestaurantCustomField } from "./RestaurantCustomField";
+import { RestaurantCustomLabel } from "./RestaurantCustomLabel";
+
 export interface ResponseRestaurant {
 
 
@@ -43,8 +50,8 @@ export interface ResponseRestaurant {
 
     city: string,
     //The restaurant's city.
-    contextualpricing: string,
-    //$ref: '#/ContextualPricing'
+
+    contextualpricing: ContextualPricing,
 
     country: string,
     //The restaurant's country (eg. US, CA).
@@ -56,13 +63,12 @@ export interface ResponseRestaurant {
     //Customer facing message that the restaurant wishes to display.
     //Typically used for greetings, deal notifications, and any extraordinary circumstances.
 
-    customfields: string[],
+    customfields: RestaurantCustomField[],
 
     // List of custom fields defined for the restaurant. 
     //To see how to set these fields, 
     //please reference the[Custom Fields endpoint](#operation / SetBasketCustomFieldValue).
-    //items:
-    //$ref: '#/RestaurantCustomField
+
 
     deliveryarea: string,
     //Description of the area the restaurant delivers to.
@@ -80,10 +86,8 @@ export interface ResponseRestaurant {
     //Fee for delivery. This will return as 0 if the restaurant has multiple fee tiers.
     //Please note that this does not apply to Dispatch, only in -house delivery.
 
-    deliveryfeetiers: string[],
+    deliveryfeetiers: DeliveryFeeTier[],
     //List of fee tiers for delivery. Please note that this does not apply to Dispatch, only in-house delivery.
-    //items:
-    //$ref: '#/DeliveryFeeTier'
 
     distance: number,
     //Distance in miles from the set of coordinates provided to [GET /restaurants/near](#operation/FindNearbyParticipatingRestaurants)
@@ -107,12 +111,8 @@ export interface ResponseRestaurant {
     // If the restaurant is open, this field will be "true" else "false".
     //This also respects business hours overrides.
 
-    labels: string[],
+    labels: RestaurantCustomLabel[],
     //List of custom labels for handoff modes and thank you messages as determined by the restaurant's brand.
-    //items:
-    //$ref: '#/RestaurantCustomLabel'
-
-
 
     latitude: number,
     //The restaurant's latitude.
@@ -124,12 +124,10 @@ export interface ResponseRestaurant {
     //Maximum total amount for any Pay in Store (a.k.a. cash) order.
     //Only relevant if the restaurant supports the billing scheme Pay In Store.
 
-    metadata: string[],
+    metadata: MetadataItem[],
     // description: Restaurant metadata (array of key/value pairs) that has a very limited use case.
     // If interested in using restaurant - level metadata, 
     //please discuss your project requirements with your Olo Customer Success representative.
-    //items:
-    //$ref: '#/MetadataItem'
 
     minimumdeliveryorder: number,
     //Minimum total amount for an order to be eligible for delivery.
@@ -268,13 +266,10 @@ export interface ResponseRestaurant {
     //Whether or not the restaurant wants to display calorie information for products.
     // When false, calorie information is omitted from the menu and product endpoints.
 
-    calendars?: string[],
+    calendars?: RestaurantCalendar[],
     //List of restaurant operating hours for multiple types of calendars over the date range specified in the request. 
     //Please note that this array can only be returned for requests sent to the following endpoints:
 
     //* [Find Nearby Participating Restaurants](#operation/FindNearbyParticipatingRestaurants)
     //* [Find Nearby Participating Restaurants with In-House Delivery](#operation/FindNearbyParticipatingRestaurantswithInHouseDelivery)
-    //items:
-    //$ref: '#/RestaurantCalendar'
-
 }

@@ -1,9 +1,10 @@
+import { LoyaltyVendor } from "./LoyaltyVendor";
+
 export interface ResponseLoyaltyRewardsByVendor {
 
 
 
-    vendors: string[]
+    vendors: LoyaltyVendor[]
     //List of restaurants with rewards.
-    //items:
-    // $ref: '#/LoyaltyVendor'
+
 }

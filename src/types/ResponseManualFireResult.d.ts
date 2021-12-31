@@ -1,3 +1,5 @@
+import { ResponseOrderStatus } from "./ResponseOrderStatus";
+
 export interface ResponseManualFireResult {
 
     success: boolean,
@@ -7,8 +9,7 @@ export interface ResponseManualFireResult {
     //Gives more details about the status of the firing. This may contain error messages if any errors occurred.
     //example: Order submitted.
 
-    order: string
-    //$ref: '#/ResponseOrderStatus'
+    order: ResponseOrderStatus
 
 }
 

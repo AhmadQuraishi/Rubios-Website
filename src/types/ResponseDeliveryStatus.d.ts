@@ -1,6 +1,7 @@
+import { Delivery } from "./Delivery";
+
 export interface ResponseDeliveryStatus {
 
-    deliveries: string[],
+    deliveries: Delivery[],
     //List of Dispatch delivery statuses for the order.
-    // items:$ref: '#/Delivery'
 }

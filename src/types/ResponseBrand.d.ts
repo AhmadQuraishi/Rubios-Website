@@ -1,3 +1,8 @@
+import { DeliveryModes } from "./DeliveryModes";
+import { LoginProviders } from "./LoginProviders";
+import { PushNotifications } from "./PushNotifications";
+import { TimeModes } from "./TimeModes";
+
 export interface ResponseBrand {
 
     advanceorderdays: number,
@@ -8,21 +13,16 @@ export interface ResponseBrand {
     //The maximum number of characters the brand desires for delivery special instructions.
     //Submitting more characters could truncate the message.
 
-    deliverymodes: string[],
+    deliverymodes: DeliveryModes[],
     //type: array
-    //items:
-    //$ref: '#/DeliveryModes']
-    loginproviders: string[],
+
+    loginproviders: LoginProviders[],
     //type: array
-    //items:
-    //$ref: '#/LoginProviders'
-    pushnotifications: string[],
+
+    pushnotifications: PushNotifications[],
     //type: array
-    //items:
-    //$ref: '#/PushNotifications'
-    timemodes: string[],
+
+    timemodes: TimeModes[],
     //type: array
-    //items:
-    //$ref: '#/TimeModes'
 }
 

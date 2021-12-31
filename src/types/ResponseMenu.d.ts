@@ -1,3 +1,4 @@
+import { Category } from "./Category";
 
 export interface ResponseMenu {
 
@@ -6,10 +7,8 @@ export interface ResponseMenu {
     //the base path to be used in the construction of an image's full URL. // required but also nullable: true
     //example: https://menu-images.com/
 
-    categories: string[]
+    categories: Category[]
     //type: array
     //description: List of product categories on the menu.
-    //items:
-    // $ref: '#/Category'
 
 }

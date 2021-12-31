@@ -1,5 +1,7 @@
 import { CaloriesSeparator } from "enums"
+import { CustomField } from "./CustomField"
 import { MetadataItem } from "./MetadataItem"
+import { OptionAvailability } from "./OptionAvailability"
 import { OptionGroup } from "./OptionGroup"
 
 export interface Option {
@@ -29,10 +31,8 @@ export interface Option {
     modifiers: OptionGroup[],
     // List of child option groups.
 
-    fields: string[],
+    fields: CustomField[],
     // List of custom fields applicable to the option.
-    //items:
-    // $ref: '#/CustomField'
 
     menuitemlabels: MetadataItem[],
     // List of menu item labels that apply to the option.
@@ -53,8 +53,7 @@ export interface Option {
     adjustsparentcalories: boolean,
     //Indicates that the modifier adjusts the calories of the product or a parent modifier. For example, the modifier's calories should be displayed as "+50" rather than "50".
 
-    availability: string,
-    //$ref: '#/OptionAvailability'
+    availability: OptionAvailability,
 
     metadata: MetadataItem[]
     //List of customizable key-value pairs associated with the option. If you would like to configure metadata for options, please reach out to your assigned Customer Success representative.

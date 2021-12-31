@@ -1,3 +1,5 @@
+import { ChoiceCustomFieldValue } from "./ChoiceCustomFieldValue";
+
 export interface BasketChoice {
 
     id: number,
@@ -21,9 +23,7 @@ export interface BasketChoice {
     quantity: number,
     //Quantity selected of the option.
 
-    customfields: string[]
+    customfields: ChoiceCustomFieldValue[]
     // Any custom fields that were applied to the option.
-    // items:
-    // $ref: '#/ChoiceCustomFieldValue'
 
 }

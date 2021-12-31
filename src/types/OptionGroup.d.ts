@@ -1,3 +1,4 @@
+import { MenuItemAvailability } from "./MenuItemAvailability"
 import { MetadataItem } from "./MetadataItem"
 import { Option } from "./Option"
 
@@ -47,8 +48,7 @@ export interface OptionGroup {
     choicequantityincrement: string,
     //Quantity increment for options in the option group. For example, if an option group has a choicequantityincrement of 2, option quantities can only be selected in multiples of 2 (2, 4, 6, etc).
 
-    availability: string,
-    //$ref: '#/MenuItemAvailability'
+    availability: MenuItemAvailability,
 
     metadata: MetadataItem[],
     //List of customizable key-value pairs associated with the option group. If you would like to configure metadata for option groups, please reach out to your assigned Customer Success representative.

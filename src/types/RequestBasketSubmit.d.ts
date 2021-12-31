@@ -1,4 +1,5 @@
 import { BillingMethod, UserType, Country, CardType, SaveOnFile } from '../enums'
+import { BillingFieldData } from './BillingFieldData';
 
 interface RequestBasketSubmit {
 
@@ -23,10 +24,9 @@ interface RequestBasketSubmit {
     // with a new gift card. Required if "billingmethod" is "storedvalue"; otherwise
     // omitted.
 
-    billingfields?: string[],
+    billingfields?: BillingFieldData[],
     // List of billing fields for the selected "billingmethod". Required
     // if "billingmethod" is "storedvalue"; otherwise omitted.
-    //items: $ref: '#/BillingFieldData'
 
     usertype: UserType,         //Type of customer.
     firstname?: string,          //First name.Required for guests; otherwise omitted.

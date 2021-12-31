@@ -1,8 +1,9 @@
+import { BrandExportStatus } from "./BrandExportStatus";
+
 export interface ResponseBrandExportStatusList {
 
 
-    brands: string[]
+    brands: BrandExportStatus[]
     //Status records by brand.
-    //items:
-    // $ref: '#/BrandExportStatus'
+
 }

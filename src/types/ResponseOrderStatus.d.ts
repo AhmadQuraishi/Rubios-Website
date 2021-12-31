@@ -1,5 +1,11 @@
 import { ArrivalStatus, DeliveryMode, OrderStatus } from "enums"
+import { BasketCustomField } from "./BasketCustomField"
+import { Discount } from "./Discount"
+import { OrderDonation } from "./OrderDonation"
+import { OrderFee } from "./OrderFee"
+import { OrderStatusProduct } from "./OrderStatusProduct"
 import { ResponseDeliveryAddress } from "./ResponseDeliveryAddress"
+import { TaxResult } from "./TaxResult"
 
 export interface ResponseOrderStatus {
 
@@ -23,23 +29,17 @@ export interface ResponseOrderStatus {
     salestax: number,
     // Total sales tax for the order.
 
-    taxes: string[],
+    taxes: TaxResult[],
     // List of taxes for the order.
-    // items:
-    //$ref: '#/TaxResult'
 
-    fees: string[],
+    fees: OrderFee[],
     // List of fees for the order.
-    //items:
-    //$ref: '#/OrderFee'
 
     totalfees: number,
     // Total fees for the order.
 
-    donations: string[],
+    donations: OrderDonation[],
     // List of donations applied to the order.
-    //items:
-    //$ref: '#/OrderDonation'
 
     totaldonations: number,
     // The sum of all donations applied to the order.
@@ -69,10 +69,8 @@ export interface ResponseOrderStatus {
 
     deliveryaddress: ResponseDeliveryAddress,
 
-    customfields: string[],
+    customfields: BasketCustomField[],
     //List of custom fields for the order.
-    //items:
-    // $ref: '#/BasketCustomField'
 
     iseditable: boolean,
     //Whether or not the order can be edited or cancelled.
@@ -80,10 +78,8 @@ export interface ResponseOrderStatus {
     discount: number,
     // Total sum of all discounts applied to the order. This value cannot be greater than the subtotal.
 
-    discounts: string[],
+    discounts: Discount[],
     //List of discounts, including coupons and loyalty rewards, applied to the order.
-    //items:
-    // $ref: '#/Discount'
 
     orderref: string,
     //Order reference in the calling system (a.k.a. external reference).
@@ -118,10 +114,8 @@ export interface ResponseOrderStatus {
     hasolopass: boolean,
     //This is a legacy property that should be ignored. deprecated: true
 
-    products: string[],
+    products: OrderStatusProduct[],
     // List of products ordered.
-    // items:
-    //$ref: '#/OrderStatusProduct'
 
     posreferenceresponse: string
     //deprecated: true

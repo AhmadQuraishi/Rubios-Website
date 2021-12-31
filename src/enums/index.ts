@@ -244,3 +244,32 @@ export enum DispatchDeliveryStatus {
   Scheduled = 'Scheduled'
 
 }
+
+export enum ValidationMessageType {
+
+  error = 'error',
+  warning = 'Warning'
+
+}
+
+export enum BillingFieldName {
+
+  number = 'number',
+  pin = 'pin'
+
+}
+
+export enum BillingFieldType {
+
+  number = 'number',
+  password = 'password'
+
+}
+
+
+export enum LoginProviderType {
+
+  olo = 'olo',
+  external = 'external'
+
+}

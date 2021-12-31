@@ -1,10 +1,10 @@
+import { OrderBatch } from "./OrderBatch";
+
 export interface ResponseOrderBatches {
 
 
 
-    batches: string[]
+    batches: OrderBatch[]
     // List of Order Export batches.
-    //items:
-    //  $ref: '#/OrderBatch'
 
 }

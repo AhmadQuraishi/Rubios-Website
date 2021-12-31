@@ -1,8 +1,8 @@
+import { BillingAccount } from "./BillingAccount";
+
 export interface ResponseUserBillingAccounts {
 
 
-    billingaccounts: string[]
+    billingaccounts: BillingAccount[]
     // List of billing accounts for the user.
-    //items:
-    //$ref: '#/BillingAccount'
 }

@@ -1,9 +1,9 @@
+import { Fave } from "./Fave";
+
 export interface ResponseUserFaves {
 
 
-    faves: string[]
+    faves: Fave[]
     //  description: List of favorites for the user.
-    //items:
-    // $ref: '#/Fave'
 
 }

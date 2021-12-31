@@ -1,4 +1,5 @@
 import { BillingMethod, UserType, Country, CardType, SaveOnFile } from '../enums'
+import { BillingAccountData } from './BillingAccountData';
 
 export interface RequestBasketSubmitMultiple {
 
@@ -29,31 +30,8 @@ export interface RequestBasketSubmitMultiple {
 
     billingaccounts?: BillingAccountData[]
     //List of billing accounts to use for order payment.
-    // items:
-    // allOf:
-    // $ref: '#/BillingAccountData'
-
-
-
 
 }
 
 
-
-
-// billingaccounts:
-//     type: array
-// description: List of billing accounts to use for order payment.
-//     items:
-//     allOf:
-//     - $ref: '#/BillingAccountData'
-//     properties:
-//         billingmethod:
-//             enum:
-// -               creditcard
-//     -           creditcardonfile
-//     -           creditcardtoken
-//     -            billingaccount
-//     -            cash
-//     -            storedvalue
 

@@ -1,5 +1,7 @@
 import { AlcoholStatus, CaloriesSeparator } from "enums"
+import { Image } from "./Image"
 import { MetadataItem } from "./MetadataItem"
+import { ProductAvailability } from "./ProductAvailability"
 
 export interface Product {
 
@@ -81,13 +83,10 @@ export interface Product {
     // The alcohol status of the product. 
     //For example, FoodAndAlcohol would indicate a combo meal with both required food and alcohol items.
 
-    images: string[],
+    images: Image[],
     //List of images for the product.
-    //items:
-    //$ref: '#/Image'
 
-    availability: string,
-    //$ref: '#/ProductAvailability'
+    availability: ProductAvailability,
 
     unavailablehandoffmodes: string[]
     // List of unavailable handoff modes for the product. 

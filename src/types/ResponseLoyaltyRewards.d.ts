@@ -1,8 +1,8 @@
+import { LoyaltyReward } from "./LoyaltyReward";
+
 export interface ResponseLoyaltyRewards {
 
-    rewards: string[],
+    rewards: LoyaltyReward[],
     //List of loyalty rewards.
-    // items:
-    //  $ref: '#/LoyaltyReward'
 
 }

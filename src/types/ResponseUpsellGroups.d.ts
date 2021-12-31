@@ -1,8 +1,8 @@
+import { UpsellGroup } from "./UpsellGroup";
+
 export interface ResponseUpsellGroups {
 
-    groups: string[],
+    groups: UpsellGroup[],
     //List of eligible upsell groups.
-    // items:
-    //$ref: '#/UpsellGroup'
 
 }

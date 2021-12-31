@@ -1,3 +1,4 @@
+import { Image } from "./Image"
 import { MetadataItem } from "./MetadataItem"
 import { Product } from "./Product"
 
@@ -20,10 +21,8 @@ export interface Category {
     containsalcohol: boolean,
     //Determines if all products within the category are alcoholic.
 
-    images: string[],
-    // Images associated with the product category.
-    // items:
-    //   $ref: '#/Image'
+    images: Image[],
+    // Images associated with the product category.'
 
     products: Product[]
     //Products in the category.
