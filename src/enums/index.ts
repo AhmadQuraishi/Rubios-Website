@@ -108,3 +108,139 @@ export enum TypeOfBillingScheme {
   prepaid = 'prepaid',
 
 }
+
+
+export enum OrderStatus {
+
+  completed = 'completed',
+  canceled = 'canceled',
+  transmitting = 'transmitting',
+  scheduled = 'scheduled',
+  PendingManualFire = 'PendingManualFire',
+  InProgress = 'InProgress',
+
+}
+
+
+
+export enum ArrivalStatus {
+
+  OrderPlaced = 'OrderPlaced',
+  Arrived = 'Arrived',
+  PickedUp = 'PickedUp',
+
+}
+
+export enum MarketingSMS {
+
+  true = 'true',
+  false = 'false'
+
+}
+export enum UpSell {
+
+  true = 'true',
+  false = 'false'
+
+}
+export enum EmailReceipts {
+
+  true = 'true',
+  false = 'false'
+
+}
+export enum FollowUps {
+
+  true = 'true',
+  false = 'false'
+
+}
+
+
+export enum CalendarType {
+
+  business = 'business',
+  delivery = 'delivery',
+  carryout = 'carryout',
+  pickupwindow = 'pickupwindow',
+  dinein = 'dinein',
+  curbsidepickup = 'curbsidepickup',
+  drivethru = 'drivethru',
+  dispatch = 'dispatch',
+
+}
+
+export enum QualificationCriteria {
+
+  AllOrders = 'AllOrders',
+  DeliveryOrdersOnly = 'DeliveryOrdersOnly',
+  CashOrdersOnly = 'CashOrdersOnly',
+  CurbsidePickupOrdersOnly = 'CurbsidePickupOrdersOnly',
+  DriveThruOnly = 'DriveThruOnly',
+  DineInOrdersOnly = 'DineInOrdersOnly',
+  CarryOutOnly = 'CarryOutOnly',
+  CallCenterTimeWantedThreshold = 'CallCenterTimeWantedThreshold',
+  CallCenterOrderAmountThreshold = 'CallCenterOrderAmountThreshold',
+  CallCenterProductQuantityThreshold = 'CallCenterProductQuantityThreshold',
+  CallCenterTimeWantedAndProductQuantityThreshold = 'CallCenterTimeWantedAndProductQuantityThreshold',
+}
+
+
+export enum FeeType {
+
+  SubtotalPercent = 'SubtotalPercent',
+  DispatchFee = 'DispatchFee',
+  FixedFee = 'FixedFee',
+
+}
+
+export enum CaloriesSeparator {
+
+  hyphen = '-',
+  forwardslash = '/',
+
+
+}
+
+export enum AlcoholStatus {
+
+  None = 'None',
+  Alcohol = 'Alcohol',
+  FoodAndAlcohol = 'FoodAndAlcohol',
+
+}
+
+
+export enum GroupName {
+
+  desktop_menu = 'desktop-menu',
+  desktop_customize = 'desktop-customize',
+  mobile_app = 'mobile-app',
+  mobile_app_large = 'mobile-app-large',
+  marketplace_product = 'marketplace-product',
+  mobile_webapp_menu = 'mobile-webapp-menu',
+  mobile_webapp_customize = 'mobile-webapp-customize'
+
+}
+
+
+export enum ScopeOfOrder {
+
+  AllOrders = 'AllOrders',
+  DeliveryOrdersOnly = 'DeliveryOrdersOnly',
+  CashOrdersOnly = 'CashOrdersOnly',
+  CurbsidePickupOrdersOnly = 'CurbsidePickupOrdersOnly'
+
+}
+
+
+export enum DispatchDeliveryStatus {
+
+  Pending = 'Pending',
+  PickupInProgress = 'PickupInProgress',
+  DeliveryInProgress = 'DeliveryInProgress',
+  Delivered = 'Delivered',
+  Canceled = 'Canceled',
+  Scheduled = 'Scheduled'
+
+}
