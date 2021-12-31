@@ -15,6 +15,4 @@ interface RequestNewBasketProduct {
     choicecustomfields?: BatchProductChoice[]        //List of custom field values for selected options. If none of
 
     // the selected options have any custom fields, this property may be omitted.
-    // items:
-    // $ref: '#/BatchProductChoice'
 }

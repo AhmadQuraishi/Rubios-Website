@@ -1,4 +1,5 @@
 import { TargetType, CategoryType } from "enums";
+import { Parameter } from "./Parameter";
 
 
 export interface RequestFeedback {
@@ -12,5 +13,5 @@ export interface RequestFeedback {
     fullname: string,                  //Name of the feedback giver. nullable: false
     email: string,                     //Email of the feedback giver. nullable: false
     feedback: string,                  // Details of the feedback.
-    date?: string[]                    //Customizable key value pairs to store. $ref: '#/Parameter'
+    date?: Parameter[]                    //Customizable key value pairs to store.
 }

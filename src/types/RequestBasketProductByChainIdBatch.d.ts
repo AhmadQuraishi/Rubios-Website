@@ -3,6 +3,7 @@ import { RequestNewBasketProductByChainId } from './RequestNewBasketProductByCha
 
 interface RequestBasketProductByChainIdBatch {
 
-    products: RequestNewBasketProductByChainId[],                      // List of products to add to the basket.    items:   $ref: '#/RequestNewBasketProductByChainId'
+    products: RequestNewBasketProductByChainId[],
+    // List of products to add to the basket.   
 
 }

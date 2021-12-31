@@ -1,9 +1,10 @@
+import { NewBasketProductChoiceByChainId } from "./NewBasketProductChoiceByChainId";
 
 export interface RequestNewBasketProductByChainId {
 
     chainproductid: number,                  //format: int64 // Olo chain wide product id as retrieved from the restaurant's menu.example: 23901384
     quantity: number,                         //format: int32 // Quantity of the product.
-    choices: string[],                        // List of top level options (choices) that apply to the product.items: $ref: '#/NewBasketProductChoiceByChainId'
+    choices: NewBasketProductChoiceByChainId[],                        // List of top level options (choices) that apply to the product.
     specialinstructions?: string                 //Special instructions for the product. example Lightly toasted
     recipient?: string,                        // Recipient name, i.e. the person who the product is for. Required if basket is a group order.
     customdata?: string

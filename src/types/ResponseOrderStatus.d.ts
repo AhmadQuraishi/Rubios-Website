@@ -1,5 +1,6 @@
 import { ArrivalStatus, DeliveryMode, OrderStatus } from "enums"
 import { BasketCustomField } from "./BasketCustomField"
+import { ContextualPricing } from "./ContextualPricing"
 import { Discount } from "./Discount"
 import { OrderDonation } from "./OrderDonation"
 import { OrderFee } from "./OrderFee"
@@ -64,8 +65,7 @@ export interface ResponseOrderStatus {
     //List of billing account ids used to pay for the order. 
     //Only returned if multiple payment types were used.
 
-    contextualpricing: string,
-    //$ref: '#/ContextualPricing'
+    contextualpricing: ContextualPricing,
 
     deliveryaddress: ResponseDeliveryAddress,
 

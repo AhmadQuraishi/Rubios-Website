@@ -1,5 +1,6 @@
 import { BillingMethod, UserType, Country, CardType, SaveOnFile } from '../enums'
 import { BillingAccountData } from './BillingAccountData';
+import { OrderCustomData } from './OrderCustomData';
 
 export interface RequestBasketSubmitMultiple {
 
@@ -20,10 +21,9 @@ export interface RequestBasketSubmitMultiple {
     // Required for Rails partners; optional otherwise.This allows order status to be looked up later by this reference.
     //example: zie892 - se8912nd34iae
 
-    customdata?: string[]
+    customdata?: OrderCustomData[]
     // A limited use case list of passthrough data that, under certain conditions(and only when supported by the underlying POS),
     // can allow extra information to get added to email templates and printed out on receipts.
-    // items:$ref: '#/OrderCustomData'
 
     guestoptin?: boolean,
     //Guest has opted in to marketing communication.Required for non - Rails guests; otherwise omitted.

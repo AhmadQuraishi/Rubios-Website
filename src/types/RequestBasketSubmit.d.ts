@@ -1,5 +1,6 @@
 import { BillingMethod, UserType, Country, CardType, SaveOnFile } from '../enums'
 import { BillingFieldData } from './BillingFieldData';
+import { OrderCustomData } from './OrderCustomData';
 
 interface RequestBasketSubmit {
 
@@ -94,10 +95,9 @@ interface RequestBasketSubmit {
     //Specifies a customer friendly description of the payment.Required if `billingmethod` is "prepaid"; otherwise omitted.
     //example: VISA x - 1234
 
-    customdata?: string[]
+    customdata?: OrderCustomData[]
     // A limited use case list of passthrough data that, under certain conditions(and only when supported by the underlying POS),
     // can allow extra information to get added to email templates and printed out on receipts.
-    // items:$ref: '#/OrderCustomData'
 
     guestoptin?: boolean,
     //Guest has opted in to marketing communication.Required for non - Rails guests; otherwise omitted.

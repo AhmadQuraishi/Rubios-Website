@@ -8,6 +8,7 @@ import { ContextualPricing } from './ContextualPricing';
 import { Discount } from './Discount';
 import { LoyaltyReward } from './LoyaltyReward';
 import { ResponseDeliveryAddress } from './ResponseDeliveryAddress';
+import { TaxResult } from './TaxResult';
 import { ValidationMessage } from './ValidationMessage';
 
 export interface ResponseBasket {
@@ -108,13 +109,12 @@ export interface ResponseBasket {
     suggestedtippercentage: number,
     //The suggested tip percentage as set by the brand.
 
-    taxes: string[],
+    taxes: TaxResult[],
     //List of all taxes applicable to the basket. Prior to calling basket validation, 
     //this value will be an estimate.After validating the basket, 
     //this will be the actual tax returned by the POS, 
     //which is the ultimate source of authority regarding any discrepancies. 
     //Any material changes to the basket after validation will flip this back to an estimate.
-    //items: $ref: '#/TaxResult'
 
     timemode: TimeMode,
     //Time mode of the basket.
