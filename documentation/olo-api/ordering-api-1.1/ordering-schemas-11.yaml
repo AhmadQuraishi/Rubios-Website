@@ -1,0 +1,5485 @@
+# Request Models
+RequestCheckDeliveryCoverage:
+  required:
+  - city
+  - handoffmode
+  - street
+  - timewantedmode
+  - zipcode
+  type: object
+  properties:
+    handoffmode:
+      type: string
+      description: Handoff mode to check for delivery coverage. Use "delivery" for in-house delivery or "dispatch" for Dispatch (3rd party delivery).
+      enum:
+      - delivery
+      - dispatch
+    timewantedmode:
+      type: string
+      description: Desired order time mode.
+      enum:
+      - asap
+      - advance
+    timewantedutc:
+      type: string
+      description: Time the user would like to receive their order formatted "yyyymmdd hh:mm". Only send if `timewantedmode` is "advance".
+    street:
+      type: string
+      description: Street of the delivery address.
+    city:
+      type: string
+      description: City of the delivery address.
+    zipcode:
+      type: string
+      description: Zip code of the delivery address.
+RequestCreateBasket:
+  required:
+  - vendorid
+  type: object
+  properties:
+    vendorid:
+      type: integer
+      format: int64
+      description: Restaurant id to associate with the basket.
+    authtoken:
+      type: string
+      description: If specified, will link the basket to the specified user account.
+RequestCreateBasketFromOrder:
+  type: object
+  properties:
+    orderref:
+      type: string
+      description: The external order reference supplied by the integration partner.
+    id:
+      type: string
+      format: uuid
+      description: Olo order id (guid) returned when the order was submitted.
+    ignoreunavailableproducts:
+      type: boolean
+      description: Whether or not to ignore errors resulting from unavailable
+        products in the order when creating the new basket. If true, any unavailable
+        products in the order will be ignored and not cause an error. If false
+        and the order contains unavailable products, an error will be returned.
+RequestCreateBasketFromFave:
+  required:
+  - faveid
+  type: object
+  properties:
+    faveid:
+      type: integer
+      format: int64
+      description: Id of the favorite to add to the basket.
+    ignoreunavailableproducts:
+      type: boolean
+      description: Whether or not to ignore errors resulting from unavailable
+        products in the fave when creating the new basket. If true, any unavailable
+        products in the fave will be ignored and not cause an error. If false
+        and the fave contains unavailable products, an error will be returned.
+RequestCreateGroupOrder:
+  required:
+  - deadline
+  - restaurantid
+  type: object
+  properties:
+    restaurantid:
+      type: integer
+      format: int64
+      description: Olo restaurant id (a.k.a. vendor id).
+    basketid:
+      type: string
+      format: uuid
+      description: Olo basket guid.
+    deadline:
+      type: string
+      format: date-time
+      description: Group order deadline, in "yyyymmdd hh:mm" format.
+    note:
+      type: string
+      description: Note to display to group order participants.
+RequestUpdateGroupOrder:
+  required:
+  - deadline
+  - grouporderid
+  type: object
+  properties:
+    grouporderid:
+      type: string
+      format: uuid
+      description: Olo group order guid.
+    deadline:
+      type: string
+      format: date-time
+      description: Group order deadline in "yyyymmdd hh:mm" format.
+    note:
+      type: string
+      description: Note to display to group order participants.
+RequestGroupOrderInvite:
+  required:
+  - emailaddresses
+  type: object
+  properties:
+    emailaddresses:
+      type: array
+      description: List of email addresses to send group order invite emails.
+      items:
+        type: string
+RequestNewBasketProduct:
+  required:
+  - options
+  - productid
+  - quantity
+  type: object
+  properties:
+    productid:
+      type: integer
+      format: int64
+      description: Olo product id as retrieved from the restaurant's menu.
+      example: 921308138
+    quantity:
+      type: integer
+      format: int32
+      description: Quantity of the product.
+      example: 1
+    options:
+      type: string
+      description: Comma-delimited list of option (choice) ids.
+      example: '12394871,12093809,12987123'
+    specialinstructions:
+      type: string
+      description: Special instructions for the product.
+      example: Well done.
+    recipient:
+      type: string
+      description: Recipient name, i.e. the person who the product is for. Required if basket is a group order.
+      maxLength: 32
+      example: Ron Idaho
+    customdata:
+      type: string
+      description: Custom passthrough data that will show up when calling one
+        of the order status endpoints. Will not get passed down to the POS. Will
+        not show up in webhook payloads or Order Exports.
+    choicecustomfields:
+      type: array
+      description: List of custom field values for selected options. If none of
+        the selected options have any custom fields, this property may be omitted.
+      items:
+        $ref: '#/BatchProductChoice'
+RequestNewBasketProductByChainId:
+  required:
+  - chainproductid
+  - choices
+  - quantity
+  type: object
+  properties:
+    chainproductid:
+      type: integer
+      format: int64
+      description: Olo chain wide product id as retrieved from the restaurant's menu.
+      example: 23901384
+    quantity:
+      type: integer
+      format: int32
+      description: Quantity of the product.
+      example: 2
+    choices:
+      type: array
+      description: List of top level options (choices) that apply to the product.
+      items:
+        $ref: '#/NewBasketProductChoiceByChainId'
+    specialinstructions:
+      type: string
+      description: Special instructions for the product.
+      example: Lightly toasted
+    recipient:
+      type: string
+      description: Recipient name, i.e. the person who the product is for. Required if basket is a group order.
+      maxLength: 32
+      example: Ron Idaho
+    customdata:
+      type: string
+      description: Custom passthrough data that will show up when calling one
+        of the order status endpoints. Will not get passed down to the POS. Will
+        not show up in webhook payloads or Order Exports.
+RequestBasketProductBatch:
+  required:
+  - products
+  type: object
+  properties:
+    products:
+      type: array
+      description: List of products to add to the basket.
+      items:
+        $ref: '#/BatchProduct'
+RequestBasketProductByChainIdBatch:
+  required:
+  - products
+  type: object
+  properties:
+    products:
+      type: array
+      description: List of products to add to the basket.
+      items:
+        $ref: '#/RequestNewBasketProductByChainId'
+RequestAddProductsFromFave:
+  required:
+  - faveid
+  type: object
+  properties:
+    faveid:
+      type: integer
+      description: Id of the favorite to add to the basket.
+      format: int64
+      example: 1203910238
+RequestBasketAddUpsell:
+  required:
+  - items
+  type: object
+  properties:
+    items:
+      type: array
+      description: List of upsell items to add to the basket.
+      items:
+        $ref: '#/BasketAddUpsellPostItem'
+RequestApplyCoupon:
+  required:
+  - couponcode
+  type: object
+  properties:
+    couponcode:
+      type: string
+      description: Coupon code to apply to the basket.
+      example: Take20
+    coupontype:
+      type: string
+      description: For Aloha POS with use of Open Dollar Comp.
+      nullable: true
+      enum:
+        - comp
+    compamount:
+      type: number
+      format: double
+      description: For Aloha POS with use of Open Dollar Comp. Amount of the comp.
+      nullable: true
+      example: 2.25
+RequestApplyCouponCompCode:
+  required:
+  - code
+  - promotiontype
+  type: object
+  properties:
+    code:
+      type: string
+      description: Coupon code or comp code to apply to the basket.
+      example: Take20
+    secondarycode:
+      type: string
+      description: Only used when type of promotion is 'compcode'.
+    promotiontype:
+      type: string
+      description: Type of promotion.
+      enum:
+        - coupon
+        - compcode
+RequestUpdateBasketTip:
+  required:
+  - amount
+  type: object
+  properties:
+    amount:
+      type: number
+      format: double
+      description: Tip amount.
+      example: 5.75
+RequestLoyaltyScheme:
+  required:
+  - authtoken
+  - checkbalance
+  - checkrewards
+  - membershipnumber
+  - schemeid
+  type: object
+  properties:
+    authtoken:
+      type: string
+      description: Olo user authentication token.
+      example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    schemeid:
+      type: integer
+      format: int64
+      description: Loyalty scheme id.
+      example: 348912891
+    membershipnumber:
+      type: string
+      description: User's membership number for the loyalty scheme.
+      example: '1000200031006483'
+    checkbalance:
+      type: boolean
+      description: Whether or not to check the account's balance from the provider.
+    checkrewards:
+      type: boolean
+      description: Whether or not to check the account's rewards from the provider.
+RequestApplyReward:
+  required:
+  - membershipid
+  - references
+  type: object
+  properties:
+    membershipid:
+      type: integer
+      format: int64
+      description: The user's Olo loyalty membership id.
+      example: 23901930912
+    references:
+      type: array
+      description: The loyalty provider's external identifier/code for the reward.
+        Each basket can only have a single reward.
+      items:
+        type: string
+        example: reward81391
+RequestSetDeliveryMode:
+  required:
+  - deliverymode
+  type: object
+  properties:
+    deliverymode:
+      type: string
+      description: Delivery mode (a.k.a. handoff mode) to set the basket to, provided
+        the mode is supported by the restaurant. When attempting to
+        set the delivery mode to "delivery" or "dispatch", the basket must already
+        have a delivery address set.
+      enum:
+      - delivery
+      - dispatch
+      - curbside
+      - pickup
+      - dinein
+      - drivethru
+RequestUpdateBasketTimeWanted:
+  required:
+  - day
+  - hour
+  - ismanualfire
+  - minute
+  - month
+  - year
+  type: object
+  properties:
+    ismanualfire:
+      type: boolean
+      description: Whether or not the basket is to become a Manual Fire order.
+        If true, all other fields are to be omitted. When you submit an order
+        set to Manual Fire, it won't get sent to the POS until /manualfire is
+        explicitly called. Often used as a customer check-in feature.
+    year:
+      type: integer
+      format: int32
+      description: 4 digit year for the time wanted.
+      example: 2021
+    month:
+      type: integer
+      format: int32
+      description: Month without any leading zero for the time wanted.
+      minimum: 1
+      maximum: 12
+      example: 1
+    day:
+      type: integer
+      format: int32
+      description: Day without any leading zero for the time wanted.
+      minimum: 1
+      maximum: 31
+      example: 15
+    hour:
+      type: integer
+      format: int32
+      description: Hour without any leading zero for the time wanted.
+      minimum: 0
+      maximum: 23
+      example: 9
+    minute:
+      type: integer
+      format: int32
+      description: Minute without any leading zero for the time wanted.
+      minimum: 0
+      maximum: 59
+      example: 0
+RequestBasketSetCustomField:
+  required:
+  - id
+  - value
+  type: object
+  properties:
+    id:
+      type: integer
+      format: int64
+      description: Olo custom field id to set.
+      example: 389103452
+    value:
+      type: string
+      description: Custom field value.
+      example: Red
+RequestBasketTransfer:
+  required:
+  - vendorid
+  type: object
+  properties:
+    vendorid:
+      type: integer
+      format: int64
+      description: Olo restaurant id to transfer the basket to.
+      example: 27739
+RequestCardBalanceRetrieval:
+  required:
+  - cardnumber
+  - pin
+  type: object
+  properties:
+    cardnumber:
+      type: string
+      description: Card number to retrieve balance for.
+      example: '56168998248321598'
+    pin:
+      type: string
+      description: Card pin number. Only to be provided if the billing scheme requires a pin.
+      example: '1234'
+RequestBinPinValidation:
+  required:
+  - cardnumber
+  type: object
+  properties:
+    cardnumber:
+      type: string
+      description: Card number to check if pin is required.
+      example: '56168998248321598'
+RequestPaymentToken:
+  properties:
+    authtoken:
+      type: string
+      description: Token used to identify the user, fetched via [Create Olo User](#operation/CreateOloUser) or [Create SSO User](#operation/CreateorGetSSOLinkedOloUser).
+      example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+RequestBasketSubmit:
+  required:
+  - billingmethod
+  - usertype
+  type: object
+  properties:
+    authtoken:
+      type: string
+      description: Olo user authentication token. Required for users; otherwise
+        omitted.
+      example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    billingmethod:
+      type: string
+      description: Name of the billing method. Always required. Possible values
+        are "creditcard", "creditcardonfile" (a.k.a. most recent credit card on
+        file), "creditcardtoken", "billingaccount" (a previously saved account), "cash" (a.k.a. pay
+        in store), "storedvalue" (a.k.a. gift card), and "prepaid". Note that
+        the restaurant must be configured to support these billing methods or
+        you will receive an error when trying to use them. To get a billing method
+        added to a restaurant, please contact your Olo Customer Success representative.
+      enum:
+        - creditcard
+        - creditcardonfile
+        - creditcardtoken
+        - billingaccount
+        - cash
+        - storedvalue
+        - prepaid
+    billingaccountid:
+      type: integer
+      format: int64
+      description: Billing account id to be provided when the user wishes to pay
+        with an existing account. Required if "billingmethod" is "BillingAccount";
+        otherwise omitted.
+      example: 12309485
+    billingschemeid:
+      type: string
+      description: Billing scheme id to be provided when the user wishes to pay
+        with a new gift card. Required if "billingmethod" is "storedvalue"; otherwise
+        omitted.
+      example: '2'
+    billingfields:
+      type: array
+      description: List of billing fields for the selected "billingmethod". Required
+        if "billingmethod" is "storedvalue"; otherwise omitted.
+      items:
+        $ref: '#/BillingFieldData'
+    usertype:
+      type: string
+      description: Type of customer.
+      enum:
+      - user
+      - guest
+    firstname:
+      type: string
+      description: First name. Required for guests; otherwise omitted.
+      maxLength: 36
+      example: Ron
+    lastname:
+      type: string
+      description: Last name. Required for guests; otherwise omitted.
+      maxLength: 36
+      example: Idaho
+    emailaddress:
+      type: string
+      format: email
+      description: Email address. Required for guests; otherwise omitted.
+      maxLength: 128
+      example: ron@example.com
+    contactnumber:
+      type: string
+      description: Phone number in an 11 digit format. If specified, this contact number will be applied to the user or guest.  Orders with a handoff mode of "dispatch" require a valid phone number. If the user does not have a phone number on file or this is a guest order, this field is required.
+      minLength: 11
+      maxLength: 11
+      example: '15055555555'
+    reference:
+      type: string
+      description: User reference in the calling system (a.k.a. user external reference).
+      maxLength: 128
+      example: f50abf1a9a8c74375da9669ed
+    cardnumber:
+      type: string
+      description: Credit card number. Required if "billingmethod" is "creditcard"; otherwise omitted.
+      example: '4111111111111111'
+    expiryyear:
+      type: integer
+      format: int32
+      description: Credit card expiration year. Must be the full 4 digit year. Required if `billingmethod` is "creditcard" or "creditcardtoken"; otherwise omitted.
+      example: 2024
+    expirymonth:
+      type: integer
+      format: int32
+      description: Credit card expiration month. Do not provide any preceding
+        zeros (i.e. 3, not 03). Required if `billingmethod` is "creditcard" or "creditcardtoken"; otherwise
+        omitted.
+      minimum: 1
+      maximum: 12
+      example: 2
+    cvv:
+      type: string
+      description: Credit card verification value (CVV). Required if `billingmethod` is "creditcard"; otherwise omitted.
+      example: '222'
+    streetaddress:
+      type: string
+      description: Street address associated with the credit card. Only send if `billingmethod` is "creditcard" or "creditcardtoken" and credit card address validation is required by the brand or restaurant.
+      example: 26 Broadway
+    streetaddress2:
+      type: string
+      description: Street address line 2 associated with the credit card. Only send if `billingmethod` is "creditcard" or "creditcardtoken" and credit card address validation is required by the brand or restaurant.
+      example: Unit 4
+    city:
+      type: string
+      description: City associated with the credit card. Only send if `billingmethod` is "creditcard" or "creditcardtoken" and credit card address validation is required by the brand or restaurant.
+      example: New York
+    state:
+      type: string
+      description: State associated with the credit card. Only send if `billingmethod` is "creditcard" or "creditcardtoken" and credit card address validation is required by the brand or restaurant.
+      example: New York
+    zip:
+      type: string
+      description: Zip code associated with the credit card. Required if `billingmethod` is "creditcard" or "creditcardtoken"; otherwise omitted.
+      example: '10004'
+    country:
+      type: string
+      description: Country code associated with the credit card. Optionally send if `billingmethod` is "creditcard" or "creditcardtoken". If no value is given, the country of the restaurant will be used.
+      format: ""
+      enum:
+      - US
+      - CA
+    saveonfile:
+      type: string
+      description: Determines whether or not to save the `billingmethod` details for a user at supported restaurants. Once saved, the payment method will be available in the list of billing accounts for future orders. Required for users when the billing method is "creditcard", "creditcardtoken", or "storedvalue"; otherwise omitted.
+      enum:
+      - "true"
+      - "false"
+    orderref:
+      type: string
+      description: Order reference in the calling system (a.k.a. order external reference). Required for Rails partners; optional otherwise. This allows order status to be looked up later by this reference.
+      maxLength: 36
+      example: zie892-se8912nd34iae
+    prepaidtransactionid:
+      type: string
+      description: Specifies a transaction identifier in the calling system. Required if `billingmethod` is "prepaid"; otherwise omitted.
+      example: '138900241'
+    prepaiddescription:
+      type: string
+      description: Specifies a customer friendly description of the payment. Required if `billingmethod` is "prepaid"; otherwise omitted.
+      example: VISA x-1234
+    customdata:
+      type: array
+      description: A limited use case list of passthrough data that, under certain conditions (and only when supported by the underlying POS), can allow extra information to get added to email templates and printed out on receipts.
+      items:
+        $ref: '#/OrderCustomData'
+    guestoptin:
+      type: boolean
+      description: Guest has opted in to marketing communication. Required for non-Rails guests; otherwise omitted.
+    receivinguser:
+      type: object
+      description: Specify a separate customer that will receive the order.
+      properties:
+        firstname:
+          type: string
+          description: First name.
+          maxLength: 36
+          example: Ron
+        lastname:
+          type: string
+          description: Last name.
+          maxLength: 36
+          example: Idaho
+        emailaddress:
+          type: string
+          format: email
+          description: Email address.
+          maxLength: 128
+          example: ron@example.com
+        contactnumber:
+          type: string
+          description: Phone number in an 11 digit format.
+          minLength: 11
+          maxLength: 11
+          example: '15055555555'
+    token:
+        type: string
+        description: A payment token used for credit card payments. Required if `billingmethod` is "creditcardtoken"; otherwise omitted.
+    cardtype:
+      type: string
+      description: Type of credit card. This field will only be populated for credit card accounts. Required if `billingmethod` is "creditcardtoken"; otherwise omitted.
+      example: Visa
+      enum:
+      - Amex
+      - Visa
+      - Discover
+      - Mastercard
+    cardlastfour:
+      type: string
+      description: Last four digits of the card number. Required if `billingmethod` is "creditcardtoken"; otherwise omitted.
+      minLength: 4
+      maxLength: 4
+      example: '1111'
+RequestBasketSubmitMultiple:
+  required:
+  - usertype
+  type: object
+  properties:
+    authtoken:
+      type: string
+      description: Olo user authentication token. Required for users; otherwise omitted.
+      example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    usertype:
+      type: string
+      description: Type of customer.
+      enum:
+      - user
+      - guest
+    firstname:
+      type: string
+      description: First name. Required for guests; otherwise omitted.
+      maxLength: 36
+      example: Ron
+    lastname:
+      type: string
+      description: Last name.  Required for guests; otherwise omitted.
+      maxLength: 36
+      example: Idaho
+    emailaddress:
+      type: string
+      format: email
+      description: Email address. 128 character limit. Required for guests; otherwise omitted.
+      maxLength: 128
+      example: ron@example.com
+    contactnumber:
+      type: string
+      description: Phone number in an 11 digit format. If specified, this contact number will be applied to the user or guest.
+      minLength: 11
+      maxLength: 11
+      example: '15055555555'
+    reference:
+      type: string
+      description: User reference in the calling system (a.k.a. user external reference).
+      maxLength: 128
+      example: f50abf1a9a8c74375da9669ed
+    orderref:
+      type: string
+      description: Order reference in the calling system (a.k.a. order external reference). This allows order status to be looked  up later by this reference.
+      maxLength: 36
+      example: zie892-se8912nd34iae
+    customdata:
+      type: array
+      description: A limited use case list of passthrough data that, under certain conditions (and only when supported by the underlying POS), can allow extra information to get added to email templates and printed out on receipts.
+      items:
+        $ref: '#/OrderCustomData'
+    guestoptin:
+      type: boolean
+      description: Guest has opted in to marketing communication. Required for guests; otherwise omitted.
+    billingaccounts:
+      type: array
+      description: List of billing accounts to use for order payment.
+      items:
+        allOf:
+          - $ref: '#/BillingAccountData'
+        properties:
+          billingmethod:
+            enum:
+              - creditcard
+              - creditcardonfile
+              - creditcardtoken
+              - billingaccount
+              - cash
+              - storedvalue
+RequestManualFireOrder:
+  required:
+  - handoffmode
+  type: object
+  properties:
+    handoffmode:
+      type: string
+      description: Handoff mode for the order. If the brand has required choose handoff at checkin, this value must be sent in the request.
+      enum:
+        - pickup
+        - curbside
+        - drivethru
+    customfieldvalues:
+      type: array
+      description: Updates to any related Custom Fields.
+      items:
+        $ref: '#/CustomFieldValue'
+RequestSubmitCustomerArrivalNotification:
+  type: object
+  properties:
+    message:
+      type: string
+      description: Optional message string.
+      maxLength: 128
+      nullable: true
+      example: Parked in spot 2.
+RequestNewUser:
+  required:
+  - contactnumber
+  - emailaddress
+  - firstname
+  - lastname
+  - password
+  type: object
+  properties:
+    firstname:
+      type: string
+      description: New user's first name.
+      maxLength: 36
+      example: Ron
+    lastname:
+      type: string
+      description: New user's last name.
+      maxLength: 36
+      example: Idaho
+    emailaddress:
+      type: string
+      format: email
+      description: New user's email address.
+      maxLength: 128
+      example: ron@example.com
+    password:
+      type: string
+      format: password
+      description: New user's password. There are currently no requirements for capitalization, numbers, special characters, etc.
+      minLength: 8
+      maxLength: 1024
+      example: securepassword
+    contactnumber:
+      type: string
+      description: New user's phone number.
+      example: '15055555555'
+    reference:
+      type: string
+      description: Reference for the user in the calling system (a.k.a. external reference).
+      example: f50abf1a9a8c74375da9669ed
+    basketid:
+      type: string
+      format: uuid
+      description: If specified, will link the specified basket to this user.
+      example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+RequestUserExists:
+  required:
+  - email
+  type: object
+  properties:
+    email:
+      type: string
+      format: email
+      description: Email to check.
+      example: ron@example.com
+RequestUserSingleSignOn:
+  required:
+  - provider
+  - providertoken
+  - provideruserid
+  type: object
+  properties:
+    provider:
+      type: string
+      description: Slug of the single sign on (SSO) provider. This can be obtained by reaching out to your Customer Success representative. Please note that the provider must also be enabled for the brand associated with your API credentials.
+      example: loginprovider
+    providertoken:
+      type: string
+      description: Login provider's token assigned to the user. Sometimes referred to as the provider's "access token" for the user.
+      example: oianvo223983bueufbi23u4ur9238hk-udfb9284298bfasdu-ibf9282bf9
+    provideruserid:
+      type: string
+      description: User id in the login provider's system. Only required if the login provider requires server-to-server authentication, otherwise use `providertoken`.
+      example: oi231-asdoin234-3rf
+    contactnumber:
+      type: string
+      description: If specified, this contact number will be applied to the user.
+      example: '15055555555'
+    basketid:
+      type: string
+      format: uuid
+      description: If specified, the basket will be linked to this new user.
+      example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    firstname:
+      type: string
+      description: First name of the user. If specified in the request body, Olo will update the user account. Required for sign-ins using Apple ID.
+      example: Ron
+    lastname:
+      type: string
+      description: Last name of the user. If specified in the request body, Olo will update the user account. Required for sign-ins using Apple ID.
+      example: Idaho
+    emailaddress:
+      type: string
+      format: email
+      description: Email address for the user. If specified in the request body, Olo wil update the user account. Required for sign-ins using Apple ID.
+      example: ron@example.com
+RequestConvertGuestToUser:
+  required:
+  - optin
+  - password
+  type: object
+  properties:
+    password:
+      type: string
+      format: password
+      description: New user's password. There are currently no requirements for capitalization, numbers, special characters, etc.
+      minLength: 8
+      maxLength: 1024
+      example: securepassword
+    optin:
+      type: string
+      description: Whether or not the user would like to receive deals newsletters.
+      enum:
+      - "true"
+      - "false"
+RequestLogin:
+  required:
+  - login
+  - password
+  type: object
+  properties:
+    login:
+      type: string
+      format: email
+      description: User's email address.
+      example: ron@example.com
+    password:
+      type: string
+      format: password
+      description: User's password.
+      example: securepassword
+    basketid:
+      type: string
+      format: uuid
+      description: If specified, will link the specified basket to this user.
+      example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+RequestChangePassword:
+  required:
+  - currentpassword
+  - newpassword
+  type: object
+  properties:
+    currentpassword:
+      type: string
+      format: password
+      description: User's current password.
+      example: securepassword
+    newpassword:
+      type: string
+      format: password
+      description: User's new password. There are currently no requirements for capitalization, numbers, special characters, etc.
+      minLength: 8
+      maxLength: 128
+      example: moresecurepassword
+RequestForgotPassword:
+  required:
+  - emailaddress
+  type: object
+  properties:
+    emailaddress:
+      type: string
+      format: email
+      description: User's email address.
+      example: ron@example.com
+RequestUserPersonalDetails:
+  required:
+  - firstname
+  - lastname
+  - emailaddress
+  type: object
+  properties:
+    firstname:
+      type: string
+      description: User's first name.
+      maxLength: 36
+      example: Ron
+    lastname:
+      type: string
+      description: User's last name.
+      maxLength: 36
+      example: Idaho
+    emailaddress:
+      type: string
+      format: email
+      description: User's email address.
+      maxLength: 128
+      example: ron@example.com
+    userguid:
+      type: string
+      format: uuid
+      description: User's unique identifier.
+      nullable: false
+      example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+RequestUserDefaultAddress:
+  required:
+  - addressid
+  type: object
+  properties:
+    addressid:
+      type: integer
+      format: int64
+      description: User delivery address id to set as default.
+      example: 3
+RequestNewFave:
+  required:
+  - basketid
+  - description
+  type: object
+  properties:
+    basketid:
+      type: string
+      format: uuid
+      description: Basket id that the user would like to save as a fave.
+      example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    description:
+      type: string
+      description: Description/name of the fave.
+      example: Favorite lunch
+    isdefault:
+      type: boolean
+      description: Whether or not the fave is the user's default fave. A user can only have one default fave at a time. If the user already has a default fave set and they add a new one with `isdefault` set to true, their previous default fave will be set to a regular fave.
+      nullable: false
+      example: false
+RequestChangePasswordByUserGuid:
+  required:
+  - newpassword
+  type: object
+  properties:
+    newpassword:
+      type: string
+      format: password
+      description: User's new password. There are currently no requirements for capitalization, numbers, special characters, etc.
+      minLength: 8
+      maxLength: 1024
+      example: moresecurepassword
+RequestFeedback:
+  required:
+  - authtoken
+  - email
+  - feedback
+  - fullname
+  type: object
+  properties:
+    target:
+      type: string
+      description: Target for the feedback.
+      nullable: false
+      enum:
+      - app
+      - service
+      - food
+      - other
+    category:
+      type: string
+      description: Category for the feedback.
+      nullable: false
+      enum:
+      - compliment
+      - issue
+      - question
+      - suggestion
+      - none
+    authtoken:
+      type: string
+      description: Olo user authentication token.
+      nullable: false
+      example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    vendorid:
+      type: string
+      description: Olo restaurant id the feedback is associated with.
+      nullable: true
+      example: 27739
+    basketid:
+      type: string
+      format: uuid
+      description: Olo basket guid the feedback is associated with.
+      example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    orderid:
+      type: string
+      format: uuid
+      description: Olo order guid the feedback is associated with.
+      example: cea27ddd-06cd-4a62-93af-858cb3e32dc9
+    fullname:
+      type: string
+      description: Name of the feedback giver.
+      nullable: false
+      example: Ron
+    email:
+      type: string
+      format: email
+      description: Email of the feedback giver.
+      nullable: false
+      example: Idaho
+    feedback:
+      type: string
+      description: Details of the feedback.
+      nullable: false
+      example: Delicious lunch and I did not have to wait in line.
+    data:
+      type: array
+      description: Customizable key value pairs to store.
+      items:
+        $ref: '#/Parameter'
+RequestDonationUpdate:
+  required:
+  - id
+  - amount
+  type: object
+  properties:
+    id:
+      type: integer
+      format: int64
+      description: Olo donation option id. This id is unique to each donation type.
+      nullable: false
+      example: 3891
+    amount:
+      type: number
+      format: double
+      description: Amount of the donation.
+      nullable: false
+      example: 5.75
+
+# Response Models
+ResponseBrand:
+  required:
+  - advanceorderdays
+  - deliveryinstructionsmaxlength
+  - deliverymodes
+  - loginproviders
+  - pushnotifications
+  - timemodes
+  type: object
+  properties:
+    advanceorderdays:
+      type: integer
+      description: For Advance (a.k.a. later) orders, this is the number of days in advance in which an order can be placed.
+      nullable: false
+      example: 2
+    deliveryinstructionsmaxlength:
+      type: integer
+      description: The maximum number of characters the brand desires for delivery special instructions. Submitting more characters could truncate the message.
+      nullable: false
+      example: 128
+    deliverymodes:
+      type: array
+      items:
+        $ref: '#/DeliveryModes'
+    loginproviders:
+      type: array
+      items:
+        $ref: '#/LoginProviders'
+    pushnotifications:
+      type: array
+      items:
+        $ref: '#/PushNotifications'
+    timemodes:
+      type: array
+      items:
+        $ref: '#/TimeModes'
+ResponseRestaurantList:
+  required:
+  - restaurants
+  type: object
+  properties:
+    restaurants:
+      type: array
+      description: List of restaurants.
+      items:
+        $ref: '#/ResponseRestaurant'
+ResponseRestaurant:
+  required:
+  - acceptsordersbeforeopening
+  - acceptsordersuntilclosing
+  - advanceonly
+  - advanceorderdays
+  - allowhandoffchoiceatmanualfire
+  - attributes
+  - availabilitymessage
+  - brand
+  - candeliver
+  - canpickup
+  - city
+  - contextualpricing
+  - country
+  - crossstreet
+  - customerfacingmessage
+  - customfields
+  - deliveryarea
+  - deliverydelayalertenabled
+  - deliverydelayalertmessage
+  - deliveryfee
+  - deliveryfeetiers
+  - distance
+  - extref
+  - hasolopass
+  - id
+  - isavailable
+  - iscurrentlyopen
+  - labels
+  - latitude
+  - longitude
+  - maximumpayinstoreorder
+  - metadata
+  - minimumdeliveryorder
+  - minimumpickuporder
+  - mobileurl
+  - name
+  - productrecipientnamelabel
+  - requiresphonenumber
+  - slug
+  - specialinstructionsmaxlength
+  - state
+  - storename
+  - streetaddress
+  - suggestedtippercentage
+  - supportedcardtypes
+  - supportedcountries
+  - supportedtimemodes
+  - supportedarrivalmessagehandoffmodes
+  - supportsbaskettransfers
+  - supportscoupons
+  - supportscurbside
+  - supportsdinein
+  - supportsdispatch
+  - supportsdrivethru
+  - supportsfeedback
+  - supportsgrouporders
+  - supportsguestordering
+  - supportsloyalty
+  - supportsmanualfire
+  - supportsnationalmenu
+  - supportsonlineordering
+  - supportsproductrecipientnames
+  - supportsspecialinstructions
+  - supportssplitpayments
+  - supportstip
+  - telephone
+  - url
+  - utcoffset
+  - zip
+  type: object
+  properties:
+    id:
+      type: integer
+      format: int64
+      description: Olo restaurant id. Also referred to as "vendor id". Unique across brands. This id is used in all routes that reference "vendorid" or "restaurantid".
+      nullable: false
+      example: 27739
+    name:
+      type: string
+      description: Olo's configured name for the restaurant, generally set with guidance from the brand.
+      nullable: false
+      example: Kitchen Sink Seaport
+    brand:
+      type: string
+      description: Olo's internal name of the brand associated with the restaurant.
+        Usually comes across all lowercase with no punctuation and no spaces in
+        between multiple words. (Ex. Bob's Coffee -> bobscoffee).
+      nullable: true
+      example: kitchensink
+    storename:
+      type: string
+      description: Standard name of the brand's restaurants. If none is provided, this will default to the name of the brand. More display friendly than the brand field.
+      nullable: false
+      example: Kitchen Sink
+    telephone:
+      type: string
+      description: The restaurant's phone number. Will be formatted like (xxx) xxx-xxxx.
+      nullable: false
+      example: (505) 555-5555
+    streetaddress:
+      type: string
+      description: The restaurant's street address.
+      nullable: false
+      example: 26 Broadway
+    crossstreet:
+      type: string
+      description: Closest cross street to the restaurant.
+      nullable: false
+      example: Beaver Street
+    city:
+      type: string
+      description: The restaurant's city.
+      nullable: false
+      example: New York
+    contextualpricing:
+      $ref: '#/ContextualPricing'
+    state:
+      type: string
+      description: The restaurant's state.
+      nullable: false
+      example: New York
+    zip:
+      type: string
+      description: The restaurant's zip code.
+      nullable: false
+      example: '10004'
+    country:
+      type: string
+      description: The restaurant's country (eg. US, CA).
+      nullable: false
+      example: US
+    latitude:
+      type: number
+      format: double
+      description: The restaurant's latitude.
+      nullable: false
+      example: 40.7054008
+    longitude:
+      type: number
+      format: double
+      description: The restaurant's longitude.
+      nullable: false
+      example: -74.0132198
+    utcoffset:
+      type: number
+      format: float
+      description: UTC offset of the timezone the restaurant is in. This factors in Daylight Savings time.
+      nullable: false
+      example: -5
+    url:
+      type: string
+      format: uri
+      description: If the API credentials are set to show URLs (enabled by default), this will return the URL to the desktop ordering site.
+      nullable: false
+      example: https://kitchensink.olosandbox.com
+    mobileurl:
+      type: string
+      format: uri
+      description: If the API credentials are set to show URLs (enabled by default), this will return the URL to the mobile ordering site.
+      nullable: false
+      example: https://kitchensink.olosandbox.mobile.com
+    distance:
+      type: number
+      format: double
+      description: Distance in miles from the set of coordinates provided to [GET /restaurants/near](#operation/FindNearbyParticipatingRestaurants) or [GET /restaurants/deliveringto](#operation/FindNearbyParticipatingRestaurantswithInHouseDelivery), otherwise 0.
+      nullable: false
+      example: 3
+    extref:
+      type: string
+      description: The restaurant's external reference (a.k.a. identifier). This field is not returned for projects that are associated with multiple brands or Rails enabled.
+      nullable: true
+      example: '109'
+    advanceonly:
+      type: boolean
+      description: Whether or not the restaurant only accepts Advance (a.k.a. later) orders.
+      nullable: false
+    advanceorderdays:
+      type: integer
+      format: int32
+      description: For Advance (a.k.a. later) orders, this is the number of days in advance in which an order can be placed.
+      nullable: false
+      example: 7
+    supportscoupons:
+      type: boolean
+      description: Whether or not the restaurant supports Olo coupon codes.
+      nullable: false
+    supportsloyalty:
+      type: boolean
+      description: Whether or not the restaurant accepts any loyalty schemes.
+      nullable: false
+    supportedcardtypes:
+      type: string
+      description: List of card types (full names) the restaurant supports, delimited by '/'.
+      nullable: false
+      example: American Express/Discover/MasterCard/Visa
+    supportsmanualfire:
+      type: boolean
+      description: Whether or not the restaurant supports manual fire orders. This must be true for both the restaurant and the brand in order for the restaurant to support them. Manual Fire is an order time mode that allows orders to be fired at a precise desired moment.
+      nullable: false
+    candeliver:
+      type: boolean
+      description: Whether or not the restaurant supports the handoff mode "Delivery" (ie. in-house delivery) for orders. Please note that this does not consider whether or not the restaurant supports the handoff mode "Dispatch".
+      nullable: false
+    canpickup:
+      type: boolean
+      description: Whether or not the restaurant supports the handoff mode "Counter Pickup" (a.k.a. Pickup).
+      nullable: false
+    supportscurbside:
+      type: boolean
+      description: Whether or not the restaurant supports the handoff mode "Curbside Pickup".
+      nullable: false
+    supportsdispatch:
+      type: boolean
+      description: Whether or not the restaurant supports the handoff mode "Dispatch".
+        To learn more about Dispatch delivery, please check out the [Dispatch tutorial](#section/Tutorials/Dispatch).
+      format: (not null)
+    supportsdinein:
+      type: boolean
+      description: Whether or not the restaurant supports the handoff mode "dinein".
+      nullable: false
+    hasolopass:
+      type: boolean
+      description: This is a legacy property that should be ignored.
+      nullable: false
+      deprecated: true
+    deliveryarea:
+      type: string
+      description: Description of the area the restaurant delivers to. Please note that this does not consider "Dispatch", only in-house delivery.
+      nullable: false
+      example: Up to 10 miles away.
+    minimumdeliveryorder:
+      type: number
+      format: double
+      description: Minimum total amount for an order to be eligible for delivery. Please note that this does not apply to "Dispatch", only in-house delivery.
+      nullable: false
+      example: 10.00
+    minimumpickuporder:
+      type: number
+      format: double
+      description: Minimum total amount for an order to be eligible for pickup.
+      nullable: false
+      example: 8.50
+    maximumpayinstoreorder:
+      type: number
+      format: double
+      description: Maximum total amount for any Pay in Store (a.k.a. cash) order. Only relevant if the restaurant supports the billing scheme Pay In Store.
+      nullable: false
+      example: 4.00
+    deliveryfee:
+      type: number
+      format: double
+      description: Fee for delivery. This will return as 0 if the restaurant has multiple fee tiers. Please note that this does not apply to Dispatch, only in-house delivery.
+      nullable: false
+      example: 2.50
+    deliveryfeetiers:
+      type: array
+      description: List of fee tiers for delivery. Please note that this does not apply to Dispatch, only in-house delivery.
+      items:
+        $ref: '#/DeliveryFeeTier'
+    supportstip:
+      type: boolean
+      description: Whether or not the restaurant allows tipping. Please note that a basket may still not allow tips if the associated handoff mode does not support tipping.
+      nullable: false
+    supportsspecialinstructions:
+      type: boolean
+      description: Whether or not the restaurant allows customers to enter product special instructions for orders. Does not apply to delivery or Dispatch special instructions.
+      nullable: false
+    specialinstructionsmaxlength:
+      type: integer
+      format: int32
+      description: Max character length of product special instructions for an order a customer is allowed to enter. Does not apply to delivery or Dispatch special instructions.
+      nullable: false
+      example: 50
+    supportsguestordering:
+      type: boolean
+      description: Whether or not the restaurant allows guests (customers with no user account) to place an order.
+      nullable: false
+    requiresphonenumber:
+      type: boolean
+      description: Whether or not the restaurant requires a phone number to place an order. Please note that for orders placed via the Ordering API, this  requirement is not enforced. However, if this field comes back as "true", please try to send a contact number if possible.
+      nullable: false
+    supportsonlineordering:
+      type: boolean
+      description: Whether or not the restaurant supports online ordering. If false, you will not be able to create an online order at this restaurant.
+      nullable: false
+    supportsnationalmenu:
+      type: boolean
+      description: Whether or not a brand wants to surface their menu even when online ordering is disabled.
+      nullable: false
+    supportsfeedback:
+      type: boolean
+      description: Whether or not the restaurant allows user feedback.
+      nullable: false
+    supportssplitpayments:
+      type: boolean
+      description: Whether or not the restaurant allows split (a.k.a. multiple) payments for orders. Please note that the [/submit/multiplepayments](#operation/SubmitOrderwithMultiplePayments) endpoint will not allow multiple payment methods to be used when this field is false.
+      nullable: false
+    slug:
+      type: string
+      description: Olo's configured name for the restaurant represented by a URL friendly slug.
+      nullable: false
+      example: kitchen-sink-seaport
+    isavailable:
+      type: boolean
+      description: Whether or not the restaurant is available to take orders. If the restaurant is temporarily unavailable or is unable to connect to its POS, this field will be "false". If this field is "false" at the time an order is placed, the order is guaranteed to fail. Please note that this field functions the same as the `vendoronline` field for baskets associated with the restaurant.
+      nullable: false
+    iscurrentlyopen:
+      type: boolean
+      description: Whether or not the restaurant is open based on the business hours. If the restaurant is open, this field will be "true" else "false". This also respects business hours overrides.
+      nullable: false
+    deliverydelayalertenabled:
+      type: boolean
+      description: Whether or not the restaurant has a delivery delay alert enabled.
+      nullable: false
+      deprecated: true
+    deliverydelayalertmessage:
+      type: string
+      description: The message that can be used to alert the guest that a delivery delay alert is enabled. This field will be null when `deliverydelayalertenabled` is `false`. The message changes based on the type of delivery delay alert (default message or inclement weather).
+      nullable: true
+      deprecated: true
+    supportsgrouporders:
+      type: boolean
+      description: Whether or not the restaurant supports group orders. If this is "false", group orders cannot be created at the restaurant nor can a basket associated with the restaurant be used in a group order.
+      nullable: false
+    supportsproductrecipientnames:
+      type: boolean
+      description: Whether or not the restaurant allows customers to set a recipient name for each product ordered. Some POS systems will recognize these names and allow them to be printed out on the receipt.
+      nullable: false
+    supportsbaskettransfers:
+      type: boolean
+      description: Whether or not the restaurant supports basket transfers to another restaurant. When false, the [Basket Transfer endpoint](#operation/TransferBaskettoDifferentRestaurant) will return an error for baskets associated with the restaurant.
+      nullable: false
+    allowhandoffchoiceatmanualfire:
+      type: boolean
+      description: Whether or not an order's handoff mode can be changed at the time the order is to be fired down to the POS ([Manual Fire endpoint](#operation/SubmitManualFireOrder)). For Manual Fire orders only.
+      nullable: false
+    productrecipientnamelabel:
+      type: string
+      description: Label used to describe the recipient name attached to a product. The label can be configured by each brand.
+      nullable: false
+      example: 'Name:'
+    customerfacingmessage:
+      type: string
+      description: Customer facing message that the restaurant wishes to display. Typically used for greetings, deal notifications, and any extraordinary circumstances.
+      nullable: false
+      example: Receive a free cookie with any sandwich purchase.
+    availabilitymessage:
+      type: string
+      description: Customer facing message that indicates if the restaurant is temporarily closed or has online ordering temporarily disabled.
+      nullable: true
+      example: Online ordering is currently unavailable.
+    supportsdrivethru:
+      type: boolean
+      description: Whether or not the restaurant supports the handoff mode "Drive-Thru".
+      nullable: false
+    showcalories:
+      type: boolean
+      description: Whether or not the restaurant wants to display calorie information for products. When false, calorie information is omitted from the menu and product endpoints.
+      nullable: false
+    acceptsordersuntilclosing:
+      type: boolean
+      description: Whether or not the restaurant accepts orders until closing.
+      nullable: false
+    acceptsordersbeforeopening:
+      type: boolean
+      description: Whether or not the restaurant accepts orders before opening.
+      nullable: false
+    suggestedtippercentage:
+      type: number
+      format: float
+      description: The suggested tip percentage as set by the brand.
+      nullable: false
+      example: 10
+    customfields:
+      type: array
+      description: List of custom fields defined for the restaurant. To see how to set these fields, please reference the [Custom Fields endpoint](#operation/SetBasketCustomFieldValue).
+      items:
+        $ref: '#/RestaurantCustomField'
+    labels:
+      type: array
+      description: List of custom labels for handoff modes and thank you messages as determined by the restaurant's brand.
+      items:
+        $ref: '#/RestaurantCustomLabel'
+    metadata:
+      type: array
+      description: Restaurant metadata (array of key/value pairs) that has a very limited use case. If interested in using restaurant-level metadata, please discuss your project requirements with your Olo Customer Success representative.
+      items:
+        $ref: '#/MetadataItem'
+    supportedtimemodes:
+      type: array
+      description: List of time modes supported by the restaurant (see the [Time Wanted endpoint](#operation/SetTimeWanted) for how to apply advance and manual fire time modes). Note that if ASAP (a.k.a. immediate) is not supported, a basket's time mode will default to one that is supported.
+      items:
+        type: string
+        example: advance
+    attributes:
+      type: array
+      description: List of location attributes for the restaurant. These are generally configured by the brand on a per-restaurant basis.
+      items:
+        type: string
+    supportedcountries:
+      type: array
+      description: List of countries supported by the restaurant.
+      items:
+        type: string
+        example: US
+    supportedarrivalmessagehandoffmodes:
+      type: array
+      description: List of handoff modes that support sending a message along with an arrival notification.
+      items:
+        type: string
+        example: CurbsidePickup
+    calendars:
+      type: array
+      description: |
+        List of restaurant operating hours for multiple types of calendars over the date range specified in the request. Please note that this array can only be returned for requests sent to the following endpoints:
+
+        * [Find Nearby Participating Restaurants](#operation/FindNearbyParticipatingRestaurants)
+        * [Find Nearby Participating Restaurants with In-House Delivery](#operation/FindNearbyParticipatingRestaurantswithInHouseDelivery)
+      items:
+        $ref: '#/RestaurantCalendar'
+ResponseCheckDeliveryCoverage:
+  required:
+  - candeliver
+  type: object
+  properties:
+    candeliver:
+      type: boolean
+      description: Whether or not the restaurant can deliver to the specified address.
+      nullable: false
+    message:
+      type: string
+      description: If the restaurant cannot deliver to the specified address, this will be populated with a customer friendly reason explaining why.
+      nullable: false
+      example: Delivery address is outside of our delivery area.
+ResponseRestaurantCalendars:
+  required:
+  - calendar
+  type: object
+  properties:
+    calendar:
+      type: array
+      description: List of calendars (ie. store hour categories) associated with restaurant for the provided date range.
+      items:
+        $ref: '#/RestaurantCalendar'
+ResponseRestaurantDisclaimers:
+  required:
+  - disclaimers
+  - imagepath
+  type: object
+  properties:
+    imagepath:
+      type: string
+      format: uri
+      description: Base image path for images in the disclaimers.
+      nullable: true
+      example: https://disclaimer-images.com/
+    disclaimers:
+      type: array
+      description: List of disclaimers.
+      items:
+        $ref: '#/RestaurantDisclaimer'
+ResponseMenu:
+  required:
+  - categories
+  - imagepath
+  type: object
+  properties:
+    imagepath:
+      type: string
+      format: uri
+      description: The base path to be used in the construction of an image's full URL.
+      nullable: true
+      example: https://menu-images.com/
+    categories:
+      type: array
+      description: List of product categories on the menu.
+      items:
+        $ref: '#/Category'
+ResponseEightySixedItems:
+  required:
+  - choices
+  - products
+  type: object
+  properties:
+    choices:
+      type: array
+      description: List of eighty-sixed (currently unavailable) options (a.k.a. choices) at the restaurant.
+      items:
+        $ref: '#/EightySixedChoice'
+    products:
+      type: array
+      description: List of eighty-sixed (currently unavailable) products at the restaurant.
+      items:
+        $ref: '#/EightySixedProduct'
+ResponseModifiers:
+  required:
+  - optiongroups
+  type: object
+  properties:
+    optiongroups:
+      type: array
+      description: List of option groups (a.k.a. modifiers) applicable to the provided product.
+      items:
+        $ref: '#/OptionGroup'
+ResponseMenuItemLabels:
+      type: array
+      description: List of menu item labels for the product.
+      items:
+        $ref: '#/MenuItemLabel'
+ResponseBasket:
+  required:
+  - allowstip
+  - appliedrewards
+  - contextualpricing
+  - coupondiscount
+  - customerhandoffcharge
+  - customfields
+  - deliveryaddress
+  - deliverymode
+  - discount
+  - discounts
+  - donations
+  - earliestreadytime
+  - fees
+  - id
+  - isupsellenabled
+  - leadtimeestimateminutes
+  - mode
+  - products
+  - salestax
+  - subtotal
+  - suggestedtipamount
+  - suggestedtippercentage
+  - taxes
+  - timemode
+  - timewanted
+  - tip
+  - total
+  - totalfees
+  - validationmessages
+  - vendorid
+  - vendoronline
+  - wasupsold
+  type: object
+  properties:
+    id:
+      type: string
+      format: uuid
+      description: Olo basket id (guid).
+      example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    timewanted:
+      type: string
+      format: date-time
+      description: Time the user wants to receive the order, formatted "yyyymmdd hh:mm". If placing an Advance order, this must be set via the [Time Wanted endpoint](#operation/SetTimeWanted). If the order is not Advance, it will be left null.
+      nullable: true
+      example: 20210115 09:00
+    earliestreadytime:
+      type: string
+      format: date-time
+      description: Earliest time at which the customer can receive their order, formatted "yyymmdd hh:mm". This field is functionally equivalent to the `leadtimeestimateminutes` field but is presented as a datetime rather than an integer. Please note that this field is only guaranteed to be accurate at the moment the basket is received back from the API. As time goes on, it can become out of date.
+      nullable: false
+      example: 20210115 08:50
+    subtotal:
+      type: number
+      format: double
+      description: Subtotal of all products and modifiers in the order. Prior to calling basket validation, this value will be a sum of all products and modifier costs in the basket. After validation, this will be the actual subtotal returned by the POS, which is the ultimate source of authority regarding any discrepancies. Any material changes to the basket after validation will flip this back to an sum-based estimate.
+      nullable: false
+      example: 18.75
+    salestax:
+      type: number
+      format: double
+      description: Total of all taxes applicable to the basket. Prior to calling basket validation, this value will be an estimate. After validating the basket, this will be the actual tax returned by the POS, which is the ultimate source of authority regarding any discrepancies. Any material changes to the basket after validation will flip this back to an estimate.
+      nullable: false
+      example: 2.00
+    taxes:
+      type: array
+      description: List of all taxes applicable to the basket. Prior to calling basket validation, this value will be an estimate. After validating the basket, this will be the actual tax returned by the POS, which is the ultimate source of authority regarding any discrepancies. Any material changes to the basket after validation will flip this back to an estimate.
+      items:
+        $ref: '#/TaxResult'
+    suggestedtipamount:
+      type: number
+      format: float
+      description: The amount calculated for suggested tip utilizing the `suggestedtippercentage` and current basket subtotal.
+      example: 1.80
+    suggestedtippercentage:
+      type: number
+      format: float
+      description: The suggested tip percentage as set by the brand.
+      example: 10
+    discount:
+      type: number
+      format: double
+      description: Total sum of all discounts applied to the basket. This value cannot be greater than the subtotal.
+      nullable: false
+      example: 4.00
+    total:
+      type: number
+      format: double
+      description: Total cost of the order. Prior to calling basket validation, this value will be an estimate. After validating the basket, this will be the actual total returned by the POS, which is the ultimate source of authority regarding any discrepancies. Any material changes to the basket after validation will flip this back to an estimate.
+      nullable: false
+      example: 21.75
+    tip:
+      type: number
+      format: double
+      description: Tip amount.
+      nullable: false
+      example: 2.00
+    coupon:
+      $ref: '#/BasketCoupon'
+    coupondiscount:
+      type: number
+      format: double
+      description: Total discount provided by the applied coupon.
+      nullable: false
+      example: 1.50
+    vendorid:
+      type: integer
+      format: int64
+      description: Restaurant id the basket is tied to.
+      nullable: false
+      example: 27739
+    vendoronline:
+      type: boolean
+      description: Whether or not the restaurant tied to the basket is available to take orders. If the restaurant is temporarily unavailable or is unable to connect to the POS, this will be "false". If this is "false" at the time an order attempt is made, it is guaranteed to fail. Please note that this field functions the same as the `isavailable` field in the [restaurant model](#tag/retrieveConfiguration).
+      nullable: false
+    deliverymode:
+      type: string
+      description: Handoff mode for the basket.
+      nullable: false
+      default: pickup
+      enum:
+      - curbside
+      - drivethru
+      - pickup
+      - dispatch
+      - delivery
+      - dinein
+      - unspecified
+    isupsellenabled:
+      type: boolean
+      description: Whether or not the basket has upsell enabled. This value will only be true if the brand supports upsell and the basket user has not opted out of upsell. Please reference the [/upsell endpoints](#operation/RetrieveEligibleUpsellItems) to view and add upsell items to a basket.
+      nullable: false
+    wasupsold:
+      type: boolean
+      description: Whether or not a collection of eligible upsell items has already been returned for the specified basket.
+      nullable: false
+    customerhandoffcharge:
+      type: number
+      format: double
+      description: Estimated delivery/Dispatch fee for the basket.
+      nullable: false
+      example: 1.95
+    leadtimeestimateminutes:
+      type: integer
+      format: int32
+      description: Number of minutes until the user can receive their order. This field is functionally equivalent to the `earliestreadytime` field but is presented as an integer rather than a datetime. Please note that this field is only guaranteed to be accurate at the moment the basket is received back from the API. As time goes on, it can become out of date.
+      nullable: false
+      example: 12
+    timemode:
+      type: string
+      description: Time mode of the basket.
+      nullable: false
+      default: asap
+      enum:
+      - manualfire
+      - advance
+      - asap
+    mode:
+      type: string
+      description: Legacy field. Will always return "orderahead".
+      nullable: false
+      example: orderahead
+      deprecated: true
+    deliveryaddress:
+      $ref: '#/ResponseDeliveryAddress'
+    appliedrewards:
+      type: array
+      description: List of loyalty rewards applied to the basket.
+      items:
+        $ref: '#/LoyaltyReward'
+    fees:
+      type: array
+      description: List of fees that apply to the basket. A fee is added if the basket meets the conditions for the fee defined by the brand.
+      items:
+        $ref: '#/BasketFee'
+    totalfees:
+      type: number
+      format: double
+      description: Total of all fees applied to the basket.
+      nullable: false
+      example: 3.25
+    donations:
+      type: array
+      description: List of all donations that apply to the basket.
+      items:
+        $ref: '#/BasketDonation'
+    contactnumber:
+      type: string
+      description: User's contact number. This will only be populated if the basket is associated with a user.
+      nullable: true
+      example: '15055555555'
+    contextualpricing:
+      $ref: '#/ContextualPricing'
+    customfields:
+      type: array
+      description: List of custom fields for the restaurant that are tied to the basket. Please pay attention to the `isrequired` and `scope` fields on each custom field to determine whether or not a value is necessary.
+      items:
+        $ref: '#/BasketCustomField'
+    validationmessages:
+      type: array
+      description: List of validation messages for the basket, generally used to inform about any potential issues with the basket. These messages are not persisted across requests.
+      items:
+        $ref: '#/ValidationMessage'
+    allowstip:
+      type: boolean
+      description: Whether or not the user can add a tip to the basket. In order for this to be true, the restaurant must support tipping and the selected handoff mode must support tipping.
+      nullable: false
+    discounts:
+      type: array
+      description: List of discounts applied to the basket.
+      items:
+        $ref: '#/Discount'
+    products:
+      type: array
+      description: List of products that have already been added to the basket.
+      items:
+        $ref: '#/BasketProduct'
+ResponseGroupOrder:
+  required:
+  - basket
+  - deadline
+  - id
+  - isopen
+  - note
+  - ownername
+  type: object
+  properties:
+    id:
+      type: string
+      description: Olo group order guid.
+      nullable: false
+      example: 23d639c2-602b-472c-bb33-9686ef1dea83
+    deadline:
+      type: string
+      format: date-time
+      description: Deadline for group order participants to contribute to the group order in "yyyymmdd hh:mm" format.
+      nullable: false
+      example: 20210116 16:30
+    note:
+      type: string
+      description: Note to display to group order participants.
+      nullable: true
+      example: Join our group order and skip the line.
+    ownername:
+      type: string
+      description: Name of the group order owner.
+      nullable: false
+      example: Ron Idaho
+    isopen:
+      type: boolean
+      description: Whether or not the group order is open. If true, items can still be added to the basket.
+      nullable: false
+    basket:
+      $ref: '#/ResponseBasket'
+ResponseBasketProductBatchResult:
+  required:
+  - basket
+  - errors
+  type: object
+  properties:
+    basket:
+      $ref: '#/ResponseBasket'
+    errors:
+      type: array
+      description: List of errors that occurred when attempting to add or edit products.
+      items:
+        $ref: '#/BasketProductBatchError'
+ResponseBasketProductByChainIdBatchResult:
+  required:
+  - basket
+  - errors
+  type: object
+  properties:
+    basket:
+      $ref: '#/ResponseBasket'
+    errors:
+      type: array
+      description: List of errors that occurred when attempting to add or edit products.
+      items:
+        $ref: '#/BasketProductByChainIdBatchError'
+ResponseUpsellGroups:
+  required:
+  - groups
+  type: object
+  properties:
+    groups:
+      type: array
+      description: List of eligible upsell groups.
+      items:
+        $ref: '#/UpsellGroup'
+ResponseLoyaltySchemes:
+  required:
+  - schemes
+  type: object
+  properties:
+    schemes:
+      type: array
+      description: List of loyalty schemes.
+      items:
+        $ref: '#/LoyaltyScheme'
+ResponseLoyaltyRewards:
+  required:
+  - rewards
+  type: object
+  properties:
+    rewards:
+      type: array
+      description: List of loyalty rewards.
+      items:
+        $ref: '#/LoyaltyReward'
+RequestDeliveryAddress:
+  type: object
+  properties:
+    id:
+      type: integer
+      format: int64
+      description: Olo delivery address id. Only provide this field if the user wishes to use a previously saved address, all other request fields can be omitted.
+      nullable: true
+      example: 3
+    building:
+      type: string
+      description: Apartment, suite, or building name.
+      nullable: true
+      example: Tower Apartments
+      maxLength: 100
+    streetaddress:
+      type: string
+      description: Street address.
+      nullable: true
+      example: 26 Broadway
+    city:
+      type: string
+      description: City.
+      nullable: true
+      example: New York
+    zipcode:
+      type: string
+      description: Zip code.
+      nullable: true
+      example: '10004'
+    phonenumber:
+      type: string
+      description: Phone number for user associated with the basket. Please provide as an 11 digit number with no special characters. If the basket is associated with a registered user, their account contact number will be updated. For guest users without a registered account, please provide the phone number in the [basket submission](#operation/SubmitOrderwithSinglePayment) `contactnumber` field instead.
+      minLength: 11
+      maxLength: 11
+      nullable: true
+      example: '15055555555'
+    specialinstructions:
+      type: string
+      description: Special instructions for this delivery address.
+      maxLength: 128
+      nullable: true
+      example: Last house on the left.
+    isdefault:
+      type: boolean
+      description: Whether or not this delivery address is the user's default address. A user can only have one default address at a time. If the user does not have any other addresses associated with their account, the newly added address will become their default address.
+      nullable: false
+ResponseDeliveryAddress:
+  required:
+  - city
+  - isdefault
+  - phonenumber
+  - streetaddress
+  - zipcode
+  type: object
+  properties:
+    id:
+      type: integer
+      format: int64
+      description: Olo delivery address id.
+      nullable: false
+      example: 3
+    building:
+      type: string
+      description: Apartment, suite, or building name.
+      nullable: true
+      example: Tower Apartments
+    streetaddress:
+      type: string
+      description: Street address.
+      nullable: false
+      example: 26 Broadway
+    city:
+      type: string
+      description: City.
+      nullable: true
+      example: New York
+    zipcode:
+      type: string
+      description: Zip code.
+      nullable: true
+      example: '10004'
+    phonenumber:
+      type: string
+      description: Always displays an empty string. Please reference the phone number associated with the user's account instead. This will be displayed in the basket `contactnumber` field and in the response from the [Retrieve User Contact Number](#operation/RetrieveUserContactNumber) endpoint.
+      nullable: false
+    specialinstructions:
+      type: string
+      description: Special instructions for this delivery address.
+      maxLength: 128
+      nullable: true
+      example: Last house on the left.
+    isdefault:
+      type: boolean
+      description: Whether or not this delivery address is the user's default address. A user can only have one default address at a time.
+      nullable: false
+ResponseBasketTransferResult:
+  required:
+  - basket
+  - itemsnottransferred
+  type: object
+  properties:
+    basket:
+      $ref: '#/ResponseBasket'
+    itemsnottransferred:
+      type: array
+      description: List of Olo product ids that were unable to be transferred.
+      items:
+        type: string
+        example: 598165712
+ResponseBasketPlatformTransfer:
+  required:
+  - mobileweb
+  - web
+  type: object
+  properties:
+    web:
+      type: string
+      format: uri
+      description: Desktop web URL for the basket.
+      nullable: false
+      example: https://kitchensink.olosandbox.com/basket/73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    mobileweb:
+      type: string
+      format: uri
+      description: Mobile web URL for the basket.
+      nullable: false
+      example: https://kitchensink.olosandbox.com/basket/73d6f9c2-60cb-474c-bb36-9686bf1dea83
+ResponseBillingSchemes:
+  required:
+  - billingschemes
+  type: object
+  properties:
+    billingschemes:
+      type: array
+      description: List of billing eligible schemes.
+      items:
+        $ref: '#/ResponseBillingScheme'
+ResponseBillingScheme:
+  required:
+  - accounts
+  - cancheckbalance
+  - fields
+  - id
+  - name
+  - supportsfulladdresscollection
+  - supportssaveonfile
+  - supportstokens
+  - type
+  type: object
+  properties:
+    id:
+      type: integer
+      format: int64
+      description: Olo billing scheme id. Used when submitting an order with a new gift card as payment.
+      nullable: false
+      example: 2
+    name:
+      type: string
+      description: Name of the billing scheme.
+      nullable: false
+      example: Kitchen Sink Gift Card
+    type:
+      type: string
+      description: Type of billing scheme. Please note that a billing scheme, while similar, is not the same thing as the billing method to be used during basket submission.
+      nullable: false
+      enum:
+      - giftcard
+      - payinstore
+      - creditcard
+      - external
+      - prepaid
+    cancheckbalance:
+      type: boolean
+      description: Indicates whether the billing scheme supports balance checks.
+      nullable: false
+    supportsfulladdresscollection:
+      type: boolean
+      description: Whether or not the billing scheme requires full address collection. If true, the user will need to provide their address, city, state, and zip in order to process the payment. This value can only be true for billing schemes with a type of "creditcard".
+      nullable: false
+    supportssaveonfile:
+      type: boolean
+      description: Whether or not the billing scheme supports saving accounts on file for future use.
+      nullable: false
+    supportstokens:
+      type: boolean
+      description: Whether or not the billing scheme supports payment tokens.
+      nullable: false
+    fields:
+      type: array
+      description: List of billing fields that can be provided for this billing scheme.
+      items:
+        $ref: '#/BillingFieldInput'
+    accounts:
+      type: array
+      description: List of accounts the user has for the billing scheme that are supported at the restaurant tied to the basket.
+      items:
+        $ref: '#/BillingAccount'
+ResponseBillingBalance:
+  type: object
+  properties:
+    balance:
+      type: number
+      format: double
+      description: Gift card balance
+      nullable: false
+      example: 15.00
+    success:
+      type: boolean
+      description: Whether or not gift card balance was retrieved.
+      nullable: false
+    message:
+      type: string
+      description: Validation message. Gives detail on why a balance inquiry may have failed.
+      nullable: true
+      example: Please verify you have entered a pin number.
+ResponseBinValidation:
+  required:
+  - ispinrequired
+  type: object
+  properties:
+    ispinrequired:
+      type: boolean
+      description: Whether or not the card requires a pin.
+      nullable: false
+ResponseBasketValidation:
+  required:
+  - basketid
+  - contextualpricing
+  - customerhandoffcharge
+  - fees
+  - donations
+  - posreferenceresponse
+  - readytime
+  - subtotal
+  - tax
+  - taxes
+  - total
+  - totalfees
+  - totaldonations
+  type: object
+  properties:
+    basketid:
+      type: string
+      format: uuid
+      description: Olo basket id (guid).
+      example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    contextualpricing:
+      $ref: '#/ContextualPricing'
+    tax:
+      type: number
+      description: Total amount of tax. This is the actual amount as determined by the POS, not an estimate.
+      format: double
+      nullable: false
+      example: 2.25
+    taxes:
+      type: array
+      description: List of all taxes applicable to the basket. These are the actual amounts as determined by the POS, not estimates.
+      items:
+        $ref: '#/TaxResult'
+    customerhandoffcharge:
+      type: number
+      format: double
+      description: Delivery/Dispatch fee for the basket.
+      nullable: false
+      example: 1.95
+    fees:
+      type: array
+      description: List of fees that apply to the basket. A fee is added if the basket meets the conditions for the fee defined by the brand.
+      items:
+        $ref: '#/BasketFee'
+    donations:
+      type: array
+      description: List of donations that apply to the basket. A donation is added if the basket meets the conditions for the donation defined by the brand.
+      items:
+        $ref: '#/BasketDonation'
+    subtotal:
+      type: number
+      format: double
+      description: Basket subtotal.
+      nullable: false
+      example: 18.28
+    total:
+      type: number
+      format: double
+      description: Basket total including taxes.
+      nullable: false
+      example: 22.15
+    readytime:
+      type: string
+      format: date-time
+      description: Local estimated date and time at which the order will be ready, formatted as "yyyymmdd hh:mm". If the restaurant is using ASAP Order Throttling and the basket has been throttled, this value may be later than the basket `earliestreadytime` field. Please reference this value when displaying the ready time to the customer.
+      nullable: false
+      example: 20210125 19:20
+    totalfees:
+      type: number
+      format: double
+      description: Total of all fees applied to the basket.
+      nullable: false
+      example: 2.25
+    totaldonations:
+      type: number
+      format: double
+      description: Total of all donations applied to the basket.
+      nullable: false
+      example: 5.00
+    upsellgroups:
+      type: array
+      description: List of upsell groups with items that can optionally be added to the basket.
+      items:
+        $ref: '#/UpsellGroup'
+    posreferenceresponse:
+      type: string
+      deprecated: true
+ResponsePaymentToken:
+  required:
+  - accesstoken
+  properties:
+    accesstoken:
+      type: string
+      format: uuid
+      description: Token GUID to identify payment transaction attempt.
+      example: 95251bcc-c8b3-4cb0-9aa4-39881336b8b4
+ResponseOrderStatus:
+  required:
+  - arrivalstatus
+  - contextualpricing
+  - customfields
+  - deliverymode
+  - discount
+  - discounts
+  - fees
+  - donations
+  - hasolopass
+  - id
+  - iseditable
+  - mode
+  - oloid
+  - orderref
+  - posreferenceresponse
+  - products
+  - readytime
+  - salestax
+  - status
+  - subtotal
+  - taxes
+  - timemode
+  - timeplaced
+  - tip
+  - total
+  - totalfees
+  - vendorextref
+  - vendorid
+  - vendorname
+  type: object
+  properties:
+    id:
+      type: string
+      format: uuid
+      description: Olo Order guid
+      nullable: false
+      example: cea27ddd-06cd-4a62-93af-858cb3e32dc9
+    oloid:
+      type: string
+      description: Internal Olo Order ID, a non-sequential int64 value. When reaching out to Olo about an order, please provide this id.
+      nullable: false
+      example: 1393482147
+    vendorid:
+      type: integer
+      format: int64
+      description: Restaurant ID.
+      nullable: false
+      example: 27739
+    status:
+      type: string
+      description: Status of the order.
+      nullable: false
+      enum:
+      - Completed
+      - Canceled
+      - Transmitting
+      - Scheduled
+      - Pending Manual Fire
+      - In Progress
+    subtotal:
+      type: number
+      format: double
+      description: Order subtotal.
+      nullable: false
+      example: 8.73
+    salestax:
+      type: number
+      format: double
+      description: Total sales tax for the order.
+      nullable: false
+      example: 1.23
+    taxes:
+      type: array
+      description: List of taxes for the order.
+      items:
+        $ref: '#/TaxResult'
+    fees:
+      type: array
+      description: List of fees for the order.
+      items:
+        $ref: '#/OrderFee'
+    totalfees:
+      type: number
+      format: double
+      description: Total fees for the order.
+      nullable: false
+      example: .75
+    donations:
+      type: array
+      description: List of donations applied to the order.
+      items:
+        $ref: '#/OrderDonation'
+    totaldonations:
+      type: number
+      format: double
+      description: The sum of all donations applied to the order.
+      nullable: false
+      example: .75
+    total:
+      type: number
+      format: double
+      description: Total (including tax, tip, etc.)
+      nullable: false
+      example: 9.55
+    timemode:
+      type: string
+      description: The time mode of the basket.
+      nullable: false
+      enum:
+      - asap
+      - manualfire
+      - advance
+    tip:
+      type: number
+      format: double
+      description: Tip amount.
+      nullable: false
+      example: 2.00
+    mode:
+      type: string
+      description: Legacy value. Currently hardcoded to always be 'orderahead'.
+      nullable: false
+      example: orderahead
+      deprecated: true
+    billingaccountid:
+      type: string
+      description: Billing account id used to pay for the order. Only returned for orders paid with a single billing account where the account was saved on file.
+      nullable: true
+      example: 125846
+    billingaccountids:
+      type: array
+      description: List of billing account ids used to pay for the order. Only returned if multiple payment types were used.
+      items:
+        type: string
+        example: 125846
+    contextualpricing:
+      $ref: '#/ContextualPricing'
+    deliveryaddress:
+      $ref: '#/ResponseDeliveryAddress'
+    customfields:
+      type: array
+      description: List of custom fields for the order.
+      items:
+        $ref: '#/BasketCustomField'
+    iseditable:
+      type: boolean
+      description: Whether or not the order can be edited or cancelled.
+      nullable: false
+    discount:
+      type: number
+      format: double
+      description: Total sum of all discounts applied to the order. This value cannot be greater than the subtotal.
+      nullable: false
+      example: 0.50
+    discounts:
+      type: array
+      description: List of discounts, including coupons and loyalty rewards, applied to the order.
+      items:
+        $ref: '#/Discount'
+    orderref:
+      type: string
+      description: Order reference in the calling system (a.k.a. external reference).
+      nullable: false
+      example: zie892-se8912nd34iae
+    timeplaced:
+      type: string
+      format: date-time
+      description: Local date and time when the order was placed, formatted as "yyyymmdd hh:mm".
+      nullable: false
+      example: 20200204 13:25
+    readytime:
+      type: string
+      format: date-time
+      description: Local estimated date and time at which the order will be ready, formatted as "yyyymmdd hh:mm".
+      nullable: false
+      example: 20200204 13:25
+    vendorname:
+      type: string
+      description: Name of the restaurant where the order was placed.
+      nullable: false
+      example: Kitchen Sink Seaport
+    vendorextref:
+      type: string
+      description: The restaurant's store number as referenced by the brand.
+      nullable: false
+      example: '109'
+    deliverymode:
+      type: string
+      description: Handoff mode for the order.
+      nullable: false
+      enum:
+      - curbside
+      - drivethru
+      - pickup
+      - dispatch
+      - delivery
+      - dinein
+      - unspecified
+    customerhandoffcharge:
+      type: number
+      format: double
+      description: Delivery fee for the order. Applies to either in-house delivery or Dispatch.
+      nullable: false
+      example: 2.50
+    arrivalstatus:
+      type: string
+      description: Arrival status of the Order. If the order is ineligible to use [Arrival Notifications](#operation/SubmitCustomerArrivalNotification), this property will be null. Possible values are "Order Placed" (the order has been placed and is eligible for arrival notifications), "Arrived" (the customer has indicated that they have arrived), and "Picked Up" (the restaurant employee has indicated that the food has been handed off).
+      nullable: true
+      enum:
+      - Order Placed
+      - Arrived
+      - Picked Up
+    hasolopass:
+      type: boolean
+      description: This is a legacy property that should be ignored.
+      nullable: false
+      default: false
+      deprecated: true
+    products:
+      type: array
+      description: List of products ordered.
+      items:
+        $ref: '#/OrderStatusProduct'
+    posreferenceresponse:
+      type: string
+      deprecated: true
+ResponseRecentOrdersArray:
+  required:
+  - arrivalstatus
+  - contextualpricing
+  - customfields
+  - deliverymode
+  - discount
+  - discounts
+  - fees
+  - hasolopass
+  - id
+  - iseditable
+  - mode
+  - oloid
+  - orderref
+  - posreferenceresponse
+  - products
+  - readytime
+  - salestax
+  - status
+  - subtotal
+  - taxes
+  - timemode
+  - timeplaced
+  - tip
+  - total
+  - totalfees
+  - vendorextref
+  - vendorid
+  - vendorname
+  type: object
+  properties:
+    id:
+      type: string
+      format: uuid
+      description: Olo Order guid
+      nullable: false
+      example: cea27ddd-06cd-4a62-93af-858cb3e32dc9
+    oloid:
+      type: string
+      description: Internal Olo Order ID, a non-sequential int64 value. When reaching out to Olo about an order, please provide this id.
+      nullable: false
+      example: 1393482147
+    vendorid:
+      type: integer
+      format: int64
+      description: Restaurant ID.
+      nullable: false
+      example: 27739
+    status:
+      type: string
+      description: Status of the order.
+      nullable: false
+      enum:
+      - Completed
+      - Canceled
+      - Transmitting
+      - Scheduled
+      - Pending Manual Fire
+      - In Progress
+    subtotal:
+      type: number
+      format: double
+      description: Order subtotal.
+      nullable: false
+      example: 8.73
+    salestax:
+      type: number
+      format: double
+      description: Total sales tax for the order.
+      nullable: false
+      example: 1.23
+    taxes:
+      type: array
+      description: List of taxes for the order.
+      items:
+        $ref: '#/TaxResult'
+    fees:
+      type: array
+      description: List of fees for the order.
+      items:
+        $ref: '#/OrderFee'
+    totalfees:
+      type: number
+      format: double
+      description: Total fees for the order.
+      nullable: false
+      example: .75
+    total:
+      type: number
+      format: double
+      description: Total (including tax, tip, etc.)
+      nullable: false
+      example: 9.55
+    timemode:
+      type: string
+      description: The time mode of the basket.
+      nullable: false
+      enum:
+      - asap
+      - manualfire
+      - advance
+    tip:
+      type: number
+      format: double
+      description: Tip amount.
+      nullable: false
+      example: 2.00
+    mode:
+      type: string
+      description: Legacy value. Currently hardcoded to always be 'orderahead'.
+      nullable: false
+      example: orderahead
+      deprecated: true
+    billingaccountid:
+      type: string
+      description: Billing account id used to pay for the order. Only returned for orders paid with a single billing account where the account was saved on file.
+      nullable: true
+      example: 125846
+    billingaccountids:
+      type: array
+      description: List of billing account ids used to pay for the order. Only returned if multiple payment types were used.
+      items:
+        type: string
+        example: 125846
+    contextualpricing:
+      $ref: '#/ContextualPricing'
+    deliveryaddress:
+      $ref: '#/ResponseDeliveryAddress'
+    customfields:
+      type: array
+      description: List of custom fields for the order.
+      items:
+        $ref: '#/BasketCustomField'
+    iseditable:
+      type: boolean
+      description: Whether or not the order can be edited or cancelled.
+      nullable: false
+    discount:
+      type: number
+      format: double
+      description: Total sum of all discounts applied to the order. This value cannot be greater than the subtotal.
+      nullable: false
+      example: 0.50
+    discounts:
+      type: array
+      description: List of discounts, including coupons and loyalty rewards, applied to the order.
+      items:
+        $ref: '#/Discount'
+    orderref:
+      type: string
+      description: Order reference in the calling system (a.k.a. external reference).
+      nullable: false
+      example: zie892-se8912nd34iae
+    timeplaced:
+      type: string
+      format: date-time
+      description: Local date and time when the order was placed, formatted as "yyyymmdd hh:mm".
+      nullable: false
+      example: 20200204 13:25
+    readytime:
+      type: string
+      format: date-time
+      description: Local estimated date and time at which the order will be ready, formatted as "yyyymmdd hh:mm".
+      nullable: false
+      example: 20200204 13:25
+    vendorname:
+      type: string
+      description: Name of the restaurant where the order was placed.
+      nullable: false
+      example: Kitchen Sink Seaport
+    vendorextref:
+      type: string
+      description: The restaurant's store number as referenced by the brand.
+      nullable: false
+      example: '109'
+    deliverymode:
+      type: string
+      description: Handoff mode for the order.
+      nullable: false
+      enum:
+      - curbside
+      - drivethru
+      - pickup
+      - dispatch
+      - delivery
+      - dinein
+      - unspecified
+    customerhandoffcharge:
+      type: number
+      format: double
+      description: Delivery fee for the order. Applies to either in-house delivery or Dispatch.
+      nullable: false
+      example: 2.50
+    arrivalstatus:
+      type: string
+      description: Arrival status of the Order. If the order is ineligible to use [Arrival Notifications](#operation/SubmitCustomerArrivalNotification), this property will be null. Possible values are "Order Placed" (the order has been placed and is eligible for arrival notifications), "Arrived" (the customer has indicated that they have arrived), and "Picked Up" (the restaurant employee has indicated that the food has been handed off).
+      nullable: true
+      enum:
+      - Order Placed
+      - Arrived
+      - Picked Up
+    hasolopass:
+      type: boolean
+      description: This is a legacy property that should be ignored.
+      nullable: false
+      default: false
+      deprecated: true
+    products:
+      type: array
+      description: List of products ordered.
+      items:
+        $ref: '#/OrderStatusProduct'
+    unavailableproducts:
+      type: array
+      description: List of products that cannot be reordered due to menu changes.
+      items:
+        $ref: '#/OrderStatusProduct'
+    posreferenceresponse:
+      type: string
+      deprecated: true
+ResponseDeliveryStatus:
+  required:
+  - deliveries
+  type: object
+  properties:
+    deliveries:
+      type: array
+      description: List of Dispatch delivery statuses for the order.
+      items:
+        $ref: '#/Delivery'
+ResponseManualFireResult:
+  type: object
+  properties:
+    success:
+      type: boolean
+      description: Whether or not the manual fire order was placed successfully.
+      nullable: false
+    message:
+      type: string
+      description: Gives more details about the status of the firing. This may contain error messages if any errors occurred.
+      nullable: false
+      example: Order submitted.
+    order:
+      $ref: '#/ResponseOrderStatus'
+ResponseNewUser:
+  required:
+  - authtoken
+  - contactnumber
+  - emailaddress
+  - firstname
+  - lastname
+  type: object
+  properties:
+    firstname:
+      type: string
+      description: User's first name.
+      nullable: false
+      example: Ron
+    lastname:
+      type: string
+      description: User's last name.
+      nullable: false
+      example: Idaho
+    emailaddress:
+      type: string
+      format: email
+      description: User's email address.
+      nullable: false
+      example: ron@example.com
+    authtoken:
+      type: string
+      description: Olo user authentication token.
+      nullable: false
+      example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    contactnumber:
+      type: string
+      description: User's phone number.
+      nullable: true
+      example: '15055555555'
+    reference:
+      type: string
+      description: Reference for the user in the calling system (a.k.a. external reference).
+      nullable: true
+      example: f50abf1a9a8c74375da9669ed
+    basketid:
+      type: string
+      format: uuid
+      description: If it was provided in the request, this Olo basket is linked to the user.
+      example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+ResponseUserSingleSignOn:
+  required:
+  - provider
+  - providertoken
+  - provideruserid
+  type: object
+  properties:
+    provider:
+      type: string
+      description: Slug of the login provider.
+      nullable: false
+      example: loginprovider
+    providertoken:
+      type: string
+      description: Login provider's token assigned to the user. Sometimes referred to as the provider's "access token" for the user.
+      nullable: false
+      example: oianvo223983bueufbi23u4ur9238hk-udfb9284298bfasdu-ibf9282bf9
+    provideruserid:
+      type: string
+      description: User id in the login provider's system. Only presented if the login provider requires server-to-server authentication, otherwise "providertoken" will be used.
+      nullable: true
+      example: myuserid
+    contactnumber:
+      type: string
+      description: Contact number to associate with the user in an 11 digit format with no spaces or other non-numeric characters.
+      minLength: 11
+      maxLength: 11
+      nullable: true
+      example: '15055555555'
+    basketid:
+      type: string
+      format: uuid
+      description: If it was provided in the request, this Olo basket is linked to the user.
+      example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    authtoken:
+      type: string
+      description: Olo user authentication token that will be returned if successful.
+      nullable: false
+      example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+ResponseLoginUser:
+  required:
+  - authtoken
+  - cardsuffix
+  - emailaddress
+  - firstname
+  - lastname
+  type: object
+  properties:
+    authtoken:
+      type: string
+      description: Olo user authentication token.
+      nullable: false
+      example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    cardsuffix:
+      type: string
+      description: Will always return null for this endpoint.
+      format: (null)
+      nullable: true
+      default: null
+      example:
+    emailaddress:
+      type: string
+      format: email
+      description: User's email address.
+      nullable: false
+      example: ron@example.com
+    firstname:
+      type: string
+      description: User's first name.
+      nullable: false
+      example: Ron
+    lastname:
+      type: string
+      description: User's last name.
+      nullable: false
+      example: Idaho
+ResponseLogin:
+  required:
+  - token
+  - user
+  type: object
+  properties:
+    token:
+      type: string
+      description: Olo user authentication token.
+      nullable: true
+      example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    user:
+      $ref: '#/ResponseLoginUser'
+ResponseUser:
+  required:
+  - firstname
+  - lastname
+  - cardsuffix
+  - emailaddress
+  type: object
+  properties:
+    authtoken:
+      type: string
+      description: Olo user authentication token.
+      nullable: false
+      example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    firstname:
+      type: string
+      description: User's first name.
+      nullable: false
+      example: Ron
+    lastname:
+      type: string
+      description: User's last name.
+      nullable: false
+      example: Idaho
+    cardsuffix:
+      type: string
+      description: Last 4 digits of the user's most recent credit card on file.
+      minLength: 4
+      maxLength: 4
+      nullable: false
+      example: '1111'
+    emailaddress:
+      type: string
+      format: email
+      description: User's email address.
+      nullable: false
+      example: ron@example.com
+    userguid:
+      type: string
+      format: uuid
+      description: User's unique identifier.
+      nullable: false
+      example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+ResponseUserExists:
+  required:
+  - providers
+  type: object
+  properties:
+    providers:
+      type: array
+      description: Names of the login providers that have a user account with the provided email.
+      items:
+        type: string
+        example: loginprovider
+    userid:
+      type: string
+      description: Olo user guid. Only returned if the API key has "Access Unauthenticated Users" permission and an Olo user account else the userid will be "null".
+      nullable: true
+      example: 2b9888ca-24bc-e711-a977-0afcc1bd9d86
+ResponseContactDetails:
+  required:
+  - contactdetails
+  type: object
+  properties:
+    contactdetails:
+      type: string
+      description: User's contact number, in a 10 digit format.
+      minLength: 10
+      nullable: false
+      example: '5055555555'
+ResponseContactOptions:
+  required:
+  - emailreceipts
+  - followups
+  - marketingsms
+  - optin
+  - upsell
+  type: object
+  properties:
+    marketingsms:
+      type: string
+      description: Whether or not the user would like to receive deals through SMS.
+      nullable: false
+      enum:
+      - "true"
+      - "false"
+    optin:
+      type: string
+      description: Whether or not the user would like to receive deals newsletters (i.e. marketing emails).
+      nullable: false
+      enum:
+      - "true"
+      - "false"
+    upsell:
+      type: string
+      description: Whether or not the user would like to see prompts for upsell items.
+      nullable: false
+      enum:
+      - "true"
+      - "false"
+    emailreceipts:
+      type: string
+      description: Whether or not the user would like to receive order notification emails.
+      nullable: false
+      enum:
+      - "true"
+      - "false"
+    followups:
+      type: string
+      description: Whether or not the user would like to allow the brand to request order feedback.
+      nullable: false
+      enum:
+      - "true"
+      - "false"
+ResponseUserDeliveryAddresses:
+  type: object
+  properties:
+    deliveryaddresses:
+      type: array
+      description: List of delivery addresses associated with the user.
+      items:
+        $ref: '#/ResponseDeliveryAddress'
+ResponseUserBillingAccounts:
+  required:
+  - billingaccounts
+  type: object
+  properties:
+    billingaccounts:
+      type: array
+      description: List of billing accounts for the user.
+      items:
+        $ref: '#/BillingAccount'
+ResponseStoredValueCards:
+  type: object
+  properties:
+    cardbalances:
+      type: array
+      description: List of stored value (a.k.a. gift card) accounts.
+      items:
+        $ref: '#/ResponseBillingBalance'
+ResponseUpdateCreditCard:
+  required:
+  - isdefault
+  type: object
+  properties:
+    isdefault:
+      type: boolean
+ResponseUserFaves:
+  required:
+  - faves
+  type: object
+  properties:
+    faves:
+      type: array
+      description: List of favorites for the user.
+      items:
+        $ref: '#/Fave'
+ResponseFaveLocation:
+  required:
+  - id
+  - isdefault
+  - vendorid
+  - vendorname
+  type: object
+  properties:
+    id:
+      type: integer
+      format: int64
+      description: Unique id for the fave location.
+      nullable: false
+      example: 38910481
+    vendorid:
+      type: integer
+      format: int64
+      description: Restaurant id.
+      nullable: false
+      example: 27739
+    vendorname:
+      type: string
+      description: Name of the restaurant.
+      nullable: false
+      example: Kitchen Sink Seaport
+    isdefault:
+      type: boolean
+      description: Whether or not this is the user's default fave restaurant. A user can only have one default restaurant at a time.
+      nullable: false
+ResponseUserFaveLocations:
+  required:
+  - favelocations
+  type: object
+  properties:
+    favelocations:
+      type: array
+      description: List of user's favorite locations.
+      items:
+        $ref: '#/ResponseFaveLocation'
+ResponseRecentOrders:
+  required:
+  - orders
+  type: object
+  properties:
+    orders:
+      type: array
+      description: List of recent orders for the user.
+      items:
+        $ref: '#/ResponseRecentOrdersArray'
+ResponseManualFireOrders:
+  required:
+  - orders
+  type: object
+  properties:
+    orders:
+      type: array
+      description: List of open Manual Fire orders for the user.
+      items:
+        $ref: '#/ManualFireOrder'
+ResponseLoyaltyRewardsByVendor:
+  required:
+  - vendors
+  type: object
+  properties:
+    vendors:
+      type: array
+      description: List of restaurants with rewards.
+      items:
+        $ref: '#/LoyaltyVendor'
+ResponseChangePasswordByUserGuid:
+  required:
+  - id
+  type: object
+  properties:
+    id:
+      type: string
+      format: uuid
+      description: Guid representing the password change operation.
+      example: 2b9888ca-24bc-e711-a977-0afcc1bd9d86
+ResponseBrandExportStatusList:
+  required:
+  - brands
+  type: object
+  properties:
+    brands:
+      type: array
+      description: Status records by brand.
+      items:
+        $ref: '#/BrandExportStatus'
+ResponseOrderBatches:
+  required:
+  - batches
+  type: object
+  properties:
+    batches:
+      type: array
+      description: List of Order Export batches.
+      items:
+        $ref: '#/OrderBatch'
+
+# Sub-Models
+RestaurantCustomLabel:
+  required:
+  - key
+  - value
+  type: object
+  properties:
+    key:
+      type: string
+      description: Label key.
+      example: handoffmode_pickup
+    value:
+      type: string
+      description: Label value.
+      example: Pickup
+RestaurantDisclaimer:
+  required:
+  - code
+  - disclaimer
+  - images
+  - name
+  type: object
+  properties:
+    code:
+      type: string
+      description: Code of the disclaimer.
+      nullable: true
+      example: '1567'
+    name:
+      type: string
+      description: Name of the disclaimer.
+      nullable: true
+      example: FDA Statement
+    disclaimer:
+      type: string
+      description: Disclaimer text.
+      nullable: false
+      example: FDA guideline statement.
+    images:
+      type: array
+      description: List of images associated with the disclaimer.
+      items:
+        $ref: '#/Image'
+RestaurantCalendar:
+  required:
+  - ranges
+  - type
+  type: object
+  properties:
+    label:
+      type: string
+      description: Display label for the calendar.
+      nullable: true
+      example: Curbside Pickup Hours
+    type:
+      type: string
+      description: Type of calendar. This list is not exhaustive as other calendar types may be added in the future.
+      nullable: false
+      enum:
+      - business
+      - delivery
+      - carryout
+      - pickupwindow
+      - dinein
+      - curbsidepickup
+      - drivethru
+      - dispatch
+    ranges:
+      type: array
+      description: Time ranges the calendar applies to.
+      items:
+        $ref: '#/TimeRange'
+RestaurantCustomField:
+  required:
+  - id
+  - label
+  - qualificationcriteria
+  - required
+  - validationregex
+  type: object
+  properties:
+    id:
+      type: integer
+      format: int64
+      description: Unique id for the restaurant custom field.
+      nullable: false
+      example: 390138451
+    label:
+      type: string
+      description: Label for the restaurant custom field.
+      nullable: false
+      example: Car Color
+    required:
+      type: boolean
+      description: Whether or not the custom field is required to have a value set when placing an order at the restaurant.
+      nullable: false
+    validationregex:
+      type: string
+      description: Regular expression used to validate the value. If the desired custom field value does not match the validationregex, the API will return an error.
+      nullable: true
+      example: '[a-z]+'
+    qualificationcriteria:
+      type: string
+      description: Which types of orders the custom field applies to.
+      enum:
+       - AllOrders
+       - DeliveryOrdersOnly
+       - CashOrdersOnly
+       - CurbsidePickupOrdersOnly
+       - DriveThruOnly
+       - DineInOrdersOnly
+       - CarryOutOnly
+       - CallCenterTimeWantedThreshold
+       - CallCenterOrderAmountThreshold
+       - CallCenterProductQuantityThreshold
+       - CallCenterTimeWantedAndProductQuantityThreshold
+      nullable: false
+EightySixedChoice:
+  required:
+  - chainoptionid
+  - id
+  type: object
+  properties:
+    chainoptionid:
+      type: integer
+      format: int64
+      description: Olo's chain-wide option id.
+      nullable: false
+      example: 910248134
+    id:
+      type: integer
+      format: int64
+      description: Olo option id (a.k.a choice id). Corresponds to the option id on the restaurant's menu.
+      nullable: false
+      example: 9835472301
+EightySixedProduct:
+  required:
+  - chainproductid
+  - id
+  type: object
+  properties:
+    chainproductid:
+      type: integer
+      format: int64
+      description: Olo's chain-wide product id.
+      nullable: false
+      example: 310248134
+    id:
+      type: integer
+      format: int64
+      description: Olo product id. Corresponds to the product id on the restaurant's menu.
+      nullable: false
+      example: 3235472301
+DeliveryFeeTier:
+  required:
+  - amount
+  - feetype
+  - subtotalminimum
+  type: object
+  properties:
+    feetype:
+      type: string
+      description: Type of fee.
+      nullable: false
+      enum:
+        - SubtotalPercent
+        - DispatchFee
+        - FixedFee
+    amount:
+      type: number
+      format: double
+      description: Amount of the fee.
+      nullable: false
+      example: 1.25
+    subtotalminimum:
+      type: number
+      format: double
+      description: Minimum value of the order subtotal for the fee to be in effect.
+      nullable: false
+      example: 10
+MetadataItem:
+  required:
+  - key
+  - value
+  type: object
+  properties:
+    key:
+      type: string
+      description: Metadata key.
+      nullable: false
+      example: display-group-option-name
+    value:
+      type: string
+      description: Metadata value.
+      nullable: false
+      example: Remove Chicken
+TimeRange:
+  required:
+  - end
+  - start
+  - weekday
+  type: object
+  properties:
+    start:
+      type: string
+      format: date-time
+      description: Start date time formatted "yyyymmdd hh:mm". This date time is local to the restaurant.
+      nullable: false
+      example: 20200315 08:00
+    end:
+      type: string
+      format: date-time
+      description: End date time formatted "yyyymmdd hh:mm". This date time is local to the restaurant.
+      nullable: false
+      example: 20200315 20:00
+    weekday:
+      type: string
+      description: Abbreviated day of the week.
+      nullable: false
+      example: Thu
+Category:
+  required:
+  - description
+  - id
+  - images
+  - metadata
+  - name
+  - products
+  - containsalcohol
+  type: object
+  properties:
+    id:
+      type: integer
+      format: int64
+      description: Olo product category id.
+      nullable: false
+      example: 32341238
+    name:
+      type: string
+      description: Name of the product category.
+      nullable: false
+      example: Breakfast
+    description:
+      type: string
+      description: Description of the product category.
+      nullable: true
+      example: Breakfast products.
+    metadata:
+      type: array
+      description: List of customizable key-value pairs associated with the product category. If you would like to configure metadata for product categories, please reach out to your assigned Customer Success representative.
+      items:
+        $ref: '#/MetadataItem'
+    containsalcohol:
+      type: boolean
+      description: Determines if all products within the category are alcoholic.
+      nullable: false
+      example: true
+    images:
+      type: array
+      description: Images associated with the product category.
+      items:
+        $ref: '#/Image'
+    products:
+      type: array
+      description: Products in the category.
+      items:
+        $ref: '#/Product'
+Product:
+  required:
+  - basecalories
+  - chainproductid
+  - cost
+  - description
+  - displayid
+  - endhour
+  - id
+  - imagefilename
+  - images
+  - maxcalories
+  - maximumbasketquantity
+  - maximumquantity
+  - metadata
+  - minimumbasketquantity
+  - minimumquantity
+  - alcoholstatus
+  - name
+  - quantityincrement
+  - starthour
+  - unavailablehandoffmodes
+  type: object
+  properties:
+    id:
+      type: integer
+      format: int64
+      description: Olo product id.
+      nullable: false
+      example: 123801038
+    chainproductid:
+      type: integer
+      format: int64
+      description: Olo's chain wide product id.
+      nullable: false
+      example: 9804859081
+    name:
+      type: string
+      description: Name of the product.
+      nullable: false
+      example: Sandwich
+    description:
+      type: string
+      description: Description of the product.
+      nullable: true
+      example: A peanut butter and jelly sandwich.
+    cost:
+      type: number
+      format: double
+      description: Cost of the product.
+      nullable: false
+      example: 3.50
+    basecalories:
+      type: string
+      description: If the restaurant has decided to show calories (denoted by the `showcalories` field on the `restaurant` model), this will be the base calories of the product.
+      nullable: true
+      example: '800'
+    maxcalories:
+      type: string
+      description: If the restaurant has decided to show calories (denoted by the `showcalories` field on the `restaurant` model), this will be the max calories of the product, if a value has been defined.
+      nullable: true
+      example: '1200'
+    caloriesseparator:
+      type: string
+      description: If the restaurant has decided to show calories (denoted by the `showcalories` field on the `restaurant` model), this will be the separator between the base and max calories.
+      nullable: true
+      enum:
+      - "-"
+      - "/"
+    displayid:
+      type: string
+      description: Legacy field.
+      nullable: true
+      example:
+      deprecated: true
+    starthour:
+      type: number
+      format: double
+      description: Legacy field. Currently set to always return 0.
+      nullable: false
+      default: 0
+      example: 0
+      deprecated: true
+    endhour:
+      type: number
+      format: double
+      description: Legacy field. Currently set to always return 24.
+      nullable: false
+      default: 24
+      example: 24
+      deprecated: true
+    imagefilename:
+      type: string
+      description: Legacy field. Points to default image filename.
+      nullable: true
+      example:
+      deprecated: true
+    maximumquantity:
+      type: string
+      description: Maximum quantity for an individual product in a basket. For the total maximum quantity of the product that can be added to the basket, please reference the `maximumbasketquantity` field.
+      nullable: true
+      example: '1'
+    minimumquantity:
+      type: string
+      description: Minimum quantity for an individual product in a basket. Please note that for values above zero this does not mean that the product is required to be in every basket. Instead it means that if it is added to a basket, it must have a quantity greater than or equal to the minimum quantity.
+      nullable: false
+      example: '0'
+    maximumbasketquantity:
+      type: string
+      description: Total maximum quantity of the product that can be in a single basket.
+      nullable: true
+      example: '4'
+    minimumbasketquantity:
+      type: string
+      description: Total minimum quantity of the product that must be in a single basket. Please note that for values above zero this mean that the product is required to be in every basket.
+      nullable: true
+      example: '0'
+    quantityincrement:
+      type: string
+      description: Quantity increment for the product if it is ordered. For example, if a product has quantityincrement of 2, it can only be ordered in multiples of 2 (2, 4, 6, etc).
+      nullable: false
+      example: '1'
+    shortdescription:
+      type: string
+      description: Short description of the product.
+      nullable: true
+      example: PB&J
+    metadata:
+      type: array
+      description: List of customizable key-value pairs associated with the product. If you would like to configure metadata for products, please reach out to your assigned Customer Success representative.
+      items:
+        $ref: '#/MetadataItem'
+    alcoholstatus:
+      type: enum
+      description: The alcohol status of the product. For example, FoodAndAlcohol would indicate a combo meal with both required food and alcohol items.
+      nullable: false
+      enum:
+        - None
+        - Alcohol
+        - FoodAndAlcohol
+    images:
+      type: array
+      description: List of images for the product.
+      items:
+        $ref: '#/Image'
+    availability:
+      $ref: '#/ProductAvailability'
+    unavailablehandoffmodes:
+      type: array
+      description: List of unavailable handoff modes for the product. Attempting to order a product with an unavailable handoff mode will result in an error.
+      items:
+        type: string
+        example: drivethru
+OptionGroup:
+  required:
+  - chainmodifierid
+  - choicequantityincrement
+  - description
+  - id
+  - mandatory
+  - maxselects
+  - minselects
+  - options
+  - parentchoiceid
+  - hidechoicecost
+  type: object
+  properties:
+    id:
+      type: integer
+      format: int64
+      description: Olo option group id (a.k.a. modifier id).
+      nullable: false
+      example: 91234801
+    chainmodifierid:
+      type: integer
+      format: int64
+      description: Olo's chain wide option group id. This id is not to be used in any Ordering API call.
+      nullable: false
+      example: 894324561
+    description:
+      type: string
+      description: Description of the option group.
+      nullable: false
+      example: 'Choose Side:'
+    mandatory:
+      type: boolean
+      description: Whether or not one and only one option from the option group must be selected.
+      nullable: false
+    options:
+      type: array
+      description: List of options in the option group.
+      items:
+        $ref: '#/Option'
+    parentchoiceid:
+      type: string
+      description: This is a legacy property that should be ignored.
+      nullable: true
+      example:
+      deprecated: true
+    minselects:
+      type: string
+      description: Minimum number of options that must be selected from the option group.
+      nullable: true
+      example: '1'
+    maxselects:
+      type: string
+      description: Maximum number of options that may be selected from the option group.
+      nullable: true
+      example: '1'
+    minaggregatequantity:
+      type: string
+      description: Minimum aggregate quantity of all selected options from the option group.
+      nullable: true
+      example: '1'
+    maxaggregatequantity:
+      type: string
+      description: Maximum aggregate quantity of all selected options from the option group.
+      nullable: true
+      example: '6'
+    minchoicequantity:
+      type: string
+      description: Minimum quantity for options within the option group.
+      nullable: true
+      example: '0'
+    maxchoicequantity:
+      type: string
+      description: Maximum quantity for options within the option group.
+      nullable: true
+      example: '3'
+    supportschoicequantities:
+      type: boolean
+      description: Whether or not the option group supports options with quantities greater than 1. Please note that this field determines the relevancy of the other quantity fields.
+      nullable: false
+    choicequantityincrement:
+      type: string
+      description: Quantity increment for options in the option group. For example, if an option group has a choicequantityincrement of 2, option quantities can only be selected in multiples of 2 (2, 4, 6, etc).
+      nullable: false
+      example: "1"
+    availability:
+      $ref: '#/MenuItemAvailability'
+    metadata:
+      type: array
+      description: List of customizable key-value pairs associated with the option group. If you would like to configure metadata for option groups, please reach out to your assigned Customer Success representative.
+      items:
+        $ref: '#/MetadataItem'
+    explanationtext:
+      type: string
+      description: Explanation text for the option group.
+      nullable: false
+      example: 'Please choose a side:'
+    hidechoicecost:
+       type: boolean
+       description: Whether or not the restaurant wants to hide option costs when displaying the menu to customers.
+       nullable: false
+Option:
+  required:
+  - chainoptionid
+  - children
+  - cost
+  - fields
+  - id
+  - isdefault
+  - menuitemlabels
+  - metadata
+  - modifiers
+  - name
+  type: object
+  properties:
+    id:
+      type: integer
+      format: int64
+      description: Olo option id (a.k.a choice id).
+      nullable: false
+      example: 9681651123
+    chainoptionid:
+      type: integer
+      format: int64
+      description: Olo's chain-wide option id.
+      nullable: false
+      example: 89765131
+    displayid:
+      type: string
+      description: Legacy field.
+      nullable: true
+      example:
+      deprecated: true
+    name:
+      type: string
+      description: Name of the option.
+      nullable: false
+      example: Small
+    isdefault:
+      type: boolean
+      description: Whether or not the option should be selected by default.
+      nullable: false
+    cost:
+      type: number
+      format: double
+      description: Cost of the option in dollars, can be positive or negative. If "adjustsparentprice" is "true" this value is an adjustment. If "adjustsparentprice" is "false" this value is the option cost.
+      nullable: false
+      example: .25
+    children:
+      type: boolean
+      description: Whether or not the option has child option groups.
+      nullable: false
+    modifiers:
+      type: array
+      description: List of child option groups.
+      items:
+        $ref: '#/OptionGroup'
+    fields:
+      type: array
+      description: List of custom fields applicable to the option.
+      items:
+        $ref: '#/CustomField'
+    menuitemlabels:
+      type: array
+      description: List of menu item labels that apply to the option.
+      items:
+        $ref: '#/MenuItemLabel'
+    basecalories:
+      type: string
+      description: If the restaurant has decided to show calories, this will be the base calories of the option.
+      nullable: true
+      example: '250'
+    maxcalories:
+      type: string
+      description: If the restaurant has decided to show calories, this will be the max calories of the option.
+      nullable: true
+      example: '500'
+    caloriesseparator:
+      type: string
+      description: If the restaurant has decided to show calories, this will be the separator between the base and max calories.
+      nullable: true
+      enum:
+      - '-'
+      - '/'
+    adjustsparentprice:
+      type: boolean
+      description: If "true", the value in the "cost" field will be an adjustment value. If "false", the value in the "cost" field will be the option cost.
+      nullable: false
+    adjustsparentcalories:
+      type: boolean
+      description: Indicates that the modifier adjusts the calories of the product or a parent modifier. For example, the modifier's calories should be displayed as "+50" rather than "50".
+      nullable: false
+    availability:
+      $ref: '#/OptionAvailability'
+    metadata:
+      type: array
+      description: List of customizable key-value pairs associated with the option. If you would like to configure metadata for options, please reach out to your assigned Customer Success representative.
+      items:
+        $ref: '#/MetadataItem'
+Image:
+  type: object
+  properties:
+    groupname:
+      type: string
+      description: The name of the group the image resides in.
+      nullable: false
+      enum:
+      - desktop-menu
+      - desktop-customize
+      - mobile-app
+      - mobile-app-large
+      - marketplace-product
+      - mobile-webapp-menu
+      - mobile-webapp-customize
+    description:
+      type: string
+      description: Description of the image.
+      nullable: true
+      example: Image file
+    isdefault:
+      type: boolean
+      description: Whether or not this is a default image.
+      nullable: false
+    filename:
+      type: string
+      description: The filename of the image. Append it to the menu's "imagepath" field to construct the full URL.
+      nullable: true
+      example: image15382.jpg
+    url:
+      type: string
+      format: uri
+      description: Legacy field that can be ignored.
+      nullable: true
+      example:
+      deprecated: true
+MenuItemLabel:
+  required:
+  - code
+  - name
+  type: object
+  properties:
+    name:
+      type: string
+      description: Name of the menu item label.
+      nullable: false
+      example: Sodium
+    code:
+      type: string
+      description: Code for the menu item label.
+      nullable: false
+      example: HighSodium
+    images:
+      type: array
+      description: List of images for the menu item label.
+      items:
+        $ref: '#/Image'
+BatchProduct:
+  type: object
+  properties:
+    productid:
+      type: integer
+      format: int64
+      description: Olo product id as retrieved from the restaurant's menu.
+      example: 1130491234
+    quantity:
+      type: integer
+      format: int32
+      description: Quantity of the product.
+      example: 1
+    specialinstructions:
+      type: string
+      description: Special instructions for the product.
+      example: Well done.
+    recipient:
+      type: string
+      description: Recipient name, i.e. the person who the product is for. Required if basket is a group order.
+      maxLength: 32
+      example: Ron Idaho
+    customdata:
+      type: string
+      description: Custom passthrough data that will show up when calling one of the order status endpoints. Will not get passed down to the POS. Will not show up in webhook payloads or Order Exports.
+      example:
+    choices:
+      type: array
+      description: List of options (choices) that apply to the product.
+      items:
+        $ref: '#/BatchProductChoice'
+BatchProductChoice:
+  required:
+  - choiceid
+  - customfields
+  type: object
+  properties:
+    choiceid:
+      type: integer
+      format: int64
+      description: Olo option id as retrieved from the restaurant's menu.
+      example: 2389014421
+    quantity:
+      type: integer
+      format: int32
+      description: Quantity selected of the option.
+      example: 2
+    customfields:
+      type: array
+      description: List of option custom fields.
+      items:
+        $ref: '#/BatchProductChoiceCustomField'
+BatchProductChoiceCustomField:
+  required:
+  - fieldid
+  - value
+  type: object
+  properties:
+    fieldid:
+      type: integer
+      format: int64
+      description: Olo option custom field id.
+      example: 4298321
+    value:
+      type: string
+      description: Value to set for the option custom field.
+      example: Happy Birthday!!
+BasketCustomField:
+  required:
+  - id
+  - isrequired
+  - label
+  - scope
+  - validationregex
+  - value
+  type: object
+  properties:
+    id:
+      type: integer
+      format: int64
+      description: Unique id for the restaurant custom field.
+      nullable: false
+      example: 389103452
+    label:
+      type: string
+      description: Description of what the custom field is used for.
+      nullable: false
+      example: Color of vehicle
+    value:
+      type: string
+      description: Value of the custom field.
+      nullable: true
+      example: Red
+    isrequired:
+      type: boolean
+      description: Whether or not the custom field value is required.
+      nullable: false
+    validationregex:
+      type: string
+      description: Regular expression used to validate the value of the field.
+      nullable: true
+      example: '[a-z]+'
+    scope:
+      type: string
+      description: Which types of orders the custom field applies to.
+      nullable: false
+      enum:
+      - AllOrders
+      - DeliveryOrdersOnly
+      - CashOrdersOnly
+      - CurbsidePickupOrdersOnly
+BasketProduct:
+  required:
+  - basecost
+  - choices
+  - customdata
+  - id
+  - name
+  - productId
+  - quantity
+  - recipient
+  - specialinstructions
+  - totalcost
+  type: object
+  properties:
+    id:
+      type: integer
+      format: int64
+      description: Olo basket product id. This id is unique to each basket and is used for any modifications to the product within this basket.
+      nullable: false
+      example: 8946124
+    productId:
+      type: integer
+      format: int64
+      description: Olo product id. This is the product id from the restaurant's menu.
+      nullable: false
+      example: 78481654
+    name:
+      type: string
+      description: Name of the product.
+      nullable: false
+      example: PB&J Sandwich
+    quantity:
+      type: integer
+      format: int32
+      description: Quantity of the product in the basket.
+      nullable: false
+      example: 1
+    basecost:
+      type: number
+      format: double
+      description: Unit cost of the product without any modifiers.
+      nullable: false
+      example: 1.50
+    totalcost:
+      type: number
+      format: double
+      description: Total cost of the product including product quantity and any additional option costs.
+      nullable: false
+      example: 1.95
+    specialinstructions:
+      type: string
+      description: Special instructions for the product.
+      nullable: true
+      example: Please cut off crusts.
+    customdata:
+      type: string
+      description: Custom passthrough data that will show up when calling one of the order status endpoints. Will not get passed down to the POS. Will not show up in webhook payloads or Order Exports.
+      nullable: true
+      example:
+    recipient:
+      type: string
+      description: Recipient name (who the product is for).
+      maxLength: 32
+      nullable: true
+      example: Ron Idaho
+    choices:
+      type: array
+      description: List of choices (options) that have been chosen for this product
+        within the basket.
+      items:
+        $ref: '#/BasketChoice'
+BasketChoice:
+  required:
+  - cost
+  - id
+  - indent
+  - metric
+  - name
+  - optionid
+  - quantity
+  type: object
+  properties:
+    id:
+      type: integer
+      format: int64
+      description: Olo basket option id. This id is unique to each basket product.
+      nullable: false
+      example: 389139747
+    optionid:
+      type: integer
+      format: int64
+      description: Olo option id. This is the option id from the restaurant's menu.
+      nullable: false
+      example: 38891305
+    name:
+      type: string
+      description: Name of the option.
+      nullable: false
+      example: Small
+    metric:
+      type: integer
+      format: int32
+      description: Display order metric for options.
+      nullable: false
+      example: 1
+    indent:
+      type: integer
+      format: int32
+      description: Display indent-level for nested options (e.g. Light/Regular/Heavy).
+      nullable: false
+      example: 2
+    cost:
+      type: number
+      format: double
+      description: Cost of the option.
+      nullable: false
+      example: .25
+    quantity:
+      type: integer
+      format: int32
+      description: Quantity selected of the option.
+      nullable: false
+      example: 1
+    customfields:
+      type: array
+      description: Any custom fields that were applied to the option.
+      items:
+        $ref: '#/ChoiceCustomFieldValue'
+BasketFee:
+  required:
+  - amount
+  - description
+  type: object
+  properties:
+    amount:
+      type: number
+      format: double
+      description: Amount of the fee.
+      nullable: false
+      example: .75
+    description:
+      type: string
+      description: Description of the fee.
+      nullable: true
+      example: Service fee
+    note:
+      type: string
+      description: Explanation of the fee.
+      nullable: true
+      example: Necessary service fee
+BasketDonation:
+  required:
+    - amount
+    - description
+    - id
+    - note
+  properties:
+    id:
+      type: integer
+      format: int64
+      description: Olo donation option id. This id is unique to each donation type.
+      nullable: false
+      example: 3891
+    amount:
+      type: number
+      format: double
+      description: Amount of the donation.
+      nullable: false
+      example: 5.75
+    description:
+      type: string
+      description: Description of the donation.
+      nullable: true
+      example: Donation toward dog shelters.
+    note:
+      type: string
+      description: Explanation of the donation.
+      nullable: true
+      example: Dog shelter donation.
+BasketCoupon:
+  required:
+  - couponcode
+  - description
+  type: object
+  properties:
+    couponcode:
+      type: string
+      description: Coupon code.
+      nullable: false
+      example: Take20
+    description:
+      type: string
+      description: Description of the coupon.
+      nullable: true
+      example: Take 20% off order
+BasketAddUpsellPostItem:
+  required:
+  - id
+  - quantity
+  type: object
+  properties:
+    id:
+      type: integer
+      format: int64
+      description: Olo product id, the same id as found on the restaurant's menu.
+      example: 986517516
+    quantity:
+      type: integer
+      format: int32
+      description: Quantity to add to the basket.
+      example: 1
+BasketProductBatchError:
+  required:
+  - message
+  - num
+  - optionid
+  - productid
+  type: object
+  properties:
+    productid:
+      type: integer
+      format: int64
+      description: The restaurant-specific product id associated with the error.
+      nullable: false
+      example: 98165171
+    optionid:
+      type: integer
+      format: int64
+      description: The restaurant-specific option id (a.k.a. choice id) associated with the error.
+      nullable: true
+      example: 1351859844
+    num:
+      type: integer
+      format: int32
+      description: Error classification number.
+      nullable: false
+      example: 251
+    message:
+      type: string
+      description: The error message.
+      nullable: true
+      example: Missing required selections.
+BasketProductByChainIdBatchError:
+  required:
+  - chainproductid
+  - message
+  - num
+  type: object
+  properties:
+    chainproductid:
+      type: integer
+      format: int64
+      description: The Olo chain wide product id associated with the error.
+      nullable: false
+      example: 3215987
+    productid:
+      type: integer
+      format: int64
+      description: The restaurant-specific product id associated with the error.
+      nullable: false
+      example: 6549681651
+    optionid:
+      type: integer
+      format: int64
+      description: The restaurant-specific option id (a.k.a. choice id) associated with the error.
+      nullable: false
+      example: 51651968
+    num:
+      type: integer
+      format: int32
+      description: Error classification number.
+      nullable: false
+      example: 250
+    message:
+      type: string
+      description: The error message.
+      nullable: true
+      example: Menu item no longer available.
+NewBasketProductChoiceByChainId:
+  required:
+  - chainchoiceid
+  - quantity
+  type: object
+  properties:
+    chainchoiceid:
+      type: integer
+      format: int64
+      description: Olo chain wide option id as retrieved from the restaurant's menu.
+      example: 98465134
+    quantity:
+      type: integer
+      format: int32
+      description: Quantity selected of the option.
+      example: 1
+    customfields:
+      type: array
+      description: List of option custom fields.
+      items:
+        $ref: '#/BatchProductChoiceCustomField'
+    choices:
+      type: array
+      description: List of options (choices) nested under this option that apply to the product.
+      items:
+        $ref: '#/NewBasketProductChoiceByChainId'
+CustomField:
+  required:
+  - id
+  - isrequired
+  - label
+  - maxlength
+  type: object
+  properties:
+    id:
+      type: integer
+      format: int64
+      description: The id of the custom field.
+      nullable: false
+      example: 56168456
+    isrequired:
+      type: boolean
+      description: Whether or not the option custom field is required. If "true", any attempt to add the option without the custom field will result in an error.
+      nullable: false
+    label:
+      type: string
+      description: Label for the option custom field.
+      nullable: false
+      example: Personalized message.
+    maxlength:
+      type: integer
+      format: int32
+      description: Max length for the custom field value.
+      nullable: false
+      example: 35
+CustomFieldValue:
+  required:
+  - id
+  - value
+  type: object
+  properties:
+    id:
+      type: integer
+      format: int64
+      description: The id of the Custom Field to update.
+      nullable: false
+      example: 891651244
+    value:
+      type: string
+      description: The updated value for the Custom Field.
+      example: Parking spot 2
+Delivery:
+  required:
+  - status
+  type: object
+  properties:
+    id:
+      type: integer
+      format: int64
+      description: Dispatch details id.
+      nullable: false
+      example: 21652658
+    status:
+      type: string
+      description: Status of the Dispatch delivery.
+      nullable: true
+      enum:
+      - Pending
+      - PickupInProgress
+      - DeliveryInProgress
+      - Delivered
+      - Canceled
+      - Scheduled
+    drivername:
+      type: string
+      description: Name of the Dispatch driver.
+      nullable: true
+      example: Cal Naughton Jr.
+    driverphonenumber:
+      type: string
+      description: Phone number of the Dispatch driver, in an 11 digit format.
+      minLength: 11
+      maxLength: 11
+      nullable: true
+      example: '15055555555'
+    deliveryservice:
+      type: string
+      description: Name of the Dispatch Service Provider (DSP).
+      nullable: true
+      example: Speedy Delivery
+Fave:
+  required:
+  - disabled
+  - id
+  - isdefault
+  - name
+  - online
+  - products
+  - vendorid
+  - vendorname
+  type: object
+  properties:
+    id:
+      type: integer
+      format: int64
+      description: Unique fave id.
+      nullable: false
+      example: 123554
+    name:
+      type: string
+      description: Name of the fave.
+      nullable: false
+      example: Breakfast
+    vendorid:
+      type: integer
+      format: int64
+      description: Restaurant id that the fave was created at.
+      nullable: false
+      example: 27739
+    vendorname:
+      type: string
+      description: Name of the restaurant that the fave was created at.
+      nullable: false
+      example: Kitchen Sink Seaport
+    disabled:
+      type: boolean
+      deprecated: true
+      example: false
+      nullable: false
+    online:
+      type: boolean
+      description: Whether or not the fave is available to be ordered.
+      nullable: false
+    isdefault:
+      type: boolean
+      description: Whether or not the fave is the user's default fave. A user can only have one default fave at a time.
+      nullable: false
+    products:
+      type: array
+      description: List of products in the fave.
+      items:
+        $ref: '#/FaveProduct'
+FaveProduct:
+  required:
+  - choices
+  - disabled
+  - name
+  - productid
+  - quantity
+  - recipient
+  - specialinstructions
+  type: object
+  properties:
+    productid:
+      type: integer
+      format: int64
+      description: Olo product id. Corresponds to the product id on the restaurant's menu.
+      nullable: false
+      example: 2265349445
+    name:
+      type: string
+      description: Name of the product.
+      nullable: false
+      example: Everything Bagel
+    quantity:
+      type: integer
+      format: int32
+      description: Quantity of the product.
+      nullable: false
+      example: 2
+    choices:
+      type: array
+      description: Options selected for the product. Any nested options that were selected are included in this array.
+      items:
+        $ref: '#/FaveProductChoice'
+    disabled:
+      type: boolean
+      description: Whether or not the product can be ordered.
+      nullable: false
+    recipient:
+      type: string
+      description: Recipient name, i.e. the person who the product is for.
+      maxLength: 32
+      nullable: true
+      example: Ron Idaho
+    specialinstructions:
+      type: string
+      description: Special instructions for the product.
+      nullable: true
+      example: Well done.
+FaveProductChoice:
+  required:
+  - name
+  - optionid
+  - quantity
+  type: object
+  properties:
+    optionid:
+      type: integer
+      format: int64
+      description: Olo option id. Corresponds to the option id on the restaurant's menu.
+      nullable: false
+      example: 35468135
+    name:
+      type: string
+      description: Name of the option.
+      nullable: false
+      example: Cream Cheese
+    quantity:
+      type: integer
+      format: int32
+      description: Quantity of the option selected.
+      nullable: false
+      example: 1
+Discount:
+  required:
+  - amount
+  - description
+  type: object
+  properties:
+    description:
+      type: string
+      description: Description of the discount.
+      nullable: true
+      example: Customer appreciation
+    amount:
+      type: number
+      format: double
+      description: Amount of the discount.
+      nullable: false
+      example: 2.25
+ValidationMessage:
+  required:
+  - category
+  - key
+  - message
+  type: object
+  properties:
+    key:
+      type: string
+      description: Olo validation message key.
+      nullable: false
+      example: HANDOFF_MODE_WARNING
+    message:
+      type: string
+      description: Details of the validation issue.
+      nullable: false
+      example: Hamburgers not available for drivethru orders.
+    category:
+      type: string
+      description: The type of validation message.
+      nullable: false
+      enum:
+      - Error
+      - Warning
+TaxResult:
+  required:
+  - label
+  - tax
+  type: object
+  properties:
+    label:
+      type: string
+      description: Description of the tax.
+      nullable: false
+      example: Sales Tax
+    tax:
+      type: number
+      format: double
+      description: Amount of the tax.
+      nullable: false
+      example: 1.25
+ChoiceCustomFieldValue:
+  required:
+  - fieldid
+  - value
+  type: object
+  properties:
+    fieldid:
+      type: integer
+      format: int64
+      description: Unique choice custom field id.
+      nullable: false
+      example: 3654688145
+    value:
+      type: string
+      description: Value set for the choice custom field.
+      nullable: false
+      example: Congratulations Ron!
+LoyaltyMembership:
+  required:
+  - balance
+  - description
+  - id
+  - membershipnumber
+  - rewards
+  type: object
+  properties:
+    id:
+      type: integer
+      format: int64
+      description: Olo loyalty membership id. Used when applying rewards to a basket, not when adding the loyalty scheme.
+      nullable: false
+      example: 3489498465
+    description:
+      type: string
+      description: Customer-friendly description of the membership.
+      nullable: false
+      example: MyLoyalty Card x-1234
+    membershipnumber:
+      type: string
+      description: The full membership number. Used when adding a loyalty scheme to a basket, not when applying loyalty rewards.
+      nullable: false
+      example: '65168798761565798'
+    balance:
+      $ref: '#/LoyaltyBalance'
+    rewards:
+      type: array
+      description: List of loyalty rewards associated with the membership.
+      items:
+        $ref: '#/LoyaltyReward'
+LoyaltyBalance:
+  required:
+  - label
+  - quantity
+  - unit
+  - rewardthreshold
+  type: object
+  properties:
+    quantity:
+      type: number
+      format: double
+      description: Amount of balance.
+      nullable: false
+      example: 250
+    unit:
+      type: string
+      description: The unit of the balance.
+      nullable: false
+      example: points
+    label:
+      type: string
+      description: Customer-friendly description of the balance.
+      nullable: true
+      example: Reward Points
+    rewardthreshold:
+      type: number
+      description: The accrual threshold that must be met to gain a reward.
+      format: double
+      nullable: true
+      example: 100
+LoyaltyScheme:
+  required:
+  - cancheckbalance
+  - id
+  - label
+  - membership
+  - name
+  - provider
+  type: object
+  properties:
+    id:
+      type: integer
+      format: int64
+      description: Olo loyalty scheme id. This id is used when adding a loyalty scheme to a basket.
+      nullable: false
+      example: 9846516514
+    label:
+      type: string
+      description: Customer-friendly identifier describing the membership number field.
+      nullable: false
+      example: Kitchen Sink Rewards Card
+    name:
+      type: string
+      description: Name of the loyalty program.
+      nullable: false
+      example: Kitchen Sink Rewards
+    provider:
+      type: string
+      description: Name of the loyalty provider.
+      nullable: false
+      example: Loyalty Provider
+    cancheckbalance:
+      type: boolean
+      description: Whether or not the loyalty scheme has a checkable balance.
+      nullable: false
+    membership:
+      $ref: '#/LoyaltyMembership'
+LoyaltyReward:
+  required:
+  - applied
+  - availableoffline
+  - availableonline
+  - categories
+  - description
+  - externalreference
+  - fineprint
+  - imageurl
+  - items
+  - label
+  - membershipid
+  - quantityapplied
+  - quantityavailable
+  - reference
+  - rewardid
+  - type
+  - value
+  type: object
+  properties:
+    membershipid:
+      type: integer
+      format: int64
+      description: Olo's id for the loyalty scheme membership associated with this reward.
+      nullable: false
+      example: 6868131441
+    reference:
+      type: string
+      description: Loyalty provider's external id for all instances of this reward. For example, if multiple users have a "buy one get one free" reward, each specific reward would have the same `reference` but the `externalreference` would be unique to each user. Please use this field when redeeming the reward.
+      nullable: false
+      example: 'FreeCookie289'
+    label:
+      type: string
+      description: Name of the reward.
+      nullable: false
+      example: Free cookie
+    type:
+      type: string
+      description: The type of reward.
+      nullable: false
+      example: freeitem
+    value:
+      type: number
+      format: double
+      description: The value of the reward.
+      nullable: false
+      example: 0
+    rewardid:
+      type: integer
+      format: int64
+      description: Olo id for the reward.
+      nullable: true
+      example: 312651687
+    applied:
+      type: boolean
+      description: Indicates whether the reward is applied.
+      nullable: false
+    quantityavailable:
+      type: number
+      format: double
+      description: The quantity available of the reward.
+      nullable: false
+      example: 1
+    quantityapplied:
+      type: number
+      format: double
+      description: The quantity applied to the reward.
+      nullable: false
+      example: 0
+    description:
+      type: string
+      description: Description of the reward.
+      nullable: true
+      example: Receive a free cookie with any purchase.
+    fineprint:
+      type: string
+      description: Fine print of the reward.
+      nullable: true
+      example: Must make a purchase to redeem.
+    imageurl:
+      type: string
+      format: uri
+      description: Image URL for the reward.
+      nullable: true
+      example: https://reward-images.com/freecookie
+    validminutes:
+      type: integer
+      format: int32
+      description: How long the reward is valid once it has been selected.
+      nullable: true
+      example: 720
+    availableonline:
+      type: boolean
+      description: Indicates whether or not the reward is available online.
+      nullable: false
+    availableoffline:
+      type: boolean
+      description: Indicates whether or not the reward is available offline. This field is rarely used, please reference `availableonline` instead.
+      nullable: false
+    expirationdate:
+      type: string
+      format: date-time
+      description: Date the reward expires.
+      nullable: true
+      example: 20210731 00:00
+    externalreference:
+      type: string
+      description: User specific external reference for this reward. Please use the `reference` when redeeming the reward.
+      nullable: false
+      example: f2lkn2390asdfikn23
+    vendorrefs:
+      type: array
+      description: List of external references of restaurants the reward is valid at.
+      items:
+        type: string
+        example: afsd68we9f81asd3v1we8
+    items:
+      type: array
+      description: Items to which the reward applies.
+      items:
+        type: integer
+        format: int64
+        example: 33598716
+    categories:
+      type: array
+      description: Categories to which the reward applies.
+      items:
+        type: integer
+        format: int64
+        example: 315648954
+LoyaltyVendor:
+  required:
+  - rewards
+  type: object
+  properties:
+    id:
+      type: integer
+      format: int64
+      description: Restaurant id.
+      nullable: false
+      example: 27739
+    name:
+      type: string
+      description: Name.
+      nullable: false
+      example: Kitchen Sink Seaport
+    storename:
+      type: string
+      description: Store name.
+      nullable: false
+      example: Kitchen Sink
+    streetaddress:
+      type: string
+      description: Street address.
+      nullable: false
+      example: 26 Broadway
+    distance:
+      type: number
+      format: double
+      description: Distance from provided lat/long in miles.
+      nullable: false
+      example: 4.15
+    extref:
+      type: string
+      description: External reference.
+      nullable: true
+      example: '109'
+    supportsonlineordering:
+      type: boolean
+      description: Whether or not the vendor supports online ordering.
+      nullable: false
+    candeliver:
+      type: boolean
+      description: Whether or not the vendor supports delivery.
+      nullable: false
+    canpickup:
+      type: boolean
+      description: Whether or not the vendor supports pickup.
+      nullable: false
+    supportscurbside:
+      type: boolean
+      description: Whether or not the vendor supports curbside pickup.
+      nullable: false
+    rewards:
+      type: array
+      description: List of rewards at the restaurant
+      items:
+        $ref: '#/LoyaltyReward'
+UpsellGroup:
+  required:
+  - items
+  - title
+  type: object
+  properties:
+    title:
+      type: string
+      description: Name of the upsell group.
+      nullable: false
+      example: Desserts
+    items:
+      type: array
+      description: Products in the upsell group.
+      items:
+        $ref: '#/UpsellItem'
+UpsellItem:
+  required:
+  - cost
+  - id
+  - name
+  type: object
+  properties:
+    id:
+      type: integer
+      format: int64
+      description: Olo product id. Corresponds to the product on the restaurant's menu.
+      nullable: false
+      example: 3151658
+    name:
+      type: string
+      description: Name of the upsell product.
+      nullable: false
+      example: Cookie
+    cost:
+      type: string
+      description: Cost of the upsell product.
+      nullable: false
+      example: '1.50'
+    shortdescription:
+      type: string
+      description: Short description of the upsell product.
+      nullable: true
+      example: Oatmeal Raisin Cookie
+    minquantity:
+      type: integer
+      format: int32
+      description: Minimum quantity of the upsell product that can be in a single order. Please note that for values above zero this does not mean that the product is required to be in every order. Instead it means that if it is in an order, it must have a quantity greater than or equal to the minimum quantity.
+      nullable: false
+      example: 1
+    maxquantity:
+      type: integer
+      format: int32
+      description: Maximum quantity of the upsell product that can be in a single order.
+      nullable: false
+      example: 12
+BillingFieldInput:
+  required:
+  - isMandatory
+  - label
+  - maxlength
+  - minlength
+  - name
+  - type
+  type: object
+  properties:
+    name:
+      type: string
+      description: Name of the billing field.
+      nullable: false
+      enum:
+      - number
+      - pin
+    type:
+      type: string
+      description: Type of the billing field.
+      nullable: false
+      enum:
+      - number
+      - password
+    label:
+      type: string
+      description: Label for the billing field.
+      nullable: false
+      example: Giftcard Number
+    minlength:
+      type: integer
+      format: int32
+      description: Minimum length of the billing field input.
+      nullable: false
+      example: 16
+    maxlength:
+      type: integer
+      format: int32
+      description: Maximum length of the billing field input.
+      nullable: false
+      example: 22
+    isMandatory:
+      type: boolean
+      description: Whether or not the billing field must be supplied when using the corresponding billing scheme. For PIN fields, please use the [BIN Validation endpoint](#operation/VerifyGiftCardPINRequirement) to determine whether or not the billing scheme requires a PIN.
+      nullable: false
+BillingAccountData:
+  required:
+  - amount
+  - billingmethod
+  - tipportion
+  type: object
+  properties:
+    billingmethod:
+      type: string
+      description: Name of the billing method. "creditcardonfile" is the most recent credit card on file, "creditcardtoken" is a payment token that can be used to charge a credit card, "billingaccount" is a previously saved account, "cash" is pay-in-store, and "storedvalue" is a gift card. Note that the restaurant must be configured  to support these billing methods or you will receive an error when trying to use them. To get a billing method added to a restaurant, please contact your Olo Customer Success representative.
+      enum:
+      - creditcard
+      - creditcardonfile
+      - creditcardtoken
+      - billingaccount
+      - cash
+      - storedvalue
+      - prepaid
+    amount:
+      type: number
+      format: double
+      description: Amount, including 'tipportion' value, of order total to be applied to this billing account.
+      example: 32.75
+    tipportion:
+      type: number
+      format: double
+      description: Amount of tip to be applied to this billing account.
+      example: 5.50
+    cardnumber:
+      type: string
+      description: Credit card number. Required if `billingmethod` is "creditcard"; otherwise omitted.
+      example: '4111111111111111'
+    expiryyear:
+      type: integer
+      format: int32
+      description: Credit card expiration year. Must be the full 4-digit year, not an abbreviation. Required if `billingmethod` is "creditcard" or "creditcardtoken"; otherwise omitted.
+      minLength: 4
+      maxLength: 4
+      example: 2024
+    expirymonth:
+      type: integer
+      format: int32
+      description: Credit card expiration month. Do not provide any preceding zeros (i.e. 3, not 03). Required if `billingmethod` is "creditcard" or "creditcardtoken"; otherwise omitted.
+      example: 8
+    cvv:
+      type: string
+      description: Credit card verification value (CVV). Required if `billingmethod` is "creditcard"; otherwise omitted.
+      example: '211'
+    streetaddress:
+      type: string
+      description: Street address associated with the credit card. Only send if `billingmethod` is "creditcard" and credit card address validation is required by the brand or restaurant.
+      example: 26 Broadway
+    streetaddress2:
+      type: string
+      description: Street address line 2 associated with the credit card. Only send if `billingmethod` is "creditcard" and credit card address validation is required by the brand or restaurant.
+      example: Apt 32
+    city:
+      type: string
+      description: City associated with the credit card. Only send if `billingmethod` is "creditcard" and credit card address validation is required by the brand or restaurant.
+      example: New York
+    state:
+      type: string
+      description: State associated with the credit card. Only send if `billingmethod` is "creditcard" and credit card address validation is required by the brand or restaurant.
+      example: New York
+    zip:
+      type: string
+      description: Zip code associated with the credit card. Required if `billingmethod` is "creditcard"; otherwise omitted.
+      example: '10004'
+    country:
+      type: string
+      description: Country code associated with the credit card. Optionally send if `billingmethod` is "creditcard". If no value is given, the country of the restaurant will be used.
+      enum:
+      - US
+      - CA
+    saveonfile:
+      type: string
+      description: Determines whether or not to save the `billingmethod` details for a user at supported restaurants. Once saved, the payment method will be available in the list of billing accounts for future orders. Required
+        for users when the billing method is either "creditcard" or "storedvalue"; otherwise omitted.
+      enum:
+      - "true"
+      - "false"
+    billingaccountid:
+      type: integer
+      format: int64
+      description: Billing account id to be provided when the user wishes to pay with an existing account. Required if `billingmethod` is "BillingAccount"; otherwise omitted.
+      example: 3549841651
+    billingschemeid:
+      type: integer
+      format: int64
+      description: Billing scheme id to be provided when the user wishes to pay with a new gift card. Required if `billingmethod` is "storedvalue"; otherwise omitted.
+      example: 3
+    billingfields:
+      type: array
+      description: List of billing fields for the selected `billingmethod`. Required if `billingmethod` is "storedvalue"; otherwise omitted.
+      items:
+        $ref: '#/BillingFieldData'
+    token:
+        type: string
+        description: A payment token used for credit card payments. Required if `billingmethod` is "creditcardtoken"; otherwise omitted.
+    cardtype:
+      type: string
+      description: Type of credit card. This field will only be populated for credit card accounts. Required if `billingmethod` is "creditcardtoken"; otherwise omitted.
+      example: Visa
+      enum:
+      - Amex
+      - Visa
+      - Discover
+      - Mastercard
+    cardlastfour:
+      type: string
+      description: Last four digits of the card number. Required if `billingmethod` is "creditcardtoken"; otherwise omitted.
+      minLength: 4
+      maxLength: 4
+      example: '1111'
+BillingAccount:
+  required:
+  - accountid
+  - accounttype
+  - balance
+  - cardsuffix
+  - cardtype
+  - description
+  - expiration
+  - isdefault
+  - removable
+  type: object
+  properties:
+    accountid:
+      type: integer
+      format: int64
+      description: Olo billing account id.
+      nullable: false
+      example: 315998745
+    accounttype:
+      type: string
+      description: Type of account. For credit card, this will be "creditcard". For pay in store, this will be "payinstore". For all stored value accounts, it will be the name of the associated billing scheme.
+      nullable: false
+      example: Kitchen Sink Giftcard
+    cardtype:
+      type: string
+      description: Type of credit card. This field will only be populated for credit card accounts.
+      nullable: true
+      example: null
+      enum:
+      - Amex
+      - Visa
+      - Discover
+      - Mastercard
+    cardsuffix:
+      type: string
+      description: Last four digits of the card number.
+      minLength: 4
+      maxLength: 4
+      nullable: true
+      example: '1111'
+    description:
+      type: string
+      description: Description of the billing account.
+      nullable: false
+      example: Gift card account
+    removable:
+      type: boolean
+      description: Whether or not the billing account can be removed.
+      nullable: false
+    expiration:
+      type: string
+      description: Credit card expiration date formatted as yyyy-MM. This field will only be populated for credit card accounts.
+      nullable: true
+      example: '2024-08'
+    balance:
+      $ref: '#/BillingBalance'
+    isdefault:
+      type: boolean
+      description: Whether or not this billing account is the user's default billing account. A user can only have one default billing account at a time. This value can only be true for billing accounts of type "creditcard".
+      nullable: false
+BillingBalance:
+  type: object
+  properties:
+    balance:
+      type: number
+      format: double
+      description: Gift card balance
+      nullable: false
+      example: 25.00
+    success:
+      type: boolean
+      description: Whether or not gift card balance was retrieved.
+      nullable: false
+    message:
+      type: string
+      description: Validation message. Gives detail on why a balance inquiry may have failed.
+      nullable: true
+      example: Please ensure you entered a PIN, if required.
+BillingFieldData:
+  required:
+  - name
+  - value
+  type: object
+  properties:
+    name:
+      type: string
+      description: Name of the billing field.
+      enum:
+        - pin
+        - number
+    value:
+      type: string
+      description: Value of the billing field.
+      example: '4281'
+TimeModes:
+  required:
+  - label
+  - type
+  type: object
+  properties:
+    label:
+      type: string
+      description: The label to display to customers for a given timemode
+      nullable: true
+      example: Immediate
+    type:
+      type: string
+      description: The slug for a given timemode
+      nullable: true
+      enum:
+        - asap
+        - advance
+        - manualfire
+LoginProviders:
+  required:
+  - name
+  - provider
+  - type
+  type: object
+  properties:
+    name:
+        type: string
+        description: The name of the Login Provider configured by the brand in the Olo platform. If the brand is using the Olo login provider, this is typically their brand name.
+        nullable: false
+        example: Login Provider
+    provider:
+        type: string
+        description: The slug for a given provider
+        nullable: false
+        example: loginprovider
+    type:
+        type: string
+        description: The type of login provider.
+        nullable: false
+        enum:
+        - olo
+        - external
+DeliveryModes:
+  required:
+  - isdefault
+  - label
+  - timemodes
+  - type
+  type: object
+  properties:
+    isdefault:
+      type: boolean
+      description: Whether or not a given deliverymode is the default deliverymode
+      nullable: false
+    label:
+      type: string
+      description: The label to display to customers for a given deliverymode
+      nullable: false
+      example: Curbside Pickup
+    timemodes:
+      type: array
+      description: The timemodes supported for a given deliverymode. Individual restaurants may not support all timemodes. Use [Vendor Export](#tag/vendorExport) or the `supportedtimemodes` field within the restaurant object (see [Retrieve Configuration](#tag/retrieveConfiguration) section) for restaurant-specific values.
+      enum:
+      - asap
+      - advance
+      - manualfire
+      items:
+        $ref: '#/TimeModes'
+    type:
+      type: string
+      description: The deliverymode (a.k.a. handoff method) value to be used when submitting orders.
+      nullable: false
+      enum:
+      - curbside
+      - pickup
+      - delivery
+      - dispatch
+      - drivethru
+      - dinein
+ManualFireOrder:
+  type: object
+  properties:
+    id:
+      type: string
+      description: Order reference ("orderref") in the calling system.
+      nullable: true
+      example: zie892-se8912nd34iae
+    timeplaced:
+      type: string
+      format: date-time
+      description: Time the manual fire order was placed, formatted as "yyyymmdd hh:mm"
+      nullable: false
+      example: 20210124 17:05
+    vendorname:
+      type: string
+      description: Name of the restaurant the manual fire order was placed at.
+      nullable: false
+      example: Kitchen Sink Seaport
+OrderCustomData:
+  required:
+  - key
+  - value
+  type: object
+  properties:
+    key:
+      type: string
+      description: Custom data key.
+    value:
+      type: string
+      description: Custom data value.
+OrderFee:
+  required:
+  - amount
+  - description
+  type: object
+  properties:
+    amount:
+      type: number
+      format: double
+      description: Amount of the fee.
+      nullable: false
+      example: 1.25
+    description:
+      type: string
+      description: Description of the fee.
+      nullable: false
+      example: Service fee.
+OrderDonation:
+  required:
+  - amount
+  - description
+  type: object
+  properties:
+    amount:
+      type: number
+      format: double
+      description: Amount of the donation. If the consumer did not donate, the amount will be $0.
+      nullable: false
+      example: 1.25
+    description:
+      type: string
+      description: Name of the donation for display to end consumers.
+      nullable: false
+      example: SPCA Cat Fund.
+
+OrderStatusProduct:
+  required:
+  - choices
+  - custompassthroughdata
+  - name
+  - quantity
+  - specialinstructions
+  - totalcost
+  type: object
+  properties:
+    name:
+      type: string
+      description: Name of the product.
+      nullable: false
+      example: Sandwich
+    quantity:
+      type: integer
+      format: int32
+      description: Quantity ordered of the product.
+      nullable: false
+      example: 1
+    totalcost:
+      type: number
+      format: double
+      description: Total cost of the product.
+      nullable: false
+      example: 2.75
+    specialinstructions:
+      type: string
+      description: Special instructions for the product.
+      nullable: true
+      example: Please toast the bread.
+    custompassthroughdata:
+      type: string
+      description: Custom passthrough data that was provided when the product was added to the basket. Does not get passed down to the POS. Does not show up in webhook payloads or Order Exports.
+      nullable: true
+    choices:
+      type: array
+      description: Selected options for the product.
+      items:
+        $ref: '#/OrderStatusProductChoice'
+OrderStatusProductChoice:
+  required:
+  - name
+  - quantity
+  type: object
+  properties:
+    name:
+      type: string
+      description: Name of the option.
+      nullable: false
+      example: 'Raspberry Jelly'
+    quantity:
+      type: number
+      description: Quantity ordered of the option.
+      nullable: false
+      example: 1
+ContextualPricing:
+  required:
+  - isposvalidated
+  - issyndicated
+  type: object
+  properties:
+    isposvalidated:
+      type: boolean
+      description: Indicates whether or not prices based on the API client's context are also validated with the restaurant's POS.
+      nullable: false
+    issyndicated:
+      type: boolean
+      description: Indicates whether or not prices have been altered for this specific API client's context.
+      nullable: false
+PushNotifications:
+  required:
+  - androidsenderid
+  - platforms
+  type: object
+  properties:
+    androidsenderid:
+      type: string
+      description: Currently will always be empty.
+      nullable: true
+      example: ''
+    platforms:
+      type: array
+      description: Currently will always be empty.
+      format: string
+      example: ''
+Parameter:
+  required:
+  - key
+  - value
+  type: object
+  properties:
+    key:
+      type: string
+      description: Feedback parameter key.
+      nullable: true
+      example: App Version
+    value:
+      type: string
+      description: Feedback parameter value.
+      nullable: true
+      example: '2.0'
+MenuItemAvailability:
+  required:
+  - always
+  - description
+  - now
+  type: object
+  properties:
+    always:
+      type: boolean
+      description: Whether or not the menu item is always available. Please note that this does not consider when a menu item is temporarily unavailable (86'd).
+      nullable: false
+    now:
+      type: boolean
+      description: Whether or not the menu item is currently available. If this is "false", any attempts to add the menu item to a basket, basket validation calls, and basket submit calls will result in an error. Please note that this does not consider when a menu item is temporarily unavailable (86'd).
+      nullable: false
+    description:
+      type: string
+      description: 'A human-readable description of when the menu item is available. If it''s always available the description will be blank. Example A: "through October 30". Example B: "Tuesdays from 4pm to 6pm." Example C: "Tuesdays from 9am to 6pm through October 10."'
+      nullable: true
+      example: Tuesdays from 4pm to 6pm.
+    startdate:
+      type: string
+      format: date-time
+      description: If availability date ranges are used and a start date has been set, the first day the product is available. Otherwise null. Datetime in "yyyymmdd" format.
+      nullable: true
+      example: '20210101'
+    enddate:
+      type: string
+      format: date-time
+      description: If availability date ranges are used and an end date has been set, the last day the product is available. Otherwise null. Datetime in "yyyymmdd" format.
+      nullable: true
+      example: '20210531'
+ProductAvailability:
+  allOf:
+    - $ref: '#/MenuItemAvailability'
+    - type: object
+      required:
+      - isdisabled
+      properties:
+        isdisabled:
+          type: boolean
+          description: Whether or not the product is 86’d
+          nullable: false
+          example: false
+OptionAvailability:
+  allOf:
+    - $ref: '#/MenuItemAvailability'
+    - type: object
+      required:
+      - isdisabled
+      properties:
+        isdisabled:
+          type: boolean
+          description: Whether or not the option is 86’d
+          nullable: false
+          example: false
+OrderBatch:
+  required:
+  - batchId
+  - generated
+  type: object
+  properties:
+    batchId:
+      type: integer
+      format: int64
+      description: Unique order batch id. Each batch is associated with a collection of closed orders.
+      nullable: false
+      example: 842123
+    generated:
+      type: string
+      format: date-time
+      description: Date the order batch was generated, in "yyyymmdd hh:mm" format.
+      nullable: false
+      example: 20210204 03:27
+VendorExportStatus:
+  required:
+  - vendorid
+  type: object
+  properties:
+    vendorid:
+      type: integer
+      format: int64
+      description: Olo internal id for a particular vendor (a.k.a restaurant).
+      nullable: false
+      example: 27739
+    extref:
+      type: string
+      description: The vendor's (a.k.a. restaurant) store number; a.k.a external reference.
+      nullable: true
+      example: '109'
+    lastexport:
+      type: string
+      format: date-time
+      description: Timestamp of the last export of this vendor's (a.k.a. restaurant) data, formatted as "yyyymmdd hh:mm".
+      nullable: true
+      example: 20210208 15:34
+    lastupdate:
+      type: string
+      format: date-time
+      description: Timestamp of the last time this vendor's menu was updated, formatted as "yyyymmdd hh:mm".
+      nullable: true
+      example: 20210208 15:30
+BrandExportStatus:
+  required:
+  - brand
+  - vendors
+  type: object
+  properties:
+    brand:
+      type: string
+      description: Human-readable identifier for a brand.
+      nullable: false
+      example: kitchensink
+    lastupdate:
+      type: string
+      format: date-time
+      description: Timestamp of the last time this brand's menu was updated, formatted as "yyyymmdd hh:mm".'
+      nullable: true
+      example: 20210127 03:43
+    vendors:
+      type: array
+      description: Individual vendor (a.k.a. restaurant) export status records
+      items:
+        $ref: '#/VendorExportStatus'
+
+# HTTP Status Descriptions
+400:
+  description: An Olo error occurred. Please reference the response body's "num" value in the Olo Error Numbers documentation.
+403:
+  description: Invalid API credentials or insufficient access to operation.
+500:
+  description: An unexpected error occurred. Please verify that your request is correctly formatted. If it persists reach out to Olo Developer Support.

@@ -1,0 +1,1405 @@
+# Event Models
+Test:
+  allOf:
+    - $ref: '#/Test'
+    - type: object
+      properties:
+        message:
+          description: A test message with the content "Olo webhook test!"
+          type: string
+          example: Olo webhook test!
+      required:
+        - description
+OrderPlaced:
+  allOf:
+    - $ref: '#/Order'
+    - type: object
+      properties:
+        isReplacement:
+          type: boolean
+          description: Whether or not this order is a replacement order. If so, please reference the `replacementDetails` field to find the original order guid.
+          example: false
+        replacementDetails:
+          $ref: '#/OrderReplacementDetails'
+      required:
+        - isReplacement
+        - replacementDetails
+CustomerArrived:
+  allOf:
+    - $ref: '#/Order'
+    - type: object
+      properties:
+        arrivalDetails:
+          type: object
+          description: Details regarding the customer's arrival.
+          properties:
+            timeArrived:
+              type: string
+              description: Local date and time when the customer arrived, in the format "yyyymmdd hh:mm".
+              example: "20171028 17:27"
+            comment:
+              type: string
+              description: Instructions or comments left by the customer.
+              example: "License DDE-3933"
+OrderClosed:
+  $ref: '#/Order'
+OrderCancelled:
+  allOf:
+    - $ref: '#/Order'
+    - type: object
+      properties:
+        timeCancelled:
+          type: string
+          format: date-time
+          description: Local date and time when the order was cancelled, in the format "yyyymmdd hh:mm".
+          example: "20171028 17:27"
+        cancelReason:
+          description: Reason for the cancellation.
+          type: string
+          example: Ordered by mistake.
+      required:
+        - timeCancelled
+        - cancelReason
+OrderAdjusted:
+  allOf:
+    - $ref: '#/Order'
+    - type: object
+      properties:
+        adjustment:
+          type: object
+          description: Details about the order adjustment. Adjusted amount fields are displayed as negatives which indicate how much of the original amount was adjusted.
+          properties:
+            timeAdjusted:
+              type: string
+              format: date-time
+              description: Date and time local to the restaurant when the order was adjusted, in the format "yyyymmdd hh:mm".
+              example: 20171028 17:27
+            adjustmentAmount:
+              type: number
+              format: double
+              description: Total amount of the adjustment.
+              example: -5.00
+            adjustmentCustomFeeTotalAmount:
+              type: number
+              format: double
+              description: Amount the custom fees have been adjusted.
+              example: 0
+            adjustmentSubtotalAmount:
+              type: number
+              format: double
+              description: Amount the subtotal has been adjusted.
+              example: -2.00
+            adjustmentTaxAmount:
+              type: number
+              format: double
+              description: Amount tax has been adjusted.
+              example: -1.4
+            adjustmentType:
+              type: string
+              description: Type of adjustment.
+              enum:
+                - FullRefund
+                - AdditionalCharge
+                - PartialRefund
+                - Tip
+              example: FullRefund
+            adjustmentReason:
+              type: string
+              example: Order refunded.
+              description: Reason for the adjustment.
+      required:
+        - timeAdjusted
+        - adjustmentAmount
+        - adjustmentCustomFeeTotalAmount
+        - adjustmentSubtotalAmount
+        - adjustmentTaxAmount
+        - adjustmentType
+        - adjustmentReason
+UserSignedUp:
+  $ref: '#/User'
+UserUpdated:
+  $ref: '#/User'
+GuestOptIn:
+  type: object
+  properties:
+    firstName:
+      type: string
+      description: First name of the guest.
+      example: Michael
+    lastName:
+      type: string
+      description: Last name of the guest.
+      example: Jordan
+    email:
+      type: string
+      format: email
+      description: Email address of the guest.
+      example: hisairness@example.com
+    locationId:
+      type: integer
+      format: int64
+      description: Olo restaurant id (a.k.a. VendorId) where the guest placed their order.
+      example: 234556
+    storeNumber:
+      type: string
+      description: External reference of the restaurant where the guest placed their order.
+      example: '10586'
+  required:
+    - firstName
+    - lastName
+    - email
+    - locationId
+    - storeNumber
+UserOptOut:
+  type: object
+  properties:
+    id:
+      type: integer
+      format: int64
+      description: Olo user id.
+      example: 12345678
+    emailAddress:
+      type: string
+      format: email
+      description: Email address of the user.
+      example: ron@example.com
+  required:
+    - id
+    - emailAddress
+ScheduledOrderFired:
+  $ref: '#/Order'
+ScheduledOrderFailed:
+  allOf:
+    - $ref: '#/Order'
+    - type: object
+      properties:
+        failReason:
+          type: string
+          description: Reason why the scheduled order failed to fire.
+          example: Order was cancelled
+      required:
+        - failReason
+MenuItemAvailabilityChanged:
+  type: array
+  items:
+    type: object
+    properties:
+      locationId:
+        type: integer
+        format: int64
+        description: Olo restaurant id (a.k.a. VendorId).
+        example: 12341234
+      itemEntityType:
+        type: string
+        description: Type of item that was changed.
+        enum:
+          - Product
+          - Choice
+        example: Product
+      itemEntityId:
+        type: integer
+        description: Olo id for the menu item on the associated restaurant's menu.
+        format: int64
+        example: 72251234
+      itemExternalReference:
+        type: string
+        description: External reference for the menu item.
+        example: 61DCD03A2-4FE53-4FG80-8DE47-C42GED
+      isAvailable:
+        type: boolean
+        description: Whether or not the menu item is available.
+        example: false
+    required:
+      - locationId
+      - itemEntityType
+      - itemEntityId
+      - itemExternalReference
+      - isAvailable
+VendorAvailabilityChanged:
+  type: object
+  properties:
+    storeNumber:
+      type: string
+      description: External reference of the restaurant.
+      example: '15623'
+    state:
+      type: string
+      description: State where the restaurant is located, two character abbreviation.
+      example: NY
+    locationId:
+      type: integer
+      format: int64
+      description: Olo restaurant id (a.k.a. VendorId).
+      example: 837213
+    newStatus:
+      type: string
+      description: Restaurant's online / offline status.
+      enum:
+        - Offline
+        - Online
+      example: Online
+    changeTime:
+      type: string
+      format: date-time
+      description: Date and time (UTC) the change occurred.
+      example: 2017-03-18T08:41:49.897486Z
+  required:
+    - storeNumber
+    - state
+    - locationId
+    - newStatus
+    - changeTime
+VendorTemporarilyDisabled:
+  type: object
+  properties:
+    change:
+      type: string
+      description: Restaurant's enabled / disabled status.
+      enum:
+        - Enabled
+        - Disabled
+      example: Enabled
+    timestamp:
+      type: string
+      format: date-time
+      description: Date and time (UTC) the change occurred.
+      example: 2017-11-20T15:31:03.5941528Z
+    channelName:
+      type: string
+      description: Brand name.
+      example: Foos Burgers
+    vendorExternalReference:
+      type: string
+      description: External reference of the restaurant.
+      example: '1003'
+    vendorId:
+      type: integer
+      format: int64
+      description: Olo restaurant id (a.k.a. VendorId).
+      example: 34512
+    vendorStatus:
+      type: string
+      description: Restaurant status in Olo.
+      enum:
+        - Public
+        - Private
+        - Removed
+        - Staging
+        - Junk
+        - Disabled
+      example: Public
+    category:
+      type: string
+      description: Reason for the change, can include the source.
+      example: Restaurant maintenance is complete and now open
+  required:
+    - change
+    - timestamp
+    - channelName
+    - vendorExternalReference
+    - vendorId
+    - vendorStatus
+    - category
+VendorMenuExportComplete:
+  type: object
+  properties:
+    dateCreated:
+      type: string
+      format: date-time
+      description: Date and time (UTC) the new Vendor Export file was created.
+      example: 20190809 15:12
+    vendorId:
+      type: integer
+      format: int64
+      description: Olo restaurant/vendor id.
+      example: 32157
+    hasMenuChanges:
+      type: boolean
+      description: Whether or not any menu changes were detected when the Vendor Export file was created.
+      example: true
+    hasUncategorizedChanges:
+      type: boolean
+      description: Whether or not any uncategorizable changes were detected when the Vendor Export file was created. Please note that when this field is true, it is possible that changes to the menu and/or restaurant were made even if the other change boolean fields are false.
+      example: false
+    hasVendorChanges:
+      type: boolean
+      description: Whether or not any restaurant/vendor level changes were detected when the Vendor Export file was created.
+      example: false
+  required:
+    - dateCreated
+    - vendorId
+    - hasMenuChanges
+    - hasUncategorizedChanges
+    - hasVendorChanges
+DispatchStatusUpdate:
+  type: object
+  properties:
+    id:
+      type: string
+      format: uuid
+      description: Olo dispatch GUID.
+      example: 708e00-b7se7-4wc4-be42-dfab3546w
+    orderId:
+      type: integer
+      format: int64
+      description: Internal Olo order id. Javascript apps should instead use the `orderIdString` field to maintain correct application behavior.
+      example: 224895
+    orderIdString:
+      type: string
+      description: The exact same value as in the `orderId` field, except in string format. Javascript apps should use this field instead of `orderId` to maintain correct application behavior.
+      example: "224895"
+    deliveryServiceDeliveryId:
+      type: string
+      description: Delivery id from the delivery service provider (DSP).
+      example: '4554154'
+    deliveryService:
+      type: string
+      description: Name of the delivery service provider (DSP).
+      example: roadrunner
+    status:
+      type: string
+      description: Status of the delivery.
+      enum:
+        - Unknown
+        - Pending
+        - PickupInProgress
+        - DeliveryInProgress
+        - Delivered
+        - Canceled
+        - ReturnInitiated
+        - ReturnInProgress
+        - Returned
+        - ReturnCanceled
+      example: DeliveryInProgress
+    estimatedPickupTime:
+      type: string
+      format: date-time
+      description: Estimated date and time (UTC) that the courier will pickup the order from the restaurant.
+      example: "2017-04-18T21:15:11.587"
+    estimatedDropoffTime:
+      type: string
+      format: date-time
+      description: Estimated date and time (UTC) that the courier will deliver the order to the customer.
+      example: "2017-04-18T21:30:11.587"
+    driverName:
+      type: string
+      description: Name of the courier.
+      example: Dan Deliveryman
+    driverPhoneNumber:
+      type: string
+      description: Courier's phone number.
+      example: '15055555555'
+    customerServiceContactInfo:
+      type: string
+      description: Contact information for the delivery service provider (DSP).
+      example: dispatch-devsupport@olo.com; 1-505-555-5555
+    assignTime:
+      type: string
+      format: date-time
+      description: Date and time (UTC) that the delivery was assigned to the courier.
+      example: "2016-03-03T16:41:37.397"
+    pickupTime:
+      type: string
+      format: date-time
+      description: Date and time (UTC) that the courier picked up the order from the restaurant.
+      example: "2016-03-03T16:41:48.603"
+    dropoffTime:
+      type: string
+      format: date-time
+      description: Date and time (UTC) that the courier completed the delivery to the customer.
+      nullable: true
+      example: "2016-03-03T16:42:03.227"
+    cancelTime:
+      type: string
+      format: date-time
+      description: Date and time (UTC) that the delivery was canceled.
+      nullable: true
+      example: "2016-03-03T16:40:03.227"
+    canceledBy:
+      type: string
+      description: Who canceled the delivery.
+      nullable: true
+      example: DeliveryProvider
+    cancelReason:
+      type: string
+      description: Reason the delivery was canceled.
+      nullable: true
+      enum:
+        - Unknown
+        - PickupNotReady
+        - DestinationUnreachable
+        - IncompatibleDeliveryMode
+        - DriverFailure
+        - ServiceOverCommitted
+        - DspOtherReason
+        - PackageContents
+        - PackageDamage
+        - CustomerCanceled
+        - CustomerChangedOrder
+        - MissedDropoffTime
+        - CustomerOtherReason
+        - DriverMissedPickup
+        - VendorOtherReason
+        - SystemFailure
+        - UnableToFulfill
+        - SchedulingFailure
+        - UnableToCreateDelivery
+      example: PickupNotReady
+    latitude:
+      type: number
+      format: float
+      description: Latitude of the delivery driver at the time the webhook was queued.
+      example: 40.716038
+    longitude:
+      type: number
+      format: float
+      description: Longitude of the delivery driver at the time the webhook was queued.
+      example: -74.00631
+  required:
+    - id
+    - orderId
+    - orderIdString
+    - deliveryServiceDeliveryId
+    - deliveryService
+    - status
+    - estimatedPickupTime
+    - estimatedDropoffTime
+    - driverName
+    - driverPhoneNumber
+    - customerServiceContactInfo
+    - assignTime
+    - pickupTime
+    - dropoffTime
+    - cancelTime
+    - canceledBy
+    - cancelReason
+    - latitude
+    - longitude
+StandingOrderInstantiationFailed:
+  type: object
+  properties:
+    orderId:
+      type: integer
+      format: int64
+      description: Internal Olo order id. Javascript apps should instead use the `orderIdString` field to maintain correct application behavior.
+      example: 123456
+    orderIdString:
+      type: string
+      description: The exact same value as in the `orderId` field, except in string format. Javascript apps should use this field instead of `orderId` to maintain correct application behavior.
+      example: "123456"
+    templateName:
+      type: string
+      description: Name of the standing order template.
+      example: Test
+    templateId:
+      type: integer
+      format: int64
+      description: Id of the standing order template.
+      example: 54
+    timeWanted:
+      type: string
+      format: date-time
+      description: Date and time local to the restaurant that the order is wanted.
+      example: "20170310 13:28"
+    failReason:
+      type: string
+      description: Reason why the standing order failed.
+      example: Order failed
+    customer:
+      $ref: '#/OrderCustomer'
+  required:
+    - orderId
+    - orderIdString
+    - templateName
+    - templateId
+    - timeWanted
+    - failReason
+    - customer
+LocationParticipationChanged:
+  type: object
+  properties:
+    storeNumber:
+      type: string
+      description: External reference of the restaurant.
+      example: '51832'
+    locationId:
+      type: integer
+      format: int64
+      description: Olo restaurant id (a.k.a. VendorId).
+      example: 249674
+    locationName:
+      type: string
+      description: Name of the restaurant.
+      example: Acapuloco - Downey
+    status:
+      type: string
+      description: Restaurant's enabled / disabled status. If the restaurant is disabled, you will no longer be able to retrieve the associated Vendor Export file or interact with it via the Rails API.
+      enum:
+        - Enabled
+        - Disabled
+      example: Enabled
+    changeTime:
+      type: string
+      format: date-time
+      description: Date and time (UTC) the change was made.
+      example: "2020-05-10T14:30:05.578"
+  required:
+    - storeNumber
+    - locationId
+    - locationName
+    - status
+    - changeTime
+MenuSyncComplete:
+  type: object
+  properties:
+    syncId:
+      type: string
+      format: uuid
+      description: Internal Olo menu sync id.
+      example: eaa36dba-4f05-41ec-9080-63a6f4989d98
+    storeNumber:
+      type: string
+      description: External reference of the restaurant.
+      example: '114590'
+    status:
+      type: string
+      description: Status of the menu sync operation.
+      enum:
+        - Succeeded
+        - Failed
+      example: Succeeded
+    createdDateTime:
+      type: string
+      format: date-time
+      description: Date and time (UTC) the menu sync was initiated.
+      example: "2019-02-19T14:10:37.59"
+    completedDateTime:
+      type: string
+      format: date-time
+      description: Date and time (UTC) the menu sync completed.
+      example: "2019-02-19T14:10:52.253"
+  required:
+    - syncId
+    - storeNumber
+    - status
+    - createdDateTime
+    - completedDateTime
+ExternalOrderEvent:
+  type: object
+  properties:
+    id:
+      type: string
+      format: uuid
+      description: Olo external order event guid.
+      example: 2b9888ca-24bc-e711-a977-0afcc1bd9d86
+    orderId:
+      type: integer
+      format: int64
+      description: Internal Olo order id. Javascript apps should instead use the `orderIdString` field to maintain correct application behavior.
+      example: 123456
+    orderIdString:
+      type: string
+      description: The exact same value as in the `orderId` field, except in string format. Javascript apps should use this field instead of `orderId` to maintain correct application behavior.
+      example: "123456"
+    externalReference:
+      type: string
+      description: External reference for the order. This will be the same as the order id in the Rails marketplace's system.
+      example: '54321'
+    posRef:
+      type: string
+      description: POS id for the order.
+      nullable: true
+      example: '615891'
+    eventType:
+      type: string
+      description: External order event type.
+      enum:
+        - OrderCanceled
+      example: OrderCanceled
+    updateReason:
+      type: string
+      description: Reason for the external order event.
+      enum:
+        - EndUserCanceled
+        - DestinationUnreachable
+        - DriverFailure
+        - ServiceOverCommitted
+        - OtherCancelReason
+      example: EndUserCanceled
+    comments:
+      type: string
+      description: Any additional comments provided for the external order event.
+      example: Order was cancelled by customer
+    orderingProvider:
+      type: object
+      $ref: '#/OrderingProvider'
+  required:
+    - id
+    - orderId
+    - orderIdString
+    - externalReference
+    - posRef
+    - eventType
+    - updateReason
+    - comments
+    - orderingProvider
+BasketSubmitFailed:
+  type: object
+  properties:
+    brandName:
+      type: string
+      description: The brand name.
+      example: Foosburgers
+    brandId:
+      type: string
+      format: uuid
+      description: Internal Olo brand GUID.
+      example: cea27ddd-06cd-4a62-93af-858cb3e32dc9
+    storeNumber:
+      type: string
+      description: External reference of the restaurant.
+      example: '2064'
+    storeUtcOffset:
+      type: number
+      format: float
+      description: UTC offset of the timezone the restaurant is in, this factors in Daylight Savings time.
+      example: -5
+    timestamp:
+      type: string
+      format: date-time
+      description: Date and time (UTC) the failure occurred.
+      example: 2020-02-21T11:18:45.7374087Z
+    basket:
+      type: object
+      description: The basket information.
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Olo basket GUID.
+          example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+        externalReference:
+          type: string
+          description: External basket reference id.
+          example: '54012234125'
+        posRef:
+          type: string
+          description: The POS transaction id for the order, if the POS provides it.
+          nullable: true
+          example: 60628|1027606
+        createdDate:
+          type: string
+          description: Date and time (UTC) the basket was created.
+          format: date-time
+          example: 2020-02-21T11:18:37.92
+      required:
+        - id
+        - externalReference
+        - posRef
+        - createdDate
+    error:
+      $ref: '#/BasketSubmitError'
+  required:
+    - brandName
+    - brandId
+    - storeNumber
+    - storeUtcOffset
+    - timestamp
+    - basket
+    - error
+
+# Sub-Models
+BasketSubmitError:
+  type: object
+  description: Details of the error.
+  properties:
+    failureOrigin:
+      type: string
+      description: Where the failure occurred.
+      enum:
+        - None
+        - Unspecified
+        - PosPlatform
+        - PosInStore
+        - PosCloud
+        - Payments
+        - Loyalty
+        - Shield
+        - Dispatch
+        - PosDataExtract
+        - Fax
+        - Handoff
+        - Throttling
+        - Validation
+        - Scheduler
+        - Admin
+        - TokenizeBillingService
+        - SettingsProvider
+        - DiscountService
+        - LoginProvider
+        - CallCenter
+        - GroupOrderingPlatform
+        - ThirdPartyCoupon
+        - Rails
+        - Expo
+      example: PosInStore
+    failureCategory:
+      type: string
+      description: Category of failure based on failureOrigin.
+      example: PosMappingError
+    customerFriendlyMessage:
+      type: string
+      description: Customer friendly message about the failure.
+      example: Apologies, there is a problem on this order. Please update your order to remove any unavailable items to try this order again. 'Cowboy Burger' is not currently available.
+  required:
+    - failureOrigin
+    - failureCategory
+    - customerFriendlyMessage
+OrderCoupon:
+  type: object
+  description: Coupon applied to the order.
+  nullable: true
+  properties:
+    couponCode:
+      type: string
+      description: Coupon code.
+      example: 25OFF
+    description:
+      type: string
+      description: Description of the coupon.
+      example: 'Take 25% off entire order'
+  required:
+    - couponCode
+    - description
+OrderingProvider:
+  type: object
+  description: Ordering provider information. If this is null, then the order was placed on one of the Olo white label ordering interfaces.
+  nullable: true
+  properties:
+    name:
+      type: string
+      description: Name of the ordering provider's API project.
+      example: Olo
+    slug:
+      type: string
+      description: Ordering provider slug. Typically this will only be populated for Rails orders.
+      nullable: true
+      example: olo
+  required:
+    - name
+    - slug
+OrderLocation:
+  type: object
+  description: Details of the restaurant/location associated with the order.
+  properties:
+    name:
+      type: string
+      description: Name of the restaurant.
+      example: Kitchen Sink Demo Vendor
+    logo:
+      type: string
+      description: URL to the restaurant's logo.
+    latitude:
+      type: number
+      format: float
+      description: Latitude of the restaurant.
+      example: 40.7270278
+    longitude:
+      type: number
+      format: float
+      description: Longitude of the restaurant.
+      example: -73.9918977
+  required:
+    - name
+    - logo
+    - latitude
+    - longitude
+OrderPayment:
+  type: object
+  description: Payment information.
+  properties:
+    type:
+      type: string
+      description: Type of payment.
+      enum:
+        - instore
+        - creditcard
+        - prepaid
+        - giftcard
+      example: instore
+    description:
+      type: string
+      description: Description of the payment.
+      example: Cash
+    amount:
+      type: number
+      format: double
+      description: Amount of the payment.
+      example: 6.99
+  required:
+    - type
+    - description
+    - amount
+OrderTotals:
+  type: object
+  description: Amounts paid for the order.
+  properties:
+    subTotal:
+      type: number
+      format: double
+      description: Subtotal amount.
+    salesTax:
+      type: number
+      format: double
+      description: Sales tax amount.
+    feesTotal:
+      type: number
+      format: double
+      description: Total of all custom fees.
+    tip:
+      type: number
+      format: double
+      description: Tip amount.
+    discount:
+      type: number
+      format: double
+      description: Discount amount.
+    total:
+      type: number
+      format: double
+      description: Total including taxes and fees.
+    customerDelivery:
+      type: number
+      format: double
+      description: Amount paid by the customer for delivery. Only populated for Dispatch or in-house delivery orders.
+    delivery:
+      type: number
+      format: double
+      description: Amount charged by the restaurant for delivery. Please reference the `customerDelivery` field as this factors in both Dispatch and in-house delivery charges.
+      deprecated: true
+  required:
+    - subTotal
+    - salesTax
+    - feesTotal
+    - tip
+    - delivery
+    - discount
+    - total
+    - customerDelivery
+OrderCustomFee:
+  type: object
+  description: Custom fee that was charged for the order.
+  properties:
+    amount:
+      type: number
+      format: double
+      description: Amount of the fee.
+    description:
+      type: string
+      example: Service Fee
+      description: Description of the fee.
+    internalName:
+      type: string
+      description: Explanation of the fee.
+      example: Systemwide Service Fee
+  required:
+    - amount
+    - description
+    - internalName
+OrderCustomField:
+  type: object
+  description: Custom field, commonly assocatied with curbside pickup orders.
+  properties:
+    key:
+      type: string
+      description: Description of the custom field.
+      example: Name
+    value:
+      type: string
+      description: Value of the custom field.
+      example: Value
+  required:
+    - key
+    - value
+OrderProductCustomValue:
+  type: object
+  description: Choice custom field filled out by the customer.
+  properties:
+    label:
+      type: string
+      description: Label of the choice custom field.
+      example: Writing on the cake
+    value:
+      type: string
+      description: Value of the choice custom field.
+      example: Happy Birthday!
+    vendorOptionGroupChoiceId:
+      type: integer
+      format: int64
+      description: Restaurant specific choice custom field id.
+      example: 894675
+  required:
+    - label
+    - value
+    - vendorOptionGroupChoiceId
+OrderProductModifier:
+  type: object
+  description: Choice made by the customer for a product modifier/option group.
+  properties:
+    modifierId:
+      type: integer
+      format: int64
+      description: Company level option/choice id.
+      example: 382903
+    vendorSpecificModifierId:
+      type: integer
+      format: int64
+      description: Restaurant specific option/choice id.
+      example: 214931301
+    modifierQuantity:
+      type: integer
+      format: int32
+      description: Quantity of the choice ordered.
+      example: 1
+    description:
+      type: string
+      description: Name of the option/choice.
+    sellingPrice:
+      type: number
+      format: double
+      description: Cost of the option/choice.
+      example: 0.99
+    modifiers:
+      type: array
+      description: Choices made by the customer for modifiers/option groups that are nested under this one.
+      minItems: 0
+      items:
+        $ref: '#/OrderProductModifier'
+    customFields:
+      type: array
+      description: List of custom fields for the option/choice. Please reference the item level "customValues" array instead.
+      minItems: 0
+      deprecated: true
+      items:
+        $ref: '#/OrderProductModifierCustomField'
+  required:
+    - modifierId
+    - vendorSpecificModifierId
+    - modifierQuantity
+    - customFields
+    - description
+    - sellingPrice
+OrderProductModifierCustomField:
+  type: object
+  description: Choice custom field.
+  properties:
+    key:
+      type: string
+      description: Description of the custom field.
+      example: Name
+      deprecated: true
+    value:
+      type: string
+      description: Value of the custom field.
+      example: Value
+      deprecated: true
+  required:
+    - key
+    - value
+OrderLoginProvider:
+  type: object
+  properties:
+    name:
+      type: string
+      description: Name of the login provider.
+      example: Google
+    slug:
+      type: string
+      description: Login provider slug.
+      example: google
+  required:
+    - name
+    - slug
+OrderCustomer:
+  type: object
+  description: Details about the customer.
+  properties:
+    customerId:
+      type: integer
+      format: int64
+      description: Olo user/customer id.
+      example: 63775
+    externalReference:
+      type: string
+      description: External reference of the customer supplied by the ordering provider.
+      example: 53235aacb-a24a-4e4c-17d1-d0d215412cb2
+    firstName:
+      type: string
+      description: Customer's first name.
+      example: Mike
+    lastName:
+      type: string
+      description: Customer's last name.
+      example: Test
+    contactNumber:
+      type: string
+      description: Customer's phone number. Please note that some ordering providers such as Rails marketplaces do not typically provide actual customer phone numbers.
+      example: '15055555555'
+    email:
+      type: string
+      format: email
+      description: Customer's email address. Please note that some ordering providers such as Rails marketplaces do not typically provide actual customer email addresses.
+      example: mike.test@olo.com
+    loyaltyScheme:
+      type: string
+      description: Name of the loyalty scheme that the customer is enrolled in.
+      nullable: true
+    membershipNumber:
+      type: string
+      description: Customer's membership number for the loyalty scheme.
+      nullable: true
+    loginProviders:
+      type: array
+      description: Login provider for the customer. If empty, the customer did not have a registered account and is considered a guest user.
+      minItems: 0
+      items:
+        $ref: '#/OrderLoginProvider'
+  required:
+    - customerId
+    - externalReference
+    - firstName
+    - lastName
+    - contactNumber
+    - email
+    - membershipNumber
+    - loyaltyScheme
+    - loginProviders
+OrderProduct:
+  type: object
+  description: Product that was ordered.
+  properties:
+    productId:
+      type: integer
+      format: int64
+      description: Olo product id.
+      example: 122483
+    specialInstructions:
+      type: string
+      description: Special instructions.
+    quantity:
+      type: integer
+      format: int32
+      description: Quantity of product ordered.
+      example: 1
+    recipientName:
+      type: string
+      description: Name of the recipient.
+    customValues:
+      type: array
+      description: Choice custom fields specified by the customer for the product. Typically these are used for products that allow the customer to supply a custom message (ex. writing on a birthday cake).
+      items:
+        $ref: '#/OrderProductCustomValue'
+    description:
+      type: string
+      description: Description of the product.
+    sellingPrice:
+      type: number
+      format: double
+      description: Selling price of the product.
+      example: 1.99
+    modifiers:
+      type: array
+      description: Choices made by the customer for modifiers/option groups.
+      minItems: 0
+      items:
+        $ref: '#/OrderProductModifier'
+  required:
+    - productId
+    - specialInstructions
+    - quantity
+    - recipientName
+    - customValues
+    - description
+    - sellingPrice
+    - modifiers
+OrderReplacementDetails:
+  type: object
+  nullable: true
+  properties:
+    originalId:
+      type: string
+      format: uuid
+      description: Original Olo order GUID.
+      example: cea27ddd-06cd-4a62-93af-858cb3e32dc9
+  required:
+    - originalId
+User:
+  type: object
+  properties:
+    id:
+      type: integer
+      format: int64
+      description: Olo user id.
+      example: 12345678
+    userGuid:
+      type: string
+      format: uuid
+      description: Olo user GUID.
+      example: f50abf1a-db44-419a-8c74-c375da9669ed
+    firstName:
+      type: string
+      description: First name of the user.
+      example: Ron
+    lastName:
+      type: string
+      description: Last name of the user.
+      example: Idaho
+    emailAddress:
+      type: string
+      description: Email address of the user.
+      example: ron@example.com
+    contactNumber:
+      type: string
+      description: Contact number of the user.
+      example: '15055555555'
+    allowEmail:
+      type: boolean
+      description: Whether or not the user wishes to receive marketing emails.
+      example: false
+    allowMarketingSms:
+      type: boolean
+      description: Whether or not the user wishes to receive marketing SMS messages (text messages).
+      example: false
+  required:
+    - id
+    - userGuid
+    - firstName
+    - lastName
+    - emailAddress
+    - contactNumber
+    - allowEmail
+    - allowMarketingSms
+OrderDeliveryAddress:
+  type: object
+  description: Delivery address for the order. Please note that this information is not provided to Olo for Rails orders as the marketplace handles delivery through their system.
+  nullable: true
+  properties:
+    streetAddress1:
+      type: string
+      description: Street address line 1 and building (if specified).
+      example: 26 Broadway, Building 3
+    streetAddress2:
+      type: string
+      description: Will always be blank.
+    city:
+      type: string
+      description: City.
+      example: New York
+    postalCode:
+      type: string
+      description: Zip code.
+      example: '10004'
+    comments:
+      type: string
+      description: Special instructions for the delivery address.
+      example: Wait in lobby
+    coordinates:
+      type: object
+      description: Coordinates of the delivery address.
+      properties:
+        latitude:
+          type: number
+          format: float
+          description: Latitude.
+          example: 40.7055092
+        longitude:
+          type: number
+          format: float
+          description: Longitude.
+          example: -74.0131178
+      required:
+        - latitude
+        - longitude
+  required:
+    - streetAddress1
+    - streetAddress2
+    - city
+    - postalCode
+    - comments
+    - coordinates
+Order:
+  type: object
+  properties:
+    id:
+      type: string
+      format: uuid
+      description: Olo order GUID.
+      example: 2b9888ca-24bc-e711-a977-0afcc1bd9d86
+    orderId:
+      type: integer
+      format: int64
+      description: Internal Olo order id. Javascript apps should instead use the `orderIdString` field to maintain correct application behavior.
+      example: 88182
+    orderIdString:
+      type: string
+      description: The exact same value as in the `orderId` field, except in string format. Javascript apps should use this field instead of `orderId` to maintain correct application behavior.
+      example: "88182"
+    externalReference:
+      type: string
+      description: External order reference for the order supplied by the ordering provider.
+      nullable: true
+    posRef:
+      type: string
+      description: POS id for the order.
+      nullable: true
+      example: ABC123
+    brandName:
+      type: string
+      description: Olo's configured name for the restaurant, generally set with guidance from the brand.
+      example: Foosburgers
+    brandId:
+      type: string
+      format: uuid
+      description: Olo brand GUID.
+      example: cea27ddd-06cd-4a62-93af-858cb3e32dc9
+    storeNumber:
+      type: string
+      description: External reference of the restaurant.
+    storeUtcOffset:
+      type: number
+      format: float
+      description: UTC offset of the restaurant's timezone. This will factor in Daylight Savings time.
+      example: -4
+    timePlaced:
+      type: string
+      format: date-time
+      description: Local date and time when the order was placed, in the format "yyyymmdd hh:mm".
+      example: "20171028 17:13"
+    timeWanted:
+      type: string
+      format: date-time
+      description: Local date and time the customer wants to receive the order, formatted "yyyymmdd hh:mm".
+      nullable: true
+      example: "20171028 17:19"
+    timeReady:
+      type: string
+      format: date-time
+      description: Local estimated date and time at which the order will be ready, in the format "yyyymmdd hh:mm".
+      nullable: true
+      example: "20171028 17:19"
+    customer:
+      $ref: '#/OrderCustomer'
+    deliveryMethod:
+      type: string
+      description: Handoff mode for the order.
+      enum:
+        - pickup
+        - delivery
+        - dispatch
+        - curbside
+        - drivethru
+        - dinein
+        - unspecified
+      example: pickup
+    deliveryAddress:
+      $ref: '#/OrderDeliveryAddress'
+    items:
+      type: array
+      description: List of products ordered.
+      minItems: 1
+      items:
+        $ref: '#/OrderProduct'
+    customFields:
+      type: array
+      description: List of custom fields specified for the order.
+      minItems: 0
+      items:
+        $ref: '#/OrderCustomField'
+    customFees:
+      type: array
+      description: List of custom fees for the order.
+      minItems: 0
+      items:
+        $ref: '#/OrderCustomFee'
+    totals:
+      $ref: '#/OrderTotals'
+    payments:
+      type: array
+      description: Payment methods used for the order.
+      minItems: 0
+      items:
+        $ref: '#/OrderPayment'
+    clientPlatform:
+      type: string
+      description: Client platform associated with the API key used to place the order.
+      enum:
+        - Web
+        - ThirdParty
+        - MobileWeb
+        - Kiosk
+        - Android
+        - iOS
+        - CallCenter
+      example: Web
+    location:
+      $ref: '#/OrderLocation'
+    orderingProvider:
+      $ref: '#/OrderingProvider'
+    coupon:
+      $ref: '#/OrderCoupon'
+  required:
+    - id
+    - orderId
+    - orderIdString
+    - externalReference
+    - posRef
+    - brandName
+    - brandId
+    - storeNumber
+    - storeUtcOffset
+    - timePlaced
+    - timeWanted
+    - timeReady
+    - customer
+    - deliveryMethod
+    - deliveryAddress
+    - items
+    - customFields
+    - customFees
+    - totals
+    - payments
+    - clientPlatform
+    - location
+    - orderingProvider
+    - coupon
+
+# Headers
+X-Olo-Message-Id:
+  in: header
+  name: X-Olo-Message-Id
+  description: A unique identifier for the message which may optionally be used for duplicate prevention. Please see the [At-Least Once Delivery documentation](#section/At-Least-Once-Delivery) for more information about duplicate messages.
+  schema:
+    type: string
+    format: uuid
+    example: f8dac5dd-d3b2-w76c-b969-a668c699637c
+  required: true
+X-Olo-Timestamp:
+  in: header
+  name: X-Olo-Timestamp
+  description: Olo's server time when the message was sent. This field is represented in UTC ticks (the number of 100-nanosecond intervals since midnight on January 1, 0001). Please note that this field does not relate to the timing of the underlying event.
+  schema:
+    type: string
+    example: 635616089149791951
+  required: true
+X-Olo-Signature:
+  in: header
+  name: X-Olo-Signature
+  description: A HMAC-SHA256 signature based on the request headers and message content which can be used to verify that the message originated from Olo. Please see the [HTTP Headers documentation](#section/HTTP-Headers) for more information on how this is calculated.
+  schema:
+    type: string
+    example: GZTBDbSm7Wd0clQTiIQHCSvT06fM7uMkptGAM0oVSZE=
+  required: true
+
+# HTTP Status Descriptions
+200:
+  description: Return a 200 status to Olo to indicate that the data was received successfully.
