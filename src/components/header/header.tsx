@@ -1,6 +1,5 @@
 import { useSelector } from "react-redux";
 import { State } from "../../redux";
-import Olo from '../../types/index';
 
 const Header = () => {
   const cart = useSelector((state: State) => state.cart);
