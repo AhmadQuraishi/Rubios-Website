@@ -1,7 +1,0 @@
-openapi: 3.0.1
-info:
-  title: Olo Pay
-  version: "1.0"
-  description:
-    $ref: olopay-description-10.md
-paths: {}
