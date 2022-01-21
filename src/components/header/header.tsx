@@ -1,27 +1,29 @@
-import { useSelector } from "react-redux";
-import { State } from "../../redux";
+import './header.scss';
+
+import { Link } from 'react-router-dom';
+
+import logo from '../../assests/imgs/logo.svg';
+import menuicon from '../../assests/imgs/menu-icon.svg';
+import cart from '../../assests/imgs/cart-icon.svg';
 
 const Header = () => {
-  const cart = useSelector((state: State) => state.cart);
   return (
     <header>
-      <div style={{ display: "block", padding: "20px" }}>
-        <img
-          style={{ display: "inlineBlock", width: 200 + "px" }}
-          src="https://www.rubios.com/sites/all/themes/rubios/images/global/logo-rubios_coastal.png"
-          alt="Rubios Castal Grills"
-        />
-        {cart.cartItems.length > 0 && (
-          <div style={{ fontWeight: 600 }}>
-            Cart Items: {cart.cartItems.length} - Total: $
-            {parseFloat(
-              cart.cartItems.reduce(
-                (total: any, item: any) => total + item.price,
-                0
-              )
-            )}
+      <div id="header-container">
+        <img src={logo} id="logo" alt="Rubios Coastal Grill" />
+        <div id="content-panel">
+          <div className="content">
+            <p className="menu-text">
+              <Link to="/">Main Menu</Link>
+            </p>
+            <p className="cart-icon">
+              <img src={cart} alt="Cart Icon" />
+            </p>
           </div>
-        )}
+          <div className="menu-icon">
+            <img src={menuicon} alt="Menu Icon" />
+          </div>
+        </div>
       </div>
     </header>
   );

@@ -1,66 +1,26 @@
+@font-face {
+  font-family: 'Poppins-Regular';
+  src: url('./assests/fonts/Poppins-Regular.ttf')  format('truetype');
+}
+@font-face {
+  font-family: Poppins-Medium;
+  src: url('./assests/fonts/Poppins-Medium.ttf')  format('truetype');
+}
+@font-face {
+  font-family: Poppins-Bold;
+  src: url('./assests/fonts/Poppins-Bold.ttf')  format('truetype');
+}
 *{
   margin: 0;
   padding: 0;
-  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family:'Poppins-Regular', sans-serif;
 }
 
 #wapper{
-  max-width: 1290px;
-  min-width: 320px;
+  max-width: 1355px;
+  min-width: 375px;
   margin: auto;
 }
-
-.product-container{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: nowrap;  
-}
-.product-container > div {
-  flex-direction: row;
-  padding: 10px;
-  box-sizing: border-box;
-  align-self: flex-start;
-  position: relative;
-}
-
-.product-container > div > img {
-  width: 100%;
-  display: block;
-  max-width: 100%;
-  height: auto;
-  margin: auto;
-}
-
-.product-container > div > .buttonicon{
-  position: absolute;
-  margin: auto;
-  top:40%;
-  right:0;
-  left:0;  
-  height: 30px;
-  width: 80%;
-  cursor: pointer;
-  background: #333;
-  opacity: .7;
-  color: #FFF;
-  border: #CCC;
-  font-size: 16px;
-  display: none;
-}
-
-.product-container > div:hover > .buttonicon {
-  display: block;
-}
-
-.product-container > div > h3 {
-    padding-top: 10px;
-    text-transform: capitalize;
-    color: #234d92;
-    font-weight: 600!important;
-    color: #425563;
-    font-size: 18px;
-    line-height: 1.2;
-    margin-top: 0;
-    margin-bottom: 0;
+main {
+  min-height: 200px;
 }
