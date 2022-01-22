@@ -2,9 +2,9 @@ import './header.scss';
 
 import { Link } from 'react-router-dom';
 
-import logo from '../../assests/imgs/logo.svg';
-import menuicon from '../../assests/imgs/menu-icon.svg';
-import cart from '../../assests/imgs/cart-icon.svg';
+import logo from '../../assets/imgs/logo.svg';
+import menuicon from '../../assets/imgs/menu-icon.svg';
+import cart from '../../assets/imgs/cart-icon.svg';
 
 const Header = () => {
   return (
