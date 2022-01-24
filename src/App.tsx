@@ -24,6 +24,7 @@ function App(props: any) {
       <main>
         <Routes>
           <Route path="/" element={<Home />}></Route>
+          <Route path="/order" element={<Home />}></Route>
         </Routes>
       </main>
       <Footer />

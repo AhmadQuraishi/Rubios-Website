@@ -63,9 +63,6 @@ const useStyles = makeStyles((theme: Theme) => ({
 const Footer = () => {
   const classes = useStyles();
   return (
-<<<<<<< Updated upstream
-    <footer>
-=======
     <footer style={{ overflow: 'hidden' }}>
       <div className={classes['footer-container']}>
         <img src={footerLogo} className="img-logo" alt="Rubios Coastal Grill" />
@@ -101,7 +98,6 @@ const Footer = () => {
           </div>
         </div>
       </div>
->>>>>>> Stashed changes
     </footer>
   );
 };
