@@ -1,5 +1,5 @@
-import { CartActionTypes } from "../../action-types/cart/index";
-import { Action } from "../../actions/cart/index";
+import { CartActionTypes } from '../../action-types/cart/index';
+import { Action } from '../../actions/cart/index';
 
 const INITIAL_VALUES = {
   cartItems: [],
