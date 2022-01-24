@@ -1,6 +1,6 @@
-import { Dispatch } from "redux";
-import { CartActionTypes } from "../../action-types/cart";
-import { Action } from "../../actions/cart";
+import { Dispatch } from 'redux';
+import { CartActionTypes } from '../../action-types/cart';
+import { Action } from '../../actions/cart';
 
 export const SetCartItem = (cartItem: any) => {
   return (dispatch: Dispatch<Action>) => {
