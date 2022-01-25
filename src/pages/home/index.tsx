@@ -1,22 +1,19 @@
-import { Typography } from '@mui/material';
+import { Typography, useTheme } from '@mui/material';
+import StoreInfoBar from '../../components/store-info-bar/';
 const Home = () => {
+  const theme = useTheme();
   return (
-    <Typography
-      component="div"
-      color="primary.main"
-      sx={{
-        textAlign: 'center',
-        padding: '50px 20px',
-        boxSizing: 'border-box',
-        fontWeight: "bold",
-        fontSize: {
-          md: '22px',
-          xs: '16px',
-        },
-      }}
-    >
-      RUBIOS ORDER SECTION - REACTIFIED
-    </Typography>
+    <>
+      <StoreInfoBar />
+      <Typography
+        variant="h4"
+        color={theme.palette.primary.main}
+        textAlign="center"
+        padding="40px"
+      >
+        Rubio's Website - Ordering Page
+      </Typography>
+    </>
   );
 };
 
