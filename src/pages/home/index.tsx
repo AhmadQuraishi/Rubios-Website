@@ -1,8 +1,22 @@
+import { Typography } from '@mui/material';
 const Home = () => {
   return (
-    <div style={{ textAlign: 'center', padding: '50px 20px' }}>
-      <h2 style={{ color: '#0069aa' }}>RUBIOS ORDER SECTION - REACTIFIED</h2>
-    </div>
+    <Typography
+      component="div"
+      color="primary.main"
+      sx={{
+        textAlign: 'center',
+        padding: '50px 20px',
+        boxSizing: 'border-box',
+        fontWeight: "bold",
+        fontSize: {
+          md: '22px',
+          xs: '16px',
+        },
+      }}
+    >
+      RUBIOS ORDER SECTION - REACTIFIED
+    </Typography>
   );
 };
 
