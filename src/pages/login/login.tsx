@@ -1,9 +1,16 @@
 import { makeStyles } from '@mui/styles';
 // import { CssBaseline, Card, Typography, CardContent, Grid,TextField, Box, Link, Button, Paper} from '@material-ui/core';
-import { Grid, Box, Typography, Card, CardContent, TextField, Button, Link } from '@mui/material';
+import {
+  Grid,
+  Box,
+  Typography,
+  Card,
+  CardContent,
+  TextField,
+  Button,
+  Link,
+} from '@mui/material';
 import CustomButton from '../../helpers/button/button';
-
-
 
 const useStyle = makeStyles(() => ({
   root: {
@@ -11,25 +18,39 @@ const useStyle = makeStyles(() => ({
     backgroundImage: `url(https://www.pexels.com/photo/1640777/download/)`,
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   card: {
-    marginTop: "40px",
-    marginLeft: "40px"
-  }
-}))
+    marginTop: '40px',
+    marginLeft: '40px',
+  },
+}));
 
 const Login = () => {
-  const classes = useStyle()
+  const classes = useStyle();
   return (
     <>
-   <Grid container component="main" className={classes.root}>
-   <Grid item xs={12} sm={12} md={12} lg={10} style={{ marginTop: '20px', height: '60vh'}}>
-       <Card>
-       <Grid container style={{ justifyContent: 'center', marginTop: '20px'}}>
-       <Grid item xs={8} sm={8} md={8} lg={5}>
-       <Typography variant="caption" style={{ color: 'blue' }}>LOGIN</Typography>
-                <Typography variant="h4" style={{ color: "" }}>SIGN IN TO RUBIO'S REWARDS</Typography>
+      <Grid container component="main" className={classes.root}>
+        <Grid
+          item
+          xs={12}
+          sm={12}
+          md={12}
+          lg={10}
+          style={{ marginTop: '20px', height: '60vh' }}
+        >
+          <Card>
+            <Grid
+              container
+              style={{ justifyContent: 'center', marginTop: '20px' }}
+            >
+              <Grid item xs={8} sm={8} md={8} lg={5}>
+                <Typography variant="caption" style={{ color: 'blue' }}>
+                  LOGIN
+                </Typography>
+                <Typography variant="h4" style={{ color: '' }}>
+                  SIGN IN TO RUBIO'S REWARDS
+                </Typography>
                 <Box component="form" sx={{ mt: 1 }}>
                   <TextField
                     margin="normal"
@@ -40,7 +61,8 @@ const Login = () => {
                     name="email"
                     autoComplete="email"
                     autoFocus
-                  /><br />
+                  />
+                  <br />
                   <TextField
                     margin="normal"
                     required
@@ -50,26 +72,42 @@ const Login = () => {
                     type="password"
                     id="password"
                     autoComplete="current-password"
-                  /><br />
-                      <Link href="#" variant="body2">
-                        Forgot password?
-                      </Link> <br />
-                  <Button variant="contained" style={{marginLeft: "80px"}}> SIGN IN</Button>
+                  />
+                  <br />
+                  <Link href="#" variant="body2">
+                    Forgot password?
+                  </Link>{' '}
+                  <br />
+                  <Button variant="contained" style={{ marginLeft: '80px' }}>
+                    {' '}
+                    SIGN IN
+                  </Button>
                 </Box>
-         </Grid>
-         <Grid item xs={8} sm={8} md={8} lg={5}>
-          <Typography variant="caption" style={{ color: 'blue' }}>MORE OPTIONS</Typography><br />
-                <CustomButton variant="outlined" text="SIGN IN WITH FACEBOOK" /><br />
-                <CustomButton variant="outlined" text="SIGN IN WITH APPLE" /><br />
-                <CustomButton variant="outlined" text="SIGN IN WITH GOOGLE"  /><br />
-                <CustomButton variant="contained" text="CREATE ACCOUNT"/><br />
-                <Typography variant="caption" style={{ color: 'blue', marginLeft: "100px" }} >CONTINUE AS GEUST</Typography>
-         </Grid>
-         </Grid>
-       </Card>
-</Grid>
-
-   </Grid>
+              </Grid>
+              <Grid item xs={8} sm={8} md={8} lg={5}>
+                <Typography variant="caption" style={{ color: 'blue' }}>
+                  MORE OPTIONS
+                </Typography>
+                <br />
+                <CustomButton variant="outlined" text="SIGN IN WITH FACEBOOK" />
+                <br />
+                <CustomButton variant="outlined" text="SIGN IN WITH APPLE" />
+                <br />
+                <CustomButton variant="outlined" text="SIGN IN WITH GOOGLE" />
+                <br />
+                <CustomButton variant="contained" text="CREATE ACCOUNT" />
+                <br />
+                <Typography
+                  variant="caption"
+                  style={{ color: 'blue', marginLeft: '100px' }}
+                >
+                  CONTINUE AS GEUST
+                </Typography>
+              </Grid>
+            </Grid>
+          </Card>
+        </Grid>
+      </Grid>
       {/* <Grid container component="main" className={classes.root}>
         <Grid item xs={10} sm={10} md={10} lg={8} flexGrow={1}>
           <Card>
@@ -121,7 +159,7 @@ const Login = () => {
         </Grid>
       </Grid> */}
     </>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;
