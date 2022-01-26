@@ -4,9 +4,11 @@ import { Container, Box } from '@mui/material';
 import Header from './components/header/';
 import Footer from './components/footer/';
 import Home from './pages/home';
-import Login from './pages/login/login';
-import Welcome from './pages/welcomeScreen/welcome';
+import Login from './pages/login';
+import Welcome from './pages/welcomeScreen';
 import Location from './pages/location';
+import RewardConfirmation from './pages/rewardConfirmation';
+import OrderConfirmation from './pages/orderConfirmation';
 
 function App(props: any) {
   return (
@@ -22,6 +24,8 @@ function App(props: any) {
             <Route path="/login" element={<Login />} />
             <Route path="/welcome" element={<Welcome />} />
             <Route path="/location" element={<Location />} />
+            <Route path="/confirmationReward" element={<RewardConfirmation />} />
+            <Route path="/orderConfirmation" element={<OrderConfirmation />} />
           </Routes>
         </main>
         <Footer />
