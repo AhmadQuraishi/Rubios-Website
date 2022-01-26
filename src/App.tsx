@@ -3,7 +3,7 @@ import { Container, Box } from '@mui/material';
 
 import Header from './components/header/';
 import Footer from './components/footer/';
-import Home from './pages/home';
+import CategoryList from './pages/category';
 import Login from './pages/login';
 import Welcome from './pages/welcomeScreen';
 import Location from './pages/location';
