@@ -86,6 +86,7 @@ const Header = () => {
                     '&:hover': {
                       color: 'success.main',
                     },
+                    transition: 'color 0.5s ease',
                   }}
                 >
                   Main Menu
@@ -119,6 +120,7 @@ const Header = () => {
                 '&:hover': {
                   color: 'success.main',
                 },
+                transition: 'color 0.5s ease',
               }}
             >
               Main Menu
@@ -135,6 +137,7 @@ const Header = () => {
                 '&:hover': {
                   backgroundColor: 'success.main',
                 },
+                transition: 'background-color 0.3s ease',
               }}
             >
               <img src={cart} style={{ width: '38px' }} alt="Cart Icon" />

@@ -3,7 +3,7 @@ import { Container, Box } from '@mui/material';
 
 import Header from './components/header/';
 import Footer from './components/footer/';
-import Home from './pages/home';
+import CategoryList from './pages/category';
 import Login from './pages/login/login';
 import Welcome from './pages/welcomeScreen/welcome';
 import Location from './pages/location';
@@ -18,7 +18,7 @@ function App(props: any) {
         <Header />
         <main>
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<CategoryList />} />
             <Route path="/login" element={<Login />} />
             <Route path="/welcome" element={<Welcome />} />
             <Route path="/location" element={<Location />} />
