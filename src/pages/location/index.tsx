@@ -1,9 +1,10 @@
-import Map from '../../components/map';
-import LocationCard from '../../components/locationcard';
-import React from 'react';
+import Map from "../../components/map";
+import React from "react";
 
 const Location = () => {
-  return <Map />;
+  return (
+      <Map/>
+  );
 };
 
 export default Location;

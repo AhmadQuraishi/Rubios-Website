@@ -61,6 +61,10 @@ const LocationCard = () => {
           <ListItemText primary={filteredRes[index].distance} />
         </ListItemButton>
           </Grid>
+
+          <Grid item xs={12}  >
+          </Grid>
+
         </Grid>
 
       </ListItem>
@@ -125,7 +129,7 @@ const LocationCard = () => {
               <FixedSizeList
                 height={400}
                 itemSize={130}
-                width={360}
+                width='auto'
                 itemCount={filteredRes.length}
                 overscanCount={5}
               >

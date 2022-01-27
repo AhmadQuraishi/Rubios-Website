@@ -18,7 +18,7 @@ const StoreInfoBar = () => {
       spacing={0}
       sx={{
         backgroundColor: theme.palette.secondary.main,
-        padding: { xs: '20px', sm: '35px' },
+        padding: { xs: '30px', sm: '35px' },
       }}
     >
       <Grid item xs={12}>
@@ -58,8 +58,8 @@ const StoreInfoBar = () => {
             sx={{
               paddingRight: { xs: '0px', sm: '15px' },
               paddingBottom: { xs: '15px', sm: '0px' },
+              paddingTop: { xs: '15px', sm: '0px' },
               flexDirection: 'column',
-              display: { xs: 'none', sm: 'flex' },
             }}
           >
             <Typography
@@ -89,7 +89,7 @@ const StoreInfoBar = () => {
             sm={3}
             sx={{
               flexDirection: 'column',
-              display: { xs: 'none', sm: 'flex' },
+              paddingTop: { xs: '5px', sm: '0px' },
             }}
           >
             <Typography
