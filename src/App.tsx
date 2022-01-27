@@ -9,6 +9,7 @@ import Welcome from './pages/welcomeScreen';
 import Login from './pages/login';
 import OrderConfirmation from './pages/orderConfirmation';
 import RewardConfirmation from './pages/rewardConfirmation';
+import FoodItem from './pages/foodItem';
 
 function App(props: any) {
   return (
@@ -23,6 +24,7 @@ function App(props: any) {
           <Route path="/welcome" element={<Welcome />}></Route>
           <Route path="/orderConfirmation" element={<OrderConfirmation />}></Route>
           <Route path="/rewardConfirmation" element={<RewardConfirmation />}></Route>
+          <Route path='/foodItem' element={<FoodItem />}></Route>
         </Routes>
       </main>
       <Footer />
