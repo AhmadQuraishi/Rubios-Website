@@ -6,9 +6,9 @@ import Divider from '@mui/material/Divider';
 const OrderDetail = () => {
   return (
     <Grid container>
-      <Grid item xs={1} sm={0.5} md={0.5} lg={0.5} xl={2}></Grid>
+      <Grid item xs={1} sm={0.5} md={0.5} lg={2} />
 
-      <Grid item xs={10} sm={11} md={11} lg={11} xl={8}>
+      <Grid item xs={10} sm={11} md={11} lg={8}>
         <Typography variant="h3">ORDER DETAILS</Typography>
         <Grid container>
           <Grid item xs={10} sm={10} md={10} lg={11}>
@@ -54,7 +54,7 @@ const OrderDetail = () => {
         </Grid>
       </Grid>
 
-      <Grid item xs={1} sm={0.5} md={0.5} lg={0.5} xl={2}></Grid>
+      <Grid item xs={1} sm={0.5} md={0.5} lg={2} />
     </Grid>
   );
 };
