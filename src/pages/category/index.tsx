@@ -1,15 +1,6 @@
 import StoreInfoBar from '../../components/store-info-bar';
 import ProductListing from '../../components/product-listing';
-import {
-  Grid,
-  Theme,
-  Typography,
-  useMediaQuery,
-  useTheme,
-  Tabs,
-  Tab,
-  Box,
-} from '@mui/material';
+import { Grid, Theme, Typography, Tabs, Tab, Box } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
@@ -18,7 +9,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   heading: {
     fontFamily: 'Poppins-Bold !important',
     color: theme.palette.secondary.main,
-    fontSize: '25px',
+    fontSize: '25px !important',
     textTransform: 'uppercase',
     paddingBottom: '30px',
   },
@@ -47,13 +38,22 @@ const categories = [
 ];
 
 const CategoryList = () => {
-  const theme = useTheme();
   const classes = useStyles();
-  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
+  const [value, setValue] = useState('0');
 
-  const [value, setValue] = useState('1');
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    setTimeout(() => {
+      var elem = document.getElementById('#panel-' + newValue);
+      elem?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 200);
     setValue(newValue);
   };
 
@@ -63,10 +63,9 @@ const CategoryList = () => {
       <Box
         sx={{
           width: '100%',
-          display: { xs: 'none', lg: 'flex' },
           padding: {
-            xs: '30px',
-            md: '20px 80px 5px 80px',
+            xs: '30px 15px 10px 15px',
+            md: '20px 60px 5px 60px',
             boxSizing: 'border-box',
           },
         }}
@@ -75,39 +74,27 @@ const CategoryList = () => {
           value={value}
           onChange={handleChange}
           textColor="secondary"
-          indicatorColor="secondary"
-          aria-label="secondary tabs example"
+          indicatorColor="primary"
+          aria-label="Menu Tabs"
+          variant="scrollable"
+          scrollButtons
+          allowScrollButtonsMobile
           sx={{ fontFamily: 'Poppins-Medium !important' }}
         >
-          <Tab
-            value="1"
-            label="Seasonal Menu"
-            color="secondary.main"
-            sx={{ fontFamily: 'Poppins-Medium !important' }}
-          />
-          <Tab
-            value="2"
-            label="Tacos"
-            color="secondary.main"
-            sx={{ fontFamily: 'Poppins-Medium !important' }}
-          />
-          <Tab
-            value="3"
-            label="Burritos"
-            color="secondary.main"
-            sx={{ fontFamily: 'Poppins-Medium !important' }}
-          />
-          <Tab
-            value="4"
-            label="Bowl & Salads"
-            color="secondary.main"
-            sx={{ fontFamily: 'Poppins-Medium !important' }}
-          />
+          {categories.map((item, index) => (
+            <Tab
+              key={index}
+              value={`${index}`}
+              label={item}
+              color="secondary.main"
+              sx={{ fontFamily: 'Poppins-Medium !important' }}
+            />
+          ))}
         </Tabs>
       </Box>
       {categories.map((item, index) => (
         <Grid
-          data-id={'#panel-' + index}
+          id={'#panel-' + index}
           key={index}
           container
           spacing={0}

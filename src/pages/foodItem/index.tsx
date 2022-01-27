@@ -2,7 +2,7 @@
 import { Grid, Typography, Card, CardMedia, CardContent, Button } from '@mui/material'
 import FoodMenuCard from '../../components/foodMenuCard'
 
-const FoodItem = () => {
+const Product = () => {
 
     const menuItems1 = [
         {
@@ -143,4 +143,4 @@ const FoodItem = () => {
 
 }
 
-export default FoodItem
+export default Product
