@@ -10,6 +10,9 @@ import Login from './pages/login';
 import OrderConfirmation from './pages/orderConfirmation';
 import RewardConfirmation from './pages/rewardConfirmation';
 import Product from './pages/foodItem';
+import CheckIn from './pages/check-in';
+import Invite from './pages/invite';
+import PaymentInformation from './pages/payment-information';
 
 function App(props: any) {
   return (
@@ -31,6 +34,12 @@ function App(props: any) {
             element={<RewardConfirmation />}
           ></Route>
           <Route path="/product" element={<Product />}></Route>
+          <Route path="/check-in" element={<CheckIn />}></Route>
+          <Route path="/invite" element={<Invite />}></Route>
+          <Route
+            path="/payment-information"
+            element={<PaymentInformation />}
+          ></Route>
         </Routes>
       </main>
       <Footer />
