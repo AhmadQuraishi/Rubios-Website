@@ -1,4 +1,4 @@
-import Map from '../../components/map';
+import Map from '../map';
 import React from 'react';
 import { Grid, Typography } from '@mui/material';
 import Divider from '@mui/material/Divider';

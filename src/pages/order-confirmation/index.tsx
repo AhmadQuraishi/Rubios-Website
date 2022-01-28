@@ -5,8 +5,8 @@ import {
     Card,
     TextField
 } from '@mui/material';
-import OrderDetails from '../../components/order_details';
-import OrderConfirmedCard from '../../components/orderConfirmCard';
+import OrderDetails from '../../components/order-details';
+import OrderConfirmedCard from '../../components/order-confirm-card';
 
 
 const useStyle = makeStyles(() => ({
