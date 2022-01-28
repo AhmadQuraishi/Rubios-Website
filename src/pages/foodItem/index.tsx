@@ -66,7 +66,7 @@ const FoodItem = () => {
                         <Grid item xs={12} sm={12} md={12} lg={6}>
                             <Typography variant='caption' style={{ color: 'blue' }}>PICK UP YOUR</Typography>
                             <Typography variant='h5'>Maxican Street Toca Plate </Typography>
-                            <Typography variant="subtitle1"></Typography>
+                            <Typography variant="subtitle1">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ipsum lorem, laoreet vel nulla at, pellentesque rhoncus nibh. Suspendisse potenti. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nam bibendum justo vel nunc ultrices bibendum. Sed in diam turpis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Duis eget luctus est, quis aliquam lorem. Nulla volutpat metus at felis faucibus, sit amet feugiat diam gravida. Donec vestibulum efficitur tincidunt. Duis at facilisis justo, sit amet tristique risus. Sed imperdiet malesuada lectus, a tempus nulla facilisis ut. Pellentesque sollicitudin tellus dictum nisi mattis gravida eu non lorem. Praesent eu viverra magna, eu cursus velit.</Typography>
 
                             <Typography component="div">
                                 <Typography variant='caption' style={{ color: "blue" }}>1000 Cal</Typography>
@@ -74,7 +74,12 @@ const FoodItem = () => {
                             </Typography>
                         </Grid>
                         <Grid item xs={12} sm={12} md={12} lg={6}>
-
+                          <CardMedia
+                                 component="img"
+                                 sx={{ width: 500 }}
+                                 image=' https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUAKpRxf2AActPwZQg__oUrjxb7K2od0nJug0zkYc94NePv_wFW5suC8nIiXBNQRzYw3s&usqp=CAU'
+                                 alt="Live from space album cover"
+                             />
                         </Grid>
                     </Grid>
                     <Grid container>
@@ -129,13 +134,11 @@ const FoodItem = () => {
                     <FoodMenuCard  menuItems={drinks} />
                     <br />
                     <br />
-                    {/* <Typography component='div' textAlign='center'>
+                    {/* <Typography component='div' textAlign='center'> */}
                          <Typography variant='caption'>QUANTITY</Typography>
-                         <Card>
-
-                         </Card>
+                      
                          <Button variant='contained'>ADD TO BOX</Button>
-                    </Typography> */}
+                    {/* </Typography> */}
                 </Grid>
             </Grid>
         </>
