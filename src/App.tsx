@@ -5,11 +5,11 @@ import Footer from './components/footer';
 import CategoryList from './pages/category';
 import Location from './pages/location';
 import Checkout from './pages/checkout';
-import Welcome from './pages/welcomeScreen';
+import Welcome from './pages/welcome';
 import Login from './pages/login';
-import OrderConfirmation from './pages/orderConfirmation';
-import RewardConfirmation from './pages/rewardConfirmation';
-import Product from './pages/foodItem';
+import OrderConfirmation from './pages/order-confirmation';
+import RewardConfirmation from './pages/reward-confirmation';
+import Product from './pages/product';
 
 function App(props: any) {
   return (

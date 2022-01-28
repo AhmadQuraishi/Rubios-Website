@@ -13,7 +13,7 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Divider from '@mui/material/Divider';
-import OrderDetail from '../../components/order_detail';
+import OrderDetail from '../../components/order-detail';
 import Tip from '../../components/tip';
 import Rewards from '../../components/rewards';
 import PaymentInfo from '../../components/payment-info';
