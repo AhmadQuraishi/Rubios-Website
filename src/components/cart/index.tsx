@@ -1,5 +1,6 @@
 import { Grid, Typography, Theme, Box, Divider, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import crossIcon from '../../assets/imgs/cross-icon.svg';
 
@@ -66,6 +67,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 const Cart = (props: any) => {
   const { showCart } = props;
   const classes = useStyles();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <>
       <div className={classes.dimPanel} onClick={showCart}></div>
