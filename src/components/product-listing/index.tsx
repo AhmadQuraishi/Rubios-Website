@@ -47,28 +47,32 @@ const ProductListing = () => {
   const classes = useStyles();
   const products = [
     {
-      image: 'TacoKit.jpg',
+      image:
+        'https://www.rubios.com/sites/default/files/styles/menu_item_teaser/public/menu/TacoKit.jpg?itok=sXyv_fvV',
       name: ' California Burrito',
       desc: 'Salsa Verde Taco, Grilled Gourmet Toca and the Maxican street corn Taco all with your choice of sustainably sourced protien.',
       cal: '1000',
       price: '12.05',
     },
     {
-      image: '../../assets/imgs/taco-mango-mahi-mahi.jpg',
+      image:
+        'https://www.rubios.com/sites/default/files/styles/menu_item_teaser/public/bowl-mahi-mahi.jpg?itok=yXA_BMpa',
       name: ' Grilled Chicken Salad Bowl',
       desc: 'Salsa Verde Taco, Grilled Gourmet Toca and the Maxican street corn Taco all with your choice of sustainably sourced protien.',
       cal: '1000',
       price: '12.05',
     },
     {
-      image: '../../assets/imgs/Family_Burrito_Box_mainA573LR.jpg',
+      image:
+        'https://www.rubios.com/sites/default/files/styles/menu_item_teaser/public/menu/Chicken_Nachos_V2.jpg?itok=JCQOjNiP',
       name: ' Classic Grilled Chicken Salad Platter',
       desc: 'Salsa Verde Taco, Grilled Gourmet Toca and the Maxican street corn Taco all with your choice of sustainably sourced protien.',
       cal: '1000',
       price: '12.05',
     },
     {
-      image: '../../assets/imgs/taco-original-fish.jpg',
+      image:
+        'https://www.rubios.com/sites/default/files/styles/menu_item_teaser/public/menu/Shirmp%20and%20Bacon%20Burrito%20-%201400x800%20-%20DD.jpg?itok=aNmnW-Q0',
       name: ' Warp Chicken Special Roll',
       desc: 'Salsa Verde Taco, Grilled Gourmet Toca and the Maxican street corn Taco all with your choice of sustainably sourced protien.',
       cal: '1000',
@@ -92,7 +96,7 @@ const ProductListing = () => {
                 <CardMedia
                   className={classes.img}
                   component="img"
-                  image={require('../../assets/imgs/taco-mango-mahi-mahi.jpg')}
+                  image={item.image}
                   alt="Taco Kit"
                 />
                 <CardContent sx={{ padding: '0' }}>

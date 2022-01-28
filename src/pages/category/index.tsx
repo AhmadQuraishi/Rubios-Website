@@ -41,14 +41,6 @@ const CategoryList = () => {
   const classes = useStyles();
   const [value, setValue] = useState('0');
 
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
-
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setTimeout(() => {
       var elem = document.getElementById('#panel-' + newValue);
