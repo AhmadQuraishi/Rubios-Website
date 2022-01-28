@@ -8,7 +8,7 @@ import {
     Link,
     CardContent,
 } from '@mui/material';
-import FoodMenuCard from '../../components/foodMenuCard';
+import FoodMenuCard from '../../components/food-menu-card';
 
 const RedeemRewards = () =>{
     const menuItems1 = [
