@@ -52,7 +52,7 @@ const LeftMenuBar = () => {
         </ListItem>
         <Divider />
         <ListItem>
-          <Link to="/account/paymentmethod" className={classes.link}>
+          <Link to="/account/paymentinformation" className={classes.link}>
             <ListItemText primary="Payment Methods" />
           </Link>
         </ListItem>
@@ -70,13 +70,13 @@ const LeftMenuBar = () => {
         </ListItem>
         <Divider />
         <ListItem>
-          <Link to="/account/paymentmethod" className={classes.link}>
+          <Link to="/account/invite" className={classes.link}>
             <ListItemText primary="Invite Friends" />
           </Link>
         </ListItem>
         <Divider />
         <ListItem>
-          <Link to="/account/paymentmethod" className={classes.link}>
+          <Link to="/account/profile" className={classes.link}>
             <ListItemText primary="Profile" />
           </Link>
         </ListItem>

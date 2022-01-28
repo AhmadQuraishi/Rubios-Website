@@ -3,7 +3,7 @@ import LeftMenuBar from '../../components/left-menu-bar';
 const AccountHistory = () => {
   return (
     <>
-      <Grid container>
+      <Grid container spacing={0}>
         <Grid item xs={2}>
           <LeftMenuBar />
         </Grid>

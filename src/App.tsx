@@ -44,10 +44,10 @@ function App(props: any) {
             element={<DeliveryAddress />}
           />
           <Route path="/account/history" element={<AccountHistory />} />
-          <Route path="/account/check-in" element={<CheckIn />} />
+          <Route path="/account/checkin" element={<CheckIn />} />
           <Route path="/account/invite" element={<Invite />} />
           <Route
-            path="/account/payment-information"
+            path="/account/paymentinformation"
             element={<PaymentInformation />}
           />
         </Routes>
