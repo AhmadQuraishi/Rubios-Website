@@ -13,11 +13,14 @@ import DeliveryAddress from './pages/delivery-address';
 import RedeemRewards from './pages/redeem-reward';
 import Product from './pages/product';
 import AccountHistory from './pages/account-history';
+import CheckIn from './pages/check-in';
+import Invite from './pages/invite';
+import PaymentInformation from './pages/payment-information';
 import { useLayoutEffect } from 'react';
 
 function App(props: any) {
   const location = useLocation();
-  // Scroll to top if path changes
+
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
@@ -41,6 +44,12 @@ function App(props: any) {
             element={<DeliveryAddress />}
           />
           <Route path="/account/history" element={<AccountHistory />} />
+          <Route path="/account/check-in" element={<CheckIn />} />
+          <Route path="/account/invite" element={<Invite />} />
+          <Route
+            path="/account/payment-information"
+            element={<PaymentInformation />}
+          />
         </Routes>
       </main>
       <Footer />
