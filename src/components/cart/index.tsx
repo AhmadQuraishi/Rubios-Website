@@ -1,5 +1,6 @@
-import { Grid, Typography, Theme, Box, Divider } from '@mui/material';
+import { Grid, Typography, Theme, Box, Divider, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import { Link } from 'react-router-dom';
 import crossIcon from '../../assets/imgs/cross-icon.svg';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -11,23 +12,33 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: '100%',
     height: '100vh',
     zIndex: 10000,
+    [theme.breakpoints.down('xl')]: {
+      display: 'block !important',
+    },
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
   },
   cartBox: {
     border: '1px solid #666',
     borderTop: '0',
     borderRight: '0',
-    maxHeight: '100vh',
     position: 'absolute',
     background: '#fff',
     top: 0,
     right: 0,
     width: '100%',
-    maxWidth: '375px',
     minHeight: '300px',
     zIndex: 10001,
+    [theme.breakpoints.up('md')]: {
+      maxWidth: '375px',
+    },
+    [theme.breakpoints.up('xs')]: {
+      maxWidth: 'auto !important',
+    },
   },
   cartRoot: {
-    padding: '20px',
+    padding: '20px 20px 10px 20px',
   },
   cartTitle: {
     color: theme.palette.secondary.main,
@@ -115,7 +126,7 @@ const Cart = (props: any) => {
               <Grid item xs={12} sx={{ padding: '5px 0 5px 0' }}>
                 <Divider sx={{ borderColor: 'rgba(0, 0, 0, 1);' }} />
               </Grid>
-              <Grid item xs={12} >
+              <Grid item xs={12}>
                 <Typography variant="caption" fontSize={11}>
                   Grilled Chicken Mexican Oil Butter Mix Topping
                 </Typography>
@@ -185,7 +196,7 @@ const Cart = (props: any) => {
               <Grid item xs={12} sx={{ padding: '5px 0 5px 0' }}>
                 <Divider sx={{ borderColor: 'rgba(0, 0, 0, 1);' }} />
               </Grid>
-              <Grid item xs={12} >
+              <Grid item xs={12}>
                 <Typography variant="caption" fontSize={11}>
                   Medium, Light Ice
                 </Typography>
@@ -223,6 +234,222 @@ const Cart = (props: any) => {
                 </Grid>
               </Grid>
             </Grid>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography
+              variant="h6"
+              component="h6"
+              fontSize="18px !important"
+              textAlign="center"
+              paddingTop="20px"
+              className={classes.cartTitle}
+            >
+              Complete Your Meal
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Grid container spacing={0} justifyContent="space-around">
+              <Grid item xs={3}>
+                <img
+                  style={{ display: 'block', margin: 'auto' }}
+                  src={require('../../assets/imgs/pic1.png')}
+                  alt="side one"
+                />
+                <Typography
+                  variant="h6"
+                  component="p"
+                  fontSize="14px !important"
+                  textAlign="center"
+                  padding="5px 0 0 0"
+                  textTransform="capitalize"
+                  className={classes.cartTitle}
+                >
+                  Chips
+                </Typography>
+                <Typography
+                  variant="caption"
+                  component="p"
+                  fontSize="14px !important"
+                  textAlign="center"
+                  paddingTop="0px"
+                  fontFamily="Poppins-Regular !important"
+                  className={classes.cartTitle}
+                >
+                  $3.09
+                </Typography>
+              </Grid>
+              <Grid item xs={3}>
+                <img
+                  style={{ display: 'block', margin: 'auto' }}
+                  src={require('../../assets/imgs/pic2.png')}
+                  alt="side one"
+                />
+                <Typography
+                  variant="h6"
+                  component="p"
+                  fontSize="14px !important"
+                  textAlign="center"
+                  padding="5px 0 0 0"
+                  textTransform="capitalize"
+                  className={classes.cartTitle}
+                >
+                  Churros
+                </Typography>
+                <Typography
+                  variant="caption"
+                  component="p"
+                  fontSize="14px !important"
+                  textAlign="center"
+                  paddingTop="0px"
+                  fontFamily="Poppins-Regular !important"
+                  className={classes.cartTitle}
+                >
+                  $3.09
+                </Typography>
+              </Grid>
+              <Grid item xs={3}>
+                <img
+                  style={{ display: 'block', margin: 'auto' }}
+                  src={require('../../assets/imgs/pic3.png')}
+                  alt="side one"
+                />
+                <Typography
+                  variant="h6"
+                  component="p"
+                  fontSize="14px !important"
+                  textAlign="center"
+                  padding="5px 0 0 0"
+                  textTransform="capitalize"
+                  className={classes.cartTitle}
+                >
+                  drinks
+                </Typography>
+                <Typography
+                  variant="caption"
+                  component="p"
+                  fontSize="14px !important"
+                  textAlign="center"
+                  paddingTop="0px"
+                  fontFamily="Poppins-Regular !important"
+                  className={classes.cartTitle}
+                >
+                  $3.09
+                </Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item xs={12} textAlign="center" padding="10px 0">
+            <Button
+              variant="contained"
+              sx={{
+                textTransform: 'uppercase',
+                backgroundColor: 'secondary.main',
+                margin: 'auto',
+                width: '100%',
+                borderRadius: 0,
+                padding: '15px',
+              }}
+            >
+              Add Another Menu Item
+            </Button>
+          </Grid>
+          <Grid item xs={12} padding="20px 10px 20px 20px">
+            <Grid container spacing={0}>
+              <Grid
+                item
+                xs={9}
+                sx={{
+                  fontFamily: 'Poppins-Bold !important',
+                  color: 'secondary.main',
+                  fontize: '16px',
+                }}
+              >
+                Sub Total
+              </Grid>
+              <Grid
+                item
+                xs={3}
+                sx={{
+                  fontFamily: 'Poppins-Bold !important',
+                  color: 'secondary.main',
+                  fontize: '16px',
+                  textAlign: 'right',
+                }}
+              >
+                $15.00
+              </Grid>
+              <Grid
+                item
+                xs={9}
+                sx={{
+                  color: 'secondary.main',
+                  fontize: '12px',
+                }}
+              >
+                Tax
+              </Grid>
+              <Grid
+                item
+                xs={3}
+                sx={{
+                  color: 'secondary.main',
+                  fontize: '16px',
+                  textAlign: 'right',
+                }}
+              >
+                $1.53
+              </Grid>
+              <Grid item xs={12} sx={{ padding: '20px 0px' }}>
+                <Divider />
+              </Grid>
+              <Grid
+                item
+                xs={9}
+                sx={{
+                  fontFamily: 'Poppins-Bold !important',
+                  color: 'secondary.main',
+                  fontize: '16px',
+                }}
+              >
+                Total
+              </Grid>
+              <Grid
+                item
+                xs={3}
+                sx={{
+                  fontFamily: 'Poppins-Bold !important',
+                  color: 'secondary.main',
+                  fontize: '16px',
+                  textAlign: 'right',
+                }}
+              >
+                $16.53
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+
+        <Grid container spacing={0}>
+          <Grid item xs={12}>
+            <Link
+              to="/checkout"
+              style={{ textDecoration: 'none' }}
+              onClick={showCart}
+            >
+              <Button
+                variant="contained"
+                sx={{
+                  textTransform: 'uppercase',
+                  backgroundColor: 'primary.main',
+                  margin: 'auto',
+                  width: '100%',
+                  borderRadius: 0,
+                  padding: '10px',
+                }}
+              >
+                CHECKOUT
+              </Button>
+            </Link>
           </Grid>
         </Grid>
       </Box>
