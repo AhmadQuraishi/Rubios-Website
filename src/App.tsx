@@ -16,18 +16,26 @@ import AccountHistory from './pages/account-history';
 import CheckIn from './pages/check-in';
 import Invite from './pages/invite';
 import PaymentInformation from './pages/payment-information';
-import { useLayoutEffect } from 'react';
+import { useLayoutEffect, useState } from 'react';
+import UpdatePaymentCard from './pages/update-card-info';
 
 function App(props: any) {
   const location = useLocation();
 
+  const [showCartButton, setShowCartButton] = useState(true);
+
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
+    if (window.location.href.toLocaleLowerCase().indexOf('/account') != -1) {
+      setShowCartButton(false);
+    } else {
+      setShowCartButton(true);
+    }
   }, [location.pathname]);
 
   return (
     <div id="wapper">
-      <Header />
+      <Header showCartIcon={showCartButton} />
       <main>
         <Routes>
           <Route path="/" element={<CategoryList />} />
@@ -49,6 +57,10 @@ function App(props: any) {
           <Route
             path="/account/paymentinformation"
             element={<PaymentInformation />}
+          />
+          <Route
+            path="/account/updatepaymentcard"
+            element={<UpdatePaymentCard />}
           />
         </Routes>
       </main>

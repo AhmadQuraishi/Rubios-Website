@@ -6,10 +6,22 @@ const Invite = () => {
   const code = '1234566778';
   return (
     <Grid container spacing={0}>
-      <Grid item xs={2}>
-        <LeftMenuBar />
-      </Grid>
-      <Grid item xs={10} sx={{ padding: '50px' }}>
+        <Grid
+          item
+          xs={0}
+          sm={3}
+          lg={2}
+          sx={{ display: { xs: 'none', sm: 'grid' } }}
+        >
+          <LeftMenuBar />
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          sm={9}
+          lg={10}
+          sx={{ padding: { xs: '30px 20px', sm: '30px 40px' } }}
+        >
         <Box>
           <Grid container>
             {/*column for space*/}

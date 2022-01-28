@@ -17,7 +17,7 @@ import logo from '../../assets/imgs/rubios-logo-color.png';
 import cartIcon from '../../assets/imgs/cart-icon.svg';
 import cartIconMobile from '../../assets/imgs/cart-icon-mobile.svg';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Cart from '../cart';
 
@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('lg')]: {
       padding: '18px 0 14px 30px',
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       padding: '18px 0 14px 20px',
     },
   },
@@ -61,12 +61,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const Header = () => {
+const Header = (props: any) => {
+  const { showCartIcon } = props;
   const classes = useStyles();
   const theme = useTheme();
   const [openDrawer, setOpenDrawer] = useState(false);
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [showCart, setShowCart] = useState(false);
+
 
   const handleShowCart = () => {
     setShowCart(!showCart);
@@ -100,12 +102,14 @@ const Header = () => {
                   </Link>
                 </div>
               </Drawer>
-              <img
-                onClick={handleShowCart}
-                src={cartIconMobile}
-                alt="Cart Icon"
-                style={{ width: '25px', paddingRight: '10px' }}
-              />
+              {showCartIcon && (
+                <img
+                  onClick={handleShowCart}
+                  src={cartIconMobile}
+                  alt="Cart Icon"
+                  style={{ width: '25px', paddingRight: '10px' }}
+                />
+              )}
               <IconButton
                 onClick={() => setOpenDrawer(!openDrawer)}
                 className={classes.icon}
@@ -118,24 +122,30 @@ const Header = () => {
               <Link to="/" className={classes.menuLink}>
                 Main Menu
               </Link>
-              <Typography
-                component="div"
-                onClick={handleShowCart}
-                sx={{
-                  backgroundColor: 'primary.main',
-                  width: '140px',
-                  cursor: 'pointer',
-                  float: 'right',
-                  justifyContent: 'center',
-                  display: { xs: 'none', sm: 'flex' },
-                  '&:hover': {
-                    backgroundColor: 'success.main',
-                  },
-                  transition: 'background-color 0.3s ease',
-                }}
-              >
-                <img src={cartIcon} style={{ width: '38px' }} alt="Cart Icon" />
-              </Typography>
+              {showCartIcon && (
+                <Typography
+                  component="div"
+                  onClick={handleShowCart}
+                  sx={{
+                    backgroundColor: 'primary.main',
+                    width: '140px',
+                    cursor: 'pointer',
+                    float: 'right',
+                    justifyContent: 'center',
+                    display: { xs: 'none', sm: 'flex' },
+                    '&:hover': {
+                      backgroundColor: 'success.main',
+                    },
+                    transition: 'background-color 0.3s ease',
+                  }}
+                >
+                  <img
+                    src={cartIcon}
+                    style={{ width: '38px' }}
+                    alt="Cart Icon"
+                  />
+                </Typography>
+              )}
             </>
           )}
         </Toolbar>
