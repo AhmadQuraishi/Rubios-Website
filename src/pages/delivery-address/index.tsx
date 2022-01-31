@@ -5,12 +5,13 @@ import {
   Button,
   CardContent,
 } from '@mui/material';
+import { Fragment } from 'react';
 import LeftMenuBar from '../../components/left-menu-bar';
 import {Link} from 'react-router-dom'
 
 const DeliveryAddress = () => {
   return (
-    <>
+    <Fragment>
       <Grid container spacing={0}>
       <Grid
           item
@@ -110,7 +111,7 @@ const DeliveryAddress = () => {
           </Grid>
         </Grid>
       </Grid>
-    </>
+    </Fragment>
   );
 };
 

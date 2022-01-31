@@ -1,6 +1,7 @@
 import { Grid, Typography, Tabs, Box, Tab } from '@mui/material';
 import { useState } from 'react';
 import LeftMenuBar from '../../components/left-menu-bar';
+import { Fragment } from 'react';
 
 import HistoryGrid from '../../components/history-grid';
 
@@ -45,7 +46,7 @@ const AccountHistory = () => {
   };
 
   return (
-    <>
+    <Fragment>
       <Grid container spacing={0}>
         <Grid
           item
@@ -69,8 +70,8 @@ const AccountHistory = () => {
               paddingBottom: '10px',
               color: 'secondary.main',
               fontWeight: 700,
-              fontFamily: 'Poppins-Bold !important',              
-              textTransform: 'uppercase'
+              fontFamily: 'Poppins-Bold !important',
+              textTransform: 'uppercase',
             }}
           >
             Account History
@@ -94,7 +95,7 @@ const AccountHistory = () => {
           </TabPanel>
         </Grid>
       </Grid>
-    </>
+    </Fragment>
   );
 };
 

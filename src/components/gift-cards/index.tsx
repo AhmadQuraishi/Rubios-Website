@@ -45,6 +45,7 @@ const GiftCards = () => {
                         width="24px"
                         image={card.icon}
                         alt="Gift card icon"
+                        aria-label="Gift card icon"
                       />
                     </Grid>
                     <Grid item xs={8} md={8}>
@@ -52,7 +53,7 @@ const GiftCards = () => {
                         <Typography variant="body1">{card.title}</Typography>
                         <Typography variant="body1">{card.number}</Typography>
                         <Typography variant="body1">
-                          Balance:&{card.balance}
+                          Balance:${card.balance}
                         </Typography>
                       </CardContent>
                     </Grid>

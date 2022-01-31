@@ -57,6 +57,7 @@ const Rewards = () => {
                     <FormControlLabel
                       control={<Checkbox defaultChecked />}
                       label={reward.desc}
+                      aria-label={reward.desc}
                     />
                   </FormGroup>
                 </Card>

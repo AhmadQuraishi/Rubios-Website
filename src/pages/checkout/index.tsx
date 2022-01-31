@@ -54,14 +54,26 @@ const Checkout = () => {
                         <Typography variant="h4">PICK UP INFO</Typography>
                       </Grid>
                       <Grid item xs={12}>
-                        <TextField placeholder="Name" />
+                        <TextField
+                          aria-label="Name"
+                          label="Name"
+                          aria-required="true"
+                        />
                       </Grid>
 
                       <Grid item xs={12}>
-                        <TextField placeholder="Phone Number" />
+                        <TextField
+                          aria-label="Phone Number"
+                          label="Phone Number"
+                          aria-required="true"
+                        />
                       </Grid>
                       <Grid item xs={12}>
-                        <TextField placeholder="Email" />
+                        <TextField
+                          aria-label="Email"
+                          label="Email"
+                          aria-required="true"
+                        />
                       </Grid>
 
                       <Grid item xs={12}>
@@ -69,6 +81,8 @@ const Checkout = () => {
                           <FormControlLabel
                             control={<Checkbox defaultChecked />}
                             label="send me emails with special offers and updates"
+                            aria-label="send me emails with special offers and updates"
+                            aria-required="true"
                           />
                         </FormGroup>
                       </Grid>
@@ -102,6 +116,7 @@ const Checkout = () => {
                                 value="6:10"
                                 control={<Radio />}
                                 label="6:10"
+                                aria-label="6:10"
                               />
                             </Grid>
                             <Grid item lg={3} md={6} sm={6} xs={6}>
@@ -109,6 +124,7 @@ const Checkout = () => {
                                 value="6:20"
                                 control={<Radio />}
                                 label="6:20"
+                                aria-label="6:20"
                               />
                             </Grid>
                             <Grid item lg={3} md={6} sm={6} xs={6}>
@@ -116,6 +132,7 @@ const Checkout = () => {
                                 value="6:30"
                                 control={<Radio />}
                                 label="6:30"
+                                aria-label="6:30"
                               />
                             </Grid>
                             <Grid item lg={3} md={6} sm={6} xs={6}>
@@ -123,6 +140,7 @@ const Checkout = () => {
                                 value="6:40"
                                 control={<Radio />}
                                 label="6:40"
+                                aria-label="6:40"
                               />
                             </Grid>
                           </RadioGroup>
@@ -131,11 +149,20 @@ const Checkout = () => {
                     </Grid>
                     <Grid item xs={12}>
                       <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">
+                        <InputLabel
+                          id="select-more-times"
+                          aria-label="More Times"
+                        >
                           MORE TIMES
                         </InputLabel>
-                        <Select value={time} onChange={handleChange}>
-                          <MenuItem value={10}>7.10</MenuItem>
+                        <Select
+                          id="select-label"
+                          labelId="select-more-times"
+                          value={time}
+                          onChange={handleChange}
+                          label="Select More times"
+                        >
+                          <MenuItem value={10}>7:10</MenuItem>
                           <MenuItem value={20}>8:10</MenuItem>
                           <MenuItem value={30}>9:10</MenuItem>
                         </Select>

@@ -30,32 +30,27 @@ const PaymentInformation = () => {
         lg={10}
         sx={{ padding: { xs: '30px 20px', sm: '30px 40px' } }}
       >
-        <Box>
-          <Grid container>
-            {/*column for space*/}
-            <Grid item xs={1} sm={1} md={1} lg={1} />
+        <Grid container>
+          <Grid item xs={12}>
+            <Typography variant="h4">PAYMENT INFORMATION</Typography>
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              textColor="secondary"
+              indicatorColor="secondary"
+              aria-label="Payment Information tabs"
+            >
+              <Tab aria-label="credit cards" value="1" label="CREDIT CARDS" />
+              <Tab aria-label="gift cards" value="2" label="GIFT CARDS" />
+            </Tabs>
 
-            <Grid item xs={10} sm={10} md={9} lg={9}>
-              <Typography variant="h4">PAYMENT INFORMATION</Typography>
-              <Tabs
-                value={value}
-                onChange={handleChange}
-                textColor="secondary"
-                indicatorColor="secondary"
-                aria-label="Payment Information tabs"
-              >
-                <Tab aria-label="credit cards" value="1" label="CREDIT CARDS" />
-                <Tab aria-label="gift cards" value="2" label="GIFT CARDS" />
-              </Tabs>
-
-              {value === '1' && <CreditCards />}
-              {value === '2' && <GiftCards />}
-            </Grid>
-
-            {/*column for space*/}
-            <Grid item xs={1} sm={1} md={2} lg={2} />
+            {value === '1' && <CreditCards />}
+            {value === '2' && <GiftCards />}
           </Grid>
-        </Box>
+          <Grid item xs={12}>
+            <Button sx={{ display: { xs: 'flex', sm: 'none' } }}>back</Button>
+          </Grid>
+        </Grid>
       </Grid>
     </Grid>
   );
