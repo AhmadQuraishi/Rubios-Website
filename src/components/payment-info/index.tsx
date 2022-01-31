@@ -14,24 +14,40 @@ const PaymentInfo = () => {
           <Grid item xs={12} sm={12} md={6}>
             <Grid container>
               <Grid item xs={12}>
-                <TextField placeholder="First Name" />
+                <TextField
+                  label="First Name"
+                  aria-label="First Name"
+                  aria-required="true"
+                />
               </Grid>
               <Grid item xs={12}>
-                <TextField placeholder="Card Number" />
+                <TextField
+                  label="Card Number"
+                  aria-label="Card Number"
+                  aria-required="true"
+                />
               </Grid>
             </Grid>
           </Grid>
           <Grid item xs={12} sm={12} md={6}>
             <Grid container>
               <Grid item xs={12}>
-                <TextField placeholder="Last Name" />
+                <TextField
+                  label="Last Name"
+                  aria-label="Last Name"
+                  aria-required="true"
+                />
               </Grid>
               <Grid item xs={5}>
-                <TextField placeholder="CVV" />
+                <TextField label="CVV" aria-label="CVV" aria-required="true" />
               </Grid>
               <Grid item xs={1} />
               <Grid item xs={5}>
-                <TextField placeholder="MM/DD/YY" />
+                <TextField
+                  label="MM/DD/YY"
+                  aria-label="Month/Day/Year"
+                  aria-required="true"
+                />
               </Grid>
             </Grid>
           </Grid>
