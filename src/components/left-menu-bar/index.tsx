@@ -47,7 +47,7 @@ const LeftMenuBar = () => {
         </ListItem>
         <Divider />
         <ListItem>
-          <Link to="/account/orders" className={classes.link}>
+          <Link to="/account/ordersHistory" className={classes.link}>
             <ListItemText primary="Orders" />
           </Link>
         </ListItem>

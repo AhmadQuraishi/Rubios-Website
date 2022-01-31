@@ -1,14 +1,12 @@
 import {
   Grid,
-  Box,
   Typography,
   Card,
-  TextField,
   Button,
-  Link,
   CardContent,
 } from '@mui/material';
 import LeftMenuBar from '../../components/left-menu-bar';
+import {Link} from 'react-router-dom'
 
 const DeliveryAddress = () => {
   return (
@@ -31,6 +29,7 @@ const DeliveryAddress = () => {
           sx={{ padding: { xs: '30px 20px', sm: '30px 40px' } }}
         >
           <Grid container>
+      <Grid item xs={1} sm={0.5} md={0.5} lg={1} />
             <Typography variant="h5">DELIVERY ADDRESSES</Typography>
             <Grid item xs={10} sm={10} md={10} lg={4}>
               <Grid container marginTop="80px">
@@ -49,6 +48,7 @@ const DeliveryAddress = () => {
                       textAlign="right"
                       variant="button"
                       color="text.secondary"
+                      aria-label='edit button'
                     >
                       {' '}
                       EDIT{' '}
@@ -57,6 +57,7 @@ const DeliveryAddress = () => {
                       textAlign="right"
                       variant="button"
                       color="text.secondary"
+                      aria-label='delete button'
                     >
                       {' '}
                       DELETE{' '}
@@ -78,6 +79,7 @@ const DeliveryAddress = () => {
                       textAlign="right"
                       variant="button"
                       color="text.secondary"
+                      aria-label='edit button'
                     >
                       {' '}
                       EDIT{' '}
@@ -86,20 +88,24 @@ const DeliveryAddress = () => {
                       textAlign="right"
                       variant="button"
                       color="text.secondary"
+                      aria-label='delete button'
                     >
                       {' '}
                       DELETE{' '}
                     </Typography>
-                    <Typography textAlign="right" variant="button" color="blue">
+                    <Typography aria-label='make default' textAlign="right" variant="button" color="blue">
                       {' '}
                       MARK DEFAULT{' '}
                     </Typography>
                   </CardContent>
                 </Card>
-              </Grid>
-              <Button variant="contained" size="large">
+              </Grid>          
+              <Link to="/account/addDeliveryAddress">
+
+              <Button aria-label='add address' variant="contained" size="large">
                 ADD ADDRESS
               </Button>
+          </Link>
             </Grid>
           </Grid>
         </Grid>

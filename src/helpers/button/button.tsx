@@ -12,7 +12,7 @@ const useStyle = makeStyles(() => ({
 const CustomButton = (props: any) =>{
   const classes = useStyle()
     return (
-        <Button variant={props.variant} fullWidth style={{marginTop: '6px'}} >
+        <Button aria-label={props.ariaLabel} variant={props.variant} fullWidth style={{marginTop: '6px'}} >
               {props.text}
         </Button>
     )

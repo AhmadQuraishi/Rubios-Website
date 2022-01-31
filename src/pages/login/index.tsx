@@ -59,6 +59,7 @@ const Login = () => {
                     name="email"
                     autoComplete="email"
                     autoFocus
+                    aria-label='email address'
                   />
                   <br />
                   <TextField
@@ -70,13 +71,14 @@ const Login = () => {
                     type="password"
                     id="password"
                     autoComplete="current-password"
+                    aria-label='password'
                   />
                   <br />
                   <Link href="#" variant="body2">
                     Forgot password?
                   </Link>{' '}
                   <br />
-                  <Button variant="contained" style={{ marginLeft: '80px' }}>
+                  <Button aria-label='sign in' variant="contained" style={{ marginLeft: '80px' }}>
                     {' '}
                     SIGN IN
                   </Button>
@@ -87,13 +89,13 @@ const Login = () => {
                   MORE OPTIONS
                 </Typography>
                 <br />
-                <CustomButton variant="outlined" text="SIGN IN WITH FACEBOOK" />
+                <CustomButton ariaLabel="sign in with facebbok" variant="outlined" text="SIGN IN WITH FACEBOOK" />
                 <br />
-                <CustomButton variant="outlined" text="SIGN IN WITH APPLE" />
+                <CustomButton ariaLabel="sign in with apple" variant="outlined" text="SIGN IN WITH APPLE" />
                 <br />
-                <CustomButton variant="outlined" text="SIGN IN WITH GOOGLE" />
+                <CustomButton ariaLabel="sign in with google" variant="outlined" text="SIGN IN WITH GOOGLE" />
                 <br />
-                <CustomButton variant="contained" text="CREATE ACCOUNT" />
+                <CustomButton ariaLabel="create account" variant="contained" text="CREATE ACCOUNT" />
                 <br />
                 <Typography
                   variant="caption"

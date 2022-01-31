@@ -41,25 +41,25 @@ const OrderConfirmation = () => {
                                 <Typography variant='caption' style={{color: 'white'}}>Join today for completing the form below</Typography>
                                 <Grid container>
                                      <Grid item xs={12} sm={12} md={12} lg={6}>
-                                          <TextField placeholder='Jhonathen'/>
+                                          <TextField aria-label='first name' placeholder='Jhonathen'/>
                                      </Grid>
                                      <Grid item xs={12} sm={12} md={12} lg={6}>
-                                          <TextField placeholder='Doe'/>
+                                          <TextField aria-label='last name' placeholder='Doe'/>
                                      </Grid>
                                      <Grid item xs={12} sm={12} md={12} lg={6}>
-                                          <TextField placeholder='ilovetacos@email.com'/>
+                                          <TextField aria-label='email' placeholder='ilovetacos@email.com'/>
                                      </Grid>
                                      <Grid item xs={12} sm={12} md={12} lg={6}>
-                                          <TextField placeholder='11/19/1993'/>
+                                          <TextField aria-label='date of birth' placeholder='11/19/1993'/>
                                      </Grid>
                                      <Grid item xs={12} sm={12} md={12} lg={12}>
-                                          <TextField fullWidth placeholder='#000 Broadway St.San Diego Ca.'/>
+                                          <TextField aria-label='address' fullWidth placeholder='#000 Broadway St.San Diego Ca.'/>
                                      </Grid>
                                      <Grid item xs={12} sm={12} md={12} lg={6}>
-                                          <TextField placeholder='*****' type='password' />
+                                          <TextField aria-label='password' placeholder='*****' type='password' />
                                      </Grid>
                                      <Grid item xs={12} sm={12} md={12} lg={6}>
-                                     <TextField placeholder='*****' type='password' />
+                                     <TextField aria-label='confirm password' placeholder='*****' type='password' />
                                 </Grid>
                                 </Grid>
                             </Card>

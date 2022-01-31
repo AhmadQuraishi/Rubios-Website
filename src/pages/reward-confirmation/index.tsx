@@ -39,7 +39,7 @@ const RewardConfirmation = () => {
                                 <Typography  style={{ color: 'white' }}>YOUR REWARDS</Typography>
                                 <Typography style={{ color: 'white' }}> YOU EARNED 18 POINTS!</Typography>
                                 <Typography style={{ color: 'white' }}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent velit neque, vehicula vel magna ultricies, eleifend bibendum ex. Donec id neque dui. Cras ac sodales risus. In at ante nec sapien dictum imperdiet. Pellentesque iaculis urna in porta elementum. Morbi rhoncus, turpis at bibendum aliquam, ex ipsum bibendum est, ut ultrices odio libero nec diam. Vestibulum auctor neque a leo rhoncus, ut mollis dui mattis.</Typography>
-                            <Button variant='contained'>VIEW ACCOUNT</Button>
+                            <Button aria-label='view account' variant='contained'>VIEW ACCOUNT</Button>
                             <br />
                             <br />
                             <br/>

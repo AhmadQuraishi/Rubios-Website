@@ -79,6 +79,7 @@ const Product = () => {
                                  sx={{ width: 500 }}
                                  image=' https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUAKpRxf2AActPwZQg__oUrjxb7K2od0nJug0zkYc94NePv_wFW5suC8nIiXBNQRzYw3s&usqp=CAU'
                                  alt="Live from space album cover"
+                                 aria-label='image'
                              />
                         </Grid>
                     </Grid>
@@ -92,6 +93,7 @@ const Product = () => {
                                     sx={{ width: 200 }}
                                     image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUAKpRxf2AActPwZQg__oUrjxb7K2od0nJug0zkYc94NePv_wFW5suC8nIiXBNQRzYw3s&usqp=CAU"
                                     alt="Live from space album cover"
+                                    aria-label='image'
                                 />
                                      </Grid>
                                 <Grid item xs={8} sm={8} md={8} lg={5} >
@@ -113,6 +115,7 @@ const Product = () => {
                                     sx={{ width: 200 }}
                                     image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUAKpRxf2AActPwZQg__oUrjxb7K2od0nJug0zkYc94NePv_wFW5suC8nIiXBNQRzYw3s&usqp=CAU"
                                     alt="Live from space album cover"
+                                    aria-label='image'
                                 />
                                      </Grid>
                                      <Grid item xs={8} sm={8} md={8} lg={5} >
@@ -137,7 +140,7 @@ const Product = () => {
                     {/* <Typography component='div' textAlign='center'> */}
                          <Typography variant='caption'>QUANTITY</Typography>
                       
-                         <Button variant='contained'>ADD TO BOX</Button>
+                         <Button aria-label='add to bag' variant='contained'>ADD TO Bag</Button>
                     {/* </Typography> */}
                 </Grid>
             </Grid>

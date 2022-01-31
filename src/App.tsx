@@ -18,6 +18,10 @@ import Invite from './pages/invite';
 import PaymentInformation from './pages/payment-information';
 import { useLayoutEffect, useState } from 'react';
 import UpdatePaymentCard from './pages/update-card-info';
+import OrdersHistory from './pages/order-history';
+import Profile from './pages/profile';
+import AddDeliveryAddress from './pages/add-delivery-address';
+
 
 function App(props: any) {
   const location = useLocation();
@@ -51,12 +55,21 @@ function App(props: any) {
             path="/account/deliveryaddress"
             element={<DeliveryAddress />}
           />
+           <Route
+            path="/account/addDeliveryAddress"
+            element={<AddDeliveryAddress />}
+          />
           <Route path="/account/history" element={<AccountHistory />} />
           <Route path="/account/checkin" element={<CheckIn />} />
           <Route path="/account/invite" element={<Invite />} />
+          <Route path="/account/profile" element={<Profile />} />
           <Route
             path="/account/paymentinformation"
             element={<PaymentInformation />}
+          />
+            <Route
+            path="/account/ordersHistory"
+            element={<OrdersHistory />}
           />
           <Route
             path="/account/updatepaymentcard"
