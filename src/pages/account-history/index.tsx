@@ -47,54 +47,35 @@ const AccountHistory = () => {
 
   return (
     <Fragment>
-      <Grid container spacing={0}>
-        <Grid
-          item
-          xs={0}
-          sm={3}
-          lg={2}
-          sx={{ display: { xs: 'none', sm: 'grid' } }}
+      <Typography
+        variant="h5"
+        sx={{
+          paddingBottom: '10px',
+          color: 'secondary.main',
+          fontWeight: 700,
+          fontFamily: 'Poppins-Bold !important',
+          textTransform: 'uppercase',
+        }}
+      >
+        Account History
+      </Typography>
+      <Box>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          aria-label="Account History Tabs"
+          indicatorColor="primary"
         >
-          <LeftMenuBar />
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          sm={9}
-          lg={10}
-          sx={{ padding: { xs: '30px 20px', sm: '30px 40px' } }}
-        >
-          <Typography
-            variant="h5"
-            sx={{
-              paddingBottom: '10px',
-              color: 'secondary.main',
-              fontWeight: 700,
-              fontFamily: 'Poppins-Bold !important',
-              textTransform: 'uppercase',
-            }}
-          >
-            Account History
-          </Typography>
-          <Box>
-            <Tabs
-              value={value}
-              onChange={handleChange}
-              aria-label="Account History Tabs"
-              indicatorColor="primary"
-            >
-              <Tab label="All History" {...a11yProps(0)} />
-              <Tab label="Transaction History" {...a11yProps(1)} />
-            </Tabs>
-          </Box>
-          <TabPanel value={value} index={0}>
-            <HistoryGrid />
-          </TabPanel>
-          <TabPanel value={value} index={1}>
-            <HistoryGrid />
-          </TabPanel>
-        </Grid>
-      </Grid>
+          <Tab label="All History" {...a11yProps(0)} />
+          <Tab label="Transaction History" {...a11yProps(1)} />
+        </Tabs>
+      </Box>
+      <TabPanel value={value} index={0}>
+        <HistoryGrid />
+      </TabPanel>
+      <TabPanel value={value} index={1}>
+        <HistoryGrid />
+      </TabPanel>
     </Fragment>
   );
 };

@@ -116,7 +116,7 @@ const Header = (props: any) => {
                   variant="body1"
                   component="span"
                   fontWeight="700"
-                  sx={{ fontSize: { xs: '12px', md: '18px' } }}
+                  sx={{ fontSize: { xs: '12px', md: '15px' } }}
                   color="primary.main"
                 >
                   Hi Stackey !

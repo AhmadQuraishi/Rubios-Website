@@ -77,7 +77,7 @@ const HistoryGrid = () => {
             <>
               <Grid
                 item
-                key={index}
+                key={index + '-col1'}
                 xs={0}
                 sm={3}
                 sx={{
@@ -94,6 +94,7 @@ const HistoryGrid = () => {
               </Grid>
               <Grid
                 item
+                key={index + '-col2'}
                 xs={4}
                 sm={3}
                 sx={{
@@ -109,6 +110,7 @@ const HistoryGrid = () => {
               </Grid>
               <Grid
                 item
+                key={index + '-col3'}
                 xs={8}
                 sm={6}
                 sx={{
