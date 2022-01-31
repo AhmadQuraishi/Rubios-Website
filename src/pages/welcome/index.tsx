@@ -55,6 +55,7 @@ const Welcome = () => {
                     sx={{ width: 120 }}
                     image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUAKpRxf2AActPwZQg__oUrjxb7K2od0nJug0zkYc94NePv_wFW5suC8nIiXBNQRzYw3s&usqp=CAU"
                     alt="Live from space album cover"
+                    aria-label="image"
                   />
                   <CardContent sx={{ flex: '1 0 auto' }}>
                     <Typography variant="body2">
@@ -69,11 +70,11 @@ const Welcome = () => {
                       {' '}
                       1x Medium Drink...{' '}
                     </Typography>
-                    <Typography variant="button" color="text.secondary">
+                    <Typography aria-label="edit order" variant="button" color="text.secondary">
                       {' '}
                       EDIT ORDER{' '}
                     </Typography>{' '}
-                    <Typography variant="button" color="blue">
+                    <Typography aria-label="order" variant="button" color="blue">
                       {' '}
                       ORDER{' '}
                     </Typography>
@@ -100,11 +101,11 @@ const Welcome = () => {
                 </Typography>
                 <Typography variant="h6">San Diego, CA</Typography>
                 <Typography variant="h6">4.2 Mile Away</Typography>
-                <CustomButton variant="contained" text="PICKUP" />
+                <CustomButton aria-label="pickup button" variant="contained" text="PICKUP" />
                 <br />
-                <CustomButton variant="contained" text="CURBSIDE" />
+                <CustomButton aria-label="curbside button" variant="contained" text="CURBSIDE" />
                 <br />
-                <CustomButton variant="contained" text="DELIVERY" />
+                <CustomButton aria-label="delivery button" variant="contained" text="DELIVERY" />
                 <br />
               </Grid>
             </Grid>

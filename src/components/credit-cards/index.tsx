@@ -7,26 +7,27 @@ import {
   Grid,
   Typography,
 } from '@mui/material';
-import gc_icon from '../../assets/imgs/gift_card_icon.png';
+import card from '../../assets/imgs/card.png';
+import { Link } from 'react-router-dom';
 
 const CreditCards = () => {
   const creditcardsList = [
     {
-      icon: gc_icon,
+      icon: card,
       title: 'Company Card',
       number: 'Mastercard x-9345',
       exp_date: 'Exp 12/28',
       default: true,
     },
     {
-      icon: gc_icon,
+      icon: card,
       title: `Personal Card`,
       number: 'Mastercard x-9345',
       exp_date: 'Exp 12/28',
       default: false,
     },
     {
-      icon: gc_icon,
+      icon: card,
       title: 'Credit Card',
       number: 'Mastercard x-9345',
       exp_date: 'Exp 12/28',
@@ -66,7 +67,9 @@ const CreditCards = () => {
                       </CardContent>
                     </Grid>
                     <Grid item xs={12}>
-                      <Button>Edit</Button>
+                      <Link to="/account/updatepaymentcard">
+                        <Button>Edit</Button>
+                      </Link>
                       <Button>Delete</Button>
                       {!card.default && <Button>Make default</Button>}
                     </Grid>
@@ -80,7 +83,9 @@ const CreditCards = () => {
       </Grid>
 
       <Grid item xs={6}>
-        <Button variant="contained">ADD CARD</Button>
+        <Link to="/account/updatepaymentcard">
+          <Button variant="contained">ADD CARD</Button>
+        </Link>
       </Grid>
 
       <Grid item xs={6}></Grid>

@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import AccountLinks from '../account-links';
 const LeftMenuBar = () => {
-    return (
+  return (
     <Box
       sx={{
         boxShadow: 2,

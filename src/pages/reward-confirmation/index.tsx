@@ -44,7 +44,7 @@ const RewardConfirmation = () => {
                   ipsum bibendum est, ut ultrices odio libero nec diam.
                   Vestibulum auctor neque a leo rhoncus, ut mollis dui mattis.
                 </Typography>
-                <Button variant="contained">VIEW ACCOUNT</Button>
+                <Button aria-label="view account" variant="contained">VIEW ACCOUNT</Button>
                 <br />
                 <br />
                 <br />
