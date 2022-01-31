@@ -77,6 +77,7 @@ const HistoryGrid = () => {
             <>
               <Grid
                 item
+                key={index}
                 xs={0}
                 sm={3}
                 sx={{

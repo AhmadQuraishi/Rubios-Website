@@ -1,4 +1,4 @@
-import { Grid, Typography, Card, TextField } from '@mui/material';
+import { Grid, Typography, Card, TextField, Button } from '@mui/material';
 import LeftMenuBar from '../../components/left-menu-bar';
 
 const UpdatePaymentCard = () => {
@@ -39,13 +39,18 @@ const UpdatePaymentCard = () => {
             <Grid
               container
               spacing={0}
-              sx={{ flexDirection: { xs: 'column-reverse', lg: 'row' } }}
+              sx={{
+                flexDirection: { xs: 'column-reverse', lg: 'row' },
+                width: { xs: '90%', lg: '90%' },
+              }}
             >
               <Grid
                 item
                 xs={12}
                 lg={8}
-                sx={{ paddingRight: { xs: '0px', lg: '25px' } }}
+                sx={{
+                  paddingRight: { xs: '0px', lg: '25px' },
+                }}
               >
                 <Grid container spacing={0}>
                   <Grid item xs={12} sx={{ paddingBottom: '20px' }}>
@@ -149,6 +154,14 @@ const UpdatePaymentCard = () => {
                       variant="outlined"
                       sx={{ width: '100%' }}
                     />
+                  </Grid>
+                  <Grid item xs={12} sx={{ paddingBottom: '20px' }}>
+                    <Button
+                      variant="contained"
+                      sx={{ width: { xs: '100%', lg: '400px' } }}
+                    >
+                      UPDATE CARD
+                    </Button>
                   </Grid>
                 </Grid>
               </Grid>

@@ -12,14 +12,15 @@ import { makeStyles } from '@mui/styles';
 
 import { Link } from 'react-router-dom';
 
+import { useState } from 'react';
+
 import MenuIcon from '@mui/icons-material/Menu';
 import logo from '../../assets/imgs/rubios-logo-color.png';
 import cartIcon from '../../assets/imgs/cart-icon.svg';
 import cartIconMobile from '../../assets/imgs/cart-icon-mobile.svg';
 
-import { useEffect, useState } from 'react';
-
 import Cart from '../cart';
+import AccountLinks from '../account-links';
 
 const useStyles = makeStyles((theme: Theme) => ({
   navBar: {
@@ -30,6 +31,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   logo: {
     flexGrow: '1',
     cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
   },
   logoImg: {
     display: 'inline-block',
@@ -39,6 +42,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     [theme.breakpoints.down('sm')]: {
       padding: '18px 0 14px 20px',
+    },
+    '& img': {
+      width: '90%',
     },
   },
   icon: {
@@ -62,13 +68,12 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const Header = (props: any) => {
-  const { showCartIcon } = props;
+  const { removeCart } = props;
   const classes = useStyles();
   const theme = useTheme();
   const [openDrawer, setOpenDrawer] = useState(false);
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [showCart, setShowCart] = useState(false);
-
 
   const handleShowCart = () => {
     setShowCart(!showCart);
@@ -84,14 +89,40 @@ const Header = (props: any) => {
           }}
         >
           <Typography variant="h4" className={classes.logo}>
-            <Link to="/" className={classes.logoImg}>
-              <img
-                aria-label="Rubio's Cosatal Grill"
-                src={logo}
-                style={{ display: 'flex', width: '100%' }}
-                alt="Rubio's Cosatal Grill"
-              />
-            </Link>
+            {!removeCart ? (
+              <Link to="/" className={classes.logoImg}>
+                <img
+                  aria-label="Rubio's Cosatal Grill"
+                  src={logo}
+                  style={{ display: 'flex' }}
+                  alt="Rubio's Cosatal Grill"
+                />
+              </Link>
+            ) : (
+              <>
+                <Link
+                  to="/"
+                  className={classes.logoImg}
+                  style={{ padding: '20px 0px 20px 15px' }}
+                >
+                  <img
+                    aria-label="Rubio's Cosatal Grill"
+                    src={logo}
+                    style={{ display: 'flex' }}
+                    alt="Rubio's Cosatal Grill"
+                  />
+                </Link>
+                <Typography
+                  variant="body1"
+                  component="span"
+                  fontWeight="700"
+                  sx={{ fontSize: { xs: '12px', md: '18px' } }}
+                  color="primary.main"
+                >
+                  Hi Stackey !
+                </Typography>
+              </>
+            )}
           </Typography>
           {isMobile ? (
             <>
@@ -101,8 +132,9 @@ const Header = (props: any) => {
                     Main Menu
                   </Link>
                 </div>
+                <AccountLinks closeDrawer={removeCart ? setOpenDrawer : null} />
               </Drawer>
-              {showCartIcon && (
+              {!removeCart && (
                 <img
                   onClick={handleShowCart}
                   src={cartIconMobile}
@@ -122,7 +154,7 @@ const Header = (props: any) => {
               <Link to="/" className={classes.menuLink}>
                 Main Menu
               </Link>
-              {showCartIcon && (
+              {!removeCart && (
                 <Typography
                   component="div"
                   onClick={handleShowCart}
