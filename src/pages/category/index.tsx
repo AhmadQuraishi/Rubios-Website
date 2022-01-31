@@ -3,7 +3,7 @@ import ProductListing from '../../components/product-listing';
 import { Grid, Theme, Typography, Tabs, Tab, Box } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 
 const useStyles = makeStyles((theme: Theme) => ({
   heading: {
@@ -50,7 +50,7 @@ const CategoryList = () => {
   };
 
   return (
-    <>
+    <Fragment>
       <StoreInfoBar />
       <Box
         sx={{
@@ -110,7 +110,7 @@ const CategoryList = () => {
         </Grid>
       ))}
       <div style={{ paddingBottom: '30px' }}></div>
-    </>
+    </Fragment>
   );
 };
 

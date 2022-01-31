@@ -1,18 +1,16 @@
 import {
   Grid,
-  Box,
   Typography,
   Card,
-  TextField,
   Button,
-  Link,
   CardContent,
 } from '@mui/material';
+import { Fragment } from 'react';
 import LeftMenuBar from '../../components/left-menu-bar';
 
 const DeliveryAddress = () => {
   return (
-    <>
+    <Fragment>
       <Grid container spacing={0}>
       <Grid
           item
@@ -104,7 +102,7 @@ const DeliveryAddress = () => {
           </Grid>
         </Grid>
       </Grid>
-    </>
+    </Fragment>
   );
 };
 

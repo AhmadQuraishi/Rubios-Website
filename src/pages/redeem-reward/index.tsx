@@ -8,6 +8,7 @@ import {
   Link,
   CardContent,
 } from '@mui/material';
+import { Fragment } from 'react';
 import FoodMenuCard from '../../components/food-menu-card';
 import LeftMenuBar from '../../components/left-menu-bar';
 
@@ -35,7 +36,7 @@ const RedeemRewards = () => {
     },
   ];
   return (
-    <>
+    <Fragment>
       <Grid container>
       <Grid
           item
@@ -62,7 +63,7 @@ const RedeemRewards = () => {
           </Grid>
         </Grid>
       </Grid>
-    </>
+    </Fragment>
   );
 };
 

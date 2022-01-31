@@ -9,6 +9,7 @@ import {
   Link,
 } from '@mui/material';
 import CustomButton from '../../helpers/button/button';
+import { Fragment } from 'react';
 
 const useStyle = makeStyles(() => ({
   root: {
@@ -27,7 +28,7 @@ const useStyle = makeStyles(() => ({
 const Login = () => {
   const classes = useStyle();
   return (
-    <>
+    <Fragment>
       <Grid container component="main" className={classes.root}>
         <Grid
           item
@@ -106,7 +107,7 @@ const Login = () => {
           </Card>
         </Grid>
       </Grid>
-    </>
+    </Fragment>
   );
 };
 
