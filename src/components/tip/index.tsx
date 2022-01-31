@@ -23,11 +23,7 @@ const Tip = () => {
             <Typography variant="h4">TIP</Typography>
             <Grid container>
               <FormControl>
-                <RadioGroup
-                  row
-                  aria-labelledby="demo-row-radio-buttons-group-label"
-                  name="row-radio-buttons-group"
-                >
+                <RadioGroup row aria-labelledby="tip" name="Tip percentage">
                   <Grid item xs={12}>
                     <FormControlLabel
                       value="10"
