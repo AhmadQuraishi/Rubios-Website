@@ -78,6 +78,7 @@ const CategoryList = () => {
               key={index}
               value={`${index}`}
               label={item}
+              title={item}
               color="secondary.main"
               sx={{ fontFamily: 'Poppins-Medium !important' }}
             />

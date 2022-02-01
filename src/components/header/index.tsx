@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   menuLink: {
     textTransform: 'uppercase',
     display: 'block',
-    paddingTop: '35px',
+    paddingTop: '30px',
     paddingRight: '25px',
     color: theme.palette.primary.main,
     fontFamily: 'Poppins-Medium !important',
@@ -96,6 +96,7 @@ const Header = (props: any) => {
                   src={logo}
                   style={{ display: 'flex' }}
                   alt="Rubio's Cosatal Grill"
+                  title="Rubio's Cosatal Grill Logo"
                 />
               </Link>
             ) : (
@@ -110,16 +111,20 @@ const Header = (props: any) => {
                     src={logo}
                     style={{ display: 'flex' }}
                     alt="Rubio's Cosatal Grill"
+                    title="Rubio's Cosatal Grill Logo"
                   />
                 </Link>
                 <Typography
                   variant="body1"
                   component="span"
                   fontWeight="700"
-                  sx={{ fontSize: { xs: '12px', md: '15px' } }}
+                  paddingTop="5px"
+                  sx={{ fontSize: { xs: '11px', md: '13px' } }}
                   color="primary.main"
+                  textTransform="uppercase"
+                  title=" Hi Stacey"
                 >
-                  Hi Stackey !
+                  Hi, Stacey !
                 </Typography>
               </>
             )}
@@ -128,7 +133,11 @@ const Header = (props: any) => {
             <>
               <Drawer open={openDrawer} onClose={() => setOpenDrawer(false)}>
                 <div style={{ padding: '20px' }}>
-                  <Link to="/category" className={classes.menuLink}>
+                  <Link
+                    to="/category"
+                    className={classes.menuLink}
+                    title="Main Menu"
+                  >
                     Main Menu
                   </Link>
                 </div>
@@ -140,18 +149,19 @@ const Header = (props: any) => {
                   src={cartIconMobile}
                   alt="Cart Icon"
                   style={{ width: '25px', paddingRight: '10px' }}
+                  title="Cart Icon"
                 />
               )}
               <IconButton
                 onClick={() => setOpenDrawer(!openDrawer)}
                 className={classes.icon}
               >
-                <MenuIcon fontSize="large" />
+                <MenuIcon fontSize="large" titleAccess="Cart Icon" />
               </IconButton>
             </>
           ) : (
             <>
-              <Link to="/" className={classes.menuLink}>
+              <Link to="/" className={classes.menuLink} title="Main Menu">
                 Main Menu
               </Link>
               {!removeCart && (
@@ -175,6 +185,7 @@ const Header = (props: any) => {
                     src={cartIcon}
                     style={{ width: '38px' }}
                     alt="Cart Icon"
+                    title="Cart Icon"
                   />
                 </Typography>
               )}

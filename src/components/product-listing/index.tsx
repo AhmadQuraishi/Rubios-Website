@@ -97,21 +97,40 @@ const ProductListing = () => {
                 <CardMedia
                   className={classes.img}
                   component="img"
-                  image={item.image}
-                  alt="Taco Kit"
+                  image={item.image + ' image'}
+                  alt={item.name}
+                  title={item.name}
                 />
                 <CardContent sx={{ padding: '0' }}>
-                  <Typography variant="body1" className={classes.title}>
+                  <Typography
+                    variant="body1"
+                    title={item.name}
+                    className={classes.title}
+                  >
                     {item.name}
                   </Typography>
-                  <Typography variant="caption" className={classes.content}>
+                  <Typography
+                    variant="caption"
+                    title={item.desc}
+                    className={classes.content}
+                  >
                     {item.desc}
                   </Typography>
                   <Grid container spacing={0}>
-                    <Grid item xs={6} className={classes.cal}>
+                    <Grid
+                      item
+                      xs={6}
+                      title={`${item.cal} cal`}
+                      className={classes.cal}
+                    >
                       {item.cal} cal
                     </Grid>
-                    <Grid item xs={6} className={classes.price}>
+                    <Grid
+                      item
+                      xs={6}
+                      title={`$${item.price}`}
+                      className={classes.price}
+                    >
                       ${item.price}
                     </Grid>
                   </Grid>

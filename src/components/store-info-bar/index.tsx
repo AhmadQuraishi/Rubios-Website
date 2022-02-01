@@ -36,6 +36,7 @@ const StoreInfoBar = () => {
               className={classes.heading}
               variant="body2"
               textTransform="uppercase"
+              title="Pick Up From"
             >
               Pick Up From
             </Typography>
@@ -47,6 +48,7 @@ const StoreInfoBar = () => {
               lineHeight={1.3}
               fontFamily="Poppins-Bold !important"
               sx={{ fontSize: { xs: 30, sm: 35, lg: 40 } }}
+              title="Broadway Blvd"
             >
               Broadway Blvd
             </Typography>
@@ -66,6 +68,7 @@ const StoreInfoBar = () => {
               className={classes.heading}
               variant="body2"
               textTransform="uppercase"
+              title="Address"
             >
               Address
             </Typography>
@@ -75,6 +78,7 @@ const StoreInfoBar = () => {
               textTransform="uppercase"
               fontSize={11}
               paddingTop="8px"
+              title="2120 North 59th Ave Str. 56th. A34, San Diego, CA, 4.2 Miles Away"
             >
               2120 North 59th Ave Str. 56th. A34
               <br />
@@ -96,6 +100,7 @@ const StoreInfoBar = () => {
               className={classes.heading}
               variant="body1"
               textTransform="uppercase"
+              title="Hours"
             >
               Hours
             </Typography>
@@ -113,6 +118,7 @@ const StoreInfoBar = () => {
                     sx={{
                       padding: '0 0 0 0',
                     }}
+                    title="M-S"
                   >
                     M-S
                   </ListItem>
@@ -120,6 +126,7 @@ const StoreInfoBar = () => {
                     sx={{
                       padding: '0 0 0 0',
                     }}
+                    title="S"
                   >
                     S
                   </ListItem>
@@ -138,6 +145,7 @@ const StoreInfoBar = () => {
                     sx={{
                       padding: '0 0 0 0',
                     }}
+                    title="10AM - 9PM"
                   >
                     10AM - 9PM
                   </ListItem>
@@ -145,6 +153,7 @@ const StoreInfoBar = () => {
                     sx={{
                       padding: '0 0 0 0',
                     }}
+                    title="10:30AM - 5:30PM"
                   >
                     10:30AM - 5:30PM
                   </ListItem>

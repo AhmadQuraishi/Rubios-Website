@@ -82,11 +82,20 @@ const Product = () => {
         <Grid item xs={12} sm={12} md={12} lg={12}>
           <Grid container>
             <Grid item xs={12} sm={12} md={12} lg={6}>
-              <Typography variant="caption" style={{ color: 'blue' }}>
+              <Typography
+                variant="caption"
+                title="PICK UP YOUR"
+                style={{ color: 'blue' }}
+              >
                 PICK UP YOUR
               </Typography>
-              <Typography variant="h5">Maxican Street Toca Plate </Typography>
-              <Typography variant="subtitle1">
+              <Typography variant="h5" title="Maxican Street Toca Plate">
+                Maxican Street Toca Plate
+              </Typography>
+              <Typography
+                variant="subtitle1"
+                title="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+              >
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
                 ipsum lorem, laoreet vel nulla at, pellentesque rhoncus nibh.
                 Suspendisse potenti. Vestibulum ante ipsum primis in faucibus
@@ -103,10 +112,16 @@ const Product = () => {
               </Typography>
 
               <Typography component="div">
-                <Typography variant="caption" style={{ color: 'blue' }}>
+                <Typography
+                  variant="caption"
+                  title="1000 Cal"
+                  style={{ color: 'blue' }}
+                >
                   1000 Cal
                 </Typography>
-                <Typography variant="caption">$9.69</Typography>
+                <Typography variant="caption" title="$9.69">
+                  $9.69
+                </Typography>
               </Typography>
             </Grid>
             <Grid item xs={12} sm={12} md={12} lg={6}>
@@ -116,6 +131,7 @@ const Product = () => {
                 image=" https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUAKpRxf2AActPwZQg__oUrjxb7K2od0nJug0zkYc94NePv_wFW5suC8nIiXBNQRzYw3s&usqp=CAU"
                 alt="Live from space album cover"
                 aria-label="image"
+                title="Live from space album cover"
               />
             </Grid>
           </Grid>
@@ -130,21 +146,30 @@ const Product = () => {
                       image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUAKpRxf2AActPwZQg__oUrjxb7K2od0nJug0zkYc94NePv_wFW5suC8nIiXBNQRzYw3s&usqp=CAU"
                       alt="Live from space album cover"
                       aria-label="image"
+                      title="Live from space album cover"
                     />
                   </Grid>
                   <Grid item xs={8} sm={8} md={8} lg={5}>
                     <CardContent sx={{ flex: '1 0 auto' }}>
-                      <Typography variant="caption" color="blue">
-                        {' '}
-                        TACO ONE{' '}
+                      <Typography
+                        title="TACO ONE"
+                        variant="caption"
+                        color="blue"
+                      >
+                        TACO ONE
                       </Typography>
-                      <Typography variant="h6">
-                        {' '}
-                        MAXICAN STREET CORN SHRIMP TACO{' '}
+                      <Typography
+                        variant="h6"
+                        title="MAXICAN STREET CORN SHRIMP TACO"
+                      >
+                        MAXICAN STREET CORN SHRIMP TACO
                       </Typography>
-                      <Typography variant="caption" color="blue">
-                        {' '}
-                        CLICK TO CUSTOMIZE{' '}
+                      <Typography
+                        variant="caption"
+                        color="blue"
+                        title="CLICK TO CUSTOMIZE"
+                      >
+                        CLICK TO CUSTOMIZE
                       </Typography>
                     </CardContent>
                   </Grid>
@@ -161,21 +186,30 @@ const Product = () => {
                       image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUAKpRxf2AActPwZQg__oUrjxb7K2od0nJug0zkYc94NePv_wFW5suC8nIiXBNQRzYw3s&usqp=CAU"
                       alt="Live from space album cover"
                       aria-label="image"
+                      title="Live from space album cover"
                     />
                   </Grid>
                   <Grid item xs={8} sm={8} md={8} lg={5}>
                     <CardContent sx={{ flex: '1 0 auto' }}>
-                      <Typography variant="caption" color="blue">
-                        {' '}
-                        TACO TWO{' '}
+                      <Typography
+                        variant="caption"
+                        title="TACO TWO"
+                        color="blue"
+                      >
+                        TACO TWO
                       </Typography>
-                      <Typography variant="h6">
-                        {' '}
-                        MAXICAN STREET CORN SHRIMP TACO{' '}
+                      <Typography
+                        variant="h6"
+                        title="MAXICAN STREET CORN SHRIMP TACO"
+                      >
+                        MAXICAN STREET CORN SHRIMP TACO
                       </Typography>
-                      <Typography variant="caption" color="blue">
-                        {' '}
-                        CLICK TO CUSTOMIZE{' '}
+                      <Typography
+                        title="CLICK TO CUSTOMIZE"
+                        variant="caption"
+                        color="blue"
+                      >
+                        CLICK TO CUSTOMIZE
                       </Typography>
                     </CardContent>
                   </Grid>
@@ -183,21 +217,31 @@ const Product = () => {
               </Card>
             </Grid>
           </Grid>
-          <Typography variant="h6">SELECT SIDE ONE</Typography>
+          <Typography variant="h6" title="SELECT SIDE ONE">
+            SELECT SIDE ONE
+          </Typography>
           <FoodMenuCard menuItems={menuItems1} />
-          <Typography variant="h6">SELECT SIDE TWO</Typography>
+          <Typography variant="h6" title="SELECT SIDE TWO">
+            SELECT SIDE TWO
+          </Typography>
           <FoodMenuCard menuItems={menuItems2} />
-          <Typography variant="h6">ADD A DRINK</Typography>
+          <Typography variant="h6" title="ADD A DRINK">
+            ADD A DRINK
+          </Typography>
           <FoodMenuCard menuItems={drinks} />
           <br />
           <br />
-          {/* <Typography component='div' textAlign='center'> */}
-          <Typography variant="caption">QUANTITY</Typography>
+          <Typography variant="caption" title="QUANTITY">
+            QUANTITY
+          </Typography>
 
-          <Button aria-label="add to bag" variant="contained">
+          <Button
+            aria-label="add to bag"
+            title="ADD TO Bag"
+            variant="contained"
+          >
             ADD TO Bag
           </Button>
-          {/* </Typography> */}
         </Grid>
       </Grid>
     </Fragment>

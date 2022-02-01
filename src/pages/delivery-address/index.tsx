@@ -13,74 +13,89 @@ const DeliveryAddress = () => {
           <Grid container marginTop="80px">
             <Card elevation={0} style={{ border: '1px solid blue' }}>
               <CardContent>
-                <Typography variant="body2">DEFAULT Stacey's Home</Typography>
-                <Typography variant="body1"> 5326 Highway Ave. </Typography>
-                <Typography variant="body1"> Apt 342 </Typography>
-                <Typography variant="body1">
-                  {' '}
-                  Carisbad, CA 34092-342387{' '}
+                <Typography variant="body2" title="DEFAULT Stacey's Home">
+                  DEFAULT Stacey's Home
+                </Typography>
+                <Typography variant="body1" title="5326 Highway Ave.">
+                  5326 Highway Ave.
+                </Typography>
+                <Typography variant="body1" title="Apt 342">
+                  Apt 342
+                </Typography>
+                <Typography variant="body1" title="Carisbad, CA 34092-342387">
+                  Carisbad, CA 34092-342387
                 </Typography>
                 <Typography
                   textAlign="right"
                   variant="button"
                   color="text.secondary"
                   aria-label="edit button"
+                  title="Edit"
                 >
-                  {' '}
-                  EDIT{' '}
-                </Typography>{' '}
+                  EDIT
+                </Typography>
                 <Typography
                   textAlign="right"
                   variant="button"
                   color="text.secondary"
                   aria-label="delete button"
+                  title="DELETE"
                 >
-                  {' '}
-                  DELETE{' '}
+                  DELETE
                 </Typography>
               </CardContent>
             </Card>
             <Card elevation={0} style={{ border: '1px solid blue' }}>
               <CardContent>
-                <Typography variant="body2">DEFAULT Stacey's Home</Typography>
-                <Typography variant="body1"> 5326 Highway Ave. </Typography>
-                <Typography variant="body1"> Apt 342 </Typography>
-                <Typography variant="body1">
-                  {' '}
-                  Carisbad, CA 34092-342387{' '}
+                <Typography variant="body2" title="DEFAULT Stacey's Home">
+                  DEFAULT Stacey's Home
+                </Typography>
+                <Typography variant="body1" title="5326 Highway Ave.">
+                  5326 Highway Ave.
+                </Typography>
+                <Typography variant="body1" title="Apt 342">
+                  Apt 342
+                </Typography>
+                <Typography variant="body1" title="Carisbad, CA 34092-342387">
+                  Carisbad, CA 34092-342387
                 </Typography>
                 <Typography
                   textAlign="right"
                   variant="button"
                   color="text.secondary"
                   aria-label="edit button"
+                  title="edit button"
                 >
-                  {' '}
-                  EDIT{' '}
-                </Typography>{' '}
+                  EDIT
+                </Typography>
                 <Typography
                   textAlign="right"
                   variant="button"
                   color="text.secondary"
                   aria-label="delete button"
+                  title="DELETE"
                 >
-                  {' '}
-                  DELETE{' '}
+                  DELETE
                 </Typography>
                 <Typography
                   aria-label="make default"
                   textAlign="right"
                   variant="button"
                   color="blue"
+                  title="MARK DEFAULT"
                 >
-                  {' '}
-                  MARK DEFAULT{' '}
+                  MARK DEFAULT
                 </Typography>
               </CardContent>
             </Card>
           </Grid>
           <Link to="/account/addDeliveryAddress">
-            <Button aria-label="add address" variant="contained" size="large">
+            <Button
+              aria-label="add address"
+              title=" ADD ADDRESS"
+              variant="contained"
+              size="large"
+            >
               ADD ADDRESS
             </Button>
           </Link>

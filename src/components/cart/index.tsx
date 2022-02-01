@@ -83,6 +83,7 @@ const Cart = (props: any) => {
             >
               <img
                 src={crossIcon}
+                title="Close Cart"
                 height="20px"
                 onClick={showCart}
                 width="20px"
@@ -95,6 +96,7 @@ const Cart = (props: any) => {
               variant="h6"
               component="h6"
               className={classes.cartTitle}
+              title="Your Order"
             >
               Your Order
             </Typography>
@@ -104,6 +106,7 @@ const Cart = (props: any) => {
               <Grid item xs={9}>
                 <Typography
                   variant="caption"
+                  title="Maxican Street Corn Taco Plate"
                   sx={{
                     fontSize: '13px',
                     color: 'secondary.main',
@@ -116,6 +119,7 @@ const Cart = (props: any) => {
               <Grid item xs={3} sx={{ textAlign: 'right' }}>
                 <Typography
                   variant="caption"
+                  title="$12.05"
                   sx={{
                     textAlign: 'right',
                     fontSize: '14px',
@@ -131,7 +135,11 @@ const Cart = (props: any) => {
                 <Divider sx={{ borderColor: 'rgba(0, 0, 0, 1);' }} />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="caption" fontSize={11}>
+                <Typography
+                  title="Grilled Chicken Mexican Oil Butter Mix Topping"
+                  variant="caption"
+                  fontSize={11}
+                >
                   Grilled Chicken Mexican Oil Butter Mix Topping
                 </Typography>
               </Grid>
@@ -141,6 +149,7 @@ const Cart = (props: any) => {
                     <Typography
                       variant="caption"
                       component="a"
+                      title="Remove"
                       className={classes.smallLink}
                     >
                       Remove
@@ -150,6 +159,7 @@ const Cart = (props: any) => {
                     <Typography
                       variant="caption"
                       component="a"
+                      title="Edit"
                       className={classes.smallLink}
                     >
                       Edit
@@ -160,6 +170,7 @@ const Cart = (props: any) => {
                       variant="caption"
                       component="a"
                       className={classes.smallLink}
+                      title="Duplicate"
                     >
                       Duplicate
                     </Typography>
@@ -174,6 +185,7 @@ const Cart = (props: any) => {
               <Grid item xs={9}>
                 <Typography
                   variant="caption"
+                  title="Regular Mango Tea"
                   sx={{
                     fontSize: '13px',
                     color: 'secondary.main',
@@ -186,6 +198,7 @@ const Cart = (props: any) => {
               <Grid item xs={3} sx={{ textAlign: 'right' }}>
                 <Typography
                   variant="caption"
+                  title="$2.05"
                   sx={{
                     textAlign: 'right',
                     fontSize: '14px',
@@ -201,7 +214,11 @@ const Cart = (props: any) => {
                 <Divider sx={{ borderColor: 'rgba(0, 0, 0, 1);' }} />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="caption" fontSize={11}>
+                <Typography
+                  title="Medium, Light Ice"
+                  variant="caption"
+                  fontSize={11}
+                >
                   Medium, Light Ice
                 </Typography>
               </Grid>
@@ -211,6 +228,7 @@ const Cart = (props: any) => {
                     <Typography
                       variant="caption"
                       component="a"
+                      title="Remove"
                       className={classes.smallLink}
                     >
                       Remove
@@ -221,6 +239,7 @@ const Cart = (props: any) => {
                       variant="caption"
                       component="a"
                       className={classes.smallLink}
+                      title="Edit"
                     >
                       Edit
                     </Typography>
@@ -230,6 +249,7 @@ const Cart = (props: any) => {
                       variant="caption"
                       component="a"
                       className={classes.smallLink}
+                      title="Duplicate"
                     >
                       Duplicate
                     </Typography>
@@ -247,6 +267,7 @@ const Cart = (props: any) => {
               textAlign="center"
               paddingTop="20px"
               className={classes.cartTitle}
+              title="Complete Your Meal"
             >
               Complete Your Meal
             </Typography>
@@ -257,7 +278,8 @@ const Cart = (props: any) => {
                 <img
                   style={{ display: 'block', margin: 'auto' }}
                   src={require('../../assets/imgs/pic1.png')}
-                  alt="side one"
+                  alt="Chips"
+                  title="Chips"
                 />
                 <Typography
                   variant="h6"
@@ -267,6 +289,7 @@ const Cart = (props: any) => {
                   padding="5px 0 0 0"
                   textTransform="capitalize"
                   className={classes.cartTitle}
+                  title="Chips"
                 >
                   Chips
                 </Typography>
@@ -278,6 +301,7 @@ const Cart = (props: any) => {
                   paddingTop="0px"
                   fontFamily="Poppins-Regular !important"
                   className={classes.cartTitle}
+                  title="$3.09"
                 >
                   $3.09
                 </Typography>
@@ -286,7 +310,8 @@ const Cart = (props: any) => {
                 <img
                   style={{ display: 'block', margin: 'auto' }}
                   src={require('../../assets/imgs/pic2.png')}
-                  alt="side one"
+                  alt="Churros"
+                  title="Churros"
                 />
                 <Typography
                   variant="h6"
@@ -296,6 +321,7 @@ const Cart = (props: any) => {
                   padding="5px 0 0 0"
                   textTransform="capitalize"
                   className={classes.cartTitle}
+                  title="Churros"
                 >
                   Churros
                 </Typography>
@@ -307,6 +333,7 @@ const Cart = (props: any) => {
                   paddingTop="0px"
                   fontFamily="Poppins-Regular !important"
                   className={classes.cartTitle}
+                  title="$3.09"
                 >
                   $3.09
                 </Typography>
@@ -315,7 +342,8 @@ const Cart = (props: any) => {
                 <img
                   style={{ display: 'block', margin: 'auto' }}
                   src={require('../../assets/imgs/pic3.png')}
-                  alt="side one"
+                  alt="Drinks"
+                  title="Drinks"
                 />
                 <Typography
                   variant="h6"
@@ -325,6 +353,7 @@ const Cart = (props: any) => {
                   padding="5px 0 0 0"
                   textTransform="capitalize"
                   className={classes.cartTitle}
+                  title="drinks"
                 >
                   drinks
                 </Typography>
@@ -336,6 +365,7 @@ const Cart = (props: any) => {
                   paddingTop="0px"
                   fontFamily="Poppins-Regular !important"
                   className={classes.cartTitle}
+                  title="$3.09"
                 >
                   $3.09
                 </Typography>
@@ -345,6 +375,7 @@ const Cart = (props: any) => {
           <Grid item xs={12} textAlign="center" padding="10px 0">
             <Button
               variant="contained"
+              title="Add Another Menu Item"
               sx={{
                 textTransform: 'uppercase',
                 backgroundColor: 'secondary.main',
@@ -367,6 +398,7 @@ const Cart = (props: any) => {
                   color: 'secondary.main',
                   fontize: '16px',
                 }}
+                title="Sub Total"
               >
                 Sub Total
               </Grid>
@@ -379,6 +411,7 @@ const Cart = (props: any) => {
                   fontize: '16px',
                   textAlign: 'right',
                 }}
+                title="$15.00"
               >
                 $15.00
               </Grid>
@@ -389,6 +422,7 @@ const Cart = (props: any) => {
                   color: 'secondary.main',
                   fontize: '12px',
                 }}
+                title="Tax"
               >
                 Tax
               </Grid>
@@ -400,6 +434,7 @@ const Cart = (props: any) => {
                   fontize: '16px',
                   textAlign: 'right',
                 }}
+                title="$1.53"
               >
                 $1.53
               </Grid>
@@ -414,6 +449,7 @@ const Cart = (props: any) => {
                   color: 'secondary.main',
                   fontize: '16px',
                 }}
+                title="Total"
               >
                 Total
               </Grid>
@@ -426,6 +462,7 @@ const Cart = (props: any) => {
                   fontize: '16px',
                   textAlign: 'right',
                 }}
+                title="$16.53"
               >
                 $16.53
               </Grid>
@@ -450,6 +487,7 @@ const Cart = (props: any) => {
                   borderRadius: 0,
                   padding: '10px',
                 }}
+                title="Checkout"
               >
                 CHECKOUT
               </Button>

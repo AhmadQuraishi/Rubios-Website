@@ -23,15 +23,31 @@ const PaymentInformation = () => {
           indicatorColor="secondary"
           aria-label="Payment Information tabs"
         >
-          <Tab aria-label="credit cards" value="1" label="CREDIT CARDS" />
-          <Tab aria-label="gift cards" value="2" label="GIFT CARDS" />
+          <Tab
+            aria-label="credit cards"
+            value="1"
+            label="CREDIT CARDS"
+            title="CREDIT CARDS"
+          />
+          <Tab
+            aria-label="gift cards"
+            value="2"
+            label="GIFT CARDS"
+            title="GIFT CARDS"
+          />
         </Tabs>
 
         {value === '1' && <CreditCards />}
         {value === '2' && <GiftCards />}
       </Grid>
       <Grid item xs={12}>
-        <Button sx={{ display: { xs: 'flex', sm: 'none' } }}>back</Button>
+        <Button
+          sx={{ display: { xs: 'flex', sm: 'none' } }}
+          aria-label="back"
+          title="back"
+        >
+          back
+        </Button>
       </Grid>
     </Grid>
   );

@@ -1,6 +1,5 @@
-import React from 'react';
 import { Button, Grid, IconButton, TextField, Typography } from '@mui/material';
-import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
+import { Link } from 'react-router-dom';
 
 const PaymentInfo = () => {
   return (
@@ -9,7 +8,9 @@ const PaymentInfo = () => {
       <Grid item xs={1} sm={0.5} md={0.5} lg={2} />
 
       <Grid item xs={10} sm={11} md={11} lg={8}>
-        <Typography variant="h4">PAYMENT INFO</Typography>
+        <Typography variant="h4" title="PAYMENT INFO">
+          PAYMENT INFO
+        </Typography>
         <Grid container>
           <Grid item xs={12} sm={12} md={6}>
             <Grid container>
@@ -18,6 +19,7 @@ const PaymentInfo = () => {
                   label="First Name"
                   aria-label="First Name"
                   aria-required="true"
+                  title="First Name"
                 />
               </Grid>
               <Grid item xs={12}>
@@ -25,6 +27,7 @@ const PaymentInfo = () => {
                   label="Card Number"
                   aria-label="Card Number"
                   aria-required="true"
+                  title="Card Number"
                 />
               </Grid>
             </Grid>
@@ -36,6 +39,7 @@ const PaymentInfo = () => {
                   label="Last Name"
                   aria-label="Last Name"
                   aria-required="true"
+                  title="Last Name"
                 />
               </Grid>
               <Grid item xs={5}>
@@ -47,6 +51,7 @@ const PaymentInfo = () => {
                   label="MM/DD/YY"
                   aria-label="Month/Day/Year"
                   aria-required="true"
+                  title="MM/DD/YY"
                 />
               </Grid>
             </Grid>
@@ -56,7 +61,7 @@ const PaymentInfo = () => {
             <Grid container>
               <Grid item xs={3} sm={4} md={4} lg={5} />
               <Grid item xs={6} sm={4} md={4} lg={3}>
-                <Button>ADD A GIFT CARD</Button>
+                <Button title="ADD A GIFT CARD">ADD A GIFT CARD</Button>
               </Grid>
               <Grid item xs={3} sm={4} md={4} lg={5} />
             </Grid>
@@ -66,7 +71,14 @@ const PaymentInfo = () => {
             <Grid container>
               <Grid item xs={3} sm={4} md={4} lg={5} />
               <Grid item xs={6} sm={4} md={4} lg={3}>
-                <Button variant="contained">PLACE ORDER</Button>
+                <Link
+                  to="/orderconfirmation"
+                  style={{ textDecoration: 'none' }}
+                >
+                  <Button variant="contained" title="PLACE ORDER">
+                    PLACE ORDER
+                  </Button>
+                </Link>
               </Grid>
               <Grid item xs={3} sm={4} md={4} lg={5} />
             </Grid>
