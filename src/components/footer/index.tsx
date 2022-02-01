@@ -8,7 +8,7 @@ import iosLogo from '../../assets/imgs/button-apple.png';
 
 const useStyles = makeStyles((theme: Theme) => ({
   links: {
-    textTransform: "uppercase",
+    textTransform: 'uppercase',
     fontSize: '13px',
     fontFamily: 'Poppins-Bold !important',
     textDecoration: 'none',
@@ -74,6 +74,7 @@ const Footer = () => {
                   src={footerLogo}
                   style={{ width: '100%' }}
                   alt="Rubios Coastal Grill"
+                  title="Rubios Coastal Grill"
                 />
               </Typography>
             </Grid>
@@ -82,22 +83,26 @@ const Footer = () => {
                 <Grid item xs={6}>
                   <Grid container spacing={1}>
                     <Grid item xs={12} md={3}>
-                      <Link className={classes.links} to="/">
+                      <Link className={classes.links} to="/" title="Careers">
                         CAREERS
                       </Link>
                     </Grid>
                     <Grid item xs={12} md={3}>
-                      <Link to="/" className={classes.links}>
+                      <Link to="/" className={classes.links} title="Locations">
                         LOCATIONS
                       </Link>
                     </Grid>
                     <Grid item xs={12} md={3}>
-                      <Link to="/" className={classes.links}>
+                      <Link to="/" className={classes.links} title="Gift Cards">
                         GIFT CARDS
                       </Link>
                     </Grid>
                     <Grid item xs={12} md={3}>
-                      <Link to="/" className={classes.links}>
+                      <Link
+                        to="/"
+                        className={classes.links}
+                        title="Fundraisers"
+                      >
                         FUNDRAISERS
                       </Link>
                     </Grid>
@@ -110,6 +115,7 @@ const Footer = () => {
                         style={{ display: 'inline-block', width: '130px' }}
                         to="/"
                         className={classes.links}
+                        title="Press & Awards"
                       >
                         PRESS & AWARDS
                       </Link>
@@ -120,12 +126,12 @@ const Footer = () => {
                       md={3}
                       sx={{ textAlign: { xs: 'left', md: 'center' } }}
                     >
-                      <Link to="/" className={classes.links}>
+                      <Link to="/" className={classes.links} title="Blog">
                         BLOG
                       </Link>
                     </Grid>
                     <Grid item xs={12} md={3}>
-                      <Link to="/" className={classes.links}>
+                      <Link to="/" className={classes.links} title="Contact Us">
                         Contact US
                       </Link>
                     </Grid>
@@ -157,6 +163,7 @@ const Footer = () => {
                   fontFamily: 'Poppins-Medium !important',
                   paddingTop: { xs: '40px', md: '30px', lg: '60px' },
                 }}
+                title="Connect with Us"
               >
                 Connect with Us
               </Typography>
@@ -205,6 +212,7 @@ const Footer = () => {
                   fontFamily: 'Poppins-Medium !important',
                   paddingTop: { xs: '40px', md: '30px', lg: '60px' },
                 }}
+                title="Get The Rubio's App"
               >
                 Get The Rubio's App
               </Typography>
@@ -243,6 +251,7 @@ const Footer = () => {
             component="p"
             color="#fff"
             fontSize={9}
+            title="Copyright 2021 Rubios's Restaurants, Inc. All Rights reserved."
           >
             Copyright 2021 Rubios's Restaurants, Inc. All Rights reserved.
           </Typography>
@@ -275,6 +284,7 @@ const Footer = () => {
                 variant="caption"
                 color="#fff"
                 fontSize={9}
+                title="Copyright 2021 Rubios's Restaurants, Inc. All Rights reserved."
               >
                 Copyright 2021 Rubios's Restaurants, Inc. All Rights reserved.
               </Typography>
@@ -297,18 +307,29 @@ const Footer = () => {
                   sx={{
                     display: 'flex',
                     paddingTop: '15px !important',
-                    paddingLeft: { xs: '20px !important', sm: '30px !important' },
+                    paddingLeft: {
+                      xs: '20px !important',
+                      sm: '30px !important',
+                    },
                     paddingRight: { md: '60px' },
                     justifyContent: { xs: 'left', md: 'right' },
                   }}
                 >
-                  <Link to="/" className={classes.smallLinks}>
+                  <Link
+                    to="/"
+                    className={classes.smallLinks}
+                    title="Website Accessibility"
+                  >
                     Website Accessibility
                   </Link>
-                  <Link to="/" className={classes.smallLinks}>
+                  <Link
+                    to="/"
+                    className={classes.smallLinks}
+                    title="Terms of use"
+                  >
                     Terms of use
                   </Link>
-                  <Link to="/" className={classes.smallLinks}>
+                  <Link to="/" className={classes.smallLinks} title="Privacy">
                     Privacy
                   </Link>
                 </Grid>

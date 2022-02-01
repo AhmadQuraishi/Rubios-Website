@@ -12,14 +12,15 @@ import { makeStyles } from '@mui/styles';
 
 import { Link } from 'react-router-dom';
 
+import { useState } from 'react';
+
 import MenuIcon from '@mui/icons-material/Menu';
 import logo from '../../assets/imgs/rubios-logo-color.png';
 import cartIcon from '../../assets/imgs/cart-icon.svg';
 import cartIconMobile from '../../assets/imgs/cart-icon-mobile.svg';
 
-import { useState } from 'react';
-
 import Cart from '../cart';
+import AccountLinks from '../account-links';
 
 const useStyles = makeStyles((theme: Theme) => ({
   navBar: {
@@ -30,6 +31,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   logo: {
     flexGrow: '1',
     cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
   },
   logoImg: {
     display: 'inline-block',
@@ -37,8 +40,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('lg')]: {
       padding: '18px 0 14px 30px',
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       padding: '18px 0 14px 20px',
+    },
+    '& img': {
+      width: '90%',
     },
   },
   icon: {
@@ -47,7 +53,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   menuLink: {
     textTransform: 'uppercase',
     display: 'block',
-    paddingTop: '35px',
+    paddingTop: '30px',
     paddingRight: '25px',
     color: theme.palette.primary.main,
     fontFamily: 'Poppins-Medium !important',
@@ -61,7 +67,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const Header = () => {
+const Header = (props: any) => {
+  const { removeCart } = props;
   const classes = useStyles();
   const theme = useTheme();
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -82,60 +89,106 @@ const Header = () => {
           }}
         >
           <Typography variant="h4" className={classes.logo}>
-            <Link to="/" className={classes.logoImg}>
-              <img
-                aria-label="Rubio's Cosatal Grill"
-                src={logo}
-                style={{ display: 'flex', width: '100%' }}
-                alt="Rubio's Cosatal Grill"
-              />
-            </Link>
+            {!removeCart ? (
+              <Link to="/" className={classes.logoImg}>
+                <img
+                  aria-label="Rubio's Cosatal Grill"
+                  src={logo}
+                  style={{ display: 'flex' }}
+                  alt="Rubio's Cosatal Grill"
+                  title="Rubio's Cosatal Grill Logo"
+                />
+              </Link>
+            ) : (
+              <>
+                <Link
+                  to="/"
+                  className={classes.logoImg}
+                  style={{ padding: '20px 0px 20px 15px' }}
+                >
+                  <img
+                    aria-label="Rubio's Cosatal Grill"
+                    src={logo}
+                    style={{ display: 'flex' }}
+                    alt="Rubio's Cosatal Grill"
+                    title="Rubio's Cosatal Grill Logo"
+                  />
+                </Link>
+                <Typography
+                  variant="body1"
+                  component="span"
+                  fontWeight="700"
+                  paddingTop="5px"
+                  sx={{ fontSize: { xs: '11px', md: '13px' } }}
+                  color="primary.main"
+                  textTransform="uppercase"
+                  title=" Hi Stacey"
+                >
+                  Hi, Stacey !
+                </Typography>
+              </>
+            )}
           </Typography>
           {isMobile ? (
             <>
               <Drawer open={openDrawer} onClose={() => setOpenDrawer(false)}>
                 <div style={{ padding: '20px' }}>
-                  <Link to="/category" className={classes.menuLink}>
+                  <Link
+                    to="/category"
+                    className={classes.menuLink}
+                    title="Main Menu"
+                  >
                     Main Menu
                   </Link>
                 </div>
+                <AccountLinks closeDrawer={removeCart ? setOpenDrawer : null} />
               </Drawer>
-              <img
-                onClick={handleShowCart}
-                src={cartIconMobile}
-                alt="Cart Icon"
-                style={{ width: '25px', paddingRight: '10px' }}
-              />
+              {!removeCart && (
+                <img
+                  onClick={handleShowCart}
+                  src={cartIconMobile}
+                  alt="Cart Icon"
+                  style={{ width: '25px', paddingRight: '10px' }}
+                  title="Cart Icon"
+                />
+              )}
               <IconButton
                 onClick={() => setOpenDrawer(!openDrawer)}
                 className={classes.icon}
               >
-                <MenuIcon fontSize="large" />
+                <MenuIcon fontSize="large" titleAccess="Cart Icon" />
               </IconButton>
             </>
           ) : (
             <>
-              <Link to="/" className={classes.menuLink}>
+              <Link to="/" className={classes.menuLink} title="Main Menu">
                 Main Menu
               </Link>
-              <Typography
-                component="div"
-                onClick={handleShowCart}
-                sx={{
-                  backgroundColor: 'primary.main',
-                  width: '140px',
-                  cursor: 'pointer',
-                  float: 'right',
-                  justifyContent: 'center',
-                  display: { xs: 'none', sm: 'flex' },
-                  '&:hover': {
-                    backgroundColor: 'success.main',
-                  },
-                  transition: 'background-color 0.3s ease',
-                }}
-              >
-                <img src={cartIcon} style={{ width: '38px' }} alt="Cart Icon" />
-              </Typography>
+              {!removeCart && (
+                <Typography
+                  component="div"
+                  onClick={handleShowCart}
+                  sx={{
+                    backgroundColor: 'primary.main',
+                    width: '140px',
+                    cursor: 'pointer',
+                    float: 'right',
+                    justifyContent: 'center',
+                    display: { xs: 'none', sm: 'flex' },
+                    '&:hover': {
+                      backgroundColor: 'success.main',
+                    },
+                    transition: 'background-color 0.3s ease',
+                  }}
+                >
+                  <img
+                    src={cartIcon}
+                    style={{ width: '38px' }}
+                    alt="Cart Icon"
+                    title="Cart Icon"
+                  />
+                </Typography>
+              )}
             </>
           )}
         </Toolbar>

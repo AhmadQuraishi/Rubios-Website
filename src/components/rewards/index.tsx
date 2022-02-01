@@ -1,19 +1,10 @@
 import React, { useState } from 'react';
-import {
-  Button,
-  Card,
-  CardActionArea,
-  CardContent,
-  CardMedia,
-  Grid,
-  Typography,
-} from '@mui/material';
-import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
+import { Button, Card, Grid, RadioGroup, Typography } from '@mui/material';
 import drinks from '../../assets/imgs/drinks.svg';
 import food from '../../assets/imgs/food.svg';
-import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
+import Radio from '@mui/material/Radio';
+import FormControl from '@mui/material/FormControl';
 
 const Rewards = () => {
   const rewardsArray = [
@@ -39,7 +30,9 @@ const Rewards = () => {
           <Grid container>
             <Grid item xs={3} sm={4} md={4} lg={5} />
             <Grid item xs={6} sm={4} md={4} lg={3}>
-              <Button onClick={handler}>VIEW REWARDS</Button>
+              <Button onClick={handler} title="VIEW REWARDS">
+                VIEW REWARDS
+              </Button>
             </Grid>
             <Grid item xs={3} sm={4} md={4} lg={5} />
           </Grid>
@@ -48,20 +41,27 @@ const Rewards = () => {
 
       {!view && (
         <Grid item xs={10} sm={11} md={11} lg={8}>
-          <Typography variant="h4">APPLY REWARDS</Typography>
+          <Typography variant="h4" title="APPLY REWARDS">
+            APPLY REWARDS
+          </Typography>
           <Grid container>
-            {rewardsArray.map((reward, index) => (
-              <Grid item xs={12} sm={12} md={6}>
-                <Card>
-                  <FormGroup>
-                    <FormControlLabel
-                      control={<Checkbox defaultChecked />}
-                      label={reward.desc}
-                    />
-                  </FormGroup>
-                </Card>
-              </Grid>
-            ))}
+            <FormControl>
+              <RadioGroup row aria-labelledby="rewards" name="Rubio,s rewards">
+                {rewardsArray.map((reward, index) => (
+                  <Grid item xs={12} sm={12} md={6}>
+                    <Card>
+                      <FormControlLabel
+                        value={reward.desc}
+                        control={<Radio />}
+                        label={reward.desc}
+                        aria-label={reward.desc}
+                        title={reward.desc}
+                      />
+                    </Card>
+                  </Grid>
+                ))}
+              </RadioGroup>
+            </FormControl>
           </Grid>
         </Grid>
       )}

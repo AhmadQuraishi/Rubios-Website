@@ -9,6 +9,7 @@ import {
   Link,
 } from '@mui/material';
 import CustomButton from '../../helpers/button/button';
+import { Fragment } from 'react';
 
 const useStyle = makeStyles(() => ({
   root: {
@@ -27,7 +28,7 @@ const useStyle = makeStyles(() => ({
 const Login = () => {
   const classes = useStyle();
   return (
-    <>
+    <Fragment>
       <Grid container component="main" className={classes.root}>
         <Grid
           item
@@ -43,10 +44,18 @@ const Login = () => {
               style={{ justifyContent: 'center', marginTop: '20px' }}
             >
               <Grid item xs={8} sm={8} md={8} lg={5}>
-                <Typography variant="caption" style={{ color: 'blue' }}>
+                <Typography
+                  variant="caption"
+                  style={{ color: 'blue' }}
+                  title="LOGIN"
+                >
                   LOGIN
                 </Typography>
-                <Typography variant="h4" style={{ color: '' }}>
+                <Typography
+                  variant="h4"
+                  style={{ color: '' }}
+                  title="SIGN IN TO RUBIO'S REWARDS"
+                >
                   SIGN IN TO RUBIO'S REWARDS
                 </Typography>
                 <Box component="form" sx={{ mt: 1 }}>
@@ -59,6 +68,8 @@ const Login = () => {
                     name="email"
                     autoComplete="email"
                     autoFocus
+                    aria-label="email address"
+                    title="email address"
                   />
                   <br />
                   <TextField
@@ -70,34 +81,73 @@ const Login = () => {
                     type="password"
                     id="password"
                     autoComplete="current-password"
+                    aria-label="password"
+                    title="password"
                   />
                   <br />
-                  <Link href="#" variant="body2">
+                  <Link href="#" variant="body2" title="Forgot password?">
                     Forgot password?
                   </Link>{' '}
                   <br />
-                  <Button variant="contained" style={{ marginLeft: '80px' }}>
-                    {' '}
-                    SIGN IN
-                  </Button>
+                  <Link href="/order/account">
+                    <Button
+                      aria-label="sign in"
+                      variant="contained"
+                      style={{ marginLeft: '80px' }}
+                      title="sign in"
+                    >
+                      SIGN IN
+                    </Button>
+                  </Link>
                 </Box>
               </Grid>
-              <Grid item xs={8} sm={8} md={8} lg={5} style={{textAlign: 'center'}}>
-                <Typography variant="caption" style={{ color: 'blue' }}>
+              <Grid
+                item
+                xs={8}
+                sm={8}
+                md={8}
+                lg={5}
+                style={{ textAlign: 'center' }}
+              >
+                <Typography
+                  variant="caption"
+                  title="MORE OPTIONS"
+                  style={{ color: 'blue' }}
+                >
                   MORE OPTIONS
                 </Typography>
                 <br />
-                <CustomButton variant="outlined" text="SIGN IN WITH FACEBOOK" />
+                <CustomButton
+                  ariaLabel="sign in with facebbok"
+                  variant="outlined"
+                  text="SIGN IN WITH FACEBOOK"
+                  title="SIGN IN WITH FACEBOOK"
+                />
                 <br />
-                <CustomButton variant="outlined" text="SIGN IN WITH APPLE" />
+                <CustomButton
+                  ariaLabel="sign in with apple"
+                  variant="outlined"
+                  text="SIGN IN WITH APPLE"
+                  title="SIGN IN WITH APPLE"
+                />
                 <br />
-                <CustomButton variant="outlined" text="SIGN IN WITH GOOGLE" />
+                <CustomButton
+                  ariaLabel="sign in with google"
+                  variant="outlined"
+                  text="SIGN IN WITH GOOGLE"
+                />
                 <br />
-                <CustomButton variant="contained" text="CREATE ACCOUNT" />
+                <CustomButton
+                  ariaLabel="create account"
+                  variant="contained"
+                  text="CREATE ACCOUNT"
+                  title="CREATE ACCOUNT"
+                />
                 <br />
                 <Typography
                   variant="caption"
                   style={{ color: 'blue', textAlign: 'center' }}
+                  title="CONTINUE AS GEUST"
                 >
                   CONTINUE AS GEUST
                 </Typography>
@@ -106,7 +156,7 @@ const Login = () => {
           </Card>
         </Grid>
       </Grid>
-    </>
+    </Fragment>
   );
 };
 

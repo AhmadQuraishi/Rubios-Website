@@ -3,7 +3,7 @@ import ProductListing from '../../components/product-listing';
 import { Grid, Theme, Typography, Tabs, Tab, Box } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 
 const useStyles = makeStyles((theme: Theme) => ({
   heading: {
@@ -41,14 +41,6 @@ const CategoryList = () => {
   const classes = useStyles();
   const [value, setValue] = useState('0');
 
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
-
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setTimeout(() => {
       var elem = document.getElementById('#panel-' + newValue);
@@ -58,7 +50,7 @@ const CategoryList = () => {
   };
 
   return (
-    <>
+    <Fragment>     
       <StoreInfoBar />
       <Box
         sx={{
@@ -86,6 +78,7 @@ const CategoryList = () => {
               key={index}
               value={`${index}`}
               label={item}
+              title={item}
               color="secondary.main"
               sx={{ fontFamily: 'Poppins-Medium !important' }}
             />
@@ -118,7 +111,7 @@ const CategoryList = () => {
         </Grid>
       ))}
       <div style={{ paddingBottom: '30px' }}></div>
-    </>
+    </Fragment>
   );
 };
 

@@ -1,23 +1,15 @@
 import Map from '../../components/map';
 import React from 'react';
-import {
-  Button,
-  FormLabel,
-  Grid,
-  IconButton,
-  RadioGroup,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Button, Grid, RadioGroup, TextField, Typography } from '@mui/material';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
-import Divider from '@mui/material/Divider';
+
 import Radio from '@mui/material/Radio';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 
 const Tip = () => {
   const Icon = () => (
-    <Button sx={{ bgColor: 'black' }}>
+    <Button aria-label="proceed">
       <ArrowRightAltIcon />
     </Button>
   );
@@ -31,35 +23,38 @@ const Tip = () => {
             <Typography variant="h4">TIP</Typography>
             <Grid container>
               <FormControl>
-                <RadioGroup
-                  row
-                  aria-labelledby="demo-row-radio-buttons-group-label"
-                  name="row-radio-buttons-group"
-                >
+                <RadioGroup row aria-labelledby="tip" name="Tip percentage">
                   <Grid item xs={12}>
                     <FormControlLabel
                       value="10"
                       control={<Radio />}
-                      label="10%"
+                      label="%"
+                      aria-label="10%"
+                      title="10%"
                     />
                     <FormControlLabel
                       value="15"
                       control={<Radio />}
                       label="15%"
+                      aria-label="15%"
+                      title="15%"
                     />
                     <FormControlLabel
                       value="20"
                       control={<Radio />}
                       label="20%"
+                      aria-label="20%"
+                      title="20%"
                     />
                   </Grid>
                 </RadioGroup>
               </FormControl>
               <Grid item xs={12}>
                 <TextField
-                  placeholder="Custom Amount"
+                  label="Custom Amount"
                   aria-label="custom amount"
                   InputProps={{ endAdornment: <Icon /> }}
+                  title="Custom Amount"
                 />
               </Grid>
             </Grid>
@@ -69,9 +64,10 @@ const Tip = () => {
               <Typography variant="h4">COUPON CODE</Typography>
               <Grid item xs={12}>
                 <TextField
-                  placeholder="Enter Code"
-                  aria-label="custom amount"
+                  label="Enter Code"
+                  aria-label="Enter Code"
                   InputProps={{ endAdornment: <Icon /> }}
+                  title="Enter Code"
                 ></TextField>
               </Grid>
             </Grid>

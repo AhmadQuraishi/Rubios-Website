@@ -13,7 +13,7 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Divider from '@mui/material/Divider';
-import OrderDetail from '../../components/order_detail';
+import OrderDetail from '../../components/order-detail';
 import Tip from '../../components/tip';
 import Rewards from '../../components/rewards';
 import PaymentInfo from '../../components/payment-info';
@@ -48,20 +48,39 @@ const Checkout = () => {
                       sx={{ justifyContent: 'center', alignItem: 'center' }}
                     >
                       <Grid item xs={12}>
-                        <Typography variant="h6">WHO IS PICKING UP?</Typography>
+                        <Typography variant="h6" title="WHO IS PICKING UP?">
+                          WHO IS PICKING UP?
+                        </Typography>
                       </Grid>
                       <Grid item xs={12}>
-                        <Typography variant="h4">PICK UP INFO</Typography>
+                        <Typography variant="h4" title="PICK UP INFO">
+                          PICK UP INFO
+                        </Typography>
                       </Grid>
                       <Grid item xs={12}>
-                        <TextField placeholder="Name" />
+                        <TextField
+                          aria-label="Name"
+                          label="Name"
+                          aria-required="true"
+                          title="Name"
+                        />
                       </Grid>
 
                       <Grid item xs={12}>
-                        <TextField placeholder="Phone Number" />
+                        <TextField
+                          aria-label="Phone Number"
+                          label="Phone Number"
+                          aria-required="true"
+                          title="Phone Number"
+                        />
                       </Grid>
                       <Grid item xs={12}>
-                        <TextField placeholder="Email" />
+                        <TextField
+                          aria-label="Email"
+                          label="Email"
+                          aria-required="true"
+                          title="Email"
+                        />
                       </Grid>
 
                       <Grid item xs={12}>
@@ -69,6 +88,9 @@ const Checkout = () => {
                           <FormControlLabel
                             control={<Checkbox defaultChecked />}
                             label="send me emails with special offers and updates"
+                            aria-label="send me emails with special offers and updates"
+                            aria-required="true"
+                            title="send me emails with special offers and updates"
                           />
                         </FormGroup>
                       </Grid>
@@ -77,19 +99,28 @@ const Checkout = () => {
                   <Grid item xs={12} md={6} lg={6}>
                     <Grid container>
                       <Grid item xs={12}>
-                        <Typography variant="h6">PICKUP TIME</Typography>
+                        <Typography variant="h6" title="PICKUP TIME">
+                          PICKUP TIME
+                        </Typography>
                       </Grid>
                     </Grid>
                     <Grid item xs={12}>
-                      <Typography variant="h4">THURSDAY SEPT.9TH</Typography>
+                      <Typography variant="h4" title="THURSDAY SEPT.9TH">
+                        THURSDAY SEPT.9TH
+                      </Typography>
                     </Grid>
                     <Grid item xs={12}>
-                      <Button>(change)</Button>
+                      <Button aria-label="change" title="change">
+                        (change)
+                      </Button>
                     </Grid>
                     <Grid item xs={12}>
                       <Grid container>
                         <FormControl>
-                          <FormLabel id="demo-row-radio-buttons-group-label">
+                          <FormLabel
+                            title="QUICKEST"
+                            id="demo-row-radio-buttons-group-label"
+                          >
                             QUICKEST
                           </FormLabel>
                           <RadioGroup
@@ -102,6 +133,8 @@ const Checkout = () => {
                                 value="6:10"
                                 control={<Radio />}
                                 label="6:10"
+                                aria-label="6:10"
+                                title="6:10"
                               />
                             </Grid>
                             <Grid item lg={3} md={6} sm={6} xs={6}>
@@ -109,6 +142,7 @@ const Checkout = () => {
                                 value="6:20"
                                 control={<Radio />}
                                 label="6:20"
+                                aria-label="6:20"
                               />
                             </Grid>
                             <Grid item lg={3} md={6} sm={6} xs={6}>
@@ -116,6 +150,8 @@ const Checkout = () => {
                                 value="6:30"
                                 control={<Radio />}
                                 label="6:30"
+                                aria-label="6:30"
+                                title="6:30"
                               />
                             </Grid>
                             <Grid item lg={3} md={6} sm={6} xs={6}>
@@ -123,6 +159,8 @@ const Checkout = () => {
                                 value="6:40"
                                 control={<Radio />}
                                 label="6:40"
+                                aria-label="6:40"
+                                title="6:40"
                               />
                             </Grid>
                           </RadioGroup>
@@ -131,13 +169,30 @@ const Checkout = () => {
                     </Grid>
                     <Grid item xs={12}>
                       <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">
+                        <InputLabel
+                          id="select-more-times"
+                          aria-label="More Times"
+                          title="More Times"
+                        >
                           MORE TIMES
                         </InputLabel>
-                        <Select value={time} onChange={handleChange}>
-                          <MenuItem value={10}>7.10</MenuItem>
-                          <MenuItem value={20}>8:10</MenuItem>
-                          <MenuItem value={30}>9:10</MenuItem>
+                        <Select
+                          id="select-label"
+                          labelId="select-more-times"
+                          value={time}
+                          onChange={handleChange}
+                          label="Select More times"
+                          title="Select More times"
+                        >
+                          <MenuItem value={10} title="7:10">
+                            7:10
+                          </MenuItem>
+                          <MenuItem value={20} title="8:10">
+                            8:10
+                          </MenuItem>
+                          <MenuItem value={30} title="9:10">
+                            9:10
+                          </MenuItem>
                         </Select>
                       </FormControl>
                     </Grid>
