@@ -8,6 +8,7 @@ import {
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Link } from 'react-router-dom';
+import { Fragment } from 'react';
 
 const useStyles = makeStyles((theme: Theme) => ({
   img: {
@@ -80,7 +81,7 @@ const ProductListing = () => {
     },
   ];
   return (
-    <>
+    <Fragment>
       <Grid container spacing={3}>
         {products.map((item, index) => (
           <Grid
@@ -120,7 +121,7 @@ const ProductListing = () => {
           </Grid>
         ))}
       </Grid>
-    </>
+    </Fragment>
   );
 };
 export default ProductListing;

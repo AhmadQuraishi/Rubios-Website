@@ -50,7 +50,7 @@ const CategoryList = () => {
   };
 
   return (
-    <Fragment>
+    <Fragment>     
       <StoreInfoBar />
       <Box
         sx={{

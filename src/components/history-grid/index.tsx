@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 
 const HistoryGrid = () => {
   const data = [
@@ -106,6 +106,12 @@ const HistoryGrid = () => {
                   color: 'secondary.main',
                 }}
               >
+                <Typography
+                  variant="caption"
+                  sx={{ display: { xs: 'block', sm: 'none' } }}
+                >
+                  {item.date}
+                </Typography>
                 {item.category}
               </Grid>
               <Grid
