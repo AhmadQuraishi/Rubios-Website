@@ -12,7 +12,7 @@ import { makeStyles } from '@mui/styles';
 
 import { Link } from 'react-router-dom';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import MenuIcon from '@mui/icons-material/Menu';
 import logo from '../../assets/imgs/rubios-logo-color.png';
@@ -21,6 +21,10 @@ import cartIconMobile from '../../assets/imgs/cart-icon-mobile.svg';
 
 import Cart from '../cart';
 import AccountLinks from '../account-links';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { rootState } from '../../redux/reducers';
+import { getMenuRequest } from '../../redux/actions/footer'
 
 const useStyles = makeStyles((theme: Theme) => ({
   navBar: {
@@ -74,11 +78,9 @@ const Header = (props: any) => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [showCart, setShowCart] = useState(false);
-
   const handleShowCart = () => {
     setShowCart(!showCart);
   };
-
   return (
     <>
       <AppBar position="sticky" className={classes.navBar}>
