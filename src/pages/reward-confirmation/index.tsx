@@ -30,12 +30,19 @@ const RewardConfirmation = () => {
             </Grid>
             <Grid item xs={12} sm={12} md={12} lg={6}>
               <Card style={{ backgroundColor: 'blue' }}>
-                <Typography style={{ color: 'white' }}>YOUR REWARDS</Typography>
-                <Typography style={{ color: 'white' }}>
-                  {' '}
+                <Typography style={{ color: 'white' }} title="YOUR REWARDS">
+                  YOUR REWARDS
+                </Typography>
+                <Typography
+                  style={{ color: 'white' }}
+                  title="YOU EARNED 18 POINTS!"
+                >
                   YOU EARNED 18 POINTS!
                 </Typography>
-                <Typography style={{ color: 'white' }}>
+                <Typography
+                  style={{ color: 'white' }}
+                  title="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                >
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                   Praesent velit neque, vehicula vel magna ultricies, eleifend
                   bibendum ex. Donec id neque dui. Cras ac sodales risus. In at
@@ -44,7 +51,13 @@ const RewardConfirmation = () => {
                   ipsum bibendum est, ut ultrices odio libero nec diam.
                   Vestibulum auctor neque a leo rhoncus, ut mollis dui mattis.
                 </Typography>
-                <Button aria-label="view account" variant="contained">VIEW ACCOUNT</Button>
+                <Button
+                  aria-label="view account"
+                  variant="contained"
+                  title="VIEW ACCOUNT"
+                >
+                  VIEW ACCOUNT
+                </Button>
                 <br />
                 <br />
                 <br />

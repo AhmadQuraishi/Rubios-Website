@@ -28,20 +28,23 @@ const Tip = () => {
                     <FormControlLabel
                       value="10"
                       control={<Radio />}
-                      label="10%"
+                      label="%"
                       aria-label="10%"
+                      title="10%"
                     />
                     <FormControlLabel
                       value="15"
                       control={<Radio />}
                       label="15%"
                       aria-label="15%"
+                      title="15%"
                     />
                     <FormControlLabel
                       value="20"
                       control={<Radio />}
                       label="20%"
                       aria-label="20%"
+                      title="20%"
                     />
                   </Grid>
                 </RadioGroup>
@@ -51,6 +54,7 @@ const Tip = () => {
                   label="Custom Amount"
                   aria-label="custom amount"
                   InputProps={{ endAdornment: <Icon /> }}
+                  title="Custom Amount"
                 />
               </Grid>
             </Grid>
@@ -61,8 +65,9 @@ const Tip = () => {
               <Grid item xs={12}>
                 <TextField
                   label="Enter Code"
-                  aria-label="custom amount"
+                  aria-label="Enter Code"
                   InputProps={{ endAdornment: <Icon /> }}
+                  title="Enter Code"
                 ></TextField>
               </Grid>
             </Grid>

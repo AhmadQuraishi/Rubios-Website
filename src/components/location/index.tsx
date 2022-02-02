@@ -102,23 +102,33 @@ const LocationCard = () => {
         component="div"
         aria-label="Nearby Location"
         role="list"
+        title="Nearby Location"
       >
         <Grid container>
           <Grid item xs={12}>
             <ListItemButton>
-              <ListItemText primary={filteredRes[index].name} />
+              <ListItemText
+                title={filteredRes[index].name}
+                primary={filteredRes[index].name}
+              />
             </ListItemButton>
           </Grid>
 
           <Grid item xs={12}>
             <ListItemButton>
-              <ListItemText primary={filteredRes[index].address} />
+              <ListItemText
+                title={filteredRes[index].address}
+                primary={filteredRes[index].address}
+              />
             </ListItemButton>
           </Grid>
 
           <Grid item xs={12}>
             <ListItemButton>
-              <ListItemText primary={filteredRes[index].distance} />
+              <ListItemText
+                title={filteredRes[index].distance}
+                primary={filteredRes[index].distance}
+              />
             </ListItemButton>
           </Grid>
 
@@ -129,7 +139,10 @@ const LocationCard = () => {
   }
 
   const Icon = () => (
-    <Button aria-label="search nearby locations">
+    <Button
+      aria-label="search nearby locations"
+      title="search nearby locations"
+    >
       <SearchIcon />
     </Button>
   );
@@ -147,18 +160,25 @@ const LocationCard = () => {
         <Card>
           <Grid container spacing={2} sx={{ textAlign: 'center' }}>
             <Grid item xs={12}>
-              <Button variant="contained">PICK UP</Button>
+              <Button variant="contained" title="Pick up">
+                PICK UP
+              </Button>
             </Grid>
             <Grid item xs={12}>
-              <Button variant="contained">CURBSIDE</Button>
+              <Button variant="contained" title="Curbside">
+                CURBSIDE
+              </Button>
             </Grid>
             <Grid item xs={12}>
-              <Button variant="contained">DELIVERY</Button>
+              <Button variant="contained" title="Delivery">
+                DELIVERY
+              </Button>
             </Grid>
             <Grid item xs={12}>
               <TextField
                 aria-label="Enter City"
                 label="Enter City"
+                title="Enter City"
                 aria-required="true"
                 value={city}
                 onChange={handleChange}
@@ -166,7 +186,9 @@ const LocationCard = () => {
               />
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="h5">NEARBY LOCATIONS</Typography>
+              <Typography variant="h5" title="NEARBY LOCATIONS">
+                NEARBY LOCATIONS
+              </Typography>
             </Grid>
             <Grid item xs={12}>
               <FixedSizeList

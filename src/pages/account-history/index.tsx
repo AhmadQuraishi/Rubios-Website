@@ -49,6 +49,7 @@ const AccountHistory = () => {
     <Fragment>
       <Typography
         variant="h5"
+        title="Account History"
         sx={{
           paddingBottom: '10px',
           color: 'secondary.main',
@@ -66,8 +67,12 @@ const AccountHistory = () => {
           aria-label="Account History Tabs"
           indicatorColor="primary"
         >
-          <Tab label="All History" {...a11yProps(0)} />
-          <Tab label="Transaction History" {...a11yProps(1)} />
+          <Tab label="All History" title="All History" {...a11yProps(0)} />
+          <Tab
+            label="Transaction History"
+            title="Transaction History"
+            {...a11yProps(1)}
+          />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>

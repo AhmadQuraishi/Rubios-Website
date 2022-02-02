@@ -49,11 +49,12 @@ const CreditCards = () => {
                         width="24px"
                         image={card.icon}
                         alt="Gift card icon"
+                        title="Gift card icon"
                       />
                     </Grid>
                     <Grid item xs={8} md={8}>
                       <CardContent>
-                        <Typography variant="body1">
+                        <Typography variant="body1" title={card.title}>
                           {card.default ? (
                             <Fragment>
                               <span>DEFAULT</span> {card.title}
@@ -62,16 +63,22 @@ const CreditCards = () => {
                             `${card.title}`
                           )}
                         </Typography>
-                        <Typography variant="body1">{card.number}</Typography>
-                        <Typography variant="body1">{card.exp_date}</Typography>
+                        <Typography variant="body1" title={card.number}>
+                          {card.number}
+                        </Typography>
+                        <Typography variant="body1" title={card.exp_date}>
+                          {card.exp_date}
+                        </Typography>
                       </CardContent>
                     </Grid>
                     <Grid item xs={12}>
                       <Link to="/account/updatepaymentcard">
-                        <Button>Edit</Button>
+                        <Button title="Edit">Edit</Button>
                       </Link>
-                      <Button>Delete</Button>
-                      {!card.default && <Button>Make default</Button>}
+                      <Button title="Delete">Delete</Button>
+                      {!card.default && (
+                        <Button title="Make default">Make default</Button>
+                      )}
                     </Grid>
                   </Grid>
                 </Card>
@@ -84,7 +91,9 @@ const CreditCards = () => {
 
       <Grid item xs={6}>
         <Link to="/account/updatepaymentcard">
-          <Button variant="contained">ADD CARD</Button>
+          <Button variant="contained" title="Add Card">
+            ADD CARD
+          </Button>
         </Link>
       </Grid>
 

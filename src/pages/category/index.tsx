@@ -78,6 +78,7 @@ const CategoryList = () => {
               key={index}
               value={`${index}`}
               label={item}
+              title={item}
               color="secondary.main"
               sx={{ fontFamily: 'Poppins-Medium !important' }}
             />
@@ -95,11 +96,11 @@ const CategoryList = () => {
           <Grid item xs={12}>
             <Grid container>
               <Grid item xs={12} md={6}>
-                <Typography className={classes.heading}>{item}</Typography>
+                <Typography className={classes.heading} title={item}>{item}</Typography>
               </Grid>
               <Grid item md={6} sx={{ display: { xs: 'none', md: 'grid' } }}>
                 <Typography className={classes.link}>
-                  <Link to="/">view all →</Link>
+                  <Link to="/" title="view all">view all →</Link>
                 </Typography>
               </Grid>
             </Grid>

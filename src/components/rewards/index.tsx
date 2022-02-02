@@ -30,7 +30,9 @@ const Rewards = () => {
           <Grid container>
             <Grid item xs={3} sm={4} md={4} lg={5} />
             <Grid item xs={6} sm={4} md={4} lg={3}>
-              <Button onClick={handler}>VIEW REWARDS</Button>
+              <Button onClick={handler} title="VIEW REWARDS">
+                VIEW REWARDS
+              </Button>
             </Grid>
             <Grid item xs={3} sm={4} md={4} lg={5} />
           </Grid>
@@ -39,7 +41,9 @@ const Rewards = () => {
 
       {!view && (
         <Grid item xs={10} sm={11} md={11} lg={8}>
-          <Typography variant="h4">APPLY REWARDS</Typography>
+          <Typography variant="h4" title="APPLY REWARDS">
+            APPLY REWARDS
+          </Typography>
           <Grid container>
             <FormControl>
               <RadioGroup row aria-labelledby="rewards" name="Rubio,s rewards">
@@ -51,6 +55,7 @@ const Rewards = () => {
                         control={<Radio />}
                         label={reward.desc}
                         aria-label={reward.desc}
+                        title={reward.desc}
                       />
                     </Card>
                   </Grid>

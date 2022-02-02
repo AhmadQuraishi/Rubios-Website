@@ -46,21 +46,29 @@ const GiftCards = () => {
                         image={card.icon}
                         alt="Gift card icon"
                         aria-label="Gift card icon"
+                        title="Gift card icon"
                       />
                     </Grid>
                     <Grid item xs={8} md={8}>
                       <CardContent>
-                        <Typography variant="body1">{card.title}</Typography>
-                        <Typography variant="body1">{card.number}</Typography>
-                        <Typography variant="body1">
+                        <Typography variant="body1" title={card.title}>
+                          {card.title}
+                        </Typography>
+                        <Typography variant="body1" title={card.number}>
+                          {card.number}
+                        </Typography>
+                        <Typography
+                          variant="body1"
+                          title={card.balance.toString()}
+                        >
                           Balance:${card.balance}
                         </Typography>
                       </CardContent>
                     </Grid>
                     <Grid item xs={6} sm={8} md={5} lg={7} />
                     <Grid item xs={6} sm={4} md={7} lg={5}>
-                      <Button>Edit</Button>
-                      <Button>Delete</Button>
+                      <Button title="Edit">Edit</Button>
+                      <Button title="Delete">Delete</Button>
                     </Grid>
                   </Grid>
                 </Card>
@@ -72,7 +80,9 @@ const GiftCards = () => {
       </Grid>
 
       <Grid item xs={6}>
-        <Button variant="contained">ADD GIFT CARD</Button>
+        <Button variant="contained" title="ADD GIFT CARD">
+          ADD GIFT CARD
+        </Button>
       </Grid>
 
       <Grid item xs={6}></Grid>

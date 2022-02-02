@@ -25,7 +25,7 @@ const AccountLinks = (props: any) => {
           onClick={() => (closeDrawer ? closeDrawer(false) : false)}
           className={classes.link}
         >
-          <ListItemText primary="My Rewards" />
+          <ListItemText title="My Rewards" primary="My Rewards" />
         </Link>
       </ListItem>
       <Divider />
@@ -35,7 +35,7 @@ const AccountLinks = (props: any) => {
           onClick={() => (closeDrawer ? closeDrawer(false) : false)}
           className={classes.link}
         >
-          <ListItemText primary="Check-In" />
+          <ListItemText title="Check-In" primary="Check-In" />
         </Link>
       </ListItem>
       <Divider />
@@ -45,7 +45,7 @@ const AccountLinks = (props: any) => {
           onClick={() => (closeDrawer ? closeDrawer(false) : false)}
           className={classes.link}
         >
-          <ListItemText primary="Orders" />
+          <ListItemText title="Orders" primary="Orders" />
         </Link>
       </ListItem>
       <Divider />
@@ -55,7 +55,7 @@ const AccountLinks = (props: any) => {
           onClick={() => (closeDrawer ? closeDrawer(false) : false)}
           className={classes.link}
         >
-          <ListItemText primary="Payment Methods" />
+          <ListItemText title="Payment Methods" primary="Payment Methods" />
         </Link>
       </ListItem>
       <Divider />
@@ -65,7 +65,10 @@ const AccountLinks = (props: any) => {
           onClick={() => (closeDrawer ? closeDrawer(false) : false)}
           className={classes.link}
         >
-          <ListItemText primary="Delivery Addresses" />
+          <ListItemText
+            title="Delivery Addresses"
+            primary="Delivery Addresses"
+          />
         </Link>
       </ListItem>
       <Divider />
@@ -75,7 +78,7 @@ const AccountLinks = (props: any) => {
           onClick={() => (closeDrawer ? closeDrawer(false) : false)}
           className={classes.link}
         >
-          <ListItemText primary="Account History" />
+          <ListItemText title="Account History" primary="Account History" />
         </Link>
       </ListItem>
       <Divider />
@@ -85,7 +88,7 @@ const AccountLinks = (props: any) => {
           onClick={() => (closeDrawer ? closeDrawer(false) : false)}
           className={classes.link}
         >
-          <ListItemText primary="Invite Friends" />
+          <ListItemText title="Invite Friends" primary="Invite Friends" />
         </Link>
       </ListItem>
       <Divider />
@@ -95,7 +98,7 @@ const AccountLinks = (props: any) => {
           onClick={() => (closeDrawer ? closeDrawer(false) : false)}
           className={classes.link}
         >
-          <ListItemText primary="Profile" />
+          <ListItemText title="Profile" primary="Profile" />
         </Link>
       </ListItem>
       <Divider />
@@ -105,7 +108,7 @@ const AccountLinks = (props: any) => {
           onClick={() => (closeDrawer ? closeDrawer(false) : false)}
           className={classes.link}
         >
-          <ListItemText primary="Logout" />
+          <ListItemText title="Logout" primary="Logout" />
         </Link>
       </ListItem>
     </List>

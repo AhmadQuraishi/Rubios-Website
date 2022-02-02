@@ -38,8 +38,10 @@ const RedeemRewards = () => {
   return (
     <Fragment>
       <Grid container>
-        <Typography variant="h3">REDEEM YOUR REWARDS</Typography>
-        <Typography variant="body1">
+        <Typography variant="h3" title="REDEEM YOUR REWARDS">
+          REDEEM YOUR REWARDS
+        </Typography>
+        <Typography variant="body1" title="REDEEM YOUR REWARDS">
           click a reward to start your order
         </Typography>
         <FoodMenuCard menuItems={menuItems1} />
