@@ -11,7 +11,7 @@ import theme from './theme/theme';
 ReactDOM.render(
   <Provider store={store}>
     <React.StrictMode>
-      <BrowserRouter>
+      <BrowserRouter basename='order'>
         <ThemeProvider theme={theme}>
           <App />
         </ThemeProvider>
