@@ -474,6 +474,7 @@ const Cart = (props: any) => {
           <Grid item xs={12}>
             <Link
               to="/checkout"
+              aria-label="checkout"
               style={{ textDecoration: 'none' }}
               onClick={showCart}
             >

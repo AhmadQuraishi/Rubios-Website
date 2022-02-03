@@ -89,7 +89,10 @@ const DeliveryAddress = () => {
               </CardContent>
             </Card>
           </Grid>
-          <Link to="/account/addDeliveryAddress">
+          <Link
+            to="/account/addDeliveryAddress"
+            aria-label="Add delivery Address"
+          >
             <Button
               aria-label="add address"
               title=" ADD ADDRESS"

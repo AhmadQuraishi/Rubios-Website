@@ -90,7 +90,7 @@ const CreditCards = () => {
       </Grid>
 
       <Grid item xs={6}>
-        <Link to="/account/updatepaymentcard">
+        <Link aria-label="Add payment card" to="/account/updatepaymentcard">
           <Button variant="contained" title="Add Card">
             ADD CARD
           </Button>

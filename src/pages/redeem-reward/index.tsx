@@ -1,16 +1,6 @@
-import {
-  Grid,
-  Box,
-  Typography,
-  Card,
-  TextField,
-  Button,
-  Link,
-  CardContent,
-} from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import { Fragment } from 'react';
 import FoodMenuCard from '../../components/food-menu-card';
-import LeftMenuBar from '../../components/left-menu-bar';
 
 const RedeemRewards = () => {
   const menuItems1 = [

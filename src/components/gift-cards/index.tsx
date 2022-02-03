@@ -35,7 +35,7 @@ const GiftCards = () => {
       <Grid item xs={12}>
         <Grid container>
           {giftcardsList.map((card, index) => (
-            <Fragment key={index.toString()}>
+            <Fragment key={card.title + index}>
               <Grid item xs={12} md={5}>
                 <Card>
                   <Grid container>

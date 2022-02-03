@@ -105,6 +105,7 @@ const Footer = () => {
                         className={classes.links}
                         href={item.url}
                         title={item.title}
+                        aria-label={item.title}
                       >
                         {item.title}
                       </a>
@@ -292,6 +293,7 @@ const Footer = () => {
                     to="/"
                     className={classes.smallLinks}
                     title="Website Accessibility"
+                    aria-label="Website Accessibility"
                   >
                     Website Accessibility
                   </Link>
@@ -299,10 +301,16 @@ const Footer = () => {
                     to="/"
                     className={classes.smallLinks}
                     title="Terms of use"
+                    aria-label="Terms of use"
                   >
                     Terms of use
                   </Link>
-                  <Link to="/" className={classes.smallLinks} title="Privacy">
+                  <Link
+                    to="/"
+                    className={classes.smallLinks}
+                    title="Privacy"
+                    aria-label="Privacy"
+                  >
                     Privacy
                   </Link>
                 </Grid>

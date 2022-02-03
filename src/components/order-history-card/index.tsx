@@ -6,7 +6,6 @@ import {
   Grid,
   Typography,
 } from '@mui/material';
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 const OrderHistoryCard = (props: any) => {

@@ -92,7 +92,11 @@ const ProductListing = () => {
             sm={6}
             md={3}
           >
-            <Link to="/product" style={{ textDecoration: 'none' }}>
+            <Link
+              to="/product"
+              aria-label={item.name}
+              style={{ textDecoration: 'none' }}
+            >
               <Card elevation={0} style={{ borderRadius: 0 }}>
                 <CardMedia
                   className={classes.img}

@@ -24,7 +24,7 @@ import AccountLinks from '../account-links';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { rootState } from '../../redux/reducers';
-import { getMenuRequest } from '../../redux/actions/footer'
+import { getMenuRequest } from '../../redux/actions/footer';
 
 const useStyles = makeStyles((theme: Theme) => ({
   navBar: {
@@ -92,7 +92,11 @@ const Header = (props: any) => {
         >
           <Typography variant="h4" className={classes.logo}>
             {!removeCart ? (
-              <Link to="/" className={classes.logoImg}>
+              <Link
+                to="/"
+                className={classes.logoImg}
+                aria-label="Rubio's Cosatal Grill"
+              >
                 <img
                   aria-label="Rubio's Cosatal Grill"
                   src={logo}
@@ -105,6 +109,7 @@ const Header = (props: any) => {
               <>
                 <Link
                   to="/"
+                  aria-label="Rubio's Cosatal Grill"
                   className={classes.logoImg}
                   style={{ padding: '20px 0px 20px 15px' }}
                 >
@@ -139,6 +144,7 @@ const Header = (props: any) => {
                     to="/category"
                     className={classes.menuLink}
                     title="Main Menu"
+                    aria-label="Main Menu"
                   >
                     Main Menu
                   </Link>
@@ -158,12 +164,21 @@ const Header = (props: any) => {
                 onClick={() => setOpenDrawer(!openDrawer)}
                 className={classes.icon}
               >
-                <MenuIcon fontSize="large" titleAccess="Cart Icon" />
+                <MenuIcon
+                  fontSize="large"
+                  titleAccess="Cart Icon"
+                  aria-label="Cart Icon"
+                />
               </IconButton>
             </>
           ) : (
             <>
-              <Link to="/" className={classes.menuLink} title="Main Menu">
+              <Link
+                to="/"
+                className={classes.menuLink}
+                title="Main Menu"
+                ara-label="Main Menu"
+              >
                 Main Menu
               </Link>
               {!removeCart && (

@@ -1,6 +1,12 @@
 import { makeStyles } from '@mui/styles';
-import { Grid, Typography, CardMedia, Card, CardContent } from '@mui/material';
-import CustomButton from '../../helpers/button/button';
+import {
+  Grid,
+  Typography,
+  CardMedia,
+  Card,
+  CardContent,
+  Button,
+} from '@mui/material';
 import { Fragment } from 'react';
 
 const useStyle = makeStyles(() => ({
@@ -67,9 +73,9 @@ const Welcome = () => {
                     component="img"
                     sx={{ width: 120 }}
                     image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUAKpRxf2AActPwZQg__oUrjxb7K2od0nJug0zkYc94NePv_wFW5suC8nIiXBNQRzYw3s&usqp=CAU"
-                    alt="Live from space album cover"
-                    aria-label="image"
-                    title="Live from space album cover"
+                    alt="California Burrito"
+                    aria-label="California Burrito"
+                    title="California Burrito"
                   />
                   <CardContent sx={{ flex: '1 0 auto' }}>
                     <Typography variant="body2" title="1x California Burrito">
@@ -130,26 +136,29 @@ const Welcome = () => {
                 <Typography variant="h6" title="4.2 Mile Away">
                   4.2 Mile Away
                 </Typography>
-                <CustomButton
+                <Button
                   aria-label="pickup button"
                   variant="contained"
-                  text="PICKUP"
                   title="PICKUP"
-                />
+                >
+                  PICKUP
+                </Button>
                 <br />
-                <CustomButton
+                <Button
                   aria-label="curbside button"
                   variant="contained"
-                  text="CURBSIDE"
                   title="CURBSIDE"
-                />
+                >
+                  CURBSIDE
+                </Button>
                 <br />
-                <CustomButton
+                <Button
                   aria-label="delivery button"
                   variant="contained"
-                  text="DELIVERY"
                   title="DELIVERY"
-                />
+                >
+                  DELIVERY
+                </Button>
                 <br />
               </Grid>
             </Grid>

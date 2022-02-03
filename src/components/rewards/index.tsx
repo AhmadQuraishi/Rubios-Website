@@ -48,7 +48,7 @@ const Rewards = () => {
             <FormControl>
               <RadioGroup row aria-labelledby="rewards" name="Rubio,s rewards">
                 {rewardsArray.map((reward, index) => (
-                  <Grid item xs={12} sm={12} md={6}>
+                  <Grid item xs={12} sm={12} md={6} key={reward.desc + index}>
                     <Card>
                       <FormControlLabel
                         value={reward.desc}

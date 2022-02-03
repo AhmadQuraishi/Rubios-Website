@@ -8,7 +8,6 @@ import {
   Card,
 } from '@mui/material';
 import { Fragment } from 'react';
-import LeftMenuBar from '../../components/left-menu-bar';
 
 const Profile = () => {
   return (

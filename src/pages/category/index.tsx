@@ -50,7 +50,7 @@ const CategoryList = () => {
   };
 
   return (
-    <Fragment>     
+    <Fragment>
       <StoreInfoBar />
       <Box
         sx={{
@@ -75,7 +75,7 @@ const CategoryList = () => {
         >
           {categories.map((item, index) => (
             <Tab
-              key={index}
+              key={item + index}
               value={`${index}`}
               label={item}
               title={item}
@@ -96,11 +96,15 @@ const CategoryList = () => {
           <Grid item xs={12}>
             <Grid container>
               <Grid item xs={12} md={6}>
-                <Typography className={classes.heading} title={item}>{item}</Typography>
+                <Typography className={classes.heading} title={item}>
+                  {item}
+                </Typography>
               </Grid>
               <Grid item md={6} sx={{ display: { xs: 'none', md: 'grid' } }}>
                 <Typography className={classes.link}>
-                  <Link to="/" title="view all">view all →</Link>
+                  <Link to="/" title="view all">
+                    view all →
+                  </Link>
                 </Typography>
               </Grid>
             </Grid>

@@ -8,7 +8,6 @@ import {
   Button,
   Link,
 } from '@mui/material';
-import CustomButton from '../../helpers/button/button';
 import { Fragment } from 'react';
 
 const useStyle = makeStyles(() => ({
@@ -85,11 +84,16 @@ const Login = () => {
                     title="password"
                   />
                   <br />
-                  <Link href="#" variant="body2" title="Forgot password?">
+                  <Link
+                    href="#"
+                    variant="body2"
+                    title="Forgot password?"
+                    aria-label="Forgot password?"
+                  >
                     Forgot password?
                   </Link>{' '}
                   <br />
-                  <Link href="/order/account">
+                  <Link href="/order/account" aria-label="sign in">
                     <Button
                       aria-label="sign in"
                       variant="contained"
@@ -117,32 +121,16 @@ const Login = () => {
                   MORE OPTIONS
                 </Typography>
                 <br />
-                <CustomButton
-                  ariaLabel="sign in with facebbok"
-                  variant="outlined"
-                  text="SIGN IN WITH FACEBOOK"
-                  title="SIGN IN WITH FACEBOOK"
-                />
+                <Button title="SIGN IN WITH FACEBOOK">
+                  SIGN IN WITH FACEBOOK
+                </Button>
                 <br />
-                <CustomButton
-                  ariaLabel="sign in with apple"
-                  variant="outlined"
-                  text="SIGN IN WITH APPLE"
-                  title="SIGN IN WITH APPLE"
-                />
+                <Button title="SIGN IN WITH APPLE">SIGN IN WITH APPLE</Button>
+
                 <br />
-                <CustomButton
-                  ariaLabel="sign in with google"
-                  variant="outlined"
-                  text="SIGN IN WITH GOOGLE"
-                />
+                <Button title="SIGN IN WITH GOOGLE">SIGN IN WITH GOOGLE</Button>
                 <br />
-                <CustomButton
-                  ariaLabel="create account"
-                  variant="contained"
-                  text="CREATE ACCOUNT"
-                  title="CREATE ACCOUNT"
-                />
+                <Button title="CREATE ACCOUNT">CREATE ACCOUNT</Button>
                 <br />
                 <Typography
                   variant="caption"

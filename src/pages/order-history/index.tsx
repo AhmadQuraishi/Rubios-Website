@@ -2,7 +2,6 @@ import React from 'react';
 import { Box, Grid, Typography } from '@mui/material';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import LeftMenuBar from '../../components/left-menu-bar';
 import OrderHistoryCard from '../../components/order-history-card';
 
 const OrdersHistory = () => {
@@ -40,42 +39,40 @@ const OrdersHistory = () => {
   ];
 
   return (
-    <Box>
-      <Grid container>
-        <Grid item xs={1} sm={1} md={1} lg={1} />
-        <Grid item xs={10} sm={10} md={9} lg={9}>
-          <Typography aria-label="your orders" variant="h5" title="YOUR ORDERS">
-            YOUR ORDERS
-          </Typography>
-          <br />
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            textColor="secondary"
-            indicatorColor="secondary"
-            aria-label="Order History tabs"
-            title="Order History tabs"
-          >
-            <Tab
-              aria-label="favorite orders"
-              value="1"
-              label="FAVOTITES"
-              title="favorite orders"
-            />
-            <Tab
-              aria-label="recent orders"
-              value="2"
-              label="RECENT"
-              title="recent orders"
-            />
-          </Tabs>
-          <br />
-          {value === '1' && <OrderHistoryCard orderHistory={favoriteOrders} />}
-          {value === '2' && <OrderHistoryCard orderHistory={favoriteOrders} />}
-        </Grid>
-        <Grid item xs={1} sm={1} md={2} lg={2} />
+    <Grid container>
+      <Grid item xs={1} sm={1} md={1} lg={1} />
+      <Grid item xs={10} sm={10} md={9} lg={9}>
+        <Typography aria-label="your orders" variant="h5" title="YOUR ORDERS">
+          YOUR ORDERS
+        </Typography>
+        <br />
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          textColor="secondary"
+          indicatorColor="secondary"
+          aria-label="Order History tabs"
+          title="Order History tabs"
+        >
+          <Tab
+            aria-label="favorite orders"
+            value="1"
+            label="FAVOTITES"
+            title="favorite orders"
+          />
+          <Tab
+            aria-label="recent orders"
+            value="2"
+            label="RECENT"
+            title="recent orders"
+          />
+        </Tabs>
+        <br />
+        {value === '1' && <OrderHistoryCard orderHistory={favoriteOrders} />}
+        {value === '2' && <OrderHistoryCard orderHistory={favoriteOrders} />}
       </Grid>
-    </Box>
+      <Grid item xs={1} sm={1} md={2} lg={2} />
+    </Grid>
   );
 };
 
