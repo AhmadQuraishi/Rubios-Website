@@ -41,6 +41,41 @@ const CategoryList = () => {
   const classes = useStyles();
   const [value, setValue] = useState('0');
 
+  const products = [
+    {
+      image:
+        'https://www.rubios.com/sites/default/files/styles/menu_item_teaser/public/menu/TacoKit.jpg?itok=sXyv_fvV',
+      name: ' California Burrito',
+      desc: 'Salsa Verde Taco, Grilled Gourmet Toca and the Maxican street corn Taco all with your choice of sustainably sourced protien.',
+      cal: '1000',
+      price: '12.05',
+    },
+    {
+      image:
+        'https://www.rubios.com/sites/default/files/styles/menu_item_teaser/public/bowl-mahi-mahi.jpg?itok=yXA_BMpa',
+      name: ' Grilled Chicken Salad Bowl',
+      desc: 'Salsa Verde Taco, Grilled Gourmet Toca and the Maxican street corn Taco all with your choice of sustainably sourced protien.',
+      cal: '1000',
+      price: '12.05',
+    },
+    {
+      image:
+        'https://www.rubios.com/sites/default/files/styles/menu_item_teaser/public/menu/Chicken_Nachos_V2.jpg?itok=JCQOjNiP',
+      name: ' Classic Grilled Chicken Salad Platter',
+      desc: 'Salsa Verde Taco, Grilled Gourmet Toca and the Maxican street corn Taco all with your choice of sustainably sourced protien.',
+      cal: '1000',
+      price: '12.05',
+    },
+    {
+      image:
+        'https://www.rubios.com/sites/default/files/styles/menu_item_teaser/public/menu/Shirmp%20and%20Bacon%20Burrito%20-%201400x800%20-%20DD.jpg?itok=aNmnW-Q0',
+      name: ' Warp Chicken Special Roll',
+      desc: 'Salsa Verde Taco, Grilled Gourmet Toca and the Maxican street corn Taco all with your choice of sustainably sourced protien.',
+      cal: '1000',
+      price: '12.05',
+    },
+  ];
+
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setTimeout(() => {
       var elem = document.getElementById('#panel-' + newValue);
@@ -102,7 +137,7 @@ const CategoryList = () => {
               </Grid>
               <Grid item md={6} sx={{ display: { xs: 'none', md: 'grid' } }}>
                 <Typography className={classes.link}>
-                  <Link to="/" title="view all">
+                  <Link to="/category" title="view all">
                     view all →
                   </Link>
                 </Typography>
@@ -110,7 +145,7 @@ const CategoryList = () => {
             </Grid>
           </Grid>
           <Grid item xs={12} sx={{ paddingBottom: '20px' }}>
-            <ProductListing />
+            <ProductListing productList={products} />
           </Grid>
         </Grid>
       ))}
