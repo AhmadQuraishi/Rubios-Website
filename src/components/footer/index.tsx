@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Grid, Theme, Typography, Divider } from '@mui/material';
+import { Grid, Theme, Typography, Divider, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
 import footerLogo from '../../assets/imgs/rubios-logo-white.png';
@@ -69,7 +69,7 @@ const Footer = () => {
             }}
           >
             <Grid item xs={12}>
-              <Typography
+              <Button
                 sx={{
                   display: 'flex',
                   padding: {
@@ -87,7 +87,7 @@ const Footer = () => {
                   alt="Rubios Coastal Grill"
                   title="Rubios Coastal Grill"
                 />
-              </Typography>
+              </Button>
             </Grid>
             <Grid item xs={12}>
               <Grid
@@ -197,18 +197,22 @@ const Footer = () => {
                 sx={{ padding: '10px 0 0 0' }}
               >
                 <Grid item xs={6}>
-                  <img
-                    style={{ display: 'inline-block', width: '100%' }}
-                    src={iosLogo}
-                    alt="Click Here To Download Our From Apple Store"
-                  />
+                  <Button sx={{ padding: 0 }}>
+                    <img
+                      style={{ display: 'inline-block', width: '100%' }}
+                      src={iosLogo}
+                      alt="Click Here To Download Our From Apple Store"
+                    />
+                  </Button>
                 </Grid>
                 <Grid item xs={6}>
-                  <img
-                    style={{ display: 'inline-block', width: '100%' }}
-                    src={andriodLogo}
-                    alt="Click Here To Download Our From Google App Store"
-                  />
+                  <Button sx={{ padding: 0 }}>
+                    <img
+                      style={{ display: 'inline-block', width: '100%' }}
+                      src={andriodLogo}
+                      alt="Click Here To Download Our From Google App Store"
+                    />
+                  </Button>
                 </Grid>
               </Grid>
             </Grid>

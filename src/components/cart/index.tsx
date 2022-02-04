@@ -146,34 +146,34 @@ const Cart = (props: any) => {
               <Grid item xs={12} sx={{ padding: '0' }}>
                 <Grid container spacing={0}>
                   <Grid item xs={3}>
-                    <Typography
-                      variant="caption"
-                      component="a"
+                    <Link
                       title="Remove"
                       className={classes.smallLink}
+                      to="/product"
+                      aria-label="Remove the item from cart"
                     >
                       Remove
-                    </Typography>
+                    </Link>
                   </Grid>
                   <Grid item xs={3}>
-                    <Typography
-                      variant="caption"
-                      component="a"
+                    <Link
+                      to="/"
                       title="Edit"
                       className={classes.smallLink}
+                      aria-label="Make changes to the current menu item"
                     >
                       Edit
-                    </Typography>
+                    </Link>
                   </Grid>
                   <Grid item xs={3}>
-                    <Typography
-                      variant="caption"
-                      component="a"
+                    <Link
+                      to="/"
                       className={classes.smallLink}
                       title="Duplicate"
+                      aria-label="Duplicate the menu item"
                     >
                       Duplicate
-                    </Typography>
+                    </Link>
                   </Grid>
                   <Grid item xs={3}></Grid>
                 </Grid>
@@ -225,34 +225,34 @@ const Cart = (props: any) => {
               <Grid item xs={12} sx={{ padding: '0' }}>
                 <Grid container spacing={0}>
                   <Grid item xs={3}>
-                    <Typography
-                      variant="caption"
-                      component="a"
+                    <Link
                       title="Remove"
                       className={classes.smallLink}
+                      to="/product"
+                      aria-label="Remove the item from cart"
                     >
                       Remove
-                    </Typography>
+                    </Link>
                   </Grid>
                   <Grid item xs={3}>
-                    <Typography
-                      variant="caption"
-                      component="a"
-                      className={classes.smallLink}
+                    <Link
+                      to="/"
                       title="Edit"
+                      className={classes.smallLink}
+                      aria-label="Make changes to the current menu item"
                     >
                       Edit
-                    </Typography>
+                    </Link>
                   </Grid>
                   <Grid item xs={3}>
-                    <Typography
-                      variant="caption"
-                      component="a"
+                    <Link
+                      to="/"
                       className={classes.smallLink}
                       title="Duplicate"
+                      aria-label="Duplicate the menu item"
                     >
                       Duplicate
-                    </Typography>
+                    </Link>
                   </Grid>
                   <Grid item xs={3}></Grid>
                 </Grid>

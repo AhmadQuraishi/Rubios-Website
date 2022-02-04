@@ -159,13 +159,7 @@ const Product = () => {
                     >
                       MAXICAN STREET CORN SHRIMP TACO
                     </Typography>
-                    <Typography
-                      variant="caption"
-                      color="blue"
-                      title="CLICK TO CUSTOMIZE"
-                    >
-                      CLICK TO CUSTOMIZE
-                    </Typography>
+                    <Button>CLICK TO CUSTOMIZE</Button>
                   </CardContent>
                 </Grid>
               </Grid>
@@ -195,13 +189,7 @@ const Product = () => {
                     >
                       MAXICAN STREET CORN SHRIMP TACO
                     </Typography>
-                    <Typography
-                      title="CLICK TO CUSTOMIZE"
-                      variant="caption"
-                      color="blue"
-                    >
-                      CLICK TO CUSTOMIZE
-                    </Typography>
+                    <Button>CLICK TO CUSTOMIZE</Button>
                   </CardContent>
                 </Grid>
               </Grid>
@@ -222,9 +210,7 @@ const Product = () => {
         <FoodMenuCard menuItems={drinks} />
         <br />
         <br />
-        <Typography variant="caption" title="QUANTITY">
-          QUANTITY
-        </Typography>
+        <Button>QUANTITY</Button>
 
         <Button aria-label="add to bag" title="ADD TO Bag" variant="contained">
           ADD TO Bag

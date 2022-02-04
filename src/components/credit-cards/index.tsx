@@ -72,8 +72,12 @@ const CreditCards = () => {
                       </CardContent>
                     </Grid>
                     <Grid item xs={12}>
-                      <Link to="/account/updatepaymentcard">
-                        <Button title="Edit">Edit</Button>
+                      <Link
+                        title="Edit"
+                        aria-label="Edit card"
+                        to="/account/updatepaymentcard"
+                      >
+                        Edit
                       </Link>
                       <Button title="Delete">Delete</Button>
                       {!card.default && (
@@ -90,10 +94,12 @@ const CreditCards = () => {
       </Grid>
 
       <Grid item xs={6}>
-        <Link aria-label="Add payment card" to="/account/updatepaymentcard">
-          <Button variant="contained" title="Add Card">
-            ADD CARD
-          </Button>
+        <Link
+          title="Add Card"
+          aria-label="Add payment card"
+          to="/account/updatepaymentcard"
+        >
+          ADD CARD
         </Link>
       </Grid>
 

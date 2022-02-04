@@ -7,6 +7,7 @@ import {
   Theme,
   Drawer,
   IconButton,
+  Button,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
@@ -182,15 +183,17 @@ const Header = (props: any) => {
                 Main Menu
               </Link>
               {!removeCart && (
-                <Typography
+                <Button
                   component="div"
                   onClick={handleShowCart}
+                  aria-label="Open the cart"
                   sx={{
                     backgroundColor: 'primary.main',
                     width: '140px',
                     cursor: 'pointer',
                     float: 'right',
                     justifyContent: 'center',
+                    borderRadius: 0,
                     display: { xs: 'none', sm: 'flex' },
                     '&:hover': {
                       backgroundColor: 'success.main',
@@ -204,7 +207,7 @@ const Header = (props: any) => {
                     alt="Cart Icon"
                     title="Cart Icon"
                   />
-                </Typography>
+                </Button>
               )}
             </>
           )}

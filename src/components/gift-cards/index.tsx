@@ -8,6 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 import gc_icon from '../../assets/imgs/gift_card_icon.png';
+import { Link } from 'react-router-dom';
 
 const GiftCards = () => {
   const giftcardsList = [
@@ -67,7 +68,13 @@ const GiftCards = () => {
                     </Grid>
                     <Grid item xs={6} sm={8} md={5} lg={7} />
                     <Grid item xs={6} sm={4} md={7} lg={5}>
-                      <Button title="Edit">Edit</Button>
+                      <Link
+                        title="Edit"
+                        aria-label="Edit card"
+                        to="/account/updatepaymentcard"
+                      >
+                        Edit
+                      </Link>
                       <Button title="Delete">Delete</Button>
                     </Grid>
                   </Grid>
@@ -80,9 +87,13 @@ const GiftCards = () => {
       </Grid>
 
       <Grid item xs={6}>
-        <Button variant="contained" title="ADD GIFT CARD">
+        <Link
+          title="ADD GIFT CARD"
+          aria-label="Add gift card"
+          to="/account/updatepaymentcard"
+        >
           ADD GIFT CARD
-        </Button>
+        </Link>
       </Grid>
 
       <Grid item xs={6}></Grid>
