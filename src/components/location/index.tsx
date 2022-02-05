@@ -5,6 +5,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
 import SearchIcon from '@mui/icons-material/Search';
+import './location.css';
 
 const LocationCard = () => {
   const restaurants = [
@@ -103,11 +104,12 @@ const LocationCard = () => {
         aria-label="Nearby Location"
         role="list"
         title="Nearby Location"
+        className="listing"
       >
         <Grid container>
           <Grid item xs={12}>
             <ListItemButton>
-              <ListItemText
+              <ListItemText className="name"
                 title={filteredRes[index].name}
                 primary={filteredRes[index].name}
               />
@@ -116,7 +118,7 @@ const LocationCard = () => {
 
           <Grid item xs={12}>
             <ListItemButton>
-              <ListItemText
+              <ListItemText className="address"
                 title={filteredRes[index].address}
                 primary={filteredRes[index].address}
               />
@@ -125,14 +127,12 @@ const LocationCard = () => {
 
           <Grid item xs={12}>
             <ListItemButton>
-              <ListItemText
+              <ListItemText className="label"
                 title={filteredRes[index].distance}
                 primary={filteredRes[index].distance}
               />
             </ListItemButton>
           </Grid>
-
-          <Grid item xs={12}></Grid>
         </Grid>
       </ListItem>
     );
@@ -148,7 +148,7 @@ const LocationCard = () => {
   );
 
   return (
-    <Grid container>
+    <Grid container className="list-wrapper">
       <Grid
         item
         xs={12}
@@ -158,7 +158,7 @@ const LocationCard = () => {
         sx={{ zIndex: 1, margin: '20px 30px' }}
       >
         <Card>
-          <Grid container spacing={2} sx={{ textAlign: 'center' }}>
+          <Grid container spacing={2}>
             <Grid item xs={12}>
               <Button variant="contained" title="Pick up">
                 PICK UP
@@ -186,7 +186,7 @@ const LocationCard = () => {
               />
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="h5" title="NEARBY LOCATIONS">
+              <Typography className="label" title="NEARBY LOCATIONS">
                 NEARBY LOCATIONS
               </Typography>
             </Grid>

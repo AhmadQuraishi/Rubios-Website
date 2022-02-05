@@ -6,8 +6,10 @@ import {
   Card,
   CardContent,
   Button,
+  Link,
 } from '@mui/material';
 import { Fragment } from 'react';
+import './welcome.css';
 
 const useStyle = makeStyles(() => ({
   root: {
@@ -17,10 +19,9 @@ const useStyle = makeStyles(() => ({
     backgroundSize: 'cover',
     justifyContent: 'center',
   },
-  card: {
-    marginTop: '40px',
-    marginLeft: '40px',
-  },
+  caption: {
+
+  }
 }));
 
 const Welcome = () => {
@@ -28,141 +29,42 @@ const Welcome = () => {
   return (
     <Fragment>
       <Grid container component="main" columns={16} className={classes.root}>
-        <Grid
-          item
-          xs={12}
-          sm={12}
-          md={12}
-          lg={10}
-          style={{ marginTop: '20px' }}
-        >
-          <Card>
-            <Grid
-              container
-              style={{ justifyContent: 'center', marginTop: '20px' }}
-            >
-              <Grid item xs={12} sm={12} md={12} lg={6}>
-                <Typography
-                  variant="caption"
-                  style={{ color: 'blue' }}
-                  title="WELCOME"
-                >
-                  WELCOME
-                </Typography>
-                <Typography
-                  fontWeight={500}
-                  variant="h5"
-                  style={{ color: '' }}
-                  title="WELCOME BACK ALEXENDRA"
-                >
-                  WELCOME BACK ALEXENDRA!
-                </Typography>
-                <Typography
-                  variant="caption"
-                  style={{ color: 'blue' }}
-                  title="LAST ORDER 11/01"
-                >
-                  LAST ORDER 11/01
-                </Typography>
-                <Card
-                  elevation={0}
-                  style={{ border: '1px solid black' }}
-                  sx={{ display: 'flex' }}
-                >
+        <Grid item xs={12} className="welcome-wrapper">
+            <Grid container className="welcome-content">
+              <Grid item xs={12} md={6} lg={6} className="left-col">
+                <Typography variant="caption" className="label" title="Welcome">WELCOME</Typography>
+                <Typography variant="h4" title="WELCOME BACK ALEXENDRA">WELCOME BACK ALEXENDRA!</Typography>
+                <Typography variant="caption" className="label" title="LAST ORDER 11/01">LAST ORDER 11/01</Typography>
+                <Card elevation={0} className="product-card">
                   <CardMedia
                     component="img"
-                    sx={{ width: 120 }}
                     image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUAKpRxf2AActPwZQg__oUrjxb7K2od0nJug0zkYc94NePv_wFW5suC8nIiXBNQRzYw3s&usqp=CAU"
                     alt="California Burrito"
                     aria-label="California Burrito"
                     title="California Burrito"
                   />
-                  <CardContent sx={{ flex: '1 0 auto' }}>
-                    <Typography variant="body2" title="1x California Burrito">
-                      1x California Burrito
-                    </Typography>
-                    <Typography variant="body2" title="2x Fish Toca Plates">
-                      2x Fish Toca Plates
-                    </Typography>
-                    <Typography variant="body2" title="1x Medium Drink">
-                      1x Medium Drink...
-                    </Typography>
-                    <Typography
-                      aria-label="edit order"
-                      variant="button"
-                      color="text.secondary"
-                      title="EDIT ORDER"
-                    >
-                      EDIT ORDER
-                    </Typography>{' '}
-                    <Typography
-                      aria-label="order"
-                      variant="button"
-                      color="blue"
-                      title="order"
-                    >
-                      ORDER
-                    </Typography>
+                  <CardContent>
+                    <Typography variant="h6" title="1x California Burrito">1x California Burrito</Typography>
+                    <Typography variant="h6" title="2x Fish Toca Plates">2x Fish Toca Plates</Typography>
+                    <Typography variant="h6" title="1x Medium Drink">1x Medium Drink...</Typography>
+                    <Link href="" aria-label="edit order" color="#a5a5a5" fontWeight={900} textTransform="uppercase" underline="none" title="EDIT ORDER">Edit Order</Link>
+                    <Link href="" aria-label="re order" color="#0075bf" fontWeight={900} textTransform="uppercase" underline="none" title="order">Re Order</Link>
                   </CardContent>
                 </Card>
               </Grid>
-              <Grid
-                item
-                xs={12}
-                sm={12}
-                md={12}
-                lg={7}
-                style={{ marginLeft: '10px' }}
-              >
-                <Typography
-                  variant="caption"
-                  style={{ color: 'blue' }}
-                  title="YOUR FAVORITE LOCATION"
-                >
-                  YOUR FAVORITE LOCATION
+              <Grid item xs={12} md={6} lg={6} className="right-col">
+                <Typography variant="caption" className="label" title="YOUR FAVORITE LOCATION">YOUR FAVORITE LOCATION</Typography>
+                <Typography variant="h5" title="Broadway Blvd">Broadway Blvd
+                  <Typography variant="caption" className="caption-grey" title="change">(change)</Typography>
                 </Typography>
-                <Typography fontWeight={400} variant="h4" title="Broadway Blvd">
-                  Broadway Blvd
-                  <Typography variant="caption" title="change">
-                    (change)
-                  </Typography>
-                </Typography>
-                <Typography variant="h6" title="20212 North 59th Ave, Ste.465A">
-                  20212 North 59th Ave, Ste.465A
-                </Typography>
-                <Typography variant="h6" title="San Diego, CA">
-                  San Diego, CA
-                </Typography>
-                <Typography variant="h6" title="4.2 Mile Away">
-                  4.2 Mile Away
-                </Typography>
-                <Button
-                  aria-label="pickup button"
-                  variant="contained"
-                  title="PICKUP"
-                >
-                  PICKUP
-                </Button>
-                <br />
-                <Button
-                  aria-label="curbside button"
-                  variant="contained"
-                  title="CURBSIDE"
-                >
-                  CURBSIDE
-                </Button>
-                <br />
-                <Button
-                  aria-label="delivery button"
-                  variant="contained"
-                  title="DELIVERY"
-                >
-                  DELIVERY
-                </Button>
-                <br />
+                <Typography variant="h6" title="20212 North 59th Ave, Ste.465A">20212 North 59th Ave, Ste.465A</Typography>
+                <Typography variant="h6" title="San Diego, CA">San Diego, CA</Typography>
+                <Typography variant="h6" title="4.2 Mile Away">4.2 Mile Away</Typography>
+                <Button aria-label="pickup button" variant="contained" title="PICKUP">PICKUP</Button>
+                <Button aria-label="curbside button" variant="contained" title="CURBSIDE">CURBSIDE</Button>
+                <Button aria-label="delivery button" variant="contained" title="DELIVERY">DELIVERY</Button>
               </Grid>
             </Grid>
-          </Card>
         </Grid>
       </Grid>
     </Fragment>
