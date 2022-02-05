@@ -1,0 +1,17 @@
+.order-details {
+  background: white;
+  padding: 50px;
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  border-radius: 30px;
+  margin: 50px auto 50px auto !important;
+}
+.order-details h6 {
+  font-family: 'Poppins-Bold', sans-serif !Important;
+  font-size: 16px !important;
+  color: #285169;
+}
+.order-details hr {
+  background: #285169;
+  height: 1px;
+}
