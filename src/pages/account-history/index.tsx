@@ -48,7 +48,7 @@ const AccountHistory = () => {
   return (
     <Fragment>
       <Typography
-        variant="h5"
+        variant="h4"
         title="Account History"
         sx={{
           paddingBottom: '10px',

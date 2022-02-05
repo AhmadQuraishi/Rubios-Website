@@ -38,14 +38,14 @@ const OrderConfirmation = () => {
                   EARN REWARDS
                 </Typography>
                 <Typography
-                  variant="h5"
+                  variant="h4"
                   style={{ color: 'white' }}
                   title="GET $5 OFF YOUR"
                 >
                   GET $5 OFF YOUR
                 </Typography>
                 <Typography
-                  variant="h5"
+                  variant="h4"
                   style={{ color: 'white' }}
                   title="NEXT ORDER"
                 >

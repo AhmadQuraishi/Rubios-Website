@@ -42,7 +42,7 @@ const OrdersHistory = () => {
     <Grid container>
       <Grid item xs={1} sm={1} md={1} lg={1} />
       <Grid item xs={10} sm={10} md={9} lg={9}>
-        <Typography aria-label="your orders" variant="h5" title="YOUR ORDERS">
+        <Typography aria-label="your orders" variant="h4" title="YOUR ORDERS">
           YOUR ORDERS
         </Typography>
         <br />

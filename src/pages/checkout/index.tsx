@@ -48,7 +48,10 @@ const Checkout = () => {
                       sx={{ justifyContent: 'center', alignItem: 'center' }}
                     >
                       <Grid item xs={12}>
-                        <Typography variant="h6" title="WHO IS PICKING UP?">
+                        <Typography
+                          variant="caption"
+                          title="WHO IS PICKING UP?"
+                        >
                           WHO IS PICKING UP?
                         </Typography>
                       </Grid>
@@ -99,7 +102,7 @@ const Checkout = () => {
                   <Grid item xs={12} md={6} lg={6}>
                     <Grid container>
                       <Grid item xs={12}>
-                        <Typography variant="h6" title="PICKUP TIME">
+                        <Typography variant="caption" title="PICKUP TIME">
                           PICKUP TIME
                         </Typography>
                       </Grid>

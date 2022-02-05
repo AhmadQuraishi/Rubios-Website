@@ -8,7 +8,7 @@ const OrderDetail = () => {
       <Grid item xs={1} sm={0.5} md={0.5} lg={2} />
 
       <Grid item xs={10} sm={11} md={11} lg={8}>
-        <Typography variant="h3" title="ORDER DETAILS">
+        <Typography variant="h4" title="ORDER DETAILS">
           ORDER DETAILS
         </Typography>
         <Grid container>
@@ -50,12 +50,12 @@ const OrderDetail = () => {
         </Grid>
         <Grid container>
           <Grid item xs={10} sm={10} md={10} lg={11}>
-            <Typography variant="h5" title="Tax">
+            <Typography variant="caption" title="Tax">
               TAX
             </Typography>
           </Grid>
           <Grid item xs={2} sm={2} md={2} lg={1}>
-            <Typography variant="h5" title="$1.53">
+            <Typography variant="caption" title="$1.53">
               $1.53
             </Typography>
           </Grid>

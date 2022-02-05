@@ -6,7 +6,7 @@ const UpdatePaymentCard = () => {
     <Grid container spacing={0}>
       <Grid item xs={12}>
         <Typography
-          variant="h5"
+          variant="h4"
           sx={{
             paddingBottom: '10px',
             color: 'secondary.main',

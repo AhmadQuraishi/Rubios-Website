@@ -30,10 +30,15 @@ const RewardConfirmation = () => {
             </Grid>
             <Grid item xs={12} sm={12} md={12} lg={6}>
               <Card style={{ backgroundColor: 'blue' }}>
-                <Typography style={{ color: 'white' }} title="YOUR REWARDS">
+                <Typography
+                  variant="caption"
+                  style={{ color: 'white' }}
+                  title="YOUR REWARDS"
+                >
                   YOUR REWARDS
                 </Typography>
                 <Typography
+                  variant="h4"
                   style={{ color: 'white' }}
                   title="YOU EARNED 18 POINTS!"
                 >
