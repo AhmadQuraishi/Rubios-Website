@@ -1,12 +1,13 @@
 .list-wrapper {
   padding: 0px;
-  width: 80%;
 }
 .list-wrapper .MuiPaper-root {
   padding: 20px;
   -webkit-border-radius: 30px;
   -moz-border-radius: 30px;
   border-radius: 30px;
+  width: 70%;
+  height: calc(100vh - 80px);
 }
 .list-wrapper .listing {
   padding: 0px;
