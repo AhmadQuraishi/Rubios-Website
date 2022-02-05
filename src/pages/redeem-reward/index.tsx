@@ -28,13 +28,19 @@ const RedeemRewards = () => {
   return (
     <Fragment>
       <Grid container>
-        <Typography variant="h3" title="REDEEM YOUR REWARDS">
-          REDEEM YOUR REWARDS
-        </Typography>
-        <Typography variant="body1" title="REDEEM YOUR REWARDS">
-          click a reward to start your order
-        </Typography>
-        <FoodMenuCard menuItems={menuItems1} />
+        <Grid item xs={12}>
+          <Typography variant="h4" title="REDEEM YOUR REWARDS">
+            REDEEM YOUR REWARDS
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Typography variant="body1" title="REDEEM YOUR REWARDS">
+            click a reward to start your order
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <FoodMenuCard menuItems={menuItems1} />
+        </Grid>
       </Grid>
     </Fragment>
   );

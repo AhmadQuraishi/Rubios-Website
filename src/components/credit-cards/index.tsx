@@ -54,7 +54,7 @@ const CreditCards = () => {
                     </Grid>
                     <Grid item xs={8} md={8}>
                       <CardContent>
-                        <Typography variant="body1" title={card.title}>
+                        <Typography variant="h6" title={card.title}>
                           {card.default ? (
                             <Fragment>
                               <span>DEFAULT</span> {card.title}
@@ -63,15 +63,15 @@ const CreditCards = () => {
                             `${card.title}`
                           )}
                         </Typography>
-                        <Typography variant="body1" title={card.number}>
+                        <Typography variant="h6" title={card.number}>
                           {card.number}
                         </Typography>
-                        <Typography variant="body1" title={card.exp_date}>
+                        <Typography variant="h6" title={card.exp_date}>
                           {card.exp_date}
                         </Typography>
                       </CardContent>
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} sx={{ display: 'flex' }}>
                       <Link
                         title="Edit"
                         aria-label="Edit card"

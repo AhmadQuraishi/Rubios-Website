@@ -52,14 +52,14 @@ const GiftCards = () => {
                     </Grid>
                     <Grid item xs={8} md={8}>
                       <CardContent>
-                        <Typography variant="body1" title={card.title}>
+                        <Typography variant="h6" title={card.title}>
                           {card.title}
                         </Typography>
-                        <Typography variant="body1" title={card.number}>
+                        <Typography variant="h6" title={card.number}>
                           {card.number}
                         </Typography>
                         <Typography
-                          variant="body1"
+                          variant="h6"
                           title={card.balance.toString()}
                         >
                           Balance:${card.balance}
@@ -67,7 +67,14 @@ const GiftCards = () => {
                       </CardContent>
                     </Grid>
                     <Grid item xs={6} sm={8} md={5} lg={7} />
-                    <Grid item xs={6} sm={4} md={7} lg={5}>
+                    <Grid
+                      item
+                      xs={6}
+                      sm={4}
+                      md={7}
+                      lg={5}
+                      sx={{ display: 'flex' }}
+                    >
                       <Link
                         title="Edit"
                         aria-label="Edit card"
