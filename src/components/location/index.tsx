@@ -140,6 +140,7 @@ const LocationCard = () => {
 
   const Icon = () => (
     <Button
+      className="search-field"
       aria-label="search nearby locations"
       title="search nearby locations"
     >

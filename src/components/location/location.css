@@ -14,6 +14,9 @@
 .list-wrapper .listing .MuiListItemButton-root {
   padding: 0px !important;
 }
+.search-field {
+  width: auto;
+}
 .name span {
   font-family: 'Poppins-Bold', sans-serif !important;
   color: #414141;
