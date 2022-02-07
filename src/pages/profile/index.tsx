@@ -103,7 +103,7 @@ const Profile = () => {
       <Typography variant="h4">Edit Profile</Typography>
       <Grid container>
         <Grid item xs={12} md={6}>
-          <Grid container>
+          <Grid container className="profile-section">
             <Grid item xs={12}>
               <TextField
                 aria-label="email"

@@ -1,6 +1,7 @@
 import { Grid, Box, Button, TextField, Typography } from '@mui/material';
 import receipt from '../../assets/imgs/receipt.png';
 import { Fragment } from 'react';
+import './check-in.css';
 
 const CheckIn = () => {
   return (
@@ -10,7 +11,7 @@ const CheckIn = () => {
       </Typography>
       <Grid container>
         <Grid item md={10}>
-          <Grid container>
+          <Grid container className="check-in-section">
             <Grid item xs={12} md={5}>
               <Grid container>
                 <Typography
@@ -35,7 +36,7 @@ const CheckIn = () => {
                 <TextField
                   aria-label="Rubio's rewards barcode number"
                   // label="Rubio's rewards barcode number"
-                  placeholder="x-xx-xxxx"
+                  placeholder="x-xxx-xxx-xxxx-x"
                   aria-required="true"
                   title="Rubio's rewards barcode number"
                   sx={{ width: '100%' }}
