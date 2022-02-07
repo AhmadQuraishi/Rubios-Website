@@ -140,7 +140,11 @@ const Header = (props: any) => {
                     Main Menu
                   </Link>
                 </div>
-                <AccountLinks closeDrawer={removeCart ? setOpenDrawer : null} />
+                {removeCart && (
+                  <AccountLinks
+                    closeDrawer={removeCart ? setOpenDrawer : null}
+                  />
+                )}
               </Drawer>
               {!removeCart && (
                 <img
