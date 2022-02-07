@@ -2,12 +2,11 @@ import axios from 'axios';
 
 export const getFooterMenu = () => {
   try {
+    const url =  process.env.REACT_APP_FOOTER_URL ||"";
     return axios(
-      'https://rubioslivedev.wpengine.com/wp-json/wp-api-menus/v2/menus/6',
+     url,
     ).then((response) => response.data);
   } catch (error) {
     throw error;
   }
 };
-
-
