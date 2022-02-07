@@ -3,14 +3,26 @@ import { Box, Grid, Typography } from '@mui/material';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import OrderHistoryCard from '../../components/order-history-card';
+import { makeStyles } from '@mui/styles';
+import { boxSizing } from '@mui/system';
+
+const useStyles = makeStyles({
+  root: {
+    padding: '0px 15px',
+    maxWidth: '990px',
+    boxSizing: 'border-box'
+  },
+  heading: {
+    paddingBottom: '5px',
+  },
+});
 
 const OrdersHistory = () => {
+  const classes = useStyles();
   const [value, setValue] = React.useState('1');
-
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
-
   const favoriteOrders = [
     {
       lastOrder: '12/1',
@@ -39,18 +51,20 @@ const OrdersHistory = () => {
   ];
 
   return (
-    <Grid container>
-      <Grid item xs={1} sm={1} md={1} lg={1} />
-      <Grid item xs={10} sm={10} md={9} lg={9}>
-        <Typography aria-label="your orders" variant="h4" title="YOUR ORDERS">
+    <Grid container className={classes.root}>
+      <Grid item xs={12}>
+        <Typography
+          className={classes.heading}
+          aria-label="your orders"
+          variant="h4"
+          title="your orders"
+        >
           YOUR ORDERS
         </Typography>
-        <br />
         <Tabs
           value={value}
           onChange={handleChange}
-          textColor="secondary"
-          indicatorColor="secondary"
+          indicatorColor="primary"
           aria-label="Order History tabs"
           title="Order History tabs"
         >
@@ -71,7 +85,6 @@ const OrdersHistory = () => {
         {value === '1' && <OrderHistoryCard orderHistory={favoriteOrders} />}
         {value === '2' && <OrderHistoryCard orderHistory={favoriteOrders} />}
       </Grid>
-      <Grid item xs={1} sm={1} md={2} lg={2} />
     </Grid>
   );
 };
