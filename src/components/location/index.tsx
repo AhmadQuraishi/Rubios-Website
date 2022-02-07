@@ -159,7 +159,7 @@ const LocationCard = () => {
         sx={{ zIndex: 1, margin: '20px 30px' }}
       >
         <Card>
-          <Grid container spacing={2}>
+          <Grid container spacing={2} className="location-sidebar">
             <Grid item xs={12}>
               <Button variant="contained" title="Pick up">
                 PICK UP

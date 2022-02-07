@@ -5,7 +5,7 @@ const OrderDetails = (props: any) => {
   return (
     <>
     <Grid container>
-      <Grid item lg={7} className="order-details">
+      <Grid item xs={12} md={7} lg={7} className="order-details">
         <Typography fontWeight={500} title="ORDER DETAILS" variant="h4">ORDER DETAILS</Typography>
         <br/>
         <Grid container>

@@ -16,7 +16,10 @@
   padding: 0px !important;
 }
 .search-field {
-  width: auto;
+  width: auto !important;
+}
+.location-sidebar button {
+  width: 100%;
 }
 .name span {
   font-family: 'Poppins-Bold', sans-serif !important;
@@ -33,4 +36,10 @@
 .label span {
   margin: 0;
   font-size: 13px !important;
+}
+
+@media screen and (max-width: 768px){
+  button {
+    width: auto;
+  }
 }
