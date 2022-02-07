@@ -61,4 +61,10 @@ fieldset{
   border:none !important;
 }
 
+.card-border
+{
+  border-radius: 0px !important;
+  border: 1px solid blue;
+}
+
 

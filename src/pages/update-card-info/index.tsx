@@ -151,7 +151,7 @@ const UpdatePaymentCard = () => {
             </Grid>
           </Grid>
           <Grid item xs={12} lg={4} sx={{ paddingBottom: { xs: '20px' } }}>
-            <Card variant="outlined" sx={{ borderColor: 'primary.main' }}>
+            <Card className="card-border">
               <Grid container spacing={0} sx={{ padding: '20px' }}>
                 <Grid item xs={3}>
                   <img

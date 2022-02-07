@@ -197,7 +197,7 @@ const Profile = () => {
               />
             </Grid>
             <Grid item xs={12}>
-              <Card className="notification-section">
+              <Card className="card-border">
                 <CardContent>
                   <Typography
                     variant="body1"
