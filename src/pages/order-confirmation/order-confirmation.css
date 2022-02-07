@@ -1,5 +1,6 @@
 .order-confirmation .MuiPaper-root {
   padding: 95px;
+  min-height: 435px;
 }
 .order-confirmation .MuiTextField-root {
   width: 100%;

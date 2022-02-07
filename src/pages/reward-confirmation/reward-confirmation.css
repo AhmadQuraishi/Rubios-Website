@@ -1,5 +1,6 @@
 .reward-confirmation .MuiPaper-root {
   padding: 95px;
+  min-height: 435px;
 }
 .white {
   color: white;
