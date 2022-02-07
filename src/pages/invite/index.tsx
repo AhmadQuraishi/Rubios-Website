@@ -16,7 +16,8 @@ const Invite = () => {
         <Grid item xs={12} md={8} lg={6}>
           <Grid container>
             <Typography
-              variant="body1"
+              variant="body2"
+              className="body-text"
               title="Earn $5 off when your friends use the invite code below to Sign Up
               for Rubio's Rewards and make their first purchase."
             >

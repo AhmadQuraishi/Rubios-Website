@@ -15,7 +15,8 @@ const CheckIn = () => {
             <Grid item xs={12} md={5}>
               <Grid container>
                 <Typography
-                  variant="body1"
+                  variant="body2"
+                  className="body-text"
                   title="To check-in for your visit , Enter the Rubio's Rewards barcode
               number located at the bottom of your receipt."
                 >
@@ -49,7 +50,8 @@ const CheckIn = () => {
               </Grid>
               <Grid item xs={12}>
                 <Typography
-                  variant="body1"
+                  variant="body2"
+                  className="body-text"
                   title="Please enter the 12 or 13 digit numeric barcode at the bottom of
               your receipt."
                 >
@@ -59,7 +61,8 @@ const CheckIn = () => {
               </Grid>
               <Grid item xs={12}>
                 <Typography
-                  variant="body1"
+                  variant="body2"
+                  className="body-text"
                   title="Please ensure that you enter any leading zeros that may appear in
               the barcode e.g 0600101234124."
                 >

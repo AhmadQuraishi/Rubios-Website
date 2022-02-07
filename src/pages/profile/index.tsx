@@ -146,11 +146,12 @@ const Profile = () => {
             </Grid>
             <Grid item xs={12}>
               <Typography
-                variant="caption"
+                variant="body2"
+                className="body-text"
                 title="your current password require to update your personal details"
                 sx={{ width: '100%' }}
               >
-                your current password require to update your personal details
+                Your current password require to update your personal details
               </Typography>
             </Grid>
             <Grid item xs={12}>
@@ -163,7 +164,8 @@ const Profile = () => {
             </Grid>
             <Grid item xs={12}>
               <Typography
-                variant="caption"
+                variant="body2"
+                className="body-text"
                 title="Password must be at least 8 characters."
                 sx={{ width: '100%' }}
               >
@@ -179,15 +181,27 @@ const Profile = () => {
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
+              {/*<TextField*/}
+              {/*  disabled*/}
+              {/*  aria-label="date of birth"*/}
+              {/*  variant="outlined"*/}
+              {/*  label="Birthday"*/}
+              {/*  title="date of birth"*/}
+              {/*  sx={{ width: '100%' }}*/}
+              {/*/>*/}
+              <Button
                 disabled
                 aria-label="date of birth"
-                variant="outlined"
-                label="Birthday"
                 title="date of birth"
-                sx={{ width: '100%' }}
-              />
+                sx={{ width: { xs: '100%' } }}
+                className="birthday-button"
+              >
+                <span className="bday-text">Birthday</span>
+                <span className="date">September 6, 2009</span>
+                <span>icon</span>
+              </Button>
             </Grid>
+
             <Grid item xs={12}>
               <TextField
                 aria-label="enter your favorite location"
@@ -200,7 +214,8 @@ const Profile = () => {
               <Card className="card-border">
                 <CardContent>
                   <Typography
-                    variant="body1"
+                    variant="body2"
+                    className="body-text"
                     title="Keep up to date on rewards, exclusive offers and new product
                       launches."
                     sx={{ width: '100%' }}
@@ -209,14 +224,20 @@ const Profile = () => {
                     launches.
                   </Typography>
                   <br />
-                  <Switch aria-label="email notification" defaultChecked />
-                  <Typography variant="caption" title="Email Notification">
-                    Email Notification
-                  </Typography>
-                  <Switch aria-label="push notification" />
-                  <Typography variant="caption" title="Push Notification">
-                    Push Notification
-                  </Typography>
+                  <Grid container>
+                    <Grid item xs={12} sm={6}>
+                      <Switch aria-label="email notification" defaultChecked />
+                      <Typography variant="caption" title="Email Notification">
+                        Email Notification
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Switch aria-label="push notification" />
+                      <Typography variant="caption" title="Push Notification">
+                        Push Notification
+                      </Typography>
+                    </Grid>
+                  </Grid>
                 </CardContent>
               </Card>
             </Grid>
