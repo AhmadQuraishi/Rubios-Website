@@ -23,7 +23,12 @@ const CheckIn = () => {
                   number located at the bottom of your receipt.
                 </Typography>
               </Grid>
-              <Grid item xs={12} sx={{ display: { xs: 'flex', md: 'none' } }}>
+              <Grid
+                item
+                xs={12}
+                sx={{ display: { xs: 'flex', md: 'none' } }}
+                className="receipt-image-box"
+              >
                 <Box
                   component="img"
                   alt="Receipt Image"

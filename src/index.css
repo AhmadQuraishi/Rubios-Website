@@ -24,6 +24,7 @@ button {
   height: 50px;
   box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.2) !important;
   text-transform: uppercase;
+  border-radius: 0 !important;
 }
 
 h4 {
