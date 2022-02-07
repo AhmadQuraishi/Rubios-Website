@@ -1,16 +1,7 @@
-import {
-  Grid,
-  Box,
-  Typography,
-  Card,
-  TextField,
-  Button,
-  Link,
-  CardContent,
-} from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import { Fragment } from 'react';
 import FoodMenuCard from '../../components/food-menu-card';
-import LeftMenuBar from '../../components/left-menu-bar';
+import './redeem-reward.css';
 
 const RedeemRewards = () => {
   const menuItems1 = [
@@ -34,17 +25,42 @@ const RedeemRewards = () => {
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUAKpRxf2AActPwZQg__oUrjxb7K2od0nJug0zkYc94NePv_wFW5suC8nIiXBNQRzYw3s&usqp=CAU',
       name: 'Buy one Get one Free',
     },
+    {
+      image:
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUAKpRxf2AActPwZQg__oUrjxb7K2od0nJug0zkYc94NePv_wFW5suC8nIiXBNQRzYw3s&usqp=CAU',
+      name: 'Buy one Get one Free',
+    },
+    {
+      image:
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUAKpRxf2AActPwZQg__oUrjxb7K2od0nJug0zkYc94NePv_wFW5suC8nIiXBNQRzYw3s&usqp=CAU',
+      name: 'Buy one Get one Free',
+    },
+    {
+      image:
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUAKpRxf2AActPwZQg__oUrjxb7K2od0nJug0zkYc94NePv_wFW5suC8nIiXBNQRzYw3s&usqp=CAU',
+      name: 'Buy one Get one Free',
+    },
   ];
   return (
     <Fragment>
       <Grid container>
-        <Typography variant="h3" title="REDEEM YOUR REWARDS">
-          REDEEM YOUR REWARDS
-        </Typography>
-        <Typography variant="body1" title="REDEEM YOUR REWARDS">
-          click a reward to start your order
-        </Typography>
-        <FoodMenuCard menuItems={menuItems1} />
+        <Grid item xs={12}>
+          <Typography variant="h4" title="REDEEM YOUR REWARDS">
+            REDEEM YOUR REWARDS
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Typography
+            variant="body2"
+            title="REDEEM YOUR REWARDS"
+            className="body-text"
+          >
+            click a reward to start your order
+          </Typography>
+        </Grid>
+        <Grid item xs={12} lg={10}>
+          <FoodMenuCard menuItems={menuItems1} />
+        </Grid>
       </Grid>
     </Fragment>
   );

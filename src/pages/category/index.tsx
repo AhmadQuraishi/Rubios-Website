@@ -41,6 +41,41 @@ const CategoryList = () => {
   const classes = useStyles();
   const [value, setValue] = useState('0');
 
+  const products = [
+    {
+      image:
+        'https://www.rubios.com/sites/default/files/styles/menu_item_teaser/public/menu/TacoKit.jpg?itok=sXyv_fvV',
+      name: ' California Burrito',
+      desc: 'Salsa Verde Taco, Grilled Gourmet Toca and the Maxican street corn Taco all with your choice of sustainably sourced protien.',
+      cal: '1000',
+      price: '12.05',
+    },
+    {
+      image:
+        'https://www.rubios.com/sites/default/files/styles/menu_item_teaser/public/bowl-mahi-mahi.jpg?itok=yXA_BMpa',
+      name: ' Grilled Chicken Salad Bowl',
+      desc: 'Salsa Verde Taco, Grilled Gourmet Toca and the Maxican street corn Taco all with your choice of sustainably sourced protien.',
+      cal: '1000',
+      price: '12.05',
+    },
+    {
+      image:
+        'https://www.rubios.com/sites/default/files/styles/menu_item_teaser/public/menu/Chicken_Nachos_V2.jpg?itok=JCQOjNiP',
+      name: ' Classic Grilled Chicken Salad Platter',
+      desc: 'Salsa Verde Taco, Grilled Gourmet Toca and the Maxican street corn Taco all with your choice of sustainably sourced protien.',
+      cal: '1000',
+      price: '12.05',
+    },
+    {
+      image:
+        'https://www.rubios.com/sites/default/files/styles/menu_item_teaser/public/menu/Shirmp%20and%20Bacon%20Burrito%20-%201400x800%20-%20DD.jpg?itok=aNmnW-Q0',
+      name: ' Warp Chicken Special Roll',
+      desc: 'Salsa Verde Taco, Grilled Gourmet Toca and the Maxican street corn Taco all with your choice of sustainably sourced protien.',
+      cal: '1000',
+      price: '12.05',
+    },
+  ];
+
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setTimeout(() => {
       var elem = document.getElementById('#panel-' + newValue);
@@ -50,7 +85,7 @@ const CategoryList = () => {
   };
 
   return (
-    <Fragment>     
+    <Fragment>
       <StoreInfoBar />
       <Box
         sx={{
@@ -75,7 +110,7 @@ const CategoryList = () => {
         >
           {categories.map((item, index) => (
             <Tab
-              key={index}
+              key={item + index}
               value={`${index}`}
               label={item}
               title={item}
@@ -96,17 +131,21 @@ const CategoryList = () => {
           <Grid item xs={12}>
             <Grid container>
               <Grid item xs={12} md={6}>
-                <Typography className={classes.heading}>{item}</Typography>
+                <Typography className={classes.heading} title={item}>
+                  {item}
+                </Typography>
               </Grid>
               <Grid item md={6} sx={{ display: { xs: 'none', md: 'grid' } }}>
                 <Typography className={classes.link}>
-                  <Link to="/">view all →</Link>
+                  <Link to="/category" title="view all">
+                    view all →
+                  </Link>
                 </Typography>
               </Grid>
             </Grid>
           </Grid>
           <Grid item xs={12} sx={{ paddingBottom: '20px' }}>
-            <ProductListing />
+            <ProductListing productList={products} />
           </Grid>
         </Grid>
       ))}

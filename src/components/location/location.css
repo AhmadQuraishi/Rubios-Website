@@ -1,0 +1,45 @@
+.list-wrapper {
+  padding: 0px;
+}
+.list-wrapper .MuiPaper-root {
+  padding: 20px;
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  border-radius: 30px;
+  width: 70%;
+  height: calc(100vh - 80px);
+}
+.list-wrapper .listing {
+  padding: 0px;
+}
+.list-wrapper .listing .MuiListItemButton-root {
+  padding: 0px !important;
+}
+.search-field {
+  width: auto !important;
+}
+.location-sidebar button {
+  width: 100%;
+}
+.name span {
+  font-family: 'Poppins-Bold', sans-serif !important;
+  color: #414141;
+  font-size: 18px;
+  padding: 0px;
+}
+.address {
+  font-size: 13px;
+}
+.label {
+  text-align: left;
+}
+.label span {
+  margin: 0;
+  font-size: 13px !important;
+}
+
+@media screen and (max-width: 768px){
+  button {
+    width: auto;
+  }
+}

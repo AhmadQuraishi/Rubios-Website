@@ -1,13 +1,14 @@
 import { makeStyles } from '@mui/styles';
-import { Grid, Typography, Card, TextField } from '@mui/material';
+import { Grid, Typography, Card, TextField, Button } from '@mui/material';
 import OrderDetails from '../../components/order-details';
 import OrderConfirmedCard from '../../components/order-confirm-card';
 import { Fragment } from 'react';
+import './order-confirmation.css';
 
 const useStyle = makeStyles(() => ({
   root: {
     minHeight: '100vh',
-    backgroundColor: 'blueviolet',
+    backgroundColor: '#73aac7',
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
     justifyContent: 'center',
@@ -24,40 +25,18 @@ const OrderConfirmation = () => {
     <Fragment>
       <Grid container component="main" className={classes.root}>
         <Grid item xs={12} sm={12} md={12} lg={12}>
-          <Grid container>
+          <Grid container className="order-confirmation">
             <Grid item xs={12} sm={12} md={12} lg={6}>
               <OrderConfirmedCard />
             </Grid>
             <Grid item xs={12} sm={12} md={12} lg={6}>
-              <Card style={{ backgroundColor: 'blue' }}>
-                <Typography
-                  variant="caption"
-                  style={{ color: 'white' }}
-                  title="EARN REWARDS"
-                >
-                  EARN REWARDS
-                </Typography>
-                <Typography
-                  variant="h5"
-                  style={{ color: 'white' }}
-                  title="GET $5 OFF YOUR"
-                >
-                  GET $5 OFF YOUR
-                </Typography>
-                <Typography
-                  variant="h5"
-                  style={{ color: 'white' }}
-                  title="NEXT ORDER"
-                >
-                  NEXT ORDER
-                </Typography>
-                <Typography
-                  variant="caption"
-                  style={{ color: 'white' }}
-                  title="Join today for completing the form below"
-                >
-                  Join today for completing the form below
-                </Typography>
+              <Card style={{ backgroundColor: '#2b4b62' }}>
+                <Typography variant="caption" className="label white" title="EARN REWARDS">EARN REWARDS</Typography>
+                <Typography variant="h4" className="white" title="GET $5 OFF YOUR">GET $5 OFF YOUR</Typography>
+                <Typography variant="h4" className="white" title="NEXT ORDER">NEXT ORDER</Typography>
+                <br/>
+                <Typography variant="h6" className="white" title="Join today for completing the form below">Join today for completing the form below</Typography>
+                <br/>
                 <Grid container>
                   <Grid item xs={12} sm={12} md={12} lg={6}>
                     <TextField
@@ -110,6 +89,9 @@ const OrderConfirmation = () => {
                       type="confirm password"
                       title="confirm password"
                     />
+                  </Grid>
+                  <Grid item xs={12} sm={12} md={12} lg={12}>
+                    <Button aria-label="view account" variant="contained" title="Sign Up">SIGN UP</Button>
                   </Grid>
                 </Grid>
               </Card>

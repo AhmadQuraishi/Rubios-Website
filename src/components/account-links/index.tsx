@@ -22,6 +22,7 @@ const AccountLinks = (props: any) => {
       <ListItem>
         <Link
           to="/account/"
+          aria-label="Your Rewards"
           onClick={() => (closeDrawer ? closeDrawer(false) : false)}
           className={classes.link}
         >
@@ -32,6 +33,7 @@ const AccountLinks = (props: any) => {
       <ListItem>
         <Link
           to="/account/checkin"
+          aria-label="checkin"
           onClick={() => (closeDrawer ? closeDrawer(false) : false)}
           className={classes.link}
         >
@@ -42,6 +44,7 @@ const AccountLinks = (props: any) => {
       <ListItem>
         <Link
           to="/account/orders"
+          aria-label="your orders"
           onClick={() => (closeDrawer ? closeDrawer(false) : false)}
           className={classes.link}
         >
@@ -52,6 +55,7 @@ const AccountLinks = (props: any) => {
       <ListItem>
         <Link
           to="/account/paymentinformation"
+          aria-label="payment information"
           onClick={() => (closeDrawer ? closeDrawer(false) : false)}
           className={classes.link}
         >
@@ -62,6 +66,7 @@ const AccountLinks = (props: any) => {
       <ListItem>
         <Link
           to="/account/deliveryaddress"
+          aria-label="Delivery Addresses"
           onClick={() => (closeDrawer ? closeDrawer(false) : false)}
           className={classes.link}
         >
@@ -75,6 +80,7 @@ const AccountLinks = (props: any) => {
       <ListItem>
         <Link
           to="/account/history"
+          aria-label="Your Account History"
           onClick={() => (closeDrawer ? closeDrawer(false) : false)}
           className={classes.link}
         >
@@ -85,6 +91,7 @@ const AccountLinks = (props: any) => {
       <ListItem>
         <Link
           to="/account/invite"
+          aria-label="Invite Friends"
           onClick={() => (closeDrawer ? closeDrawer(false) : false)}
           className={classes.link}
         >
@@ -95,6 +102,7 @@ const AccountLinks = (props: any) => {
       <ListItem>
         <Link
           to="/account/profile"
+          aria-label="Profile"
           onClick={() => (closeDrawer ? closeDrawer(false) : false)}
           className={classes.link}
         >
@@ -105,6 +113,7 @@ const AccountLinks = (props: any) => {
       <ListItem>
         <Link
           to="/"
+          aria-label="Logout"
           onClick={() => (closeDrawer ? closeDrawer(false) : false)}
           className={classes.link}
         >

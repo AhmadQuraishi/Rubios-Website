@@ -44,46 +44,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const ProductListing = () => {
+const ProductListing = (props: any) => {
   const classes = useStyles();
-  const products = [
-    {
-      image:
-        'https://www.rubios.com/sites/default/files/styles/menu_item_teaser/public/menu/TacoKit.jpg?itok=sXyv_fvV',
-      name: ' California Burrito',
-      desc: 'Salsa Verde Taco, Grilled Gourmet Toca and the Maxican street corn Taco all with your choice of sustainably sourced protien.',
-      cal: '1000',
-      price: '12.05',
-    },
-    {
-      image:
-        'https://www.rubios.com/sites/default/files/styles/menu_item_teaser/public/bowl-mahi-mahi.jpg?itok=yXA_BMpa',
-      name: ' Grilled Chicken Salad Bowl',
-      desc: 'Salsa Verde Taco, Grilled Gourmet Toca and the Maxican street corn Taco all with your choice of sustainably sourced protien.',
-      cal: '1000',
-      price: '12.05',
-    },
-    {
-      image:
-        'https://www.rubios.com/sites/default/files/styles/menu_item_teaser/public/menu/Chicken_Nachos_V2.jpg?itok=JCQOjNiP',
-      name: ' Classic Grilled Chicken Salad Platter',
-      desc: 'Salsa Verde Taco, Grilled Gourmet Toca and the Maxican street corn Taco all with your choice of sustainably sourced protien.',
-      cal: '1000',
-      price: '12.05',
-    },
-    {
-      image:
-        'https://www.rubios.com/sites/default/files/styles/menu_item_teaser/public/menu/Shirmp%20and%20Bacon%20Burrito%20-%201400x800%20-%20DD.jpg?itok=aNmnW-Q0',
-      name: ' Warp Chicken Special Roll',
-      desc: 'Salsa Verde Taco, Grilled Gourmet Toca and the Maxican street corn Taco all with your choice of sustainably sourced protien.',
-      cal: '1000',
-      price: '12.05',
-    },
-  ];
+  const { productList } = props;
   return (
     <Fragment>
       <Grid container spacing={3}>
-        {products.map((item, index) => (
+        {productList.map((item: any, index: number) => (
           <Grid
             scroll-id={'#panel-' + index}
             key={index}
@@ -92,7 +59,11 @@ const ProductListing = () => {
             sm={6}
             md={3}
           >
-            <Link to="/product" style={{ textDecoration: 'none' }}>
+            <Link
+              to="/product"
+              aria-label={item.name}
+              style={{ textDecoration: 'none' }}
+            >
               <Card elevation={0} style={{ borderRadius: 0 }}>
                 <CardMedia
                   className={classes.img}

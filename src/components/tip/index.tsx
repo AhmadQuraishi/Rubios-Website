@@ -1,4 +1,3 @@
-import Map from '../../components/map';
 import React from 'react';
 import { Button, Grid, RadioGroup, TextField, Typography } from '@mui/material';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';

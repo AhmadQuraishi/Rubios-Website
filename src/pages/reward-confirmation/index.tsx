@@ -3,11 +3,12 @@ import { Grid, Typography, Card, Button } from '@mui/material';
 import OrderDetails from '../../components/order-details';
 import OrderConfirmedCard from '../../components/order-confirm-card';
 import { Fragment } from 'react';
+import './reward-confirmation.css';
 
 const useStyle = makeStyles(() => ({
   root: {
     minHeight: '100vh',
-    backgroundColor: 'blueviolet',
+    backgroundColor: '#73aac7',
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
     justifyContent: 'center',
@@ -24,40 +25,27 @@ const RewardConfirmation = () => {
     <Fragment>
       <Grid container component="main" className={classes.root}>
         <Grid item xs={12} sm={12} md={12} lg={12}>
-          <Grid container>
+          <Grid container className="reward-confirmation">
             <Grid item xs={12} sm={12} md={12} lg={6}>
               <OrderConfirmedCard />
             </Grid>
             <Grid item xs={12} sm={12} md={12} lg={6}>
-              <Card style={{ backgroundColor: 'blue' }}>
-                <Typography style={{ color: 'white' }} title="YOUR REWARDS">
-                  YOUR REWARDS
-                </Typography>
-                <Typography
-                  style={{ color: 'white' }}
-                  title="YOU EARNED 18 POINTS!"
-                >
-                  YOU EARNED 18 POINTS!
-                </Typography>
-                <Typography
-                  style={{ color: 'white' }}
-                  title="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-                >
+              <Card style={{ backgroundColor: '#2b4b62' }}>
+                <Typography variant="caption" className="label white" title="YOUR REWARDS">YOUR REWARDS</Typography>
+                <Typography variant="h4" className="white" title="YOU EARNED 18 POINTS!">YOU EARNED 18 POINTS!</Typography>
+                <br/>
+                <Typography variant="h6" className="white" title="Lorem ipsum dolor sit amet, consectetur adipiscing elit.">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                   Praesent velit neque, vehicula vel magna ultricies, eleifend
                   bibendum ex. Donec id neque dui. Cras ac sodales risus. In at
-                  ante nec sapien dictum imperdiet. Pellentesque iaculis urna in
-                  porta elementum. Morbi rhoncus, turpis at bibendum aliquam, ex
-                  ipsum bibendum est, ut ultrices odio libero nec diam.
-                  Vestibulum auctor neque a leo rhoncus, ut mollis dui mattis.
+                  ante nec sapien dictum imperdiet.
                 </Typography>
-                <Button
-                  aria-label="view account"
-                  variant="contained"
-                  title="VIEW ACCOUNT"
-                >
-                  VIEW ACCOUNT
-                </Button>
+                <Grid container>
+                  <Grid item xs={12} md={8} lg={8}></Grid>
+                  <Grid item xs={12} md={4} lg={4}>
+                    <Button aria-label="view account" variant="contained" title="VIEW ACCOUNT">VIEW ACCOUNT</Button>
+                  </Grid>
+                </Grid>
                 <br />
                 <br />
                 <br />

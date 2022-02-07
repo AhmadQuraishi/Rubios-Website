@@ -1,0 +1,25 @@
+.order-confirmation .MuiPaper-root {
+  padding: 95px;
+  min-height: 435px;
+}
+.order-confirmation .MuiTextField-root {
+  width: 100%;
+}
+.white {
+  color: white;
+}
+.order-confirmation button {
+  width: 40%;
+  margin-top: 7px;
+  float: right !important;
+}
+.order-confirmation input {
+  background: white;
+  width: 100%;
+  height: 23px;
+  padding: 5px;
+  margin: 0px 5px 5px 0px;
+}
+.order-confirmation fieldset {
+  border: none;
+}

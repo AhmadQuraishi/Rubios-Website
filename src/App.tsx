@@ -41,7 +41,7 @@ function App(props: any) {
                 xs={12}
                 sm={9}
                 lg={10}
-                sx={{ padding: { xs: '30px 20px', sm: '30px 40px' } }}
+                sx={{ padding: { xs: '30px 10px', sm: '30px 40px' } }}
               >
                 <AppRoutes />
               </Grid>

@@ -7,6 +7,7 @@ import {
   Theme,
   Drawer,
   IconButton,
+  Button,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
@@ -74,11 +75,9 @@ const Header = (props: any) => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [showCart, setShowCart] = useState(false);
-
   const handleShowCart = () => {
     setShowCart(!showCart);
   };
-
   return (
     <>
       <AppBar position="sticky" className={classes.navBar}>
@@ -141,7 +140,11 @@ const Header = (props: any) => {
                     Main Menu
                   </Link>
                 </div>
-                <AccountLinks closeDrawer={removeCart ? setOpenDrawer : null} />
+                {removeCart && (
+                  <AccountLinks
+                    closeDrawer={removeCart ? setOpenDrawer : null}
+                  />
+                )}
               </Drawer>
               {!removeCart && (
                 <img
@@ -165,15 +168,17 @@ const Header = (props: any) => {
                 Main Menu
               </Link>
               {!removeCart && (
-                <Typography
+                <Button
                   component="div"
                   onClick={handleShowCart}
+                  aria-label="Open the cart"
                   sx={{
                     backgroundColor: 'primary.main',
                     width: '140px',
                     cursor: 'pointer',
                     float: 'right',
                     justifyContent: 'center',
+                    borderRadius: 0,
                     display: { xs: 'none', sm: 'flex' },
                     '&:hover': {
                       backgroundColor: 'success.main',
@@ -187,7 +192,7 @@ const Header = (props: any) => {
                     alt="Cart Icon"
                     title="Cart Icon"
                   />
-                </Typography>
+                </Button>
               )}
             </>
           )}

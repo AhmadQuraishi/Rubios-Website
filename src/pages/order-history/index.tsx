@@ -1,17 +1,35 @@
 import React from 'react';
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Grid, Theme, Typography } from '@mui/material';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import LeftMenuBar from '../../components/left-menu-bar';
 import OrderHistoryCard from '../../components/order-history-card';
+import { makeStyles } from '@mui/styles';
+import { boxSizing } from '@mui/system';
+
+const useStyles = makeStyles((theme: Theme) => ({
+  root: {
+    padding: '0px 15px 20px 15px',
+    maxWidth: '990px',
+    boxSizing: 'border-box',
+  },
+  heading: {
+    paddingBottom: '5px',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '25px !important',
+    },
+  },
+  tabspanel: {
+    fontWeight: '600 !important',
+    color: theme.palette.secondary.main + ' !important',
+  },
+}));
 
 const OrdersHistory = () => {
+  const classes = useStyles();
   const [value, setValue] = React.useState('1');
-
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
-
   const favoriteOrders = [
     {
       lastOrder: '12/1',
@@ -40,42 +58,47 @@ const OrdersHistory = () => {
   ];
 
   return (
-    <Box>
-      <Grid container>
-        <Grid item xs={1} sm={1} md={1} lg={1} />
-        <Grid item xs={10} sm={10} md={9} lg={9}>
-          <Typography aria-label="your orders" variant="h5" title="YOUR ORDERS">
-            YOUR ORDERS
-          </Typography>
-          <br />
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            textColor="secondary"
-            indicatorColor="secondary"
-            aria-label="Order History tabs"
-            title="Order History tabs"
-          >
-            <Tab
-              aria-label="favorite orders"
-              value="1"
-              label="FAVOTITES"
-              title="favorite orders"
-            />
-            <Tab
-              aria-label="recent orders"
-              value="2"
-              label="RECENT"
-              title="recent orders"
-            />
-          </Tabs>
-          <br />
-          {value === '1' && <OrderHistoryCard orderHistory={favoriteOrders} />}
-          {value === '2' && <OrderHistoryCard orderHistory={favoriteOrders} />}
-        </Grid>
-        <Grid item xs={1} sm={1} md={2} lg={2} />
+    <Grid container className={classes.root}>
+      <Grid item xs={12}>
+        <Typography
+          className={classes.heading}
+          aria-label="your orders"
+          variant="h4"
+          title="your orders"
+        >
+          YOUR ORDERS
+        </Typography>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          aria-label="Order History tabs"
+          title="Order History tabs"
+          TabIndicatorProps={{
+            style: {
+              backgroundColor: '#79C043',
+            },
+          }}
+        >
+          <Tab
+            aria-label="favorite orders"
+            value="1"
+            label="FAVOURITE"
+            title="favourite orders"
+            className={classes.tabspanel}
+          />
+          <Tab
+            aria-label="recent orders"
+            value="2"
+            label="RECENT"
+            title="recent orders"
+            className={classes.tabspanel}
+          />
+        </Tabs>
+        <br />
+        {value === '1' && <OrderHistoryCard orderHistory={favoriteOrders} />}
+        {value === '2' && <OrderHistoryCard orderHistory={favoriteOrders} />}
       </Grid>
-    </Box>
+    </Grid>
   );
 };
 

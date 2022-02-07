@@ -18,11 +18,13 @@ import UpdatePaymentCard from './pages/update-card-info';
 import OrdersHistory from './pages/order-history';
 import Profile from './pages/profile';
 import AddDeliveryAddress from './pages/add-delivery-address';
+import CategoryDetail from './pages/category-detail';
 
 const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<CategoryList />} />
+      <Route path="/category" element={<CategoryDetail />} />
       <Route path="/product" element={<Product />} />
       <Route path="/location" element={<Location />} />
       <Route path="/checkout" element={<Checkout />} />

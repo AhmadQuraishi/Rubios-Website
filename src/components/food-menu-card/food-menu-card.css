@@ -1,0 +1,26 @@
+.reward-item{
+  margin-right: 20px;
+  margin-top: 20px;
+  height: 140px;
+  border-radius: 0 !important;
+  padding:10px;
+  box-shadow: 2px 2px 2px -1px rgb(0 0 0 / 10%), 2px 2px 2px 2px rgb(0 0 0 / 6%), 2px 1px 2px 2px rgb(0 0 0 / 6%) !important;
+  border: 1px solid #E6E6E6;
+}
+.rewards {
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  height: 100%
+}
+
+.item-name {
+  font-family: 'Poppins-Medium' !important;
+  font-size: 1rem !important;
+}
+@media screen and (max-width: 475px) {
+  .reward-item{
+    margin-right: 0px;
+    margin-top: 20px;
+  }
+}

@@ -1,0 +1,11 @@
+.reward-confirmation .MuiPaper-root {
+  padding: 95px;
+  min-height: 435px;
+}
+.white {
+  color: white;
+}
+.reward-confirmation button {
+  width: 100%;
+  margin: 28px auto 0;
+}

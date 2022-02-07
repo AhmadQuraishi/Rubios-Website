@@ -1,10 +1,14 @@
 import { Link } from 'react-router-dom';
-import { Grid, Theme, Typography, Divider } from '@mui/material';
+import { Grid, Theme, Typography, Divider, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
 import footerLogo from '../../assets/imgs/rubios-logo-white.png';
 import andriodLogo from '../../assets/imgs/button-google.png';
 import iosLogo from '../../assets/imgs/button-apple.png';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { getMenuRequest } from '../../redux/actions/footer';
+import { useEffect } from 'react';
 
 const useStyles = makeStyles((theme: Theme) => ({
   links: {
@@ -32,6 +36,13 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const Footer = () => {
   const classes = useStyles();
+  const menu = useSelector((state: any) => state.footerReducer.menu);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getMenuRequest());
+  }, []);
+
   return (
     <footer>
       <Grid
@@ -58,7 +69,7 @@ const Footer = () => {
             }}
           >
             <Grid item xs={12}>
-              <Typography
+              <Button
                 sx={{
                   display: 'flex',
                   padding: {
@@ -76,67 +87,30 @@ const Footer = () => {
                   alt="Rubios Coastal Grill"
                   title="Rubios Coastal Grill"
                 />
-              </Typography>
+              </Button>
             </Grid>
             <Grid item xs={12}>
-              <Grid container spacing={1}>
-                <Grid item xs={6}>
-                  <Grid container spacing={1}>
-                    <Grid item xs={12} md={3}>
-                      <Link className={classes.links} to="/" title="Careers">
-                        CAREERS
-                      </Link>
-                    </Grid>
-                    <Grid item xs={12} md={3}>
-                      <Link to="/" className={classes.links} title="Locations">
-                        LOCATIONS
-                      </Link>
-                    </Grid>
-                    <Grid item xs={12} md={3}>
-                      <Link to="/" className={classes.links} title="Gift Cards">
-                        GIFT CARDS
-                      </Link>
-                    </Grid>
-                    <Grid item xs={12} md={3}>
-                      <Link
-                        to="/"
+              <Grid
+                container
+                spacing={1}
+                sx={{
+                  flexWrap: { xs: 'wrap', md: 'nowrap' },
+                  maxWidth: '1024px',
+                }}
+              >
+                {menu &&
+                  menu.items.map((item: any, index: number) => (
+                    <Grid item xs={6} md={2} key={index}>
+                      <a
                         className={classes.links}
-                        title="Fundraisers"
+                        href={item.url}
+                        title={item.title}
+                        aria-label={item.title}
                       >
-                        FUNDRAISERS
-                      </Link>
+                        {item.title}
+                      </a>
                     </Grid>
-                  </Grid>
-                </Grid>
-                <Grid item xs={6}>
-                  <Grid container spacing={1}>
-                    <Grid item xs={12} md={3}>
-                      <Link
-                        style={{ display: 'inline-block', width: '130px' }}
-                        to="/"
-                        className={classes.links}
-                        title="Press & Awards"
-                      >
-                        PRESS & AWARDS
-                      </Link>
-                    </Grid>
-                    <Grid
-                      item
-                      xs={12}
-                      md={3}
-                      sx={{ textAlign: { xs: 'left', md: 'center' } }}
-                    >
-                      <Link to="/" className={classes.links} title="Blog">
-                        BLOG
-                      </Link>
-                    </Grid>
-                    <Grid item xs={12} md={3}>
-                      <Link to="/" className={classes.links} title="Contact Us">
-                        Contact US
-                      </Link>
-                    </Grid>
-                  </Grid>
-                </Grid>
+                  ))}
               </Grid>
             </Grid>
           </Grid>
@@ -223,18 +197,22 @@ const Footer = () => {
                 sx={{ padding: '10px 0 0 0' }}
               >
                 <Grid item xs={6}>
-                  <img
-                    style={{ display: 'inline-block', width: '100%' }}
-                    src={iosLogo}
-                    alt="Click Here To Download Our From Apple Store"
-                  />
+                  <Button sx={{ padding: 0 }}>
+                    <img
+                      style={{ display: 'inline-block', width: '100%' }}
+                      src={iosLogo}
+                      alt="Click Here To Download Our From Apple Store"
+                    />
+                  </Button>
                 </Grid>
                 <Grid item xs={6}>
-                  <img
-                    style={{ display: 'inline-block', width: '100%' }}
-                    src={andriodLogo}
-                    alt="Click Here To Download Our From Google App Store"
-                  />
+                  <Button sx={{ padding: 0 }}>
+                    <img
+                      style={{ display: 'inline-block', width: '100%' }}
+                      src={andriodLogo}
+                      alt="Click Here To Download Our From Google App Store"
+                    />
+                  </Button>
                 </Grid>
               </Grid>
             </Grid>
@@ -319,6 +297,7 @@ const Footer = () => {
                     to="/"
                     className={classes.smallLinks}
                     title="Website Accessibility"
+                    aria-label="Website Accessibility"
                   >
                     Website Accessibility
                   </Link>
@@ -326,10 +305,16 @@ const Footer = () => {
                     to="/"
                     className={classes.smallLinks}
                     title="Terms of use"
+                    aria-label="Terms of use"
                   >
                     Terms of use
                   </Link>
-                  <Link to="/" className={classes.smallLinks} title="Privacy">
+                  <Link
+                    to="/"
+                    className={classes.smallLinks}
+                    title="Privacy"
+                    aria-label="Privacy"
+                  >
                     Privacy
                   </Link>
                 </Grid>

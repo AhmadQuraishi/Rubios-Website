@@ -1,12 +1,11 @@
 import { Grid, Typography, Card, TextField, Button } from '@mui/material';
-import LeftMenuBar from '../../components/left-menu-bar';
 
 const UpdatePaymentCard = () => {
   return (
     <Grid container spacing={0}>
       <Grid item xs={12}>
         <Typography
-          variant="h5"
+          variant="h4"
           sx={{
             paddingBottom: '10px',
             color: 'secondary.main',
@@ -24,7 +23,7 @@ const UpdatePaymentCard = () => {
           spacing={0}
           sx={{
             flexDirection: { xs: 'column-reverse', lg: 'row' },
-            width: { xs: '90%', lg: '90%' },
+            width: { xs: '100%', md: '90%' },
           }}
         >
           <Grid
@@ -42,7 +41,6 @@ const UpdatePaymentCard = () => {
                   aria-required="true"
                   id="card_nickname"
                   label="Card Nickname"
-                  variant="outlined"
                   sx={{ width: '100%' }}
                   title="Card Nickname"
                 />
@@ -53,7 +51,6 @@ const UpdatePaymentCard = () => {
                   aria-required="true"
                   id="Name"
                   label="Name"
-                  variant="outlined"
                   title="Name"
                   sx={{ width: '100%' }}
                 />
@@ -64,7 +61,6 @@ const UpdatePaymentCard = () => {
                   aria-required="true"
                   id="card_number"
                   label="Card Number"
-                  variant="outlined"
                   title="Card Number"
                   sx={{ width: '100%' }}
                 />
@@ -77,7 +73,6 @@ const UpdatePaymentCard = () => {
                       aria-required="true"
                       id="card_expirey_month"
                       label="MM"
-                      variant="outlined"
                       title="Card Expirey Month"
                       sx={{ width: '90%' }}
                     />
@@ -88,7 +83,6 @@ const UpdatePaymentCard = () => {
                       aria-required="true"
                       id="card_expirey_year"
                       label="YY"
-                      variant="outlined"
                       title="Card Expirey Year"
                       sx={{ width: '90%' }}
                     />
@@ -100,7 +94,6 @@ const UpdatePaymentCard = () => {
                       id="cvc"
                       label="CVC"
                       title="CVC"
-                      variant="outlined"
                       sx={{ width: '90%' }}
                     />
                   </Grid>
@@ -110,7 +103,6 @@ const UpdatePaymentCard = () => {
                   aria-required="true"
                   id="card_number"
                   label="Card Number"
-                  variant="outlined"
                   title="Card Number"
                   sx={{ width: '100%' }}
                 />
@@ -121,7 +113,6 @@ const UpdatePaymentCard = () => {
                   aria-required="true"
                   id="street_Address"
                   label="Street Address 1"
-                  variant="outlined"
                   title="Street Address 1"
                   sx={{ width: '100%' }}
                 />
@@ -132,7 +123,6 @@ const UpdatePaymentCard = () => {
                   aria-required="true"
                   id="city_state"
                   label="City, State"
-                  variant="outlined"
                   title="City & State"
                   sx={{ width: '100%' }}
                 />
@@ -143,7 +133,6 @@ const UpdatePaymentCard = () => {
                   aria-required="true"
                   id="zip_code"
                   label="Zip Code"
-                  variant="outlined"
                   sx={{ width: '100%' }}
                   title="Zip Code"
                 />
@@ -161,7 +150,7 @@ const UpdatePaymentCard = () => {
             </Grid>
           </Grid>
           <Grid item xs={12} lg={4} sx={{ paddingBottom: { xs: '20px' } }}>
-            <Card variant="outlined" sx={{ borderColor: 'primary.main' }}>
+            <Card className="card-border">
               <Grid container spacing={0} sx={{ padding: '20px' }}>
                 <Grid item xs={3}>
                   <img

@@ -1,0 +1,30 @@
+.profile-section .MuiGrid-grid-xs-12{
+  padding-top: 20px
+}
+.birthday-button
+{
+  background-color: #EAEAEA !important;
+  color: black !important;
+  justify-content: left !important;
+  padding-left: 20px !important;
+  text-transform: initial;
+}
+
+.date {
+  width: 80%;
+  text-align: left;
+}
+.bday-text{
+  font-family: 'Poppins-Bold';
+  padding-right: 10px;
+}
+.birthday-button span{
+  text-transform: initial;
+}
+.body-text
+{
+  font-size: 15px;
+  font-family: 'Poppins-Medium', sans-serif !important;
+  color: #414141;
+  padding-top: 8px;
+}

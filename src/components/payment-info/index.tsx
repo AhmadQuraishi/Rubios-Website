@@ -74,6 +74,7 @@ const PaymentInfo = () => {
                 <Link
                   to="/orderconfirmation"
                   style={{ textDecoration: 'none' }}
+                  aria-label="place your order"
                 >
                   <Button variant="contained" title="PLACE ORDER">
                     PLACE ORDER
