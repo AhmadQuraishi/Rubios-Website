@@ -1,10 +1,28 @@
 import React, { useState } from 'react';
-import { Box, Button, Grid, TextField, Typography } from '@mui/material';
+import { Button, Grid, Theme, Typography } from '@mui/material';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import CreditCards from '../../components/credit-cards';
 import GiftCards from '../../components/gift-cards';
-import LeftMenuBar from '../../components/left-menu-bar';
+import { makeStyles } from '@mui/styles';
+
+const useStyles = makeStyles((theme: Theme) => ({
+  root: {
+    padding: '0px 15px',
+    boxSizing: 'border-box',
+  },
+  heading: {
+    paddingBottom: '5px',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '25px !important',
+    },
+  },
+
+  tabspanel: {
+    fontWeight: '600 !important',
+    color: theme.palette.secondary.main + ' !important',
+  },
+}));
 
 const PaymentInformation = () => {
   const [value, setValue] = React.useState('1');
@@ -12,42 +30,43 @@ const PaymentInformation = () => {
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
+
+  const classes = useStyles();
+
   return (
-    <Grid container>
+    <Grid container className={classes.root}>
       <Grid item xs={12}>
-        <Typography variant="h4">PAYMENT INFORMATION</Typography>
+        <Typography variant="h4" className={classes.heading}>
+          PAYMENT INFORMATION
+        </Typography>
         <Tabs
           value={value}
           onChange={handleChange}
-          textColor="secondary"
-          indicatorColor="secondary"
-          aria-label="Payment Information tabs"
+          textColor="primary"
+          TabIndicatorProps={{
+            style: {
+              backgroundColor: '#79C043',
+            },
+          }}
+          aria-label="Payment Information Tabs"
         >
           <Tab
             aria-label="credit cards"
             value="1"
             label="CREDIT CARDS"
             title="CREDIT CARDS"
+            className={classes.tabspanel}
           />
           <Tab
             aria-label="gift cards"
             value="2"
             label="GIFT CARDS"
             title="GIFT CARDS"
+            className={classes.tabspanel}
           />
         </Tabs>
-
         {value === '1' && <CreditCards />}
         {value === '2' && <GiftCards />}
-      </Grid>
-      <Grid item xs={12}>
-        <Button
-          sx={{ display: { xs: 'flex', sm: 'none' } }}
-          aria-label="back"
-          title="back"
-        >
-          back
-        </Button>
       </Grid>
     </Grid>
   );

@@ -1,9 +1,26 @@
-import { Grid, Typography, Tabs, Box, Tab } from '@mui/material';
+import { Grid, Typography, Tabs, Box, Tab, Theme } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import { useState } from 'react';
-import LeftMenuBar from '../../components/left-menu-bar';
 import { Fragment } from 'react';
 
 import HistoryGrid from '../../components/history-grid';
+
+const useStyles = makeStyles((theme: Theme) => ({
+  root: {
+    padding: '0px 15px',
+    boxSizing: 'border-box',
+  },
+  heading: {
+    paddingBottom: '5px',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '25px !important',
+    },
+  },
+  tabspanel: {
+    fontWeight: '600 !important',
+    color: theme.palette.secondary.main + ' !important',
+  },
+}));
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -44,43 +61,51 @@ const AccountHistory = () => {
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
-
+  const classes = useStyles();
   return (
     <Fragment>
-      <Typography
-        variant="h4"
-        title="Account History"
-        sx={{
-          paddingBottom: '10px',
-          color: 'secondary.main',
-          fontWeight: 700,
-          fontFamily: 'Poppins-Bold !important',
-          textTransform: 'uppercase',
-        }}
-      >
-        Account History
-      </Typography>
-      <Box>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          aria-label="Account History Tabs"
-          indicatorColor="primary"
-        >
-          <Tab label="All History" title="All History" {...a11yProps(0)} />
-          <Tab
-            label="Transaction History"
-            title="Transaction History"
-            {...a11yProps(1)}
-          />
-        </Tabs>
-      </Box>
-      <TabPanel value={value} index={0}>
-        <HistoryGrid />
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <HistoryGrid />
-      </TabPanel>
+      <Grid container className={classes.root}>
+        <Grid item xs={12}>
+          <Typography
+            variant="h4"
+            className={classes.heading}
+            title="Account History"
+          >
+            ACCOUNT HISTORY
+          </Typography>
+          <Box>
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              aria-label="Account History Tabs"
+              TabIndicatorProps={{
+                style: {
+                  backgroundColor: '#79C043',
+                },
+              }}
+            >
+              <Tab
+                label="All History"
+                className={classes.tabspanel}
+                title="All History"
+                {...a11yProps(0)}
+              />
+              <Tab
+                className={classes.tabspanel}
+                label="Transaction History"
+                title="Transaction History"
+                {...a11yProps(1)}
+              />
+            </Tabs>
+          </Box>
+          <TabPanel value={value} index={0}>
+            <HistoryGrid />
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            <HistoryGrid />
+          </TabPanel>
+        </Grid>
+      </Grid>
     </Fragment>
   );
 };

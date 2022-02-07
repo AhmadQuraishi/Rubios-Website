@@ -1,12 +1,9 @@
 import {
-  Button,
   Card,
-  CardContent,
   CardMedia,
   Grid,
   Typography,
 } from '@mui/material';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import './index.css';
 
 const OrderHistoryCard = (props: any) => {
@@ -53,7 +50,12 @@ const OrderHistoryCard = (props: any) => {
                 item
                 xs={12}
                 sm={8}
-                sx={{ padding: { xs: '0px 10px 20px 10px', sm: '0px 0px 10px 20px' } }}
+                sx={{
+                  padding: {
+                    xs: '20px 10px 20px 10px',
+                    sm: '0px 0px 10px 20px',
+                  },
+                }}
                 className="order-detail-panel"
               >
                 <Typography

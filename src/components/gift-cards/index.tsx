@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import gc_icon from '../../assets/imgs/gift_card_icon.png';
 import { Link } from 'react-router-dom';
+import './index.css';
 
 const GiftCards = () => {
   const giftcardsList = [
@@ -34,76 +35,59 @@ const GiftCards = () => {
   return (
     <Grid container>
       <Grid item xs={12}>
-        <Grid container>
+        <Grid container spacing={3} className="gift-cards-panel">
           {giftcardsList.map((card, index) => (
-            <Fragment key={card.title + index}>
-              <Grid item xs={12} md={5}>
-                <Card>
-                  <Grid container>
-                    <Grid item xs={4} md={4}>
-                      <CardMedia
-                        component="img"
-                        width="24px"
-                        image={card.icon}
-                        alt="Gift card icon"
-                        aria-label="Gift card icon"
-                        title="Gift card icon"
-                      />
-                    </Grid>
-                    <Grid item xs={8} md={8}>
-                      <CardContent>
-                        <Typography variant="h6" title={card.title}>
-                          {card.title}
-                        </Typography>
-                        <Typography variant="h6" title={card.number}>
-                          {card.number}
-                        </Typography>
-                        <Typography
-                          variant="h6"
-                          title={card.balance.toString()}
-                        >
-                          Balance:${card.balance}
-                        </Typography>
-                      </CardContent>
-                    </Grid>
-                    <Grid item xs={6} sm={8} md={5} lg={7} />
-                    <Grid
-                      item
-                      xs={6}
-                      sm={4}
-                      md={7}
-                      lg={5}
-                      sx={{ display: 'flex' }}
-                    >
-                      <Link
-                        title="Edit"
-                        aria-label="Edit card"
-                        to="/account/updatepaymentcard"
-                      >
-                        Edit
-                      </Link>
-                      <Button title="Delete">Delete</Button>
-                    </Grid>
+            <Grid item xs={12} md={6} key={card.title + index}>
+              <Card className="card-panel">
+                <Grid container>
+                  <Grid item xs={2}>
+                    <img
+                      src={require('../../assets/imgs/gc-card-icon.png')}
+                      alt="Gift card icon"
+                      title="Gift card icon"
+                    />
                   </Grid>
-                </Card>
-              </Grid>
-              <Grid item xs={0} md={0.5} />
-            </Fragment>
+                  <Grid item xs={10}>
+                    <CardContent className="panel">
+                      <Typography variant="h6" title={card.title}>
+                        {card.title}
+                      </Typography>
+                      <Typography variant="h6" title={card.number}>
+                        {card.number}
+                      </Typography>
+                      <Typography variant="h6" title={card.balance.toString()}>
+                        Balance:${card.balance}
+                      </Typography>
+                    </CardContent>
+                  </Grid>
+                  <Grid item xs={6} sm={8} md={5} lg={7} />
+                  <Grid item xs={12} className="order-Link">
+                    <Link
+                      title="Edit"
+                      aria-label="Edit card"
+                      to="/account/updatepaymentcard"
+                    >
+                      Edit
+                    </Link>
+                    <Button title="Delete">Delete</Button>
+                  </Grid>
+                </Grid>
+              </Card>
+            </Grid>
           ))}
+          <Grid item xs={12}></Grid>
+          <Grid item xs={12} md={6} sx={{ paddingTop: '0px !important' }}>
+            <Link
+              title="Add Card"
+              aria-label="Add payment card"
+              to="/account/updatepaymentcard"
+              className="button-add-card"
+            >
+              ADD GIFT CARD
+            </Link>
+          </Grid>
         </Grid>
       </Grid>
-
-      <Grid item xs={6}>
-        <Link
-          title="ADD GIFT CARD"
-          aria-label="Add gift card"
-          to="/account/updatepaymentcard"
-        >
-          ADD GIFT CARD
-        </Link>
-      </Grid>
-
-      <Grid item xs={6}></Grid>
     </Grid>
   );
 };

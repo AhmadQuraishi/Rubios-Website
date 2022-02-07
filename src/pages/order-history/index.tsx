@@ -1,21 +1,28 @@
 import React from 'react';
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Grid, Theme, Typography } from '@mui/material';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import OrderHistoryCard from '../../components/order-history-card';
 import { makeStyles } from '@mui/styles';
 import { boxSizing } from '@mui/system';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    padding: '0px 15px',
+    padding: '0px 15px 20px 15px',
     maxWidth: '990px',
-    boxSizing: 'border-box'
+    boxSizing: 'border-box',
   },
   heading: {
     paddingBottom: '5px',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '25px !important',
+    },
   },
-});
+  tabspanel: {
+    fontWeight: '600 !important',
+    color: theme.palette.secondary.main + ' !important',
+  },
+}));
 
 const OrdersHistory = () => {
   const classes = useStyles();
@@ -64,21 +71,27 @@ const OrdersHistory = () => {
         <Tabs
           value={value}
           onChange={handleChange}
-          indicatorColor="primary"
           aria-label="Order History tabs"
           title="Order History tabs"
+          TabIndicatorProps={{
+            style: {
+              backgroundColor: '#79C043',
+            },
+          }}
         >
           <Tab
             aria-label="favorite orders"
             value="1"
-            label="FAVOTITES"
-            title="favorite orders"
+            label="FAVOURITE"
+            title="favourite orders"
+            className={classes.tabspanel}
           />
           <Tab
             aria-label="recent orders"
             value="2"
             label="RECENT"
             title="recent orders"
+            className={classes.tabspanel}
           />
         </Tabs>
         <br />

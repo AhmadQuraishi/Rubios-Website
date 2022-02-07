@@ -1,14 +1,8 @@
 import React, { Fragment } from 'react';
-import {
-  Button,
-  Card,
-  CardContent,
-  CardMedia,
-  Grid,
-  Typography,
-} from '@mui/material';
+import { Button, Card, CardContent, Grid, Typography } from '@mui/material';
 import card from '../../assets/imgs/card.png';
 import { Link } from 'react-router-dom';
+import './index.css';
 
 const CreditCards = () => {
   const creditcardsList = [
@@ -37,27 +31,25 @@ const CreditCards = () => {
   return (
     <Grid container>
       <Grid item xs={12}>
-        <Grid container>
+        <Grid container spacing={3} className="credit-cards-panel">
           {creditcardsList.map((card, index) => (
             <Fragment key={index.toString()}>
-              <Grid item xs={12} md={5}>
-                <Card>
+              <Grid item xs={12} md={6}>
+                <Card className="card-panel">
                   <Grid container>
-                    <Grid item xs={4} md={4}>
-                      <CardMedia
-                        component="img"
-                        width="24px"
-                        image={card.icon}
-                        alt="Gift card icon"
-                        title="Gift card icon"
+                    <Grid item xs={2}>
+                      <img
+                        src={require('../../assets/imgs/cc-card-unselected.png')}
+                        alt="Credit card icon"
+                        title="Credit card icon"
                       />
                     </Grid>
-                    <Grid item xs={8} md={8}>
-                      <CardContent>
+                    <Grid item xs={10}>
+                      <CardContent className="panel">
                         <Typography variant="h6" title={card.title}>
                           {card.default ? (
                             <Fragment>
-                              <span>DEFAULT</span> {card.title}
+                              <b>DEFAULT</b> {card.title}
                             </Fragment>
                           ) : (
                             `${card.title}`
@@ -71,7 +63,7 @@ const CreditCards = () => {
                         </Typography>
                       </CardContent>
                     </Grid>
-                    <Grid item xs={12} sx={{ display: 'flex' }}>
+                    <Grid item xs={12} className="order-Link">
                       <Link
                         title="Edit"
                         aria-label="Edit card"
@@ -81,29 +73,29 @@ const CreditCards = () => {
                       </Link>
                       <Button title="Delete">Delete</Button>
                       {!card.default && (
-                        <Button title="Make default">Make default</Button>
+                        <Button title="Make default" className="default">
+                          Make default
+                        </Button>
                       )}
                     </Grid>
                   </Grid>
                 </Card>
               </Grid>
-              <Grid item xs={0} md={0.5} />
             </Fragment>
           ))}
+          <Grid item xs={12}></Grid>
+          <Grid item xs={12} md={6} sx={{ paddingTop: '0px !important' }}>
+            <Link
+              title="Add Card"
+              aria-label="Add payment card"
+              to="/account/updatepaymentcard"
+              className="button-add-card"
+            >
+              ADD CARD
+            </Link>
+          </Grid>
         </Grid>
       </Grid>
-
-      <Grid item xs={6}>
-        <Link
-          title="Add Card"
-          aria-label="Add payment card"
-          to="/account/updatepaymentcard"
-        >
-          ADD CARD
-        </Link>
-      </Grid>
-
-      <Grid item xs={6}></Grid>
     </Grid>
   );
 };

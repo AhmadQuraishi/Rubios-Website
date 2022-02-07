@@ -1,5 +1,4 @@
 import { Grid, Typography, Card, TextField, Button } from '@mui/material';
-import LeftMenuBar from '../../components/left-menu-bar';
 
 const UpdatePaymentCard = () => {
   return (
