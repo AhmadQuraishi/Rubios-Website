@@ -9,7 +9,7 @@ import {
   Theme,
 } from '@mui/material';
 import './profile.css';
-import { Fragment } from 'react';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -138,7 +138,11 @@ const Profile = () => {
               >
                 <span className="bday-text">Birthday</span>
                 <span className="date">September 6, 2009</span>
-                <span>icon</span>
+                <span>
+                  <LockOutlinedIcon
+                    style={{ color: 'grey', paddingTop: '5px' }}
+                  />
+                </span>
               </Button>
             </Grid>
 
@@ -147,7 +151,7 @@ const Profile = () => {
                 aria-label="enter your favorite location"
                 label="Favorite Location"
                 title="enter your favorite location"
-                sx={{ width: '100%' }}                
+                sx={{ width: '100%' }}
                 variant="filled"
               />
             </Grid>
