@@ -1,6 +1,14 @@
 .profile-section .MuiGrid-grid-xs-12{
   padding-top: 20px
 }
+.profile-section .MuiFilledInput-root{
+  background-color: #FFF !important;
+}
+.profile-section .MuiFilledInput-root:hover,
+.profile-section .MuiFilledInput-root::before,
+.profile-section .MuiFilledInput-root::after{
+  border: 0 !important;
+}
 .birthday-button
 {
   background-color: #EAEAEA !important;

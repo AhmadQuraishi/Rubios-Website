@@ -50,14 +50,14 @@ const DeliveryAddress = () => {
               </Typography>
               <Grid container>
                 <Grid item xs={12} className="small-button-panel">
-                  <Typography
-                    variant="button"
-                    aria-label="Delete"
+                  <Link
+                    aria-label="Edit"
                     title="Edit"
                     className="link"
+                    to="/account/addDeliveryAddress/1"
                   >
                     EDIT
-                  </Typography>
+                  </Link>
                   <Typography
                     variant="button"
                     aria-label="Delete"
@@ -88,14 +88,14 @@ const DeliveryAddress = () => {
               </Typography>
               <Grid container>
                 <Grid item xs={12} className="small-button-panel">
-                  <Typography
-                    variant="button"
-                    aria-label="Delete"
+                  <Link
+                    aria-label="Edit"
                     title="Edit"
                     className="link"
+                    to="/account/addDeliveryAddress/1"
                   >
                     EDIT
-                  </Typography>
+                  </Link>
                   <Typography
                     variant="button"
                     aria-label="Delete"
@@ -128,7 +128,7 @@ const DeliveryAddress = () => {
               variant="contained"
               className="button-panel"
             >
-              ADD ADDRESS
+              'ADD ADDRESS
             </Button>
           </Link>
         </Grid>

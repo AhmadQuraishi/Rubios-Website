@@ -1,8 +1,10 @@
 import { Grid, Typography, TextField, Button } from '@mui/material';
 import { Fragment } from 'react';
+import { useParams } from 'react-router-dom';
 import './add-delivery-address.css';
 
 const AddDeliveryAddress = () => {
+  const { id } = useParams();
   return (
     <Fragment>
       <Typography variant="h4" title="Delivery Address">
@@ -59,7 +61,7 @@ const AddDeliveryAddress = () => {
                 variant="contained"
                 sx={{ width: { xs: '100%', lg: '400px' } }}
               >
-                Add Address
+                {id ? 'Update Address' : 'Add Address'}
               </Button>
             </Grid>
           </Grid>

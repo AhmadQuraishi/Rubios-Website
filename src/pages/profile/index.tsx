@@ -6,101 +6,33 @@ import {
   TextField,
   Button,
   Card,
+  Theme,
 } from '@mui/material';
 import './profile.css';
 import { Fragment } from 'react';
+import { makeStyles } from '@mui/styles';
+
+const useStyles = makeStyles((theme: Theme) => ({
+  root: {
+    padding: '0px 15px 20px 15px',
+    maxWidth: '990px',
+    boxSizing: 'border-box',
+  },
+  heading: {
+    paddingBottom: '5px',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '25px !important',
+    },
+  },
+}));
 
 const Profile = () => {
+  const classes = useStyles();
   return (
-    // <Fragment>
-    //   <Typography variant="h4">Edit Profile</Typography>
-    //   <TextField aria-label="email" placeholder="Email" title="Email" />
-    //   <TextField
-    //     aria-label="first name"
-    //     placeholder="First Name"
-    //     title="First Name"
-    //   />
-    //   <TextField
-    //     aria-label="last name"
-    //     placeholder="Last Name"
-    //     title="Last Name"
-    //   />
-    //   <TextField
-    //     aria-label="mobile phone "
-    //     placeholder="Mobile Phone"
-    //     title="Mobile Phone"
-    //   />
-    //   <TextField
-    //     aria-label="current password"
-    //     placeholder="Current Password"
-    //     title="Current Password"
-    //   />
-    //   <br />
-    //   <Typography
-    //     variant="caption"
-    //     title="your current password require to update your personal details"
-    //   >
-    //     your current password require to update your personal details
-    //   </Typography>
-    //   <TextField
-    //     aria-label="new password"
-    //     placeholder="New Password"
-    //     title="New Password"
-    //   />
-    //   <br />
-    //   <Typography
-    //     variant="caption"
-    //     title="Password must be at least 8 characters."
-    //   >
-    //     Password must be at least 8 characters.
-    //   </Typography>
-    //   <br />
-    //   <TextField
-    //     aria-label="confirm password "
-    //     placeholder="Confirm Password"
-    //     title="Confirm Password"
-    //   />
-    //   <TextField
-    //     disabled
-    //     aria-label="date of birth"
-    //     variant="outlined"
-    //     placeholder="Birthday"
-    //     title="date of birth"
-    //   />
-    //   <TextField
-    //     aria-label="enter your favorite location"
-    //     placeholder="Favorite Location"
-    //     title="enter your favorite location"
-    //   />
-    //   <Grid container>
-    //     <Card>
-    //       <CardContent>
-    //         <Typography
-    //           variant="body1"
-    //           title="Keep up to date on rewards, exclusive offers and new product
-    //           launches."
-    //         >
-    //           Keep up to date on rewards, exclusive offers and new product
-    //           launches.
-    //         </Typography>
-    //         <br />
-    //         <Switch aria-label="email notification" defaultChecked />
-    //         <Typography variant="caption" title="Email Notification">
-    //           Email Notification
-    //         </Typography>
-    //         <Switch aria-label="push notification" />
-    //         <Typography variant="caption" title="Push Notification">
-    //           Push Notification
-    //         </Typography>
-    //       </CardContent>
-    //     </Card>
-    //   </Grid>
-    //   <Button aria-label="submit" title="submit" variant="outlined">
-    //     Submit
-    //   </Button>
-    // </Fragment>
-    <Fragment>
-      <Typography variant="h4">Edit Profile</Typography>
+    <div className={classes.root}>
+      <Typography variant="h4" className={classes.heading}>
+        Edit Profile
+      </Typography>
       <Grid container>
         <Grid item xs={12} md={6}>
           <Grid container className="profile-section">
@@ -110,6 +42,7 @@ const Profile = () => {
                 label="Email"
                 title="Email"
                 sx={{ width: '100%' }}
+                variant="filled"
               />
             </Grid>
             <Grid item xs={12}>
@@ -118,10 +51,12 @@ const Profile = () => {
                 label="First Name"
                 title="First Name"
                 sx={{ width: '100%' }}
+                variant="filled"
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
+                variant="filled"
                 aria-label="last name"
                 label="Last Name"
                 title="Last Name"
@@ -134,6 +69,7 @@ const Profile = () => {
                 label="Mobile Phone"
                 title="Mobile Phone"
                 sx={{ width: '100%' }}
+                variant="filled"
               />
             </Grid>
             <Grid item xs={12}>
@@ -142,6 +78,7 @@ const Profile = () => {
                 label="Current Password"
                 title="Current Password"
                 sx={{ width: '100%' }}
+                variant="filled"
               />
             </Grid>
             <Grid item xs={12}>
@@ -160,6 +97,7 @@ const Profile = () => {
                 label="New Password"
                 title="New Password"
                 sx={{ width: '100%' }}
+                variant="filled"
               />
             </Grid>
             <Grid item xs={12}>
@@ -178,6 +116,7 @@ const Profile = () => {
                 label="Confirm Password"
                 title="Confirm Password"
                 sx={{ width: '100%' }}
+                variant="filled"
               />
             </Grid>
             <Grid item xs={12}>
@@ -207,7 +146,8 @@ const Profile = () => {
                 aria-label="enter your favorite location"
                 label="Favorite Location"
                 title="enter your favorite location"
-                sx={{ width: '100%' }}
+                sx={{ width: '100%' }}                
+                variant="filled"
               />
             </Grid>
             <Grid item xs={12}>
@@ -254,7 +194,7 @@ const Profile = () => {
           </Grid>
         </Grid>
       </Grid>
-    </Fragment>
+    </div>
   );
 };
 
