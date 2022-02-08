@@ -45,8 +45,6 @@ const useStyle = makeStyles(() => ({
     marginLeft: "40px"
   }
 }));
-const PUNCHH_CLIENT_ID = "c7f0b80300f53da0f25b52b06c8b9b89afcb47397e8e2c1f3fe9b58200171a41";
-const PUNCHH_CLIENT_SECRET = "a2e83d96525d4d6d3db3823ec86cbd0d935f223f9d7e8df6167187cb95e7fbca";
 
 const Login = () => {
   const classes = useStyle();
@@ -59,7 +57,7 @@ const Login = () => {
           buttonText={"Punchh SSO Sign In"}
           authorizationUrl="https://sandbox.punchh.com/oauth/authorize"
           responseType="code"
-          clientId={PUNCHH_CLIENT_ID}
+          clientId={process.env.REACT_APP_PUNCHH_CLIENT_ID}
           redirectUri={window.location.href}
           onSuccess={onAuthSuccess}
           onFailure={onAuthFailure} />
@@ -89,8 +87,8 @@ const getAccessTokenByAuthCode = async (code: string): Promise<any> => {
     {
       grant_type: "authorization_code",
       code: code,
-      client_id: PUNCHH_CLIENT_ID,
-      client_secret: PUNCHH_CLIENT_SECRET,
+      client_id: process.env.REACT_APP_PUNCHH_CLIENT_ID,
+      client_secret: process.env.REACT_APP_PUNCHH_CLIENT_SECRET,
       redirect_uri: window.location.origin + "/login"
     },
     {
@@ -104,18 +102,8 @@ const getAccessTokenByAuthCode = async (code: string): Promise<any> => {
 };
 
 const getUser = async (authResult: PunchhAuth): Promise<any> => {
-  const url = `https://sandbox.punchh.com/api/auth/users?client=${PUNCHH_CLIENT_ID}&access_token=${authResult.access_token}`;
-  const body = {};
-  const payload = url + body;
-  const signature = CryptoJS.HmacSHA1(
-    payload,
-    PUNCHH_CLIENT_SECRET
-  ).toString();
-  return axios.get(url, {
-    headers: {
-      "x-pch-digest": signature
-    }
-  });
+  const url = `https://sandbox.punchh.com/api/auth/users?client=${process.env.REACT_APP_PUNCHH_CLIENT_ID}&access_token=${authResult.access_token}`;
+  return axios.get(url, { });
 };
 
 

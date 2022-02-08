@@ -11,14 +11,13 @@ import theme from './theme/theme';
 import axios from "axios";
 import CryptoJS from "crypto-js"
 axios.interceptors.request.use(function (config) {
-  const url = config.url;
+  const url = config.url || "";
   debugger
   let check = url?.toString().includes("/sandbox.punchh.com/api/");
   if(check){
-    const uri = axios.getUri(config)
+    var uri = new URL(url?.toString())
     const body = config.data;
-    let load = uri.split("?")
-    let uriData   = load[1].toString();
+    let uriData   = uri.pathname.concat(uri.search);
     let secret = process.env.REACT_APP_PUNCHH_CLIENT_ID ||"";
     let secretString = secret.toString();
     const signature = CryptoJS.HmacSHA1(uriData.concat(body), secretString).toString()
