@@ -1,21 +1,44 @@
-import { Grid, Typography, Card, TextField, Button } from '@mui/material';
+import {
+  Grid,
+  Typography,
+  Card,
+  TextField,
+  Button,
+  Theme,
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import { useParams } from 'react-router-dom';
 import './update-card-info.css';
-
+const useStyles = makeStyles((theme: Theme) => ({
+  root: {
+    padding: '0px 15px 20px 15px',
+    maxWidth: '990px',
+    boxSizing: 'border-box',
+  },
+  heading: {
+    paddingBottom: '5px',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '23px !important',
+    },
+  },
+}));
 const UpdatePaymentCard = () => {
   const { id } = useParams();
+  const classes = useStyles();
   return (
-    <Grid container spacing={0} className="payment-info-update">
+    <Grid
+      container
+      spacing={0}
+      className={`${classes.root + ' payment-info-update'}`}
+    >
       <Grid item xs={12}>
         <Typography
           variant="h4"
-          sx={{
-            paddingBottom: '10px',
-            color: 'secondary.main',
-            fontWeight: 700,
-            fontFamily: 'Poppins-Bold !important',
-            textTransform: 'uppercase',
-          }}
+          aria-label={
+            id ? 'Edit Payment Information' : 'Add Payment Information'
+          }
+          title={id ? 'Edit Payment Information' : 'Add Payment Information'}
+          className={classes.heading}
         >
           {id ? 'Edit Payment Information' : 'Add Payment Information'}
         </Typography>
