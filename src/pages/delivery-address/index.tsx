@@ -128,7 +128,7 @@ const DeliveryAddress = () => {
               variant="contained"
               className="button-panel"
             >
-              'ADD ADDRESS
+              ADD ADDRESS
             </Button>
           </Link>
         </Grid>

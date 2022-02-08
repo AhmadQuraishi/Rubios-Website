@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     boxSizing: 'border-box',
   },
   heading: {
-    paddingBottom: '25px',
+    paddingBottom: '0px',
     [theme.breakpoints.down('sm')]: {
       fontSize: '25px !important',
     },

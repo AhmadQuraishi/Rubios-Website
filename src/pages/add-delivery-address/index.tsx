@@ -6,7 +6,6 @@ import './add-delivery-address.css';
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     padding: '0px 15px',
-    maxWidth: '990px',
     boxSizing: 'border-box',
   },
   heading: {

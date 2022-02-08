@@ -5,7 +5,6 @@ import './invite.css';
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     padding: '0px 15px 20px 15px',
-    maxWidth: '990px',
     boxSizing: 'border-box',
   },
   heading: {
@@ -66,15 +65,6 @@ const Invite = () => {
               </Button>
             </Grid>
           </Grid>
-        </Grid>
-        <Grid item xs={12}>
-          <Button
-            sx={{ display: { xs: 'flex', sm: 'none' } }}
-            aria-label="back"
-            title="back"
-          >
-            back
-          </Button>
         </Grid>
       </Grid>
     </div>
