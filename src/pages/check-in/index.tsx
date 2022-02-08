@@ -1,12 +1,26 @@
-import { Grid, Box, Button, TextField, Typography } from '@mui/material';
+import { Grid, Box, Button, TextField, Typography, Theme } from '@mui/material';
 import receipt from '../../assets/imgs/receipt.png';
 import { Fragment } from 'react';
 import './check-in.css';
-
+import { makeStyles } from '@mui/styles';
+const useStyles = makeStyles((theme: Theme) => ({
+  root: {
+    padding: '0px 15px',
+    maxWidth: '990px',
+    boxSizing: 'border-box',
+  },
+  heading: {
+    paddingBottom: '0px',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '25px !important',
+    },
+  },
+}));
 const CheckIn = () => {
+  const classes = useStyles();
   return (
-    <Fragment>
-      <Typography variant="h4" title="CHECK-IN">
+    <div className={classes.root}>
+      <Typography className={classes.heading} variant="h4" title="CHECK-IN">
         CHECK-IN
       </Typography>
       <Grid container>
@@ -101,19 +115,8 @@ const CheckIn = () => {
             </Grid>
           </Grid>
         </Grid>
-
-        <Grid item md={2} />
-        <Grid item xs={12}>
-          <Button
-            sx={{ display: { xs: 'flex', sm: 'none' } }}
-            aria-label="back"
-            title="back"
-          >
-            back
-          </Button>
-        </Grid>
       </Grid>
-    </Fragment>
+    </div>
   );
 };
 

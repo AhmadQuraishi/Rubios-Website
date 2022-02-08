@@ -65,7 +65,7 @@ const GiftCards = () => {
                     <Link
                       title="Edit"
                       aria-label="Edit card"
-                      to="/account/updatepaymentcard"
+                      to="/account/updatepaymentcard/1"
                     >
                       Edit
                     </Link>

@@ -1,11 +1,31 @@
-import { Grid, Typography, TextField, Button } from '@mui/material';
+import { Grid, Typography, TextField, Button, Theme } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import { Fragment } from 'react';
+import { useParams } from 'react-router-dom';
 import './add-delivery-address.css';
-
+const useStyles = makeStyles((theme: Theme) => ({
+  root: {
+    padding: '0px 15px',
+    boxSizing: 'border-box',
+  },
+  heading: {
+    paddingBottom: '5px',
+    textTransform: 'uppercase',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '25px !important',
+    },
+  },
+}));
 const AddDeliveryAddress = () => {
+  const { id } = useParams();
+  const classes = useStyles();
   return (
-    <Fragment>
-      <Typography variant="h4" title="Delivery Address">
+    <div className={classes.root}>
+      <Typography
+        className={classes.heading}
+        variant="h4"
+        title="Delivery Address"
+      >
         Delivery Address
       </Typography>
       <Grid container>
@@ -59,13 +79,13 @@ const AddDeliveryAddress = () => {
                 variant="contained"
                 sx={{ width: { xs: '100%', lg: '400px' } }}
               >
-                Add Address
+                {id ? 'Update Address' : 'Add Address'}
               </Button>
             </Grid>
           </Grid>
         </Grid>
       </Grid>
-    </Fragment>
+    </div>
   );
 };
 

@@ -1,9 +1,25 @@
-import { Grid, Typography } from '@mui/material';
+import { Grid, Theme, Typography } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import { Fragment } from 'react';
 import FoodMenuCard from '../../components/food-menu-card';
 import './redeem-reward.css';
 
+const useStyles = makeStyles((theme: Theme) => ({
+  root: {
+    padding: '0px 15px 20px 15px',
+    maxWidth: '990px',
+    boxSizing: 'border-box',
+  },
+  heading: {
+    paddingBottom: '5px',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '25px !important',
+    },
+  },
+}));
+
 const RedeemRewards = () => {
+  const classes = useStyles();
   const menuItems1 = [
     {
       image:
@@ -43,9 +59,13 @@ const RedeemRewards = () => {
   ];
   return (
     <Fragment>
-      <Grid container>
+      <Grid container className={classes.root}>
         <Grid item xs={12}>
-          <Typography variant="h4" title="REDEEM YOUR REWARDS">
+          <Typography
+            variant="h4"
+            className={classes.heading}
+            title="REDEEM YOUR REWARDS"
+          >
             REDEEM YOUR REWARDS
           </Typography>
         </Grid>

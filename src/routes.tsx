@@ -38,6 +38,10 @@ const AppRoutes = () => {
         path="/account/addDeliveryAddress"
         element={<AddDeliveryAddress />}
       />
+      <Route
+        path="/account/addDeliveryAddress/:id"
+        element={<AddDeliveryAddress />}
+      />
       <Route path="/account/history" element={<AccountHistory />} />
       <Route path="/account/checkin" element={<CheckIn />} />
       <Route path="/account/invite" element={<Invite />} />
@@ -48,6 +52,10 @@ const AppRoutes = () => {
       />
       <Route
         path="/account/updatepaymentcard"
+        element={<UpdatePaymentCard />}
+      />
+      <Route
+        path="/account/updatepaymentcard/:id"
         element={<UpdatePaymentCard />}
       />
       <Route path="/account/orders" element={<OrdersHistory />} />

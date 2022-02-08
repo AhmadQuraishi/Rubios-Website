@@ -1,20 +1,46 @@
-import { Grid, Typography, Card, TextField, Button } from '@mui/material';
-
+import {
+  Grid,
+  Typography,
+  Card,
+  TextField,
+  Button,
+  Theme,
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import { useParams } from 'react-router-dom';
+import './update-card-info.css';
+const useStyles = makeStyles((theme: Theme) => ({
+  root: {
+    padding: '0px 15px 20px 15px',
+    maxWidth: '990px',
+    boxSizing: 'border-box',
+  },
+  heading: {
+    paddingBottom: '5px',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '23px !important',
+    },
+  },
+}));
 const UpdatePaymentCard = () => {
+  const { id } = useParams();
+  const classes = useStyles();
   return (
-    <Grid container spacing={0}>
+    <Grid
+      container
+      spacing={0}
+      className={`${classes.root + ' payment-info-update'}`}
+    >
       <Grid item xs={12}>
         <Typography
           variant="h4"
-          sx={{
-            paddingBottom: '10px',
-            color: 'secondary.main',
-            fontWeight: 700,
-            fontFamily: 'Poppins-Bold !important',
-            textTransform: 'uppercase',
-          }}
+          aria-label={
+            id ? 'Edit Payment Information' : 'Add Payment Information'
+          }
+          title={id ? 'Edit Payment Information' : 'Add Payment Information'}
+          className={classes.heading}
         >
-          Edit Payment Information
+          {id ? 'Edit Payment Information' : 'Add Payment Information'}
         </Typography>
       </Grid>
       <Grid item xs={12} sx={{ paddingTop: '20px' }}>
@@ -43,12 +69,14 @@ const UpdatePaymentCard = () => {
                   label="Card Nickname"
                   sx={{ width: '100%' }}
                   title="Card Nickname"
+                  variant="filled"
                 />
               </Grid>
               <Grid item xs={12} sx={{ paddingBottom: '20px' }}>
                 <TextField
                   aria-label="Name"
                   aria-required="true"
+                  variant="filled"
                   id="Name"
                   label="Name"
                   title="Name"
@@ -63,6 +91,7 @@ const UpdatePaymentCard = () => {
                   label="Card Number"
                   title="Card Number"
                   sx={{ width: '100%' }}
+                  variant="filled"
                 />
               </Grid>
               <Grid item xs={12} sx={{ paddingBottom: '20px' }}>
@@ -75,6 +104,7 @@ const UpdatePaymentCard = () => {
                       label="MM"
                       title="Card Expirey Month"
                       sx={{ width: '90%' }}
+                      variant="filled"
                     />
                   </Grid>
                   <Grid item xs={3}>
@@ -85,6 +115,7 @@ const UpdatePaymentCard = () => {
                       label="YY"
                       title="Card Expirey Year"
                       sx={{ width: '90%' }}
+                      variant="filled"
                     />
                   </Grid>
                   <Grid item xs={3}>
@@ -95,6 +126,7 @@ const UpdatePaymentCard = () => {
                       label="CVC"
                       title="CVC"
                       sx={{ width: '90%' }}
+                      variant="filled"
                     />
                   </Grid>
                 </Grid>
@@ -105,6 +137,7 @@ const UpdatePaymentCard = () => {
                   label="Card Number"
                   title="Card Number"
                   sx={{ width: '100%' }}
+                  variant="filled"
                 />
               </Grid>
               <Grid item xs={12} sx={{ paddingBottom: '20px' }}>
@@ -125,12 +158,14 @@ const UpdatePaymentCard = () => {
                   label="City, State"
                   title="City & State"
                   sx={{ width: '100%' }}
+                  variant="filled"
                 />
               </Grid>
               <Grid item xs={12} sx={{ paddingBottom: '20px' }}>
                 <TextField
                   aria-label="Zip Code"
                   aria-required="true"
+                  variant="filled"
                   id="zip_code"
                   label="Zip Code"
                   sx={{ width: '100%' }}
@@ -144,7 +179,7 @@ const UpdatePaymentCard = () => {
                   title="UPDATE CARD"
                   aria-label="UPDATE CARD"
                 >
-                  UPDATE CARD
+                  {id ? 'UPDATE CARD' : 'ADD CARD'}
                 </Button>
               </Grid>
             </Grid>
