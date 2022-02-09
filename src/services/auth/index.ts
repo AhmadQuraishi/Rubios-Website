@@ -5,7 +5,6 @@ interface OAuthResponse {
     client: string;
   }
 export const getToken = async (code: string): Promise<any> => {
-    debugger
     return axios.post(
       `https://sandbox.punchh.com/oauth/token`,
       {

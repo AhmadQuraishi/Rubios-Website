@@ -9,7 +9,7 @@ import {
 
 function* asyncTokenItemRequest(action: any): any {
   try {
-    debugger
+
     const response = yield call(getToken, action.code);
     yield put(getTokenRequestSuccess(response));
   } catch (error) {
@@ -17,6 +17,6 @@ function* asyncTokenItemRequest(action: any): any {
   }
 }
 
-export function* storeToken() { debugger
+export function* storeToken() { 
   yield takeEvery(Type.GET_TOKEN_REQUEST, asyncTokenItemRequest);
 }
