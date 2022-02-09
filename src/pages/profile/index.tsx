@@ -43,7 +43,6 @@ const Profile = () => {
                 label="Email"
                 title="Email"
                 sx={{ width: '100%' }}
-                variant="filled"
               />
             </Grid>
             <Grid item xs={12}>
@@ -52,12 +51,10 @@ const Profile = () => {
                 label="First Name"
                 title="First Name"
                 sx={{ width: '100%' }}
-                variant="filled"
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
-                variant="filled"
                 aria-label="last name"
                 label="Last Name"
                 title="Last Name"
@@ -70,7 +67,6 @@ const Profile = () => {
                 label="Mobile Phone"
                 title="Mobile Phone"
                 sx={{ width: '100%' }}
-                variant="filled"
               />
             </Grid>
             <Grid item xs={12}>
@@ -79,7 +75,6 @@ const Profile = () => {
                 label="Current Password"
                 title="Current Password"
                 sx={{ width: '100%' }}
-                variant="filled"
               />
             </Grid>
             <Grid item xs={12}>
@@ -98,7 +93,6 @@ const Profile = () => {
                 label="New Password"
                 title="New Password"
                 sx={{ width: '100%' }}
-                variant="filled"
               />
             </Grid>
             <Grid item xs={12}>
@@ -117,18 +111,9 @@ const Profile = () => {
                 label="Confirm Password"
                 title="Confirm Password"
                 sx={{ width: '100%' }}
-                variant="filled"
               />
             </Grid>
             <Grid item xs={12}>
-              {/*<TextField*/}
-              {/*  disabled*/}
-              {/*  aria-label="date of birth"*/}
-              {/*  variant="outlined"*/}
-              {/*  label="Birthday"*/}
-              {/*  title="date of birth"*/}
-              {/*  sx={{ width: '100%' }}*/}
-              {/*/>*/}
               <Button
                 disabled
                 aria-label="date of birth"
@@ -152,7 +137,6 @@ const Profile = () => {
                 label="Favorite Location"
                 title="enter your favorite location"
                 sx={{ width: '100%' }}
-                variant="filled"
               />
             </Grid>
             <Grid item xs={12}>

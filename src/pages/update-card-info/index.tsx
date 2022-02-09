@@ -69,14 +69,12 @@ const UpdatePaymentCard = () => {
                   label="Card Nickname"
                   sx={{ width: '100%' }}
                   title="Card Nickname"
-                  variant="filled"
                 />
               </Grid>
               <Grid item xs={12} sx={{ paddingBottom: '20px' }}>
                 <TextField
                   aria-label="Name"
                   aria-required="true"
-                  variant="filled"
                   id="Name"
                   label="Name"
                   title="Name"
@@ -91,7 +89,6 @@ const UpdatePaymentCard = () => {
                   label="Card Number"
                   title="Card Number"
                   sx={{ width: '100%' }}
-                  variant="filled"
                 />
               </Grid>
               <Grid item xs={12} sx={{ paddingBottom: '20px' }}>
@@ -104,7 +101,6 @@ const UpdatePaymentCard = () => {
                       label="MM"
                       title="Card Expirey Month"
                       sx={{ width: '90%' }}
-                      variant="filled"
                     />
                   </Grid>
                   <Grid item xs={3}>
@@ -115,7 +111,6 @@ const UpdatePaymentCard = () => {
                       label="YY"
                       title="Card Expirey Year"
                       sx={{ width: '90%' }}
-                      variant="filled"
                     />
                   </Grid>
                   <Grid item xs={3}>
@@ -126,7 +121,6 @@ const UpdatePaymentCard = () => {
                       label="CVC"
                       title="CVC"
                       sx={{ width: '90%' }}
-                      variant="filled"
                     />
                   </Grid>
                 </Grid>
@@ -137,7 +131,6 @@ const UpdatePaymentCard = () => {
                   label="Card Number"
                   title="Card Number"
                   sx={{ width: '100%' }}
-                  variant="filled"
                 />
               </Grid>
               <Grid item xs={12} sx={{ paddingBottom: '20px' }}>
@@ -158,14 +151,12 @@ const UpdatePaymentCard = () => {
                   label="City, State"
                   title="City & State"
                   sx={{ width: '100%' }}
-                  variant="filled"
                 />
               </Grid>
               <Grid item xs={12} sx={{ paddingBottom: '20px' }}>
                 <TextField
                   aria-label="Zip Code"
                   aria-required="true"
-                  variant="filled"
                   id="zip_code"
                   label="Zip Code"
                   sx={{ width: '100%' }}
