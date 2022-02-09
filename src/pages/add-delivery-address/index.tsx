@@ -36,7 +36,6 @@ const AddDeliveryAddress = () => {
                 label="Name"
                 title="Name"
                 sx={{ width: '100%' }}
-                variant="filled"
               />
             </Grid>
             <Grid item xs={12}>
@@ -45,7 +44,6 @@ const AddDeliveryAddress = () => {
                 title="Street Address 1"
                 label="Street Address 1"
                 sx={{ width: '100%' }}
-                variant="filled"
               />
             </Grid>
             <Grid item xs={12}>
@@ -54,7 +52,6 @@ const AddDeliveryAddress = () => {
                 title="Street Address 2"
                 label="Street Address 2"
                 sx={{ width: '100%' }}
-                variant="filled"
               />
             </Grid>
             <Grid item xs={12}>
@@ -63,7 +60,6 @@ const AddDeliveryAddress = () => {
                 title="City, state"
                 label="City, state"
                 sx={{ width: '100%' }}
-                variant="filled"
               />
             </Grid>
             <Grid item xs={12}>
@@ -72,7 +68,6 @@ const AddDeliveryAddress = () => {
                 title="Zip Code"
                 label="Zip Code"
                 sx={{ width: '100%' }}
-                variant="filled"
               />
             </Grid>
 
