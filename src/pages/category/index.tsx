@@ -3,7 +3,9 @@ import ProductListing from '../../components/product-listing';
 import { Grid, Theme, Typography, Tabs, Tab, Box } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Link } from 'react-router-dom';
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getMenuRequest } from '../../redux/actions/menu';
 
 const useStyles = makeStyles((theme: Theme) => ({
   heading: {
@@ -40,6 +42,18 @@ const categories = [
 const CategoryList = () => {
   const classes = useStyles();
   const [value, setValue] = useState('0');
+  const menu = useSelector((state: any) => state.menuReducer.menu);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    //TODO: StoreID will get from State when select store work will be done
+    const storeID = 60854;
+    dispatch(getMenuRequest(storeID));
+  }, []);
+
+  useEffect(() => {
+    console.log(menu)
+  }, [menu]);
 
   const products = [
     {
@@ -92,7 +106,8 @@ const CategoryList = () => {
           width: '100%',
           padding: {
             xs: '30px 15px 10px 15px',
-            md: '20px 60px 5px 60px',
+            sm: '20px 30px 5px 30px',
+            lg: '20px 60px 5px 60px',
             boxSizing: 'border-box',
           },
         }}
@@ -126,7 +141,7 @@ const CategoryList = () => {
           key={index}
           container
           spacing={0}
-          sx={{ padding: { xs: '30px', md: '30px 80px 0px 80px' } }}
+          sx={{ padding: { xs: '30px', sm: '30px 40px 0px 40px', lg: '30px 80px 0px 80px' } }}
         >
           <Grid item xs={12}>
             <Grid container>

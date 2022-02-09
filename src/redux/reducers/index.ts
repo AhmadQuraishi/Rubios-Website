@@ -1,7 +1,8 @@
 import { combineReducers } from 'redux';
 import footerReducer from './footer';
+import menuReducer from './menu';
 
-const rootReducers = combineReducers({ footerReducer });
+const rootReducers = combineReducers({ footerReducer, menuReducer });
 
 export default rootReducers;
 
