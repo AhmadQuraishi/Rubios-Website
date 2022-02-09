@@ -1,7 +1,8 @@
 import { combineReducers } from 'redux';
 import footerReducer from './footer';
+import tokenReducer from "./token";
 
-const rootReducers = combineReducers({ footerReducer });
+const rootReducers = combineReducers({tokenReducer, footerReducer });
 
 export default rootReducers;
 

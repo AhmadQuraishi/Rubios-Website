@@ -12,6 +12,9 @@ import { Fragment } from "react";
 import axios from "axios";
 // @ts-ignore
 import OAuth2Login from "react-simple-oauth2-login";
+import { useDispatch, useSelector } from 'react-redux';
+import {getTokenRequest} from '../../redux/actions/token';
+import { useEffect } from 'react';
 
 declare var window: any;
 
@@ -48,7 +51,8 @@ const useStyle = makeStyles(() => ({
 
 const Login = () => {
   const classes = useStyle();
-
+  const dispatch = useDispatch();
+  const authTrue = onAuthSuccess(dispatch);
   return (
     <Fragment>
       <Grid container component="main" className={classes.root}>
@@ -59,16 +63,15 @@ const Login = () => {
           responseType="code"
           clientId={process.env.REACT_APP_PUNCHH_CLIENT_ID}
           redirectUri={window.location.href}
-          onSuccess={onAuthSuccess}
+          onSuccess={authTrue}
           onFailure={onAuthFailure} />
       </Grid>
     </Fragment>
   );
 };
-
-const onAuthSuccess = async (oAuthResponse: OAuthResponse) => {
+const onAuthSuccess = (dispatch: any) => async (oAuthResponse: OAuthResponse) => {
   try {
-    const token: PunchhAuth = await getAccessTokenByAuthCode(oAuthResponse.code);
+    const token: PunchhAuth = await getAccessTokenByAuthCode(oAuthResponse.code, dispatch);
     debugger;
     console.log(token);
     const foundUser = await getUser(token);
@@ -81,24 +84,27 @@ const onAuthSuccess = async (oAuthResponse: OAuthResponse) => {
 const onAuthFailure = (args: any) => {
   console.error(args);
 };
-const getAccessTokenByAuthCode = async (code: string): Promise<any> => {
-  return axios.post(
-    `https://sandbox.punchh.com/oauth/token`,
-    {
-      grant_type: "authorization_code",
-      code: code,
-      client_id: process.env.REACT_APP_PUNCHH_CLIENT_ID,
-      client_secret: process.env.REACT_APP_PUNCHH_CLIENT_SECRET,
-      redirect_uri: window.location.origin + "/login"
-    },
-    {
-      headers: {
-        "accept": "application/json",
-        "Content-Type": "application/json",
-        "Origin": window.location.origin
-      }
+const getAccessTokenByAuthCode = async (code: string, dispatch:any): Promise<any> => {
+  return () => {
+    dispatch(getTokenRequest(code));
     }
-  );
+  // return axios.post(
+  //   `https://sandbox.punchh.com/oauth/token`,
+  //   {
+  //     grant_type: "authorization_code",
+  //     code: code,
+  //     client_id: process.env.REACT_APP_PUNCHH_CLIENT_ID,
+  //     client_secret: process.env.REACT_APP_PUNCHH_CLIENT_SECRET,
+  //     redirect_uri: window.location.origin + "/login"
+  //   },
+  //   {
+  //     headers: {
+  //       "accept": "application/json",
+  //       "Content-Type": "application/json",
+  //       "Origin": window.location.origin
+  //     }
+  //   }
+  // );
 };
 
 const getUser = async (authResult: PunchhAuth): Promise<any> => {
