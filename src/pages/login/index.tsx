@@ -75,7 +75,6 @@ const onAuthSuccess = (dispatch: any) => async (oAuthResponse: OAuthResponse) =>
   
     console.log(token);
     const foundUser = await getUser(token);
-    console.log(foundUser);
   } catch (error: any) {
     alert("Auth Error!" + error.message().toString());
   }

@@ -8,6 +8,7 @@ import { Grid } from '@mui/material';
 import LeftMenuBar from './components/left-menu-bar';
 
 function App(props: any) {
+
   const location = useLocation();
   const [isAccountSection, setIsAccountSection] = useState(false);
 
