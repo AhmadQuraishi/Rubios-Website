@@ -11,6 +11,7 @@ const FoodMenuCard = (props: any) => {
               <Grid item xs={6}>
                 <CardMedia
                   component="img"
+                  className="item-image"
                   image={menuItem.image}
                   alt={menuItem.name}
                   title={menuItem.name}
