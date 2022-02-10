@@ -1,6 +1,4 @@
 import axios from 'axios';
-import { GetAccesstoken } from '../../helpers/getAccesstoken';
-import { useSelector } from 'react-redux';
 
 export const RequestUserProfile = () => {
   try {

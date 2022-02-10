@@ -21,15 +21,15 @@ axios.interceptors.request.use(
       let uriData = uri.pathname.concat(uri.search);
       let secret = process.env.REACT_APP_PUNCHH_CLIENT_SECRET || '';
       let secretString = secret.toString();
-      let concatString ='';
-      if(body === undefined){
+      let concatString = '';
+      debugger;
+      if (body === undefined) {
+        concatString = uriData;
+      } else {
         concatString = uriData.concat(JSON.stringify(body));
       }
-      else{
-        concatString = uriData;
-      }
       const signature = CryptoJS.HmacSHA1(
-       concatString,
+        concatString,
         secretString,
       ).toString();
       config.headers = {
@@ -46,7 +46,9 @@ axios.interceptors.request.use(
 ReactDOM.render(
   <Provider store={store}>
     <React.StrictMode>
-      <BrowserRouter basename={process.env.APP_BASENAME ? process.env.APP_BASENAME : ''}>
+      <BrowserRouter
+        basename={process.env.APP_BASENAME ? process.env.APP_BASENAME : ''}
+      >
         <ThemeProvider theme={theme}>
           <App />
         </ThemeProvider>
