@@ -1,4 +1,4 @@
-import { makeStyles } from "@mui/styles";
+import { makeStyles } from '@mui/styles';
 import {
   Grid,
   Box,
@@ -6,14 +6,14 @@ import {
   Card,
   TextField,
   Button,
-  Link
-} from "@mui/material";
-import { Fragment } from "react";
-import axios from "axios";
+  Link,
+} from '@mui/material';
+import { Fragment } from 'react';
+import axios from 'axios';
 // @ts-ignore
-import OAuth2Login from "react-simple-oauth2-login";
+import OAuth2Login from 'react-simple-oauth2-login';
 import { useDispatch, useSelector } from 'react-redux';
-import {getTokenRequest} from '../../redux/actions/token';
+import { getTokenRequest } from '../../redux/actions/token';
 import { useEffect } from 'react';
 
 declare var window: any;
@@ -33,20 +33,20 @@ interface PunchhAuth {
 
 const useStyle = makeStyles(() => ({
   root: {
-    minHeight: "100vh",
+    minHeight: '100vh',
     // backgroundImage: `url(https://www.pexels.com/photo/1640777/download/)`,
     // backgroundRepeat: "no-repeat",
     // backgroundSize: "cover",
-    justifyContent: "center"
+    justifyContent: 'center',
   },
-  signinBtn:{
+  signinBtn: {
     width: '200px',
-    margin: '20px'
+    margin: '20px',
   },
   card: {
-    marginTop: "40px",
-    marginLeft: "40px"
-  }
+    marginTop: '40px',
+    marginLeft: '40px',
+  },
 }));
 
 const Login = () => {
@@ -58,34 +58,40 @@ const Login = () => {
       <Grid container component="main" className={classes.root}>
         <OAuth2Login
           className={classes.signinBtn}
-          buttonText={"Punchh SSO Sign In"}
+          buttonText={'Punchh SSO Sign In'}
           authorizationUrl="https://sandbox.punchh.com/oauth/authorize"
           responseType="code"
           clientId={process.env.REACT_APP_PUNCHH_CLIENT_ID}
           redirectUri={window.location.href}
           onSuccess={authTrue}
-          onFailure={onAuthFailure} />
+          onFailure={onAuthFailure}
+        />
       </Grid>
     </Fragment>
   );
 };
-const onAuthSuccess = (dispatch: any) => async (oAuthResponse: OAuthResponse) => {
-  try {
-    const token: PunchhAuth = await getAccessTokenByAuthCode(oAuthResponse.code, dispatch);
-  
-    console.log(token);
-    const foundUser = await getUser(token);
-  } catch (error: any) {
-    alert("Auth Error!" + error.message().toString());
-  }
-};
+const onAuthSuccess =
+  (dispatch: any) => async (oAuthResponse: OAuthResponse) => {
+    try {
+      const token: PunchhAuth = await getAccessTokenByAuthCode(
+        oAuthResponse.code,
+        dispatch,
+      );
+      const foundUser = await getUser(token);
+    } catch (error: any) {
+      alert('Auth Error!' + error.message().toString());
+    }
+  };
 const onAuthFailure = (args: any) => {
   console.error(args);
 };
-const getAccessTokenByAuthCode = async (code: string, dispatch:any): Promise<any> => {
+const getAccessTokenByAuthCode = async (
+  code: string,
+  dispatch: any,
+): Promise<any> => {
   return () => {
     dispatch(getTokenRequest(code));
-    }
+  };
   // return axios.post(
   //   `https://sandbox.punchh.com/oauth/token`,
   //   {
@@ -107,8 +113,7 @@ const getAccessTokenByAuthCode = async (code: string, dispatch:any): Promise<any
 
 const getUser = async (authResult: PunchhAuth): Promise<any> => {
   const url = `https://sandbox.punchh.com/api/auth/users?client=${process.env.REACT_APP_PUNCHH_CLIENT_ID}&access_token=${authResult.access_token}`;
-  return axios.get(url, { });
+  return axios.get(url, {});
 };
-
 
 export default Login;
