@@ -23,10 +23,8 @@ const useStyles = makeStyles((theme: Theme) => ({
       fontSize: '13px',
       textTransform: 'uppercase',
       textDecoration: 'none',
-      paddingTop: '15px',
-      [theme.breakpoints.down('md')]: {
-        paddingTop: '20px'
-      }
+      paddingTop: '10px',
+      display: 'block'
     },
   },
 }));
@@ -36,7 +34,7 @@ const CategoryList = () => {
   const [value, setValue] = useState('0');
   const [categoriesWithProducts, setCategoriesWithProducts] = useState([]);
   const categoriesData = useSelector(
-    (state: any) => state.categoryReducer.categories,
+    (state: any) => state.categoriesData.categories,
   );
   const dispatch = useDispatch();
 
@@ -68,7 +66,7 @@ const CategoryList = () => {
           sx={{
             width: '100%',
             padding: {
-              xs: '30px 20px 10px 20px',
+              xs: '20px 20px 10px 20px',
               sm: '20px 30px 5px 30px',
               lg: '20px 60px 5px 60px',
               boxSizing: 'border-box',

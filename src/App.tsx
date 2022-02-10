@@ -23,6 +23,7 @@ function App(props: any) {
 
   return (
     <div id="wapper">
+      {process.env.APP_BASENAME}
       <Header removeCart={isAccountSection} />
       <main>
         {isAccountSection ? (

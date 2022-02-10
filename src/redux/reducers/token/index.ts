@@ -15,7 +15,7 @@ const tokenReducer = (state = INITIAL_STATE, action: any) => {
     case Type.GET_TOKEN_FAILURE:
       return { ...state, loading: false, error: action.error };
     default:
-      return { ...state };
+      return state;
   }
 };
 

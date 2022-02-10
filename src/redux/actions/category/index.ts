@@ -1,7 +1,6 @@
 import { categoryActionsTypes } from '../../types/category';
 
 export function getCategoriesRequest(id: number) {
-  debugger;
   return {
     type: categoryActionsTypes.GET_CATEGORY_ITMES_REQUEST,
     storeID: id,

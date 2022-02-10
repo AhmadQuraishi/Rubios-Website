@@ -4,12 +4,13 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
-import store from './redux/store';
+import { store, persistor } from './redux/store';
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
 import theme from './theme/theme';
 import axios from 'axios';
 import CryptoJS from 'crypto-js';
+import { PersistGate } from 'redux-persist/integration/react';
 
 axios.interceptors.request.use(
   function (config) {
@@ -39,10 +40,14 @@ axios.interceptors.request.use(
 ReactDOM.render(
   <Provider store={store}>
     <React.StrictMode>
-      <BrowserRouter basename={process.env.APP_BASENAME ? process.env.APP_BASENAME : ''}>
-        <ThemeProvider theme={theme}>
-          <App />
-        </ThemeProvider>
+      <BrowserRouter
+        basename={process.env.APP_BASENAME ? process.env.APP_BASENAME : ''}
+      >
+        <PersistGate persistor={persistor}>
+          <ThemeProvider theme={theme}>
+            <App />
+          </ThemeProvider>
+        </PersistGate>
       </BrowserRouter>
     </React.StrictMode>
   </Provider>,
