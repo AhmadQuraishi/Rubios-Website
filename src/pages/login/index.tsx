@@ -72,11 +72,9 @@ const Login = () => {
 const onAuthSuccess = (dispatch: any) => async (oAuthResponse: OAuthResponse) => {
   try {
     const token: PunchhAuth = await getAccessTokenByAuthCode(oAuthResponse.code, dispatch);
-    debugger;
+  
     console.log(token);
     const foundUser = await getUser(token);
-    debugger;
-    console.log(foundUser);
   } catch (error: any) {
     alert("Auth Error!" + error.message().toString());
   }
