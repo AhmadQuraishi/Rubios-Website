@@ -1,7 +1,8 @@
 import { combineReducers } from 'redux';
 import footerReducer from './footer';
 import categoryReducer from './category';
-import tokenReducer from './token';
+import userProfileReducer from './userProfile';
+import TokensReducer from './Tokens';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
@@ -12,9 +13,10 @@ const persistConfig = {
 };
 
 const rootReducers = combineReducers({
-  tokenReducer,
+  TokensReducer,
   categoriesData: categoryReducer,
   footerReducer,
+  userProfileReducer,
 });
 
 const persistReducers = persistReducer(persistConfig, rootReducers);
