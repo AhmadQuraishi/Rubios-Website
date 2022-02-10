@@ -19,10 +19,17 @@ axios.interceptors.request.use(
       var uri = new URL(url?.toString());
       const body = config.data;
       let uriData = uri.pathname.concat(uri.search);
-      let secret = process.env.REACT_APP_PUNCHH_CLIENT_ID || '';
+      let secret = process.env.REACT_APP_PUNCHH_CLIENT_SECRET || '';
       let secretString = secret.toString();
+      let concatString ='';
+      if(body === undefined){
+        concatString = uriData.concat(JSON.stringify(body));
+      }
+      else{
+        concatString = uriData;
+      }
       const signature = CryptoJS.HmacSHA1(
-        uriData.concat(body),
+       concatString,
         secretString,
       ).toString();
       config.headers = {
