@@ -8,7 +8,7 @@ import iosLogo from '../../assets/imgs/button-apple.png';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { getMenuRequest } from '../../redux/actions/footer';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const useStyles = makeStyles((theme: Theme) => ({
   links: {
@@ -42,6 +42,10 @@ const Footer = () => {
   useEffect(() => {
     dispatch(getMenuRequest());
   }, []);
+
+  useEffect(() => {
+    console.log(menu);
+  }, [menu]);
 
   return (
     <footer>

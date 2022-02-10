@@ -16,24 +16,20 @@ axios.interceptors.request.use(
     const url = config.url || '';
     let check = url?.toString().includes('/sandbox.punchh.com/api/');
     if (check) {
-      debugger;
       var uri = new URL(url?.toString());
       const body = config.data;
       let uriData = uri.pathname.concat(uri.search);
       let secret = process.env.REACT_APP_PUNCHH_CLIENT_SECRET || '';
       let secretString = secret.toString();
-      // const signature = CryptoJS.HmacSHA1(
-      //   uriData.concat(body),
-      //   secretString,
-      // ).toString();
-      let concatString = '';
-      if (body === undefined) {
-        concatString = uriData;
-      } else {
+      let concatString ='';
+      if(body === undefined){
         concatString = uriData.concat(JSON.stringify(body));
       }
+      else{
+        concatString = uriData;
+      }
       const signature = CryptoJS.HmacSHA1(
-        concatString,
+       concatString,
         secretString,
       ).toString();
       config.headers = {
@@ -50,9 +46,7 @@ axios.interceptors.request.use(
 ReactDOM.render(
   <Provider store={store}>
     <React.StrictMode>
-      <BrowserRouter
-        basename={process.env.APP_BASENAME ? process.env.APP_BASENAME : ''}
-      >
+      <BrowserRouter basename={process.env.APP_BASENAME ? process.env.APP_BASENAME : ''}>
         <ThemeProvider theme={theme}>
           <App />
         </ThemeProvider>

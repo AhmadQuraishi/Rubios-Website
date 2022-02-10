@@ -13,14 +13,27 @@
   align-items: center;
   height: 100%
 }
+.reward-item .item-image {
+  width: 75%;
+}
 
 .item-name {
   font-family: 'Poppins-Medium' !important;
   font-size: 1rem !important;
 }
+
+@media screen and (max-width: 768px) {
+  .reward-item .item-image {
+    width: 42% !important;
+  }
+}
+
 @media screen and (max-width: 475px) {
   .reward-item{
     margin-right: 0px;
     margin-top: 20px;
+  }
+  .reward-item .item-image {
+    width: 60% !important;
   }
 }

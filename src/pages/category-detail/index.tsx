@@ -3,6 +3,7 @@ import ProductListing from '../../components/product-listing';
 import { Grid, Theme, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Fragment } from 'react';
+import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles((theme: Theme) => ({
   heading: {
@@ -27,6 +28,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const CategoryDetail = () => {
   const classes = useStyles();
+  const categoriesData = useSelector((state: any) => state.menuReducer);
+  console.log(categoriesData);
   const products = [
     {
       image:

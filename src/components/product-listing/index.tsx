@@ -8,11 +8,14 @@ import {
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Link } from 'react-router-dom';
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
+import './index.css';
 
 const useStyles = makeStyles((theme: Theme) => ({
   img: {
     borderRadius: '10px',
+    display: 'block',
+    width: '100%',
   },
   title: {
     color: theme.palette.secondary.main,
@@ -46,11 +49,15 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const ProductListing = (props: any) => {
   const classes = useStyles();
-  const { productList } = props;
+  const { productList, shownItems } = props;
+  let products = productList;
+  if (shownItems) {
+    products = productList.slice(0, shownItems);
+  }
   return (
     <Fragment>
       <Grid container spacing={3}>
-        {productList.map((item: any, index: number) => (
+        {products.map((item: any, index: number) => (
           <Grid
             scroll-id={'#panel-' + index}
             key={index}
@@ -65,13 +72,21 @@ const ProductListing = (props: any) => {
               style={{ textDecoration: 'none' }}
             >
               <Card elevation={0} style={{ borderRadius: 0 }}>
-                <CardMedia
-                  className={classes.img}
-                  component="img"
-                  image={item.image + ' image'}
-                  alt={item.name}
-                  title={item.name}
-                />
+                {item.image ? (
+                  <img
+                    className={classes.img}
+                    src={item.image}
+                    alt={item.name}
+                    title={item.name}
+                  />
+                ) : (
+                  <img
+                    className={classes.img}
+                    src={require('../../assets/imgs/default_img.png')}
+                    alt={item.name}
+                    title={item.name}
+                  />
+                )}
                 <CardContent sx={{ padding: '0' }}>
                   <Typography
                     variant="body1"
@@ -82,27 +97,27 @@ const ProductListing = (props: any) => {
                   </Typography>
                   <Typography
                     variant="caption"
-                    title={item.desc}
-                    className={classes.content}
+                    title={item.description}
+                    className={classes.content + ' fix-span'}
                   >
-                    {item.desc}
+                    {item.description}
                   </Typography>
                   <Grid container spacing={0}>
                     <Grid
                       item
                       xs={6}
-                      title={`${item.cal} cal`}
+                      title={`${item.basecalories} cal`}
                       className={classes.cal}
                     >
-                      {item.cal} cal
+                      {item.basecalories} cal
                     </Grid>
                     <Grid
                       item
                       xs={6}
-                      title={`$${item.price}`}
+                      title={`$${parseFloat(item.cost).toFixed(2)}`}
                       className={classes.price}
                     >
-                      ${item.price}
+                      ${parseFloat(item.cost).toFixed(2)}
                     </Grid>
                   </Grid>
                 </CardContent>
