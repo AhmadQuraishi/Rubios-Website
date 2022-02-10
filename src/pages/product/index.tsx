@@ -174,11 +174,15 @@ const Product = () => {
           <br />
         <br />
         </Grid>
-        <Button>QUANTITY</Button>
-
-        <Button aria-label="add to bag" title="ADD TO Bag" variant="contained">
-          ADD TO Bag
-        </Button>
+        <Grid container>
+          <Grid item xs={12} md={8} lg={8}></Grid>
+          <Grid item xs={12} md={2} lg={2}>
+            <Button title="Quantity" className="label bold">QUANTITY</Button>
+          </Grid>
+          <Grid item xs={12} md={2} lg={2}>
+            <Button aria-label="add to bag" title="ADD TO Bag" className="add-to-bag" variant="contained">ADD TO Bag</Button>
+          </Grid>
+        </Grid>
       </Grid>
     </Grid>
   );

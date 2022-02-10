@@ -7,7 +7,6 @@ const INITIAL_STATE = {
 };
 
 const tokenReducer = (state = INITIAL_STATE, action: any) => {
-
   switch (action.type) {    
     case Type.GET_TOKEN_REQUEST:
       return { ...state, loading: true };
@@ -16,7 +15,7 @@ const tokenReducer = (state = INITIAL_STATE, action: any) => {
     case Type.GET_TOKEN_FAILURE:
       return { ...state, loading: false, error: action.error };
     default:
-      return { state };
+      return { ...state };
   }
 };
 

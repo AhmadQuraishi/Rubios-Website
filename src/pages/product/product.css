@@ -30,6 +30,9 @@
 .product-detail .menu-items h4 {
   margin-top: 70px;
 }
+.product-detail .add-to-bag {
+  width: 100%;
+}
 
 
 @media screen and (max-width: 768px) {

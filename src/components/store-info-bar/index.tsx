@@ -98,7 +98,7 @@ const StoreInfoBar = () => {
           >
             <Typography
               className={classes.heading}
-              variant="body1"
+              variant="body2"
               textTransform="uppercase"
               title="Hours"
             >

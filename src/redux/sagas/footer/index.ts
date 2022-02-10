@@ -1,6 +1,5 @@
-import axios from 'axios';
 import { takeEvery, put, call } from 'redux-saga/effects';
-import { footerActionsTypes as Type } from '../../types/footer';
+import { footerActionsTypes } from '../../types/footer';
 import { getFooterMenu } from '../../../services/footer';
 import {
   getMenuRequestFailure,
@@ -17,5 +16,8 @@ function* asyncMenuItemRequest(): any {
 }
 
 export function* footerMenuItemSaga() {
-  yield takeEvery(Type.GET_FOOTER_ITMES_REQUEST, asyncMenuItemRequest);
+  yield takeEvery(
+    footerActionsTypes.GET_FOOTER_ITMES_REQUEST,
+    asyncMenuItemRequest,
+  );
 }

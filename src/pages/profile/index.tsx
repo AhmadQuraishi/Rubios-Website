@@ -11,6 +11,9 @@ import {
 import './profile.css';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { makeStyles } from '@mui/styles';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { getUserprofile } from '../../redux/actions/userProfile';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -29,6 +32,17 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const Profile = () => {
   const classes = useStyles();
+  const { authtoken } = useSelector((state: any) => state.TokensReducer);
+  const dispatch = useDispatch();
+  const { userProfile, loading } = useSelector(
+    (state: any) => state.userProfileReducer,
+  );
+  useEffect(() => {
+    dispatch(getUserprofile());
+  }, []);
+
+  console.log(authtoken);
+  console.log(userProfile);
   return (
     <div className={classes.root}>
       <Typography variant="h4" className={classes.heading}>

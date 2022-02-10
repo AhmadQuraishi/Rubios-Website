@@ -9,7 +9,11 @@ export const getMenuItem = (id: number) => {
           Authorization: `OloKey ElwEkgDhuasD9HydkYI2kp3Hs0EWPkR2`,
         },
       })
-      .then((response) => response.data);
+      .then((response) => response.data)
+      .catch((error) => {
+        console.log(error.response);
+        throw error;
+      });
   } catch (error) {
     throw error;
   }
