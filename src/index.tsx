@@ -39,7 +39,7 @@ axios.interceptors.request.use(
 ReactDOM.render(
   <Provider store={store}>
     <React.StrictMode>
-      <BrowserRouter basename="order">
+      <BrowserRouter basename={process.env.APP_BASENAME ? process.env.APP_BASENAME : ''}>
         <ThemeProvider theme={theme}>
           <App />
         </ThemeProvider>
