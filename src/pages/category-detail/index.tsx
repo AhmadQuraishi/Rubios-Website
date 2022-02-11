@@ -6,6 +6,7 @@ import { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getCategoriesRequest } from '../../redux/actions/category';
+import LoadingBar from '../../components/loading-bar';
 
 const useStyles = makeStyles((theme: Theme) => ({
   heading: {
@@ -36,9 +37,7 @@ const CategoryDetail = () => {
   const initValue: any = null;
   const [selectedCategory, setSelectedCategory] = useState(initValue);
 
-  const categoriesData = useSelector(
-    (state: any) => state.categoryReducer.categories,
-  );
+  const categoriesData = useSelector((state: any) => state.categoryReducer);
 
   useEffect(() => {
     //TODO: StoreID will get from State when select store work will be done
@@ -47,11 +46,17 @@ const CategoryDetail = () => {
   }, []);
 
   useEffect(() => {
-    if (categoriesData && categoriesData.categories) {
+    if (
+      categoriesData &&
+      categoriesData.categories &&
+      categoriesData.categories.categories
+    ) {
       if (id) {
-        const category = categoriesData.categories.find((obj: any) => {
-          return obj.id == id;
-        });
+        const category = categoriesData.categories.categories.find(
+          (obj: any) => {
+            return obj.id == id;
+          },
+        );
         if (category === undefined) {
           navigate('/');
         }
@@ -63,6 +68,7 @@ const CategoryDetail = () => {
   return (
     <Fragment>
       <StoreInfoBar />
+      {categoriesData.loading === true && selectedCategory == null && <LoadingBar />}
       {selectedCategory && (
         <Grid
           container

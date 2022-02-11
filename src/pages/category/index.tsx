@@ -64,7 +64,8 @@ const CategoryList = () => {
   return (
     <Fragment>
       <StoreInfoBar />
-      {categoriesData.loading === true && <LoadingBar />}
+      {categoriesData.loading === true &&
+        categoriesWithProducts.length == 0 && <LoadingBar />}
       {categoriesWithProducts.length > 0 && (
         <Box
           sx={{
