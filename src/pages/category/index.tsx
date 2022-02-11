@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategoriesRequest } from '../../redux/actions/category';
+import LoadingBar from '../../components/loading-bar';
 
 const useStyles = makeStyles((theme: Theme) => ({
   heading: {
@@ -24,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       textTransform: 'uppercase',
       textDecoration: 'none',
       paddingTop: '10px',
-      display: 'block'
+      display: 'block',
     },
   },
 }));
@@ -33,9 +34,7 @@ const CategoryList = () => {
   const classes = useStyles();
   const [value, setValue] = useState('0');
   const [categoriesWithProducts, setCategoriesWithProducts] = useState([]);
-  const categoriesData = useSelector(
-    (state: any) => state.categoriesData.categories,
-  );
+  const categoriesData = useSelector((state: any) => state.categoryReducer);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -45,8 +44,12 @@ const CategoryList = () => {
   }, []);
 
   useEffect(() => {
-    if (categoriesData && categoriesData.categories) {
-      setCategoriesWithProducts(categoriesData.categories);
+    if (
+      categoriesData &&
+      categoriesData.categories &&
+      categoriesData.categories.categories
+    ) {
+      setCategoriesWithProducts(categoriesData.categories.categories);
     }
   }, [categoriesData]);
 
@@ -61,6 +64,8 @@ const CategoryList = () => {
   return (
     <Fragment>
       <StoreInfoBar />
+      {categoriesData.loading === true &&
+        categoriesWithProducts.length == 0 && <LoadingBar />}
       {categoriesWithProducts.length > 0 && (
         <Box
           sx={{
@@ -121,10 +126,7 @@ const CategoryList = () => {
                 </Grid>
                 <Grid item xs={4}>
                   <Typography className={classes.link}>
-                    <Link
-                      to={`/category/${item.id}`}
-                      title="view all"
-                    >
+                    <Link to={`/category/${item.id}`} title="view all">
                       view all →
                     </Link>
                   </Typography>

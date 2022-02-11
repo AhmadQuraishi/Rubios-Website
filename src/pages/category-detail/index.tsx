@@ -2,9 +2,11 @@ import StoreInfoBar from '../../components/store-info-bar';
 import ProductListing from '../../components/product-listing';
 import { Grid, Theme, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { Fragment } from 'react';
-import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { Fragment, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getCategoriesRequest } from '../../redux/actions/category';
+import LoadingBar from '../../components/loading-bar';
 
 const useStyles = makeStyles((theme: Theme) => ({
   heading: {
@@ -28,20 +30,45 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const CategoryDetail = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const classes = useStyles();
-  const categoriesData = useSelector(
-    (state: any) => state.categoriesData.categories,
-  );
   const { id } = useParams();
-  let selectedCategory = null;
-  if (id) {
-    selectedCategory = categoriesData.categories.find((obj: any) => {
-      return obj.id == id;
-    });
-  }
+  const initValue: any = null;
+  const [selectedCategory, setSelectedCategory] = useState(initValue);
+
+  const categoriesData = useSelector((state: any) => state.categoryReducer);
+
+  useEffect(() => {
+    //TODO: StoreID will get from State when select store work will be done
+    const storeID = 60854;
+    dispatch(getCategoriesRequest(storeID));
+  }, []);
+
+  useEffect(() => {
+    if (
+      categoriesData &&
+      categoriesData.categories &&
+      categoriesData.categories.categories
+    ) {
+      if (id) {
+        const category = categoriesData.categories.categories.find(
+          (obj: any) => {
+            return obj.id == id;
+          },
+        );
+        if (category === undefined) {
+          navigate('/');
+        }
+        setSelectedCategory(category);
+      }
+    }
+  }, [categoriesData]);
+
   return (
     <Fragment>
       <StoreInfoBar />
+      {categoriesData.loading === true && selectedCategory == null && <LoadingBar />}
       {selectedCategory && (
         <Grid
           container
