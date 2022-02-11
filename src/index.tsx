@@ -23,7 +23,7 @@ axios.interceptors.request.use(
       let secret = process.env.REACT_APP_PUNCHH_CLIENT_SECRET || '';
       let secretString = secret.toString();
       let concatString = '';
-      debugger;
+
       if (body === undefined) {
         concatString = uriData;
       } else {

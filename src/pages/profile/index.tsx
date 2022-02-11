@@ -12,8 +12,8 @@ import './profile.css';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { makeStyles } from '@mui/styles';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
-import { getUserprofile } from '../../redux/actions/userProfile';
+import { useEffect } from 'react';
+import { getUserprofile } from '../../redux/actions/user';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -34,21 +34,14 @@ const Profile = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const userProfile = useSelector(
-    (state: any) => state.userProfileReducer.userProfile,
+    (state: any) => state.userReducer.userProfile,
   );
-
-  // const [email, setEmail] = useState('');
-  // console.log(userProfile);
 
   useEffect(() => {
     dispatch(getUserprofile());
-    // setEmail(!loading && userProfile !== undefined ? userProfile.email : '');
-    console.log(userProfile);
   }, []);
 
-  useEffect(() => {
-    console.log(userProfile);
-  }, [userProfile]);
+  useEffect(() => {}, [userProfile]);
 
   return (
     <div className={classes.root}>

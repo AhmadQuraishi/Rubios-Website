@@ -1,16 +1,12 @@
-import {
-  Card,
-  CardMedia,
-  Grid,
-  Typography,
-} from '@mui/material';
+import { Card, CardMedia, Grid, Typography } from '@mui/material';
 import './index.css';
 
 const OrderHistoryCard = (props: any) => {
+  let x = 0;
   return (
     <Grid container spacing={3} className="order-history-card">
       {props.orderHistory.map((ordersHistory: any) => (
-        <Grid item xs={12} lg={6}>
+        <Grid item xs={12} lg={6} key={x++}>
           <Card elevation={0} className="card-panel">
             <Grid container>
               <Grid item xs={8}>

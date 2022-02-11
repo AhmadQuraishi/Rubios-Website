@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { Box, Grid, Theme, Typography } from '@mui/material';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import OrderHistoryCard from '../../components/order-history-card';
 import { makeStyles } from '@mui/styles';
 import { boxSizing } from '@mui/system';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserRecentOrders } from '../../redux/actions/user';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -27,6 +29,26 @@ const useStyles = makeStyles((theme: Theme) => ({
 const OrdersHistory = () => {
   const classes = useStyles();
   const [value, setValue] = React.useState('1');
+  const [orders, setOrders] = React.useState([]);
+  const dispatch = useDispatch();
+  console.log('123');
+
+  const authtoken = useSelector((state: any) => state.TokensReducer.authtoken);
+  const { userRecentOrders, loading } = useSelector(
+    (state: any) => state.userReducer,
+  );
+
+  useEffect(() => {
+    dispatch(getUserRecentOrders(authtoken));
+  }, []);
+
+  useEffect(() => {
+    if (userRecentOrders && userRecentOrders.orders) {
+      console.log(userRecentOrders.orders);
+      setOrders(userRecentOrders.orders);
+    }
+  }, [userRecentOrders]);
+
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
@@ -97,6 +119,18 @@ const OrdersHistory = () => {
         <br />
         {value === '1' && <OrderHistoryCard orderHistory={favoriteOrders} />}
         {value === '2' && <OrderHistoryCard orderHistory={favoriteOrders} />}
+        {/*{value === '2' && (*/}
+        {/*  <Fragment>*/}
+        {/*    <h1>Recent Orders</h1>*/}
+        {/*  </Fragment>*/}
+        {/*)}*/}
+        {/*{orders.length > 0 && (*/}
+        {/*  <Fragment>*/}
+        {/*    {orders.map((order: any, index) => (*/}
+        {/*      <h1 key={index}>{order.timeplaced}</h1>*/}
+        {/*    ))}*/}
+        {/*  </Fragment>*/}
+        {/*)}*/}
       </Grid>
     </Grid>
   );
