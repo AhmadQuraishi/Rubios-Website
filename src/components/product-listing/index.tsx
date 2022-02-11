@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const ProductListing = (props: any) => {
   const classes = useStyles();
-  const { productList, shownItems } = props;
+  const { productList, shownItems, categoryID } = props;
   let products = productList;
   if (shownItems) {
     products = productList.slice(0, shownItems);
@@ -67,7 +67,7 @@ const ProductListing = (props: any) => {
             md={3}
           >
             <Link
-              to="/product"
+              to={`/product/${categoryID}/${item.id}`}
               aria-label={item.name}
               style={{ textDecoration: 'none' }}
             >

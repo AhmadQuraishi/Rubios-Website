@@ -131,7 +131,11 @@ const CategoryList = () => {
               </Grid>
             </Grid>
             <Grid item xs={12} sx={{ paddingBottom: '20px' }}>
-              <ProductListing productList={item.products} shownItems={4} />
+              <ProductListing
+                productList={item.products}
+                categoryID={item.id}
+                shownItems={4}
+              />
             </Grid>
           </Grid>
         ))}

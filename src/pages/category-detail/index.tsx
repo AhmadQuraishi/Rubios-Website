@@ -31,7 +31,6 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const CategoryDetail = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const classes = useStyles();
   const { id } = useParams();
   const initValue: any = null;
@@ -77,7 +76,10 @@ const CategoryDetail = () => {
             </Typography>
           </Grid>
           <Grid item xs={12} sx={{ paddingBottom: '20px' }}>
-            <ProductListing productList={selectedCategory.products} />
+            <ProductListing
+              productList={selectedCategory.products}
+              categoryID={id}
+            />
           </Grid>
         </Grid>
       )}

@@ -26,10 +26,6 @@ const StoreInfoBar = () => {
     dispatch(getResturantInfoRequest(storeID));
   }, []);
 
-  useEffect(() => {
-    console.log(restaurant);
-  }, [restaurant]);
-
   return (
     <>
       {restaurant && (
@@ -68,7 +64,7 @@ const StoreInfoBar = () => {
                   lineHeight={1.3}
                   fontFamily="Poppins-Bold !important"
                   sx={{ fontSize: { xs: 30, sm: 35, lg: 40 } }}
-                  title="Broadway Blvd"
+                  title={restaurant.name}
                 >
                   {restaurant.name}
                 </Typography>
@@ -98,7 +94,7 @@ const StoreInfoBar = () => {
                   textTransform="uppercase"
                   fontSize={11}
                   paddingTop="8px"
-                  title="2120 North 59th Ave Str. 56th. A34, San Diego, CA, 4.2 Miles Away"
+                  title={`${restaurant.streetaddress}, ${restaurant.city}, ${restaurant.state}`}
                 >
                   {restaurant.streetaddress}
                   <br />

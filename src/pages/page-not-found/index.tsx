@@ -8,6 +8,7 @@ const PageNotFound = () => {
       <br />
       <Typography variant="body1">
         Sorry, that doesn't seem to be a valid URL. Your best bet is to head
+        &nbsp;
         <Link to="/" style={{ color: '#7AC142' }}>
           back to the home page!
         </Link>
