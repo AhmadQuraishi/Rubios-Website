@@ -9,12 +9,12 @@ import storage from 'redux-persist/lib/storage';
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['categoriesData'],
+  whitelist: [],
 };
 
 const rootReducers = combineReducers({
   TokensReducer,
-  categoriesData: categoryReducer,
+  categoryReducer,
   footerReducer,
   userProfileReducer,
 });

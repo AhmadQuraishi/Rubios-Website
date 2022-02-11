@@ -44,7 +44,6 @@ const Footer = () => {
   }, []);
 
   useEffect(() => {
-    console.log(menu);
   }, [menu]);
 
   return (
