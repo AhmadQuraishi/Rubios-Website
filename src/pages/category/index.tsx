@@ -34,7 +34,9 @@ const CategoryList = () => {
   const classes = useStyles();
   const [value, setValue] = useState('0');
   const [categoriesWithProducts, setCategoriesWithProducts] = useState([]);
-  const categoriesData = useSelector((state: any) => state.categoryReducer);
+  const { categories, loading } = useSelector(
+    (state: any) => state.categoryReducer,
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -44,14 +46,10 @@ const CategoryList = () => {
   }, []);
 
   useEffect(() => {
-    if (
-      categoriesData &&
-      categoriesData.categories &&
-      categoriesData.categories.categories
-    ) {
-      setCategoriesWithProducts(categoriesData.categories.categories);
+    if (categories && categories.categories) {
+      setCategoriesWithProducts(categories.categories);
     }
-  }, [categoriesData]);
+  }, [categories]);
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setTimeout(() => {
@@ -64,8 +62,7 @@ const CategoryList = () => {
   return (
     <Fragment>
       <StoreInfoBar />
-      {categoriesData.loading === true &&
-        categoriesWithProducts.length == 0 && <LoadingBar />}
+      {loading === true && categoriesWithProducts.length == 0 && <LoadingBar />}
       {categoriesWithProducts.length > 0 && (
         <Box
           sx={{

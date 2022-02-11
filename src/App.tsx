@@ -2,14 +2,14 @@ import './App.css';
 import { useLocation } from 'react-router-dom';
 import Header from './components/header';
 import Footer from './components/footer';
-import { Fragment, useLayoutEffect, useMemo, useState } from 'react';
+import React, { Fragment, useLayoutEffect, useState } from 'react';
 import AppRoutes from './routes';
 import { Grid } from '@mui/material';
 import LeftMenuBar from './components/left-menu-bar';
 
 function App(props: any) {
   const location = useLocation();
-  const [isAccountSection, setIsAccountSection] = useState(true);
+  const [isAccountSection, setIsAccountSection] = useState(false);
 
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
@@ -19,9 +19,7 @@ function App(props: any) {
       setIsAccountSection(false);
     }
   }, [location.pathname]);
-
-  const AppRoutesComponent = useMemo(() => <AppRoutes />, []);
-
+  const routes = React.lazy(() => import('./routes'));
   return (
     <div id="wapper">
       {process.env.APP_BASENAME}
@@ -46,12 +44,12 @@ function App(props: any) {
                 lg={10}
                 sx={{ padding: { xs: '30px 10px', sm: '30px 40px' } }}
               >
-                {AppRoutesComponent}
+                <AppRoutes />
               </Grid>
             </Grid>
           </Fragment>
         ) : (
-          { AppRoutesComponent }
+          <AppRoutes />
         )}
       </main>
       <Footer />

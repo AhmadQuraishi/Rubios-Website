@@ -8,7 +8,7 @@ import {
 
 function* asyncCategoriesRequest(action: any): any {
   try {
-    const response = yield call(getMenuItem, action.storeID);
+    const response = yield call(getMenuItem, action.restaurantID);
     yield put(getCategoriesRequestSuccess(response));
   } catch (error) {
     yield put(getCategoriesRequestFailure(error));

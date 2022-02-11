@@ -37,7 +37,9 @@ const CategoryDetail = () => {
   const initValue: any = null;
   const [selectedCategory, setSelectedCategory] = useState(initValue);
 
-  const categoriesData = useSelector((state: any) => state.categoryReducer);
+  const { categories, loading } = useSelector(
+    (state: any) => state.categoryReducer,
+  );
 
   useEffect(() => {
     //TODO: StoreID will get from State when select store work will be done
@@ -46,29 +48,20 @@ const CategoryDetail = () => {
   }, []);
 
   useEffect(() => {
-    if (
-      categoriesData &&
-      categoriesData.categories &&
-      categoriesData.categories.categories
-    ) {
+    if (categories && categories.categories) {
       if (id) {
-        const category = categoriesData.categories.categories.find(
-          (obj: any) => {
-            return obj.id == id;
-          },
-        );
-        if (category === undefined) {
-          navigate('/');
-        }
+        const category = categories.categories.find((obj: any) => {
+          return obj.id == id;
+        });
         setSelectedCategory(category);
       }
     }
-  }, [categoriesData]);
+  }, [categories]);
 
   return (
     <Fragment>
       <StoreInfoBar />
-      {categoriesData.loading === true && selectedCategory == null && <LoadingBar />}
+      {loading === true && selectedCategory == null && <LoadingBar />}
       {selectedCategory && (
         <Grid
           container

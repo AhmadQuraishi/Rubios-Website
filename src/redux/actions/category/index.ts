@@ -3,7 +3,7 @@ import { categoryActionsTypes } from '../../types/category';
 export function getCategoriesRequest(id: number) {
   return {
     type: categoryActionsTypes.GET_CATEGORY_ITMES_REQUEST,
-    storeID: id,
+    restaurantID: id,
   };
 }
 

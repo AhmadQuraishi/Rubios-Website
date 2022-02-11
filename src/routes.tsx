@@ -1,5 +1,5 @@
-import { Routes, Route } from 'react-router-dom';
-
+import { Routes, Route, Navigate } from 'react-router-dom';
+import React from 'react';
 import CategoryList from './pages/category';
 import Location from './pages/location';
 import Checkout from './pages/checkout';
@@ -19,6 +19,7 @@ import OrdersHistory from './pages/order-history';
 import Profile from './pages/profile';
 import AddDeliveryAddress from './pages/add-delivery-address';
 import CategoryDetail from './pages/category-detail';
+import PageNotFound from './pages/page-not-found';
 
 const AppRoutes = () => {
   return (
@@ -59,8 +60,9 @@ const AppRoutes = () => {
         element={<UpdatePaymentCard />}
       />
       <Route path="/account/orders" element={<OrdersHistory />} />
+      <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
 };
 
-export default AppRoutes;
+export default React.memo(AppRoutes);
