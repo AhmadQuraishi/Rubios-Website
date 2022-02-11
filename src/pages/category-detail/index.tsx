@@ -4,6 +4,7 @@ import { Grid, Theme, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Fragment } from 'react';
 import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) => ({
   heading: {
@@ -28,91 +29,38 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const CategoryDetail = () => {
   const classes = useStyles();
-  const categoriesData = useSelector((state: any) => state.menuReducer);
-  console.log(categoriesData);
-  const products = [
-    {
-      image:
-        'https://www.rubios.com/sites/default/files/styles/menu_item_teaser/public/menu/TacoKit.jpg?itok=sXyv_fvV',
-      name: ' California Burrito',
-      desc: 'Salsa Verde Taco, Grilled Gourmet Toca and the Maxican street corn Taco all with your choice of sustainably sourced protien.',
-      cal: '1000',
-      price: '12.05',
-    },
-    {
-      image:
-        'https://www.rubios.com/sites/default/files/styles/menu_item_teaser/public/bowl-mahi-mahi.jpg?itok=yXA_BMpa',
-      name: ' Grilled Chicken Salad Bowl',
-      desc: 'Salsa Verde Taco, Grilled Gourmet Toca and the Maxican street corn Taco all with your choice of sustainably sourced protien.',
-      cal: '1000',
-      price: '12.05',
-    },
-    {
-      image:
-        'https://www.rubios.com/sites/default/files/styles/menu_item_teaser/public/menu/Chicken_Nachos_V2.jpg?itok=JCQOjNiP',
-      name: ' Classic Grilled Chicken Salad Platter',
-      desc: 'Salsa Verde Taco, Grilled Gourmet Toca and the Maxican street corn Taco all with your choice of sustainably sourced protien.',
-      cal: '1000',
-      price: '12.05',
-    },
-    {
-      image:
-        'https://www.rubios.com/sites/default/files/styles/menu_item_teaser/public/menu/Shirmp%20and%20Bacon%20Burrito%20-%201400x800%20-%20DD.jpg?itok=aNmnW-Q0',
-      name: ' Warp Chicken Special Roll',
-      desc: 'Salsa Verde Taco, Grilled Gourmet Toca and the Maxican street corn Taco all with your choice of sustainably sourced protien.',
-      cal: '1000',
-      price: '12.05',
-    },
-    {
-      image:
-        'https://www.rubios.com/sites/default/files/styles/menu_item_teaser/public/menu/TacoKit.jpg?itok=sXyv_fvV',
-      name: ' California Burrito',
-      desc: 'Salsa Verde Taco, Grilled Gourmet Toca and the Maxican street corn Taco all with your choice of sustainably sourced protien.',
-      cal: '1000',
-      price: '12.05',
-    },
-    {
-      image:
-        'https://www.rubios.com/sites/default/files/styles/menu_item_teaser/public/menu/Shirmp%20and%20Bacon%20Burrito%20-%201400x800%20-%20DD.jpg?itok=aNmnW-Q0',
-      name: ' Warp Chicken Special Roll',
-      desc: 'Salsa Verde Taco, Grilled Gourmet Toca and the Maxican street corn Taco all with your choice of sustainably sourced protien.',
-      cal: '1000',
-      price: '12.05',
-    },
-    {
-      image:
-        'https://www.rubios.com/sites/default/files/styles/menu_item_teaser/public/bowl-mahi-mahi.jpg?itok=yXA_BMpa',
-      name: ' Grilled Chicken Salad Bowl',
-      desc: 'Salsa Verde Taco, Grilled Gourmet Toca and the Maxican street corn Taco all with your choice of sustainably sourced protien.',
-      cal: '1000',
-      price: '12.05',
-    },
-    {
-      image:
-        'https://www.rubios.com/sites/default/files/styles/menu_item_teaser/public/menu/Chicken_Nachos_V2.jpg?itok=JCQOjNiP',
-      name: ' Classic Grilled Chicken Salad Platter',
-      desc: 'Salsa Verde Taco, Grilled Gourmet Toca and the Maxican street corn Taco all with your choice of sustainably sourced protien.',
-      cal: '1000',
-      price: '12.05',
-    },
-  ];
+  const categoriesData = useSelector(
+    (state: any) => state.categoriesData.categories,
+  );
+  const { id } = useParams();
+  let selectedCategory = null;
+  if (id) {
+    selectedCategory = categoriesData.categories.find((obj: any) => {
+      return obj.id == id;
+    });
+  }
   return (
     <Fragment>
       <StoreInfoBar />
-      <Grid
-        container
-        spacing={0}
-        sx={{ padding: { xs: '30px', md: '30px 80px 0px 80px' } }}
-      >
-        <Grid item xs={12} md={6}>
-          <Typography className={classes.heading} title="Seasonal Menu">
-            Seasonal Menu
-          </Typography>
+      {selectedCategory && (
+        <Grid
+          container
+          spacing={0}
+          sx={{ padding: { xs: '30px', md: '30px 80px 0px 80px' } }}
+        >
+          <Grid item xs={12} md={6}>
+            <Typography
+              className={classes.heading}
+              title={selectedCategory.name}
+            >
+              {selectedCategory.name}
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sx={{ paddingBottom: '20px' }}>
+            <ProductListing productList={selectedCategory.products} />
+          </Grid>
         </Grid>
-        <Grid item xs={12} sx={{ paddingBottom: '20px' }}>
-          <ProductListing productList={products} />
-        </Grid>
-      </Grid>
+      )}
       <div style={{ paddingBottom: '30px' }}></div>
     </Fragment>
   );

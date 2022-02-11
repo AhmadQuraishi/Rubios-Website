@@ -8,7 +8,6 @@ import {
 
 function* asyncCategoriesRequest(action: any): any {
   try {
-    debugger;
     const response = yield call(getMenuItem, action.storeID);
     yield put(getCategoriesRequestSuccess(response));
   } catch (error) {
@@ -17,5 +16,8 @@ function* asyncCategoriesRequest(action: any): any {
 }
 
 export function* categoryItemsSaga() {
-  yield takeEvery(categoryActionsTypes.GET_CATEGORY_ITMES_REQUEST, asyncCategoriesRequest);
+  yield takeEvery(
+    categoryActionsTypes.GET_CATEGORY_ITMES_REQUEST,
+    asyncCategoriesRequest,
+  );
 }

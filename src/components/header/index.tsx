@@ -151,7 +151,7 @@ const Header = (props: any) => {
                   onClick={handleShowCart}
                   src={cartIconMobile}
                   alt="Cart Icon"
-                  style={{ width: '25px', paddingRight: '10px' }}
+                  style={{ width: '28px', paddingRight: '10px' }}
                   title="Cart Icon"
                 />
               )}

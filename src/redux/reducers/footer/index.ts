@@ -15,7 +15,7 @@ const footerReducer = (state = INITIAL_STATE, action: any) => {
     case Type.GET_FOOTER_ITMES_FAILURE:
       return { ...state, loading: false, error: action.error };
     default:
-      return { ...state };
+      return state;
   }
 };
 

@@ -4,12 +4,17 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
-import store from './redux/store';
+<<<<<<< HEAD
+import { persistor, store } from './redux/store';
+=======
+import { store, persistor } from './redux/store';
+>>>>>>> 5738f82e7545163620b2c2c470c64625248e6220
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
 import theme from './theme/theme';
 import axios from 'axios';
 import CryptoJS from 'crypto-js';
+import { PersistGate } from 'redux-persist/integration/react';
 
 axios.interceptors.request.use(
   function (config) {
@@ -22,7 +27,6 @@ axios.interceptors.request.use(
       let secret = process.env.REACT_APP_PUNCHH_CLIENT_SECRET || '';
       let secretString = secret.toString();
       let concatString = '';
-      debugger;
       if (body === undefined) {
         concatString = uriData;
       } else {
@@ -45,15 +49,31 @@ axios.interceptors.request.use(
 );
 ReactDOM.render(
   <Provider store={store}>
+<<<<<<< HEAD
+    <PersistGate loading={null} persistor={persistor}>
+      <React.StrictMode>
+        <BrowserRouter
+          basename={process.env.APP_BASENAME ? process.env.APP_BASENAME : ''}
+        >
+          <ThemeProvider theme={theme}>
+            <App />
+          </ThemeProvider>
+        </BrowserRouter>
+      </React.StrictMode>
+    </PersistGate>
+=======
     <React.StrictMode>
       <BrowserRouter
         basename={process.env.APP_BASENAME ? process.env.APP_BASENAME : ''}
       >
-        <ThemeProvider theme={theme}>
-          <App />
-        </ThemeProvider>
+        <PersistGate persistor={persistor}>
+          <ThemeProvider theme={theme}>
+            <App />
+          </ThemeProvider>
+        </PersistGate>
       </BrowserRouter>
     </React.StrictMode>
+>>>>>>> 5738f82e7545163620b2c2c470c64625248e6220
   </Provider>,
   document.getElementById('root'),
 );
