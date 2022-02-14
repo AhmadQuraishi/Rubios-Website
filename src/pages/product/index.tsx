@@ -1,23 +1,18 @@
-import {
-  Grid,
-  Typography,
-  Card,
-  CardContent,
-  Button,
-} from '@mui/material';
+import { Grid, Typography, Card, CardContent, Button } from '@mui/material';
 import FoodMenuCard from '../../components/food-menu-card';
 import ArrowForward from '@mui/icons-material/ArrowForward';
 import './product.css';
-import StoreInfoBar from '../../components/store-info-bar';
+import StoreInfoBar from '../../components/restaurant-info-bar';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategoriesRequest } from '../../redux/actions/category';
 import { useParams } from 'react-router-dom';
 import LoadingBar from '../../components/loading-bar';
 import { Product as ProductInfo } from '../../types/olo-api';
+import { getProductOptionRequest } from '../../redux/actions/product/option';
 
 const Product = () => {
-  const [product, setProduct] = useState<ProductInfo>();
+  const [productDetails, setproductDetails] = useState<ProductInfo>();
   const { categoryID, id } = useParams();
   const { categories, loading } = useSelector(
     (state: any) => state.categoryReducer,
@@ -40,17 +35,23 @@ const Product = () => {
           const product = category.products.find((obj: any) => {
             return obj.id == id;
           });
-          setProduct(product);
+          setproductDetails(product);
         }
       }
     }
   }, [categories]);
 
+  useEffect(() => {
+    if (productDetails) {
+      dispatch(getProductOptionRequest(productDetails.id));
+    }
+  }, [productDetails]);
+
   return (
     <>
       <StoreInfoBar />
-      {loading == true && product == null && <LoadingBar />}
-      {product && (
+      {loading == true && productDetails == null && <LoadingBar />}
+      {productDetails && (
         <Grid container className="product-detail">
           <Grid item xs={12} sm={12} md={12} lg={12}>
             <Grid container>
@@ -65,50 +66,50 @@ const Product = () => {
                 <Typography
                   variant="h4"
                   className="heading"
-                  title={product.name}
+                  title={productDetails.name}
                 >
-                  {product.name}
+                  {productDetails.name}
                 </Typography>
-                <Typography variant="h6" title={product.description}>
-                  {product.description}
+                <Typography variant="h6" title={productDetails.description}>
+                  {productDetails.description}
                 </Typography>
                 <Grid container>
                   <Grid item xs={6}>
                     <Typography
                       variant="caption"
                       className="label bold"
-                      aria-label={`${product.basecalories} Cal`}
-                      title={`${product.basecalories} Cal`}
+                      aria-label={`${productDetails.basecalories} Cal`}
+                      title={`${productDetails.basecalories} Cal`}
                     >
-                      {product.basecalories} Cal
+                      {productDetails.basecalories} Cal
                     </Typography>
                   </Grid>
                   <Grid item xs={6}>
                     <Typography
                       variant="h6"
                       className="price"
-                      title={`$${product.cost.toFixed(2)}`}
+                      title={`$${productDetails.cost.toFixed(2)}`}
                     >
-                      ${product.cost.toFixed(2)}
+                      ${productDetails.cost.toFixed(2)}
                     </Typography>
                   </Grid>
                 </Grid>
               </Grid>
               <Grid item xs={12} sm={12} md={12} lg={6}>
-                {product.imagefilename ? (
+                {productDetails.imagefilename ? (
                   <img
-                    src={product.imagefilename}
-                    alt={product.name}
-                    aria-label={product.name}
-                    title={product.name}
+                    src={productDetails.imagefilename}
+                    alt={productDetails.name}
+                    aria-label={productDetails.name}
+                    title={productDetails.name}
                   />
                 ) : (
                   <img
                     style={{ width: '80%', display: 'block', margin: 'auto' }}
                     src={require('../../assets/imgs/default_img.png')}
-                    alt={product.name}
-                    aria-label={product.name}
-                    title={product.name}
+                    alt={productDetails.name}
+                    aria-label={productDetails.name}
+                    title={productDetails.name}
                   />
                 )}
               </Grid>

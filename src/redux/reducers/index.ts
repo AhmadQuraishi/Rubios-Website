@@ -1,11 +1,13 @@
 import { combineReducers } from 'redux';
+import { persistReducer } from 'redux-persist';
 import footerReducer from './footer';
 import categoryReducer from './category';
 import userReducer from './user';
 import TokensReducer from './Tokens';
-import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import restaurantInfoReducer from './restaurant';
+import restaurantCalendarReducer from './restaurant/calendar';
+import productOptionsReducer from './product/option';
 
 const persistConfig = {
   key: 'root',
@@ -19,6 +21,8 @@ const rootReducers = combineReducers({
   footerReducer,
   userReducer,
   restaurantInfoReducer,
+  restaurantCalendarReducer,
+  productOptionsReducer,
 });
 
 const persistReducers = persistReducer(persistConfig, rootReducers);

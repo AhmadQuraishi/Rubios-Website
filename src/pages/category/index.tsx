@@ -1,4 +1,4 @@
-import StoreInfoBar from '../../components/store-info-bar';
+import StoreInfoBar from '../../components/restaurant-info-bar';
 import ProductListing from '../../components/product-listing';
 import { Grid, Theme, Typography, Tabs, Tab, Box } from '@mui/material';
 import { makeStyles } from '@mui/styles';
@@ -7,7 +7,6 @@ import { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategoriesRequest } from '../../redux/actions/category';
 import LoadingBar from '../../components/loading-bar';
-
 import { ResponseMenu } from '../../types/olo-api';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -58,17 +57,14 @@ const CategoryList = () => {
     setTimeout(() => {
       var elem = document.getElementById('#panel-' + newValue);
       elem?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 200);
+    }, 500);
     setValue(newValue);
   };
 
   return (
     <Fragment>
       <StoreInfoBar />
-
-      {loading === true && categoriesWithProducts?.categories.length == 0 && (
-        <LoadingBar />
-      )}
+      {loading === true && categoriesWithProducts == null && <LoadingBar />}
       {categoriesWithProducts?.categories &&
         categoriesWithProducts?.categories.length > 0 && (
           <Box

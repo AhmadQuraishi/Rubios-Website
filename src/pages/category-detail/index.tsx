@@ -1,4 +1,4 @@
-import StoreInfoBar from '../../components/store-info-bar';
+import StoreInfoBar from '../../components/restaurant-info-bar';
 import ProductListing from '../../components/product-listing';
 import { Grid, Theme, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';

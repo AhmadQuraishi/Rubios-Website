@@ -1,12 +1,16 @@
 import axios from 'axios';
-
-export const getRestaurantInfo = (id: number) => {
+import './index';
+export const getRestaurantCalendar = (
+  id: number,
+  dateFrom: string,
+  dateTo: string,
+) => {
   try {
     const url = process.env.REACT_APP_OLO_API_URL || '';
     return axios
-      .get(url + `/products/${id}/modifiers?includedisabled=false`, {
+      .get(url + `/restaurants/${id}/calendars?from=${dateFrom}&to=${dateTo}`, {
         headers: {
-          Authorization: `OloKey ElwEkgDhuasD9HydkYI2kp3Hs0EWPkR2`,
+          Authorization: process.env.REACT_APP_OLO_AUTH_KEY || '',
         },
       })
       .then((response) => response.data)

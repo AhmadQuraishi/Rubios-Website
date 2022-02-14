@@ -4,6 +4,8 @@ import { categoryItemsSaga } from './category';
 import { storeToken } from './token';
 import { userSaga } from './user';
 import { restaurantInfoSaga } from './restaurant';
+import { restaurantCalendarSaga } from './restaurant/calendar';
+import { productOptionsSaga } from './product/option';
 
 export default function* rootSaga() {
   yield all([
@@ -12,5 +14,7 @@ export default function* rootSaga() {
     footerMenuItemSaga(),
     userSaga(),
     restaurantInfoSaga(),
+    restaurantCalendarSaga(),
+    productOptionsSaga(),
   ]);
 }
