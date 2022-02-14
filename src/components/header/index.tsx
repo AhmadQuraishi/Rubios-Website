@@ -46,6 +46,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     '& img': {
       width: '90%',
+      [theme.breakpoints.down('sm')]: {
+        width: '80%'
+      }
     },
   },
   icon: {
@@ -123,7 +126,7 @@ const Header = (props: any) => {
                   textTransform="uppercase"
                   title=" Hi Stacey"
                 >
-                  Hi, Stacey !
+                  Hi, Stacey!
                 </Typography>
               </>
             )}

@@ -1,8 +1,9 @@
 import { Grid, Typography, useTheme, List, ListItem } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getResturantInfoRequest } from '../../redux/actions/restaurant';
+import { ResponseRestaurant } from '../../types/olo-api';
 
 const useStyle = makeStyles({
   heading: {
@@ -15,6 +16,7 @@ const useStyle = makeStyles({
 const StoreInfoBar = () => {
   const theme = useTheme();
   const classes = useStyle();
+  const [restaurantInfo, setRestaurantInfo] = useState<ResponseRestaurant>();
   const { restaurant, loading } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
@@ -26,9 +28,15 @@ const StoreInfoBar = () => {
     dispatch(getResturantInfoRequest(storeID));
   }, []);
 
+  useEffect(() => {
+    if (restaurant) {
+      setRestaurantInfo(restaurant);
+    }
+  }, [restaurant]);
+
   return (
     <>
-      {restaurant && (
+      {restaurantInfo && (
         <Grid
           container
           spacing={0}
@@ -64,9 +72,9 @@ const StoreInfoBar = () => {
                   lineHeight={1.3}
                   fontFamily="Poppins-Bold !important"
                   sx={{ fontSize: { xs: 30, sm: 35, lg: 40 } }}
-                  title={restaurant.name}
+                  title={restaurantInfo.name}
                 >
-                  {restaurant.name}
+                  {restaurantInfo.name}
                 </Typography>
               </Grid>
               <Grid
@@ -94,11 +102,11 @@ const StoreInfoBar = () => {
                   textTransform="uppercase"
                   fontSize={11}
                   paddingTop="8px"
-                  title={`${restaurant.streetaddress}, ${restaurant.city}, ${restaurant.state}`}
+                  title={`${restaurantInfo.streetaddress}, ${restaurantInfo.city}, ${restaurantInfo.state}`}
                 >
-                  {restaurant.streetaddress}
+                  {restaurantInfo.streetaddress}
                   <br />
-                  {restaurant.city}, {restaurant.state}
+                  {restaurantInfo.city}, {restaurantInfo.state}
                   <br />
                   0.0 Miles Away
                 </Typography>
