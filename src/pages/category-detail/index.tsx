@@ -4,9 +4,10 @@ import { Grid, Theme, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { getCategoriesRequest } from '../../redux/actions/category';
 import LoadingBar from '../../components/loading-bar';
+import { Category } from '../../types/olo-api';
 
 const useStyles = makeStyles((theme: Theme) => ({
   heading: {
@@ -33,8 +34,7 @@ const CategoryDetail = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
   const { id } = useParams();
-  const initValue: any = null;
-  const [selectedCategory, setSelectedCategory] = useState(initValue);
+  const [selectedCategory, setSelectedCategory] = useState<Category>();
 
   const { categories, loading } = useSelector(
     (state: any) => state.categoryReducer,

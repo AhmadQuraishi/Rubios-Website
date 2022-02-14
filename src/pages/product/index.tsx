@@ -2,7 +2,6 @@ import {
   Grid,
   Typography,
   Card,
-  CardMedia,
   CardContent,
   Button,
 } from '@mui/material';
@@ -15,10 +14,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getCategoriesRequest } from '../../redux/actions/category';
 import { useParams } from 'react-router-dom';
 import LoadingBar from '../../components/loading-bar';
+import { Product as ProductInfo } from '../../types/olo-api';
 
 const Product = () => {
-  const initValue: any = null;
-  const [product, setProduct] = useState(initValue);
+  const [product, setProduct] = useState<ProductInfo>();
   const { categoryID, id } = useParams();
   const { categories, loading } = useSelector(
     (state: any) => state.categoryReducer,
@@ -47,72 +46,6 @@ const Product = () => {
     }
   }, [categories]);
 
-  const menuItems1 = [
-    {
-      image:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUAKpRxf2AActPwZQg__oUrjxb7K2od0nJug0zkYc94NePv_wFW5suC8nIiXBNQRzYw3s&usqp=CAU',
-      name: 'Chips',
-    },
-    {
-      image:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUAKpRxf2AActPwZQg__oUrjxb7K2od0nJug0zkYc94NePv_wFW5suC8nIiXBNQRzYw3s&usqp=CAU',
-      name: 'Maxicon Rice',
-    },
-    {
-      image:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUAKpRxf2AActPwZQg__oUrjxb7K2od0nJug0zkYc94NePv_wFW5suC8nIiXBNQRzYw3s&usqp=CAU',
-      name: 'Citrus Rice',
-    },
-    {
-      image:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUAKpRxf2AActPwZQg__oUrjxb7K2od0nJug0zkYc94NePv_wFW5suC8nIiXBNQRzYw3s&usqp=CAU',
-      name: 'Fresh Greens',
-    },
-  ];
-  const menuItems2 = [
-    {
-      image:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUAKpRxf2AActPwZQg__oUrjxb7K2od0nJug0zkYc94NePv_wFW5suC8nIiXBNQRzYw3s&usqp=CAU',
-      name: 'Chips',
-    },
-    {
-      image:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUAKpRxf2AActPwZQg__oUrjxb7K2od0nJug0zkYc94NePv_wFW5suC8nIiXBNQRzYw3s&usqp=CAU',
-      name: 'Maxicon Rice',
-    },
-    {
-      image:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUAKpRxf2AActPwZQg__oUrjxb7K2od0nJug0zkYc94NePv_wFW5suC8nIiXBNQRzYw3s&usqp=CAU',
-      name: 'Citrus Rice',
-    },
-    {
-      image:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUAKpRxf2AActPwZQg__oUrjxb7K2od0nJug0zkYc94NePv_wFW5suC8nIiXBNQRzYw3s&usqp=CAU',
-      name: 'Fresh Greens',
-    },
-  ];
-  const drinks = [
-    {
-      image:
-        'https://cdnprod.mafretailproxy.com/sys-master-root/hc0/h47/9843100844062/46332_main.jpg_480Wx480H',
-      name: 'Pepsi',
-    },
-    {
-      image:
-        'https://cdnprod.mafretailproxy.com/sys-master-root/hc0/h47/9843100844062/46332_main.jpg_480Wx480H',
-      name: 'Sprite',
-    },
-    {
-      image:
-        'https://cdnprod.mafretailproxy.com/sys-master-root/hc0/h47/9843100844062/46332_main.jpg_480Wx480H',
-      name: 'Coke',
-    },
-    {
-      image:
-        'https://cdnprod.mafretailproxy.com/sys-master-root/hc0/h47/9843100844062/46332_main.jpg_480Wx480H',
-      name: '7up',
-    },
-  ];
   return (
     <>
       <StoreInfoBar />
@@ -154,17 +87,17 @@ const Product = () => {
                     <Typography
                       variant="h6"
                       className="price"
-                      title={`$${parseFloat(product.cost).toFixed(2)}`}
+                      title={`$${product.cost.toFixed(2)}`}
                     >
-                      ${parseFloat(product.cost).toFixed(2)}
+                      ${product.cost.toFixed(2)}
                     </Typography>
                   </Grid>
                 </Grid>
               </Grid>
               <Grid item xs={12} sm={12} md={12} lg={6}>
-                {product.image ? (
+                {product.imagefilename ? (
                   <img
-                    src={product.image}
+                    src={product.imagefilename}
                     alt={product.name}
                     aria-label={product.name}
                     title={product.name}
@@ -260,22 +193,22 @@ const Product = () => {
                 </Card>
               </Grid>
             </Grid>
-            <Grid container className="menu-items">
+            {/* <Grid container className="menu-items">
               <Typography variant="h4" title="SELECT SIDE ONE">
                 SELECT SIDE ONE
               </Typography>
-              <FoodMenuCard menuItems={menuItems1} />
+              <FoodMenuCard menuItems={[]} />
               <Typography variant="h4" title="SELECT SIDE TWO">
                 SELECT SIDE TWO
               </Typography>
-              <FoodMenuCard menuItems={menuItems2} />
+              <FoodMenuCard menuItems={[]} />
               <Typography variant="h4" title="ADD A DRINK">
                 ADD A DRINK
               </Typography>
-              <FoodMenuCard menuItems={drinks} />
+              <FoodMenuCard menuItems={[]} />
               <br />
               <br />
-            </Grid>
+            </Grid> */}
             <Grid container>
               <Grid item xs={12} md={8} lg={8}></Grid>
               <Grid item xs={12} md={2} lg={2}>

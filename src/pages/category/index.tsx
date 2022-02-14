@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getCategoriesRequest } from '../../redux/actions/category';
 import LoadingBar from '../../components/loading-bar';
 
+import { ResponseMenu } from '../../types/olo-api';
+
 const useStyles = makeStyles((theme: Theme) => ({
   heading: {
     fontFamily: 'Poppins-Bold !important',
@@ -33,7 +35,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 const CategoryList = () => {
   const classes = useStyles();
   const [value, setValue] = useState('0');
-  const [categoriesWithProducts, setCategoriesWithProducts] = useState([]);
+  const [categoriesWithProducts, setCategoriesWithProducts] =
+    useState<ResponseMenu>();
   const { categories, loading } = useSelector(
     (state: any) => state.categoryReducer,
   );
@@ -47,7 +50,7 @@ const CategoryList = () => {
 
   useEffect(() => {
     if (categories && categories.categories) {
-      setCategoriesWithProducts(categories.categories);
+      setCategoriesWithProducts(categories);
     }
   }, [categories]);
 
@@ -62,45 +65,52 @@ const CategoryList = () => {
   return (
     <Fragment>
       <StoreInfoBar />
-      {loading === true && categoriesWithProducts.length == 0 && <LoadingBar />}
-      {categoriesWithProducts.length > 0 && (
-        <Box
-          sx={{
-            width: '100%',
-            padding: {
-              xs: '20px 20px 10px 20px',
-              sm: '20px 30px 5px 30px',
-              lg: '20px 60px 5px 60px',
-              boxSizing: 'border-box',
-            },
-          }}
-        >
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            textColor="secondary"
-            indicatorColor="primary"
-            aria-label="Menu Tabs"
-            variant="scrollable"
-            scrollButtons
-            allowScrollButtonsMobile
-            sx={{ fontFamily: 'Poppins-Medium !important' }}
-          >
-            {categoriesWithProducts.map((item: any, index: number) => (
-              <Tab
-                key={item.id}
-                value={`${index}`}
-                label={item.name}
-                title={item.name}
-                color="secondary.main"
-                sx={{ fontFamily: 'Poppins-Medium !important' }}
-              />
-            ))}
-          </Tabs>
-        </Box>
+
+      {loading === true && categoriesWithProducts?.categories.length == 0 && (
+        <LoadingBar />
       )}
-      {categoriesWithProducts.length > 0 &&
-        categoriesWithProducts.map((item: any, index: number) => (
+      {categoriesWithProducts?.categories &&
+        categoriesWithProducts?.categories.length > 0 && (
+          <Box
+            sx={{
+              width: '100%',
+              padding: {
+                xs: '20px 20px 10px 20px',
+                sm: '20px 30px 5px 30px',
+                lg: '20px 60px 5px 60px',
+                boxSizing: 'border-box',
+              },
+            }}
+          >
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              textColor="secondary"
+              indicatorColor="primary"
+              aria-label="Menu Tabs"
+              variant="scrollable"
+              scrollButtons
+              allowScrollButtonsMobile
+              sx={{ fontFamily: 'Poppins-Medium !important' }}
+            >
+              {categoriesWithProducts?.categories.map(
+                (item: any, index: number) => (
+                  <Tab
+                    key={item.id}
+                    value={`${index}`}
+                    label={item.name}
+                    title={item.name}
+                    color="secondary.main"
+                    sx={{ fontFamily: 'Poppins-Medium !important' }}
+                  />
+                ),
+              )}
+            </Tabs>
+          </Box>
+        )}
+      {categoriesWithProducts?.categories &&
+        categoriesWithProducts?.categories.length > 0 &&
+        categoriesWithProducts?.categories.map((item: any, index: number) => (
           <Grid
             id={'#panel-' + index}
             key={index}
@@ -134,7 +144,7 @@ const CategoryList = () => {
               <ProductListing
                 productList={item.products}
                 categoryID={item.id}
-                shownItems={4}
+                shownItemsCount={4}
               />
             </Grid>
           </Grid>

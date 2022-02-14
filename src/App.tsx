@@ -9,7 +9,7 @@ import LeftMenuBar from './components/left-menu-bar';
 
 function App(props: any) {
   const location = useLocation();
-  const [isAccountSection, setIsAccountSection] = useState(true);
+  const [isAccountSection, setIsAccountSection] = useState(false);
 
   useLayoutEffect(() => {
     window.scrollTo(0, 0);

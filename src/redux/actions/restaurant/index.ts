@@ -1,4 +1,5 @@
 import { restaurantActionsTypes } from '../../types/restaurant';
+import { ResponseRestaurant } from '../../../types/olo-api';
 
 export function getResturantInfoRequest(id: number) {
   return {
@@ -7,7 +8,7 @@ export function getResturantInfoRequest(id: number) {
   };
 }
 
-export function getResturantInfoRequestSuccess(data: any) {
+export function getResturantInfoRequestSuccess(data: ResponseRestaurant) {
   return {
     type: restaurantActionsTypes.GET_RESTAURANT_INFO_SUCCESS,
     payload: data,

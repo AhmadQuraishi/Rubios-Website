@@ -1,4 +1,5 @@
 import { categoryActionsTypes } from '../../types/category';
+import { ResponseMenu } from '../../../types/olo-api';
 
 export function getCategoriesRequest(id: number) {
   return {
@@ -7,7 +8,7 @@ export function getCategoriesRequest(id: number) {
   };
 }
 
-export function getCategoriesRequestSuccess(data: any) {
+export function getCategoriesRequestSuccess(data: ResponseMenu) {
   return {
     type: categoryActionsTypes.GET_CATEGORY_ITMES_SUCCESS,
     payload: data,
