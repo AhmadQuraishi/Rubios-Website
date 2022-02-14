@@ -2,11 +2,14 @@ import React, { Fragment, useEffect } from 'react';
 import { Box, Grid, Theme, Typography } from '@mui/material';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import OrderHistoryCard from '../../components/order-history-card';
+import OrderHistoryCard from '../../components/favorite-orders';
 import { makeStyles } from '@mui/styles';
 import { boxSizing } from '@mui/system';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserRecentOrders } from '../../redux/actions/user';
+import LoadingBar from '../../components/loading-bar';
+import FavoriteOrders from '../../components/favorite-orders';
+import RecentOrders from '../../components/recent-orders';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -29,55 +32,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 const OrdersHistory = () => {
   const classes = useStyles();
   const [value, setValue] = React.useState('1');
-  const [orders, setOrders] = React.useState([]);
-  const dispatch = useDispatch();
-  console.log('123');
-
-  const authtoken = useSelector((state: any) => state.TokensReducer.authtoken);
-  const { userRecentOrders, loading } = useSelector(
-    (state: any) => state.userReducer,
-  );
-
-  useEffect(() => {
-    dispatch(getUserRecentOrders(authtoken));
-  }, []);
-
-  useEffect(() => {
-    if (userRecentOrders && userRecentOrders.orders) {
-      console.log(userRecentOrders.orders);
-      setOrders(userRecentOrders.orders);
-    }
-  }, [userRecentOrders]);
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
-  const favoriteOrders = [
-    {
-      lastOrder: '12/1',
-      image:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUAKpRxf2AActPwZQg__oUrjxb7K2od0nJug0zkYc94NePv_wFW5suC8nIiXBNQRzYw3s&usqp=CAU',
-      name: "Amanda's Usual",
-    },
-    {
-      lastOrder: '12/1',
-      image:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUAKpRxf2AActPwZQg__oUrjxb7K2od0nJug0zkYc94NePv_wFW5suC8nIiXBNQRzYw3s&usqp=CAU',
-      name: "Amanda's Usual",
-    },
-    {
-      lastOrder: '12/1',
-      image:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUAKpRxf2AActPwZQg__oUrjxb7K2od0nJug0zkYc94NePv_wFW5suC8nIiXBNQRzYw3s&usqp=CAU',
-      name: "Amanda's Usual",
-    },
-    {
-      lastOrder: '12/1',
-      image:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUAKpRxf2AActPwZQg__oUrjxb7K2od0nJug0zkYc94NePv_wFW5suC8nIiXBNQRzYw3s&usqp=CAU',
-      name: "Amanda's Usual",
-    },
-  ];
 
   return (
     <Grid container className={classes.root}>
@@ -117,8 +75,8 @@ const OrdersHistory = () => {
           />
         </Tabs>
         <br />
-        {value === '1' && <OrderHistoryCard orderHistory={favoriteOrders} />}
-        {value === '2' && <OrderHistoryCard orderHistory={favoriteOrders} />}
+        {value === '1' && <FavoriteOrders />}
+        {value === '2' && <RecentOrders />}
         {/*{value === '2' && (*/}
         {/*  <Fragment>*/}
         {/*    <h1>Recent Orders</h1>*/}
@@ -136,4 +94,4 @@ const OrdersHistory = () => {
   );
 };
 
-export default OrdersHistory;
+export default React.memo(OrdersHistory);

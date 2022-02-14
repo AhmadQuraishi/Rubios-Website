@@ -12,8 +12,9 @@ import './profile.css';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { makeStyles } from '@mui/styles';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { getUserprofile } from '../../redux/actions/user';
+import LoadingBar from '../../components/loading-bar';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -33,8 +34,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 const Profile = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const userProfile = useSelector(
-    (state: any) => state.userReducer.userProfile,
+  const { userProfile, loading } = useSelector(
+    (state: any) => state.userReducer,
   );
 
   useEffect(() => {
@@ -214,4 +215,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default React.memo(Profile);
