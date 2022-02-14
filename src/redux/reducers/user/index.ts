@@ -17,8 +17,6 @@ const userReducer = (state = initialState, action: any) => {
     case Type.GET_USER_RECENT_ORDERS:
     case Type.GET_USER_FAVORITE_ORDERS:
     case Type.GET_USER_DELIVERY_ADDRESSES:
-    case Type.DELETE_USER_DELIVERY_ADDRESS:
-    case Type.DEL_USER_DEL_ADD_SUCCESS:
       return { ...state, loading: true };
 
     //Success cases
@@ -51,6 +49,11 @@ const userReducer = (state = initialState, action: any) => {
         ...state,
         loading: false,
         userDefaultDeliveryAddress: action.payload,
+      };
+    case Type.DEL_USER_DEL_ADD_SUCCESS:
+      return {
+        ...state,
+        loading: false,
       };
 
     // error cases

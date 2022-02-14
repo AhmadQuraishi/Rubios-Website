@@ -48,9 +48,9 @@ const RecentOrders = (props: any) => {
                     <Typography
                       variant="caption"
                       className="order-name"
-                      title="Amanda's Usual"
+                      title={order.vendorname}
                     >
-                      Amanda's Usual
+                      {order.vendorname}
                     </Typography>
                   </Grid>
                   <Grid item xs={4} className="order-fav-icon">
@@ -82,27 +82,19 @@ const RecentOrders = (props: any) => {
                     }}
                     className="order-detail-panel"
                   >
-                    <Typography
+                  
+                    {
+                      order.products.slice(0,3).map((product : any , index: number) => (
+                        <Typography
                       className="order-detail"
                       variant="body2"
-                      title="1x California Burrito"
+                          title={product.name}
+                          key = {product.name + product.quantity}
                     >
-                      1x California Burrito
+                      {product.quantity} x {product.name}
                     </Typography>
-                    <Typography
-                      className="order-detail"
-                      variant="body2"
-                      title="2x Fish Toca Plates"
-                    >
-                      2x Fish Toca Plates
-                    </Typography>
-                    <Typography
-                      className="order-detail"
-                      variant="body2"
-                      title="1x Medium Drink..."
-                    >
-                      1x Medium Drink...
-                    </Typography>
+                      ))
+                    }
                     <Typography
                       className="order-Link"
                       variant="button"

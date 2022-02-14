@@ -22,46 +22,46 @@ import CategoryDetail from './pages/category-detail';
 import PageNotFound from './pages/page-not-found';
 
 const AppRoutes = () => {
-  let x = 0;
+ 
   return (
     <Routes>
-      <Route key = {x++} path="/" element={<CategoryList />} />
-      <Route key = {x++} path="/category/:id" element={<CategoryDetail />} />
-      <Route key = {x++} path="/product/:categoryID/:id" element={<Product />} />
-      <Route key = {x++} path="/location" element={<Location />} />
-      <Route key = {x++} path="/checkout" element={<Checkout />} />
-      <Route key = {x++} path="/login" element={<Login />} />
-      <Route key = {x++} path="/welcome" element={<Welcome />} />
-      <Route key = {x++} path="/orderconfirmation" element={<OrderConfirmation />} />
-      <Route key = {x++} path="/rewardconfirmation" element={<RewardConfirmation />} />
-      <Route key = {x++} path="/account" element={<RedeemRewards />} />
-      <Route key = {x++} path="/account/deliveryaddress" element={<DeliveryAddress />} />
-      <Route key = {x++}
+      <Route path="/" element={<CategoryList />} />
+      <Route path="/category/:id" element={<CategoryDetail />} />
+      <Route path="/product/:categoryID/:id" element={<Product />} />
+      <Route path="/location" element={<Location />} />
+      <Route path="/checkout" element={<Checkout />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/welcome" element={<Welcome />} />
+      <Route path="/orderconfirmation" element={<OrderConfirmation />} />
+      <Route path="/rewardconfirmation" element={<RewardConfirmation />} />
+      <Route path="/account" element={<RedeemRewards />} />
+      <Route path="/account/deliveryaddress" element={<DeliveryAddress />} />
+      <Route
         path="/account/addDeliveryAddress"
         element={<AddDeliveryAddress />}
       />
-      <Route key = {x++}
+      <Route
         path="/account/addDeliveryAddress/:id"
         element={<AddDeliveryAddress />}
       />
-      <Route key = {x++} path="/account/history" element={<AccountHistory />} />
-      <Route key = {x++} path="/account/checkin" element={<CheckIn />} />
-      <Route key = {x++} path="/account/invite" element={<Invite />} />
-      <Route key = {x++} path="/account/profile" element={<Profile />} />
-      <Route key = {x++}
+      <Route path="/account/history" element={<AccountHistory />} />
+      <Route path="/account/checkin" element={<CheckIn />} />
+      <Route path="/account/invite" element={<Invite />} />
+      <Route path="/account/profile" element={<Profile />} />
+      <Route
         path="/account/paymentinformation"
         element={<PaymentInformation />}
       />
-      <Route key = {x++}
+      <Route
         path="/account/updatepaymentcard"
         element={<UpdatePaymentCard />}
       />
-      <Route key = {x++}
+      <Route
         path="/account/updatepaymentcard/:id"
         element={<UpdatePaymentCard />}
       />
-      <Route key = {x++} path="/account/orders" element={<OrdersHistory />} />
-      <Route key = {x++} path="*" element={<PageNotFound />} />
+      <Route path="/account/orders" element={<OrdersHistory />} />
+      <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
 };

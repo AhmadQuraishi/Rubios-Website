@@ -18,6 +18,7 @@ import {
   setUserDefaultDelAddress,
 } from '../../redux/actions/user';
 import LoadingBar from '../../components/loading-bar';
+import { SettingsInputAntennaTwoTone } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -36,6 +37,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const DeliveryAddress = () => {
   const classes = useStyles();
   const [deliveryaddresses, setDelAddresses] = useState([]);
+  const [value, setValue] = useState(true);
   const dispatch = useDispatch();
 
 
@@ -70,11 +72,14 @@ const DeliveryAddress = () => {
     dispatch(setUserDefaultDelAddress(obj, authtoken));
   }
 
-  // const deleteAddressHandler = (id: number) => {
+  const deleteAddressHandler = (id: number) => {
     
-  //   dispatch(deleteUserDeliveryAddress(id, authtoken));
-  
-  // }
+    dispatch(deleteUserDeliveryAddress(id, authtoken));
+    setTimeout(() => {
+      dispatch(getUserDeliveryAddresses(authtoken));
+    }, 600);
+    setValue(!value);
+  }
 
   return (
     <Fragment>
@@ -120,7 +125,7 @@ const DeliveryAddress = () => {
                         aria-label="Delete"
                         title="DELETE"
                         className="link"
-                        // onClick={() => deleteAddressHandler( address.id )}
+                         onClick={() => deleteAddressHandler( address.id )}
                       >
                         DELETE
                       </Typography>

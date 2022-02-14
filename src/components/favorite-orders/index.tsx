@@ -41,13 +41,7 @@ const FavoriteOrders = (props: any) => {
               <Card elevation={0} className="card-panel">
                 <Grid container>
                   <Grid item xs={8}>
-                    <Typography
-                      variant="caption"
-                      className="order-date"
-                      title={`LAST ORDERED ${forder.lastOrder}`}
-                    >
-                      LAST ORDERED {forder.lastOrder}
-                    </Typography>
+                  
                     <Typography
                       variant="caption"
                       className="order-name"
@@ -67,7 +61,7 @@ const FavoriteOrders = (props: any) => {
                   <Grid item xs={12} sm={4}>
                     <CardMedia
                       component="img"
-                      title="Live from space album cover"
+                      title='food item image'
                       image={require('../../assets/imgs/order-hidtory-icon.png')}
                       alt="Live from space album cover"
                       className="order-img"
@@ -85,27 +79,19 @@ const FavoriteOrders = (props: any) => {
                     }}
                     className="order-detail-panel"
                   >
-                    <Typography
+                    {
+                      forder.products.map((product : any , index: number) => (
+                        <Typography
                       className="order-detail"
                       variant="body2"
-                      title="1x California Burrito"
+                          title={product.name}
+                          key = {product.name + product.quantity}
                     >
-                      1x California Burrito
+                      {product.quantity} x {product.name}
                     </Typography>
-                    <Typography
-                      className="order-detail"
-                      variant="body2"
-                      title="2x Fish Toca Plates"
-                    >
-                      2x Fish Toca Plates
-                    </Typography>
-                    <Typography
-                      className="order-detail"
-                      variant="body2"
-                      title="1x Medium Drink..."
-                    >
-                      1x Medium Drink...
-                    </Typography>
+                      ))
+                    }
+                  
                     <Typography
                       className="order-Link"
                       variant="button"
