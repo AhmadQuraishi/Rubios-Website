@@ -27,7 +27,7 @@ const LocationCard = (data :any) => {
     setAlignment(newAlignment);
   };
 
-  const filteredRes = restaurants.filter((restaurant) => {
+  const filteredRes = restaurants.filter((restaurant :any) => {
     return restaurant.city === city;
   });
 
