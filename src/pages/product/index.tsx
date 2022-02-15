@@ -8,15 +8,23 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getCategoriesRequest } from '../../redux/actions/category';
 import { useParams } from 'react-router-dom';
 import LoadingBar from '../../components/loading-bar';
-import { Category, Product as ProductInfo } from '../../types/olo-api';
+import {
+  Category,
+  Option,
+  OptionGroup,
+  Product as ProductInfo,
+  ResponseModifiers,
+} from '../../types/olo-api';
 import { getProductOptionRequest } from '../../redux/actions/product/option';
 
 const Product = () => {
-  const [productDetails, setproductDetails] = useState<ProductInfo>();
+  const [productDetails, setProductDetails] = useState<ProductInfo>();
+  const [productOptions, setProductOptions] = useState<ResponseModifiers>();
   const { categoryID, id } = useParams();
   const { categories, loading } = useSelector(
     (state: any) => state.categoryReducer,
   );
+  const { options } = useSelector((state: any) => state.productOptionsReducer);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -35,7 +43,7 @@ const Product = () => {
           const product = category.products.find((obj: ProductInfo) => {
             return obj.id.toString() == id;
           });
-          setproductDetails(product);
+          setProductDetails(product);
         }
       }
     }
@@ -46,6 +54,13 @@ const Product = () => {
       dispatch(getProductOptionRequest(productDetails.id));
     }
   }, [productDetails]);
+
+  useEffect(() => {
+    if (options && options.optiongroups) {
+      console.log(options);
+      setProductOptions(options);
+    }
+  }, [options]);
 
   return (
     <>
@@ -114,20 +129,25 @@ const Product = () => {
                 )}
               </Grid>
             </Grid>
-            <Grid container spacing={2}>
+            {productOptions && (
+              <Grid container className="menu-items">
+                {productOptions.optiongroups.map(
+                  (item: OptionGroup, index: number) =>
+                    item.options.find((x) => x.isdefault === true) != null && (
+                      <>
+                        <Typography variant="h4" title="SELECT SIDE ONE">
+                          {item.description}
+                        </Typography>
+                        <FoodMenuCard menuItems={[]} />
+                      </>
+                    ),
+                )}
+              </Grid>
+            )}
+            {/* <Grid container spacing={2}>
               <Grid item xs={12} sm={12} md={6} lg={6}>
                 <Card elevation={6} className="single-product">
                   <Grid container>
-                    {/*<Grid item xs={8} sm={8} md={8} lg={5}>*/}
-                    {/*<CardMedia*/}
-                    {/*component="img"*/}
-                    {/*sx={{ width: 200 }}*/}
-                    {/*image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUAKpRxf2AActPwZQg__oUrjxb7K2od0nJug0zkYc94NePv_wFW5suC8nIiXBNQRzYw3s&usqp=CAU"*/}
-                    {/*alt="TACO ONE"*/}
-                    {/*aria-label="TACO ONE"*/}
-                    {/*title="TACO ONE"*/}
-                    {/*/>*/}
-                    {/*</Grid>*/}
                     <CardContent sx={{ flex: '1 0 auto' }}>
                       <Typography
                         title="TACO ONE"
@@ -157,16 +177,6 @@ const Product = () => {
               <Grid item xs={12} sm={12} md={6} lg={6}>
                 <Card elevation={6} className="single-product">
                   <Grid container>
-                    {/*<Grid item xs={8} sm={8} md={8} lg={5}>*/}
-                    {/*<CardMedia*/}
-                    {/*component="img"*/}
-                    {/*sx={{ width: 200 }}*/}
-                    {/*image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUAKpRxf2AActPwZQg__oUrjxb7K2od0nJug0zkYc94NePv_wFW5suC8nIiXBNQRzYw3s&usqp=CAU"*/}
-                    {/*alt="TACO TWO"*/}
-                    {/*aria-label="TACO TWO"*/}
-                    {/*title="TACO TWO"*/}
-                    {/*/>*/}
-                    {/*</Grid>*/}
                     <CardContent sx={{ flex: '1 0 auto' }}>
                       <Typography
                         title="TACO ONE"
@@ -193,7 +203,7 @@ const Product = () => {
                   </Grid>
                 </Card>
               </Grid>
-            </Grid>
+            </Grid> */}
             {/* <Grid container className="menu-items">
               <Typography variant="h4" title="SELECT SIDE ONE">
                 SELECT SIDE ONE

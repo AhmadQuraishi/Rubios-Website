@@ -81,7 +81,7 @@ const StoreInfoBar = () => {
           spacing={0}
           sx={{
             backgroundColor: theme.palette.secondary.main,
-            padding: { xs: '30px', sm: '35px' },
+            padding: { xs: '30px 20px', sm: '35px' },
           }}
         >
           <Grid item xs={12}>
@@ -138,6 +138,7 @@ const StoreInfoBar = () => {
                 <Typography
                   variant="body1"
                   color="#fff"
+                  component="div"
                   textTransform="uppercase"
                   fontSize={11}
                   paddingTop="8px"

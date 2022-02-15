@@ -1,5 +1,5 @@
 import { productOptionActionsTypes } from '../../../types/product/option';
-import { Option } from '../../../../types/olo-api';
+import { ResponseModifiers } from '../../../../types/olo-api';
 
 export function getProductOptionRequest(id: number) {
   return {
@@ -8,7 +8,7 @@ export function getProductOptionRequest(id: number) {
   };
 }
 
-export function getProductOptionRequestSuccess(data: Option) {
+export function getProductOptionRequestSuccess(data: ResponseModifiers) {
   return {
     type: productOptionActionsTypes.GET_PRODUCT_OPTION_SUCCESS,
     payload: data,
