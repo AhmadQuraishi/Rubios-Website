@@ -8,41 +8,7 @@ import store from './redux/store';
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
 import theme from './theme/theme';
-import axios from 'axios';
-import CryptoJS from 'crypto-js';
 
-axios.interceptors.request.use(
-  function (config) {
-    const url = config.url || '';
-    let check = url?.toString().includes('/sandbox.punchh.com/api/');
-    if (check) {
-      var uri = new URL(url?.toString());
-      const body = config.data;
-      let uriData = uri.pathname.concat(uri.search);
-      let secret = process.env.REACT_APP_PUNCHH_CLIENT_SECRET || '';
-      let secretString = secret.toString();
-      let concatString ='';
-      if(body === undefined){
-        concatString = uriData.concat(JSON.stringify(body));
-      }
-      else{
-        concatString = uriData;
-      }
-      const signature = CryptoJS.HmacSHA1(
-       concatString,
-        secretString,
-      ).toString();
-      config.headers = {
-        'x-pch-digest': signature,
-      };
-    }
-
-    return config;
-  },
-  function (error) {
-    return Promise.reject(error);
-  },
-);
 ReactDOM.render(
   <Provider store={store}>
     <React.StrictMode>

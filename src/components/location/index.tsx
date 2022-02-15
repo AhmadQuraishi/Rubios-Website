@@ -7,95 +7,25 @@ import { FixedSizeList, ListChildComponentProps } from 'react-window';
 import SearchIcon from '@mui/icons-material/Search';
 import './location.css';
 
-const LocationCard = () => {
-  const restaurants = [
-    {
-      name: 'Broadway Blvd',
-      address: '20212 North 59th Ave , Ste , 465A , san Diego , CA',
-      distance: '4.2 Miles Away',
-      city: 'san deigo',
-    },
-    {
-      name: 'Broadway Blvd',
-      address: '20212 North 59th Ave , Ste , 465A , san Diego , CA',
-      distance: '4.2 Miles Away',
-      city: 'san deigo',
-    },
-    {
-      name: 'Broadway Blvd',
-      address: '20212 North 59th Ave , Ste , 465A , san Diego , CA',
-      distance: '4.2 Miles Away',
-      city: 'san deigo',
-    },
-    {
-      name: 'Broadway Blvd',
-      address: '20212 North 59th Ave , Ste , 465A , san Diego , CA',
-      distance: '4.2 Miles Away',
-      city: 'san deigo',
-    },
-    {
-      name: 'Broadway Blvd',
-      address: '20212 North 59th Ave , Ste , 465A , san Jose , CA',
-      distance: '4.2 Miles Away',
-      city: 'san jose',
-    },
-    {
-      name: 'Broadway Blvd',
-      address: '20212 North 59th Ave , Ste , 465A , san jose , CA',
-      distance: '4.2 Miles Away',
-      city: 'san jose',
-    },
-    {
-      name: 'Broadway Blvd',
-      address: '20212 North 59th Ave , Ste , 465A , san Jose , CA',
-      distance: '4.2 Miles Away',
-      city: 'san jose',
-    },
-    {
-      name: 'Broadway Blvd',
-      address: '20212 North 59th Ave , Ste , 465A , san Jose , CA',
-      distance: '4.2 Miles Away',
-      city: 'san jose',
-    },
-    {
-      name: 'Broadway Blvd',
-      address: '20212 North 59th Ave , Ste , 465A , san Jose , CA',
-      distance: '4.2 Miles Away',
-      city: 'san jose',
-    },
-    {
-      name: 'Broadway Blvd',
-      address: '20212 North 59th Ave , Ste , 465A , san jose , CA',
-      distance: '4.2 Miles Away',
-      city: 'san jose',
-    },
-    {
-      name: 'Broadway Blvd',
-      address: '20212 North 59th Ave , Ste , 465A , san jose , CA',
-      distance: '4.2 Miles Away',
-      city: 'san jose',
-    },
-    {
-      name: 'Broadway Blvd',
-      address: '20212 North 59th Ave , Ste , 465A , san Jose , CA',
-      distance: '4.2 Miles Away',
-      city: 'san jose',
-    },
-  ];
-
-  const [city, setCity] = useState('san deigo');
+const LocationCard = (data :any) => {
+  const restaurants = data.respondData.restaurants;
+ 
+  console.log("child comp : ")
+  console.log( data.respondData.restaurants)
+  const [city, setCity] = useState('New York');
   const handleChange = (e: any) => {
     setCity(e.target.value);
     console.log(city);
   };
 
-  const filteredRes = restaurants.filter((restaurant) => {
+  const filteredRes = restaurants.filter((restaurant: any) => {
     return restaurant.city === city;
   });
 
   function renderRow(props: ListChildComponentProps) {
     const { index, style } = props;
-
+   
+    console.log( filteredRes)
     return (
       <ListItem
         style={style}
@@ -110,8 +40,8 @@ const LocationCard = () => {
           <Grid item xs={12}>
             <ListItemButton>
               <ListItemText className="name"
-                title={filteredRes[index].name}
-                primary={filteredRes[index].name}
+                title={filteredRes[index].storename}
+                primary={filteredRes[index].storename}
               />
             </ListItemButton>
           </Grid>
@@ -119,8 +49,8 @@ const LocationCard = () => {
           <Grid item xs={12}>
             <ListItemButton>
               <ListItemText className="address"
-                title={filteredRes[index].address}
-                primary={filteredRes[index].address}
+                title={filteredRes[index].streetaddress}
+                primary={filteredRes[index].streetaddress}
               />
             </ListItemButton>
           </Grid>

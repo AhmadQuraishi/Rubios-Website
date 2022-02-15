@@ -7,7 +7,7 @@
   -moz-border-radius: 30px;
   border-radius: 30px;
   width: 70%;
-  height: calc(100vh - 80px);
+  height:auto; /*calc(100vh - 80px); */
 }
 .list-wrapper .listing {
   padding: 0px;
@@ -20,6 +20,7 @@
 }
 .location-sidebar button {
   width: 100%;
+  height: auto;
 }
 .name span {
   font-family: 'Poppins-Bold', sans-serif !important;
