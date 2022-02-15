@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getCategoriesRequest } from '../../redux/actions/category';
 import { useParams } from 'react-router-dom';
 import LoadingBar from '../../components/loading-bar';
-import { Product as ProductInfo } from '../../types/olo-api';
+import { Category, Product as ProductInfo } from '../../types/olo-api';
 import { getProductOptionRequest } from '../../redux/actions/product/option';
 
 const Product = () => {
@@ -28,12 +28,12 @@ const Product = () => {
   useEffect(() => {
     if (categories && categories.categories) {
       if (id && categoryID) {
-        const category = categories.categories.find((obj: any) => {
-          return obj.id == categoryID;
+        const category = categories.categories.find((obj: Category) => {
+          return obj.id.toString() == categoryID;
         });
         if (category) {
-          const product = category.products.find((obj: any) => {
-            return obj.id == id;
+          const product = category.products.find((obj: ProductInfo) => {
+            return obj.id.toString() == id;
           });
           setproductDetails(product);
         }

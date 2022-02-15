@@ -49,8 +49,8 @@ const CategoryDetail = () => {
   useEffect(() => {
     if (categories && categories.categories) {
       if (id) {
-        const category = categories.categories.find((obj: any) => {
-          return obj.id == id;
+        const category = categories.categories.find((obj: Category) => {
+          return obj.id.toString() == id;
         });
         setSelectedCategory(category);
       }

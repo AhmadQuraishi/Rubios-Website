@@ -4,12 +4,10 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getResturantInfoRequest } from '../../redux/actions/restaurant';
 import { getResturantCalendarRequest } from '../../redux/actions/restaurant/calendar';
-import {
-  ResponseRestaurant,
-  CalendarTypeEnum as typeEnum,
-} from '../../types/olo-api';
+import { ResponseRestaurant } from '../../types/olo-api';
 import { GetUserFriendlyHours } from '../../helpers/getUserFriendlyHours';
-
+import { HoursListing } from '../../helpers/hoursListing';
+import { CalendarTypeEnum } from '../../helpers/hoursListing';
 const useStyle = makeStyles({
   heading: {
     fontSize: '13px',
@@ -22,7 +20,7 @@ const StoreInfoBar = () => {
   const theme = useTheme();
   const classes = useStyle();
   const [restaurantInfo, setRestaurantInfo] = useState<ResponseRestaurant>();
-  const [restaurantHours, setRestaurantHours] = useState([]);
+  const [restaurantHours, setRestaurantHours] = useState<HoursListing[]>();
   const { restaurant } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
@@ -69,7 +67,9 @@ const StoreInfoBar = () => {
 
   useEffect(() => {
     if (calendar) {
-      setRestaurantHours(GetUserFriendlyHours(calendar, 'business'));
+      setRestaurantHours(
+        GetUserFriendlyHours(calendar, CalendarTypeEnum.business),
+      );
     }
   }, [calendar]);
 
@@ -143,8 +143,10 @@ const StoreInfoBar = () => {
                   paddingTop="8px"
                   title={`${restaurantInfo.streetaddress}, ${restaurantInfo.city}, ${restaurantInfo.state}`}
                 >
-                  <p style={{paddingBottom: '2px'}}>{restaurantInfo.streetaddress}</p>
-                  <p style={{paddingBottom: '2px'}}>
+                  <p style={{ paddingBottom: '2px' }}>
+                    {restaurantInfo.streetaddress}
+                  </p>
+                  <p style={{ paddingBottom: '2px' }}>
                     {restaurantInfo.city}, {restaurantInfo.state}
                   </p>
                   <p>{restaurantInfo.distance.toFixed(1)} Miles Away</p>
@@ -164,12 +166,13 @@ const StoreInfoBar = () => {
                   variant="body2"
                   textTransform="uppercase"
                   title="Hours"
-                  sx={{ paddingBottom: '5px'}}
+                  sx={{ paddingBottom: '5px' }}
                 >
                   Hours
                 </Typography>
-                {restaurantHours.length > 0 &&
-                  restaurantHours.map((item: any, index: number) => (
+                {restaurantHours &&
+                  restaurantHours.length > 0 &&
+                  restaurantHours.map((item: HoursListing, index: number) => (
                     <Grid container spacing={0} key={index}>
                       <Grid item xs={3}>
                         <List
@@ -206,12 +209,12 @@ const StoreInfoBar = () => {
                             title={
                               item.isOpenAllDay
                                 ? 'Open 24 hours'
-                                : item.startTime + ' - ' + item.endTime
+                                : item.start + ' - ' + item.end
                             }
                           >
                             {item.isOpenAllDay
                               ? 'Open 24 hours'
-                              : item.startTime + ' - ' + item.endTime}
+                              : item.start + ' - ' + item.end}
                           </ListItem>
                         </List>
                       </Grid>

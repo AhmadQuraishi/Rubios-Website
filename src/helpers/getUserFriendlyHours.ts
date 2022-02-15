@@ -1,18 +1,19 @@
 import { ResponseRestaurantCalendars } from '../types/olo-api';
+import { HoursListing, CalendarTypeEnum } from './hoursListing';
 
 export function GetUserFriendlyHours(
   hours: ResponseRestaurantCalendars,
-  type: string,
-) {
+  type: CalendarTypeEnum,
+): HoursListing[] {
   const selectedStoreHours = hours?.calendar.find((x) => x.type === type);
-  let newHoursArray: any = [];
+  let newHoursArray: HoursListing[] = [];
   if (selectedStoreHours) {
     selectedStoreHours.ranges.forEach((item, index) => {
       if (newHoursArray.length == 0) {
         newHoursArray.push({
           label: item.weekday.substring(0, 1),
-          startTime: getTimeFormat(item.start),
-          endTime: getTimeFormat(item.end),
+          start: getTimeFormat(item.start),
+          end: getTimeFormat(item.end),
           isOpenAllDay: isTimeSame(item.start, item.end),
         });
       } else {
@@ -22,8 +23,8 @@ export function GetUserFriendlyHours(
         ) {
           newHoursArray.push({
             label: item.weekday.substring(0, 1),
-            startTime: getTimeFormat(item.start),
-            endTime: getTimeFormat(item.end),
+            start: getTimeFormat(item.start),
+            end: getTimeFormat(item.end),
             isOpenAllDay: isTimeSame(item.start, item.end),
           });
         } else {

@@ -7,7 +7,7 @@ import { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategoriesRequest } from '../../redux/actions/category';
 import LoadingBar from '../../components/loading-bar';
-import { ResponseMenu } from '../../types/olo-api';
+import { Category, ResponseMenu } from '../../types/olo-api';
 
 const useStyles = makeStyles((theme: Theme) => ({
   heading: {
@@ -90,7 +90,7 @@ const CategoryList = () => {
               sx={{ fontFamily: 'Poppins-Medium !important' }}
             >
               {categoriesWithProducts?.categories.map(
-                (item: any, index: number) => (
+                (item: Category, index: number) => (
                   <Tab
                     key={item.id}
                     value={`${index}`}
@@ -106,45 +106,47 @@ const CategoryList = () => {
         )}
       {categoriesWithProducts?.categories &&
         categoriesWithProducts?.categories.length > 0 &&
-        categoriesWithProducts?.categories.map((item: any, index: number) => (
-          <Grid
-            id={'#panel-' + index}
-            key={index}
-            container
-            spacing={0}
-            sx={{
-              padding: {
-                xs: '20px',
-                sm: '30px 40px 0px 40px',
-                lg: '30px 80px 0px 80px',
-              },
-            }}
-          >
-            <Grid item xs={12}>
-              <Grid container>
-                <Grid item xs={8}>
-                  <Typography className={classes.heading} title={item.name}>
-                    {item.name}
-                  </Typography>
-                </Grid>
-                <Grid item xs={4}>
-                  <Typography className={classes.link}>
-                    <Link to={`/category/${item.id}`} title="view all">
-                      view all →
-                    </Link>
-                  </Typography>
+        categoriesWithProducts?.categories.map(
+          (item: Category, index: number) => (
+            <Grid
+              id={'#panel-' + index}
+              key={index}
+              container
+              spacing={0}
+              sx={{
+                padding: {
+                  xs: '20px',
+                  sm: '30px 40px 0px 40px',
+                  lg: '30px 80px 0px 80px',
+                },
+              }}
+            >
+              <Grid item xs={12}>
+                <Grid container>
+                  <Grid item xs={8}>
+                    <Typography className={classes.heading} title={item.name}>
+                      {item.name}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Typography className={classes.link}>
+                      <Link to={`/category/${item.id}`} title="view all">
+                        view all →
+                      </Link>
+                    </Typography>
+                  </Grid>
                 </Grid>
               </Grid>
+              <Grid item xs={12} sx={{ paddingBottom: '20px' }}>
+                <ProductListing
+                  productList={item.products}
+                  categoryID={item.id}
+                  shownItemsCount={4}
+                />
+              </Grid>
             </Grid>
-            <Grid item xs={12} sx={{ paddingBottom: '20px' }}>
-              <ProductListing
-                productList={item.products}
-                categoryID={item.id}
-                shownItemsCount={4}
-              />
-            </Grid>
-          </Grid>
-        ))}
+          ),
+        )}
       <div style={{ paddingBottom: '30px' }}></div>
     </Fragment>
   );
