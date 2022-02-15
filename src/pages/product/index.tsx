@@ -3,7 +3,7 @@ import FoodMenuCard from '../../components/food-menu-card';
 import ArrowForward from '@mui/icons-material/ArrowForward';
 import './product.css';
 import StoreInfoBar from '../../components/restaurant-info-bar';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategoriesRequest } from '../../redux/actions/category';
 import { useParams } from 'react-router-dom';
@@ -20,6 +20,7 @@ import { getProductOptionRequest } from '../../redux/actions/product/option';
 const Product = () => {
   const [productDetails, setProductDetails] = useState<ProductInfo>();
   const [productOptions, setProductOptions] = useState<ResponseModifiers>();
+
   const { categoryID, id } = useParams();
   const { categories, loading } = useSelector(
     (state: any) => state.categoryReducer,
@@ -28,6 +29,7 @@ const Product = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    setProductOptions(undefined);
     //TODO: StoreID will get from State when select store work will be done
     const storeID = 60854;
     dispatch(getCategoriesRequest(storeID));
@@ -65,7 +67,9 @@ const Product = () => {
   return (
     <>
       <StoreInfoBar />
-      {loading == true && productDetails == null && <LoadingBar />}
+      {loading == true && productDetails == null && productOptions == null && (
+        <LoadingBar />
+      )}
       {productDetails && (
         <Grid container className="product-detail">
           <Grid item xs={12} sm={12} md={12} lg={12}>
@@ -93,10 +97,27 @@ const Product = () => {
                     <Typography
                       variant="caption"
                       className="label bold"
-                      aria-label={`${productDetails.basecalories} Cal`}
-                      title={`${productDetails.basecalories} Cal`}
+                      aria-label={`${
+                        productDetails.caloriesseparator
+                          ? productDetails.basecalories +
+                            productDetails.caloriesseparator +
+                            productDetails.maxcalories
+                          : productDetails.basecalories
+                      } Cal`}
+                      title={`${
+                        productDetails.caloriesseparator
+                          ? productDetails.basecalories +
+                            productDetails.caloriesseparator +
+                            productDetails.maxcalories
+                          : productDetails.basecalories
+                      } Cal`}
                     >
-                      {productDetails.basecalories} Cal
+                      {productDetails.caloriesseparator
+                        ? productDetails.basecalories +
+                          productDetails.caloriesseparator +
+                          productDetails.maxcalories
+                        : productDetails.basecalories}{' '}
+                      Cal
                     </Typography>
                   </Grid>
                   <Grid item xs={6}>
@@ -133,93 +154,93 @@ const Product = () => {
               <Grid container className="menu-items">
                 {productOptions.optiongroups.map(
                   (item: OptionGroup, index: number) =>
-                    item.options.find((x) => x.isdefault === true) != null && (
-                      <>
-                        <Typography variant="h4" title="SELECT SIDE ONE">
+                    item.mandatory ? (
+                      <Fragment key={index}>
+                        {item.options && item.options.length == 1 && (
+                          <>
+                            <Typography
+                              variant="h4"
+                              sx={{ marginTop: '20px' }}
+                              title={item.options[0].name}
+                            >
+                              {item.options[0].name}
+                            </Typography>
+                            {item.options[0].modifiers &&
+                              item.options[0].modifiers.length == 1 && (
+                                <Card
+                                  sx={{
+                                    padding: '20px',
+                                    border: '1px solid #ccc',
+                                    marginTop: '10px',
+                                    boxShadow: 'none',
+                                  }}
+                                >
+                                  <Typography
+                                    variant="h5"
+                                    title={
+                                      item.options[0].modifiers[0].description
+                                    }
+                                  >
+                                    {item.options[0].modifiers[0].description}
+                                  </Typography>
+                                  <FoodMenuCard
+                                    menuItems={
+                                      item.options[0].modifiers[0].options
+                                    }
+                                    options={productOptions.optiongroups}
+                                  />
+                                </Card>
+                              )}
+                            {item.options[0].modifiers &&
+                              item.options[0].modifiers.length > 1 && (
+                                <FoodMenuCard
+                                  menuItems={item.options[0].modifiers}
+                                  options={productOptions.optiongroups}
+                                />
+                              )}
+                          </>
+                        )}
+                        {item.options && item.options.length > 1 && (
+                          <Card
+                            sx={{
+                              padding: '20px',
+                              border: '1px solid #ccc',
+                              marginTop: '10px',
+                              boxShadow: 'none',
+                            }}
+                          >
+                            <Typography variant="h4" title={item.description}>
+                              {item.description}
+                            </Typography>
+                            <FoodMenuCard
+                              menuItems={item.options}
+                              options={productOptions.optiongroups}
+                            />
+                          </Card>
+                        )}
+                      </Fragment>
+                    ) : (
+                      <Fragment key={index}>
+                        <Typography
+                          variant="h4"
+                          sx={{ marginTop: '20px' }}
+                          title={item.description}
+                        >
                           {item.description}
                         </Typography>
-                        <FoodMenuCard menuItems={[]} />
-                      </>
+                        {item.options && (
+                          <FoodMenuCard
+                            menuItems={item.options}
+                            options={productOptions.optiongroups}
+                          />
+                        )}
+                      </Fragment>
                     ),
                 )}
               </Grid>
             )}
-            {/* <Grid container spacing={2}>
-              <Grid item xs={12} sm={12} md={6} lg={6}>
-                <Card elevation={6} className="single-product">
-                  <Grid container>
-                    <CardContent sx={{ flex: '1 0 auto' }}>
-                      <Typography
-                        title="TACO ONE"
-                        variant="caption"
-                        className="label"
-                      >
-                        TACO ONE
-                      </Typography>
-                      <Typography
-                        variant="h4"
-                        title="MAXICAN STREET CORN SHRIMP TACO"
-                      >
-                        MAXICAN STREET CORN
-                        <br /> SHRIMP TACO
-                      </Typography>
-                      <Button
-                        title="Click to customize"
-                        className="custom-btn"
-                        endIcon={<ArrowForward />}
-                      >
-                        CLICK TO CUSTOMIZE
-                      </Button>
-                    </CardContent>
-                  </Grid>
-                </Card>
-              </Grid>
-              <Grid item xs={12} sm={12} md={6} lg={6}>
-                <Card elevation={6} className="single-product">
-                  <Grid container>
-                    <CardContent sx={{ flex: '1 0 auto' }}>
-                      <Typography
-                        title="TACO ONE"
-                        variant="caption"
-                        className="label"
-                      >
-                        TACO ONE
-                      </Typography>
-                      <Typography
-                        variant="h4"
-                        title="MAXICAN STREET CORN SHRIMP TACO"
-                      >
-                        MAXICAN STREET CORN
-                        <br /> SHRIMP TACO
-                      </Typography>
-                      <Button
-                        title="Click to customize"
-                        className="custom-btn"
-                        endIcon={<ArrowForward />}
-                      >
-                        CLICK TO CUSTOMIZE
-                      </Button>
-                    </CardContent>
-                  </Grid>
-                </Card>
-              </Grid>
-            </Grid> */}
-            {/* <Grid container className="menu-items">
-              <Typography variant="h4" title="SELECT SIDE ONE">
-                SELECT SIDE ONE
-              </Typography>
-              <FoodMenuCard menuItems={[]} />
-              <Typography variant="h4" title="SELECT SIDE TWO">
-                SELECT SIDE TWO
-              </Typography>
-              <FoodMenuCard menuItems={[]} />
-              <Typography variant="h4" title="ADD A DRINK">
-                ADD A DRINK
-              </Typography>
-              <FoodMenuCard menuItems={[]} />
-              <br />
-              <br />
-            </Grid> */}
+            <br />
+            <br />
             <Grid container>
               <Grid item xs={12} md={8} lg={8}></Grid>
               <Grid item xs={12} md={2} lg={2}>
