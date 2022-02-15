@@ -11,6 +11,10 @@ import {
 import './profile.css';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { makeStyles } from '@mui/styles';
+import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { getUserprofile } from '../../redux/actions/user';
+import LoadingBar from '../../components/loading-bar';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -29,162 +33,186 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const Profile = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const { userProfile, loading } = useSelector(
+    (state: any) => state.userReducer,
+  );
+
+  useEffect(() => {
+    dispatch(getUserprofile());
+  }, []);
+
+  useEffect(() => {}, [userProfile]);
+
   return (
     <div className={classes.root}>
       <Typography variant="h4" className={classes.heading}>
         Edit Profile
       </Typography>
-      <Grid container>
-        <Grid item xs={12} md={6}>
-          <Grid container className="profile-section">
-            <Grid item xs={12}>
-              <TextField
-                aria-label="email"
-                label="Email"
-                title="Email"
-                sx={{ width: '100%' }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                aria-label="first name"
-                label="First Name"
-                title="First Name"
-                sx={{ width: '100%' }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                aria-label="last name"
-                label="Last Name"
-                title="Last Name"
-                sx={{ width: '100%' }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                aria-label="mobile phone "
-                label="Mobile Phone"
-                title="Mobile Phone"
-                sx={{ width: '100%' }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                aria-label="current password"
-                label="Current Password"
-                title="Current Password"
-                sx={{ width: '100%' }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography
-                variant="body2"
-                className="body-text"
-                title="your current password require to update your personal details"
-                sx={{ width: '100%' }}
-              >
-                Your current password require to update your personal details
-              </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                aria-label="new password"
-                label="New Password"
-                title="New Password"
-                sx={{ width: '100%' }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography
-                variant="body2"
-                className="body-text"
-                title="Password must be at least 8 characters."
-                sx={{ width: '100%' }}
-              >
-                Password must be at least 8 characters.
-              </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                aria-label="confirm password "
-                label="Confirm Password"
-                title="Confirm Password"
-                sx={{ width: '100%' }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Button
-                disabled
-                aria-label="date of birth"
-                title="date of birth"
-                sx={{ width: { xs: '100%' } }}
-                className="birthday-button"
-              >
-                <span className="bday-text">Birthday</span>
-                <span className="date">September 6, 2009</span>
-                <span>
-                  <LockOutlinedIcon
-                    style={{ color: 'grey', paddingTop: '5px' }}
-                  />
-                </span>
-              </Button>
-            </Grid>
+      {userProfile && (
+        <Grid container>
+          <Grid item xs={12} md={6}>
+            <Grid container className="profile-section">
+              <Grid item xs={12}>
+                <TextField
+                  aria-label="email"
+                  label="Email"
+                  title="Email"
+                  sx={{ width: '100%' }}
+                  value={userProfile.email}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  aria-label="first name"
+                  label="First Name"
+                  title="First Name"
+                  sx={{ width: '100%' }}
+                  value={userProfile.first_name}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  aria-label="last name"
+                  label="Last Name"
+                  title="Last Name"
+                  sx={{ width: '100%' }}
+                  value={userProfile.last_name}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  aria-label="mobile phone "
+                  label="Mobile Phone"
+                  title="Mobile Phone"
+                  sx={{ width: '100%' }}
+                  value={userProfile.phone}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  aria-label="current password"
+                  label="Current Password"
+                  title="Current Password"
+                  sx={{ width: '100%' }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography
+                  variant="body2"
+                  className="body-text"
+                  title="your current password require to update your personal details"
+                  sx={{ width: '100%' }}
+                >
+                  Your current password require to update your personal details
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  aria-label="new password"
+                  label="New Password"
+                  title="New Password"
+                  sx={{ width: '100%' }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography
+                  variant="body2"
+                  className="body-text"
+                  title="Password must be at least 8 characters."
+                  sx={{ width: '100%' }}
+                >
+                  Password must be at least 8 characters.
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  aria-label="confirm password "
+                  label="Confirm Password"
+                  title="Confirm Password"
+                  sx={{ width: '100%' }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                  disabled
+                  aria-label="date of birth"
+                  title="date of birth"
+                  sx={{ width: { xs: '100%' } }}
+                  className="birthday-button"
+                >
+                  <span className="bday-text">Birthday</span>
+                  <span className="date">{userProfile.birthday}</span>
+                  <span>
+                    <LockOutlinedIcon
+                      style={{ color: 'grey', paddingTop: '5px' }}
+                    />
+                  </span>
+                </Button>
+              </Grid>
 
-            <Grid item xs={12}>
-              <TextField
-                aria-label="enter your favorite location"
-                label="Favorite Location"
-                title="enter your favorite location"
-                sx={{ width: '100%' }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Card className="card-border">
-                <CardContent>
-                  <Typography
-                    variant="body2"
-                    className="body-text"
-                    title="Keep up to date on rewards, exclusive offers and new product
+              <Grid item xs={12}>
+                <TextField
+                  aria-label="enter your favorite location"
+                  label="Favorite Location"
+                  title="enter your favorite location"
+                  sx={{ width: '100%' }}
+                  value={userProfile.favourite_locations}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Card className="card-border">
+                  <CardContent>
+                    <Typography
+                      variant="body2"
+                      className="body-text"
+                      title="Keep up to date on rewards, exclusive offers and new product
                       launches."
-                    sx={{ width: '100%' }}
-                  >
-                    Keep up to date on rewards, exclusive offers and new product
-                    launches.
-                  </Typography>
-                  <br />
-                  <Grid container>
-                    <Grid item xs={12} sm={6}>
-                      <Switch aria-label="email notification" defaultChecked />
-                      <Typography variant="caption" title="Email Notification">
-                        Email Notification
-                      </Typography>
+                      sx={{ width: '100%' }}
+                    >
+                      Keep up to date on rewards, exclusive offers and new
+                      product launches.
+                    </Typography>
+                    <br />
+                    <Grid container>
+                      <Grid item xs={12} sm={6}>
+                        <Switch
+                          aria-label="email notification"
+                          defaultChecked
+                        />
+                        <Typography
+                          variant="caption"
+                          title="Email Notification"
+                        >
+                          Email Notification
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <Switch aria-label="push notification" />
+                        <Typography variant="caption" title="Push Notification">
+                          Push Notification
+                        </Typography>
+                      </Grid>
                     </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <Switch aria-label="push notification" />
-                      <Typography variant="caption" title="Push Notification">
-                        Push Notification
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                </CardContent>
-              </Card>
-            </Grid>
-            <Grid item xs={12}>
-              <Button
-                aria-label="submit"
-                title="submit"
-                variant="contained"
-                sx={{ width: { xs: '100%', lg: '400px' } }}
-              >
-                Submit
-              </Button>
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                  aria-label="submit"
+                  title="submit"
+                  variant="contained"
+                  sx={{ width: { xs: '100%', lg: '400px' } }}
+                >
+                  Submit
+                </Button>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
-      </Grid>
+      )}
     </div>
   );
 };
 
-export default Profile;
+export default React.memo(Profile);

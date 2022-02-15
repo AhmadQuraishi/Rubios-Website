@@ -6,7 +6,7 @@ export const getMenuItem = (id: number) => {
     return axios
       .get(url + `restaurants/${id}/menu?includedisabled=false`, {
         headers: {
-          Authorization: `OloKey ElwEkgDhuasD9HydkYI2kp3Hs0EWPkR2`,
+          Authorization: process.env.REACT_APP_OLO_AUTH_KEY || '',
         },
       })
       .then((response) => response.data)

@@ -10,6 +10,7 @@ import { makeStyles } from '@mui/styles';
 import { Link } from 'react-router-dom';
 import { Fragment, useEffect } from 'react';
 import './index.css';
+import { Product } from '../../types/olo-api';
 
 const useStyles = makeStyles((theme: Theme) => ({
   img: {
@@ -49,10 +50,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const ProductListing = (props: any) => {
   const classes = useStyles();
-  const { productList, shownItems } = props;
-  let products = productList;
-  if (shownItems) {
-    products = productList.slice(0, shownItems);
+  const { productList, shownItemsCount, categoryID } = props;
+  let products: [Product] = productList;
+  if (shownItemsCount) {
+    products = productList.slice(0, shownItemsCount);
   }
   return (
     <Fragment>
@@ -67,7 +68,7 @@ const ProductListing = (props: any) => {
             md={3}
           >
             <Link
-              to="/product"
+              to={`/product/${categoryID}/${item.id}`}
               aria-label={item.name}
               style={{ textDecoration: 'none' }}
             >

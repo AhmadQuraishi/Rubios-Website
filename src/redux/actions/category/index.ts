@@ -1,14 +1,14 @@
 import { categoryActionsTypes } from '../../types/category';
+import { ResponseMenu } from '../../../types/olo-api';
 
 export function getCategoriesRequest(id: number) {
-  debugger;
   return {
     type: categoryActionsTypes.GET_CATEGORY_ITMES_REQUEST,
-    storeID: id,
+    restaurantID: id,
   };
 }
 
-export function getCategoriesRequestSuccess(data: any) {
+export function getCategoriesRequestSuccess(data: ResponseMenu) {
   return {
     type: categoryActionsTypes.GET_CATEGORY_ITMES_SUCCESS,
     payload: data,

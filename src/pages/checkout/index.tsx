@@ -22,7 +22,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Radio from '@mui/material/Radio';
-import StoreInfoBar from '../../components/store-info-bar';
+import StoreInfoBar from '../../components/restaurant-info-bar';
 
 const Checkout = () => {
   const [time, setTime] = React.useState('');

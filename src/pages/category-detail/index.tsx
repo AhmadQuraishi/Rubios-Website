@@ -1,9 +1,13 @@
-import StoreInfoBar from '../../components/store-info-bar';
+import StoreInfoBar from '../../components/restaurant-info-bar';
 import ProductListing from '../../components/product-listing';
 import { Grid, Theme, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { Fragment } from 'react';
-import { useSelector } from 'react-redux';
+import { Fragment, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { getCategoriesRequest } from '../../redux/actions/category';
+import LoadingBar from '../../components/loading-bar';
+import { Category } from '../../types/olo-api';
 
 const useStyles = makeStyles((theme: Theme) => ({
   heading: {
@@ -27,92 +31,58 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const CategoryDetail = () => {
+  const dispatch = useDispatch();
   const classes = useStyles();
-  const categoriesData = useSelector((state: any) => state.menuReducer);
-  console.log(categoriesData);
-  const products = [
-    {
-      image:
-        'https://www.rubios.com/sites/default/files/styles/menu_item_teaser/public/menu/TacoKit.jpg?itok=sXyv_fvV',
-      name: ' California Burrito',
-      desc: 'Salsa Verde Taco, Grilled Gourmet Toca and the Maxican street corn Taco all with your choice of sustainably sourced protien.',
-      cal: '1000',
-      price: '12.05',
-    },
-    {
-      image:
-        'https://www.rubios.com/sites/default/files/styles/menu_item_teaser/public/bowl-mahi-mahi.jpg?itok=yXA_BMpa',
-      name: ' Grilled Chicken Salad Bowl',
-      desc: 'Salsa Verde Taco, Grilled Gourmet Toca and the Maxican street corn Taco all with your choice of sustainably sourced protien.',
-      cal: '1000',
-      price: '12.05',
-    },
-    {
-      image:
-        'https://www.rubios.com/sites/default/files/styles/menu_item_teaser/public/menu/Chicken_Nachos_V2.jpg?itok=JCQOjNiP',
-      name: ' Classic Grilled Chicken Salad Platter',
-      desc: 'Salsa Verde Taco, Grilled Gourmet Toca and the Maxican street corn Taco all with your choice of sustainably sourced protien.',
-      cal: '1000',
-      price: '12.05',
-    },
-    {
-      image:
-        'https://www.rubios.com/sites/default/files/styles/menu_item_teaser/public/menu/Shirmp%20and%20Bacon%20Burrito%20-%201400x800%20-%20DD.jpg?itok=aNmnW-Q0',
-      name: ' Warp Chicken Special Roll',
-      desc: 'Salsa Verde Taco, Grilled Gourmet Toca and the Maxican street corn Taco all with your choice of sustainably sourced protien.',
-      cal: '1000',
-      price: '12.05',
-    },
-    {
-      image:
-        'https://www.rubios.com/sites/default/files/styles/menu_item_teaser/public/menu/TacoKit.jpg?itok=sXyv_fvV',
-      name: ' California Burrito',
-      desc: 'Salsa Verde Taco, Grilled Gourmet Toca and the Maxican street corn Taco all with your choice of sustainably sourced protien.',
-      cal: '1000',
-      price: '12.05',
-    },
-    {
-      image:
-        'https://www.rubios.com/sites/default/files/styles/menu_item_teaser/public/menu/Shirmp%20and%20Bacon%20Burrito%20-%201400x800%20-%20DD.jpg?itok=aNmnW-Q0',
-      name: ' Warp Chicken Special Roll',
-      desc: 'Salsa Verde Taco, Grilled Gourmet Toca and the Maxican street corn Taco all with your choice of sustainably sourced protien.',
-      cal: '1000',
-      price: '12.05',
-    },
-    {
-      image:
-        'https://www.rubios.com/sites/default/files/styles/menu_item_teaser/public/bowl-mahi-mahi.jpg?itok=yXA_BMpa',
-      name: ' Grilled Chicken Salad Bowl',
-      desc: 'Salsa Verde Taco, Grilled Gourmet Toca and the Maxican street corn Taco all with your choice of sustainably sourced protien.',
-      cal: '1000',
-      price: '12.05',
-    },
-    {
-      image:
-        'https://www.rubios.com/sites/default/files/styles/menu_item_teaser/public/menu/Chicken_Nachos_V2.jpg?itok=JCQOjNiP',
-      name: ' Classic Grilled Chicken Salad Platter',
-      desc: 'Salsa Verde Taco, Grilled Gourmet Toca and the Maxican street corn Taco all with your choice of sustainably sourced protien.',
-      cal: '1000',
-      price: '12.05',
-    },
-  ];
+  const { id } = useParams();
+  const [selectedCategory, setSelectedCategory] = useState<Category>();
+
+  const { categories, loading } = useSelector(
+    (state: any) => state.categoryReducer,
+  );
+
+  useEffect(() => {
+    //TODO: StoreID will get from State when select store work will be done
+    const storeID = 60854;
+    dispatch(getCategoriesRequest(storeID));
+  }, []);
+
+  useEffect(() => {
+    if (categories && categories.categories) {
+      if (id) {
+        const category = categories.categories.find((obj: Category) => {
+          return obj.id.toString() == id;
+        });
+        setSelectedCategory(category);
+      }
+    }
+  }, [categories]);
+
   return (
     <Fragment>
       <StoreInfoBar />
-      <Grid
-        container
-        spacing={0}
-        sx={{ padding: { xs: '30px', md: '30px 80px 0px 80px' } }}
-      >
-        <Grid item xs={12} md={6}>
-          <Typography className={classes.heading} title="Seasonal Menu">
-            Seasonal Menu
-          </Typography>
+      {loading === true && selectedCategory == null && <LoadingBar />}
+      {selectedCategory && (
+        <Grid
+          container
+          spacing={0}
+          sx={{ padding: { xs: '30px', md: '30px 80px 0px 80px' } }}
+        >
+          <Grid item xs={12} md={6}>
+            <Typography
+              className={classes.heading}
+              title={selectedCategory.name}
+            >
+              {selectedCategory.name}
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sx={{ paddingBottom: '20px' }}>
+            <ProductListing
+              productList={selectedCategory.products}
+              categoryID={id}
+            />
+          </Grid>
         </Grid>
-        <Grid item xs={12} sx={{ paddingBottom: '20px' }}>
-          <ProductListing productList={products} />
-        </Grid>
-      </Grid>
+      )}
       <div style={{ paddingBottom: '30px' }}></div>
     </Fragment>
   );

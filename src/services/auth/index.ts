@@ -17,8 +17,7 @@ export const getToken = async (code: string): Promise<any> => {
       {
         headers: {
           "accept": "application/json",
-          "Content-Type": "application/json",
-          "Origin": window.location.origin
+          "Content-Type": "application/json"
         }
       }
     );

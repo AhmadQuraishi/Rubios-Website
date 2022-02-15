@@ -44,10 +44,12 @@
     color:#B9B9B9;
     font-size: 15px;
     font-weight: 600;
+    cursor: pointer;
 }
 
 .delivery-address-container .card-panel .small-button-panel .link.default {
     color:#1F86C7;
+    cursor: pointer;
 }
 
 .delivery-address-container .button-panel {

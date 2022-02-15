@@ -15,7 +15,7 @@ const categoryReducer = (state = INITIAL_STATE, action: any) => {
     case categoryActionsTypes.GET_CATEGORY_ITMES_FAILURE:
       return { ...state, loading: false, error: action.error };
     default:
-      return { ...state };
+      return state;
   }
 };
 

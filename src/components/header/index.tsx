@@ -46,6 +46,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     '& img': {
       width: '90%',
+      [theme.breakpoints.down('sm')]: {
+        width: '80%',
+      },
     },
   },
   icon: {
@@ -123,7 +126,7 @@ const Header = (props: any) => {
                   textTransform="uppercase"
                   title=" Hi Stacey"
                 >
-                  Hi, Stacey !
+                  Hi, Stacey!
                 </Typography>
               </>
             )}
@@ -133,7 +136,8 @@ const Header = (props: any) => {
               <Drawer open={openDrawer} onClose={() => setOpenDrawer(false)}>
                 <div style={{ padding: '20px' }}>
                   <Link
-                    to="/category"
+                    to="/"
+                    onClick={() => setOpenDrawer(false)}
                     className={classes.menuLink}
                     title="Main Menu"
                   >
@@ -151,7 +155,7 @@ const Header = (props: any) => {
                   onClick={handleShowCart}
                   src={cartIconMobile}
                   alt="Cart Icon"
-                  style={{ width: '25px', paddingRight: '10px' }}
+                  style={{ width: '28px', paddingRight: '10px' }}
                   title="Cart Icon"
                 />
               )}
