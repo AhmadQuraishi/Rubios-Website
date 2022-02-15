@@ -51,9 +51,11 @@
 }
 .address {
   font-size: 13px;
+  margin-bottom: 0px !important;
 }
 .label {
   text-align: left;
+  margin-bottom: 0px !important;
 }
 .label span {
   margin: 0;

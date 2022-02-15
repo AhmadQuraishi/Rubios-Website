@@ -134,7 +134,7 @@ const LocationCard = (data :any) => {
             <Grid item xs={12}>
               <FixedSizeList className="address-list"
                 height={400}
-                itemSize={130}
+                itemSize={100}
                 width="auto"
                 itemCount={filteredRes.length}
                 overscanCount={5}
