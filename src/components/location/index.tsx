@@ -5,12 +5,11 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
 import SearchIcon from '@mui/icons-material/Search';
-import CheckIcon from '@mui/icons-material/Check';
 import './location.css';
 
 const LocationCard = (data :any) => {
   const restaurants = data.respondData.restaurants;
- 
+
   console.log("child comp : ")
   console.log( data.respondData.restaurants)
   const [city, setCity] = useState('New York');
@@ -33,7 +32,7 @@ const LocationCard = (data :any) => {
 
   function renderRow(props: ListChildComponentProps) {
     const { index, style } = props;
-   
+
     console.log( filteredRes)
     return (
       <ListItem
@@ -133,7 +132,7 @@ const LocationCard = (data :any) => {
               </Typography>
             </Grid>
             <Grid item xs={12}>
-              <FixedSizeList
+              <FixedSizeList className="address-list"
                 height={400}
                 itemSize={130}
                 width="auto"

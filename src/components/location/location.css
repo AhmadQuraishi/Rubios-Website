@@ -20,7 +20,7 @@
 }
 .location-sidebar .selected-btn {
   width: 100%;
-  height: auto;
+  margin-bottom: 10px !important;
 }
 .location-sidebar .selected-btn.Mui-selected:before {
   content: '';
@@ -37,6 +37,10 @@
 .location-sidebar .MuiToggleButtonGroup-root {
   display: flex;
   flex-direction: column;
+}
+.location-sidebar .address-list {
+  height: auto !important;
+  max-height: 400px !important;
 }
 
 .name span {
