@@ -1,10 +1,11 @@
-import { Button, Card, Grid, TextField, Box, Typography } from '@mui/material';
+import { Button, Card, Grid, TextField, Box, Typography, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import React, { useState } from 'react';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
 import SearchIcon from '@mui/icons-material/Search';
+import CheckIcon from '@mui/icons-material/Check';
 import './location.css';
 
 const LocationCard = () => {
@@ -89,6 +90,14 @@ const LocationCard = () => {
     console.log(city);
   };
 
+  const [alignment, setAlignment] = React.useState('web');
+  const onServiceSelect = (
+    event: React.MouseEvent<HTMLElement>,
+    newAlignment: string,
+  ) => {
+    setAlignment(newAlignment);
+  };
+
   const filteredRes = restaurants.filter((restaurant) => {
     return restaurant.city === city;
   });
@@ -161,19 +170,21 @@ const LocationCard = () => {
         <Card>
           <Grid container spacing={2} className="location-sidebar">
             <Grid item xs={12}>
-              <Button variant="contained" title="Pick up">
-                PICK UP
-              </Button>
-            </Grid>
-            <Grid item xs={12}>
-              <Button variant="contained" title="Curbside">
-                CURBSIDE
-              </Button>
-            </Grid>
-            <Grid item xs={12}>
-              <Button variant="contained" title="Delivery">
-                DELIVERY
-              </Button>
+              <ToggleButtonGroup
+                value={alignment}
+                exclusive
+                onChange={onServiceSelect}
+              >
+                <ToggleButton value="Pick up" className="selected-btn">
+                  Pick Up
+                </ToggleButton>
+                <ToggleButton value="Curbside" className="selected-btn">
+                  Curbside
+                </ToggleButton>
+                <ToggleButton value="Delivery" className="selected-btn">
+                  Delivery
+                </ToggleButton>
+              </ToggleButtonGroup>
             </Grid>
             <Grid item xs={12}>
               <TextField
