@@ -142,13 +142,6 @@ const FoodMenuCard = (props: any) => {
 
   const isItemSelected = (id: number): any => {
     if (selectedItem.length > 0) {
-      console.log(
-        selectedItem +
-          ' - ' +
-          id +
-          ' - ' +
-          selectedItem?.find((x: number) => x === id),
-      );
       return selectedItem?.find((x: number) => x === id) ? true : false;
     }
   };
