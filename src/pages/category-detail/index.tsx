@@ -39,7 +39,11 @@ const CategoryDetail = () => {
   const { categories, loading } = useSelector(
     (state: any) => state.categoryReducer,
   );
-
+  useEffect(() => {
+    if (loading == true) {
+      setSelectedCategory(undefined);
+    }
+  }, [loading]);
   useEffect(() => {
     //TODO: StoreID will get from State when select store work will be done
     const storeID = 60854;
