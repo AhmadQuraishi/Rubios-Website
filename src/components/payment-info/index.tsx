@@ -1,17 +1,19 @@
 import { Button, Grid, IconButton, TextField, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
+import './payment-info.css';
 
 const PaymentInfo = () => {
   return (
     <Grid container>
       {/*column for space*/}
-      <Grid item xs={1} sm={0.5} md={0.5} lg={2} />
+      <Grid item xs={12} sm={12} md={2} lg={2} />
 
       <Grid item xs={10} sm={11} md={11} lg={8}>
         <Typography variant="h4" title="PAYMENT INFO">
           PAYMENT INFO
         </Typography>
-        <Grid container>
+        <br/>
+        <Grid container spacing={2} className="payment-form">
           <Grid item xs={12} sm={12} md={6}>
             <Grid container>
               <Grid item xs={12}>
@@ -57,38 +59,29 @@ const PaymentInfo = () => {
             </Grid>
           </Grid>
 
-          <Grid item xs={12}>
-            <Grid container>
-              <Grid item xs={3} sm={4} md={4} lg={5} />
-              <Grid item xs={6} sm={4} md={4} lg={3}>
-                <Button title="ADD A GIFT CARD">ADD A GIFT CARD</Button>
-              </Grid>
-              <Grid item xs={3} sm={4} md={4} lg={5} />
+          <Grid container>
+            <Grid item xs={12} sm={12} md={12} lg={12} className="add-gift">
+              <Button title="ADD A GIFT CARD" className="label">ADD GIFT CARD</Button>
             </Grid>
           </Grid>
 
-          <Grid item xs={12}>
-            <Grid container>
-              <Grid item xs={3} sm={4} md={4} lg={5} />
-              <Grid item xs={6} sm={4} md={4} lg={3}>
-                <Link
-                  to="/orderconfirmation"
-                  style={{ textDecoration: 'none' }}
-                  aria-label="place your order"
-                >
-                  <Button variant="contained" title="PLACE ORDER">
-                    PLACE ORDER
-                  </Button>
-                </Link>
-              </Grid>
-              <Grid item xs={3} sm={4} md={4} lg={5} />
+          <Grid container className="add-order">
+            <Grid item xs={12} sm={12} md={4} lg={4}>
+              <Link
+                to="/orderconfirmation"
+                aria-label="place your order"
+              >
+                <Button variant="contained" title="PLACE ORDER">
+                  PLACE ORDER
+                </Button>
+              </Link>
             </Grid>
           </Grid>
         </Grid>
       </Grid>
 
       {/*column for space*/}
-      <Grid item xs={1} sm={0.5} md={0.5} lg={2} />
+      <Grid item xs={1} sm={12} md={2} lg={2} />
     </Grid>
   );
 };

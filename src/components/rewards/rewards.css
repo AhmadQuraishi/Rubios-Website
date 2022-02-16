@@ -1,0 +1,8 @@
+.rewards {
+  text-align: center;
+  margin: 20px 0px;
+}
+.rewards .label {
+  border: 1px solid #0075BF;
+  padding: 20px;
+}

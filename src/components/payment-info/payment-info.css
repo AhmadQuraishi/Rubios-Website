@@ -1,0 +1,21 @@
+.payment-form .MuiTextField-root {
+  margin-bottom: 10px;
+}
+.payment-form .add-gift {
+  text-align: center;
+  margin: 40px 0px;
+}
+.payment-form .add-gift .label {
+  font-size: 16px !important;
+}
+.payment-form .add-order {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+.payment-form .add-order a {
+  text-decoration: none;
+}
+.payment-form .add-order button {
+  width: 100%;
+}

@@ -100,6 +100,7 @@ h6 {
   color: white;
   border: none;
   margin: 0px !important;
+  font-size: 16px;
 }
 .selected-btn.MuiToggleButton-standard:focus {
   outline: 1px dotted #79C043 !important;
@@ -122,8 +123,17 @@ h6 {
   color: #214F66;
   font-size: 12px;
 }
-
-input {
+.MuiFormControl-root {
+  width: 100%;
+}
+.MuiInputBase-root {
+  border-radius: 0px !important;
+  padding: 0px !important;
+}
+.MuiTextField-root {
+  width: 100%;
+}
+.MuiTextField-root input {
   color: #000;
   border-radius: 0;
   font-family: 'Poppins-Regular', sans-serif !important;
@@ -143,14 +153,21 @@ fieldset{
   font-family: 'Poppins-Regular', sans-serif;
 }
 
-.MuiInputBase-root{
-  border-radius: 0px !important;
-  padding: 0px;
-}
 .card-border
 {
   border-radius: 0px !important;
   border: 1px solid blue;
+}
+
+.slot-label {
+  background: #79C043 !important;
+  color: white !important;
+  width: 122px !important;
+  display: inline-block !important;
+  text-align: center;
+  font-size: 12px !important;
+  font-family: 'Poppins-Bold' !important;
+  padding: 8px 0px !important;
 }
 
 /***** Scrollbar Style *****/

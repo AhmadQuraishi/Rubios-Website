@@ -5,6 +5,7 @@ import food from '../../assets/imgs/food.svg';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
 import FormControl from '@mui/material/FormControl';
+import './rewards.css';
 
 const Rewards = () => {
   const rewardsArray = [
@@ -26,15 +27,11 @@ const Rewards = () => {
       <Grid item xs={1} sm={0.5} md={0.5} lg={2} />
 
       {view && (
-        <Grid item xs={10} sm={11} md={11} lg={8}>
-          <Grid container>
-            <Grid item xs={3} sm={4} md={4} lg={5} />
-            <Grid item xs={6} sm={4} md={4} lg={3}>
-              <Button onClick={handler} title="VIEW REWARDS">
-                VIEW REWARDS
-              </Button>
-            </Grid>
-            <Grid item xs={3} sm={4} md={4} lg={5} />
+        <Grid container className="rewards">
+          <Grid item xs={12} sm={12} md={12} lg={12}>
+            <Button onClick={handler} title="VIEW REWARDS" className="label">
+              VIEW REWARDS
+            </Button>
           </Grid>
         </Grid>
       )}

@@ -43,21 +43,21 @@
   max-height: 400px !important;
 }
 
-.name span {
+.location-sidebar .name span {
   font-family: 'Poppins-Bold', sans-serif !important;
   color: #414141;
   font-size: 18px;
   padding: 0px;
 }
-.address {
+.location-sidebar .address {
   font-size: 13px;
   margin-bottom: 0px !important;
 }
-.label {
+.location-sidebar .label {
   text-align: left;
   margin-bottom: 0px !important;
 }
-.label span {
+.location-sidebar .label span {
   margin: 0;
   font-size: 13px !important;
 }
