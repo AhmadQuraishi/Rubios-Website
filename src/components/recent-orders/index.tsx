@@ -30,7 +30,9 @@ const RecentOrders = (props: any) => {
   return (
     <Fragment>
       {loading && <LoadingBar />}
-      {!loading && recentorders.length < 1 && <h6>You don't have any recent orders</h6>}
+      {recentorders.length < 1 && !loading && (
+        <h6>You don't have any recent orders</h6>
+      )}
       {!loading && recentorders.length > 0 && (
         <Grid container spacing={3} className="order-history-card">
           {recentorders.map((order: any) => (
@@ -43,7 +45,8 @@ const RecentOrders = (props: any) => {
                       className="order-date"
                       title={`LAST ORDERED ${order.timeplaced}`}
                     >
-                      LAST ORDERED {order.timeplaced}
+                      LAST ORDERED {order.timeplaced.substr(6, 2)}/
+                      {order.timeplaced.substr(4, 2)}
                     </Typography>
                     <Typography
                       variant="caption"
@@ -82,19 +85,18 @@ const RecentOrders = (props: any) => {
                     }}
                     className="order-detail-panel"
                   >
-                  
-                    {
-                      order.products.slice(0,3).map((product : any , index: number) => (
+                    {order.products
+                      .slice(0, 3)
+                      .map((product: any, index: number) => (
                         <Typography
-                      className="order-detail"
-                      variant="body2"
+                          className="order-detail"
+                          variant="body2"
                           title={product.name}
-                          key = {product.name + product.quantity}
-                    >
-                      {product.quantity} x {product.name}
-                    </Typography>
-                      ))
-                    }
+                          key={product.name + product.quantity}
+                        >
+                          {product.quantity} x {product.name}
+                        </Typography>
+                      ))}
                     <Typography
                       className="order-Link"
                       variant="button"

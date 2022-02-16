@@ -33,7 +33,9 @@ const FavoriteOrders = (props: any) => {
   return (
     <Fragment>
       {loading && <LoadingBar />}
-      {!loading && favOrders.length < 1 && <h6>You don't have any favorites</h6>}
+      {!loading && favOrders.length < 1 && (
+        <h6>You don't have any favorites</h6>
+      )}
       {!loading && favOrders.length > 0 && (
         <Grid container spacing={3} className="order-history-card">
           {favOrders.map((forder: any) => (
@@ -41,7 +43,6 @@ const FavoriteOrders = (props: any) => {
               <Card elevation={0} className="card-panel">
                 <Grid container>
                   <Grid item xs={8}>
-                  
                     <Typography
                       variant="caption"
                       className="order-name"
@@ -61,7 +62,7 @@ const FavoriteOrders = (props: any) => {
                   <Grid item xs={12} sm={4}>
                     <CardMedia
                       component="img"
-                      title='food item image'
+                      title="food item image"
                       image={require('../../assets/imgs/order-hidtory-icon.png')}
                       alt="Live from space album cover"
                       className="order-img"
@@ -79,19 +80,17 @@ const FavoriteOrders = (props: any) => {
                     }}
                     className="order-detail-panel"
                   >
-                    {
-                      forder.products.map((product : any , index: number) => (
-                        <Typography
-                      className="order-detail"
-                      variant="body2"
-                          title={product.name}
-                          key = {product.name + product.quantity}
-                    >
-                      {product.quantity} x {product.name}
-                    </Typography>
-                      ))
-                    }
-                  
+                    {forder.products.map((product: any, index: number) => (
+                      <Typography
+                        className="order-detail"
+                        variant="body2"
+                        title={product.name}
+                        key={product.name + product.quantity}
+                      >
+                        {product.quantity} x {product.name}
+                      </Typography>
+                    ))}
+
                     <Typography
                       className="order-Link"
                       variant="button"

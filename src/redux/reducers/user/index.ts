@@ -1,3 +1,4 @@
+import { type } from 'os';
 import { userTypes as Type } from '../../types/user';
 
 const initialState = {
@@ -13,14 +14,17 @@ const initialState = {
 const userReducer = (state = initialState, action: any) => {
   switch (action.type) {
     // Case get requests
-    case Type.GET_USER_PROFILE:
     case Type.GET_USER_RECENT_ORDERS:
     case Type.GET_USER_FAVORITE_ORDERS:
-    case Type.GET_USER_DELIVERY_ADDRESSES:
+    // case Type.GET_USER_DELIVERY_ADDRESSES:
+      case Type.GET_USER_PROFILE:
+    case Type.CHANGE_PASSWORD:
+    case Type.UPDATE_USER:
       return { ...state, loading: true };
 
     //Success cases
     case Type.GET_USER_PROFILE_SUCCESS:
+    case Type.CHANGE_PASSWORD_SUCCESS:
       return {
         ...state,
         loading: false,
@@ -55,6 +59,12 @@ const userReducer = (state = initialState, action: any) => {
         ...state,
         loading: false,
       };
+    case Type.UPDATE_USER_SUCCESS:
+      return {
+        ...state,
+        userProfile: action.payload,
+        loading: false,
+      };
 
     // error cases
     case Type.GET_USER_RECENT_ORDERS_FAILURE:
@@ -63,6 +73,8 @@ const userReducer = (state = initialState, action: any) => {
     case Type.GET_USER_DELIVERY_ADDRESSES_FAILURE:
     case Type.SET_USER_DEFAULT_DEL_ADD_FAILURE:
     case Type.DEL_USER_DEL_ADD_FAILURE:
+    case Type.UPDATE_USER_FAILURE:
+    case Type.CHANGE_PASSWORD_FAILURE:
       return { ...state, loading: false, error: action.error };
 
     default:

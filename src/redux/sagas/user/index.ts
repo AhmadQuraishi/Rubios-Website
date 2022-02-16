@@ -7,11 +7,12 @@ import {
   requestUserFavoriteOrders,
   requestUserDeliiveryAddresses,
   requestSetUserDefDelAddress,
-  requestDelUserDelAddress
+  requestDelUserDelAddress,
+  requestUpdateUser,
+  requestChangePassword
 } from '../../../services/user';
 import {
   deleteUserDelAddFailure,
-  deleteUserDeliveryAddress,
   getUserDeliveryAddressesFailure,
   getUserDeliveryAddressesSuccess,
   getUserFavoritetOrdersFailure,
@@ -22,7 +23,11 @@ import {
   getUserRecentOrdersSuccess,
   setUserDefaultDelAddFailure,
   setUserDefaultDelAddressSuccess,
-  deleteUserDelAddSuccess
+  deleteUserDelAddSuccess,
+  updateUserSuccess,
+  updateUserFailure,
+  changePasswordSuccess,
+  changePasswordFailure
 } from '../../actions/user';
 
 //profile
@@ -95,6 +100,32 @@ function* deleleteDelAddressHandler(action: any): any {
   }
 }
 
+// Update User
+function* updateUserHandler(action: any): any {
+  try {
+    const response = yield call(
+      requestUpdateUser,
+      action.payload,
+    );
+    yield put(updateUserSuccess(response));
+  } catch (error) {
+    yield put(updateUserFailure(error));
+  }
+}
+
+// Update User
+function* changePasswordHandler(action: any): any {
+  try {
+    const response = yield call(
+      requestChangePassword,
+      action.payload,
+    );
+    yield put(changePasswordSuccess(response));
+  } catch (error) {
+    yield put(changePasswordFailure(error));
+  }
+}
+
 export function* userSaga() {
   yield takeEvery(Type.GET_USER_PROFILE, userProfileHandler);
   yield takeEvery(Type.GET_USER_RECENT_ORDERS, userRecentOrdersHandler);
@@ -110,6 +141,14 @@ export function* userSaga() {
   yield takeEvery(
     Type.DELETE_USER_DELIVERY_ADDRESS,
     deleleteDelAddressHandler,
+  );
+  yield takeEvery(
+    Type.UPDATE_USER,
+    updateUserHandler,
+  );
+  yield takeEvery(
+    Type.CHANGE_PASSWORD,
+    changePasswordHandler,
   );
 }
 

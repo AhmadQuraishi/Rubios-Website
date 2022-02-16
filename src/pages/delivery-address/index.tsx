@@ -40,46 +40,35 @@ const DeliveryAddress = () => {
   const [value, setValue] = useState(true);
   const dispatch = useDispatch();
 
-
   const authtoken = useSelector((state: any) => state.TokensReducer.authtoken);
-  const { userDeliveryAddresses, loading , userDefaultDeliveryAddress } = useSelector(
-    (state: any) => state.userReducer,
-  );
+  const { userDeliveryAddresses, loading, userDefaultDeliveryAddress } =
+    useSelector((state: any) => state.userReducer);
 
   useEffect(() => {
-   
-      dispatch(getUserDeliveryAddresses(authtoken));
-
-    
+    dispatch(getUserDeliveryAddresses(authtoken));
   }, [userDefaultDeliveryAddress]);
-
 
   useEffect(() => {
     if (userDeliveryAddresses && userDeliveryAddresses.deliveryaddresses) {
       console.log(userDeliveryAddresses.deliveryaddresses);
       setDelAddresses(userDeliveryAddresses.deliveryaddresses);
-     
-    
     }
-  }, [userDeliveryAddresses , loading])
-  
+  }, [userDeliveryAddresses, loading]);
+
   const defaultAddressHandler = (e: any, id: number) => {
-
-
     const obj = {
-      addressid : id
-    }
+      addressid: id,
+    };
     dispatch(setUserDefaultDelAddress(obj, authtoken));
-  }
+  };
 
   const deleteAddressHandler = (id: number) => {
-    
     dispatch(deleteUserDeliveryAddress(id, authtoken));
     setTimeout(() => {
       dispatch(getUserDeliveryAddresses(authtoken));
     }, 600);
     setValue(!value);
-  }
+  };
 
   return (
     <Fragment>
@@ -94,18 +83,17 @@ const DeliveryAddress = () => {
         {!loading &&
           deliveryaddresses.length > 0 &&
           deliveryaddresses.map((address: any, index) => (
-           
-              <Grid item xs={12} key={index + address.id}>
-             <Card elevation={0} className="card-panel">
+            <Grid item xs={12} key={index + address.id}>
+              <Card elevation={0} className="card-panel">
                 <CardContent className="card-content">
                   <Typography variant="body2" title="DEFAULT Stacey's Home">
                     {address.isdefault && <b>DEFAULT</b>} {address.building}
                   </Typography>
                   <Typography variant="body2" title="5326 Highway Ave.">
-                  {address.streetaddress}
+                    {address.streetaddress}
                   </Typography>
                   <Typography variant="body2" title="Apt 342">
-                  {address.city}
+                    {address.city}
                   </Typography>
                   <Typography variant="body2" title="Carisbad, CA 34092-342387">
                     Carisbad, CA 34092-342387
@@ -125,19 +113,21 @@ const DeliveryAddress = () => {
                         aria-label="Delete"
                         title="DELETE"
                         className="link"
-                         onClick={() => deleteAddressHandler( address.id )}
+                        onClick={() => deleteAddressHandler(address.id)}
                       >
                         DELETE
                       </Typography>
-                     {!address.isdefault  &&  <Typography
-                        variant="button"
-                        aria-label="MAke Default"
-                        title="Make Default"
-                        className="link default"
-                        onClick={(e) => defaultAddressHandler( e , address.id )}
-                      >
-                        MAKE DEFAULT
-                      </Typography>}
+                      {!address.isdefault && (
+                        <Typography
+                          variant="button"
+                          aria-label="MAke Default"
+                          title="Make Default"
+                          className="link default"
+                          onClick={(e) => defaultAddressHandler(e, address.id)}
+                        >
+                          MAKE DEFAULT
+                        </Typography>
+                      )}
                     </Grid>
                   </Grid>
                 </CardContent>
@@ -145,7 +135,6 @@ const DeliveryAddress = () => {
             </Grid>
           ))}
 
-       
         <Grid item xs={12}>
           <Link
             to="/account/addDeliveryAddress"

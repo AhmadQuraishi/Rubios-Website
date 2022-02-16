@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { store } from '../../redux/store';
 
 //profile
 export const RequestUserProfile = () => {
@@ -8,11 +10,52 @@ export const RequestUserProfile = () => {
 
     const url = `https://sandbox.punchh.com/api/auth/users?client=${process.env.REACT_APP_PUNCHH_CLIENT_ID}&access_token=${access_token}`;
 
-    return axios(url).then((response) => response.data);
+    return axios.get(url).then((response) => response.data);
   } catch (error) {
     throw error;
   }
 };
+
+//Update user profile
+export const requestUpdateUser = (body: object) => {
+  const obj = {
+    user: body,
+    client: 'c7f0b80300f53da0f25b52b06c8b9b89afcb47397e8e2c1f3fe9b58200171a41',
+    authentication_token: 'JckRvf5eQoHPFNb8-Uhm'
+  }
+
+  // console.log(store.getState().TokensReducer.providertoken);
+  try {
+
+    const url = `https://sandbox.punchh.com/api/auth/users`;
+
+    return axios.put(url, obj).then((response) => response.data);
+
+  } catch (error) {
+    throw error;
+  }
+};
+
+//Change Password requestChangePassword
+export const requestChangePassword = (body: object) => {
+  const obj = {
+    user: body,
+    client: 'c7f0b80300f53da0f25b52b06c8b9b89afcb47397e8e2c1f3fe9b58200171a41',
+    authentication_token: 'JckRvf5eQoHPFNb8-Uhm'
+  }
+
+  // console.log(store.getState().TokensReducer.providertoken);
+  try {
+
+    const url = ` https://sandbox.punchh.com/api/auth/users/change_password`;
+
+    return axios.patch(url, obj).then((response) => response.data);
+
+  } catch (error) {
+    throw error;
+  }
+};
+
 
 //Recent Orders
 export const requestUserRecentOrders = (authtoken: string) => {
