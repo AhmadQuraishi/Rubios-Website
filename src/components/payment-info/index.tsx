@@ -45,12 +45,13 @@ const PaymentInfo = () => {
                   title="Last Name"
                 />
               </Grid>
-              <Grid item xs={5} className="image-field">
+            </Grid>
+            <Grid container spacing={2}>
+              <Grid item xs={6} className="image-field align">
                 <TextField label="CVV" aria-label="CVV" aria-required="true" />
                 <img src={require('../../assets/imgs/ccv-icon.png')} />
               </Grid>
-              <Grid item xs={1} />
-              <Grid item xs={5}>
+              <Grid item xs={6}>
                 <TextField
                   label="MM/DD/YY"
                   aria-label="Month/Day/Year"

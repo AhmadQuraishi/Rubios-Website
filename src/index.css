@@ -183,3 +183,8 @@ fieldset{
   border-radius: 20px;
   border: 3px solid #7e7e7e;
 }
+
+input[type="radio"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
