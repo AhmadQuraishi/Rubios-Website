@@ -47,8 +47,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     '& img': {
       width: '90%',
       [theme.breakpoints.down('sm')]: {
-        width: '80%'
-      }
+        width: '80%',
+      },
     },
   },
   icon: {
@@ -136,7 +136,8 @@ const Header = (props: any) => {
               <Drawer open={openDrawer} onClose={() => setOpenDrawer(false)}>
                 <div style={{ padding: '20px' }}>
                   <Link
-                    to="/category"
+                    to="/"
+                    onClick={() => setOpenDrawer(false)}
                     className={classes.menuLink}
                     title="Main Menu"
                   >

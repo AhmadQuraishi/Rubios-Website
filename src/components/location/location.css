@@ -7,7 +7,7 @@
   -moz-border-radius: 30px;
   border-radius: 30px;
   width: 70%;
-  height: calc(100vh - 80px);
+  height:auto; /*calc(100vh - 80px); */
 }
 .list-wrapper .listing {
   padding: 0px;
@@ -18,9 +18,31 @@
 .search-field {
   width: auto !important;
 }
-.location-sidebar button {
+.location-sidebar .selected-btn {
   width: 100%;
+  margin-bottom: 10px !important;
 }
+.location-sidebar .selected-btn.Mui-selected:before {
+  content: '';
+  display: inline-block;
+  transform: rotate(45deg);
+  height: 14px;
+  width: 6px;
+  border-bottom: 3px solid white;
+  border-right: 3px solid white;
+  position: absolute;
+  left: calc(50% - 28%);
+  top: 30%;
+}
+.location-sidebar .MuiToggleButtonGroup-root {
+  display: flex;
+  flex-direction: column;
+}
+.location-sidebar .address-list {
+  height: auto !important;
+  max-height: 400px !important;
+}
+
 .name span {
   font-family: 'Poppins-Bold', sans-serif !important;
   color: #414141;
@@ -29,9 +51,11 @@
 }
 .address {
   font-size: 13px;
+  margin-bottom: 0px !important;
 }
 .label {
   text-align: left;
+  margin-bottom: 0px !important;
 }
 .label span {
   margin: 0;
@@ -39,6 +63,12 @@
 }
 
 @media screen and (max-width: 768px){
+  .list-wrapper .MuiPaper-root {
+    padding: 20px;
+    border-radius: 30px;
+    width: calc(100% - 20%);
+    height: auto;
+  }
   button {
     width: auto;
   }

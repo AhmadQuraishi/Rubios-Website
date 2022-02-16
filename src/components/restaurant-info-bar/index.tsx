@@ -3,8 +3,11 @@ import { makeStyles } from '@mui/styles';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getResturantInfoRequest } from '../../redux/actions/restaurant';
+import { getResturantCalendarRequest } from '../../redux/actions/restaurant/calendar';
 import { ResponseRestaurant } from '../../types/olo-api';
-
+import { GetUserFriendlyHours } from '../../helpers/getUserFriendlyHours';
+import { HoursListing } from '../../helpers/hoursListing';
+import { CalendarTypeEnum } from '../../helpers/hoursListing';
 const useStyle = makeStyles({
   heading: {
     fontSize: '13px',
@@ -17,8 +20,12 @@ const StoreInfoBar = () => {
   const theme = useTheme();
   const classes = useStyle();
   const [restaurantInfo, setRestaurantInfo] = useState<ResponseRestaurant>();
-  const { restaurant, loading } = useSelector(
+  const [restaurantHours, setRestaurantHours] = useState<HoursListing[]>();
+  const { restaurant } = useSelector(
     (state: any) => state.restaurantInfoReducer,
+  );
+  const { calendar } = useSelector(
+    (state: any) => state.restaurantCalendarReducer,
   );
   const dispatch = useDispatch();
 
@@ -34,6 +41,38 @@ const StoreInfoBar = () => {
     }
   }, [restaurant]);
 
+  useEffect(() => {
+    if (restaurantInfo) {
+      var today = new Date();
+      const dateTo =
+        today.getFullYear() * 1e4 +
+        (today.getMonth() + 1) * 100 +
+        today.getDate() +
+        '';
+      const lastWeekDate = new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate() - 6,
+      );
+      const dateFrom =
+        lastWeekDate.getFullYear() * 1e4 +
+        (lastWeekDate.getMonth() + 1) * 100 +
+        lastWeekDate.getDate() +
+        '';
+      dispatch(
+        getResturantCalendarRequest(restaurantInfo.id, dateFrom, dateTo),
+      );
+    }
+  }, [restaurantInfo]);
+
+  useEffect(() => {
+    if (calendar) {
+      setRestaurantHours(
+        GetUserFriendlyHours(calendar, CalendarTypeEnum.business),
+      );
+    }
+  }, [calendar]);
+
   return (
     <>
       {restaurantInfo && (
@@ -42,7 +81,7 @@ const StoreInfoBar = () => {
           spacing={0}
           sx={{
             backgroundColor: theme.palette.secondary.main,
-            padding: { xs: '30px', sm: '35px' },
+            padding: { xs: '30px 20px', sm: '35px' },
           }}
         >
           <Grid item xs={12}>
@@ -99,16 +138,19 @@ const StoreInfoBar = () => {
                 <Typography
                   variant="body1"
                   color="#fff"
+                  component="div"
                   textTransform="uppercase"
                   fontSize={11}
                   paddingTop="8px"
                   title={`${restaurantInfo.streetaddress}, ${restaurantInfo.city}, ${restaurantInfo.state}`}
                 >
-                  {restaurantInfo.streetaddress}
-                  <br />
-                  {restaurantInfo.city}, {restaurantInfo.state}
-                  <br />
-                  0.0 Miles Away
+                  <p style={{ paddingBottom: '2px' }}>
+                    {restaurantInfo.streetaddress}
+                  </p>
+                  <p style={{ paddingBottom: '2px' }}>
+                    {restaurantInfo.city}, {restaurantInfo.state}
+                  </p>
+                  <p>{restaurantInfo.distance.toFixed(1)} Miles Away</p>
                 </Typography>
               </Grid>
               <Grid
@@ -125,65 +167,60 @@ const StoreInfoBar = () => {
                   variant="body2"
                   textTransform="uppercase"
                   title="Hours"
+                  sx={{ paddingBottom: '5px' }}
                 >
                   Hours
                 </Typography>
-                <Grid container spacing={0}>
-                  <Grid item xs={3}>
-                    <List
-                      sx={{
-                        padding: '5px 0 0 0',
-                        fontSize: '12px',
-                        fontWeight: '600',
-                        color: 'background.paper',
-                      }}
-                    >
-                      <ListItem
-                        sx={{
-                          padding: '0 0 0 0',
-                        }}
-                        title="M-S"
-                      >
-                        M-S
-                      </ListItem>
-                      <ListItem
-                        sx={{
-                          padding: '0 0 0 0',
-                        }}
-                        title="S"
-                      >
-                        S
-                      </ListItem>
-                    </List>
-                  </Grid>
-                  <Grid item xs={9}>
-                    <List
-                      sx={{
-                        padding: '5px 0 0 0',
-                        fontSize: '12px',
-                        fontWeight: '500',
-                        color: 'background.paper',
-                      }}
-                    >
-                      <ListItem
-                        sx={{
-                          padding: '0 0 0 0',
-                        }}
-                        title="10AM - 9PM"
-                      >
-                        10AM - 9PM
-                      </ListItem>
-                      <ListItem
-                        sx={{
-                          padding: '0 0 0 0',
-                        }}
-                        title="10:30AM - 5:30PM"
-                      >
-                        10:30AM - 5:30PM
-                      </ListItem>
-                    </List>
-                  </Grid>
-                </Grid>
+                {restaurantHours &&
+                  restaurantHours.length > 0 &&
+                  restaurantHours.map((item: HoursListing, index: number) => (
+                    <Grid container spacing={0} key={index}>
+                      <Grid item xs={3}>
+                        <List
+                          sx={{
+                            padding: '2px 0 0 0',
+                            fontSize: '12px',
+                            fontWeight: '600',
+                            color: 'background.paper',
+                          }}
+                        >
+                          <ListItem
+                            sx={{
+                              padding: '0 0 0 0',
+                            }}
+                            title={item.label}
+                          >
+                            {item.label}
+                          </ListItem>
+                        </List>
+                      </Grid>
+                      <Grid item xs={9}>
+                        <List
+                          sx={{
+                            padding: '2px 0 0 0',
+                            fontSize: '12px',
+                            fontWeight: '500',
+                            color: 'background.paper',
+                          }}
+                        >
+                          <ListItem
+                            sx={{
+                              padding: '0 0 0 0',
+                            }}
+                            title={
+                              item.isOpenAllDay
+                                ? 'Open 24 hours'
+                                : item.start + ' - ' + item.end
+                            }
+                          >
+                            {item.isOpenAllDay
+                              ? 'Open 24 hours'
+                              : item.start + ' - ' + item.end}
+                          </ListItem>
+                        </List>
+                      </Grid>
+                    </Grid>
+                  ))}
               </Grid>
             </Grid>
           </Grid>

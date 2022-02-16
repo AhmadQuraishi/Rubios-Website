@@ -6,7 +6,7 @@ import {
   getResturantInfoRequestFailure,
 } from '../../actions/restaurant';
 
-function* asyncResturantIfoRequest(action: any): any {
+function* asyncResturantInfoRequest(action: any): any {
   try {
     const response = yield call(getRestaurantInfo, action.restaurantID);
     yield put(getResturantInfoRequestSuccess(response));
@@ -18,6 +18,6 @@ function* asyncResturantIfoRequest(action: any): any {
 export function* restaurantInfoSaga() {
   yield takeEvery(
     restaurantActionsTypes.GET_RESTAURANT_INFO_REQUEST,
-    asyncResturantIfoRequest,
+    asyncResturantInfoRequest,
   );
 }

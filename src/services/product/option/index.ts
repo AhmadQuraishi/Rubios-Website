@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-export const getRestaurantInfo = (id: number) => {
+export const getProductOption = (id: number) => {
   try {
     const url = process.env.REACT_APP_OLO_API_URL || '';
     return axios
-      .get(url + `restaurants/${id}`, {
+      .get(url + `/products/${id}/modifiers?includedisabled=false`, {
         headers: {
           Authorization: process.env.REACT_APP_OLO_AUTH_KEY || '',
         },

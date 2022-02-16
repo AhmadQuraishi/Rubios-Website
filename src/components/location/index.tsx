@@ -1,4 +1,4 @@
-import { Button, Card, Grid, TextField, Box, Typography } from '@mui/material';
+import { Button, Card, Grid, TextField, Box, Typography, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import React, { useState } from 'react';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -7,95 +7,33 @@ import { FixedSizeList, ListChildComponentProps } from 'react-window';
 import SearchIcon from '@mui/icons-material/Search';
 import './location.css';
 
-const LocationCard = () => {
-  const restaurants = [
-    {
-      name: 'Broadway Blvd',
-      address: '20212 North 59th Ave , Ste , 465A , san Diego , CA',
-      distance: '4.2 Miles Away',
-      city: 'san deigo',
-    },
-    {
-      name: 'Broadway Blvd',
-      address: '20212 North 59th Ave , Ste , 465A , san Diego , CA',
-      distance: '4.2 Miles Away',
-      city: 'san deigo',
-    },
-    {
-      name: 'Broadway Blvd',
-      address: '20212 North 59th Ave , Ste , 465A , san Diego , CA',
-      distance: '4.2 Miles Away',
-      city: 'san deigo',
-    },
-    {
-      name: 'Broadway Blvd',
-      address: '20212 North 59th Ave , Ste , 465A , san Diego , CA',
-      distance: '4.2 Miles Away',
-      city: 'san deigo',
-    },
-    {
-      name: 'Broadway Blvd',
-      address: '20212 North 59th Ave , Ste , 465A , san Jose , CA',
-      distance: '4.2 Miles Away',
-      city: 'san jose',
-    },
-    {
-      name: 'Broadway Blvd',
-      address: '20212 North 59th Ave , Ste , 465A , san jose , CA',
-      distance: '4.2 Miles Away',
-      city: 'san jose',
-    },
-    {
-      name: 'Broadway Blvd',
-      address: '20212 North 59th Ave , Ste , 465A , san Jose , CA',
-      distance: '4.2 Miles Away',
-      city: 'san jose',
-    },
-    {
-      name: 'Broadway Blvd',
-      address: '20212 North 59th Ave , Ste , 465A , san Jose , CA',
-      distance: '4.2 Miles Away',
-      city: 'san jose',
-    },
-    {
-      name: 'Broadway Blvd',
-      address: '20212 North 59th Ave , Ste , 465A , san Jose , CA',
-      distance: '4.2 Miles Away',
-      city: 'san jose',
-    },
-    {
-      name: 'Broadway Blvd',
-      address: '20212 North 59th Ave , Ste , 465A , san jose , CA',
-      distance: '4.2 Miles Away',
-      city: 'san jose',
-    },
-    {
-      name: 'Broadway Blvd',
-      address: '20212 North 59th Ave , Ste , 465A , san jose , CA',
-      distance: '4.2 Miles Away',
-      city: 'san jose',
-    },
-    {
-      name: 'Broadway Blvd',
-      address: '20212 North 59th Ave , Ste , 465A , san Jose , CA',
-      distance: '4.2 Miles Away',
-      city: 'san jose',
-    },
-  ];
+const LocationCard = (data :any) => {
+  const restaurants = data.respondData.restaurants;
 
-  const [city, setCity] = useState('san deigo');
+  console.log("child comp : ")
+  console.log( data.respondData.restaurants)
+  const [city, setCity] = useState('New York');
   const handleChange = (e: any) => {
     setCity(e.target.value);
     console.log(city);
   };
 
-  const filteredRes = restaurants.filter((restaurant) => {
+  const [alignment, setAlignment] = React.useState('web');
+  const onServiceSelect = (
+    event: React.MouseEvent<HTMLElement>,
+    newAlignment: string,
+  ) => {
+    setAlignment(newAlignment);
+  };
+
+  const filteredRes = restaurants.filter((restaurant :any) => {
     return restaurant.city === city;
   });
 
   function renderRow(props: ListChildComponentProps) {
     const { index, style } = props;
 
+    console.log( filteredRes)
     return (
       <ListItem
         style={style}
@@ -110,8 +48,8 @@ const LocationCard = () => {
           <Grid item xs={12}>
             <ListItemButton>
               <ListItemText className="name"
-                title={filteredRes[index].name}
-                primary={filteredRes[index].name}
+                title={filteredRes[index].storename}
+                primary={filteredRes[index].storename}
               />
             </ListItemButton>
           </Grid>
@@ -119,8 +57,8 @@ const LocationCard = () => {
           <Grid item xs={12}>
             <ListItemButton>
               <ListItemText className="address"
-                title={filteredRes[index].address}
-                primary={filteredRes[index].address}
+                title={filteredRes[index].streetaddress}
+                primary={filteredRes[index].streetaddress}
               />
             </ListItemButton>
           </Grid>
@@ -161,19 +99,21 @@ const LocationCard = () => {
         <Card>
           <Grid container spacing={2} className="location-sidebar">
             <Grid item xs={12}>
-              <Button variant="contained" title="Pick up">
-                PICK UP
-              </Button>
-            </Grid>
-            <Grid item xs={12}>
-              <Button variant="contained" title="Curbside">
-                CURBSIDE
-              </Button>
-            </Grid>
-            <Grid item xs={12}>
-              <Button variant="contained" title="Delivery">
-                DELIVERY
-              </Button>
+              <ToggleButtonGroup
+                value={alignment}
+                exclusive
+                onChange={onServiceSelect}
+              >
+                <ToggleButton value="Pick up" className="selected-btn">
+                  Pick Up
+                </ToggleButton>
+                <ToggleButton value="Curbside" className="selected-btn">
+                  Curbside
+                </ToggleButton>
+                <ToggleButton value="Delivery" className="selected-btn">
+                  Delivery
+                </ToggleButton>
+              </ToggleButtonGroup>
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -192,9 +132,9 @@ const LocationCard = () => {
               </Typography>
             </Grid>
             <Grid item xs={12}>
-              <FixedSizeList
+              <FixedSizeList className="address-list"
                 height={400}
-                itemSize={130}
+                itemSize={100}
                 width="auto"
                 itemCount={filteredRes.length}
                 overscanCount={5}

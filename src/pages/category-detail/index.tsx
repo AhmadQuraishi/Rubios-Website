@@ -1,4 +1,4 @@
-import StoreInfoBar from '../../components/store-info-bar';
+import StoreInfoBar from '../../components/restaurant-info-bar';
 import ProductListing from '../../components/product-listing';
 import { Grid, Theme, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
@@ -49,8 +49,8 @@ const CategoryDetail = () => {
   useEffect(() => {
     if (categories && categories.categories) {
       if (id) {
-        const category = categories.categories.find((obj: any) => {
-          return obj.id == id;
+        const category = categories.categories.find((obj: Category) => {
+          return obj.id.toString() == id;
         });
         setSelectedCategory(category);
       }

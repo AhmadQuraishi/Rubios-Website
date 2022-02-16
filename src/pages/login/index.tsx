@@ -9,7 +9,7 @@ import {
   Link,
 } from '@mui/material';
 import { Fragment } from 'react';
-import axios from 'axios';
+import axiosInterceptor from '../../services/axiosInceptor';
 // @ts-ignore
 import OAuth2Login from 'react-simple-oauth2-login';
 import { useDispatch, useSelector } from 'react-redux';
@@ -113,7 +113,7 @@ const getAccessTokenByAuthCode = async (
 
 const getUser = async (authResult: PunchhAuth): Promise<any> => {
   const url = `https://sandbox.punchh.com/api/auth/users?client=${process.env.REACT_APP_PUNCHH_CLIENT_ID}&access_token=${authResult.access_token}`;
-  return axios.get(url, {});
+  return axiosInterceptor.get(url, {});
 };
 
 export default Login;
