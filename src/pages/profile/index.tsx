@@ -63,7 +63,6 @@ const Profile = () => {
 
   useEffect(() => {
     if (userProfile && !loading) {
-      console.log(userProfile.favourite_locations);
       setFavLoc(userProfile.favourite_locations);
       setState({
         emailnotification: userProfile.marketing_email_subscription,
