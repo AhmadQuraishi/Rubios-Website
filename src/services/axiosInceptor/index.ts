@@ -25,10 +25,10 @@ console.log(obj.seconds_to_expire)
         let secretString = secret.toString();
         let concatString ='';
         if(body === undefined){
-          concatString = uriData.concat(JSON.stringify(body));
+          concatString = uriData;
         }
         else{
-          concatString = uriData;
+          concatString = uriData.concat(JSON.stringify(body));
         }
         const signature = CryptoJS.HmacSHA1(
          concatString,
