@@ -190,6 +190,9 @@ const Product = () => {
                                       item.options[0].modifiers[0].mandatory
                                     }
                                     options={productOptions.optiongroups}
+                                    showDDL={
+                                      !item.options[0].modifiers[0].mandatory
+                                    }
                                   />
                                 </Card>
                               )}
@@ -201,6 +204,9 @@ const Product = () => {
                                     item.options[0].modifiers[0].mandatory
                                   }
                                   options={productOptions.optiongroups}
+                                  showDDL={
+                                    !item.options[0].modifiers[0].mandatory
+                                  }
                                 />
                               )}
                           </>
@@ -221,6 +227,7 @@ const Product = () => {
                               menuItems={item.options}
                               options={productOptions.optiongroups}
                               isSingleSelect={item.mandatory}
+                              showDDL={!item.mandatory}
                             />
                           </Card>
                         )}
@@ -239,6 +246,7 @@ const Product = () => {
                             menuItems={item.options}
                             isSingleSelect={item.mandatory}
                             options={productOptions.optiongroups}
+                            showDDL={item.mandatory}
                           />
                         )}
                       </Fragment>

@@ -4,7 +4,7 @@ import { Option, OptionGroup } from '../../types/olo-api';
 import './food-menu-card.css';
 
 const FoodMenuCard = (props: any) => {
-  const { menuItems, options, isSingleSelect } = props;
+  const { menuItems, options, isSingleSelect, showDDL } = props;
 
   let optionFound: any = null;
   const [viewUI, setViewUI] = useState<any>();
@@ -14,10 +14,10 @@ const FoodMenuCard = (props: any) => {
   useEffect(() => {
     const defaultItem = menuItems.find((x: any) => x.isdefault === true);
     if (defaultItem) {
-      handleClick(defaultItem.id, false);
+      handleClick(defaultItem.id, true);
     }
   }, []);
-  
+
   useEffect(() => {
     if (viewUI) {
       setViewUIList((viewUIList) => [
@@ -27,7 +27,7 @@ const FoodMenuCard = (props: any) => {
     }
   }, [viewUI]);
 
-  const handleClick = (id: number, selected: boolean) => {
+  const handleClick = (id: number, isFunctional: boolean = true) => {
     if (options === undefined) {
       return false;
     }
@@ -52,10 +52,11 @@ const FoodMenuCard = (props: any) => {
     } else {
       setSelectedItem((selectedItem) => [...selectedItem, id]);
     }
-
-    getOptionsByID(id, options);
-    if (optionFound) {
-      setViewUI(renderView(optionFound));
+    if (isFunctional) {
+      getOptionsByID(id, options);
+      if (optionFound) {
+        setViewUI(renderView(optionFound));
+      }
     }
   };
 
@@ -95,6 +96,7 @@ const FoodMenuCard = (props: any) => {
             marginTop: '20px',
             boxShadow: 'none',
           }}
+          key={modifier.id}
         >
           <Typography variant="h5" title={modifier.description}>
             {modifier.description}
@@ -102,6 +104,7 @@ const FoodMenuCard = (props: any) => {
           <FoodMenuCard
             menuItems={modifier.options}
             isSingleSelect={modifier.mandatory}
+            showDDL={!modifier.mandatory}
             options={options}
           />
         </Card>
@@ -115,6 +118,7 @@ const FoodMenuCard = (props: any) => {
             marginTop: '20px',
             boxShadow: 'none',
           }}
+          key={option.id}
         >
           <Typography variant="h5" title={option.name}>
             {option.name}
@@ -123,6 +127,7 @@ const FoodMenuCard = (props: any) => {
             menuItems={option.modifiers}
             isSingleSelect={false}
             options={options}
+            showDDL={false}
           />
         </Card>
       ));
@@ -169,58 +174,73 @@ const FoodMenuCard = (props: any) => {
     <>
       <Grid container>
         {menuItems.map((menuItem: any, index: number) => (
-          <Grid item xs={12} md={6} lg={4}>
-            <>
-              <Card
-                className={`reward-item${
-                  selectedItem && isItemSelected(menuItem.id) ? ' selected' : ''
-                }`}
-                onClick={() =>
-                  handleClick(
-                    menuItem.id,
-                    selectedItem && isItemSelected(menuItem.id),
-                  )
-                }
-              >
-                <div className="icon">✓</div>
-                <Grid container className="rewards">
-                  <Grid item xs={5}>
-                    {menuItem.image ? (
-                      <img
-                        className="item-image"
-                        src={menuItem.image}
-                        alt={menuItem.name}
-                        title={menuItem.name}
-                      />
-                    ) : (
-                      <img
-                        className="item-image"
-                        src={require('../../assets/imgs/default_img.png')}
-                        alt={menuItem.name}
-                        title={menuItem.name}
-                      />
-                    )}
-                  </Grid>
-                  <Grid item xs={7}>
-                    <CardContent sx={{ flex: '1 0 auto' }}>
-                      <Typography
-                        variant="caption"
-                        title={menuItem.name || menuItem.description}
-                        className="item-name"
-                      >
-                        {menuItem.name || menuItem.description}
-                        <br />
-                        {menuItem.cost > 0 && (
-                          <span className="price-tag">{`+$${menuItem.cost.toFixed(
-                            2,
-                          )}`}</span>
-                        )}
-                      </Typography>
-                    </CardContent>
-                  </Grid>
+          <Grid item xs={12} md={6} lg={4} key={index}>
+            <Card
+              className={`reward-item${
+                selectedItem && isItemSelected(menuItem.id) ? ' selected' : ''
+              }`}
+              onClick={() => handleClick(menuItem.id, !showDDL)}
+            >
+              <div className="icon">✓</div>
+              <Grid container className="rewards">
+                <Grid item xs={5}>
+                  {menuItem.image ? (
+                    <img
+                      className="item-image"
+                      src={menuItem.image}
+                      alt={menuItem.name}
+                      title={menuItem.name}
+                    />
+                  ) : (
+                    <img
+                      className="item-image"
+                      src={require('../../assets/imgs/default_img.png')}
+                      alt={menuItem.name}
+                      title={menuItem.name}
+                    />
+                  )}
                 </Grid>
-              </Card>
-            </>
+                <Grid item xs={7}>
+                  <CardContent
+                    sx={{
+                      flex: '1 0 auto',
+                      textAlign: 'left',
+                      paddingLeft: '20px',
+                    }}
+                  >
+                    <Typography
+                      variant="caption"
+                      title={menuItem.name || menuItem.description}
+                      className="item-name"
+                    >
+                      {menuItem.name || menuItem.description}
+                      <br />
+                      {menuItem.cost > 0 && (
+                        <span className="price-tag">{`+$${menuItem.cost.toFixed(
+                          2,
+                        )}`}</span>
+                      )}
+                    </Typography>
+                    {!isSingleSelect &&
+                      showDDL &&
+                      menuItem.modifiers &&
+                      menuItem.modifiers.map((item: any, index: number) => (
+                        <select
+                          onClick={(e) => e.stopPropagation()}
+                          style={{ width: '100px' }}
+                        >
+                          {item.options &&
+                            item.options.map((item: any, index: number) => (
+                              <option key={index} value={item.id}>
+                                {item.name}
+                              </option>
+                            ))}
+                        </select>
+                      ))}
+                  </CardContent>
+                </Grid>
+              </Grid>
+            </Card>
           </Grid>
         ))}
       </Grid>
