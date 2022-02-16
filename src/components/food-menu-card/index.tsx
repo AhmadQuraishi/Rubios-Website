@@ -5,7 +5,6 @@ import './food-menu-card.css';
 
 const FoodMenuCard = (props: any) => {
   const { menuItems, options, isSingleSelect, showDDL } = props;
-
   let optionFound: any = null;
   const [viewUI, setViewUI] = useState<any>();
   const [selectedItem, setSelectedItem] = useState<number[]>([]);
@@ -14,7 +13,7 @@ const FoodMenuCard = (props: any) => {
   useEffect(() => {
     const defaultItem = menuItems.find((x: any) => x.isdefault === true);
     if (defaultItem) {
-      handleClick(defaultItem.id, true);
+      handleClick(defaultItem.id, true, true);
     }
   }, []);
 
@@ -27,24 +26,29 @@ const FoodMenuCard = (props: any) => {
     }
   }, [viewUI]);
 
-  const handleClick = (id: number, isFunctional: boolean = true) => {
+  const handleClick = (
+    id: number,
+    isFunctional: boolean = true,
+    firstLoad: boolean = false,
+  ) => {
     if (options === undefined) {
       return false;
     }
     optionFound = null;
+    if (!firstLoad) {
+      if (isSingleSelect) {
+        removeItemFromSelection(0);
+        removeItemFromViewUI(0);
+        if (selectedItem.find((x: number) => x === id)) {
+          return false;
+        }
+      }
 
-    if (isSingleSelect) {
-      removeItemFromSelection(0);
-      removeItemFromViewUI(0);
       if (selectedItem.find((x: number) => x === id)) {
+        removeItemFromSelection(id);
+        removeItemFromViewUI(id);
         return false;
       }
-    }
-
-    if (selectedItem.find((x: number) => x === id)) {
-      removeItemFromSelection(id);
-      removeItemFromViewUI(id);
-      return false;
     }
 
     if (isSingleSelect) {
@@ -137,8 +141,15 @@ const FoodMenuCard = (props: any) => {
   };
 
   const isItemSelected = (id: number): any => {
-    if (selectedItem) {
-      return selectedItem?.find((x: number) => x === id);
+    if (selectedItem.length > 0) {
+      console.log(
+        selectedItem +
+          ' - ' +
+          id +
+          ' - ' +
+          selectedItem?.find((x: number) => x === id),
+      );
+      return selectedItem?.find((x: number) => x === id) ? true : false;
     }
   };
 
@@ -177,7 +188,9 @@ const FoodMenuCard = (props: any) => {
           <Grid item xs={12} md={6} lg={4} key={index}>
             <Card
               className={`reward-item${
-                selectedItem && isItemSelected(menuItem.id) ? ' selected' : ''
+                selectedItem.length > 0 && isItemSelected(menuItem.id)
+                  ? ' selected'
+                  : ''
               }`}
               onClick={() => handleClick(menuItem.id, !showDDL)}
             >
@@ -227,8 +240,9 @@ const FoodMenuCard = (props: any) => {
                       menuItem.modifiers.map((item: any, index: number) => (
                         <select
                           onClick={(e) => e.stopPropagation()}
-                          style={{ width: '100px' }}
+                          style={{ width: '115px', fontSize: '12px' }}
                         >
+                          <option value="0">Please choose</option>
                           {item.options &&
                             item.options.map((item: any, index: number) => (
                               <option key={index} value={item.id}>

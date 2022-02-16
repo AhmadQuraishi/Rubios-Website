@@ -29,6 +29,13 @@ const Product = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (loading == true) {
+      setProductOptions(undefined);
+      setProductDetails(undefined);
+    }
+  }, [loading]);
+
+  useEffect(() => {
     setProductOptions(undefined);
     //TODO: StoreID will get from State when select store work will be done
     const storeID = 60854;
@@ -149,6 +156,8 @@ const Product = () => {
                 )}
               </Grid>
             </Grid>
+            <br />
+            <br />
             {productOptions && (
               <Grid container className="menu-items">
                 {productOptions.optiongroups.map(
