@@ -24,13 +24,14 @@ const PaymentInfo = () => {
                   title="First Name"
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} className="image-field">
                 <TextField
                   label="Card Number"
                   aria-label="Card Number"
                   aria-required="true"
                   title="Card Number"
                 />
+                <img src={require('../../assets/imgs/card-icon.png')} />
               </Grid>
             </Grid>
           </Grid>
@@ -44,8 +45,9 @@ const PaymentInfo = () => {
                   title="Last Name"
                 />
               </Grid>
-              <Grid item xs={5}>
+              <Grid item xs={5} className="image-field">
                 <TextField label="CVV" aria-label="CVV" aria-required="true" />
+                <img src={require('../../assets/imgs/ccv-icon.png')} />
               </Grid>
               <Grid item xs={1} />
               <Grid item xs={5}>

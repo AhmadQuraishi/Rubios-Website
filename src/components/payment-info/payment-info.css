@@ -19,3 +19,14 @@
 .payment-form .add-order button {
   width: 100%;
 }
+.payment-form .image-field input {
+  padding-right: 65px !important;
+}
+.payment-form .image-field {
+  position: relative;
+}
+.payment-form .image-field img {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
