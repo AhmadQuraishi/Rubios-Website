@@ -1,5 +1,5 @@
 .payment-form .MuiTextField-root {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 .payment-form .add-gift {
   text-align: center;
@@ -29,4 +29,7 @@
   position: absolute;
   right: 10px;
   top: 10px;
+}
+.payment-form .image-field.align img {
+  top: 25px;
 }
