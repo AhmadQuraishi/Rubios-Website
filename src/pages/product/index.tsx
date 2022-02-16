@@ -59,7 +59,6 @@ const Product = () => {
 
   useEffect(() => {
     if (options && options.optiongroups) {
-      console.log(options);
       setProductOptions(options);
     }
   }, [options]);
@@ -187,6 +186,9 @@ const Product = () => {
                                     menuItems={
                                       item.options[0].modifiers[0].options
                                     }
+                                    isSingleSelect={
+                                      item.options[0].modifiers[0].mandatory
+                                    }
                                     options={productOptions.optiongroups}
                                   />
                                 </Card>
@@ -195,6 +197,9 @@ const Product = () => {
                               item.options[0].modifiers.length > 1 && (
                                 <FoodMenuCard
                                   menuItems={item.options[0].modifiers}
+                                  isSingleSelect={
+                                    item.options[0].modifiers[0].mandatory
+                                  }
                                   options={productOptions.optiongroups}
                                 />
                               )}
@@ -215,6 +220,7 @@ const Product = () => {
                             <FoodMenuCard
                               menuItems={item.options}
                               options={productOptions.optiongroups}
+                              isSingleSelect={item.mandatory}
                             />
                           </Card>
                         )}
@@ -231,6 +237,7 @@ const Product = () => {
                         {item.options && (
                           <FoodMenuCard
                             menuItems={item.options}
+                            isSingleSelect={item.mandatory}
                             options={productOptions.optiongroups}
                           />
                         )}

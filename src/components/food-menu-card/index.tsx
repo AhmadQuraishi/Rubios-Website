@@ -1,33 +1,63 @@
 import { Grid, Typography, Card, CardContent } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { setTimeout } from 'timers/promises';
 import { Option, OptionGroup } from '../../types/olo-api';
 import './food-menu-card.css';
 
 const FoodMenuCard = (props: any) => {
-  const { menuItems, options } = props;
+  const { menuItems, options, isSingleSelect } = props;
 
   let optionFound: any = null;
   const [viewUI, setViewUI] = useState<any>();
-  const [selectedItem, setSelectedItem] = useState<number>();
-
-  const handleClick = (id: number) => {
-    optionFound = null;
-    setSelectedItem(id);
-    getOptionsByID(id, options);
-    if (optionFound) {
-      console.log(optionFound);
-      setViewUI(renderView(optionFound));
-    }
-  };
+  const [selectedItem, setSelectedItem] = useState<number[]>([]);
+  const [viewUIList, setViewUIList] = useState<{}[]>([]);
 
   useEffect(() => {
     const defaultItem = menuItems.find((x: any) => x.isdefault === true);
     if (defaultItem) {
-      setSelectedItem(defaultItem.id);
-      handleClick(defaultItem.id);
+      handleClick(defaultItem.id, false);
     }
   }, []);
+  
+  useEffect(() => {
+    if (viewUI) {
+      setViewUIList((viewUIList) => [
+        ...viewUIList,
+        { id: selectedItem[selectedItem.length - 1], viewUI: viewUI },
+      ]);
+    }
+  }, [viewUI]);
+
+  const handleClick = (id: number, selected: boolean) => {
+    if (options === undefined) {
+      return false;
+    }
+    optionFound = null;
+
+    if (isSingleSelect) {
+      removeItemFromSelection(0);
+      removeItemFromViewUI(0);
+      if (selectedItem.find((x: number) => x === id)) {
+        return false;
+      }
+    }
+
+    if (selectedItem.find((x: number) => x === id)) {
+      removeItemFromSelection(id);
+      removeItemFromViewUI(id);
+      return false;
+    }
+
+    if (isSingleSelect) {
+      setSelectedItem([id]);
+    } else {
+      setSelectedItem((selectedItem) => [...selectedItem, id]);
+    }
+
+    getOptionsByID(id, options);
+    if (optionFound) {
+      setViewUI(renderView(optionFound));
+    }
+  };
 
   const getOptionsByID = (id: number, options: any) => {
     if (optionFound) {
@@ -56,7 +86,6 @@ const FoodMenuCard = (props: any) => {
   };
 
   const renderView = (obj: any): any => {
-    console.log(obj.modifiers);
     if (obj.modifiers) {
       return obj.modifiers.map((modifier: OptionGroup, index: number) => (
         <Card
@@ -70,7 +99,11 @@ const FoodMenuCard = (props: any) => {
           <Typography variant="h5" title={modifier.description}>
             {modifier.description}
           </Typography>
-          <FoodMenuCard menuItems={modifier.options} options={options} />
+          <FoodMenuCard
+            menuItems={modifier.options}
+            isSingleSelect={modifier.mandatory}
+            options={options}
+          />
         </Card>
       ));
     } else if (obj.options) {
@@ -86,12 +119,50 @@ const FoodMenuCard = (props: any) => {
           <Typography variant="h5" title={option.name}>
             {option.name}
           </Typography>
-          <FoodMenuCard menuItems={option.modifiers} options={options} />
+          <FoodMenuCard
+            menuItems={option.modifiers}
+            isSingleSelect={false}
+            options={options}
+          />
         </Card>
       ));
     } else {
       return <></>;
     }
+  };
+
+  const isItemSelected = (id: number): any => {
+    if (selectedItem) {
+      return selectedItem?.find((x: number) => x === id);
+    }
+  };
+
+  const removeItemFromSelection = (id: number) => {
+    if (id === 0) {
+      setSelectedItem([]);
+      return false;
+    }
+    const updatedList: number[] = [];
+    selectedItem.forEach((item: number, index: number) => {
+      if (item !== id) {
+        updatedList.push(item);
+      }
+    });
+    setSelectedItem(updatedList);
+  };
+
+  const removeItemFromViewUI = (id: number) => {
+    if (id === 0) {
+      setViewUIList([]);
+      return false;
+    }
+    const updatedList: number[] = [];
+    viewUIList.forEach((item: any, index: number) => {
+      if (item.id !== id) {
+        updatedList.push(item);
+      }
+    });
+    setViewUIList(updatedList);
   };
 
   return (
@@ -102,9 +173,14 @@ const FoodMenuCard = (props: any) => {
             <>
               <Card
                 className={`reward-item${
-                  selectedItem == menuItem.id ? ' selected' : ''
+                  selectedItem && isItemSelected(menuItem.id) ? ' selected' : ''
                 }`}
-                onClick={() => handleClick(menuItem.id)}
+                onClick={() =>
+                  handleClick(
+                    menuItem.id,
+                    selectedItem && isItemSelected(menuItem.id),
+                  )
+                }
               >
                 <div className="icon">✓</div>
                 <Grid container className="rewards">
@@ -148,7 +224,7 @@ const FoodMenuCard = (props: any) => {
           </Grid>
         ))}
       </Grid>
-      {viewUI}
+      {viewUIList && viewUIList.map((item: any, index: number) => item.viewUI)}
     </>
   );
 };
