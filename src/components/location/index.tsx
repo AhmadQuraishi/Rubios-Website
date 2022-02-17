@@ -1,4 +1,14 @@
-import { Button, Card, Grid, TextField, Box, Typography, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import {
+  Button,
+  Card,
+  Grid,
+  TextField,
+  Box,
+  Typography,
+  ToggleButton,
+  ToggleButtonGroup,
+  Stack,
+} from '@mui/material';
 import React, { useState } from 'react';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -6,12 +16,10 @@ import ListItemText from '@mui/material/ListItemText';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
 import SearchIcon from '@mui/icons-material/Search';
 import './location.css';
+import { ResponseRestaurant } from '../../types/olo-api';
 
-const LocationCard = (data :any) => {
-  const restaurants = data.respondData.restaurants;
-
-  console.log("child comp : ")
-  console.log( data.respondData.restaurants)
+const LocationCard = (props: any) => {
+  const { restaurants } = props;
   const [city, setCity] = useState('New York');
   const handleChange = (e: any) => {
     setCity(e.target.value);
@@ -26,14 +34,14 @@ const LocationCard = (data :any) => {
     setAlignment(newAlignment);
   };
 
-  const filteredRes = restaurants.filter((restaurant :any) => {
+  const filteredRes = restaurants.filter((restaurant: any) => {
     return restaurant.city === city;
   });
 
   function renderRow(props: ListChildComponentProps) {
     const { index, style } = props;
 
-    console.log( filteredRes)
+    console.log(filteredRes);
     return (
       <ListItem
         style={style}
@@ -47,7 +55,8 @@ const LocationCard = (data :any) => {
         <Grid container>
           <Grid item xs={12}>
             <ListItemButton>
-              <ListItemText className="name"
+              <ListItemText
+                className="name"
                 title={filteredRes[index].storename}
                 primary={filteredRes[index].storename}
               />
@@ -56,7 +65,8 @@ const LocationCard = (data :any) => {
 
           <Grid item xs={12}>
             <ListItemButton>
-              <ListItemText className="address"
+              <ListItemText
+                className="address"
                 title={filteredRes[index].streetaddress}
                 primary={filteredRes[index].streetaddress}
               />
@@ -65,7 +75,8 @@ const LocationCard = (data :any) => {
 
           <Grid item xs={12}>
             <ListItemButton>
-              <ListItemText className="label"
+              <ListItemText
+                className="label"
                 title={filteredRes[index].distance}
                 primary={filteredRes[index].distance}
               />
@@ -94,7 +105,7 @@ const LocationCard = (data :any) => {
         sm={4}
         md={4}
         lg={3}
-        sx={{ zIndex: 1, margin: '20px 30px' }}
+        sx={{ zIndex: 1, margin: '20px 30px'}}
       >
         <Card>
           <Grid container spacing={2} className="location-sidebar">
@@ -132,16 +143,11 @@ const LocationCard = (data :any) => {
               </Typography>
             </Grid>
             <Grid item xs={12}>
-              <FixedSizeList className="address-list"
-                height={400}
-                itemSize={100}
-                width="auto"
-                itemCount={filteredRes.length}
-                overscanCount={5}
-                aria-label="Nearby Locations"
-              >
-                {renderRow}
-              </FixedSizeList>
+              {restaurants.map((item: ResponseRestaurant, index: number) => (
+                <Stack sx={{ height: '100px'}}>
+                  <p>{item.name}</p>
+                </Stack>
+              ))}
             </Grid>
           </Grid>
         </Card>

@@ -8,6 +8,7 @@ import storage from 'redux-persist/lib/storage';
 import restaurantInfoReducer from './restaurant';
 import restaurantCalendarReducer from './restaurant/calendar';
 import productOptionsReducer from './product/option';
+import restaurantListReducer from './restaurant/list';
 
 const persistConfig = {
   key: 'root',
@@ -23,6 +24,7 @@ const rootReducers = combineReducers({
   restaurantInfoReducer,
   restaurantCalendarReducer,
   productOptionsReducer,
+  restaurantListReducer,
 });
 
 const persistReducers = persistReducer(persistConfig, rootReducers);

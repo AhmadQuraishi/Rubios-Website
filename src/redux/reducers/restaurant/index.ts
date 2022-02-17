@@ -11,7 +11,12 @@ const restaurantInfoReducer = (state = INITIAL_STATE, action: any) => {
     case restaurantActionsTypes.GET_RESTAURANT_INFO_REQUEST:
       return { ...state, loading: true };
     case restaurantActionsTypes.GET_RESTAURANT_INFO_SUCCESS:
-      return { ...state, loading: false, restaurant: action.payload };
+      return {
+        ...state,
+        loading: false,
+        restaurant: action.payload,
+        error: {},
+      };
     case restaurantActionsTypes.GET_RESTAURANT_INFO_FAILURE:
       return { ...state, loading: false, error: action.error };
     default:

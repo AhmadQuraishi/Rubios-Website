@@ -11,7 +11,7 @@ const productOptionsReducer = (state = INITIAL_STATE, action: any) => {
     case productOptionActionsTypes.GET_PRODUCT_OPTION_REQUEST:
       return { ...state, loading: true };
     case productOptionActionsTypes.GET_PRODUCT_OPTION_SUCCESS:
-      return { ...state, loading: false, options: action.payload };
+      return { ...state, loading: false, options: action.payload, error: {} };
     case productOptionActionsTypes.GET_PRODUCT_OPTION_FAILURE:
       return { ...state, loading: false, error: action.error };
     default:

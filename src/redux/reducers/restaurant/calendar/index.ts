@@ -11,7 +11,7 @@ const restaurantCalendarReducer = (state = INITIAL_STATE, action: any) => {
     case restaurantCalendarActionsTypes.GET_RESTAURANT_CALENDAR_REQUEST:
       return { ...state, loading: true };
     case restaurantCalendarActionsTypes.GET_RESTAURANT_CALENDAR_SUCCESS:
-      return { ...state, loading: false, calendar: action.payload };
+      return { ...state, loading: false, calendar: action.payload, error: {} };
     case restaurantCalendarActionsTypes.GET_RESTAURANT_CALENDAR_FAILURE:
       return { ...state, loading: false, error: action.error };
     default:
