@@ -4,7 +4,7 @@ import { Grid, Theme, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getCategoriesRequest } from '../../redux/actions/category';
 import { Category } from '../../types/olo-api';
 import ProductListingSkeletonUI from '../../components/product-listing-skeleton-ui';
@@ -39,15 +39,21 @@ const CategoryDetail = () => {
   const { categories, loading } = useSelector(
     (state: any) => state.categoryReducer,
   );
+  const { restaurant } = useSelector(
+    (state: any) => state.restaurantInfoReducer,
+  );
   useEffect(() => {
     if (loading == true) {
       setSelectedCategory(undefined);
     }
   }, [loading]);
+  const navigate = useNavigate();
   useEffect(() => {
-    //TODO: StoreID will get from State when select store work will be done
-    const storeID = 60854;
-    dispatch(getCategoriesRequest(storeID));
+    if (restaurant === null) {
+      navigate('/location');
+    } else {
+      dispatch(getCategoriesRequest(restaurant.id));
+    }
   }, []);
 
   useEffect(() => {

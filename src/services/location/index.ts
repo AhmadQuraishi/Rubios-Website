@@ -29,7 +29,7 @@ export const getNearByRestaurants = (
     return axios
       .get(
         url +
-          `/restaurants/near?lat=${lat}&long=${long}&radius=${radius}&limit=${limit}&calendarstart=${startDate}&calendarend=${endDate}`,
+          `restaurants/near?lat=${lat}&long=${long}&radius=${radius}&limit=${limit}&calendarstart=${startDate}&calendarend=${endDate}`,
         {
           headers: {
             Authorization: process.env.REACT_APP_OLO_AUTH_KEY || '',
@@ -50,7 +50,7 @@ export const getAllResturants = () => {
   try {
     const url = process.env.REACT_APP_OLO_API_URL || '';
     return axios
-      .get(url + `/restaurants?includePrivate=false`, {
+      .get(url + `restaurants?includePrivate=false`, {
         headers: {
           Authorization: process.env.REACT_APP_OLO_AUTH_KEY || '',
         },

@@ -28,13 +28,6 @@ const StoreInfoBar = () => {
     (state: any) => state.restaurantCalendarReducer,
   );
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    //TODO: StoreID will get from State when select store work will be done
-    const storeID = 60854;
-    dispatch(getResturantInfoRequest(storeID));
-  }, []);
-
   useEffect(() => {
     if (restaurant) {
       setRestaurantInfo(restaurant);
@@ -44,7 +37,7 @@ const StoreInfoBar = () => {
   useEffect(() => {
     if (restaurantInfo) {
       var today = new Date();
-      const dateTo =
+      const dateFrom =
         today.getFullYear() * 1e4 +
         (today.getMonth() + 1) * 100 +
         today.getDate() +
@@ -52,9 +45,9 @@ const StoreInfoBar = () => {
       const lastWeekDate = new Date(
         today.getFullYear(),
         today.getMonth(),
-        today.getDate() - 6,
+        today.getDate() + 6,
       );
-      const dateFrom =
+      const dateTo =
         lastWeekDate.getFullYear() * 1e4 +
         (lastWeekDate.getMonth() + 1) * 100 +
         lastWeekDate.getDate() +
@@ -150,7 +143,9 @@ const StoreInfoBar = () => {
                   <p style={{ paddingBottom: '2px' }}>
                     {restaurantInfo.city}, {restaurantInfo.state}
                   </p>
-                  <p>{restaurantInfo.distance.toFixed(1)} Miles Away</p>
+                  {restaurantInfo.distance > 0 && (
+                    <p>{restaurantInfo.distance.toFixed(2)} Miles Away</p>
+                  )}
                 </Typography>
               </Grid>
               <Grid

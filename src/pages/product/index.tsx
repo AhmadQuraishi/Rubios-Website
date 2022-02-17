@@ -5,7 +5,7 @@ import StoreInfoBar from '../../components/restaurant-info-bar';
 import { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategoriesRequest } from '../../redux/actions/category';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import LoadingBar from '../../components/loading-bar';
 import {
   Category,
@@ -26,6 +26,9 @@ const Product = () => {
     (state: any) => state.categoryReducer,
   );
   const { options } = useSelector((state: any) => state.productOptionsReducer);
+  const { restaurant } = useSelector(
+    (state: any) => state.restaurantInfoReducer,
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -35,11 +38,15 @@ const Product = () => {
     }
   }, [loading]);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     setProductOptions(undefined);
-    //TODO: StoreID will get from State when select store work will be done
-    const storeID = 60854;
-    dispatch(getCategoriesRequest(storeID));
+    if (restaurant === null) {
+      navigate('/location');
+    } else {
+      dispatch(getCategoriesRequest(restaurant.id));
+    }
   }, []);
 
   useEffect(() => {

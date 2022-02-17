@@ -9,7 +9,7 @@ const INITIAL_STATE = {
 const restaurantInfoReducer = (state = INITIAL_STATE, action: any) => {
   switch (action.type) {
     case restaurantActionsTypes.GET_RESTAURANT_INFO_REQUEST:
-      return { ...state, loading: true };
+      return { ...state, loading: true, restaurant: null };
     case restaurantActionsTypes.GET_RESTAURANT_INFO_SUCCESS:
       return {
         ...state,
@@ -18,6 +18,17 @@ const restaurantInfoReducer = (state = INITIAL_STATE, action: any) => {
         error: {},
       };
     case restaurantActionsTypes.GET_RESTAURANT_INFO_FAILURE:
+      return { ...state, loading: false, error: action.error };
+    case restaurantActionsTypes.SET_RESTAURANT_INFO_REQUEST:
+      return { ...state, loading: true, restaurant: null };
+    case restaurantActionsTypes.SET_RESTAURANT_INFO_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        restaurant: action.payload,
+        error: {},
+      };
+    case restaurantActionsTypes.SET_RESTAURANT_INFO_FAILURE:
       return { ...state, loading: false, error: action.error };
     default:
       return state;

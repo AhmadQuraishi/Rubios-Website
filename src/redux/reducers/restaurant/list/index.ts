@@ -9,7 +9,7 @@ const INITIAL_STATE = {
 const restaurantListReducer = (state = INITIAL_STATE, action: any) => {
   switch (action.type) {
     case restaurantListDataActionsTypes.GET_RESTAURANT_LIST_REQUEST:
-      return { ...state, loading: true };
+      return { ...state, loading: true, restaurants: null };
     case restaurantListDataActionsTypes.GET_RESTAURANT_LIST_SUCCESS:
       return {
         ...state,

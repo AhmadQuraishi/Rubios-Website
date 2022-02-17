@@ -14,7 +14,9 @@ import restaurantListReducer from './restaurant/list';
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: [],
+  whitelist: [
+    'restaurantInfoReducer',
+  ],
 };
 
 const rootReducers = combineReducers({

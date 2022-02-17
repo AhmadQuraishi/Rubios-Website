@@ -1,10 +1,13 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import LocationCard from '../../components/location';
 import './location.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { ResponseRestaurant } from '../../types/olo-api';
-import { getNearByResturantListRequest } from '../../redux/actions/restaurant/list';
+import {
+  getNearByResturantListRequest,
+  getResturantListRequest,
+} from '../../redux/actions/restaurant/list';
 import LoadingBar from '../../components/loading-bar';
 
 const Location = () => {
@@ -12,15 +15,40 @@ const Location = () => {
     (state: any) => state.restaurantListReducer,
   );
 
+  const [mapCenter, setMapCenter] = useState<any>();
+  const [showNearBy, setShowNearBy] = useState(false);
+
   useEffect(() => {
-    console.log(restaurants);
+    if (
+      restaurants &&
+      restaurants.restaurants &&
+      restaurants.restaurants.length == 0
+    ) {
+      setMapCenter({
+        lat: 37.772,
+        lng: -122.214,
+      });
+      if (showNearBy) {
+        setShowNearBy(false);
+        dispatch(getResturantListRequest());
+      }
+    }
+    if (
+      restaurants &&
+      restaurants.restaurants &&
+      restaurants.restaurants.length > 0
+    ) {
+      setMapCenter({
+        lat: restaurants.restaurants[0].latitude,
+        lng: restaurants.restaurants[0].longitude,
+      });
+    }
   }, [restaurants]);
 
   const dispatch = useDispatch();
 
   const containerStyle = {
     width: '100%',
-    height: '100vh',
   };
 
   let lat: number, long: number;
@@ -28,14 +56,23 @@ const Location = () => {
     navigator.geolocation.getCurrentPosition(function (position) {
       lat = position.coords.latitude;
       long = position.coords.longitude;
-      console.log(lat + ' - ' + long);
-      getNearByRestaurants(40.7054008, -74.0132198);
+      setShowNearBy(true);
+      //DUMMY LAT, LONG = 40.7054008, -74.0132198
+      getNearByRestaurants(lat, long);
     });
+    navigator.permissions
+      .query({ name: 'geolocation' })
+      .then(function (result) {
+        // Will return ['granted', 'prompt', 'denied']
+        if (result.state == 'denied') {
+          dispatch(getResturantListRequest());
+        }
+      });
   }, []);
 
   const getNearByRestaurants = (lat: number, long: number) => {
     var today = new Date();
-    const dateTo =
+    const dateFrom =
       today.getFullYear() * 1e4 +
       (today.getMonth() + 1) * 100 +
       today.getDate() +
@@ -43,9 +80,9 @@ const Location = () => {
     const lastWeekDate = new Date(
       today.getFullYear(),
       today.getMonth(),
-      today.getDate() - 6,
+      today.getDate() + 6,
     );
-    const dateFrom =
+    const dateTo =
       lastWeekDate.getFullYear() * 1e4 +
       (lastWeekDate.getMonth() + 1) * 100 +
       lastWeekDate.getDate() +
@@ -55,16 +92,15 @@ const Location = () => {
     );
   };
 
-  let mapCenter: any;
   let newMarker: any;
   if (restaurants && restaurants.restaurants) {
     newMarker = restaurants.restaurants.map(
       (item: ResponseRestaurant, index: number) => {
         if (mapCenter == undefined) {
-          mapCenter = {
+          setMapCenter({
             lat: item.latitude,
             lng: item.longitude,
-          };
+          });
         }
         let latLong = {
           lat: item.latitude,
@@ -74,10 +110,6 @@ const Location = () => {
       },
     );
   } else {
-    mapCenter = {
-      lat: 37.772,
-      lng: -122.214,
-    };
   }
   return (
     <>
@@ -90,7 +122,10 @@ const Location = () => {
         >
           {newMarker}
           {restaurants && restaurants.restaurants && (
-            <LocationCard restaurants={restaurants.restaurants} />
+            <LocationCard
+              isNearByRestaurantList={showNearBy}
+              restaurants={restaurants.restaurants}
+            />
           )}
         </GoogleMap>
       </LoadScript>
