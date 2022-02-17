@@ -9,6 +9,8 @@ import restaurantInfoReducer from './restaurant';
 import locationReducer from './location';
 import restaurantCalendarReducer from './restaurant/calendar';
 import productOptionsReducer from './product/option';
+import providerReducer from './provider';
+import authReducer from './auth';
 import restaurantListReducer from './restaurant/list';
 
 const persistConfig = {
@@ -28,6 +30,8 @@ const rootReducers = combineReducers({
   locationReducer,
   restaurantCalendarReducer,
   productOptionsReducer,
+  providerReducer,
+  authReducer,
   restaurantListReducer,
 });
 
