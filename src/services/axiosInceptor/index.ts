@@ -1,4 +1,3 @@
-
 import axios from 'axios';
 import CryptoJS from 'crypto-js';
 
@@ -28,12 +27,12 @@ axiosInstance.interceptors.request.use(
           'x-pch-digest': signature,
         };
       }
-  
-      return config;
-    },
-    function (error) {
-      return Promise.reject(error);
-    },
-  );
 
-  export default axiosInstance;
+    return config;
+  },
+  function (error) {
+    return Promise.reject(error);
+  },
+);
+
+export default axiosInstance;

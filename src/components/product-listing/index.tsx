@@ -107,14 +107,27 @@ const ProductListing = (props: any) => {
                     <Grid
                       item
                       xs={6}
-                      title={`${item.basecalories} cal`}
+                      lg={7}
+                      title={`${
+                        item.caloriesseparator
+                          ? item.basecalories +
+                            item.caloriesseparator +
+                            item.maxcalories
+                          : item.basecalories
+                      } cal`}
                       className={classes.cal}
                     >
-                      {item.basecalories} cal
+                      {item.caloriesseparator
+                        ? item.basecalories +
+                          item.caloriesseparator +
+                          item.maxcalories
+                        : item.basecalories}{' '}
+                      cal
                     </Grid>
                     <Grid
                       item
                       xs={6}
+                      lg={5}
                       title={`$${parseFloat(item.cost).toFixed(2)}`}
                       className={classes.price}
                     >

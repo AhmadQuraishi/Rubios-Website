@@ -28,7 +28,16 @@
   color: #1781c4;
 }
 .product-detail .menu-items h4 {
-  margin-top: 70px;
+  text-transform: uppercase;
+  width: 100%;
+}
+
+.product-detail h5{
+  text-transform: uppercase;
+  color: #0069aa;
+  font-weight: 500;
+  font-family: 'Poppins-Medium', sans-serif !important;
+  font-size: 16px;
 }
 .product-detail .add-to-bag {
   width: 100%;

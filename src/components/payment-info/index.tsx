@@ -1,20 +1,22 @@
 import { Button, Grid, IconButton, TextField, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
+import './payment-info.css';
 
 const PaymentInfo = () => {
   return (
     <Grid container>
       {/*column for space*/}
-      <Grid item xs={1} sm={0.5} md={0.5} lg={2} />
+      <Grid item xs={0} sm={0} md={2} lg={2} />
 
-      <Grid item xs={10} sm={11} md={11} lg={8}>
+      <Grid item xs={12} sm={12} md={8} lg={8}>
         <Typography variant="h4" title="PAYMENT INFO">
           PAYMENT INFO
         </Typography>
-        <Grid container>
-          <Grid item xs={12} sm={12} md={6}>
-            <Grid container>
-              <Grid item xs={12}>
+        <br/>
+        <Grid container spacing={2} className="payment-form">
+          <Grid item xs={12}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6} md={6} lg={6}>
                 <TextField
                   label="First Name"
                   aria-label="First Name"
@@ -22,19 +24,7 @@ const PaymentInfo = () => {
                   title="First Name"
                 />
               </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  label="Card Number"
-                  aria-label="Card Number"
-                  aria-required="true"
-                  title="Card Number"
-                />
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid item xs={12} sm={12} md={6}>
-            <Grid container>
-              <Grid item xs={12}>
+              <Grid item xs={12} sm={6} md={6} lg={6}>
                 <TextField
                   label="Last Name"
                   aria-label="Last Name"
@@ -42,53 +32,61 @@ const PaymentInfo = () => {
                   title="Last Name"
                 />
               </Grid>
-              <Grid item xs={5}>
-                <TextField label="CVV" aria-label="CVV" aria-required="true" />
-              </Grid>
-              <Grid item xs={1} />
-              <Grid item xs={5}>
+            </Grid>
+          </Grid>
+          <Grid item xs={12}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6} md={6} lg={6} className="image-field align">
                 <TextField
-                  label="MM/DD/YY"
-                  aria-label="Month/Day/Year"
+                  label="Card Number"
+                  aria-label="Card Number"
                   aria-required="true"
-                  title="MM/DD/YY"
+                  title="Card Number"
                 />
+                <img src={require('../../assets/imgs/card-icon.png')} />
+              </Grid>
+              <Grid item xs={12} sm={6} md={6} lg={6}>
+                <Grid container spacing={2}>
+                  <Grid item xs={6} sm={6} md={6} lg={6} className="image-field align">
+                    <TextField label="CVV" aria-label="CVV" aria-required="true" />
+                    <img src={require('../../assets/imgs/ccv-icon.png')} />
+                  </Grid>
+                  <Grid item xs={6} sm={6} md={6} lg={6}>
+                    <TextField
+                      label="MM/DD/YY"
+                      aria-label="Month/Day/Year"
+                      aria-required="true"
+                      title="MM/DD/YY"
+                    />
+                  </Grid>
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
 
-          <Grid item xs={12}>
-            <Grid container>
-              <Grid item xs={3} sm={4} md={4} lg={5} />
-              <Grid item xs={6} sm={4} md={4} lg={3}>
-                <Button title="ADD A GIFT CARD">ADD A GIFT CARD</Button>
-              </Grid>
-              <Grid item xs={3} sm={4} md={4} lg={5} />
+          <Grid container>
+            <Grid item xs={12} sm={12} md={12} lg={12} className="add-gift">
+              <Button title="ADD A GIFT CARD" className="label">ADD GIFT CARD</Button>
             </Grid>
           </Grid>
 
-          <Grid item xs={12}>
-            <Grid container>
-              <Grid item xs={3} sm={4} md={4} lg={5} />
-              <Grid item xs={6} sm={4} md={4} lg={3}>
-                <Link
-                  to="/orderconfirmation"
-                  style={{ textDecoration: 'none' }}
-                  aria-label="place your order"
-                >
-                  <Button variant="contained" title="PLACE ORDER">
-                    PLACE ORDER
-                  </Button>
-                </Link>
-              </Grid>
-              <Grid item xs={3} sm={4} md={4} lg={5} />
+          <Grid container className="add-order">
+            <Grid item xs={12} sm={12} md={4} lg={4}>
+              <Link
+                to="/orderconfirmation"
+                aria-label="place your order"
+              >
+                <Button variant="contained" title="PLACE ORDER">
+                  PLACE ORDER
+                </Button>
+              </Link>
             </Grid>
           </Grid>
         </Grid>
       </Grid>
 
       {/*column for space*/}
-      <Grid item xs={1} sm={0.5} md={0.5} lg={2} />
+      <Grid item xs={0} sm={0} md={2} lg={2} />
     </Grid>
   );
 };

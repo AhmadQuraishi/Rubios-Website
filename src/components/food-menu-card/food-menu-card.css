@@ -1,20 +1,62 @@
-.reward-item{
+.reward-item {
   margin-right: 20px;
   margin-top: 20px;
   height: 140px;
   border-radius: 0 !important;
-  padding:10px;
-  box-shadow: 2px 2px 2px -1px rgb(0 0 0 / 10%), 2px 2px 2px 2px rgb(0 0 0 / 6%), 2px 1px 2px 2px rgb(0 0 0 / 6%) !important;
-  border: 1px solid #E6E6E6;
+  padding: 10px;
+  box-shadow: 2px 2px 2px -1px rgb(0 0 0 / 10%), 2px 2px 2px 2px rgb(0 0 0 / 6%),
+    2px 1px 2px 2px rgb(0 0 0 / 6%) !important;
+  border: 1px solid #e6e6e6;
+  cursor: pointer;
+  position: relative;
+}
+.price-tag{
+  color: #6AC0BD;
+  font-size: 13px;
+  font-weight: 600;
+}
+.reward-item h5{
+  text-transform: uppercase;
+  color: #0069aa;
+  font-weight: 500;
+  font-family: 'Poppins-Medium', sans-serif !important;
+  font-size: 18px;
+}
+.reward-item.selected {
+  border: 1px solid #e58530 !important;
+  box-shadow: none !important;
+}
+.reward-item .icon {
+  display: none;
+  justify-content: space-around;
+  font-size: 45px;
+  color: #fff;
+  font-weight: 800;
+  opacity: 0.95;
+}
+.reward-item.selected .icon {
+  position: absolute;
+  margin: auto;
+  left: 30px;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background-color: #e58530;
 }
 .rewards {
   justify-content: center;
   align-content: center;
   align-items: center;
-  height: 100%
+  height: 100%;
+  margin: 0px !important;
 }
 .reward-item .item-image {
-  width: 75%;
+  width: 95%;
+  display: block;
+  margin: auto;
 }
 
 .item-name {
@@ -24,16 +66,16 @@
 
 @media screen and (max-width: 768px) {
   .reward-item .item-image {
-    width: 42% !important;
+    width: 95% !important;
   }
 }
 
 @media screen and (max-width: 475px) {
-  .reward-item{
+  .reward-item {
     margin-right: 0px;
     margin-top: 20px;
   }
   .reward-item .item-image {
-    width: 60% !important;
+    width: 90% !important;
   }
 }

@@ -143,3 +143,50 @@ export function deleteUserDelAddFailure(error: any) {
     error: error,
   };
 }
+
+
+//Update user
+
+export function updateUser(data: any) {
+  return {
+    type: Type.UPDATE_USER,
+    payload: data
+  };
+}
+
+export function updateUserSuccess(data: any) {
+  return {
+    type: Type.UPDATE_USER_SUCCESS,
+    payload: data
+  };
+}
+
+export function updateUserFailure(error: any) {
+  return {
+    type: Type.UPDATE_USER_FAILURE,
+    error: error,
+  };
+}
+
+//Change Password
+
+export function changePassword(data: any) {
+  return {
+    type: Type.CHANGE_PASSWORD,
+    payload: data
+  };
+}
+
+export function changePasswordSuccess(data: any) {
+  return {
+    type: Type.CHANGE_PASSWORD_SUCCESS,
+    payload: data
+  };
+}
+
+export function changePasswordFailure(error: any) {
+  return {
+    type: Type.CHANGE_PASSWORD_FAILURE,
+    error: error,
+  };
+}
