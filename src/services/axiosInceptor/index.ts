@@ -5,16 +5,6 @@ import CryptoJS from 'crypto-js';
 const axiosInstance = axios.create();
 axiosInstance.interceptors.request.use(
     function (config) {
-      debugger
-let obj = {
-  "seconds_to_expire": 2344440,
-  "revoked_at": "2022-02-15T11:mm:ssZ",
-  "refresh_token": "string",
-}
-console.log(obj.seconds_to_expire)
-//refresh token check 
-
-
       const url = config.url || '';
       let check = url?.toString().includes('/sandbox.punchh.com/api/');
       if (check) {
