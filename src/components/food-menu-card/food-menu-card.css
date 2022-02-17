@@ -51,6 +51,7 @@
   align-content: center;
   align-items: center;
   height: 100%;
+  margin: 0px !important;
 }
 .reward-item .item-image {
   width: 95%;

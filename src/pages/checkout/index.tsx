@@ -8,6 +8,8 @@ import {
   RadioGroup,
   TextField,
   Typography,
+  ToggleButtonGroup,
+  ToggleButton
 } from '@mui/material';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -23,6 +25,7 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Radio from '@mui/material/Radio';
 import StoreInfoBar from '../../components/restaurant-info-bar';
+import './checkout.css';
 
 const Checkout = () => {
   const [time, setTime] = React.useState('');
@@ -30,26 +33,28 @@ const Checkout = () => {
   const handleChange = (event: SelectChangeEvent) => {
     setTime(event.target.value as string);
   };
+
+  const [alignment, setAlignment] = React.useState('web');
+  const onTimeSlotSelect = (
+    event: React.MouseEvent<HTMLElement>,
+    newAlignment: string,
+  ) => {
+    setAlignment(newAlignment);
+  };
+
   return (
-    <Box>
+    <Box className="checkout-wrapper">
       <StoreInfoBar />
       <Grid container>
-        <Grid item xs={1} sm={1} md={1} lg={1} />
-
-        <Grid item xs={10} sm={10} md={10} lg={10}>
-          <Card>
+        <Grid item xs={12} sm={12} md={12} lg={12}>
+          <Card className="order">
             <Grid container>
-              <Grid item xs={1} sm={0.5} md={0.5} lg={1} xl={1} />
-              <Grid item xs={10} sm={11} md={11} lg={10} xl={10}>
-                <Grid container>
-                  <Grid item xs={12} md={6} lg={6}>
-                    <Grid
-                      container
-                      sx={{ justifyContent: 'center', alignItem: 'center' }}
-                    >
+              <Grid container>
+                  <Grid item xs={12} sm={6} md={6} lg={6} className="left-col">
+                    <Grid container>
                       <Grid item xs={12}>
                         <Typography
-                          variant="caption"
+                          variant="caption" className="label"
                           title="WHO IS PICKING UP?"
                         >
                           WHO IS PICKING UP?
@@ -90,19 +95,19 @@ const Checkout = () => {
                         <FormGroup>
                           <FormControlLabel
                             control={<Checkbox defaultChecked />}
-                            label="send me emails with special offers and updates"
-                            aria-label="send me emails with special offers and updates"
+                            label="Send me emails with special offers and updates"
+                            aria-label="Send me emails with special offers and updates"
                             aria-required="true"
-                            title="send me emails with special offers and updates"
+                            title="Send me emails with special offers and updates"
                           />
                         </FormGroup>
                       </Grid>
                     </Grid>
                   </Grid>
-                  <Grid item xs={12} md={6} lg={6}>
+                  <Grid item xs={12} sm={6} md={6} lg={6} className="right-col">
                     <Grid container>
                       <Grid item xs={12}>
-                        <Typography variant="caption" title="PICKUP TIME">
+                        <Typography variant="caption" title="PICKUP TIME" className="label">
                           PICKUP TIME
                         </Typography>
                       </Grid>
@@ -113,65 +118,55 @@ const Checkout = () => {
                       </Typography>
                     </Grid>
                     <Grid item xs={12}>
-                      <Button aria-label="change" title="change">
+                      <Button aria-label="change" title="change" className="caption-grey">
                         (change)
                       </Button>
                     </Grid>
                     <Grid item xs={12}>
                       <Grid container>
                         <FormControl>
-                          <FormLabel
-                            title="QUICKEST"
-                            id="demo-row-radio-buttons-group-label"
+                          <Grid container>
+                            <Grid item xs={6} sm={6} md={3} lg={3}>
+                              <FormLabel className="slot-label"
+                                     title="QUICKEST"
+                                     id="demo-row-radio-buttons-group-label">
+                                QUICKEST
+                              </FormLabel>
+                            </Grid>
+                          </Grid>
+                          <ToggleButtonGroup
+                            value={alignment}
+                            exclusive
+                            onChange={onTimeSlotSelect}
                           >
-                            QUICKEST
-                          </FormLabel>
-                          <RadioGroup
-                            row
-                            aria-labelledby="demo-row-radio-buttons-group-label"
-                            name="row-radio-buttons-group"
-                          >
-                            <Grid item lg={3} md={6} sm={6} xs={6}>
-                              <FormControlLabel
-                                value="6:10"
-                                control={<Radio />}
-                                label="6:10"
-                                aria-label="6:10"
-                                title="6:10"
-                              />
+                            <Grid container spacing={2}>
+                              <Grid item xs={6} sm={6} md={3} lg={3}>
+                                <ToggleButton value="06:10" className="selected-btn">
+                                  06:10
+                                </ToggleButton>
+                              </Grid>
+                              <Grid item xs={6} sm={6} md={3} lg={3}>
+                                <ToggleButton value="06:20" className="selected-btn">
+                                  06:20
+                                </ToggleButton>
+                              </Grid>
+                              <Grid item xs={6} sm={6} md={3} lg={3}>
+                                <ToggleButton value="06:30" className="selected-btn">
+                                  06:30
+                                </ToggleButton>
+                              </Grid>
+                              <Grid item xs={6} sm={6} md={3} lg={3}>
+                                <ToggleButton value="06:40" className="selected-btn">
+                                  06:30
+                                </ToggleButton>
+                              </Grid>
                             </Grid>
-                            <Grid item lg={3} md={6} sm={6} xs={6}>
-                              <FormControlLabel
-                                value="6:20"
-                                control={<Radio />}
-                                label="6:20"
-                                aria-label="6:20"
-                              />
-                            </Grid>
-                            <Grid item lg={3} md={6} sm={6} xs={6}>
-                              <FormControlLabel
-                                value="6:30"
-                                control={<Radio />}
-                                label="6:30"
-                                aria-label="6:30"
-                                title="6:30"
-                              />
-                            </Grid>
-                            <Grid item lg={3} md={6} sm={6} xs={6}>
-                              <FormControlLabel
-                                value="6:40"
-                                control={<Radio />}
-                                label="6:40"
-                                aria-label="6:40"
-                                title="6:40"
-                              />
-                            </Grid>
-                          </RadioGroup>
+                          </ToggleButtonGroup>
                         </FormControl>
                       </Grid>
                     </Grid>
                     <Grid item xs={12}>
-                      <FormControl fullWidth>
+                      <FormControl fullWidth className="time-slot">
                         <InputLabel
                           id="select-more-times"
                           aria-label="More Times"
@@ -201,24 +196,34 @@ const Checkout = () => {
                     </Grid>
                   </Grid>
                 </Grid>
-              </Grid>
-              <Grid item xs={1} sm={0.5} md={0.5} lg={1} xl={1} />
             </Grid>
+            <br/>
             <Divider />
+            <br/>
+            <br/>
             {/*second section*/}
             <OrderDetail />
+            <br/>
+            <br/>
             <Divider />
+            <br/>
+            <br/>
             <Rewards />
+            <br/>
+            <br/>
             <Divider />
+            <br/>
+            <br/>
             <Tip />
+            <br/>
+            <br/>
             <Divider />
+            <br/>
+            <br/>
             <PaymentInfo />
-
             {/*second section ends here*/}
           </Card>
         </Grid>
-
-        <Grid item xs={1} sm={1} md={1} lg={1} />
       </Grid>
     </Box>
   );

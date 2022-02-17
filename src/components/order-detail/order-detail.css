@@ -1,0 +1,16 @@
+.order-detail {
+  background: white;
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  border-radius: 30px;
+  margin: 0px auto 0px auto !important;
+}
+.order-detail h6 {
+  font-family: 'Poppins-Bold', sans-serif !Important;
+  font-size: 16px !important;
+  color: #285169;
+}
+.order-detail hr {
+  background: #285169;
+  height: 1px;
+}

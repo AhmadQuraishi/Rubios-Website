@@ -1,0 +1,47 @@
+.payment-form .MuiTextField-root {
+  margin-bottom: 15px;
+}
+.payment-form .add-gift {
+  text-align: center;
+  margin: 40px 0px;
+}
+.payment-form .add-gift .label {
+  font-size: 16px !important;
+}
+.payment-form .add-order {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+.payment-form .add-order a {
+  text-decoration: none;
+}
+.payment-form .add-order button {
+  width: 100%;
+}
+.payment-form .image-field input {
+  padding-right: 65px !important;
+}
+.payment-form .image-field {
+  position: relative;
+}
+.payment-form .image-field img {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+.payment-form .image-field.align img {
+  top: 25px;
+}
+
+@media screen and (max-width: 800px) {
+  .payment-form .add-order button {
+    width: auto;
+    padding: 0px 35px;
+  }
+}
+@media screen and (max-width: 468px) {
+  .payment-form .add-order button {
+    width: 100%;
+  }
+}

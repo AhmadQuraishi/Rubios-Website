@@ -1,6 +1,5 @@
-import { Grid, Typography, Card, CardContent, Button } from '@mui/material';
+import { Grid, Typography, Card, Button } from '@mui/material';
 import FoodMenuCard from '../../components/food-menu-card';
-import ArrowForward from '@mui/icons-material/ArrowForward';
 import './product.css';
 import StoreInfoBar from '../../components/restaurant-info-bar';
 import { Fragment, useEffect, useState } from 'react';
@@ -16,6 +15,7 @@ import {
   ResponseModifiers,
 } from '../../types/olo-api';
 import { getProductOptionRequest } from '../../redux/actions/product/option';
+import ProductSkeletonUI from '../../components/product-skeleton-ui';
 
 const Product = () => {
   const [productDetails, setProductDetails] = useState<ProductInfo>();
@@ -27,6 +27,13 @@ const Product = () => {
   );
   const { options } = useSelector((state: any) => state.productOptionsReducer);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (loading == true) {
+      setProductOptions(undefined);
+      setProductDetails(undefined);
+    }
+  }, [loading]);
 
   useEffect(() => {
     setProductOptions(undefined);
@@ -59,7 +66,6 @@ const Product = () => {
 
   useEffect(() => {
     if (options && options.optiongroups) {
-      console.log(options);
       setProductOptions(options);
     }
   }, [options]);
@@ -68,7 +74,7 @@ const Product = () => {
     <>
       <StoreInfoBar />
       {loading == true && productDetails == null && productOptions == null && (
-        <LoadingBar />
+        <ProductSkeletonUI />
       )}
       {productDetails && (
         <Grid container className="product-detail">
@@ -150,6 +156,8 @@ const Product = () => {
                 )}
               </Grid>
             </Grid>
+            <br />
+            <br />
             {productOptions && (
               <Grid container className="menu-items">
                 {productOptions.optiongroups.map(
@@ -187,7 +195,13 @@ const Product = () => {
                                     menuItems={
                                       item.options[0].modifiers[0].options
                                     }
+                                    isSingleSelect={
+                                      item.options[0].modifiers[0].mandatory
+                                    }
                                     options={productOptions.optiongroups}
+                                    showDDL={
+                                      !item.options[0].modifiers[0].mandatory
+                                    }
                                   />
                                 </Card>
                               )}
@@ -195,7 +209,13 @@ const Product = () => {
                               item.options[0].modifiers.length > 1 && (
                                 <FoodMenuCard
                                   menuItems={item.options[0].modifiers}
+                                  isSingleSelect={
+                                    item.options[0].modifiers[0].mandatory
+                                  }
                                   options={productOptions.optiongroups}
+                                  showDDL={
+                                    !item.options[0].modifiers[0].mandatory
+                                  }
                                 />
                               )}
                           </>
@@ -215,6 +235,8 @@ const Product = () => {
                             <FoodMenuCard
                               menuItems={item.options}
                               options={productOptions.optiongroups}
+                              isSingleSelect={item.mandatory}
+                              showDDL={!item.mandatory}
                             />
                           </Card>
                         )}
@@ -231,7 +253,9 @@ const Product = () => {
                         {item.options && (
                           <FoodMenuCard
                             menuItems={item.options}
+                            isSingleSelect={item.mandatory}
                             options={productOptions.optiongroups}
+                            showDDL={item.mandatory}
                           />
                         )}
                       </Fragment>

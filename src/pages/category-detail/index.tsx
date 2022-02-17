@@ -6,8 +6,8 @@ import { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getCategoriesRequest } from '../../redux/actions/category';
-import LoadingBar from '../../components/loading-bar';
 import { Category } from '../../types/olo-api';
+import ProductListingSkeletonUI from '../../components/product-listing-skeleton-ui';
 
 const useStyles = makeStyles((theme: Theme) => ({
   heading: {
@@ -39,7 +39,11 @@ const CategoryDetail = () => {
   const { categories, loading } = useSelector(
     (state: any) => state.categoryReducer,
   );
-
+  useEffect(() => {
+    if (loading == true) {
+      setSelectedCategory(undefined);
+    }
+  }, [loading]);
   useEffect(() => {
     //TODO: StoreID will get from State when select store work will be done
     const storeID = 60854;
@@ -60,7 +64,9 @@ const CategoryDetail = () => {
   return (
     <Fragment>
       <StoreInfoBar />
-      {loading === true && selectedCategory == null && <LoadingBar />}
+      {loading === true && selectedCategory === undefined && (
+        <ProductListingSkeletonUI />
+      )}
       {selectedCategory && (
         <Grid
           container
