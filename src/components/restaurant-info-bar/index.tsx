@@ -2,7 +2,6 @@ import { Grid, Typography, useTheme, List, ListItem } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getResturantInfoRequest } from '../../redux/actions/restaurant';
 import { getResturantCalendarRequest } from '../../redux/actions/restaurant/calendar';
 import { ResponseRestaurant } from '../../types/olo-api';
 import { GetUserFriendlyHours } from '../../helpers/getUserFriendlyHours';
@@ -21,7 +20,7 @@ const StoreInfoBar = () => {
   const classes = useStyle();
   const [restaurantInfo, setRestaurantInfo] = useState<ResponseRestaurant>();
   const [restaurantHours, setRestaurantHours] = useState<HoursListing[]>();
-  const { restaurant } = useSelector(
+  const { restaurant, orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
   const { calendar } = useSelector(
@@ -94,7 +93,8 @@ const StoreInfoBar = () => {
                   textTransform="uppercase"
                   title="Pick Up From"
                 >
-                  Pick Up From
+                  {orderType && orderType == 'delivery' && 'Delivered From'}
+                  {orderType && orderType != 'delivery' && 'Pick Up From'}
                 </Typography>
                 <Typography
                   variant="body2"

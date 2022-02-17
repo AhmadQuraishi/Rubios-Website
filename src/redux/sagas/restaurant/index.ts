@@ -5,7 +5,7 @@ import {
   getResturantInfoRequestSuccess,
   getResturantInfoRequestFailure,
   setResturantInfoRequestSuccess,
-  setResturantInfoRequestFailure
+  setResturantInfoRequestFailure,
 } from '../../actions/restaurant';
 
 function* asyncResturantInfoRequest(action: any): any {
@@ -19,7 +19,9 @@ function* asyncResturantInfoRequest(action: any): any {
 
 function* setResturantInfoRequest(action: any): any {
   try {
-    yield put(setResturantInfoRequestSuccess(action.restaurant));
+    yield put(
+      setResturantInfoRequestSuccess(action.restaurant, action.orderType),
+    );
   } catch (error) {
     yield put(setResturantInfoRequestFailure(error));
   }

@@ -88,7 +88,7 @@ const Location = () => {
       lastWeekDate.getDate() +
       '';
     dispatch(
-      getNearByResturantListRequest(lat, long, 15, 10, dateFrom, dateTo),
+      getNearByResturantListRequest(lat, long, 10, 10, dateFrom, dateTo),
     );
   };
 

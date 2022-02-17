@@ -22,17 +22,19 @@ export function getResturantInfoRequestFailure(error: any) {
   };
 }
 
-export function setResturantInfoRequest(restaurant: ResponseRestaurant) {
+export function setResturantInfoRequest(restaurant: ResponseRestaurant, orderType: string) {
   return {
     type: restaurantActionsTypes.SET_RESTAURANT_INFO_REQUEST,
-    restaurant
+    restaurant,
+    orderType
   };
 }
 
-export function setResturantInfoRequestSuccess(data: ResponseRestaurant) {
+export function setResturantInfoRequestSuccess(data: ResponseRestaurant, orderType: string) {
   return {
     type: restaurantActionsTypes.SET_RESTAURANT_INFO_SUCCESS,
     payload: data,
+    orderType
   };
 }
 

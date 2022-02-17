@@ -13,15 +13,14 @@ import './location.css';
 import { ResponseRestaurant } from '../../types/olo-api';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  getResturantInfoRequest,
-  setResturantInfoRequest,
-} from '../../redux/actions/restaurant';
+import { setResturantInfoRequest } from '../../redux/actions/restaurant';
+import ErrorMessageAlert from '../error-message-alert';
 
 const LocationCard = (props: any) => {
   const { restaurants, isNearByRestaurantList } = props;
   const [searchText, setSearchText] = useState<string>();
   const [orderType, setOrderType] = useState<string>();
+  const [showError, setShowError] = useState(false);
   const [filteredRestaurants, setfilteredRestaurants] = useState<
     ResponseRestaurant[]
   >(isNearByRestaurantList ? restaurants : undefined);
@@ -33,9 +32,14 @@ const LocationCard = (props: any) => {
   const dispatch = useDispatch();
 
   const gotoCategoryPage = (storeID: number) => {
+    setShowError(false);
+    if (orderType == undefined || orderType == '') {
+      setShowError(true);
+      return false;
+    }
     const restaurant = restaurants.find((x: any) => x.id === storeID);
     if (restaurant) {
-      dispatch(setResturantInfoRequest(restaurant));
+      dispatch(setResturantInfoRequest(restaurant, orderType || ''));
       navigate('/');
     }
   };
@@ -66,30 +70,30 @@ const LocationCard = (props: any) => {
       if (searchText && searchText.length > 2) {
         if (!resultsFound) {
           updatedRestaurants = restaurants.filter((x: any) =>
-            x.streetaddress.toLowerCase().includes(searchText),
+            x.city.toLowerCase().includes(searchText),
           );
           if (updatedRestaurants.length === 0) {
             updatedRestaurants = restaurants.filter((x: any) =>
-              x.city.toLowerCase().includes(searchText),
+              x.zip.toLowerCase().includes(searchText),
             );
           }
           if (updatedRestaurants.length === 0) {
             searchedRestaurant = restaurants.filter((x: any) =>
-              x.zip.toLowerCase().includes(searchText),
+              x.state.toLowerCase().includes(searchText),
             );
           }
         } else {
           searchedRestaurant = updatedRestaurants.filter((x: any) =>
-            x.streetaddress.toLowerCase().includes(searchText),
+            x.city.toLowerCase().includes(searchText),
           );
           if (searchedRestaurant.length === 0) {
             searchedRestaurant = updatedRestaurants.filter((x: any) =>
-              x.city.toLowerCase().includes(searchText),
+              x.zip.toLowerCase().includes(searchText),
             );
           }
           if (searchedRestaurant.length === 0) {
             searchedRestaurant = updatedRestaurants.filter((x: any) =>
-              x.zip.toLowerCase().includes(searchText),
+              x.state.toLowerCase().includes(searchText),
             );
           }
         }
@@ -120,6 +124,9 @@ const LocationCard = (props: any) => {
 
   return (
     <Grid container className="list-wrapper">
+      {showError && (
+        <ErrorMessageAlert message="Please choose atleast one order type" />
+      )}
       <Grid
         item
         xs={12}
@@ -167,9 +174,9 @@ const LocationCard = (props: any) => {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                aria-label="Address, City, or Zip Code"
-                label="Address, City, or Zip Code"
-                title="Address, City, or Zip Code"
+                aria-label="City, Zip Code, State"
+                label="City, Zip Code, State"
+                title="City, Zip Code, State"
                 aria-required="true"
                 value={searchText || ''}
                 onChange={handleChange}
