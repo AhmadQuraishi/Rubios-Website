@@ -50,7 +50,7 @@ const Checkout = () => {
           <Card className="order">
             <Grid container>
               <Grid container>
-                  <Grid item xs={12} md={6} lg={6} className="left-col">
+                  <Grid item xs={12} sm={6} md={6} lg={6} className="left-col">
                     <Grid container>
                       <Grid item xs={12}>
                         <Typography
@@ -104,7 +104,7 @@ const Checkout = () => {
                       </Grid>
                     </Grid>
                   </Grid>
-                  <Grid item xs={12} md={6} lg={6} className="right-col">
+                  <Grid item xs={12} sm={6} md={6} lg={6} className="right-col">
                     <Grid container>
                       <Grid item xs={12}>
                         <Typography variant="caption" title="PICKUP TIME" className="label">
@@ -125,28 +125,42 @@ const Checkout = () => {
                     <Grid item xs={12}>
                       <Grid container>
                         <FormControl>
-                          <FormLabel className="slot-label"
-                            title="QUICKEST"
-                            id="demo-row-radio-buttons-group-label">
-                            QUICKEST
-                          </FormLabel>
+                          <Grid container>
+                            <Grid item xs={6} sm={6} md={3} lg={3}>
+                              <FormLabel className="slot-label"
+                                     title="QUICKEST"
+                                     id="demo-row-radio-buttons-group-label">
+                                QUICKEST
+                              </FormLabel>
+                            </Grid>
+                          </Grid>
                           <ToggleButtonGroup
                             value={alignment}
                             exclusive
                             onChange={onTimeSlotSelect}
                           >
-                            <ToggleButton value="06:10" className="selected-btn">
-                              06:10
-                            </ToggleButton>
-                            <ToggleButton value="06:20" className="selected-btn">
-                              06:20
-                            </ToggleButton>
-                            <ToggleButton value="06:30" className="selected-btn">
-                              06:30
-                            </ToggleButton>
-                            <ToggleButton value="06:40" className="selected-btn">
-                              06:30
-                            </ToggleButton>
+                            <Grid container spacing={2}>
+                              <Grid item xs={6} sm={6} md={3} lg={3}>
+                                <ToggleButton value="06:10" className="selected-btn">
+                                  06:10
+                                </ToggleButton>
+                              </Grid>
+                              <Grid item xs={6} sm={6} md={3} lg={3}>
+                                <ToggleButton value="06:20" className="selected-btn">
+                                  06:20
+                                </ToggleButton>
+                              </Grid>
+                              <Grid item xs={6} sm={6} md={3} lg={3}>
+                                <ToggleButton value="06:30" className="selected-btn">
+                                  06:30
+                                </ToggleButton>
+                              </Grid>
+                              <Grid item xs={6} sm={6} md={3} lg={3}>
+                                <ToggleButton value="06:40" className="selected-btn">
+                                  06:30
+                                </ToggleButton>
+                              </Grid>
+                            </Grid>
                           </ToggleButtonGroup>
                         </FormControl>
                       </Grid>

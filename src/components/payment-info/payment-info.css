@@ -33,3 +33,15 @@
 .payment-form .image-field.align img {
   top: 25px;
 }
+
+@media screen and (max-width: 800px) {
+  .payment-form .add-order button {
+    width: auto;
+    padding: 0px 35px;
+  }
+}
+@media screen and (max-width: 468px) {
+  .payment-form .add-order button {
+    width: 100%;
+  }
+}

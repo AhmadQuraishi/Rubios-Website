@@ -7,6 +7,7 @@ const initialState = {
   userFavoriteOrders: null,
   userDeliveryAddresses: null,
   userDefaultDeliveryAddress: null,
+  updatedUserprofile : null,
   loading: false,
   error: {},
 };
@@ -16,19 +17,27 @@ const userReducer = (state = initialState, action: any) => {
     // Case get requests
     case Type.GET_USER_RECENT_ORDERS:
     case Type.GET_USER_FAVORITE_ORDERS:
-    // case Type.GET_USER_DELIVERY_ADDRESSES:
+     case Type.GET_USER_DELIVERY_ADDRESSES:
       case Type.GET_USER_PROFILE:
     case Type.CHANGE_PASSWORD:
     case Type.UPDATE_USER:
       return { ...state, loading: true };
 
     //Success cases
-    case Type.GET_USER_PROFILE_SUCCESS:
     case Type.CHANGE_PASSWORD_SUCCESS:
       return {
         ...state,
         loading: false,
+        updatedUserprofile: action.payload,
+        error: null,
+        
+      };
+    case Type.GET_USER_PROFILE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
         userProfile: action.payload,
+        error: null
       };
     case Type.GET_USER_RECENT_ORDERS_SUCCESS:
       return {
@@ -39,14 +48,14 @@ const userReducer = (state = initialState, action: any) => {
     case Type.GET_USER_FAVORITE_ORDERS_SUCCESS:
       return {
         ...state,
-        loading: false,
         userFavoriteOrders: action.payload,
+        loading: false,
       };
     case Type.GET_USER_DELIVERY_ADDRESSES_SUCCESS:
       return {
         ...state,
-        loading: false,
         userDeliveryAddresses: action.payload,
+        loading: false,
       };
     case Type.SET_USER_DEF_DEL_ADD_SUCCESS:
       return {
@@ -64,6 +73,8 @@ const userReducer = (state = initialState, action: any) => {
         ...state,
         userProfile: action.payload,
         loading: false,
+        error: null
+        
       };
 
     // error cases

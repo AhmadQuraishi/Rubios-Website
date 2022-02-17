@@ -6,17 +6,17 @@ const PaymentInfo = () => {
   return (
     <Grid container>
       {/*column for space*/}
-      <Grid item xs={12} sm={12} md={2} lg={2} />
+      <Grid item xs={0} sm={0} md={2} lg={2} />
 
-      <Grid item xs={10} sm={11} md={11} lg={8}>
+      <Grid item xs={12} sm={12} md={8} lg={8}>
         <Typography variant="h4" title="PAYMENT INFO">
           PAYMENT INFO
         </Typography>
         <br/>
         <Grid container spacing={2} className="payment-form">
-          <Grid item xs={12} sm={12} md={6}>
-            <Grid container>
-              <Grid item xs={12}>
+          <Grid item xs={12}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6} md={6} lg={6}>
                 <TextField
                   label="First Name"
                   aria-label="First Name"
@@ -24,20 +24,7 @@ const PaymentInfo = () => {
                   title="First Name"
                 />
               </Grid>
-              <Grid item xs={12} className="image-field">
-                <TextField
-                  label="Card Number"
-                  aria-label="Card Number"
-                  aria-required="true"
-                  title="Card Number"
-                />
-                <img src={require('../../assets/imgs/card-icon.png')} />
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid item xs={12} sm={12} md={6}>
-            <Grid container>
-              <Grid item xs={12}>
+              <Grid item xs={12} sm={6} md={6} lg={6}>
                 <TextField
                   label="Last Name"
                   aria-label="Last Name"
@@ -46,18 +33,33 @@ const PaymentInfo = () => {
                 />
               </Grid>
             </Grid>
+          </Grid>
+          <Grid item xs={12}>
             <Grid container spacing={2}>
-              <Grid item xs={6} className="image-field align">
-                <TextField label="CVV" aria-label="CVV" aria-required="true" />
-                <img src={require('../../assets/imgs/ccv-icon.png')} />
-              </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12} sm={6} md={6} lg={6} className="image-field align">
                 <TextField
-                  label="MM/DD/YY"
-                  aria-label="Month/Day/Year"
+                  label="Card Number"
+                  aria-label="Card Number"
                   aria-required="true"
-                  title="MM/DD/YY"
+                  title="Card Number"
                 />
+                <img src={require('../../assets/imgs/card-icon.png')} />
+              </Grid>
+              <Grid item xs={12} sm={6} md={6} lg={6}>
+                <Grid container spacing={2}>
+                  <Grid item xs={6} sm={6} md={6} lg={6} className="image-field align">
+                    <TextField label="CVV" aria-label="CVV" aria-required="true" />
+                    <img src={require('../../assets/imgs/ccv-icon.png')} />
+                  </Grid>
+                  <Grid item xs={6} sm={6} md={6} lg={6}>
+                    <TextField
+                      label="MM/DD/YY"
+                      aria-label="Month/Day/Year"
+                      aria-required="true"
+                      title="MM/DD/YY"
+                    />
+                  </Grid>
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
@@ -84,7 +86,7 @@ const PaymentInfo = () => {
       </Grid>
 
       {/*column for space*/}
-      <Grid item xs={1} sm={12} md={2} lg={2} />
+      <Grid item xs={0} sm={0} md={2} lg={2} />
     </Grid>
   );
 };

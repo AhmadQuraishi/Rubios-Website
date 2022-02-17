@@ -77,9 +77,7 @@ const DeliveryAddress = () => {
           DELIVERY ADDRESSES
         </Typography>
         {loading && <LoadingBar />}
-        {!loading && deliveryaddresses.length < 1 && (
-          <h6>No Delivery Addresses Found</h6>
-        )}
+
         {!loading &&
           deliveryaddresses.length > 0 &&
           deliveryaddresses.map((address: any, index) => (
@@ -134,6 +132,12 @@ const DeliveryAddress = () => {
               </Card>
             </Grid>
           ))}
+        {!loading && deliveryaddresses.length === 0 && (
+          <>
+            <br />
+            <Typography>No Delivery Addresses Found</Typography>
+          </>
+        )}
 
         <Grid item xs={12}>
           <Link
