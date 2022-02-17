@@ -16,7 +16,7 @@ import './profile.css';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { makeStyles } from '@mui/styles';
 import { useDispatch, useSelector } from 'react-redux';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   changePassword,
   getUserprofile,
@@ -26,6 +26,8 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { getlocations } from '../../redux/actions/location';
 import LoadingBar from '../../components/loading-bar';
+import { IMaskInput } from 'react-imask';
+import { forwardRef } from 'react';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -42,14 +44,40 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
+interface CustomProps {
+  onChange: (event: { target: { name: string; value: string } }) => void;
+  name: string;
+}
+
+const NumberFormatCustom = forwardRef<HTMLElement, CustomProps>(
+  function NumberFormatCustom(props, ref) {
+    const { onChange, ...other } = props;
+
+    return (
+      <IMaskInput
+        {...other}
+        mask="(#00) 000-0000"
+        definitions={{
+          '#': /[1-9]/,
+        }}
+        onAccept={(value: any) =>
+          onChange({ target: { name: props.name, value } })
+        }
+        overwrite
+      />
+    );
+  },
+);
+
 const Profile = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { userProfile, loading } = useSelector(
+  const { userProfile, loading, error, updatedUserprofile } = useSelector(
     (state: any) => state.userReducer,
   );
 
   const [favlocation, setFavLoc] = useState('');
+  const [userObject, setUserObject] = useState({});
   const { locations } = useSelector((state: any) => state.locationReducer);
   const [state, setState] = useState({
     emailnotification: true,
@@ -62,8 +90,21 @@ const Profile = () => {
   }, []);
 
   useEffect(() => {
+    if (error && error.message) {
+      alert('Error');
+      dispatch(getUserprofile());
+    }
+  }, [error]);
+  useEffect(() => {
+    if (updatedUserprofile) {
+      if (userObject) {
+        dispatch(updateUser(userObject));
+      }
+    }
+  }, [updatedUserprofile]);
+
+  useEffect(() => {
     if (userProfile && !loading) {
-      console.log(userProfile.favourite_locations);
       setFavLoc(userProfile.favourite_locations);
       setState({
         emailnotification: userProfile.marketing_email_subscription,
@@ -109,7 +150,7 @@ const Profile = () => {
                 .min(3, 'Must be at least 3 characters')
                 .matches(
                   /^[aA-zZ\s]+$/,
-                  'Only alphabets are allowed for this field ',
+                  'Only letters are allowed for this field ',
                 )
                 .required('Name is required'),
               lastName: Yup.string()
@@ -117,7 +158,7 @@ const Profile = () => {
                 .min(3, 'Must be at least 3 characters')
                 .matches(
                   /^[aA-zZ\s]+$/,
-                  'Only alphabets are allowed for this field ',
+                  'Only letters are allowed for this field ',
                 )
                 .required('Last name is required'),
               email: Yup.string()
@@ -126,7 +167,7 @@ const Profile = () => {
                   'Invalid Email ',
                 )
                 .email('Invalid email address')
-                .required('Required'),
+                .required('Email is required'),
               newpassword: Yup.string().matches(
                 /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
                 'password must be minimum 8 characters and  must contain only  numbers and letters. ',
@@ -137,9 +178,7 @@ const Profile = () => {
                 'password must be minimum 8 characters and  must contain only  numbers and letters. ',
               ),
 
-              phone: Yup.string()
-                .matches(/^[^_]+$/, 'invalid phone number')
-                .required('phone is required'),
+              phone: Yup.string().min(14, 'Enter valid number'),
             })}
             onSubmit={async (values) => {
               const obj = {
@@ -149,6 +188,9 @@ const Profile = () => {
                 favourite_locations: favlocation,
                 marketing_email_subscription: state.emailnotification,
                 marketing_pn_subscription: state.pushnotification,
+                phone: values.phone
+                  ? values.phone.replace(/\D/g, '')
+                  : userProfile.phone,
               };
               const passwordObj = {
                 password: values.newpassword,
@@ -163,13 +205,15 @@ const Profile = () => {
                 }
               } else {
                 if (values.newpassword === values.confirmpassword) {
-                  const userdata: any = await dispatch(updateUser(obj));
-                  if (userdata) {
-                    dispatch(changePassword(passwordObj));
-                    setTimeout(() => {
-                      dispatch(getUserprofile());
-                    }, 1000);
-                  }
+                  dispatch(changePassword(passwordObj));
+                  setUserObject(obj);
+
+                  // if (userdata) {
+                  //   setTimeout(() => {
+                  //     dispatch(changePassword(passwordObj));
+                  //     dispatch(getUserprofile());
+                  //   }, 1000);
+                  // }
                 } else {
                   alert('password error');
                 }
@@ -199,8 +243,9 @@ const Profile = () => {
                         sx={{ width: '100%' }}
                         value={values.email}
                         onChange={handleChange}
+                        error={Boolean(touched && errors.email)}
+                        helperText={errors.email}
                       />
-                      <Typography>{touched.email && errors.email}</Typography>
                     </Grid>
                     <Grid item xs={12}>
                       <TextField
@@ -212,10 +257,9 @@ const Profile = () => {
                         sx={{ width: '100%' }}
                         value={values.firstName}
                         onChange={handleChange}
+                        error={Boolean(touched && errors.firstName)}
+                        helperText={errors.firstName}
                       />
-                      <Typography>
-                        {touched.firstName && errors.firstName}
-                      </Typography>
                     </Grid>
                     <Grid item xs={12}>
                       <TextField
@@ -226,20 +270,28 @@ const Profile = () => {
                         sx={{ width: '100%' }}
                         value={values.lastName}
                         onChange={handleChange}
+                        error={Boolean(touched && errors.lastName)}
+                        helperText={errors.lastName}
                       />
-                      <Typography>
-                        {touched.lastName && errors.lastName}
-                      </Typography>
                     </Grid>
                     <Grid item xs={12}>
                       <TextField
                         aria-label="mobile phone "
                         label="Mobile Phone"
                         title="Mobile Phone"
-                        name="phone"
-                        sx={{ width: '100%' }}
                         value={values.phone}
+                        sx={{ width: '100%' }}
                         onChange={handleChange}
+                        name="phone"
+                        id="formatted-numberformat-input"
+                        InputLabelProps={{
+                          shrink: touched && values.phone == '' ? false : true,
+                        }}
+                        InputProps={{
+                          inputComponent: NumberFormatCustom as any,
+                        }}
+                        error={Boolean(touched && errors.phone)}
+                        helperText={errors.phone}
                       />
                     </Grid>
                     <Grid item xs={12}>
@@ -247,10 +299,13 @@ const Profile = () => {
                         aria-label="new password"
                         label="New Password"
                         title="New Password"
+                        type="password"
                         name="newpassword"
                         sx={{ width: '100%' }}
                         onChange={handleChange}
                         value={values.newpassword}
+                        error={Boolean(touched && errors.newpassword)}
+                        helperText={errors.newpassword}
                       />
                     </Grid>
                     <Grid item xs={12}>
@@ -269,9 +324,12 @@ const Profile = () => {
                         label="Confirm Password"
                         title="Confirm Password"
                         name="confirmpassword"
+                        type="password"
                         sx={{ width: '100%' }}
                         value={values.confirmpassword}
                         onChange={handleChange}
+                        error={Boolean(touched && errors.confirmpassword)}
+                        helperText={errors.confirmpassword}
                       />
                     </Grid>
                     <Grid item xs={12}>
@@ -368,9 +426,12 @@ const Profile = () => {
                       <Button
                         type="submit"
                         aria-label="submit"
+                        name="submit"
                         title="submit"
                         variant="contained"
                         sx={{ width: { xs: '100%', lg: '400px' } }}
+                        disabled={!(dirty && isValid)}
+                        onBlur={handleBlur}
                       >
                         Submit
                       </Button>

@@ -36,7 +36,7 @@ export const requestUpdateUser = (body: object) => {
   }
 };
 
-//Change Password requestChangePassword
+//Change Password 
 export const requestChangePassword = (body: object) => {
   const obj = {
     user: body,
@@ -49,7 +49,10 @@ export const requestChangePassword = (body: object) => {
 
     const url = ` https://sandbox.punchh.com/api/auth/users/change_password`;
 
-    return axios.patch(url, obj).then((response) => response.data);
+    return axios.patch(url, obj).then((response) => response.data).catch((error) => {
+      console.log(error.response);
+      throw error;
+    });
 
   } catch (error) {
     throw error;

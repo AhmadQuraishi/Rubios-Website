@@ -6,6 +6,7 @@ import { userSaga } from './user';
 import { restaurantInfoSaga } from './restaurant';
 import { restaurantCalendarSaga } from './restaurant/calendar';
 import { productOptionsSaga } from './product/option';
+import { locationSaga } from './location';
 
 export default function* rootSaga() {
   yield all([
@@ -15,6 +16,7 @@ export default function* rootSaga() {
     userSaga(),
     restaurantInfoSaga(),
     restaurantCalendarSaga(),
+    locationSaga(),
     productOptionsSaga(),
   ]);
 }
