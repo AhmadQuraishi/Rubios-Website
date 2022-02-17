@@ -1,6 +1,5 @@
-import { Grid, Typography, Card, CardContent, Button } from '@mui/material';
+import { Grid, Typography, Card, Button } from '@mui/material';
 import FoodMenuCard from '../../components/food-menu-card';
-import ArrowForward from '@mui/icons-material/ArrowForward';
 import './product.css';
 import StoreInfoBar from '../../components/restaurant-info-bar';
 import { Fragment, useEffect, useState } from 'react';
@@ -16,6 +15,7 @@ import {
   ResponseModifiers,
 } from '../../types/olo-api';
 import { getProductOptionRequest } from '../../redux/actions/product/option';
+import ProductSkeletonUI from '../../components/product-skeleton-ui';
 
 const Product = () => {
   const [productDetails, setProductDetails] = useState<ProductInfo>();
@@ -74,7 +74,7 @@ const Product = () => {
     <>
       <StoreInfoBar />
       {loading == true && productDetails == null && productOptions == null && (
-        <LoadingBar />
+        <ProductSkeletonUI />
       )}
       {productDetails && (
         <Grid container className="product-detail">
