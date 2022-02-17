@@ -53,21 +53,18 @@ const Location = () => {
 
   let lat: number, long: number;
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(function (position) {
-      lat = position.coords.latitude;
-      long = position.coords.longitude;
-      setShowNearBy(true);
-      //DUMMY LAT, LONG = 40.7054008, -74.0132198
-      getNearByRestaurants(lat, long);
-    });
-    navigator.permissions
-      .query({ name: 'geolocation' })
-      .then(function (result) {
-        // Will return ['granted', 'prompt', 'denied']
-        if (result.state == 'denied') {
-          dispatch(getResturantListRequest());
-        }
-      });
+    navigator.geolocation.getCurrentPosition(
+      function (position) {
+        lat = position.coords.latitude;
+        long = position.coords.longitude;
+        setShowNearBy(true);
+        //DUMMY LAT, LONG = 40.7054008, -74.0132198
+        getNearByRestaurants(lat, long);
+      },
+      function () {
+        dispatch(getResturantListRequest());
+      },
+    );
   }, []);
 
   const getNearByRestaurants = (lat: number, long: number) => {
@@ -106,7 +103,16 @@ const Location = () => {
           lat: item.latitude,
           lng: parseFloat(item.longitude),
         };
-        return <Marker key={index} position={latLong} />;
+        return (
+          <Marker
+            key={index}
+            position={latLong}
+            icon={{
+              url: '/marker.png',
+              scaledSize: new google.maps.Size(50, 55),
+            }}
+          />
+        );
       },
     );
   } else {
