@@ -35,9 +35,9 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  margin-top: -22px;
+  margin-top: -6%;
   transform: rotate(45deg);
-  margin-left: -126px;
+  margin-left: -32%;
 }
 .choose-reward .choose-btn.Mui-selected:before {
   content: " ";
@@ -49,7 +49,23 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  margin-top: -30px;
-  margin-left: -145px;
+  margin-top: -8%;
+  margin-left: -37%;
 }
 
+@media screen and (max-width: 768px) {
+  .choose-reward .choose-btn.Mui-selected:before {
+    margin-top: -9%;
+    margin-left: -38%;
+  }
+}
+
+@media screen and (max-width: 468px) {
+  .choose-reward .MuiToggleButtonGroup-root {
+    display: flex;
+    flex-direction: column;
+  }
+  .choose-reward .choose-btn {
+    margin: 0px 0px 15px 0px;
+  }
+}

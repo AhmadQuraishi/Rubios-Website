@@ -33,7 +33,7 @@ const Rewards = () => {
 
   return (
     <Grid container>
-      <Grid item xs={1} sm={0.5} md={0.5} lg={2} />
+      <Grid item xs={0} sm={0} md={2} lg={2} />
 
       {view && (
         <Grid container className="rewards">
@@ -46,7 +46,7 @@ const Rewards = () => {
       )}
 
       {!view && (
-        <Grid item xs={10} sm={11} md={11} lg={8} className="choose-reward">
+        <Grid item xs={12} sm={12} md={8} lg={8} className="choose-reward">
           <Typography variant="h4" title="APPLY REWARDS">
             APPLY REWARDS
           </Typography>
@@ -76,10 +76,10 @@ const Rewards = () => {
                 aria-labelledby="rewards"
               >
                 {rewardsArray.map((reward, index) => (
-                    <ToggleButton value={reward.desc} className="choose-btn">
-                      <img src={reward.icon} />
-                      <Typography>{reward.desc}</Typography>
-                    </ToggleButton>
+                  <ToggleButton value={reward.desc} className="choose-btn">
+                    <img src={reward.icon} />
+                    <Typography>{reward.desc}</Typography>
+                  </ToggleButton>
                 ))}
               </ToggleButtonGroup>
             </FormControl>
@@ -87,7 +87,7 @@ const Rewards = () => {
         </Grid>
       )}
 
-      <Grid item xs={1} sm={0.5} md={0.5} lg={2} />
+      <Grid item xs={0} sm={0} md={2} lg={2} />
     </Grid>
   );
 };
