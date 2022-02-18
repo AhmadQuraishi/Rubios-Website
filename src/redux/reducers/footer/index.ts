@@ -9,9 +9,9 @@ const INITIAL_STATE = {
 const footerReducer = (state = INITIAL_STATE, action: any) => {
   switch (action.type) {
     case Type.GET_FOOTER_ITMES_REQUEST:
-      return { ...state, loading: true };
+      return { ...state, loading: true, menu: null };
     case Type.GET_FOOTER_ITMES_SUCCESS:
-      return { ...state, loading: false, menu: action.payload };
+      return { ...state, loading: false, menu: action.payload, error: {} };
     case Type.GET_FOOTER_ITMES_FAILURE:
       return { ...state, loading: false, error: action.error };
     default:

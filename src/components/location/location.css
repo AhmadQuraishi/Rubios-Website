@@ -1,12 +1,19 @@
 .list-wrapper {
   padding: 0px;
 }
+.location-sidebar .MuiOutlinedInput-input, .location-sidebar .MuiInputLabel {
+  font-family: 'Poppins-Regular', sans-serif !important;
+  font-size: 16px;
+}
+.MuiInputLabel.Mui-focused{
+  padding: 0px !important;
+}
 .list-wrapper .MuiPaper-root {
-  padding: 20px;
+  padding: 30px;
   -webkit-border-radius: 30px;
   -moz-border-radius: 30px;
   border-radius: 30px;
-  width: 70%;
+  width: 56%;
   height:auto; /*calc(100vh - 80px); */
 }
 .list-wrapper .listing {
@@ -61,12 +68,16 @@
   margin: 0;
   font-size: 13px !important;
 }
-
+@media screen and (max-width: 1024px){
+  .list-wrapper .MuiPaper-root {
+    width: 70%;
+  }
+}
 @media screen and (max-width: 768px){
   .list-wrapper .MuiPaper-root {
     padding: 20px;
     border-radius: 30px;
-    width: calc(100% - 20%);
+    width: calc(100% - 40px);
     height: auto;
   }
   button {

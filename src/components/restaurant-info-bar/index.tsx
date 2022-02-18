@@ -2,7 +2,6 @@ import { Grid, Typography, useTheme, List, ListItem } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getResturantInfoRequest } from '../../redux/actions/restaurant';
 import { getResturantCalendarRequest } from '../../redux/actions/restaurant/calendar';
 import { ResponseRestaurant } from '../../types/olo-api';
 import { GetUserFriendlyHours } from '../../helpers/getUserFriendlyHours';
@@ -21,20 +20,13 @@ const StoreInfoBar = () => {
   const classes = useStyle();
   const [restaurantInfo, setRestaurantInfo] = useState<ResponseRestaurant>();
   const [restaurantHours, setRestaurantHours] = useState<HoursListing[]>();
-  const { restaurant } = useSelector(
+  const { restaurant, orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
   const { calendar } = useSelector(
     (state: any) => state.restaurantCalendarReducer,
   );
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    //TODO: StoreID will get from State when select store work will be done
-    const storeID = 60854;
-    dispatch(getResturantInfoRequest(storeID));
-  }, []);
-
   useEffect(() => {
     if (restaurant) {
       setRestaurantInfo(restaurant);
@@ -44,7 +36,7 @@ const StoreInfoBar = () => {
   useEffect(() => {
     if (restaurantInfo) {
       var today = new Date();
-      const dateTo =
+      const dateFrom =
         today.getFullYear() * 1e4 +
         (today.getMonth() + 1) * 100 +
         today.getDate() +
@@ -52,9 +44,9 @@ const StoreInfoBar = () => {
       const lastWeekDate = new Date(
         today.getFullYear(),
         today.getMonth(),
-        today.getDate() - 6,
+        today.getDate() + 6,
       );
-      const dateFrom =
+      const dateTo =
         lastWeekDate.getFullYear() * 1e4 +
         (lastWeekDate.getMonth() + 1) * 100 +
         lastWeekDate.getDate() +
@@ -101,7 +93,8 @@ const StoreInfoBar = () => {
                   textTransform="uppercase"
                   title="Pick Up From"
                 >
-                  Pick Up From
+                  {orderType && orderType == 'delivery' && 'Delivered From'}
+                  {orderType && orderType != 'delivery' && 'Pick Up From'}
                 </Typography>
                 <Typography
                   variant="body2"
@@ -150,7 +143,9 @@ const StoreInfoBar = () => {
                   <p style={{ paddingBottom: '2px' }}>
                     {restaurantInfo.city}, {restaurantInfo.state}
                   </p>
-                  <p>{restaurantInfo.distance.toFixed(1)} Miles Away</p>
+                  {restaurantInfo.distance > 0 && (
+                    <p>{restaurantInfo.distance.toFixed(2)} Miles Away</p>
+                  )}
                 </Typography>
               </Grid>
               <Grid

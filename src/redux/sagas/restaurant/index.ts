@@ -4,6 +4,8 @@ import { getRestaurantInfo } from '../../../services/restaurant';
 import {
   getResturantInfoRequestSuccess,
   getResturantInfoRequestFailure,
+  setResturantInfoRequestSuccess,
+  setResturantInfoRequestFailure,
 } from '../../actions/restaurant';
 
 function* asyncResturantInfoRequest(action: any): any {
@@ -15,9 +17,23 @@ function* asyncResturantInfoRequest(action: any): any {
   }
 }
 
+function* setResturantInfoRequest(action: any): any {
+  try {
+    yield put(
+      setResturantInfoRequestSuccess(action.restaurant, action.orderType),
+    );
+  } catch (error) {
+    yield put(setResturantInfoRequestFailure(error));
+  }
+}
+
 export function* restaurantInfoSaga() {
   yield takeEvery(
     restaurantActionsTypes.GET_RESTAURANT_INFO_REQUEST,
     asyncResturantInfoRequest,
+  );
+  yield takeEvery(
+    restaurantActionsTypes.SET_RESTAURANT_INFO_REQUEST,
+    setResturantInfoRequest,
   );
 }

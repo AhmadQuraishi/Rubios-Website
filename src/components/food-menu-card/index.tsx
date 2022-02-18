@@ -187,7 +187,6 @@ const FoodMenuCard = (props: any) => {
               }`}
               onClick={() => handleClick(menuItem.id, !showDDL)}
             >
-              <div className="icon">✓</div>
               <Grid container className="rewards">
                 <Grid item xs={5}>
                   {menuItem.image ? (

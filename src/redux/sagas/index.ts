@@ -6,6 +6,9 @@ import { userSaga } from './user';
 import { restaurantInfoSaga } from './restaurant';
 import { restaurantCalendarSaga } from './restaurant/calendar';
 import { productOptionsSaga } from './product/option';
+import { storeProvider } from './provider'
+import { storeAuth } from './auth'
+import { resturantListSaga } from './restaurant/list';
 import { locationSaga } from './location';
 
 export default function* rootSaga() {
@@ -18,5 +21,8 @@ export default function* rootSaga() {
     restaurantCalendarSaga(),
     locationSaga(),
     productOptionsSaga(),
+    storeProvider(),
+    storeAuth(),
+    resturantListSaga(),
   ]);
 }

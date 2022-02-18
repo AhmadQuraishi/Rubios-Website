@@ -2,7 +2,7 @@ import StoreInfoBar from '../../components/restaurant-info-bar';
 import ProductListing from '../../components/product-listing';
 import { Grid, Theme, Typography, Tabs, Tab, Box } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategoriesRequest } from '../../redux/actions/category';
@@ -40,12 +40,18 @@ const CategoryList = () => {
   const { categories, loading, error } = useSelector(
     (state: any) => state.categoryReducer,
   );
-  const dispatch = useDispatch();
+  const { restaurant } = useSelector(
+    (state: any) => state.restaurantInfoReducer,
+  );
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   useEffect(() => {
-    //TODO: StoreID will get from State when select store work will be done
-    const storeID = 60854;
-    dispatch(getCategoriesRequest(storeID));
+    if (restaurant === null) {
+      navigate('/location');
+    } else {
+      dispatch(getCategoriesRequest(restaurant.id));
+    }
   }, []);
 
   useEffect(() => {

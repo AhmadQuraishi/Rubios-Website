@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { takeEvery, put, call } from 'redux-saga/effects';
 import { tokenActionsTypes as Type } from '../../types/token';
-import { getToken } from '../../../services/auth';
+import { getToken } from '../../../services/token';
 import {
   getTokenRequestFailure,
   getTokenRequestSuccess,
