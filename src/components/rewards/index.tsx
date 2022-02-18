@@ -83,8 +83,14 @@ const Rewards = () => {
               >
                 {rewardsArray.map((reward, index) => (
                   <ToggleButton value={reward.desc} className="choose-btn">
-                    <img src={reward.icon} />
-                    <Typography>{reward.desc}</Typography>
+                    <Grid container spacing={2}>
+                      <Grid item xs={12} sm={5} md={5} lg={5}>
+                        <img src={reward.icon} />
+                      </Grid>
+                      <Grid item xs={12} sm={7} md={7} lg={7} className="icon-content">
+                        <Typography>{reward.desc}</Typography>
+                      </Grid>
+                    </Grid>
                   </ToggleButton>
                 ))}
               </ToggleButtonGroup>

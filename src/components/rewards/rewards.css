@@ -13,8 +13,11 @@
   margin: 0px 15px 0 0;
 }
 .choose-reward .choose-btn img {
-  min-width: 30%;
-  margin-right: 60px;
+  width: 85%;
+}
+.choose-reward .choose-btn .icon-content {
+  display: flex;
+  align-items: center;
 }
 .choose-reward .choose-btn p {
   font-size: 18px !important;
@@ -67,5 +70,20 @@
   }
   .choose-reward .choose-btn {
     margin: 0px 0px 15px 0px;
+    height: 100%;
+  }
+  .choose-reward .choose-btn img {
+    width: auto;
+  }
+  .choose-reward .choose-btn .icon-content {
+    justify-content: center;
+  }
+  .choose-reward .choose-btn.Mui-selected:before {
+    margin-top: -15%;
+    margin-left: -8%;
+  }
+  .choose-reward .choose-btn.Mui-selected:after {
+    margin-top: -13%;
+    margin-left: -3%;
   }
 }
