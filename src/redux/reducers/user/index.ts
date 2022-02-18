@@ -7,9 +7,14 @@ const initialState = {
   userFavoriteOrders: null,
   userDeliveryAddresses: null,
   userDefaultDeliveryAddress: null,
-  updatedUserprofile : null,
+  updatedUserprofile: {
+    data: null,
+    passerror: {},
+    passsuccess : 0
+  },
   loading: false,
   error: {},
+  success: 0
 };
 
 const userReducer = (state = initialState, action: any) => {
@@ -28,8 +33,9 @@ const userReducer = (state = initialState, action: any) => {
       return {
         ...state,
         loading: false,
-        updatedUserprofile: action.payload,
+        updatedUserprofile: { data : action.payload , error : null , passsuccess : 1},
         error: null,
+        
         
       };
     case Type.GET_USER_PROFILE_SUCCESS:
@@ -73,11 +79,18 @@ const userReducer = (state = initialState, action: any) => {
         ...state,
         userProfile: action.payload,
         loading: false,
-        error: null
+        error: null,
+        success : 1
         
       };
 
     // error cases
+    case Type.CHANGE_PASSWORD_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        updatedUserprofile: { ...state.updatedUserprofile, passerror: action.payload , passsuccess : 0 },
+ };
     case Type.GET_USER_RECENT_ORDERS_FAILURE:
     case Type.GET_USER_FAVORITE_ORDERS_FAILURE:
     case Type.GET_USER_PROFILE_FAILURE:
@@ -85,8 +98,7 @@ const userReducer = (state = initialState, action: any) => {
     case Type.SET_USER_DEFAULT_DEL_ADD_FAILURE:
     case Type.DEL_USER_DEL_ADD_FAILURE:
     case Type.UPDATE_USER_FAILURE:
-    case Type.CHANGE_PASSWORD_FAILURE:
-      return { ...state, loading: false, error: action.error };
+      return { ...state, loading: false, error: action.error  , success: 0};
 
     default:
       return state;

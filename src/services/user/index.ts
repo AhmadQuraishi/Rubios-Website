@@ -29,7 +29,10 @@ export const requestUpdateUser = (body: object) => {
 
     const url = `https://sandbox.punchh.com/api/auth/users`;
 
-    return axios.put(url, obj).then((response) => response.data);
+    return axios.put(url, obj).then((response) => response.data).catch((error) => {
+      // console.log(error.response);
+      throw error.response;
+    });
 
   } catch (error) {
     throw error;
@@ -50,8 +53,8 @@ export const requestChangePassword = (body: object) => {
     const url = ` https://sandbox.punchh.com/api/auth/users/change_password`;
 
     return axios.patch(url, obj).then((response) => response.data).catch((error) => {
-      console.log(error.response);
-      throw error;
+    
+      throw error.response;
     });
 
   } catch (error) {

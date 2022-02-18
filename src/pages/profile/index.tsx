@@ -28,6 +28,8 @@ import { getlocations } from '../../redux/actions/location';
 import LoadingBar from '../../components/loading-bar';
 import { IMaskInput } from 'react-imask';
 import { forwardRef } from 'react';
+import ErrorMessageAlert from '../../components/error-message-alert';
+import Moment from 'react-moment';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -42,8 +44,50 @@ const useStyles = makeStyles((theme: Theme) => ({
       fontSize: '25px !important',
     },
   },
+  roott: {
+    width: '50px',
+    height: '30px',
+    padding: '0px',
+  },
+  switchBase: {
+    color: '#818181',
+    padding: '1px',
+    '&$checked': {
+      '& + $track': {
+        backgroundColor: '#23bf58',
+      },
+    },
+  },
+  thumb: {
+    color: 'white',
+    width: '20px',
+    height: '20px',
+    margin: '1px',
+  },
+  track: {
+    borderRadius: '20px',
+    backgroundColor: '#818181',
+    opacity: '1 !important',
+    '&:after, &:before': {
+      color: 'white',
+      fontSize: '8.5px',
+      position: 'absolute',
+      top: '8px',
+    },
+    '&:after': {
+      content: "'ON'",
+      left: '8px',
+    },
+    '&:before': {
+      content: "'OFF'",
+      right: '7px',
+    },
+  },
+  checked: {
+    color: '#23bf58 !important',
+    transform: 'translateX(26px) !important',
+  },
 }));
-
 interface CustomProps {
   onChange: (event: { target: { name: string; value: string } }) => void;
   name: string;
@@ -72,36 +116,22 @@ const NumberFormatCustom = forwardRef<HTMLElement, CustomProps>(
 const Profile = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { userProfile, loading, error, updatedUserprofile } = useSelector(
-    (state: any) => state.userReducer,
-  );
-
+  const { userProfile, loading, error, updatedUserprofile, success } =
+    useSelector((state: any) => state.userReducer);
   const [favlocation, setFavLoc] = useState('');
-  const [userObject, setUserObject] = useState({});
   const { locations } = useSelector((state: any) => state.locationReducer);
   const [state, setState] = useState({
     emailnotification: true,
     pushnotification: true,
   });
-
   useEffect(() => {
     dispatch(getUserprofile());
     dispatch(getlocations());
   }, []);
 
-  useEffect(() => {
-    if (error && error.message) {
-      alert('Error');
-      dispatch(getUserprofile());
-    }
-  }, [error]);
-  useEffect(() => {
-    if (updatedUserprofile) {
-      if (userObject) {
-        dispatch(updateUser(userObject));
-      }
-    }
-  }, [updatedUserprofile]);
+  useEffect(() => {}, [error]);
+  useEffect(() => {}, [updatedUserprofile]);
+  useEffect(() => {}, [userProfile]);
 
   useEffect(() => {
     if (userProfile && !loading) {
@@ -131,6 +161,21 @@ const Profile = () => {
       <Typography variant="h4" className={classes.heading}>
         Edit Profile
       </Typography>
+      {!loading && updatedUserprofile.passsuccess == 1 && (
+        <ErrorMessageAlert message="password Updated successfully" />
+      )}
+      {!loading && success == 1 && (
+        <ErrorMessageAlert message="profile Updated successfully" />
+      )}
+      {!loading &&
+        updatedUserprofile &&
+        updatedUserprofile.passerror &&
+        updatedUserprofile.passerror.data && (
+          <ErrorMessageAlert message={updatedUserprofile.passerror.data} />
+        )}
+      {!loading && error && error.data && (
+        <ErrorMessageAlert message={error.data} />
+      )}
       {loading && !userProfile && <LoadingBar />}
       {userProfile && (
         <Grid container>
@@ -173,10 +218,12 @@ const Profile = () => {
                 'password must be minimum 8 characters and  must contain only  numbers and letters. ',
               ),
 
-              confirmpassword: Yup.string().matches(
-                /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-                'password must be minimum 8 characters and  must contain only  numbers and letters. ',
-              ),
+              confirmpassword: Yup.string()
+                .matches(
+                  /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+                  'password must be minimum 8 characters and  must contain only  numbers and letters. ',
+                )
+                .oneOf([Yup.ref('newpassword'), null], 'Passwords must match'),
 
               phone: Yup.string().min(14, 'Enter valid number'),
             })}
@@ -197,26 +244,11 @@ const Profile = () => {
                 password_confirmation: values.confirmpassword,
               };
 
-              if (values.newpassword === '' && values.confirmpassword === '') {
-                const data: any = await dispatch(updateUser(obj));
-
-                if (data) {
-                  alert('updated');
-                }
+              if (values.newpassword === '' || values.confirmpassword === '') {
+                dispatch(updateUser(obj));
               } else {
-                if (values.newpassword === values.confirmpassword) {
-                  dispatch(changePassword(passwordObj));
-                  setUserObject(obj);
-
-                  // if (userdata) {
-                  //   setTimeout(() => {
-                  //     dispatch(changePassword(passwordObj));
-                  //     dispatch(getUserprofile());
-                  //   }, 1000);
-                  // }
-                } else {
-                  alert('password error');
-                }
+                const data: any = await dispatch(changePassword(passwordObj));
+                const dataa: any = await dispatch(updateUser(obj));
               }
             }}
           >
@@ -341,7 +373,11 @@ const Profile = () => {
                         className="birthday-button"
                       >
                         <span className="bday-text">Birthday</span>
-                        <span className="date">{userProfile.birthday}</span>
+                        <span className="date">
+                          <Moment format="MMMM DD, YYYY">
+                            {userProfile.birthday}
+                          </Moment>
+                        </span>
                         <span>
                           <LockOutlinedIcon
                             style={{ color: 'grey', paddingTop: '5px' }}
@@ -406,6 +442,13 @@ const Profile = () => {
                             </Grid>
                             <Grid item xs={12} sm={6}>
                               <Switch
+                                classes={{
+                                  root: classes.roott,
+                                  switchBase: classes.switchBase,
+                                  thumb: classes.thumb,
+                                  track: classes.track,
+                                  checked: classes.checked,
+                                }}
                                 aria-label="push notification"
                                 checked={state.pushnotification}
                                 onChange={handleChangeNotification}

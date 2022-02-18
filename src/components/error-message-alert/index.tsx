@@ -22,7 +22,8 @@ const ErrorMessageAlert = (props: any) => {
         variant="filled"
         sx={{ width: '100%', alignItems: 'center' }}
       >
-        <b>Error Message: </b>{message || 'This is a error message!'}
+        <b>Error Message: </b>
+        {message || 'This is a error message!'}
       </Alert>
     </Snackbar>
   );

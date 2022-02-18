@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { takeEvery, put, call } from 'redux-saga/effects';
 import { userTypes as Type } from '../../types/user';
 import {
@@ -29,11 +28,12 @@ import {
   changePasswordSuccess,
   changePasswordFailure
 } from '../../actions/user';
+import ErrorMessageAlert from '../../../components/error-message-alert';
 
 //profile
 function* userProfileHandler(): any {
   try {
-    const response = yield call(RequestUserProfile);
+    const response = yield call(RequestUserProfile); 
     yield put(getUserprofileSuccess(response));
   } catch (error) {
     yield put(getUserprofileFailure(error));
@@ -122,6 +122,7 @@ function* changePasswordHandler(action: any): any {
     );
     yield put(changePasswordSuccess(response));
   } catch (error) {
+  
     yield put(changePasswordFailure(error));
   }
 }
