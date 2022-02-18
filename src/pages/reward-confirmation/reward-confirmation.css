@@ -9,3 +9,27 @@
   width: 100%;
   margin: 28px auto 0;
 }
+.reward-confirmation .card {
+  background-color: #2b4b62;
+  background-color: #2b4b62;
+  background-image: url("../../assets/imgs/bg1.png");
+  background-size: 70% auto;
+  background-position: bottom -45px right -40px;
+  background-repeat: no-repeat;
+
+}
+
+@media screen and (max-width: 800px) {
+  .order-details {
+    background: white;
+    padding: 50px;
+    border-radius: 0px;
+    margin: 0px auto 0px auto !important;
+  }
+}
+
+@media screen and (max-width:480px) {
+  .reward-confirmation .MuiPaper-root {
+    padding: 40px;
+  }
+}
