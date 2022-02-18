@@ -12,7 +12,8 @@ axiosInstance.interceptors.request.use(
         let uriData = uri.pathname.concat(uri.search);
         let secret = process.env.REACT_APP_PUNCHH_CLIENT_SECRET || '';
         let secretString = secret.toString();
-        let concatString ='';
+        let concatString = '';
+        debugger
         if(body === undefined){
           concatString = uriData;
         }

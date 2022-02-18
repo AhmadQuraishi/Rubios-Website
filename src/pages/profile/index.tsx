@@ -44,49 +44,6 @@ const useStyles = makeStyles((theme: Theme) => ({
       fontSize: '25px !important',
     },
   },
-  roott: {
-    width: '50px',
-    height: '30px',
-    padding: '0px',
-  },
-  switchBase: {
-    color: '#818181',
-    padding: '1px',
-    '&$checked': {
-      '& + $track': {
-        backgroundColor: '#23bf58',
-      },
-    },
-  },
-  thumb: {
-    color: 'white',
-    width: '20px',
-    height: '20px',
-    margin: '1px',
-  },
-  track: {
-    borderRadius: '20px',
-    backgroundColor: '#818181',
-    opacity: '1 !important',
-    '&:after, &:before': {
-      color: 'white',
-      fontSize: '8.5px',
-      position: 'absolute',
-      top: '8px',
-    },
-    '&:after': {
-      content: "'ON'",
-      left: '8px',
-    },
-    '&:before': {
-      content: "'OFF'",
-      right: '7px',
-    },
-  },
-  checked: {
-    color: '#23bf58 !important',
-    transform: 'translateX(26px) !important',
-  },
 }));
 interface CustomProps {
   onChange: (event: { target: { name: string; value: string } }) => void;
@@ -248,7 +205,7 @@ const Profile = () => {
                 dispatch(updateUser(obj));
               } else {
                 const data: any = await dispatch(changePassword(passwordObj));
-                const dataa: any = await dispatch(updateUser(obj));
+                // const dataa: any = await dispatch(updateUser(obj));
               }
             }}
           >
@@ -442,13 +399,6 @@ const Profile = () => {
                             </Grid>
                             <Grid item xs={12} sm={6}>
                               <Switch
-                                classes={{
-                                  root: classes.roott,
-                                  switchBase: classes.switchBase,
-                                  thumb: classes.thumb,
-                                  track: classes.track,
-                                  checked: classes.checked,
-                                }}
                                 aria-label="push notification"
                                 checked={state.pushnotification}
                                 onChange={handleChangeNotification}
