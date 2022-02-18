@@ -30,7 +30,7 @@ const RewardConfirmation = () => {
               <OrderConfirmedCard />
             </Grid>
             <Grid item xs={12} sm={12} md={12} lg={6}>
-              <Card style={{ backgroundColor: '#2b4b62' }}>
+              <Card className="card">
                 <Typography variant="caption" className="label white" title="YOUR REWARDS">YOUR REWARDS</Typography>
                 <Typography variant="h4" className="white" title="YOU EARNED 18 POINTS!">YOU EARNED 18 POINTS!</Typography>
                 <br/>
@@ -41,9 +41,9 @@ const RewardConfirmation = () => {
                   ante nec sapien dictum imperdiet.
                 </Typography>
                 <Grid container>
-                  <Grid item xs={12} md={8} lg={8}></Grid>
-                  <Grid item xs={12} md={4} lg={4}>
-                    <Button aria-label="view account" variant="contained" title="VIEW ACCOUNT">VIEW ACCOUNT</Button>
+                  <Grid item xs={12} md={7} lg={7}></Grid>
+                  <Grid item xs={12} md={5} lg={5}>
+                    <Button aria-label="view account" className="custom-btn cta1-btn" variant="contained" title="VIEW ACCOUNT">VIEW ACCOUNT</Button>
                   </Grid>
                 </Grid>
                 <br />
