@@ -92,7 +92,7 @@ const Header = (props: any) => {
         >
           <Typography variant="h4" className={classes.logo}>
             {!removeCart ? (
-              <Link to="/" className={classes.logoImg}>
+              <Link to="/location" className={classes.logoImg}>
                 <img
                   aria-label="Rubio's Cosatal Grill"
                   src={logo}
@@ -104,7 +104,7 @@ const Header = (props: any) => {
             ) : (
               <>
                 <Link
-                  to="/"
+                  to="/location"
                   className={classes.logoImg}
                   style={{ padding: '20px 0px 20px 15px' }}
                 >

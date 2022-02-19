@@ -14,27 +14,37 @@ import { ResponseRestaurant } from '../../types/olo-api';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setResturantInfoRequest } from '../../redux/actions/restaurant';
-import ErrorMessageAlert from '../error-message-alert';
 
 const LocationCard = (props: any) => {
-  const { restaurants, isNearByRestaurantList } = props;
+  const { restaurants, isNearByRestaurantList, setShowNearBy, setShowError } =
+    props;
   const [searchText, setSearchText] = useState<string>();
   const [orderType, setOrderType] = useState<string>();
-  const [showError, setShowError] = useState(false);
-  const [filteredRestaurants, setfilteredRestaurants] = useState<
-    ResponseRestaurant[]
-  >(isNearByRestaurantList ? restaurants : undefined);
-  const handleChange = (e: any) => {
-    setSearchText(e.target.value);
-  };
+  const [filteredRestaurants, setfilteredRestaurants] =
+    useState<ResponseRestaurant[]>();
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const handleChange = (e: any) => {
+    setSearchText(e.target.value);
+  };
+
+  useEffect(() => {
+    if (isNearByRestaurantList) {
+      alert('');
+      if (searchText) {
+        setSearchText(searchText?.trim() + ' ');
+        setTimeout(() => {
+          setSearchText(searchText?.trim());
+        }, 500);
+      }
+    }
+  }, [isNearByRestaurantList]);
+
   const gotoCategoryPage = (storeID: number) => {
-    setShowError(false);
-    if (orderType == undefined || orderType == '') {
-      setShowError(true);
+    if (orderType == undefined) {
+      setShowError('Please select atleast one order type');
       return false;
     }
     const restaurant = restaurants.find((x: any) => x.id === storeID);
@@ -45,10 +55,18 @@ const LocationCard = (props: any) => {
   };
 
   useEffect(() => {
+    if (isNearByRestaurantList) {
+      setfilteredRestaurants(restaurants);
+    } else {
+      setfilteredRestaurants(undefined);
+    }
+  }, [isNearByRestaurantList, restaurants]);
+
+  useEffect(() => {
     if (searchText || orderType) {
       let updatedRestaurants = [];
       let resultsFound = false;
-      if (orderType !== '') {
+      if (orderType && orderType !== '') {
         if (orderType === 'pickup') {
           updatedRestaurants = restaurants.filter(
             (x: any) => x.canpickup === true,
@@ -62,45 +80,53 @@ const LocationCard = (props: any) => {
             (x: any) => x.candeliver === true,
           );
         }
+        setfilteredRestaurants(updatedRestaurants);
         if (updatedRestaurants.length > 0) {
           resultsFound = true;
         }
       }
       let searchedRestaurant: ResponseRestaurant[] = [];
-      if (searchText && searchText.length > 2) {
+      if (searchText && searchText.trim() && searchText.length > 1) {
+        let searchTxt = searchText.trim().toLowerCase();
         if (!resultsFound) {
           updatedRestaurants = restaurants.filter((x: any) =>
-            x.city.toLowerCase().includes(searchText),
+            x.city.toLowerCase().includes(searchTxt),
           );
           if (updatedRestaurants.length === 0) {
             updatedRestaurants = restaurants.filter((x: any) =>
-              x.zip.toLowerCase().includes(searchText),
+              x.zip.toLowerCase().includes(searchTxt),
             );
           }
           if (updatedRestaurants.length === 0) {
-            searchedRestaurant = restaurants.filter((x: any) =>
-              x.state.toLowerCase().includes(searchText),
+            updatedRestaurants = restaurants.filter((x: any) =>
+              x.state.toLowerCase().includes(searchTxt),
             );
           }
+          if (updatedRestaurants.length > 0)
+            setfilteredRestaurants(updatedRestaurants);
         } else {
           searchedRestaurant = updatedRestaurants.filter((x: any) =>
-            x.city.toLowerCase().includes(searchText),
+            x.city.toLowerCase().includes(searchTxt),
           );
           if (searchedRestaurant.length === 0) {
             searchedRestaurant = updatedRestaurants.filter((x: any) =>
-              x.zip.toLowerCase().includes(searchText),
+              x.zip.toLowerCase().includes(searchTxt),
             );
           }
           if (searchedRestaurant.length === 0) {
             searchedRestaurant = updatedRestaurants.filter((x: any) =>
-              x.state.toLowerCase().includes(searchText),
+              x.state.toLowerCase().includes(searchTxt),
             );
           }
+          setfilteredRestaurants(
+            searchedRestaurant.length > 0 ? searchedRestaurant : [],
+          );
         }
       }
-      if (searchedRestaurant.length > 0)
-        setfilteredRestaurants(searchedRestaurant);
-      else setfilteredRestaurants(updatedRestaurants);
+    } else {
+      if (!isNearByRestaurantList) {
+        setfilteredRestaurants([]);
+      }
     }
   }, [searchText, orderType]);
 
@@ -122,11 +148,12 @@ const LocationCard = (props: any) => {
     </Button>
   );
 
+  const findNearByRestaurants = () => {
+    setShowNearBy(true);
+  };
+
   return (
     <Grid container className="list-wrapper">
-      {showError && (
-        <ErrorMessageAlert message="Please choose atleast one order type" />
-      )}
       <Grid
         item
         xs={12}
@@ -146,7 +173,7 @@ const LocationCard = (props: any) => {
                 <ToggleButton
                   value="Pick up"
                   onClick={() =>
-                    setOrderType(orderType === 'pickup' ? '' : 'pickup')
+                    setOrderType(orderType === 'pickup' ? undefined : 'pickup')
                   }
                   className="selected-btn"
                 >
@@ -155,7 +182,9 @@ const LocationCard = (props: any) => {
                 <ToggleButton
                   value="Curbside"
                   onClick={() =>
-                    setOrderType(orderType === 'curbside' ? '' : 'curbside')
+                    setOrderType(
+                      orderType === 'curbside' ? undefined : 'curbside',
+                    )
                   }
                   className="selected-btn"
                 >
@@ -164,7 +193,9 @@ const LocationCard = (props: any) => {
                 <ToggleButton
                   value="Delivery"
                   onClick={() =>
-                    setOrderType(orderType === 'delivery' ? '' : 'delivery')
+                    setOrderType(
+                      orderType === 'delivery' ? undefined : 'delivery',
+                    )
                   }
                   className="selected-btn"
                 >
@@ -187,17 +218,21 @@ const LocationCard = (props: any) => {
             </Grid>
             <Grid item xs={12}>
               <Typography className="label" title="NEARBY LOCATIONS">
-                {isNearByRestaurantList ? (
-                  'NEARBY LOCATIONS'
-                ) : (
+                {isNearByRestaurantList &&
+                  filteredRestaurants &&
+                  filteredRestaurants.length > 0 &&
+                  'NEARBY LOCATIONS'}
+                {!isNearByRestaurantList && (
                   <span
                     style={{
                       textAlign: 'center',
-                      color: '#5fa625',
                       display: 'block',
+                      cursor: 'pointer',
+                      color: '#7AC142'
                     }}
+                    onClick={() => findNearByRestaurants()}
                   >
-                    FIND A RUBIO'S NEAR YOU
+                    USE YOUR CURRENT LOCATION?
                   </span>
                 )}
               </Typography>
@@ -208,8 +243,8 @@ const LocationCard = (props: any) => {
               style={{
                 overflow: 'hidden',
                 overflowY: 'auto',
-                maxHeight: '300px',
-                minHeight: '300px',
+                maxHeight: '350px',
+                minHeight: '350px',
               }}
             >
               <Grid container spacing={1}>
@@ -235,7 +270,7 @@ const LocationCard = (props: any) => {
                         {item.name}
                       </Typography>
                       <Typography variant="body2">
-                        {item.streetaddress}, {item.city}, {item.state},{' '}
+                        {item.streetaddress}, <br /> {item.city}, {item.state},{' '}
                         {item.zip}
                       </Typography>
                       {item.distance > 0 && (

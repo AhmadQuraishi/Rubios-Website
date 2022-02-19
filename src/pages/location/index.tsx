@@ -8,64 +8,68 @@ import {
   getNearByResturantListRequest,
   getResturantListRequest,
 } from '../../redux/actions/restaurant/list';
-import LoadingBar from '../../components/loading-bar';
+import ErrorMessageAlert from '../../components/error-message-alert';
 
 const Location = () => {
-  const { restaurants, loading, error } = useSelector(
+  const { restaurants } = useSelector(
     (state: any) => state.restaurantListReducer,
   );
 
   const [mapCenter, setMapCenter] = useState<any>();
   const [showNearBy, setShowNearBy] = useState(false);
-
-  useEffect(() => {
-    if (
-      restaurants &&
-      restaurants.restaurants &&
-      restaurants.restaurants.length == 0
-    ) {
-      setMapCenter({
-        lat: 37.772,
-        lng: -122.214,
-      });
-      if (showNearBy) {
-        setShowNearBy(false);
-        dispatch(getResturantListRequest());
-      }
-    }
-    if (
-      restaurants &&
-      restaurants.restaurants &&
-      restaurants.restaurants.length > 0
-    ) {
-      setMapCenter({
-        lat: restaurants.restaurants[0].latitude,
-        lng: restaurants.restaurants[0].longitude,
-      });
-    }
-  }, [restaurants]);
-
+  const [orderType, setOrderType] = useState<string>();
+  const [showError, setShowError] = useState<string>();
+  const [nearByRestaurantsFound, setNearByRestaurantsFound] = useState(false);
   const dispatch = useDispatch();
 
-  const containerStyle = {
-    width: '100%',
-  };
-
-  let lat: number, long: number;
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      function (position) {
-        lat = position.coords.latitude;
-        long = position.coords.longitude;
-        setShowNearBy(true);
-        //DUMMY LAT, LONG = 40.7054008, -74.0132198
-        getNearByRestaurants(lat, long);
-      },
-      function () {
-        dispatch(getResturantListRequest());
-      },
-    );
+    setMapCenter({
+      lat: 37.772,
+      lng: -122.214,
+    });
+    dispatch(getResturantListRequest());
   }, []);
+
+  useEffect(() => {
+    if (showNearBy) {
+      navigator.geolocation.getCurrentPosition(
+        function (position) {
+          //getNearByRestaurants(40.7054008, -74.0132198);
+          getNearByRestaurants(
+            position.coords.latitude,
+            position.coords.longitude,
+          );
+        },
+        function () {
+          setShowNearBy(false);
+        },
+      );
+    }
+  }, [showNearBy]);
+
+  useEffect(() => {
+    if (restaurants && restaurants.restaurants) {
+      if (restaurants.restaurants.length === 0) {
+        if (showNearBy) {
+          setShowNearBy(false);
+          setNearByRestaurantsFound(false);
+          setShowError(
+            "We could not find any Rubio's within 10 Miles of Your Current Location.",
+          );
+          dispatch(getResturantListRequest());
+        }
+      } else {
+        if (showNearBy) {
+          setShowNearBy(false);
+          setNearByRestaurantsFound(true);
+        }
+        setMapCenter({
+          lat: restaurants.restaurants[0].latitude,
+          lng: restaurants.restaurants[0].longitude,
+        });
+      }
+    }
+  }, [restaurants]);
 
   const getNearByRestaurants = (lat: number, long: number) => {
     var today = new Date();
@@ -90,7 +94,7 @@ const Location = () => {
   };
 
   let newMarker: any;
-  if (restaurants && restaurants.restaurants) {
+  if (restaurants && restaurants.restaurants.length > 0) {
     newMarker = restaurants.restaurants.map(
       (item: ResponseRestaurant, index: number) => {
         if (mapCenter == undefined) {
@@ -109,33 +113,31 @@ const Location = () => {
             position={latLong}
             icon={{
               url: '/marker.png',
-              scaledSize: new google.maps.Size(50, 55),
             }}
           />
         );
       },
     );
-  } else {
   }
+
   return (
-    <>
-      {loading == true && <LoadingBar />}
+    <div style={{ minHeight: '300px' }}>
+      {showError && showError !== '' && (
+        <ErrorMessageAlert setOpen={true} message={showError} />
+      )}
       <LoadScript googleMapsApiKey="AIzaSyCWKuRHEkeFWOy0JDMBT7Z4YApPVkZYHFI">
-        <GoogleMap
-          mapContainerStyle={containerStyle}
-          center={mapCenter}
-          zoom={7}
-        >
+        <GoogleMap center={mapCenter} zoom={7}>
           {newMarker}
-          {restaurants && restaurants.restaurants && (
-            <LocationCard
-              isNearByRestaurantList={showNearBy}
-              restaurants={restaurants.restaurants}
-            />
-          )}
+          <LocationCard
+            isNearByRestaurantList={nearByRestaurantsFound}
+            restaurants={(restaurants && restaurants.restaurants) || []}
+            setOrderTypeMain={setOrderType}
+            setShowNearBy={setShowNearBy}
+            setShowError={setShowError}
+          />
         </GoogleMap>
       </LoadScript>
-    </>
+    </div>
   );
 };
 
