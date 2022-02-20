@@ -52,10 +52,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "start.mmubasher": "react-scripts start",
     "build": "react-scripts build",
     "build.rubioslivedev": "PUBLIC_URL=/wp-content/reactpress/apps/rubios/build react-scripts build --env=rubioslivedev",
-    "build.rubiosliveqa": "PUBLIC_URL=/wp-content/reactpress/apps/rubios/build react-scripts build --env=rubiosliveqa",
+    "build.rubioslivestg": "PUBLIC_URL=/wp-content/reactpress/apps/rubios/build react-scripts build --env=rubioslivestg",
     "build.rubioslive": "PUBLIC_URL=/wp-content/reactpress/apps/rubios/build react-scripts build --env=rubioslive",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
