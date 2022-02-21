@@ -44,7 +44,7 @@ const RecentOrders = () => {
     <Fragment>
       {loading && <LoadingBar />}
       {recentorders.length < 1 && !loading && (
-        <h6>You don't have any recent orders</h6>
+        <Typography variant="h6">You don't have any recent orders</Typography>
       )}
       {!loading && recentorders.length > 0 && (
         <Grid container spacing={3} className="order-history-card">
