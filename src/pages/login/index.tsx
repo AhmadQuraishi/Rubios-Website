@@ -1,30 +1,28 @@
-import { makeStyles } from '@mui/styles';
-import {
-  Grid,
-  Box,
-  Typography,
-  Card,
-  TextField,
-  Button,
-  Link,
-} from '@mui/material';
-import { Fragment } from 'react';
-import axiosInterceptor from '../../services/axiosInceptor';
+import { makeStyles } from "@mui/styles";
+import { Grid } from "@mui/material";
+import { Fragment } from "react";
 // @ts-ignore
-import OAuth2Login from 'react-simple-oauth2-login';
-import { useDispatch, useSelector } from 'react-redux';
-import { getTokenRequest } from '../../redux/actions/token';
-import { getProviderRequest } from '../../redux/actions/provider';
-import { getAuthRequest } from '../../redux/actions/auth';
-import { useEffect } from 'react';
-//import { store } from '../../redux/store';  
+import OAuth2Login from "react-simple-oauth2-login";
+import { useDispatch, useSelector } from "react-redux";
+import { getTokenRequest } from "../../redux/actions/token";
+import { getProviderRequest } from "../../redux/actions/provider";
+//import { store } from '../../redux/store';
 
 declare var window: any;
 
 interface OAuthResponse {
-  code: string;
-  jwt: string;
-  client: string;
+  authorizationcode?: string,
+  authtoken?: string,
+  basketid?: string,
+  contactnumber?: string,
+  emailaddress?: string,
+  expiresin?: string,
+  firstname?: string,
+  lastname?: string,
+  provider?: string,
+  providertoken: string,
+  provideruserid: string,
+  refreshtoken?: null,
 }
 
 interface PunchhAuth {
@@ -56,12 +54,12 @@ const Login = () => {
   const { providerToken, loading } = useSelector(
     (state: any) => state.providerReducer,
   )
- 
-  
+
+
   const classes = useStyle();
   const dispatch = useDispatch();
   const authTrue = onAuthSuccess(dispatch);
- 
+
   return (
     <Fragment>
       <Grid container component="main" className={classes.root}>
@@ -83,13 +81,13 @@ const Login = () => {
 const onAuthSuccess =
   (dispatch: any) => async (oAuthResponse: OAuthResponse) => {
     try {
-      const token: PunchhAuth = await getAccessTokenByAuthCode(
-        oAuthResponse.code,
-        dispatch,
-      );
-      const foundUser = await getUser(dispatch);
+      // const token: PunchhAuth = await getUser(
+      //   oAuthResponse.code,
+      //   dispatch,
+      // );
+      const foundUser = await getUser(oAuthResponse);
       const linkToOLO = await linkingUserToOLO(dispatch);
-      
+
     } catch (error: any) {
       alert('Auth Error!' + error.message().toString());
     }
