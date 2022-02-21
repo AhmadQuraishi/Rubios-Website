@@ -144,3 +144,94 @@ export const requestDelUserDelAddress = (addressid: number, authtoken: string) =
   }
 
 }
+
+//Get User Billing accounts
+
+export const requestUserBillingAccount = (authtoken: string) => {
+
+  try {
+    const url = process.env.REACT_APP_OLO_API_URL || '';
+    return axios
+      .get(url + `users/${authtoken}/billingaccounts`)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.log(error.response);
+        throw error;
+      });
+  } catch (error) {
+    throw error;
+  }
+}
+
+
+
+//Get User Billing account by id (Api not Valid)
+
+export const requestUserBillingAccountById = (authtoken: string, billingAccountId: number) => {
+
+  try {
+    const url = process.env.REACT_APP_OLO_API_URL || '';
+    return axios
+      .get(url + `users/${authtoken}/billingaccount/${billingAccountId}`)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.log(error.response);
+        throw error;
+      });
+  } catch (error) {
+    throw error;
+  }
+}
+
+
+// Delete Billing Account
+
+export const deleteUserBillingAccount = (authtoken: string, billingAccountId: number) => {
+
+  try {
+    const url = process.env.REACT_APP_OLO_API_URL || '';
+    return axios
+      .delete(url + `users/${authtoken}/billingaccounts/${billingAccountId}`)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.log(error.response);
+        throw error;
+      });
+  } catch (error) {
+    throw error;
+  }
+}
+
+// Update Billing Account (API not in working condition)
+export const updateUserBillingAccount = (authtoken: string, billingAccountId: number) => {
+  try {
+    const url = process.env.REACT_APP_OLO_API_URL || '';
+    return axios
+      .put(url + `users/${authtoken}/creditcards/${billingAccountId}`)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.log(error.response);
+        throw error;
+      });
+  } catch (error) {
+    throw error;
+  }
+}
+
+
+//Get User Gift Card
+
+export const requestUseGiftCards = (authtoken: string) => {
+  try {
+    const url = process.env.REACT_APP_OLO_API_URL || '';
+    return axios
+      .get(url + `users/${authtoken}/billingaccounts/storedvalue`)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.log(error.response);
+        throw error;
+      });
+  } catch (error) {
+    throw error;
+  }
+}

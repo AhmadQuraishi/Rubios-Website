@@ -1,39 +1,57 @@
-import React, { Fragment } from 'react';
+import React, {useEffect, Fragment, useState} from 'react';
 import { Button, Card, CardContent, Grid, Typography } from '@mui/material';
 import card from '../../assets/imgs/card.png';
 import { Link } from 'react-router-dom';
 import './index.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllBillingAccounts, deleteBillingAccount, updateBillingAccount } from '../../redux/actions/user';
+// import { BillingAccount, ResponseUserBillingAccounts } from '../../types/olo-api';
+import LoadingBar from '../loading-bar';
+
 
 const CreditCards = () => {
-  const creditcardsList = [
-    {
-      icon: card,
-      title: 'Company Card',
-      number: 'Mastercard x-9345',
-      exp_date: 'Exp 12/28',
-      default: true,
-    },
-    {
-      icon: card,
-      title: `Personal Card`,
-      number: 'Mastercard x-9345',
-      exp_date: 'Exp 12/28',
-      default: false,
-    },
-    {
-      icon: card,
-      title: 'Credit Card',
-      number: 'Mastercard x-9345',
-      exp_date: 'Exp 12/28',
-      default: false,
-    },
-  ];
+  const [billingAccounts, setBillingAccounts] = useState([]);
+  const dispatch = useDispatch();
+  const authtoken = useSelector((state: any) => state.TokensReducer.authtoken);
+  const {userBillingAccounts, loading } =
+    useSelector((state: any) => state.userReducer);
+  useEffect(() => {
+    dispatch(getAllBillingAccounts(authtoken));
+  }, []);
+
+  useEffect(() => {
+    if (userBillingAccounts) {
+      setBillingAccounts(userBillingAccounts.billingaccounts);
+    }
+  }, [userBillingAccounts, loading]);
+
+  const deleteBillingAccountHandler = (id: number) => {
+    dispatch(deleteBillingAccount(authtoken, id));
+    setTimeout(() => {
+      dispatch(getAllBillingAccounts(authtoken));
+    }, 600);
+  };
+
+  const makeBillingCardDefaultHandler = (id: number) => {
+    dispatch(updateBillingAccount(authtoken, id));
+    setTimeout(() => {
+      dispatch(getAllBillingAccounts(authtoken));
+    }, 600);
+  };
+
+ 
   return (
     <Grid container>
       <Grid item xs={12}>
         <Grid container spacing={3} className="credit-cards-panel">
-          {creditcardsList.map((card, index) => (
-            <Fragment key={index.toString()}>
+        {loading && <LoadingBar />}
+        {!loading && billingAccounts.length < 1 && (
+          <h6>No Billing Account Found</h6>
+        )}
+          {!loading &&
+          billingAccounts.length > 0 &&
+          billingAccounts.filter((cardType: any) => cardType.accounttype === "creditcard").map((cardData: any, index) => (
+            <Fragment key={index}>
               <Grid item xs={12} md={6}>
                 <Card className="card-panel">
                   <Grid container>
@@ -46,34 +64,38 @@ const CreditCards = () => {
                     </Grid>
                     <Grid item xs={10}>
                       <CardContent className="panel">
-                        <Typography variant="h6" title={card.title}>
-                          {card.default ? (
+                        <Typography variant="h6" title={cardData.accounttype}>
+                          {cardData.isdefault ? (
                             <Fragment>
-                              <b>DEFAULT</b> {card.title}
+                              <b>DEFAULT</b> {cardData.accounttype}
                             </Fragment>
                           ) : (
-                            `${card.title}`
+                            `${cardData.accounttype}`
                           )}
                         </Typography>
-                        <Typography variant="h6" title={card.number}>
-                          {card.number}
+                        <Typography variant="h6" title={cardData.description}>
+                          {cardData.description}
                         </Typography>
-                        <Typography variant="h6" title={card.exp_date}>
-                          {card.exp_date}
+                        <Typography variant="h6" title={cardData.expiration}>
+                          {cardData.expiration}
                         </Typography>
                       </CardContent>
                     </Grid>
                     <Grid item xs={12} className="order-Link">
-                      <Link
+                      {/* <Link
                         title="Edit"
                         aria-label="Edit card"
-                        to="/account/updatepaymentcard/1"
+                        to={`/account/updatepaymentcard/${cardData.accountid}`}
                       >
                         Edit
-                      </Link>
-                      <Button title="Delete">Delete</Button>
-                      {!card.default && (
-                        <Button title="Make default" className="default">
+                      </Link> */}
+                      <Button title="Delete" 
+                        onClick={() => deleteBillingAccountHandler(cardData.accountid)}
+                        >Delete</Button>
+                      {!cardData.isdefault && (
+                        <Button title="Make default" className="default"
+                        onClick={() => makeBillingCardDefaultHandler(cardData.accountid)}
+                         >
                           Make default
                         </Button>
                       )}
@@ -84,7 +106,7 @@ const CreditCards = () => {
             </Fragment>
           ))}
           <Grid item xs={12}></Grid>
-          <Grid item xs={12} md={6} sx={{ paddingTop: '0px !important' }}>
+          {/* <Grid item xs={12} md={6} sx={{ paddingTop: '0px !important' }}>
             <Link
               title="Add Card"
               aria-label="Add payment card"
@@ -93,7 +115,7 @@ const CreditCards = () => {
             >
               ADD CARD
             </Link>
-          </Grid>
+          </Grid> */}
         </Grid>
       </Grid>
     </Grid>

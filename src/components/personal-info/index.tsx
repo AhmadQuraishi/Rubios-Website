@@ -25,6 +25,7 @@ import LoadingBar from '../../components/loading-bar';
 import { IMaskInput } from 'react-imask';
 import { forwardRef } from 'react';
 import ErrorMessageAlert from '../../components/error-message-alert';
+import moment from 'moment';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -251,7 +252,7 @@ const PersonalInfo = () => {
                       >
                         <span className="bday-text">Birthday</span>
                         <span className="date">
-                            {userProfile.birthday}
+                          {moment(userProfile.birthday).format('MMMM Do, YYYY')}
                         </span>
                         <span>
                           <LockOutlinedIcon
