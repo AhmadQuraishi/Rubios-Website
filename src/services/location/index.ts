@@ -47,7 +47,6 @@ export const getAllResturants = () => {
       .get(url + `/restaurants?includePrivate=false`)
       .then((response) => response.data)
       .catch((error) => {
-        console.log(error.response);
         throw error;
       });
   } catch (error) {

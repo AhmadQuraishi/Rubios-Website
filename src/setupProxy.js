@@ -3,14 +3,14 @@ module.exports = function(app) {
   app.use(
     "/olo_api",
     createProxyMiddleware({
-      target: `${process.env.REACT_APP_PROXY_URL}/olo_api`,
+      target: `${process.env["REACT_APP_OLO_PROXY_URL"]}`,
       changeOrigin: true
     })
   );
   app.use(
     "/punchh_api",
     createProxyMiddleware({
-      target: `${process.env.REACT_APP_PROXY_URL}/punchh_api`,
+      target: `${process.env["REACT_APP_PUNCHH_PROXY_URL"]}`,
       changeOrigin: true
     })
   );
