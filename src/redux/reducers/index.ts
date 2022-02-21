@@ -6,13 +6,19 @@ import userReducer from './user';
 import TokensReducer from './Tokens';
 import storage from 'redux-persist/lib/storage';
 import restaurantInfoReducer from './restaurant';
+import locationReducer from './location';
 import restaurantCalendarReducer from './restaurant/calendar';
 import productOptionsReducer from './product/option';
+import providerReducer from './provider';
+import authReducer from './auth';
+import restaurantListReducer from './restaurant/list';
 
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: [],
+  whitelist: [
+    'restaurantInfoReducer',
+  ],
 };
 
 const rootReducers = combineReducers({
@@ -21,8 +27,12 @@ const rootReducers = combineReducers({
   footerReducer,
   userReducer,
   restaurantInfoReducer,
+  locationReducer,
   restaurantCalendarReducer,
   productOptionsReducer,
+  providerReducer,
+  authReducer,
+  restaurantListReducer,
 });
 
 const persistReducers = persistReducer(persistConfig, rootReducers);

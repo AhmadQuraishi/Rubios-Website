@@ -1,12 +1,11 @@
-import { Grid, Typography, Card, CardContent, Button } from '@mui/material';
+import { Grid, Typography, Card, Button } from '@mui/material';
 import FoodMenuCard from '../../components/food-menu-card';
-import ArrowForward from '@mui/icons-material/ArrowForward';
 import './product.css';
 import StoreInfoBar from '../../components/restaurant-info-bar';
 import { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategoriesRequest } from '../../redux/actions/category';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import LoadingBar from '../../components/loading-bar';
 import {
   Category,
@@ -16,6 +15,7 @@ import {
   ResponseModifiers,
 } from '../../types/olo-api';
 import { getProductOptionRequest } from '../../redux/actions/product/option';
+import ProductSkeletonUI from '../../components/product-skeleton-ui';
 
 const Product = () => {
   const [productDetails, setProductDetails] = useState<ProductInfo>();
@@ -26,13 +26,27 @@ const Product = () => {
     (state: any) => state.categoryReducer,
   );
   const { options } = useSelector((state: any) => state.productOptionsReducer);
+  const { restaurant } = useSelector(
+    (state: any) => state.restaurantInfoReducer,
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (loading == true) {
+      setProductOptions(undefined);
+      setProductDetails(undefined);
+    }
+  }, [loading]);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
     setProductOptions(undefined);
-    //TODO: StoreID will get from State when select store work will be done
-    const storeID = 60854;
-    dispatch(getCategoriesRequest(storeID));
+    if (restaurant === null) {
+      navigate('/location');
+    } else {
+      dispatch(getCategoriesRequest(restaurant.id));
+    }
   }, []);
 
   useEffect(() => {
@@ -67,7 +81,7 @@ const Product = () => {
     <>
       <StoreInfoBar />
       {loading == true && productDetails == null && productOptions == null && (
-        <LoadingBar />
+        <ProductSkeletonUI />
       )}
       {productDetails && (
         <Grid container className="product-detail">
@@ -149,6 +163,8 @@ const Product = () => {
                 )}
               </Grid>
             </Grid>
+            <br />
+            <br />
             {productOptions && (
               <Grid container className="menu-items">
                 {productOptions.optiongroups.map(

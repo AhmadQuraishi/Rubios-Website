@@ -1,6 +1,4 @@
-import axios from 'axios';
-import { useSelector } from 'react-redux';
-import { store } from '../../redux/store';
+import axios from "axios";
 
 //profile
 export const RequestUserProfile = () => {
@@ -8,7 +6,7 @@ export const RequestUserProfile = () => {
     const access_token =
       'ede0074cdd8df2f60ff81037cae9358ca9cdf9030c1698d5d3709b65456ce2c1';
 
-    const url = `https://sandbox.punchh.com/api/auth/users?client=${process.env.REACT_APP_PUNCHH_CLIENT_ID}&access_token=${access_token}`;
+    const url = `${process.env.REACT_APP_PUNCHH_API}/api/auth/users?client=${process.env.REACT_APP_PUNCHH_CLIENT_ID}&access_token=${access_token}`;
 
     return axios.get(url).then((response) => response.data);
   } catch (error) {
@@ -20,36 +18,42 @@ export const RequestUserProfile = () => {
 export const requestUpdateUser = (body: object) => {
   const obj = {
     user: body,
-    client: 'c7f0b80300f53da0f25b52b06c8b9b89afcb47397e8e2c1f3fe9b58200171a41',
-    authentication_token: 'JckRvf5eQoHPFNb8-Uhm'
+    client: process.env.REACT_APP_PUNCHH_CLIENT_ID,
+    authentication_token: "JckRvf5eQoHPFNb8-Uhm"
   }
 
   // console.log(store.getState().TokensReducer.providertoken);
   try {
 
-    const url = `https://sandbox.punchh.com/api/auth/users`;
+    const url = `${process.env.REACT_APP_PUNCHH_API}/api/auth/users`;
 
-    return axios.put(url, obj).then((response) => response.data);
+    return axios.put(url, obj).then((response) => response.data).catch((error) => {
+      // console.log(error.response);
+      throw error.response;
+    });
 
   } catch (error) {
     throw error;
   }
 };
 
-//Change Password requestChangePassword
+//Change Password
 export const requestChangePassword = (body: object) => {
   const obj = {
     user: body,
-    client: 'c7f0b80300f53da0f25b52b06c8b9b89afcb47397e8e2c1f3fe9b58200171a41',
-    authentication_token: 'JckRvf5eQoHPFNb8-Uhm'
+    client: process.env.REACT_APP_PUNCHH_CLIENT_ID,
+    authentication_token: "JckRvf5eQoHPFNb8-Uhm"
   }
 
   // console.log(store.getState().TokensReducer.providertoken);
   try {
 
-    const url = ` https://sandbox.punchh.com/api/auth/users/change_password`;
+    const url = ` ${process.env.REACT_APP_PUNCHH_API}/api/auth/users/change_password`;
 
-    return axios.patch(url, obj).then((response) => response.data);
+    return axios.patch(url, obj).then((response) => response.data).catch((error) => {
+
+      throw error.response;
+    });
 
   } catch (error) {
     throw error;
@@ -60,13 +64,9 @@ export const requestChangePassword = (body: object) => {
 //Recent Orders
 export const requestUserRecentOrders = (authtoken: string) => {
   try {
-    const url = process.env.REACT_APP_OLO_API_URL || '';
+    const url = process.env.REACT_APP_OLO_API || "";
     return axios
-      .get(url + `users/${authtoken}/recentorders`, {
-        headers: {
-          Authorization: `OloKey ElwEkgDhuasD9HydkYI2kp3Hs0EWPkR2`,
-        },
-      })
+      .get(url + `/users/${authtoken}/recentorders`)
       .then((response) => response.data)
       .catch((error) => {
         console.log(error.response);
@@ -80,13 +80,9 @@ export const requestUserRecentOrders = (authtoken: string) => {
 //Favorite Orders
 export const requestUserFavoriteOrders = (authtoken: string) => {
   try {
-    const url = process.env.REACT_APP_OLO_API_URL || '';
+    const url = process.env.REACT_APP_OLO_API || "";
     return axios
-      .get(url + `users/${authtoken}/faves`, {
-        headers: {
-          Authorization: `OloKey ElwEkgDhuasD9HydkYI2kp3Hs0EWPkR2`,
-        },
-      })
+      .get(url + `/users/${authtoken}/faves`)
       .then((response) => response.data)
       .catch((error) => {
         console.log(error.response);
@@ -100,13 +96,9 @@ export const requestUserFavoriteOrders = (authtoken: string) => {
 //Delivery Addresses
 export const requestUserDeliiveryAddresses = (authtoken: string) => {
   try {
-    const url = process.env.REACT_APP_OLO_API_URL || '';
+    const url = process.env.REACT_APP_OLO_API || "";
     return axios
-      .get(url + `users/${authtoken}/userdeliveryaddresses`, {
-        headers: {
-          Authorization: `OloKey ElwEkgDhuasD9HydkYI2kp3Hs0EWPkR2`,
-        },
-      })
+      .get(url + `/users/${authtoken}/userdeliveryaddresses`)
       .then((response) => response.data)
       .catch((error) => {
         console.log(error.response);
@@ -121,13 +113,9 @@ export const requestUserDeliiveryAddresses = (authtoken: string) => {
 export const requestSetUserDefDelAddress = (body: RequestUserDefaultAddress, authtoken: string) => {
 
   try {
-    const url = process.env.REACT_APP_OLO_API_URL || '';
+    const url = process.env.REACT_APP_OLO_API || "";
     return axios
-      .put(url + `users/${authtoken}/userdeliveryaddresses/default`, body, {
-        headers: {
-          Authorization: `OloKey ElwEkgDhuasD9HydkYI2kp3Hs0EWPkR2`,
-        },
-      })
+      .put(url + `/users/${authtoken}/userdeliveryaddresses/default`, body)
       .then((response) => response.data)
       .catch((error) => {
         console.log(error.response);
@@ -143,13 +131,9 @@ export const requestSetUserDefDelAddress = (body: RequestUserDefaultAddress, aut
 export const requestDelUserDelAddress = (addressid: number, authtoken: string) => {
 
   try {
-    const url = process.env.REACT_APP_OLO_API_URL || '';
+    const url = process.env.REACT_APP_OLO_API || "";
     return axios
-      .delete(url + `users/${authtoken}/userdeliveryaddresses/${addressid}`, {
-        headers: {
-          Authorization: `OloKey ElwEkgDhuasD9HydkYI2kp3Hs0EWPkR2`,
-        },
-      })
+      .delete(url + `/users/${authtoken}/userdeliveryaddresses/${addressid}`)
       .then((response) => response.data)
       .catch((error) => {
         console.log(error.response);

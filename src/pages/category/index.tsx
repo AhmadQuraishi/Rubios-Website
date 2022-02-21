@@ -2,12 +2,13 @@ import StoreInfoBar from '../../components/restaurant-info-bar';
 import ProductListing from '../../components/product-listing';
 import { Grid, Theme, Typography, Tabs, Tab, Box } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategoriesRequest } from '../../redux/actions/category';
-import LoadingBar from '../../components/loading-bar';
 import { Category, ResponseMenu } from '../../types/olo-api';
+import ProductListingSkeletonUI from '../../components/product-listing-skeleton-ui';
+import ErrorMessageAlert from '../../components/error-message-alert';
 
 const useStyles = makeStyles((theme: Theme) => ({
   heading: {
@@ -36,15 +37,21 @@ const CategoryList = () => {
   const [value, setValue] = useState('0');
   const [categoriesWithProducts, setCategoriesWithProducts] =
     useState<ResponseMenu>();
-  const { categories, loading } = useSelector(
+  const { categories, loading, error } = useSelector(
     (state: any) => state.categoryReducer,
   );
-  const dispatch = useDispatch();
+  const { restaurant } = useSelector(
+    (state: any) => state.restaurantInfoReducer,
+  );
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   useEffect(() => {
-    //TODO: StoreID will get from State when select store work will be done
-    const storeID = 60854;
-    dispatch(getCategoriesRequest(storeID));
+    if (restaurant === null) {
+      navigate('/location');
+    } else {
+      dispatch(getCategoriesRequest(restaurant.id));
+    }
   }, []);
 
   useEffect(() => {
@@ -63,8 +70,13 @@ const CategoryList = () => {
 
   return (
     <Fragment>
+      {loading === false && error.message && (
+        <ErrorMessageAlert message={error.message} />
+      )}
       <StoreInfoBar />
-      {loading === true && categoriesWithProducts == null && <LoadingBar />}
+      {loading === true && categoriesWithProducts === undefined && (
+        <ProductListingSkeletonUI />
+      )}
       {categoriesWithProducts?.categories &&
         categoriesWithProducts?.categories.length > 0 && (
           <Box

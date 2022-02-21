@@ -34,6 +34,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.up('md')]: {
       maxWidth: '375px',
     },
+    [theme.breakpoints.up('sm')]: {
+      maxWidth: '375px',
+    },
     [theme.breakpoints.up('xs')]: {
       maxWidth: 'auto !important',
     },

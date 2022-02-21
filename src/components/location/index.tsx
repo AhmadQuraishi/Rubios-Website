@@ -1,22 +1,133 @@
-import { Button, Card, Grid, TextField, Box, Typography, ToggleButton, ToggleButtonGroup } from '@mui/material';
-import React, { useState } from 'react';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import { FixedSizeList, ListChildComponentProps } from 'react-window';
+import {
+  Button,
+  Card,
+  Grid,
+  TextField,
+  Typography,
+  ToggleButton,
+  ToggleButtonGroup,
+} from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import './location.css';
+import { ResponseRestaurant } from '../../types/olo-api';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { setResturantInfoRequest } from '../../redux/actions/restaurant';
 
-const LocationCard = (data :any) => {
-  const restaurants = data.respondData.restaurants;
+const LocationCard = (props: any) => {
+  const { restaurants, isNearByRestaurantList, setShowNearBy, setShowError } =
+    props;
+  const [searchText, setSearchText] = useState<string>();
+  const [orderType, setOrderType] = useState<string>();
+  const [filteredRestaurants, setfilteredRestaurants] =
+    useState<ResponseRestaurant[]>();
 
-  console.log("child comp : ")
-  console.log( data.respondData.restaurants)
-  const [city, setCity] = useState('New York');
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const handleChange = (e: any) => {
-    setCity(e.target.value);
-    console.log(city);
+    setSearchText(e.target.value);
   };
+
+  useEffect(() => {
+    if (isNearByRestaurantList) {
+      if (searchText) {
+        setSearchText(searchText?.trim() + ' ');
+        setTimeout(() => {
+          setSearchText(searchText?.trim());
+        }, 500);
+      }
+    }
+  }, [isNearByRestaurantList]);
+
+  const gotoCategoryPage = (storeID: number) => {
+    if (orderType == undefined) {
+      setShowError('Please select atleast one order type');
+      return false;
+    }
+    const restaurant = restaurants.find((x: any) => x.id === storeID);
+    if (restaurant) {
+      dispatch(setResturantInfoRequest(restaurant, orderType || ''));
+      navigate('/');
+    }
+  };
+
+  useEffect(() => {
+    if (isNearByRestaurantList) {
+      setfilteredRestaurants(restaurants);
+    } else {
+      setfilteredRestaurants(undefined);
+    }
+  }, [isNearByRestaurantList, restaurants]);
+
+  useEffect(() => {
+    if (searchText || orderType) {
+      let updatedRestaurants = [];
+      let resultsFound = false;
+      if (orderType && orderType !== '') {
+        if (orderType === 'pickup') {
+          updatedRestaurants = restaurants.filter(
+            (x: any) => x.canpickup === true,
+          );
+        } else if (orderType === 'curbside') {
+          updatedRestaurants = restaurants.filter(
+            (x: any) => x.supportscurbside === true,
+          );
+        } else if (orderType === 'delivery') {
+          updatedRestaurants = restaurants.filter(
+            (x: any) => x.candeliver === true,
+          );
+        }
+        setfilteredRestaurants(updatedRestaurants);
+        if (updatedRestaurants.length > 0) {
+          resultsFound = true;
+        }
+      }
+      let searchedRestaurant: ResponseRestaurant[] = [];
+      if (searchText && searchText.trim() && searchText.length > 1) {
+        let searchTxt = searchText.trim().toLowerCase();
+        if (!resultsFound) {
+          updatedRestaurants = restaurants.filter((x: any) =>
+            x.city.toLowerCase().includes(searchTxt),
+          );
+          if (updatedRestaurants.length === 0) {
+            updatedRestaurants = restaurants.filter((x: any) =>
+              x.zip.toLowerCase().includes(searchTxt),
+            );
+          }
+          if (updatedRestaurants.length === 0) {
+            updatedRestaurants = restaurants.filter((x: any) =>
+              x.state.toLowerCase().includes(searchTxt),
+            );
+          }
+          if (updatedRestaurants.length > 0)
+            setfilteredRestaurants(updatedRestaurants);
+        } else {
+          searchedRestaurant = updatedRestaurants.filter((x: any) =>
+            x.city.toLowerCase().includes(searchTxt),
+          );
+          if (searchedRestaurant.length === 0) {
+            searchedRestaurant = updatedRestaurants.filter((x: any) =>
+              x.zip.toLowerCase().includes(searchTxt),
+            );
+          }
+          if (searchedRestaurant.length === 0) {
+            searchedRestaurant = updatedRestaurants.filter((x: any) =>
+              x.state.toLowerCase().includes(searchTxt),
+            );
+          }
+          setfilteredRestaurants(
+            searchedRestaurant.length > 0 ? searchedRestaurant : [],
+          );
+        }
+      }
+    } else {
+      if (!isNearByRestaurantList) {
+        setfilteredRestaurants([]);
+      }
+    }
+  }, [searchText, orderType]);
 
   const [alignment, setAlignment] = React.useState('web');
   const onServiceSelect = (
@@ -25,56 +136,6 @@ const LocationCard = (data :any) => {
   ) => {
     setAlignment(newAlignment);
   };
-
-  const filteredRes = restaurants.filter((restaurant :any) => {
-    return restaurant.city === city;
-  });
-
-  function renderRow(props: ListChildComponentProps) {
-    const { index, style } = props;
-
-    console.log( filteredRes)
-    return (
-      <ListItem
-        style={style}
-        key={index}
-        component="div"
-        aria-label="Nearby Location"
-        role="list"
-        title="Nearby Location"
-        className="listing"
-      >
-        <Grid container>
-          <Grid item xs={12}>
-            <ListItemButton>
-              <ListItemText className="name"
-                title={filteredRes[index].storename}
-                primary={filteredRes[index].storename}
-              />
-            </ListItemButton>
-          </Grid>
-
-          <Grid item xs={12}>
-            <ListItemButton>
-              <ListItemText className="address"
-                title={filteredRes[index].streetaddress}
-                primary={filteredRes[index].streetaddress}
-              />
-            </ListItemButton>
-          </Grid>
-
-          <Grid item xs={12}>
-            <ListItemButton>
-              <ListItemText className="label"
-                title={filteredRes[index].distance}
-                primary={filteredRes[index].distance}
-              />
-            </ListItemButton>
-          </Grid>
-        </Grid>
-      </ListItem>
-    );
-  }
 
   const Icon = () => (
     <Button
@@ -86,14 +147,18 @@ const LocationCard = (data :any) => {
     </Button>
   );
 
+  const findNearByRestaurants = () => {
+    setShowNearBy(true);
+  };
+
   return (
     <Grid container className="list-wrapper">
       <Grid
         item
         xs={12}
-        sm={4}
+        sm={5}
         md={4}
-        lg={3}
+        lg={4}
         sx={{ zIndex: 1, margin: '20px 30px' }}
       >
         <Card>
@@ -104,44 +169,123 @@ const LocationCard = (data :any) => {
                 exclusive
                 onChange={onServiceSelect}
               >
-                <ToggleButton value="Pick up" className="selected-btn">
+                <ToggleButton
+                  value="Pick up"
+                  onClick={() =>
+                    setOrderType(orderType === 'pickup' ? undefined : 'pickup')
+                  }
+                  className="selected-btn"
+                >
                   Pick Up
                 </ToggleButton>
-                <ToggleButton value="Curbside" className="selected-btn">
+                <ToggleButton
+                  value="Curbside"
+                  onClick={() =>
+                    setOrderType(
+                      orderType === 'curbside' ? undefined : 'curbside',
+                    )
+                  }
+                  className="selected-btn"
+                >
                   Curbside
                 </ToggleButton>
-                <ToggleButton value="Delivery" className="selected-btn">
+                <ToggleButton
+                  value="Delivery"
+                  onClick={() =>
+                    setOrderType(
+                      orderType === 'delivery' ? undefined : 'delivery',
+                    )
+                  }
+                  className="selected-btn"
+                >
                   Delivery
                 </ToggleButton>
               </ToggleButtonGroup>
             </Grid>
             <Grid item xs={12}>
               <TextField
-                aria-label="Enter City"
-                label="Enter City"
-                title="Enter City"
+                aria-label="City, Zip Code, State"
+                label="City, Zip Code, State"
+                title="City, Zip Code, State"
                 aria-required="true"
-                value={city}
+                value={searchText || ''}
                 onChange={handleChange}
+                sx={{ fontSize: '14px' }}
                 InputProps={{ endAdornment: <Icon /> }}
+                variant="outlined"
               />
             </Grid>
             <Grid item xs={12}>
               <Typography className="label" title="NEARBY LOCATIONS">
-                NEARBY LOCATIONS
+                {isNearByRestaurantList &&
+                  filteredRestaurants &&
+                  filteredRestaurants.length > 0 &&
+                  'NEARBY LOCATIONS'}
+                {!isNearByRestaurantList && (
+                  <span
+                    style={{
+                      textAlign: 'center',
+                      display: 'block',
+                      cursor: 'pointer',
+                      color: '#7AC142'
+                    }}
+                    onClick={() => findNearByRestaurants()}
+                  >
+                    USE YOUR CURRENT LOCATION?
+                  </span>
+                )}
               </Typography>
             </Grid>
-            <Grid item xs={12}>
-              <FixedSizeList className="address-list"
-                height={400}
-                itemSize={100}
-                width="auto"
-                itemCount={filteredRes.length}
-                overscanCount={5}
-                aria-label="Nearby Locations"
-              >
-                {renderRow}
-              </FixedSizeList>
+            <Grid
+              item
+              xs={12}
+              style={{
+                overflow: 'hidden',
+                overflowY: 'auto',
+                maxHeight: '350px',
+                minHeight: '350px',
+              }}
+            >
+              <Grid container spacing={1}>
+                {filteredRestaurants?.map(
+                  (item: ResponseRestaurant, index: number) => (
+                    <Grid
+                      item
+                      xs={12}
+                      sx={{ marginBottom: '10px', cursor: 'pointer' }}
+                      onClick={() => {
+                        gotoCategoryPage(item.id);
+                      }}
+                      key={index}
+                    >
+                      <Typography
+                        variant="h5"
+                        sx={{
+                          fontWeight: 'bold',
+                          fontSize: '18px',
+                          paddingBottom: '5px',
+                        }}
+                      >
+                        {item.name}
+                      </Typography>
+                      <Typography variant="body2">
+                        {item.streetaddress}, <br /> {item.city}, {item.state},{' '}
+                        {item.zip}
+                      </Typography>
+                      {item.distance > 0 && (
+                        <Typography variant="body2" sx={{ color: '#5FA625' }}>
+                          {item.distance} Miles Away
+                        </Typography>
+                      )}
+                      {item.iscurrentlyopen && item.distance == 0 && (
+                        <Typography variant="body2" sx={{ color: '#5FA625' }}>
+                          Online
+                        </Typography>
+                      )}
+                    </Grid>
+                  ),
+                )}
+              </Grid>
             </Grid>
           </Grid>
         </Card>

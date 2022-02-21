@@ -6,3 +6,84 @@
   border: 1px solid #0075BF;
   padding: 20px;
 }
+.choose-reward .choose-btn {
+  min-height: 150px;
+  background: white;
+  box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.2) !important;
+  margin: 0px 15px 0 0;
+}
+.choose-reward .choose-btn img {
+  width: 85%;
+}
+.choose-reward .choose-btn .icon-content {
+  display: flex;
+  align-items: center;
+}
+.choose-reward .choose-btn p {
+  font-size: 18px !important;
+  text-transform: capitalize;
+  text-align: left;
+}
+.choose-reward .choose-btn.Mui-selected {
+  border: 2px solid #EE9D26 !important;
+  background: transparent;
+}
+.choose-reward .choose-btn.Mui-selected:after {
+  content: " ";
+  display: block;
+  width: 10px;
+  height: 22px;
+  border: solid #fff;
+  border-width: 0 5px 5px 0;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-top: -6%;
+  transform: rotate(45deg);
+  margin-left: -32%;
+}
+.choose-reward .choose-btn.Mui-selected:before {
+  content: " ";
+  display: block;
+  border: solid 25px #EE9D26;
+  border-radius: 45px;
+  height: 0px;
+  width: 0px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-top: -8%;
+  margin-left: -37%;
+}
+
+@media screen and (max-width: 768px) {
+  .choose-reward .choose-btn.Mui-selected:before {
+    margin-top: -9%;
+    margin-left: -38%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .choose-reward .MuiToggleButtonGroup-root {
+    display: flex;
+    flex-direction: column;
+  }
+  .choose-reward .choose-btn {
+    margin: 0px 0px 15px 0px;
+    height: 100%;
+  }
+  .choose-reward .choose-btn img {
+    width: auto;
+  }
+  .choose-reward .choose-btn .icon-content {
+    justify-content: center;
+  }
+  .choose-reward .choose-btn.Mui-selected:before {
+    margin-top: -15%;
+    margin-left: -8%;
+  }
+  .choose-reward .choose-btn.Mui-selected:after {
+    margin-top: -13%;
+    margin-left: -3%;
+  }
+}

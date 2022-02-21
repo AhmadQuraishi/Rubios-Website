@@ -11,3 +11,9 @@
   color: white;
   height: 56px;
 }
+
+@media screen and (max-width: 468px) {
+  .tip-wrapper .coupon-sec {
+    margin-top: 40px;
+  }
+}

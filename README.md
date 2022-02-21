@@ -46,12 +46,34 @@ Npm: 6
 - All variable names must be in camel casing e.g. rubiosApp.
 - All constants must be in pascal casing e.g. RubiosApp.
 - Developer must adhere to .editorconfig and .eslintrc.json configurations, to have a consistent coding standard.
-- According to the type of change being pushed, a commit message must contain [major], [minor], [refactor] or [fix] keyword.
---> [major] for any breaking change.
---> [minor] for feature additions.
---> [refactor] for refactoring existing code.
---> [fix] for any bug fixing.
+- According to the type of change being pushed, a commit message must contain [major], [minor], [refactor] or [fix]
+  keyword. --> [major] for any breaking change. --> [minor] for feature additions. --> [refactor] for refactoring
+  existing code. --> [fix] for any bug fixing.
 - Developer must update this Document during Sprint 0 and update sections as per project requirement.
 
 ## Project Structure
+
 _This information will update when project structure will be finalized_
+
+## Nginx Config
+
+#### This site requires following rules to be added in the server nginx config
+
+`Please set upstream for php as per your environment. Example, fastcgi_pass `
+
+```
+location ~ \.php$ {
+  fastcgi_pass   127.0.0.1:9000;
+  fastcgi_index  index.php;
+  fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+  include        fastcgi_params;
+}
+location ~ /punchh_api/(.*) {
+  index index.php;
+  try_files $uri $uri/ /punchh_api/index.php?$args;
+}
+location ~ /olo_api/(.*) {
+  index index.php;
+  try_files $uri $uri/ /olo_api/index.php?$args;
+}
+```

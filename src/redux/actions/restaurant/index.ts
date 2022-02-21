@@ -21,3 +21,26 @@ export function getResturantInfoRequestFailure(error: any) {
     error: error,
   };
 }
+
+export function setResturantInfoRequest(restaurant: ResponseRestaurant, orderType: string) {
+  return {
+    type: restaurantActionsTypes.SET_RESTAURANT_INFO_REQUEST,
+    restaurant,
+    orderType
+  };
+}
+
+export function setResturantInfoRequestSuccess(data: ResponseRestaurant, orderType: string) {
+  return {
+    type: restaurantActionsTypes.SET_RESTAURANT_INFO_SUCCESS,
+    payload: data,
+    orderType
+  };
+}
+
+export function setResturantInfoRequestFailure(error: any) {
+  return {
+    type: restaurantActionsTypes.SET_RESTAURANT_INFO_FAILURE,
+    error: error,
+  };
+}

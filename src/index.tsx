@@ -1,18 +1,17 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import { Provider } from 'react-redux';
-import { store, persistor } from './redux/store';
-import { BrowserRouter } from 'react-router-dom';
-import { ThemeProvider } from '@mui/material';
-import theme from './theme/theme';
-import axios from 'axios';
-import CryptoJS from 'crypto-js';
-import { PersistGate } from 'redux-persist/integration/react';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { Provider } from "react-redux";
+import { persistor, store } from "./redux/store";
+import { BrowserRouter } from "react-router-dom";
+import { ThemeProvider } from "@mui/material";
+import theme from "./theme/theme";
+import { PersistGate } from "redux-persist/integration/react";
 
-axios.interceptors.request.use(
+// const axiosInstance = axios.create();
+/*axios.interceptors.request.use(
   function (config) {
     const url = config.url || '';
     let check = url?.toString().includes('/sandbox.punchh.com/api/');
@@ -23,7 +22,6 @@ axios.interceptors.request.use(
       let secret = process.env.REACT_APP_PUNCHH_CLIENT_SECRET || '';
       let secretString = secret.toString();
       let concatString = '';
-
       if (body === undefined) {
         concatString = uriData;
       } else {
@@ -43,12 +41,12 @@ axios.interceptors.request.use(
   function (error) {
     return Promise.reject(error);
   },
-);
+);*/
 ReactDOM.render(
   <Provider store={store}>
     <React.StrictMode>
       <BrowserRouter
-        basename={process.env.APP_BASENAME ? process.env.APP_BASENAME : ''}
+        basename=""
       >
         <PersistGate persistor={persistor}>
           <ThemeProvider theme={theme}>

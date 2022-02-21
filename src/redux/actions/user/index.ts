@@ -5,6 +5,8 @@ import {
   ResponseUserFaves,
   ResponseUserBillingAccounts
 } from '../../../types/olo-api';
+import { toast } from 'react-toastify';
+import ErrorMessageAlert from '../../../components/error-message-alert';
 
 //profile actions
 export function getUserprofile() {
@@ -179,16 +181,16 @@ export function changePassword(data: any) {
 }
 
 export function changePasswordSuccess(data: any) {
+ 
   return {
     type: Type.CHANGE_PASSWORD_SUCCESS,
     payload: data
   };
 }
-
 export function changePasswordFailure(error: any) {
   return {
     type: Type.CHANGE_PASSWORD_FAILURE,
-    error: error,
+    payload: error,
   };
 }
 

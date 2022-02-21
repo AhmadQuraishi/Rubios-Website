@@ -2,23 +2,26 @@ import {
   Grid,
   Typography,
   Card,
-  Button,
   CardContent,
   Theme,
+  Button,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import React, { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './index.css';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   deleteUserDeliveryAddress,
   getUserDeliveryAddresses,
-  getUserFavoritetOrders,
   setUserDefaultDelAddress,
 } from '../../redux/actions/user';
 import LoadingBar from '../../components/loading-bar';
-import { SettingsInputAntennaTwoTone } from '@material-ui/icons';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -35,6 +38,16 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const DeliveryAddress = () => {
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const classes = useStyles();
   const [deliveryaddresses, setDelAddresses] = useState([]);
   const [value, setValue] = useState(true);
@@ -64,6 +77,8 @@ const DeliveryAddress = () => {
 
   const deleteAddressHandler = (id: number) => {
     dispatch(deleteUserDeliveryAddress(id, authtoken));
+
+    setOpen(false);
     setTimeout(() => {
       dispatch(getUserDeliveryAddresses(authtoken));
     }, 600);
@@ -77,9 +92,7 @@ const DeliveryAddress = () => {
           DELIVERY ADDRESSES
         </Typography>
         {loading && <LoadingBar />}
-        {!loading && deliveryaddresses.length < 1 && (
-          <h6>No Delivery Addresses Found</h6>
-        )}
+
         {!loading &&
           deliveryaddresses.length > 0 &&
           deliveryaddresses.map((address: any, index) => (
@@ -100,23 +113,54 @@ const DeliveryAddress = () => {
                   </Typography>
                   <Grid container>
                     <Grid item xs={12} className="small-button-panel">
-                      <Link
+                      {/* <Link
                         aria-label="Edit"
                         title="Edit"
                         className="link"
                         to={`/account/addDeliveryAddress/${address.id}`}
                       >
                         EDIT
-                      </Link>
+                      </Link> */}
                       <Typography
                         variant="button"
                         aria-label="Delete"
                         title="DELETE"
                         className="link"
-                        onClick={() => deleteAddressHandler(address.id)}
+                        onClick={handleClickOpen}
                       >
                         DELETE
                       </Typography>
+                      <Dialog
+                        open={open}
+                        onClose={handleClose}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                      >
+                        <DialogTitle>
+                          <Typography variant="h6">
+                            Do You Really Want To Delete This Delivery Address?
+                          </Typography>
+                        </DialogTitle>
+                        <DialogActions>
+                          <Button
+                            aria-label="Cancel"
+                            title="Cancel"
+                            className="link"
+                            onClick={handleClose}
+                          >
+                            No
+                          </Button>
+                          <Button
+                            aria-label="Delete"
+                            title="Delete"
+                            className="link default"
+                            onClick={() => deleteAddressHandler(address.id)}
+                            autoFocus
+                          >
+                            Yes
+                          </Button>
+                        </DialogActions>
+                      </Dialog>
                       {!address.isdefault && (
                         <Typography
                           variant="button"
@@ -135,7 +179,15 @@ const DeliveryAddress = () => {
             </Grid>
           ))}
 
-        <Grid item xs={12}>
+        <Grid xs={12}>
+          {!loading && deliveryaddresses.length === 0 && (
+            <Typography variant="h6">
+              You don't have any delivery addresses
+            </Typography>
+          )}
+        </Grid>
+
+        {/* <Grid item xs={12}>
           <Link
             to="/account/addDeliveryAddress"
             aria-label="Add delivery Address"
@@ -149,7 +201,7 @@ const DeliveryAddress = () => {
               ADD ADDRESS
             </Button>
           </Link>
-        </Grid>
+        </Grid> */}
       </Grid>
     </Fragment>
   );

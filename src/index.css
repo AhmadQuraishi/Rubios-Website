@@ -162,7 +162,7 @@ fieldset{
 .slot-label {
   background: #79C043 !important;
   color: white !important;
-  width: 122px !important;
+  width: calc(100% - 8%) !important;
   display: inline-block !important;
   text-align: center;
   font-size: 12px !important;
@@ -183,3 +183,4 @@ fieldset{
   border-radius: 20px;
   border: 3px solid #7e7e7e;
 }
+
