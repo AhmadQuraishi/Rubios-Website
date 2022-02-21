@@ -44,7 +44,7 @@ const FavoriteOrders = () => {
     <Fragment>
       {loading && <LoadingBar />}
       {!loading && favOrders.length < 1 && (
-        <h6>You don't have any favorites</h6>
+        <Typography variant="h6">You don't have any favorites</Typography>
       )}
       {!loading && favOrders.length > 0 && (
         <Grid container spacing={3} className="order-history-card">
