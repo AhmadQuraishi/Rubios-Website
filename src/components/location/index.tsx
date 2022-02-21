@@ -32,7 +32,6 @@ const LocationCard = (props: any) => {
 
   useEffect(() => {
     if (isNearByRestaurantList) {
-      alert('');
       if (searchText) {
         setSearchText(searchText?.trim() + ' ');
         setTimeout(() => {
