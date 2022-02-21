@@ -69,7 +69,7 @@ const Login = () => {
           authorizationUrl="https://sandbox.punchh.com/oauth/authorize"
           responseType="code"
           clientId={process.env.REACT_APP_PUNCHH_CLIENT_ID}
-          redirectUri={window.location.href}
+          redirectUri={process.env.REACT_APP_PUNCHH_PROXY_URL + "/fetch-sso-info"}
           onSuccess={authTrue}
           onFailure={onAuthFailure}
         />
