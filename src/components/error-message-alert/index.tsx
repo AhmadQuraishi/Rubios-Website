@@ -1,9 +1,9 @@
 import { Alert, Snackbar, Slide } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const ErrorMessageAlert = (props: any) => {
-  const [open, setOpen] = useState(true);
-
+  const [open, setOpen] = useState(props.setOpen || true);
+  
   const handleClose = () => {
     setOpen(false);
   };
@@ -11,7 +11,6 @@ const ErrorMessageAlert = (props: any) => {
   return (
     <Snackbar
       open={open}
-      autoHideDuration={6000}
       TransitionComponent={Slide}
       onClose={handleClose}
       sx={{ alignItems: 'center' }}
@@ -22,7 +21,6 @@ const ErrorMessageAlert = (props: any) => {
         variant="filled"
         sx={{ width: '100%', alignItems: 'center' }}
       >
-        <b>Error Message: </b>
         {message || 'This is a error message!'}
       </Alert>
     </Snackbar>

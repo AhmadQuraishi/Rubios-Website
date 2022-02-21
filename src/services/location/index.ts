@@ -1,9 +1,8 @@
-import axios from 'axios';
+import axios from "axios";
 
 export const requestLocations = () => {
   try {
-    const url = `https://sandbox.punchh.com/api2/dashboard/locations`;
-
+    const url = `${process.env.REACT_APP_PUNCHH_API}/api2/dashboard/locations`;
     return axios
       .get(url, {
         headers: {
@@ -25,16 +24,11 @@ export const getNearByRestaurants = (
   endDate: string,
 ) => {
   try {
-    const url = process.env.REACT_APP_OLO_API_URL || '';
+    const url = process.env.REACT_APP_OLO_API || "";
     return axios
       .get(
         url +
-          `restaurants/near?lat=${lat}&long=${long}&radius=${radius}&limit=${limit}&calendarstart=${startDate}&calendarend=${endDate}`,
-        {
-          headers: {
-            Authorization: process.env.REACT_APP_OLO_AUTH_KEY || '',
-          },
-        },
+        `/restaurants/near?lat=${lat}&long=${long}&radius=${radius}&limit=${limit}&calendarstart=${startDate}&calendarend=${endDate}`
       )
       .then((response) => response.data)
       .catch((error) => {
@@ -48,13 +42,9 @@ export const getNearByRestaurants = (
 
 export const getAllResturants = () => {
   try {
-    const url = process.env.REACT_APP_OLO_API_URL || '';
+    const url = process.env.REACT_APP_OLO_API || "";
     return axios
-      .get(url + `restaurants?includePrivate=false`, {
-        headers: {
-          Authorization: process.env.REACT_APP_OLO_AUTH_KEY || '',
-        },
-      })
+      .get(url + `/restaurants?includePrivate=false`)
       .then((response) => response.data)
       .catch((error) => {
         console.log(error.response);
