@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { useEffect, Fragment, useState } from 'react';
 import {
   Button,
   Card,
@@ -10,8 +10,33 @@ import {
 import gc_icon from '../../assets/imgs/gift_card_icon.png';
 import { Link } from 'react-router-dom';
 import './index.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllBillingAccounts, deleteBillingAccount } from '../../redux/actions/user';
+import LoadingBar from '../loading-bar';
+
 
 const GiftCards = () => {
+  const [giftCards, setGiftCards] = useState([]);
+  const dispatch = useDispatch();
+  const authtoken = useSelector((state: any) => state.TokensReducer.authtoken);
+  const {userBillingAccounts, loading } =
+    useSelector((state: any) => state.userReducer);
+  useEffect(() => {
+    dispatch(getAllBillingAccounts(authtoken));
+  }, []);
+
+  useEffect(() => {
+    if (userBillingAccounts) {
+      setGiftCards(userBillingAccounts.billingaccounts);
+    }
+  }, [userBillingAccounts, loading]);
+
+  const deleteBillingAccountHandler = (id: number) => {
+    dispatch(deleteBillingAccount(authtoken, id));
+    setTimeout(() => {
+      dispatch(getAllBillingAccounts(authtoken));
+    }, 600);
+  };
   const giftcardsList = [
     {
       icon: gc_icon,
@@ -36,8 +61,14 @@ const GiftCards = () => {
     <Grid container>
       <Grid item xs={12}>
         <Grid container spacing={3} className="gift-cards-panel">
-          {giftcardsList.map((card, index) => (
-            <Grid item xs={12} md={6} key={card.title + index}>
+        {loading && <LoadingBar />}
+        {!loading && giftCards.length < 1 && (
+          <h6>No Gift Cards Found</h6>
+        )}
+          {!loading &&
+          giftCards.length > 0 &&
+          giftCards.filter((cardType: any) => cardType.accounttype !== "creditcard" && cardType.accounttype !== "payinstore (cash)").map((card: any, index) => (
+            <Grid item xs={12} md={6} key={index}>
               <Card className="card-panel">
                 <Grid container>
                   <Grid item xs={2}>
@@ -49,34 +80,36 @@ const GiftCards = () => {
                   </Grid>
                   <Grid item xs={10}>
                     <CardContent className="panel">
-                      <Typography variant="h6" title={card.title}>
-                        {card.title}
+                      <Typography variant="h6" title={card.accounttype}>
+                        {card.accounttype}
                       </Typography>
-                      <Typography variant="h6" title={card.number}>
-                        {card.number}
+                      <Typography variant="h6" title={card.description}>
+                        {card.description}
                       </Typography>
-                      <Typography variant="h6" title={card.balance.toString()}>
-                        Balance:${card.balance}
+                      <Typography variant="h6" title={card.balance !== null ? card.balance.toString() : "balance"}>
+                        Balance:${card.balance !== null ? card.balance : "0"}
                       </Typography>
                     </CardContent>
                   </Grid>
                   <Grid item xs={6} sm={8} md={5} lg={7} />
                   <Grid item xs={12} className="order-Link">
-                    <Link
+                    {/* <Link
                       title="Edit"
                       aria-label="Edit card"
                       to="/account/updatepaymentcard/1"
                     >
                       Edit
-                    </Link>
-                    <Button title="Delete">Delete</Button>
+                    </Link> */}
+                     <Button title="Delete" 
+                        onClick={() => deleteBillingAccountHandler(card.accountid)}
+                        >Delete</Button>
                   </Grid>
                 </Grid>
               </Card>
             </Grid>
           ))}
           <Grid item xs={12}></Grid>
-          <Grid item xs={12} md={6} sx={{ paddingTop: '0px !important' }}>
+          {/* <Grid item xs={12} md={6} sx={{ paddingTop: '0px !important' }}>
             <Link
               title="Add Card"
               aria-label="Add payment card"
@@ -85,7 +118,7 @@ const GiftCards = () => {
             >
               ADD GIFT CARD
             </Link>
-          </Grid>
+          </Grid> */}
         </Grid>
       </Grid>
     </Grid>
