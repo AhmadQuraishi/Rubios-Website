@@ -51,7 +51,7 @@ const PaymentInfo = () => {
       elements.applyStyles(styleObject);
 
       setCreditCardElements(elements);
-      
+
       await elements.create();
     };
 
@@ -116,9 +116,9 @@ const PaymentInfo = () => {
           </Grid>
 
           <Grid container className="add-order">
-          <Button onClick={submitPayment} variant="contained" title="PLACE ORDER">
+          {/* <Button onClick={submitPayment} variant="contained" title="PLACE ORDER">
                 test
-           </Button>
+           </Button> */}
             <Grid item xs={12} sm={12} md={4} lg={4}>
               <Link
                 to="/orderconfirmation"
