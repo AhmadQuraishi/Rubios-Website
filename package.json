@@ -52,7 +52,7 @@
     "yup": "0.32.11"
   },
   "scripts": {
-    "start": "react-scripts start --env=local",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "build.rubioslivedev": "PUBLIC_URL=/wp-content/reactpress/apps/rubios/build react-scripts build --env=rubioslivedev",
     "build.rubioslivestg": "PUBLIC_URL=/wp-content/reactpress/apps/rubios/build react-scripts build --env=rubioslivestg",

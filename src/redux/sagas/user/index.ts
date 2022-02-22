@@ -192,6 +192,7 @@ function* updateUserBillingAccountHandler(action: any): any {
   try {
     const response = yield call(
       updateUserBillingAccount,
+      action.payload,
       action.authtoken,
       action.billingAccountId
     );

@@ -111,9 +111,6 @@ const Location = () => {
           <Marker
             key={index}
             position={latLong}
-            icon={{
-              url: '/marker.png',
-            }}
           />
         );
       },

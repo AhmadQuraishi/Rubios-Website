@@ -7,9 +7,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAllBillingAccounts, deleteBillingAccount, updateBillingAccount } from '../../redux/actions/user';
 // import { BillingAccount, ResponseUserBillingAccounts } from '../../types/olo-api';
 import LoadingBar from '../loading-bar';
+import DialogBox from '../../components/dialog-box';
 
 
 const CreditCards = () => {
+  const [open, setOpen] = useState(false);
   const [billingAccounts, setBillingAccounts] = useState([]);
   const dispatch = useDispatch();
   const authtoken = useSelector((state: any) => state.TokensReducer.authtoken);
@@ -32,14 +34,24 @@ const CreditCards = () => {
     }, 600);
   };
 
-  const makeBillingCardDefaultHandler = (id: number) => {
-    dispatch(updateBillingAccount(authtoken, id));
+  const makeBillingCardDefaultHandler = (isdefault: boolean , id: number) => {
+    const obj = {
+      isdefault: isdefault,
+    };
+    dispatch(updateBillingAccount(obj, authtoken, id));
     setTimeout(() => {
       dispatch(getAllBillingAccounts(authtoken));
-    }, 600);
+    }, 800);
   };
 
- 
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
   return (
     <Grid container>
       <Grid item xs={12}>
@@ -90,11 +102,13 @@ const CreditCards = () => {
                         Edit
                       </Link> */}
                       <Button title="Delete" 
-                        onClick={() => deleteBillingAccountHandler(cardData.accountid)}
+                        onClick={handleClickOpen}
                         >Delete</Button>
+                      <DialogBox open={open} handleClose={handleClose}
+                       message={'Do You Really Want To Delete This Credit Card?'} handleDeleteFunction={() => deleteBillingAccountHandler(cardData.accountid)} />
                       {!cardData.isdefault && (
                         <Button title="Make default" className="default"
-                        onClick={() => makeBillingCardDefaultHandler(cardData.accountid)}
+                        onClick={() => makeBillingCardDefaultHandler(true , cardData.accountid)}
                          >
                           Make default
                         </Button>

@@ -5,8 +5,7 @@ import {
   ResponseUserFaves,
   ResponseUserBillingAccounts
 } from '../../../types/olo-api';
-import { toast } from 'react-toastify';
-import ErrorMessageAlert from '../../../components/error-message-alert';
+
 
 //profile actions
 export function getUserprofile() {
@@ -268,9 +267,10 @@ export function deleteBillingAccountFailure(error: any) {
 
 // update Billing Account 
 
-export function updateBillingAccount(authtoken: string, billingAccountId: number ) {
+export function updateBillingAccount(data: RequestUserDefaultBillingAccount, authtoken: string, billingAccountId: number ) {
   return {
     type: Type.UPDATE_BILLING_ACCOUNTS,
+    payload: data,
     authtoken: authtoken,
     billingAccountId: billingAccountId
   };

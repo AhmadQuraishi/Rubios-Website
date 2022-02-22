@@ -13,9 +13,12 @@ import './index.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllBillingAccounts, deleteBillingAccount } from '../../redux/actions/user';
 import LoadingBar from '../loading-bar';
+import DialogBox from '../../components/dialog-box';
+
 
 
 const GiftCards = () => {
+  const [open, setOpen] = useState(false);
   const [giftCards, setGiftCards] = useState([]);
   const dispatch = useDispatch();
   const authtoken = useSelector((state: any) => state.TokensReducer.authtoken);
@@ -37,26 +40,15 @@ const GiftCards = () => {
       dispatch(getAllBillingAccounts(authtoken));
     }, 600);
   };
-  const giftcardsList = [
-    {
-      icon: gc_icon,
-      title: 'Happy Birthday Gift Card',
-      number: '00-233-112',
-      balance: 1234,
-    },
-    {
-      icon: gc_icon,
-      title: `Father's Day Gift card`,
-      number: '00-233-112',
-      balance: 1234,
-    },
-    {
-      icon: gc_icon,
-      title: 'Merry Christmas Gift Card',
-      number: '00-233-112',
-      balance: 1234,
-    },
-  ];
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
   return (
     <Grid container>
       <Grid item xs={12}>
@@ -101,8 +93,10 @@ const GiftCards = () => {
                       Edit
                     </Link> */}
                      <Button title="Delete" 
-                        onClick={() => deleteBillingAccountHandler(card.accountid)}
+                      onClick={handleClickOpen}
                         >Delete</Button>
+                         <DialogBox open={open} handleClose={handleClose}
+                       message={'Do You Really Want To Delete This Gift Card?'} handleDeleteFunction={() => deleteBillingAccountHandler(card.accountid)} />
                   </Grid>
                 </Grid>
               </Card>

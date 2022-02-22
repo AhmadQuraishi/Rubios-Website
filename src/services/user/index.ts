@@ -150,9 +150,9 @@ export const requestDelUserDelAddress = (addressid: number, authtoken: string) =
 export const requestUserBillingAccount = (authtoken: string) => {
 
   try {
-    const url = process.env.REACT_APP_OLO_API_URL || '';
+    const url = process.env.REACT_APP_OLO_API || '';
     return axios
-      .get(url + `users/${authtoken}/billingaccounts`)
+      .get(url + `/users/${authtoken}/billingaccounts`)
       .then((response) => response.data)
       .catch((error) => {
         console.log(error.response);
@@ -170,9 +170,9 @@ export const requestUserBillingAccount = (authtoken: string) => {
 export const requestUserBillingAccountById = (authtoken: string, billingAccountId: number) => {
 
   try {
-    const url = process.env.REACT_APP_OLO_API_URL || '';
+    const url = process.env.REACT_APP_OLO_API || '';
     return axios
-      .get(url + `users/${authtoken}/billingaccount/${billingAccountId}`)
+      .get(url + `/users/${authtoken}/billingaccount/${billingAccountId}`)
       .then((response) => response.data)
       .catch((error) => {
         console.log(error.response);
@@ -189,9 +189,9 @@ export const requestUserBillingAccountById = (authtoken: string, billingAccountI
 export const deleteUserBillingAccount = (authtoken: string, billingAccountId: number) => {
 
   try {
-    const url = process.env.REACT_APP_OLO_API_URL || '';
+    const url = process.env.REACT_APP_OLO_API || '';
     return axios
-      .delete(url + `users/${authtoken}/billingaccounts/${billingAccountId}`)
+      .delete(url + `/users/${authtoken}/billingaccounts/${billingAccountId}`)
       .then((response) => response.data)
       .catch((error) => {
         console.log(error.response);
@@ -203,11 +203,11 @@ export const deleteUserBillingAccount = (authtoken: string, billingAccountId: nu
 }
 
 // Update Billing Account (API not in working condition)
-export const updateUserBillingAccount = (authtoken: string, billingAccountId: number) => {
+export const updateUserBillingAccount = (body: RequestUserDefaultBillingAccount,authtoken: string, billingAccountId: number) => {
   try {
-    const url = process.env.REACT_APP_OLO_API_URL || '';
+    const url = process.env.REACT_APP_OLO_API || '';
     return axios
-      .put(url + `users/${authtoken}/creditcards/${billingAccountId}`)
+      .put(url + `/users/${authtoken}/creditcards/${billingAccountId}`, body)
       .then((response) => response.data)
       .catch((error) => {
         console.log(error.response);
@@ -223,9 +223,9 @@ export const updateUserBillingAccount = (authtoken: string, billingAccountId: nu
 
 export const requestUseGiftCards = (authtoken: string) => {
   try {
-    const url = process.env.REACT_APP_OLO_API_URL || '';
+    const url = process.env.REACT_APP_OLO_API || '';
     return axios
-      .get(url + `users/${authtoken}/billingaccounts/storedvalue`)
+      .get(url + `/users/${authtoken}/billingaccounts/storedvalue`)
       .then((response) => response.data)
       .catch((error) => {
         console.log(error.response);
