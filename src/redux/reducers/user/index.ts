@@ -7,6 +7,9 @@ const initialState = {
   userFavoriteOrders: null,
   userDeliveryAddresses: null,
   userDefaultDeliveryAddress: null,
+  userBillingAccounts: null,
+  userBillingAccountById: null,
+  userGiftCards: null,
   updatedUserprofile: {
     data: null,
     passerror: {},
@@ -22,10 +25,15 @@ const userReducer = (state = initialState, action: any) => {
     // Case get requests
     case Type.GET_USER_RECENT_ORDERS:
     case Type.GET_USER_FAVORITE_ORDERS:
+    // case Type.GET_USER_DELIVERY_ADDRESSES:
+    case Type.GET_USER_PROFILE:
      case Type.GET_USER_DELIVERY_ADDRESSES:
       case Type.GET_USER_PROFILE:
     case Type.CHANGE_PASSWORD:
     case Type.UPDATE_USER:
+    case Type.GET_BILLING_ACCOUNTS:
+    case Type.GET_BILLING_ACCOUNT_BY_ID:
+    case Type.GET_GIFT_CARDS:
       return { ...state, loading: true };
 
     //Success cases
@@ -83,6 +91,35 @@ const userReducer = (state = initialState, action: any) => {
         success : 1
         
       };
+    case Type.GET_BILLING_ACCOUNTS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        userBillingAccounts: action.payload,
+      };
+    case Type.GET_BILLING_ACCOUNT_BY_ID_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        userBillingAccountById: action.payload,
+      };
+    case Type.DELETE_BILLING_ACCOUNTS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+      }; 
+      case Type.UPDATE_BILLING_ACCOUNTS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        userBillingAccounts: action.payload,
+      };
+      case Type.GET_GIFT_CARDS_SUCCESS:
+        return {
+          ...state,
+          loading: false,
+          userGiftCards: action.payload,
+        };
 
     // error cases
     case Type.CHANGE_PASSWORD_FAILURE:
@@ -98,6 +135,12 @@ const userReducer = (state = initialState, action: any) => {
     case Type.SET_USER_DEFAULT_DEL_ADD_FAILURE:
     case Type.DEL_USER_DEL_ADD_FAILURE:
     case Type.UPDATE_USER_FAILURE:
+    case Type.CHANGE_PASSWORD_FAILURE:
+    case Type.GET_BILLING_ACCOUNTS_FAILURE:
+    case Type.GET_BILLING_ACCOUNT_BY_ID_FAILURE:
+    case Type.DELETE_BILLING_ACCOUNTS_FAILURE:
+    case Type.UPDATE_BILLING_ACCOUNTS_FAILURE:
+    case Type.GET_GIFT_CARDS_FAILURE:
       return { ...state, loading: false, error: action.error  , success: 0};
 
     default:

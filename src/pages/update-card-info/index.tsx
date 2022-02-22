@@ -9,6 +9,10 @@ import {
 import { makeStyles } from '@mui/styles';
 import { useParams } from 'react-router-dom';
 import './update-card-info.css';
+import React, {useEffect, Fragment, useState} from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getBillingAccountById } from '../../redux/actions/user';
+
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     padding: '0px 15px 20px 15px',
@@ -24,7 +28,24 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 const UpdatePaymentCard = () => {
   const { id } = useParams();
+  let billingAccountId = parseInt(id || '')
   const classes = useStyles();
+  const [billingAccountById, setBillingAccountById] = useState();
+  const dispatch = useDispatch();
+  const authtoken = useSelector((state: any) => state.TokensReducer.authtoken);
+  const {userBillingAccountById, loading } =
+    useSelector((state: any) => state.userReducer);
+  // useEffect(() => {
+  //   dispatch(getBillingAccountById(authtoken, billingAccountId ));
+  // }, []);
+
+  // useEffect(() => {
+  //   if (userBillingAccountById) {
+  //     console.log("userBillingAccountById", userBillingAccountById)
+  //     // setBillingAccountById(userBillingAccounts.billingaccounts);
+  //   }
+  // }, [userBillingAccountById, loading]);
+
   return (
     <Grid
       container

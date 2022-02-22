@@ -3,6 +3,7 @@ import {
   ResponseRecentOrders,
   ResponseUserDeliveryAddresses,
   ResponseUserFaves,
+  ResponseUserBillingAccounts
 } from '../../../types/olo-api';
 import { toast } from 'react-toastify';
 import ErrorMessageAlert from '../../../components/error-message-alert';
@@ -190,5 +191,124 @@ export function changePasswordFailure(error: any) {
   return {
     type: Type.CHANGE_PASSWORD_FAILURE,
     payload: error,
+  };
+}
+
+//  Get Billing Accounts
+
+export function getAllBillingAccounts(authtoken: string) {
+  return {
+    type: Type.GET_BILLING_ACCOUNTS,
+    authtoken: authtoken,
+  };
+}
+
+export function getAllBillingAccountsSuccess(data: ResponseUserBillingAccounts) {
+  return {
+    type: Type.GET_BILLING_ACCOUNTS_SUCCESS,
+    payload: data
+  };
+}
+
+export function getAllBillingAccountsFailure(error: any) {
+  return {
+    type: Type.GET_BILLING_ACCOUNTS_FAILURE,
+    error: error,
+  };
+}
+
+//  Get Billing Account By Id
+
+export function getBillingAccountById(authtoken: string, billingAccountId: number) {
+     console.log("billingAccountId", billingAccountId)
+  return {
+    type: Type.GET_BILLING_ACCOUNT_BY_ID,
+    authtoken: authtoken,
+    billingAccountId: billingAccountId
+  };
+}
+
+export function getBillingAccountByIdSuccess(data: ResponseUserBillingAccounts) {
+  return {
+    type: Type.GET_BILLING_ACCOUNT_BY_ID_SUCCESS,
+    payload: data
+  };
+}
+
+export function getBillingAccountByIdFailure(error: any) {
+  return {
+    type: Type.GET_BILLING_ACCOUNT_BY_ID_FAILURE,
+    error: error,
+  };
+}
+
+
+// Delete Billing Account
+
+export function deleteBillingAccount(authtoken: string, billingAccountId: number ) {
+  return {
+    type: Type.DELETE_BILLING_ACCOUNTS,
+    authtoken: authtoken,
+    billingAccountId: billingAccountId
+  };
+}
+
+export function deleteBillingAccountSuccess() {
+  return {
+    type: Type.DELETE_BILLING_ACCOUNTS_SUCCESS
+  };
+}
+
+export function deleteBillingAccountFailure(error: any) {
+  return {
+    type: Type.DELETE_BILLING_ACCOUNTS_FAILURE,
+    error: error,
+  };
+}
+
+// update Billing Account 
+
+export function updateBillingAccount(authtoken: string, billingAccountId: number ) {
+  return {
+    type: Type.UPDATE_BILLING_ACCOUNTS,
+    authtoken: authtoken,
+    billingAccountId: billingAccountId
+  };
+}
+
+export function updateBillingAccountSuccess(data: ResponseUserBillingAccounts ) {
+  return {
+    type: Type.UPDATE_BILLING_ACCOUNTS_SUCCESS,
+    payload: data
+  };
+}
+
+export function updateBillingAccountFailure(error: any) {
+  return {
+    type: Type.UPDATE_BILLING_ACCOUNTS_FAILURE,
+    error: error,
+  };
+}
+
+//  Get Gift Card
+
+export function getAllGiftCards(authtoken: string) {
+  return {
+    type: Type.GET_GIFT_CARDS,
+    authtoken: authtoken,
+  };
+}
+
+export function getAllGiftCardsSuccess(data: ResponseUserBillingAccounts) {
+  return {
+    type: Type.GET_GIFT_CARDS_SUCCESS,
+    payload: data
+  };
+}
+
+export function getAllGiftCardsFailure(error: any) {
+  return {
+    type: Type.GET_GIFT_CARDS_FAILURE,
+    error: error,
   };
 }
