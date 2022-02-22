@@ -17,11 +17,12 @@ import {
   setUserDefaultDelAddress,
 } from '../../redux/actions/user';
 import LoadingBar from '../../components/loading-bar';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import DialogBox from '../../components/dialog-box';
+// import Dialog from '@mui/material/Dialog';
+// import DialogActions from '@mui/material/DialogActions';
+// import DialogContent from '@mui/material/DialogContent';
+// import DialogContentText from '@mui/material/DialogContentText';
+// import DialogTitle from '@mui/material/DialogTitle';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -130,37 +131,8 @@ const DeliveryAddress = () => {
                       >
                         DELETE
                       </Typography>
-                      <Dialog
-                        open={open}
-                        onClose={handleClose}
-                        aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description"
-                      >
-                        <DialogTitle>
-                          <Typography variant="h6">
-                            Do You Really Want To Delete This Delivery Address?
-                          </Typography>
-                        </DialogTitle>
-                        <DialogActions>
-                          <Button
-                            aria-label="Cancel"
-                            title="Cancel"
-                            className="link"
-                            onClick={handleClose}
-                          >
-                            No
-                          </Button>
-                          <Button
-                            aria-label="Delete"
-                            title="Delete"
-                            className="link default"
-                            onClick={() => deleteAddressHandler(address.id)}
-                            autoFocus
-                          >
-                            Yes
-                          </Button>
-                        </DialogActions>
-                      </Dialog>
+                      <DialogBox open={open} handleClose={handleClose}
+                       message={'Do You Really Want To Delete This Delivery Address?'} handleDeleteFunction={() => deleteAddressHandler(address.id)} />
                       {!address.isdefault && (
                         <Typography
                           variant="button"

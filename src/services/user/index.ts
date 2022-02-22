@@ -203,11 +203,11 @@ export const deleteUserBillingAccount = (authtoken: string, billingAccountId: nu
 }
 
 // Update Billing Account (API not in working condition)
-export const updateUserBillingAccount = (authtoken: string, billingAccountId: number) => {
+export const updateUserBillingAccount = (body: RequestUserDefaultBillingAccount,authtoken: string, billingAccountId: number) => {
   try {
     const url = process.env.REACT_APP_OLO_API || '';
     return axios
-      .put(url + `/users/${authtoken}/creditcards/${billingAccountId}`)
+      .put(url + `/users/${authtoken}/creditcards/${billingAccountId}`, body)
       .then((response) => response.data)
       .catch((error) => {
         console.log(error.response);
