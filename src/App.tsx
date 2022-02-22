@@ -6,11 +6,12 @@ import { Fragment, useLayoutEffect, useMemo, useState } from "react";
 import AppRoutes from './routes';
 import { Grid } from '@mui/material';
 import LeftMenuBar from './components/left-menu-bar';
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 function App(props: any) {
   const location = useLocation();
   const [isAccountSection, setIsAccountSection] = useState(false);
-
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
     if (window.location.href.toLocaleLowerCase().indexOf('/account') != -1) {
@@ -27,6 +28,7 @@ function App(props: any) {
       {process.env.APP_BASENAME}
       <Header removeCart={isAccountSection} />
       <main>
+      <ToastContainer />
         {isAccountSection ? (
           <Fragment>
             <Grid container spacing={0}>
