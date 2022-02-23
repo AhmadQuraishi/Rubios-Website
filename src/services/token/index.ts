@@ -12,11 +12,10 @@ export const getToken = async (code: string): Promise<any> => {
     {
       grant_type: "authorization_code",
       code: code,
-      redirect_uri: process.env['REACT_APP_PUNCHH_API ']
+      redirect_uri: "https://dpropt.com/login"
     },
     {
       headers: {
-        "accept": "application/json",
           "Content-Type": "application/json"
         }
       }
