@@ -74,7 +74,7 @@ const CategoryList = () => {
         <ErrorMessageAlert message={error.message} />
       )}
       <StoreInfoBar />
-      {loading === true && categoriesWithProducts === undefined && (
+      {loading === true && (
         <ProductListingSkeletonUI />
       )}
       {categoriesWithProducts?.categories &&
@@ -135,18 +135,20 @@ const CategoryList = () => {
             >
               <Grid item xs={12}>
                 <Grid container>
-                  <Grid item xs={8}>
+                  <Grid item xs={item.products.length > 4 ? 8 : 12}>
                     <Typography className={classes.heading} title={item.name}>
                       {item.name}
                     </Typography>
                   </Grid>
-                  <Grid item xs={4}>
-                    <Typography className={classes.link}>
-                      <Link to={`/category/${item.id}`} title="view all">
-                        view all →
-                      </Link>
-                    </Typography>
-                  </Grid>
+                  {item.products.length > 4 && (
+                    <Grid item xs={4}>
+                      <Typography className={classes.link}>
+                        <Link to={`/category/${item.id}`} title="view all">
+                          view all →
+                        </Link>
+                      </Typography>
+                    </Grid>
+                  )}
                 </Grid>
               </Grid>
               <Grid item xs={12} sx={{ paddingBottom: '20px' }}>
