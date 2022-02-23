@@ -23,3 +23,12 @@
 .order-confirmation fieldset {
   border: none;
 }
+.order-confirmation .card {
+  background-color: #2b4b62;
+  background-color: #2b4b62;
+  background-image: url("../../assets/imgs/bg1.png");
+  background-size: 70% auto;
+  background-position: bottom -45px right -40px;
+  background-repeat: no-repeat;
+
+}

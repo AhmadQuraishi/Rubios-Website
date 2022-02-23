@@ -30,7 +30,7 @@ const OrderConfirmation = () => {
               <OrderConfirmedCard />
             </Grid>
             <Grid item xs={12} sm={12} md={12} lg={6}>
-              <Card style={{ backgroundColor: '#2b4b62' }}>
+              <Card className="card">
                 <Typography variant="caption" className="label white" title="EARN REWARDS">EARN REWARDS</Typography>
                 <Typography variant="h4" className="white" title="GET $5 OFF YOUR">GET $5 OFF YOUR</Typography>
                 <Typography variant="h4" className="white" title="NEXT ORDER">NEXT ORDER</Typography>
