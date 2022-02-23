@@ -104,35 +104,37 @@ const ProductListing = (props: any) => {
                     {item.description}
                   </Typography>
                   <Grid container spacing={0}>
-                    <Grid
-                      item
-                      xs={6}
-                      lg={7}
-                      title={`${
-                        item.caloriesseparator
+                    {(item.basecalories > 0 || item.maxcalories > 0) && (
+                      <Grid
+                        item
+                        xs={6}
+                        title={`${
+                          item.caloriesseparator
+                            ? item.basecalories +
+                              item.caloriesseparator +
+                              item.maxcalories
+                            : item.basecalories
+                        } cal`}
+                        className={classes.cal}
+                      >
+                        {item.caloriesseparator
                           ? item.basecalories +
                             item.caloriesseparator +
                             item.maxcalories
-                          : item.basecalories
-                      } cal`}
-                      className={classes.cal}
-                    >
-                      {item.caloriesseparator
-                        ? item.basecalories +
-                          item.caloriesseparator +
-                          item.maxcalories
-                        : item.basecalories}{' '}
-                      cal
-                    </Grid>
-                    <Grid
-                      item
-                      xs={6}
-                      lg={5}
-                      title={`$${parseFloat(item.cost).toFixed(2)}`}
-                      className={classes.price}
-                    >
-                      ${parseFloat(item.cost).toFixed(2)}
-                    </Grid>
+                          : item.basecalories}{' '}
+                        cal
+                      </Grid>
+                    )}
+                    {item.cost > 0 && (
+                      <Grid
+                        item
+                        xs={6}
+                        title={`$${parseFloat(item.cost).toFixed(2)}`}
+                        className={classes.price}
+                      >
+                        ${parseFloat(item.cost).toFixed(2)}
+                      </Grid>
+                    )}
                   </Grid>
                 </CardContent>
               </Card>
