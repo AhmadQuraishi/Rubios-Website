@@ -46,7 +46,7 @@ ReactDOM.render(
   <Provider store={store}>
     <React.StrictMode>
       <BrowserRouter
-        basename="order"
+        basename=""
       >
         <PersistGate persistor={persistor}>
           <ThemeProvider theme={theme}>

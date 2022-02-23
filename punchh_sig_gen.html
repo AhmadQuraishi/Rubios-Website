@@ -100,13 +100,27 @@
 <script>
 
   function generateSingature() {
-    const url = document.getElementById("apiUri").value;
-    const PunchhClientSecret = document.getElementById("clientSecret").value;
-    const body = document.getElementById("payload").value;
-    const payload = url.concat(JSON.stringify(body));
-    console.log(payload);
-    const signature = CryptoJS.HmacSHA1(payload, PunchhClientSecret).toString();
-    document.getElementById("hashResult").innerHTML = signature;
+      const url =document.getElementById("apiUri").value;
+      let check = url?.toString().includes('/sandbox.punchh.com/api/');
+      if (check) {
+        var uri = new URL(url?.toString());
+        const body = document.getElementById("payload").value;
+        let uriData = uri.pathname.concat(uri.search);
+        let secret = document.getElementById("clientSecret").value;
+        let secretString = secret.toString();
+        let concatString = '';
+        if(body === undefined){
+          concatString = uriData;
+        }
+        else{
+          concatString = uriData.concat(JSON.stringify(body));
+        }
+        const signature = CryptoJS.HmacSHA1(
+          concatString,
+          secretString,
+        ).toString();
+        document.getElementById("hashResult").innerHTML = signature;
+      }
   }
 </script>
 

@@ -54,9 +54,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "build.rubioslivedev": "PUBLIC_URL=/wp-content/reactpress/apps/rubios/build react-scripts build --env=rubioslivedev",
-    "build.rubioslivestg": "PUBLIC_URL=/wp-content/reactpress/apps/rubios/build react-scripts build --env=rubioslivestg",
-    "build.rubioslive": "PUBLIC_URL=/wp-content/reactpress/apps/rubios/build react-scripts build --env=rubioslive",
+    "build.prod": "react-scripts build --env=prod",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

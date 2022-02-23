@@ -11,6 +11,9 @@ import { getProviderRequest } from "../../redux/actions/provider";
 declare var window: any;
 
 interface OAuthResponse {
+  code: string;
+  jwt: string;
+  client: string;
   authorizationcode?: string,
   authtoken?: string,
   basketid?: string,
@@ -20,8 +23,8 @@ interface OAuthResponse {
   firstname?: string,
   lastname?: string,
   provider?: string,
-  providertoken: string,
-  provideruserid: string,
+  providertoken?: string,
+  provideruserid?: string,
   refreshtoken?: null,
 }
 
@@ -69,7 +72,7 @@ const Login = () => {
           authorizationUrl="https://sandbox.punchh.com/oauth/authorize"
           responseType="code"
           clientId={process.env.REACT_APP_PUNCHH_CLIENT_ID}
-          redirectUri={process.env.REACT_APP_PUNCHH_PROXY_URL + "/fetch-sso-info"}
+          redirectUri={window.location.href}
           onSuccess={authTrue}
           onFailure={onAuthFailure}
         />
@@ -81,11 +84,13 @@ const Login = () => {
 const onAuthSuccess =
   (dispatch: any) => async (oAuthResponse: OAuthResponse) => {
     try {
-      // const token: PunchhAuth = await getUser(
-      //   oAuthResponse.code,
-      //   dispatch,
-      // );
-      const foundUser = await getUser(oAuthResponse);
+      const token: PunchhAuth = await getAccessTokenByAuthCode(
+        oAuthResponse.code,
+        dispatch,
+      );
+      const foundUser = await getUser(dispatch);
+      console.log('Found token');
+      console.log(token);
       const linkToOLO = await linkingUserToOLO(dispatch);
 
     } catch (error: any) {

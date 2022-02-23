@@ -10,13 +10,14 @@ import {
 function* asyncTokenItemRequest(action: any): any {
   try {
 
-    const response = yield call(getToken, action.code);
+    const response = yield call(getToken, action);
+    console.log(response);
     yield put(getTokenRequestSuccess(response));
   } catch (error) {
     yield put(getTokenRequestFailure(error));
   }
 }
 
-export function* storeToken() { 
+export function* storeToken() {
   yield takeEvery(Type.GET_TOKEN_REQUEST, asyncTokenItemRequest);
 }
