@@ -40,7 +40,7 @@ class Proxy
     /**
      * Prepare the proxy to forward a request instance.
      *
-     * @param  RequestInterface $request
+     * @param RequestInterface $request
      * @return $this
      */
     public function forward(RequestInterface $request)
@@ -53,9 +53,9 @@ class Proxy
     /**
      * Forward the request to the target url and return the response.
      *
-     * @param  string $target
-     * @throws UnexpectedValueException
+     * @param string $target
      * @return ResponseInterface
+     * @throws UnexpectedValueException
      */
     public function to($target, $subDirPath = null, $port = null)
     {
@@ -65,10 +65,10 @@ class Proxy
 
         $target = new Uri($target);
 
-        if($subDirPath == null){
+        if ($subDirPath == null) {
             $subDirPath = '';
         }
-        if($port == null){
+        if ($port == null) {
             $port = $target->getPort();
         }
         // Overwrite target scheme, host and port.
@@ -78,11 +78,8 @@ class Proxy
             ->withPort($port);
 
         // Check for subdirectory.
-        if ($path = $target->getPath()) {
-            $path = rtrim($path, '/') . '/' . ltrim($uri->getPath(), '/');
-            $uri = $uri->withPath(str_ireplace($subDirPath, "", $path));
-        }
-//        echo '<pre>'; var_dump($uri); echo '</pre>'; exit;
+        $path = rtrim($target->getPath(), '/') . '/' . ltrim($uri->getPath(), '/');
+        $uri = $uri->withPath(str_ireplace($subDirPath, "", $path));
         $request = $this->request->withUri($uri);
 
         $stack = $this->filters;
@@ -105,7 +102,7 @@ class Proxy
     /**
      * Add a filter middleware.
      *
-     * @param  callable $callable
+     * @param callable $callable
      * @return $this
      */
     public function filter(callable $callable)
@@ -122,10 +119,11 @@ class Proxy
     {
         return $this->request;
     }
+
     /**
      * @return RequestInterface
      */
-    public function getUri():UriInterface
+    public function getUri(): UriInterface
     {
         return $this->request->getUri();
     }

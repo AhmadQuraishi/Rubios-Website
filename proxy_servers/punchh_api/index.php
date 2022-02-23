@@ -32,20 +32,20 @@ try {
         ->filter(function ($request, $response, $next) use ($proxy) {
 
             if (str_contains($proxy->getUri()->getPath(), 'fetchoauthinfo')) {
-                $response = sendAccessTokenFetchRequest($proxy->getRequest()->getUri());
+                $response = sendAccessTokenFetchRequest($proxy->getRequest()->getBody());
                 (new SapiEmitter)->emit($response);
                 exit;
             }
-            if (str_contains($proxy->getUri()->getPath(), 'getuserauth')) {
-                $response = sendUserAuthFetchRequest($proxy);
-                (new SapiEmitter)->emit($response);
-                exit;
-            }
+//            if (str_contains($proxy->getUri()->getPath(), 'getuserauth')) {
+//                $response = sendUserAuthFetchRequest($proxy);
+//                (new SapiEmitter)->emit($response);
+//                exit;
+//            }
 
             $request = $request->withHeader('Accept', 'application/json');
-            $request = $request->withHeader('Origin', PUNCHH_API_HOST);
+//            $request = $request->withHeader('Origin', PUNCHH_API_HOST);
             $request = $request->withHeader('Content-Type', 'application/json');
-            $request = $request->withHeader('Access-Control-Allow-Origin', PUNCHH_API_HOST);
+//            $request = $request->withHeader('Access-Control-Allow-Origin', PUNCHH_API_HOST);
 
 //            $request = $request->withHeader('x-pch-digest', '95eabff47c8625f83048170ffa96545998d3173f');
 
@@ -60,9 +60,8 @@ try {
                 exit;
             }
 
-            $x_pch_digest = getSignature($proxy, str_replace('/punchh_api', '', $proxy->getUri()->getPath()));
-
-            $request = $request->withHeader('x-pch-digest', $x_pch_digest);
+//            $x_pch_digest = getSignature($proxy, str_replace('/punchh_api', '', $proxy->getUri()->getPath()));
+//            $request = $request->withHeader('x-pch-digest', $x_pch_digest);
 
             // Call the next item in the middleware.
             $response = $next($request, $response);
@@ -89,39 +88,40 @@ function sendAccessTokenFetchRequest($payload): \Psr\Http\Message\ResponseInterf
     $request = $request->withUri(new Laminas\Diactoros\Uri(PUNCHH_API_HOST . '/oauth/token'));
     $request = $request->withMethod('POST');
     $request = $request->withHeader('Accept', 'application/json');
-    $request = $request->withHeader('Origin', PUNCHH_API_HOST)
-        ->withAddedHeader('Content-Type', 'application/json');
+    $request = $request->withHeader('Origin', PUNCHH_API_HOST);
+    $request = $request->withHeader('Content-Type', 'application/json');
     $request->getBody()->write(json_encode($credentials));
     return $client->send($request);
 }
 
-function sendUserAuthFetchRequest($proxy): \Psr\Http\Message\ResponseInterface
-{
-    $client = new \GuzzleHttp\Client();
-    parse_str($proxy->getUri()->getQuery(), $credentials);
-    $credentials["client"] = PUNCHH_API_CLIENT_ID;
-    // Create a request
-    $request = new Laminas\Diactoros\Request();
-    $request = $request->withUri((new Laminas\Diactoros\Uri(PUNCHH_API_HOST . '/api/auth/users'))->withQuery(http_build_query($credentials)));
-    $request = $request->withMethod('GET');
-    $request = $request->withHeader('Accept', 'application/json');
-    $request = $request->withHeader('Origin', PUNCHH_API_HOST);
-    $request = $request->withHeader('x-pch-digest', getSignature($proxy, '/api/auth/users'));
-    $request->getBody()->write(json_encode($credentials));
-    return $client->send($request);
-}
+//function sendUserAuthFetchRequest($proxy): \Psr\Http\Message\ResponseInterface
+//{
+//    $client = new \GuzzleHttp\Client();
+//    parse_str($proxy->getUri()->getQuery(), $credentials);
+//    $credentials["client"] = PUNCHH_API_CLIENT_ID;
+//    // Create a request
+//    $request = new Laminas\Diactoros\Request();
+//    $request = $request->withUri((new Laminas\Diactoros\Uri(PUNCHH_API_HOST . '/api/auth/users'))->withQuery(http_build_query($credentials)));
+//    $request = $request->withMethod('GET');
+//    $request = $request->withHeader('Accept', 'application/json');
+//    $signature = getSignature($proxy, '/api/auth/users');
+//    $request = $request->withHeader('x-pch-digest', $signature);
+//    $request->getBody()->write(json_encode($credentials));
+//
+//    return $client->send($request);
+//}
 
 function getSignature($proxy, $uriPath): string
 {
     parse_str($proxy->getUri()->getQuery(), $queryArgs);
-    $newUri = (new Laminas\Diactoros\Uri($uriPath))->withQuery(http_build_query($queryArgs));
+    $newUri = (new Laminas\Diactoros\Uri( $uriPath))->withQuery(http_build_query($queryArgs));
     // Body in JSON format
     $body = $proxy->getRequest()->getBody();
     if ($body->getSize()) {
         $bodyjson = json_encode($proxy->getRequest()->getBody());
         $finalStringToHash = ((string)$newUri) . $bodyjson;
     } else {
-        $finalStringToHash = (string)$newUri;
+        $finalStringToHash = (string)$newUri . 'test';
     }
     // signature specific to very request using SHA1 which is to be passed in `x-pch-digest` key in header
     return hash_hmac('sha1', $finalStringToHash, PUNCHH_API_CLIENT_SECRET);
