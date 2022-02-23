@@ -239,7 +239,7 @@ const FoodMenuCard = (props: any) => {
                             item.options.map((item: any, index: number) => (
                               <option key={index} value={item.id}>
                                 {item.name}
-                                {item.cost > 0 ? ' - $' + item.cost : ''}
+                                {item.cost > 0 ? ' + $' + item.cost : ''}
                               </option>
                             ))}
                         </select>

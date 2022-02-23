@@ -72,7 +72,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const Header = (props: any) => {
-  const { removeCart } = props;
+  const { removeCart, showUserName, removeCartForLocation } = props;
   const classes = useStyles();
   const theme = useTheme();
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -91,7 +91,7 @@ const Header = (props: any) => {
           }}
         >
           <Typography variant="h4" className={classes.logo}>
-            {!removeCart ? (
+            {!showUserName ? (
               <Link to="/location" className={classes.logoImg}>
                 <img
                   aria-label="Rubio's Cosatal Grill"
@@ -150,7 +150,7 @@ const Header = (props: any) => {
                   />
                 )}
               </Drawer>
-              {!removeCart && (
+              {!removeCart && !removeCartForLocation && (
                 <img
                   onClick={handleShowCart}
                   src={cartIconMobile}

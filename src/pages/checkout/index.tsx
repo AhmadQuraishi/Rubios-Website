@@ -9,7 +9,7 @@ import {
   TextField,
   Typography,
   ToggleButtonGroup,
-  ToggleButton
+  ToggleButton,
 } from '@mui/material';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -43,18 +43,20 @@ const Checkout = () => {
   };
 
   return (
-    <Box className="checkout-wrapper">
+    <>
       <StoreInfoBar />
-      <Grid container>
-        <Grid item xs={12} sm={12} md={12} lg={12}>
-          <Card className="order">
-            <Grid container>
+      <Box className="checkout-wrapper">
+        <Grid container>
+          <Grid item xs={12} sm={12} md={12} lg={12}>
+            <Card className="order">
               <Grid container>
+                <Grid container>
                   <Grid item xs={12} sm={6} md={6} lg={6} className="left-col">
                     <Grid container>
                       <Grid item xs={12}>
                         <Typography
-                          variant="caption" className="label"
+                          variant="caption"
+                          className="label"
                           title="WHO IS PICKING UP?"
                         >
                           WHO IS PICKING UP?
@@ -107,7 +109,11 @@ const Checkout = () => {
                   <Grid item xs={12} sm={6} md={6} lg={6} className="right-col">
                     <Grid container>
                       <Grid item xs={12}>
-                        <Typography variant="caption" title="PICKUP TIME" className="label">
+                        <Typography
+                          variant="caption"
+                          title="PICKUP TIME"
+                          className="label"
+                        >
                           PICKUP TIME
                         </Typography>
                       </Grid>
@@ -118,7 +124,11 @@ const Checkout = () => {
                       </Typography>
                     </Grid>
                     <Grid item xs={12}>
-                      <Button aria-label="change" title="change" className="caption-grey">
+                      <Button
+                        aria-label="change"
+                        title="change"
+                        className="caption-grey"
+                      >
                         (change)
                       </Button>
                     </Grid>
@@ -127,9 +137,11 @@ const Checkout = () => {
                         <FormControl>
                           <Grid container>
                             <Grid item xs={6} sm={6} md={3} lg={3}>
-                              <FormLabel className="slot-label"
-                                     title="QUICKEST"
-                                     id="demo-row-radio-buttons-group-label">
+                              <FormLabel
+                                className="slot-label"
+                                title="QUICKEST"
+                                id="demo-row-radio-buttons-group-label"
+                              >
                                 QUICKEST
                               </FormLabel>
                             </Grid>
@@ -141,22 +153,34 @@ const Checkout = () => {
                           >
                             <Grid container spacing={2}>
                               <Grid item xs={6} sm={6} md={3} lg={3}>
-                                <ToggleButton value="06:10" className="selected-btn">
+                                <ToggleButton
+                                  value="06:10"
+                                  className="selected-btn"
+                                >
                                   06:10
                                 </ToggleButton>
                               </Grid>
                               <Grid item xs={6} sm={6} md={3} lg={3}>
-                                <ToggleButton value="06:20" className="selected-btn">
+                                <ToggleButton
+                                  value="06:20"
+                                  className="selected-btn"
+                                >
                                   06:20
                                 </ToggleButton>
                               </Grid>
                               <Grid item xs={6} sm={6} md={3} lg={3}>
-                                <ToggleButton value="06:30" className="selected-btn">
+                                <ToggleButton
+                                  value="06:30"
+                                  className="selected-btn"
+                                >
                                   06:30
                                 </ToggleButton>
                               </Grid>
                               <Grid item xs={6} sm={6} md={3} lg={3}>
-                                <ToggleButton value="06:40" className="selected-btn">
+                                <ToggleButton
+                                  value="06:40"
+                                  className="selected-btn"
+                                >
                                   06:30
                                 </ToggleButton>
                               </Grid>
@@ -196,36 +220,37 @@ const Checkout = () => {
                     </Grid>
                   </Grid>
                 </Grid>
-            </Grid>
-            <br/>
-            <Divider />
-            <br/>
-            <br/>
-            {/*second section*/}
-            <OrderDetail />
-            <br/>
-            <br/>
-            <Divider />
-            <br/>
-            <br/>
-            <Rewards />
-            <br/>
-            <br/>
-            <Divider />
-            <br/>
-            <br/>
-            <Tip />
-            <br/>
-            <br/>
-            <Divider />
-            <br/>
-            <br/>
-            <PaymentInfo />
-            {/*second section ends here*/}
-          </Card>
+              </Grid>
+              <br />
+              <Divider />
+              <br />
+              <br />
+              {/*second section*/}
+              <OrderDetail />
+              <br />
+              <br />
+              <Divider />
+              <br />
+              <br />
+              <Rewards />
+              <br />
+              <br />
+              <Divider />
+              <br />
+              <br />
+              <Tip />
+              <br />
+              <br />
+              <Divider />
+              <br />
+              <br />
+              <PaymentInfo />
+              {/*second section ends here*/}
+            </Card>
+          </Grid>
         </Grid>
-      </Grid>
-    </Box>
+      </Box>
+    </>
   );
 };
 

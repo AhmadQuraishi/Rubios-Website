@@ -2,11 +2,11 @@ import './App.css';
 import { useLocation } from 'react-router-dom';
 import Header from './components/header';
 import Footer from './components/footer';
-import { Fragment, useLayoutEffect, useMemo, useState } from "react";
+import { Fragment, useLayoutEffect, useMemo, useState } from 'react';
 import AppRoutes from './routes';
 import { Grid } from '@mui/material';
 import LeftMenuBar from './components/left-menu-bar';
-import { ToastContainer } from "react-toastify";
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App(props: any) {
@@ -21,13 +21,22 @@ function App(props: any) {
     }
   }, [location.pathname]);
 
-  const AppRoutesComponent = useMemo(()=><AppRoutes/>, [])
+  const AppRoutesComponent = useMemo(() => <AppRoutes />, []);
 
   return (
     <div id="wapper">
-      <Header removeCart={isAccountSection} />
+      <Header
+        removeCartForLocation={
+          window.location.href.toLocaleLowerCase().indexOf('/location') != -1
+        }
+        showUserName={isAccountSection}
+        removeCart={
+          isAccountSection ||
+          window.location.href.toLocaleLowerCase().indexOf('/checkout') != -1
+        }
+      />
       <main>
-      <ToastContainer />
+        <ToastContainer />
         {isAccountSection ? (
           <Fragment>
             <Grid container spacing={0}>
