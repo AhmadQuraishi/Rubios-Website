@@ -1,4 +1,4 @@
-import { Grid, Typography, Card, Button } from '@mui/material';
+import { Grid, Typography, Card, Button, TextField } from '@mui/material';
 import FoodMenuCard from '../../components/food-menu-card';
 import './product.css';
 import StoreInfoBar from '../../components/restaurant-info-bar';
@@ -273,13 +273,22 @@ const Product = () => {
             <br />
             <br />
             <Grid container>
-              <Grid item xs={12} md={8} lg={8}></Grid>
-              <Grid item xs={12} md={2} lg={2}>
+              <Grid item xs={0} sm={0} md={2} lg={6}></Grid>
+              <Grid item xs={12} sm={3} md={2} lg={1}>
                 <Button title="Quantity" className="label bold">
                   QUANTITY
                 </Button>
               </Grid>
-              <Grid item xs={12} md={2} lg={2}>
+              <Grid item xs={12} sm={4} md={4} lg={2} className="quantity">
+                <Button title="" className="add"> + </Button>
+                <TextField
+                  aria-label=""
+                  placeholder="0"
+                  title=""
+                />
+                <Button title="" className="subtract"> - </Button>
+              </Grid>
+              <Grid item xs={12} sm={3} md={2} lg={2}>
                 <Button
                   aria-label="add to bag"
                   title="ADD TO Bag"
