@@ -1,3 +1,6 @@
+.order-confirmation {
+  position: relative;
+}
 .order-confirmation .MuiPaper-root {
   padding: 95px;
   min-height: 435px;
@@ -31,4 +34,26 @@
   background-position: bottom -45px right -40px;
   background-repeat: no-repeat;
 
+}
+.order-confirmation .phone-icon {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  margin-left: -165px;
+}
+
+@media screen and (max-width: 800px) {
+  .order-confirmation .MuiPaper-root {
+    padding: 85px 30px;
+    min-height: auto;
+  }
+  .order-confirmation .phone-icon {
+    left: 0 !important;
+    margin-left: 0px !important;
+  }
+}
+@media screen and (max-width: 468px) {
+  .order-confirmation .card.MuiPaper-root {
+    min-height: 700px;
+  }
 }
