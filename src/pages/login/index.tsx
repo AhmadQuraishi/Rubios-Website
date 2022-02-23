@@ -6,7 +6,7 @@ import OAuth2Login from "react-simple-oauth2-login";
 import { useDispatch, useSelector } from "react-redux";
 import { getTokenRequest } from "../../redux/actions/token";
 import { getProviderRequest } from "../../redux/actions/provider";
-//import { store } from '../../redux/store';
+import { getAuthRequest } from '../../redux/actions/auth';
 
 declare var window: any;
 
@@ -136,7 +136,7 @@ const getUser = async ( dispatch: any): Promise<any> => {
 };
 const linkingUserToOLO = async ( dispatch: any): Promise<any> => {
   return () => {
-    dispatch(getProviderRequest());
+    dispatch(getAuthRequest());
   }
 };
 

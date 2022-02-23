@@ -7,6 +7,7 @@ const INITIAL_STATE = {
 };
 
 const tokenReducer = (state = INITIAL_STATE, action: any) => {
+  console.log("token hit reducer")
   switch (action.type) {    
     case Type.GET_TOKEN_REQUEST:
       return { ...state, loading: true };
