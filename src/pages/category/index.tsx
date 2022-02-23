@@ -74,7 +74,7 @@ const CategoryList = () => {
         <ErrorMessageAlert message={error.message} />
       )}
       <StoreInfoBar />
-      {loading === true && categoriesWithProducts === undefined && (
+      {loading === true && (
         <ProductListingSkeletonUI />
       )}
       {categoriesWithProducts?.categories &&
