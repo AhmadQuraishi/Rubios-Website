@@ -9,7 +9,7 @@ import {
 
 function* asyncTokenItemRequest(action: any): any {
   try {
-
+console.log("token hit")
     const response = yield call(getToken, action);
     console.log(response);
     yield put(getTokenRequestSuccess(response));
