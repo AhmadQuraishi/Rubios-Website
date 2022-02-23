@@ -89,6 +89,7 @@ const onAuthSuccess =
         dispatch,
       );
       const foundUser = await getUser(dispatch);
+      debugger
       console.log('Found token'+ foundUser);
       console.log(token);
       const linkToOLO = await linkingUserToOLO(dispatch);
@@ -127,6 +128,7 @@ const getAccessTokenByAuthCode = async (
 };
 
 const getUser = async ( dispatch: any): Promise<any> => {
+  debugger
   return () => {
     console.log("get user0")
     dispatch(getProviderRequest());
