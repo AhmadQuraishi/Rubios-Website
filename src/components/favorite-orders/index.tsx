@@ -44,7 +44,9 @@ const FavoriteOrders = () => {
     <Fragment>
       {loading && <LoadingBar />}
       {!loading && favOrders.length < 1 && (
-        <Typography variant="h6">You don't have any favorites</Typography>
+        <Typography variant="h6" className="no-orders">
+          You don't have any favorites
+        </Typography>
       )}
       {!loading && favOrders.length > 0 && (
         <Grid container spacing={3} className="order-history-card">
@@ -54,16 +56,19 @@ const FavoriteOrders = () => {
               <Grid item xs={12} lg={6} key={x++}>
                 <Card elevation={0} className="card-panel">
                   <Grid container>
-                    <Grid item xs={8}>
+                    <Grid item xs={10}>
                       <Typography
                         variant="caption"
                         className="order-name"
                         title={forder.name}
                       >
+                        {/* {forder.name.length > 30
+                          ? forder.name.substring(0, 30) + '...'
+                          : forder.name} */}
                         {forder.name}
                       </Typography>
                     </Grid>
-                    <Grid item xs={4} className="order-fav-icon">
+                    <Grid item xs={2} className="order-fav-icon">
                       <img
                         src={require('../../assets/imgs/favrouite-icon.png')}
                         alt="Favrouite Order Icon"
@@ -95,14 +100,28 @@ const FavoriteOrders = () => {
                       {forder.products
                         .slice(0, 3)
                         .map((product: any, index: number) => (
-                          <Typography
-                            className="order-detail"
-                            variant="body2"
-                            title={product.name}
-                            key={product.name + product.quantity}
-                          >
-                            {product.quantity} x {product.name}
-                          </Typography>
+                          <Fragment>
+                            {index == 2 ? (
+                              <Typography
+                                className="order-detail"
+                                variant="body2"
+                                title={product.name}
+                                key={product.name + product.quantity}
+                              >
+                                {product.quantity}x{' '}
+                                {product.name.substring(0, 19)}...
+                              </Typography>
+                            ) : (
+                              <Typography
+                                className="order-detail"
+                                variant="body2"
+                                title={product.name}
+                                key={product.name + product.quantity}
+                              >
+                                {product.quantity}x {product.name}
+                              </Typography>
+                            )}
+                          </Fragment>
                         ))}
 
                       <Typography
