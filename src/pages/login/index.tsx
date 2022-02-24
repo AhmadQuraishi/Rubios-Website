@@ -105,6 +105,7 @@ const getAccessTokenByAuthCode = async (
   code: string,
   dispatch: any,
 ): Promise<any> => {
+  console.log("token")
   return () => {
     dispatch(getTokenRequest(code));
   };
