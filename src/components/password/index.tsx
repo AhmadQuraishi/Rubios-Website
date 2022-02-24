@@ -52,18 +52,22 @@ const Password = () => {
           }}
           validationSchema={Yup.object({
             newpassword: Yup.string()
-              .matches(
-                /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-                'password must be minimum 8 characters and  must contain only  numbers and letters. ',
-              )
+              // .matches(
+              //   /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+              //   'password must be minimum 8 characters and  must contain only  numbers and letters. ',
+              // )
+              .min(8, 'Must be at least 8 characters')
+              .max(16, 'Must be at most 16 characters')
               .required('required'),
 
             confirmpassword: Yup.string()
 
-              .matches(
-                /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-                'password must be minimum 8 characters and  must contain only  numbers and letters. ',
-              )
+              //   .matches(
+              //     /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+              //     'password must be minimum 8 characters and  must contain only  numbers and letters. ',
+              // )
+              .min(8, 'Must be at least 8 characters')
+              .max(16, 'Must be at most 16 characters')
               .oneOf([Yup.ref('newpassword'), null], 'Passwords must match')
               .required('required'),
           })}
@@ -97,10 +101,11 @@ const Password = () => {
                       type="password"
                       name="newpassword"
                       sx={{ width: '100%' }}
-                      onChange={handleChange}
                       value={values.newpassword}
+                      onChange={handleChange('newpassword')}
+                      onBlur={handleBlur('newpassword')}
                       error={Boolean(touched.newpassword && errors.newpassword)}
-                      helperText={errors.newpassword}
+                      helperText={touched.newpassword && errors.newpassword}
                     />
                   </Grid>
                   {/* <Typography>{errors.newpassword}</Typography> */}
@@ -123,11 +128,14 @@ const Password = () => {
                       type="password"
                       sx={{ width: '100%' }}
                       value={values.confirmpassword}
-                      onChange={handleChange}
+                      onChange={handleChange('confirmpassword')}
+                      onBlur={handleBlur('confirmpassword')}
                       error={Boolean(
                         touched.confirmpassword && errors.confirmpassword,
                       )}
-                      helperText={errors.confirmpassword}
+                      helperText={
+                        touched.confirmpassword && errors.confirmpassword
+                      }
                     />
                   </Grid>
                   {/* <Typography>{errors.confirmpassword}</Typography> */}
