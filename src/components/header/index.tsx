@@ -22,6 +22,7 @@ import cartIconMobile from '../../assets/imgs/cart-icon-mobile.svg';
 
 import Cart from '../cart';
 import AccountLinks from '../account-links';
+import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles((theme: Theme) => ({
   navBar: {
@@ -78,6 +79,8 @@ const Header = (props: any) => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [showCart, setShowCart] = useState(false);
+  const basketObj = useSelector((state: any) => state.basketReducer);
+
   const handleShowCart = () => {
     setShowCart(!showCart);
   };
@@ -131,6 +134,7 @@ const Header = (props: any) => {
               </>
             )}
           </Typography>
+
           {isMobile ? (
             <>
               <Drawer open={openDrawer} onClose={() => setOpenDrawer(false)}>
@@ -151,19 +155,42 @@ const Header = (props: any) => {
                 )}
               </Drawer>
               {!removeCart && !removeCartForLocation && (
-                <img
-                  onClick={handleShowCart}
-                  src={cartIconMobile}
-                  alt="Cart Icon"
-                  style={{ width: '28px', paddingRight: '10px' }}
-                  title="Cart Icon"
-                />
+                <div style={{ position: 'relative' }}>
+                  <img
+                    onClick={handleShowCart}
+                    src={cartIconMobile}
+                    alt="Cart Icon"
+                    style={{ width: '28px', paddingRight: '10px' }}
+                    title="Cart Icon"
+                  />
+                  <div
+                    style={{
+                      color: 'rgb(34, 76, 101)',
+                      position: 'absolute',
+                      margin: 'auto',
+                      inset: 'auto',
+                      display: 'inline-block',
+                      paddingTop: '18px',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      textAlign: 'center',
+                      marginRight: '10px',
+                      fontSize: '13px',
+                    }}
+                  >
+                    {basketObj.basket &&
+                      basketObj.basket.products.length > 0 &&
+                      basketObj.basket.products.length}
+                  </div>
+                </div>
               )}
               <IconButton
                 onClick={() => setOpenDrawer(!openDrawer)}
                 className={classes.icon}
               >
-                <MenuIcon fontSize="large" titleAccess="Cart Icon" />
+                <MenuIcon fontSize="large" titleAccess="Menu Icon" />
               </IconButton>
             </>
           ) : (
@@ -183,6 +210,7 @@ const Header = (props: any) => {
                     float: 'right',
                     justifyContent: 'center',
                     borderRadius: 0,
+                    position: 'relative',
                     display: { xs: 'none', sm: 'flex' },
                     '&:hover': {
                       backgroundColor: 'success.main',
@@ -196,6 +224,20 @@ const Header = (props: any) => {
                     alt="Cart Icon"
                     title="Cart Icon"
                   />
+                  <div
+                    style={{
+                      color: '#fff',
+                      position: 'absolute',
+                      margin: 'auto',
+                      inset: 'auto',
+                      display: 'inline',
+                      paddingTop: '15px',
+                    }}
+                  >
+                    {basketObj.basket &&
+                      basketObj.basket.products.length > 0 &&
+                      basketObj.basket.products.length}
+                  </div>
                 </Button>
               )}
             </>

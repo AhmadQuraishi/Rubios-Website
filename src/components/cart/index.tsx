@@ -183,99 +183,7 @@ const Cart = (props: any) => {
               </Grid>
             </Grid>
           </Grid>
-          <Grid item xs={12} sx={{ padding: '20px 10px 0 10px' }}>
-            <Grid container spacing={0}>
-              <Grid item xs={9}>
-                <Typography
-                  variant="caption"
-                  title="Regular Mango Tea"
-                  sx={{
-                    fontSize: '13px',
-                    color: 'secondary.main',
-                    fontFamily: 'Poppins-Medium !important',
-                  }}
-                >
-                  Regular Mango Tea
-                </Typography>
-              </Grid>
-              <Grid item xs={3} sx={{ textAlign: 'right' }}>
-                <Typography
-                  variant="caption"
-                  title="$2.05"
-                  sx={{
-                    textAlign: 'right',
-                    fontSize: '14px',
-                    fontWeight: '700',
-                    fontFamily: 'Poppins-Bold !important',
-                    color: 'secondary.main',
-                  }}
-                >
-                  $2.05
-                </Typography>
-              </Grid>
-              <Grid item xs={12} sx={{ padding: '5px 0 5px 0' }}>
-                <Divider sx={{ borderColor: 'rgba(0, 0, 0, 1);' }} />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography
-                  title="Medium, Light Ice"
-                  variant="caption"
-                  fontSize={11}
-                >
-                  Medium, Light Ice
-                </Typography>
-              </Grid>
-              <Grid item xs={12} sx={{ padding: '0' }}>
-                <Grid container spacing={0}>
-                  <Grid item xs={3}>
-                    <Link
-                      title="Remove"
-                      className={classes.smallLink}
-                      to="/product"
-                      aria-label="Remove the item from cart"
-                    >
-                      Remove
-                    </Link>
-                  </Grid>
-                  <Grid item xs={3}>
-                    <Link
-                      to="/"
-                      title="Edit"
-                      className={classes.smallLink}
-                      aria-label="Make changes to the current menu item"
-                    >
-                      Edit
-                    </Link>
-                  </Grid>
-                  <Grid item xs={3}>
-                    <Link
-                      to="/"
-                      className={classes.smallLink}
-                      title="Duplicate"
-                      aria-label="Duplicate the menu item"
-                    >
-                      Duplicate
-                    </Link>
-                  </Grid>
-                  <Grid item xs={3}></Grid>
-                </Grid>
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid item xs={12}>
-            <Typography
-              variant="h6"
-              component="h6"
-              fontSize="18px !important"
-              textAlign="center"
-              paddingTop="20px"
-              className={classes.cartTitle}
-              title="Complete Your Meal"
-            >
-              Complete Your Meal
-            </Typography>
-          </Grid>
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}>
             <Grid container spacing={0} justifyContent="space-around">
               <Grid item xs={3}>
                 <img
@@ -374,7 +282,7 @@ const Cart = (props: any) => {
                 </Typography>
               </Grid>
             </Grid>
-          </Grid>
+          </Grid> */}
           <Grid item xs={12} textAlign="center" padding="10px 0">
             <Button
               variant="contained"

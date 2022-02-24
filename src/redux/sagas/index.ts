@@ -6,10 +6,13 @@ import { userSaga } from './user';
 import { restaurantInfoSaga } from './restaurant';
 import { restaurantCalendarSaga } from './restaurant/calendar';
 import { productOptionsSaga } from './product/option';
-import { storeProvider } from './provider'
-import { storeAuth } from './auth'
+import { storeProvider } from './provider';
+import { storeAuth } from './auth';
 import { resturantListSaga } from './restaurant/list';
 import { locationSaga } from './location';
+import { BasketSaga } from './basket';
+import { dummyBasketSaga } from './basket/dummy';
+import { addSingleProductSaga } from './basket/addSingleProduct';
 
 export default function* rootSaga() {
   yield all([
@@ -24,5 +27,8 @@ export default function* rootSaga() {
     storeProvider(),
     storeAuth(),
     resturantListSaga(),
+    dummyBasketSaga(),
+    BasketSaga(),
+    addSingleProductSaga(),
   ]);
 }

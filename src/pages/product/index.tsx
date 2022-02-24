@@ -1,4 +1,13 @@
-import { Grid, Typography, Card, Button, TextField } from '@mui/material';
+import {
+  Grid,
+  Typography,
+  Card,
+  Button,
+  TextField,
+  Snackbar,
+  Alert,
+  Slide,
+} from '@mui/material';
 import FoodMenuCard from '../../components/food-menu-card';
 import './product.css';
 import StoreInfoBar from '../../components/restaurant-info-bar';
@@ -13,19 +22,33 @@ import {
   Option,
   OptionGroup,
   Product as ProductInfo,
+  ResponseBasket,
   ResponseModifiers,
 } from '../../types/olo-api';
 import { getProductOptionRequest } from '../../redux/actions/product/option';
 import ProductSkeletonUI from '../../components/product-skeleton-ui';
+import { getDummyBasketRequest } from '../../redux/actions/basket/dummy';
+import { addSingleProductRequest } from '../../redux/actions/basket/addSingleProduct';
+import { getBasketRequest } from '../../redux/actions/basket';
 
 const Product = () => {
   const [productDetails, setProductDetails] = useState<ProductInfo>();
   const [productOptions, setProductOptions] = useState<ResponseModifiers>();
+  const [showError, setShowError] = useState<string>('');
+  const [basket, setBasket] = useState<ResponseBasket>();
 
   const { categoryID, id } = useParams();
   const { categories, loading } = useSelector(
     (state: any) => state.categoryReducer,
   );
+
+  const dummyBasketObj = useSelector((state: any) => state.dummyBasketReducer);
+  const basketObj = useSelector((state: any) => state.basketReducer);
+
+  const productAddObj = useSelector(
+    (state: any) => state.addSingleProductReducer,
+  );
+
   const { options } = useSelector((state: any) => state.productOptionsReducer);
   const { restaurant } = useSelector(
     (state: any) => state.restaurantInfoReducer,
@@ -80,11 +103,74 @@ const Product = () => {
     }
   }, [options]);
 
+  const addProductToBag = () => {
+    if (basketObj.basket == null) {
+      const request: any = {};
+      request.vendorid = restaurant.id;
+      dispatch(getDummyBasketRequest(request));
+    } else {
+      const request: any = {};
+      request.productid = productDetails?.id;
+      request.quantity = 1;
+      dispatch(addSingleProductRequest(basket?.id || '', request));
+    }
+  };
+
+  useEffect(() => {
+    if (dummyBasketObj.basket && basket == undefined) {
+      setBasket(dummyBasketObj.basket);
+      dispatch(getBasketRequest('', dummyBasketObj.basket));
+      const request: any = {};
+      request.productid = productDetails?.id;
+      request.quantity = 1;
+      dispatch(
+        addSingleProductRequest(dummyBasketObj.basket.id || '', request),
+      );
+    }
+    if (dummyBasketObj.error.data) {
+      setShowError(dummyBasketObj.error.data.message);
+    }
+  }, [dummyBasketObj.basket]);
+
+  useEffect(() => {
+    if (basketObj.basket) {
+      setBasket(basketObj.basket);
+    }
+  }, [basketObj.basket]);
+
+  useEffect(() => {
+    if (productAddObj.basket) {
+      setBasket(productAddObj.basket);
+      dispatch(getBasketRequest('', productAddObj.basket));
+    }
+  }, [productAddObj.basket]);
+
   return (
     <>
       <StoreInfoBar />
       {loading == true && productDetails == null && productOptions == null && (
         <ProductSkeletonUI />
+      )}
+      {basketObj && basketObj.error && basketObj.error.message && (
+        <Snackbar
+          open={showError != '' ? true : false}
+          autoHideDuration={6000}
+          TransitionComponent={Slide}
+          onClose={() => {
+            setShowError('');
+          }}
+        >
+          <Alert
+            onClose={() => {
+              setShowError('');
+            }}
+            severity="error"
+            variant="filled"
+            sx={{ width: '100%', alignItems: 'center' }}
+          >
+            {showError}
+          </Alert>
+        </Snackbar>
       )}
       {productDetails && (
         <Grid container className="product-detail">
@@ -283,21 +369,46 @@ const Product = () => {
                 </Button>
               </Grid>
               <Grid item xs={12} sm={4} md={4} lg={2} className="quantity">
-                <Button title="" className="add"  aria-label="increase" onClick={() => {setCount(count + 1);}}> + </Button>
+                <Button
+                  title=""
+                  className="add"
+                  aria-label="increase"
+                  onClick={() => {
+                    setCount(count + 1);
+                  }}
+                >
+                  {' '}
+                  +{' '}
+                </Button>
                 <TextField
                   value={count}
                   aria-label=""
                   placeholder="0"
                   title=""
                 />
-                <Button title="" className="subtract"  aria-label="reduce" onClick={() => {setCount(Math.max(count - 1, 0));}}> - </Button>
+                <Button
+                  title=""
+                  className="subtract"
+                  aria-label="reduce"
+                  onClick={() => {
+                    setCount(Math.max(count - 1, 0));
+                  }}
+                >
+                  {' '}
+                  -{' '}
+                </Button>
               </Grid>
+
               <Grid item xs={12} sm={3} md={2} lg={2}>
                 <Button
                   aria-label="add to bag"
                   title="ADD TO Bag"
                   className="add-to-bag"
                   variant="contained"
+                  onClick={() => {
+                    addProductToBag();
+                    return false;
+                  }}
                 >
                   ADD TO Bag
                 </Button>

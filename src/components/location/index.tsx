@@ -130,15 +130,9 @@ const LocationCard = (props: any) => {
   };
 
   useEffect(() => {
-    if (orderType) {
-      setShowError('');
-      getSearchResults();
-    } else {
-      if (searchText && searchText == '') {
-        setShowError('');
-        getSearchResults();
-      }
-    }
+    debugger;
+    setShowError('');
+    getSearchResults();
   }, [orderType]);
 
   useEffect(() => {
