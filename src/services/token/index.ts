@@ -20,8 +20,7 @@ export const getToken = async (code: string): Promise<any> => {
     {
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        "User-Agent": ""
+        'Content-Type': 'application/json'
       },
       }
     );
