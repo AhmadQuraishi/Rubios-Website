@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
   },
   tabspanel: {
-    fontWeight: '600 !important',
+    fontFamily: 'Poppins-Medium !important',
     color: theme.palette.secondary.main + ' !important',
   },
 }));
