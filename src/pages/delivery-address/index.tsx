@@ -131,8 +131,7 @@ const DeliveryAddress = () => {
                       >
                         DELETE
                       </Typography>
-                      <DialogBox open={open} handleClose={handleClose}
-                       message={'Do You Really Want To Delete This Delivery Address?'} handleDeleteFunction={() => deleteAddressHandler(address.id)} />
+
                       {!address.isdefault && (
                         <Typography
                           variant="button"
@@ -145,6 +144,16 @@ const DeliveryAddress = () => {
                         </Typography>
                       )}
                     </Grid>
+                    <DialogBox
+                      open={open}
+                      handleClose={handleClose}
+                      message={
+                        'Do You Really Want To Delete This Delivery Address?'
+                      }
+                      handleDeleteFunction={() =>
+                        deleteAddressHandler(address.id)
+                      }
+                    />
                   </Grid>
                 </CardContent>
               </Card>
