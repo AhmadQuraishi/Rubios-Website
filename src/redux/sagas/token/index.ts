@@ -9,9 +9,8 @@ import {
 
 function* asyncTokenRequest(action: any): any {
   try {
-    const response = yield call(getToken, action);
-    console.log(response);
-    yield put(getTokenRequestSuccess(response));
+    const response = yield call(getToken, action.code);
+    yield put(getTokenRequestSuccess(response.data));
   } catch (error) {
     yield put(getTokenRequestFailure(error));
   }
