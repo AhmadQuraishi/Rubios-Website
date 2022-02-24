@@ -9,10 +9,8 @@ import {
 
 function* asyncProviderItemRequest(): any {
     try {
-      console.log("get user2")
-      debugger
       const response = yield call(getProviderToken);
-      yield put(getProviderRequestSuccess(response));
+      yield put(getProviderRequestSuccess(response.data));
     } catch (error) {
       yield put(getProviderRequestFailure(error));
     }

@@ -190,7 +190,7 @@ const LocationCard = (props: any) => {
                   }
                   className="selected-btn"
                 >
-                  Pick Up
+                  PickUp
                 </ToggleButton>
                 <ToggleButton
                   value="Curbside"

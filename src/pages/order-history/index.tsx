@@ -62,14 +62,14 @@ const OrdersHistory = () => {
           <Tab
             aria-label="favorite orders"
             value="1"
-            label="FAVOURITE"
+            label="FAVORITES"
             title="favourite orders"
             className={classes.tabspanel}
           />
           <Tab
             aria-label="recent orders"
             value="2"
-            label="RECENT"
+            label="RECENTS"
             title="recent orders"
             className={classes.tabspanel}
           />
