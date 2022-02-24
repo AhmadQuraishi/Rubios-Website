@@ -77,7 +77,7 @@ const CategoryDetail = () => {
         <Grid
           container
           spacing={0}
-          sx={{ padding: { xs: '30px', md: '30px 80px 0px 80px' } }}
+          sx={{ padding: { xs: '20px', md: '30px 80px 0px 80px' } }}
         >
           <Grid item xs={12} md={6}>
             <Typography

@@ -25,7 +25,7 @@
   text-align: left;
 }
 .choose-reward .choose-btn.Mui-selected {
-  border: 2px solid #EE9D26 !important;
+  border: 2px solid #e58530 !important;
   background: transparent;
 }
 .choose-reward .choose-btn.Mui-selected:after {
@@ -45,7 +45,7 @@
 .choose-reward .choose-btn.Mui-selected:before {
   content: " ";
   display: block;
-  border: solid 25px #EE9D26;
+  border: solid 25px #e58530;
   border-radius: 45px;
   height: 0px;
   width: 0px;
