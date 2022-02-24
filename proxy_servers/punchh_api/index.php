@@ -43,9 +43,9 @@ try {
 //            }
 
             $request = $request->withHeader('Accept', 'application/json');
-//            $request = $request->withHeader('Origin', PUNCHH_API_HOST);
+            $request = $request->withHeader('Origin', PUNCHH_API_HOST);
             $request = $request->withHeader('Content-Type', 'application/json');
-//            $request = $request->withHeader('Access-Control-Allow-Origin', PUNCHH_API_HOST);
+            $request = $request->withHeader('Access-Control-Allow-Origin', PUNCHH_API_HOST);
 
 //            $request = $request->withHeader('x-pch-digest', '95eabff47c8625f83048170ffa96545998d3173f');
 
@@ -65,7 +65,7 @@ try {
 
             // Call the next item in the middleware.
             $response = $next($request, $response);
-
+            $response = $response->withHeader('Access-Control-Allow-Origin', '*');
             return $response;
         })
         ->to(PUNCHH_API_HOST, '/punchh_api', 443);

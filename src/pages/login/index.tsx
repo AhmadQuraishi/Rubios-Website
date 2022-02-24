@@ -1,4 +1,5 @@
 import { makeStyles } from "@mui/styles";
+import { useEffect, useState } from 'react';
 import { Grid } from "@mui/material";
 import { Fragment } from "react";
 // @ts-ignore
@@ -7,6 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { getTokenRequest } from "../../redux/actions/token";
 import { getProviderRequest } from "../../redux/actions/provider";
 import { getAuthRequest } from '../../redux/actions/auth';
+
+import { store } from "../../redux/store";
 
 declare var window: any;
 
@@ -54,13 +57,38 @@ const useStyle = makeStyles(() => ({
 }));
 
 const Login = () => {
+  const { accessToken } = useSelector(
+    (state: any) => state.tokenReducer,
+  )
   const { providerToken, loading } = useSelector(
     (state: any) => state.providerReducer,
   )
+  const dispatch = useDispatch();
+  const onAuthSuccess =
+  (dispatch: any) => async (oAuthResponse: OAuthResponse) => {
+    try {
+      const token: PunchhAuth = await getAccessTokenByAuthCode(
+        oAuthResponse.code,
+        dispatch,
+      );
 
+    } catch (error: any) {
+      alert('Auth Error!' + error.message().toString());
+    }
+  };
+  useEffect(() => {
+    console.log(accessToken)
+    if(accessToken){
+      dispatch(getProviderRequest());
+    }
+  },[accessToken])
+  useEffect(() => {
+    if(providerToken){
+      dispatch(getAuthRequest());
+    }
+  },[providerToken])
 
   const classes = useStyle();
-  const dispatch = useDispatch();
   const authTrue = onAuthSuccess(dispatch);
   //dispatch(getTokenRequest("code"));
   //getAccessTokenByAuthCode("abc",dispatch)
@@ -83,23 +111,7 @@ const Login = () => {
   );
 };
 
-const onAuthSuccess =
-  (dispatch: any) => async (oAuthResponse: OAuthResponse) => {
-    try {
-      const token: PunchhAuth = await getAccessTokenByAuthCode(
-        oAuthResponse.code,
-        dispatch,
-      );
-      const foundUser = await getUser(dispatch);
-      debugger
-      console.log('Found token'+ foundUser);
-      console.log(token);
-      const linkToOLO = await linkingUserToOLO(dispatch);
 
-    } catch (error: any) {
-      alert('Auth Error!' + error.message().toString());
-    }
-  };
 const onAuthFailure = (args: any) => {
   console.error(args);
 };

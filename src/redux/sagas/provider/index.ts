@@ -10,7 +10,7 @@ import {
 function* asyncProviderItemRequest(): any {
     try {
       const response = yield call(getProviderToken);
-      yield put(getProviderRequestSuccess(response));
+      yield put(getProviderRequestSuccess(response.data));
     } catch (error) {
       yield put(getProviderRequestFailure(error));
     }
