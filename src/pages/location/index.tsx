@@ -9,9 +9,11 @@ import {
   getResturantListRequest,
 } from '../../redux/actions/restaurant/list';
 import ErrorMessageAlert from '../../components/error-message-alert';
+import LoadingBar from '../../components/loading-bar';
+import { Alert, Snackbar, Slide } from '@mui/material';
 
 const Location = () => {
-  const { restaurants } = useSelector(
+  const { restaurants, loading } = useSelector(
     (state: any) => state.restaurantListReducer,
   );
 
@@ -107,20 +109,56 @@ const Location = () => {
           lat: item.latitude,
           lng: parseFloat(item.longitude),
         };
-        return (
-          <Marker
-            key={index}
-            position={latLong}
-          />
-        );
+        return <Marker key={index} position={latLong} />;
       },
     );
   }
 
   return (
-    <div style={{ minHeight: '300px' }}>
+    <div style={{ minHeight: '300px', position: 'relative' }}>
       {showError && showError !== '' && (
-        <ErrorMessageAlert setOpen={true} message={showError} />
+        <Snackbar
+          open={showError != '' ? true : false}
+          autoHideDuration={6000}
+          TransitionComponent={Slide}
+          onClose={() => {
+            setShowError('');
+          }}
+        >
+          <Alert
+            onClose={() => {
+              setShowError('');
+            }}
+            severity="error"
+            variant="filled"
+            sx={{ width: '100%', alignItems: 'center' }}
+          >
+            {showError}
+          </Alert>
+        </Snackbar>
+      )}
+      {loading && (
+        <div
+          style={{
+            position: 'absolute',
+            height: '100vh',
+            width: '100%',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            margin: 'auto',
+            background: 'rgba(0, 0, 0, 0)',
+            zIndex: 10000,
+            display: 'flex',
+            justifyContent: 'center',
+            alignContent: 'center',
+            alignItems: 'center',
+            justifyItems: 'center',
+          }}
+        >
+          <LoadingBar />
+        </div>
       )}
       <LoadScript googleMapsApiKey="AIzaSyCWKuRHEkeFWOy0JDMBT7Z4YApPVkZYHFI">
         <GoogleMap center={mapCenter} zoom={7}>

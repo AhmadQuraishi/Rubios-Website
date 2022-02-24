@@ -1,5 +1,5 @@
 import { Alert, Snackbar, Slide } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const ErrorMessageAlert = (props: any) => {
   const [open, setOpen] = useState(props.setOpen || true);

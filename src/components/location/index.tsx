@@ -12,7 +12,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import './location.css';
 import { ResponseRestaurant } from '../../types/olo-api';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setResturantInfoRequest } from '../../redux/actions/restaurant';
 
 const LocationCard = (props: any) => {
@@ -61,8 +61,12 @@ const LocationCard = (props: any) => {
     }
   }, [isNearByRestaurantList, restaurants]);
 
-  useEffect(() => {
-    if (searchText || orderType) {
+  const getSearchResults = () => {
+    if (searchText == undefined || searchText == '') {
+      setfilteredRestaurants(isNearByRestaurantList ? restaurants : []);
+      return false;
+    }
+    if (orderType || searchText) {
       let updatedRestaurants = [];
       let resultsFound = false;
       if (orderType && orderType !== '') {
@@ -88,33 +92,33 @@ const LocationCard = (props: any) => {
       if (searchText && searchText.trim() && searchText.length > 1) {
         let searchTxt = searchText.trim().toLowerCase();
         if (!resultsFound) {
-          updatedRestaurants = restaurants.filter((x: any) =>
-            x.city.toLowerCase().includes(searchTxt),
+          updatedRestaurants = restaurants.filter(
+            (x: any) => x.city.toLowerCase() == searchTxt,
           );
           if (updatedRestaurants.length === 0) {
-            updatedRestaurants = restaurants.filter((x: any) =>
-              x.zip.toLowerCase().includes(searchTxt),
+            updatedRestaurants = restaurants.filter(
+              (x: any) => x.zip.toLowerCase() == searchTxt,
             );
           }
           if (updatedRestaurants.length === 0) {
-            updatedRestaurants = restaurants.filter((x: any) =>
-              x.state.toLowerCase().includes(searchTxt),
+            updatedRestaurants = restaurants.filter(
+              (x: any) => x.state.toLowerCase() == searchTxt,
             );
           }
           if (updatedRestaurants.length > 0)
             setfilteredRestaurants(updatedRestaurants);
         } else {
-          searchedRestaurant = updatedRestaurants.filter((x: any) =>
-            x.city.toLowerCase().includes(searchTxt),
+          searchedRestaurant = updatedRestaurants.filter(
+            (x: any) => x.city.toLowerCase() == searchTxt,
           );
           if (searchedRestaurant.length === 0) {
-            searchedRestaurant = updatedRestaurants.filter((x: any) =>
-              x.zip.toLowerCase().includes(searchTxt),
+            searchedRestaurant = updatedRestaurants.filter(
+              (x: any) => x.zip.toLowerCase() == searchTxt,
             );
           }
           if (searchedRestaurant.length === 0) {
-            searchedRestaurant = updatedRestaurants.filter((x: any) =>
-              x.state.toLowerCase().includes(searchTxt),
+            searchedRestaurant = updatedRestaurants.filter(
+              (x: any) => x.state.toLowerCase() == searchTxt,
             );
           }
           setfilteredRestaurants(
@@ -127,7 +131,25 @@ const LocationCard = (props: any) => {
         setfilteredRestaurants([]);
       }
     }
-  }, [searchText, orderType]);
+  };
+
+  useEffect(() => {
+    if (orderType) {
+      setShowError('');
+      getSearchResults();
+    } else {
+      if (searchText && searchText == '') {
+        setShowError('');
+        getSearchResults();
+      }
+    }
+  }, [orderType]);
+
+  useEffect(() => {
+    if (searchText == undefined || searchText == '') {
+      setfilteredRestaurants(isNearByRestaurantList ? restaurants : []);
+    }
+  }, [searchText]);
 
   const [alignment, setAlignment] = React.useState('web');
   const onServiceSelect = (
@@ -142,6 +164,7 @@ const LocationCard = (props: any) => {
       className="search-field"
       aria-label="search nearby locations"
       title="search nearby locations"
+      onClick={() => getSearchResults()}
     >
       <SearchIcon />
     </Button>
@@ -149,6 +172,7 @@ const LocationCard = (props: any) => {
 
   const findNearByRestaurants = () => {
     setShowNearBy(true);
+    setShowError('');
   };
 
   return (
@@ -209,9 +233,12 @@ const LocationCard = (props: any) => {
                 title="City, Zip Code, State"
                 aria-required="true"
                 value={searchText || ''}
+                type="search"
                 onChange={handleChange}
                 sx={{ fontSize: '14px' }}
-                InputProps={{ endAdornment: <Icon /> }}
+                InputProps={{
+                  endAdornment: <Icon />,
+                }}
                 variant="outlined"
               />
             </Grid>
@@ -221,19 +248,23 @@ const LocationCard = (props: any) => {
                   filteredRestaurants &&
                   filteredRestaurants.length > 0 &&
                   'NEARBY LOCATIONS'}
-                {!isNearByRestaurantList && (
-                  <span
-                    style={{
-                      textAlign: 'center',
-                      display: 'block',
-                      cursor: 'pointer',
-                      color: '#7AC142'
-                    }}
-                    onClick={() => findNearByRestaurants()}
-                  >
-                    USE YOUR CURRENT LOCATION?
-                  </span>
-                )}
+                {!isNearByRestaurantList &&
+                  (filteredRestaurants == undefined ||
+                    (filteredRestaurants &&
+                      filteredRestaurants.length == 0)) && (
+                    <span
+                      style={{
+                        textAlign: 'center',
+                        display: 'block',
+                        cursor: 'pointer',
+                        fontWeight: 500,
+                        textDecoration: 'underline',
+                      }}
+                      onClick={() => findNearByRestaurants()}
+                    >
+                      USE YOUR CURRENT LOCATION?
+                    </span>
+                  )}
               </Typography>
             </Grid>
             <Grid
