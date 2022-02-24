@@ -230,7 +230,7 @@ const FoodMenuCard = (props: any) => {
                       showDDL &&
                       menuItem.modifiers &&
                       menuItem.modifiers.map((item: any, index: number) => (
-                        <select
+                        <select className="select"
                           onClick={(e) => e.stopPropagation()}
                           style={{ width: '115px', fontSize: '12px' }}
                         >

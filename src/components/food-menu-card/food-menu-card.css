@@ -42,7 +42,7 @@
 .reward-item.selected:before {
   content: " ";
   display: block;
-  border: solid 25px #EE9D26;
+  border: solid 25px #e58530;
   border-radius: 45px;
   height: 0px;
   width: 0px;
@@ -69,9 +69,25 @@
   font-family: 'Poppins-Medium' !important;
   font-size: 1rem !important;
   color: rgba(0, 0, 0, 0.54);
+  min-height: 40px;
+  display: block;
 }
 .selected .item-name{
   color: #000
+}
+.rewards .select {
+  font-size: 12px;
+  padding: 5px;
+  min-width: 150px;
+  border-radius: 5px;
+  margin-top: 30px;
+  color: #526c7f;
+  border: 2px solid #e1e1e1;
+}
+.rewards .select:focus,
+.rewards .select:active
+{
+  outline:none !important;
 }
 
 @media screen and (max-width: 768px) {

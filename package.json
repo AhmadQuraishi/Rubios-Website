@@ -52,7 +52,7 @@
     "yup": "0.32.11"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts start --env=local",
     "build": "react-scripts build",
     "build.prod": "react-scripts build --env=prod",
     "test": "react-scripts test",
