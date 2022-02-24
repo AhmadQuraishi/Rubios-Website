@@ -62,10 +62,6 @@ const LocationCard = (props: any) => {
   }, [isNearByRestaurantList, restaurants]);
 
   const getSearchResults = () => {
-    if (searchText == undefined || searchText == '') {
-      setfilteredRestaurants(isNearByRestaurantList ? restaurants : []);
-      return false;
-    }
     if (orderType || searchText) {
       let updatedRestaurants = [];
       let resultsFound = false;
