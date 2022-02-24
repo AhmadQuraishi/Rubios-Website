@@ -83,7 +83,7 @@ const CategoryList = () => {
             sx={{
               width: '100%',
               padding: {
-                xs: '20px 20px 10px 20px',
+                xs: '20px 5px 10px 5px',
                 sm: '20px 30px 5px 30px',
                 lg: '20px 60px 5px 60px',
                 boxSizing: 'border-box',
