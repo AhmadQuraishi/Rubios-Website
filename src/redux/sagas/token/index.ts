@@ -7,9 +7,8 @@ import {
   getTokenRequestSuccess,
 } from '../../actions/token';
 
-function* asyncTokenItemRequest(action: any): any {
+function* asyncTokenRequest(action: any): any {
   try {
-console.log("token hit")
     const response = yield call(getToken, action);
     console.log(response);
     yield put(getTokenRequestSuccess(response));
@@ -19,5 +18,5 @@ console.log("token hit")
 }
 
 export function* storeToken() {
-  yield takeEvery(Type.GET_TOKEN_REQUEST, asyncTokenItemRequest);
+  yield takeEvery(Type.GET_TOKEN_REQUEST, asyncTokenRequest);
 }

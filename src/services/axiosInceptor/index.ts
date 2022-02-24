@@ -24,7 +24,7 @@ axiosInstance.interceptors.request.use(
           secretString,
         ).toString();
         config.headers = {
-          'X-Forwarded-For': signature,
+          'X-Forwarded-For': signature
         };
       }
 

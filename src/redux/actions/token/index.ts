@@ -1,14 +1,13 @@
 import { tokenActionsTypes as Type } from '../../types/token';
 
 
-//  export const getTokenRequest = (code :string) => ({type: Type.GET_TOKEN_REQUEST, code });
-export function getTokenRequest(code: string) {
-  console.log("token hit saga")
-  return {
-    type: Type.GET_TOKEN_REQUEST,
-    code,
-  };
-}
+ export const getTokenRequest = (code :string) => ({type: Type.GET_TOKEN_REQUEST, code });
+// export function getTokenRequest(code: string) {
+//   return {
+//     type: Type.GET_TOKEN_REQUEST,
+//     code,
+//   };
+// }
 
 export function getTokenRequestSuccess(data: any) {
   return {

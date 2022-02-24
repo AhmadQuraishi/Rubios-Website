@@ -8,6 +8,7 @@ interface OAuthResponse {
 
 export const getToken = async (code: string): Promise<any> => {
   console.log("token service")
+  // return Promise.resolve("abc");
   return axios.post(
     `${process.env.REACT_APP_PUNCHH_API}/fetchoauthinfo`,
     {
@@ -18,9 +19,10 @@ export const getToken = async (code: string): Promise<any> => {
     },
     {
       headers: {
-          'Accept': 'application/json',
-          "Content-Type": "application/json"
-        }
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        "User-Agent": ""
+      },
       }
     );
   };

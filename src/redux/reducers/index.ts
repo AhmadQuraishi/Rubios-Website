@@ -3,6 +3,7 @@ import { persistReducer } from 'redux-persist';
 import footerReducer from './footer';
 import categoryReducer from './category';
 import userReducer from './user';
+import tokenReducer from './token'
 import TokensReducer from './Tokens';
 import storage from 'redux-persist/lib/storage';
 import restaurantInfoReducer from './restaurant';
@@ -22,6 +23,7 @@ const persistConfig = {
 };
 
 const rootReducers = combineReducers({
+  tokenReducer,
   TokensReducer,
   categoryReducer,
   footerReducer,
