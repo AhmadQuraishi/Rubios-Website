@@ -90,7 +90,7 @@ const Product = () => {
         <Grid container className="product-detail">
           <Grid item xs={12} sm={12} md={12} lg={12}>
             <Grid container>
-              <Grid item xs={12} sm={12} md={12} lg={6}>
+              <Grid item xs={12} sm={12} md={12} lg={6} className="ph-fix">
                 <Typography
                   variant="caption"
                   title="PICK UP YOUR"

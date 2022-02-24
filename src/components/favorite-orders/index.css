@@ -1,50 +1,68 @@
 .order-history-card .card-panel {
-    border: 1px solid #E6E6E6;
-    border-radius: 0px;
-    padding: 15px 15px 20px 20px;
-    box-sizing: border-box;
-    max-width: 466px;
-    position: relative;
+  border: 1px solid #e6e6e6;
+  border-radius: 0px;
+  padding: 15px 15px 20px 20px;
+  box-sizing: border-box;
+  max-width: 466px;
+  position: relative;
 }
-.order-history-card .card-panel .order-fav-icon{
-    text-align: right;
+.order-history-card .card-panel .order-fav-icon {
+  text-align: right;
 }
-.order-history-card .card-panel .order-date{
-    font-size: 12px;    
-    font-family: 'Poppins-Medium', sans-serif !important;
-    display: block;
-    margin-bottom: -2px;
-}
-
-.order-history-card .card-panel .order-name{
-    font-size: 20px;
-    font-family: 'Poppins-Medium', sans-serif !important;
-    display: block;
-    color: #414141;
-    padding-bottom: 8px;
+.order-history-card .card-panel .order-date {
+  font-size: 12px;
+  font-family: 'Poppins-Medium', sans-serif !important;
+  display: block;
+  margin-bottom: -2px;
 }
 
-.order-history-card .card-panel .order-detail{
-    font-size: 15px;
-    font-family: 'Poppins-Medium', sans-serif !important;
-    display: block;
-    color: #414141;
-    padding-bottom: 8px;
+.order-history-card .card-panel .order-name {
+  font-size: 20px;
+  font-family: 'Poppins-Medium', sans-serif !important;
+  display: block;
+  color: #414141;
+  padding-bottom: 8px;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
 }
 
-.order-history-card .card-panel .order-img{
-    display: block;
+.order-history-card .card-panel .order-detail {
+  font-size: 15px;
+  font-family: 'Poppins-Medium', sans-serif !important;
+  display: block;
+  color: #414141;
+  padding-bottom: 8px;
 }
 
-.order-history-card .card-panel .order-Link{
-    font-size: 15px;
-    font-family: 'Poppins-Bold', sans-serif !important;
-    display: block;
-    color: #2E75BF;
-    padding-bottom: 0px;
-    text-align: right;
-    text-transform: uppercase;
-    position: absolute;
-    bottom: 15px;
-    right: 15px;
+.order-history-card .card-panel .order-img {
+  display: block;
+}
+
+.order-history-card .card-panel .order-Link {
+  font-size: 15px;
+  font-family: 'Poppins-Bold', sans-serif !important;
+  display: block;
+  color: #2e75bf;
+  padding-bottom: 0px;
+  text-align: right;
+  text-transform: uppercase;
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+}
+.no-orders {
+  text-align: center;
+}
+
+@media screen and (max-width: 468px) {
+  .MuiTablePagination-actions {
+    margin-left: 0 !important;
+  }
+  .MuiTablePagination-toolbar {
+    padding-left: 0 !important;
+  }
+  .css-16c50h-MuiInputBase-root-MuiTablePagination-select {
+    margin-right: 12px !important;
+  }
 }
