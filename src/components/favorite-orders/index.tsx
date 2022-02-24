@@ -101,7 +101,7 @@ const FavoriteOrders = () => {
                         .slice(0, 3)
                         .map((product: any, index: number) => (
                           <Fragment>
-                            {index == 2 ? (
+                            {index == 2 && forder.products.length > 3 ? (
                               <Typography
                                 className="order-detail"
                                 variant="body2"
