@@ -110,7 +110,7 @@ const DeliveryAddress = () => {
                     {address.city}
                   </Typography>
                   <Typography variant="body2" title="Carisbad, CA 34092-342387">
-                    Carisbad, CA 34092-342387
+                    {address.zipcode}
                   </Typography>
                   <Grid container>
                     <Grid item xs={12} className="small-button-panel">
@@ -162,7 +162,7 @@ const DeliveryAddress = () => {
 
         <Grid xs={12}>
           {!loading && deliveryaddresses.length === 0 && (
-            <Typography variant="h6">
+            <Typography variant="h6" className="no-address">
               You don't have any delivery addresses
             </Typography>
           )}
