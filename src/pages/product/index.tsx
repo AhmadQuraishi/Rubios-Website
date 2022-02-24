@@ -4,6 +4,7 @@ import './product.css';
 import StoreInfoBar from '../../components/restaurant-info-bar';
 import { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import * as React from 'react';
 import { getCategoriesRequest } from '../../redux/actions/category';
 import { useNavigate, useParams } from 'react-router-dom';
 import LoadingBar from '../../components/loading-bar';
@@ -29,6 +30,8 @@ const Product = () => {
   const { restaurant } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
+
+  const [count, setCount] = React.useState(1);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -280,13 +283,14 @@ const Product = () => {
                 </Button>
               </Grid>
               <Grid item xs={12} sm={4} md={4} lg={2} className="quantity">
-                <Button title="" className="add"> + </Button>
+                <Button title="" className="add"  aria-label="increase" onClick={() => {setCount(count + 1);}}> + </Button>
                 <TextField
+                  value={count}
                   aria-label=""
                   placeholder="0"
                   title=""
                 />
-                <Button title="" className="subtract"> - </Button>
+                <Button title="" className="subtract"  aria-label="reduce" onClick={() => {setCount(Math.max(count - 1, 0));}}> - </Button>
               </Grid>
               <Grid item xs={12} sm={3} md={2} lg={2}>
                 <Button
