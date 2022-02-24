@@ -128,8 +128,8 @@ const CategoryList = () => {
               sx={{
                 padding: {
                   xs: '20px',
-                  sm: '30px 40px 0px 40px',
-                  lg: '30px 80px 0px 80px',
+                  sm: '30px 70px 0px 70px',
+                  lg: '30px 100px 0px 100px',
                 },
               }}
             >
