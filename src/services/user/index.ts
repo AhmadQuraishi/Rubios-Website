@@ -1,4 +1,5 @@
 import axios from "axios";
+import { store } from "../../redux/store";
 
 //profile
 export const RequestUserProfile = () => {
@@ -94,9 +95,10 @@ export const requestUserFavoriteOrders = (authtoken: string) => {
 //Delivery Addresses
 export const requestUserDeliiveryAddresses = (authtoken: string) => {
   try {
+    const auth = store.getState().authReducer.authToken.authtoken;
     const url = process.env.REACT_APP_OLO_API || "";
     return axios
-      .get(url + `/users/${authtoken}/userdeliveryaddresses`)
+      .get(url + `/users/${auth}/userdeliveryaddresses`)
       .then((response) => response.data)
       .catch((error) => {
         console.log(error.response);
