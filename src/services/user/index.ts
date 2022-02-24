@@ -200,7 +200,7 @@ export const deleteUserBillingAccount = (authtoken: string, billingAccountId: nu
   }
 }
 
-// Update Billing Account (API not in working condition)
+// Update Billing Account
 export const updateUserBillingAccount = (body: RequestUserDefaultBillingAccount,authtoken: string, billingAccountId: number) => {
   try {
     const url = process.env.REACT_APP_OLO_API || '';
