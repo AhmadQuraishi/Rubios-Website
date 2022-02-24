@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
   },
   tabspanel: {
-    fontWeight: '600 !important',
+    fontFamily: 'Poppins-Medium !important',
     color: theme.palette.secondary.main + ' !important',
   },
 }));
@@ -69,7 +69,7 @@ const OrdersHistory = () => {
           <Tab
             aria-label="recent orders"
             value="2"
-            label="RECENTS"
+            label="RECENT"
             title="recent orders"
             className={classes.tabspanel}
           />
