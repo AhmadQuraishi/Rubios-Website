@@ -34,16 +34,6 @@ const Password = () => {
 
   return (
     <div className={classes.root}>
-      {!loading && updatedUserprofile.passsuccess == 1 && (
-        <ErrorMessageAlert message="password Updated successfully" />
-      )}
-      {!loading &&
-        updatedUserprofile &&
-        updatedUserprofile.passerror &&
-        updatedUserprofile.passerror.data && (
-          <ErrorMessageAlert message={updatedUserprofile.passerror.data} />
-        )}
-
       <Grid container>
         <Formik
           initialValues={{

@@ -111,9 +111,6 @@ const PersonalInfo = () => {
 
   return (
     <div className={classes.root}>
-      {!loading && error && error.data && (
-        <ErrorMessageAlert message={error.data} />
-      )}
       {loading && !userProfile && <LoadingBar />}
       {userProfile && (
         <Grid container>

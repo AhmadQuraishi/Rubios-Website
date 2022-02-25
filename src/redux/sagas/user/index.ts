@@ -45,6 +45,7 @@ import {
 
 } from '../../actions/user';
 import ErrorMessageAlert from '../../../components/error-message-alert';
+import { displayToast } from '../../../helpers/toast';
 
 //profile
 function* userProfileHandler(): any {
@@ -124,8 +125,10 @@ function* updateUserHandler(action: any): any {
       action.payload,
     );
     yield put(updateUserSuccess(response));
+    displayToast("SUCCESS" , "profile updated successfully");
   } catch (error) {
     yield put(updateUserFailure(error));
+    displayToast("ERROR" , "profile not updated");
   }
 }
 
@@ -137,9 +140,11 @@ function* changePasswordHandler(action: any): any {
       action.payload,
     );
     yield put(changePasswordSuccess(response));
+    displayToast("SUCCESS" , "password updated successfully");
   } catch (error) {
   
     yield put(changePasswordFailure(error));
+    displayToast("ERROR" , "Password need to be new and unused");
   }
 }
 
