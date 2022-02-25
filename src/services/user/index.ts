@@ -1,6 +1,6 @@
 import axios from "axios";
 import { store } from "../../redux/store";
-
+import axiosInstance from "../axiosInceptor";
 //profile
 export const RequestUserProfile = () => {
   try {
@@ -26,7 +26,7 @@ export const requestUpdateUser = (body: object) => {
 
     const url = `${process.env.REACT_APP_PUNCHH_API}/api/auth/users`;
 
-    return axios.put(url, obj).then((response) => response.data).catch((error) => {
+    return axiosInstance.put(url, obj).then((response) => response.data).catch((error) => {
       // console.log(error.response);
       throw error.response;
     });
