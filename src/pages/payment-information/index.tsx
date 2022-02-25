@@ -20,7 +20,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 
   tabspanel: {
-    fontWeight: '600 !important',
+    fontFamily: 'Poppins-Medium !important',
+    fontSize: '14px !important',
     color: theme.palette.secondary.main + ' !important',
   },
 }));

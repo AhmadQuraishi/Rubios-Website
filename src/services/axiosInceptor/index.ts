@@ -1,14 +1,18 @@
 import axios from "axios";
+import * as CryptoJS from "crypto-js";
 
 const axiosInstance = axios.create();
 axiosInstance.interceptors.request.use(
     function (config) {
       const url = config.url || '';
-      let check = url?.toString().includes('/sandbox.punchh.com/api/');
+      let envUrl = process.env.REACT_APP_PUNCHH_API ||'';
+      let checkURL = envUrl+'/api/' ;
+      let check = url?.toString().includes(checkURL);
       if (check) {
         var uri = new URL(url?.toString());
         const body = config.data;
-        let uriData = uri.pathname.concat(uri.search);
+        //let uriData = uri.pathname.concat(uri.search);
+        var uriData = uri.toString().replace(envUrl,'');
         let secret = process.env.REACT_APP_PUNCHH_CLIENT_SECRET || '';
         let secretString = secret.toString();
         let concatString = '';
@@ -19,12 +23,10 @@ axiosInstance.interceptors.request.use(
         else{
           concatString = uriData.concat(JSON.stringify(body));
         }
-        const signature = CryptoJS.HmacSHA1(
-         concatString,
-          secretString,
-        ).toString();
+        const signature = CryptoJS.HmacSHA1(concatString,secretString).toString();
+
         config.headers = {
-          'X-Forwarded-For': signature,
+          'x-pch-digest': signature
         };
       }
 

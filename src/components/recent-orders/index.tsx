@@ -44,7 +44,9 @@ const RecentOrders = () => {
     <Fragment>
       {loading && <LoadingBar />}
       {recentorders.length < 1 && !loading && (
-        <Typography variant="h6">You don't have any recent orders</Typography>
+        <Typography variant="h6" className="no-orders">
+          You don't have any recent orders
+        </Typography>
       )}
       {!loading && recentorders.length > 0 && (
         <Grid container spacing={3} className="order-history-card">
@@ -54,7 +56,7 @@ const RecentOrders = () => {
               <Grid item xs={12} lg={6} key={x++}>
                 <Card elevation={0} className="card-panel">
                   <Grid container>
-                    <Grid item xs={8}>
+                    <Grid item xs={10}>
                       <Typography
                         variant="caption"
                         className="order-date"
@@ -71,7 +73,7 @@ const RecentOrders = () => {
                         {order.vendorname}
                       </Typography>
                     </Grid>
-                    <Grid item xs={4} className="order-fav-icon">
+                    <Grid item xs={2} className="order-fav-icon">
                       {/* <img
                       src={require('../../assets/imgs/favrouite-icon.png')}
                       alt="Favrouite Order Icon"

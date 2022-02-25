@@ -77,10 +77,10 @@
   .list-wrapper .MuiPaper-root {
     padding: 20px;
     border-radius: 30px;
-    width: calc(100% - 40px);
+    width: calc(100% - 75px);
     height: auto;
   }
-  button {
+  .list-wrapper button {
     width: auto;
   }
 }

@@ -107,7 +107,7 @@ h6 {
   outline-offset: 2px !important;
 }
 .selected-btn.MuiToggleButton-standard:hover {
-  background: #79C043;
+  background: #214F66;
 }
 .selected-btn.Mui-selected {
   background: #79C043 !important;
@@ -116,15 +116,37 @@ h6 {
 
 /****** Form Elements ******/
 
-.MuiTextField-root .MuiInputLabel-root.Mui-focused,
-.MuiTextField-root .MuiInputLabel-root.MuiFormLabel-filled {
+
+.MuiTextField-root .MuiInputLabel-root.MuiFormLabel-filled,
+.MuiTextField-root .MuiInputLabel-root.MuiFormLabel-filled.Mui-focused,
+.MuiTextField-root .MuiInputLabel-root.Mui-error {
   font-family: 'Poppins-Bold', sans-serif !important;
   padding: 14px 14px 14px 0px;
   color: #214F66;
   font-size: 12px;
 }
+.MuiTextField-root .MuiInputLabel-root.Mui-focused {
+  padding: 0px;
+}
+.MuiTextField-root .MuiInputLabel-root.Mui-error {
+  color: red;
+  padding: 0px;
+}
+.MuiTextField-root .MuiInputLabel-root.Mui-error.Mui-focused,
+.MuiTextField-root .MuiInputLabel-root.Mui-error.MuiFormLabel-filled {
+  padding: 14px 14px 14px 0px !important;
+  color: red !important;
+}
 .MuiFormControl-root {
   width: 100%;
+}
+.MuiFormControl-root .MuiInputLabel-root.Mui-focused,
+.MuiFormControl-root .MuiInputLabel-root.MuiFormLabel-filled,
+.MuiFormControl-root .MuiInputLabel-root.MuiFormLabel-filled.Mui-focused {
+  font-family: 'Poppins-Bold', sans-serif !important;
+  padding: 14px 14px 14px 0px;
+  color: #214F66;
+  font-size: 12px;
 }
 .MuiInputBase-root {
   border-radius: 0px !important;

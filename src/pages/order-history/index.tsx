@@ -24,7 +24,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
   },
   tabspanel: {
-    fontWeight: '600 !important',
+    fontFamily: 'Poppins-Medium !important',
+    fontSize: '14px !important',
     color: theme.palette.secondary.main + ' !important',
   },
 }));
@@ -62,7 +63,7 @@ const OrdersHistory = () => {
           <Tab
             aria-label="favorite orders"
             value="1"
-            label="FAVOURITE"
+            label="FAVORITES"
             title="favourite orders"
             className={classes.tabspanel}
           />

@@ -29,7 +29,7 @@ import moment from 'moment';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    padding: '0px 15px 20px 15px',
+    padding: '0px 0px 20px 0px',
     maxWidth: '990px',
     boxSizing: 'border-box',
   },

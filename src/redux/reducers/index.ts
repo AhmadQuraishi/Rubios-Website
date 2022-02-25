@@ -4,6 +4,7 @@ import footerReducer from './footer';
 import categoryReducer from './category';
 import userReducer from './user';
 import rewardReducer from './reward';
+import tokenReducer from './token'
 import TokensReducer from './Tokens';
 import storage from 'redux-persist/lib/storage';
 import restaurantInfoReducer from './restaurant';
@@ -13,16 +14,18 @@ import productOptionsReducer from './product/option';
 import providerReducer from './provider';
 import authReducer from './auth';
 import restaurantListReducer from './restaurant/list';
+import dummyBasketReducer from './basket/dummy';
+import basketReducer from './basket';
+import addSingleProductReducer from './basket/addSingleProduct';
 
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: [
-    'restaurantInfoReducer',
-  ],
+  whitelist: ['restaurantInfoReducer', 'basketReducer'],
 };
 
 const rootReducers = combineReducers({
+  tokenReducer,
   TokensReducer,
   categoryReducer,
   footerReducer,
@@ -35,6 +38,9 @@ const rootReducers = combineReducers({
   providerReducer,
   authReducer,
   restaurantListReducer,
+  dummyBasketReducer,
+  basketReducer,
+  addSingleProductReducer,
 });
 
 const persistReducers = persistReducer(persistConfig, rootReducers);

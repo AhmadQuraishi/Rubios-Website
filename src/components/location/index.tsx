@@ -130,15 +130,8 @@ const LocationCard = (props: any) => {
   };
 
   useEffect(() => {
-    if (orderType) {
-      setShowError('');
-      getSearchResults();
-    } else {
-      if (searchText && searchText == '') {
-        setShowError('');
-        getSearchResults();
-      }
-    }
+    setShowError('');
+    getSearchResults();
   }, [orderType]);
 
   useEffect(() => {
@@ -196,7 +189,7 @@ const LocationCard = (props: any) => {
                   }
                   className="selected-btn"
                 >
-                  Pick Up
+                  PickUp
                 </ToggleButton>
                 <ToggleButton
                   value="Curbside"
@@ -256,6 +249,7 @@ const LocationCard = (props: any) => {
                         fontWeight: 500,
                         textDecoration: 'underline',
                       }}
+                      title="USE YOUR CURRENT LOCATION?"
                       onClick={() => findNearByRestaurants()}
                     >
                       USE YOUR CURRENT LOCATION?
