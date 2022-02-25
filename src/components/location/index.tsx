@@ -130,7 +130,6 @@ const LocationCard = (props: any) => {
   };
 
   useEffect(() => {
-    debugger;
     setShowError('');
     getSearchResults();
   }, [orderType]);
@@ -250,6 +249,7 @@ const LocationCard = (props: any) => {
                         fontWeight: 500,
                         textDecoration: 'underline',
                       }}
+                      title="USE YOUR CURRENT LOCATION?"
                       onClick={() => findNearByRestaurants()}
                     >
                       USE YOUR CURRENT LOCATION?

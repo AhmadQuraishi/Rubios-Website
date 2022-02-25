@@ -111,7 +111,7 @@ const Product = () => {
     } else {
       const request: any = {};
       request.productid = productDetails?.id;
-      request.quantity = 1;
+      request.quantity = count;
       dispatch(addSingleProductRequest(basket?.id || '', request));
     }
   };
@@ -122,7 +122,7 @@ const Product = () => {
       dispatch(getBasketRequest('', dummyBasketObj.basket));
       const request: any = {};
       request.productid = productDetails?.id;
-      request.quantity = 1;
+      request.quantity = count;
       dispatch(
         addSingleProductRequest(dummyBasketObj.basket.id || '', request),
       );
@@ -391,27 +391,40 @@ const Product = () => {
                   className="subtract"
                   aria-label="reduce"
                   onClick={() => {
-                    setCount(Math.max(count - 1, 0));
+                    setCount(Math.max(count - 1, 1));
                   }}
                 >
                   {' '}
                   -{' '}
                 </Button>
               </Grid>
-
               <Grid item xs={12} sm={3} md={2} lg={2}>
-                <Button
-                  aria-label="add to bag"
-                  title="ADD TO Bag"
-                  className="add-to-bag"
-                  variant="contained"
-                  onClick={() => {
-                    addProductToBag();
-                    return false;
-                  }}
-                >
-                  ADD TO Bag
-                </Button>
+                {productAddObj.loading ||
+                basketObj.loading ||
+                dummyBasketObj.loading ? (
+                  <Button
+                    aria-label="add to bag"
+                    title="ADD TO Bag"
+                    className="add-to-bag"
+                    variant="contained"
+                    disabled
+                  >
+                    ADD TO Bag
+                  </Button>
+                ) : (
+                  <Button
+                    aria-label="add to bag"
+                    title="ADD TO Bag"
+                    className="add-to-bag"
+                    variant="contained"
+                    onClick={() => {
+                      addProductToBag();
+                      return false;
+                    }}
+                  >
+                    ADD TO BAG
+                  </Button>
+                )}
               </Grid>
             </Grid>
           </Grid>

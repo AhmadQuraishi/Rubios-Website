@@ -1,18 +1,38 @@
 import { useEffect, useState } from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import LocationCard from '../../components/location';
-import './location.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { ResponseRestaurant } from '../../types/olo-api';
 import {
   getNearByResturantListRequest,
   getResturantListRequest,
 } from '../../redux/actions/restaurant/list';
-import ErrorMessageAlert from '../../components/error-message-alert';
 import LoadingBar from '../../components/loading-bar';
-import { Alert, Snackbar, Slide } from '@mui/material';
+import { Alert, Snackbar, Slide, Theme } from '@mui/material';
+import { makeStyles } from '@mui/styles';
+
+const useStyles = makeStyles((theme: Theme) => ({
+  dummyBg: {
+    position: 'absolute',
+    height: '100vh',
+    width: '100%',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    margin: 'auto',
+    background: 'rgba(0, 0, 0, 0)',
+    zIndex: 10000,
+    display: 'flex',
+    justifyContent: 'center',
+    alignContent: 'center',
+    alignItems: 'center',
+    justifyItems: 'center',
+  }
+}));
 
 const Location = () => {
+  const classes = useStyles();
   const { restaurants, loading } = useSelector(
     (state: any) => state.restaurantListReducer,
   );
@@ -138,25 +158,7 @@ const Location = () => {
         </Snackbar>
       )}
       {loading && (
-        <div
-          style={{
-            position: 'absolute',
-            height: '100vh',
-            width: '100%',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            margin: 'auto',
-            background: 'rgba(0, 0, 0, 0)',
-            zIndex: 10000,
-            display: 'flex',
-            justifyContent: 'center',
-            alignContent: 'center',
-            alignItems: 'center',
-            justifyItems: 'center',
-          }}
-        >
+        <div className={classes.dummyBg}>
           <LoadingBar />
         </div>
       )}

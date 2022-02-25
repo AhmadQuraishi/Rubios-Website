@@ -1,7 +1,8 @@
 import { Grid, Typography, Theme, Box, Divider, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 import crossIcon from '../../assets/imgs/cross-icon.svg';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -70,6 +71,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 const Cart = (props: any) => {
   const { showCart } = props;
   const classes = useStyles();
+  const basketObj = useSelector((state: any) => state.basketReducer);
+  const navigate = useNavigate();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -94,303 +97,363 @@ const Cart = (props: any) => {
               />
             </Typography>
           </Grid>
-          <Grid item xs={12} sx={{ padding: '0 20px 0 0' }}>
-            <Typography
-              variant="h6"
-              component="h6"
-              className={classes.cartTitle}
-              title="Your Order"
+          {basketObj && basketObj.basket == null && (
+            <Grid
+              item
+              xs={12}
+              style={{
+                height: '220px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
             >
-              Your Order
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sx={{ padding: '0 10px 0 10px' }}>
-            <Grid container spacing={0}>
-              <Grid item xs={9}>
-                <Typography
-                  variant="caption"
-                  title="Maxican Street Corn Taco Plate"
-                  sx={{
-                    fontSize: '13px',
-                    color: 'secondary.main',
-                    fontFamily: 'Poppins-Medium !important',
-                  }}
-                >
-                  Maxican Street Corn Taco Plate
-                </Typography>
-              </Grid>
-              <Grid item xs={3} sx={{ textAlign: 'right' }}>
-                <Typography
-                  variant="caption"
-                  title="$12.05"
-                  sx={{
-                    textAlign: 'right',
-                    fontSize: '14px',
-                    fontWeight: '700',
-                    fontFamily: 'Poppins-Bold !important',
-                    color: 'secondary.main',
-                  }}
-                >
-                  $12.05
-                </Typography>
-              </Grid>
-              <Grid item xs={12} sx={{ padding: '5px 0 5px 0' }}>
-                <Divider sx={{ borderColor: 'rgba(0, 0, 0, 1);' }} />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography
-                  title="Grilled Chicken Mexican Oil Butter Mix Topping"
-                  variant="caption"
-                  fontSize={11}
-                >
-                  Grilled Chicken Mexican Oil Butter Mix Topping
-                </Typography>
-              </Grid>
-              <Grid item xs={12} sx={{ padding: '0' }}>
+              <h6>Your Cart Is Currently Empty</h6>
+            </Grid>
+          )}
+          {basketObj && basketObj.basket && (
+            <Grid item xs={12} sx={{ padding: '0 20px 0 0' }}>
+              <Typography
+                variant="h6"
+                component="h6"
+                className={classes.cartTitle}
+                title="Your Order"
+              >
+                Your Order
+              </Typography>
+            </Grid>
+          )}
+          {basketObj &&
+            basketObj.basket &&
+            basketObj.basket.products.map((item: any, index: number) => (
+              <Grid key={index} item xs={12} sx={{ padding: '0 10px 0 10px' }}>
                 <Grid container spacing={0}>
-                  <Grid item xs={3}>
-                    <Link
-                      title="Remove"
-                      className={classes.smallLink}
-                      to="/product"
-                      aria-label="Remove the item from cart"
+                  <Grid item xs={9}>
+                    <Typography
+                      variant="caption"
+                      title={item.name}
+                      sx={{
+                        fontSize: '13px',
+                        color: 'secondary.main',
+                        fontFamily: 'Poppins-Medium !important',
+                      }}
                     >
-                      Remove
-                    </Link>
+                      {item.name}
+                    </Typography>
                   </Grid>
-                  <Grid item xs={3}>
-                    <Link
-                      to="/"
-                      title="Edit"
-                      className={classes.smallLink}
-                      aria-label="Make changes to the current menu item"
+                  <Grid item xs={3} sx={{ textAlign: 'right' }}>
+                    <Typography
+                      variant="caption"
+                      title="$12.05"
+                      sx={{
+                        textAlign: 'right',
+                        fontSize: '14px',
+                        fontWeight: '700',
+                        fontFamily: 'Poppins-Bold !important',
+                        color: 'secondary.main',
+                      }}
                     >
-                      Edit
-                    </Link>
+                      ${item.totalcost.toFixed(2)}
+                    </Typography>
                   </Grid>
-                  <Grid item xs={3}>
-                    <Link
-                      to="/"
-                      className={classes.smallLink}
-                      title="Duplicate"
-                      aria-label="Duplicate the menu item"
+                  <Grid item xs={12} sx={{ padding: '5px 0 5px 0' }}>
+                    <Divider sx={{ borderColor: 'rgba(0, 0, 0, 1);' }} />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography
+                      title="Grilled Chicken Mexican Oil Butter Mix Topping"
+                      variant="caption"
+                      fontSize={11}
                     >
-                      Duplicate
-                    </Link>
+                      {item.choices.map((item: any) => item.name + ',')}
+                    </Typography>
                   </Grid>
-                  <Grid item xs={3}></Grid>
+                  <Grid item xs={12} sx={{ padding: '0' }}>
+                    <Grid container spacing={0}>
+                      <Grid item xs={3}>
+                        <Link
+                          title="Remove"
+                          className={classes.smallLink}
+                          to="/product"
+                          aria-label="Remove the item from cart"
+                        >
+                          Remove
+                        </Link>
+                      </Grid>
+                      <Grid item xs={3}>
+                        <Link
+                          to="/"
+                          title="Edit"
+                          className={classes.smallLink}
+                          aria-label="Make changes to the current menu item"
+                        >
+                          Edit
+                        </Link>
+                      </Grid>
+                      <Grid item xs={3}>
+                        <Link
+                          to="/"
+                          className={classes.smallLink}
+                          title="Duplicate"
+                          aria-label="Duplicate the menu item"
+                        >
+                          Duplicate
+                        </Link>
+                      </Grid>
+                      <Grid item xs={3}></Grid>
+                    </Grid>
+                  </Grid>
+                </Grid>
+                <Grid item xs={12}>
+                  <br />
+                </Grid>
+              </Grid>
+            ))}
+          {basketObj && basketObj.basket && (
+            <Grid item xs={12}>
+              <Grid container spacing={0} justifyContent="space-around">
+                <Grid item xs={3}>
+                  <img
+                    style={{ display: 'block', margin: 'auto' }}
+                    src={require('../../assets/imgs/pic1.png')}
+                    alt="Chips"
+                    title="Chips"
+                  />
+                  <Typography
+                    variant="h6"
+                    component="p"
+                    fontSize="14px !important"
+                    textAlign="center"
+                    padding="5px 0 0 0"
+                    textTransform="capitalize"
+                    className={classes.cartTitle}
+                    title="Chips"
+                  >
+                    Chips
+                  </Typography>
+                  <Typography
+                    variant="caption"
+                    component="p"
+                    fontSize="14px !important"
+                    textAlign="center"
+                    paddingTop="0px"
+                    fontFamily="Poppins-Regular !important"
+                    className={classes.cartTitle}
+                    title="$3.09"
+                  >
+                    $3.09
+                  </Typography>
+                </Grid>
+                <Grid item xs={3}>
+                  <img
+                    style={{ display: 'block', margin: 'auto' }}
+                    src={require('../../assets/imgs/pic2.png')}
+                    alt="Churros"
+                    title="Churros"
+                  />
+                  <Typography
+                    variant="h6"
+                    component="p"
+                    fontSize="14px !important"
+                    textAlign="center"
+                    padding="5px 0 0 0"
+                    textTransform="capitalize"
+                    className={classes.cartTitle}
+                    title="Churros"
+                  >
+                    Churros
+                  </Typography>
+                  <Typography
+                    variant="caption"
+                    component="p"
+                    fontSize="14px !important"
+                    textAlign="center"
+                    paddingTop="0px"
+                    fontFamily="Poppins-Regular !important"
+                    className={classes.cartTitle}
+                    title="$3.09"
+                  >
+                    $3.09
+                  </Typography>
+                </Grid>
+                <Grid item xs={3}>
+                  <img
+                    style={{ display: 'block', margin: 'auto' }}
+                    src={require('../../assets/imgs/pic3.png')}
+                    alt="Drinks"
+                    title="Drinks"
+                  />
+                  <Typography
+                    variant="h6"
+                    component="p"
+                    fontSize="14px !important"
+                    textAlign="center"
+                    padding="5px 0 0 0"
+                    textTransform="capitalize"
+                    className={classes.cartTitle}
+                    title="drinks"
+                  >
+                    drinks
+                  </Typography>
+                  <Typography
+                    variant="caption"
+                    component="p"
+                    fontSize="14px !important"
+                    textAlign="center"
+                    paddingTop="0px"
+                    fontFamily="Poppins-Regular !important"
+                    className={classes.cartTitle}
+                    title="$3.09"
+                  >
+                    $3.09
+                  </Typography>
                 </Grid>
               </Grid>
             </Grid>
-          </Grid>
-          {/* <Grid item xs={12}>
-            <Grid container spacing={0} justifyContent="space-around">
-              <Grid item xs={3}>
-                <img
-                  style={{ display: 'block', margin: 'auto' }}
-                  src={require('../../assets/imgs/pic1.png')}
-                  alt="Chips"
-                  title="Chips"
-                />
-                <Typography
-                  variant="h6"
-                  component="p"
-                  fontSize="14px !important"
-                  textAlign="center"
-                  padding="5px 0 0 0"
-                  textTransform="capitalize"
-                  className={classes.cartTitle}
-                  title="Chips"
-                >
-                  Chips
-                </Typography>
-                <Typography
-                  variant="caption"
-                  component="p"
-                  fontSize="14px !important"
-                  textAlign="center"
-                  paddingTop="0px"
-                  fontFamily="Poppins-Regular !important"
-                  className={classes.cartTitle}
-                  title="$3.09"
-                >
-                  $3.09
-                </Typography>
-              </Grid>
-              <Grid item xs={3}>
-                <img
-                  style={{ display: 'block', margin: 'auto' }}
-                  src={require('../../assets/imgs/pic2.png')}
-                  alt="Churros"
-                  title="Churros"
-                />
-                <Typography
-                  variant="h6"
-                  component="p"
-                  fontSize="14px !important"
-                  textAlign="center"
-                  padding="5px 0 0 0"
-                  textTransform="capitalize"
-                  className={classes.cartTitle}
-                  title="Churros"
-                >
-                  Churros
-                </Typography>
-                <Typography
-                  variant="caption"
-                  component="p"
-                  fontSize="14px !important"
-                  textAlign="center"
-                  paddingTop="0px"
-                  fontFamily="Poppins-Regular !important"
-                  className={classes.cartTitle}
-                  title="$3.09"
-                >
-                  $3.09
-                </Typography>
-              </Grid>
-              <Grid item xs={3}>
-                <img
-                  style={{ display: 'block', margin: 'auto' }}
-                  src={require('../../assets/imgs/pic3.png')}
-                  alt="Drinks"
-                  title="Drinks"
-                />
-                <Typography
-                  variant="h6"
-                  component="p"
-                  fontSize="14px !important"
-                  textAlign="center"
-                  padding="5px 0 0 0"
-                  textTransform="capitalize"
-                  className={classes.cartTitle}
-                  title="drinks"
-                >
-                  drinks
-                </Typography>
-                <Typography
-                  variant="caption"
-                  component="p"
-                  fontSize="14px !important"
-                  textAlign="center"
-                  paddingTop="0px"
-                  fontFamily="Poppins-Regular !important"
-                  className={classes.cartTitle}
-                  title="$3.09"
-                >
-                  $3.09
-                </Typography>
-              </Grid>
-            </Grid>
-          </Grid> */}
-          <Grid item xs={12} textAlign="center" padding="10px 0">
-            <Button
-              variant="contained"
-              title="Add Another Menu Item"
-              sx={{
-                textTransform: 'uppercase',
-                backgroundColor: 'secondary.main',
-                margin: 'auto',
-                width: '100%',
-                borderRadius: 0,
-                padding: '15px',
-              }}
-            >
-              Add Another Menu Item
-            </Button>
-          </Grid>
-          <Grid item xs={12} padding="20px 10px 20px 20px">
-            <Grid container spacing={0}>
-              <Grid
-                item
-                xs={9}
-                sx={{
-                  fontFamily: 'Poppins-Bold !important',
-                  color: 'secondary.main',
-                  fontize: '16px',
-                }}
-                title="Sub Total"
-              >
-                Sub Total
-              </Grid>
-              <Grid
-                item
-                xs={3}
-                sx={{
-                  fontFamily: 'Poppins-Bold !important',
-                  color: 'secondary.main',
-                  fontize: '16px',
-                  textAlign: 'right',
-                }}
-                title="$15.00"
-              >
-                $15.00
-              </Grid>
-              <Grid
-                item
-                xs={9}
-                sx={{
-                  color: 'secondary.main',
-                  fontize: '12px',
-                }}
-                title="Tax"
-              >
-                Tax
-              </Grid>
-              <Grid
-                item
-                xs={3}
-                sx={{
-                  color: 'secondary.main',
-                  fontize: '16px',
-                  textAlign: 'right',
-                }}
-                title="$1.53"
-              >
-                $1.53
-              </Grid>
-              <Grid item xs={12} sx={{ padding: '20px 0px' }}>
-                <Divider />
-              </Grid>
-              <Grid
-                item
-                xs={9}
-                sx={{
-                  fontFamily: 'Poppins-Bold !important',
-                  color: 'secondary.main',
-                  fontize: '16px',
-                }}
-                title="Total"
-              >
-                Total
-              </Grid>
-              <Grid
-                item
-                xs={3}
-                sx={{
-                  fontFamily: 'Poppins-Bold !important',
-                  color: 'secondary.main',
-                  fontize: '16px',
-                  textAlign: 'right',
-                }}
-                title="$16.53"
-              >
-                $16.53
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
-
-        <Grid container spacing={0}>
-          <Grid item xs={12}>
-            <Link
-              to="/checkout"
-              aria-label="checkout"
-              style={{ textDecoration: 'none' }}
-              onClick={showCart}
-            >
+          )}
+          {basketObj && basketObj.basket && (
+            <Grid item xs={12} textAlign="center" padding="10px 0">
               <Button
                 variant="contained"
+                title="Add Another Menu Item"
+                onClick={() => {
+                  showCart();
+                  navigate('/');
+                  return false;
+                }}
+                sx={{
+                  textTransform: 'uppercase',
+                  backgroundColor: 'secondary.main',
+                  margin: 'auto',
+                  width: '100%',
+                  borderRadius: 0,
+                  padding: '15px',
+                }}
+              >
+                Add Another Menu Item
+              </Button>
+            </Grid>
+          )}
+          {basketObj && basketObj.basket && (
+            <Grid item xs={12} padding="20px 10px 20px 20px">
+              <Grid container spacing={0}>
+                <Grid
+                  item
+                  xs={9}
+                  sx={{
+                    fontFamily: 'Poppins-Bold !important',
+                    color: 'secondary.main',
+                    fontize: '16px',
+                  }}
+                  title="Sub Total"
+                >
+                  Sub Total
+                </Grid>
+                <Grid
+                  item
+                  xs={3}
+                  sx={{
+                    fontFamily: 'Poppins-Bold !important',
+                    color: 'secondary.main',
+                    fontize: '16px',
+                    textAlign: 'right',
+                  }}
+                  title="$"
+                >
+                  ${basketObj && basketObj.basket && basketObj.basket.subtotal}
+                </Grid>
+                <Grid
+                  item
+                  xs={9}
+                  sx={{
+                    color: 'secondary.main',
+                    fontize: '12px',
+                  }}
+                  title="Tax"
+                >
+                  Sales Tax
+                </Grid>
+                <Grid
+                  item
+                  xs={3}
+                  sx={{
+                    color: 'secondary.main',
+                    fontize: '16px',
+                    textAlign: 'right',
+                  }}
+                  title="$"
+                >
+                  ${basketObj && basketObj.basket && basketObj.basket.salestax}
+                </Grid>
+                <Grid
+                  item
+                  xs={9}
+                  sx={{
+                    color: 'secondary.main',
+                    fontize: '12px',
+                  }}
+                  title="Tax"
+                >
+                  Total Fee
+                </Grid>
+                <Grid
+                  item
+                  xs={3}
+                  sx={{
+                    color: 'secondary.main',
+                    fontize: '16px',
+                    textAlign: 'right',
+                  }}
+                  title="$"
+                >
+                  ${basketObj && basketObj.basket && basketObj.basket.totalfees}
+                </Grid>
+                <Grid item xs={12} sx={{ padding: '20px 0px' }}>
+                  <Divider />
+                </Grid>
+                <Grid
+                  item
+                  xs={9}
+                  sx={{
+                    fontFamily: 'Poppins-Bold !important',
+                    color: 'secondary.main',
+                    fontize: '16px',
+                  }}
+                  title="Total"
+                >
+                  Total
+                </Grid>
+                <Grid
+                  item
+                  xs={3}
+                  sx={{
+                    fontFamily: 'Poppins-Bold !important',
+                    color: 'secondary.main',
+                    fontize: '16px',
+                    textAlign: 'right',
+                  }}
+                  title={
+                    basketObj && basketObj.basket && basketObj.basket.total
+                  }
+                >
+                  ${basketObj && basketObj.basket && basketObj.basket.total}
+                </Grid>
+              </Grid>
+            </Grid>
+          )}
+        </Grid>
+        <Grid container spacing={0}>
+          <Grid item xs={12}>
+            {basketObj &&
+            basketObj.basket &&
+            basketObj.basket.products.length > 0 ? (
+              <Button
+                variant="contained"
+                onClick={() => {
+                  showCart();
+                  navigate('/checkout');
+                  return false;
+                }}
                 sx={{
                   textTransform: 'uppercase',
                   backgroundColor: 'primary.main',
@@ -403,7 +466,23 @@ const Cart = (props: any) => {
               >
                 CHECKOUT
               </Button>
-            </Link>
+            ) : (
+              <Button
+                variant="contained"
+                disabled
+                sx={{
+                  textTransform: 'uppercase',
+                  backgroundColor: 'primary.main',
+                  margin: 'auto',
+                  width: '100%',
+                  borderRadius: 0,
+                  padding: '10px',
+                }}
+                title="Checkout"
+              >
+                CHECKOUT
+              </Button>
+            )}
           </Grid>
         </Grid>
       </Box>

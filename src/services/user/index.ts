@@ -95,10 +95,10 @@ export const requestUserFavoriteOrders = (authtoken: string) => {
 //Delivery Addresses
 export const requestUserDeliiveryAddresses = (authtoken: string) => {
   try {
-    const auth = store.getState().authReducer.authToken.authtoken;
+    // const auth = store.getState().authReducer.authToken.authtoken;
     const url = process.env.REACT_APP_OLO_API || "";
     return axios
-      .get(url + `/users/${auth}/userdeliveryaddresses`)
+      .get(url + `/users/${authtoken}/userdeliveryaddresses`)
       .then((response) => response.data)
       .catch((error) => {
         console.log(error.response);
