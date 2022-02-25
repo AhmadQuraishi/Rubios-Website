@@ -7,7 +7,7 @@ export const RequestUserProfile = () => {
     const access_token =
       'ede0074cdd8df2f60ff81037cae9358ca9cdf9030c1698d5d3709b65456ce2c1';
     const url = `${process.env.REACT_APP_PUNCHH_API}/api/auth/users?client=${process.env.REACT_APP_PUNCHH_CLIENT_ID}&access_token=${access_token}`;
-    return axios.get(url).then((response) => response.data);
+    return axiosInstance.get(url).then((response) => response.data);
   } catch (error) {
     throw error;
   }
@@ -47,9 +47,9 @@ export const requestChangePassword = (body: object) => {
   // console.log(store.getState().TokensReducer.providertoken);
   try {
 
-    const url = ` ${process.env.REACT_APP_PUNCHH_API}/api/auth/users/change_password`;
+    const url = `${process.env.REACT_APP_PUNCHH_API}/api/auth/users/change_password`;
 
-    return axios.patch(url, obj).then((response) => response.data).catch((error) => {
+    return axiosInstance.patch(url, obj).then((response) => response.data).catch((error) => {
 
       throw error.response;
     });
@@ -64,7 +64,7 @@ export const requestChangePassword = (body: object) => {
 export const requestUserRecentOrders = (authtoken: string) => {
   try {
     const url = process.env.REACT_APP_OLO_API || "";
-    return axios
+    return axiosInstance
       .get(url + `/users/${authtoken}/recentorders`)
       .then((response) => response.data)
       .catch((error) => {
@@ -80,7 +80,7 @@ export const requestUserRecentOrders = (authtoken: string) => {
 export const requestUserFavoriteOrders = (authtoken: string) => {
   try {
     const url = process.env.REACT_APP_OLO_API || "";
-    return axios
+    return axiosInstance
       .get(url + `/users/${authtoken}/faves`)
       .then((response) => response.data)
       .catch((error) => {
@@ -97,7 +97,7 @@ export const requestUserDeliiveryAddresses = (authtoken: string) => {
   try {
     // const auth = store.getState().authReducer.authToken.authtoken;
     const url = process.env.REACT_APP_OLO_API || "";
-    return axios
+    return axiosInstance
       .get(url + `/users/${authtoken}/userdeliveryaddresses`)
       .then((response) => response.data)
       .catch((error) => {
@@ -114,7 +114,7 @@ export const requestSetUserDefDelAddress = (body: RequestUserDefaultAddress, aut
 
   try {
     const url = process.env.REACT_APP_OLO_API || "";
-    return axios
+    return axiosInstance
       .put(url + `/users/${authtoken}/userdeliveryaddresses/default`, body)
       .then((response) => response.data)
       .catch((error) => {
@@ -132,7 +132,7 @@ export const requestDelUserDelAddress = (addressid: number, authtoken: string) =
 
   try {
     const url = process.env.REACT_APP_OLO_API || "";
-    return axios
+    return axiosInstance
       .delete(url + `/users/${authtoken}/userdeliveryaddresses/${addressid}`)
       .then((response) => response.data)
       .catch((error) => {
@@ -151,7 +151,7 @@ export const requestUserBillingAccount = (authtoken: string) => {
 
   try {
     const url = process.env.REACT_APP_OLO_API || '';
-    return axios
+    return axiosInstance
       .get(url + `/users/${authtoken}/billingaccounts`)
       .then((response) => response.data)
       .catch((error) => {
@@ -171,7 +171,7 @@ export const requestUserBillingAccountById = (authtoken: string, billingAccountI
 
   try {
     const url = process.env.REACT_APP_OLO_API || '';
-    return axios
+    return axiosInstance
       .get(url + `/users/${authtoken}/billingaccount/${billingAccountId}`)
       .then((response) => response.data)
       .catch((error) => {
@@ -190,7 +190,7 @@ export const deleteUserBillingAccount = (authtoken: string, billingAccountId: nu
 
   try {
     const url = process.env.REACT_APP_OLO_API || '';
-    return axios
+    return axiosInstance
       .delete(url + `/users/${authtoken}/billingaccounts/${billingAccountId}`)
       .then((response) => response.data)
       .catch((error) => {
@@ -206,7 +206,7 @@ export const deleteUserBillingAccount = (authtoken: string, billingAccountId: nu
 export const updateUserBillingAccount = (body: RequestUserDefaultBillingAccount,authtoken: string, billingAccountId: number) => {
   try {
     const url = process.env.REACT_APP_OLO_API || '';
-    return axios
+    return axiosInstance
       .put(url + `/users/${authtoken}/creditcards/${billingAccountId}`, body)
       .then((response) => response.data)
       .catch((error) => {
@@ -224,7 +224,7 @@ export const updateUserBillingAccount = (body: RequestUserDefaultBillingAccount,
 export const requestUseGiftCards = (authtoken: string) => {
   try {
     const url = process.env.REACT_APP_OLO_API || '';
-    return axios
+    return axiosInstance
       .get(url + `/users/${authtoken}/billingaccounts/storedvalue`)
       .then((response) => response.data)
       .catch((error) => {
