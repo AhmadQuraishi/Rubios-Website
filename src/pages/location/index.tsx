@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     alignContent: 'center',
     alignItems: 'center',
     justifyItems: 'center',
-  }
+  },
 }));
 
 const Location = () => {
@@ -162,8 +162,11 @@ const Location = () => {
           <LoadingBar />
         </div>
       )}
-      <LoadScript googleMapsApiKey="AIzaSyCWKuRHEkeFWOy0JDMBT7Z4YApPVkZYHFI">
-        <GoogleMap center={mapCenter} zoom={7}>
+      <LoadScript googleMapsApiKey="AIzaSyCQk3wKWEY245-xNgGBhCYW1Jekqeci8f0">
+        <GoogleMap
+          center={mapCenter}
+          zoom={7}
+        >
           {newMarker}
           <LocationCard
             isNearByRestaurantList={nearByRestaurantsFound}

@@ -111,18 +111,36 @@ const Cart = (props: any) => {
               <h6>Your Cart Is Currently Empty</h6>
             </Grid>
           )}
-          {basketObj && basketObj.basket && (
-            <Grid item xs={12} sx={{ padding: '0 20px 0 0' }}>
-              <Typography
-                variant="h6"
-                component="h6"
-                className={classes.cartTitle}
-                title="Your Order"
+          {basketObj &&
+            basketObj.basket &&
+            basketObj.basket.products.length == 0 && (
+              <Grid
+                item
+                xs={12}
+                style={{
+                  height: '220px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
               >
-                Your Order
-              </Typography>
-            </Grid>
-          )}
+                <h6>Your Cart Is Currently Empty</h6>
+              </Grid>
+            )}
+          {basketObj &&
+            basketObj.basket &&
+            basketObj.basket.products.length > 0 && (
+              <Grid item xs={12} sx={{ padding: '0 20px 0 0' }}>
+                <Typography
+                  variant="h6"
+                  component="h6"
+                  className={classes.cartTitle}
+                  title="Your Order"
+                >
+                  Your Order
+                </Typography>
+              </Grid>
+            )}
           {basketObj &&
             basketObj.basket &&
             basketObj.basket.products.map((item: any, index: number) => (
@@ -209,7 +227,7 @@ const Cart = (props: any) => {
                 </Grid>
               </Grid>
             ))}
-          {basketObj && basketObj.basket && (
+          {/* {basketObj && basketObj.basket && (
             <Grid item xs={12}>
               <Grid container spacing={0} justifyContent="space-around">
                 <Grid item xs={3}>
@@ -310,137 +328,146 @@ const Cart = (props: any) => {
                 </Grid>
               </Grid>
             </Grid>
-          )}
-          {basketObj && basketObj.basket && (
-            <Grid item xs={12} textAlign="center" padding="10px 0">
-              <Button
-                variant="contained"
-                title="Add Another Menu Item"
-                onClick={() => {
-                  showCart();
-                  navigate('/');
-                  return false;
-                }}
-                sx={{
-                  textTransform: 'uppercase',
-                  backgroundColor: 'secondary.main',
-                  margin: 'auto',
-                  width: '100%',
-                  borderRadius: 0,
-                  padding: '15px',
-                }}
-              >
-                Add Another Menu Item
-              </Button>
-            </Grid>
-          )}
-          {basketObj && basketObj.basket && (
-            <Grid item xs={12} padding="20px 10px 20px 20px">
-              <Grid container spacing={0}>
-                <Grid
-                  item
-                  xs={9}
-                  sx={{
-                    fontFamily: 'Poppins-Bold !important',
-                    color: 'secondary.main',
-                    fontize: '16px',
+          )} */}
+          {basketObj &&
+            basketObj.basket &&
+            basketObj.basket.products.length > 0 && (
+              <Grid item xs={12} textAlign="center" padding="10px 0">
+                <Button
+                  variant="contained"
+                  title="Add Another Menu Item"
+                  onClick={() => {
+                    showCart();
+                    navigate('/');
+                    return false;
                   }}
-                  title="Sub Total"
-                >
-                  Sub Total
-                </Grid>
-                <Grid
-                  item
-                  xs={3}
                   sx={{
-                    fontFamily: 'Poppins-Bold !important',
-                    color: 'secondary.main',
-                    fontize: '16px',
-                    textAlign: 'right',
+                    textTransform: 'uppercase',
+                    backgroundColor: 'secondary.main',
+                    margin: 'auto',
+                    width: '100%',
+                    borderRadius: 0,
+                    padding: '15px',
                   }}
-                  title="$"
                 >
-                  ${basketObj && basketObj.basket && basketObj.basket.subtotal}
-                </Grid>
-                <Grid
-                  item
-                  xs={9}
-                  sx={{
-                    color: 'secondary.main',
-                    fontize: '12px',
-                  }}
-                  title="Tax"
-                >
-                  Sales Tax
-                </Grid>
-                <Grid
-                  item
-                  xs={3}
-                  sx={{
-                    color: 'secondary.main',
-                    fontize: '16px',
-                    textAlign: 'right',
-                  }}
-                  title="$"
-                >
-                  ${basketObj && basketObj.basket && basketObj.basket.salestax}
-                </Grid>
-                <Grid
-                  item
-                  xs={9}
-                  sx={{
-                    color: 'secondary.main',
-                    fontize: '12px',
-                  }}
-                  title="Tax"
-                >
-                  Total Fee
-                </Grid>
-                <Grid
-                  item
-                  xs={3}
-                  sx={{
-                    color: 'secondary.main',
-                    fontize: '16px',
-                    textAlign: 'right',
-                  }}
-                  title="$"
-                >
-                  ${basketObj && basketObj.basket && basketObj.basket.totalfees}
-                </Grid>
-                <Grid item xs={12} sx={{ padding: '20px 0px' }}>
-                  <Divider />
-                </Grid>
-                <Grid
-                  item
-                  xs={9}
-                  sx={{
-                    fontFamily: 'Poppins-Bold !important',
-                    color: 'secondary.main',
-                    fontize: '16px',
-                  }}
-                  title="Total"
-                >
-                  Total
-                </Grid>
-                <Grid
-                  item
-                  xs={3}
-                  sx={{
-                    fontFamily: 'Poppins-Bold !important',
-                    color: 'secondary.main',
-                    fontize: '16px',
-                    textAlign: 'right',
-                  }}
-                  title={
-                    basketObj && basketObj.basket && basketObj.basket.total
-                  }
-                >
-                  ${basketObj && basketObj.basket && basketObj.basket.total}
+                  Add Another Menu Item
+                </Button>
+              </Grid>
+            )}
+          {basketObj &&
+            basketObj.basket &&
+            basketObj.basket.products.length > 0 && (
+              <Grid item xs={12} padding="20px 10px 20px 20px">
+                <Grid container spacing={0}>
+                  <Grid
+                    item
+                    xs={9}
+                    sx={{
+                      fontFamily: 'Poppins-Bold !important',
+                      color: 'secondary.main',
+                      fontize: '16px',
+                    }}
+                    title="Sub Total"
+                  >
+                    Sub Total
+                  </Grid>
+                  <Grid
+                    item
+                    xs={3}
+                    sx={{
+                      fontFamily: 'Poppins-Bold !important',
+                      color: 'secondary.main',
+                      fontize: '16px',
+                      textAlign: 'right',
+                    }}
+                    title="$"
+                  >
+                    $
+                    {basketObj && basketObj.basket && basketObj.basket.subtotal}
+                  </Grid>
+                  <Grid
+                    item
+                    xs={9}
+                    sx={{
+                      color: 'secondary.main',
+                      fontize: '12px',
+                    }}
+                    title="Tax"
+                  >
+                    Sales Tax
+                  </Grid>
+                  <Grid
+                    item
+                    xs={3}
+                    sx={{
+                      color: 'secondary.main',
+                      fontize: '16px',
+                      textAlign: 'right',
+                    }}
+                    title="$"
+                  >
+                    $
+                    {basketObj && basketObj.basket && basketObj.basket.salestax}
+                  </Grid>
+                  <Grid
+                    item
+                    xs={9}
+                    sx={{
+                      color: 'secondary.main',
+                      fontize: '12px',
+                    }}
+                    title="Tax"
+                  >
+                    Total Fee
+                  </Grid>
+                  <Grid
+                    item
+                    xs={3}
+                    sx={{
+                      color: 'secondary.main',
+                      fontize: '16px',
+                      textAlign: 'right',
+                    }}
+                    title="$"
+                  >
+                    $
+                    {basketObj &&
+                      basketObj.basket &&
+                      basketObj.basket.totalfees}
+                  </Grid>
+                  <Grid item xs={12} sx={{ padding: '20px 0px' }}>
+                    <Divider />
+                  </Grid>
+                  <Grid
+                    item
+                    xs={9}
+                    sx={{
+                      fontFamily: 'Poppins-Bold !important',
+                      color: 'secondary.main',
+                      fontize: '16px',
+                    }}
+                    title="Total"
+                  >
+                    Total
+                  </Grid>
+                  <Grid
+                    item
+                    xs={3}
+                    sx={{
+                      fontFamily: 'Poppins-Bold !important',
+                      color: 'secondary.main',
+                      fontize: '16px',
+                      textAlign: 'right',
+                    }}
+                    title={
+                      basketObj && basketObj.basket && basketObj.basket.total
+                    }
+                  >
+                    ${basketObj && basketObj.basket && basketObj.basket.total}
+                  </Grid>
                 </Grid>
               </Grid>
-            </Grid>
-          )}
+            )}
         </Grid>
         <Grid container spacing={0}>
           <Grid item xs={12}>

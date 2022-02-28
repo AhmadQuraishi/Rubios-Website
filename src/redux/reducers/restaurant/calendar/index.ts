@@ -9,7 +9,7 @@ const INITIAL_STATE = {
 const restaurantCalendarReducer = (state = INITIAL_STATE, action: any) => {
   switch (action.type) {
     case restaurantCalendarActionsTypes.GET_RESTAURANT_CALENDAR_REQUEST:
-      return { ...state, loading: true, calendar: null };
+      return { ...state, loading: true, calendar: null, error: {} };
     case restaurantCalendarActionsTypes.GET_RESTAURANT_CALENDAR_SUCCESS:
       return { ...state, loading: false, calendar: action.payload, error: {} };
     case restaurantCalendarActionsTypes.GET_RESTAURANT_CALENDAR_FAILURE:

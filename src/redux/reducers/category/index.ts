@@ -9,7 +9,7 @@ const INITIAL_STATE = {
 const categoryReducer = (state = INITIAL_STATE, action: any) => {
   switch (action.type) {
     case categoryActionsTypes.GET_CATEGORY_ITMES_REQUEST:
-      return { ...state, loading: true, categories: null };
+      return { ...state, loading: true, categories: null, error: {} };
     case categoryActionsTypes.GET_CATEGORY_ITMES_SUCCESS:
       return {
         ...state,
