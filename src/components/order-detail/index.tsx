@@ -3,7 +3,7 @@ import { Grid, Typography } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import './order-detail.css';
 
-const OrderDetail = () => {
+const OrderDetail = ({basket}: any)  => {
   return (
     <Grid container>
       <Grid item xs={12} sm={12} md={8} lg={8} className="order-detail">
@@ -11,32 +11,27 @@ const OrderDetail = () => {
           ORDER DETAILS
         </Typography>
         <br/>
-        <Grid container>
-          <Grid item xs={10} sm={10} md={10} lg={11}>
-            <Typography variant="h6" title="Mexican street corn taco plate">
-              Mexican street corn taco plate
-            </Typography>
-          </Grid>
-          <Grid item xs={2} sm={2} md={2} lg={1}>
-            <Typography variant="h6" title="$12.50">
-              $12.50
-            </Typography>
-          </Grid>
-        </Grid>
-        <br/>
-        <Grid container>
-          <Grid item xs={10} sm={10} md={10} lg={11}>
-            <Typography variant="h6" title="Regular Mango tea">
-              Regular Mango tea
-            </Typography>
-          </Grid>
-          <Grid item xs={2} sm={2} md={2} lg={1}>
-            <Typography variant="h6" title="$2.50">
-              $2.50
-            </Typography>
-          </Grid>
-        </Grid>
-        <br/>
+        {
+          basket && basket.products && basket.products.map((item: any) => {
+            return (
+              <>
+                <Grid container>
+                  <Grid item xs={10} sm={10} md={10} lg={11}>
+                    <Typography variant="h6" title={item.name}>
+                      {item.name}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={2} sm={2} md={2} lg={1}>
+                    <Typography variant="h6" title={item.totalcost}>
+                      ${item.totalcost}
+                    </Typography>
+                  </Grid>
+                </Grid>
+                <br/>
+              </>              
+            )
+          })
+        }
         <Divider />
         <br/>
         <Grid container>
@@ -46,9 +41,9 @@ const OrderDetail = () => {
             </Typography>
           </Grid>
           <Grid item xs={2} sm={2} md={2} lg={1}>
-            <Typography variant="h6" title="$15.30">
-              $15.30
-            </Typography>
+             <Typography variant="h6" title={basket && basket.subtotal}>
+              ${basket && basket.subtotal}
+            </Typography> 
           </Grid>
         </Grid>
         <Grid container>
@@ -57,11 +52,11 @@ const OrderDetail = () => {
               TAX
             </Typography>
           </Grid>
-          <Grid item xs={2} sm={2} md={2} lg={1}>
-            <Typography variant="h6" title="$1.53">
-              $1.53
+           <Grid item xs={2} sm={2} md={2} lg={1}>
+            <Typography variant="h6" >
+            ${basket && basket.taxes && basket.taxes.reduce((sum: number, tax: any) => sum + tax.tax, 0)}
             </Typography>
-          </Grid>
+          </Grid> 
         </Grid>
         <br/>
         <Divider />
@@ -73,8 +68,8 @@ const OrderDetail = () => {
             </Typography>
           </Grid>
           <Grid item xs={2} sm={2} md={2} lg={1}>
-            <Typography variant="h6" title="$16.53">
-              $16.53
+            <Typography variant="h6" title={basket && basket.total}>
+              ${basket && basket.total}
             </Typography>
           </Grid>
         </Grid>

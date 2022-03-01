@@ -1,12 +1,13 @@
 import axios from 'axios';
 
-
-import RequestCreateBasket from '../../types/olo-api';
-import {RequestNewBasketProduct} from '../../types/olo-api';
-import {RequestApplyCoupon} from '../../types/olo-api';
-import RequestUpdateBasketTip from '../../types/olo-api';
-import RequestUpdateBasketTimeWanted from '../../types/olo-api';
-import {RequestBasketSubmit} from '../../types/olo-api';
+import {
+  RequestCreateBasket,
+  RequestNewBasketProduct,
+  RequestApplyCoupon,
+  RequestUpdateBasketTip,
+  RequestBasketSubmit,
+  RequestUpdateBasketTimeWanted
+} from '../../types/olo-api';
 
 export const getBasket = (basketid: string) => {
   try {

@@ -28,9 +28,7 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import StoreInfoBar from '../../components/restaurant-info-bar';
 import './checkout.css';
-import {
-  ResponseBasket,
-} from '../../types/olo-api';
+import {  ResponseBasket, RequestUpdateBasketTimeWanted } from '../../types/olo-api';
 import { IMaskInput } from 'react-imask';
 import moment from 'moment';
 import AdapterMoment from '@mui/lab/AdapterMoment';
@@ -38,7 +36,7 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 import { HoursListing } from '../../helpers/hoursListing';
 import { CalendarTypeEnum } from '../../helpers/hoursListing';
-import { getSingleRestaurantCalendar } from '../../redux/actions/basket/calendar';
+import { getSingleRestaurantCalendar, updateBasketTimeWanted } from '../../redux/actions/basket/calendar';
 import { ResponseRestaurantCalendars } from '../../types/olo-api';
 
 const isTimeSame = (fTime: string, sTime: string): boolean => {
@@ -67,13 +65,12 @@ const GetRestaurantHoursRange = (
 
 const Checkout = () => {
   const dispatch = useDispatch(); 
-  const [time, setTime] = React.useState('');
+  const [selectedTime, setSelectedTime] = React.useState('');
   const [timeSlots, setTimeSlots] = React.useState<string[]>([]); 
   const [selectedDate, setSelectedDate] = React.useState<any>(new Date());
   const [open, setOpen] = React.useState<boolean>(false);
   const [basket, setBasket] = React.useState<ResponseBasket>();
   const [restaurantHours, setRestaurantHours] = React.useState<HoursListing[]>();
-  const [alignment, setAlignment] = React.useState('');
   const [tipPercentage, setTipPercentage] = React.useState(0);
   const [tipAmount, setTipAmount] = React.useState(0);
 
@@ -107,15 +104,29 @@ const Checkout = () => {
    }
   }, [restaurantHours]);
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setTime(event.target.value as string);
-    setAlignment('');
-  };
+  const createTimeWantedPayload = (time: string) => {
+    const date = moment(time, 'YYYYMMDD HH:mm');
+    const payload: RequestUpdateBasketTimeWanted = {
+      ismanualfire: false,
+      year: date.year(),
+      month: date.month() + 1,
+      day: date.date(),
+      hour: date.hour(),
+      minute: date.minute(),
+      }
+      return payload;
+  }
 
-  const onTimeSlotSelect = (event: React.MouseEvent<HTMLElement>, value: any) => {
-    console.log('event', value)
-    setAlignment(value);
-    setTime('')
+  const onTimeSlotSelect = (event: any) => {
+    const  timeSelect = event.target.value;
+    setSelectedTime(timeSelect)
+    if(timeSelect && timeSelect !== ''){
+      const payload = createTimeWantedPayload(timeSelect)
+        if(basket){
+          dispatch(updateBasketTimeWanted(basket.id, payload));
+        }
+
+    }
   };
 
   interface CustomProps {
@@ -143,27 +154,39 @@ const Checkout = () => {
     },
   );
 
+  const calculateMinutesDiff = (minutes: number): number => {
+
+    if([0, 15, 30, 45].includes(minutes)){
+      return minutes;
+   } else { 
+      let difference = Math.ceil(minutes / 15);
+      difference = (difference * 15) - minutes; 
+      minutes = difference + 30;
+      return minutes;
+   }
+
+  }
+
   const generateNextAvailableTimeSlots = (openingTime: string, closingTime: string, isOpenAllDay: Boolean) => {
-    // return []
     let timeSlots = [];
     let currentTime = moment();
     let startTime;
 
     let openAt = moment(openingTime, 'YYYYMMDD HH:mm');
     let closeAt = moment(closingTime, 'YYYYMMDD HH:mm');
+    let minutes = currentTime.minutes();
+    minutes = calculateMinutesDiff(minutes);
 
-    if(isOpenAllDay || currentTime.isBetween(openAt, closeAt)){
-      startTime = currentTime.add(30, 'minute');
+    if(currentTime.isAfter(closeAt)){
+      return [];
+    } else if (isOpenAllDay || currentTime.isBetween(openAt, closeAt)){
+      startTime = currentTime.add(minutes, 'minute');
       if(isOpenAllDay){
         openAt.startOf('day');
         closeAt.endOf('day')
       }
-    }
-    if(currentTime.isBefore(openAt)){
-      startTime = openAt.add(30, 'minute')
-    }
-    if(currentTime.isAfter(closeAt)){
-     return [];
+    } else if (currentTime.isBefore(openAt)){
+     startTime = openAt.add(15, 'm')
     }
 
     let count = 0;
@@ -174,7 +197,6 @@ const Checkout = () => {
        count++;
     }
 
-    console.log('timeSlots', timeSlots)
     setTimeSlots(timeSlots)
   }
 
@@ -392,9 +414,9 @@ const Checkout = () => {
                             </Grid>
                           </Grid>
                           <ToggleButtonGroup
-                            value={alignment}
+                            value={selectedTime}
                             exclusive
-                            onChange={onTimeSlotSelect}
+                            onChange={(event) => onTimeSlotSelect(event)}
                             className="selected-btn"
                           >
                             {/* <Grid container spacing={2}> */}
@@ -403,9 +425,10 @@ const Checkout = () => {
                                   return (
                                     // <Grid item xs={6} sm={6} md={3} lg={3}>
                                       <ToggleButton
-                                        value={moment(time, 'YYYYMMDD HH:mm').format('HH:mm')}
+                                        value={time}
+                                        name={time}
                                         className="selected-btn"
-                                        selected={ alignment === `${moment(time, 'YYYYMMDD HH:mm').format('HH:mm')}` ? true : false}
+                                        selected={ selectedTime === time ? true : false}
                                       >
                                         {moment(time, 'YYYYMMDD HH:mm').format('HH:mm')}
                                       </ToggleButton>
@@ -432,18 +455,17 @@ const Checkout = () => {
                             <Select
                               id="select-label"
                               labelId="select-more-times"
-                              value={time}
-                              onChange={handleChange}
+                              value={selectedTime}
+                              onChange={(event) => onTimeSlotSelect(event)}
                               label="Select More times"
                               title="Select More times"
                             >
                               {
                                     timeSlots.slice(4,7).map(time => {
                                       return (
-                                        <MenuItem value={moment(time, 'YYYYMMDD HH:mm').format('HH:mm')} title= {moment(time, 'YYYYMMDD HH:mm').format('HH:mm')}>
+                                        <MenuItem value={time}>
                                         {moment(time, 'YYYYMMDD HH:mm').format('HH:mm')}
                                         </MenuItem>
-                                        
                                       )
                                     })
                               }
@@ -461,7 +483,7 @@ const Checkout = () => {
               <br />
               <br />
               {/*second section*/}
-              <OrderDetail />
+              <OrderDetail basket={basket} />
               <br />
               <br />
               <Divider />
