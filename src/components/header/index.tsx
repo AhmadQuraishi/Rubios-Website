@@ -155,9 +155,11 @@ const Header = (props: any) => {
                 )}
               </Drawer>
               {!removeCart && !removeCartForLocation && (
-                <div style={{ position: 'relative' }}>
+                <div
+                  style={{ position: 'relative', cursor: 'pointer' }}
+                  onClick={handleShowCart}
+                >
                   <img
-                    onClick={handleShowCart}
                     src={cartIconMobile}
                     alt="Cart Icon"
                     style={{ width: '28px', paddingRight: '10px' }}

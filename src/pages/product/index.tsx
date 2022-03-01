@@ -139,11 +139,15 @@ const Product = () => {
   }, [basketObj.basket]);
 
   useEffect(() => {
-    if (productAddObj.basket) {
+    setShowError('');
+    if (productAddObj && productAddObj.basket) {
       setBasket(productAddObj.basket);
       dispatch(getBasketRequest('', productAddObj.basket));
     }
-  }, [productAddObj.basket]);
+    if (productAddObj && productAddObj.error && productAddObj.error.message) {
+      setShowError(productAddObj.error.message);
+    }
+  }, [productAddObj]);
 
   return (
     <>
@@ -151,27 +155,25 @@ const Product = () => {
       {loading == true && productDetails == null && productOptions == null && (
         <ProductSkeletonUI />
       )}
-      {basketObj && basketObj.error && basketObj.error.message && (
-        <Snackbar
-          open={showError != '' ? true : false}
-          autoHideDuration={6000}
-          TransitionComponent={Slide}
+      <Snackbar
+        open={showError != '' ? true : false}
+        autoHideDuration={6000}
+        TransitionComponent={Slide}
+        onClose={() => {
+          setShowError('');
+        }}
+      >
+        <Alert
           onClose={() => {
             setShowError('');
           }}
+          severity="error"
+          variant="filled"
+          sx={{ width: '100%', alignItems: 'center' }}
         >
-          <Alert
-            onClose={() => {
-              setShowError('');
-            }}
-            severity="error"
-            variant="filled"
-            sx={{ width: '100%', alignItems: 'center' }}
-          >
-            {showError}
-          </Alert>
-        </Snackbar>
-      )}
+          {showError}
+        </Alert>
+      </Snackbar>
       {productDetails && (
         <Grid container className="product-detail">
           <Grid item xs={12} sm={12} md={12} lg={12}>
@@ -222,15 +224,17 @@ const Product = () => {
                       Cal
                     </Typography>
                   </Grid>
-                  <Grid item xs={6}>
-                    <Typography
-                      variant="h6"
-                      className="price"
-                      title={`$${productDetails.cost.toFixed(2)}`}
-                    >
-                      ${productDetails.cost.toFixed(2)}
-                    </Typography>
-                  </Grid>
+                  {productDetails.cost > 0 && (
+                    <Grid item xs={6}>
+                      <Typography
+                        variant="h6"
+                        className="price"
+                        title={`$${productDetails.cost.toFixed(2)}`}
+                      >
+                        ${productDetails.cost.toFixed(2)}
+                      </Typography>
+                    </Grid>
+                  )}
                 </Grid>
               </Grid>
               <Grid item xs={12} sm={12} md={12} lg={6}>

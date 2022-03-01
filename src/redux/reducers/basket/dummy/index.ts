@@ -9,7 +9,7 @@ const INITIAL_STATE = {
 const dummyBasketReducer = (state = INITIAL_STATE, action: any) => {
   switch (action.type) {
     case basketActionsTypes.GET_DUMMY_BASKET_REQUEST:
-      return { ...state, loading: true, basket: null };
+      return { ...state, loading: true, basket: null, error: {} };
     case basketActionsTypes.GET_DUMMY_BASKET_SUCCESS:
       return {
         ...state,

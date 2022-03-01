@@ -9,7 +9,7 @@ const INITIAL_STATE = {
 const addSingleProductReducer = (state = INITIAL_STATE, action: any) => {
   switch (action.type) {
     case basketActionsTypes.ADD_SINGLE_PRODUCT_REQUEST:
-      return { ...state, loading: true, basket: null };
+      return { ...state, loading: true, basket: null, error: {} };
     case basketActionsTypes.ADD_SINGLE_PRODUCT_SUCCESS:
       return {
         ...state,
