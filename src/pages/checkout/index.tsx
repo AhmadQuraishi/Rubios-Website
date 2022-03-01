@@ -36,7 +36,7 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 import { HoursListing } from '../../helpers/hoursListing';
 import { CalendarTypeEnum } from '../../helpers/hoursListing';
-import { getSingleRestaurantCalendar, updateBasketTimeWanted, deleteBasketTimeWanted } from '../../redux/actions/basket/calendar';
+import { getSingleRestaurantCalendar, updateBasketTimeWanted, deleteBasketTimeWanted } from '../../redux/actions/basket/checkout';
 import { ResponseRestaurantCalendars } from '../../types/olo-api';
 
 const isTimeSame = (fTime: string, sTime: string): boolean => {
@@ -69,6 +69,7 @@ const Checkout = () => {
   const [timeSlots, setTimeSlots] = React.useState<string[]>([]); 
   const [selectedDate, setSelectedDate] = React.useState<any>(new Date());
   const [open, setOpen] = React.useState<boolean>(false);
+  const [runOnce, setRunOnce] = React.useState<boolean>(true);
   const [basket, setBasket] = React.useState<ResponseBasket>();
   const [restaurantHours, setRestaurantHours] = React.useState<HoursListing[]>();
   const [tipPercentage, setTipPercentage] = React.useState(0);
@@ -78,9 +79,10 @@ const Checkout = () => {
   // const { calendar } = useSelector(    (state: any) => state.restaurantCalendarReducer  );
 
   React.useEffect(() => {
-    if (basket) {
+    if (basket && runOnce) {
       dispatch(getSingleRestaurantCalendar(basket.vendorid, moment().format('YYYYMMDD'), moment().format('YYYYMMDD')));
       setSelectedTime(basket.timewanted ? basket.timewanted : '')
+      setRunOnce(false)
     }
   }, [basket]);
 
@@ -186,14 +188,15 @@ const Checkout = () => {
     let minutes = currentTime.minutes();
     minutes = calculateMinutesDiff(minutes);
 
+    if(isOpenAllDay){
+      openAt.startOf('day');
+      closeAt.endOf('day')
+    }
+
     if(currentTime.isAfter(closeAt)){
       return [];
-    } else if (isOpenAllDay || currentTime.isBetween(openAt, closeAt)){
+    } else if (currentTime.isBetween(openAt, closeAt)){
       startTime = currentTime.add(minutes, 'minute');
-      if(isOpenAllDay){
-        openAt.startOf('day');
-        closeAt.endOf('day')
-      }
     } else if (currentTime.isBefore(openAt)){
      startTime = openAt.add(15, 'm')
     }
@@ -504,7 +507,7 @@ const Checkout = () => {
               <Divider />
               <br />
               <br />
-              <Tip />
+              <Tip basket={basket} />
               <br />
               <br />
               <Divider />

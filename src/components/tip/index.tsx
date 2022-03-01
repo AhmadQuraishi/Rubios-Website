@@ -1,26 +1,35 @@
 import React from 'react';
 import { Button, Grid, RadioGroup, TextField, Typography, ToggleButtonGroup, ToggleButton } from '@mui/material';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
-
+import { useDispatch } from 'react-redux';
 import Radio from '@mui/material/Radio';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import './tip.css';
+import {updateBasketTipAmount} from '../../redux/actions/basket/checkout';
 
-const Tip = () => {
-  const Icon = () => (
-    <Button aria-label="proceed">
-      <ArrowRightAltIcon />
-    </Button>
-  );
+
+
+const Tip = ({basket}: any)  => {
+  const dispatch = useDispatch();
+ 
   const [tipPercentage, setTipPercentage] = React.useState(0);
-  const [tipCustomAmount, setTipCustomAmount] = React.useState('');
+  const [tipCustomAmount, setTipCustomAmount] = React.useState(0);
   const [couponCode, setCouponCode] = React.useState('');
+
+  const updateTipAmountCall = (tip: number) => {
+    const payload = {
+      amount: tip
+    }
+    dispatch(updateBasketTipAmount(basket.id, payload))
+  }
 
   const handleTipPercentage = (event: React.MouseEvent<HTMLElement>, value: number ) => {
     console.log('setTipPercentage', value)
     setTipPercentage(value);
-    setTipCustomAmount('');
+    setTipCustomAmount(0);
+    const totalPerc = (value * basket.total) / 100;
+    updateTipAmountCall(totalPerc)
   };
 
   const handleTipCustomAmountChange = (event: any) => {
@@ -31,6 +40,12 @@ const Tip = () => {
   const handleCouponCodeChange = (event: any) => {
     setCouponCode(event.target.value);
   }
+
+  const Icon = () => (
+    <Button onClick={() => updateTipAmountCall(tipCustomAmount)} aria-label="proceed">
+      <ArrowRightAltIcon />
+    </Button>
+  );
 
   return (
     <Grid container className="tip-wrapper">
@@ -87,7 +102,7 @@ const Tip = () => {
                   aria-label="custom amount"
                   InputProps={{ endAdornment: <Icon /> }}
                   title="Custom Amount"
-                />
+                /> 
               </Grid>
             </Grid>
           </Grid>

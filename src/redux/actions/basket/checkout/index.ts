@@ -1,5 +1,10 @@
 import { basketActionsTypes } from '../../../types/basket';
-import {ResponseRestaurantCalendars, RequestUpdateBasketTimeWanted, ResponseBasket } from '../../../../types/olo-api';
+import {
+  ResponseRestaurantCalendars, 
+  RequestUpdateBasketTimeWanted, 
+  ResponseBasket,
+  RequestUpdateBasketTip
+ } from '../../../../types/olo-api';
 import {displayToast} from '../../../../helpers/toast'
 export function getSingleRestaurantCalendar(id: number, dateFrom: string, dateTo: string,) {
   return {
@@ -41,8 +46,7 @@ export function updateBasketTimeWantedSuccess(data: ResponseBasket) {
 }
 
 export function updateBasketTimeWantedFailure(error: any) {
-  displayToast('ERROR', 'ERROR! Please Try agin later')
-
+  displayToast('ERROR', error?.response?.data?.message  ? error.response.data.message : 'ERROR! Please Try agin later')
   return {
     type: basketActionsTypes.UPDATE_BASKET_TIME_WANTED_FAILURE,
     error: error
@@ -65,10 +69,34 @@ export function deleteBasketTimeWantedSuccess(data: ResponseBasket) {
 }
 
 export function deleteBasketTimeWantedFailure(error: any) {
-  displayToast('ERROR', 'ERROR! Please Try agin later')
+  displayToast('ERROR', error?.response?.data?.message  ? error.response.data.message : 'ERROR! Please Try agin later')
 
   return {
     type: basketActionsTypes.DELETE_BASKET_TIME_WANTED_FAILURE,
+    error: error
+  };
+}
+
+export function updateBasketTipAmount(basketId: string, data: RequestUpdateBasketTip) {
+  return {
+    type: basketActionsTypes.UPDATE_BASKET_TIP_AMOUNT,
+    basketId,
+    data
+  };
+}
+
+export function updateBasketTipAmountSuccess(data: ResponseBasket) {
+  displayToast('SUCCESS', 'Order Tip updated.')
+  return {
+    type: basketActionsTypes.UPDATE_BASKET_TIP_AMOUNT_SUCCESS,
+    payload: data,
+  };
+}
+
+export function updateBasketTipAmountFailure(error: any) {
+  displayToast('ERROR', error?.response?.data?.message  ? error.response.data.message : 'ERROR! Please Try agin later')
+  return {
+    type: basketActionsTypes.UPDATE_BASKET_TIP_AMOUNT_FAILURE,
     error: error
   };
 }

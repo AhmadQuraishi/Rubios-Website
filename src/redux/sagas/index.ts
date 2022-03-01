@@ -11,7 +11,7 @@ import { storeAuth } from './auth';
 import { resturantListSaga } from './restaurant/list';
 import { locationSaga } from './location';
 import { BasketSaga } from './basket';
-import { singleRestaurantCalendarSaga } from './basket/calendar';
+import { checkoutSaga } from './basket/checkout';
 import { dummyBasketSaga } from './basket/dummy';
 import { addSingleProductSaga } from './basket/addSingleProduct';
 
@@ -30,7 +30,7 @@ export default function* rootSaga() {
     resturantListSaga(),
     dummyBasketSaga(),
     BasketSaga(),
-    singleRestaurantCalendarSaga(),
+    checkoutSaga(),
     addSingleProductSaga(),
   ]);
 }
