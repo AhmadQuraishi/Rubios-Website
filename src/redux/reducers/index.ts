@@ -17,11 +17,12 @@ import restaurantListReducer from './restaurant/list';
 import dummyBasketReducer from './basket/dummy';
 import basketReducer from './basket';
 import addSingleProductReducer from './basket/addSingleProduct';
+import checkInReducer from './check-in';
 
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['restaurantInfoReducer', 'basketReducer'],
+  whitelist: ['restaurantInfoReducer', 'basketReducer' , 'userReducer'],
 };
 
 const rootReducers = combineReducers({
@@ -41,6 +42,7 @@ const rootReducers = combineReducers({
   dummyBasketReducer,
   basketReducer,
   addSingleProductReducer,
+  checkInReducer
 });
 
 const persistReducers = persistReducer(persistConfig, rootReducers);

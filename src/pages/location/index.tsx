@@ -28,10 +28,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     alignContent: 'center',
     alignItems: 'center',
     justifyItems: 'center',
-  }
+  },
 }));
 
 const Location = () => {
+  const api_key = process.env.REACT_APP_MAPS_API_KEY || '';
   const classes = useStyles();
   const { restaurants, loading } = useSelector(
     (state: any) => state.restaurantListReducer,
@@ -162,7 +163,7 @@ const Location = () => {
           <LoadingBar />
         </div>
       )}
-      <LoadScript googleMapsApiKey="AIzaSyCWKuRHEkeFWOy0JDMBT7Z4YApPVkZYHFI">
+      <LoadScript googleMapsApiKey={api_key}>
         <GoogleMap center={mapCenter} zoom={7}>
           {newMarker}
           <LocationCard
