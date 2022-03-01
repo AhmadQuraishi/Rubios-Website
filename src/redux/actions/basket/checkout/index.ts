@@ -3,7 +3,8 @@ import {
   ResponseRestaurantCalendars, 
   RequestUpdateBasketTimeWanted, 
   ResponseBasket,
-  RequestUpdateBasketTip
+  RequestUpdateBasketTip,
+  RequestApplyCoupon
  } from '../../../../types/olo-api';
 import {displayToast} from '../../../../helpers/toast'
 export function getSingleRestaurantCalendar(id: number, dateFrom: string, dateTo: string,) {
@@ -97,6 +98,30 @@ export function updateBasketTipAmountFailure(error: any) {
   displayToast('ERROR', error?.response?.data?.message  ? error.response.data.message : 'ERROR! Please Try agin later')
   return {
     type: basketActionsTypes.UPDATE_BASKET_TIP_AMOUNT_FAILURE,
+    error: error
+  };
+}
+
+export function updateBasketCouponCode(basketId: string, data: RequestApplyCoupon) {
+  return {
+    type: basketActionsTypes.UPDATE_BASKET_COUPON_CODE,
+    basketId,
+    data
+  };
+}
+
+export function updateBasketCouponCodeSuccess(data: ResponseBasket) {
+  displayToast('SUCCESS', 'Coupon applied to order.')
+  return {
+    type: basketActionsTypes.UPDATE_BASKET_COUPON_CODE_SUCCESS,
+    payload: data,
+  };
+}
+
+export function updateBasketCouponCodeFailure(error: any) {
+  displayToast('ERROR', error?.response?.data?.message  ? error.response.data.message : 'ERROR! Please Try agin later')
+  return {
+    type: basketActionsTypes.UPDATE_BASKET_COUPON_CODE_FAILURE,
     error: error
   };
 }

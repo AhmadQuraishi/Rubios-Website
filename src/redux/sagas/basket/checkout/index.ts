@@ -1,7 +1,7 @@
 import { takeEvery, put, call } from 'redux-saga/effects';
 import { basketActionsTypes } from '../../../types/basket';
 import { getRestaurantCalendar } from '../../../../services/restaurant/calendar';
-import { setTimeWantedBasket, deleteTimeWantedBasket, setTipAmountBasket } from '../../../../services/checkout';
+import { setTimeWantedBasket, deleteTimeWantedBasket, setTipAmountBasket, applyCouponBasket } from '../../../../services/checkout';
 import {
   getSingleRestaurantCalendarSuccess,
   getSingleRestaurantCalendarFailure,
@@ -10,7 +10,9 @@ import {
   deleteBasketTimeWantedSuccess,
   deleteBasketTimeWantedFailure,
   updateBasketTipAmountSuccess,
-  updateBasketTipAmountFailure
+  updateBasketTipAmountFailure,
+  updateBasketCouponCodeSuccess,
+  updateBasketCouponCodeFailure
 } from '../../../actions/basket/checkout';
 
 function* asyncgetSingleRestaurantCalendarRequest(action: any): any {
@@ -65,21 +67,38 @@ function* asyncUpdateBasketTipAmount(action: any): any {
   }
 }
 
+function* asyncUpdateBasketCouponCode(action: any): any {
+  try {
+    const response = yield call(
+      applyCouponBasket,
+      action.basketId,
+      action.data
+    );
+    yield put(updateBasketCouponCodeSuccess(response));
+  } catch (error) {
+    yield put(updateBasketTimeWantedFailure(error));
+  }
+}
+
 export function* checkoutSaga() {
   yield takeEvery(
     basketActionsTypes.GET_SINGLE_RESTAURANT_CALENDAR,
-    asyncgetSingleRestaurantCalendarRequest,
+    asyncgetSingleRestaurantCalendarRequest
   );
   yield takeEvery(
     basketActionsTypes.UPDATE_BASKET_TIME_WANTED,
-    asyncUpdateBasketTimeWanted,
+    asyncUpdateBasketTimeWanted
   );
   yield takeEvery(
     basketActionsTypes.DELETE_BASKET_TIME_WANTED,
-    asyncDeleteBasketTimeWanted,
+    asyncDeleteBasketTimeWanted
   );
   yield takeEvery(
     basketActionsTypes.UPDATE_BASKET_TIP_AMOUNT,
-    asyncUpdateBasketTipAmount,
+    asyncUpdateBasketTipAmount
+  );
+  yield takeEvery(
+    basketActionsTypes.UPDATE_BASKET_COUPON_CODE,
+    asyncUpdateBasketCouponCode
   );
 }

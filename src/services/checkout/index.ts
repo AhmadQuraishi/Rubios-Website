@@ -11,7 +11,7 @@ export const applyCouponBasket = (basketid: string, body: RequestApplyCoupon) =>
   try {
     const url = process.env.REACT_APP_OLO_API || '';
     return axios
-      .post(url + `/baskets/${basketid}/coupon`, body)
+      .put(url + `/baskets/${basketid}/coupon`, body)
       .then((response) => response.data)
       .catch((error) => {
         console.log(error.response);

@@ -6,9 +6,7 @@ import Radio from '@mui/material/Radio';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import './tip.css';
-import {updateBasketTipAmount} from '../../redux/actions/basket/checkout';
-
-
+import {updateBasketTipAmount, updateBasketCouponCode} from '../../redux/actions/basket/checkout';
 
 const Tip = ({basket}: any)  => {
   const dispatch = useDispatch();
@@ -22,6 +20,13 @@ const Tip = ({basket}: any)  => {
       amount: tip
     }
     dispatch(updateBasketTipAmount(basket.id, payload))
+  }
+
+  const updateCouponCodeCall = (coupon: string) => {
+    const payload = {
+      couponcode: coupon
+    }
+    dispatch(updateBasketCouponCode(basket.id, payload))
   }
 
   const handleTipPercentage = (event: React.MouseEvent<HTMLElement>, value: number ) => {
@@ -41,8 +46,14 @@ const Tip = ({basket}: any)  => {
     setCouponCode(event.target.value);
   }
 
-  const Icon = () => (
+  const IconTip = () => (
     <Button onClick={() => updateTipAmountCall(tipCustomAmount)} aria-label="proceed">
+      <ArrowRightAltIcon />
+    </Button>
+  );
+
+  const IconCoupon = () => (
+    <Button onClick={() => updateCouponCodeCall(couponCode)} aria-label="proceed">
       <ArrowRightAltIcon />
     </Button>
   );
@@ -100,7 +111,7 @@ const Tip = ({basket}: any)  => {
                   onChange={handleTipCustomAmountChange}
                   label="Custom Amount"
                   aria-label="custom amount"
-                  InputProps={{ endAdornment: <Icon /> }}
+                  InputProps={{ endAdornment: <IconTip /> }}
                   title="Custom Amount"
                 /> 
               </Grid>
@@ -116,7 +127,7 @@ const Tip = ({basket}: any)  => {
                   type="text"
                   onChange={handleCouponCodeChange}
                   aria-label="Enter Code"
-                  InputProps={{ endAdornment: <Icon /> }}
+                  InputProps={{ endAdornment: <IconCoupon /> }}
                   title="Enter Code"
                 ></TextField>
               </Grid>
