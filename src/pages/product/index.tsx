@@ -35,6 +35,7 @@ const Product = () => {
   const [productOptions, setProductOptions] = useState<ResponseModifiers>();
   const [showError, setShowError] = useState<string>('');
   const [basket, setBasket] = useState<ResponseBasket>();
+  const [actionStatus, setActionStatus] = useState<boolean>(false);
 
   const { categoryID, id } = useParams();
   const { categories, loading } = useSelector(
@@ -109,6 +110,7 @@ const Product = () => {
       const request: any = {};
       request.productid = productDetails?.id;
       request.quantity = count;
+      setActionStatus(true);
       dispatch(addProductRequest(basket?.id || '', request));
     }
   };
@@ -120,6 +122,7 @@ const Product = () => {
       const request: any = {};
       request.productid = productDetails?.id;
       request.quantity = count;
+      setActionStatus(true);
       dispatch(addProductRequest(dummyBasketObj.basket.id || '', request));
     }
     if (dummyBasketObj.error.data) {
@@ -135,8 +138,9 @@ const Product = () => {
 
   useEffect(() => {
     setShowError('');
-    if (productAddObj && productAddObj.basket) {
+    if (productAddObj && productAddObj.basket && actionStatus) {
       setBasket(productAddObj.basket);
+      setActionStatus(false);
       dispatch(getBasketRequest('', productAddObj.basket));
     }
     if (productAddObj && productAddObj.error && productAddObj.error.message) {

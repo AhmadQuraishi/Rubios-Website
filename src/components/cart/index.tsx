@@ -1,4 +1,12 @@
-import { Grid, Typography, Theme, Box, Divider, Button } from '@mui/material';
+import {
+  Grid,
+  Typography,
+  Theme,
+  Box,
+  Divider,
+  Button,
+  Link as MUILink,
+} from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,6 +14,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import crossIcon from '../../assets/imgs/cross-icon.svg';
 import { getBasketRequest } from '../../redux/actions/basket';
 import { removeProductRequest } from '../../redux/actions/basket/product/remove';
+import { addProductRequest } from '../../redux/actions/basket/product/add';
 import LoadingBar from '../loading-bar';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -16,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     right: 0,
     width: '100%',
     height: '100vh',
-    zIndex: 10000,
+    zIndex: 1101,
     [theme.breakpoints.down('xl')]: {
       display: 'block !important',
     },
@@ -34,7 +43,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     right: 0,
     width: '100%',
     minHeight: '300px',
-    zIndex: 10001,
+    zIndex: 1101,
     [theme.breakpoints.up('md')]: {
       maxWidth: '375px',
     },
@@ -68,38 +77,29 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: '#0075BF',
     fontSize: '11px !important',
     fontFamily: 'Poppins-Medium !important',
-    fomtWeight: '600',
     textDecoration: 'underline',
     display: 'inline',
     cursor: 'pointer',
   },
-  dummyBg: {
-    position: 'absolute',
-    height: '100vh',
-    width: '100%',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    margin: 'auto',
-    background: 'rgba(0, 0, 0, 0)',
-    zIndex: 10000000,
-    display: 'flex',
-    justifyContent: 'center',
-    alignContent: 'center',
-    alignItems: 'center',
-    justifyItems: 'center',
+  disabledLink: {
+    color: '#ccc !important',
+    fontSize: '11px !important',
+    fontFamily: 'Poppins-Medium !important',
+    display: 'inline',
+    textDecoration: 'none !important',
+    cursor: 'pointer',
   },
 }));
 
 const Cart = (props: any) => {
   const { showCart } = props;
   const classes = useStyles();
-  const [removeItem, setRemoveItem] = useState(false);
+  const [actionStatus, setActionStatus] = useState(false);
   const basketObj = useSelector((state: any) => state.basketReducer);
   const productRemoveObj = useSelector(
     (state: any) => state.removeProductReducer,
   );
+  const productAddObj = useSelector((state: any) => state.addProductReducer);
 
   const dispatch = useDispatch();
 
@@ -109,28 +109,43 @@ const Cart = (props: any) => {
   }, []);
 
   useEffect(() => {
-    if (productRemoveObj && productRemoveObj.basket && removeItem) {
+    if (productRemoveObj && productRemoveObj.basket && actionStatus) {
       dispatch(getBasketRequest('', productRemoveObj.basket));
-      setRemoveItem(false);
+      setActionStatus(false);
     }
   }, [productRemoveObj]);
 
+  useEffect(() => {
+    if (productAddObj && productAddObj.basket && actionStatus) {
+      dispatch(getBasketRequest('', productAddObj.basket));
+      setActionStatus(false);
+    }
+  }, [productAddObj]);
+
   const removeProductHandle = (productID: number) => {
-    setRemoveItem(true);
+    setActionStatus(true);
     dispatch(removeProductRequest(basketObj.basket.id, productID));
   };
 
-  const duplicateProductHandle = () => {};
+  const duplicateProductHandle = (productID: number) => {
+    const product = basketObj.basket.products.find(
+      (x: any) => x.id == productID,
+    );
+    if (product) {
+      setActionStatus(true);
+      const request: any = {};
+      request.productid = product.productId;
+      request.quantity = product.quantity;
+      console.log(request);
+      dispatch(addProductRequest(basketObj.basket.id, request));
+    }
+  };
+
   return (
     <>
       <div className={classes.dimPanel} onClick={showCart}></div>
       <Box className={classes.cartBox}>
         <Grid container spacing={0} className={classes.cartRoot}>
-          {productRemoveObj && productRemoveObj.loading && (
-            <div className={classes.dummyBg}>
-              <LoadingBar />
-            </div>
-          )}
           <Grid item xs={12}>
             <Typography
               variant="caption"
@@ -239,16 +254,28 @@ const Cart = (props: any) => {
                   <Grid item xs={12} sx={{ padding: '0' }}>
                     <Grid container spacing={0}>
                       <Grid item xs={3}>
-                        <div
-                          title="Remove"
-                          className={classes.smallLink}
-                          aria-label="Remove the item from cart"
-                          onClick={() => removeProductHandle(item.id)}
-                        >
-                          Remove
-                        </div>
+                        {(productRemoveObj && productRemoveObj.loading) ||
+                        (productAddObj && productAddObj.loading) ? (
+                          <MUILink
+                            title="Remove"
+                            className={classes.disabledLink}
+                            aria-label="Remove the item from basket"
+                            onClick={() => false}
+                          >
+                            Remove
+                          </MUILink>
+                        ) : (
+                          <MUILink
+                            title="Remove"
+                            className={classes.smallLink}
+                            aria-label="Remove the item from basket"
+                            onClick={() => removeProductHandle(item.id)}
+                          >
+                            Remove
+                          </MUILink>
+                        )}
                       </Grid>
-                      <Grid item xs={3}>
+                      <Grid item xs={3} sx={{ display: 'none' }}>
                         <Link
                           to="/"
                           title="Edit"
@@ -259,14 +286,26 @@ const Cart = (props: any) => {
                         </Link>
                       </Grid>
                       <Grid item xs={3}>
-                        <Link
-                          to="/"
-                          className={classes.smallLink}
-                          title="Duplicate"
-                          aria-label="Duplicate the menu item"
-                        >
-                          Duplicate
-                        </Link>
+                        {(productRemoveObj && productRemoveObj.loading) ||
+                        (productAddObj && productAddObj.loading) ? (
+                          <MUILink
+                            onClick={() => false}
+                            className={classes.disabledLink}
+                            title="Duplicate"
+                            aria-label="Duplicate the basket item"
+                          >
+                            Duplicate
+                          </MUILink>
+                        ) : (
+                          <MUILink
+                            onClick={() => duplicateProductHandle(item.id)}
+                            className={classes.smallLink}
+                            title="Duplicate"
+                            aria-label="Duplicate the basket item"
+                          >
+                            Duplicate
+                          </MUILink>
+                        )}
                       </Grid>
                       <Grid item xs={3}></Grid>
                     </Grid>
@@ -433,7 +472,9 @@ const Cart = (props: any) => {
                     title="$"
                   >
                     $
-                    {basketObj && basketObj.basket && basketObj.basket.subtotal}
+                    {basketObj &&
+                      basketObj.basket &&
+                      basketObj.basket.subtotal.toFixed(2)}
                   </Grid>
                   <Grid
                     item
@@ -457,7 +498,9 @@ const Cart = (props: any) => {
                     title="$"
                   >
                     $
-                    {basketObj && basketObj.basket && basketObj.basket.salestax}
+                    {basketObj &&
+                      basketObj.basket &&
+                      basketObj.basket.salestax.toFixed(2)}
                   </Grid>
                   <Grid
                     item
@@ -483,7 +526,7 @@ const Cart = (props: any) => {
                     $
                     {basketObj &&
                       basketObj.basket &&
-                      basketObj.basket.totalfees}
+                      basketObj.basket.totalfees.toFixed(2)}
                   </Grid>
                   <Grid item xs={12} sx={{ padding: '20px 0px' }}>
                     <Divider />
@@ -513,7 +556,7 @@ const Cart = (props: any) => {
                       basketObj && basketObj.basket && basketObj.basket.total
                     }
                   >
-                    ${basketObj && basketObj.basket && basketObj.basket.total}
+                    ${basketObj && basketObj.basket && basketObj.basket.total.toFixed(2)}
                   </Grid>
                 </Grid>
               </Grid>
