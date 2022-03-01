@@ -36,7 +36,7 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 import { HoursListing } from '../../helpers/hoursListing';
 import { CalendarTypeEnum } from '../../helpers/hoursListing';
-import { getSingleRestaurantCalendar, updateBasketTimeWanted } from '../../redux/actions/basket/calendar';
+import { getSingleRestaurantCalendar, updateBasketTimeWanted, deleteBasketTimeWanted } from '../../redux/actions/basket/calendar';
 import { ResponseRestaurantCalendars } from '../../types/olo-api';
 
 const isTimeSame = (fTime: string, sTime: string): boolean => {
@@ -80,6 +80,7 @@ const Checkout = () => {
   React.useEffect(() => {
     if (basket) {
       dispatch(getSingleRestaurantCalendar(basket.vendorid, moment().format('YYYYMMDD'), moment().format('YYYYMMDD')));
+      setSelectedTime(basket.timewanted ? basket.timewanted : '')
     }
   }, [basket]);
 
@@ -118,14 +119,22 @@ const Checkout = () => {
   }
 
   const onTimeSlotSelect = (event: any) => {
-    const  timeSelect = event.target.value;
-    setSelectedTime(timeSelect)
-    if(timeSelect && timeSelect !== ''){
-      const payload = createTimeWantedPayload(timeSelect)
+    const selectedValue = event.target.value;
+    setSelectedTime(selectedValue);
+    if(selectedValue && selectedValue !== ''){
+      console.log('selectedValue', selectedValue)
+      console.log('selectedTime', selectedTime)
+      if(selectedValue === basket?.timewanted){
+        if(basket){
+          dispatch(deleteBasketTimeWanted(basket.id));
+          setSelectedTime('')
+        }
+      } else {
+        const payload = createTimeWantedPayload(selectedValue)
         if(basket){
           dispatch(updateBasketTimeWanted(basket.id, payload));
         }
-
+      }
     }
   };
 
@@ -444,7 +453,7 @@ const Checkout = () => {
                     {
                       timeSlots.length > 4 ? (
                         <Grid item xs={12}>
-                          <FormControl fullWidth className="time-slot">
+                          <FormControl fullWidth className={`${timeSlots.slice(4,7).includes(selectedTime) ? 'time-slot-selected' : 'time-slot'}`}>
                             <InputLabel
                               id="select-more-times"
                               aria-label="More Times"
@@ -455,7 +464,7 @@ const Checkout = () => {
                             <Select
                               id="select-label"
                               labelId="select-more-times"
-                              value={selectedTime}
+                              value={timeSlots.slice(4,7).includes(selectedTime) ? selectedTime : ''}
                               onChange={(event) => onTimeSlotSelect(event)}
                               label="Select More times"
                               title="Select More times"

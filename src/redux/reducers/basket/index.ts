@@ -17,6 +17,7 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
       return { ...state, loading: true, basket: null };
     case basketActionsTypes.GET_BASKET_SUCCESS:
     case basketActionsTypes.UPDATE_BASKET_TIME_WANTED_SUCCESS:
+    case basketActionsTypes.DELETE_BASKET_TIME_WANTED_SUCCESS:
       return {
         ...state,
         loading: false,
@@ -25,6 +26,7 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
       };
     case basketActionsTypes.GET_BASKET_FAILURE:
     case basketActionsTypes.UPDATE_BASKET_TIME_WANTED_FAILURE:
+    case basketActionsTypes.DELETE_BASKET_TIME_WANTED_FAILURE:
       return { ...state, loading: false, error: action.error };
     case basketActionsTypes.GET_SINGLE_RESTAURANT_CALENDAR:
       return { ...state, calendar: {loading: true, data: null, error: {}}};

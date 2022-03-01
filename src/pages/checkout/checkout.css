@@ -32,6 +32,11 @@
   margin-top: 10px;
   width: 100%;
 }
+.order .right-col .time-slot-selected {
+  background: #79C043;
+  margin-top: 10px;
+  width: 100%;
+}
 .order .right-col #select-more-times,
 .order .right-col .MuiSelect-select {
   width: 100%;

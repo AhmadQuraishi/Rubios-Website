@@ -1,12 +1,14 @@
 import { takeEvery, put, call } from 'redux-saga/effects';
 import { basketActionsTypes } from '../../../types/basket';
 import { getRestaurantCalendar } from '../../../../services/restaurant/calendar';
-import { setTimeWantedBasket } from '../../../../services/basket';
+import { setTimeWantedBasket, deleteTimeWantedBasket } from '../../../../services/basket';
 import {
   getSingleRestaurantCalendarSuccess,
   getSingleRestaurantCalendarFailure,
   updateBasketTimeWantedSuccess,
-  updateBasketTimeWantedFailure
+  updateBasketTimeWantedFailure,
+  deleteBasketTimeWantedSuccess,
+  deleteBasketTimeWantedFailure
 } from '../../../actions/basket/calendar';
 
 function* asyncgetSingleRestaurantCalendarRequest(action: any): any {
@@ -36,6 +38,18 @@ function* asyncUpdateBasketTimeWanted(action: any): any {
   }
 }
 
+function* asyncDeleteBasketTimeWanted(action: any): any {
+  try {
+    const response = yield call(
+      deleteTimeWantedBasket,
+      action.basketId
+    );
+    yield put(deleteBasketTimeWantedSuccess(response));
+  } catch (error) {
+    yield put(deleteBasketTimeWantedFailure(error));
+  }
+}
+
 export function* singleRestaurantCalendarSaga() {
   yield takeEvery(
     basketActionsTypes.GET_SINGLE_RESTAURANT_CALENDAR,
@@ -44,5 +58,9 @@ export function* singleRestaurantCalendarSaga() {
   yield takeEvery(
     basketActionsTypes.UPDATE_BASKET_TIME_WANTED,
     asyncUpdateBasketTimeWanted,
+  );
+  yield takeEvery(
+    basketActionsTypes.DELETE_BASKET_TIME_WANTED,
+    asyncDeleteBasketTimeWanted,
   );
 }
