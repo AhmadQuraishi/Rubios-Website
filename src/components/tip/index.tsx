@@ -13,13 +13,24 @@ const Tip = () => {
       <ArrowRightAltIcon />
     </Button>
   );
-  const [alignment, setAlignment] = React.useState('web');
-  const onTipSelect = (
-    event: React.MouseEvent<HTMLElement>,
-    newAlignment: string,
-  ) => {
-    setAlignment(newAlignment);
+  const [tipPercentage, setTipPercentage] = React.useState(0);
+  const [tipCustomAmount, setTipCustomAmount] = React.useState('');
+  const [couponCode, setCouponCode] = React.useState('');
+
+  const handleTipPercentage = (event: React.MouseEvent<HTMLElement>, value: number ) => {
+    console.log('setTipPercentage', value)
+    setTipPercentage(value);
+    setTipCustomAmount('');
   };
+
+  const handleTipCustomAmountChange = (event: any) => {
+    setTipCustomAmount(event.target.value);
+    setTipPercentage(0)
+  }
+
+  const handleCouponCodeChange = (event: any) => {
+    setCouponCode(event.target.value);
+  }
 
   return (
     <Grid container className="tip-wrapper">
@@ -31,32 +42,47 @@ const Tip = () => {
             <Grid container>
               <FormControl>
                 <ToggleButtonGroup
-                  value={alignment}
+                  value={tipPercentage}
                   exclusive
-                  onChange={onTipSelect}
+                  onChange={handleTipPercentage}
                 >
-                  <Grid container spacing={2}>
-                    <Grid item xs={4} sm={4} md={3} lg={3}>
-                      <ToggleButton value="10%" className="selected-btn">
+                  {/* <Grid container spacing={2}>
+                    <Grid item xs={4} sm={4} md={3} lg={3}> */}
+                      <ToggleButton                              
+                        selected={ tipPercentage === 10 ? true : false}
+                        value={10} 
+                        className="selected-btn"
+                      >
                         10%
                       </ToggleButton>
-                    </Grid>
-                    <Grid item xs={4} sm={4} md={3} lg={3}>
-                      <ToggleButton value="20%" className="selected-btn">
+                    {/* </Grid>
+                    <Grid item xs={4} sm={4} md={3} lg={3}> */}
+                    <ToggleButton                              
+                        selected={ tipPercentage === 20 ? true : false}
+                        value={20} 
+                        className="selected-btn"
+                      >
                         20%
                       </ToggleButton>
-                    </Grid>
-                    <Grid item xs={4} sm={4} md={3} lg={3}>
-                      <ToggleButton value="30%" className="selected-btn">
+                    {/* </Grid> */}
+                    {/* <Grid item xs={4} sm={4} md={3} lg={3}> */}
+                    <ToggleButton                              
+                        selected={ tipPercentage === 30 ? true : false}
+                        value={30} 
+                        className="selected-btn"
+                      >
                         30%
                       </ToggleButton>
-                    </Grid>
-                  </Grid>
+                    {/* </Grid>
+                  </Grid> */}
                 </ToggleButtonGroup>
               </FormControl>
               <Grid item xs={12} md={9} lg={9}>
                 <TextField
                   className="action-btn"
+                  value={tipCustomAmount}
+                  type="number"
+                  onChange={handleTipCustomAmountChange}
                   label="Custom Amount"
                   aria-label="custom amount"
                   InputProps={{ endAdornment: <Icon /> }}
@@ -72,6 +98,8 @@ const Tip = () => {
                 <TextField
                   className="action-btn"
                   label="Enter Code"
+                  type="text"
+                  onChange={handleCouponCodeChange}
                   aria-label="Enter Code"
                   InputProps={{ endAdornment: <Icon /> }}
                   title="Enter Code"

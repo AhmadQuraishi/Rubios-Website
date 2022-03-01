@@ -37,7 +37,6 @@ import AdapterMoment from '@mui/lab/AdapterMoment';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 import { HoursListing } from '../../helpers/hoursListing';
-import { GetUserFriendlyHours } from '../../helpers/getUserFriendlyHours';
 import { CalendarTypeEnum } from '../../helpers/hoursListing';
 import { getSingleRestaurantCalendar } from '../../redux/actions/basket/calendar';
 import { ResponseRestaurantCalendars } from '../../types/olo-api';
@@ -74,6 +73,9 @@ const Checkout = () => {
   const [open, setOpen] = React.useState<boolean>(false);
   const [basket, setBasket] = React.useState<ResponseBasket>();
   const [restaurantHours, setRestaurantHours] = React.useState<HoursListing[]>();
+  const [alignment, setAlignment] = React.useState('');
+  const [tipPercentage, setTipPercentage] = React.useState(0);
+  const [tipAmount, setTipAmount] = React.useState(0);
 
   const basketObj = useSelector((state: any) => state.basketReducer);
   // const { calendar } = useSelector(    (state: any) => state.restaurantCalendarReducer  );
@@ -85,33 +87,35 @@ const Checkout = () => {
   }, [basket]);
 
   React.useEffect(() => {
+    console.log('working 1')
     if (basketObj.basket) {
       setBasket(basketObj.basket);
     }
 
     if (basketObj.calendar.data) {
+      console.log('working 2')
+
       setRestaurantHours(GetRestaurantHoursRange(basketObj.calendar.data, CalendarTypeEnum.business));
     }
     
-  }, [basketObj.basket]);
+  }, [basketObj.basket, basketObj.calendar.data]);
 
   React.useEffect(() => {
    console.log('restaurantHours', restaurantHours)
    if(restaurantHours && restaurantHours.length){
-    generateNextAvailableTimeSlots(restaurantHours[0].start, restaurantHours[0].end)
+    generateNextAvailableTimeSlots(restaurantHours[0].start, restaurantHours[0].end, restaurantHours[0].isOpenAllDay )
    }
   }, [restaurantHours]);
 
   const handleChange = (event: SelectChangeEvent) => {
     setTime(event.target.value as string);
+    setAlignment('');
   };
 
-  const [alignment, setAlignment] = React.useState('web');
-  const onTimeSlotSelect = (
-    event: React.MouseEvent<HTMLElement>,
-    newAlignment: string,
-  ) => {
-    setAlignment(newAlignment);
+  const onTimeSlotSelect = (event: React.MouseEvent<HTMLElement>, value: any) => {
+    console.log('event', value)
+    setAlignment(value);
+    setTime('')
   };
 
   interface CustomProps {
@@ -139,30 +143,52 @@ const Checkout = () => {
     },
   );
 
-  const generateNextAvailableTimeSlots = (openingTime: string, ClosingTime: string) => {
-    // let timeSlots = [];
-    // const currentTime = moment().format();
+  const generateNextAvailableTimeSlots = (openingTime: string, closingTime: string, isOpenAllDay: Boolean) => {
+    // return []
+    let timeSlots = [];
+    let currentTime = moment();
+    let startTime;
 
-    // if(currentTime )
-    // let start = moment(startTime, 'YYYYMMDD HH:mm');
-    // let end = moment(endTime, 'YYYYMMDD HH:mm');
+    let openAt = moment(openingTime, 'YYYYMMDD HH:mm');
+    let closeAt = moment(closingTime, 'YYYYMMDD HH:mm');
 
-    // let currentTime = moment(startTime, 'YYYYMMDD HH:mm');
+    if(isOpenAllDay || currentTime.isBetween(openAt, closeAt)){
+      startTime = currentTime.add(30, 'minute');
+      if(isOpenAllDay){
+        openAt.startOf('day');
+        closeAt.endOf('day')
+      }
+    }
+    if(currentTime.isBefore(openAt)){
+      startTime = openAt.add(30, 'minute')
+    }
+    if(currentTime.isAfter(closeAt)){
+     return [];
+    }
 
-    // console.log('start.diff(end,)', start.diff(end, 'seconds'))
-    // while(end.diff(start, 'seconds') > 900){
-    //   timeSlots.push(moment(start).format('YYYYMMDD HH:mm'));
-    //     start.add('m', 15);
-    // }
+    let count = 0;
+    const maxAllowed = 7;
+    while((closeAt.diff(openAt, 'seconds') > 900) && (count <= maxAllowed) ){
+       timeSlots.push(moment(startTime).format('YYYYMMDD HH:mm'));
+       startTime && startTime.add('m', 15);
+       count++;
+    }
 
-    // console.log('timeSlots', timeSlots)
-    // setTimeSlots(timeSlots)
+    console.log('timeSlots', timeSlots)
+    setTimeSlots(timeSlots)
   }
 
   const handleDateChange = (e: any) => {
     setSelectedDate(e)
     setOpen(!open);
   }
+
+  React.useEffect(() => {
+    console.log('selectedDate', selectedDate)
+    if(basket){
+      dispatch(getSingleRestaurantCalendar(basket.vendorid, moment(selectedDate).format('YYYYMMDD'), moment(selectedDate).format('YYYYMMDD')));
+    }
+  }, [selectedDate])
 
   return (
     <>
@@ -213,7 +239,7 @@ const Checkout = () => {
                               .email('Invalid email address')
                               .required('Email is required'),
 
-                            phone: Yup.string().min(14, 'Enter valid number'),
+                            phone: Yup.string().min(14, 'Enter valid number').required('Phone is required'),
                             emailNotification: Yup.bool().optional()
                           })}
                           onSubmit={async (values) => {
@@ -242,6 +268,7 @@ const Checkout = () => {
                       <Grid item xs={12}>
                         <TextField
                           aria-label="Name"
+                          onBlur={handleBlur}
                           label="Name"
                           aria-required="true"
                           title="Name"
@@ -249,7 +276,7 @@ const Checkout = () => {
                           name="name"
                           value={values.name}
                           onChange={handleChange}
-                          error={Boolean(touched && errors.name)}
+                          error={Boolean(touched.name && errors.name)}
                           helperText={errors.name}
                         />
                       </Grid>
@@ -257,6 +284,7 @@ const Checkout = () => {
                       <Grid item xs={12}>
                         <TextField
                           aria-label="Phone Number"
+                          onBlur={handleBlur}
                           label="Phone Number"
                           aria-required="true"
                           title="Phone Number"
@@ -264,20 +292,19 @@ const Checkout = () => {
                           onChange={handleChange}
                           name="phone"
                           InputLabelProps={{
-                            shrink: touched && values.phone == '' ? false : true,
+                            // shrink: touched.phone && values.phone === '' ? false : true,
                           }}
                           InputProps={{
                             inputComponent: NumberFormatCustom as any,
                           }}
-                          error={Boolean(touched && errors.phone)}
+                          error={Boolean(touched.phone && errors.phone)}
                           helperText={errors.phone}
-
-
                         />
                       </Grid>
                       <Grid item xs={12}>
                         <TextField
                           aria-label="Email"
+                          onBlur={handleBlur}
                           label="Email"
                           aria-required="true"
                           title="Email"
@@ -285,7 +312,7 @@ const Checkout = () => {
                           name="email"
                           value={values.email}
                           onChange={handleChange}
-                          error={Boolean(touched && errors.email)}
+                          error={Boolean(touched.email && errors.email)}
                           helperText={errors.email}
                         />
                       </Grid>
@@ -320,8 +347,8 @@ const Checkout = () => {
                       </Grid>
                     </Grid>
                     <Grid item xs={12}>
-                      <Typography variant="h4" title="THURSDAY SEPT.9TH">
-                        THURSDAY SEPT.9TH
+                      <Typography style={{textTransform: 'uppercase'}} variant="h4" title={moment(selectedDate).format('dddd MMM.Do')}>
+                        {moment(selectedDate).format('dddd MMM.Do')}
                       </Typography>
                     </Grid>
                     <Grid item xs={12}>                
@@ -334,20 +361,20 @@ const Checkout = () => {
                         (change)
                       </Button>
                       <LocalizationProvider dateAdapter={AdapterMoment}>
-                   <DatePicker
-                      open={open}
-                      label="Date desktop"
-                      minDate={moment()}
-                      inputFormat="MM/dd/yyyy"
-                      value={selectedDate}
-                      onChange={handleDateChange}
-                      renderInput={
-                            ({ inputRef, inputProps, InputProps }) => (
-                                <Box ref={inputRef}>
-                                </Box>
-                            )   
-                      }
-                    />
+                      <DatePicker
+                          open={open}
+                          label="Date desktop"
+                          minDate={moment()}
+                          inputFormat="MM/dd/yyyy"
+                          value={selectedDate}
+                          onChange={handleDateChange}
+                          renderInput={
+                                ({ inputRef, inputProps, InputProps }) => (
+                                    <Box ref={inputRef}>
+                                    </Box>
+                                )   
+                          }
+                        />
                  </LocalizationProvider>
                     </Grid>
                     <Grid item xs={12}>
@@ -368,23 +395,25 @@ const Checkout = () => {
                             value={alignment}
                             exclusive
                             onChange={onTimeSlotSelect}
+                            className="selected-btn"
                           >
-                            <Grid container spacing={2}>
+                            {/* <Grid container spacing={2}> */}
                               {
                                 timeSlots.slice(0,4).map(time => {
                                   return (
-                                    <Grid item xs={6} sm={6} md={3} lg={3}>
+                                    // <Grid item xs={6} sm={6} md={3} lg={3}>
                                       <ToggleButton
-                                        value="06:10"
+                                        value={moment(time, 'YYYYMMDD HH:mm').format('HH:mm')}
                                         className="selected-btn"
+                                        selected={ alignment === `${moment(time, 'YYYYMMDD HH:mm').format('HH:mm')}` ? true : false}
                                       >
                                         {moment(time, 'YYYYMMDD HH:mm').format('HH:mm')}
                                       </ToggleButton>
-                                    </Grid>
+                                    // </Grid>
                                   )
                                 })
                               }
-                            </Grid>
+                            {/* </Grid> */}
                           </ToggleButtonGroup>
                         </FormControl>
                       </Grid>
