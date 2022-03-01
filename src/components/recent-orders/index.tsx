@@ -9,8 +9,6 @@ import { TablePagination } from '@mui/material';
 const RecentOrders = () => {
   const [recentorders, setOrders] = React.useState([]);
   const dispatch = useDispatch();
-  console.log('123');
-
   const authtoken = useSelector((state: any) => state.TokensReducer.authtoken);
   const { userRecentOrders, loading } = useSelector(
     (state: any) => state.userReducer,
@@ -84,9 +82,9 @@ const RecentOrders = () => {
                     <Grid item xs={12} sm={4}>
                       <CardMedia
                         component="img"
-                        title="Live from space album cover"
+                        title="image"
                         image={require('../../assets/imgs/order-hidtory-icon.png')}
-                        alt="Live from space album cover"
+                        alt="image"
                         className="order-img"
                       />
                     </Grid>

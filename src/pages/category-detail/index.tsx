@@ -47,6 +47,7 @@ const CategoryDetail = () => {
       setSelectedCategory(undefined);
     }
   }, [loading]);
+
   const navigate = useNavigate();
   useEffect(() => {
     if (restaurant === null) {
@@ -66,6 +67,10 @@ const CategoryDetail = () => {
       }
     }
   }, [categories]);
+
+  const changeImageSize = (path: string) => {
+    return path.replaceAll('w=210', 'w=520').replaceAll('h=140', 'w=520');
+  };
 
   return (
     <Fragment>
@@ -91,6 +96,7 @@ const CategoryDetail = () => {
             <ProductListing
               productList={selectedCategory.products}
               categoryID={id}
+              imgPath={(categories && categories.imagepath) || ''}
             />
           </Grid>
         </Grid>

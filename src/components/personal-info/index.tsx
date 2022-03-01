@@ -111,9 +111,6 @@ const PersonalInfo = () => {
 
   return (
     <div className={classes.root}>
-      {!loading && error && error.data && (
-        <ErrorMessageAlert message={error.data} />
-      )}
       {loading && !userProfile && <LoadingBar />}
       {userProfile && (
         <Grid container>
@@ -342,8 +339,6 @@ const PersonalInfo = () => {
                         title="submit"
                         variant="contained"
                         sx={{ width: { xs: '100%', lg: '400px' } }}
-                        disabled={!(dirty && isValid)}
-                        onBlur={handleBlur}
                       >
                         Submit
                       </Button>

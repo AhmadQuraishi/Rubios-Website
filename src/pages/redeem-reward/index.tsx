@@ -1,8 +1,12 @@
 import { Grid, Theme, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { Fragment } from 'react';
 import FoodMenuCard from '../../components/food-menu-card';
 import './redeem-reward.css';
+import React, {useEffect, Fragment, useState} from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getRedeemRewards } from '../../redux/actions/reward';
+
+
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -20,6 +24,21 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const RedeemRewards = () => {
   const classes = useStyles();
+  const [redeemRewards, setRedeemRewardss] = useState([]);
+  const dispatch = useDispatch();
+  const {userRedeemRewards, loading } =
+    useSelector((state: any) => state.rewardReducer);
+  useEffect(() => {
+    dispatch(getRedeemRewards());
+  }, []);
+
+  useEffect(() => {
+    if (userRedeemRewards) {
+      console.log("Redeem Rewards", userRedeemRewards)
+      // setRedeemRewardss(userRedeemRewards);
+    }
+  }, [userRedeemRewards, loading]);
+
   const menuItems1 = [
     {
       image:
