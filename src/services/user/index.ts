@@ -92,6 +92,23 @@ export const requestUserFavoriteOrders = (authtoken: string) => {
   }
 };
 
+//DELETE FAV order
+export const requestDeleteFavOrder = ( favid: number) => {
+  try {
+    const url = process.env.REACT_APP_OLO_API || "";
+    const authtoken = '99aUK4SLSvQwZkmCeM8kSgp6uCPR2KNz';
+    return axiosInstance
+      .delete(url + `/users/${authtoken}/faves/${favid}`)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.log(error.response);
+        throw error;
+      });
+  } catch (error) {
+    throw error;
+  }
+};
+
 //Delivery Addresses
 export const requestUserDeliiveryAddresses = (authtoken: string) => {
   try {

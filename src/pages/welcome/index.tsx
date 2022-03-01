@@ -6,8 +6,8 @@ import {
   Card,
   CardContent,
   Button,
-  Link,
 } from '@mui/material';
+import { Link } from 'react-router-dom';
 import './welcome.css';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -48,7 +48,7 @@ const Welcome = () => {
       <Grid container component="main" columns={16} className={classes.root}>
         <Grid item xs={12} className="welcome-wrapper">
           <Grid container className="welcome-content">
-            {recentorders.length > 0 && (
+            {!loading && recentorders.length > 0 && (
               <Grid item xs={12} md={6} lg={6} className="left-col">
                 <Typography variant="caption" className="label" title="Welcome">
                   WELCOME
@@ -101,23 +101,23 @@ const Welcome = () => {
                             </Fragment>
                           ))}
                         <Link
-                          href=""
+                          to="/product"
                           aria-label="edit order"
                           color="#a5a5a5"
-                          fontWeight={900}
-                          textTransform="uppercase"
-                          underline="none"
+                          // fontWeight={900}
+                          // textTransform="uppercase"
+                          // underline="none"
                           title="EDIT ORDER"
                         >
                           Edit Order
                         </Link>
                         <Link
-                          href=""
+                          to="/product"
                           aria-label="re order"
                           color="#0075bf"
-                          fontWeight={900}
-                          textTransform="uppercase"
-                          underline="none"
+                          // fontWeight={900}
+                          // textTransform="uppercase"
+                          // underline="none"
                           title="order"
                         >
                           Re Order
@@ -139,14 +139,11 @@ const Welcome = () => {
               </Typography>
               <Typography variant="h5" title="Broadway Blvd">
                 Broadway Blvd
-                <Typography
-                  variant="caption"
-                  className="caption-grey"
-                  title="change"
-                >
+                <Link className="caption-grey" title="change" to="/location">
                   (change)
-                </Typography>
+                </Link>
               </Typography>
+
               <Typography variant="h6" title="20212 North 59th Ave, Ste.465A">
                 20212 North 59th Ave, Ste.465A
               </Typography>

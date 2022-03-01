@@ -34,6 +34,7 @@ const userReducer = (state = initialState, action: any) => {
     case Type.GET_BILLING_ACCOUNTS:
     case Type.GET_BILLING_ACCOUNT_BY_ID:
     case Type.GET_GIFT_CARDS:
+      case Type.DELETE_FAV_ORDER:
       return { ...state, loading: true };
 
     //Success cases
@@ -104,17 +105,18 @@ const userReducer = (state = initialState, action: any) => {
         userBillingAccountById: action.payload,
       };
     case Type.DELETE_BILLING_ACCOUNTS_SUCCESS:
+    case Type.DEL_FAV_ORDER_SUCCESS:
       return {
         ...state,
         loading: false,
       }; 
-      case Type.UPDATE_BILLING_ACCOUNTS_SUCCESS:
+    case Type.UPDATE_BILLING_ACCOUNTS_SUCCESS:
       return {
         ...state,
         loading: false,
         userBillingAccounts: action.payload,
       };
-      case Type.GET_GIFT_CARDS_SUCCESS:
+    case Type.GET_GIFT_CARDS_SUCCESS:
         return {
           ...state,
           loading: false,
@@ -141,6 +143,7 @@ const userReducer = (state = initialState, action: any) => {
     case Type.DELETE_BILLING_ACCOUNTS_FAILURE:
     case Type.UPDATE_BILLING_ACCOUNTS_FAILURE:
     case Type.GET_GIFT_CARDS_FAILURE:
+    case Type.DEL_FAV_ORDER__FAILURE:
       return { ...state, loading: false, error: action.error  , success: 0};
 
     default:
