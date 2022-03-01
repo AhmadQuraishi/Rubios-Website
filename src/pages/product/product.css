@@ -74,6 +74,10 @@
   box-shadow: none !important;
 }
 
+.ph-fix{
+padding-right: 20px;
+}
+
 
 @media screen and (max-width: 768px) {
   .product-detail {

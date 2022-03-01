@@ -139,6 +139,7 @@ const Product = () => {
   }, [basketObj.basket]);
 
   useEffect(() => {
+    console.log(productAddObj);
     setShowError('');
     if (productAddObj && productAddObj.basket) {
       setBasket(productAddObj.basket);
@@ -149,8 +150,12 @@ const Product = () => {
     }
   }, [productAddObj]);
 
+  const changeImageSize = (path: string) => {
+    return path.replaceAll('w=210', 'w=520').replaceAll('h=140', 'w=520');
+  };
+
   return (
-    <>
+    <div style={{ minHeight: '500px' }}>
       <StoreInfoBar />
       {loading == true && productDetails == null && productOptions == null && (
         <ProductSkeletonUI />
@@ -237,10 +242,20 @@ const Product = () => {
                   )}
                 </Grid>
               </Grid>
-              <Grid item xs={12} sm={12} md={12} lg={6}>
+              <Grid
+                item
+                xs={12}
+                sm={12}
+                md={12}
+                lg={6}
+                sx={{ marginTop: '20px', textAlign: 'center' }}
+              >
                 {productDetails.imagefilename ? (
                   <img
-                    src={productDetails.imagefilename}
+                    src={
+                      ((categories && categories.imagepath) || '') +
+                      changeImageSize(productDetails.imagefilename)
+                    }
                     alt={productDetails.name}
                     aria-label={productDetails.name}
                     title={productDetails.name}
@@ -434,7 +449,7 @@ const Product = () => {
           </Grid>
         </Grid>
       )}
-    </>
+    </div>
   );
 };
 
