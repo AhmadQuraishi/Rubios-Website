@@ -1,9 +1,12 @@
 import { Grid, Typography, Theme, Box, Divider, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import crossIcon from '../../assets/imgs/cross-icon.svg';
+import { getBasketRequest } from '../../redux/actions/basket';
+import { removeProductRequest } from '../../redux/actions/basket/product/remove';
+import LoadingBar from '../loading-bar';
 
 const useStyles = makeStyles((theme: Theme) => ({
   dimPanel: {
@@ -43,6 +46,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
   },
   cartRoot: {
+    position: 'relative',
     padding: '20px 20px 10px 20px',
   },
   cartTitle: {
@@ -66,21 +70,67 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontFamily: 'Poppins-Medium !important',
     fomtWeight: '600',
     textDecoration: 'underline',
+    display: 'inline',
+    cursor: 'pointer',
+  },
+  dummyBg: {
+    position: 'absolute',
+    height: '100vh',
+    width: '100%',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    margin: 'auto',
+    background: 'rgba(0, 0, 0, 0)',
+    zIndex: 10000000,
+    display: 'flex',
+    justifyContent: 'center',
+    alignContent: 'center',
+    alignItems: 'center',
+    justifyItems: 'center',
   },
 }));
+
 const Cart = (props: any) => {
   const { showCart } = props;
   const classes = useStyles();
+  const [removeItem, setRemoveItem] = useState(false);
   const basketObj = useSelector((state: any) => state.basketReducer);
+  const productRemoveObj = useSelector(
+    (state: any) => state.removeProductReducer,
+  );
+
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  useEffect(() => {
+    if (productRemoveObj && productRemoveObj.basket && removeItem) {
+      dispatch(getBasketRequest('', productRemoveObj.basket));
+      setRemoveItem(false);
+    }
+  }, [productRemoveObj]);
+
+  const removeProductHandle = (productID: number) => {
+    setRemoveItem(true);
+    dispatch(removeProductRequest(basketObj.basket.id, productID));
+  };
+
+  const duplicateProductHandle = () => {};
   return (
     <>
       <div className={classes.dimPanel} onClick={showCart}></div>
       <Box className={classes.cartBox}>
         <Grid container spacing={0} className={classes.cartRoot}>
+          {productRemoveObj && productRemoveObj.loading && (
+            <div className={classes.dummyBg}>
+              <LoadingBar />
+            </div>
+          )}
           <Grid item xs={12}>
             <Typography
               variant="caption"
@@ -189,14 +239,14 @@ const Cart = (props: any) => {
                   <Grid item xs={12} sx={{ padding: '0' }}>
                     <Grid container spacing={0}>
                       <Grid item xs={3}>
-                        <Link
+                        <div
                           title="Remove"
                           className={classes.smallLink}
-                          to="/product"
                           aria-label="Remove the item from cart"
+                          onClick={() => removeProductHandle(item.id)}
                         >
                           Remove
-                        </Link>
+                        </div>
                       </Grid>
                       <Grid item xs={3}>
                         <Link

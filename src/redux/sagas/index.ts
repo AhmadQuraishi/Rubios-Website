@@ -3,7 +3,7 @@ import { footerMenuItemSaga } from './footer';
 import { categoryItemsSaga } from './category';
 import { storeToken } from './token';
 import { userSaga } from './user';
-import {redeemRewardSada} from './reward';
+import { redeemRewardSada } from './reward';
 import { restaurantInfoSaga } from './restaurant';
 import { restaurantCalendarSaga } from './restaurant/calendar';
 import { productOptionsSaga } from './product/option';
@@ -12,8 +12,9 @@ import { storeAuth } from './auth';
 import { resturantListSaga } from './restaurant/list';
 import { locationSaga } from './location';
 import { BasketSaga } from './basket';
-import { dummyBasketSaga } from './basket/dummy';
-import { addSingleProductSaga } from './basket/addSingleProduct';
+import { createBasketSaga } from './basket/create';
+import { addProductSaga } from './basket/product/add';
+import { removeProductSaga } from './basket/product/remove';
 
 export default function* rootSaga() {
   yield all([
@@ -29,8 +30,9 @@ export default function* rootSaga() {
     storeAuth(),
     resturantListSaga(),
     redeemRewardSada(),
-    dummyBasketSaga(),
+    createBasketSaga(),
     BasketSaga(),
-    addSingleProductSaga(),
+    addProductSaga(),
+    removeProductSaga()
   ]);
 }

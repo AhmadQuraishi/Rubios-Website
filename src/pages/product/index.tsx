@@ -16,7 +16,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as React from 'react';
 import { getCategoriesRequest } from '../../redux/actions/category';
 import { useNavigate, useParams } from 'react-router-dom';
-import LoadingBar from '../../components/loading-bar';
 import {
   Category,
   Option,
@@ -27,8 +26,8 @@ import {
 } from '../../types/olo-api';
 import { getProductOptionRequest } from '../../redux/actions/product/option';
 import ProductSkeletonUI from '../../components/product-skeleton-ui';
-import { getDummyBasketRequest } from '../../redux/actions/basket/dummy';
-import { addSingleProductRequest } from '../../redux/actions/basket/addSingleProduct';
+import { setBasketRequest } from '../../redux/actions/basket/create';
+import { addProductRequest } from '../../redux/actions/basket/product/add';
 import { getBasketRequest } from '../../redux/actions/basket';
 
 const Product = () => {
@@ -42,12 +41,10 @@ const Product = () => {
     (state: any) => state.categoryReducer,
   );
 
-  const dummyBasketObj = useSelector((state: any) => state.dummyBasketReducer);
+  const dummyBasketObj = useSelector((state: any) => state.createBasketReducer);
   const basketObj = useSelector((state: any) => state.basketReducer);
 
-  const productAddObj = useSelector(
-    (state: any) => state.addSingleProductReducer,
-  );
+  const productAddObj = useSelector((state: any) => state.addProductReducer);
 
   const { options } = useSelector((state: any) => state.productOptionsReducer);
   const { restaurant } = useSelector(
@@ -107,12 +104,12 @@ const Product = () => {
     if (basketObj.basket == null) {
       const request: any = {};
       request.vendorid = restaurant.id;
-      dispatch(getDummyBasketRequest(request));
+      dispatch(setBasketRequest(request));
     } else {
       const request: any = {};
       request.productid = productDetails?.id;
       request.quantity = count;
-      dispatch(addSingleProductRequest(basket?.id || '', request));
+      dispatch(addProductRequest(basket?.id || '', request));
     }
   };
 
@@ -123,9 +120,7 @@ const Product = () => {
       const request: any = {};
       request.productid = productDetails?.id;
       request.quantity = count;
-      dispatch(
-        addSingleProductRequest(dummyBasketObj.basket.id || '', request),
-      );
+      dispatch(addProductRequest(dummyBasketObj.basket.id || '', request));
     }
     if (dummyBasketObj.error.data) {
       setShowError(dummyBasketObj.error.data.message);
@@ -139,7 +134,6 @@ const Product = () => {
   }, [basketObj.basket]);
 
   useEffect(() => {
-    console.log(productAddObj);
     setShowError('');
     if (productAddObj && productAddObj.basket) {
       setBasket(productAddObj.basket);
@@ -252,6 +246,7 @@ const Product = () => {
               >
                 {productDetails.imagefilename ? (
                   <img
+                    style={{ width: '100%', display: 'block', margin: 'auto' }}
                     src={
                       ((categories && categories.imagepath) || '') +
                       changeImageSize(productDetails.imagefilename)
