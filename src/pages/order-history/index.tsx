@@ -1,13 +1,8 @@
-import React, { Fragment, useEffect } from 'react';
-import { Box, Grid, Theme, Typography } from '@mui/material';
+import React from 'react';
+import { Grid, Theme, Typography } from '@mui/material';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import OrderHistoryCard from '../../components/favorite-orders';
 import { makeStyles } from '@mui/styles';
-import { boxSizing } from '@mui/system';
-import { useDispatch, useSelector } from 'react-redux';
-import { getUserRecentOrders } from '../../redux/actions/user';
-import LoadingBar from '../../components/loading-bar';
 import FavoriteOrders from '../../components/favorite-orders';
 import RecentOrders from '../../components/recent-orders';
 

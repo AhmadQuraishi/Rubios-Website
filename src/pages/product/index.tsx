@@ -16,7 +16,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as React from 'react';
 import { getCategoriesRequest } from '../../redux/actions/category';
 import { useNavigate, useParams } from 'react-router-dom';
-import LoadingBar from '../../components/loading-bar';
 import {
   Category,
   Option,
@@ -27,8 +26,8 @@ import {
 } from '../../types/olo-api';
 import { getProductOptionRequest } from '../../redux/actions/product/option';
 import ProductSkeletonUI from '../../components/product-skeleton-ui';
-import { getDummyBasketRequest } from '../../redux/actions/basket/dummy';
-import { addSingleProductRequest } from '../../redux/actions/basket/addSingleProduct';
+import { setBasketRequest } from '../../redux/actions/basket/create';
+import { addProductRequest } from '../../redux/actions/basket/product/add';
 import { getBasketRequest } from '../../redux/actions/basket';
 
 const Product = () => {
@@ -36,18 +35,17 @@ const Product = () => {
   const [productOptions, setProductOptions] = useState<ResponseModifiers>();
   const [showError, setShowError] = useState<string>('');
   const [basket, setBasket] = useState<ResponseBasket>();
+  const [actionStatus, setActionStatus] = useState<boolean>(false);
 
   const { categoryID, id } = useParams();
   const { categories, loading } = useSelector(
     (state: any) => state.categoryReducer,
   );
 
-  const dummyBasketObj = useSelector((state: any) => state.dummyBasketReducer);
+  const dummyBasketObj = useSelector((state: any) => state.createBasketReducer);
   const basketObj = useSelector((state: any) => state.basketReducer);
 
-  const productAddObj = useSelector(
-    (state: any) => state.addSingleProductReducer,
-  );
+  const productAddObj = useSelector((state: any) => state.addProductReducer);
 
   const { options } = useSelector((state: any) => state.productOptionsReducer);
   const { restaurant } = useSelector(
@@ -107,12 +105,13 @@ const Product = () => {
     if (basketObj.basket == null) {
       const request: any = {};
       request.vendorid = restaurant.id;
-      dispatch(getDummyBasketRequest(request));
+      dispatch(setBasketRequest(request));
     } else {
       const request: any = {};
       request.productid = productDetails?.id;
       request.quantity = count;
-      dispatch(addSingleProductRequest(basket?.id || '', request));
+      setActionStatus(true);
+      dispatch(addProductRequest(basket?.id || '', request));
     }
   };
 
@@ -123,9 +122,8 @@ const Product = () => {
       const request: any = {};
       request.productid = productDetails?.id;
       request.quantity = count;
-      dispatch(
-        addSingleProductRequest(dummyBasketObj.basket.id || '', request),
-      );
+      setActionStatus(true);
+      dispatch(addProductRequest(dummyBasketObj.basket.id || '', request));
     }
     if (dummyBasketObj.error.data) {
       setShowError(dummyBasketObj.error.data.message);
@@ -139,39 +137,46 @@ const Product = () => {
   }, [basketObj.basket]);
 
   useEffect(() => {
-    if (productAddObj.basket) {
+    setShowError('');
+    if (productAddObj && productAddObj.basket && actionStatus) {
       setBasket(productAddObj.basket);
+      setActionStatus(false);
       dispatch(getBasketRequest('', productAddObj.basket));
     }
-  }, [productAddObj.basket]);
+    if (productAddObj && productAddObj.error && productAddObj.error.message) {
+      setShowError(productAddObj.error.message);
+    }
+  }, [productAddObj]);
+
+  const changeImageSize = (path: string) => {
+    return path.replaceAll('w=210', 'w=520').replaceAll('h=140', 'w=520');
+  };
 
   return (
-    <>
+    <div style={{ minHeight: '500px' }}>
       <StoreInfoBar />
       {loading == true && productDetails == null && productOptions == null && (
         <ProductSkeletonUI />
       )}
-      {basketObj && basketObj.error && basketObj.error.message && (
-        <Snackbar
-          open={showError != '' ? true : false}
-          autoHideDuration={6000}
-          TransitionComponent={Slide}
+      <Snackbar
+        open={showError != '' ? true : false}
+        autoHideDuration={6000}
+        TransitionComponent={Slide}
+        onClose={() => {
+          setShowError('');
+        }}
+      >
+        <Alert
           onClose={() => {
             setShowError('');
           }}
+          severity="error"
+          variant="filled"
+          sx={{ width: '100%', alignItems: 'center' }}
         >
-          <Alert
-            onClose={() => {
-              setShowError('');
-            }}
-            severity="error"
-            variant="filled"
-            sx={{ width: '100%', alignItems: 'center' }}
-          >
-            {showError}
-          </Alert>
-        </Snackbar>
-      )}
+          {showError}
+        </Alert>
+      </Snackbar>
       {productDetails && (
         <Grid container className="product-detail">
           <Grid item xs={12} sm={12} md={12} lg={12}>
@@ -222,21 +227,34 @@ const Product = () => {
                       Cal
                     </Typography>
                   </Grid>
-                  <Grid item xs={6}>
-                    <Typography
-                      variant="h6"
-                      className="price"
-                      title={`$${productDetails.cost.toFixed(2)}`}
-                    >
-                      ${productDetails.cost.toFixed(2)}
-                    </Typography>
-                  </Grid>
+                  {productDetails.cost > 0 && (
+                    <Grid item xs={6}>
+                      <Typography
+                        variant="h6"
+                        className="price"
+                        title={`$${productDetails.cost.toFixed(2)}`}
+                      >
+                        ${productDetails.cost.toFixed(2)}
+                      </Typography>
+                    </Grid>
+                  )}
                 </Grid>
               </Grid>
-              <Grid item xs={12} sm={12} md={12} lg={6}>
+              <Grid
+                item
+                xs={12}
+                sm={12}
+                md={12}
+                lg={6}
+                sx={{ marginTop: '20px', textAlign: 'center' }}
+              >
                 {productDetails.imagefilename ? (
                   <img
-                    src={productDetails.imagefilename}
+                    style={{ width: '100%', display: 'block', margin: 'auto' }}
+                    src={
+                      ((categories && categories.imagepath) || '') +
+                      changeImageSize(productDetails.imagefilename)
+                    }
                     alt={productDetails.name}
                     aria-label={productDetails.name}
                     title={productDetails.name}
@@ -430,7 +448,7 @@ const Product = () => {
           </Grid>
         </Grid>
       )}
-    </>
+    </div>
   );
 };
 

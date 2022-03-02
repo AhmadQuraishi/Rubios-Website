@@ -6,22 +6,22 @@ const INITIAL_STATE = {
   error: {},
 };
 
-const dummyBasketReducer = (state = INITIAL_STATE, action: any) => {
+const createBasketReducer = (state = INITIAL_STATE, action: any) => {
   switch (action.type) {
-    case basketActionsTypes.GET_DUMMY_BASKET_REQUEST:
-      return { ...state, loading: true, basket: null };
-    case basketActionsTypes.GET_DUMMY_BASKET_SUCCESS:
+    case basketActionsTypes.SET_BASKET_REQUEST:
+      return { ...state, loading: true, basket: null, error: {} };
+    case basketActionsTypes.SET_BASKET_SUCCESS:
       return {
         ...state,
         loading: false,
         basket: action.payload,
         error: {},
       };
-    case basketActionsTypes.GET_DUMMY_BASKET_FAILURE:
+    case basketActionsTypes.SET_BASKET_FAILURE:
       return { ...state, loading: false, error: action.error };
     default:
       return state;
   }
 };
 
-export default dummyBasketReducer;
+export default createBasketReducer;

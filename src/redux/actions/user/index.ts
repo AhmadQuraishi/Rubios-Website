@@ -312,3 +312,27 @@ export function getAllGiftCardsFailure(error: any) {
     error: error,
   };
 }
+
+//Delete Fav Order
+//Delete user delivery address
+
+export function deleteFavOrder(favid: number) {
+  return {
+    type: Type.DELETE_FAV_ORDER,
+    favid: favid,
+  };
+}
+
+export function deleteFavOrderSuccess() {
+  return {
+    type: Type.DEL_FAV_ORDER_SUCCESS,
+
+  };
+}
+
+export function deleteFavOrderFailure(error: any) {
+  return {
+    type: Type.DEL_FAV_ORDER__FAILURE,
+    error: error,
+  };
+}

@@ -114,9 +114,9 @@ const RecentOrders = () => {
                     <Grid item xs={12} sm={4}>
                       <CardMedia
                         component="img"
-                        title="Live from space album cover"
+                        title="image"
                         image={require('../../assets/imgs/order-hidtory-icon.png')}
-                        alt="Live from space album cover"
+                        alt="image"
                         className="order-img"
                       />
                     </Grid>

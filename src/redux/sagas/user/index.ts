@@ -3,7 +3,6 @@ import { userTypes as Type } from '../../types/user';
 import {
   RequestUserProfile,
   requestUserRecentOrders,
-  requestUserFavoriteOrders,
   requestUserDeliiveryAddresses,
   requestSetUserDefDelAddress,
   requestDelUserDelAddress,
@@ -13,7 +12,9 @@ import {
   deleteUserBillingAccount,
   requestUserBillingAccountById,
   updateUserBillingAccount,
-  requestUseGiftCards
+  requestUseGiftCards,
+  requestDeleteFavOrder,
+  requestUserFavoriteOrders
 } from '../../../services/user';
 import {
   deleteUserDelAddFailure,
@@ -41,7 +42,9 @@ import {
   getBillingAccountByIdSuccess,
   getBillingAccountByIdFailure,
   getAllGiftCardsSuccess,
-  getAllGiftCardsFailure
+  getAllGiftCardsFailure,
+  deleteFavOrderSuccess,
+  deleteFavOrderFailure
 
 } from '../../actions/user';
 import ErrorMessageAlert from '../../../components/error-message-alert';
@@ -73,6 +76,18 @@ function* userFavoriteOrdersHandler(action: any): any {
     yield put(getUserFavoritetOrdersSuccess(response));
   } catch (error) {
     yield put(getUserFavoritetOrdersFailure(error));
+  }
+}
+
+function* deleleteFavOrderHandler(action: any): any {
+  try {
+    const response = yield call(
+      requestDeleteFavOrder,
+      action.favid,
+    );
+    yield put(deleteFavOrderSuccess());
+  } catch (error) {
+    yield put(deleteFavOrderFailure(error));
   }
 }
 
@@ -264,6 +279,10 @@ export function* userSaga() {
   yield takeEvery(
     Type.GET_GIFT_CARDS,
     getUserGiftCardsHandler,
+  );
+  yield takeEvery(
+    Type.DELETE_FAV_ORDER,
+    deleleteFavOrderHandler,
   );
 }
 

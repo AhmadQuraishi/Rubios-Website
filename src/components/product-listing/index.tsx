@@ -1,11 +1,4 @@
-import {
-  Grid,
-  Typography,
-  Card,
-  CardMedia,
-  CardContent,
-  Theme,
-} from '@mui/material';
+import { Grid, Typography, Card, CardContent, Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Link } from 'react-router-dom';
 import { Fragment, useEffect } from 'react';
@@ -50,11 +43,16 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const ProductListing = (props: any) => {
   const classes = useStyles();
-  const { productList, shownItemsCount, categoryID } = props;
+  const { productList, shownItemsCount, categoryID, imgPath } = props;
   let products: [Product] = productList;
   if (shownItemsCount) {
     products = productList.slice(0, shownItemsCount);
   }
+
+  const changeImageSize = (path: string) => {
+    return path.replaceAll('w=210', 'w=640').replaceAll('h=140', 'w=640');
+  };
+
   return (
     <Fragment>
       <Grid container spacing={3}>
@@ -73,10 +71,10 @@ const ProductListing = (props: any) => {
               style={{ textDecoration: 'none' }}
             >
               <Card elevation={0} style={{ borderRadius: 0 }}>
-                {item.image ? (
+                {item.imagefilename ? (
                   <img
                     className={classes.img}
-                    src={item.image}
+                    src={imgPath + changeImageSize(item.imagefilename)}
                     alt={item.name}
                     title={item.name}
                   />

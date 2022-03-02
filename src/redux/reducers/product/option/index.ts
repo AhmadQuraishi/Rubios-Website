@@ -9,7 +9,7 @@ const INITIAL_STATE = {
 const productOptionsReducer = (state = INITIAL_STATE, action: any) => {
   switch (action.type) {
     case productOptionActionsTypes.GET_PRODUCT_OPTION_REQUEST:
-      return { ...state, loading: true, options: null };
+      return { ...state, loading: true, options: null, error: {} };
     case productOptionActionsTypes.GET_PRODUCT_OPTION_SUCCESS:
       return { ...state, loading: false, options: action.payload, error: {} };
     case productOptionActionsTypes.GET_PRODUCT_OPTION_FAILURE:
