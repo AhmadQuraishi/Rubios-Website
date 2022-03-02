@@ -114,7 +114,7 @@ const Cart = (props: any) => {
       dispatch(getBasketRequest('', productRemoveObj.basket));
       displayToast('SUCCESS', '1 item removed from cart.');
       setActionStatus(false);
-      navigate("/");
+      navigate('/');
     }
   }, [productRemoveObj]);
 
@@ -123,7 +123,7 @@ const Cart = (props: any) => {
       dispatch(getBasketRequest('', productAddObj.basket));
       displayToast('SUCCESS', 'Duplicate item added to cart.');
       setActionStatus(false);
-      navigate("/");
+      navigate('/');
     }
   }, [productAddObj]);
 
@@ -141,9 +141,21 @@ const Cart = (props: any) => {
       const request: any = {};
       request.productid = product.productId;
       request.quantity = product.quantity;
-      console.log(request);
+      let options = '';
+      product.choices.map((item: any) => {
+        options = options + item.optionid + ',';
+      });
+      request.options = options;
       dispatch(addProductRequest(basketObj.basket.id, request));
     }
+  };
+
+  const getOptions = (options: any) => {
+    let val = '';
+    options.map((item: any) => {
+      val = val + ' ' + item.name.trim() + ',';
+    });
+    return val.trim().replace(/,*$/, '');
   };
 
   return (
@@ -263,7 +275,7 @@ const Cart = (props: any) => {
                       variant="caption"
                       fontSize={11}
                     >
-                      {item.choices.map((item: any) => item.name + ',')}
+                      {getOptions(item.choices)}
                     </Typography>
                   </Grid>
                   <Grid item xs={12} sx={{ padding: '0' }}>

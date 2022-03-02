@@ -25,7 +25,7 @@ export function getResturantCalendarRequestSuccess(
 }
 
 export function getResturantCalendarRequestFailure(error: any) {
-   displayToast(
+  displayToast(
     'ERROR',
     error?.response?.data?.message
       ? error.response.data.message

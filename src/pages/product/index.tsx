@@ -98,7 +98,6 @@ const Product = () => {
 
   const setCountWithEdit = () => {
     if (edit && productDetails) {
-      debugger;
       const product = basketObj.basket.products.find(
         (item: any) => item.id == edit,
       );
@@ -129,6 +128,15 @@ const Product = () => {
       const request: any = {};
       request.productid = productDetails?.id;
       request.quantity = count;
+      let options = "";
+      Array.from(
+        document.getElementsByClassName('reward-item-selected'),
+      ).forEach((el) => {
+        if (el.getAttribute('option-id')) {
+          options = options + el.getAttribute('option-id') + ",";
+        }
+      });
+      request.options = options;
       setActionStatus(true);
       if (edit) {
         dispatch(
@@ -164,7 +172,7 @@ const Product = () => {
       setActionStatus(false);
       displayToast('SUCCESS', '1 item added to cart.');
       dispatch(getBasketRequest('', productAddObj.basket));
-      navigate("/");
+      navigate('/');
     }
   }, [productAddObj]);
 
@@ -174,7 +182,7 @@ const Product = () => {
       setActionStatus(false);
       displayToast('SUCCESS', '1 item updated in cart.');
       dispatch(getBasketRequest('', productUpdateObj.basket));
-      navigate("/");
+      navigate('/');
     }
   }, [productUpdateObj]);
 
@@ -266,6 +274,7 @@ const Product = () => {
                       ((categories && categories.imagepath) || '') +
                       changeImageSize(productDetails.imagefilename)
                     }
+                    className="img"
                     alt={productDetails.name}
                     aria-label={productDetails.name}
                     title={productDetails.name}

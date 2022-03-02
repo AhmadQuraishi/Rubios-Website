@@ -39,7 +39,7 @@ const FoodMenuCard = (props: any) => {
       if (isSingleSelect) {
         if (selectedItem.find((x: number) => x === id)) {
           return false;
-        }        
+        }
         removeItemFromSelection(0);
         removeItemFromViewUI(0);
       }
@@ -184,6 +184,7 @@ const FoodMenuCard = (props: any) => {
                   ? ' reward-item-selected'
                   : ''
               }`}
+              option-id={menuItem.id}
               onClick={() => handleClick(menuItem.id, !showDDL)}
             >
               <Grid container className="rewards">
