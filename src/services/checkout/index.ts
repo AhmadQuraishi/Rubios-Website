@@ -82,6 +82,21 @@ export const deleteTimeWantedBasket = (basketid: string) => {
   }
 }
 
+export const validateBasket = (basketid: string) => {
+    try {
+      const url = process.env.REACT_APP_OLO_API || '';
+      return axios
+        .post(url + `/baskets/${basketid}/validate`)
+        .then((response) => response.data)
+        .catch((error) => {
+          console.log(error.response);
+          throw error;
+        });
+    } catch (error) {
+      throw error;
+    }
+  }
+
 export const submitSinglePaymentBasket = (basketid: string, body: RequestBasketSubmit) => {
   try {
     const url = process.env.REACT_APP_OLO_API || '';

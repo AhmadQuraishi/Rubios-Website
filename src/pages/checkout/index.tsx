@@ -28,7 +28,7 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import StoreInfoBar from '../../components/restaurant-info-bar';
 import './checkout.css';
-import {  ResponseBasket, RequestUpdateBasketTimeWanted } from '../../types/olo-api';
+import {  ResponseBasket, RequestUpdateBasketTimeWanted, RequestBasketSubmit } from '../../types/olo-api';
 import { IMaskInput } from 'react-imask';
 import moment from 'moment';
 import AdapterMoment from '@mui/lab/AdapterMoment';
@@ -36,9 +36,11 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 import { HoursListing } from '../../helpers/hoursListing';
 import { CalendarTypeEnum } from '../../helpers/hoursListing';
-import { getSingleRestaurantCalendar, updateBasketTimeWanted, deleteBasketTimeWanted } from '../../redux/actions/basket/checkout';
+import { getSingleRestaurantCalendar, updateBasketTimeWanted, deleteBasketTimeWanted, validateBasket } from '../../redux/actions/basket/checkout';
 import { ResponseRestaurantCalendars } from '../../types/olo-api';
 import { displayToast } from '../../helpers/toast';
+import { ClickAwayListener } from '@mui/lab/node_modules/@mui/base';
+import { generateSubmitBasketPayload } from '../../helpers/checkout';
 
 const isTimeSame = (fTime: string, sTime: string): boolean => {
   return fTime.split(' ')[1] === sTime.split(' ')[1];
@@ -258,21 +260,17 @@ const Checkout = () => {
     
   }
 
-  interface payment {
-    isValidCard: boolean,
-    cardDetails: any,
-    errors: any
-  }
+  const validatePaymentForm = async ()  => {
 
-  const validatePaymentForm = async () : Promise<payment> => {
-
-    let data : payment = {
+    let data: any = {
       isValidCard: false,
       cardDetails: null,
-      errors: null
+      errors: {}
     }
 
     const cardDetails = await paymentInfoRef.current.getCardDetails();
+
+    console.log('cardDetails', cardDetails)
 
     if(cardDetails.error){
       data.errors = cardDetails.error;
@@ -287,7 +285,7 @@ const Checkout = () => {
 
   }
 
-  const placeOrder = () => {
+  const placeOrder = async () => {
 
    const {isValidForm, formData} =  validatePickupForm();
 
@@ -297,15 +295,18 @@ const Checkout = () => {
         return;
    }
 
-  //  const {isValidCard} = validatePaymentForm();
+   const {isValidCard, cardDetails, errors } = await validatePaymentForm();
 
-  //  if(!isValidCard){
-  //       // displayToast('ERROR', errors.message);
-  //       return;
-  //  }
+   if(!isValidCard){
+        displayToast('ERROR', errors?.message);
+        return;
+   }
 
-    
-
+   const payload = generateSubmitBasketPayload(formData, cardDetails, '')
+  
+  if(basket){
+    dispatch(validateBasket(basket.id, payload))
+  }    
   }
 
   return (
@@ -337,20 +338,29 @@ const Checkout = () => {
                           innerRef={pickupFormRef}
                           enableReinitialize={true}
                           initialValues={{
-                            email: '',
-                            name: '',
+                            firstName: '',
+                            lastName: '',
                             phone: '',
+                            email: '',
                             emailNotification: false
                           }}
                           validationSchema={Yup.object({
-                            name: Yup.string()
+                            firstName: Yup.string()
                               .max(15, 'Must be 15 characters or less')
                               .min(3, 'Must be at least 3 characters')
                               .matches(
                                 /^[aA-zZ\s]+$/,
                                 'Only letters are allowed for this field ',
                               )
-                              .required('Name is required'),
+                              .required('First Name is required'),
+                            lastName: Yup.string()
+                              .max(15, 'Must be 15 characters or less')
+                              .min(3, 'Must be at least 3 characters')
+                              .matches(
+                                /^[aA-zZ\s]+$/,
+                                'Only letters are allowed for this field ',
+                              )
+                              .required('Last Name is required'),
                             email: Yup.string()
                               .matches(
                                 /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
@@ -377,17 +387,33 @@ const Checkout = () => {
                     <form onSubmit={handleSubmit}>
                       <Grid item xs={12}>
                         <TextField
-                          aria-label="Name"
+                          aria-label="First Name"
                           onBlur={handleBlur}
-                          label="Name"
+                          label="First Name"
                           aria-required="true"
-                          title="Name"
+                          title="First Name"
                           type="text"
-                          name="name"
-                          value={values.name}
+                          name="firstName"
+                          value={values.firstName}
                           onChange={handleChange}
-                          error={Boolean(touched.name && errors.name)}
-                          helperText={errors.name}
+                          error={Boolean(touched.firstName && errors.firstName)}
+                          helperText={errors.firstName}
+                        />
+                      </Grid>
+
+                      <Grid item xs={12}>
+                        <TextField
+                          aria-label="Last Name"
+                          onBlur={handleBlur}
+                          label="Last Name"
+                          aria-required="true"
+                          title="Last Name"
+                          type="text"
+                          name="lastName"
+                          value={values.lastName}
+                          onChange={handleChange}
+                          error={Boolean(touched.lastName && errors.lastName)}
+                          helperText={errors.lastName}
                         />
                       </Grid>
 
