@@ -16,6 +16,7 @@ import { getBasketRequest } from '../../redux/actions/basket';
 import { removeProductRequest } from '../../redux/actions/basket/product/remove';
 import { addProductRequest } from '../../redux/actions/basket/product/add';
 import LoadingBar from '../loading-bar';
+import { displayToast } from '../../helpers/toast';
 
 const useStyles = makeStyles((theme: Theme) => ({
   dimPanel: {
@@ -111,14 +112,18 @@ const Cart = (props: any) => {
   useEffect(() => {
     if (productRemoveObj && productRemoveObj.basket && actionStatus) {
       dispatch(getBasketRequest('', productRemoveObj.basket));
+      displayToast('SUCCESS', '1 item removed from cart.');
       setActionStatus(false);
+      navigate("/");
     }
   }, [productRemoveObj]);
 
   useEffect(() => {
     if (productAddObj && productAddObj.basket && actionStatus) {
       dispatch(getBasketRequest('', productAddObj.basket));
+      displayToast('SUCCESS', 'Duplicate item added to cart.');
       setActionStatus(false);
+      navigate("/");
     }
   }, [productAddObj]);
 

@@ -21,11 +21,11 @@
   font-family: 'Poppins-Medium', sans-serif !important;
   font-size: 18px;
 }
-.reward-item.selected {
+.reward-item.reward-item-selected {
   border: 2px solid #e58530 !important;
   box-shadow: none !important;
 }
-.reward-item.selected:after {
+.reward-item.reward-item-selected:after {
   content: " ";
   display: block;
   width: 10px;
@@ -39,7 +39,7 @@
   transform: rotate(45deg);
   margin-left: -32%;
 }
-.reward-item.selected:before {
+.reward-item.reward-item-selected:before {
   content: " ";
   display: block;
   border: solid 25px #e58530;

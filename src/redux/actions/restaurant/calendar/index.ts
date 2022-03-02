@@ -1,5 +1,6 @@
 import { restaurantCalendarActionsTypes } from '../../../types/restaurant/calendar';
 import { ResponseRestaurantCalendars } from '../../../../types/olo-api';
+import { displayToast } from '../../../../helpers/toast';
 
 export function getResturantCalendarRequest(
   id: number,
@@ -24,6 +25,12 @@ export function getResturantCalendarRequestSuccess(
 }
 
 export function getResturantCalendarRequestFailure(error: any) {
+   displayToast(
+    'ERROR',
+    error?.response?.data?.message
+      ? error.response.data.message
+      : 'ERROR! Please Try agin later',
+  );
   return {
     type: restaurantCalendarActionsTypes.GET_RESTAURANT_CALENDAR_FAILURE,
     error: error,

@@ -37,13 +37,12 @@ const FoodMenuCard = (props: any) => {
     optionFound = null;
     if (!firstLoad) {
       if (isSingleSelect) {
-        removeItemFromSelection(0);
-        removeItemFromViewUI(0);
         if (selectedItem.find((x: number) => x === id)) {
           return false;
-        }
+        }        
+        removeItemFromSelection(0);
+        removeItemFromViewUI(0);
       }
-
       if (selectedItem.find((x: number) => x === id)) {
         removeItemFromSelection(id);
         removeItemFromViewUI(id);
@@ -182,7 +181,7 @@ const FoodMenuCard = (props: any) => {
             <Card
               className={`reward-item${
                 selectedItem.length > 0 && isItemSelected(menuItem.id)
-                  ? ' selected'
+                  ? ' reward-item-selected'
                   : ''
               }`}
               onClick={() => handleClick(menuItem.id, !showDDL)}
