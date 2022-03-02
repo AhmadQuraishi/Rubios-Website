@@ -53,18 +53,18 @@ const GetRestaurantHoursRange = (
   const selectedStoreHours = hours?.calendar.find((x) => x.type === type);
   let newHoursArray: HoursListing[] = [];
   if (selectedStoreHours) {
-    selectedStoreHours && selectedStoreHours.ranges.forEach((item, index) => {
+    selectedStoreHours &&
+      selectedStoreHours.ranges.forEach((item, index) => {
         newHoursArray.push({
           label: item.weekday.substring(0, 1),
           start: item.start,
           end: item.end,
           isOpenAllDay: isTimeSame(item.start, item.end),
         });
-      })
+      });
   }
   return newHoursArray;
-}
-
+};
 
 const Checkout = () => {
   const dispatch = useDispatch(); 
@@ -72,12 +72,13 @@ const Checkout = () => {
   const paymentInfoRef = React.useRef<any>();
    
   const [selectedTime, setSelectedTime] = React.useState('');
-  const [timeSlots, setTimeSlots] = React.useState<string[]>([]); 
+  const [timeSlots, setTimeSlots] = React.useState<string[]>([]);
   const [selectedDate, setSelectedDate] = React.useState<any>(new Date());
   const [open, setOpen] = React.useState<boolean>(false);
   const [runOnce, setRunOnce] = React.useState<boolean>(true);
   const [basket, setBasket] = React.useState<ResponseBasket>();
-  const [restaurantHours, setRestaurantHours] = React.useState<HoursListing[]>();
+  const [restaurantHours, setRestaurantHours] =
+    React.useState<HoursListing[]>();
   const [tipPercentage, setTipPercentage] = React.useState(0);
   const [tipAmount, setTipAmount] = React.useState(0);
 
@@ -86,31 +87,45 @@ const Checkout = () => {
 
   React.useEffect(() => {
     if (basket && runOnce) {
-      dispatch(getSingleRestaurantCalendar(basket.vendorid, moment().format('YYYYMMDD'), moment().format('YYYYMMDD')));
-      setSelectedTime(basket.timewanted ? basket.timewanted : '')
-      setRunOnce(false)
+      dispatch(
+        getSingleRestaurantCalendar(
+          basket.vendorid,
+          moment().format('YYYYMMDD'),
+          moment().format('YYYYMMDD'),
+        ),
+      );
+      setSelectedTime(basket.timewanted ? basket.timewanted : '');
+      setRunOnce(false);
     }
   }, [basket]);
 
   React.useEffect(() => {
-    console.log('working 1')
+    console.log('working 1');
     if (basketObj.basket) {
       setBasket(basketObj.basket);
     }
 
-    if (basketObj.calendar.data) {
-      console.log('working 2')
+    if (basketObj.calendar && basketObj.calendar.data) {
+      console.log('working 2');
 
-      setRestaurantHours(GetRestaurantHoursRange(basketObj.calendar.data, CalendarTypeEnum.business));
+      setRestaurantHours(
+        GetRestaurantHoursRange(
+          basketObj.calendar.data,
+          CalendarTypeEnum.business,
+        ),
+      );
     }
-    
-  }, [basketObj.basket, basketObj.calendar.data]);
+  }, [basketObj.basket, basketObj.calendar]);
 
   React.useEffect(() => {
-   console.log('restaurantHours', restaurantHours)
-   if(restaurantHours && restaurantHours.length){
-    generateNextAvailableTimeSlots(restaurantHours[0].start, restaurantHours[0].end, restaurantHours[0].isOpenAllDay )
-   }
+    console.log('restaurantHours', restaurantHours);
+    if (restaurantHours && restaurantHours.length) {
+      generateNextAvailableTimeSlots(
+        restaurantHours[0].start,
+        restaurantHours[0].end,
+        restaurantHours[0].isOpenAllDay,
+      );
+    }
   }, [restaurantHours]);
 
   const createTimeWantedPayload = (time: string) => {
@@ -122,24 +137,24 @@ const Checkout = () => {
       day: date.date(),
       hour: date.hour(),
       minute: date.minute(),
-      }
-      return payload;
-  }
+    };
+    return payload;
+  };
 
   const onTimeSlotSelect = (event: any) => {
     const selectedValue = event.target.value;
     setSelectedTime(selectedValue);
-    if(selectedValue && selectedValue !== ''){
-      console.log('selectedValue', selectedValue)
-      console.log('selectedTime', selectedTime)
-      if(selectedValue === basket?.timewanted){
-        if(basket){
+    if (selectedValue && selectedValue !== '') {
+      console.log('selectedValue', selectedValue);
+      console.log('selectedTime', selectedTime);
+      if (selectedValue === basket?.timewanted) {
+        if (basket) {
           dispatch(deleteBasketTimeWanted(basket.id));
-          setSelectedTime('')
+          setSelectedTime('');
         }
       } else {
-        const payload = createTimeWantedPayload(selectedValue)
-        if(basket){
+        const payload = createTimeWantedPayload(selectedValue);
+        if (basket) {
           dispatch(updateBasketTimeWanted(basket.id, payload));
         }
       }
@@ -154,7 +169,7 @@ const Checkout = () => {
   const NumberFormatCustom = forwardRef<HTMLElement, CustomProps>(
     function NumberFormatCustom(props, ref) {
       const { onChange, ...other } = props;
-  
+
       return (
         <IMaskInput
           {...other}
@@ -172,19 +187,21 @@ const Checkout = () => {
   );
 
   const calculateMinutesDiff = (minutes: number): number => {
-
-    if([0, 15, 30, 45].includes(minutes)){
+    if ([0, 15, 30, 45].includes(minutes)) {
       return minutes;
-   } else { 
+    } else {
       let difference = Math.ceil(minutes / 15);
-      difference = (difference * 15) - minutes; 
+      difference = difference * 15 - minutes;
       minutes = difference + 30;
       return minutes;
-   }
+    }
+  };
 
-  }
-
-  const generateNextAvailableTimeSlots = (openingTime: string, closingTime: string, isOpenAllDay: Boolean) => {
+  const generateNextAvailableTimeSlots = (
+    openingTime: string,
+    closingTime: string,
+    isOpenAllDay: Boolean,
+  ) => {
     let timeSlots = [];
     let currentTime = moment();
     let startTime;
@@ -194,39 +211,45 @@ const Checkout = () => {
     let minutes = currentTime.minutes();
     minutes = calculateMinutesDiff(minutes);
 
-    if(isOpenAllDay){
+    if (isOpenAllDay) {
       openAt.startOf('day');
-      closeAt.endOf('day')
+      closeAt.endOf('day');
     }
 
-    if(currentTime.isAfter(closeAt)){
+    if (currentTime.isAfter(closeAt)) {
       return [];
-    } else if (currentTime.isBetween(openAt, closeAt)){
+    } else if (currentTime.isBetween(openAt, closeAt)) {
       startTime = currentTime.add(minutes, 'minute');
-    } else if (currentTime.isBefore(openAt)){
-     startTime = openAt.add(15, 'm')
+    } else if (currentTime.isBefore(openAt)) {
+      startTime = openAt.add(15, 'm');
     }
 
     let count = 0;
     const maxAllowed = 7;
-    while((closeAt.diff(openAt, 'seconds') > 900) && (count <= maxAllowed) ){
-       timeSlots.push(moment(startTime).format('YYYYMMDD HH:mm'));
-       startTime && startTime.add('m', 15);
-       count++;
+    while (closeAt.diff(openAt, 'seconds') > 900 && count <= maxAllowed) {
+      timeSlots.push(moment(startTime).format('YYYYMMDD HH:mm'));
+      startTime && startTime.add('m', 15);
+      count++;
     }
 
-    setTimeSlots(timeSlots)
-  }
+    setTimeSlots(timeSlots);
+  };
 
   const handleDateChange = (e: any) => {
-    setSelectedDate(e)
+    setSelectedDate(e);
     setOpen(!open);
-  }
+  };
 
   React.useEffect(() => {
-    console.log('selectedDate', selectedDate)
-    if(basket){
-      dispatch(getSingleRestaurantCalendar(basket.vendorid, moment(selectedDate).format('YYYYMMDD'), moment(selectedDate).format('YYYYMMDD')));
+    console.log('selectedDate', selectedDate);
+    if (basket) {
+      dispatch(
+        getSingleRestaurantCalendar(
+          basket.vendorid,
+          moment(selectedDate).format('YYYYMMDD'),
+          moment(selectedDate).format('YYYYMMDD'),
+        ),
+      );
     }
   }, [selectedDate]);
 
@@ -417,57 +440,59 @@ const Checkout = () => {
                         />
                       </Grid>
 
-                      <Grid item xs={12}>
-                        <TextField
-                          aria-label="Phone Number"
-                          onBlur={handleBlur}
-                          label="Phone Number"
-                          aria-required="true"
-                          title="Phone Number"
-                          value={values.phone}
-                          onChange={handleChange}
-                          name="phone"
-                          InputLabelProps={{
-                            // shrink: touched.phone && values.phone === '' ? false : true,
-                          }}
-                          InputProps={{
-                            inputComponent: NumberFormatCustom as any,
-                          }}
-                          error={Boolean(touched.phone && errors.phone)}
-                          helperText={errors.phone}
-                        />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <TextField
-                          aria-label="Email"
-                          onBlur={handleBlur}
-                          label="Email"
-                          aria-required="true"
-                          title="Email"
-                          type="text"
-                          name="email"
-                          value={values.email}
-                          onChange={handleChange}
-                          error={Boolean(touched.email && errors.email)}
-                          helperText={errors.email}
-                        />
-                      </Grid>
+                            <Grid item xs={12}>
+                              <TextField
+                                aria-label="Phone Number"
+                                onBlur={handleBlur}
+                                label="Phone Number"
+                                aria-required="true"
+                                title="Phone Number"
+                                value={values.phone}
+                                onChange={handleChange}
+                                name="phone"
+                                InputLabelProps={
+                                  {
+                                    // shrink: touched.phone && values.phone === '' ? false : true,
+                                  }
+                                }
+                                InputProps={{
+                                  inputComponent: NumberFormatCustom as any,
+                                }}
+                                error={Boolean(touched.phone && errors.phone)}
+                                helperText={errors.phone}
+                              />
+                            </Grid>
+                            <Grid item xs={12}>
+                              <TextField
+                                aria-label="Email"
+                                onBlur={handleBlur}
+                                label="Email"
+                                aria-required="true"
+                                title="Email"
+                                type="text"
+                                name="email"
+                                value={values.email}
+                                onChange={handleChange}
+                                error={Boolean(touched.email && errors.email)}
+                                helperText={errors.email}
+                              />
+                            </Grid>
 
-                      <Grid item xs={12}>
-                        <FormGroup>
-                          <FormControlLabel
-                            control={<Checkbox defaultChecked />}
-                            label="Send me emails with special offers and updates"
-                            aria-label="Send me emails with special offers and updates"
-                            aria-required="true"
-                            title="Send me emails with special offers and updates"
-                            name="emailNotification"
-                          />
-                        </FormGroup>
-                      </Grid>
-                      </form>
-                    )}
-                  </Formik>
+                            <Grid item xs={12}>
+                              <FormGroup>
+                                <FormControlLabel
+                                  control={<Checkbox defaultChecked />}
+                                  label="Send me emails with special offers and updates"
+                                  aria-label="Send me emails with special offers and updates"
+                                  aria-required="true"
+                                  title="Send me emails with special offers and updates"
+                                  name="emailNotification"
+                                />
+                              </FormGroup>
+                            </Grid>
+                          </form>
+                        )}
+                      </Formik>
                     </Grid>
                   </Grid>
                   <Grid item xs={12} sm={6} md={6} lg={6} className="right-col">
@@ -483,11 +508,15 @@ const Checkout = () => {
                       </Grid>
                     </Grid>
                     <Grid item xs={12}>
-                      <Typography style={{textTransform: 'uppercase'}} variant="h4" title={moment(selectedDate).format('dddd MMM.Do')}>
+                      <Typography
+                        style={{ textTransform: 'uppercase' }}
+                        variant="h4"
+                        title={moment(selectedDate).format('dddd MMM.Do')}
+                      >
                         {moment(selectedDate).format('dddd MMM.Do')}
                       </Typography>
                     </Grid>
-                    <Grid item xs={12}>                
+                    <Grid item xs={12}>
                       <Button
                         aria-label="change"
                         title="change"
@@ -497,21 +526,20 @@ const Checkout = () => {
                         (change)
                       </Button>
                       <LocalizationProvider dateAdapter={AdapterMoment}>
-                      <DatePicker
+                        <DatePicker
                           open={open}
                           label="Date desktop"
                           minDate={moment()}
                           inputFormat="MM/dd/yyyy"
                           value={selectedDate}
                           onChange={handleDateChange}
-                          renderInput={
-                                ({ inputRef, inputProps, InputProps }) => (
-                                    <Box ref={inputRef}>
-                                    </Box>
-                                )   
-                          }
+                          renderInput={({
+                            inputRef,
+                            inputProps,
+                            InputProps,
+                          }) => <Box ref={inputRef}></Box>}
                         />
-                 </LocalizationProvider>
+                      </LocalizationProvider>
                     </Grid>
                     <Grid item xs={12}>
                       <Grid container>

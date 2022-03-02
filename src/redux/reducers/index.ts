@@ -16,9 +16,11 @@ import authReducer from './auth';
 import restaurantListReducer from './restaurant/list';
 import createBasketReducer from './basket/create';
 import basketReducer from './basket';
+import addMultipleProductsReducer from './basket/addMultipleProducts';
 import addProductReducer from './basket/product/add';
 import removeProductReducer from './basket/product/remove';
 import checkInReducer from './check-in';
+import updateProductReducer from './basket/product/update';
 
 const persistConfig = {
   key: 'root',
@@ -42,9 +44,11 @@ const rootReducers = combineReducers({
   restaurantListReducer,
   createBasketReducer,
   basketReducer,
+  addMultipleProductsReducer,
   addProductReducer,
   removeProductReducer,
   checkInReducer,
+  updateProductReducer,
 });
 
 const persistReducers = persistReducer(persistConfig, rootReducers);

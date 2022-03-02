@@ -12,10 +12,12 @@ import { storeAuth } from './auth';
 import { resturantListSaga } from './restaurant/list';
 import { locationSaga } from './location';
 import { BasketSaga } from './basket';
+import { addMultipleProductsSaga } from './basket/addMultipleProducts';
 import { checkoutSaga } from './basket/checkout';
 import { createBasketSaga } from './basket/create';
 import { addProductSaga } from './basket/product/add';
 import { removeProductSaga } from './basket/product/remove';
+import { updateProductSaga } from './basket/product/update';
 
 export default function* rootSaga() {
   yield all([
@@ -33,8 +35,10 @@ export default function* rootSaga() {
     redeemRewardSada(),
     createBasketSaga(),
     BasketSaga(),
+    addMultipleProductsSaga(),
     checkoutSaga(),
     addProductSaga(),
-    removeProductSaga()
+    removeProductSaga(),
+    updateProductSaga(),
   ]);
 }

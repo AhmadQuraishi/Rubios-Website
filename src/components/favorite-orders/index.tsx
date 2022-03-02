@@ -6,9 +6,11 @@ import {
   deleteFavOrder,
   getUserFavoritetOrders,
 } from '../../redux/actions/user';
+import { addMultipleProductsRequest } from '../../redux/actions/basket/addMultipleProducts';
 import LoadingBar from '../loading-bar';
 import { TablePagination } from '@mui/material';
 import DialogBox from '../dialog-box';
+import { RequestBasketProductBatch } from '../../types/olo-api';
 
 const FavoriteOrders = () => {
   const [open, setOpen] = useState(false);
@@ -19,6 +21,7 @@ const FavoriteOrders = () => {
   console.log('123');
 
   const authtoken = useSelector((state: any) => state.TokensReducer.authtoken);
+  const basketObj = useSelector((state: any) => state.basketReducer);
   const { userFavoriteOrders, loading } = useSelector(
     (state: any) => state.userReducer,
   );
@@ -62,6 +65,13 @@ const FavoriteOrders = () => {
     }, 600);
     setId(0);
   };
+
+  const addProductToBag = (orderProducts: any) =>{
+    const request: RequestBasketProductBatch = {} as RequestBasketProductBatch ;
+    request.products = orderProducts;
+    request.replaceContents = true;
+    dispatch(addMultipleProductsRequest(basketObj.basket.id || '', request))
+  }
 
   let x = 0;
   return (

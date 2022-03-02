@@ -20,14 +20,15 @@ import Profile from './pages/profile';
 import AddDeliveryAddress from './pages/add-delivery-address';
 import CategoryDetail from './pages/category-detail';
 import PageNotFound from './pages/page-not-found';
+import ScanToRedeem from './pages/scan-to-redeem';
 
 const AppRoutes = () => {
- 
   return (
     <Routes>
       <Route path="/" element={<CategoryList />} />
       <Route path="/category/:id" element={<CategoryDetail />} />
-      <Route path="/product/:categoryID/:id" element={<Product />} />
+      <Route path="/product/:id" element={<Product />} />
+      <Route path="/product/:id/:edit" element={<Product />} />
       <Route path="/location" element={<Location />} />
       <Route path="/checkout" element={<Checkout />} />
       <Route path="/login" element={<Login />} />
@@ -60,6 +61,7 @@ const AppRoutes = () => {
         path="/account/updatepaymentcard/:id"
         element={<UpdatePaymentCard />}
       />
+      <Route path="/account/reward/:id" element={<ScanToRedeem />} />
       <Route path="/account/orders" element={<OrdersHistory />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>

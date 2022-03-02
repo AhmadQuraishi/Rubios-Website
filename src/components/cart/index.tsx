@@ -285,15 +285,28 @@ const Cart = (props: any) => {
                           </MUILink>
                         )}
                       </Grid>
-                      <Grid item xs={3} sx={{ display: 'none' }}>
-                        <Link
-                          to="/"
-                          title="Edit"
-                          className={classes.smallLink}
-                          aria-label="Make changes to the current menu item"
-                        >
-                          Edit
-                        </Link>
+                      <Grid item xs={3}>
+                        {(productRemoveObj && productRemoveObj.loading) ||
+                        (productAddObj && productAddObj.loading) ? (
+                          <Link
+                            to={`product/${item.productId}/${item.id}`}
+                            title="Edit"
+                            className={classes.disabledLink}
+                            aria-label="Make changes to the current menu item"
+                          >
+                            Edit
+                          </Link>
+                        ) : (
+                          <Link
+                            to={`product/${item.productId}/${item.id}`}
+                            title="Edit"
+                            onClick={() => showCart()}
+                            className={classes.smallLink}
+                            aria-label="Make changes to the current menu item"
+                          >
+                            Edit
+                          </Link>
+                        )}
                       </Grid>
                       <Grid item xs={3}>
                         {(productRemoveObj && productRemoveObj.loading) ||
