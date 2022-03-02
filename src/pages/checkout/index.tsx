@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useRef } from 'react';
 import {
   Box,
   Button,
@@ -28,10 +28,7 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import StoreInfoBar from '../../components/restaurant-info-bar';
 import './checkout.css';
-import {
-  ResponseBasket,
-  RequestUpdateBasketTimeWanted,
-} from '../../types/olo-api';
+import {  ResponseBasket, RequestUpdateBasketTimeWanted, RequestBasketSubmit } from '../../types/olo-api';
 import { IMaskInput } from 'react-imask';
 import moment from 'moment';
 import AdapterMoment from '@mui/lab/AdapterMoment';
@@ -39,12 +36,11 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 import { HoursListing } from '../../helpers/hoursListing';
 import { CalendarTypeEnum } from '../../helpers/hoursListing';
-import {
-  getSingleRestaurantCalendar,
-  updateBasketTimeWanted,
-  deleteBasketTimeWanted,
-} from '../../redux/actions/basket/checkout';
+import { getSingleRestaurantCalendar, updateBasketTimeWanted, deleteBasketTimeWanted, validateBasket } from '../../redux/actions/basket/checkout';
 import { ResponseRestaurantCalendars } from '../../types/olo-api';
+import { displayToast } from '../../helpers/toast';
+import { ClickAwayListener } from '@mui/lab/node_modules/@mui/base';
+import { generateSubmitBasketPayload } from '../../helpers/checkout';
 
 const isTimeSame = (fTime: string, sTime: string): boolean => {
   return fTime.split(' ')[1] === sTime.split(' ')[1];
@@ -71,7 +67,10 @@ const GetRestaurantHoursRange = (
 };
 
 const Checkout = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch(); 
+  const pickupFormRef = React.useRef<any>(null);
+  const paymentInfoRef = React.useRef<any>();
+   
   const [selectedTime, setSelectedTime] = React.useState('');
   const [timeSlots, setTimeSlots] = React.useState<string[]>([]);
   const [selectedDate, setSelectedDate] = React.useState<any>(new Date());
@@ -254,6 +253,85 @@ const Checkout = () => {
     }
   }, [selectedDate]);
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 300,
+      behavior: "smooth"
+    });
+  };
+
+  const validatePickupForm = () : any => {
+
+    let data = {
+      isValidForm: false,
+      formData: null
+    }
+
+    if(!pickupFormRef.current){
+    } 
+    else if (!pickupFormRef.current.dirty){
+        pickupFormRef.current.submitForm();
+    } 
+    else if (Object.keys(pickupFormRef.current.errors).length > 0){
+    } 
+    else {
+      data.isValidForm = true;
+      data.formData = pickupFormRef.current.values;
+    }  
+
+    return data;
+    
+  }
+
+  const validatePaymentForm = async ()  => {
+
+    let data: any = {
+      isValidCard: false,
+      cardDetails: null,
+      errors: {}
+    }
+
+    const cardDetails = await paymentInfoRef.current.getCardDetails();
+
+    console.log('cardDetails', cardDetails)
+
+    if(cardDetails.error){
+      data.errors = cardDetails.error;
+    } else if(cardDetails.paymentMethod){
+      data.cardDetails = cardDetails.paymentMethod;
+      data.isValidCard = true;
+    }
+
+    console.log('payment', data)
+
+    return data;
+
+  }
+
+  const placeOrder = async () => {
+
+   const {isValidForm, formData} =  validatePickupForm();
+
+   if(!isValidForm){
+        displayToast('ERROR', 'Pickup fields are required.');
+        scrollToTop();
+        return;
+   }
+
+   const {isValidCard, cardDetails, errors } = await validatePaymentForm();
+
+   if(!isValidCard){
+        displayToast('ERROR', errors?.message);
+        return;
+   }
+
+   const payload = generateSubmitBasketPayload(formData, cardDetails, '')
+  
+  if(basket){
+    dispatch(validateBasket(basket.id, payload))
+  }    
+  }
+
   return (
     <>
       <StoreInfoBar />
@@ -280,71 +358,87 @@ const Checkout = () => {
                         </Typography>
                       </Grid>
                       <Formik
-                        initialValues={{
-                          email: '',
-                          name: '',
-                          phone: '',
-                          emailNotification: false,
-                        }}
-                        validationSchema={Yup.object({
-                          name: Yup.string()
-                            .max(15, 'Must be 15 characters or less')
-                            .min(3, 'Must be at least 3 characters')
-                            .matches(
-                              /^[aA-zZ\s]+$/,
-                              'Only letters are allowed for this field ',
-                            )
-                            .required('Name is required'),
-                          email: Yup.string()
-                            .matches(
-                              /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-                              'Invalid Email ',
-                            )
-                            .email('Invalid email address')
-                            .required('Email is required'),
+                          innerRef={pickupFormRef}
+                          enableReinitialize={true}
+                          initialValues={{
+                            firstName: '',
+                            lastName: '',
+                            phone: '',
+                            email: '',
+                            emailNotification: false
+                          }}
+                          validationSchema={Yup.object({
+                            firstName: Yup.string()
+                              .max(15, 'Must be 15 characters or less')
+                              .min(3, 'Must be at least 3 characters')
+                              .matches(
+                                /^[aA-zZ\s]+$/,
+                                'Only letters are allowed for this field ',
+                              )
+                              .required('First Name is required'),
+                            lastName: Yup.string()
+                              .max(15, 'Must be 15 characters or less')
+                              .min(3, 'Must be at least 3 characters')
+                              .matches(
+                                /^[aA-zZ\s]+$/,
+                                'Only letters are allowed for this field ',
+                              )
+                              .required('Last Name is required'),
+                            email: Yup.string()
+                              .matches(
+                                /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+                                'Invalid Email ',
+                              )
+                              .email('Invalid email address')
+                              .required('Email is required'),
 
-                          phone: Yup.string()
-                            .min(14, 'Enter valid number')
-                            .required('Phone is required'),
-                          emailNotification: Yup.bool().optional(),
-                        })}
-                        onSubmit={async (values) => {
-                          // const obj = {
-                          //   email: values.email,
-                          //   name: values.name,
-                          //   phone: values.phone
-                          //     ? values.phone.replace(/\D/g, '')
-                          //     : ''
-                          // };
-                          // const data: any = await dispatch(updateUser(obj));
-                        }}
-                      >
-                        {({
-                          errors,
-                          handleBlur,
-                          handleChange,
-                          handleSubmit,
-                          touched,
-                          values,
-                          isValid,
-                          dirty,
-                        }) => (
-                          <form onSubmit={handleSubmit}>
-                            <Grid item xs={12}>
-                              <TextField
-                                aria-label="Name"
-                                onBlur={handleBlur}
-                                label="Name"
-                                aria-required="true"
-                                title="Name"
-                                type="text"
-                                name="name"
-                                value={values.name}
-                                onChange={handleChange}
-                                error={Boolean(touched.name && errors.name)}
-                                helperText={errors.name}
-                              />
-                            </Grid>
+                            phone: Yup.string().min(14, 'Enter valid number').required('Phone is required'),
+                            emailNotification: Yup.bool().optional()
+                          })}
+                          onSubmit={(values, actions) => {}}
+                        >
+                          {({
+                            errors,
+                            handleBlur,
+                            handleChange,
+                            handleSubmit,
+                            touched,
+                            values,
+                            isValid,
+                            dirty,
+                          }) => (
+                    <form onSubmit={handleSubmit}>
+                      <Grid item xs={12}>
+                        <TextField
+                          aria-label="First Name"
+                          onBlur={handleBlur}
+                          label="First Name"
+                          aria-required="true"
+                          title="First Name"
+                          type="text"
+                          name="firstName"
+                          value={values.firstName}
+                          onChange={handleChange}
+                          error={Boolean(touched.firstName && errors.firstName)}
+                          helperText={errors.firstName}
+                        />
+                      </Grid>
+
+                      <Grid item xs={12}>
+                        <TextField
+                          aria-label="Last Name"
+                          onBlur={handleBlur}
+                          label="Last Name"
+                          aria-required="true"
+                          title="Last Name"
+                          type="text"
+                          name="lastName"
+                          value={values.lastName}
+                          onChange={handleChange}
+                          error={Boolean(touched.lastName && errors.lastName)}
+                          helperText={errors.lastName}
+                        />
+                      </Grid>
 
                             <Grid item xs={12}>
                               <TextField
@@ -468,71 +562,61 @@ const Checkout = () => {
                             className="selected-btn"
                           >
                             {/* <Grid container spacing={2}> */}
-                            {timeSlots.slice(0, 4).map((time) => {
-                              return (
-                                // <Grid item xs={6} sm={6} md={3} lg={3}>
-                                <ToggleButton
-                                  value={time}
-                                  name={time}
-                                  className="selected-btn"
-                                  selected={
-                                    selectedTime === time ? true : false
-                                  }
-                                >
-                                  {moment(time, 'YYYYMMDD HH:mm').format(
-                                    'HH:mm',
-                                  )}
-                                </ToggleButton>
-                                // </Grid>
-                              );
-                            })}
+                              {
+                                timeSlots.slice(0,4).map(time => {
+                                  return (
+                                    // <Grid item xs={6} sm={6} md={3} lg={3}>
+                                      <ToggleButton
+                                        key={`button-${time}`}
+                                        value={time}
+                                        className="selected-btn"
+                                        selected={ selectedTime === time ? true : false}
+                                      >
+                                        {moment(time, 'YYYYMMDD HH:mm').format('HH:mm')}
+                                      </ToggleButton>
+                                    // </Grid>
+                                  )
+                                })
+                              }
                             {/* </Grid> */}
                           </ToggleButtonGroup>
                         </FormControl>
                       </Grid>
                     </Grid>
-                    {timeSlots.length > 4 ? (
-                      <Grid item xs={12}>
-                        <FormControl
-                          fullWidth
-                          className={`${
-                            timeSlots.slice(4, 7).includes(selectedTime)
-                              ? 'time-slot-selected'
-                              : 'time-slot'
-                          }`}
-                        >
-                          <InputLabel
-                            id="select-more-times"
-                            aria-label="More Times"
-                            title="More Times"
-                          >
-                            MORE TIMES
-                          </InputLabel>
-                          <Select
-                            id="select-label"
-                            labelId="select-more-times"
-                            value={
-                              timeSlots.slice(4, 7).includes(selectedTime)
-                                ? selectedTime
-                                : ''
-                            }
-                            onChange={(event) => onTimeSlotSelect(event)}
-                            label="Select More times"
-                            title="Select More times"
-                          >
-                            {timeSlots.slice(4, 7).map((time) => {
-                              return (
-                                <MenuItem value={time}>
-                                  {moment(time, 'YYYYMMDD HH:mm').format(
-                                    'HH:mm',
-                                  )}
-                                </MenuItem>
-                              );
-                            })}
-                          </Select>
-                        </FormControl>
-                      </Grid>
-                    ) : null}
+                    {
+                      timeSlots.length > 4 ? (
+                        <Grid item xs={12}>
+                          <FormControl fullWidth className={`${timeSlots.slice(4,7).includes(selectedTime) ? 'time-slot-selected' : 'time-slot'}`}>
+                            <InputLabel
+                              id="select-more-times"
+                              aria-label="More Times"
+                              title="More Times"
+                            >
+                              MORE TIMES
+                            </InputLabel>
+                            <Select
+                              id="select-label"
+                              labelId="select-more-times"
+                              value={timeSlots.slice(4,7).includes(selectedTime) ? selectedTime : ''}
+                              onChange={(event) => onTimeSlotSelect(event)}
+                              label="Select More times"
+                              title="Select More times"
+                            >
+                              {
+                                    timeSlots.slice(4,7).map(time => {
+                                      return (
+                                        <MenuItem key={`menu-${time}`} value={time}>
+                                        {moment(time, 'YYYYMMDD HH:mm').format('HH:mm')}
+                                        </MenuItem>
+                                      )
+                                    })
+                              }
+                            </Select>
+                          </FormControl>
+                        </Grid>
+                      ) : (null)
+                    }
+                    
                   </Grid>
                 </Grid>
               </Grid>
@@ -559,8 +643,22 @@ const Checkout = () => {
               <Divider />
               <br />
               <br />
-              <PaymentInfo />
+              <PaymentInfo ref={paymentInfoRef} />
               {/*second section ends here*/}
+              {/* <button onClick={testing}>testing</button> */}
+              <Grid container className="add-order">
+                <Grid item xs={12} sm={12} md={4} lg={4}>
+                  {/* <Link
+                    to="/orderconfirmation"
+                    aria-label="place your order"
+                  > */}
+                    <Button onClick={placeOrder} variant="contained" title="PLACE ORDER">
+                      PLACE ORDER
+                    </Button>
+                  
+                  {/* </Link> */}
+                </Grid>
+             </Grid>
             </Card>
           </Grid>
         </Grid>
