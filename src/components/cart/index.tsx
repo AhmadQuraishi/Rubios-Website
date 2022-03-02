@@ -162,7 +162,10 @@ const Cart = (props: any) => {
               />
             </Typography>
           </Grid>
-          {basketObj && basketObj.basket.products.length == 0 && (
+          {((basketObj &&
+            basketObj.basket &&
+            basketObj.basket.products.length == 0) ||
+            (basketObj && basketObj.basket == null)) && (
             <Grid
               item
               xs={12}
