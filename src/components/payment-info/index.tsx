@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {forwardRef, useImperativeHandle} from 'react';
 import { Button, Grid, IconButton, TextField, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { CreditCardElements, PaymentMethodResult } from "@olo/pay";
@@ -26,7 +26,7 @@ const styleObject = {
     // }
 };
 
-const PaymentInfo = () => {
+const PaymentInfo = forwardRef((props, _ref) => {
 
   const [
     creditCardElements,
@@ -38,15 +38,19 @@ const PaymentInfo = () => {
     setPaymentMethod
   ] = React.useState<PaymentMethodResult | null>(null);
 
-  const submitPayment = async () => {
-    const response = (await creditCardElements!.createPaymentMethod()) as PaymentMethodResult;
-    console.log('response', response)
-    setPaymentMethod(response);
-  };
+  useImperativeHandle(_ref, () => ({
+    getCardDetails: async () => {
+      const response = (await creditCardElements!.createPaymentMethod()) as PaymentMethodResult;
+      setPaymentMethod(response);
+      return response;
+    }
+  }));
 
   React.useEffect(() => {
     const initializeCreditCardElements = async () => {
       const elements = new CreditCardElements();
+      // for production use 
+      // const elements = new CreditCardElements('production');
 
       elements.applyStyles(styleObject);
 
@@ -69,7 +73,7 @@ const PaymentInfo = () => {
         </Typography>
         <br/>
         <Grid container spacing={2} className="payment-form">
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6} md={6} lg={6}>
                 <TextField
@@ -88,7 +92,7 @@ const PaymentInfo = () => {
                 />
               </Grid>
             </Grid>
-          </Grid>
+          </Grid> */}
           <Grid item xs={12}>
             <Grid container spacing={2}>
             <Grid item xs={12} sm={6} md={6} lg={6} className="payment-form image-field align">
@@ -114,23 +118,6 @@ const PaymentInfo = () => {
               <Button title="ADD A GIFT CARD" className="label">ADD GIFT CARD</Button>
             </Grid>
           </Grid>
-
-          <Grid container className="add-order">
-          {/* <Button onClick={submitPayment} variant="contained" title="PLACE ORDER">
-                test
-           </Button> */}
-            <Grid item xs={12} sm={12} md={4} lg={4}>
-              <Link
-                to="/orderconfirmation"
-                aria-label="place your order"
-              >
-                <Button variant="contained" title="PLACE ORDER">
-                  PLACE ORDER
-                </Button>
-               
-              </Link>
-            </Grid>
-          </Grid>
         </Grid>
       </Grid>
 
@@ -138,6 +125,6 @@ const PaymentInfo = () => {
       <Grid item xs={0} sm={0} md={2} lg={2} />
     </Grid>
   );
-};
+});
 
 export default PaymentInfo;

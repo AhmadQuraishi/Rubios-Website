@@ -15,7 +15,7 @@ const OrderDetail = ({basket}: any)  => {
           basket && basket.products && basket.products.map((item: any) => {
             return (
               <>
-                <Grid container>
+                <Grid key={item.id} container>
                   <Grid item xs={10} sm={10} md={10} lg={11}>
                     <Typography variant="h6" title={item.name}>
                       {item.name}

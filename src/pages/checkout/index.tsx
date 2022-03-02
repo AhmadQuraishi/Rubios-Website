@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useRef } from 'react';
 import {
   Box,
   Button,
@@ -38,6 +38,7 @@ import { HoursListing } from '../../helpers/hoursListing';
 import { CalendarTypeEnum } from '../../helpers/hoursListing';
 import { getSingleRestaurantCalendar, updateBasketTimeWanted, deleteBasketTimeWanted } from '../../redux/actions/basket/checkout';
 import { ResponseRestaurantCalendars } from '../../types/olo-api';
+import { displayToast } from '../../helpers/toast';
 
 const isTimeSame = (fTime: string, sTime: string): boolean => {
   return fTime.split(' ')[1] === sTime.split(' ')[1];
@@ -65,6 +66,9 @@ const GetRestaurantHoursRange = (
 
 const Checkout = () => {
   const dispatch = useDispatch(); 
+  const pickupFormRef = React.useRef<any>(null);
+  const paymentInfoRef = React.useRef<any>();
+   
   const [selectedTime, setSelectedTime] = React.useState('');
   const [timeSlots, setTimeSlots] = React.useState<string[]>([]); 
   const [selectedDate, setSelectedDate] = React.useState<any>(new Date());
@@ -222,7 +226,87 @@ const Checkout = () => {
     if(basket){
       dispatch(getSingleRestaurantCalendar(basket.vendorid, moment(selectedDate).format('YYYYMMDD'), moment(selectedDate).format('YYYYMMDD')));
     }
-  }, [selectedDate])
+  }, [selectedDate]);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 300,
+      behavior: "smooth"
+    });
+  };
+
+  const validatePickupForm = () : any => {
+
+    let data = {
+      isValidForm: false,
+      formData: null
+    }
+
+    if(!pickupFormRef.current){
+    } 
+    else if (!pickupFormRef.current.dirty){
+        pickupFormRef.current.submitForm();
+    } 
+    else if (Object.keys(pickupFormRef.current.errors).length > 0){
+    } 
+    else {
+      data.isValidForm = true;
+      data.formData = pickupFormRef.current.values;
+    }  
+
+    return data;
+    
+  }
+
+  interface payment {
+    isValidCard: boolean,
+    cardDetails: any,
+    errors: any
+  }
+
+  const validatePaymentForm = async () : Promise<payment> => {
+
+    let data : payment = {
+      isValidCard: false,
+      cardDetails: null,
+      errors: null
+    }
+
+    const cardDetails = await paymentInfoRef.current.getCardDetails();
+
+    if(cardDetails.error){
+      data.errors = cardDetails.error;
+    } else if(cardDetails.paymentMethod){
+      data.cardDetails = cardDetails.paymentMethod;
+      data.isValidCard = true;
+    }
+
+    console.log('payment', data)
+
+    return data;
+
+  }
+
+  const placeOrder = () => {
+
+   const {isValidForm, formData} =  validatePickupForm();
+
+   if(!isValidForm){
+        displayToast('ERROR', 'Pickup fields are required.');
+        scrollToTop();
+        return;
+   }
+
+  //  const {isValidCard} = validatePaymentForm();
+
+  //  if(!isValidCard){
+  //       // displayToast('ERROR', errors.message);
+  //       return;
+  //  }
+
+    
+
+  }
 
   return (
     <>
@@ -250,6 +334,8 @@ const Checkout = () => {
                         </Typography>
                       </Grid>
                       <Formik
+                          innerRef={pickupFormRef}
+                          enableReinitialize={true}
                           initialValues={{
                             email: '',
                             name: '',
@@ -276,17 +362,7 @@ const Checkout = () => {
                             phone: Yup.string().min(14, 'Enter valid number').required('Phone is required'),
                             emailNotification: Yup.bool().optional()
                           })}
-                          onSubmit={async (values) => {
-                            // const obj = {
-                            //   email: values.email,
-                            //   name: values.name,
-                            //   phone: values.phone
-                            //     ? values.phone.replace(/\D/g, '')
-                            //     : ''
-                            // };
-
-                            // const data: any = await dispatch(updateUser(obj));
-                          }}
+                          onSubmit={(values, actions) => {}}
                         >
                           {({
                             errors,
@@ -437,8 +513,8 @@ const Checkout = () => {
                                   return (
                                     // <Grid item xs={6} sm={6} md={3} lg={3}>
                                       <ToggleButton
+                                        key={`button-${time}`}
                                         value={time}
-                                        name={time}
                                         className="selected-btn"
                                         selected={ selectedTime === time ? true : false}
                                       >
@@ -475,7 +551,7 @@ const Checkout = () => {
                               {
                                     timeSlots.slice(4,7).map(time => {
                                       return (
-                                        <MenuItem value={time}>
+                                        <MenuItem key={`menu-${time}`} value={time}>
                                         {moment(time, 'YYYYMMDD HH:mm').format('HH:mm')}
                                         </MenuItem>
                                       )
@@ -513,8 +589,22 @@ const Checkout = () => {
               <Divider />
               <br />
               <br />
-              <PaymentInfo />
+              <PaymentInfo ref={paymentInfoRef} />
               {/*second section ends here*/}
+              {/* <button onClick={testing}>testing</button> */}
+              <Grid container className="add-order">
+                <Grid item xs={12} sm={12} md={4} lg={4}>
+                  {/* <Link
+                    to="/orderconfirmation"
+                    aria-label="place your order"
+                  > */}
+                    <Button onClick={placeOrder} variant="contained" title="PLACE ORDER">
+                      PLACE ORDER
+                    </Button>
+                  
+                  {/* </Link> */}
+                </Grid>
+             </Grid>
             </Card>
           </Grid>
         </Grid>
