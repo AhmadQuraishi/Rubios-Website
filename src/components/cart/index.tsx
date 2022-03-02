@@ -286,15 +286,27 @@ const Cart = (props: any) => {
                         )}
                       </Grid>
                       <Grid item xs={3}>
-                        <Link
-                          to={`product/${item.productId}/${item.id}`}
-                          title="Edit"
-                          onClick={() => showCart()}
-                          className={classes.smallLink}
-                          aria-label="Make changes to the current menu item"
-                        >
-                          Edit
-                        </Link>
+                        {(productRemoveObj && productRemoveObj.loading) ||
+                        (productAddObj && productAddObj.loading) ? (
+                          <Link
+                            to={`product/${item.productId}/${item.id}`}
+                            title="Edit"
+                            className={classes.disabledLink}
+                            aria-label="Make changes to the current menu item"
+                          >
+                            Edit
+                          </Link>
+                        ) : (
+                          <Link
+                            to={`product/${item.productId}/${item.id}`}
+                            title="Edit"
+                            onClick={() => showCart()}
+                            className={classes.smallLink}
+                            aria-label="Make changes to the current menu item"
+                          >
+                            Edit
+                          </Link>
+                        )}
                       </Grid>
                       <Grid item xs={3}>
                         {(productRemoveObj && productRemoveObj.loading) ||
