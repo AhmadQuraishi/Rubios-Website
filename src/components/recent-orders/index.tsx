@@ -1,17 +1,22 @@
-import { Card, CardMedia, Grid, Typography } from '@mui/material';
+import { Card, CardMedia, Grid, Typography, Button } from '@mui/material';
 import './index.css';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserRecentOrders } from '../../redux/actions/user';
+import { addMultipleProductsRequest } from '../../redux/actions/basket/addMultipleProducts';
 import LoadingBar from '../loading-bar';
 import { TablePagination } from '@mui/material';
+import {
+  RequestBasketProductBatch
+} from '../../types/olo-api';
+
 
 const RecentOrders = () => {
   const [recentorders, setOrders] = React.useState([]);
   const dispatch = useDispatch();
-  console.log('123');
-
   const authtoken = useSelector((state: any) => state.TokensReducer.authtoken);
+  const basketObj = useSelector((state: any) => state.basketReducer);
+
   const { userRecentOrders, loading } = useSelector(
     (state: any) => state.userReducer,
   );
@@ -38,6 +43,31 @@ const RecentOrders = () => {
     setPage(0);
     //
   };
+
+  const addProductToBag = (orderProducts: any) => {
+    const request: RequestBasketProductBatch = {} as RequestBasketProductBatch;
+    request.products = [{
+      productid: 13369288,
+      quantity: 1,
+      specialinstructions: "Like it",
+      recipient: '',
+      customdata: '',
+      choices: [{
+        choiceid: 46013861379,
+        quantity: 2,
+        customfields: [
+          {
+            fieldid: 4298321,
+            value: "Happy Birthday!!"
+          }
+        ]
+      }
+      ]
+    }];
+    request.replaceContents = true;
+    dispatch(addMultipleProductsRequest(basketObj.basket.id || '', request))
+  }
+
 
   let x = 0;
   return (
@@ -118,6 +148,7 @@ const RecentOrders = () => {
                         className="order-Link"
                         variant="button"
                         title="Reorder"
+                        onClick={() => addProductToBag(order.products)}
                       >
                         REORDER
                       </Typography>

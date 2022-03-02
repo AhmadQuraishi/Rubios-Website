@@ -3,8 +3,13 @@ import './index.css';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserFavoritetOrders } from '../../redux/actions/user';
+import { addMultipleProductsRequest } from '../../redux/actions/basket/addMultipleProducts';
 import LoadingBar from '../loading-bar';
 import { TablePagination } from '@mui/material';
+import {
+  RequestBasketProductBatch
+} from '../../types/olo-api';
+
 
 const FavoriteOrders = () => {
   const [favOrders, setfavOrders] = React.useState([]);
@@ -12,6 +17,7 @@ const FavoriteOrders = () => {
   console.log('123');
 
   const authtoken = useSelector((state: any) => state.TokensReducer.authtoken);
+  const basketObj = useSelector((state: any) => state.basketReducer);
   const { userFavoriteOrders, loading } = useSelector(
     (state: any) => state.userReducer,
   );
@@ -38,6 +44,13 @@ const FavoriteOrders = () => {
     setPage(0);
     //
   };
+
+  const addProductToBag = (orderProducts: any) =>{
+    const request: RequestBasketProductBatch = {} as RequestBasketProductBatch ;
+    request.products = orderProducts;
+    request.replaceContents = true;
+    dispatch(addMultipleProductsRequest(basketObj.basket.id || '', request))
+  }
 
   let x = 0;
   return (
@@ -128,6 +141,7 @@ const FavoriteOrders = () => {
                         className="order-Link"
                         variant="button"
                         title="Reorder"
+                        onClick={() => addProductToBag(forder.products)}
                       >
                         REORDER
                       </Typography>

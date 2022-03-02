@@ -1,6 +1,7 @@
 import axios from 'axios';
 import RequestCreateBasket, {
   RequestNewBasketProduct,
+  RequestBasketProductBatch
 } from '../../types/olo-api';
 
 export const getBasket = (basketid: string) => {
@@ -33,6 +34,7 @@ export const getDummyBasket = (body: RequestCreateBasket) => {
   }
 };
 
+
 export const addSingleProduct = (
   basketid: string,
   body: RequestNewBasketProduct,
@@ -50,3 +52,23 @@ export const addSingleProduct = (
     throw error;
   }
 };
+
+
+export const addMultipleProducts = (
+  basketid: string,
+  body: RequestBasketProductBatch,
+) => {
+  try {
+    const url = process.env.REACT_APP_OLO_API || '';
+    return axios
+      .post(url + `/baskets/${basketid}/products/batch`, body)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.log(error.response);
+        throw error;
+      });
+  } catch (error) {
+    throw error;
+  }
+};
+

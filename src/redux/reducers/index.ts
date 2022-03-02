@@ -17,6 +17,7 @@ import restaurantListReducer from './restaurant/list';
 import dummyBasketReducer from './basket/dummy';
 import basketReducer from './basket';
 import addSingleProductReducer from './basket/addSingleProduct';
+import addMultipleProductsReducer from './basket/addMultipleProducts'
 
 const persistConfig = {
   key: 'root',
@@ -41,6 +42,7 @@ const rootReducers = combineReducers({
   dummyBasketReducer,
   basketReducer,
   addSingleProductReducer,
+  addMultipleProductsReducer
 });
 
 const persistReducers = persistReducer(persistConfig, rootReducers);

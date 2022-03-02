@@ -56,7 +56,8 @@
     "build": "react-scripts build",
     "build.prod": "react-scripts build --env=prod",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "dev": "SET NODE_ENV=dev && npm start"
   },
   "eslintConfig": {
     "extends": [

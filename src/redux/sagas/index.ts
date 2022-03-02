@@ -14,6 +14,7 @@ import { locationSaga } from './location';
 import { BasketSaga } from './basket';
 import { dummyBasketSaga } from './basket/dummy';
 import { addSingleProductSaga } from './basket/addSingleProduct';
+import {addMultipleProductsSaga} from './basket/addMultipleProducts';
 
 export default function* rootSaga() {
   yield all([
@@ -32,5 +33,6 @@ export default function* rootSaga() {
     dummyBasketSaga(),
     BasketSaga(),
     addSingleProductSaga(),
+    addMultipleProductsSaga()
   ]);
 }
