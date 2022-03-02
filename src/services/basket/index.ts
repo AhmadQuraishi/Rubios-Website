@@ -1,5 +1,7 @@
 import axios from 'axios';
-import RequestCreateBasket, {
+
+import {
+  RequestCreateBasket,
   RequestNewBasketProduct,
 } from '../../types/olo-api';
 
@@ -40,7 +42,22 @@ export const addSingleProduct = (
   try {
     const url = process.env.REACT_APP_OLO_API || '';
     return axios
-      .post(url + `/baskets/${basketid}/products?`, body)
+      .post(url + `/baskets/${basketid}/products`, body)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.log(error.response);
+        throw error;
+      });
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const removeProduct = (basketid: string, basketProductId: number) => {
+  try {
+    const url = process.env.REACT_APP_OLO_API || '';
+    return axios
+      .delete(url + `/baskets/${basketid}/products/${basketProductId}`)
       .then((response) => response.data)
       .catch((error) => {
         console.log(error.response);

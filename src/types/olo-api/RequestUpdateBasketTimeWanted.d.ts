@@ -1,6 +1,6 @@
 
 
-interface RequestUpdateBasketTimeWanted {
+export interface RequestUpdateBasketTimeWanted {
 
     ismanualfire: boolean,
     // Whether or not the basket is to become a Manual Fire order.
@@ -10,7 +10,7 @@ interface RequestUpdateBasketTimeWanted {
 
     year: number,                      //4 digit year for the time wanted.
     month: number,                     //Month without any leading zero for the time wanted.
-    day; number,                      //Day without any leading zero for the time wanted.
+    day: number,                      //Day without any leading zero for the time wanted.
     hour: number,                     //Hour without any leading zero for the time wanted.
     minute: number                    //Minute without any leading zero for the time wanted.
 

@@ -4,7 +4,7 @@ import footerReducer from './footer';
 import categoryReducer from './category';
 import userReducer from './user';
 import rewardReducer from './reward';
-import tokenReducer from './token'
+import tokenReducer from './token';
 import TokensReducer from './Tokens';
 import storage from 'redux-persist/lib/storage';
 import restaurantInfoReducer from './restaurant';
@@ -14,15 +14,16 @@ import productOptionsReducer from './product/option';
 import providerReducer from './provider';
 import authReducer from './auth';
 import restaurantListReducer from './restaurant/list';
-import dummyBasketReducer from './basket/dummy';
+import createBasketReducer from './basket/create';
 import basketReducer from './basket';
-import addSingleProductReducer from './basket/addSingleProduct';
+import addProductReducer from './basket/product/add';
+import removeProductReducer from './basket/product/remove';
 import checkInReducer from './check-in';
 
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['restaurantInfoReducer', 'basketReducer' , 'userReducer'],
+  whitelist: ['restaurantInfoReducer', 'basketReducer', 'userReducer'],
 };
 
 const rootReducers = combineReducers({
@@ -39,10 +40,11 @@ const rootReducers = combineReducers({
   providerReducer,
   authReducer,
   restaurantListReducer,
-  dummyBasketReducer,
+  createBasketReducer,
   basketReducer,
-  addSingleProductReducer,
-  checkInReducer
+  addProductReducer,
+  removeProductReducer,
+  checkInReducer,
 });
 
 const persistReducers = persistReducer(persistConfig, rootReducers);

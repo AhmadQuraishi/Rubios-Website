@@ -74,9 +74,7 @@ const CategoryList = () => {
         <ErrorMessageAlert message={error.message} />
       )}
       <StoreInfoBar />
-      {loading === true && (
-        <ProductListingSkeletonUI />
-      )}
+      {loading === true && <ProductListingSkeletonUI />}
       {categoriesWithProducts?.categories &&
         categoriesWithProducts?.categories.length > 0 && (
           <Box
@@ -155,6 +153,7 @@ const CategoryList = () => {
                 <ProductListing
                   productList={item.products}
                   categoryID={item.id}
+                  imgPath={categoriesWithProducts.imagepath}
                   shownItemsCount={4}
                 />
               </Grid>

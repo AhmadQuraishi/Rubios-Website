@@ -25,9 +25,15 @@
 .order .right-col .selected-btn {
   width: 100%;
   height: 60px;
+  margin: 0px 18px 0px 0px !important;
 }
 .order .right-col .time-slot {
   background: #214F66;
+  margin-top: 10px;
+  width: 100%;
+}
+.order .right-col .time-slot-selected {
+  background: #79C043;
   margin-top: 10px;
   width: 100%;
 }
