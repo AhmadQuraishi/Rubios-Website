@@ -29,6 +29,7 @@ import ProductSkeletonUI from '../../components/product-skeleton-ui';
 import { setBasketRequest } from '../../redux/actions/basket/create';
 import { addProductRequest } from '../../redux/actions/basket/product/add';
 import { getBasketRequest } from '../../redux/actions/basket';
+import { updateProductRequest } from '../../redux/actions/basket/product/update';
 
 const Product = () => {
   const [productDetails, setProductDetails] = useState<ProductInfo>();
@@ -36,23 +37,23 @@ const Product = () => {
   const [showError, setShowError] = useState<string>('');
   const [basket, setBasket] = useState<ResponseBasket>();
   const [actionStatus, setActionStatus] = useState<boolean>(false);
-
-  const { categoryID, id } = useParams();
+  const { id, edit } = useParams();
   const { categories, loading } = useSelector(
     (state: any) => state.categoryReducer,
   );
-
   const dummyBasketObj = useSelector((state: any) => state.createBasketReducer);
   const basketObj = useSelector((state: any) => state.basketReducer);
-
   const productAddObj = useSelector((state: any) => state.addProductReducer);
-
+  const productUpdateObj = useSelector(
+    (state: any) => state.updateProductReducer,
+  );
   const { options } = useSelector((state: any) => state.productOptionsReducer);
   const { restaurant } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
 
   const [count, setCount] = React.useState(1);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -75,16 +76,15 @@ const Product = () => {
 
   useEffect(() => {
     if (categories && categories.categories) {
-      if (id && categoryID) {
-        const category = categories.categories.find((obj: Category) => {
-          return obj.id.toString() == categoryID;
-        });
-        if (category) {
-          const product = category.products.find((obj: ProductInfo) => {
+      if (id) {
+        categories.categories.map((item: Category) => {
+          const product = item.products.find((obj: ProductInfo) => {
             return obj.id.toString() == id;
           });
-          setProductDetails(product);
-        }
+          if (product) {
+            setProductDetails(product);
+          }
+        });
       }
     }
   }, [categories]);
@@ -92,8 +92,27 @@ const Product = () => {
   useEffect(() => {
     if (productDetails) {
       dispatch(getProductOptionRequest(productDetails.id));
+      setCountWithEdit();
     }
   }, [productDetails]);
+
+  const setCountWithEdit = () => {
+    if (edit && productDetails) {
+      debugger;
+      const product = basketObj.basket.products.find(
+        (item: any) => item.id == edit,
+      );
+      if (product) {
+        setCount(product.quantity);
+      } else {
+        navigate('/product/' + productDetails?.id);
+      }
+    }
+  };
+
+  useEffect(() => {
+    setCountWithEdit();
+  }, [edit]);
 
   useEffect(() => {
     if (options && options.optiongroups) {
@@ -111,7 +130,13 @@ const Product = () => {
       request.productid = productDetails?.id;
       request.quantity = count;
       setActionStatus(true);
-      dispatch(addProductRequest(basket?.id || '', request));
+      if (edit) {
+        dispatch(
+          updateProductRequest(basket?.id || '', parseInt(edit), request),
+        );
+      } else {
+        dispatch(addProductRequest(basket?.id || '', request));
+      }
     }
   };
 
@@ -147,6 +172,22 @@ const Product = () => {
       setShowError(productAddObj.error.message);
     }
   }, [productAddObj]);
+
+  useEffect(() => {
+    setShowError('');
+    if (productUpdateObj && productUpdateObj.basket && actionStatus) {
+      setBasket(productUpdateObj.basket);
+      setActionStatus(false);
+      dispatch(getBasketRequest('', productUpdateObj.basket));
+    }
+    if (
+      productUpdateObj &&
+      productUpdateObj.error &&
+      productUpdateObj.error.message
+    ) {
+      setShowError(productUpdateObj.error.message);
+    }
+  }, [productUpdateObj]);
 
   const changeImageSize = (path: string) => {
     return path.replaceAll('w=210', 'w=520').replaceAll('h=140', 'w=520');
@@ -419,7 +460,8 @@ const Product = () => {
               <Grid item xs={12} sm={3} md={2} lg={2}>
                 {productAddObj.loading ||
                 basketObj.loading ||
-                dummyBasketObj.loading ? (
+                dummyBasketObj.loading ||
+                productUpdateObj.loading ? (
                   <Button
                     aria-label="add to bag"
                     title="ADD TO Bag"
@@ -427,7 +469,7 @@ const Product = () => {
                     variant="contained"
                     disabled
                   >
-                    ADD TO Bag
+                    {edit ? 'UPDATE BAG' : 'ADD TO BAG'}
                   </Button>
                 ) : (
                   <Button
@@ -440,7 +482,7 @@ const Product = () => {
                       return false;
                     }}
                   >
-                    ADD TO BAG
+                    {edit ? 'UPDATE BAG' : 'ADD TO BAG'}
                   </Button>
                 )}
               </Grid>

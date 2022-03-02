@@ -66,7 +66,7 @@ const ProductListing = (props: any) => {
             md={3}
           >
             <Link
-              to={`/product/${categoryID}/${item.id}`}
+              to={`/product/${item.id}`}
               aria-label={item.name}
               style={{ textDecoration: 'none' }}
             >

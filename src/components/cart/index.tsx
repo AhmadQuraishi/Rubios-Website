@@ -285,10 +285,11 @@ const Cart = (props: any) => {
                           </MUILink>
                         )}
                       </Grid>
-                      <Grid item xs={3} sx={{ display: 'none' }}>
+                      <Grid item xs={3}>
                         <Link
-                          to="/"
+                          to={`product/${item.productId}/${item.id}`}
                           title="Edit"
+                          onClick={() => showCart()}
                           className={classes.smallLink}
                           aria-label="Make changes to the current menu item"
                         >
