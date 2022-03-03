@@ -232,7 +232,7 @@ const Welcome = () => {
       <Grid container component="main" columns={16} className={classes.root}>
         <Grid item xs={12} className="welcome-wrapper">
           <Grid container className="welcome-content">
-            <Grid item xs={12} md={6} lg={6} className="left-col">
+            <Grid item xs={12} md={7} lg={7} className="left-col">
               <Typography variant="caption" className="label" title="Welcome">
                 WELCOME
               </Typography>
@@ -284,28 +284,24 @@ const Welcome = () => {
                                 )}
                               </Fragment>
                             ))}
-                          <Link
-                            to="/product"
-                            aria-label="edit order"
-                            color="#a5a5a5"
-                            // fontWeight={900}
-                            // textTransform="uppercase"
-                            // underline="none"
-                            title="EDIT ORDER"
-                          >
-                            Edit Order
-                          </Link>
-                          <Link
-                            to="/product"
-                            aria-label="re order"
-                            color="#0075bf"
-                            // fontWeight={900}
-                            // textTransform="uppercase"
-                            // underline="none"
-                            title="order"
-                          >
-                            Re Order
-                          </Link>
+                          <Grid className="order-action">
+                            <Link
+                              to="/product"
+                              aria-label="edit order"
+                              className="caption-grey"
+                              title="EDIT ORDER"
+                            >
+                              Edit Order
+                            </Link>
+                            <Link
+                              to="/product"
+                              aria-label="re order"
+                              className="label"
+                              title="order"
+                            >
+                              Re Order
+                            </Link>
+                          </Grid>
                         </CardContent>
                       </Card>
                     </Fragment>
@@ -313,7 +309,9 @@ const Welcome = () => {
                 </Fragment>
               )}
             </Grid>
-            <Grid item xs={12} md={6} lg={6} className="right-col">
+            <Grid item xs={12} md={5} lg={5} className="right-col">
+              <Grid container columns={16}>
+                <Grid item xs={16} sm={8} md={16} lg={16}>
               <Typography
                 variant="caption"
                 className="label"
@@ -339,7 +337,8 @@ const Welcome = () => {
                   {favRestaurant.distance} Miles Away
                 </Typography>
               )}
-
+                </Grid>
+                <Grid item xs={16} sm={8} md={16} lg={16}>
               {favRestaurant.canpickup === true && (
                 <Button
                   aria-label="pickup button"
@@ -374,6 +373,8 @@ const Welcome = () => {
                   CURBSIDE
                 </Button>
               )}
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
