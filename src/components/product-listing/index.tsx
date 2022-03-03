@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   title: {
     color: theme.palette.secondary.main,
-    padding: '20px 0 5px 0',
+    padding: '20px 0 10px 0',
     fontSize: '18px !important',
     fontWeight: '600 !important',
     fontFamily: 'Poppins-Medium !important',

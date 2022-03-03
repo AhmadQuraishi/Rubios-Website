@@ -162,7 +162,9 @@ const StoreInfoBar = () => {
                   variant="body2"
                   textTransform="uppercase"
                   title="Hours"
-                  sx={{ paddingBottom: '5px' }}
+                  sx={{
+                    paddingBottom: '5px',
+                  }}
                 >
                   Hours
                 </Typography>
@@ -182,6 +184,7 @@ const StoreInfoBar = () => {
                           <ListItem
                             sx={{
                               padding: '0 0 0 0',
+                              fontFamily: "'Poppins-Medium' !important",
                             }}
                             title={item.label}
                           >
@@ -196,6 +199,7 @@ const StoreInfoBar = () => {
                             fontSize: '12px',
                             fontWeight: '500',
                             color: 'background.paper',
+                            fontFamily: "'Poppins-Medium' !important",
                           }}
                         >
                           <ListItem

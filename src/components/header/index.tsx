@@ -183,6 +183,7 @@ const Header = (props: any) => {
                       textAlign: 'center',
                       marginRight: '10px',
                       fontSize: '13px',
+                      fontFamily: "'Poppins-Medium' !important",
                     }}
                   >
                     {basketObj.basket &&

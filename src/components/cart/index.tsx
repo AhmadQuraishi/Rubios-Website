@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: '25px !important',
     fontWeight: '700',
     fontFamily: 'Poppins-Bold !important',
-    padding: '10px 0px 10px 0px',
+    padding: '10px 0px 18px 0px',
   },
   crossIcon: {
     position: 'absolute',
@@ -272,7 +272,7 @@ const Cart = (props: any) => {
                       ${item.totalcost.toFixed(2)}
                     </Typography>
                   </Grid>
-                  <Grid item xs={12} sx={{ padding: '5px 0 5px 0' }}>
+                  <Grid item xs={12} sx={{ padding: '10px 0 10px 0' }}>
                     <Divider sx={{ borderColor: 'rgba(0, 0, 0, 1);' }} />
                   </Grid>
                   <Grid item xs={12}>
@@ -280,6 +280,7 @@ const Cart = (props: any) => {
                       title={getOptions(item.choices)}
                       variant="caption"
                       fontSize={11}
+                      sx={{ paddingBottom: '5px', display: 'block' }}
                     >
                       {getOptions(item.choices)}
                     </Typography>
@@ -358,7 +359,7 @@ const Cart = (props: any) => {
                   </Grid>
                 </Grid>
                 <Grid item xs={12}>
-                  <br />
+                  <div style={{ height: '15px' }}></div>
                 </Grid>
               </Grid>
             ))}
@@ -481,7 +482,9 @@ const Cart = (props: any) => {
                     margin: 'auto',
                     width: '100%',
                     borderRadius: 0,
-                    padding: '15px',
+                    padding: '30px',
+                    fontFamily: "'Poppins-Medium', sans-serif !important;",
+                    fontSize: '16px',
                   }}
                 >
                   Add Another Menu Item
@@ -530,6 +533,7 @@ const Cart = (props: any) => {
                       color: 'secondary.main',
                       fontSize: '14px',
                       paddingBottom: '2px',
+                      fontFamily: 'Poppins-Regular',
                     }}
                     title="Tax"
                   >
@@ -543,6 +547,7 @@ const Cart = (props: any) => {
                       fontSize: '14px',
                       textAlign: 'right',
                       paddingBottom: '2px',
+                      fontFamily: 'Poppins-Regular',
                     }}
                     title="$"
                   >
@@ -557,6 +562,7 @@ const Cart = (props: any) => {
                     sx={{
                       color: 'secondary.main',
                       fontSize: '14px',
+                      fontFamily: 'Poppins-Regular',
                     }}
                     title="Tax"
                   >
@@ -569,6 +575,7 @@ const Cart = (props: any) => {
                       color: 'secondary.main',
                       fontSize: '14px',
                       textAlign: 'right',
+                      fontFamily: 'Poppins-Regular',
                     }}
                     title="$"
                   >
@@ -628,11 +635,13 @@ const Cart = (props: any) => {
                 }}
                 sx={{
                   textTransform: 'uppercase',
-                  backgroundColor: 'primary.main',
+                  backgroundColor: '#5FA625',
                   margin: 'auto',
                   width: '100%',
                   borderRadius: 0,
-                  padding: '10px',
+                  padding: '30px 10px',
+                  fontSize: '16px',
+                  fontFamily: "'Poppins-Medium', sans-serif !important;",
                 }}
                 title="Checkout"
               >
@@ -644,11 +653,13 @@ const Cart = (props: any) => {
                 disabled
                 sx={{
                   textTransform: 'uppercase',
-                  backgroundColor: 'primary.main',
+                  backgroundColor: '#5FA625',
                   margin: 'auto',
                   width: '100%',
                   borderRadius: 0,
-                  padding: '10px',
+                  padding: '30px 10px',
+                  fontSize: '16px',
+                  fontFamily: "'Poppins-Medium', sans-serif !important;",
                 }}
                 title="Checkout"
               >
