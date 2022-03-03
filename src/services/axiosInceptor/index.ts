@@ -24,10 +24,7 @@ axiosInstance.interceptors.request.use(
             concatString = uriData.concat(JSON.stringify(body));
           }
           const signature = CryptoJS.HmacSHA1(concatString,secretString).toString();
-
-          config.headers = {
-            'x-pch-digest': signature
-          };
+      config.headers = {'x-pch-digest': signature };
         }
         return config;
       } catch (e) {
