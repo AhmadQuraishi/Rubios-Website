@@ -37,6 +37,7 @@
 
 .order-history-card .card-panel .order-img {
   display: block;
+  cursor: pointer;
 }
 
 .order-history-card .card-panel .order-Link {

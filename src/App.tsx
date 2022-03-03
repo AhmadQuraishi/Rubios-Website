@@ -9,7 +9,6 @@ import LeftMenuBar from './components/left-menu-bar';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-
 function App(props: any) {
   const location = useLocation();
   const [isAccountSection, setIsAccountSection] = useState(false);
