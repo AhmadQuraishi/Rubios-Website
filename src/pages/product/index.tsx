@@ -172,7 +172,7 @@ const Product = () => {
       setActionStatus(false);
       displayToast('SUCCESS', '1 item added to cart.');
       dispatch(getBasketRequest('', productAddObj.basket));
-      navigate('/');
+      navigate('/menu/' + restaurant.slug);
     }
   }, [productAddObj]);
 
@@ -182,7 +182,7 @@ const Product = () => {
       setActionStatus(false);
       displayToast('SUCCESS', '1 item updated in cart.');
       dispatch(getBasketRequest('', productUpdateObj.basket));
-      navigate('/');
+      navigate('/menu/' + restaurant.slug);
     }
   }, [productUpdateObj]);
 
