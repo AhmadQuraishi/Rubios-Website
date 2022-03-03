@@ -3,7 +3,6 @@ import axiosInstance from "../axiosInceptor";
 
 
 export const requestCreateCheckIn = (barcode: string) => {
- 
     const body = {
         barcode: barcode,
         client: process.env.REACT_APP_PUNCHH_CLIENT_ID,
