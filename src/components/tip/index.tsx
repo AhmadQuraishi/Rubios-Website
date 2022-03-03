@@ -63,60 +63,65 @@ const Tip = ({basket}: any)  => {
       <Grid item xs={12} sm={12} md={12} lg={12}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={0} md={2} lg={2}/>
-          <Grid item xs={12} sm={6} md={4} lg={4}>
-            <Typography variant="h4">TIP</Typography>
-            <Grid container>
-              <FormControl>
-                <ToggleButtonGroup
-                  value={tipPercentage}
-                  exclusive
-                  onChange={handleTipPercentage}
-                >
-                  {/* <Grid container spacing={2}>
-                    <Grid item xs={4} sm={4} md={3} lg={3}> */}
+          {
+            basket?.allowstip ? (
+              <Grid item xs={12} sm={6} md={4} lg={4}>
+              <Typography variant="h4">TIP</Typography>
+              <Grid container>
+                <FormControl>
+                  <ToggleButtonGroup
+                    value={tipPercentage}
+                    exclusive
+                    onChange={handleTipPercentage}
+                  >
+                    {/* <Grid container spacing={2}>
+                      <Grid item xs={4} sm={4} md={3} lg={3}> */}
+                        <ToggleButton                              
+                          selected={ tipPercentage === 10 ? true : false}
+                          value={10} 
+                          className="selected-btn"
+                        >
+                          10%
+                        </ToggleButton>
+                      {/* </Grid>
+                      <Grid item xs={4} sm={4} md={3} lg={3}> */}
                       <ToggleButton                              
-                        selected={ tipPercentage === 10 ? true : false}
-                        value={10} 
-                        className="selected-btn"
-                      >
-                        10%
-                      </ToggleButton>
-                    {/* </Grid>
-                    <Grid item xs={4} sm={4} md={3} lg={3}> */}
-                    <ToggleButton                              
-                        selected={ tipPercentage === 20 ? true : false}
-                        value={20} 
-                        className="selected-btn"
-                      >
-                        20%
-                      </ToggleButton>
-                    {/* </Grid> */}
-                    {/* <Grid item xs={4} sm={4} md={3} lg={3}> */}
-                    <ToggleButton                              
-                        selected={ tipPercentage === 30 ? true : false}
-                        value={30} 
-                        className="selected-btn"
-                      >
-                        30%
-                      </ToggleButton>
-                    {/* </Grid>
-                  </Grid> */}
-                </ToggleButtonGroup>
-              </FormControl>
-              <Grid item xs={12} md={9} lg={9}>
-                <TextField
-                  className="action-btn"
-                  value={tipCustomAmount}
-                  type="number"
-                  onChange={handleTipCustomAmountChange}
-                  label="Custom Amount"
-                  aria-label="custom amount"
-                  InputProps={{ endAdornment: <IconTip /> }}
-                  title="Custom Amount"
-                /> 
+                          selected={ tipPercentage === 20 ? true : false}
+                          value={20} 
+                          className="selected-btn"
+                        >
+                          20%
+                        </ToggleButton>
+                      {/* </Grid> */}
+                      {/* <Grid item xs={4} sm={4} md={3} lg={3}> */}
+                      <ToggleButton                              
+                          selected={ tipPercentage === 30 ? true : false}
+                          value={30} 
+                          className="selected-btn"
+                        >
+                          30%
+                        </ToggleButton>
+                      {/* </Grid>
+                    </Grid> */}
+                  </ToggleButtonGroup>
+                </FormControl>
+                <Grid item xs={12} md={9} lg={9}>
+                  <TextField
+                    className="action-btn"
+                    value={tipCustomAmount}
+                    type="number"
+                    onChange={handleTipCustomAmountChange}
+                    label="Custom Amount"
+                    aria-label="custom amount"
+                    InputProps={{ endAdornment: <IconTip /> }}
+                    title="Custom Amount"
+                  /> 
+                </Grid>
               </Grid>
-            </Grid>
-          </Grid>
+            </Grid> 
+            ) : (null)
+          }
+          
           <Grid item xs={12} sm={6} md={4} lg={4} className="coupon-sec">
             <Grid container>
               <Typography variant="h4">COUPON CODE</Typography>

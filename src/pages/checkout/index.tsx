@@ -5,7 +5,6 @@ import {
   Card,
   FormLabel,
   Grid,
-  RadioGroup,
   TextField,
   Typography,
   ToggleButtonGroup,
@@ -14,6 +13,7 @@ import {
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
@@ -37,37 +37,17 @@ import DatePicker from '@mui/lab/DatePicker';
 import { HoursListing } from '../../helpers/hoursListing';
 import { CalendarTypeEnum } from '../../helpers/hoursListing';
 import { getSingleRestaurantCalendar, updateBasketTimeWanted, deleteBasketTimeWanted, validateBasket } from '../../redux/actions/basket/checkout';
-import { ResponseRestaurantCalendars } from '../../types/olo-api';
 import { displayToast } from '../../helpers/toast';
-import { ClickAwayListener } from '@mui/lab/node_modules/@mui/base';
-import { generateSubmitBasketPayload } from '../../helpers/checkout';
-
-const isTimeSame = (fTime: string, sTime: string): boolean => {
-  return fTime.split(' ')[1] === sTime.split(' ')[1];
-};
-
-const GetRestaurantHoursRange = (
-  hours: ResponseRestaurantCalendars,
-  type: CalendarTypeEnum,
-): HoursListing[] => {
-  const selectedStoreHours = hours?.calendar.find((x) => x.type === type);
-  let newHoursArray: HoursListing[] = [];
-  if (selectedStoreHours) {
-    selectedStoreHours &&
-      selectedStoreHours.ranges.forEach((item, index) => {
-        newHoursArray.push({
-          label: item.weekday.substring(0, 1),
-          start: item.start,
-          end: item.end,
-          isOpenAllDay: isTimeSame(item.start, item.end),
-        });
-      });
-  }
-  return newHoursArray;
-};
+import { 
+  generateSubmitBasketPayload, 
+  GetRestaurantHoursRange, 
+  generateNextAvailableTimeSlots,
+  createTimeWantedPayload } from '../../helpers/checkout';
 
 const Checkout = () => {
   const dispatch = useDispatch(); 
+  const navigate = useNavigate();
+
   const pickupFormRef = React.useRef<any>(null);
   const paymentInfoRef = React.useRef<any>();
    
@@ -76,14 +56,12 @@ const Checkout = () => {
   const [selectedDate, setSelectedDate] = React.useState<any>(new Date());
   const [open, setOpen] = React.useState<boolean>(false);
   const [runOnce, setRunOnce] = React.useState<boolean>(true);
+  const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
   const [basket, setBasket] = React.useState<ResponseBasket>();
-  const [restaurantHours, setRestaurantHours] =
-    React.useState<HoursListing[]>();
-  const [tipPercentage, setTipPercentage] = React.useState(0);
-  const [tipAmount, setTipAmount] = React.useState(0);
+  const [restaurantHours, setRestaurantHours] = React.useState<HoursListing[]>();
 
   const basketObj = useSelector((state: any) => state.basketReducer);
-  // const { calendar } = useSelector(    (state: any) => state.restaurantCalendarReducer  );
+  const tokenObj = useSelector((state: any) => state.TokensReducer);
 
   React.useEffect(() => {
     if (basket && runOnce) {
@@ -103,11 +81,11 @@ const Checkout = () => {
     console.log('working 1');
     if (basketObj.basket) {
       setBasket(basketObj.basket);
+    } else {
+      navigate('/location')
     }
 
     if (basketObj.calendar && basketObj.calendar.data) {
-      console.log('working 2');
-
       setRestaurantHours(
         GetRestaurantHoursRange(
           basketObj.calendar.data,
@@ -120,33 +98,19 @@ const Checkout = () => {
   React.useEffect(() => {
     console.log('restaurantHours', restaurantHours);
     if (restaurantHours && restaurantHours.length) {
-      generateNextAvailableTimeSlots(
+     const slots =  generateNextAvailableTimeSlots(
         restaurantHours[0].start,
         restaurantHours[0].end,
         restaurantHours[0].isOpenAllDay,
       );
+      setTimeSlots(slots)
     }
   }, [restaurantHours]);
-
-  const createTimeWantedPayload = (time: string) => {
-    const date = moment(time, 'YYYYMMDD HH:mm');
-    const payload: RequestUpdateBasketTimeWanted = {
-      ismanualfire: false,
-      year: date.year(),
-      month: date.month() + 1,
-      day: date.date(),
-      hour: date.hour(),
-      minute: date.minute(),
-    };
-    return payload;
-  };
 
   const onTimeSlotSelect = (event: any) => {
     const selectedValue = event.target.value;
     setSelectedTime(selectedValue);
     if (selectedValue && selectedValue !== '') {
-      console.log('selectedValue', selectedValue);
-      console.log('selectedTime', selectedTime);
       if (selectedValue === basket?.timewanted) {
         if (basket) {
           dispatch(deleteBasketTimeWanted(basket.id));
@@ -186,55 +150,6 @@ const Checkout = () => {
     },
   );
 
-  const calculateMinutesDiff = (minutes: number): number => {
-    if ([0, 15, 30, 45].includes(minutes)) {
-      return minutes;
-    } else {
-      let difference = Math.ceil(minutes / 15);
-      difference = difference * 15 - minutes;
-      minutes = difference + 30;
-      return minutes;
-    }
-  };
-
-  const generateNextAvailableTimeSlots = (
-    openingTime: string,
-    closingTime: string,
-    isOpenAllDay: Boolean,
-  ) => {
-    let timeSlots = [];
-    let currentTime = moment();
-    let startTime;
-
-    let openAt = moment(openingTime, 'YYYYMMDD HH:mm');
-    let closeAt = moment(closingTime, 'YYYYMMDD HH:mm');
-    let minutes = currentTime.minutes();
-    minutes = calculateMinutesDiff(minutes);
-
-    if (isOpenAllDay) {
-      openAt.startOf('day');
-      closeAt.endOf('day');
-    }
-
-    if (currentTime.isAfter(closeAt)) {
-      return [];
-    } else if (currentTime.isBetween(openAt, closeAt)) {
-      startTime = currentTime.add(minutes, 'minute');
-    } else if (currentTime.isBefore(openAt)) {
-      startTime = openAt.add(15, 'm');
-    }
-
-    let count = 0;
-    const maxAllowed = 7;
-    while (closeAt.diff(openAt, 'seconds') > 900 && count <= maxAllowed) {
-      timeSlots.push(moment(startTime).format('YYYYMMDD HH:mm'));
-      startTime && startTime.add('m', 15);
-      count++;
-    }
-
-    setTimeSlots(timeSlots);
-  };
-
   const handleDateChange = (e: any) => {
     setSelectedDate(e);
     setOpen(!open);
@@ -270,7 +185,7 @@ const Checkout = () => {
     if(!pickupFormRef.current){
     } 
     else if (!pickupFormRef.current.dirty){
-        pickupFormRef.current.submitForm();
+      pickupFormRef.current.submitForm();
     } 
     else if (Object.keys(pickupFormRef.current.errors).length > 0){
     } 
@@ -293,8 +208,6 @@ const Checkout = () => {
 
     const cardDetails = await paymentInfoRef.current.getCardDetails();
 
-    console.log('cardDetails', cardDetails)
-
     if(cardDetails.error){
       data.errors = cardDetails.error;
     } else if(cardDetails.paymentMethod){
@@ -302,19 +215,19 @@ const Checkout = () => {
       data.isValidCard = true;
     }
 
-    console.log('payment', data)
-
     return data;
 
   }
 
   const placeOrder = async () => {
 
+    setButtonDisabled(true);
    const {isValidForm, formData} =  validatePickupForm();
 
    if(!isValidForm){
         displayToast('ERROR', 'Pickup fields are required.');
         scrollToTop();
+        setButtonDisabled(false);
         return;
    }
 
@@ -322,14 +235,18 @@ const Checkout = () => {
 
    if(!isValidCard){
         displayToast('ERROR', errors?.message);
+        setButtonDisabled(false);
         return;
    }
 
-   const payload = generateSubmitBasketPayload(formData, cardDetails, '')
+   formData.phone = formData.phone.replace(/\D/g, '')
+
+   const payload = generateSubmitBasketPayload(formData, cardDetails, tokenObj.authtoken);
   
-  if(basket){
-    dispatch(validateBasket(basket.id, payload))
-  }    
+    if(basket){
+      setButtonDisabled(false);
+      dispatch(validateBasket(basket.id, payload))
+    }    
   }
 
   return (
@@ -440,7 +357,7 @@ const Checkout = () => {
                         />
                       </Grid>
 
-                            <Grid item xs={12}>
+                      <Grid item xs={12}>
                               <TextField
                                 aria-label="Phone Number"
                                 onBlur={handleBlur}
@@ -452,7 +369,7 @@ const Checkout = () => {
                                 name="phone"
                                 InputLabelProps={
                                   {
-                                    // shrink: touched.phone && values.phone === '' ? false : true,
+                                    // shrink: values.phone !== '' ? true : false,
                                   }
                                 }
                                 InputProps={{
@@ -461,7 +378,7 @@ const Checkout = () => {
                                 error={Boolean(touched.phone && errors.phone)}
                                 helperText={errors.phone}
                               />
-                            </Grid>
+                      </Grid>
                             <Grid item xs={12}>
                               <TextField
                                 aria-label="Email"
@@ -478,18 +395,23 @@ const Checkout = () => {
                               />
                             </Grid>
 
-                            <Grid item xs={12}>
-                              <FormGroup>
-                                <FormControlLabel
-                                  control={<Checkbox defaultChecked />}
-                                  label="Send me emails with special offers and updates"
-                                  aria-label="Send me emails with special offers and updates"
-                                  aria-required="true"
-                                  title="Send me emails with special offers and updates"
-                                  name="emailNotification"
-                                />
-                              </FormGroup>
-                            </Grid>
+                            {
+                              tokenObj.authtoken && tokenObj.authtoken === '' ? (
+                              <Grid item xs={12}>
+                                <FormGroup>
+                                  <FormControlLabel
+                                    control={<Checkbox defaultChecked />}
+                                    label="Send me emails with special offers and updates"
+                                    aria-label="Send me emails with special offers and updates"
+                                    aria-required="true"
+                                    title="Send me emails with special offers and updates"
+                                    name="emailNotification"
+                                  />
+                                </FormGroup>
+                              </Grid>
+                              ) : (null)
+                            }
+
                           </form>
                         )}
                       </Formik>
@@ -545,7 +467,7 @@ const Checkout = () => {
                       <Grid container>
                         <FormControl>
                           <Grid container>
-                            <Grid item xs={6} sm={6} md={3} lg={3}>
+                            <Grid item xs={3} sm={3} md={3} lg={3}>
                               <FormLabel
                                 className="slot-label"
                                 title="QUICKEST"
@@ -586,7 +508,7 @@ const Checkout = () => {
                     {
                       timeSlots.length > 4 ? (
                         <Grid item xs={12}>
-                          <FormControl fullWidth className={`${timeSlots.slice(4,7).includes(selectedTime) ? 'time-slot-selected' : 'time-slot'}`}>
+                          <FormControl fullWidth className={`${timeSlots.slice(4).includes(selectedTime) ? 'time-slot-selected' : 'time-slot'}`}>
                             <InputLabel
                               id="select-more-times"
                               aria-label="More Times"
@@ -597,13 +519,13 @@ const Checkout = () => {
                             <Select
                               id="select-label"
                               labelId="select-more-times"
-                              value={timeSlots.slice(4,7).includes(selectedTime) ? selectedTime : ''}
+                              value={timeSlots.slice(4).includes(selectedTime) ? selectedTime : ''}
                               onChange={(event) => onTimeSlotSelect(event)}
                               label="Select More times"
                               title="Select More times"
                             >
                               {
-                                    timeSlots.slice(4,7).map(time => {
+                                    timeSlots.slice(4).map(time => {
                                       return (
                                         <MenuItem key={`menu-${time}`} value={time}>
                                         {moment(time, 'YYYYMMDD HH:mm').format('HH:mm')}
@@ -624,6 +546,12 @@ const Checkout = () => {
               <Divider />
               <br />
               <br />
+              <Tip basket={basket} />
+              <br />
+              <br />
+              <Divider />
+              <br />
+              <br />
               {/*second section*/}
               <OrderDetail basket={basket} />
               <br />
@@ -637,26 +565,13 @@ const Checkout = () => {
               <Divider />
               <br />
               <br />
-              <Tip basket={basket} />
-              <br />
-              <br />
-              <Divider />
-              <br />
-              <br />
               <PaymentInfo ref={paymentInfoRef} />
               {/*second section ends here*/}
-              {/* <button onClick={testing}>testing</button> */}
               <Grid container className="add-order">
                 <Grid item xs={12} sm={12} md={4} lg={4}>
-                  {/* <Link
-                    to="/orderconfirmation"
-                    aria-label="place your order"
-                  > */}
-                    <Button onClick={placeOrder} variant="contained" title="PLACE ORDER">
+                    <Button disabled={buttonDisabled || basketObj?.loading} onClick={placeOrder} variant="contained" title="PLACE ORDER">
                       PLACE ORDER
                     </Button>
-                  
-                  {/* </Link> */}
                 </Grid>
              </Grid>
             </Card>
