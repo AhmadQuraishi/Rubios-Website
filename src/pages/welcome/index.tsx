@@ -49,7 +49,7 @@ const Welcome = () => {
         <Grid item xs={12} className="welcome-wrapper">
           <Grid container className="welcome-content">
             {!loading && recentorders.length > 0 && (
-              <Grid item xs={12} md={6} lg={6} className="left-col">
+              <Grid item xs={12} md={7} lg={7} className="left-col">
                 <Typography variant="caption" className="label" title="Welcome">
                   WELCOME
                 </Typography>
@@ -100,28 +100,24 @@ const Welcome = () => {
                               )}
                             </Fragment>
                           ))}
-                        <Link
-                          to="/product"
-                          aria-label="edit order"
-                          color="#a5a5a5"
-                          // fontWeight={900}
-                          // textTransform="uppercase"
-                          // underline="none"
-                          title="EDIT ORDER"
-                        >
-                          Edit Order
-                        </Link>
-                        <Link
-                          to="/product"
-                          aria-label="re order"
-                          color="#0075bf"
-                          // fontWeight={900}
-                          // textTransform="uppercase"
-                          // underline="none"
-                          title="order"
-                        >
-                          Re Order
-                        </Link>
+                          <Grid className="order-action">
+                            <Link
+                              to="/product"
+                              aria-label="edit order"
+                              className="caption-grey"
+                              title="EDIT ORDER"
+                            >
+                              Edit Order
+                            </Link>
+                            <Link
+                              to="/product"
+                              aria-label="re order"
+                              className="label"
+                              title="order"
+                            >
+                              Re Order
+                            </Link>
+                          </Grid>
                       </CardContent>
                     </Card>
                   </Fragment>
@@ -129,51 +125,57 @@ const Welcome = () => {
               </Grid>
             )}
 
-            <Grid item xs={12} md={6} lg={6} className="right-col">
-              <Typography
-                variant="caption"
-                className="label"
-                title="YOUR FAVORITE LOCATION"
-              >
-                YOUR FAVORITE LOCATION
-              </Typography>
-              <Typography variant="h5" title="Broadway Blvd">
-                Broadway Blvd
-                <Link className="caption-grey" title="change" to="/location">
-                  (change)
-                </Link>
-              </Typography>
+            <Grid item xs={12} md={5} lg={5} className="right-col">
+              <Grid container columns={16}>
+                <Grid item xs={16} sm={8} md={16} lg={16}>
+                <Typography
+                  variant="caption"
+                  className="label"
+                  title="YOUR FAVORITE LOCATION"
+                >
+                  YOUR FAVORITE LOCATION
+                </Typography>
+                <Typography variant="h5" title="Broadway Blvd">
+                  Broadway Blvd
+                  <Link className="caption-grey" title="change" to="/location">
+                    (change)
+                  </Link>
+                </Typography>
 
-              <Typography variant="h6" title="20212 North 59th Ave, Ste.465A">
-                20212 North 59th Ave, Ste.465A
-              </Typography>
-              <Typography variant="h6" title="San Diego, CA">
-                San Diego, CA
-              </Typography>
-              <Typography variant="h6" title="4.2 Mile Away">
-                4.2 Mile Away
-              </Typography>
-              <Button
-                aria-label="pickup button"
-                variant="contained"
-                title="PICKUP"
-              >
-                PICKUP
-              </Button>
-              <Button
-                aria-label="curbside button"
-                variant="contained"
-                title="CURBSIDE"
-              >
-                CURBSIDE
-              </Button>
-              <Button
-                aria-label="delivery button"
-                variant="contained"
-                title="DELIVERY"
-              >
-                DELIVERY
-              </Button>
+                <Typography variant="h6" title="20212 North 59th Ave, Ste.465A">
+                  20212 North 59th Ave, Ste.465A
+                </Typography>
+                <Typography variant="h6" title="San Diego, CA">
+                  San Diego, CA
+                </Typography>
+                <Typography variant="h6" title="4.2 Mile Away">
+                  4.2 Mile Away
+                </Typography>
+                </Grid>
+                <Grid item xs={16} sm={8} md={16} lg={16}>
+                  <Button
+                    aria-label="pickup button"
+                    variant="contained"
+                    title="PICKUP"
+                  >
+                    PICKUP
+                  </Button>
+                  <Button
+                    aria-label="curbside button"
+                    variant="contained"
+                    title="CURBSIDE"
+                  >
+                    CURBSIDE
+                  </Button>
+                  <Button
+                    aria-label="delivery button"
+                    variant="contained"
+                    title="DELIVERY"
+                  >
+                    DELIVERY
+                  </Button>
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
