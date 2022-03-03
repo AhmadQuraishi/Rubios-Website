@@ -98,6 +98,7 @@ const FavoriteOrders = () => {
                       <img
                         src={require('../../assets/imgs/favrouite-icon.png')}
                         alt="Favrouite Order Icon"
+                        style={{ cursor: 'pointer' }}
                         onClick={() => {
                           handleClickOpen(forder.id);
                         }}
