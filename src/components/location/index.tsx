@@ -14,10 +14,10 @@ import { ResponseRestaurant } from '../../types/olo-api';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setResturantInfoRequest } from '../../redux/actions/restaurant';
+import { displayToast } from '../../helpers/toast';
 
 const LocationCard = (props: any) => {
-  const { restaurants, isNearByRestaurantList, setShowNearBy, setShowError } =
-    props;
+  const { restaurants, isNearByRestaurantList, setShowNearBy } = props;
   const [searchText, setSearchText] = useState<string>();
   const [orderType, setOrderType] = useState<string>();
   const [filteredRestaurants, setfilteredRestaurants] =
@@ -43,13 +43,13 @@ const LocationCard = (props: any) => {
 
   const gotoCategoryPage = (storeID: number) => {
     if (orderType == undefined) {
-      setShowError('Please select atleast one order type');
+      displayToast('ERROR', 'Please select atleast one order type');
       return false;
     }
     const restaurant = restaurants.find((x: any) => x.id === storeID);
     if (restaurant) {
       dispatch(setResturantInfoRequest(restaurant, orderType || ''));
-      navigate('/');
+      navigate('/menu/' + restaurant.slug);
     }
   };
 
@@ -130,7 +130,6 @@ const LocationCard = (props: any) => {
   };
 
   useEffect(() => {
-    setShowError('');
     getSearchResults();
   }, [orderType]);
 
@@ -161,7 +160,6 @@ const LocationCard = (props: any) => {
 
   const findNearByRestaurants = () => {
     setShowNearBy(true);
-    setShowError('');
   };
 
   return (

@@ -1,14 +1,6 @@
-import {
-  Grid,
-  Typography,
-  Card,
-  CardContent,
-  Theme,
-  Button,
-} from '@mui/material';
+import { Grid, Typography, Card, CardContent, Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Fragment, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import './index.css';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -18,11 +10,6 @@ import {
 } from '../../redux/actions/user';
 import LoadingBar from '../../components/loading-bar';
 import DialogBox from '../../components/dialog-box';
-// import Dialog from '@mui/material/Dialog';
-// import DialogActions from '@mui/material/DialogActions';
-// import DialogContent from '@mui/material/DialogContent';
-// import DialogContentText from '@mui/material/DialogContentText';
-// import DialogTitle from '@mui/material/DialogTitle';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -41,7 +28,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 const DeliveryAddress = () => {
   const [open, setOpen] = useState(false);
 
-  const handleClickOpen = () => {
+  const handleClickOpen = (id: number) => {
+    setId(id);
     setOpen(true);
   };
 
@@ -51,7 +39,7 @@ const DeliveryAddress = () => {
 
   const classes = useStyles();
   const [deliveryaddresses, setDelAddresses] = useState([]);
-  const [value, setValue] = useState(true);
+  const [idtoDelete, setId] = useState(0);
   const dispatch = useDispatch();
 
   const authtoken = useSelector((state: any) => state.TokensReducer.authtoken);
@@ -67,23 +55,23 @@ const DeliveryAddress = () => {
       console.log(userDeliveryAddresses.deliveryaddresses);
       setDelAddresses(userDeliveryAddresses.deliveryaddresses);
     }
-  }, [userDeliveryAddresses, loading]);
+  }, [userDeliveryAddresses]);
 
-  const defaultAddressHandler = (e: any, id: number) => {
+  const defaultAddressHandler = (id: number) => {
     const obj = {
       addressid: id,
     };
     dispatch(setUserDefaultDelAddress(obj, authtoken));
   };
 
-  const deleteAddressHandler = (id: number) => {
-    dispatch(deleteUserDeliveryAddress(id, authtoken));
+  const deleteAddressHandler = () => {
+    dispatch(deleteUserDeliveryAddress(idtoDelete, authtoken));
 
-    setOpen(false);
     setTimeout(() => {
       dispatch(getUserDeliveryAddresses(authtoken));
+      setId(0);
     }, 600);
-    setValue(!value);
+    setOpen(false);
   };
 
   return (
@@ -131,7 +119,9 @@ const DeliveryAddress = () => {
                           aria-label="Delete"
                           title="DELETE"
                           className="link"
-                          onClick={handleClickOpen}
+                          onClick={() => {
+                            handleClickOpen(address.id);
+                          }}
                         >
                           DELETE
                         </Typography>
@@ -142,9 +132,7 @@ const DeliveryAddress = () => {
                             aria-label="MAke Default"
                             title="Make Default"
                             className="link default"
-                            onClick={(e) =>
-                              defaultAddressHandler(e, address.id)
-                            }
+                            onClick={() => defaultAddressHandler(address.id)}
                           >
                             MAKE DEFAULT
                           </Typography>
@@ -156,9 +144,7 @@ const DeliveryAddress = () => {
                         message={
                           'Do You Really Want To Delete This Delivery Address?'
                         }
-                        handleDeleteFunction={() =>
-                          deleteAddressHandler(address.id)
-                        }
+                        handleDeleteFunction={() => deleteAddressHandler()}
                       />
                     </Grid>
                   </CardContent>
@@ -203,7 +189,9 @@ const DeliveryAddress = () => {
                           aria-label="Delete"
                           title="DELETE"
                           className="link"
-                          onClick={handleClickOpen}
+                          onClick={() => {
+                            handleClickOpen(address.id);
+                          }}
                         >
                           DELETE
                         </Typography>
@@ -214,9 +202,9 @@ const DeliveryAddress = () => {
                             aria-label="MAke Default"
                             title="Make Default"
                             className="link default"
-                            onClick={(e) =>
-                              defaultAddressHandler(e, address.id)
-                            }
+                            onClick={() => {
+                              defaultAddressHandler(address.id);
+                            }}
                           >
                             MAKE DEFAULT
                           </Typography>
@@ -228,9 +216,7 @@ const DeliveryAddress = () => {
                         message={
                           'Do You Really Want To Delete This Delivery Address?'
                         }
-                        handleDeleteFunction={() =>
-                          deleteAddressHandler(address.id)
-                        }
+                        handleDeleteFunction={() => deleteAddressHandler()}
                       />
                     </Grid>
                   </CardContent>

@@ -5,6 +5,7 @@ import Location from './pages/location';
 import Checkout from './pages/checkout';
 import Welcome from './pages/welcome';
 import Login from './pages/login';
+import Register from './pages/register';
 import OrderConfirmation from './pages/order-confirmation';
 import RewardConfirmation from './pages/reward-confirmation';
 import DeliveryAddress from './pages/delivery-address';
@@ -30,8 +31,10 @@ const AppRoutes = () => {
       <Route path="/product/:id" element={<Product />} />
       <Route path="/product/:id/:edit" element={<Product />} />
       <Route path="/location" element={<Location />} />
+      <Route path="/menu/:store" element={<CategoryList />} />
       <Route path="/checkout" element={<Checkout />} />
       <Route path="/login" element={<Login />} />
+      {/* <Route path="/register" element={<Register />} /> */}
       <Route path="/welcome" element={<Welcome />} />
       <Route path="/orderconfirmation" element={<OrderConfirmation />} />
       <Route path="/rewardconfirmation" element={<RewardConfirmation />} />

@@ -1,10 +1,5 @@
 import axios from "../axiosInceptor";
 
-interface OAuthResponse {
-  code: string;
-  jwt: string;
-  client: string;
-}
 
 export const getToken = async (code: string): Promise<any> => {
   console.log("token service")
@@ -14,7 +9,7 @@ export const getToken = async (code: string): Promise<any> => {
     {
       grant_type: "authorization_code",
       code: code,
-      client_id: "c7f0b80300f53da0f25b52b06c8b9b89afcb47397e8e2c1f3fe9b58200171a41",
+      client_id: process.env.REACT_APP_PUNCHH_CLIENT_ID,
       redirect_uri: "https://dpropt.com/login"
     },
     );

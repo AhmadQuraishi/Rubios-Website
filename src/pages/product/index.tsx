@@ -30,11 +30,11 @@ import { setBasketRequest } from '../../redux/actions/basket/create';
 import { addProductRequest } from '../../redux/actions/basket/product/add';
 import { getBasketRequest } from '../../redux/actions/basket';
 import { updateProductRequest } from '../../redux/actions/basket/product/update';
+import { displayToast } from '../../helpers/toast';
 
 const Product = () => {
   const [productDetails, setProductDetails] = useState<ProductInfo>();
   const [productOptions, setProductOptions] = useState<ResponseModifiers>();
-  const [showError, setShowError] = useState<string>('');
   const [basket, setBasket] = useState<ResponseBasket>();
   const [actionStatus, setActionStatus] = useState<boolean>(false);
   const { id, edit } = useParams();
@@ -98,7 +98,6 @@ const Product = () => {
 
   const setCountWithEdit = () => {
     if (edit && productDetails) {
-      debugger;
       const product = basketObj.basket.products.find(
         (item: any) => item.id == edit,
       );
@@ -129,6 +128,15 @@ const Product = () => {
       const request: any = {};
       request.productid = productDetails?.id;
       request.quantity = count;
+      let options = "";
+      Array.from(
+        document.getElementsByClassName('reward-item-selected'),
+      ).forEach((el) => {
+        if (el.getAttribute('option-id')) {
+          options = options + el.getAttribute('option-id') + ",";
+        }
+      });
+      request.options = options;
       setActionStatus(true);
       if (edit) {
         dispatch(
@@ -150,9 +158,6 @@ const Product = () => {
       setActionStatus(true);
       dispatch(addProductRequest(dummyBasketObj.basket.id || '', request));
     }
-    if (dummyBasketObj.error.data) {
-      setShowError(dummyBasketObj.error.data.message);
-    }
   }, [dummyBasketObj.basket]);
 
   useEffect(() => {
@@ -162,30 +167,22 @@ const Product = () => {
   }, [basketObj.basket]);
 
   useEffect(() => {
-    setShowError('');
     if (productAddObj && productAddObj.basket && actionStatus) {
       setBasket(productAddObj.basket);
       setActionStatus(false);
+      displayToast('SUCCESS', '1 item added to cart.');
       dispatch(getBasketRequest('', productAddObj.basket));
-    }
-    if (productAddObj && productAddObj.error && productAddObj.error.message) {
-      setShowError(productAddObj.error.message);
+      navigate('/menu/' + restaurant.slug);
     }
   }, [productAddObj]);
 
   useEffect(() => {
-    setShowError('');
     if (productUpdateObj && productUpdateObj.basket && actionStatus) {
       setBasket(productUpdateObj.basket);
       setActionStatus(false);
+      displayToast('SUCCESS', '1 item updated in cart.');
       dispatch(getBasketRequest('', productUpdateObj.basket));
-    }
-    if (
-      productUpdateObj &&
-      productUpdateObj.error &&
-      productUpdateObj.error.message
-    ) {
-      setShowError(productUpdateObj.error.message);
+      navigate('/menu/' + restaurant.slug);
     }
   }, [productUpdateObj]);
 
@@ -199,25 +196,6 @@ const Product = () => {
       {loading == true && productDetails == null && productOptions == null && (
         <ProductSkeletonUI />
       )}
-      <Snackbar
-        open={showError != '' ? true : false}
-        autoHideDuration={6000}
-        TransitionComponent={Slide}
-        onClose={() => {
-          setShowError('');
-        }}
-      >
-        <Alert
-          onClose={() => {
-            setShowError('');
-          }}
-          severity="error"
-          variant="filled"
-          sx={{ width: '100%', alignItems: 'center' }}
-        >
-          {showError}
-        </Alert>
-      </Snackbar>
       {productDetails && (
         <Grid container className="product-detail">
           <Grid item xs={12} sm={12} md={12} lg={12}>
@@ -296,6 +274,7 @@ const Product = () => {
                       ((categories && categories.imagepath) || '') +
                       changeImageSize(productDetails.imagefilename)
                     }
+                    className="img"
                     alt={productDetails.name}
                     aria-label={productDetails.name}
                     title={productDetails.name}
