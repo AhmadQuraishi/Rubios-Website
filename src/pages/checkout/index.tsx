@@ -3,12 +3,9 @@ import {
   Box,
   Button,
   Card,
-  FormLabel,
   Grid,
   TextField,
-  Typography,
-  ToggleButtonGroup,
-  ToggleButton,
+  Typography
 } from '@mui/material';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -21,28 +18,18 @@ import Divider from '@mui/material/Divider';
 import OrderDetail from '../../components/order-detail';
 import Tip from '../../components/tip';
 import Rewards from '../../components/rewards';
+import OrderTime from '../../components/order-time';
 import PaymentInfo from '../../components/payment-info';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
 import StoreInfoBar from '../../components/restaurant-info-bar';
 import './checkout.css';
-import {  ResponseBasket, RequestUpdateBasketTimeWanted, RequestBasketSubmit } from '../../types/olo-api';
+import {  ResponseBasket } from '../../types/olo-api';
 import { IMaskInput } from 'react-imask';
 import moment from 'moment';
-import AdapterMoment from '@mui/lab/AdapterMoment';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import DatePicker from '@mui/lab/DatePicker';
 import { HoursListing } from '../../helpers/hoursListing';
-import { CalendarTypeEnum } from '../../helpers/hoursListing';
-import { getSingleRestaurantCalendar, updateBasketTimeWanted, deleteBasketTimeWanted, validateBasket } from '../../redux/actions/basket/checkout';
+import { getSingleRestaurantCalendar, validateBasket } from '../../redux/actions/basket/checkout';
 import { displayToast } from '../../helpers/toast';
 import { 
-  generateSubmitBasketPayload, 
-  GetRestaurantHoursRange, 
-  generateNextAvailableTimeSlots,
-  createTimeWantedPayload } from '../../helpers/checkout';
+  generateSubmitBasketPayload } from '../../helpers/checkout';
 
 const Checkout = () => {
   const dispatch = useDispatch(); 
@@ -51,14 +38,10 @@ const Checkout = () => {
   const pickupFormRef = React.useRef<any>(null);
   const paymentInfoRef = React.useRef<any>();
    
-  const [selectedTime, setSelectedTime] = React.useState('');
-  const [timeSlots, setTimeSlots] = React.useState<string[]>([]);
-  const [selectedDate, setSelectedDate] = React.useState<any>(new Date());
-  const [open, setOpen] = React.useState<boolean>(false);
+
   const [runOnce, setRunOnce] = React.useState<boolean>(true);
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
   const [basket, setBasket] = React.useState<ResponseBasket>();
-  const [restaurantHours, setRestaurantHours] = React.useState<HoursListing[]>();
 
   const basketObj = useSelector((state: any) => state.basketReducer);
   const tokenObj = useSelector((state: any) => state.TokensReducer);
@@ -72,58 +55,17 @@ const Checkout = () => {
           moment().format('YYYYMMDD'),
         ),
       );
-      setSelectedTime(basket.timewanted ? basket.timewanted : '');
       setRunOnce(false);
     }
   }, [basket]);
 
   React.useEffect(() => {
-    console.log('working 1');
     if (basketObj.basket) {
       setBasket(basketObj.basket);
     } else {
       navigate('/location')
     }
-
-    if (basketObj.calendar && basketObj.calendar.data) {
-      setRestaurantHours(
-        GetRestaurantHoursRange(
-          basketObj.calendar.data,
-          CalendarTypeEnum.business,
-        ),
-      );
-    }
   }, [basketObj.basket, basketObj.calendar]);
-
-  React.useEffect(() => {
-    console.log('restaurantHours', restaurantHours);
-    if (restaurantHours && restaurantHours.length) {
-     const slots =  generateNextAvailableTimeSlots(
-        restaurantHours[0].start,
-        restaurantHours[0].end,
-        restaurantHours[0].isOpenAllDay,
-      );
-      setTimeSlots(slots)
-    }
-  }, [restaurantHours]);
-
-  const onTimeSlotSelect = (event: any) => {
-    const selectedValue = event.target.value;
-    setSelectedTime(selectedValue);
-    if (selectedValue && selectedValue !== '') {
-      if (selectedValue === basket?.timewanted) {
-        if (basket) {
-          dispatch(deleteBasketTimeWanted(basket.id));
-          setSelectedTime('');
-        }
-      } else {
-        const payload = createTimeWantedPayload(selectedValue);
-        if (basket) {
-          dispatch(updateBasketTimeWanted(basket.id, payload));
-        }
-      }
-    }
-  };
 
   interface CustomProps {
     onChange: (event: { target: { name: string; value: string } }) => void;
@@ -149,24 +91,6 @@ const Checkout = () => {
       );
     },
   );
-
-  const handleDateChange = (e: any) => {
-    setSelectedDate(e);
-    setOpen(!open);
-  };
-
-  React.useEffect(() => {
-    console.log('selectedDate', selectedDate);
-    if (basket) {
-      dispatch(
-        getSingleRestaurantCalendar(
-          basket.vendorid,
-          moment(selectedDate).format('YYYYMMDD'),
-          moment(selectedDate).format('YYYYMMDD'),
-        ),
-      );
-    }
-  }, [selectedDate]);
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -417,129 +341,7 @@ const Checkout = () => {
                       </Formik>
                     </Grid>
                   </Grid>
-                  <Grid item xs={12} sm={6} md={6} lg={6} className="right-col">
-                    <Grid container>
-                      <Grid item xs={12}>
-                        <Typography
-                          variant="caption"
-                          title="PICKUP TIME"
-                          className="label"
-                        >
-                          PICKUP TIME
-                        </Typography>
-                      </Grid>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Typography
-                        style={{ textTransform: 'uppercase' }}
-                        variant="h4"
-                        title={moment(selectedDate).format('dddd MMM.Do')}
-                      >
-                        {moment(selectedDate).format('dddd MMM.Do')}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Button
-                        aria-label="change"
-                        title="change"
-                        className="caption-grey"
-                        onClick={() => setOpen(!open)}
-                      >
-                        (change)
-                      </Button>
-                      <LocalizationProvider dateAdapter={AdapterMoment}>
-                        <DatePicker
-                          open={open}
-                          label="Date desktop"
-                          minDate={moment()}
-                          inputFormat="MM/dd/yyyy"
-                          value={selectedDate}
-                          onChange={handleDateChange}
-                          renderInput={({
-                            inputRef,
-                            inputProps,
-                            InputProps,
-                          }) => <Box ref={inputRef}></Box>}
-                        />
-                      </LocalizationProvider>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Grid container>
-                        <FormControl>
-                          <Grid container>
-                            <Grid item xs={3} sm={3} md={3} lg={3}>
-                              <FormLabel
-                                className="slot-label"
-                                title="QUICKEST"
-                                id="demo-row-radio-buttons-group-label"
-                              >
-                                QUICKEST
-                              </FormLabel>
-                            </Grid>
-                          </Grid>
-                          <ToggleButtonGroup
-                            value={selectedTime}
-                            exclusive
-                            onChange={(event) => onTimeSlotSelect(event)}
-                            className="selected-btn"
-                          >
-                            {/* <Grid container spacing={2}> */}
-                              {
-                                timeSlots.slice(0,4).map(time => {
-                                  return (
-                                    // <Grid item xs={6} sm={6} md={3} lg={3}>
-                                      <ToggleButton
-                                        key={`button-${time}`}
-                                        value={time}
-                                        className="selected-btn"
-                                        selected={ selectedTime === time ? true : false}
-                                      >
-                                        {moment(time, 'YYYYMMDD HH:mm').format('HH:mm')}
-                                      </ToggleButton>
-                                    // </Grid>
-                                  )
-                                })
-                              }
-                            {/* </Grid> */}
-                          </ToggleButtonGroup>
-                        </FormControl>
-                      </Grid>
-                    </Grid>
-                    {
-                      timeSlots.length > 4 ? (
-                        <Grid item xs={12}>
-                          <FormControl fullWidth className={`${timeSlots.slice(4).includes(selectedTime) ? 'time-slot-selected' : 'time-slot'}`}>
-                            <InputLabel
-                              id="select-more-times"
-                              aria-label="More Times"
-                              title="More Times"
-                            >
-                              MORE TIMES
-                            </InputLabel>
-                            <Select
-                              id="select-label"
-                              labelId="select-more-times"
-                              value={timeSlots.slice(4).includes(selectedTime) ? selectedTime : ''}
-                              onChange={(event) => onTimeSlotSelect(event)}
-                              label="Select More times"
-                              title="Select More times"
-                            >
-                              {
-                                    timeSlots.slice(4).map(time => {
-                                      return (
-                                        <MenuItem key={`menu-${time}`} value={time}>
-                                        {moment(time, 'YYYYMMDD HH:mm').format('HH:mm')}
-                                        </MenuItem>
-                                      )
-                                    })
-                              }
-                            </Select>
-                          </FormControl>
-                        </Grid>
-                      ) : (null)
-                    }
-                    
-                  </Grid>
+                  <OrderTime />
                 </Grid>
               </Grid>
               <br />
