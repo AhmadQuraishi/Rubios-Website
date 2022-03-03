@@ -1,7 +1,7 @@
 import { takeEvery, put, call } from 'redux-saga/effects';
 import { basketActionsTypes } from '../../../types/basket';
 import { getRestaurantCalendar } from '../../../../services/restaurant/calendar';
-import { setTimeWantedBasket, deleteTimeWantedBasket, setTipAmountBasket, applyCouponBasket } from '../../../../services/checkout';
+import { setTimeWantedBasket, deleteTimeWantedBasket, setTipAmountBasket, applyCouponBasket, validateBasket, submitSinglePaymentBasket } from '../../../../services/checkout';
 import {
   getSingleRestaurantCalendarSuccess,
   getSingleRestaurantCalendarFailure,
@@ -12,7 +12,11 @@ import {
   updateBasketTipAmountSuccess,
   updateBasketTipAmountFailure,
   updateBasketCouponCodeSuccess,
-  updateBasketCouponCodeFailure
+  updateBasketCouponCodeFailure,
+  validateBasketSuccess,
+  validateBasketFailure,
+  submitBasketSinglePaymentSuccess,
+  submitBasketSinglePaymentFailure
 } from '../../../actions/basket/checkout';
 
 function* asyncgetSingleRestaurantCalendarRequest(action: any): any {
@@ -76,7 +80,34 @@ function* asyncUpdateBasketCouponCode(action: any): any {
     );
     yield put(updateBasketCouponCodeSuccess(response));
   } catch (error) {
-    yield put(updateBasketTimeWantedFailure(error));
+    yield put(updateBasketCouponCodeFailure(error));
+  }
+}
+
+function* asyncValidateBasket(action: any): any {
+  try {
+    const response = yield call(
+      validateBasket,
+      action.basketId
+    );
+    yield put(validateBasketSuccess(response));
+    yield put({type: basketActionsTypes.SUBMIT_BASKET_SINGLE_PAYMENT, action});
+  } catch (error) {
+    yield put(validateBasketFailure(error));
+  }
+}
+
+function* asyncSubmitBasketSinglePayment(action: any): any {
+  console.log('actiionnnnnnnnnn', action)
+  try {
+    const response = yield call(
+      submitSinglePaymentBasket,
+      action.action.basketId,
+      action.action.data
+    );
+    yield put(submitBasketSinglePaymentSuccess(response));
+  } catch (error) {
+    yield put(submitBasketSinglePaymentFailure(error));
   }
 }
 
@@ -100,5 +131,13 @@ export function* checkoutSaga() {
   yield takeEvery(
     basketActionsTypes.UPDATE_BASKET_COUPON_CODE,
     asyncUpdateBasketCouponCode
+  );
+  yield takeEvery(
+    basketActionsTypes.VALIDETE_BASKET,
+    asyncValidateBasket
+  );
+  yield takeEvery(
+    basketActionsTypes.SUBMIT_BASKET_SINGLE_PAYMENT,
+    asyncSubmitBasketSinglePayment
   );
 }

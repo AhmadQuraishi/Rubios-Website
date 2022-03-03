@@ -56,6 +56,18 @@
   font-size: 12px;
 }
 
+.order .add-order {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+.order .add-order a {
+  text-decoration: none;
+}
+.order .add-order button {
+  width: 100%;
+}
+
 
 @media screen and (max-width: 800px) {
   .checkout-wrapper {
@@ -70,5 +82,17 @@
   }
   .checkout-wrapper .slot-label {
     width: calc(100% - 4%) !important;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .order .add-order button {
+    width: auto;
+    padding: 0px 35px;
+  }
+}
+@media screen and (max-width: 468px) {
+  .order .add-order button {
+    width: 100%;
   }
 }

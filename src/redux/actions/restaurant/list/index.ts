@@ -1,5 +1,6 @@
 import { restaurantListDataActionsTypes } from '../../../types/restaurant/list';
 import { ResponseRestaurantList } from '../../../../types/olo-api';
+import { displayToast } from '../../../../helpers/toast';
 
 export function getNearByResturantListRequest(
   lat: number,
@@ -30,6 +31,12 @@ export function getNearByResturantListRequestSuccess(
 }
 
 export function getNearByResturantListRequestFailure(error: any) {
+  displayToast(
+    'ERROR',
+    error?.response?.data?.message
+      ? error.response.data.message
+      : 'ERROR! Please Try agin later',
+  );
   return {
     type: restaurantListDataActionsTypes.GET_RESTAURANT_LIST_FAILURE,
     error: error,
@@ -50,6 +57,12 @@ export function getResturantListRequestSuccess(data: ResponseRestaurantList) {
 }
 
 export function getResturantListRequestFailure(error: any) {
+  displayToast(
+    'ERROR',
+    error?.response?.data?.message
+      ? error.response.data.message
+      : 'ERROR! Please Try agin later',
+  );
   return {
     type: restaurantListDataActionsTypes.GET_RESTAURANT_LIST_FAILURE,
     error: error,

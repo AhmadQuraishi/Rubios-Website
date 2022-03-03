@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useRef } from 'react';
 import {
   Box,
   Button,
@@ -28,7 +28,7 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import StoreInfoBar from '../../components/restaurant-info-bar';
 import './checkout.css';
-import {  ResponseBasket, RequestUpdateBasketTimeWanted } from '../../types/olo-api';
+import {  ResponseBasket, RequestUpdateBasketTimeWanted, RequestBasketSubmit } from '../../types/olo-api';
 import { IMaskInput } from 'react-imask';
 import moment from 'moment';
 import AdapterMoment from '@mui/lab/AdapterMoment';
@@ -36,8 +36,11 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 import { HoursListing } from '../../helpers/hoursListing';
 import { CalendarTypeEnum } from '../../helpers/hoursListing';
-import { getSingleRestaurantCalendar, updateBasketTimeWanted, deleteBasketTimeWanted } from '../../redux/actions/basket/checkout';
+import { getSingleRestaurantCalendar, updateBasketTimeWanted, deleteBasketTimeWanted, validateBasket } from '../../redux/actions/basket/checkout';
 import { ResponseRestaurantCalendars } from '../../types/olo-api';
+import { displayToast } from '../../helpers/toast';
+import { ClickAwayListener } from '@mui/lab/node_modules/@mui/base';
+import { generateSubmitBasketPayload } from '../../helpers/checkout';
 
 const isTimeSame = (fTime: string, sTime: string): boolean => {
   return fTime.split(' ')[1] === sTime.split(' ')[1];
@@ -50,28 +53,32 @@ const GetRestaurantHoursRange = (
   const selectedStoreHours = hours?.calendar.find((x) => x.type === type);
   let newHoursArray: HoursListing[] = [];
   if (selectedStoreHours) {
-    selectedStoreHours && selectedStoreHours.ranges.forEach((item, index) => {
+    selectedStoreHours &&
+      selectedStoreHours.ranges.forEach((item, index) => {
         newHoursArray.push({
           label: item.weekday.substring(0, 1),
           start: item.start,
           end: item.end,
           isOpenAllDay: isTimeSame(item.start, item.end),
         });
-      })
+      });
   }
   return newHoursArray;
-}
-
+};
 
 const Checkout = () => {
   const dispatch = useDispatch(); 
+  const pickupFormRef = React.useRef<any>(null);
+  const paymentInfoRef = React.useRef<any>();
+   
   const [selectedTime, setSelectedTime] = React.useState('');
-  const [timeSlots, setTimeSlots] = React.useState<string[]>([]); 
+  const [timeSlots, setTimeSlots] = React.useState<string[]>([]);
   const [selectedDate, setSelectedDate] = React.useState<any>(new Date());
   const [open, setOpen] = React.useState<boolean>(false);
   const [runOnce, setRunOnce] = React.useState<boolean>(true);
   const [basket, setBasket] = React.useState<ResponseBasket>();
-  const [restaurantHours, setRestaurantHours] = React.useState<HoursListing[]>();
+  const [restaurantHours, setRestaurantHours] =
+    React.useState<HoursListing[]>();
   const [tipPercentage, setTipPercentage] = React.useState(0);
   const [tipAmount, setTipAmount] = React.useState(0);
 
@@ -80,31 +87,45 @@ const Checkout = () => {
 
   React.useEffect(() => {
     if (basket && runOnce) {
-      dispatch(getSingleRestaurantCalendar(basket.vendorid, moment().format('YYYYMMDD'), moment().format('YYYYMMDD')));
-      setSelectedTime(basket.timewanted ? basket.timewanted : '')
-      setRunOnce(false)
+      dispatch(
+        getSingleRestaurantCalendar(
+          basket.vendorid,
+          moment().format('YYYYMMDD'),
+          moment().format('YYYYMMDD'),
+        ),
+      );
+      setSelectedTime(basket.timewanted ? basket.timewanted : '');
+      setRunOnce(false);
     }
   }, [basket]);
 
   React.useEffect(() => {
-    console.log('working 1')
+    console.log('working 1');
     if (basketObj.basket) {
       setBasket(basketObj.basket);
     }
 
-    if (basketObj.calendar.data) {
-      console.log('working 2')
+    if (basketObj.calendar && basketObj.calendar.data) {
+      console.log('working 2');
 
-      setRestaurantHours(GetRestaurantHoursRange(basketObj.calendar.data, CalendarTypeEnum.business));
+      setRestaurantHours(
+        GetRestaurantHoursRange(
+          basketObj.calendar.data,
+          CalendarTypeEnum.business,
+        ),
+      );
     }
-    
-  }, [basketObj.basket, basketObj.calendar.data]);
+  }, [basketObj.basket, basketObj.calendar]);
 
   React.useEffect(() => {
-   console.log('restaurantHours', restaurantHours)
-   if(restaurantHours && restaurantHours.length){
-    generateNextAvailableTimeSlots(restaurantHours[0].start, restaurantHours[0].end, restaurantHours[0].isOpenAllDay )
-   }
+    console.log('restaurantHours', restaurantHours);
+    if (restaurantHours && restaurantHours.length) {
+      generateNextAvailableTimeSlots(
+        restaurantHours[0].start,
+        restaurantHours[0].end,
+        restaurantHours[0].isOpenAllDay,
+      );
+    }
   }, [restaurantHours]);
 
   const createTimeWantedPayload = (time: string) => {
@@ -116,24 +137,24 @@ const Checkout = () => {
       day: date.date(),
       hour: date.hour(),
       minute: date.minute(),
-      }
-      return payload;
-  }
+    };
+    return payload;
+  };
 
   const onTimeSlotSelect = (event: any) => {
     const selectedValue = event.target.value;
     setSelectedTime(selectedValue);
-    if(selectedValue && selectedValue !== ''){
-      console.log('selectedValue', selectedValue)
-      console.log('selectedTime', selectedTime)
-      if(selectedValue === basket?.timewanted){
-        if(basket){
+    if (selectedValue && selectedValue !== '') {
+      console.log('selectedValue', selectedValue);
+      console.log('selectedTime', selectedTime);
+      if (selectedValue === basket?.timewanted) {
+        if (basket) {
           dispatch(deleteBasketTimeWanted(basket.id));
-          setSelectedTime('')
+          setSelectedTime('');
         }
       } else {
-        const payload = createTimeWantedPayload(selectedValue)
-        if(basket){
+        const payload = createTimeWantedPayload(selectedValue);
+        if (basket) {
           dispatch(updateBasketTimeWanted(basket.id, payload));
         }
       }
@@ -148,7 +169,7 @@ const Checkout = () => {
   const NumberFormatCustom = forwardRef<HTMLElement, CustomProps>(
     function NumberFormatCustom(props, ref) {
       const { onChange, ...other } = props;
-  
+
       return (
         <IMaskInput
           {...other}
@@ -166,19 +187,21 @@ const Checkout = () => {
   );
 
   const calculateMinutesDiff = (minutes: number): number => {
-
-    if([0, 15, 30, 45].includes(minutes)){
+    if ([0, 15, 30, 45].includes(minutes)) {
       return minutes;
-   } else { 
+    } else {
       let difference = Math.ceil(minutes / 15);
-      difference = (difference * 15) - minutes; 
+      difference = difference * 15 - minutes;
       minutes = difference + 30;
       return minutes;
-   }
+    }
+  };
 
-  }
-
-  const generateNextAvailableTimeSlots = (openingTime: string, closingTime: string, isOpenAllDay: Boolean) => {
+  const generateNextAvailableTimeSlots = (
+    openingTime: string,
+    closingTime: string,
+    isOpenAllDay: Boolean,
+  ) => {
     let timeSlots = [];
     let currentTime = moment();
     let startTime;
@@ -188,41 +211,126 @@ const Checkout = () => {
     let minutes = currentTime.minutes();
     minutes = calculateMinutesDiff(minutes);
 
-    if(isOpenAllDay){
+    if (isOpenAllDay) {
       openAt.startOf('day');
-      closeAt.endOf('day')
+      closeAt.endOf('day');
     }
 
-    if(currentTime.isAfter(closeAt)){
+    if (currentTime.isAfter(closeAt)) {
       return [];
-    } else if (currentTime.isBetween(openAt, closeAt)){
+    } else if (currentTime.isBetween(openAt, closeAt)) {
       startTime = currentTime.add(minutes, 'minute');
-    } else if (currentTime.isBefore(openAt)){
-     startTime = openAt.add(15, 'm')
+    } else if (currentTime.isBefore(openAt)) {
+      startTime = openAt.add(15, 'm');
     }
 
     let count = 0;
     const maxAllowed = 7;
-    while((closeAt.diff(openAt, 'seconds') > 900) && (count <= maxAllowed) ){
-       timeSlots.push(moment(startTime).format('YYYYMMDD HH:mm'));
-       startTime && startTime.add('m', 15);
-       count++;
+    while (closeAt.diff(openAt, 'seconds') > 900 && count <= maxAllowed) {
+      timeSlots.push(moment(startTime).format('YYYYMMDD HH:mm'));
+      startTime && startTime.add('m', 15);
+      count++;
     }
 
-    setTimeSlots(timeSlots)
-  }
+    setTimeSlots(timeSlots);
+  };
 
   const handleDateChange = (e: any) => {
-    setSelectedDate(e)
+    setSelectedDate(e);
     setOpen(!open);
-  }
+  };
 
   React.useEffect(() => {
-    console.log('selectedDate', selectedDate)
-    if(basket){
-      dispatch(getSingleRestaurantCalendar(basket.vendorid, moment(selectedDate).format('YYYYMMDD'), moment(selectedDate).format('YYYYMMDD')));
+    console.log('selectedDate', selectedDate);
+    if (basket) {
+      dispatch(
+        getSingleRestaurantCalendar(
+          basket.vendorid,
+          moment(selectedDate).format('YYYYMMDD'),
+          moment(selectedDate).format('YYYYMMDD'),
+        ),
+      );
     }
-  }, [selectedDate])
+  }, [selectedDate]);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 300,
+      behavior: "smooth"
+    });
+  };
+
+  const validatePickupForm = () : any => {
+
+    let data = {
+      isValidForm: false,
+      formData: null
+    }
+
+    if(!pickupFormRef.current){
+    } 
+    else if (!pickupFormRef.current.dirty){
+        pickupFormRef.current.submitForm();
+    } 
+    else if (Object.keys(pickupFormRef.current.errors).length > 0){
+    } 
+    else {
+      data.isValidForm = true;
+      data.formData = pickupFormRef.current.values;
+    }  
+
+    return data;
+    
+  }
+
+  const validatePaymentForm = async ()  => {
+
+    let data: any = {
+      isValidCard: false,
+      cardDetails: null,
+      errors: {}
+    }
+
+    const cardDetails = await paymentInfoRef.current.getCardDetails();
+
+    console.log('cardDetails', cardDetails)
+
+    if(cardDetails.error){
+      data.errors = cardDetails.error;
+    } else if(cardDetails.paymentMethod){
+      data.cardDetails = cardDetails.paymentMethod;
+      data.isValidCard = true;
+    }
+
+    console.log('payment', data)
+
+    return data;
+
+  }
+
+  const placeOrder = async () => {
+
+   const {isValidForm, formData} =  validatePickupForm();
+
+   if(!isValidForm){
+        displayToast('ERROR', 'Pickup fields are required.');
+        scrollToTop();
+        return;
+   }
+
+   const {isValidCard, cardDetails, errors } = await validatePaymentForm();
+
+   if(!isValidCard){
+        displayToast('ERROR', errors?.message);
+        return;
+   }
+
+   const payload = generateSubmitBasketPayload(formData, cardDetails, '')
+  
+  if(basket){
+    dispatch(validateBasket(basket.id, payload))
+  }    
+  }
 
   return (
     <>
@@ -250,21 +358,32 @@ const Checkout = () => {
                         </Typography>
                       </Grid>
                       <Formik
+                          innerRef={pickupFormRef}
+                          enableReinitialize={true}
                           initialValues={{
-                            email: '',
-                            name: '',
+                            firstName: '',
+                            lastName: '',
                             phone: '',
+                            email: '',
                             emailNotification: false
                           }}
                           validationSchema={Yup.object({
-                            name: Yup.string()
+                            firstName: Yup.string()
                               .max(15, 'Must be 15 characters or less')
                               .min(3, 'Must be at least 3 characters')
                               .matches(
                                 /^[aA-zZ\s]+$/,
                                 'Only letters are allowed for this field ',
                               )
-                              .required('Name is required'),
+                              .required('First Name is required'),
+                            lastName: Yup.string()
+                              .max(15, 'Must be 15 characters or less')
+                              .min(3, 'Must be at least 3 characters')
+                              .matches(
+                                /^[aA-zZ\s]+$/,
+                                'Only letters are allowed for this field ',
+                              )
+                              .required('Last Name is required'),
                             email: Yup.string()
                               .matches(
                                 /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
@@ -276,17 +395,7 @@ const Checkout = () => {
                             phone: Yup.string().min(14, 'Enter valid number').required('Phone is required'),
                             emailNotification: Yup.bool().optional()
                           })}
-                          onSubmit={async (values) => {
-                            // const obj = {
-                            //   email: values.email,
-                            //   name: values.name,
-                            //   phone: values.phone
-                            //     ? values.phone.replace(/\D/g, '')
-                            //     : ''
-                            // };
-
-                            // const data: any = await dispatch(updateUser(obj));
-                          }}
+                          onSubmit={(values, actions) => {}}
                         >
                           {({
                             errors,
@@ -301,71 +410,89 @@ const Checkout = () => {
                     <form onSubmit={handleSubmit}>
                       <Grid item xs={12}>
                         <TextField
-                          aria-label="Name"
+                          aria-label="First Name"
                           onBlur={handleBlur}
-                          label="Name"
+                          label="First Name"
                           aria-required="true"
-                          title="Name"
+                          title="First Name"
                           type="text"
-                          name="name"
-                          value={values.name}
+                          name="firstName"
+                          value={values.firstName}
                           onChange={handleChange}
-                          error={Boolean(touched.name && errors.name)}
-                          helperText={errors.name}
+                          error={Boolean(touched.firstName && errors.firstName)}
+                          helperText={errors.firstName}
                         />
                       </Grid>
 
                       <Grid item xs={12}>
                         <TextField
-                          aria-label="Phone Number"
+                          aria-label="Last Name"
                           onBlur={handleBlur}
-                          label="Phone Number"
+                          label="Last Name"
                           aria-required="true"
-                          title="Phone Number"
-                          value={values.phone}
-                          onChange={handleChange}
-                          name="phone"
-                          InputLabelProps={{
-                            // shrink: touched.phone && values.phone === '' ? false : true,
-                          }}
-                          InputProps={{
-                            inputComponent: NumberFormatCustom as any,
-                          }}
-                          error={Boolean(touched.phone && errors.phone)}
-                          helperText={errors.phone}
-                        />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <TextField
-                          aria-label="Email"
-                          onBlur={handleBlur}
-                          label="Email"
-                          aria-required="true"
-                          title="Email"
+                          title="Last Name"
                           type="text"
-                          name="email"
-                          value={values.email}
+                          name="lastName"
+                          value={values.lastName}
                           onChange={handleChange}
-                          error={Boolean(touched.email && errors.email)}
-                          helperText={errors.email}
+                          error={Boolean(touched.lastName && errors.lastName)}
+                          helperText={errors.lastName}
                         />
                       </Grid>
 
-                      <Grid item xs={12}>
-                        <FormGroup>
-                          <FormControlLabel
-                            control={<Checkbox defaultChecked />}
-                            label="Send me emails with special offers and updates"
-                            aria-label="Send me emails with special offers and updates"
-                            aria-required="true"
-                            title="Send me emails with special offers and updates"
-                            name="emailNotification"
-                          />
-                        </FormGroup>
-                      </Grid>
-                      </form>
-                    )}
-                  </Formik>
+                            <Grid item xs={12}>
+                              <TextField
+                                aria-label="Phone Number"
+                                onBlur={handleBlur}
+                                label="Phone Number"
+                                aria-required="true"
+                                title="Phone Number"
+                                value={values.phone}
+                                onChange={handleChange}
+                                name="phone"
+                                InputLabelProps={
+                                  {
+                                    // shrink: touched.phone && values.phone === '' ? false : true,
+                                  }
+                                }
+                                InputProps={{
+                                  inputComponent: NumberFormatCustom as any,
+                                }}
+                                error={Boolean(touched.phone && errors.phone)}
+                                helperText={errors.phone}
+                              />
+                            </Grid>
+                            <Grid item xs={12}>
+                              <TextField
+                                aria-label="Email"
+                                onBlur={handleBlur}
+                                label="Email"
+                                aria-required="true"
+                                title="Email"
+                                type="text"
+                                name="email"
+                                value={values.email}
+                                onChange={handleChange}
+                                error={Boolean(touched.email && errors.email)}
+                                helperText={errors.email}
+                              />
+                            </Grid>
+
+                            <Grid item xs={12}>
+                              <FormGroup>
+                                <FormControlLabel
+                                  control={<Checkbox defaultChecked />}
+                                  label="Send me emails with special offers and updates"
+                                  aria-label="Send me emails with special offers and updates"
+                                  aria-required="true"
+                                  title="Send me emails with special offers and updates"
+                                  name="emailNotification"
+                                />
+                              </FormGroup>
+                            </Grid>
+                          </form>
+                        )}
+                      </Formik>
                     </Grid>
                   </Grid>
                   <Grid item xs={12} sm={6} md={6} lg={6} className="right-col">
@@ -381,11 +508,15 @@ const Checkout = () => {
                       </Grid>
                     </Grid>
                     <Grid item xs={12}>
-                      <Typography style={{textTransform: 'uppercase'}} variant="h4" title={moment(selectedDate).format('dddd MMM.Do')}>
+                      <Typography
+                        style={{ textTransform: 'uppercase' }}
+                        variant="h4"
+                        title={moment(selectedDate).format('dddd MMM.Do')}
+                      >
                         {moment(selectedDate).format('dddd MMM.Do')}
                       </Typography>
                     </Grid>
-                    <Grid item xs={12}>                
+                    <Grid item xs={12}>
                       <Button
                         aria-label="change"
                         title="change"
@@ -395,21 +526,20 @@ const Checkout = () => {
                         (change)
                       </Button>
                       <LocalizationProvider dateAdapter={AdapterMoment}>
-                      <DatePicker
+                        <DatePicker
                           open={open}
                           label="Date desktop"
                           minDate={moment()}
                           inputFormat="MM/dd/yyyy"
                           value={selectedDate}
                           onChange={handleDateChange}
-                          renderInput={
-                                ({ inputRef, inputProps, InputProps }) => (
-                                    <Box ref={inputRef}>
-                                    </Box>
-                                )   
-                          }
+                          renderInput={({
+                            inputRef,
+                            inputProps,
+                            InputProps,
+                          }) => <Box ref={inputRef}></Box>}
                         />
-                 </LocalizationProvider>
+                      </LocalizationProvider>
                     </Grid>
                     <Grid item xs={12}>
                       <Grid container>
@@ -437,8 +567,8 @@ const Checkout = () => {
                                   return (
                                     // <Grid item xs={6} sm={6} md={3} lg={3}>
                                       <ToggleButton
+                                        key={`button-${time}`}
                                         value={time}
-                                        name={time}
                                         className="selected-btn"
                                         selected={ selectedTime === time ? true : false}
                                       >
@@ -475,7 +605,7 @@ const Checkout = () => {
                               {
                                     timeSlots.slice(4,7).map(time => {
                                       return (
-                                        <MenuItem value={time}>
+                                        <MenuItem key={`menu-${time}`} value={time}>
                                         {moment(time, 'YYYYMMDD HH:mm').format('HH:mm')}
                                         </MenuItem>
                                       )
@@ -513,8 +643,22 @@ const Checkout = () => {
               <Divider />
               <br />
               <br />
-              <PaymentInfo />
+              <PaymentInfo ref={paymentInfoRef} />
               {/*second section ends here*/}
+              {/* <button onClick={testing}>testing</button> */}
+              <Grid container className="add-order">
+                <Grid item xs={12} sm={12} md={4} lg={4}>
+                  {/* <Link
+                    to="/orderconfirmation"
+                    aria-label="place your order"
+                  > */}
+                    <Button onClick={placeOrder} variant="contained" title="PLACE ORDER">
+                      PLACE ORDER
+                    </Button>
+                  
+                  {/* </Link> */}
+                </Grid>
+             </Grid>
             </Card>
           </Grid>
         </Grid>

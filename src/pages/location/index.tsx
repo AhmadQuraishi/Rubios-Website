@@ -10,6 +10,7 @@ import {
 import LoadingBar from '../../components/loading-bar';
 import { Alert, Snackbar, Slide, Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import { displayToast } from '../../helpers/toast';
 
 const useStyles = makeStyles((theme: Theme) => ({
   dummyBg: {
@@ -28,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     alignContent: 'center',
     alignItems: 'center',
     justifyItems: 'center',
-  }
+  },
 }));
 
 const Location = () => {
@@ -40,7 +41,6 @@ const Location = () => {
   const [mapCenter, setMapCenter] = useState<any>();
   const [showNearBy, setShowNearBy] = useState(false);
   const [orderType, setOrderType] = useState<string>();
-  const [showError, setShowError] = useState<string>();
   const [nearByRestaurantsFound, setNearByRestaurantsFound] = useState(false);
   const dispatch = useDispatch();
 
@@ -75,7 +75,8 @@ const Location = () => {
         if (showNearBy) {
           setShowNearBy(false);
           setNearByRestaurantsFound(false);
-          setShowError(
+          displayToast(
+            'ERROR',
             "We could not find any Rubio's within 10 Miles of Your Current Location.",
           );
           dispatch(getResturantListRequest());
@@ -136,27 +137,6 @@ const Location = () => {
 
   return (
     <div style={{ minHeight: '300px', position: 'relative' }}>
-      {showError && showError !== '' && (
-        <Snackbar
-          open={showError != '' ? true : false}
-          autoHideDuration={6000}
-          TransitionComponent={Slide}
-          onClose={() => {
-            setShowError('');
-          }}
-        >
-          <Alert
-            onClose={() => {
-              setShowError('');
-            }}
-            severity="error"
-            variant="filled"
-            sx={{ width: '100%', alignItems: 'center' }}
-          >
-            {showError}
-          </Alert>
-        </Snackbar>
-      )}
       {loading && (
         <div className={classes.dummyBg}>
           <LoadingBar />
@@ -170,7 +150,6 @@ const Location = () => {
             restaurants={(restaurants && restaurants.restaurants) || []}
             setOrderTypeMain={setOrderType}
             setShowNearBy={setShowNearBy}
-            setShowError={setShowError}
           />
         </GoogleMap>
       </LoadScript>

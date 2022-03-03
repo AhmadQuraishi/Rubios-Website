@@ -69,7 +69,7 @@ const CategoryList = () => {
   };
 
   return (
-    <Fragment>
+    <div style={{ minHeight: '500px' }}>
       {loading === false && error.message && (
         <ErrorMessageAlert message={error.message} />
       )}
@@ -161,7 +161,7 @@ const CategoryList = () => {
           ),
         )}
       <div style={{ paddingBottom: '30px' }}></div>
-    </Fragment>
+    </div>
   );
 };
 

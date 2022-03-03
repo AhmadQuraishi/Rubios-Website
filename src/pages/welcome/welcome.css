@@ -11,33 +11,55 @@
   border-radius: 30px;
 }
 .welcome-content h4 {
-  margin-bottom: 50px;
+  margin-bottom: 25px;
+  font-size: 46px;
 }
 .welcome-content h5 {
   margin: 10px 0px 10px 0px;
 }
 .welcome-content .left-col {
   border-right: 1px solid #0069aa;
-  padding-right: 35px;
-  margin-right: 35px;
+  padding-right: 45px;
+  margin-right: 45px;
 }
 .welcome-content .left-col .product-card {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-evenly;
   border: 1px solid #d6d6d6;
+  padding: 10px 10px 10px 15px;
 }
 .welcome-content .left-col .product-card img {
-  width: 39%;
-  height: 100%;
-  margin-top: 10px;
+  width: 30%;
+  height: auto;
+  margin-right: 10px;
+}
+.welcome-content .order-action {
+  text-align: right;
+}
+.welcome-content .order-action .caption-grey {
+  font-family: 'Poppins-Bold' !important;
+  color: #a4a4a4;
 }
 .welcome-content .left-col .product-card a {
-  margin: 15px 0px 0px 10px;
+  margin: 15px 0px 0px 20px;
   display: inline-block;
+  text-decoration: none;
+  font-size: 15px !important;
+  letter-spacing: 2px;
+}
+.welcome-content .product-card .MuiCardContent-root {
+  width: 100%;
+  padding: 0px 10px;
 }
 .welcome-content .right-col button {
   margin-top: 10px;
   width: 100%;
+}
+.welcome-content .caption-grey {
+  font-size: 12px;
+  text-decoration: none;
+  font-family: 'Poppins-Regular' !important;
+  margin-left: 5px;
 }
 
 
@@ -49,6 +71,21 @@
   }
   .product-card {
     display: block !important;
+  }
+  .product-card img {
+    float: left;
+  }
+}
+
+@media screen and (max-width: 468px) {
+  .welcome-wrapper {
+    margin: 15px !important;
+  }
+  .welcome-content {
+    padding: 30px 0px;
+  }
+  .welcome-content h4 {
+    font-size: 25px;
   }
   .product-card img {
     width: 100% !important;
