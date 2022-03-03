@@ -1,5 +1,6 @@
 import { categoryActionsTypes } from '../../types/category';
 import { ResponseMenu } from '../../../types/olo-api';
+import { displayToast } from '../../../helpers/toast';
 
 export function getCategoriesRequest(id: number) {
   return {
@@ -16,6 +17,12 @@ export function getCategoriesRequestSuccess(data: ResponseMenu) {
 }
 
 export function getCategoriesRequestFailure(error: any) {
+  displayToast(
+    'ERROR',
+    error?.response?.data?.message
+      ? error.response.data.message
+      : 'ERROR! Please Try agin later',
+  );
   return {
     type: categoryActionsTypes.GET_CATEGORY_ITMES_FAILURE,
     error: error,

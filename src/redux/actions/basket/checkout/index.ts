@@ -4,7 +4,9 @@ import {
   RequestUpdateBasketTimeWanted, 
   ResponseBasket,
   RequestUpdateBasketTip,
-  RequestApplyCoupon
+  RequestApplyCoupon,
+  ResponseBasketValidation,
+  RequestBasketSubmit
  } from '../../../../types/olo-api';
 import {displayToast} from '../../../../helpers/toast'
 export function getSingleRestaurantCalendar(id: number, dateFrom: string, dateTo: string,) {
@@ -122,6 +124,54 @@ export function updateBasketCouponCodeFailure(error: any) {
   displayToast('ERROR', error?.response?.data?.message  ? error.response.data.message : 'ERROR! Please Try agin later')
   return {
     type: basketActionsTypes.UPDATE_BASKET_COUPON_CODE_FAILURE,
+    error: error
+  };
+}
+
+export function validateBasket(basketId: string, data: RequestBasketSubmit) {
+  return {
+    type: basketActionsTypes.VALIDETE_BASKET,
+    basketId,
+    data
+  };
+}
+
+export function validateBasketSuccess(response: ResponseBasketValidation) {
+  
+  return {
+    type: basketActionsTypes.VALIDETE_BASKET_SUCCESS,
+      payload: response
+  };
+}
+
+export function validateBasketFailure(error: any) {
+  displayToast('ERROR', error?.response?.data?.message  ? error.response.data.message : 'ERROR! Please Try agin later')
+  return {
+    type: basketActionsTypes.VALIDETE_BASKET_FAILURE,
+    error: error
+  };
+}
+
+export function submitBasketSinglePayment(basketId: string, data: RequestBasketSubmit ) {
+  return {
+    type: basketActionsTypes.SUBMIT_BASKET_SINGLE_PAYMENT,
+    basketId,
+    data
+  };
+}
+
+export function submitBasketSinglePaymentSuccess(data: ResponseBasket) {
+  displayToast('SUCCESS', 'Order Placed.')
+  return {
+    type: basketActionsTypes.SUBMIT_BASKET_SINGLE_PAYMENT_SUCCESS,
+    payload: data
+  };
+}
+
+export function submitBasketSinglePaymentFailure(error: any) {
+  displayToast('ERROR', error?.response?.data?.message  ? error.response.data.message : 'ERROR! Please Try agin later')
+  return {
+    type: basketActionsTypes.SUBMIT_BASKET_SINGLE_PAYMENT_FAILURE,
     error: error
   };
 }

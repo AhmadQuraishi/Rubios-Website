@@ -73,7 +73,7 @@ const CategoryDetail = () => {
   };
 
   return (
-    <Fragment>
+    <div style={{ minHeight: '500px' }}>
       <StoreInfoBar />
       {loading === true && selectedCategory === undefined && (
         <ProductListingSkeletonUI />
@@ -102,7 +102,7 @@ const CategoryDetail = () => {
         </Grid>
       )}
       <div style={{ paddingBottom: '30px' }}></div>
-    </Fragment>
+    </div>
   );
 };
 

@@ -2,22 +2,27 @@ import { basketActionsTypes } from '../../../../types/basket';
 import { ResponseBasket } from '../../../../../types/olo-api';
 import { displayToast } from '../../../../../helpers/toast';
 
-export function addProductRequest(basketid: string, request: any) {
+export function updateProductRequest(
+  basketid: string,
+  basketProductId: number,
+  request: any,
+) {
   return {
-    type: basketActionsTypes.ADD_PRODUCT_REQUEST,
+    type: basketActionsTypes.UPDATE_PRODUCT_REQUEST,
     basketid,
+    basketProductId,
     request,
   };
 }
 
-export function addProductSuccess(data: ResponseBasket) {
+export function updateProductSuccess(data: ResponseBasket) {
   return {
-    type: basketActionsTypes.ADD_PRODUCT_SUCCESS,
+    type: basketActionsTypes.UPDATE_PRODUCT_SUCCESS,
     payload: data,
   };
 }
 
-export function addProductFailure(error: any) {
+export function updateProductFailure(error: any) {
   displayToast(
     'ERROR',
     error?.response?.data?.message
@@ -25,7 +30,7 @@ export function addProductFailure(error: any) {
       : 'ERROR! Please Try agin later',
   );
   return {
-    type: basketActionsTypes.ADD_PRODUCT_FAILURE,
+    type: basketActionsTypes.UPDATE_PRODUCT_FAILURE,
     error: error,
   };
 }

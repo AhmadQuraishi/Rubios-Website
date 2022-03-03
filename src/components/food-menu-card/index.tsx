@@ -37,13 +37,12 @@ const FoodMenuCard = (props: any) => {
     optionFound = null;
     if (!firstLoad) {
       if (isSingleSelect) {
-        removeItemFromSelection(0);
-        removeItemFromViewUI(0);
         if (selectedItem.find((x: number) => x === id)) {
           return false;
         }
+        removeItemFromSelection(0);
+        removeItemFromViewUI(0);
       }
-
       if (selectedItem.find((x: number) => x === id)) {
         removeItemFromSelection(id);
         removeItemFromViewUI(id);
@@ -182,9 +181,10 @@ const FoodMenuCard = (props: any) => {
             <Card
               className={`reward-item${
                 selectedItem.length > 0 && isItemSelected(menuItem.id)
-                  ? ' selected'
+                  ? ' reward-item-selected'
                   : ''
               }`}
+              option-id={menuItem.id}
               onClick={() => handleClick(menuItem.id, !showDDL)}
             >
               <Grid container className="rewards">
@@ -230,7 +230,8 @@ const FoodMenuCard = (props: any) => {
                       showDDL &&
                       menuItem.modifiers &&
                       menuItem.modifiers.map((item: any, index: number) => (
-                        <select className="select"
+                        <select
+                          className="select"
                           onClick={(e) => e.stopPropagation()}
                           style={{ width: '115px', fontSize: '12px' }}
                         >

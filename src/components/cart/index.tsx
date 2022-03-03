@@ -16,6 +16,7 @@ import { getBasketRequest } from '../../redux/actions/basket';
 import { removeProductRequest } from '../../redux/actions/basket/product/remove';
 import { addProductRequest } from '../../redux/actions/basket/product/add';
 import LoadingBar from '../loading-bar';
+import { displayToast } from '../../helpers/toast';
 
 const useStyles = makeStyles((theme: Theme) => ({
   dimPanel: {
@@ -111,14 +112,18 @@ const Cart = (props: any) => {
   useEffect(() => {
     if (productRemoveObj && productRemoveObj.basket && actionStatus) {
       dispatch(getBasketRequest('', productRemoveObj.basket));
+      displayToast('SUCCESS', '1 item removed from cart.');
       setActionStatus(false);
+      navigate('/');
     }
   }, [productRemoveObj]);
 
   useEffect(() => {
     if (productAddObj && productAddObj.basket && actionStatus) {
       dispatch(getBasketRequest('', productAddObj.basket));
+      displayToast('SUCCESS', 'Duplicate item added to cart.');
       setActionStatus(false);
+      navigate('/');
     }
   }, [productAddObj]);
 
@@ -136,9 +141,21 @@ const Cart = (props: any) => {
       const request: any = {};
       request.productid = product.productId;
       request.quantity = product.quantity;
-      console.log(request);
+      let options = '';
+      product.choices.map((item: any) => {
+        options = options + item.optionid + ',';
+      });
+      request.options = options;
       dispatch(addProductRequest(basketObj.basket.id, request));
     }
+  };
+
+  const getOptions = (options: any) => {
+    let val = '';
+    options.map((item: any) => {
+      val = val + ' ' + item.name.trim() + ',';
+    });
+    return val.trim().replace(/,*$/, '');
   };
 
   return (
@@ -258,7 +275,7 @@ const Cart = (props: any) => {
                       variant="caption"
                       fontSize={11}
                     >
-                      {item.choices.map((item: any) => item.name + ',')}
+                      {getOptions(item.choices)}
                     </Typography>
                   </Grid>
                   <Grid item xs={12} sx={{ padding: '0' }}>
@@ -285,15 +302,28 @@ const Cart = (props: any) => {
                           </MUILink>
                         )}
                       </Grid>
-                      <Grid item xs={3} sx={{ display: 'none' }}>
-                        <Link
-                          to="/"
-                          title="Edit"
-                          className={classes.smallLink}
-                          aria-label="Make changes to the current menu item"
-                        >
-                          Edit
-                        </Link>
+                      <Grid item xs={3}>
+                        {(productRemoveObj && productRemoveObj.loading) ||
+                        (productAddObj && productAddObj.loading) ? (
+                          <Link
+                            to={`product/${item.productId}/${item.id}`}
+                            title="Edit"
+                            className={classes.disabledLink}
+                            aria-label="Make changes to the current menu item"
+                          >
+                            Edit
+                          </Link>
+                        ) : (
+                          <Link
+                            to={`product/${item.productId}/${item.id}`}
+                            title="Edit"
+                            onClick={() => showCart()}
+                            className={classes.smallLink}
+                            aria-label="Make changes to the current menu item"
+                          >
+                            Edit
+                          </Link>
+                        )}
                       </Grid>
                       <Grid item xs={3}>
                         {(productRemoveObj && productRemoveObj.loading) ||
