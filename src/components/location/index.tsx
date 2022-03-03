@@ -49,7 +49,7 @@ const LocationCard = (props: any) => {
     const restaurant = restaurants.find((x: any) => x.id === storeID);
     if (restaurant) {
       dispatch(setResturantInfoRequest(restaurant, orderType || ''));
-      navigate('/');
+      navigate('/menu/' + restaurant.slug);
     }
   };
 

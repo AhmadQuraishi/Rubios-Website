@@ -80,6 +80,9 @@ const Header = (props: any) => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [showCart, setShowCart] = useState(false);
   const basketObj = useSelector((state: any) => state.basketReducer);
+  const { restaurant } = useSelector(
+    (state: any) => state.restaurantInfoReducer,
+  );
 
   const handleShowCart = () => {
     setShowCart(!showCart);
@@ -140,7 +143,7 @@ const Header = (props: any) => {
               <Drawer open={openDrawer} onClose={() => setOpenDrawer(false)}>
                 <div style={{ padding: '20px' }}>
                   <Link
-                    to="/"
+                    to={restaurant ? '/menu/' + restaurant.slug : '/'}
                     onClick={() => setOpenDrawer(false)}
                     className={classes.menuLink}
                     title="Main Menu"
@@ -180,6 +183,7 @@ const Header = (props: any) => {
                       textAlign: 'center',
                       marginRight: '10px',
                       fontSize: '13px',
+                      fontFamily: "'Poppins-Medium' !important",
                     }}
                   >
                     {basketObj.basket &&
@@ -197,7 +201,11 @@ const Header = (props: any) => {
             </>
           ) : (
             <>
-              <Link to="/" className={classes.menuLink} title="Main Menu">
+              <Link
+                to={restaurant ? '/menu/' + restaurant.slug : '/'}
+                className={classes.menuLink}
+                title="Main Menu"
+              >
                 Main Menu
               </Link>
               {!removeCart && (

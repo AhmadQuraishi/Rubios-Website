@@ -161,7 +161,7 @@ export function submitBasketSinglePayment(basketId: string, data: RequestBasketS
 }
 
 export function submitBasketSinglePaymentSuccess(data: ResponseBasket) {
-  displayToast('SUCCESS', 'Order Placed.')
+  displayToast('SUCCESS', 'Order has been placed.')
   return {
     type: basketActionsTypes.SUBMIT_BASKET_SINGLE_PAYMENT_SUCCESS,
     payload: data

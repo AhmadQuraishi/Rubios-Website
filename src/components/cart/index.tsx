@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   cartRoot: {
     position: 'relative',
-    padding: '20px 20px 10px 20px',
+    padding: '35px 30px 10px 30px',
   },
   cartTitle: {
     color: theme.palette.secondary.main,
@@ -65,9 +65,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: '25px !important',
     fontWeight: '700',
     fontFamily: 'Poppins-Bold !important',
-    padding: '10px',
+    padding: '10px 0px 18px 0px',
   },
   crossIcon: {
+    position: 'absolute',
+    top: '15px',
+    right: '10px',
     display: 'flex',
     justifyContent: 'right',
     '& img': {
@@ -77,7 +80,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   smallLink: {
     color: '#0075BF',
     fontSize: '11px !important',
-    fontFamily: 'Poppins-Medium !important',
+    fontFamily: "'Poppins-Medium' !important",
     textDecoration: 'underline',
     display: 'inline',
     cursor: 'pointer',
@@ -101,6 +104,9 @@ const Cart = (props: any) => {
     (state: any) => state.removeProductReducer,
   );
   const productAddObj = useSelector((state: any) => state.addProductReducer);
+  const { restaurant } = useSelector(
+    (state: any) => state.restaurantInfoReducer,
+  );
 
   const dispatch = useDispatch();
 
@@ -114,7 +120,7 @@ const Cart = (props: any) => {
       dispatch(getBasketRequest('', productRemoveObj.basket));
       displayToast('SUCCESS', '1 item removed from cart.');
       setActionStatus(false);
-      navigate('/');
+      navigate(restaurant ? '/menu/' + restaurant.slug : '/');
     }
   }, [productRemoveObj]);
 
@@ -123,7 +129,7 @@ const Cart = (props: any) => {
       dispatch(getBasketRequest('', productAddObj.basket));
       displayToast('SUCCESS', 'Duplicate item added to cart.');
       setActionStatus(false);
-      navigate('/');
+      navigate(restaurant ? '/menu/' + restaurant.slug : '/');
     }
   }, [productAddObj]);
 
@@ -236,16 +242,16 @@ const Cart = (props: any) => {
           {basketObj &&
             basketObj.basket &&
             basketObj.basket.products.map((item: any, index: number) => (
-              <Grid key={index} item xs={12} sx={{ padding: '0 10px 0 10px' }}>
+              <Grid key={index} item xs={12} sx={{ padding: '0px' }}>
                 <Grid container spacing={0}>
                   <Grid item xs={9}>
                     <Typography
                       variant="caption"
                       title={item.name}
                       sx={{
-                        fontSize: '13px',
+                        fontSize: '14px',
                         color: 'secondary.main',
-                        fontFamily: 'Poppins-Medium !important',
+                        fontFamily: "'Poppins-Medium' !important",
                       }}
                     >
                       {item.name}
@@ -266,21 +272,22 @@ const Cart = (props: any) => {
                       ${item.totalcost.toFixed(2)}
                     </Typography>
                   </Grid>
-                  <Grid item xs={12} sx={{ padding: '5px 0 5px 0' }}>
+                  <Grid item xs={12} sx={{ padding: '10px 0 10px 0' }}>
                     <Divider sx={{ borderColor: 'rgba(0, 0, 0, 1);' }} />
                   </Grid>
                   <Grid item xs={12}>
                     <Typography
-                      title="Grilled Chicken Mexican Oil Butter Mix Topping"
+                      title={getOptions(item.choices)}
                       variant="caption"
                       fontSize={11}
+                      sx={{ paddingBottom: '5px', display: 'block' }}
                     >
                       {getOptions(item.choices)}
                     </Typography>
                   </Grid>
                   <Grid item xs={12} sx={{ padding: '0' }}>
                     <Grid container spacing={0}>
-                      <Grid item xs={3}>
+                      <Grid item xs={2}>
                         {(productRemoveObj && productRemoveObj.loading) ||
                         (productAddObj && productAddObj.loading) ? (
                           <MUILink
@@ -302,7 +309,7 @@ const Cart = (props: any) => {
                           </MUILink>
                         )}
                       </Grid>
-                      <Grid item xs={3}>
+                      <Grid item xs={3} sx={{ textAlign: 'center' }}>
                         {(productRemoveObj && productRemoveObj.loading) ||
                         (productAddObj && productAddObj.loading) ? (
                           <Link
@@ -325,7 +332,7 @@ const Cart = (props: any) => {
                           </Link>
                         )}
                       </Grid>
-                      <Grid item xs={3}>
+                      <Grid item xs={3} sx={{ textAlign: 'center' }}>
                         {(productRemoveObj && productRemoveObj.loading) ||
                         (productAddObj && productAddObj.loading) ? (
                           <MUILink
@@ -352,7 +359,7 @@ const Cart = (props: any) => {
                   </Grid>
                 </Grid>
                 <Grid item xs={12}>
-                  <br />
+                  <div style={{ height: '15px' }}></div>
                 </Grid>
               </Grid>
             ))}
@@ -467,8 +474,7 @@ const Cart = (props: any) => {
                   title="Add Another Menu Item"
                   onClick={() => {
                     showCart();
-                    navigate('/');
-                    return false;
+                    navigate(restaurant ? '/menu/' + restaurant.slug : '/');
                   }}
                   sx={{
                     textTransform: 'uppercase',
@@ -476,7 +482,9 @@ const Cart = (props: any) => {
                     margin: 'auto',
                     width: '100%',
                     borderRadius: 0,
-                    padding: '15px',
+                    padding: '30px',
+                    fontFamily: "'Poppins-Medium', sans-serif !important;",
+                    fontSize: '16px',
                   }}
                 >
                   Add Another Menu Item
@@ -486,7 +494,7 @@ const Cart = (props: any) => {
           {basketObj &&
             basketObj.basket &&
             basketObj.basket.products.length > 0 && (
-              <Grid item xs={12} padding="20px 10px 20px 20px">
+              <Grid item xs={12} padding="20px 0px 20px 0px">
                 <Grid container spacing={0}>
                   <Grid
                     item
@@ -494,11 +502,12 @@ const Cart = (props: any) => {
                     sx={{
                       fontFamily: 'Poppins-Bold !important',
                       color: 'secondary.main',
-                      fontize: '16px',
+                      fontSize: '14px',
+                      paddingBottom: '2px',
                     }}
                     title="Sub Total"
                   >
-                    Sub Total
+                    SUB TOTAL
                   </Grid>
                   <Grid
                     item
@@ -506,8 +515,9 @@ const Cart = (props: any) => {
                     sx={{
                       fontFamily: 'Poppins-Bold !important',
                       color: 'secondary.main',
-                      fontize: '16px',
+                      fontSize: '14px',
                       textAlign: 'right',
+                      paddingBottom: '2px',
                     }}
                     title="$"
                   >
@@ -521,19 +531,23 @@ const Cart = (props: any) => {
                     xs={9}
                     sx={{
                       color: 'secondary.main',
-                      fontize: '12px',
+                      fontSize: '14px',
+                      paddingBottom: '2px',
+                      fontFamily: 'Poppins-Regular',
                     }}
                     title="Tax"
                   >
-                    Sales Tax
+                    SALES TAX
                   </Grid>
                   <Grid
                     item
                     xs={3}
                     sx={{
                       color: 'secondary.main',
-                      fontize: '16px',
+                      fontSize: '14px',
                       textAlign: 'right',
+                      paddingBottom: '2px',
+                      fontFamily: 'Poppins-Regular',
                     }}
                     title="$"
                   >
@@ -547,19 +561,21 @@ const Cart = (props: any) => {
                     xs={9}
                     sx={{
                       color: 'secondary.main',
-                      fontize: '12px',
+                      fontSize: '14px',
+                      fontFamily: 'Poppins-Regular',
                     }}
                     title="Tax"
                   >
-                    Total Fee
+                    TOTAL FEE
                   </Grid>
                   <Grid
                     item
                     xs={3}
                     sx={{
                       color: 'secondary.main',
-                      fontize: '16px',
+                      fontSize: '14px',
                       textAlign: 'right',
+                      fontFamily: 'Poppins-Regular',
                     }}
                     title="$"
                   >
@@ -569,7 +585,7 @@ const Cart = (props: any) => {
                       basketObj.basket.totalfees.toFixed(2)}
                   </Grid>
                   <Grid item xs={12} sx={{ padding: '20px 0px' }}>
-                    <Divider />
+                    <Divider sx={{ borderColor: '#224c65' }} />
                   </Grid>
                   <Grid
                     item
@@ -577,11 +593,11 @@ const Cart = (props: any) => {
                     sx={{
                       fontFamily: 'Poppins-Bold !important',
                       color: 'secondary.main',
-                      fontize: '16px',
+                      fontSize: '15px',
                     }}
                     title="Total"
                   >
-                    Total
+                    TOTAL
                   </Grid>
                   <Grid
                     item
@@ -589,7 +605,7 @@ const Cart = (props: any) => {
                     sx={{
                       fontFamily: 'Poppins-Bold !important',
                       color: 'secondary.main',
-                      fontize: '16px',
+                      fontSize: '15px',
                       textAlign: 'right',
                     }}
                     title={
@@ -619,11 +635,13 @@ const Cart = (props: any) => {
                 }}
                 sx={{
                   textTransform: 'uppercase',
-                  backgroundColor: 'primary.main',
+                  backgroundColor: '#5FA625',
                   margin: 'auto',
                   width: '100%',
                   borderRadius: 0,
-                  padding: '10px',
+                  padding: '30px 10px',
+                  fontSize: '16px',
+                  fontFamily: "'Poppins-Medium', sans-serif !important;",
                 }}
                 title="Checkout"
               >
@@ -635,11 +653,13 @@ const Cart = (props: any) => {
                 disabled
                 sx={{
                   textTransform: 'uppercase',
-                  backgroundColor: 'primary.main',
+                  backgroundColor: '#5FA625',
                   margin: 'auto',
                   width: '100%',
                   borderRadius: 0,
-                  padding: '10px',
+                  padding: '30px 10px',
+                  fontSize: '16px',
+                  fontFamily: "'Poppins-Medium', sans-serif !important;",
                 }}
                 title="Checkout"
               >

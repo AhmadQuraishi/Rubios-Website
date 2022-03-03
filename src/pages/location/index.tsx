@@ -8,7 +8,7 @@ import {
   getResturantListRequest,
 } from '../../redux/actions/restaurant/list';
 import LoadingBar from '../../components/loading-bar';
-import { Alert, Snackbar, Slide, Theme } from '@mui/material';
+import { Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { displayToast } from '../../helpers/toast';
 
