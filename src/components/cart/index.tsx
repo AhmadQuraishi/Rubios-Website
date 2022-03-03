@@ -254,7 +254,7 @@ const Cart = (props: any) => {
                         fontFamily: "'Poppins-Medium' !important",
                       }}
                     >
-                      {item.name}
+                      {item.quantity.toString() + ' x ' + item.name.toString()}
                     </Typography>
                   </Grid>
                   <Grid item xs={3} sx={{ textAlign: 'right' }}>
@@ -635,7 +635,7 @@ const Cart = (props: any) => {
                 }}
                 sx={{
                   textTransform: 'uppercase',
-                  backgroundColor: '#5FA625',
+                  backgroundColor: '#0A6FB8',
                   margin: 'auto',
                   width: '100%',
                   borderRadius: 0,

@@ -110,12 +110,41 @@ const Product = () => {
   };
 
   useEffect(() => {
-    setCountWithEdit();
+    if (edit) {
+      setCountWithEdit();
+      setProductOptions(undefined);
+      if (productDetails) {
+        dispatch(getProductOptionRequest(productDetails.id));
+      }
+    }
   }, [edit]);
 
   useEffect(() => {
     if (options && options.optiongroups) {
       setProductOptions(options);
+      if (edit) {
+        const product = basketObj.basket.products.find(
+          (item: any) => item.id == edit,
+        );
+        setTimeout(() => {
+          alert("");
+          product.choices.map((item: any, index: number) => {
+            setTimeout(() => {
+              let element = document.querySelectorAll(
+                "[option-id='" + item.optionid + "'",
+              )[0] as HTMLElement;
+              if (element) element.click();
+              let elementSel = document.getElementById(
+                item.optionid,
+              ) as HTMLOptionElement;
+              if (elementSel) {
+                let sel = elementSel.parentElement as HTMLSelectElement;
+                sel.value = item.optionid.toString();
+              }
+            }, 100 + index * 10);
+          });
+        }, 500);
+      }
     }
   }, [options]);
 
@@ -128,14 +157,19 @@ const Product = () => {
       const request: any = {};
       request.productid = productDetails?.id;
       request.quantity = count;
-      let options = "";
+      let options = '';
       Array.from(
         document.getElementsByClassName('reward-item-selected'),
       ).forEach((el) => {
         if (el.getAttribute('option-id')) {
-          options = options + el.getAttribute('option-id') + ",";
+          options = options + el.getAttribute('option-id') + ',';
+          const sel = el.querySelector('select')?.value;
+          if (sel) {
+            options = options + sel + ',';
+          }
         }
       });
+
       request.options = options;
       setActionStatus(true);
       if (edit) {
