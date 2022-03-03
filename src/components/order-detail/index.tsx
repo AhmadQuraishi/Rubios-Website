@@ -16,7 +16,12 @@ const OrderDetail = ({basket}: any)  => {
             return (
               <>
                 <Grid key={item.id} container>
-                  <Grid item xs={10} sm={10} md={10} lg={11}>
+                <Grid item xs={1} sm={1} md={1} lg={1}>
+                    <Typography variant="h6" title={item.name}>
+                      {item.quantity}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={9} sm={9} md={9} lg={10}>
                     <Typography variant="h6" title={item.name}>
                       {item.name}
                     </Typography>

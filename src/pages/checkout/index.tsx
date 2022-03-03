@@ -14,6 +14,7 @@ import {
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
@@ -68,6 +69,8 @@ const GetRestaurantHoursRange = (
 
 const Checkout = () => {
   const dispatch = useDispatch(); 
+  const navigate = useNavigate();
+
   const pickupFormRef = React.useRef<any>(null);
   const paymentInfoRef = React.useRef<any>();
    
@@ -76,6 +79,7 @@ const Checkout = () => {
   const [selectedDate, setSelectedDate] = React.useState<any>(new Date());
   const [open, setOpen] = React.useState<boolean>(false);
   const [runOnce, setRunOnce] = React.useState<boolean>(true);
+  const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
   const [basket, setBasket] = React.useState<ResponseBasket>();
   const [restaurantHours, setRestaurantHours] =
     React.useState<HoursListing[]>();
@@ -83,6 +87,7 @@ const Checkout = () => {
   const [tipAmount, setTipAmount] = React.useState(0);
 
   const basketObj = useSelector((state: any) => state.basketReducer);
+  const tokenObj = useSelector((state: any) => state.TokensReducer);
   // const { calendar } = useSelector(    (state: any) => state.restaurantCalendarReducer  );
 
   React.useEffect(() => {
@@ -103,6 +108,8 @@ const Checkout = () => {
     console.log('working 1');
     if (basketObj.basket) {
       setBasket(basketObj.basket);
+    } else {
+      navigate('/location')
     }
 
     if (basketObj.calendar && basketObj.calendar.data) {
@@ -270,7 +277,7 @@ const Checkout = () => {
     if(!pickupFormRef.current){
     } 
     else if (!pickupFormRef.current.dirty){
-        pickupFormRef.current.submitForm();
+      pickupFormRef.current.submitForm();
     } 
     else if (Object.keys(pickupFormRef.current.errors).length > 0){
     } 
@@ -293,8 +300,6 @@ const Checkout = () => {
 
     const cardDetails = await paymentInfoRef.current.getCardDetails();
 
-    console.log('cardDetails', cardDetails)
-
     if(cardDetails.error){
       data.errors = cardDetails.error;
     } else if(cardDetails.paymentMethod){
@@ -302,19 +307,19 @@ const Checkout = () => {
       data.isValidCard = true;
     }
 
-    console.log('payment', data)
-
     return data;
 
   }
 
   const placeOrder = async () => {
 
+    setButtonDisabled(true);
    const {isValidForm, formData} =  validatePickupForm();
 
    if(!isValidForm){
         displayToast('ERROR', 'Pickup fields are required.');
         scrollToTop();
+        setButtonDisabled(false);
         return;
    }
 
@@ -322,14 +327,18 @@ const Checkout = () => {
 
    if(!isValidCard){
         displayToast('ERROR', errors?.message);
+        setButtonDisabled(false);
         return;
    }
 
-   const payload = generateSubmitBasketPayload(formData, cardDetails, '')
+   formData.phone = formData.phone.replace(/\D/g, '')
+
+   const payload = generateSubmitBasketPayload(formData, cardDetails, tokenObj.authtoken);
   
-  if(basket){
-    dispatch(validateBasket(basket.id, payload))
-  }    
+    if(basket){
+      setButtonDisabled(false);
+      dispatch(validateBasket(basket.id, payload))
+    }    
   }
 
   return (
@@ -452,7 +461,7 @@ const Checkout = () => {
                                 name="phone"
                                 InputLabelProps={
                                   {
-                                    // shrink: touched.phone && values.phone === '' ? false : true,
+                                    // shrink: values.phone !== '' ? true : false,
                                   }
                                 }
                                 InputProps={{
@@ -624,6 +633,12 @@ const Checkout = () => {
               <Divider />
               <br />
               <br />
+              <Tip basket={basket} />
+              <br />
+              <br />
+              <Divider />
+              <br />
+              <br />
               {/*second section*/}
               <OrderDetail basket={basket} />
               <br />
@@ -637,26 +652,13 @@ const Checkout = () => {
               <Divider />
               <br />
               <br />
-              <Tip basket={basket} />
-              <br />
-              <br />
-              <Divider />
-              <br />
-              <br />
               <PaymentInfo ref={paymentInfoRef} />
               {/*second section ends here*/}
-              {/* <button onClick={testing}>testing</button> */}
               <Grid container className="add-order">
                 <Grid item xs={12} sm={12} md={4} lg={4}>
-                  {/* <Link
-                    to="/orderconfirmation"
-                    aria-label="place your order"
-                  > */}
-                    <Button onClick={placeOrder} variant="contained" title="PLACE ORDER">
+                    <Button disabled={buttonDisabled || basketObj?.loading} onClick={placeOrder} variant="contained" title="PLACE ORDER">
                       PLACE ORDER
                     </Button>
-                  
-                  {/* </Link> */}
                 </Grid>
              </Grid>
             </Card>

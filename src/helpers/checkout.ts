@@ -12,7 +12,7 @@ export function generateSubmitBasketPayload(pickupInfo: any, cardDetails: any, a
 
     const payload: RequestBasketSubmit = {
         billingmethod: BillingMethodEnum.creditcardtoken,
-        usertype: UserTypeEnum.guest,
+        usertype: UserTypeEnum.guest,       
         firstname: pickupInfo.firstName,
         lastname: pickupInfo.lastName,
         emailaddress: pickupInfo.email,
@@ -40,7 +40,11 @@ export function generateSubmitBasketPayload(pickupInfo: any, cardDetails: any, a
     if(authtoken !== ''){
         payload.authtoken = authtoken;
         payload.usertype = UserTypeEnum.user;
-    }
+        delete payload.firstname;
+        delete payload.lastname;
+        delete payload.emailaddress;
+        delete payload.contactnumber;
+    } 
 
     return payload;  
 };
