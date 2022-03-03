@@ -598,7 +598,7 @@ const Cart = (props: any) => {
                     sx={{
                       fontFamily: 'Poppins-Bold !important',
                       color: 'secondary.main',
-                      fontize: '15px',
+                      fontSize: '15px',
                       textAlign: 'right',
                     }}
                     title={
