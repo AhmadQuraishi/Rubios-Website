@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: '25px !important',
     fontWeight: '700',
     fontFamily: 'Poppins-Bold !important',
-    padding: '10px 0px 15px 0px',
+    padding: '10px 0px 10px 0px',
   },
   crossIcon: {
     position: 'absolute',
