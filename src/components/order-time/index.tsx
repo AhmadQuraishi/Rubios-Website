@@ -23,7 +23,6 @@ import {
   createTimeWantedPayload } from '../../helpers/checkout';
 import { HoursListing } from '../../helpers/hoursListing';
 import { CalendarTypeEnum } from '../../helpers/hoursListing';
-import './order-detail.css';
 import { useNavigate } from 'react-router-dom';
 import {  ResponseBasket } from '../../types/olo-api';
 
