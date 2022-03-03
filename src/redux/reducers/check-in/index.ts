@@ -1,4 +1,3 @@
-import { type } from 'os';
 import { checkinTypes as Type } from '../../types/check-in';
 
 const initialState = {

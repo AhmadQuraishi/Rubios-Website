@@ -1,10 +1,10 @@
 import { displayToast } from '../../../helpers/toast';
 import { checkinTypes as Type } from '../../types/check-in';
 
-export function createCheckIn(data: any) {
+export function createCheckIn(barcode: string) {
   return {
     type: Type.CREATE_CHECK_IN,
-    payload: data
+    payload: barcode
   };
 }
 
