@@ -66,11 +66,12 @@ const Product = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setProductOptions(undefined);
     if (restaurant === null) {
       navigate('/location');
     } else {
-      dispatch(getCategoriesRequest(restaurant.id));
+      if (categories == null) {
+        dispatch(getCategoriesRequest(restaurant.id));
+      }
     }
   }, []);
 
@@ -110,30 +111,28 @@ const Product = () => {
   };
 
   useEffect(() => {
-    if (edit) {
-      setCountWithEdit();
-      setProductOptions(undefined);
-      if (productDetails) {
-        dispatch(getProductOptionRequest(productDetails.id));
-      }
+    if (edit && window.location.href.indexOf('edit') == -1) {
+      dispatch(getCategoriesRequest(restaurant.id));
     }
   }, [edit]);
 
   useEffect(() => {
-    if (options && options.optiongroups) {
+    if (options && options.optiongroups && productOptions == undefined) {
       setProductOptions(options);
       if (edit) {
         const product = basketObj.basket.products.find(
           (item: any) => item.id == edit,
         );
         setTimeout(() => {
-          alert("");
+          let timeCount = 200;
           product.choices.map((item: any, index: number) => {
             setTimeout(() => {
               let element = document.querySelectorAll(
                 "[option-id='" + item.optionid + "'",
               )[0] as HTMLElement;
-              if (element) element.click();
+              if (element) {
+                element.click();
+              }
               let elementSel = document.getElementById(
                 item.optionid,
               ) as HTMLOptionElement;
@@ -141,7 +140,8 @@ const Product = () => {
                 let sel = elementSel.parentElement as HTMLSelectElement;
                 sel.value = item.optionid.toString();
               }
-            }, 100 + index * 10);
+            }, timeCount);
+            timeCount = timeCount + 200;
           });
         }, 500);
       }
