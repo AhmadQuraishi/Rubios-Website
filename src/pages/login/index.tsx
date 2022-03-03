@@ -8,35 +8,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { getTokenRequest } from "../../redux/actions/token";
 import { getProviderRequest } from "../../redux/actions/provider";
 import { getAuthRequest } from '../../redux/actions/auth';
+import {OAuthResponse, PunchhAuth} from '../../types/punchh-api'
 
-import { store } from "../../redux/store";
 
 declare var window: any;
 
-interface OAuthResponse {
-  code: string;
-  jwt: string;
-  client: string;
-  authorizationcode?: string,
-  authtoken?: string,
-  basketid?: string,
-  contactnumber?: string,
-  emailaddress?: string,
-  expiresin?: string,
-  firstname?: string,
-  lastname?: string,
-  provider?: string,
-  providertoken?: string,
-  provideruserid?: string,
-  refreshtoken?: null,
-}
 
-interface PunchhAuth {
-  access_token: string;
-  token_type: string;
-  refresh_token: string;
-  created_at: number;
-}
 
 const useStyle = makeStyles(() => ({
   root: {
@@ -98,7 +75,7 @@ const Login = () => {
         <OAuth2Login
           className={classes.signinBtn}
           buttonText={'Punchh SSO Sign In'}
-          authorizationUrl="https://sandbox.punchh.com/oauth/authorize"
+          authorizationUrl={process.env.REACT_APP_AUTHORIZATION_URL}
           responseType="code"
           clientId={process.env.REACT_APP_PUNCHH_CLIENT_ID}
           redirectUri={window.location.href}

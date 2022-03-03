@@ -27,7 +27,6 @@ function App(props: any) {
 
   return (
     <div id="wapper">
-      {console.log("GENERATE_SOURCEMAP", process.env.REACT_APP_GENERATE_SOURCEMAP)}
       <Header
         removeCartForLocation={
           window.location.href.toLocaleLowerCase().indexOf('/location') != -1
