@@ -66,10 +66,11 @@ const Product = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (restaurant === null) {
-      navigate('/location');
-    } else {
-      if (categories == null) {
+    if (edit == undefined) {
+      setProductDetails(undefined);
+      if (restaurant === null) {
+        navigate('/location');
+      } else {
         dispatch(getCategoriesRequest(restaurant.id));
       }
     }
@@ -111,13 +112,13 @@ const Product = () => {
   };
 
   useEffect(() => {
-    if (edit && window.location.href.indexOf('edit') == -1) {
+    if (edit) {
       dispatch(getCategoriesRequest(restaurant.id));
     }
   }, [edit]);
 
   useEffect(() => {
-    if (options && options.optiongroups && productOptions == undefined) {
+    if (options && options.optiongroups) {
       setProductOptions(options);
       if (edit) {
         const product = basketObj.basket.products.find(
