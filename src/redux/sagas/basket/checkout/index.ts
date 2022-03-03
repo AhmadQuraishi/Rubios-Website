@@ -98,7 +98,6 @@ function* asyncValidateBasket(action: any): any {
 }
 
 function* asyncSubmitBasketSinglePayment(action: any): any {
-  console.log('actiionnnnnnnnnn', action)
   try {
     const response = yield call(
       submitSinglePaymentBasket,
