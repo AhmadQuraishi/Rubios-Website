@@ -25,16 +25,14 @@ const userReducer = (state = initialState, action: any) => {
     // Case get requests
     case Type.GET_USER_RECENT_ORDERS:
     case Type.GET_USER_FAVORITE_ORDERS:
-    // case Type.GET_USER_DELIVERY_ADDRESSES:
     case Type.GET_USER_PROFILE:
-     case Type.GET_USER_DELIVERY_ADDRESSES:
-      case Type.GET_USER_PROFILE:
+    case Type.GET_USER_DELIVERY_ADDRESSES:
+    case Type.GET_USER_PROFILE:
     case Type.CHANGE_PASSWORD:
     case Type.UPDATE_USER:
     case Type.GET_BILLING_ACCOUNTS:
     case Type.GET_BILLING_ACCOUNT_BY_ID:
     case Type.GET_GIFT_CARDS:
-      case Type.DELETE_FAV_ORDER:
       return { ...state, loading: true };
 
     //Success cases
@@ -79,9 +77,9 @@ const userReducer = (state = initialState, action: any) => {
         userDefaultDeliveryAddress: action.payload,
       };
     case Type.DEL_USER_DEL_ADD_SUCCESS:
+    case Type.DEL_FAV_ORDER_SUCCESS:
       return {
         ...state,
-        loading: false,
       };
     case Type.UPDATE_USER_SUCCESS:
       return {
@@ -105,7 +103,6 @@ const userReducer = (state = initialState, action: any) => {
         userBillingAccountById: action.payload,
       };
     case Type.DELETE_BILLING_ACCOUNTS_SUCCESS:
-    case Type.DEL_FAV_ORDER_SUCCESS:
       return {
         ...state,
         loading: false,
