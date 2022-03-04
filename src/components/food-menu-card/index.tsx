@@ -95,8 +95,6 @@ const FoodMenuCard = (props: any) => {
       return obj.modifiers.map((modifier: OptionGroup, index: number) => (
         <Card
           sx={{
-            padding: '20px',
-            border: '1px solid #ccc',
             marginTop: '20px',
             boxShadow: 'none',
           }}
@@ -179,9 +177,9 @@ const FoodMenuCard = (props: any) => {
 
   return (
     <>
-      <Grid container>
+      <Grid container spacing={2}>
         {menuItems.map((menuItem: any, index: number) => (
-          <Grid item xs={12} md={6} lg={4} key={index}>
+          <Grid item xs={12} md={4} key={index}>
             <Card
               className={`reward-item${
                 selectedItem.length > 0 && isItemSelected(menuItem.id)

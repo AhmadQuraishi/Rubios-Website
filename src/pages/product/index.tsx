@@ -249,9 +249,9 @@ const Product = () => {
       )}
       {productDetails && (
         <Grid container className="product-detail">
-          <Grid item xs={12} sm={12} md={12} lg={12}>
+          <Grid item xs={12}>
             <Grid container>
-              <Grid item xs={12} sm={12} md={12} lg={6} className="ph-fix">
+              <Grid item xs={12} sm={6} className="ph-fix">
                 <Typography
                   variant="caption"
                   title="PICK UP YOUR"
@@ -313,14 +313,17 @@ const Product = () => {
               <Grid
                 item
                 xs={12}
-                sm={12}
-                md={12}
-                lg={6}
+                sm={6}
                 sx={{ marginTop: '20px', textAlign: 'center' }}
               >
                 {productDetails.imagefilename ? (
                   <img
-                    style={{ width: '100%', display: 'block', margin: 'auto' }}
+                    style={{
+                      width: '100%',
+                      display: 'block',
+                      margin: 'auto',
+                      borderRadius: '10px',
+                    }}
                     src={
                       ((categories && categories.imagepath) || '') +
                       changeImageSize(productDetails.imagefilename)
@@ -362,8 +365,6 @@ const Product = () => {
                               item.options[0].modifiers.length == 1 && (
                                 <Card
                                   sx={{
-                                    padding: '20px',
-                                    border: '1px solid #ccc',
                                     marginTop: '10px',
                                     boxShadow: 'none',
                                   }}
@@ -408,8 +409,6 @@ const Product = () => {
                         {item.options && item.options.length > 1 && (
                           <Card
                             sx={{
-                              padding: '20px',
-                              border: '1px solid #ccc',
                               marginTop: '10px',
                               boxShadow: 'none',
                             }}
@@ -450,44 +449,45 @@ const Product = () => {
             )}
             <br />
             <br />
-            <Grid container>
-              <Grid item xs={0} sm={0} md={2} lg={6}></Grid>
-              <Grid item xs={12} sm={3} md={2} lg={1}>
-                <Button title="Quantity" className="label bold">
+            <Grid container className="action-panel">
+              <Grid item xs={12} className="content-panel">
+                <Typography
+                  variant="caption"
+                  title="Quantity"
+                  className="label bold quantity-label"
+                >
                   QUANTITY
-                </Button>
-              </Grid>
-              <Grid item xs={12} sm={4} md={4} lg={2} className="quantity">
-                <Button
-                  title=""
-                  className="add"
-                  aria-label="increase"
-                  onClick={() => {
-                    setCount(count + 1);
-                  }}
-                >
-                  {' '}
-                  +{' '}
-                </Button>
-                <TextField
-                  value={count}
-                  aria-label=""
-                  placeholder="0"
-                  title=""
-                />
-                <Button
-                  title=""
-                  className="subtract"
-                  aria-label="reduce"
-                  onClick={() => {
-                    setCount(Math.max(count - 1, 1));
-                  }}
-                >
-                  {' '}
-                  -{' '}
-                </Button>
-              </Grid>
-              <Grid item xs={12} sm={3} md={2} lg={2}>
+                </Typography>
+                <div className="quantity">
+                  <Button
+                    title=""
+                    className="add"
+                    aria-label="increase"
+                    onClick={() => {
+                      setCount(count + 1);
+                    }}
+                  >
+                    {' '}
+                    +{' '}
+                  </Button>
+                  <TextField
+                    value={count}
+                    aria-label=""
+                    placeholder="0"
+                    title=""
+                  />
+                  <Button
+                    title=""
+                    className="subtract"
+                    aria-label="reduce"
+                    onClick={() => {
+                      setCount(Math.max(count - 1, 1));
+                    }}
+                  >
+                    {' '}
+                    -{' '}
+                  </Button>
+                </div>
                 {productAddObj.loading ||
                 basketObj.loading ||
                 dummyBasketObj.loading ||
