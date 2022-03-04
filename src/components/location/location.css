@@ -77,7 +77,7 @@
   .list-wrapper .MuiPaper-root {
     padding: 20px;
     border-radius: 30px;
-    width: calc(100% - 75px);
+    width: calc(100% - 40px);
     height: auto;
   }
   .list-wrapper button {
