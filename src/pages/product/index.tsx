@@ -71,13 +71,16 @@ const Product = () => {
       if (restaurant === null) {
         navigate('/location');
       } else {
+        setCatRequest(true);
         dispatch(getCategoriesRequest(restaurant.id));
       }
     }
   }, []);
 
+  const [catRequest, setCatRequest] = useState(false);
+
   useEffect(() => {
-    if (categories && categories.categories) {
+    if (categories && categories.categories && catRequest) {
       if (id) {
         categories.categories.map((item: Category) => {
           const product = item.products.find((obj: ProductInfo) => {
@@ -113,6 +116,7 @@ const Product = () => {
 
   useEffect(() => {
     if (edit) {
+      setCatRequest(true);
       dispatch(getCategoriesRequest(restaurant.id));
     }
   }, [edit]);
@@ -170,7 +174,6 @@ const Product = () => {
           }
         }
       });
-
       request.options = options;
       setActionStatus(true);
       if (edit) {
@@ -184,12 +187,25 @@ const Product = () => {
   };
 
   useEffect(() => {
-    if (dummyBasketObj.basket && basket == undefined) {
+    if (dummyBasketObj.basket && basket == undefined && productDetails) {
       setBasket(dummyBasketObj.basket);
       dispatch(getBasketRequest('', dummyBasketObj.basket));
       const request: any = {};
       request.productid = productDetails?.id;
       request.quantity = count;
+      let options = '';
+      Array.from(
+        document.getElementsByClassName('reward-item-selected'),
+      ).forEach((el) => {
+        if (el.getAttribute('option-id')) {
+          options = options + el.getAttribute('option-id') + ',';
+          const sel = el.querySelector('select')?.value;
+          if (sel) {
+            options = options + sel + ',';
+          }
+        }
+      });
+      request.options = options;
       setActionStatus(true);
       dispatch(addProductRequest(dummyBasketObj.basket.id || '', request));
     }
@@ -493,7 +509,6 @@ const Product = () => {
                     variant="contained"
                     onClick={() => {
                       addProductToBag();
-                      return false;
                     }}
                   >
                     {edit ? 'UPDATE BAG' : 'ADD TO BAG'}
