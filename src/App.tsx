@@ -14,6 +14,7 @@ function App(props: any) {
   const [isAccountSection, setIsAccountSection] = useState(false);
 
   useLayoutEffect(() => {
+    console.log("REACT_APP_ACCESS_TOKEN", process.env.REACT_APP_ACCESS_TOKEN)
     window.scrollTo(0, 0);
     if (window.location.href.toLocaleLowerCase().indexOf('/account') != -1) {
       setIsAccountSection(true);

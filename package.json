@@ -29,6 +29,7 @@
     "@types/redux-persist": "4.3.1",
     "@types/redux-thunk": "^2.1.0",
     "crypto-js": "4.1.1",
+    "env-cmd": "10.1.0",
     "formik": "2.2.9",
     "moment": "2.29.1",
     "node-sass": "7.0.1",
@@ -58,7 +59,8 @@
     "build.prod": "react-scripts build --env=prod",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "dev": "SET NODE_ENV=dev && npm start"
+    "guest": "env-cmd -f .env.guest react-scripts start",
+    "client": "env-cmd -f .env.local react-scripts start"
   },
   "eslintConfig": {
     "extends": [
