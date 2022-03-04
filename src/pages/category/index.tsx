@@ -46,6 +46,7 @@ const CategoryList = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  
   useEffect(() => {
     if (restaurant === null) {
       navigate('/location');

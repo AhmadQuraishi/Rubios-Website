@@ -25,7 +25,7 @@ import updateProductReducer from './basket/product/update';
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['restaurantInfoReducer', 'basketReducer'],
+  whitelist: ['restaurantInfoReducer', 'basketReducer', 'authReducer', 'TokenReducer', 'tokenReducer','userReducer','providerReducer'],
 };
 
 const rootReducers = combineReducers({
