@@ -254,7 +254,7 @@ const Cart = (props: any) => {
                         fontFamily: "'Poppins-Medium' !important",
                       }}
                     >
-                      {item.name}
+                      {item.quantity.toString() + ' x ' + item.name.toString()}
                     </Typography>
                   </Grid>
                   <Grid item xs={3} sx={{ textAlign: 'right' }}>
@@ -312,24 +312,34 @@ const Cart = (props: any) => {
                       <Grid item xs={3} sx={{ textAlign: 'center' }}>
                         {(productRemoveObj && productRemoveObj.loading) ||
                         (productAddObj && productAddObj.loading) ? (
-                          <Link
-                            to={`product/${item.productId}/${item.id}`}
+                          <MUILink
+                            onClick={() => false}
                             title="Edit"
                             className={classes.disabledLink}
                             aria-label="Make changes to the current menu item"
                           >
                             Edit
-                          </Link>
+                          </MUILink>
                         ) : (
-                          <Link
-                            to={`product/${item.productId}/${item.id}`}
+                          <MUILink
+                            onClick={() => {
+                              showCart();
+                              navigate(
+                                `product/${item.productId}/${item.id}${
+                                  window.location.href
+                                    .toLowerCase()
+                                    .indexOf('product') == -1
+                                    ? '?edit=true'
+                                    : ''
+                                }`,
+                              );
+                            }}
                             title="Edit"
-                            onClick={() => showCart()}
                             className={classes.smallLink}
                             aria-label="Make changes to the current menu item"
                           >
                             Edit
-                          </Link>
+                          </MUILink>
                         )}
                       </Grid>
                       <Grid item xs={3} sx={{ textAlign: 'center' }}>
@@ -635,7 +645,7 @@ const Cart = (props: any) => {
                 }}
                 sx={{
                   textTransform: 'uppercase',
-                  backgroundColor: '#5FA625',
+                  backgroundColor: '#0A6FB8',
                   margin: 'auto',
                   width: '100%',
                   borderRadius: 0,

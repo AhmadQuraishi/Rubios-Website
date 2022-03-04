@@ -183,12 +183,17 @@ const Header = (props: any) => {
                       textAlign: 'center',
                       marginRight: '10px',
                       fontSize: '13px',
-                      fontFamily: "'Poppins-Medium' !important",
                     }}
                   >
-                    {basketObj.basket &&
-                      basketObj.basket.products.length > 0 &&
-                      basketObj.basket.products.length}
+                    <span
+                      style={{
+                        fontFamily: 'Poppins-Medium',
+                      }}
+                    >
+                      {basketObj.basket &&
+                        basketObj.basket.products.length > 0 &&
+                        basketObj.basket.products.length}
+                    </span>
                   </div>
                 </div>
               )}

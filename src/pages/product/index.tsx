@@ -66,16 +66,21 @@ const Product = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setProductOptions(undefined);
-    if (restaurant === null) {
-      navigate('/location');
-    } else {
-      dispatch(getCategoriesRequest(restaurant.id));
+    if (edit == undefined) {
+      setProductDetails(undefined);
+      if (restaurant === null) {
+        navigate('/location');
+      } else {
+        setCatRequest(true);
+        dispatch(getCategoriesRequest(restaurant.id));
+      }
     }
   }, []);
 
+  const [catRequest, setCatRequest] = useState(false);
+
   useEffect(() => {
-    if (categories && categories.categories) {
+    if (categories && categories.categories && catRequest) {
       if (id) {
         categories.categories.map((item: Category) => {
           const product = item.products.find((obj: ProductInfo) => {
@@ -110,12 +115,41 @@ const Product = () => {
   };
 
   useEffect(() => {
-    setCountWithEdit();
+    if (edit) {
+      setCatRequest(true);
+      dispatch(getCategoriesRequest(restaurant.id));
+    }
   }, [edit]);
 
   useEffect(() => {
     if (options && options.optiongroups) {
       setProductOptions(options);
+      if (edit) {
+        const product = basketObj.basket.products.find(
+          (item: any) => item.id == edit,
+        );
+        setTimeout(() => {
+          let timeCount = 200;
+          product.choices.map((item: any, index: number) => {
+            setTimeout(() => {
+              let element = document.querySelectorAll(
+                "[option-id='" + item.optionid + "'",
+              )[0] as HTMLElement;
+              if (element) {
+                element.click();
+              }
+              let elementSel = document.getElementById(
+                item.optionid,
+              ) as HTMLOptionElement;
+              if (elementSel) {
+                let sel = elementSel.parentElement as HTMLSelectElement;
+                sel.value = item.optionid.toString();
+              }
+            }, timeCount);
+            timeCount = timeCount + 200;
+          });
+        }, 500);
+      }
     }
   }, [options]);
 
@@ -128,12 +162,16 @@ const Product = () => {
       const request: any = {};
       request.productid = productDetails?.id;
       request.quantity = count;
-      let options = "";
+      let options = '';
       Array.from(
         document.getElementsByClassName('reward-item-selected'),
       ).forEach((el) => {
         if (el.getAttribute('option-id')) {
-          options = options + el.getAttribute('option-id') + ",";
+          options = options + el.getAttribute('option-id') + ',';
+          const sel = el.querySelector('select')?.value;
+          if (sel) {
+            options = options + sel + ',';
+          }
         }
       });
       request.options = options;
@@ -149,12 +187,25 @@ const Product = () => {
   };
 
   useEffect(() => {
-    if (dummyBasketObj.basket && basket == undefined) {
+    if (dummyBasketObj.basket && basket == undefined && productDetails) {
       setBasket(dummyBasketObj.basket);
       dispatch(getBasketRequest('', dummyBasketObj.basket));
       const request: any = {};
       request.productid = productDetails?.id;
       request.quantity = count;
+      let options = '';
+      Array.from(
+        document.getElementsByClassName('reward-item-selected'),
+      ).forEach((el) => {
+        if (el.getAttribute('option-id')) {
+          options = options + el.getAttribute('option-id') + ',';
+          const sel = el.querySelector('select')?.value;
+          if (sel) {
+            options = options + sel + ',';
+          }
+        }
+      });
+      request.options = options;
       setActionStatus(true);
       dispatch(addProductRequest(dummyBasketObj.basket.id || '', request));
     }
@@ -458,7 +509,6 @@ const Product = () => {
                     variant="contained"
                     onClick={() => {
                       addProductToBag();
-                      return false;
                     }}
                   >
                     {edit ? 'UPDATE BAG' : 'ADD TO BAG'}
