@@ -260,7 +260,7 @@ const Cart = (props: any) => {
                   <Grid item xs={3} sx={{ textAlign: 'right' }}>
                     <Typography
                       variant="caption"
-                      title="$12.05"
+                      title={'$' + item.totalcost.toFixed(2)}
                       sx={{
                         textAlign: 'right',
                         fontSize: '14px',
@@ -529,7 +529,12 @@ const Cart = (props: any) => {
                       textAlign: 'right',
                       paddingBottom: '2px',
                     }}
-                    title="$"
+                    title={
+                      '$' +
+                      (basketObj &&
+                        basketObj.basket &&
+                        basketObj.basket.subtotal.toFixed(2))
+                    }
                   >
                     $
                     {basketObj &&
@@ -559,7 +564,12 @@ const Cart = (props: any) => {
                       paddingBottom: '2px',
                       fontFamily: 'Poppins-Regular',
                     }}
-                    title="$"
+                    title={
+                      '$' +
+                      (basketObj &&
+                        basketObj.basket &&
+                        basketObj.basket.salestax.toFixed(2))
+                    }
                   >
                     $
                     {basketObj &&
@@ -587,7 +597,12 @@ const Cart = (props: any) => {
                       textAlign: 'right',
                       fontFamily: 'Poppins-Regular',
                     }}
-                    title="$"
+                    title={
+                      '$' +
+                      (basketObj &&
+                        basketObj.basket &&
+                        basketObj.basket.totalfees.toFixed(2))
+                    }
                   >
                     $
                     {basketObj &&
@@ -619,7 +634,10 @@ const Cart = (props: any) => {
                       textAlign: 'right',
                     }}
                     title={
-                      basketObj && basketObj.basket && basketObj.basket.total
+                      '$' +
+                      (basketObj &&
+                        basketObj.basket &&
+                        basketObj.basket.total.toFixed(2))
                     }
                   >
                     $
