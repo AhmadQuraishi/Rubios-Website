@@ -3,11 +3,13 @@ import * as CryptoJS from "crypto-js";
 
 const axiosInstance = axios.create();
 axiosInstance.interceptors.request.use(
-    function (config) {
+  function (config) {
     try {
+    
         const url = config.url || '';
         let origin = window.location.origin; // http://localhost:3000
         let check = url?.toString().includes('punchh_api');
+        let mobile = url?.toString().includes('mobile');
         let preppedUrl = url.replace('/punchh_api/', '/');
 
         if (check) {
@@ -23,8 +25,22 @@ axiosInstance.interceptors.request.use(
           else{
             concatString = uriData.concat(JSON.stringify(body));
           }
-          const signature = CryptoJS.HmacSHA1(concatString, secretString).toString();
-          config.headers = {'x-pch-digest': signature };
+          if (mobile)
+          {
+            const signature = CryptoJS.HmacSHA256(concatString, secretString).toString();
+            config.headers = {
+              'x-pch-digest': signature,
+               'Authorization': 'Bearer ede0074cdd8df2f60ff81037cae9358ca9cdf9030c1698d5d3709b65456ce2c1',
+             'punchh-app-device-id' : 'sasewqee234324'
+            };
+          }
+          else {
+            const signature = CryptoJS.HmacSHA1(concatString, secretString).toString();
+            config.headers = {
+              'x-pch-digest': signature,
+              
+            };
+          }
         }
         return config;
       } catch (e) {
@@ -37,3 +53,4 @@ axiosInstance.interceptors.request.use(
 );
 
 export default axiosInstance;
+

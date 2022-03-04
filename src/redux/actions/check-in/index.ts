@@ -18,7 +18,7 @@ export function checkInSuccess(data: any) {
 }
 
 export function checkInFailure(error: any) {
-  displayToast("ERROR", "Rewards not added");
+  displayToast("ERROR", error?.response?.data?.errors?.base[0]? error.response.data.errors.base[0] : "Rewards not added");
   return {
     type: Type.CHECK_IN_FAILURE,
     error: error,

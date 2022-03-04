@@ -12,7 +12,7 @@ function* checkInHandler(action: any): any {
     yield put(checkInFailure(error));
   }
 }
-export function* storeToken() {
+export function* checkinSaga() {
   yield takeEvery(Type.CREATE_CHECK_IN, checkInHandler);
 }
 
