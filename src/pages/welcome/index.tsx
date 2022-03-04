@@ -17,11 +17,11 @@ import React, {
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserRecentOrders } from '../../redux/actions/user';
-import { setResturantInfoRequest } from '../../redux/actions/restaurant';
-import { ResponseRestaurant } from '../../types/olo-api';
-import { QualificationCriteriaEnum } from '../../types/olo-api/olo-api.enums';
-import { getSingleRestaurant } from '../../redux/actions/restaurant/fav-restaurant';
-import LoadingBar from '../../components/loading-bar';
+import {
+  getResturantInfoRequest,
+  setResturantInfoRequest,
+} from '../../redux/actions/restaurant';
+
 import CardSkeletonUI from '../../components/card-skeleton-ui';
 const useStyle = makeStyles(() => ({
   root: {
@@ -42,13 +42,13 @@ const Welcome = () => {
   const authtoken = useSelector((state: any) => state.TokensReducer.authtoken);
   const { userProfile } = useSelector((state: any) => state.userReducer);
   const { userRecentOrders } = useSelector((state: any) => state.userReducer);
-  const { favRestaurant, loading } = useSelector(
-    (state: any) => state.favRestaurantReducer,
+  const { restaurant, loading } = useSelector(
+    (state: any) => state.restaurantInfoReducer,
   );
 
   useEffect(() => {
     dispatch(getUserRecentOrders(authtoken));
-    dispatch(getSingleRestaurant(64327));
+    dispatch(getResturantInfoRequest(64327));
   }, []);
 
   useEffect(() => {
@@ -59,8 +59,8 @@ const Welcome = () => {
 
   const gotoCategoryPage = (e: BaseSyntheticEvent) => {
     const orderType = e.target.name;
-    if (favRestaurant && orderType != undefined) {
-      dispatch(setResturantInfoRequest(favRestaurant, orderType));
+    if (restaurant && orderType != undefined) {
+      dispatch(setResturantInfoRequest(restaurant, orderType));
       navigate('/');
     }
   };
@@ -161,15 +161,15 @@ const Welcome = () => {
                 YOUR FAVORITE LOCATION
               </Typography>
               {loading && <CardSkeletonUI />}
-              {!loading && !favRestaurant && (
+              {!loading && !restaurant && (
                 <Typography>You don't have any favorite location</Typography>
               )}
 
-              {!loading && favRestaurant && (
+              {!loading && restaurant && (
                 <Grid container columns={16}>
                   <Grid item xs={16} sm={8} md={16} lg={16}>
                     <Typography variant="h5" title="Broadway Blvd">
-                      {favRestaurant.name}
+                      {restaurant.name}
                       <Link
                         className="caption-grey"
                         title="change"
@@ -183,19 +183,19 @@ const Welcome = () => {
                       variant="h6"
                       title="20212 North 59th Ave, Ste.465A"
                     >
-                      {favRestaurant.streetaddress}, {favRestaurant.zip}
+                      {restaurant.streetaddress}, {restaurant.zip}
                     </Typography>
                     <Typography variant="h6" title="San Diego, CA">
-                      {favRestaurant.city}, {favRestaurant.state}
+                      {restaurant.city}, {restaurant.state}
                     </Typography>
-                    {favRestaurant.distance > 0 && (
+                    {restaurant.distance > 0 && (
                       <Typography variant="h6" title="distance">
-                        {favRestaurant.distance} Miles Away
+                        {restaurant.distance} Miles Away
                       </Typography>
                     )}
                   </Grid>
                   <Grid item xs={16} sm={8} md={16} lg={16}>
-                    {favRestaurant.canpickup === true && (
+                    {restaurant.canpickup === true && (
                       <Button
                         aria-label="pickup button"
                         variant="contained"
@@ -206,7 +206,7 @@ const Welcome = () => {
                         PICKUP
                       </Button>
                     )}
-                    {favRestaurant.supportscurbside === true && (
+                    {restaurant.supportscurbside === true && (
                       <Button
                         aria-label="delivery button"
                         variant="contained"
@@ -218,7 +218,7 @@ const Welcome = () => {
                       </Button>
                     )}
 
-                    {favRestaurant.candeliver === true && (
+                    {restaurant.candeliver === true && (
                       <Button
                         aria-label="curbside button"
                         variant="contained"
