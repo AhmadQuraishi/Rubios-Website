@@ -248,7 +248,7 @@ const Checkout = () => {
                             isValid,
                             dirty,
                           }) => (
-                    <form onSubmit={handleSubmit}>
+                    <form style={{width: '100%'}} onSubmit={handleSubmit}>
                       <Grid item xs={12}>
                         <TextField
                           aria-label="First Name"
