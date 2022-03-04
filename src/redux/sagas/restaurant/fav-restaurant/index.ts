@@ -12,6 +12,6 @@ function* singleRestaurantHandler(action: any): any {
     yield put(getSingleRestaurantFailure(error));
   }
 }
-export function* checkinSaga() {
+export function* favRestaurantSaga() {
   yield takeEvery(Type.GET_SINGLE_RESTAURANT, singleRestaurantHandler);
 }
