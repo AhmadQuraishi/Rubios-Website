@@ -11,6 +11,7 @@ import LoadingBar from '../../components/loading-bar';
 import { Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { displayToast } from '../../helpers/toast';
+import './index.css';
 
 const useStyles = makeStyles((theme: Theme) => ({
   dummyBg: {

@@ -12,9 +12,10 @@ import SearchIcon from '@mui/icons-material/Search';
 import './location.css';
 import { ResponseRestaurant } from '../../types/olo-api';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setResturantInfoRequest } from '../../redux/actions/restaurant';
 import { displayToast } from '../../helpers/toast';
+import { getBasketRequest } from '../../redux/actions/basket';
 
 const LocationCard = (props: any) => {
   const { restaurants, isNearByRestaurantList, setShowNearBy } = props;
@@ -22,6 +23,9 @@ const LocationCard = (props: any) => {
   const [orderType, setOrderType] = useState<string>();
   const [filteredRestaurants, setfilteredRestaurants] =
     useState<ResponseRestaurant[]>();
+  const { restaurant } = useSelector(
+    (state: any) => state.restaurantInfoReducer,
+  );
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -46,10 +50,14 @@ const LocationCard = (props: any) => {
       displayToast('ERROR', 'Please select atleast one order type');
       return false;
     }
-    const restaurant = restaurants.find((x: any) => x.id === storeID);
-    if (restaurant) {
-      dispatch(setResturantInfoRequest(restaurant, orderType || ''));
-      navigate('/menu/' + restaurant.slug);
+    const restaurantObj = restaurants.find((x: any) => x.id === storeID);
+    if (restaurantObj) {
+      if (restaurant == null || (restaurant && restaurant.id != storeID)) {
+        dispatch(setResturantInfoRequest(restaurantObj, orderType || ''));
+        dispatch(getBasketRequest('', null));
+        displayToast('SUCCESS', 'Location changed to ' + restaurantObj.name);
+      }
+      navigate('/menu/' + restaurantObj.slug);
     }
   };
 
