@@ -20,6 +20,7 @@ import { getUserRecentOrders } from '../../redux/actions/user';
 import { setResturantInfoRequest } from '../../redux/actions/restaurant';
 import { ResponseRestaurant } from '../../types/olo-api';
 import { QualificationCriteriaEnum } from '../../types/olo-api/olo-api.enums';
+import { getSingleRestaurant } from '../../redux/actions/restaurant/fav-restaurant';
 const useStyle = makeStyles(() => ({
   root: {
     minHeight: '100vh',
@@ -44,6 +45,7 @@ const Welcome = () => {
 
   useEffect(() => {
     dispatch(getUserRecentOrders(authtoken));
+    dispatch(getSingleRestaurant(60854));
   }, []);
 
   useEffect(() => {
@@ -52,7 +54,7 @@ const Welcome = () => {
     }
   }, [userRecentOrders]);
 
-  const favRestaurant: ResponseRestaurant = {
+  const favRest: ResponseRestaurant = {
     acceptsordersbeforeopening: false,
     acceptsordersuntilclosing: true,
     advanceonly: false,
@@ -220,8 +222,8 @@ const Welcome = () => {
   };
   const gotoCategoryPage = (e: BaseSyntheticEvent) => {
     const orderType = e.target.name;
-    if (favRestaurant && orderType != undefined) {
-      dispatch(setResturantInfoRequest(favRestaurant, orderType));
+    if (favRest && orderType != undefined) {
+      dispatch(setResturantInfoRequest(favRest, orderType));
       navigate('/');
     }
   };
@@ -312,67 +314,74 @@ const Welcome = () => {
             <Grid item xs={12} md={5} lg={5} className="right-col">
               <Grid container columns={16}>
                 <Grid item xs={16} sm={8} md={16} lg={16}>
-              <Typography
-                variant="caption"
-                className="label"
-                title="YOUR FAVORITE LOCATION"
-              >
-                YOUR FAVORITE LOCATION
-              </Typography>
-              <Typography variant="h5" title="Broadway Blvd">
-                {favRestaurant.name}
-                <Link className="caption-grey" title="change" to="/location">
-                  (change)
-                </Link>
-              </Typography>
+                  <Typography
+                    variant="caption"
+                    className="label"
+                    title="YOUR FAVORITE LOCATION"
+                  >
+                    YOUR FAVORITE LOCATION
+                  </Typography>
+                  <Typography variant="h5" title="Broadway Blvd">
+                    {favRest.name}
+                    <Link
+                      className="caption-grey"
+                      title="change"
+                      to="/location"
+                    >
+                      (change)
+                    </Link>
+                  </Typography>
 
-              <Typography variant="h6" title="20212 North 59th Ave, Ste.465A">
-                {favRestaurant.streetaddress}, {favRestaurant.zip}
-              </Typography>
-              <Typography variant="h6" title="San Diego, CA">
-                {favRestaurant.city}, {favRestaurant.state}
-              </Typography>
-              {favRestaurant.distance > 0 && (
-                <Typography variant="h6" title="distance">
-                  {favRestaurant.distance} Miles Away
-                </Typography>
-              )}
+                  <Typography
+                    variant="h6"
+                    title="20212 North 59th Ave, Ste.465A"
+                  >
+                    {favRest.streetaddress}, {favRest.zip}
+                  </Typography>
+                  <Typography variant="h6" title="San Diego, CA">
+                    {favRest.city}, {favRest.state}
+                  </Typography>
+                  {favRest.distance > 0 && (
+                    <Typography variant="h6" title="distance">
+                      {favRest.distance} Miles Away
+                    </Typography>
+                  )}
                 </Grid>
                 <Grid item xs={16} sm={8} md={16} lg={16}>
-              {favRestaurant.canpickup === true && (
-                <Button
-                  aria-label="pickup button"
-                  variant="contained"
-                  title="PICKUP"
-                  name="pickup"
-                  onClick={gotoCategoryPage}
-                >
-                  PICKUP
-                </Button>
-              )}
-              {favRestaurant.supportscurbside === true && (
-                <Button
-                  aria-label="delivery button"
-                  variant="contained"
-                  title="DELIVERY"
-                  name="delivery"
-                  onClick={gotoCategoryPage}
-                >
-                  DELIVERY
-                </Button>
-              )}
+                  {favRest.canpickup === true && (
+                    <Button
+                      aria-label="pickup button"
+                      variant="contained"
+                      title="PICKUP"
+                      name="pickup"
+                      onClick={gotoCategoryPage}
+                    >
+                      PICKUP
+                    </Button>
+                  )}
+                  {favRest.supportscurbside === true && (
+                    <Button
+                      aria-label="delivery button"
+                      variant="contained"
+                      title="DELIVERY"
+                      name="delivery"
+                      onClick={gotoCategoryPage}
+                    >
+                      DELIVERY
+                    </Button>
+                  )}
 
-              {favRestaurant.candeliver === true && (
-                <Button
-                  aria-label="curbside button"
-                  variant="contained"
-                  title="CURBSIDE"
-                  name="curbside"
-                  onClick={gotoCategoryPage}
-                >
-                  CURBSIDE
-                </Button>
-              )}
+                  {favRest.candeliver === true && (
+                    <Button
+                      aria-label="curbside button"
+                      variant="contained"
+                      title="CURBSIDE"
+                      name="curbside"
+                      onClick={gotoCategoryPage}
+                    >
+                      CURBSIDE
+                    </Button>
+                  )}
                 </Grid>
               </Grid>
             </Grid>
