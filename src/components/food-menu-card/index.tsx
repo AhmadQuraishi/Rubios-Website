@@ -1,5 +1,6 @@
 import { Grid, Typography, Card, CardContent } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { displayToast } from '../../helpers/toast';
 import { Option, OptionGroup } from '../../types/olo-api';
 import './food-menu-card.css';
 
@@ -173,6 +174,9 @@ const FoodMenuCard = (props: any) => {
     setViewUIList(updatedList);
   };
 
+  const setOptionsToSelect = (val: any) => {
+  };
+
   return (
     <>
       <Grid container>
@@ -234,11 +238,13 @@ const FoodMenuCard = (props: any) => {
                           className="select"
                           onClick={(e) => e.stopPropagation()}
                           style={{ width: '115px', fontSize: '12px' }}
+                          onChange={(e) => setOptionsToSelect(e.target)}
+                          parent-option-id={menuItem.id}
                         >
                           <option value="0">Please choose</option>
                           {item.options &&
                             item.options.map((item: any, index: number) => (
-                              <option key={index} value={item.id}>
+                              <option id={item.id} key={index} value={item.id}>
                                 {item.name}
                                 {item.cost > 0 ? ' + $' + item.cost : ''}
                               </option>
