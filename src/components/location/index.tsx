@@ -50,13 +50,12 @@ const LocationCard = (props: any) => {
       displayToast('ERROR', 'Please select atleast one order type');
       return false;
     }
-    debugger;
     const restaurantObj = restaurants.find((x: any) => x.id === storeID);
     if (restaurantObj) {
       if (restaurant == null || (restaurant && restaurant.id != storeID)) {
         dispatch(setResturantInfoRequest(restaurantObj, orderType || ''));
         dispatch(getBasketRequest('', null));
-        displayToast('SUCCESS', 'Location changed to ' + restaurant.name);
+        displayToast('SUCCESS', 'Location changed to ' + restaurantObj.name);
       }
       navigate('/menu/' + restaurantObj.slug);
     }
