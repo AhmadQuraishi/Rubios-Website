@@ -5,9 +5,9 @@ import axiosInstance from "../axiosInceptor";
 export const RequestUserProfile = () => {
   try {
     const access_token =
-      'ede0074cdd8df2f60ff81037cae9358ca9cdf9030c1698d5d3709b65456ce2c1';
+    process.env.REACT_APP_ACCESS_TOKEN  ? process.env.REACT_APP_ACCESS_TOKEN : store.getState().tokenReducer.accessToken.access_token
     const url = `${process.env.REACT_APP_PUNCHH_API}/api/auth/users?client=${process.env.REACT_APP_PUNCHH_CLIENT_ID}&access_token=${access_token}`;
-    return axios.get(url).then((response) => response.data);
+    return axiosInstance.get(url).then((response) => response.data);
   } catch (error) {
     throw error;
   }
@@ -18,10 +18,10 @@ export const requestUpdateUser = (body: object) => {
   const obj = {
     user: body,
     client: process.env.REACT_APP_PUNCHH_CLIENT_ID,
-    authentication_token: "JckRvf5eQoHPFNb8-Uhm"
+    authentication_token: process.env.REACT_APP_AUTHENTICATION_TOKEN  ? process.env.REACT_APP_AUTHENTICATION_TOKEN : store.getState().providerReducer.providerToken.authentication_token
   }
 
-  // console.log(store.getState().TokensReducer.providertoken);
+  //  console.log(store.getState().TokensReducer.providertoken);
   try {
 
     const url = `${process.env.REACT_APP_PUNCHH_API}/api/auth/users`;
@@ -41,7 +41,7 @@ export const requestChangePassword = (body: object) => {
   const obj = {
     user: body,
     client: process.env.REACT_APP_PUNCHH_CLIENT_ID,
-    authentication_token: "JckRvf5eQoHPFNb8-Uhm"
+    authentication_token: process.env.REACT_APP_AUTHENTICATION_TOKEN  ? process.env.REACT_APP_AUTHENTICATION_TOKEN : store.getState().providerReducer.providerToken.authentication_token
   }
 
   // console.log(store.getState().TokensReducer.providertoken);

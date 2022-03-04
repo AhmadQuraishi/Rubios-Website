@@ -14,7 +14,6 @@ import {OAuthResponse, PunchhAuth} from '../../types/punchh-api'
 declare var window: any;
 
 
-
 const useStyle = makeStyles(() => ({
   root: {
     minHeight: '100vh',
@@ -87,7 +86,6 @@ const Login = () => {
     </Fragment>
   );
 };
-
 
 const onAuthFailure = (args: any) => {
   console.error(args);
