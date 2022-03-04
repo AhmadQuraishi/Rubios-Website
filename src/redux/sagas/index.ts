@@ -18,6 +18,7 @@ import { createBasketSaga } from './basket/create';
 import { addProductSaga } from './basket/product/add';
 import { removeProductSaga } from './basket/product/remove';
 import { updateProductSaga } from './basket/product/update';
+import { checkinSaga } from './check-in';
 
 export default function* rootSaga() {
   yield all([
@@ -40,5 +41,6 @@ export default function* rootSaga() {
     addProductSaga(),
     removeProductSaga(),
     updateProductSaga(),
+    checkinSaga()
   ]);
 }
