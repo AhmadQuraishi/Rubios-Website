@@ -11,7 +11,7 @@
   border-radius: 30px;
 }
 .welcome-content h4 {
-  margin-bottom: 25px;
+  margin-bottom: 20px;
   font-size: 46px;
 }
 .welcome-content h5 {
@@ -26,11 +26,12 @@
   display: flex;
   justify-content: space-evenly;
   border: 1px solid #d6d6d6;
-  padding: 10px 10px 10px 15px;
+  padding: 10px 10px 10px 10px;
+  margin-top: 15px;
 }
 .welcome-content .left-col .product-card img {
   width: 30%;
-  height: auto;
+  height: 100%;
   margin-right: 10px;
 }
 .welcome-content .order-action {
@@ -46,19 +47,21 @@
 }
 
 .welcome-content .left-col .product-card a {
-  margin: 15px 0px 0px 20px;
+  margin: 15px 0px 0px 15px;
   display: inline-block;
   text-decoration: none;
   font-size: 15px !important;
   letter-spacing: 2px;
 }
 .welcome-content .product-card .MuiCardContent-root {
-  width: 100%;
   padding: 0px 10px;
 }
 .welcome-content .right-col button {
   margin-top: 10px;
   width: 100%;
+}
+.welcome-content .right-col .res-info {
+  margin-bottom: 15px;
 }
 .welcome-content .caption-grey {
   font-size: 12px;
@@ -68,6 +71,9 @@
 }
 
 @media screen and (max-width: 900px) {
+  .welcome-content {
+    padding: 35px 0px;
+  }
   .left-col {
     border-right: none !important;
     padding: 0px !important;
@@ -93,5 +99,13 @@
   }
   .product-card img {
     width: 100% !important;
+  }
+  .product-card .order-action {
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+  }
+  .product-card a {
+    margin: 20px 0px 0px 0px !important;
   }
 }
