@@ -292,7 +292,7 @@ const Cart = (props: any) => {
                         (productAddObj && productAddObj.loading) ? (
                           <MUILink
                             title="Remove"
-                            className={classes.disabledLink}
+                            className={classes.smallLink}
                             aria-label="Remove the item from basket"
                             onClick={() => false}
                           >
@@ -315,7 +315,7 @@ const Cart = (props: any) => {
                           <MUILink
                             onClick={() => false}
                             title="Edit"
-                            className={classes.disabledLink}
+                            className={classes.smallLink}
                             aria-label="Make changes to the current menu item"
                           >
                             Edit
@@ -347,7 +347,7 @@ const Cart = (props: any) => {
                         (productAddObj && productAddObj.loading) ? (
                           <MUILink
                             onClick={() => false}
-                            className={classes.disabledLink}
+                            className={classes.smallLink}
                             title="Duplicate"
                             aria-label="Duplicate the basket item"
                           >
