@@ -23,6 +23,10 @@ import {
 } from '../../redux/actions/restaurant';
 
 import CardSkeletonUI from '../../components/card-skeleton-ui';
+import { createBasketFromPrev } from '../../redux/actions/basket/create';
+import { getFavRestaurant } from '../../redux/actions/restaurant/fav-restaurant';
+import { getBasketRequest } from '../../redux/actions/basket';
+import { displayToast } from '../../helpers/toast';
 const useStyle = makeStyles(() => ({
   root: {
     minHeight: '100vh',
@@ -37,19 +41,48 @@ const useStyle = makeStyles(() => ({
 const Welcome = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const classes = useStyle();
 
-  const [recentorders, setOrders] = React.useState([]);
+  const [recentorders, setOrders] = useState([]);
+  const [isEdit, setIsEdit] = useState(false);
+  const [isReoder, setIsReoder] = useState(false);
   const authtoken = useSelector((state: any) => state.TokensReducer.authtoken);
   const { userProfile } = useSelector((state: any) => state.userReducer);
   const { userRecentOrders } = useSelector((state: any) => state.userReducer);
-  const { restaurant, loading } = useSelector(
+  const basketObj = useSelector((state: any) => state.basketReducer);
+  const { restaurant } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
-
+  const { favRestaurant, loading } = useSelector(
+    (state: any) => state.favRestaurantReducer,
+  );
   useEffect(() => {
     dispatch(getUserRecentOrders(authtoken));
-    dispatch(getResturantInfoRequest(64327));
+    dispatch(getFavRestaurant(64327));
   }, []);
+  useEffect(() => {
+    console.log('inside');
+    if (
+      basketObj &&
+      basketObj.basket &&
+      basketObj.basket.products &&
+      basketObj.basket.products.length > 0
+    ) {
+      console.log(basketObj);
+      dispatch(
+        setResturantInfoRequest(restaurant, basketObj.basket.deliverymode),
+      );
+
+      if (isReoder) {
+        navigate('/checkout');
+      }
+      if (isEdit) {
+        navigate(restaurant ? '/menu/' + restaurant.slug : '/');
+      }
+      setIsEdit(false);
+      setIsReoder(false);
+    }
+  }, [basketObj]);
 
   useEffect(() => {
     if (userRecentOrders && userRecentOrders.orders) {
@@ -59,13 +92,35 @@ const Welcome = () => {
 
   const gotoCategoryPage = (e: BaseSyntheticEvent) => {
     const orderType = e.target.name;
-    if (restaurant && orderType != undefined) {
-      dispatch(setResturantInfoRequest(restaurant, orderType));
-      navigate('/');
+    if (favRestaurant && orderType != undefined) {
+      dispatch(setResturantInfoRequest(favRestaurant, orderType));
+      dispatch(getBasketRequest('', null));
+      displayToast('SUCCESS', 'Location changed to ' + favRestaurant.name);
+      navigate(favRestaurant ? '/menu/' + favRestaurant.slug : '/');
     }
   };
+  const reoderHandler = (id: string, orderref: string, vendorid: number) => {
+    const body = {
+      orderref: orderref,
+      id: id,
+      ignoreunavailableproducts: true,
+    };
+    dispatch(createBasketFromPrev(body));
+    dispatch(getResturantInfoRequest(vendorid));
+    setIsReoder(true);
+  };
+  const editHandler = (id: string, orderref: string, vendorid: number) => {
+    const body = {
+      orderref: orderref,
+      id: id,
+      ignoreunavailableproducts: true,
+    };
+    // dispatch(getBasketRequest('', null));
+    dispatch(createBasketFromPrev(body));
+    dispatch(getResturantInfoRequest(vendorid));
+    setIsEdit(true);
+  };
 
-  const classes = useStyle();
   return (
     <Fragment>
       <Grid container component="main" columns={16} className={classes.root}>
@@ -128,22 +183,34 @@ const Welcome = () => {
                               </Fragment>
                             ))}
                           <Grid className="order-action">
-                            <Link
-                              to="/product"
+                            <Button
                               aria-label="edit order"
                               className="caption-grey"
                               title="EDIT ORDER"
+                              onClick={() => {
+                                editHandler(
+                                  order.id,
+                                  order.orderref,
+                                  order.vendorid,
+                                );
+                              }}
                             >
                               Edit Order
-                            </Link>
-                            <Link
-                              to="/product"
+                            </Button>
+                            <Button
                               aria-label="re order"
-                              className="label"
+                              className="button"
                               title="order"
+                              onClick={() => {
+                                reoderHandler(
+                                  order.id,
+                                  order.orderref,
+                                  order.vendorid,
+                                );
+                              }}
                             >
-                              Re Order
-                            </Link>
+                              Reorder
+                            </Button>
                           </Grid>
                         </CardContent>
                       </Card>
@@ -161,15 +228,15 @@ const Welcome = () => {
                 YOUR FAVORITE LOCATION
               </Typography>
               {loading && <CardSkeletonUI />}
-              {!loading && !restaurant && (
+              {!loading && !favRestaurant && (
                 <Typography>You don't have any favorite location</Typography>
               )}
 
-              {!loading && restaurant && (
+              {!loading && favRestaurant && (
                 <Grid container columns={16}>
                   <Grid item xs={16} sm={8} md={16} lg={16}>
                     <Typography variant="h5" title="Broadway Blvd">
-                      {restaurant.name}
+                      {favRestaurant.name}
                       <Link
                         className="caption-grey"
                         title="change"
@@ -183,19 +250,19 @@ const Welcome = () => {
                       variant="h6"
                       title="20212 North 59th Ave, Ste.465A"
                     >
-                      {restaurant.streetaddress}, {restaurant.zip}
+                      {favRestaurant.streetaddress}, {favRestaurant.zip}
                     </Typography>
                     <Typography variant="h6" title="San Diego, CA">
-                      {restaurant.city}, {restaurant.state}
+                      {favRestaurant.city}, {favRestaurant.state}
                     </Typography>
-                    {restaurant.distance > 0 && (
+                    {favRestaurant.distance > 0 && (
                       <Typography variant="h6" title="distance">
-                        {restaurant.distance} Miles Away
+                        {favRestaurant.distance} Miles Away
                       </Typography>
                     )}
                   </Grid>
                   <Grid item xs={16} sm={8} md={16} lg={16}>
-                    {restaurant.canpickup === true && (
+                    {favRestaurant.canpickup === true && (
                       <Button
                         aria-label="pickup button"
                         variant="contained"
@@ -206,7 +273,7 @@ const Welcome = () => {
                         PICKUP
                       </Button>
                     )}
-                    {restaurant.supportscurbside === true && (
+                    {favRestaurant.supportscurbside === true && (
                       <Button
                         aria-label="delivery button"
                         variant="contained"
@@ -218,7 +285,7 @@ const Welcome = () => {
                       </Button>
                     )}
 
-                    {restaurant.candeliver === true && (
+                    {favRestaurant.candeliver === true && (
                       <Button
                         aria-label="curbside button"
                         variant="contained"

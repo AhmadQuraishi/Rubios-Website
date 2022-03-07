@@ -40,6 +40,11 @@
   font-family: 'Poppins-Bold' !important;
   color: #a4a4a4;
 }
+.welcome-content .order-action .button {
+  font-family: 'Poppins-Bold' !important;
+  font-size: 13px !important;
+}
+
 .welcome-content .left-col .product-card a {
   margin: 15px 0px 0px 20px;
   display: inline-block;
@@ -61,7 +66,6 @@
   font-family: 'Poppins-Regular' !important;
   margin-left: 5px;
 }
-
 
 @media screen and (max-width: 900px) {
   .left-col {

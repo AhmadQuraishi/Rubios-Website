@@ -10,6 +10,7 @@ const createBasketReducer = (state = INITIAL_STATE, action: any) => {
   switch (action.type) {
     case basketActionsTypes.SET_BASKET_REQUEST:
       return { ...state, loading: true, basket: null, error: {} };
+    
     case basketActionsTypes.SET_BASKET_SUCCESS:
       return {
         ...state,

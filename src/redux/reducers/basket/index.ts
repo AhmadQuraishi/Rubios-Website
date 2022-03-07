@@ -15,12 +15,15 @@ const INITIAL_STATE = {
 const basketReducer = (state = INITIAL_STATE, action: any) => {
   switch (action.type) {
     case basketActionsTypes.GET_BASKET_REQUEST:
+      case basketActionsTypes.CREATE_BASKET_FROM_PREV:
       return { ...state, loading: true, basket: null };
+   
     case basketActionsTypes.GET_BASKET_SUCCESS:
     case basketActionsTypes.UPDATE_BASKET_TIME_WANTED_SUCCESS:
     case basketActionsTypes.DELETE_BASKET_TIME_WANTED_SUCCESS:
     case basketActionsTypes.UPDATE_BASKET_TIP_AMOUNT_SUCCESS:
     case basketActionsTypes.UPDATE_BASKET_COUPON_CODE_SUCCESS:
+    case basketActionsTypes.CREATE_BASKET_FROM_PREV_SUCCESS:
       return {
         ...state,
         loading: false,
@@ -41,6 +44,7 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
     case basketActionsTypes.VALIDETE_BASKET_SUCCESS:
       return { ...state, validate: action.payload};
     case basketActionsTypes.GET_SINGLE_RESTAURANT_CALENDAR_SUCCESS:
+      case basketActionsTypes.CREATE_BASKET_FROM_PREV_FAILURE:
       return {
           ...state,
           calendar: {

@@ -28,3 +28,30 @@ export function setBasketRequestFailure(error: any) {
     error: error,
   };
 }
+
+export function createBasketFromPrev(body: RequestCreateBasketFromOrder) {
+  return {
+    type: basketActionsTypes.CREATE_BASKET_FROM_PREV,
+    body,
+  };
+}
+
+export function createBasketFromPrevSuccess(data: ResponseBasket) {
+  return {
+    type: basketActionsTypes.CREATE_BASKET_FROM_PREV_SUCCESS,
+    payload: data,
+  };
+}
+
+export function createBasketFromPrevFailure(error: any) {
+  displayToast(
+    'ERROR',
+    error?.response?.data?.message
+      ? error.response.data.message
+      : 'ERROR! Please Try agin later',
+  );
+  return {
+    type: basketActionsTypes.CREATE_BASKET_FROM_PREV_FAILURE,
+    error: error,
+  };
+}

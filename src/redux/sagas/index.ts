@@ -19,6 +19,7 @@ import { addProductSaga } from './basket/product/add';
 import { removeProductSaga } from './basket/product/remove';
 import { updateProductSaga } from './basket/product/update';
 import { checkinSaga } from './check-in';
+import { favRestaurantSaga } from './restaurant/fav-restaurant';
 
 export default function* rootSaga() {
   yield all([
@@ -42,5 +43,6 @@ export default function* rootSaga() {
     removeProductSaga(),
     updateProductSaga(),
     checkinSaga(),
+    favRestaurantSaga()
   ]);
 }
