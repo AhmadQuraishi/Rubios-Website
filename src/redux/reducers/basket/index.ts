@@ -44,7 +44,7 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
     case basketActionsTypes.VALIDETE_BASKET_SUCCESS:
       return { ...state, validate: action.payload};
     case basketActionsTypes.GET_SINGLE_RESTAURANT_CALENDAR_SUCCESS:
-      case basketActionsTypes.CREATE_BASKET_FROM_PREV_FAILURE:
+    
       return {
           ...state,
           calendar: {
@@ -54,6 +54,7 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
           }
         };
     case basketActionsTypes.GET_BASKET_FAILURE:
+      case basketActionsTypes.CREATE_BASKET_FROM_PREV_FAILURE:
       return { 
         ...state, 
         calendar: {
