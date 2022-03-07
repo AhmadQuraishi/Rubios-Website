@@ -72,6 +72,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
+const getBasketCount = (basket: any) => {
+  var count = 0;
+  basket.products.map((item: any) => {
+    count = count + item.quantity;
+  });
+  return count;
+};
+
 const Header = (props: any) => {
   const { removeCart, showUserName, removeCartForLocation } = props;
   const classes = useStyles();
@@ -127,7 +135,7 @@ const Header = (props: any) => {
                   component="span"
                   fontWeight="700"
                   paddingTop="5px"
-                  sx={{ fontSize: { xs: '11px', md: '13px' } }}
+                  sx={{ fontSize: { xs: '11px', md: '13px' }, paddingLeft: { xs: '0px', sm: '0px', md: '25px', lg: '36px',} }}
                   color="primary.main"
                   textTransform="uppercase"
                   title=" Hi Stacey"
@@ -192,7 +200,7 @@ const Header = (props: any) => {
                     >
                       {basketObj.basket &&
                         basketObj.basket.products.length > 0 &&
-                        basketObj.basket.products.length}
+                        getBasketCount(basketObj.basket)}
                     </span>
                   </div>
                 </div>
@@ -251,7 +259,7 @@ const Header = (props: any) => {
                   >
                     {basketObj.basket &&
                       basketObj.basket.products.length > 0 &&
-                      basketObj.basket.products.length}
+                      getBasketCount(basketObj.basket)}
                   </div>
                 </Button>
               )}

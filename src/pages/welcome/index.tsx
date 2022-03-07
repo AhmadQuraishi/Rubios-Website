@@ -133,8 +133,8 @@ const Welcome = () => {
     <Fragment>
       <Grid container component="main" columns={16} className={classes.root}>
         <Grid item xs={12} className="welcome-wrapper">
-          <Grid container className="welcome-content">
-            <Grid item xs={12} md={7} lg={7} className="left-col">
+          <Grid container columns={16} className="welcome-content">
+            <Grid item xs={14} sm={14} md={14} lg={7} className="left-col">
               <Typography variant="caption" className="label" title="Welcome">
                 WELCOME
               </Typography>
@@ -223,7 +223,7 @@ const Welcome = () => {
                 </Fragment>
               )}
             </Grid>
-            <Grid item xs={12} md={5} lg={5} className="right-col">
+            <Grid item xs={14} sm={14} md={14} lg={5} className="right-col">
               <Typography
                 variant="caption"
                 className="label"
@@ -238,7 +238,7 @@ const Welcome = () => {
 
               {!loading && favRestaurant && (
                 <Grid container columns={16}>
-                  <Grid item xs={16} sm={8} md={16} lg={16}>
+                  <Grid item xs={16} sm={8} md={16} lg={16} className="res-info">
                     <Typography variant="h5" title="Broadway Blvd">
                       {favRestaurant.name}
                       <Link
