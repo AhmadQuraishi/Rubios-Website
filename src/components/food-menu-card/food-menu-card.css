@@ -1,6 +1,4 @@
 .reward-item {
-  margin-right: 20px;
-  margin-top: 20px;
   height: 140px;
   border-radius: 0 !important;
   padding: 10px;
@@ -20,9 +18,10 @@
   font-weight: 500;
   font-family: 'Poppins-Medium', sans-serif !important;
   font-size: 18px;
+  padding-bottom: 10px;
 }
 .reward-item.reward-item-selected {
-  border: 2px solid #e58530 !important;
+  border: 1px solid #e58530 !important;
   box-shadow: none !important;
 }
 .reward-item.reward-item-selected:after {

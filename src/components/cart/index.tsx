@@ -78,17 +78,18 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
   },
   smallLink: {
-    color: '#0075BF',
+    color: '#0075BF !important',
     fontSize: '11px !important',
-    fontFamily: "'Poppins-Medium' !important",
+    fontFamily: "'Poppins-Bold' !important",
     textDecoration: 'underline',
     display: 'inline',
     cursor: 'pointer',
+    textTransform: 'uppercase',
   },
   disabledLink: {
     color: '#ccc !important',
     fontSize: '11px !important',
-    fontFamily: 'Poppins-Medium !important',
+    fontFamily: 'Poppins-Bold !important',
     display: 'inline',
     textDecoration: 'none !important',
     cursor: 'pointer',
@@ -494,7 +495,7 @@ const Cart = (props: any) => {
                     borderRadius: 0,
                     padding: '30px',
                     fontFamily: "'Poppins-Medium', sans-serif !important;",
-                    fontSize: '16px',
+                    fontSize: '15px',
                   }}
                 >
                   Add Another Menu Item

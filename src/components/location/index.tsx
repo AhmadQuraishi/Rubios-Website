@@ -54,7 +54,6 @@ const LocationCard = (props: any) => {
     if (restaurantObj) {
       if (restaurant == null || (restaurant && restaurant.id != storeID)) {
         dispatch(setResturantInfoRequest(restaurantObj, orderType || ''));
-        dispatch(getBasketRequest('', null));
         displayToast('SUCCESS', 'Location changed to ' + restaurantObj.name);
       }
       navigate('/menu/' + restaurantObj.slug);
