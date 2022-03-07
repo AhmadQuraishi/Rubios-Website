@@ -71,13 +71,17 @@ const useStyles = makeStyles((theme: Theme) => ({
     transition: 'color 0.5s ease',
   },
 }));
-
+let fromEditOrder = false;
 const getBasketCount = (basket: any) => {
   var count = 0;
   basket.products.map((item: any) => {
     count = count + item.quantity;
   });
   return count;
+};
+export const handleCart = () => {
+  fromEditOrder = true;
+  return;
 };
 
 const Header = (props: any) => {
@@ -94,6 +98,9 @@ const Header = (props: any) => {
 
   const handleShowCart = () => {
     setShowCart(!showCart);
+    if (fromEditOrder) {
+      fromEditOrder = false;
+    }
   };
   return (
     <>
@@ -135,7 +142,15 @@ const Header = (props: any) => {
                   component="span"
                   fontWeight="700"
                   paddingTop="5px"
-                  sx={{ fontSize: { xs: '11px', md: '13px' }, paddingLeft: { xs: '0px', sm: '0px', md: '25px', lg: '36px',} }}
+                  sx={{
+                    fontSize: { xs: '11px', md: '13px' },
+                    paddingLeft: {
+                      xs: '0px',
+                      sm: '0px',
+                      md: '25px',
+                      lg: '36px',
+                    },
+                  }}
                   color="primary.main"
                   textTransform="uppercase"
                   title=" Hi Stacey"
@@ -267,7 +282,8 @@ const Header = (props: any) => {
           )}
         </Toolbar>
       </AppBar>
-      {showCart && <Cart showCart={handleShowCart} />}
+      {(fromEditOrder && <Cart showCart={handleShowCart} />) ||
+        (showCart && <Cart showCart={handleShowCart} />)}
     </>
   );
 };

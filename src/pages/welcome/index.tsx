@@ -22,6 +22,7 @@ import { createBasketFromPrev } from '../../redux/actions/basket/create';
 import { getFavRestaurant } from '../../redux/actions/restaurant/fav-restaurant';
 import { getBasketRequest } from '../../redux/actions/basket';
 import { displayToast } from '../../helpers/toast';
+import { handleCart } from '../../components/header';
 const useStyle = makeStyles(() => ({
   root: {
     minHeight: '100vh',
@@ -90,6 +91,7 @@ const Welcome = () => {
       }
       if (isEdit) {
         navigate(restaurant ? '/menu/' + restaurant.slug : '/');
+        handleCart();
       }
       setIsEdit(false);
       setIsReoder(false);
@@ -238,7 +240,14 @@ const Welcome = () => {
 
               {!loading && favRestaurant && (
                 <Grid container columns={16}>
-                  <Grid item xs={16} sm={8} md={16} lg={16} className="res-info">
+                  <Grid
+                    item
+                    xs={16}
+                    sm={8}
+                    md={16}
+                    lg={16}
+                    className="res-info"
+                  >
                     <Typography variant="h5" title="Broadway Blvd">
                       {favRestaurant.name}
                       <Link
