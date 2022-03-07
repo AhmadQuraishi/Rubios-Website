@@ -11,7 +11,7 @@ import { makeStyles } from '@mui/styles';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import crossIcon from '../../assets/imgs/cross-icon.svg';
+import crossIcon from '../../assets/imgs/close.png';
 import { getBasketRequest } from '../../redux/actions/basket';
 import { removeProductRequest } from '../../redux/actions/basket/product/remove';
 import { addProductRequest } from '../../redux/actions/basket/product/add';
