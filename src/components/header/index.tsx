@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     transition: 'color 0.5s ease',
   },
 }));
-let fromEditOrder = false;
+let fromEditOrder: Boolean = false;
 const getBasketCount = (basket: any) => {
   var count = 0;
   basket.products.map((item: any) => {
@@ -81,7 +81,6 @@ const getBasketCount = (basket: any) => {
 };
 export const handleCart = () => {
   fromEditOrder = true;
-  return;
 };
 
 const Header = (props: any) => {
@@ -91,15 +90,20 @@ const Header = (props: any) => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [showCart, setShowCart] = useState(false);
+  const [state, setState] = useState(false);
   const basketObj = useSelector((state: any) => state.basketReducer);
   const { restaurant } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
 
   const handleShowCart = () => {
-    setShowCart(!showCart);
-    if (fromEditOrder) {
+    if (fromEditOrder == true) {
+      setShowCart(true);
+      setState(!state);
       fromEditOrder = false;
+      setShowCart(false);
+    } else {
+      setShowCart(!showCart);
     }
   };
   return (
@@ -282,7 +286,7 @@ const Header = (props: any) => {
           )}
         </Toolbar>
       </AppBar>
-      {(fromEditOrder && <Cart showCart={handleShowCart} />) ||
+      {(fromEditOrder === true && <Cart showCart={handleShowCart} />) ||
         (showCart && <Cart showCart={handleShowCart} />)}
     </>
   );
