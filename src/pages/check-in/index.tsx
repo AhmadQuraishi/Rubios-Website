@@ -120,13 +120,13 @@ const CheckIn = () => {
                         appear in the barcode e.g 0600101234124.
                       </Typography>
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} sm={8} md={10} lg={10}>
                       <Button
                         aria-label="SUBMIT"
                         title="SUBMIT"
                         type="submit"
                         variant="contained"
-                        sx={{ width: { xs: '100%', lg: '400px' } }}
+                        sx={{ width: '100%'}}
                       >
                         SUBMIT
                       </Button>

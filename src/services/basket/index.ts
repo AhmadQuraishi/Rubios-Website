@@ -105,3 +105,21 @@ export const updateProduct = (
     throw error;
   }
 };
+
+
+
+export const requestCreateBasket = (body: RequestCreateBasket) => {
+  try {
+    console.log(body);
+    const url = process.env.REACT_APP_OLO_API || '';
+    return axios
+      .post(url + `/baskets/createfromorder`, body)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.log(error.response);
+        throw error;
+      });
+  } catch (error) {
+    throw error;
+  }
+};

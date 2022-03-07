@@ -135,7 +135,7 @@ const Header = (props: any) => {
                   component="span"
                   fontWeight="700"
                   paddingTop="5px"
-                  sx={{ fontSize: { xs: '11px', md: '13px' } }}
+                  sx={{ fontSize: { xs: '11px', md: '13px' }, paddingLeft: { xs: '0px', sm: '0px', md: '25px', lg: '36px',} }}
                   color="primary.main"
                   textTransform="uppercase"
                   title=" Hi Stacey"
