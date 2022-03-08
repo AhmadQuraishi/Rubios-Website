@@ -5,11 +5,18 @@ const CardSkeletonUI = () => {
     <Grid
       container
       sx={{
-        padding: { xs: '30px 20px', md: '40px 30px', lg: '30px 40px 0px 40px' },
+        padding: {
+          xs: '10px 10px',
+          md: '10px 10px',
+          lg: '10px 10px 10px 10px',
+        },
       }}
       spacing={3}
     >
-      <Grid item xs={6}>
+      <Grid item xs={12}>
+        <Skeleton variant="rectangular" width="300px" height="20px" />
+      </Grid>
+      <Grid item xs={12}>
         <Skeleton variant="rectangular" width="300px" height="100px" />
       </Grid>
     </Grid>
