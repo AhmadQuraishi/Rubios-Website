@@ -122,13 +122,13 @@ const Welcome = () => {
   };
   const reoderHandler = (vendorid: number) => {
     dispatch(getResturantInfoRequest(vendorid));
-    setIsRestaurant(true);
     setIsReoder(true);
+    setIsRestaurant(true);
   };
   const editHandler = (vendorid: number) => {
     dispatch(getResturantInfoRequest(vendorid));
-    setIsRestaurant(true);
     setIsEdit(true);
+    setIsRestaurant(true);
   };
 
   return (
@@ -144,8 +144,8 @@ const Welcome = () => {
                 WELCOME BACK {userProfile && userProfile.first_name}!
               </Typography>
               {(loading && <CardSkeletonUI />) ||
-                (isEdit === true && <CardSkeletonUI />) ||
-                (isReoder === true && <CardSkeletonUI />)}
+                (isEdit == true && <CardSkeletonUI />) ||
+                (isReoder == true && <CardSkeletonUI />)}
               {!loading && recentorders.length < 1 && (
                 <Typography>You don't have any recent orders</Typography>
               )}
