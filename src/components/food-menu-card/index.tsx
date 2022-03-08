@@ -98,7 +98,7 @@ const FoodMenuCard = (props: any) => {
             marginTop: '20px',
             boxShadow: 'none',
           }}
-          key={modifier.id}
+          key={Math.random() + modifier.id}
         >
           <Typography variant="h5" title={modifier.description}>
             {modifier.description}
@@ -120,7 +120,7 @@ const FoodMenuCard = (props: any) => {
             marginTop: '20px',
             boxShadow: 'none',
           }}
-          key={option.id}
+          key={Math.random() + option.id}
         >
           <Typography variant="h5" title={option.name}>
             {option.name}
@@ -172,14 +172,13 @@ const FoodMenuCard = (props: any) => {
     setViewUIList(updatedList);
   };
 
-  const setOptionsToSelect = (val: any) => {
-  };
+  const setOptionsToSelect = (val: any) => {};
 
   return (
     <>
       <Grid container spacing={2}>
         {menuItems.map((menuItem: any, index: number) => (
-          <Grid item xs={12} md={4} key={index}>
+          <Grid item xs={12} md={4} key={Math.random() + index}>
             <Card
               className={`reward-item${
                 selectedItem.length > 0 && isItemSelected(menuItem.id)
@@ -242,7 +241,11 @@ const FoodMenuCard = (props: any) => {
                           <option value="0">Please choose</option>
                           {item.options &&
                             item.options.map((item: any, index: number) => (
-                              <option id={item.id} key={index} value={item.id}>
+                              <option
+                                id={item.id}
+                                key={Math.random() + index}
+                                value={item.id}
+                              >
                                 {item.name}
                                 {item.cost > 0 ? ' + $' + item.cost : ''}
                               </option>

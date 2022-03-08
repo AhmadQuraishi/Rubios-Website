@@ -54,12 +54,24 @@ const Location = () => {
     dispatch(getResturantListRequest());
   }, []);
 
+  let newMarker: any;
   const setMayLocation = () => {
     navigator.geolocation.getCurrentPosition(function (position) {
-      setMapCenter({
+      const latLong = {
         lat: position.coords.latitude,
         lng: position.coords.longitude,
-      });
+      };
+      setMapCenter(latLong);
+      setMarkers((markers) => [
+        ...markers,
+        <Marker
+          key={Math.random() + 'index'}
+          position={latLong}
+          icon={
+            'https://maps.gstatic.com/mapfiles/maps_lite/images/1x/ic_my_location_24dp_3.png'
+          }
+        />,
+      ]);
       setZoom(16);
     });
   };
@@ -131,11 +143,11 @@ const Location = () => {
       getNearByResturantListRequest(lat, long, 10, 10, dateFrom, dateTo),
     );
   };
-
-  let newMarker: any;
-  if (restaurants && restaurants.restaurants.length > 0) {
-    newMarker = restaurants.restaurants.map(
-      (item: ResponseRestaurant, index: number) => {
+  const [markers, setMarkers] = useState<any[]>([]);
+  useEffect(() => {
+    setMarkers([]);
+    if (restaurants && restaurants.restaurants.length > 0) {
+      restaurants.restaurants.map((item: ResponseRestaurant, index: number) => {
         if (mapCenter == undefined) {
           setMapCenter({
             lat: item.latitude,
@@ -146,10 +158,13 @@ const Location = () => {
           lat: item.latitude,
           lng: parseFloat(item.longitude),
         };
-        return <Marker key={index} position={latLong} />;
-      },
-    );
-  }
+        setMarkers((markers) => [
+          ...markers,
+          <Marker key={Math.random() + index} position={latLong} />,
+        ]);
+      });
+    }
+  }, [restaurants]);
 
   return (
     <div style={{ minHeight: '300px', position: 'relative' }}>
@@ -159,8 +174,15 @@ const Location = () => {
         </div>
       )}
       <LoadScript googleMapsApiKey="AIzaSyCWKuRHEkeFWOy0JDMBT7Z4YApPVkZYHFI">
-        <GoogleMap center={mapCenter} zoom={zoom}>
-          {newMarker}
+        <GoogleMap
+          center={mapCenter}
+          zoom={zoom}
+          options={{
+            streetViewControl: false,
+            mapTypeControl: false,
+            fullscreenControl: false,
+          }}
+        >
           <div
             onClick={() => {
               setMayLocation();
@@ -169,6 +191,7 @@ const Location = () => {
           >
             <span className="icon"></span>
           </div>
+          {markers}
           <LocationCard
             isNearByRestaurantList={nearByRestaurantsFound}
             restaurants={(restaurants && restaurants.restaurants) || []}
