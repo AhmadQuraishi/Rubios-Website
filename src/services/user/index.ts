@@ -1,6 +1,8 @@
 import axios from "axios";
 import { store } from "../../redux/store";
 import axiosInstance from "../axiosInceptor";
+import { ResponseContactOptions} from '../../types/olo-api';
+
 //profile
 export const RequestUserProfile = () => {
   try {
@@ -243,6 +245,21 @@ export const requestUseGiftCards = (authtoken: string) => {
     const url = process.env.REACT_APP_OLO_API || '';
     return axiosInstance
       .get(url + `/users/${authtoken}/billingaccounts/storedvalue`)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.log(error.response);
+        throw error;
+      });
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const updateUserContactOptions = (authtoken: string, body: ResponseContactOptions) => {
+  try {
+    const url = process.env.REACT_APP_OLO_API || '';
+    return axiosInstance
+      .put(url + `/users/${authtoken}/contactoptions`, body)
       .then((response) => response.data)
       .catch((error) => {
         console.log(error.response);

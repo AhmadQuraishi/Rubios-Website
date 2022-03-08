@@ -39,13 +39,16 @@ export function generateSubmitBasketPayload(pickupInfo: any, cardDetails: any, a
         guestoptin: pickupInfo.emailNotification
     }
 
-    if(authtoken !== ''){
+    console.log('authtoken', authtoken)
+
+    if(authtoken && authtoken !== ''){
         payload.authtoken = authtoken;
         payload.usertype = UserTypeEnum.user;
         delete payload.firstname;
         delete payload.lastname;
         delete payload.emailaddress;
         delete payload.contactnumber;
+        delete payload.guestoptin;
     } 
 
     return payload;  
