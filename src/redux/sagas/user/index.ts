@@ -59,7 +59,7 @@ function* userProfileHandler(): any {
   try {
     const response = yield call(RequestUserProfile); 
     yield put(getUserprofileSuccess(response));
-    yield put(getProviderRequestSuccess(response.data));
+    yield put(getProviderRequestSuccess(response));
   } catch (error) {
     yield put(getUserprofileFailure(error));
   }
