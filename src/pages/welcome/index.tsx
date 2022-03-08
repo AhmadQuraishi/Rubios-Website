@@ -9,12 +9,7 @@ import {
 } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import './welcome.css';
-import React, {
-  BaseSyntheticEvent,
-  Fragment,
-  useEffect,
-  useState,
-} from 'react';
+import { BaseSyntheticEvent, Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserRecentOrders } from '../../redux/actions/user';
 import {
@@ -27,6 +22,7 @@ import { createBasketFromPrev } from '../../redux/actions/basket/create';
 import { getFavRestaurant } from '../../redux/actions/restaurant/fav-restaurant';
 import { getBasketRequest } from '../../redux/actions/basket';
 import { displayToast } from '../../helpers/toast';
+import { handleCart } from '../../components/header';
 const useStyle = makeStyles(() => ({
   root: {
     minHeight: '100vh',
@@ -46,11 +42,20 @@ const Welcome = () => {
   const [recentorders, setOrders] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
   const [isReoder, setIsReoder] = useState(false);
+  const [isRestaurant, setIsRestaurant] = useState(false);
+  const [deliverymode, setDeliveryMode] = useState('');
+  const [restInfo, setRestInfo] = useState(false);
+  const [isbasket, setIsbasket] = useState(false);
+  const [body, setBody] = useState({
+    orderref: '',
+    id: '',
+    ignoreunavailableproducts: true,
+  });
   const authtoken = useSelector((state: any) => state.TokensReducer.authtoken);
   const { userProfile } = useSelector((state: any) => state.userReducer);
   const { userRecentOrders } = useSelector((state: any) => state.userReducer);
   const basketObj = useSelector((state: any) => state.basketReducer);
-  const { restaurant } = useSelector(
+  const { restaurant, orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
   const { favRestaurant, loading } = useSelector(
@@ -61,32 +66,48 @@ const Welcome = () => {
     dispatch(getFavRestaurant(64327));
   }, []);
   useEffect(() => {
-    console.log('inside');
+    if (isRestaurant) {
+      dispatch(setResturantInfoRequest(restaurant, deliverymode));
+      setRestInfo(true);
+      setIsRestaurant(false);
+    }
+    if (restInfo) {
+      dispatch(createBasketFromPrev(body));
+      setRestInfo(false);
+      setIsbasket(true);
+    }
+  }, [restaurant]);
+
+  useEffect(() => {
     if (
       basketObj &&
       basketObj.basket &&
       basketObj.basket.products &&
-      basketObj.basket.products.length > 0
+      basketObj.basket.products.length > 0 &&
+      isbasket
     ) {
-      console.log(basketObj);
-      dispatch(
-        setResturantInfoRequest(restaurant, basketObj.basket.deliverymode),
-      );
-
       if (isReoder) {
         navigate('/checkout');
       }
       if (isEdit) {
         navigate(restaurant ? '/menu/' + restaurant.slug : '/');
+        handleCart();
       }
       setIsEdit(false);
       setIsReoder(false);
+      setIsbasket(false);
     }
   }, [basketObj]);
 
   useEffect(() => {
     if (userRecentOrders && userRecentOrders.orders) {
       setOrders(userRecentOrders.orders);
+      setDeliveryMode(userRecentOrders.orders[0].deliverymode);
+      setBody({
+        orderref: userRecentOrders.orders[0].orderref,
+        id: userRecentOrders.orders[0].id,
+        ignoreunavailableproducts: true,
+      });
     }
   }, [userRecentOrders]);
 
@@ -99,25 +120,14 @@ const Welcome = () => {
       navigate(favRestaurant ? '/menu/' + favRestaurant.slug : '/');
     }
   };
-  const reoderHandler = (id: string, orderref: string, vendorid: number) => {
-    const body = {
-      orderref: orderref,
-      id: id,
-      ignoreunavailableproducts: true,
-    };
-    dispatch(createBasketFromPrev(body));
+  const reoderHandler = (vendorid: number) => {
     dispatch(getResturantInfoRequest(vendorid));
+    setIsRestaurant(true);
     setIsReoder(true);
   };
-  const editHandler = (id: string, orderref: string, vendorid: number) => {
-    const body = {
-      orderref: orderref,
-      id: id,
-      ignoreunavailableproducts: true,
-    };
-    // dispatch(getBasketRequest('', null));
-    dispatch(createBasketFromPrev(body));
+  const editHandler = (vendorid: number) => {
     dispatch(getResturantInfoRequest(vendorid));
+    setIsRestaurant(true);
     setIsEdit(true);
   };
 
@@ -125,8 +135,8 @@ const Welcome = () => {
     <Fragment>
       <Grid container component="main" columns={16} className={classes.root}>
         <Grid item xs={12} className="welcome-wrapper">
-          <Grid container className="welcome-content">
-            <Grid item xs={12} md={7} lg={7} className="left-col">
+          <Grid container columns={16} className="welcome-content">
+            <Grid item xs={14} sm={14} md={14} lg={7} className="left-col">
               <Typography variant="caption" className="label" title="Welcome">
                 WELCOME
               </Typography>
@@ -139,8 +149,8 @@ const Welcome = () => {
               )}
               {!loading && recentorders.length > 0 && (
                 <Fragment>
-                  {recentorders.slice(0, 1).map((order: any) => (
-                    <Fragment>
+                  {recentorders.slice(0, 1).map((order: any, index: number) => (
+                    <Fragment key={index + order.id}>
                       <Typography
                         variant="caption"
                         className="label"
@@ -149,7 +159,11 @@ const Welcome = () => {
                         LAST ORDER {order.timeplaced.substr(6, 2)}/
                         {order.timeplaced.substr(4, 2)}
                       </Typography>
-                      <Card elevation={0} className="product-card">
+                      <Card
+                        elevation={0}
+                        className="product-card"
+                        key={index + order.id}
+                      >
                         <CardMedia
                           component="img"
                           title="image"
@@ -188,11 +202,7 @@ const Welcome = () => {
                               className="caption-grey"
                               title="EDIT ORDER"
                               onClick={() => {
-                                editHandler(
-                                  order.id,
-                                  order.orderref,
-                                  order.vendorid,
-                                );
+                                editHandler(order.vendorid);
                               }}
                             >
                               Edit Order
@@ -202,11 +212,7 @@ const Welcome = () => {
                               className="button"
                               title="order"
                               onClick={() => {
-                                reoderHandler(
-                                  order.id,
-                                  order.orderref,
-                                  order.vendorid,
-                                );
+                                reoderHandler(order.vendorid);
                               }}
                             >
                               Reorder
@@ -219,7 +225,7 @@ const Welcome = () => {
                 </Fragment>
               )}
             </Grid>
-            <Grid item xs={12} md={5} lg={5} className="right-col">
+            <Grid item xs={14} sm={14} md={14} lg={5} className="right-col">
               <Typography
                 variant="caption"
                 className="label"
@@ -234,7 +240,14 @@ const Welcome = () => {
 
               {!loading && favRestaurant && (
                 <Grid container columns={16}>
-                  <Grid item xs={16} sm={8} md={16} lg={16}>
+                  <Grid
+                    item
+                    xs={16}
+                    sm={8}
+                    md={16}
+                    lg={16}
+                    className="res-info"
+                  >
                     <Typography variant="h5" title="Broadway Blvd">
                       {favRestaurant.name}
                       <Link

@@ -11,7 +11,7 @@ import { makeStyles } from '@mui/styles';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import crossIcon from '../../assets/imgs/cross-icon.svg';
+import crossIcon from '../../assets/imgs/close.png';
 import { getBasketRequest } from '../../redux/actions/basket';
 import { removeProductRequest } from '../../redux/actions/basket/product/remove';
 import { addProductRequest } from '../../redux/actions/basket/product/add';
@@ -293,7 +293,7 @@ const Cart = (props: any) => {
                         (productAddObj && productAddObj.loading) ? (
                           <MUILink
                             title="Remove"
-                            className={classes.disabledLink}
+                            className={classes.smallLink}
                             aria-label="Remove the item from basket"
                             onClick={() => false}
                           >
@@ -316,7 +316,7 @@ const Cart = (props: any) => {
                           <MUILink
                             onClick={() => false}
                             title="Edit"
-                            className={classes.disabledLink}
+                            className={classes.smallLink}
                             aria-label="Make changes to the current menu item"
                           >
                             Edit
@@ -348,7 +348,7 @@ const Cart = (props: any) => {
                         (productAddObj && productAddObj.loading) ? (
                           <MUILink
                             onClick={() => false}
-                            className={classes.disabledLink}
+                            className={classes.smallLink}
                             title="Duplicate"
                             aria-label="Duplicate the basket item"
                           >

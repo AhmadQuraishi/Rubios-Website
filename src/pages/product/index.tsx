@@ -93,9 +93,10 @@ const Product = () => {
       }
     }
   }, [categories]);
-
+  const [updatedOptions, setUpdatedOptions] = useState(false);
   useEffect(() => {
     if (productDetails) {
+      setUpdatedOptions(true)
       dispatch(getProductOptionRequest(productDetails.id));
       setCountWithEdit();
     }
@@ -122,7 +123,8 @@ const Product = () => {
   }, [edit]);
 
   useEffect(() => {
-    if (options && options.optiongroups) {
+    if (options && options.optiongroups && updatedOptions) {
+      setUpdatedOptions(false);
       setProductOptions(options);
       if (edit) {
         const product = basketObj.basket.products.find(
@@ -270,33 +272,36 @@ const Product = () => {
                   {productDetails.description}
                 </Typography>
                 <Grid container>
-                  <Grid item xs={6}>
-                    <Typography
-                      variant="caption"
-                      className="label bold"
-                      aria-label={`${
-                        productDetails.caloriesseparator
+                  {(parseInt(productDetails.basecalories || '0') > 0 ||
+                    parseInt(productDetails.maxcalories || '0') > 0) && (
+                    <Grid item xs={6}>
+                      <Typography
+                        variant="caption"
+                        className="label bold"
+                        aria-label={`${
+                          productDetails.caloriesseparator
+                            ? productDetails.basecalories +
+                              productDetails.caloriesseparator +
+                              productDetails.maxcalories
+                            : productDetails.basecalories
+                        } Cal`}
+                        title={`${
+                          productDetails.caloriesseparator
+                            ? productDetails.basecalories +
+                              productDetails.caloriesseparator +
+                              productDetails.maxcalories
+                            : productDetails.basecalories
+                        } Cal`}
+                      >
+                        {productDetails.caloriesseparator
                           ? productDetails.basecalories +
                             productDetails.caloriesseparator +
                             productDetails.maxcalories
-                          : productDetails.basecalories
-                      } Cal`}
-                      title={`${
-                        productDetails.caloriesseparator
-                          ? productDetails.basecalories +
-                            productDetails.caloriesseparator +
-                            productDetails.maxcalories
-                          : productDetails.basecalories
-                      } Cal`}
-                    >
-                      {productDetails.caloriesseparator
-                        ? productDetails.basecalories +
-                          productDetails.caloriesseparator +
-                          productDetails.maxcalories
-                        : productDetails.basecalories}{' '}
-                      Cal
-                    </Typography>
-                  </Grid>
+                          : productDetails.basecalories}{' '}
+                        Cal
+                      </Typography>
+                    </Grid>
+                  )}
                   {productDetails.cost > 0 && (
                     <Grid item xs={6}>
                       <Typography

@@ -6,7 +6,8 @@ import './check-in.css';
 import { makeStyles } from '@mui/styles';
 import { useDispatch } from 'react-redux';
 import { createCheckIn } from '../../redux/actions/check-in';
-
+import { IMaskInput } from 'react-imask';
+import { forwardRef } from 'react';
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     padding: '0px 15px',
@@ -20,6 +21,32 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
   },
 }));
+
+interface CustomProps {
+  onChange: (event: { target: { name: string; value: string } }) => void;
+  name: string;
+}
+
+const NumberFormatCustom = forwardRef<HTMLElement, CustomProps>(
+  function NumberFormatCustom(props, ref) {
+    const { onChange, ...other } = props;
+
+    return (
+      <IMaskInput
+        {...other}
+        mask="00-000-000-0000-0"
+        definitions={{
+          '#': /[1-9]/,
+        }}
+        onAccept={(value: any) =>
+          onChange({ target: { name: props.name, value } })
+        }
+        overwrite
+      />
+    );
+  },
+);
+
 const CheckIn = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -36,13 +63,11 @@ const CheckIn = () => {
             }}
             validationSchema={Yup.object({
               barcode: Yup.string()
-                .matches(/^[0-9]+$/, 'use only digits')
-                .min(12, 'Must be at least 12 characters')
-                .max(13, 'Must be at most 13 characters')
+                .min(15, 'Must be at least 12 digits')
                 .required('required'),
             })}
             onSubmit={async (values) => {
-              dispatch(createCheckIn(values.barcode));
+              dispatch(createCheckIn(values.barcode.replace(/\D/g, '')));
             }}
           >
             {({
@@ -87,7 +112,7 @@ const CheckIn = () => {
                       <TextField
                         aria-label="Rubio's rewards barcode number"
                         name="barcode"
-                        placeholder="x-xxx-xxx-xxxx-x"
+                        placeholder="xx-xxx-xxx-xxxx-x"
                         aria-required="true"
                         title="Rubio's rewards barcode number"
                         value={values.barcode}
@@ -95,6 +120,9 @@ const CheckIn = () => {
                         onBlur={handleBlur('barcode')}
                         error={Boolean(touched.barcode && errors.barcode)}
                         helperText={touched.barcode && errors.barcode}
+                        InputProps={{
+                          inputComponent: NumberFormatCustom as any,
+                        }}
                         sx={{ width: '100%' }}
                       />
                     </Grid>
@@ -102,7 +130,7 @@ const CheckIn = () => {
                       <Typography
                         variant="body2"
                         className="body-text"
-                        title="Please enter the 12 or 13 digit numeric barcode at the bottom of
+                        title="Please enter the 12 or 13 digits numeric barcode at the bottom of
               your receipt."
                       >
                         Please enter the 12 or 13 digit numeric barcode at the
@@ -120,13 +148,13 @@ const CheckIn = () => {
                         appear in the barcode e.g 0600101234124.
                       </Typography>
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} sm={8} md={10} lg={10}>
                       <Button
                         aria-label="SUBMIT"
                         title="SUBMIT"
                         type="submit"
                         variant="contained"
-                        sx={{ width: { xs: '100%', lg: '400px' } }}
+                        sx={{ width: '100%' }}
                       >
                         SUBMIT
                       </Button>

@@ -71,6 +71,17 @@ const useStyles = makeStyles((theme: Theme) => ({
     transition: 'color 0.5s ease',
   },
 }));
+let fromEditOrder: Boolean = false;
+const getBasketCount = (basket: any) => {
+  var count = 0;
+  basket.products.map((item: any) => {
+    count = count + item.quantity;
+  });
+  return count;
+};
+export const handleCart = () => {
+  fromEditOrder = true;
+};
 
 const Header = (props: any) => {
   const { removeCart, showUserName, removeCartForLocation } = props;
@@ -79,13 +90,21 @@ const Header = (props: any) => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [showCart, setShowCart] = useState(false);
+  const [state, setState] = useState(false);
   const basketObj = useSelector((state: any) => state.basketReducer);
   const { restaurant } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
 
   const handleShowCart = () => {
-    setShowCart(!showCart);
+    if (fromEditOrder == true) {
+      setShowCart(true);
+      setState(!state);
+      fromEditOrder = false;
+      setShowCart(false);
+    } else {
+      setShowCart(!showCart);
+    }
   };
   return (
     <>
@@ -127,7 +146,15 @@ const Header = (props: any) => {
                   component="span"
                   fontWeight="700"
                   paddingTop="5px"
-                  sx={{ fontSize: { xs: '11px', md: '13px' } }}
+                  sx={{
+                    fontSize: { xs: '11px', md: '13px' },
+                    paddingLeft: {
+                      xs: '0px',
+                      sm: '0px',
+                      md: '25px',
+                      lg: '36px',
+                    },
+                  }}
                   color="primary.main"
                   textTransform="uppercase"
                   title=" Hi Stacey"
@@ -192,7 +219,7 @@ const Header = (props: any) => {
                     >
                       {basketObj.basket &&
                         basketObj.basket.products.length > 0 &&
-                        basketObj.basket.products.length}
+                        getBasketCount(basketObj.basket)}
                     </span>
                   </div>
                 </div>
@@ -251,7 +278,7 @@ const Header = (props: any) => {
                   >
                     {basketObj.basket &&
                       basketObj.basket.products.length > 0 &&
-                      basketObj.basket.products.length}
+                      getBasketCount(basketObj.basket)}
                   </div>
                 </Button>
               )}
@@ -259,7 +286,8 @@ const Header = (props: any) => {
           )}
         </Toolbar>
       </AppBar>
-      {showCart && <Cart showCart={handleShowCart} />}
+      {(fromEditOrder === true && <Cart showCart={handleShowCart} />) ||
+        (showCart && <Cart showCart={handleShowCart} />)}
     </>
   );
 };
