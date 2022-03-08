@@ -1,7 +1,7 @@
 import { favRestaurantActionsTypes as Type } from "../../../types/restaurant/fav-restaurant";
 
 const INITIAL_STATE = {
-  loading: false,
+  favloading: false,
   favRestaurant: null,
   error: {},
 };
@@ -9,16 +9,16 @@ const INITIAL_STATE = {
 const favRestaurantReducer = (state = INITIAL_STATE, action: any) => {
   switch (action.type) {
     case Type.GET_FAV_RESTAURANT:
-      return { ...state, loading: true, favRestaurant: null, error: {} };
+      return { ...state, favloading: true, favRestaurant: null, error: {} };
     case Type.GET_FAV_RESTAURANT_SUCCESS:
       return {
         ...state,
-        loading: false,
+        favloading: false,
         favRestaurant: action.payload,
         error: {},
       };
     case Type.GET_FAV_RESTAURANT_FAILURE:
-      return { ...state, loading: false, error: action.error };
+      return { ...state, favloading: false, error: action.error };
     default:
       return state;
   }

@@ -53,12 +53,14 @@ const Welcome = () => {
   });
   const authtoken = useSelector((state: any) => state.TokensReducer.authtoken);
   const { providerToken } = useSelector((state: any) => state.providerReducer);
-  const { userRecentOrders } = useSelector((state: any) => state.userReducer);
+  const { userRecentOrders, loading } = useSelector(
+    (state: any) => state.userReducer,
+  );
   const basketObj = useSelector((state: any) => state.basketReducer);
   const { restaurant, orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
-  const { favRestaurant, loading } = useSelector(
+  const { favRestaurant, favloading } = useSelector(
     (state: any) => state.favRestaurantReducer,
   );
   useEffect(() => {
@@ -145,7 +147,14 @@ const Welcome = () => {
               <Typography variant="caption" className="label" title="Welcome">
                 WELCOME
               </Typography>
-              <Typography variant="h4" title="WELCOME BACK ALEXENDRA">
+              <Typography
+                variant="h4"
+                title={
+                  providerToken &&
+                  providerToken.first_name &&
+                  providerToken.first_name
+                }
+              >
                 WELCOME BACK{' '}
                 {providerToken &&
                   providerToken.first_name &&
@@ -155,9 +164,12 @@ const Welcome = () => {
               {(loading && <CardSkeletonUI />) ||
                 (isEdit == true && <CardSkeletonUI />) ||
                 (isReoder == true && <CardSkeletonUI />)}
-              {!loading && recentorders.length == 0 && (
-                <Typography>You don't have any recent orders</Typography>
-              )}
+              {!loading &&
+                recentorders.length === 0 &&
+                isEdit == false &&
+                isReoder == false && (
+                  <Typography>You don't have any recent orders</Typography>
+                )}
               {!loading &&
                 recentorders.length > 0 &&
                 isEdit == false &&
@@ -249,14 +261,17 @@ const Welcome = () => {
               >
                 YOUR FAVORITE LOCATION
               </Typography>
-              {(loading && <CardSkeletonUI />) ||
+              {(favloading && <CardSkeletonUI />) ||
                 (isEdit === true && <CardSkeletonUI />) ||
                 (isReoder === true && <CardSkeletonUI />)}
-              {!loading && !favRestaurant && (
-                <Typography>You don't have any favorite location</Typography>
-              )}
+              {!favloading &&
+                favRestaurant == null &&
+                isEdit == false &&
+                isReoder == false && (
+                  <Typography>You don't have any favorite location</Typography>
+                )}
 
-              {!loading &&
+              {!favloading &&
                 favRestaurant &&
                 isEdit == false &&
                 isReoder == false && (
