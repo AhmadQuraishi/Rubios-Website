@@ -42,6 +42,7 @@ const Location = () => {
   const [mapCenter, setMapCenter] = useState<any>();
   const [showNearBy, setShowNearBy] = useState(false);
   const [orderType, setOrderType] = useState<string>();
+  const [zoom, setZoom] = useState<number>(7);
   const [nearByRestaurantsFound, setNearByRestaurantsFound] = useState(false);
   const dispatch = useDispatch();
 
@@ -53,6 +54,16 @@ const Location = () => {
     dispatch(getResturantListRequest());
   }, []);
 
+  const setMayLocation = () => {
+    navigator.geolocation.getCurrentPosition(function (position) {
+      setMapCenter({
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+      });
+      setZoom(16);
+    });
+  };
+
   useEffect(() => {
     if (showNearBy) {
       navigator.geolocation.getCurrentPosition(
@@ -62,9 +73,11 @@ const Location = () => {
             position.coords.latitude,
             position.coords.longitude,
           );
+          setZoom(7);
         },
         function () {
           setShowNearBy(false);
+          setZoom(7);
         },
       );
     }
@@ -81,6 +94,7 @@ const Location = () => {
             "We could not find any Rubio's within 10 Miles of Your Current Location.",
           );
           dispatch(getResturantListRequest());
+          setZoom(7);
         }
       } else {
         if (showNearBy) {
@@ -91,6 +105,7 @@ const Location = () => {
           lat: restaurants.restaurants[0].latitude,
           lng: restaurants.restaurants[0].longitude,
         });
+        setZoom(7);
       }
     }
   }, [restaurants]);
@@ -144,8 +159,16 @@ const Location = () => {
         </div>
       )}
       <LoadScript googleMapsApiKey="AIzaSyCWKuRHEkeFWOy0JDMBT7Z4YApPVkZYHFI">
-        <GoogleMap center={mapCenter} zoom={7}>
+        <GoogleMap center={mapCenter} zoom={zoom}>
           {newMarker}
+          <div
+            onClick={() => {
+              setMayLocation();
+            }}
+            className="location-icon-panel"
+          >
+            <span className="icon"></span>
+          </div>
           <LocationCard
             isNearByRestaurantList={nearByRestaurantsFound}
             restaurants={(restaurants && restaurants.restaurants) || []}
