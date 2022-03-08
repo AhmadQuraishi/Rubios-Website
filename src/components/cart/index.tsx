@@ -91,8 +91,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: '11px !important',
     fontFamily: 'Poppins-Bold !important',
     display: 'inline',
-    textDecoration: 'none !important',
     cursor: 'pointer',
+    textDecoration: 'underline',
+    textTransform: 'uppercase',
   },
 }));
 
@@ -101,6 +102,7 @@ const Cart = (props: any) => {
   const classes = useStyles();
   const [actionStatus, setActionStatus] = useState(false);
   const basketObj = useSelector((state: any) => state.basketReducer);
+  const [clickAction, setClickAction] = useState("");
   const productRemoveObj = useSelector(
     (state: any) => state.removeProductReducer,
   );
@@ -289,11 +291,12 @@ const Cart = (props: any) => {
                   <Grid item xs={12} sx={{ padding: '0' }}>
                     <Grid container spacing={0}>
                       <Grid item xs={2}>
-                        {(productRemoveObj && productRemoveObj.loading) ||
-                        (productAddObj && productAddObj.loading) ? (
+                        {productRemoveObj &&
+                        productRemoveObj.loading &&
+                        clickAction == item.id + '-remove' ? (
                           <MUILink
                             title="Remove"
-                            className={classes.smallLink}
+                            className={classes.disabledLink}
                             aria-label="Remove the item from basket"
                             onClick={() => false}
                           >
@@ -304,7 +307,10 @@ const Cart = (props: any) => {
                             title="Remove"
                             className={classes.smallLink}
                             aria-label="Remove the item from basket"
-                            onClick={() => removeProductHandle(item.id)}
+                            onClick={() => {
+                              removeProductHandle(item.id);
+                              setClickAction(item.id + '-remove');
+                            }}
                           >
                             Remove
                           </MUILink>
@@ -344,11 +350,12 @@ const Cart = (props: any) => {
                         )}
                       </Grid>
                       <Grid item xs={3} sx={{ textAlign: 'center' }}>
-                        {(productRemoveObj && productRemoveObj.loading) ||
-                        (productAddObj && productAddObj.loading) ? (
+                        {productAddObj &&
+                        productAddObj.loading &&
+                        clickAction == item.id + '-add' ? (
                           <MUILink
                             onClick={() => false}
-                            className={classes.smallLink}
+                            className={classes.disabledLink}
                             title="Duplicate"
                             aria-label="Duplicate the basket item"
                           >
@@ -356,7 +363,10 @@ const Cart = (props: any) => {
                           </MUILink>
                         ) : (
                           <MUILink
-                            onClick={() => duplicateProductHandle(item.id)}
+                            onClick={() => {
+                              duplicateProductHandle(item.id);
+                              setClickAction(item.id + '-add');
+                            }}
                             className={classes.smallLink}
                             title="Duplicate"
                             aria-label="Duplicate the basket item"

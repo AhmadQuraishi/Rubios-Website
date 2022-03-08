@@ -1,11 +1,12 @@
 .list-wrapper {
   padding: 0px;
 }
-.location-sidebar .MuiOutlinedInput-input, .location-sidebar .MuiInputLabel {
+.location-sidebar .MuiOutlinedInput-input,
+.location-sidebar .MuiInputLabel {
   font-family: 'Poppins-Regular', sans-serif !important;
   font-size: 16px;
 }
-.MuiInputLabel.Mui-focused{
+.MuiInputLabel.Mui-focused {
   padding: 0px !important;
 }
 .list-wrapper .MuiPaper-root {
@@ -14,7 +15,7 @@
   -moz-border-radius: 30px;
   border-radius: 30px;
   width: 55%;
-  height:auto; /*calc(100vh - 80px); */
+  height: auto; /*calc(100vh - 80px); */
 }
 .list-wrapper .listing {
   padding: 0px;
@@ -68,12 +69,19 @@
   margin: 0;
   font-size: 13px !important;
 }
-@media screen and (max-width: 1024px){
+.location-sidebar .label.msg {
+  color: #666;
+  text-transform: none;
+  padding: 20px 0px;
+  text-align: center;
+  padding-top: 0;
+}
+@media screen and (max-width: 1024px) {
   .list-wrapper .MuiPaper-root {
     width: 70%;
   }
 }
-@media screen and (max-width: 768px){
+@media screen and (max-width: 768px) {
   .list-wrapper .MuiPaper-root {
     padding: 20px;
     border-radius: 30px;

@@ -15,12 +15,12 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setResturantInfoRequest } from '../../redux/actions/restaurant';
 import { displayToast } from '../../helpers/toast';
-import { getBasketRequest } from '../../redux/actions/basket';
 
 const LocationCard = (props: any) => {
   const { restaurants, isNearByRestaurantList, setShowNearBy } = props;
   const [searchText, setSearchText] = useState<string>();
   const [orderType, setOrderType] = useState<string>();
+  const [showNotFoundMessage, setShowNotFoundMessage] = useState(false);
   const [filteredRestaurants, setfilteredRestaurants] =
     useState<ResponseRestaurant[]>();
   const { restaurant } = useSelector(
@@ -69,6 +69,7 @@ const LocationCard = (props: any) => {
   }, [isNearByRestaurantList, restaurants]);
 
   const getSearchResults = () => {
+    setShowNotFoundMessage(false);
     if (orderType || searchText) {
       let updatedRestaurants = [];
       let resultsFound = false;
@@ -89,6 +90,8 @@ const LocationCard = (props: any) => {
         setfilteredRestaurants(updatedRestaurants);
         if (updatedRestaurants.length > 0) {
           resultsFound = true;
+        } else {
+          setShowNotFoundMessage(true);
         }
       }
       let searchedRestaurant: ResponseRestaurant[] = [];
@@ -124,6 +127,9 @@ const LocationCard = (props: any) => {
               (x: any) => x.state.toLowerCase() == searchTxt,
             );
           }
+          if (searchedRestaurant.length == 0) {
+            setShowNotFoundMessage(true);
+          }
           setfilteredRestaurants(
             searchedRestaurant.length > 0 ? searchedRestaurant : [],
           );
@@ -131,6 +137,7 @@ const LocationCard = (props: any) => {
       }
     } else {
       if (!isNearByRestaurantList) {
+        setShowNotFoundMessage(false);
         setfilteredRestaurants([]);
       }
     }
@@ -237,7 +244,7 @@ const LocationCard = (props: any) => {
               />
             </Grid>
             <Grid item xs={12}>
-              <Typography className="label" title="NEARBY LOCATIONS">
+              <Typography className="label">
                 {isNearByRestaurantList &&
                   filteredRestaurants &&
                   filteredRestaurants.length > 0 &&
@@ -255,7 +262,10 @@ const LocationCard = (props: any) => {
                         textDecoration: 'underline',
                       }}
                       title="USE YOUR CURRENT LOCATION?"
-                      onClick={() => findNearByRestaurants()}
+                      onClick={() => {
+                        findNearByRestaurants();
+                        setShowNotFoundMessage(false);
+                      }}
                     >
                       USE YOUR CURRENT LOCATION?
                     </span>
@@ -272,6 +282,17 @@ const LocationCard = (props: any) => {
                 minHeight: '350px',
               }}
             >
+              {showNotFoundMessage && (
+                <Typography
+                  className="label msg"
+                  title="We were unable to find any participating locations in the area you have selected. Please try increasing the radius or enter another address. Be sure to include city, state, or zip code for the most accurate results."
+                >
+                  We were unable to find any participating locations in the area
+                  you have selected. Please try increasing the radius or enter
+                  another address. Be sure to include city, state, or zip code
+                  for the most accurate results.
+                </Typography>
+              )}
               <Grid container spacing={1}>
                 {filteredRestaurants?.map(
                   (item: ResponseRestaurant, index: number) => (
