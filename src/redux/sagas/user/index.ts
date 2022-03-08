@@ -14,7 +14,8 @@ import {
   updateUserBillingAccount,
   requestUseGiftCards,
   requestDeleteFavOrder,
-  requestUserFavoriteOrders
+  requestUserFavoriteOrders,
+  updateUserContactOptions
 } from '../../../services/user';
 import {
   deleteUserDelAddFailure,
@@ -44,7 +45,9 @@ import {
   getAllGiftCardsSuccess,
   getAllGiftCardsFailure,
   deleteFavOrderSuccess,
-  deleteFavOrderFailure
+  deleteFavOrderFailure,
+  updateUserContactOptionsSuccess,
+  updateUserContactOptionsFailure
 
 } from '../../actions/user';
 import ErrorMessageAlert from '../../../components/error-message-alert';
@@ -235,6 +238,20 @@ function* getUserGiftCardsHandler(action: any): any {
   }
 }
 
+// Update user contact options
+function* updateUserContactOptionsHandler(action: any): any {
+  try {
+    const response = yield call(
+      updateUserContactOptions,
+      action.authtoken,
+      action.data
+    );
+    yield put(updateUserContactOptionsSuccess());
+  } catch (error) {
+    yield put(updateUserContactOptionsFailure(error));
+  }
+}
+
 
 export function* userSaga() {
   yield takeEvery(Type.GET_USER_PROFILE, userProfileHandler);
@@ -283,6 +300,10 @@ export function* userSaga() {
   yield takeEvery(
     Type.DELETE_FAV_ORDER,
     deleleteFavOrderHandler,
+  );
+  yield takeEvery(
+    Type.UPDATE_USER_CONTACT_OPTIONS,
+    updateUserContactOptionsHandler,
   );
 }
 

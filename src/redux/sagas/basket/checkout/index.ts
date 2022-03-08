@@ -1,5 +1,7 @@
 import { takeEvery, put, call } from 'redux-saga/effects';
 import { basketActionsTypes } from '../../../types/basket';
+import { userTypes } from '../../../types/user';
+
 import { getRestaurantCalendar } from '../../../../services/restaurant/calendar';
 import { setTimeWantedBasket, deleteTimeWantedBasket, setTipAmountBasket, applyCouponBasket, validateBasket, submitSinglePaymentBasket } from '../../../../services/checkout';
 import {
@@ -92,6 +94,9 @@ function* asyncValidateBasket(action: any): any {
     );
     yield put(validateBasketSuccess(response));
     yield put({type: basketActionsTypes.SUBMIT_BASKET_SINGLE_PAYMENT, action});
+    // if(action.basketPayload.authtoken && action.basketPayload.authtoken !== ''){
+    //   yield put({type: userTypes.UPDATE_USER_CONTACT_OPTIONS, payload: action.contactOptions})
+    // }
   } catch (error) {
     yield put(validateBasketFailure(error));
   }
@@ -102,7 +107,7 @@ function* asyncSubmitBasketSinglePayment(action: any): any {
     const response = yield call(
       submitSinglePaymentBasket,
       action.action.basketId,
-      action.action.data
+      action.action.basketPayload
     );
     yield put(submitBasketSinglePaymentSuccess(response));
   } catch (error) {

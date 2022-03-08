@@ -6,7 +6,8 @@ import {
   RequestUpdateBasketTip,
   RequestApplyCoupon,
   ResponseBasketValidation,
-  RequestBasketSubmit
+  RequestBasketSubmit,
+  ResponseContactOptions
  } from '../../../../types/olo-api';
 import {displayToast} from '../../../../helpers/toast'
 export function getSingleRestaurantCalendar(id: number, dateFrom: string, dateTo: string,) {
@@ -128,11 +129,11 @@ export function updateBasketCouponCodeFailure(error: any) {
   };
 }
 
-export function validateBasket(basketId: string, data: RequestBasketSubmit) {
+export function validateBasket(basketId: string, basketPayload: RequestBasketSubmit) {
   return {
     type: basketActionsTypes.VALIDETE_BASKET,
     basketId,
-    data
+    basketPayload
   };
 }
 
@@ -140,7 +141,7 @@ export function validateBasketSuccess(response: ResponseBasketValidation) {
   
   return {
     type: basketActionsTypes.VALIDETE_BASKET_SUCCESS,
-      payload: response
+    payload: response
   };
 }
 

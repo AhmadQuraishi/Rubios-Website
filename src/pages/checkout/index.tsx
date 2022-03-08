@@ -22,14 +22,13 @@ import OrderTime from '../../components/order-time';
 import PaymentInfo from '../../components/payment-info';
 import StoreInfoBar from '../../components/restaurant-info-bar';
 import './checkout.css';
-import {  ResponseBasket } from '../../types/olo-api';
+import {  ResponseBasket, ResponseContactOptions } from '../../types/olo-api';
 import { IMaskInput } from 'react-imask';
 import moment from 'moment';
 import { HoursListing } from '../../helpers/hoursListing';
 import { getSingleRestaurantCalendar, validateBasket } from '../../redux/actions/basket/checkout';
 import { displayToast } from '../../helpers/toast';
-import { 
-  generateSubmitBasketPayload } from '../../helpers/checkout';
+import { generateSubmitBasketPayload } from '../../helpers/checkout';
 
 const Checkout = () => {
   const dispatch = useDispatch(); 
@@ -44,7 +43,8 @@ const Checkout = () => {
   const [basket, setBasket] = React.useState<ResponseBasket>();
 
   const basketObj = useSelector((state: any) => state.basketReducer);
-  const tokenObj = useSelector((state: any) => state.TokensReducer);
+  const { authToken } = useSelector((state: any) => state.authReducer);
+  const { providerToken } = useSelector((state: any) => state.providerReducer);
 
   React.useEffect(() => {
     if (basket && runOnce) {
@@ -165,11 +165,18 @@ const Checkout = () => {
 
    formData.phone = formData.phone.replace(/\D/g, '')
 
-   const payload = generateSubmitBasketPayload(formData, cardDetails, tokenObj.authtoken);
+   const basketPayload = generateSubmitBasketPayload(formData, cardDetails, authToken?.authtoken);
+  //  const contactOptionsPayload: ResponseContactOptions = {
+  //     optin: formData.emailNotification,
+  //     marketingsms: false,
+  //     upsell: false, 
+  //     emailreceipts: false,
+  //     followups: false
+  //  }
   
     if(basket){
       setButtonDisabled(false);
-      dispatch(validateBasket(basket.id, payload))
+      dispatch(validateBasket(basket.id, basketPayload))
     }    
   }
 
@@ -202,11 +209,11 @@ const Checkout = () => {
                           innerRef={pickupFormRef}
                           enableReinitialize={true}
                           initialValues={{
-                            firstName: '',
-                            lastName: '',
-                            phone: '',
-                            email: '',
-                            emailNotification: false
+                            firstName: providerToken?.first_name ? providerToken?.first_name : '',
+                            lastName: providerToken?.last_name ? providerToken?.last_name : '',
+                            phone: providerToken?.email ? providerToken?.email : '',
+                            email: providerToken?.phone ? providerToken?.phone : '',
+                            emailNotification: providerToken?.marketing_email_subscription ? providerToken?.marketing_email_subscription : false
                           }}
                           validationSchema={Yup.object({
                             firstName: Yup.string()
@@ -318,13 +325,11 @@ const Checkout = () => {
                                 helperText={errors.email}
                               />
                             </Grid>
-
-                            {
-                              tokenObj.authtoken && tokenObj.authtoken === '' ? (
+                           
                               <Grid item xs={12}>
                                 <FormGroup>
                                   <FormControlLabel
-                                    control={<Checkbox defaultChecked />}
+                                    control={<Checkbox checked={values.emailNotification} onChange={handleChange}  />}
                                     label="Send me emails with special offers and updates"
                                     aria-label="Send me emails with special offers and updates"
                                     aria-required="true"
@@ -333,9 +338,6 @@ const Checkout = () => {
                                   />
                                 </FormGroup>
                               </Grid>
-                              ) : (null)
-                            }
-
                           </form>
                         )}
                       </Formik>

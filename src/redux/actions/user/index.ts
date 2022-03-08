@@ -3,7 +3,8 @@ import {
   ResponseRecentOrders,
   ResponseUserDeliveryAddresses,
   ResponseUserFaves,
-  ResponseUserBillingAccounts
+  ResponseUserBillingAccounts,
+  ResponseContactOptions
 } from '../../../types/olo-api';
 
 
@@ -333,6 +334,28 @@ export function deleteFavOrderSuccess() {
 export function deleteFavOrderFailure(error: any) {
   return {
     type: Type.DEL_FAV_ORDER__FAILURE,
+    error: error,
+  };
+}
+
+export function updateUserContactOptions(authtoken: string, data: ResponseContactOptions) {
+  return {
+    type: Type.UPDATE_USER_CONTACT_OPTIONS,
+    authtoken,
+    data
+  };
+}
+
+export function updateUserContactOptionsSuccess() {
+  return {
+    type: Type.UPDATE_USER_CONTACT_OPTIONS_SUCCESS,
+
+  };
+}
+
+export function updateUserContactOptionsFailure(error: any) {
+  return {
+    type: Type.UPDATE_USER_CONTACT_OPTIONS_FAILURE,
     error: error,
   };
 }

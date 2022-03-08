@@ -46,6 +46,7 @@ export function generateSubmitBasketPayload(pickupInfo: any, cardDetails: any, a
         delete payload.lastname;
         delete payload.emailaddress;
         delete payload.contactnumber;
+        delete payload.guestoptin;
     } 
 
     return payload;  
