@@ -52,7 +52,7 @@ const Welcome = () => {
     ignoreunavailableproducts: true,
   });
   const authtoken = useSelector((state: any) => state.TokensReducer.authtoken);
-  const { userProfile } = useSelector((state: any) => state.userReducer);
+  const { providerToken } = useSelector((state: any) => state.providerReducer);
   const { userRecentOrders } = useSelector((state: any) => state.userReducer);
   const basketObj = useSelector((state: any) => state.basketReducer);
   const { restaurant, orderType } = useSelector(
@@ -63,7 +63,12 @@ const Welcome = () => {
   );
   useEffect(() => {
     dispatch(getUserRecentOrders(authtoken));
-    dispatch(getFavRestaurant(64327));
+    if (
+      providerToken &&
+      providerToken.favourite_store_numbers &&
+      providerToken.favourite_store_numbers
+    )
+      dispatch(getFavRestaurant(providerToken.favourite_store_numbers));
   }, []);
   useEffect(() => {
     if (isRestaurant) {
@@ -76,7 +81,7 @@ const Welcome = () => {
       setRestInfo(false);
       setIsbasket(true);
     }
-  }, [restaurant]);
+  }, [restaurant, orderType]);
 
   useEffect(() => {
     if (
@@ -141,12 +146,16 @@ const Welcome = () => {
                 WELCOME
               </Typography>
               <Typography variant="h4" title="WELCOME BACK ALEXENDRA">
-                WELCOME BACK {userProfile && userProfile.first_name}!
+                WELCOME BACK{' '}
+                {providerToken &&
+                  providerToken.first_name &&
+                  providerToken.first_name}
+                !
               </Typography>
               {(loading && <CardSkeletonUI />) ||
                 (isEdit == true && <CardSkeletonUI />) ||
                 (isReoder == true && <CardSkeletonUI />)}
-              {!loading && recentorders.length < 1 && (
+              {!loading && recentorders.length == 0 && (
                 <Typography>You don't have any recent orders</Typography>
               )}
               {!loading &&
