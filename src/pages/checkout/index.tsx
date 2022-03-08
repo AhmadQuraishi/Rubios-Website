@@ -211,8 +211,8 @@ const Checkout = () => {
                           initialValues={{
                             firstName: providerToken?.first_name ? providerToken?.first_name : '',
                             lastName: providerToken?.last_name ? providerToken?.last_name : '',
-                            phone: providerToken?.email ? providerToken?.email : '',
-                            email: providerToken?.phone ? providerToken?.phone : '',
+                            phone: providerToken?.phone ? providerToken?.phone : '',
+                            email: providerToken?.email ? providerToken?.email : '',
                             emailNotification: providerToken?.marketing_email_subscription ? providerToken?.marketing_email_subscription : false
                           }}
                           validationSchema={Yup.object({
