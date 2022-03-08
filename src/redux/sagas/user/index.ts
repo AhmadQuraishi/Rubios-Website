@@ -52,12 +52,14 @@ import {
 } from '../../actions/user';
 import ErrorMessageAlert from '../../../components/error-message-alert';
 import { displayToast } from '../../../helpers/toast';
+import { getProviderRequestSuccess } from '../../actions/provider';
 
 //profile
 function* userProfileHandler(): any {
   try {
     const response = yield call(RequestUserProfile); 
     yield put(getUserprofileSuccess(response));
+    yield put(getProviderRequestSuccess(response.data));
   } catch (error) {
     yield put(getUserprofileFailure(error));
   }

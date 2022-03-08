@@ -9,6 +9,12 @@
 .profile-section .MuiFilledInput-root::after {
   border: 0 !important;
 }
+.phone-field label.MuiInputLabel-root {
+  font-family: 'Poppins-Bold', sans-serif !important;
+  /*padding: 14px 14px 14px 0px;*/
+  color: #214F66;
+  font-size: 12px;
+}
 .birthday-button {
   background-color: #eaeaea !important;
   color: black !important;
@@ -17,13 +23,16 @@
   text-transform: initial;
 }
 
-.date {
-  width: 80%;
+.profile-section .date {
+  width: 100% !important;
   text-align: left;
 }
 .bday-text {
   font-family: 'Poppins-Bold';
-  padding-right: 10px;
+  position: absolute;
+  top: 0;
+  font-size: 9px;
+  color: #214F66;
 }
 .birthday-button span {
   text-transform: initial;
