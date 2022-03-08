@@ -120,19 +120,23 @@ const CategoryList = () => {
         categoriesWithProducts?.categories.map(
           (item: Category, index: number) => (
             <Grid
-              id={'#panel-' + index}
               key={index}
               container
               spacing={0}
               sx={{
                 padding: {
-                  xs: '20px',
+                  xs: '20px 20px 0px 20px',
                   sm: '30px 70px 0px 70px',
                   lg: '30px 100px 0px 100px',
                 },
+                position: 'relative',
               }}
             >
               <Grid item xs={12}>
+                <div
+                  id={'#panel-' + index}
+                  style={{ position: 'absolute', top: '-75px' }}
+                ></div>
                 <Grid container>
                   <Grid item xs={item.products.length > 4 ? 8 : 12}>
                     <Typography className={classes.heading} title={item.name}>
