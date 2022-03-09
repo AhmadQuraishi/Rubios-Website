@@ -3,19 +3,29 @@ import './index.css';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserRecentOrders } from '../../redux/actions/user';
-import { addMultipleProductsRequest } from '../../redux/actions/basket/addMultipleProducts';
-import LoadingBar from '../loading-bar';
 import { TablePagination } from '@mui/material';
-import { RequestBasketProductBatch } from '../../types/olo-api';
-import { createBasketFromPrev } from '../../redux/actions/basket/create';
+import { createBasketFromPrevOrderRequest } from '../../redux/actions/basket/create';
 import { useNavigate } from 'react-router-dom';
+import { getBasketRequest } from '../../redux/actions/basket';
+import {
+  getResturantInfoRequest,
+  setResturantInfoRequest,
+} from '../../redux/actions/restaurant';
+import OrderListSkeletonUI from '../order-list-skeleton-ui';
 
 const RecentOrders = () => {
   const [recentorders, setOrders] = React.useState([]);
-  const [clickAction, setClickAction] = useState(false);
+  const [clickAction, setClickAction] = useState(false);  
+  const [prevOrderType, setPrevOrderType] = useState<string>();
+  const { restaurant, orderType } = useSelector(
+    (state: any) => state.restaurantInfoReducer,
+  );
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const basketObj = useSelector((state: any) => state.basketReducer);
+  const createBasketObj = useSelector(
+    (state: any) => state.createBasketReducer,
+  );
 
   const { userRecentOrders, loading } = useSelector(
     (state: any) => state.userReducer,
@@ -26,11 +36,28 @@ const RecentOrders = () => {
   }, []);
 
   useEffect(() => {
-    if (basketObj && clickAction) {
+    if (createBasketObj && clickAction) {
+      if (createBasketObj.basket && clickAction) {
+        dispatch(getResturantInfoRequest(createBasketObj.basket.vendorid));
+      } else if (createBasketObj.error && createBasketObj.error.message) {
+        setClickAction(false);
+      }
+    }
+  }, [createBasketObj]);
+
+  useEffect(() => {
+    if (restaurant && clickAction) {
       setClickAction(false);
+      dispatch(
+        setResturantInfoRequest(
+          restaurant,
+          prevOrderType || createBasketObj.basket.deliverymode || '',
+        ),
+      );
+      dispatch(getBasketRequest('', createBasketObj.basket, 'Previous'));
       navigate('/checkout');
     }
-  }, [basketObj]);
+  }, [restaurant]);
 
   useEffect(() => {
     if (userRecentOrders && userRecentOrders.orders) {
@@ -48,29 +75,29 @@ const RecentOrders = () => {
   const handleChangeRowsPerPage = (event: any) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
-    //
   };
 
-  const addProductToBag = (orderref: any, id: any) => {
+  const addProductToBag = (orderref: any, id: any, orderType: string) => {
     setClickAction(true);
-    const body = {
+    setPrevOrderType(orderType);
+    const requestBody = {
       orderref: orderref,
       id: id,
       ignoreunavailableproducts: true,
     };
-    dispatch(createBasketFromPrev(body));
+    dispatch(createBasketFromPrevOrderRequest(requestBody));
   };
 
   let x = 0;
   return (
     <Fragment>
-      {loading && <LoadingBar />}
-      {recentorders.length < 1 && !loading && (
+      {(loading || clickAction) && <OrderListSkeletonUI />}
+      {recentorders && recentorders.length == 0 && !loading && (
         <Typography variant="h6" className="no-orders">
           You don't have any recent orders
         </Typography>
       )}
-      {!loading && recentorders.length > 0 && (
+      {!loading && !clickAction && recentorders.length > 0 && (
         <Grid container spacing={3} className="order-history-card">
           {recentorders
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -137,7 +164,11 @@ const RecentOrders = () => {
                         variant="button"
                         title="Reorder"
                         onClick={() =>
-                          addProductToBag(order.orderref, order.id)
+                          addProductToBag(
+                            order.orderref,
+                            order.id,
+                            order.vendorid,
+                          )
                         }
                       >
                         REORDER

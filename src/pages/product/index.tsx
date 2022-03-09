@@ -52,6 +52,7 @@ const Product = () => {
     (state: any) => state.restaurantInfoReducer,
   );
 
+  const [basketType, setBasketType] = useState();
   const [count, setCount] = React.useState(1);
 
   const dispatch = useDispatch();
@@ -75,6 +76,8 @@ const Product = () => {
         dispatch(getCategoriesRequest(restaurant.id));
       }
     }
+    console.log(basketObj.basketType);
+    setBasketType((basketObj && basketObj.basketType) || 'New');
   }, []);
 
   const [catRequest, setCatRequest] = useState(false);
@@ -96,7 +99,7 @@ const Product = () => {
   const [updatedOptions, setUpdatedOptions] = useState(false);
   useEffect(() => {
     if (productDetails) {
-      setUpdatedOptions(true)
+      setUpdatedOptions(true);
       dispatch(getProductOptionRequest(productDetails.id));
       setCountWithEdit();
     }
@@ -224,7 +227,7 @@ const Product = () => {
       setBasket(productAddObj.basket);
       setActionStatus(false);
       displayToast('SUCCESS', '1 item added to cart.');
-      dispatch(getBasketRequest('', productAddObj.basket));
+      dispatch(getBasketRequest('', productAddObj.basket, basketType));
       navigate('/menu/' + restaurant.slug);
     }
   }, [productAddObj]);
@@ -234,7 +237,7 @@ const Product = () => {
       setBasket(productUpdateObj.basket);
       setActionStatus(false);
       displayToast('SUCCESS', '1 item updated in cart.');
-      dispatch(getBasketRequest('', productUpdateObj.basket));
+      dispatch(getBasketRequest('', productUpdateObj.basket, basketType));
       navigate('/menu/' + restaurant.slug);
     }
   }, [productUpdateObj]);

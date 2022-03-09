@@ -9,6 +9,7 @@ const INITIAL_STATE = {
     data: null,
     error: {},
   },
+  basketType: 'New',
   error: {},
 };
 
@@ -16,7 +17,13 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
   switch (action.type) {
     case basketActionsTypes.GET_BASKET_REQUEST:
     case basketActionsTypes.CREATE_BASKET_FROM_PREV:
-      return { ...state, loading: true, basket: null, error: {} };
+      return {
+        ...state,
+        loading: true,
+        basket: null,
+        basketType: 'New',
+        error: {},
+      };
 
     case basketActionsTypes.GET_BASKET_SUCCESS:
     case basketActionsTypes.UPDATE_BASKET_TIME_WANTED_SUCCESS:
@@ -28,6 +35,7 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
         ...state,
         loading: false,
         basket: action.payload,
+        basketType: action.basketType || 'New',
         validate: null,
         error: {},
       };
@@ -39,7 +47,13 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
     case basketActionsTypes.SUBMIT_BASKET_SINGLE_PAYMENT_FAILURE:
     case basketActionsTypes.CREATE_BASKET_FROM_PREV_FAILURE:
     case basketActionsTypes.VALIDETE_BASKET_FAILURE:
-      return { ...state, loading: false, error: action.error, validate: null };
+      return {
+        ...state,
+        loading: false,
+        error: action.error,
+        validate: null,
+        basketType: action.basketType || 'New',
+      };
     case basketActionsTypes.GET_SINGLE_RESTAURANT_CALENDAR:
       return { ...state, calendar: { loading: true, data: null, error: {} } };
     case basketActionsTypes.VALIDETE_BASKET_SUCCESS:
@@ -71,6 +85,7 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
         loading: false,
         basket: null,
         validate: null,
+        basketType: action.basketType || 'New',
         calendar: {
           loading: false,
           data: null,

@@ -101,8 +101,7 @@ const Cart = (props: any) => {
   const { showCart } = props;
   const classes = useStyles();
   const [actionStatus, setActionStatus] = useState(false);
-  const basketObj = useSelector((state: any) => state.basketReducer);
-  const [clickAction, setClickAction] = useState("");
+  const [clickAction, setClickAction] = useState('');
   const productRemoveObj = useSelector(
     (state: any) => state.removeProductReducer,
   );
@@ -110,17 +109,21 @@ const Cart = (props: any) => {
   const { restaurant } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
+  const basketObj = useSelector((state: any) => state.basketReducer);
 
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
+  const [basketType, setBasketType] = useState();
+
   useEffect(() => {
     window.scrollTo(0, 0);
+    console.log(basketObj);
+    setBasketType((basketObj && basketObj.basketType) || '');
   }, []);
 
   useEffect(() => {
     if (productRemoveObj && productRemoveObj.basket && actionStatus) {
-      dispatch(getBasketRequest('', productRemoveObj.basket));
+      dispatch(getBasketRequest('', productRemoveObj.basket, basketType));
       displayToast('SUCCESS', '1 item removed from cart.');
       setActionStatus(false);
       navigate(restaurant ? '/menu/' + restaurant.slug : '/');
@@ -129,7 +132,7 @@ const Cart = (props: any) => {
 
   useEffect(() => {
     if (productAddObj && productAddObj.basket && actionStatus) {
-      dispatch(getBasketRequest('', productAddObj.basket));
+      dispatch(getBasketRequest('', productAddObj.basket, basketType));
       displayToast('SUCCESS', 'Duplicate item added to cart.');
       setActionStatus(false);
       navigate(restaurant ? '/menu/' + restaurant.slug : '/');
