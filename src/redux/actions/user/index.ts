@@ -6,6 +6,7 @@ import {
   ResponseUserBillingAccounts,
   ResponseContactOptions
 } from '../../../types/olo-api';
+import { displayToast } from '../../../helpers/toast';
 
 
 //profile actions
@@ -359,3 +360,27 @@ export function updateUserContactOptionsFailure(error: any) {
     error: error,
   };
 }
+
+export function userLogin(data: any) {
+  return {
+    type: Type.USER_LOGIN_REQUEST,
+    data
+  };
+}
+
+export function userLoginSuccess(data: any) {
+  return {
+    type: Type.USER_LOGIN_SUCCESS,
+    payload: data
+  };
+}
+
+export function userLoginFailure(error: any) {
+  console.log('errrrrrr', error)
+  displayToast('ERROR', error?.data?.error  ? error.data.error : 'ERROR! Please Try agin later')
+  return {
+    type: Type.USER_LOGIN_FAILURE,
+    error: error
+  };
+}
+
