@@ -63,8 +63,9 @@ export const requestChangePassword = (body: object) => {
 
 
 //Recent Orders
-export const requestUserRecentOrders = (authtoken: string) => {
+export const requestUserRecentOrders = () => {
   try {
+    const authtoken =  process.env.REACT_APP_AUTH_TOKEN  ? process.env.REACT_APP_AUTH_TOKEN : store.getState().authReducer.authToken.authtoken
     const url = process.env.REACT_APP_OLO_API || "";
     return axiosInstance
       .get(url + `/users/${authtoken}/recentorders`)
@@ -79,8 +80,9 @@ export const requestUserRecentOrders = (authtoken: string) => {
 };
 
 //Favorite Orders
-export const requestUserFavoriteOrders = (authtoken: string) => {
+export const requestUserFavoriteOrders = () => {
   try {
+    const authtoken =  process.env.REACT_APP_AUTH_TOKEN  ? process.env.REACT_APP_AUTH_TOKEN : store.getState().authReducer.authToken.authtoken
     const url = process.env.REACT_APP_OLO_API || "";
     return axiosInstance
       .get(url + `/users/${authtoken}/faves`)
@@ -98,7 +100,7 @@ export const requestUserFavoriteOrders = (authtoken: string) => {
 export const requestDeleteFavOrder = ( favid: number) => {
   try {
     const url = process.env.REACT_APP_OLO_API || "";
-    const authtoken = '99aUK4SLSvQwZkmCeM8kSgp6uCPR2KNz';
+    const authtoken =  process.env.REACT_APP_AUTH_TOKEN  ? process.env.REACT_APP_AUTH_TOKEN : store.getState().authReducer.authToken.authtoken
     return axiosInstance
       .delete(url + `/users/${authtoken}/faves/${favid}`)
       .then((response) => response.data)
@@ -112,10 +114,11 @@ export const requestDeleteFavOrder = ( favid: number) => {
 };
 
 //Delivery Addresses
-export const requestUserDeliiveryAddresses = (authtoken: string) => {
+export const requestUserDeliiveryAddresses = () => {
   try {
     // const auth = store.getState().authReducer.authToken.authtoken;
     const url = process.env.REACT_APP_OLO_API || "";
+    const authtoken =  process.env.REACT_APP_AUTH_TOKEN  ? process.env.REACT_APP_AUTH_TOKEN : store.getState().authReducer.authToken.authtoken
     return axiosInstance
       .get(url + `/users/${authtoken}/userdeliveryaddresses`)
       .then((response) => response.data)
@@ -129,10 +132,11 @@ export const requestUserDeliiveryAddresses = (authtoken: string) => {
 };
 
 //Set Default Delivery Address
-export const requestSetUserDefDelAddress = (body: RequestUserDefaultAddress, authtoken: string) => {
+export const requestSetUserDefDelAddress = (body: RequestUserDefaultAddress) => {
 
   try {
     const url = process.env.REACT_APP_OLO_API || "";
+    const authtoken =  process.env.REACT_APP_AUTH_TOKEN  ? process.env.REACT_APP_AUTH_TOKEN : store.getState().authReducer.authToken.authtoken
     return axiosInstance
       .put(url + `/users/${authtoken}/userdeliveryaddresses/default`, body)
       .then((response) => response.data)
@@ -147,10 +151,11 @@ export const requestSetUserDefDelAddress = (body: RequestUserDefaultAddress, aut
 }
 //Delete User Delivery address
 
-export const requestDelUserDelAddress = (addressid: number, authtoken: string) => {
+export const requestDelUserDelAddress = (addressid: number) => {
 
   try {
     const url = process.env.REACT_APP_OLO_API || "";
+    const authtoken =  process.env.REACT_APP_AUTH_TOKEN  ? process.env.REACT_APP_AUTH_TOKEN : store.getState().authReducer.authToken.authtoken
     return axiosInstance
       .delete(url + `/users/${authtoken}/userdeliveryaddresses/${addressid}`)
       .then((response) => response.data)
@@ -166,10 +171,11 @@ export const requestDelUserDelAddress = (addressid: number, authtoken: string) =
 
 //Get User Billing accounts
 
-export const requestUserBillingAccount = (authtoken: string) => {
+export const requestUserBillingAccount = () => {
 
   try {
     const url = process.env.REACT_APP_OLO_API || '';
+    const authtoken =  process.env.REACT_APP_AUTH_TOKEN  ? process.env.REACT_APP_AUTH_TOKEN : store.getState().authReducer.authToken.authtoken
     return axiosInstance
       .get(url + `/users/${authtoken}/billingaccounts`)
       .then((response) => response.data)
@@ -186,10 +192,11 @@ export const requestUserBillingAccount = (authtoken: string) => {
 
 //Get User Billing account by id (Api not Valid)
 
-export const requestUserBillingAccountById = (authtoken: string, billingAccountId: number) => {
+export const requestUserBillingAccountById = (billingAccountId: number) => {
 
   try {
     const url = process.env.REACT_APP_OLO_API || '';
+    const authtoken =  process.env.REACT_APP_AUTH_TOKEN  ? process.env.REACT_APP_AUTH_TOKEN : store.getState().authReducer.authToken.authtoken
     return axiosInstance
       .get(url + `/users/${authtoken}/billingaccount/${billingAccountId}`)
       .then((response) => response.data)
@@ -205,10 +212,11 @@ export const requestUserBillingAccountById = (authtoken: string, billingAccountI
 
 // Delete Billing Account
 
-export const deleteUserBillingAccount = (authtoken: string, billingAccountId: number) => {
+export const deleteUserBillingAccount = ( billingAccountId: number) => {
 
   try {
     const url = process.env.REACT_APP_OLO_API || '';
+    const authtoken =  process.env.REACT_APP_AUTH_TOKEN  ? process.env.REACT_APP_AUTH_TOKEN : store.getState().authReducer.authToken.authtoken
     return axiosInstance
       .delete(url + `/users/${authtoken}/billingaccounts/${billingAccountId}`)
       .then((response) => response.data)
@@ -222,9 +230,10 @@ export const deleteUserBillingAccount = (authtoken: string, billingAccountId: nu
 }
 
 // Update Billing Account
-export const updateUserBillingAccount = (body: RequestUserDefaultBillingAccount,authtoken: string, billingAccountId: number) => {
+export const updateUserBillingAccount = (body: RequestUserDefaultBillingAccount, billingAccountId: number) => {
   try {
     const url = process.env.REACT_APP_OLO_API || '';
+    const authtoken =  process.env.REACT_APP_AUTH_TOKEN  ? process.env.REACT_APP_AUTH_TOKEN : store.getState().authReducer.authToken.authtoken
     return axiosInstance
       .put(url + `/users/${authtoken}/creditcards/${billingAccountId}`, body)
       .then((response) => response.data)
@@ -240,9 +249,10 @@ export const updateUserBillingAccount = (body: RequestUserDefaultBillingAccount,
 
 //Get User Gift Card
 
-export const requestUseGiftCards = (authtoken: string) => {
+export const requestUseGiftCards = () => {
   try {
     const url = process.env.REACT_APP_OLO_API || '';
+    const authtoken =  process.env.REACT_APP_AUTH_TOKEN  ? process.env.REACT_APP_AUTH_TOKEN : store.getState().authReducer.authToken.authtoken
     return axiosInstance
       .get(url + `/users/${authtoken}/billingaccounts/storedvalue`)
       .then((response) => response.data)
@@ -255,9 +265,10 @@ export const requestUseGiftCards = (authtoken: string) => {
   }
 }
 
-export const updateUserContactOptions = (authtoken: string, body: ResponseContactOptions) => {
+export const updateUserContactOptions = ( body: ResponseContactOptions) => {
   try {
     const url = process.env.REACT_APP_OLO_API || '';
+    const authtoken =  process.env.REACT_APP_AUTH_TOKEN  ? process.env.REACT_APP_AUTH_TOKEN : store.getState().authReducer.authToken.authtoken
     return axiosInstance
       .put(url + `/users/${authtoken}/contactoptions`, body)
       .then((response) => response.data)

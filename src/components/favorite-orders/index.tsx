@@ -17,7 +17,6 @@ const FavoriteOrders = () => {
   const [open, setOpen] = useState(false);
   const [idtoDelete, setId] = useState(0);
   const [favOrders, setfavOrders] = React.useState([]);
-  const authtoken = useSelector((state: any) => state.TokensReducer.authtoken);
   const basketObj = useSelector((state: any) => state.basketReducer);
   const { userFavoriteOrders, loading } = useSelector(
     (state: any) => state.userReducer,
@@ -26,7 +25,7 @@ const FavoriteOrders = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   useEffect(() => {
-    dispatch(getUserFavoritetOrders(authtoken));
+    dispatch(getUserFavoritetOrders());
   }, []);
 
   useEffect(() => {
@@ -55,7 +54,7 @@ const FavoriteOrders = () => {
   const deleteFavOrderHandler = () => {
     dispatch(deleteFavOrder(idtoDelete));
     setTimeout(() => {
-      dispatch(getUserFavoritetOrders(authtoken));
+      dispatch(getUserFavoritetOrders());
       setId(0);
     }, 200);
     setOpen(false);

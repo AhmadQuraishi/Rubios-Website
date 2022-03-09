@@ -6,15 +6,11 @@ import { getUserRecentOrders } from '../../redux/actions/user';
 import { addMultipleProductsRequest } from '../../redux/actions/basket/addMultipleProducts';
 import LoadingBar from '../loading-bar';
 import { TablePagination } from '@mui/material';
-import {
-  RequestBasketProductBatch
-} from '../../types/olo-api';
-
+import { RequestBasketProductBatch } from '../../types/olo-api';
 
 const RecentOrders = () => {
   const [recentorders, setOrders] = React.useState([]);
   const dispatch = useDispatch();
-  const authtoken = useSelector((state: any) => state.TokensReducer.authtoken);
   const basketObj = useSelector((state: any) => state.basketReducer);
 
   const { userRecentOrders, loading } = useSelector(
@@ -22,7 +18,7 @@ const RecentOrders = () => {
   );
 
   useEffect(() => {
-    dispatch(getUserRecentOrders(authtoken));
+    dispatch(getUserRecentOrders());
   }, []);
 
   useEffect(() => {
@@ -46,28 +42,30 @@ const RecentOrders = () => {
 
   const addProductToBag = (orderProducts: any) => {
     const request: RequestBasketProductBatch = {} as RequestBasketProductBatch;
-    request.products = [{
-      productid: 13369288,
-      quantity: 1,
-      specialinstructions: "Like it",
-      recipient: '',
-      customdata: '',
-      choices: [{
-        choiceid: 46013861379,
-        quantity: 2,
-        customfields: [
+    request.products = [
+      {
+        productid: 13369288,
+        quantity: 1,
+        specialinstructions: 'Like it',
+        recipient: '',
+        customdata: '',
+        choices: [
           {
-            fieldid: 4298321,
-            value: "Happy Birthday!!"
-          }
-        ]
-      }
-      ]
-    }];
+            choiceid: 46013861379,
+            quantity: 2,
+            customfields: [
+              {
+                fieldid: 4298321,
+                value: 'Happy Birthday!!',
+              },
+            ],
+          },
+        ],
+      },
+    ];
     request.replaceContents = true;
-    dispatch(addMultipleProductsRequest(basketObj.basket.id || '', request))
-  }
-
+    dispatch(addMultipleProductsRequest(basketObj.basket.id || '', request));
+  };
 
   let x = 0;
   return (

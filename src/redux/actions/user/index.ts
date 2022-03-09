@@ -31,10 +31,9 @@ export function getUserprofileFailure(error: any) {
 
 // recent order actions
 
-export function getUserRecentOrders(authtoken: string) {
+export function getUserRecentOrders() {
   return {
     type: Type.GET_USER_RECENT_ORDERS,
-    authtoken: authtoken,
   };
 }
 
@@ -54,10 +53,9 @@ export function getUserRecentOrdersFailure(error: any) {
 
 // favorite order actions
 
-export function getUserFavoritetOrders(authtoken: string) {
+export function getUserFavoritetOrders() {
   return {
     type: Type.GET_USER_FAVORITE_ORDERS,
-    authtoken: authtoken,
   };
 }
 
@@ -77,10 +75,9 @@ export function getUserFavoritetOrdersFailure(error: any) {
 
 // delivery address actions
 
-export function getUserDeliveryAddresses(authtoken: string) {
+export function getUserDeliveryAddresses() {
   return {
     type: Type.GET_USER_DELIVERY_ADDRESSES,
-    authtoken: authtoken,
   };
 }
 
@@ -100,11 +97,10 @@ export function getUserDeliveryAddressesFailure(error: any) {
 
 //set User default delivery address , Setting only , No retrieval
 
-export function setUserDefaultDelAddress(data: RequestUserDefaultAddress, authtoken: string) {
+export function setUserDefaultDelAddress(data: RequestUserDefaultAddress ) {
   return {
     type: Type.SET_USER_DEFAULT_DELIVERY_ADDRESS,
     payload: data,
-    authtoken: authtoken,
   };
 }
 export function setUserDefaultDelAddressSuccess(data: ResponseUserDeliveryAddresses) {
@@ -125,11 +121,10 @@ export function setUserDefaultDelAddFailure(error: any) {
 
 //Delete user delivery address
 
-export function deleteUserDeliveryAddress(addressid: number, authtoken: string) {
+export function deleteUserDeliveryAddress(addressid: number,) {
   return {
     type: Type.DELETE_USER_DELIVERY_ADDRESS,
     addressid: addressid,
-    authtoken: authtoken,
   };
 }
 
@@ -196,10 +191,9 @@ export function changePasswordFailure(error: any) {
 
 //  Get Billing Accounts
 
-export function getAllBillingAccounts(authtoken: string) {
+export function getAllBillingAccounts() {
   return {
     type: Type.GET_BILLING_ACCOUNTS,
-    authtoken: authtoken,
   };
 }
 
@@ -219,11 +213,9 @@ export function getAllBillingAccountsFailure(error: any) {
 
 //  Get Billing Account By Id
 
-export function getBillingAccountById(authtoken: string, billingAccountId: number) {
-     console.log("billingAccountId", billingAccountId)
+export function getBillingAccountById( billingAccountId: number) {
   return {
     type: Type.GET_BILLING_ACCOUNT_BY_ID,
-    authtoken: authtoken,
     billingAccountId: billingAccountId
   };
 }
@@ -245,10 +237,9 @@ export function getBillingAccountByIdFailure(error: any) {
 
 // Delete Billing Account
 
-export function deleteBillingAccount(authtoken: string, billingAccountId: number ) {
+export function deleteBillingAccount( billingAccountId: number ) {
   return {
     type: Type.DELETE_BILLING_ACCOUNTS,
-    authtoken: authtoken,
     billingAccountId: billingAccountId
   };
 }
@@ -268,11 +259,10 @@ export function deleteBillingAccountFailure(error: any) {
 
 // update Billing Account 
 
-export function updateBillingAccount(data: RequestUserDefaultBillingAccount, authtoken: string, billingAccountId: number ) {
+export function updateBillingAccount(data: RequestUserDefaultBillingAccount,billingAccountId: number ) {
   return {
     type: Type.UPDATE_BILLING_ACCOUNTS,
     payload: data,
-    authtoken: authtoken,
     billingAccountId: billingAccountId
   };
 }
@@ -293,10 +283,9 @@ export function updateBillingAccountFailure(error: any) {
 
 //  Get Gift Card
 
-export function getAllGiftCards(authtoken: string) {
+export function getAllGiftCards() {
   return {
     type: Type.GET_GIFT_CARDS,
-    authtoken: authtoken,
   };
 }
 
@@ -338,10 +327,9 @@ export function deleteFavOrderFailure(error: any) {
   };
 }
 
-export function updateUserContactOptions(authtoken: string, data: ResponseContactOptions) {
+export function updateUserContactOptions( data: ResponseContactOptions) {
   return {
     type: Type.UPDATE_USER_CONTACT_OPTIONS,
-    authtoken,
     data
   };
 }

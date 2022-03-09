@@ -51,7 +51,6 @@ const Welcome = () => {
     id: '',
     ignoreunavailableproducts: true,
   });
-  const authtoken = useSelector((state: any) => state.TokensReducer.authtoken);
   const { providerToken } = useSelector((state: any) => state.providerReducer);
   const { userRecentOrders, loading } = useSelector(
     (state: any) => state.userReducer,
@@ -64,7 +63,7 @@ const Welcome = () => {
     (state: any) => state.favRestaurantReducer,
   );
   useEffect(() => {
-    dispatch(getUserRecentOrders(authtoken));
+    dispatch(getUserRecentOrders());
     if (
       providerToken &&
       providerToken.favourite_store_numbers &&
@@ -322,7 +321,7 @@ const Welcome = () => {
                           PICKUP
                         </Button>
                       )}
-                      {favRestaurant.supportscurbside === true && (
+                      {favRestaurant.candeliver === true && (
                         <Button
                           aria-label="delivery button"
                           variant="contained"
@@ -334,7 +333,7 @@ const Welcome = () => {
                         </Button>
                       )}
 
-                      {favRestaurant.candeliver === true && (
+                      {favRestaurant.supportscurbside === true && (
                         <Button
                           aria-label="curbside button"
                           variant="contained"
