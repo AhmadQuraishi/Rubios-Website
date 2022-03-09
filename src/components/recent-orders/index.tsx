@@ -7,9 +7,13 @@ import { addMultipleProductsRequest } from '../../redux/actions/basket/addMultip
 import LoadingBar from '../loading-bar';
 import { TablePagination } from '@mui/material';
 import { RequestBasketProductBatch } from '../../types/olo-api';
+import { createBasketFromPrev } from '../../redux/actions/basket/create';
+import { useNavigate } from 'react-router-dom';
 
 const RecentOrders = () => {
   const [recentorders, setOrders] = React.useState([]);
+  const [clickAction, setClickAction] = useState(false);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const basketObj = useSelector((state: any) => state.basketReducer);
 
@@ -20,6 +24,13 @@ const RecentOrders = () => {
   useEffect(() => {
     dispatch(getUserRecentOrders());
   }, []);
+
+  useEffect(() => {
+    if (basketObj && clickAction) {
+      setClickAction(false);
+      navigate('/checkout');
+    }
+  }, [basketObj]);
 
   useEffect(() => {
     if (userRecentOrders && userRecentOrders.orders) {
@@ -40,31 +51,14 @@ const RecentOrders = () => {
     //
   };
 
-  const addProductToBag = (orderProducts: any) => {
-    const request: RequestBasketProductBatch = {} as RequestBasketProductBatch;
-    request.products = [
-      {
-        productid: 13369288,
-        quantity: 1,
-        specialinstructions: 'Like it',
-        recipient: '',
-        customdata: '',
-        choices: [
-          {
-            choiceid: 46013861379,
-            quantity: 2,
-            customfields: [
-              {
-                fieldid: 4298321,
-                value: 'Happy Birthday!!',
-              },
-            ],
-          },
-        ],
-      },
-    ];
-    request.replaceContents = true;
-    dispatch(addMultipleProductsRequest(basketObj.basket.id || '', request));
+  const addProductToBag = (orderref: any, id: any) => {
+    setClickAction(true);
+    const body = {
+      orderref: orderref,
+      id: id,
+      ignoreunavailableproducts: true,
+    };
+    dispatch(createBasketFromPrev(body));
   };
 
   let x = 0;
@@ -80,8 +74,8 @@ const RecentOrders = () => {
         <Grid container spacing={3} className="order-history-card">
           {recentorders
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            .map((order: any) => (
-              <Grid item xs={12} lg={6} key={x++}>
+            .map((order: any, index: number) => (
+              <Grid key={Math.random() + index} item xs={12} lg={6}>
                 <Card elevation={0} className="card-panel">
                   <Grid container>
                     <Grid item xs={10}>
@@ -100,12 +94,6 @@ const RecentOrders = () => {
                       >
                         {order.vendorname}
                       </Typography>
-                    </Grid>
-                    <Grid item xs={2} className="order-fav-icon">
-                      {/* <img
-                      src={require('../../assets/imgs/favrouite-icon.png')}
-                      alt="Favrouite Order Icon"
-                    /> */}
                     </Grid>
                   </Grid>
                   <Grid container>
@@ -137,7 +125,9 @@ const RecentOrders = () => {
                             className="order-detail"
                             variant="body2"
                             title={product.name}
-                            key={product.name + product.quantity}
+                            key={
+                              Math.random() + product.name + product.quantity
+                            }
                           >
                             {product.quantity} x {product.name}
                           </Typography>
@@ -146,7 +136,9 @@ const RecentOrders = () => {
                         className="order-Link"
                         variant="button"
                         title="Reorder"
-                        onClick={() => addProductToBag(order.products)}
+                        onClick={() =>
+                          addProductToBag(order.orderref, order.id)
+                        }
                       >
                         REORDER
                       </Typography>

@@ -7,17 +7,17 @@ const INITIAL_STATE = {
   calendar: {
     loading: false,
     data: null,
-    error: {}
-  }, 
-  error: {}
+    error: {},
+  },
+  error: {},
 };
 
 const basketReducer = (state = INITIAL_STATE, action: any) => {
   switch (action.type) {
     case basketActionsTypes.GET_BASKET_REQUEST:
-      case basketActionsTypes.CREATE_BASKET_FROM_PREV:
-      return { ...state, loading: true, basket: null };
-   
+    case basketActionsTypes.CREATE_BASKET_FROM_PREV:
+      return { ...state, loading: true, basket: null, error: {} };
+
     case basketActionsTypes.GET_BASKET_SUCCESS:
     case basketActionsTypes.UPDATE_BASKET_TIME_WANTED_SUCCESS:
     case basketActionsTypes.DELETE_BASKET_TIME_WANTED_SUCCESS:
@@ -40,42 +40,43 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
     case basketActionsTypes.VALIDETE_BASKET_FAILURE:
       return { ...state, loading: false, error: action.error, validate: null };
     case basketActionsTypes.GET_SINGLE_RESTAURANT_CALENDAR:
-      return { ...state, calendar: {loading: true, data: null, error: {}}};
+      return { ...state, calendar: { loading: true, data: null, error: {} } };
     case basketActionsTypes.VALIDETE_BASKET_SUCCESS:
-      return { ...state, validate: action.payload};
+      return { ...state, validate: action.payload };
     case basketActionsTypes.GET_SINGLE_RESTAURANT_CALENDAR_SUCCESS:
-    
       return {
-          ...state,
-          calendar: {
-            loading: false, 
-            data: action.payload, 
-            error: {}
-          }
-        };
-    case basketActionsTypes.GET_BASKET_FAILURE:
-      case basketActionsTypes.CREATE_BASKET_FROM_PREV_FAILURE:
-      return { 
-        ...state, 
+        ...state,
+        loading: false,
         calendar: {
-          loading: false, 
-          error: {}
+          loading: false,
+          data: action.payload,
+          error: {},
         },
-        validate: null
+      };
+    case basketActionsTypes.GET_BASKET_FAILURE:
+    case basketActionsTypes.CREATE_BASKET_FROM_PREV_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        calendar: {
+          loading: false,
+          error: {},
+        },
+        validate: null,
       };
     case basketActionsTypes.SUBMIT_BASKET_SINGLE_PAYMENT_SUCCESS:
-      return { 
-        ...state, 
+      return {
+        ...state,
         loading: false,
         basket: null,
         validate: null,
         calendar: {
           loading: false,
           data: null,
-          error: {}
-        }, 
-        error: {}
-      };      
+          error: {},
+        },
+        error: {},
+      };
     default:
       return state;
   }
