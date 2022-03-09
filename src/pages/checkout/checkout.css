@@ -55,8 +55,8 @@
   color: #214F66;
   font-size: 12px;
 }
-.t-size {
-  font-size: 12px;
+.size span {
+  font-size: 12px !important;
 }
 .order .add-order {
   text-align: center;

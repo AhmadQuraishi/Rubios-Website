@@ -335,7 +335,7 @@ const Checkout = () => {
                                     aria-required="true"
                                     title="Send me emails with special offers and updates"
                                     name="emailNotification"
-                                    className="t-size"
+                                    className="size"
                                   />
                                 </FormGroup>
                               </Grid>
