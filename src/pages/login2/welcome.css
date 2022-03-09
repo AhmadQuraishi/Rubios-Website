@@ -1,0 +1,113 @@
+.welcome-wrapper {
+  margin: 60px !important;
+}
+.welcome-content {
+  background: white;
+  display: flex;
+  justify-content: center;
+  padding: 80px 0px;
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  border-radius: 30px;
+}
+.welcome-content h4 {
+  margin-bottom: 20px;
+  font-size: 46px;
+}
+.welcome-content h5 {
+  margin: 10px 0px 10px 0px;
+}
+.welcome-content .left-col {
+  border-right: 1px solid #0069aa;
+  padding-right: 45px;
+  margin-right: 45px;
+}
+.welcome-content .left-col .product-card {
+  display: flex;
+  justify-content: space-evenly;
+  border: 1px solid #d6d6d6;
+  padding: 10px 10px 10px 10px;
+  margin-top: 15px;
+}
+.welcome-content .left-col .product-card img {
+  width: 30%;
+  height: 100%;
+  margin-right: 10px;
+}
+.welcome-content .order-action {
+  text-align: right;
+}
+.welcome-content .order-action .caption-grey {
+  font-family: 'Poppins-Bold' !important;
+  color: #a4a4a4;
+}
+.welcome-content .order-action .button {
+  font-family: 'Poppins-Bold' !important;
+  font-size: 13px !important;
+}
+
+.welcome-content .left-col .product-card button {
+  margin: 15px 0px 0px 0px;
+  display: inline-block;
+  text-decoration: none;
+  font-size: 15px !important;
+  letter-spacing: 2px;
+}
+.welcome-content .product-card .MuiCardContent-root {
+  padding: 0px 10px;
+}
+.welcome-content .right-col button {
+  margin-top: 10px;
+  width: 100%;
+}
+.welcome-content .right-col .res-info {
+  margin-bottom: 15px;
+}
+.welcome-content .caption-grey {
+  font-size: 12px;
+  text-decoration: none;
+  font-family: 'Poppins-Regular' !important;
+  margin-left: 5px;
+}
+
+@media screen and (max-width: 900px) {
+  .welcome-content {
+    padding: 35px 0px;
+  }
+  .left-col {
+    border-right: none !important;
+    padding: 0px !important;
+    margin: 0px 0px 15px 0px !important;
+  }
+  .product-card {
+    display: block !important;
+  }
+  .product-card img {
+    float: left;
+  }
+}
+
+@media screen and (max-width: 468px) {
+  .welcome-wrapper {
+    margin: 15px !important;
+  }
+  .welcome-content {
+    padding: 30px 0px;
+  }
+  .welcome-content h4 {
+    font-size: 25px;
+  }
+  .product-card img {
+    width: 100% !important;
+  }
+  .product-card .order-action {
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+  }
+  .product-card button {
+    margin: 20px 0px 0px 0px !important;
+    padding: 0px;
+    font-size: 13px;
+  }
+}

@@ -157,8 +157,8 @@ const LocationCard = (props: any) => {
 
   useEffect(() => {
     if (searchText == undefined || searchText == '') {
-      setShowNotFoundMessage(false);
-      setfilteredRestaurants(isNearByRestaurantList ? restaurants : []);
+      //setShowNotFoundMessage(false);
+      //setfilteredRestaurants(isNearByRestaurantList ? restaurants : []);
     }
   }, [searchText]);
 

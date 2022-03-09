@@ -4,6 +4,7 @@ import CategoryList from './pages/category';
 import Location from './pages/location';
 import Checkout from './pages/checkout';
 import Welcome from './pages/welcome';
+import Login2 from './pages/login2';
 import Login from './pages/login';
 import Register from './pages/register';
 import OrderConfirmation from './pages/order-confirmation';
@@ -34,6 +35,7 @@ const AppRoutes = () => {
       <Route path="/menu/:store" element={<CategoryList />} />
       <Route path="/checkout" element={<Checkout />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/login2" element={<Login2 />} />
       {/* <Route path="/register" element={<Register />} /> */}
       <Route path="/welcome" element={<Welcome />} />
       <Route path="/orderconfirmation" element={<OrderConfirmation />} />
