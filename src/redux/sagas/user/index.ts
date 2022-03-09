@@ -59,7 +59,6 @@ function* userProfileHandler(): any {
   try {
     const response = yield call(RequestUserProfile); 
     yield put(getUserprofileSuccess(response));
-    yield put(getProviderRequestSuccess(response));
   } catch (error) {
     yield put(getUserprofileFailure(error));
   }
@@ -142,6 +141,7 @@ function* updateUserHandler(action: any): any {
       action.payload,
     );
     yield put(updateUserSuccess(response));
+    yield put(getProviderRequestSuccess(response));
     displayToast("SUCCESS" , "profile updated successfully");
   } catch (error) {
     yield put(updateUserFailure(error));
