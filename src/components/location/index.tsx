@@ -118,8 +118,9 @@ const LocationCard = (props: any) => {
               (x: any) => x.state.toLowerCase() == searchTxt,
             );
           }
-          if (updatedRestaurants.length > 0)
+          if (updatedRestaurants.length > 0) {
             setfilteredRestaurants(updatedRestaurants);
+          } else setShowNotFoundMessage(true);
         } else {
           searchedRestaurant = updatedRestaurants.filter(
             (x: any) => x.city.toLowerCase() == searchTxt,
