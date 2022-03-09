@@ -62,7 +62,6 @@ function* userProfileHandler(): any {
   try {
     const response = yield call(RequestUserProfile); 
     yield put(getUserprofileSuccess(response));
-    yield put(getProviderRequestSuccess(response));
   } catch (error) {
     yield put(getUserprofileFailure(error));
   }
@@ -70,7 +69,7 @@ function* userProfileHandler(): any {
 //recent orders
 function* userRecentOrdersHandler(action: any): any {
   try {
-    const response = yield call(requestUserRecentOrders, action.authtoken);
+    const response = yield call(requestUserRecentOrders);
     yield put(getUserRecentOrdersSuccess(response));
   } catch (error) {
     yield put(getUserRecentOrdersFailure(error));
@@ -80,7 +79,7 @@ function* userRecentOrdersHandler(action: any): any {
 ////favorite orders
 function* userFavoriteOrdersHandler(action: any): any {
   try {
-    const response = yield call(requestUserFavoriteOrders, action.authtoken);
+    const response = yield call(requestUserFavoriteOrders);
     yield put(getUserFavoritetOrdersSuccess(response));
   } catch (error) {
     yield put(getUserFavoritetOrdersFailure(error));
@@ -104,7 +103,6 @@ function* userDeliveryAddressesHandler(action: any): any {
   try {
     const response = yield call(
       requestUserDeliiveryAddresses,
-      action.authtoken,
     );
     yield put(getUserDeliveryAddressesSuccess(response));
   } catch (error) {
@@ -118,7 +116,6 @@ function* userDefaultDelAddressHandler(action: any): any {
     const response = yield call(
       requestSetUserDefDelAddress,
       action.payload,
-      action.authtoken,
     );
     yield put(setUserDefaultDelAddressSuccess(response));
   } catch (error) {
@@ -132,7 +129,6 @@ function* deleleteDelAddressHandler(action: any): any {
     const response = yield call(
       requestDelUserDelAddress,
       action.addressid,
-      action.authtoken,
     );
     yield put(deleteUserDelAddSuccess());
   } catch (error) {
@@ -148,6 +144,7 @@ function* updateUserHandler(action: any): any {
       action.payload,
     );
     yield put(updateUserSuccess(response));
+    yield put(getProviderRequestSuccess(response));
     displayToast("SUCCESS" , "profile updated successfully");
   } catch (error) {
     yield put(updateUserFailure(error));
@@ -177,7 +174,6 @@ function* getUserBillingAccountHandler(action: any): any {
   try {
     const response = yield call(
       requestUserBillingAccount,
-      action.authtoken,
     );
     yield put(getAllBillingAccountsSuccess(response));
   } catch (error) {
@@ -191,7 +187,6 @@ function* deleteUserBillingAccountHandler(action: any): any {
   try {
     const response = yield call(
       deleteUserBillingAccount,
-      action.authtoken,
       action.billingAccountId
     );
     yield put(deleteBillingAccountSuccess());
@@ -205,7 +200,6 @@ function* getBillingAccountByIdHandler(action: any): any {
   try {
     const response = yield call(
       requestUserBillingAccountById,
-      action.authtoken,
       action.billingAccountId
     );
     yield put(getBillingAccountByIdSuccess(response));
@@ -221,7 +215,6 @@ function* updateUserBillingAccountHandler(action: any): any {
     const response = yield call(
       updateUserBillingAccount,
       action.payload,
-      action.authtoken,
       action.billingAccountId
     );
     yield put(updateBillingAccountSuccess(response));
@@ -235,7 +228,6 @@ function* getUserGiftCardsHandler(action: any): any {
   try {
     const response = yield call(
       requestUseGiftCards,
-      action.authtoken,
     );
     yield put(getAllGiftCardsSuccess(response));
   } catch (error) {
@@ -248,7 +240,6 @@ function* updateUserContactOptionsHandler(action: any): any {
   try {
     const response = yield call(
       updateUserContactOptions,
-      action.authtoken,
       action.data
     );
     yield put(updateUserContactOptionsSuccess());

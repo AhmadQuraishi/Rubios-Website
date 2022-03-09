@@ -6,7 +6,10 @@ import {
   createBasketFromPrevSuccess,
   createBasketFromPrevFailure,
 } from '../../../actions/basket/create';
-import { getDummyBasket, requestCreateBasket } from '../../../../services/basket';
+import {
+  getDummyBasket,
+  requestCreateBasket,
+} from '../../../../services/basket';
 
 function* asyncCreateBasketRequest(action: any): any {
   try {

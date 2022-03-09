@@ -41,13 +41,11 @@ const DeliveryAddress = () => {
   const [deliveryaddresses, setDelAddresses] = useState([]);
   const [idtoDelete, setId] = useState(0);
   const dispatch = useDispatch();
-
-  const authtoken = useSelector((state: any) => state.TokensReducer.authtoken);
   const { userDeliveryAddresses, loading, userDefaultDeliveryAddress } =
     useSelector((state: any) => state.userReducer);
 
   useEffect(() => {
-    dispatch(getUserDeliveryAddresses(authtoken));
+    dispatch(getUserDeliveryAddresses());
   }, [userDefaultDeliveryAddress]);
 
   useEffect(() => {
@@ -61,14 +59,14 @@ const DeliveryAddress = () => {
     const obj = {
       addressid: id,
     };
-    dispatch(setUserDefaultDelAddress(obj, authtoken));
+    dispatch(setUserDefaultDelAddress(obj));
   };
 
   const deleteAddressHandler = () => {
-    dispatch(deleteUserDeliveryAddress(idtoDelete, authtoken));
+    dispatch(deleteUserDeliveryAddress(idtoDelete));
 
     setTimeout(() => {
-      dispatch(getUserDeliveryAddresses(authtoken));
+      dispatch(getUserDeliveryAddresses());
       setId(0);
     }, 600);
     setOpen(false);
