@@ -37,6 +37,7 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
     case basketActionsTypes.UPDATE_BASKET_TIP_AMOUNT_FAILURE:
     case basketActionsTypes.UPDATE_BASKET_COUPON_CODE_FAILURE:
     case basketActionsTypes.SUBMIT_BASKET_SINGLE_PAYMENT_FAILURE:
+      case basketActionsTypes.CREATE_BASKET_FROM_PREV_FAILURE:
     case basketActionsTypes.VALIDETE_BASKET_FAILURE:
       return { ...state, loading: false, error: action.error, validate: null };
     case basketActionsTypes.GET_SINGLE_RESTAURANT_CALENDAR:
@@ -54,7 +55,7 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
           }
         };
     case basketActionsTypes.GET_BASKET_FAILURE:
-      case basketActionsTypes.CREATE_BASKET_FROM_PREV_FAILURE:
+      
       return { 
         ...state, 
         calendar: {
