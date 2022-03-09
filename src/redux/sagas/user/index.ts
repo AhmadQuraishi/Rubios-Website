@@ -1,5 +1,6 @@
 import { takeEvery, put, call } from 'redux-saga/effects';
 import { userTypes as Type } from '../../types/user';
+import { authActionsTypes } from '../../types/auth';
 import {
   RequestUserProfile,
   requestUserRecentOrders,
@@ -15,7 +16,8 @@ import {
   requestUseGiftCards,
   requestDeleteFavOrder,
   requestUserFavoriteOrders,
-  updateUserContactOptions
+  updateUserContactOptions,
+  requestUserLogin
 } from '../../../services/user';
 import {
   deleteUserDelAddFailure,
@@ -47,8 +49,9 @@ import {
   deleteFavOrderSuccess,
   deleteFavOrderFailure,
   updateUserContactOptionsSuccess,
-  updateUserContactOptionsFailure
-
+  updateUserContactOptionsFailure,
+  userLoginSuccess,
+  userLoginFailure
 } from '../../actions/user';
 import ErrorMessageAlert from '../../../components/error-message-alert';
 import { displayToast } from '../../../helpers/toast';
@@ -245,6 +248,20 @@ function* updateUserContactOptionsHandler(action: any): any {
   }
 }
 
+// User Login
+function* userLoginHandler(action: any): any {
+  try {
+    const response = yield call(
+      requestUserLogin,
+      action.data
+    );
+    yield put(userLoginSuccess(response));
+    yield put({type: authActionsTypes.GET_AUTHTOKEN_REQUEST, action});
+  } catch (error) {
+    yield put(userLoginFailure(error));
+  }
+}
+
 
 export function* userSaga() {
   yield takeEvery(Type.GET_USER_PROFILE, userProfileHandler);
@@ -297,6 +314,10 @@ export function* userSaga() {
   yield takeEvery(
     Type.UPDATE_USER_CONTACT_OPTIONS,
     updateUserContactOptionsHandler,
+  );
+  yield takeEvery(
+    Type.USER_LOGIN_REQUEST,
+    userLoginHandler,
   );
 }
 

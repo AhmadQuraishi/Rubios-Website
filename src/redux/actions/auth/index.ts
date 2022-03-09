@@ -1,3 +1,4 @@
+import { displayToast } from '../../../helpers/toast';
 import { authActionsTypes as Type } from '../../types/auth';
 
 
@@ -8,6 +9,7 @@ export function getAuthRequest() {
 }
 
 export function getAuthRequestSuccess(data: any) {
+  displayToast('SUCCESS', 'Login Success')
   return {
     type: Type.GET_AUTHTOKEN_SUCCESS,
     payload: data,
@@ -15,6 +17,7 @@ export function getAuthRequestSuccess(data: any) {
 }
 
 export function getAuthRequestFailure(error: any) {
+  displayToast('ERROR', error?.response?.data?.message  ? error.response.data.message : 'ERROR! Please Try agin later')
   return {
     type: Type.GET_AUTHTOKEN_FAILURE,
     error: error,
