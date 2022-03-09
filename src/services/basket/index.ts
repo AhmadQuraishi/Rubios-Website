@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import { store } from '../../redux/store';
 import {
   RequestCreateBasket,
   RequestNewBasketProduct,
@@ -106,13 +106,31 @@ export const updateProduct = (
   }
 };
 
-
-
-export const requestCreateBasket = (body: RequestCreateBasket) => {
+export const requestCreateBasket = (body: RequestCreateBasketFromOrder) => {
   try {
     const url = process.env.REACT_APP_OLO_API || '';
     return axios
       .post(url + `/baskets/createfromorder`, body)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.log(error.response);
+        throw error;
+      });
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const requestCreateBasketForFav = (
+  body: RequestCreateBasketFromFave,
+) => {
+  try {
+    const auth_token = process.env.REACT_APP_AUTH_TOKEN
+      ? process.env.REACT_APP_AUTH_TOKEN
+      : store.getState().authReducer.authToken.authtoken;
+    const url = process.env.REACT_APP_OLO_API || '';
+    return axios
+      .post(url + `/baskets/createfromfave?authtoken=` + auth_token, body)
       .then((response) => response.data)
       .catch((error) => {
         console.log(error.response);

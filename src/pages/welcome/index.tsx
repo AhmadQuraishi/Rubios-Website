@@ -20,7 +20,6 @@ import {
 import CardSkeletonUI from '../../components/card-skeleton-ui';
 import { createBasketFromPrev } from '../../redux/actions/basket/create';
 import { getFavRestaurant } from '../../redux/actions/restaurant/fav-restaurant';
-import { getBasketRequest } from '../../redux/actions/basket';
 import { displayToast } from '../../helpers/toast';
 import { handleCart } from '../../components/header';
 const useStyle = makeStyles(() => ({
@@ -56,6 +55,7 @@ const Welcome = () => {
     (state: any) => state.userReducer,
   );
   const basketObj = useSelector((state: any) => state.basketReducer);
+  const error = useSelector((state: any) => state.basketReducer.error);
   const { restaurant, orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
@@ -116,12 +116,16 @@ const Welcome = () => {
       });
     }
   }, [userRecentOrders]);
+  useEffect(() => {
+    setIsEdit(false);
+    setIsReoder(false);
+    setIsbasket(false);
+  }, [error]);
 
   const gotoCategoryPage = (e: BaseSyntheticEvent) => {
     const orderType = e.target.name;
     if (favRestaurant && orderType != undefined) {
       dispatch(setResturantInfoRequest(favRestaurant, orderType));
-      dispatch(getBasketRequest('', null));
       displayToast('SUCCESS', 'Location changed to ' + favRestaurant.name);
       navigate(favRestaurant ? '/menu/' + favRestaurant.slug : '/');
     }

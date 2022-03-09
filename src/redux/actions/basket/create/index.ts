@@ -55,3 +55,61 @@ export function createBasketFromPrevFailure(error: any) {
     error: error,
   };
 }
+
+export function createBasketFromPrevOrderRequest(
+  body: RequestCreateBasketFromOrder,
+) {
+  return {
+    type: basketActionsTypes.CREATE_BASKET_FROM_PREV_ORDER_REQUEST,
+    body,
+  };
+}
+
+export function createBasketFromPrevOrderSuccess(data: ResponseBasket) {
+  return {
+    type: basketActionsTypes.CREATE_BASKET_FROM_PREV_ORDER_SUCCESS,
+    payload: data,
+  };
+}
+
+export function createBasketFromPrevOrderFailure(error: any) {
+  displayToast(
+    'ERROR',
+    error?.response?.data?.message
+      ? error.response.data.message
+      : 'ERROR! Please Try agin later',
+  );
+  return {
+    type: basketActionsTypes.CREATE_BASKET_FROM_PREV_ORDER_FAILURE,
+    error: error,
+  };
+}
+
+export function createBasketFromFavOrderRequest(
+  body: RequestCreateBasketFromFave,
+) {
+  return {
+    type: basketActionsTypes.CREATE_BASKET_FROM_FAV_ORDER_REQUEST,
+    body,
+  };
+}
+
+export function createBasketFromFavOrderSuccess(data: ResponseBasket) {
+  return {
+    type: basketActionsTypes.CREATE_BASKET_FROM_FAV_ORDER_SUCCESS,
+    payload: data,
+  };
+}
+
+export function createBasketFromFavOrderFailure(error: any) {
+  displayToast(
+    'ERROR',
+    error?.response?.data?.message
+      ? error.response.data.message
+      : 'ERROR! Please Try agin later',
+  );
+  return {
+    type: basketActionsTypes.CREATE_BASKET_FROM_FAV_ORDER_FAILURE,
+    error: error,
+  };
+}

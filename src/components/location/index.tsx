@@ -80,7 +80,7 @@ const LocationCard = (props: any) => {
     if (resturantOrderType || searchText) {
       let updatedRestaurants = [];
       let resultsFound = false;
-      if (resturantOrderType && orderType !== '') {
+      if (resturantOrderType && resturantOrderType !== '') {
         if (resturantOrderType === 'pickup') {
           updatedRestaurants = restaurants.filter(
             (x: any) => x.canpickup === true,
@@ -154,13 +154,6 @@ const LocationCard = (props: any) => {
   useEffect(() => {
     getSearchResults();
   }, [resturantOrderType]);
-
-  useEffect(() => {
-    if (searchText == undefined || searchText == '') {
-      //setShowNotFoundMessage(false);
-      //setfilteredRestaurants(isNearByRestaurantList ? restaurants : []);
-    }
-  }, [searchText]);
 
   const [alignment, setAlignment] = React.useState('web');
   const onServiceSelect = (

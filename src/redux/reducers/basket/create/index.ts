@@ -9,9 +9,13 @@ const INITIAL_STATE = {
 const createBasketReducer = (state = INITIAL_STATE, action: any) => {
   switch (action.type) {
     case basketActionsTypes.SET_BASKET_REQUEST:
+    case basketActionsTypes.CREATE_BASKET_FROM_PREV_ORDER_REQUEST:
+    case basketActionsTypes.CREATE_BASKET_FROM_FAV_ORDER_REQUEST:
       return { ...state, loading: true, basket: null, error: {} };
-    
+
     case basketActionsTypes.SET_BASKET_SUCCESS:
+    case basketActionsTypes.CREATE_BASKET_FROM_PREV_ORDER_SUCCESS:
+    case basketActionsTypes.CREATE_BASKET_FROM_FAV_ORDER_SUCCESS:
       return {
         ...state,
         loading: false,
@@ -19,6 +23,8 @@ const createBasketReducer = (state = INITIAL_STATE, action: any) => {
         error: {},
       };
     case basketActionsTypes.SET_BASKET_FAILURE:
+    case basketActionsTypes.CREATE_BASKET_FROM_PREV_ORDER_FAILURE:
+    case basketActionsTypes.CREATE_BASKET_FROM_FAV_ORDER_FAILURE:
       return { ...state, loading: false, error: action.error };
     default:
       return state;

@@ -31,12 +31,12 @@ import { displayToast } from '../../helpers/toast';
 import { generateSubmitBasketPayload } from '../../helpers/checkout';
 
 const Checkout = () => {
-  const dispatch = useDispatch(); 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const pickupFormRef = React.useRef<any>(null);
   const paymentInfoRef = React.useRef<any>();
-   
+
 
   const [runOnce, setRunOnce] = React.useState<boolean>(true);
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
@@ -107,19 +107,19 @@ const Checkout = () => {
     }
 
     if(!pickupFormRef.current){
-    } 
+    }
     else if (!pickupFormRef.current.dirty){
       pickupFormRef.current.submitForm();
-    } 
+    }
     else if (Object.keys(pickupFormRef.current.errors).length > 0){
-    } 
+    }
     else {
       data.isValidForm = true;
       data.formData = pickupFormRef.current.values;
-    }  
+    }
 
     return data;
-    
+
   }
 
   const validatePaymentForm = async ()  => {
@@ -169,15 +169,15 @@ const Checkout = () => {
   //  const contactOptionsPayload: ResponseContactOptions = {
   //     optin: formData.emailNotification,
   //     marketingsms: false,
-  //     upsell: false, 
+  //     upsell: false,
   //     emailreceipts: false,
   //     followups: false
   //  }
-  
+
     if(basket){
       setButtonDisabled(false);
       dispatch(validateBasket(basket.id, basketPayload))
-    }    
+    }
   }
 
   return (
@@ -195,9 +195,9 @@ const Checkout = () => {
                         <Typography
                           variant="caption"
                           className="label"
-                          title="WHO IS PICKING UP?"
+                          title="WHO'S IS PICKING UP?"
                         >
-                          WHO IS PICKING UP?
+                          WHO'S IS PICKING UP?
                         </Typography>
                       </Grid>
                       <Grid item xs={12}>
@@ -325,7 +325,7 @@ const Checkout = () => {
                                 helperText={errors.email}
                               />
                             </Grid>
-                           
+
                               <Grid item xs={12}>
                                 <FormGroup>
                                   <FormControlLabel
@@ -335,6 +335,7 @@ const Checkout = () => {
                                     aria-required="true"
                                     title="Send me emails with special offers and updates"
                                     name="emailNotification"
+                                    className="size"
                                   />
                                 </FormGroup>
                               </Grid>

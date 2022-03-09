@@ -9,7 +9,9 @@ import { getBasket } from '../../../services/basket';
 function* asyncGetBasketRequest(action: any): any {
   try {
     if (action.basketid == '') {
-      yield put(getBasketRequestSuccess(action.updatedBasket));
+      yield put(
+        getBasketRequestSuccess(action.updatedBasket, action.basketType),
+      );
     } else {
       const response = yield call(getBasket, action.basketid);
       yield put(getBasketRequestSuccess(response));

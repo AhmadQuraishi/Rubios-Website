@@ -1,4 +1,3 @@
-import axios from "axios";
 import { store } from "../../redux/store";
 import axiosInstance from "../axiosInceptor";
 import { ResponseContactOptions} from '../../types/olo-api';

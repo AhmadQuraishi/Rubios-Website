@@ -6,23 +6,33 @@ import {
   deleteFavOrder,
   getUserFavoritetOrders,
 } from '../../redux/actions/user';
-import { addMultipleProductsRequest } from '../../redux/actions/basket/addMultipleProducts';
 import LoadingBar from '../loading-bar';
 import { TablePagination } from '@mui/material';
 import DialogBox from '../dialog-box';
-import { RequestBasketProductBatch } from '../../types/olo-api';
+import { createBasketFromFavOrderRequest } from '../../redux/actions/basket/create';
+import { getResturantInfoRequest, setResturantInfoRequest } from '../../redux/actions/restaurant';
+import { getBasketRequest } from '../../redux/actions/basket';
+import { useNavigate } from 'react-router-dom';
+import OrderListSkeletonUI from '../order-list-skeleton-ui';
 
 const FavoriteOrders = () => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [idtoDelete, setId] = useState(0);
   const [favOrders, setfavOrders] = React.useState([]);
-  const basketObj = useSelector((state: any) => state.basketReducer);
+  const createBasketObj = useSelector(
+    (state: any) => state.createBasketReducer,
+  );
+  const { restaurant, orderType } = useSelector(
+    (state: any) => state.restaurantInfoReducer,
+  );
   const { userFavoriteOrders, loading } = useSelector(
     (state: any) => state.userReducer,
   );
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [clickAction, setClickAction] = useState(false);  
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getUserFavoritetOrders());
@@ -59,24 +69,48 @@ const FavoriteOrders = () => {
     }, 200);
     setOpen(false);
   };
+  useEffect(() => {
+    if (createBasketObj && clickAction) {
+      if (createBasketObj.basket && clickAction) {
+        dispatch(getResturantInfoRequest(createBasketObj.basket.vendorid));
+      } else if (createBasketObj.error && createBasketObj.error.message) {
+        setClickAction(false);
+      }
+    }
+  }, [createBasketObj]);
 
-  const addProductToBag = (orderProducts: any) => {
-    const request: RequestBasketProductBatch = {} as RequestBasketProductBatch;
-    request.products = orderProducts;
-    request.replaceContents = true;
-    dispatch(addMultipleProductsRequest(basketObj.basket.id || '', request));
+  useEffect(() => {
+    if (restaurant && clickAction) {
+      setClickAction(false);
+      dispatch(
+        setResturantInfoRequest(
+          restaurant,
+          createBasketObj.basket.deliverymode || '',
+        ),
+      );
+      dispatch(getBasketRequest('', createBasketObj.basket, 'Favourite'));
+      navigate('/checkout');
+    }
+  }, [restaurant]);
+  const addProductToBag = (faveid: any) => {
+    setClickAction(true);
+    const requestBody = {
+      faveid: faveid,
+      ignoreunavailableproducts: true,
+    };
+    dispatch(createBasketFromFavOrderRequest(requestBody));
   };
 
   let x = 0;
   return (
     <Fragment>
-      {loading && <LoadingBar />}
-      {!loading && favOrders.length < 1 && (
+      {(loading || clickAction) && <OrderListSkeletonUI />}
+      {!loading && !clickAction && favOrders && favOrders.length == 0 && (
         <Typography variant="h6" className="no-orders">
           You don't have any favorites
         </Typography>
       )}
-      {!loading && favOrders.length > 0 && (
+      {!loading && !clickAction && favOrders.length > 0 && (
         <Grid container spacing={3} className="order-history-card">
           {favOrders
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -157,6 +191,7 @@ const FavoriteOrders = () => {
                         className="order-Link"
                         variant="button"
                         title="Reorder"
+                        onClick={() => addProductToBag(forder.id)}
                       >
                         REORDER
                       </Typography>

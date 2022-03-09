@@ -33,7 +33,7 @@ const OrderDetail = ({basket}: any)  => {
                   </Grid>
                 </Grid>
                 <br/>
-              </>              
+              </>
             )
           })
         }
@@ -48,12 +48,12 @@ const OrderDetail = ({basket}: any)  => {
           <Grid item xs={2} sm={2} md={2} lg={1}>
              <Typography variant="h6" title={basket && basket.subtotal}>
               ${basket && basket.subtotal}
-            </Typography> 
+            </Typography>
           </Grid>
         </Grid>
         <Grid container>
           <Grid item xs={10} sm={10} md={10} lg={11}>
-            <Typography variant="h6" title="Tax">
+            <Typography variant="h6" className="n-bold" title="Tax">
               TAX
             </Typography>
           </Grid>
@@ -61,7 +61,7 @@ const OrderDetail = ({basket}: any)  => {
             <Typography variant="h6" >
             ${basket && basket.taxes && basket.taxes.reduce((sum: number, tax: any) => sum + tax.tax, 0)}
             </Typography>
-          </Grid> 
+          </Grid>
         </Grid>
         <br/>
         <Divider />
