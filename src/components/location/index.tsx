@@ -19,11 +19,11 @@ import { displayToast } from '../../helpers/toast';
 const LocationCard = (props: any) => {
   const { restaurants, isNearByRestaurantList, setShowNearBy } = props;
   const [searchText, setSearchText] = useState<string>();
-  const [orderType, setOrderType] = useState<string>();
+  const [resturantOrderType, setresturantOrderType] = useState<string>();
   const [showNotFoundMessage, setShowNotFoundMessage] = useState(false);
   const [filteredRestaurants, setfilteredRestaurants] =
     useState<ResponseRestaurant[]>();
-  const { restaurant } = useSelector(
+  const { restaurant, orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
 
@@ -46,14 +46,20 @@ const LocationCard = (props: any) => {
   }, [isNearByRestaurantList]);
 
   const gotoCategoryPage = (storeID: number) => {
-    if (orderType == undefined) {
+    if (resturantOrderType == undefined) {
       displayToast('ERROR', 'Please select atleast one order type');
       return false;
     }
     const restaurantObj = restaurants.find((x: any) => x.id === storeID);
     if (restaurantObj) {
-      if (restaurant == null || (restaurant && restaurant.id != storeID)) {
-        dispatch(setResturantInfoRequest(restaurantObj, orderType || ''));
+      if (
+        restaurant == null ||
+        (restaurant && restaurant.id != storeID) ||
+        resturantOrderType != orderType
+      ) {
+        dispatch(
+          setResturantInfoRequest(restaurantObj, resturantOrderType || ''),
+        );
         displayToast('SUCCESS', 'Location changed to ' + restaurantObj.name);
       }
       navigate('/menu/' + restaurantObj.slug);
@@ -70,19 +76,20 @@ const LocationCard = (props: any) => {
 
   const getSearchResults = () => {
     setShowNotFoundMessage(false);
-    if (orderType || searchText) {
+    setfilteredRestaurants(isNearByRestaurantList ? restaurants : []);
+    if (resturantOrderType || searchText) {
       let updatedRestaurants = [];
       let resultsFound = false;
-      if (orderType && orderType !== '') {
-        if (orderType === 'pickup') {
+      if (resturantOrderType && orderType !== '') {
+        if (resturantOrderType === 'pickup') {
           updatedRestaurants = restaurants.filter(
             (x: any) => x.canpickup === true,
           );
-        } else if (orderType === 'curbside') {
+        } else if (resturantOrderType === 'curbside') {
           updatedRestaurants = restaurants.filter(
             (x: any) => x.supportscurbside === true,
           );
-        } else if (orderType === 'delivery') {
+        } else if (resturantOrderType === 'delivery') {
           updatedRestaurants = restaurants.filter(
             (x: any) => x.candeliver === true,
           );
@@ -111,8 +118,9 @@ const LocationCard = (props: any) => {
               (x: any) => x.state.toLowerCase() == searchTxt,
             );
           }
-          if (updatedRestaurants.length > 0)
+          if (updatedRestaurants.length > 0) {
             setfilteredRestaurants(updatedRestaurants);
+          } else setShowNotFoundMessage(true);
         } else {
           searchedRestaurant = updatedRestaurants.filter(
             (x: any) => x.city.toLowerCase() == searchTxt,
@@ -145,10 +153,11 @@ const LocationCard = (props: any) => {
 
   useEffect(() => {
     getSearchResults();
-  }, [orderType]);
+  }, [resturantOrderType]);
 
   useEffect(() => {
     if (searchText == undefined || searchText == '') {
+      setShowNotFoundMessage(false);
       setfilteredRestaurants(isNearByRestaurantList ? restaurants : []);
     }
   }, [searchText]);
@@ -197,7 +206,9 @@ const LocationCard = (props: any) => {
                 <ToggleButton
                   value="Pick up"
                   onClick={() =>
-                    setOrderType(orderType === 'pickup' ? undefined : 'pickup')
+                    setresturantOrderType(
+                      resturantOrderType === 'pickup' ? undefined : 'pickup',
+                    )
                   }
                   className="selected-btn"
                 >
@@ -206,8 +217,10 @@ const LocationCard = (props: any) => {
                 <ToggleButton
                   value="Curbside"
                   onClick={() =>
-                    setOrderType(
-                      orderType === 'curbside' ? undefined : 'curbside',
+                    setresturantOrderType(
+                      resturantOrderType === 'curbside'
+                        ? undefined
+                        : 'curbside',
                     )
                   }
                   className="selected-btn"
@@ -217,8 +230,10 @@ const LocationCard = (props: any) => {
                 <ToggleButton
                   value="Delivery"
                   onClick={() =>
-                    setOrderType(
-                      orderType === 'delivery' ? undefined : 'delivery',
+                    setresturantOrderType(
+                      resturantOrderType === 'delivery'
+                        ? undefined
+                        : 'delivery',
                     )
                   }
                   className="selected-btn"
