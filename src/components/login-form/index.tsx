@@ -10,8 +10,7 @@ import { makeStyles } from '@mui/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import {userLogin} from '../../redux/actions/user'
-import { useNavigate } from 'react-router-dom';
+import {userLogin} from '../../redux/actions/user';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -22,7 +21,6 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const LoginForm = () => {
   const classes = useStyles();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { loading: loadingProvider } = useSelector((state: any) => state.providerReducer);
   const { loading: loadingAuth } = useSelector((state: any) => state.authReducer);

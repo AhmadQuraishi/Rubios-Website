@@ -6,7 +6,7 @@ import {
 import {  useNavigate } from 'react-router-dom';
 import './welcome.css';
 import {  Fragment, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import LoginForm from '../../components/login-form';
 
 
@@ -21,8 +21,7 @@ const useStyle = makeStyles(() => ({
   caption: {},
 }));
 
-const Welcome = () => {
-  const dispatch = useDispatch();
+const Login2 = () => {
   const navigate = useNavigate();
   const classes = useStyle();
 
@@ -30,7 +29,7 @@ const Welcome = () => {
 
   useEffect(() => {
     if(providerToken){
-      navigate('/')
+      navigate('/welcome')
     }
   }, [providerToken])
   
@@ -69,4 +68,4 @@ const Welcome = () => {
   );
 };
 
-export default Welcome;
+export default Login2;

@@ -372,3 +372,26 @@ export function userLoginFailure(error: any) {
   };
 }
 
+export function userRegister(data: any) {
+  return {
+    type: Type.USER_REGISTER_REQUEST,
+    data
+  };
+}
+
+export function userRegisterSuccess(data: any) {
+  return {
+    type: Type.USER_REGISTER_SUCCESS,
+    payload: data
+  };
+}
+
+export function userRegisterFailure(error: any) {
+  console.log('errrrrrr', error)
+  displayToast('ERROR', error?.data?.error  ? error.data.error : 'ERROR! Please Try agin later')
+  return {
+    type: Type.USER_REGISTER_FAILURE,
+    error: error
+  };
+}
+

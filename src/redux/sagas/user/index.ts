@@ -17,7 +17,8 @@ import {
   requestDeleteFavOrder,
   requestUserFavoriteOrders,
   updateUserContactOptions,
-  requestUserLogin
+  requestUserLogin,
+  requestUserRegister
 } from '../../../services/user';
 import {
   deleteUserDelAddFailure,
@@ -51,7 +52,9 @@ import {
   updateUserContactOptionsSuccess,
   updateUserContactOptionsFailure,
   userLoginSuccess,
-  userLoginFailure
+  userLoginFailure,
+  userRegisterSuccess,
+  userRegisterFailure
 } from '../../actions/user';
 import ErrorMessageAlert from '../../../components/error-message-alert';
 import { displayToast } from '../../../helpers/toast';
@@ -256,9 +259,23 @@ function* userLoginHandler(action: any): any {
       action.data
     );
     yield put(userLoginSuccess(response));
-    yield put({type: authActionsTypes.GET_AUTHTOKEN_REQUEST, action});
+    yield put({type: authActionsTypes.GET_AUTHTOKEN_REQUEST, successMsg: 'Login Success'});
   } catch (error) {
     yield put(userLoginFailure(error));
+  }
+}
+
+// User Register
+function* userRegisterHandler(action: any): any {
+  try {
+    const response = yield call(
+      requestUserRegister,
+      action.data
+    );
+    yield put(userRegisterSuccess(response));
+    yield put({type: authActionsTypes.GET_AUTHTOKEN_REQUEST, successMsg: 'Signup Success'});
+  } catch (error) {
+    yield put(userRegisterFailure(error));
   }
 }
 
@@ -318,6 +335,10 @@ export function* userSaga() {
   yield takeEvery(
     Type.USER_LOGIN_REQUEST,
     userLoginHandler,
+  );
+  yield takeEvery(
+    Type.USER_REGISTER_REQUEST,
+    userRegisterHandler,
   );
 }
 

@@ -8,8 +8,8 @@ export function getAuthRequest() {
   };
 }
 
-export function getAuthRequestSuccess(data: any) {
-  displayToast('SUCCESS', 'Login Success')
+export function getAuthRequestSuccess(successMsg: string, data: any) {
+  displayToast('SUCCESS', successMsg)
   return {
     type: Type.GET_AUTHTOKEN_SUCCESS,
     payload: data,

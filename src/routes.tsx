@@ -36,7 +36,7 @@ const AppRoutes = () => {
       <Route path="/checkout" element={<Checkout />} />
       <Route path="/login" element={<Login />} />
       <Route path="/login2" element={<Login2 />} />
-      {/* <Route path="/register" element={<Register />} /> */}
+      <Route path="/register" element={<Register />} />
       <Route path="/welcome" element={<Welcome />} />
       <Route path="/orderconfirmation" element={<OrderConfirmation />} />
       <Route path="/rewardconfirmation" element={<RewardConfirmation />} />
