@@ -47,7 +47,6 @@ const Welcome = () => {
   const [restInfo, setRestInfo] = useState(false);
   const [isbasket, setIsbasket] = useState(false);
   const [body, setBody] = useState({
-    orderref: '',
     id: '',
     ignoreunavailableproducts: true,
   });
@@ -72,6 +71,20 @@ const Welcome = () => {
     )
       dispatch(getFavRestaurant(providerToken.favourite_store_numbers));
   }, []);
+  useEffect(() => {
+    if (
+      userRecentOrders &&
+      userRecentOrders.orders &&
+      userRecentOrders.orders[0]
+    ) {
+      setOrders(userRecentOrders.orders);
+      setDeliveryMode(userRecentOrders.orders[0].deliverymode);
+      setBody({
+        id: userRecentOrders.orders[0].id,
+        ignoreunavailableproducts: true,
+      });
+    }
+  }, [userRecentOrders]);
   useEffect(() => {
     if (isRestaurant) {
       dispatch(setResturantInfoRequest(restaurant, deliverymode));
@@ -106,34 +119,10 @@ const Welcome = () => {
     }
   }, [basketObj]);
 
-  useEffect(() => {
-    if (
-      userRecentOrders &&
-      userRecentOrders.orders &&
-      userRecentOrders.orders[0]
-    ) {
-      setOrders(userRecentOrders.orders);
-      setDeliveryMode(userRecentOrders.orders[0].deliverymode);
-      setBody({
-        orderref: userRecentOrders.orders[0].orderref,
-        id: userRecentOrders.orders[0].id,
-        ignoreunavailableproducts: true,
-      });
-    }
-  }, [userRecentOrders]);
-  useEffect(() => {
-    if (isbasket) {
-      setIsEdit(false);
-      setIsReoder(false);
-      setIsbasket(false);
-    }
-  }, [error]);
-
   const gotoCategoryPage = (e: BaseSyntheticEvent) => {
     const orderType = e.target.name;
     if (favRestaurant && orderType != undefined) {
       dispatch(setResturantInfoRequest(favRestaurant, orderType));
-      displayToast('SUCCESS', 'Location changed to ' + favRestaurant.name);
       navigate(favRestaurant ? '/menu/' + favRestaurant.slug : '/');
     }
   };
