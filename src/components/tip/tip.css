@@ -14,6 +14,6 @@
 
 @media screen and (max-width: 468px) {
   .tip-wrapper .coupon-sec {
-    margin-top: 40px;
+    margin: 10px 0px;
   }
 }
