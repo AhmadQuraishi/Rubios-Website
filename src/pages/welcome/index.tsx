@@ -40,6 +40,7 @@ const Welcome = () => {
 
   const [recentorders, setOrders] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
+  const [isError, setIserror] = useState(false);
   const [isReoder, setIsReoder] = useState(false);
   const [isRestaurant, setIsRestaurant] = useState(false);
   const [deliverymode, setDeliveryMode] = useState('');
@@ -106,7 +107,11 @@ const Welcome = () => {
   }, [basketObj]);
 
   useEffect(() => {
-    if (userRecentOrders && userRecentOrders.orders) {
+    if (
+      userRecentOrders &&
+      userRecentOrders.orders &&
+      userRecentOrders.orders[0]
+    ) {
       setOrders(userRecentOrders.orders);
       setDeliveryMode(userRecentOrders.orders[0].deliverymode);
       setBody({
@@ -117,9 +122,11 @@ const Welcome = () => {
     }
   }, [userRecentOrders]);
   useEffect(() => {
-    setIsEdit(false);
-    setIsReoder(false);
-    setIsbasket(false);
+    if (isbasket) {
+      setIsEdit(false);
+      setIsReoder(false);
+      setIsbasket(false);
+    }
   }, [error]);
 
   const gotoCategoryPage = (e: BaseSyntheticEvent) => {
@@ -158,7 +165,7 @@ const Welcome = () => {
                   providerToken.first_name
                 }
               >
-                WELCOME BACK <br/> {' '}
+                WELCOME BACK <br />{' '}
                 {providerToken &&
                   providerToken.first_name &&
                   providerToken.first_name}
