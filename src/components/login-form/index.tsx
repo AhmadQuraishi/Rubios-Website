@@ -27,7 +27,7 @@ const LoginForm = () => {
 
   return (
     <div className={classes.root}>
-        <Grid container>
+        <Grid container columns={16}>
           <Formik
             initialValues={{
               email: '',
@@ -66,9 +66,9 @@ const LoginForm = () => {
               values,
             }) => (
               <form onSubmit={handleSubmit}>
-                <Grid item xs={12} md={12} lg={12}>
+                <Grid item xs={16} md={16} lg={16}>
                   <Grid container className="profile-section">
-                    <Grid item xs={12}>
+                    <Grid item xs={16}>
                       <TextField
                         aria-label="email"
                         label="Email"
@@ -82,7 +82,7 @@ const LoginForm = () => {
                         helperText={errors.email}
                       />
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={16}>
                     <TextField
                       aria-label="password"
                       label="Password"
@@ -97,17 +97,17 @@ const LoginForm = () => {
                       helperText={touched.password && errors.password}
                     />
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={16} md={8} lg={8} sx={{float:'right'}}>
                       <Button
                         type="submit"
                         disabled={loadingProvider || loadingAuth}
-                        aria-label="submit"
+                        aria-label="sign in"
                         name="submit"
-                        title="submit"
+                        title="sign in"
                         variant="contained"
-                        sx={{ width: { xs: '100%', lg: '400px' } }}
+                        sx={{ width: '100%'}}
                       >
-                        Submit
+                        Sign in
                       </Button>
                     </Grid>
                   </Grid>
