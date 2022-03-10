@@ -12,12 +12,13 @@ import {
   setResturantInfoRequest,
 } from '../../redux/actions/restaurant';
 import OrderListSkeletonUI from '../order-list-skeleton-ui';
+import { displayToast } from '../../helpers/toast';
 
 const RecentOrders = () => {
   const [recentorders, setOrders] = React.useState([]);
-  const [clickAction, setClickAction] = useState(false);  
+  const [clickAction, setClickAction] = useState(false);
   const [prevOrderType, setPrevOrderType] = useState<string>();
-  const { restaurant, orderType } = useSelector(
+  const { restaurant, error } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
 
@@ -55,7 +56,11 @@ const RecentOrders = () => {
         ),
       );
       dispatch(getBasketRequest('', createBasketObj.basket, 'Previous'));
+      displayToast('SUCCESS', 'Recent order is added in cart');
       navigate('/checkout');
+    }
+    if (error.message) {
+      setClickAction(false);
     }
   }, [restaurant]);
 
