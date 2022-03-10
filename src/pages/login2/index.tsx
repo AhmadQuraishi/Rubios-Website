@@ -9,12 +9,13 @@ import './login2.css';
 import {  Fragment, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import LoginForm from '../../components/login-form';
+import bgImage from '../../assets/imgs/login-bg.png';
 
 
 const useStyle = makeStyles(() => ({
   root: {
     minHeight: '100vh',
-    backgroundImage: `url(https://upload.wikimedia.org/wikipedia/commons/6/6d/Good_Food_Display_-_NCI_Visuals_Online.jpg)`,
+    backgroundImage: `url(${bgImage})`,
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
     justifyContent: 'center',

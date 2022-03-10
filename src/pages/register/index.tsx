@@ -6,12 +6,13 @@ import RegisterForm from '../../components/register-form';
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import bgImage from '../../assets/imgs/login-bg.png';
 
 
 const useStyle = makeStyles(() => ({
     root: {
       minHeight: '100vh',
-      backgroundImage: `url(https://www.pexels.com/photo/1640777/download/)`,
+      backgroundImage: `url(${bgImage})`,
       backgroundRepeat: "no-repeat",
       backgroundSize: "cover",
       justifyContent: 'center'
@@ -23,7 +24,7 @@ const useStyle = makeStyles(() => ({
     card: {
       margin: '50px auto',
       borderRadius: '20px !important',
-      padding: 30
+      padding: '50px',
 
     },
   }));

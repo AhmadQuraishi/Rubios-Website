@@ -1,0 +1,10 @@
+.sign-up-section .MuiGrid-grid-xs-12 {
+  padding-top: 20px;
+}
+.sign-up-section .label {
+  display: block;
+  width: 100%;
+}
+.sign-up-section h4 {
+  margin: 5px 0px 10px 0px;
+}
