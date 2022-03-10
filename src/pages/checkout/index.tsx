@@ -48,11 +48,15 @@ const Checkout = () => {
 
   React.useEffect(() => {
     if (basket && runOnce) {
+      let selectedTime = moment().format('YYYYMMDD');
+      if(basket.timewanted){
+        selectedTime = moment(basket.timewanted, 'YYYYMMDD HH:mm').format('YYYYMMDD')
+      }
       dispatch(
         getSingleRestaurantCalendar(
           basket.vendorid,
-          moment().format('YYYYMMDD'),
-          moment().format('YYYYMMDD'),
+          selectedTime,
+          selectedTime,
         ),
       );
       setRunOnce(false);

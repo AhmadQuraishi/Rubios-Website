@@ -6,7 +6,7 @@ import { ResponseContactOptions} from '../../types/olo-api';
 export const RequestUserProfile = () => {
   try {
     const access_token =
-    process.env.REACT_APP_ACCESS_TOKEN  ? process.env.REACT_APP_ACCESS_TOKEN : store.getState().tokenReducer.accessToken.access_token
+    process.env.REACT_APP_AUTHENTICATION_TOKEN  ? process.env.REACT_APP_AUTHENTICATION_TOKEN : store.getState().providerReducer.providerToken.authentication_token
     const url = `${process.env.REACT_APP_PUNCHH_API}/api/auth/users?client=${process.env.REACT_APP_PUNCHH_CLIENT_ID}&access_token=${access_token}`;
     return axiosInstance.get(url).then((response) => response.data);
   } catch (error) {
