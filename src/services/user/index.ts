@@ -5,7 +5,7 @@ import { ResponseContactOptions} from '../../types/olo-api';
 //profile
 export const RequestUserProfile = () => {
   try {
-    const access_token = store.getState().providerReducer.providerToken.authentication_token
+    const access_token = store.getState().providerReducer.providerToken.access_token
     const url = `${process.env.REACT_APP_PUNCHH_API}/api/auth/users?client=${process.env.REACT_APP_PUNCHH_CLIENT_ID}&access_token=${access_token}`;
     return axiosInstance.get(url).then((response) => response.data);
   } catch (error) {
@@ -63,7 +63,7 @@ export const requestChangePassword = (body: object) => {
 //Recent Orders
 export const requestUserRecentOrders = () => {
   try {
-    const authtoken =  process.env.REACT_APP_AUTH_TOKEN  ? process.env.REACT_APP_AUTH_TOKEN : store.getState().authReducer.authToken.authtoken
+    const authtoken =  store.getState().authReducer.authToken.authtoken
     const url = process.env.REACT_APP_OLO_API || "";
     return axiosInstance
       .get(url + `/users/${authtoken}/recentorders`)
