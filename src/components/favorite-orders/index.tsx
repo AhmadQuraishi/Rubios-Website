@@ -14,6 +14,7 @@ import { getResturantInfoRequest, setResturantInfoRequest } from '../../redux/ac
 import { getBasketRequest } from '../../redux/actions/basket';
 import { useNavigate } from 'react-router-dom';
 import OrderListSkeletonUI from '../order-list-skeleton-ui';
+import { displayToast } from '../../helpers/toast';
 
 const FavoriteOrders = () => {
   const dispatch = useDispatch();
@@ -23,7 +24,7 @@ const FavoriteOrders = () => {
   const createBasketObj = useSelector(
     (state: any) => state.createBasketReducer,
   );
-  const { restaurant, orderType } = useSelector(
+  const { restaurant, error } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
   const { userFavoriteOrders, loading } = useSelector(
@@ -89,7 +90,11 @@ const FavoriteOrders = () => {
         ),
       );
       dispatch(getBasketRequest('', createBasketObj.basket, 'Favourite'));
+      displayToast('SUCCESS', 'Favorite order is added in cart');
       navigate('/checkout');
+    }
+    if (error && error.message) {
+      setClickAction(false);
     }
   }, [restaurant]);
   const addProductToBag = (faveid: any) => {
