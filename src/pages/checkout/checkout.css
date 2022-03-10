@@ -30,7 +30,7 @@
 .order .right-col .time-slot {
   background: #214F66;
   margin-top: 10px;
-  width: 100%;
+  width: calc(100% - 8px);
 }
 .order .right-col .time-slot-selected {
   background: #79C043;
@@ -81,9 +81,6 @@
   }
   .order .left-col {
     padding: 0px 20px 0px 0px !important;
-  }
-  .checkout-wrapper .slot-label {
-    width: calc(100% - 4%) !important;
   }
 }
 

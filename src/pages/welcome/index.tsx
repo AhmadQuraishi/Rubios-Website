@@ -151,9 +151,9 @@ const Welcome = () => {
   return (
     <Fragment>
       <Grid container component="main" columns={16} className={classes.root}>
-        <Grid item xs={12} className="welcome-wrapper">
+        <Grid item xs={13} className="welcome-wrapper">
           <Grid container columns={16} className="welcome-content">
-            <Grid item xs={14} sm={14} md={14} lg={7.5} className="left-col">
+            <Grid item xs={16} sm={16} md={14} lg={9} className="left-col">
               <Typography variant="caption" className="label" title="Welcome">
                 WELCOME
               </Typography>
@@ -165,7 +165,7 @@ const Welcome = () => {
                   providerToken.first_name
                 }
               >
-                WELCOME BACK <br></br>AQSA
+                WELCOME BACK <br />{' '}
                 {providerToken &&
                   providerToken.first_name &&
                   providerToken.first_name}
@@ -199,7 +199,7 @@ const Welcome = () => {
                           </Typography>
                           <Card
                             elevation={0}
-                            className="product-card"
+                            className="p-card"
                             key={index + order.id}
                           >
                             <CardMedia
@@ -263,7 +263,7 @@ const Welcome = () => {
                   </Fragment>
                 )}
             </Grid>
-            <Grid item xs={14} sm={14} md={14} lg={5.5} className="right-col">
+            <Grid item xs={16} sm={16} md={14} lg={5} className="right-col">
               <Typography
                 variant="caption"
                 className="label"

@@ -183,7 +183,7 @@ fieldset{
 .slot-label {
   background: #79C043 !important;
   color: white !important;
-  width: calc(100% - 8%) !important;
+  width: calc(100% - 9px) !important;
   display: inline-block !important;
   text-align: center;
   font-size: 12px !important;

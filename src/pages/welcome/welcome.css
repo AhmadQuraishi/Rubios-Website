@@ -1,41 +1,45 @@
 .welcome-wrapper {
-  margin: 60px !important;
+  margin: 62px 139px !important;
 }
-.welcome-content {
+.welcome-wrapper .welcome-content {
   background: white;
   display: flex;
-  justify-content: center;
-  padding: 80px 0px;
+  justify-content: flex-start;
+  padding: 77px 75px 88px 93px;
   -webkit-border-radius: 30px;
   -moz-border-radius: 30px;
   border-radius: 30px;
 }
 .welcome-content h4 {
-  margin-bottom: 20px;
-  font-size: 46px;
+  margin-bottom: 23px;
+  font-size: 49px;
 }
 .welcome-content h5 {
   margin: 10px 0px 10px 0px;
 }
 .welcome-content .left-col {
   border-right: 1px solid #0069aa;
-  padding-right: 45px;
-  margin-right: 45px;
+  padding-right: 58px;
+  margin-right: 66px;
 }
-.welcome-content .left-col .product-card {
+.welcome-content .left-col .p-card {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: flex-start;
   border: 1px solid #d6d6d6;
-  padding: 10px 10px 10px 10px;
-  margin-top: 15px;
+  padding: 17px;
+  margin-top: 23px;
+  position: relative;
 }
-.welcome-content .left-col .product-card img {
+.welcome-content .left-col .p-card img {
   width: 30%;
   height: 100%;
   margin-right: 10px;
 }
 .welcome-content .order-action {
   text-align: right;
+  position: absolute;
+  bottom: 0px;
+  right: 20px;
 }
 .welcome-content .order-action .caption-grey {
   font-family: 'Poppins-Bold' !important;
@@ -46,14 +50,14 @@
   font-size: 13px !important;
 }
 
-.welcome-content .left-col .product-card button {
+.welcome-content .left-col .p-card button {
   margin: 15px 0px 0px 0px;
   display: inline-block;
   text-decoration: none;
   font-size: 15px !important;
   letter-spacing: 2px;
 }
-.welcome-content .product-card .MuiCardContent-root {
+.welcome-content .p-card .MuiCardContent-root {
   padding: 0px 10px;
 }
 .welcome-content .right-col button {
@@ -72,17 +76,17 @@
 
 @media screen and (max-width: 900px) {
   .welcome-content {
-    padding: 35px 0px;
+    padding: 35px !important;
   }
   .left-col {
     border-right: none !important;
     padding: 0px !important;
     margin: 0px 0px 15px 0px !important;
   }
-  .product-card {
+  .p-card {
     display: block !important;
   }
-  .product-card img {
+  .p-card img {
     float: left;
   }
 }
@@ -92,20 +96,23 @@
     margin: 15px !important;
   }
   .welcome-content {
-    padding: 30px 0px;
+    padding: 30px 20px !important;
   }
   .welcome-content h4 {
     font-size: 25px;
   }
-  .product-card img {
+  .p-card img {
     width: 100% !important;
   }
-  .product-card .order-action {
+  .p-card .order-action {
     text-align: center;
     display: flex;
     justify-content: space-between;
+    position: relative;
+    bottom: auto;
+    right: auto;
   }
-  .product-card button {
+  .p-card button {
     margin: 20px 0px 0px 0px !important;
     padding: 0px;
     font-size: 13px;
