@@ -81,7 +81,7 @@ const RecentOrders = () => {
     setClickAction(true);
     setPrevOrderType(orderType);
     const requestBody = {
-      orderref: orderref,
+      orderref: '',
       id: id,
       ignoreunavailableproducts: true,
     };
