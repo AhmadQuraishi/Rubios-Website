@@ -1,10 +1,10 @@
 import React from 'react';
-import { Grid, 
-  Typography, 
-  Button, 
+import { Grid,
+  Typography,
+  Button,
   FormControl,
-  FormLabel, 
-  ToggleButtonGroup, 
+  FormLabel,
+  ToggleButtonGroup,
   ToggleButton,
   Select,
   InputLabel,
@@ -17,7 +17,7 @@ import DatePicker from '@mui/lab/DatePicker';
 import AdapterMoment from '@mui/lab/AdapterMoment';
 import { useDispatch, useSelector } from 'react-redux';
 import {getSingleRestaurantCalendar, updateBasketTimeWanted, deleteBasketTimeWanted } from '../../redux/actions/basket/checkout';
-import {  
+import {
   generateNextAvailableTimeSlots,
   GetRestaurantHoursRange,
   createTimeWantedPayload } from '../../helpers/checkout';
@@ -153,11 +153,11 @@ const OrderTime = ()  => {
                         />
                       </LocalizationProvider>
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} className="time-slot-wrapper">
                       <Grid container>
                         <FormControl>
                           <Grid container>
-                            <Grid item xs={3} sm={3} md={3} lg={3}>
+                            <Grid item xs={6} sm={3} md={3} lg={3}>
                               <FormLabel
                                 className="slot-label"
                                 title="QUICKEST"
@@ -171,7 +171,7 @@ const OrderTime = ()  => {
                             value={selectedTime}
                             exclusive
                             onChange={(event) => onTimeSlotSelect(event)}
-                            className="selected-btn"
+                            className="selected-btn-group"
                           >
                             {/* <Grid container spacing={2}> */}
                               {
@@ -228,7 +228,7 @@ const OrderTime = ()  => {
                         </Grid>
                       ) : (null)
                     }
-                    
+
     </Grid>
   );
 };
