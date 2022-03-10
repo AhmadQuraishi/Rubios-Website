@@ -54,7 +54,8 @@
   font-size: 12px;
 }
 .size span {
-  font-size: 12px !important;
+  font-size: 11px !important;
+  font-family: 'Poppins-Regular';
 }
 .order .add-order {
   text-align: center;
