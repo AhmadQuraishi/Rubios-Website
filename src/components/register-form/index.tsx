@@ -18,6 +18,8 @@ import {userRegister} from '../../redux/actions/user';
 import {getlocations} from '../../redux/actions/location';
 import { useEffect, useState, forwardRef } from 'react';
 import { IMaskInput } from 'react-imask';
+import ReactDateInputs from 'react-date-inputs';
+import moment from 'moment';
 
 const RegisterForm = () => {
   const dispatch = useDispatch();
@@ -25,7 +27,9 @@ const RegisterForm = () => {
   const { loading: loadingAuth } = useSelector((state: any) => state.authReducer);
   const { locations } = useSelector((state: any) => state.locationReducer);
 
+
   const [favLocation, setFavLocation] = useState('');
+  const [birthDay, setBirthDay] = useState<Date | undefined>();
   const [termsAndConditions, setTermsAndconditions] = useState(false);
   
 
@@ -35,6 +39,11 @@ const RegisterForm = () => {
 
   const handleChangeLocation = (event: SelectChangeEvent) => {
     setFavLocation(event.target.value as string);
+  };
+
+  const handleBirthDayChange = (value?: Date | undefined) : undefined => {
+    setBirthDay(value);
+    return;
   };
 
   const handleChangeCheckbox = () => {
@@ -78,6 +87,7 @@ const RegisterForm = () => {
                             password_confirmation: '',
                             invitecode: '',
                             favLocation: '',
+                            birthday: ''
                             // termsAndConditions: false
                           }}
                           validationSchema={Yup.object({
@@ -105,18 +115,18 @@ const RegisterForm = () => {
                             .email('Invalid email address')
                             .required('Email is required'),
                           phone: Yup.string().min(14, 'Enter valid number'),
-                            password: Yup.string()
+                          password: Yup.string()
                               .min(8, 'Must be at least 8 characters')
                               .max(16, 'Must be at most 16 characters')
                               .required('required'),
-                            password_confirmation: Yup.string()
+                          password_confirmation: Yup.string()
                               .min(8, 'Must be at least 8 characters')
                               .max(16, 'Must be at most 16 characters')
                               .oneOf([Yup.ref('password'), null], 'Passwords must match')
-                              .required('required'),
+                              .required('required')
                           })}
                           onSubmit={async (values) => {
-                            const obj = {
+                            const obj: any = {
                               first_name: values.first_name,
                               last_name: values.last_name,
                               password: values.password,
@@ -127,6 +137,10 @@ const RegisterForm = () => {
                               fav_location_id: favLocation,
                               terms_and_conditions: termsAndConditions
                             };
+
+                            if(birthDay){
+                              obj.birthday = moment(birthDay).format('YYYY-MM-DD')
+                            }
 
                             dispatch(userRegister(obj));
                           }}
@@ -277,6 +291,10 @@ const RegisterForm = () => {
                                     >
                                       Birthday (Optional)
                                     </Typography>
+                                    <ReactDateInputs
+                                      onChange={(value) => handleBirthDayChange(value)}
+                                      value={birthDay}
+                                    />
 
                                   </Grid>
                                   <Grid item xs={12}>

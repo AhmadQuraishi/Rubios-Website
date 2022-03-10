@@ -387,8 +387,19 @@ export function userRegisterSuccess(data: any) {
 }
 
 export function userRegisterFailure(error: any) {
-  console.log('errrrrrr', error)
-  displayToast('ERROR', error?.data?.error  ? error.data.error : 'ERROR! Please Try agin later')
+  if(error?.data?.errors?.base && error.data.errors.base.length){
+    error?.data?.errors.base.forEach((msg: string) => {
+      displayToast('ERROR', msg)
+    });
+  } else {
+    displayToast('ERROR', 'ERROR! Please Try agin later')
+  }
+  if (error?.data?.errors?.email) {
+    displayToast('ERROR', `Email ${error?.data?.errors?.email[0]}`)
+  }
+  if (error?.data?.errors?.phone) {
+    displayToast('ERROR', `Phone ${error?.data?.errors?.phone[0]}`)
+  }
   return {
     type: Type.USER_REGISTER_FAILURE,
     error: error
