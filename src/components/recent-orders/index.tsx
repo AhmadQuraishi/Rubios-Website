@@ -59,7 +59,7 @@ const RecentOrders = () => {
       displayToast('SUCCESS', 'Recent order is added in cart');
       navigate('/checkout');
     }
-    if (error.message) {
+    if (error && error.message) {
       setClickAction(false);
     }
   }, [restaurant]);

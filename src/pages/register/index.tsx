@@ -6,12 +6,15 @@ import RegisterForm from '../../components/register-form';
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import bgImage from '../../assets/imgs/login-bg.png';
+import './register.css';
+
 
 
 const useStyle = makeStyles(() => ({
     root: {
       minHeight: '100vh',
-      backgroundImage: `url(https://www.pexels.com/photo/1640777/download/)`,
+      backgroundImage: `url(${bgImage})`,
       backgroundRepeat: "no-repeat",
       backgroundSize: "cover",
       justifyContent: 'center'
@@ -20,12 +23,7 @@ const useStyle = makeStyles(() => ({
       width: '200px',
       margin: '20px',
     },
-    card: {
-      margin: '50px auto',
-      borderRadius: '20px !important',
-      padding: 30
 
-    },
   }));
 
 
@@ -46,7 +44,7 @@ const Register = () =>{
       <>
       <Grid container component="main" className={classes.root}>
            <Grid item xs={10} md={8} lg={6}>
-               <Card className={classes.card} elevation={6}>
+               <Card className="register-card" elevation={6}>
                  <RegisterForm />
                </Card>
            </Grid>
