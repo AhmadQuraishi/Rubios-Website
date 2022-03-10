@@ -263,7 +263,7 @@ const Welcome = () => {
                   </Fragment>
                 )}
             </Grid>
-            <Grid item xs={16} sm={16} md={14} lg={5} className="right-col">
+            <Grid item xs={16} sm={16} md={14} lg={5.5} className="right-col">
               <Typography
                 variant="caption"
                 className="label"
