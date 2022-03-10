@@ -29,7 +29,7 @@ export function setBasketRequestFailure(error: any) {
   };
 }
 
-export function createBasketFromPrev(body: RequestCreateBasketFromOrder) {
+export function createBasketFromPrev(body: any) {
   return {
     type: basketActionsTypes.CREATE_BASKET_FROM_PREV,
     body,

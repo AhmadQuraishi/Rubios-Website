@@ -40,13 +40,13 @@ const Welcome = () => {
 
   const [recentorders, setOrders] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
+  const [isError, setIserror] = useState(false);
   const [isReoder, setIsReoder] = useState(false);
   const [isRestaurant, setIsRestaurant] = useState(false);
   const [deliverymode, setDeliveryMode] = useState('');
   const [restInfo, setRestInfo] = useState(false);
   const [isbasket, setIsbasket] = useState(false);
   const [body, setBody] = useState({
-    orderref: '',
     id: '',
     ignoreunavailableproducts: true,
   });
@@ -71,6 +71,20 @@ const Welcome = () => {
     )
       dispatch(getFavRestaurant(providerToken.favourite_store_numbers));
   }, []);
+  useEffect(() => {
+    if (
+      userRecentOrders &&
+      userRecentOrders.orders &&
+      userRecentOrders.orders[0]
+    ) {
+      setOrders(userRecentOrders.orders);
+      setDeliveryMode(userRecentOrders.orders[0].deliverymode);
+      setBody({
+        id: userRecentOrders.orders[0].id,
+        ignoreunavailableproducts: true,
+      });
+    }
+  }, [userRecentOrders]);
   useEffect(() => {
     if (isRestaurant) {
       dispatch(setResturantInfoRequest(restaurant, deliverymode));
@@ -105,28 +119,10 @@ const Welcome = () => {
     }
   }, [basketObj]);
 
-  useEffect(() => {
-    if (userRecentOrders && userRecentOrders.orders) {
-      setOrders(userRecentOrders.orders);
-      setDeliveryMode(userRecentOrders.orders[0].deliverymode);
-      setBody({
-        orderref: userRecentOrders.orders[0].orderref,
-        id: userRecentOrders.orders[0].id,
-        ignoreunavailableproducts: true,
-      });
-    }
-  }, [userRecentOrders]);
-  useEffect(() => {
-    setIsEdit(false);
-    setIsReoder(false);
-    setIsbasket(false);
-  }, [error]);
-
   const gotoCategoryPage = (e: BaseSyntheticEvent) => {
     const orderType = e.target.name;
     if (favRestaurant && orderType != undefined) {
       dispatch(setResturantInfoRequest(favRestaurant, orderType));
-      displayToast('SUCCESS', 'Location changed to ' + favRestaurant.name);
       navigate(favRestaurant ? '/menu/' + favRestaurant.slug : '/');
     }
   };
@@ -144,9 +140,9 @@ const Welcome = () => {
   return (
     <Fragment>
       <Grid container component="main" columns={16} className={classes.root}>
-        <Grid item xs={12} className="welcome-wrapper">
+        <Grid item xs={13} className="welcome-wrapper">
           <Grid container columns={16} className="welcome-content">
-            <Grid item xs={14} sm={14} md={14} lg={7.5} className="left-col">
+            <Grid item xs={16} sm={16} md={14} lg={9} className="left-col">
               <Typography variant="caption" className="label" title="Welcome">
                 WELCOME
               </Typography>
@@ -158,7 +154,7 @@ const Welcome = () => {
                   providerToken.first_name
                 }
               >
-                WELCOME BACK{' '}
+                WELCOME BACK <br />{' '}
                 {providerToken &&
                   providerToken.first_name &&
                   providerToken.first_name}
@@ -192,7 +188,7 @@ const Welcome = () => {
                           </Typography>
                           <Card
                             elevation={0}
-                            className="product-card"
+                            className="p-card"
                             key={index + order.id}
                           >
                             <CardMedia
@@ -256,7 +252,7 @@ const Welcome = () => {
                   </Fragment>
                 )}
             </Grid>
-            <Grid item xs={14} sm={14} md={14} lg={5.5} className="right-col">
+            <Grid item xs={16} sm={16} md={14} lg={5.5} className="right-col">
               <Typography
                 variant="caption"
                 className="label"

@@ -4,7 +4,7 @@ import {
   Typography,
 } from '@mui/material';
 import {  useNavigate } from 'react-router-dom';
-import './welcome.css';
+import './login2.css';
 import {  Fragment, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import LoginForm from '../../components/login-form';
@@ -32,15 +32,15 @@ const Login2 = () => {
       navigate('/welcome')
     }
   }, [providerToken])
-  
+
   return (
     <Fragment>
       <Grid container component="main" columns={16} className={classes.root}>
-        <Grid item xs={12} className="welcome-wrapper">
-          <Grid container columns={16} className="welcome-content">
-            <Grid item xs={14} sm={14} md={14} lg={7} className="left-col">
-              <Typography variant="caption" className="label" title="Welcome">
-                LOGIN 
+        <Grid item xs={13} className="login-wrapper">
+          <Grid container columns={16} className="login-content">
+            <Grid item xs={16} sm={16} md={14} lg={9} className="left-col">
+              <Typography variant="caption" className="label" title="Login">
+                LOGIN
               </Typography>
               <Typography
                 variant="h4"
@@ -56,10 +56,10 @@ const Login2 = () => {
                   providerToken.first_name}
                 !
               </Typography>
-              <LoginForm />             
+              <LoginForm />
             </Grid>
-            <Grid item xs={14} sm={14} md={14} lg={5} className="right-col">
-              
+            <Grid item xs={16} sm={16} md={14} lg={5.5} className="right-col">
+
             </Grid>
           </Grid>
         </Grid>
