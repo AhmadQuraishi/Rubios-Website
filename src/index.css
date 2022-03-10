@@ -58,6 +58,7 @@ h6 {
   box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.2) !important;
   text-transform: uppercase;
   border-radius: 0 !important;
+  letter-spacing: 2.25px !important;
 }
 .custom-btn:focus {
   outline: 1px dotted #79C043 !important;

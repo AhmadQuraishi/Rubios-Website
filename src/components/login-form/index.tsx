@@ -14,7 +14,6 @@ import {userLogin} from '../../redux/actions/user';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    padding: '0px 0px 20px 0px',
     boxSizing: 'border-box',
   }
 }));
@@ -67,14 +66,15 @@ const LoginForm = () => {
             }) => (
               <form onSubmit={handleSubmit}>
                 <Grid item xs={16} md={16} lg={16}>
-                  <Grid container className="profile-section">
-                    <Grid item xs={16}>
+                  <Grid container spacing={1} className="sign-in-section">
+                     <Grid item xs={16} sm={8} md={8} lg={16}>
                       <TextField
                         aria-label="email"
                         label="Email"
                         title="Email"
                         type="text"
                         name="email"
+                        className="form-field"
                         sx={{ width: '100%' }}
                         value={values.email}
                         onChange={handleChange}
@@ -82,13 +82,14 @@ const LoginForm = () => {
                         helperText={errors.email}
                       />
                     </Grid>
-                    <Grid item xs={16}>
+                    <Grid item xs={16} sm={8} md={8} lg={16}>
                     <TextField
                       aria-label="password"
                       label="Password"
                       title=" Password"
                       type="password"
                       name="password"
+                      className="form-field"
                       sx={{ width: '100%' }}
                       value={values.password}
                       onChange={handleChange('password')}
@@ -97,18 +98,19 @@ const LoginForm = () => {
                       helperText={touched.password && errors.password}
                     />
                     </Grid>
-                    <Grid item xs={16} md={8} lg={8} sx={{float:'right'}}>
-                      <Button
-                        type="submit"
-                        disabled={loadingProvider || loadingAuth}
-                        aria-label="sign in"
-                        name="submit"
-                        title="sign in"
-                        variant="contained"
-                        sx={{ width: '100%'}}
-                      >
-                        Sign in
-                      </Button>
+                    <Grid item xs={16} sx={{textAlign: { lg:'right', md: 'center', sm: 'center', xs: 'center'} }}>
+                      <Grid item xs={16} md={8} lg={8} sx={{ width: '100%', display:'inline-block'}}>
+                        <Button
+                          type="submit"
+                          disabled={loadingProvider || loadingAuth}
+                          aria-label="sign in"
+                          name="submit"
+                          title="sign in"
+                          variant="contained"
+                        >
+                          Sign in
+                        </Button>
+                        </Grid>
                     </Grid>
                   </Grid>
                 </Grid>

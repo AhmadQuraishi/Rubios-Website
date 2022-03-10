@@ -334,7 +334,7 @@ const Checkout = () => {
                                 <FormGroup>
                                   <FormControlLabel
                                     control={<Checkbox checked={values.emailNotification} onChange={handleChange}  />}
-                                    label="Send me emails with special offers and updates"
+                                    label="Send me emails with special offers and updates."
                                     aria-label="Send me emails with special offers and updates"
                                     aria-required="true"
                                     title="Send me emails with special offers and updates"

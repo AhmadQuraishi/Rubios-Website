@@ -2,6 +2,7 @@ import { makeStyles } from '@mui/styles';
 import {
   Grid,
   Typography,
+  Button,
 } from '@mui/material';
 import {  useNavigate } from 'react-router-dom';
 import './login2.css';
@@ -54,12 +55,59 @@ const Login2 = () => {
                 {providerToken &&
                   providerToken.first_name &&
                   providerToken.first_name}
-                !
               </Typography>
               <LoginForm />
             </Grid>
             <Grid item xs={16} sm={16} md={14} lg={5.5} className="right-col">
-
+              <Typography variant="caption" className="label" title="More Options">
+                More Options
+              </Typography>
+              <Button
+                type="submit"
+                aria-label="sign in with facebook"
+                name="facebook"
+                title="sign in with facebook"
+                variant="contained"
+                className="sign-in-btn"
+              >
+                <img src={require('../../assets/imgs/fb-icon.png')}/>
+                Sign in with facebook
+              </Button>
+              <Button
+                type="submit"
+                aria-label="Sign in with apple"
+                name="Sign in with apple"
+                title="Sign in with apple"
+                variant="contained"
+                className="sign-in-btn"
+              >
+                <img src={require('../../assets/imgs/apple-icon.png')}/>
+                Sign in with apple
+              </Button>
+              <Button
+                type="submit"
+                aria-label="Sign in with google"
+                name="Sign in with google"
+                title="Sign in with google"
+                variant="contained"
+                className="sign-in-btn"
+              >
+                <img src={require('../../assets/imgs/g-icon.png')}/>
+                Sign in with google
+              </Button>
+              <Button
+                type="submit"
+                aria-label="Create Account"
+                name="Create Account"
+                title="Create Account"
+                variant="contained"
+                className="acc-btn"
+              >
+                Create Account
+              </Button>
+              <Typography variant="caption" className="label bold" title="continue as guest">
+                Continue as guest
+              </Typography>
             </Grid>
           </Grid>
         </Grid>

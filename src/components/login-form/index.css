@@ -1,45 +1,25 @@
-.profile-section .MuiGrid-grid-xs-12 {
+.sign-in-section .MuiGrid-grid-xs-12 {
   padding-top: 20px;
 }
-.profile-section .MuiFilledInput-root {
+.sign-in-section .MuiFilledInput-root {
   background-color: #fff !important;
 }
-.profile-section .MuiFilledInput-root:hover,
-.profile-section .MuiFilledInput-root::before,
-.profile-section .MuiFilledInput-root::after {
+.sign-in-section .MuiFilledInput-root:hover,
+.sign-in-section .MuiFilledInput-root::before,
+.sign-in-section .MuiFilledInput-root::after {
   border: 0 !important;
 }
-.phone-field label.MuiInputLabel-root {
-  font-family: 'Poppins-Bold', sans-serif !important;
-  /*padding: 14px 14px 14px 0px;*/
-  color: #214F66;
-  font-size: 12px;
+.sign-in-section .form-field {
+  margin-bottom: 14px;
 }
-.birthday-button {
-  background-color: #eaeaea !important;
-  color: black !important;
-  justify-content: left !important;
-  padding-left: 20px !important;
-  text-transform: initial;
+.sign-in-section button {
+  margin-top: 31px;
+  width: 100%;
 }
 
-.profile-section .date {
-  width: 100% !important;
-  text-align: left;
+@media screen and (max-width: 900px) {
+  .sign-in-section button {
+    width: 50%;
+  }
 }
-.bday-text {
-  font-family: 'Poppins-Bold';
-  position: absolute;
-  top: 0;
-  font-size: 9px;
-  color: #214F66;
-}
-.birthday-button span {
-  text-transform: initial;
-}
-.body-text {
-  font-size: 15px;
-  font-family: 'Poppins-Medium', sans-serif !important;
-  color: #414141;
-  padding-top: 8px;
-}
+
