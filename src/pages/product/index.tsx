@@ -76,7 +76,6 @@ const Product = () => {
         dispatch(getCategoriesRequest(restaurant.id));
       }
     }
-    console.log(basketObj.basketType);
     setBasketType((basketObj && basketObj.basketType) || 'New');
   }, []);
 

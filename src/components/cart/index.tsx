@@ -91,7 +91,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: '11px !important',
     fontFamily: 'Poppins-Bold !important',
     display: 'inline',
-    cursor: 'pointer',
+    cursor: 'default',
     textDecoration: 'underline',
     textTransform: 'uppercase',
   },
@@ -117,7 +117,6 @@ const Cart = (props: any) => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    console.log(basketObj);
     setBasketType((basketObj && basketObj.basketType) || '');
   }, []);
 
@@ -248,7 +247,12 @@ const Cart = (props: any) => {
           {basketObj &&
             basketObj.basket &&
             basketObj.basket.products.map((item: any, index: number) => (
-              <Grid key={index} item xs={12} sx={{ padding: '0px' }}>
+              <Grid
+                key={Math.random() + index}
+                item
+                xs={12}
+                sx={{ padding: '0px' }}
+              >
                 <Grid container spacing={0}>
                   <Grid item xs={9}>
                     <Typography
@@ -297,17 +301,19 @@ const Cart = (props: any) => {
                         {productRemoveObj &&
                         productRemoveObj.loading &&
                         clickAction == item.id + '-remove' ? (
-                          <MUILink
+                          <span
+                            key={Math.random() + 'disable-remove'}
                             title="Remove"
                             className={classes.disabledLink}
                             aria-label="Remove the item from basket"
                             onClick={() => false}
                           >
                             Remove
-                          </MUILink>
+                          </span>
                         ) : (
-                          <MUILink
+                          <span
                             title="Remove"
+                            key={Math.random() + 'active-remove'}
                             className={classes.smallLink}
                             aria-label="Remove the item from basket"
                             onClick={() => {
@@ -316,22 +322,23 @@ const Cart = (props: any) => {
                             }}
                           >
                             Remove
-                          </MUILink>
+                          </span>
                         )}
                       </Grid>
                       <Grid item xs={3} sx={{ textAlign: 'center' }}>
                         {(productRemoveObj && productRemoveObj.loading) ||
                         (productAddObj && productAddObj.loading) ? (
-                          <MUILink
+                          <span
+                            key={Math.random() + 'disable-edit'}
                             onClick={() => false}
                             title="Edit"
                             className={classes.smallLink}
                             aria-label="Make changes to the current menu item"
                           >
                             Edit
-                          </MUILink>
+                          </span>
                         ) : (
-                          <MUILink
+                          <span
                             onClick={() => {
                               showCart();
                               navigate(
@@ -344,28 +351,31 @@ const Cart = (props: any) => {
                                 }`,
                               );
                             }}
+                            key={Math.random() + 'active-edit'}
                             title="Edit"
                             className={classes.smallLink}
                             aria-label="Make changes to the current menu item"
                           >
                             Edit
-                          </MUILink>
+                          </span>
                         )}
                       </Grid>
                       <Grid item xs={3} sx={{ textAlign: 'center' }}>
                         {productAddObj &&
                         productAddObj.loading &&
                         clickAction == item.id + '-add' ? (
-                          <MUILink
+                          <span
+                            key={Math.random() + 'disable-duplicate'}
                             onClick={() => false}
                             className={classes.disabledLink}
                             title="Duplicate"
                             aria-label="Duplicate the basket item"
                           >
                             Duplicate
-                          </MUILink>
+                          </span>
                         ) : (
-                          <MUILink
+                          <span
+                            key={Math.random() + 'active-duplicate'}
                             onClick={() => {
                               duplicateProductHandle(item.id);
                               setClickAction(item.id + '-add');
@@ -375,7 +385,7 @@ const Cart = (props: any) => {
                             aria-label="Duplicate the basket item"
                           >
                             Duplicate
-                          </MUILink>
+                          </span>
                         )}
                       </Grid>
                       <Grid item xs={3}></Grid>

@@ -1,6 +1,5 @@
 import { Grid, Typography, Card, CardContent } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { displayToast } from '../../helpers/toast';
 import { Option, OptionGroup } from '../../types/olo-api';
 import './food-menu-card.css';
 
@@ -232,6 +231,7 @@ const FoodMenuCard = (props: any) => {
                       menuItem.modifiers &&
                       menuItem.modifiers.map((item: any, index: number) => (
                         <select
+                          key={Math.random() + index + '-select'}
                           className="select"
                           onClick={(e) => e.stopPropagation()}
                           style={{ width: '115px', fontSize: '12px' }}
