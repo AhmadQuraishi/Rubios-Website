@@ -113,6 +113,7 @@ const Welcome = () => {
         navigate(restaurant ? '/menu/' + restaurant.slug : '/');
         handleCart();
       }
+      displayToast('SUCCESS', 'Recent order is added in cart');
       setIsEdit(false);
       setIsReoder(false);
       setIsbasket(false);
