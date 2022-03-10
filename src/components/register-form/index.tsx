@@ -289,7 +289,7 @@ const RegisterForm = () => {
                         }
                       />
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} className="date-field">
                       <Typography
                         variant="body2"
                         className="body-text"
@@ -340,7 +340,7 @@ const RegisterForm = () => {
                         communications from Rubio's
                       </Typography>
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} sm={8} md={8} lg={8}>
                       <Button
                         type="submit"
                         disabled={loadingProvider || loadingAuth}

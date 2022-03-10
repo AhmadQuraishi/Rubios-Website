@@ -7,6 +7,8 @@ import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import bgImage from '../../assets/imgs/login-bg.png';
+import './register.css';
+
 
 
 const useStyle = makeStyles(() => ({
@@ -21,12 +23,7 @@ const useStyle = makeStyles(() => ({
       width: '200px',
       margin: '20px',
     },
-    card: {
-      margin: '50px auto',
-      borderRadius: '20px !important',
-      padding: '50px',
 
-    },
   }));
 
 
@@ -47,7 +44,7 @@ const Register = () =>{
       <>
       <Grid container component="main" className={classes.root}>
            <Grid item xs={10} md={8} lg={6}>
-               <Card className={classes.card} elevation={6}>
+               <Card className="register-card" elevation={6}>
                  <RegisterForm />
                </Card>
            </Grid>
