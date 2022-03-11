@@ -10,6 +10,7 @@ const INITIAL_STATE = {
     error: {},
   },
   basketType: 'New',
+  orderConfirmation: false,
   error: {},
 };
 
@@ -91,8 +92,14 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
           data: null,
           error: {},
         },
+        orderConfirmation: true,
         error: {},
       };
+    case basketActionsTypes.REMOVE_BASKET_ORDER_CONFIRMATION:
+      return {
+        ...state,
+        orderConfirmation: false,
+    };
     default:
       return state;
   }

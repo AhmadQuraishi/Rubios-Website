@@ -3,7 +3,15 @@ import { Grid, Typography } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import './order-detail.css';
 
-const OrderDetail = ({basket}: any)  => {
+const getOptions = (options: any) => {
+  let val = '';
+  options.map((item: any) => {
+    val = val + ' ' + item.name.trim() + ',';
+  });
+  return val.trim().replace(/,*$/, '');
+};
+
+const OrderDetail = ({basket, validate}: any)  => {
   return (
     <Grid container>
       <Grid item xs={12} sm={12} md={8} lg={8} className="order-detail">
@@ -24,6 +32,14 @@ const OrderDetail = ({basket}: any)  => {
                   <Grid item xs={9} sm={9} md={9} lg={10}>
                     <Typography variant="h6" title={item.name}>
                       {item.name}
+                    </Typography>
+                    <Typography
+                      title={getOptions(item.choices)}
+                      variant="caption"
+                      fontSize={11}
+                      sx={{ paddingBottom: '5px', display: 'block' }}
+                    >
+                      {getOptions(item.choices)}
                     </Typography>
                   </Grid>
                   <Grid item xs={2} sm={2} md={2} lg={1}>
@@ -46,8 +62,8 @@ const OrderDetail = ({basket}: any)  => {
             </Typography>
           </Grid>
           <Grid item xs={2} sm={2} md={2} lg={1}>
-             <Typography variant="h6" title={basket && basket.subtotal}>
-              ${basket && basket.subtotal}
+           <Typography variant="h6" title={validate && validate.subtotal}>
+              ${validate && validate.subtotal}
             </Typography>
           </Grid>
         </Grid>
@@ -59,7 +75,19 @@ const OrderDetail = ({basket}: any)  => {
           </Grid>
            <Grid item xs={2} sm={2} md={2} lg={1}>
             <Typography variant="h6" >
-            ${basket && basket.taxes && basket.taxes.reduce((sum: number, tax: any) => sum + tax.tax, 0)}
+            ${validate && validate.taxes && validate.taxes.reduce((sum: number, tax: any) => sum + tax.tax, 0)}
+            </Typography>
+          </Grid>
+        </Grid>
+        <Grid container>
+          <Grid item xs={10} sm={10} md={10} lg={11}>
+            <Typography variant="h6" className="n-bold" title="Tax">
+              TOTAL FEE
+            </Typography>
+          </Grid>
+           <Grid item xs={2} sm={2} md={2} lg={1}>
+            <Typography variant="h6" >
+            ${validate && validate.totalfees && validate.totalfees.toFixed(2)}
             </Typography>
           </Grid>
         </Grid>
@@ -73,8 +101,8 @@ const OrderDetail = ({basket}: any)  => {
             </Typography>
           </Grid>
           <Grid item xs={2} sm={2} md={2} lg={1}>
-            <Typography variant="h6" title={basket && basket.total}>
-              ${basket && basket.total}
+            <Typography variant="h6" title={validate && validate.total}>
+              ${validate && validate.total}
             </Typography>
           </Grid>
         </Grid>
