@@ -9,11 +9,11 @@
 .profile-section .MuiFilledInput-root::after {
   border: 0 !important;
 }
-.phone-field label.MuiInputLabel-root {
-  font-family: 'Poppins-Bold', sans-serif !important;
-  /*padding: 14px 14px 14px 0px;*/
-  color: #214F66;
-  font-size: 12px;
+.profile-section .mobile-field .MuiInputLabel-root.Mui-focused {
+  padding-top: 0px;
+}
+.profile-section .mobile-field .MuiInputLabel-root.MuiFormLabel-filled.Mui-focused {
+  padding-top: 14px;
 }
 .birthday-button {
   background-color: #eaeaea !important;

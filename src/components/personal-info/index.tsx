@@ -221,7 +221,8 @@ const PersonalInfo = () => {
                     </Grid>
                     <Grid item xs={12}>
                       <TextField
-                        aria-label="mobile phone "
+                        className="mobile-field"
+                        aria-label="mobile phone"
                         label="Mobile Phone"
                         title="Mobile Phone"
                         value={values.phone}
