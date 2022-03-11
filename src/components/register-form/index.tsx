@@ -328,16 +328,14 @@ const RegisterForm = () => {
                     title="Password must be at least 8 characters."
                     sx={{ width: '100%' }}
                   >
-                    <Checkbox onChange={handleChangeCheckbox} /> I agree to the
-                    Rubio's{' '}
+                    <Checkbox onChange={handleChangeCheckbox} /> I agree to the{' '}
                     <Link
                       href="https://www.rubios.com/terms-and-conditions?app=1"
                       underline="hover"
-                      color="#FF7200"
                     >
-                      terms and conditions and to receiving marketing
-                      communications from Rubio's.
+                      Rubio's terms and conditions{' '}
                     </Link>
+                    and to receiving marketing communications from Rubio's.
                   </Typography>
                 </Grid>
                 <Grid item xs={12} sm={8} md={8} lg={8}>
