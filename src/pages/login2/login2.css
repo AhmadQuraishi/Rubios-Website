@@ -63,7 +63,7 @@
     margin: 80px 75px !important;
   }
   .login-content {
-    padding: 35px;
+    padding: 35px 35px 60px 35px;
   }
   .login-content .left-col {
     border-right: none !important;
@@ -73,6 +73,10 @@
   }
   .login-content .right-col {
     padding: 0px 110px;
+  }
+  .login-content .right-col .acc-btn {
+    width: calc(100% - 40px);
+    margin: 45px 20px 0px 20px;
   }
 }
 
