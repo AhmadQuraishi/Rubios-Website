@@ -52,7 +52,7 @@ const Login2 = () => {
                   providerToken.first_name
                 }
               >
-                SIGN IN RUBIO'S REWARDS{' '}
+                SIGN IN TO<br/> RUBIO'S REWARDS{' '}
                 {providerToken &&
                   providerToken.first_name &&
                   providerToken.first_name}
