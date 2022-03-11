@@ -52,7 +52,7 @@ const Login2 = () => {
                   providerToken.first_name
                 }
               >
-                SIGN IN RUBIO'S REWARDS{' '}
+                SIGN IN TO <br/>RUBIO'S REWARDS{' '}
                 {providerToken &&
                   providerToken.first_name &&
                   providerToken.first_name}
@@ -82,7 +82,7 @@ const Login2 = () => {
                 variant="contained"
                 className="sign-in-btn"
               >
-                <img src={require('../../assets/imgs/apple-icon.png')}/>
+                <img className="apple-icon" src={require('../../assets/imgs/apple-icon.png')}/>
                 Sign in with apple
               </Button>
               <Button
