@@ -64,7 +64,9 @@ const Checkout = () => {
   }, [basket]);
 
   React.useEffect(() => {
-    if (basketObj.basket) {
+    if (basketObj.orderConfirmation) {
+      navigate('/orderconfirmation')
+    } else if (basketObj.basket) {
       setBasket(basketObj.basket);
     } else {
       navigate('/location')

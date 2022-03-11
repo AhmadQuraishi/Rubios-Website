@@ -41,7 +41,9 @@ const OrderTime = ()  => {
   const basketObj = useSelector((state: any) => state.basketReducer);
 
   React.useEffect(() => {
-    if (basketObj.basket) {
+    if (basketObj.orderConfirmation) {
+      navigate('/orderconfirmation')
+    } else if (basketObj.basket) {
       if(basketObj.basket?.timewanted){
         setSelectedDate(moment(basketObj.basket.timewanted, 'YYYYMMDD HH:mm'));
         setSelectedTime(basketObj.basket.timewanted);

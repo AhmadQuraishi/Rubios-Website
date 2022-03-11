@@ -177,4 +177,10 @@ export function submitBasketSinglePaymentFailure(error: any) {
   };
 }
 
+export function removeBasketOrderConfirmation() {
+  return {
+    type: basketActionsTypes.REMOVE_BASKET_ORDER_CONFIRMATION
+  };
+}
+
 
