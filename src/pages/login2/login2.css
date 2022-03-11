@@ -12,7 +12,7 @@
 }
 .login-content h4 {
   margin: 0px 0px 23px 0px;
-  font-size: 46px;
+  font-size: 42px;
 }
 .login-content .left-col {
   border-right: 1px solid #0069aa;
@@ -26,9 +26,9 @@
   background: white;
   border: 2px solid #bebebe;
   color: #747474;
-  padding-left: 65px;
-  font-size: 14px;
-  letter-spacing: 2.25px;
+  padding-left: 62px;
+  font-size: 13px;
+  letter-spacing: 1.5px !important;
   display: inline-block;
   text-align: left;
 }
