@@ -3,6 +3,14 @@ import { Grid, Typography } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import './order-detail.css';
 
+const getOptions = (options: any) => {
+  let val = '';
+  options.map((item: any) => {
+    val = val + ' ' + item.name.trim() + ',';
+  });
+  return val.trim().replace(/,*$/, '');
+};
+
 const OrderDetail = ({basket}: any)  => {
   return (
     <Grid container>
@@ -24,6 +32,14 @@ const OrderDetail = ({basket}: any)  => {
                   <Grid item xs={9} sm={9} md={9} lg={10}>
                     <Typography variant="h6" title={item.name}>
                       {item.name}
+                    </Typography>
+                    <Typography
+                      title={getOptions(item.choices)}
+                      variant="caption"
+                      fontSize={11}
+                      sx={{ paddingBottom: '5px', display: 'block' }}
+                    >
+                      {getOptions(item.choices)}
                     </Typography>
                   </Grid>
                   <Grid item xs={2} sm={2} md={2} lg={1}>
