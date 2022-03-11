@@ -57,6 +57,9 @@
   font-size: 15px !important;
   letter-spacing: 2px;
 }
+.welcome-content .left-col .p-card .product-content {
+  padding-bottom: 30px;
+}
 .welcome-content .p-card .MuiCardContent-root {
   padding: 0px 10px;
 }
