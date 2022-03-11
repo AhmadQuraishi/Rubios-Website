@@ -52,7 +52,7 @@ const Login2 = () => {
                   providerToken.first_name
                 }
               >
-                SIGN IN TO<br/> RUBIO'S REWARDS{' '}
+                SIGN IN RUBIO'S REWARDS{' '}
                 {providerToken &&
                   providerToken.first_name &&
                   providerToken.first_name}
@@ -103,10 +103,11 @@ const Login2 = () => {
                 title="Create Account"
                 variant="contained"
                 className="acc-btn"
+                onClick={() => navigate('/register')}
               >
                 Create Account
               </Button>
-              <Typography variant="caption" className="label bold" title="continue as guest">
+              <Typography onClick={() => navigate('/')} style={{cursor: 'pointer'}} variant="caption" className="label bold" title="continue as guest">
                 Continue as guest
               </Typography>
             </Grid>
