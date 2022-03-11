@@ -210,6 +210,7 @@ const RegisterForm = () => {
                     </Grid>
                     <Grid item xs={12}>
                     <TextField
+                        className="mobile-field"
                         aria-label="mobile phone "
                         label="Mobile Phone (Optional)"
                         title="Mobile Phone (Optional)"

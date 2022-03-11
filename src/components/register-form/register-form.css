@@ -33,7 +33,12 @@
   padding-top: 0px !important;
   float: left;
 }
-
+.sign-up-section .mobile-field .MuiInputLabel-root.Mui-focused {
+  padding-top: 0px;
+}
+.sign-up-section .mobile-field .MuiInputLabel-root.MuiFormLabel-filled.Mui-focused {
+  padding-top: 14px;
+}
 
 
 @media screen and (max-width: 468px) {
