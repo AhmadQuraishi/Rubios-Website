@@ -94,7 +94,6 @@
   }
 }
 
-
 @media screen and (max-width: 900px) {
   .welcome-wrapper {
     margin: 70px 50px !important;
@@ -127,4 +126,7 @@
     padding: 0px;
     font-size: 13px;
   }
+}
+.user-name {
+  text-transform: uppercase;
 }

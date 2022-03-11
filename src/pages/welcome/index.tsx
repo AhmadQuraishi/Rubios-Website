@@ -156,13 +156,14 @@ const Welcome = () => {
               </Typography>
               <Typography
                 variant="h4"
+                className="user-name"
                 title={
                   providerToken &&
                   providerToken.first_name &&
                   providerToken.first_name
                 }
               >
-                WELCOME BACK {' '}
+                WELCOME BACK <br></br>
                 {providerToken &&
                   providerToken.first_name &&
                   providerToken.first_name}
@@ -176,6 +177,8 @@ const Welcome = () => {
                 userRecentOrders &&
                 userRecentOrders.orders &&
                 userRecentOrders.orders.length > 0 &&
+                authToken &&
+                authToken.authtoken &&
                 isEdit == false &&
                 isReoder == false && (
                   <Fragment>
