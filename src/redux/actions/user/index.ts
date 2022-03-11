@@ -146,10 +146,11 @@ export function deleteUserDelAddFailure(error: any) {
 
 //Update user
 
-export function updateUser(data: any) {
+export function updateUser(data: any, profileCheck: boolean) {
   return {
     type: Type.UPDATE_USER,
-    payload: data
+    payload: data,
+    profileCheck: profileCheck
   };
 }
 

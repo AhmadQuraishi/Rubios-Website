@@ -162,7 +162,7 @@ const PersonalInfo = () => {
                   : userProfile.phone,
               };
 
-              const data: any = await dispatch(updateUser(obj));
+              const data: any = await dispatch(updateUser(obj, true));
             }}
           >
             {({

@@ -148,10 +148,14 @@ function* updateUserHandler(action: any): any {
     );
     yield put(updateUserSuccess(response));
     yield put(getProviderRequestSuccess(response));
-    displayToast("SUCCESS" , "profile updated successfully");
+    if(action.profileCheck){
+      displayToast("SUCCESS" , "profile updated successfully");
+    }    
   } catch (error) {
     yield put(updateUserFailure(error));
-    displayToast("ERROR" , "profile not updated");
+    if(action.profileCheck){
+      displayToast("ERROR" , "profile not updated");
+    }
   }
 }
 

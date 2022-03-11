@@ -29,6 +29,7 @@ import { HoursListing } from '../../helpers/hoursListing';
 import { getSingleRestaurantCalendar, validateBasket } from '../../redux/actions/basket/checkout';
 import { displayToast } from '../../helpers/toast';
 import { generateSubmitBasketPayload } from '../../helpers/checkout';
+import { updateUser } from '../../redux/actions/user';
 
 const Checkout = () => {
   const dispatch = useDispatch();
@@ -180,17 +181,22 @@ const Checkout = () => {
    formData.phone = formData.phone.replace(/\D/g, '')
 
    const basketPayload = generateSubmitBasketPayload(formData, cardDetails, authToken?.authtoken);
-  //  const contactOptionsPayload: ResponseContactOptions = {
-  //     optin: formData.emailNotification,
-  //     marketingsms: false,
-  //     upsell: false,
-  //     emailreceipts: false,
-  //     followups: false
-  //  }
 
     if(basket){
       setButtonDisabled(false);
-      dispatch(validateBasket(basket.id, basketPayload))
+      dispatch(validateBasket(basket.id, basketPayload));
+      if(authToken?.authtoken && authToken.authtoken !== ''){
+        const user: any = {
+            email: providerToken.email,
+            first_name: providerToken?.first_name,
+            last_name: providerToken?.last_name,
+            favourite_locations: providerToken?.favourite_locations,
+            marketing_email_subscription: formData.emailNotification,
+            phone: formData.phone
+          }
+        dispatch(updateUser(user, false));
+      }
+      
     }
   }
 
@@ -273,6 +279,7 @@ const Checkout = () => {
                       <Grid item xs={12}>
                         <TextField
                           aria-label="First Name"
+                          disabled={authToken?.authtoken ? true : false}
                           onBlur={handleBlur}
                           label="First Name"
                           aria-required="true"
@@ -289,6 +296,7 @@ const Checkout = () => {
                       <Grid item xs={12}>
                         <TextField
                           aria-label="Last Name"
+                          disabled={authToken?.authtoken ? true : false}
                           onBlur={handleBlur}
                           label="Last Name"
                           aria-required="true"
@@ -314,7 +322,7 @@ const Checkout = () => {
                                 name="phone"
                                 InputLabelProps={
                                   {
-                                    // shrink: values.phone !== '' ? true : false,
+                                    shrink: touched && values.phone == '' ? false : true
                                   }
                                 }
                                 InputProps={{
@@ -327,6 +335,7 @@ const Checkout = () => {
                             <Grid item xs={12}>
                               <TextField
                                 aria-label="Email"
+                                disabled={authToken?.authtoken ? true : false}
                                 onBlur={handleBlur}
                                 label="Email"
                                 aria-required="true"
