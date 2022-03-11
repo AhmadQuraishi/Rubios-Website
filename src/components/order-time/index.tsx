@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Grid,
   Typography,
   Button,
@@ -37,6 +37,7 @@ const OrderTime = ()  => {
   const [timeSlots, setTimeSlots] = React.useState<string[]>([]);
   const [open, setOpen] = React.useState<boolean>(false);
   const [basket, setBasket] = React.useState<ResponseBasket>();
+  const [notAvailableSlots, setNotAvailableSlots] = useState(false);
 
 
   const basketObj = useSelector((state: any) => state.basketReducer);
@@ -79,6 +80,11 @@ const OrderTime = ()  => {
         restaurantHours[0].end,
         restaurantHours[0].isOpenAllDay,
       );
+      if(!slots.length){
+        setNotAvailableSlots(true)
+      } else {
+        setNotAvailableSlots(false)
+      }
       setTimeSlots(slots)
     }
   }, [restaurantHours]);
@@ -157,15 +163,29 @@ const OrderTime = ()  => {
                       <Grid container>
                         <FormControl>
                           <Grid container>
-                            <Grid item xs={6} sm={3} md={3} lg={3}>
-                              <FormLabel
-                                className="slot-label"
-                                title="QUICKEST"
-                                id="demo-row-radio-buttons-group-label"
-                              >
-                                QUICKEST
-                              </FormLabel>
-                            </Grid>
+                          {
+                                notAvailableSlots ? (
+                          <Grid item xs={12} >
+                                <Typography
+                                  variant="caption"
+                                  className="label"
+                                  style={{color: 'red'}}
+                                >
+                                  No availabe slots. Please try a different Date.
+                                </Typography>
+                          </Grid>
+                           ) : (
+                          <Grid item xs={6} sm={3} md={3} lg={3}>                                
+                                <FormLabel
+                                  className="slot-label"
+                                  title="QUICKEST"
+                                  id="demo-row-radio-buttons-group-label"
+                                >
+                                  QUICKEST
+                                </FormLabel>
+                          </Grid>
+                             )
+                            }     
                           </Grid>
                           <ToggleButtonGroup
                             value={selectedTime}
