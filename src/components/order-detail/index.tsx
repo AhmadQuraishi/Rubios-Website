@@ -11,7 +11,7 @@ const getOptions = (options: any) => {
   return val.trim().replace(/,*$/, '');
 };
 
-const OrderDetail = ({basket}: any)  => {
+const OrderDetail = ({basket, validate}: any)  => {
   return (
     <Grid container>
       <Grid item xs={12} sm={12} md={8} lg={8} className="order-detail">
@@ -62,8 +62,8 @@ const OrderDetail = ({basket}: any)  => {
             </Typography>
           </Grid>
           <Grid item xs={2} sm={2} md={2} lg={1}>
-             <Typography variant="h6" title={basket && basket.subtotal}>
-              ${basket && basket.subtotal}
+             <Typography variant="h6" title={validate && validate.subtotal}>
+              ${validate && validate.subtotal}
             </Typography>
           </Grid>
         </Grid>
@@ -75,7 +75,7 @@ const OrderDetail = ({basket}: any)  => {
           </Grid>
            <Grid item xs={2} sm={2} md={2} lg={1}>
             <Typography variant="h6" >
-            ${basket && basket.taxes && basket.taxes.reduce((sum: number, tax: any) => sum + tax.tax, 0)}
+            ${validate && validate.taxes && validate.taxes.reduce((sum: number, tax: any) => sum + tax.tax, 0)}
             </Typography>
           </Grid>
         </Grid>
@@ -87,7 +87,7 @@ const OrderDetail = ({basket}: any)  => {
           </Grid>
            <Grid item xs={2} sm={2} md={2} lg={1}>
             <Typography variant="h6" >
-            ${basket && basket.totalfees && basket.totalfees.toFixed(2)}
+            ${validate && validate.totalfees && validate.totalfees.toFixed(2)}
             </Typography>
           </Grid>
         </Grid>
@@ -101,8 +101,8 @@ const OrderDetail = ({basket}: any)  => {
             </Typography>
           </Grid>
           <Grid item xs={2} sm={2} md={2} lg={1}>
-            <Typography variant="h6" title={basket && basket.total}>
-              ${basket && basket.total}
+            <Typography variant="h6" title={validate && validate.total}>
+              ${validate && validate.total}
             </Typography>
           </Grid>
         </Grid>
