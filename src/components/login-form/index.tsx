@@ -4,6 +4,7 @@ import {
   TextField,
   Button,
   Theme,
+  Link
 } from '@mui/material';
 import './index.css';
 import { makeStyles } from '@mui/styles';
@@ -97,6 +98,12 @@ const LoginForm = () => {
                       error={Boolean(touched.password && errors.password)}
                       helperText={touched.password && errors.password}
                     />
+                      <Link
+                        className="forgot-pass"
+                        title="forgot-password"
+                      >
+                        Forgot Password?
+                      </Link>
                     </Grid>
                     <Grid item xs={16} sx={{textAlign: { lg:'right', md: 'center', sm: 'center', xs: 'center'} }}>
                       <Grid item xs={16} md={8} lg={8} sx={{ width: '100%', display:'inline-block'}}>

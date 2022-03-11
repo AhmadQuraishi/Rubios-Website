@@ -16,6 +16,12 @@
   margin-top: 31px;
   width: 100%;
 }
+.sign-in-section .forgot-pass {
+  font-size: 12px;
+  color: #2b4b62;
+  font-family: 'Poppins-Medium' !important;
+  text-decoration: none;
+}
 
 @media screen and (max-width: 900px) {
   .sign-in-section button {
