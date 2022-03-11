@@ -199,7 +199,7 @@ const Welcome = () => {
                               alt="image"
                               className="order-img"
                             />
-                            <CardContent>
+                            <CardContent className="product-content">
                               {order.products
                                 .slice(0, 3)
                                 .map((product: any, index: number) => (
