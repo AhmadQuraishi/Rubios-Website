@@ -61,6 +61,7 @@ const Welcome = () => {
     (state: any) => state.favRestaurantReducer,
   );
   useEffect(() => {
+    console.log(userRecentOrders);
     if (authToken && authToken.authtoken) {
       dispatch(getUserRecentOrders());
     }
@@ -256,7 +257,9 @@ const Welcome = () => {
                   </Fragment>
                 )}
               {!loading &&
-                userRecentOrders == null &&
+                userRecentOrders &&
+                userRecentOrders.orders &&
+                userRecentOrders.orders.length === 0 &&
                 authToken &&
                 authToken.authtoken &&
                 isEdit == false &&
