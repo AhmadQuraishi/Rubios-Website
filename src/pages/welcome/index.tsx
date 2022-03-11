@@ -24,9 +24,10 @@ import { displayToast } from '../../helpers/toast';
 import { handleCart } from '../../components/header';
 const useStyle = makeStyles(() => ({
   root: {
+    minHeight: '100vh',
     backgroundImage: `url(https://upload.wikimedia.org/wikipedia/commons/6/6d/Good_Food_Display_-_NCI_Visuals_Online.jpg)`,
     backgroundRepeat: 'no-repeat',
-    backgroundSize: '100% 100%',
+    backgroundSize: 'cover',
     justifyContent: 'center',
   },
   caption: {},
@@ -74,9 +75,31 @@ const Welcome = () => {
       dispatch(getFavRestaurant(providerToken.favourite_store_numbers));
   }, []);
   useEffect(() => {
-    dispatch(getUserRecentOrders());
-    dispatch(getFavRestaurant(60854));
-  }, []);
+    if (
+      userRecentOrders &&
+      userRecentOrders.orders &&
+      userRecentOrders.orders[0]
+    ) {
+      setOrders(userRecentOrders.orders);
+      setDeliveryMode(userRecentOrders.orders[0].deliverymode);
+      setBody({
+        id: userRecentOrders.orders[0].id,
+        ignoreunavailableproducts: true,
+      });
+    }
+  }, [userRecentOrders]);
+  useEffect(() => {
+    if (isRestaurant) {
+      dispatch(setResturantInfoRequest(restaurant, deliverymode));
+      setRestInfo(true);
+      setIsRestaurant(false);
+    }
+    if (restInfo) {
+      dispatch(createBasketFromPrev(body));
+      setRestInfo(false);
+      setIsbasket(true);
+    }
+  }, [restaurant, orderType]);
 
   useEffect(() => {
     if (
@@ -121,7 +144,7 @@ const Welcome = () => {
   return (
     <Fragment>
       <Grid container component="main" columns={16} className={classes.root}>
-        <Grid item xs={16} className="welcome-wrapper">
+        <Grid item xs={13} className="welcome-wrapper">
           <Grid container columns={16} className="welcome-content">
             <Grid item xs={16} sm={16} md={14} lg={9} className="left-col">
               <Typography variant="caption" className="label" title="Welcome">
@@ -135,7 +158,7 @@ const Welcome = () => {
                   providerToken.first_name
                 }
               >
-                WELCOME BACK {' '}
+                WELCOME BACK <br />{' '}
                 {providerToken &&
                   providerToken.first_name &&
                   providerToken.first_name}
@@ -258,7 +281,7 @@ const Welcome = () => {
                 favRestaurant &&
                 isEdit == false &&
                 isReoder == false && (
-                  <Grid container spacing={1} columns={16}>
+                  <Grid container columns={16}>
                     <Grid
                       item
                       xs={16}
