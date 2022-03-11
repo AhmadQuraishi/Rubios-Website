@@ -63,6 +63,18 @@ const OrderDetail = ({basket}: any)  => {
             </Typography>
           </Grid>
         </Grid>
+        <Grid container>
+          <Grid item xs={10} sm={10} md={10} lg={11}>
+            <Typography variant="h6" className="n-bold" title="Tax">
+              TOTAL FEE
+            </Typography>
+          </Grid>
+           <Grid item xs={2} sm={2} md={2} lg={1}>
+            <Typography variant="h6" >
+            ${basket && basket.totalfees && basket.totalfees.toFixed(2)}
+            </Typography>
+          </Grid>
+        </Grid>
         <br/>
         <Divider />
         <br/>
