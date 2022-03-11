@@ -37,10 +37,7 @@ const Welcome = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const classes = useStyle();
-
-  const [recentorders, setOrders] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
-  const [isError, setIserror] = useState(false);
   const [isReoder, setIsReoder] = useState(false);
   const [isRestaurant, setIsRestaurant] = useState(false);
   const [deliverymode, setDeliveryMode] = useState('');
@@ -64,7 +61,9 @@ const Welcome = () => {
     (state: any) => state.favRestaurantReducer,
   );
   useEffect(() => {
-    if (authToken && authToken.authtoken) dispatch(getUserRecentOrders());
+    if (authToken && authToken.authtoken) {
+      dispatch(getUserRecentOrders());
+    }
   }, [authToken]);
   useEffect(() => {
     if (
@@ -80,7 +79,6 @@ const Welcome = () => {
       userRecentOrders.orders &&
       userRecentOrders.orders[0]
     ) {
-      setOrders(userRecentOrders.orders);
       setDeliveryMode(userRecentOrders.orders[0].deliverymode);
       setBody({
         id: userRecentOrders.orders[0].id,
@@ -117,6 +115,10 @@ const Welcome = () => {
         handleCart();
       }
       displayToast('SUCCESS', 'Recent order is added in cart');
+      setIsEdit(false);
+      setIsReoder(false);
+      setIsbasket(false);
+    } else if (error && error.message) {
       setIsEdit(false);
       setIsReoder(false);
       setIsbasket(false);
@@ -165,6 +167,7 @@ const Welcome = () => {
                 !
               </Typography>
               {(loading && <CardSkeletonUI />) ||
+                (authToken == null && <CardSkeletonUI />) ||
                 (isEdit == true && <CardSkeletonUI />) ||
                 (isReoder == true && <CardSkeletonUI />)}
 
@@ -253,7 +256,9 @@ const Welcome = () => {
                   </Fragment>
                 )}
               {!loading &&
-                userRecentOrders === null &&
+                userRecentOrders == null &&
+                authToken &&
+                authToken.authtoken &&
                 isEdit == false &&
                 isReoder == false && (
                   <Typography>You don't have any recent orders</Typography>
