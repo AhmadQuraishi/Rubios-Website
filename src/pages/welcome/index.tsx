@@ -144,7 +144,7 @@ const Welcome = () => {
   return (
     <Fragment>
       <Grid container component="main" columns={16} className={classes.root}>
-        <Grid item xs={13} className="welcome-wrapper">
+        <Grid item xs={16} className="welcome-wrapper">
           <Grid container columns={16} className="welcome-content">
             <Grid item xs={16} sm={16} md={14} lg={9} className="left-col">
               <Typography variant="caption" className="label" title="Welcome">
@@ -158,7 +158,7 @@ const Welcome = () => {
                   providerToken.first_name
                 }
               >
-                WELCOME BACK <br />{' '}
+                WELCOME BACK {' '}
                 {providerToken &&
                   providerToken.first_name &&
                   providerToken.first_name}
@@ -281,7 +281,7 @@ const Welcome = () => {
                 favRestaurant &&
                 isEdit == false &&
                 isReoder == false && (
-                  <Grid container columns={16}>
+                  <Grid container spacing={1} columns={16}>
                     <Grid
                       item
                       xs={16}
