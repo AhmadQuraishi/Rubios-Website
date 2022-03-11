@@ -352,6 +352,13 @@ const Checkout = () => {
                 </Grid>
               </Grid>
               <br />
+              <br />
+              <Divider />
+              <br />
+              <br />
+              <Rewards />
+              <br />
+              <br />
               <Divider />
               <br />
               <br />
