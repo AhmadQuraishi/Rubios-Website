@@ -120,6 +120,10 @@ const Welcome = () => {
       setIsEdit(false);
       setIsReoder(false);
       setIsbasket(false);
+    } else if (error && error.message) {
+      setIsEdit(false);
+      setIsReoder(false);
+      setIsbasket(false);
     }
   }, [basketObj]);
 
@@ -253,7 +257,11 @@ const Welcome = () => {
                   </Fragment>
                 )}
               {!loading &&
-                userRecentOrders === null &&
+                userRecentOrders &&
+                userRecentOrders.orders &&
+                userRecentOrders.orders.length === 0 &&
+                authToken &&
+                authToken.authtoken &&
                 isEdit == false &&
                 isReoder == false && (
                   <Typography>You don't have any recent orders</Typography>

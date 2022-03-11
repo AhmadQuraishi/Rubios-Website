@@ -22,7 +22,7 @@ import OrderTime from '../../components/order-time';
 import PaymentInfo from '../../components/payment-info';
 import StoreInfoBar from '../../components/restaurant-info-bar';
 import './checkout.css';
-import {  ResponseBasket, ResponseContactOptions } from '../../types/olo-api';
+import {  ResponseBasket, ResponseBasketValidation, ResponseContactOptions } from '../../types/olo-api';
 import { IMaskInput } from 'react-imask';
 import moment from 'moment';
 import { HoursListing } from '../../helpers/hoursListing';
@@ -42,6 +42,7 @@ const Checkout = () => {
   const [runOnce, setRunOnce] = React.useState<boolean>(true);
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
   const [basket, setBasket] = React.useState<ResponseBasket>();
+  const [validate, setValidate] = React.useState<ResponseBasketValidation>();
 
   const basketObj = useSelector((state: any) => state.basketReducer);
   const { authToken } = useSelector((state: any) => state.authReducer);
@@ -60,17 +61,26 @@ const Checkout = () => {
           selectedTime,
         ),
       );
+      dispatch(validateBasket(basket.id, null))
       setRunOnce(false);
     }
   }, [basket]);
 
   React.useEffect(() => {
-    if (basketObj.basket) {
+    if (basketObj.orderConfirmation) {
+      navigate('/orderconfirmation')
+    } else if (basketObj.basket) {
       setBasket(basketObj.basket);
     } else {
       navigate('/location')
     }
   }, [basketObj.basket, basketObj.calendar]);
+
+  React.useEffect(() => {
+    if (basketObj.validate) {
+      setValidate(basketObj.validate);
+    } 
+  }, [basketObj.validate]);
 
   interface CustomProps {
     onChange: (event: { target: { name: string; value: string } }) => void;
@@ -361,6 +371,13 @@ const Checkout = () => {
                 </Grid>
               </Grid>
               <br />
+              <br />
+              <Divider />
+              <br />
+              <br />
+              <Rewards />
+              <br />
+              <br />
               <Divider />
               <br />
               <br />
@@ -371,7 +388,7 @@ const Checkout = () => {
               <br />
               <br />
               {/*second section*/}
-              <OrderDetail basket={basket} />
+              <OrderDetail basket={basket} validate={validate} />
               <br />
               <br />
               <Divider />

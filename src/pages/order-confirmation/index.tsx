@@ -2,8 +2,10 @@ import { makeStyles } from '@mui/styles';
 import { Grid, Typography, Card, TextField, Button } from '@mui/material';
 import OrderDetails from '../../components/order-details';
 import OrderConfirmedCard from '../../components/order-confirm-card';
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import './order-confirmation.css';
+import { useDispatch } from 'react-redux';
+import { removeBasketOrderConfirmation } from '../../redux/actions/basket/checkout';
 
 const useStyle = makeStyles(() => ({
   root: {
@@ -21,6 +23,12 @@ const useStyle = makeStyles(() => ({
 
 const OrderConfirmation = () => {
   const classes = useStyle();
+  const dispatch = useDispatch();
+
+  useEffect(()=> {
+    dispatch(removeBasketOrderConfirmation())
+  }, [])
+  
   return (
     <Fragment>
       <Grid container component="main" className={classes.root}>
