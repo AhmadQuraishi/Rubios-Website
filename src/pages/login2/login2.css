@@ -95,4 +95,11 @@
   .sign-in-section button {
     width: 100% !important;
   }
+  .login-content .right-col .acc-btn {
+    margin-bottom: 25px !important;
+  }
+  .login-content .label.bold {
+    margin-top: 0px;
+    margin-bottom: 35px !important;
+  }
 }
