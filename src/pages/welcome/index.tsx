@@ -37,7 +37,10 @@ const Welcome = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const classes = useStyle();
+
+  const [recentorders, setOrders] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
+  const [isError, setIserror] = useState(false);
   const [isReoder, setIsReoder] = useState(false);
   const [isRestaurant, setIsRestaurant] = useState(false);
   const [deliverymode, setDeliveryMode] = useState('');
@@ -61,9 +64,7 @@ const Welcome = () => {
     (state: any) => state.favRestaurantReducer,
   );
   useEffect(() => {
-    if (authToken && authToken.authtoken) {
-      dispatch(getUserRecentOrders());
-    }
+    if (authToken && authToken.authtoken) dispatch(getUserRecentOrders());
   }, [authToken]);
   useEffect(() => {
     if (
@@ -79,6 +80,7 @@ const Welcome = () => {
       userRecentOrders.orders &&
       userRecentOrders.orders[0]
     ) {
+      setOrders(userRecentOrders.orders);
       setDeliveryMode(userRecentOrders.orders[0].deliverymode);
       setBody({
         id: userRecentOrders.orders[0].id,
@@ -118,10 +120,6 @@ const Welcome = () => {
       setIsEdit(false);
       setIsReoder(false);
       setIsbasket(false);
-    } else if (error && error.message) {
-      setIsEdit(false);
-      setIsReoder(false);
-      setIsbasket(false);
     }
   }, [basketObj]);
 
@@ -146,7 +144,7 @@ const Welcome = () => {
   return (
     <Fragment>
       <Grid container component="main" columns={16} className={classes.root}>
-        <Grid item xs={13} className="welcome-wrapper">
+        <Grid item xs={16} className="welcome-wrapper">
           <Grid container columns={16} className="welcome-content">
             <Grid item xs={16} sm={16} md={14} lg={9} className="left-col">
               <Typography variant="caption" className="label" title="Welcome">
@@ -160,14 +158,13 @@ const Welcome = () => {
                   providerToken.first_name
                 }
               >
-                WELCOME BACK <br />{' '}
+                WELCOME BACK {' '}
                 {providerToken &&
                   providerToken.first_name &&
                   providerToken.first_name}
                 !
               </Typography>
               {(loading && <CardSkeletonUI />) ||
-                (authToken == null && <CardSkeletonUI />) ||
                 (isEdit == true && <CardSkeletonUI />) ||
                 (isReoder == true && <CardSkeletonUI />)}
 
@@ -256,9 +253,7 @@ const Welcome = () => {
                   </Fragment>
                 )}
               {!loading &&
-                userRecentOrders == null &&
-                authToken &&
-                authToken.authtoken &&
+                userRecentOrders === null &&
                 isEdit == false &&
                 isReoder == false && (
                   <Typography>You don't have any recent orders</Typography>
@@ -286,7 +281,7 @@ const Welcome = () => {
                 favRestaurant &&
                 isEdit == false &&
                 isReoder == false && (
-                  <Grid container columns={16}>
+                  <Grid container spacing={1} columns={16}>
                     <Grid
                       item
                       xs={16}

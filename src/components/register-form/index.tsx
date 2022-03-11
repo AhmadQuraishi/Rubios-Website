@@ -211,8 +211,8 @@ const RegisterForm = () => {
                     <Grid item xs={12}>
                     <TextField
                         aria-label="mobile phone "
-                        label="Mobile Phone (Optional)"
-                        title="Mobile Phone (Optional)"
+                        label="Mobile Phone"
+                        title="Mobile Phone"
                         value={values.phone}
                         sx={{ width: '100%' }}
                         onChange={handleChange}
@@ -336,8 +336,8 @@ const RegisterForm = () => {
                         title="Password must be at least 8 characters."
                         sx={{ width: '100%' }}
                       >
-                        <Checkbox  onChange={handleChangeCheckbox}/> I argree to the Rubio's Terms and Conditions and to receiving marketing
-                        communications from Rubio's.
+                        <Checkbox  onChange={handleChangeCheckbox}/> I argree to the Rubio's Trems and Conditions and to receiving marketing
+                        communications from Rubio's
                       </Typography>
                     </Grid>
                     <Grid item xs={12} sm={8} md={8} lg={8}>

@@ -93,9 +93,7 @@ function* asyncValidateBasket(action: any): any {
       action.basketId
     );
     yield put(validateBasketSuccess(response));
-    if(action.basketPayload){
-      yield put({type: basketActionsTypes.SUBMIT_BASKET_SINGLE_PAYMENT, action});
-    }
+    yield put({type: basketActionsTypes.SUBMIT_BASKET_SINGLE_PAYMENT, action});
     // if(action.basketPayload.authtoken && action.basketPayload.authtoken !== ''){
     //   yield put({type: userTypes.UPDATE_USER_CONTACT_OPTIONS, payload: action.contactOptions})
     // }

@@ -32,29 +32,24 @@ const OrderTime = ()  => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [selectedDate, setSelectedDate] = React.useState<any>(new Date());
-  const [selectedTime, setSelectedTime] = React.useState<any>('');
+  const [selectedTime, setSelectedTime] = React.useState('');
   const [restaurantHours, setRestaurantHours] = React.useState<HoursListing[]>();
   const [timeSlots, setTimeSlots] = React.useState<string[]>([]);
   const [open, setOpen] = React.useState<boolean>(false);
   const [basket, setBasket] = React.useState<ResponseBasket>();
 
+
   const basketObj = useSelector((state: any) => state.basketReducer);
 
+
+
   React.useEffect(() => {
-    if (basketObj.orderConfirmation) {
-      navigate('/orderconfirmation')
-    } else if (basketObj.basket) {
-      if(basketObj.basket?.timewanted){
-        setSelectedDate(moment(basketObj.basket.timewanted, 'YYYYMMDD HH:mm'));
-        setSelectedTime(basketObj.basket.timewanted);
-      }
+    if (basketObj.basket) {
       setBasket(basketObj.basket);
     } else {
       navigate('/location')
     }
-  }, [basketObj.basket]);
 
-  React.useEffect(() => {
     if (basketObj.calendar && basketObj.calendar.data) {
       setRestaurantHours(
         GetRestaurantHoursRange(
@@ -63,7 +58,19 @@ const OrderTime = ()  => {
         ),
       );
     }
-  }, [basketObj.calendar]);
+  }, [basketObj.basket, basketObj.calendar]);
+
+  React.useEffect(() => {
+    if (basket) {
+      dispatch(
+        getSingleRestaurantCalendar(
+          basket.vendorid,
+          moment(selectedDate).format('YYYYMMDD'),
+          moment(selectedDate).format('YYYYMMDD'),
+        ),
+      );
+    }
+  }, [selectedDate]);
 
   React.useEffect(() => {
     if (restaurantHours && restaurantHours.length) {
@@ -97,15 +104,6 @@ const OrderTime = ()  => {
   const handleDateChange = (e: any) => {
     setSelectedDate(e);
     setOpen(!open);
-    if (basket) {
-      dispatch(
-        getSingleRestaurantCalendar(
-          basket.vendorid,
-          moment(e).format('YYYYMMDD'),
-          moment(e).format('YYYYMMDD'),
-        ),
-      );
-    }
   };
 
   return (
@@ -144,7 +142,6 @@ const OrderTime = ()  => {
                           open={open}
                           label="Date desktop"
                           minDate={moment()}
-                          maxDate={moment().add('days', 7)}
                           inputFormat="MM/dd/yyyy"
                           value={selectedDate}
                           onChange={handleDateChange}
@@ -187,7 +184,7 @@ const OrderTime = ()  => {
                                         className="selected-btn"
                                         selected={ selectedTime === time ? true : false}
                                       >
-                                        {moment(time, 'YYYYMMDD HH:mm').format('hh:mm A')}
+                                        {moment(time, 'YYYYMMDD HH:mm').format('HH:mm')}
                                       </ToggleButton>
                                     // </Grid>
                                   )
@@ -221,7 +218,7 @@ const OrderTime = ()  => {
                                     timeSlots.slice(4).map(time => {
                                       return (
                                         <MenuItem key={`menu-${time}`} value={time}>
-                                        {moment(time, 'YYYYMMDD HH:mm').format('hh:mm A')}
+                                        {moment(time, 'YYYYMMDD HH:mm').format('HH:mm')}
                                         </MenuItem>
                                       )
                                     })

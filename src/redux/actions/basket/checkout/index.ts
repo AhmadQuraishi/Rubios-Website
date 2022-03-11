@@ -129,7 +129,7 @@ export function updateBasketCouponCodeFailure(error: any) {
   };
 }
 
-export function validateBasket(basketId: string, basketPayload: RequestBasketSubmit | null) {
+export function validateBasket(basketId: string, basketPayload: RequestBasketSubmit) {
   return {
     type: basketActionsTypes.VALIDETE_BASKET,
     basketId,
@@ -174,12 +174,6 @@ export function submitBasketSinglePaymentFailure(error: any) {
   return {
     type: basketActionsTypes.SUBMIT_BASKET_SINGLE_PAYMENT_FAILURE,
     error: error
-  };
-}
-
-export function removeBasketOrderConfirmation() {
-  return {
-    type: basketActionsTypes.REMOVE_BASKET_ORDER_CONFIRMATION
   };
 }
 

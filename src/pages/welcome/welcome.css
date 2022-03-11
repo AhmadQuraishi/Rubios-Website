@@ -11,11 +11,11 @@
   border-radius: 30px;
 }
 .welcome-content h4 {
-  margin: 16px 0px 23px 0px;
+  margin: 0px 0px 23px 0px;
   font-size: 49px;
 }
 .welcome-content h5 {
-  margin: 16px 0px 23px 0px;
+  margin: 8px 0px 23px 0px;
 }
 .welcome-content .left-col {
   border-right: 1px solid #0069aa;
@@ -91,9 +91,16 @@
   }
 }
 
+
+@media screen and (max-width: 900px) {
+  .welcome-wrapper {
+    margin: 70px 50px !important;
+  }
+}
+
 @media screen and (max-width: 468px) {
   .welcome-wrapper {
-    margin: 15px !important;
+    margin: 25px !important;
   }
   .welcome-content {
     padding: 30px 20px !important;
