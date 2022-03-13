@@ -43,7 +43,7 @@ const Register = () =>{
   return (
       <>
       <Grid container component="main" className={classes.root}>
-           <Grid item xs={10} md={8} lg={6}>
+           <Grid item xs={10} md={7} lg={5}>
                <Card className="register-card" elevation={6}>
                  <RegisterForm />
                </Card>
