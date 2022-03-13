@@ -43,6 +43,13 @@
   padding-top: 14px;
 }
 
+@media screen and (max-width: 900px) {
+  .sign-up-section h4 {
+    font-size: 42px;
+  }
+}
+
+
 
 @media screen and (max-width: 468px) {
 

@@ -346,7 +346,7 @@ const RegisterForm = () => {
                     name="submit"
                     title="submit"
                     variant="contained"
-                    sx={{ width: { xs: '100%', lg: '400px' } }}
+                    sx={{ width:'100%'}}
                   >
                     Submit
                   </Button>
