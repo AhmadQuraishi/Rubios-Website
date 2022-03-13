@@ -217,7 +217,7 @@ const Checkout = () => {
                           className="label"
                           title="WHO'S IS PICKING UP?"
                         >
-                          WHO'S IS PICKING UP?
+                          WHO'S PICKING UP?
                         </Typography>
                       </Grid>
                       <Grid item xs={12}>
