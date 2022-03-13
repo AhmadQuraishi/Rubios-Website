@@ -79,7 +79,7 @@ const Checkout = () => {
   React.useEffect(() => {
     if (basketObj.validate) {
       setValidate(basketObj.validate);
-    } 
+    }
   }, [basketObj.validate]);
 
   interface CustomProps {
@@ -196,7 +196,7 @@ const Checkout = () => {
           }
         dispatch(updateUser(user, false));
       }
-      
+
     }
   }
 
@@ -312,6 +312,7 @@ const Checkout = () => {
 
                       <Grid item xs={12}>
                               <TextField
+                                className="mobile-field"
                                 aria-label="Phone Number"
                                 onBlur={handleBlur}
                                 label="Phone Number"

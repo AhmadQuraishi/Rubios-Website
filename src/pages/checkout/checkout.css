@@ -8,6 +8,13 @@
   -moz-border-radius: 30px;
   border-radius: 30px;
 }
+.checkout-wrapper .mobile-field .MuiInputLabel-root.Mui-focused,
+.checkout-wrapper .mobile-field .MuiInputLabel-root.Mui-focused.Mui-error {
+  padding-top: 0px !important;
+}
+.checkout-wrapper .mobile-field .MuiInputLabel-root.MuiFormLabel-filled.Mui-focused {
+  padding-top: 14px !important;
+}
 .order .left-col {
   padding: 0px 90px 0px 60px;
 }
