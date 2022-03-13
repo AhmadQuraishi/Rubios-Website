@@ -18,13 +18,14 @@
   text-transform: initial;
 }
 
-.date {
+.profile-section .date {
   width: 80%;
   text-align: left;
 }
-.bday-text{
+.profile-section .bday-text{
   font-family: 'Poppins-Bold';
   padding-right: 10px;
+  letter-spacing: 0px !important;
 }
 .birthday-button span{
   text-transform: initial;

@@ -158,7 +158,8 @@ h6 {
 .MuiTextField-root {
   width: 100%;
 }
-.MuiTextField-root input {
+.MuiFormControl-root input,
+.MuiFormControl-root .MuiSelect-select {
   color: #000;
   border-radius: 0;
   font-family: 'Poppins-Regular', sans-serif !important;
