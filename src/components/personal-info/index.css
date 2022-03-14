@@ -9,12 +9,6 @@
 .profile-section .MuiFilledInput-root::after {
   border: 0 !important;
 }
-.profile-section .mobile-field .MuiInputLabel-root.Mui-focused {
-  padding-top: 0px;
-}
-.profile-section .mobile-field .MuiInputLabel-root.MuiFormLabel-filled.Mui-focused {
-  padding-top: 14px;
-}
 .birthday-button {
   background-color: #eaeaea !important;
   color: black !important;

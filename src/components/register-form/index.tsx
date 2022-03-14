@@ -216,9 +216,14 @@ const RegisterForm = () => {
                     onChange={handleChange}
                     name="phone"
                     id="formatted-numberformat-input"
-                    InputLabelProps={{
-                      shrink: touched && values.phone == '' ? false : true,
-                    }}
+                    InputLabelProps={
+                      {
+                        shrink: touched && values.phone == '' ? false : true,
+                        classes: {
+                          root: values.phone !== '' ? 'mobile-field-label' : '',
+                        }
+                      }
+                    }
                     InputProps={{
                       inputComponent: NumberFormatCustom as any,
                     }}

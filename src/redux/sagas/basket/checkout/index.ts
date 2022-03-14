@@ -24,6 +24,7 @@ import {
 
 import { requestUpdateUser } from '../../../../services/user';
 import { updateUserSuccess } from '../../../actions/user';
+import { getProviderRequestSuccess } from '../../../actions/provider';
 
 function* asyncgetSingleRestaurantCalendarRequest(action: any): any {
   try {
@@ -95,6 +96,7 @@ function* asyncValidateBasket(action: any): any {
     if(action.userData){
       const userResponse = yield call(requestUpdateUser, action.userData);
       yield put(updateUserSuccess(userResponse));
+      yield put(getProviderRequestSuccess(userResponse));
     }
     const validateResponse = yield call(validateBasket, action.basketId);
     yield put(validateBasketSuccess(validateResponse));

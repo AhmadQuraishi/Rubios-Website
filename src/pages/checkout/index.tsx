@@ -322,7 +322,7 @@ const Checkout = () => {
                                   {
                                     shrink: touched && values.phone == '' ? false : true,
                                     classes: {
-                                      root: values.phone !== '' ? 'custom-phone-label' : '',
+                                      root: values.phone !== '' ? 'mobile-field-label' : '',
                                     }
                                   }
                                 }
