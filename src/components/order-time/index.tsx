@@ -196,7 +196,7 @@ const OrderTime = ()  => {
                                 </Typography>
                           </Grid>
                            ) : (
-                          <Grid item xs={6} sm={3} md={3} lg={3}>                                
+                          <Grid item xs={6} sm={6} md={3} lg={3}>
                                 <FormLabel
                                   className="slot-label"
                                   title="QUICKEST"
@@ -206,7 +206,7 @@ const OrderTime = ()  => {
                                 </FormLabel>
                           </Grid>
                              )
-                            }     
+                            }
                           </Grid>
                           <ToggleButtonGroup
                             value={selectedTime}
