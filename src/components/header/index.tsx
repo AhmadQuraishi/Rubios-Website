@@ -92,6 +92,7 @@ const Header = (props: any) => {
   const [showCart, setShowCart] = useState(false);
   const [state, setState] = useState(false);
   const basketObj = useSelector((state: any) => state.basketReducer);
+  const { providerToken } = useSelector((state: any) => state.providerReducer);
   const { restaurant } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
@@ -157,9 +158,9 @@ const Header = (props: any) => {
                   }}
                   color="primary.main"
                   textTransform="uppercase"
-                  title=" Hi Stacey"
+                  title={providerToken && providerToken.first_name ? `Hi ${providerToken.first_name}` : ''} 
                 >
-                  Hi, Stacey!
+                  {providerToken && providerToken.first_name ? `Hi, ${providerToken.first_name}!` : ''}                 
                 </Typography>
               </>
             )}
