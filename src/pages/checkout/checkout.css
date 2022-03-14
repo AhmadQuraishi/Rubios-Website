@@ -95,6 +95,14 @@
     width: auto;
     padding: 0px 35px;
   }
+  .order .selected-btn-group {
+    display: inline-block;
+  }
+  .order .selected-btn {
+    float: left;
+    width: 47.2%;
+    margin-bottom: 10px !important;
+  }
 }
 @media screen and (max-width: 468px) {
   .order .add-order button {
