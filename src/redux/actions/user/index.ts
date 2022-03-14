@@ -366,7 +366,7 @@ export function userLoginSuccess(data: any) {
 
 export function userLoginFailure(error: any) {
   console.log('errrrrrr', error)
-  displayToast('ERROR', error?.data?.error  ? error.data.error : 'ERROR! Please Try agin later')
+  displayToast('ERROR', error?.data?.error  ? error.data.error : 'ERROR! Please Try again later')
   return {
     type: Type.USER_LOGIN_FAILURE,
     error: error
@@ -393,7 +393,7 @@ export function userRegisterFailure(error: any) {
       displayToast('ERROR', msg)
     });
   } else {
-    displayToast('ERROR', 'ERROR! Please Try agin later')
+    displayToast('ERROR', 'ERROR! Please Try again later')
   }
   if (error?.data?.errors?.email) {
     displayToast('ERROR', `Email ${error?.data?.errors?.email[0]}`)

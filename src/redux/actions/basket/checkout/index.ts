@@ -50,7 +50,7 @@ export function updateBasketTimeWantedSuccess(data: ResponseBasket) {
 }
 
 export function updateBasketTimeWantedFailure(error: any) {
-  displayToast('ERROR', error?.response?.data?.message  ? error.response.data.message : 'ERROR! Please Try agin later')
+  displayToast('ERROR', error?.response?.data?.message  ? error.response.data.message : 'ERROR! Please Try again later')
   return {
     type: basketActionsTypes.UPDATE_BASKET_TIME_WANTED_FAILURE,
     error: error
@@ -73,7 +73,7 @@ export function deleteBasketTimeWantedSuccess(data: ResponseBasket) {
 }
 
 export function deleteBasketTimeWantedFailure(error: any) {
-  displayToast('ERROR', error?.response?.data?.message  ? error.response.data.message : 'ERROR! Please Try agin later')
+  displayToast('ERROR', error?.response?.data?.message  ? error.response.data.message : 'ERROR! Please Try again later')
 
   return {
     type: basketActionsTypes.DELETE_BASKET_TIME_WANTED_FAILURE,
@@ -98,7 +98,7 @@ export function updateBasketTipAmountSuccess(data: ResponseBasket) {
 }
 
 export function updateBasketTipAmountFailure(error: any) {
-  displayToast('ERROR', error?.response?.data?.message  ? error.response.data.message : 'ERROR! Please Try agin later')
+  displayToast('ERROR', error?.response?.data?.message  ? error.response.data.message : 'ERROR! Please Try again later')
   return {
     type: basketActionsTypes.UPDATE_BASKET_TIP_AMOUNT_FAILURE,
     error: error
@@ -122,18 +122,19 @@ export function updateBasketCouponCodeSuccess(data: ResponseBasket) {
 }
 
 export function updateBasketCouponCodeFailure(error: any) {
-  displayToast('ERROR', error?.response?.data?.message  ? error.response.data.message : 'ERROR! Please Try agin later')
+  displayToast('ERROR', error?.response?.data?.message  ? error.response.data.message : 'ERROR! Please Try again later')
   return {
     type: basketActionsTypes.UPDATE_BASKET_COUPON_CODE_FAILURE,
     error: error
   };
 }
 
-export function validateBasket(basketId: string, basketPayload: RequestBasketSubmit | null) {
+export function validateBasket(basketId: string, basketPayload: RequestBasketSubmit | null, userData: any) {
   return {
     type: basketActionsTypes.VALIDETE_BASKET,
     basketId,
-    basketPayload
+    basketPayload,
+    userData
   };
 }
 
@@ -146,9 +147,23 @@ export function validateBasketSuccess(response: ResponseBasketValidation) {
 }
 
 export function validateBasketFailure(error: any) {
-  displayToast('ERROR', error?.response?.data?.message  ? error.response.data.message : 'ERROR! Please Try agin later')
+  displayToast('ERROR', error?.response?.data?.message  ? error.response.data.message : 'ERROR! Please Try again later')
   return {
     type: basketActionsTypes.VALIDETE_BASKET_FAILURE,
+    error: error
+  };
+}
+
+export function validateBasketPhoneFailure(error: any) {
+  if(error?.data && error.data.length){
+    error.data.forEach((msg: string) => {
+      displayToast('ERROR', msg)
+    });
+  } else {
+    displayToast('ERROR', 'ERROR! Please Try again later')
+  }
+  return {
+    type: basketActionsTypes.VALIDETE_BASKET_PHONE_FAILURE,
     error: error
   };
 }
@@ -170,7 +185,7 @@ export function submitBasketSinglePaymentSuccess(data: ResponseBasket) {
 }
 
 export function submitBasketSinglePaymentFailure(error: any) {
-  displayToast('ERROR', error?.response?.data?.message  ? error.response.data.message : 'ERROR! Please Try agin later')
+  displayToast('ERROR', error?.response?.data?.message  ? error.response.data.message : 'ERROR! Please Try again later')
   return {
     type: basketActionsTypes.SUBMIT_BASKET_SINGLE_PAYMENT_FAILURE,
     error: error

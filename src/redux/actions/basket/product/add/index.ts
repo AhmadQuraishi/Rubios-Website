@@ -22,7 +22,7 @@ export function addProductFailure(error: any) {
     'ERROR',
     error?.response?.data?.message
       ? error.response.data.message
-      : 'ERROR! Please Try agin later',
+      : 'ERROR! Please Try again later',
   );
   return {
     type: basketActionsTypes.ADD_PRODUCT_FAILURE,

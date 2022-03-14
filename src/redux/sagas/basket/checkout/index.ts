@@ -18,8 +18,12 @@ import {
   validateBasketSuccess,
   validateBasketFailure,
   submitBasketSinglePaymentSuccess,
-  submitBasketSinglePaymentFailure
+  submitBasketSinglePaymentFailure,
+  validateBasketPhoneFailure
 } from '../../../actions/basket/checkout';
+
+import { requestUpdateUser } from '../../../../services/user';
+import { updateUserSuccess } from '../../../actions/user';
 
 function* asyncgetSingleRestaurantCalendarRequest(action: any): any {
   try {
@@ -88,19 +92,21 @@ function* asyncUpdateBasketCouponCode(action: any): any {
 
 function* asyncValidateBasket(action: any): any {
   try {
-    const response = yield call(
-      validateBasket,
-      action.basketId
-    );
-    yield put(validateBasketSuccess(response));
+    if(action.userData){
+      const userResponse = yield call(requestUpdateUser, action.userData);
+      yield put(updateUserSuccess(userResponse));
+    }
+    const validateResponse = yield call(validateBasket, action.basketId);
+    yield put(validateBasketSuccess(validateResponse));
     if(action.basketPayload){
       yield put({type: basketActionsTypes.SUBMIT_BASKET_SINGLE_PAYMENT, action});
     }
-    // if(action.basketPayload.authtoken && action.basketPayload.authtoken !== ''){
-    //   yield put({type: userTypes.UPDATE_USER_CONTACT_OPTIONS, payload: action.contactOptions})
-    // }
-  } catch (error) {
-    yield put(validateBasketFailure(error));
+  } catch (error: any) {
+    if(error?.config?.url && error.config.url.includes('api/auth/users')){
+      yield put(validateBasketPhoneFailure(error));
+    } else {
+      yield put(validateBasketFailure(error));
+    }
   }
 }
 

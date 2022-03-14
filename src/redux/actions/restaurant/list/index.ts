@@ -35,7 +35,7 @@ export function getNearByResturantListRequestFailure(error: any) {
     'ERROR',
     error?.response?.data?.message
       ? error.response.data.message
-      : 'ERROR! Please Try agin later',
+      : 'ERROR! Please Try again later',
   );
   return {
     type: restaurantListDataActionsTypes.GET_RESTAURANT_LIST_FAILURE,
@@ -61,7 +61,7 @@ export function getResturantListRequestFailure(error: any) {
     'ERROR',
     error?.response?.data?.message
       ? error.response.data.message
-      : 'ERROR! Please Try agin later',
+      : 'ERROR! Please Try again later',
   );
   return {
     type: restaurantListDataActionsTypes.GET_RESTAURANT_LIST_FAILURE,

@@ -53,6 +53,7 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
     case basketActionsTypes.SUBMIT_BASKET_SINGLE_PAYMENT_FAILURE:
     case basketActionsTypes.CREATE_BASKET_FROM_PREV_FAILURE:
     case basketActionsTypes.VALIDETE_BASKET_FAILURE:
+    case basketActionsTypes.VALIDETE_BASKET_PHONE_FAILURE: 
       return {
         ...state,
         loading: false,

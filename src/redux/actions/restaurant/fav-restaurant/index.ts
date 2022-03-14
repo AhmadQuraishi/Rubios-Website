@@ -23,7 +23,7 @@ export function getFavRestaurantFailure(error: any) {
     'ERROR',
     error?.response?.data?.message
       ? error.response.data.message
-      : 'ERROR! Please Try agin later',
+      : 'ERROR! Please Try again later',
   );
   return {
     type: Type.GET_FAV_RESTAURANT_FAILURE,

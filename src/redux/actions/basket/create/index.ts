@@ -21,7 +21,7 @@ export function setBasketRequestFailure(error: any) {
     'ERROR',
     error?.response?.data?.message
       ? error.response.data.message
-      : 'ERROR! Please Try agin later',
+      : 'ERROR! Please Try again later',
   );
   return {
     type: basketActionsTypes.SET_BASKET_FAILURE,
@@ -48,7 +48,7 @@ export function createBasketFromPrevFailure(error: any) {
     'ERROR',
     error?.response?.data?.message
       ? error.response.data.message
-      : 'ERROR! Please Try agin later',
+      : 'ERROR! Please Try again later',
   );
   return {
     type: basketActionsTypes.CREATE_BASKET_FROM_PREV_FAILURE,
@@ -77,7 +77,7 @@ export function createBasketFromPrevOrderFailure(error: any) {
     'ERROR',
     error?.response?.data?.message
       ? error.response.data.message
-      : 'ERROR! Please Try agin later',
+      : 'ERROR! Please Try again later',
   );
   return {
     type: basketActionsTypes.CREATE_BASKET_FROM_PREV_ORDER_FAILURE,
@@ -106,7 +106,7 @@ export function createBasketFromFavOrderFailure(error: any) {
     'ERROR',
     error?.response?.data?.message
       ? error.response.data.message
-      : 'ERROR! Please Try agin later',
+      : 'ERROR! Please Try again later',
   );
   return {
     type: basketActionsTypes.CREATE_BASKET_FROM_FAV_ORDER_FAILURE,

@@ -21,7 +21,7 @@ export function getCategoriesRequestFailure(error: any) {
     'ERROR',
     error?.response?.data?.message
       ? error.response.data.message
-      : 'ERROR! Please Try agin later',
+      : 'ERROR! Please Try again later',
   );
   return {
     type: categoryActionsTypes.GET_CATEGORY_ITMES_FAILURE,

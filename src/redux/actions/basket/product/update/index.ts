@@ -27,7 +27,7 @@ export function updateProductFailure(error: any) {
     'ERROR',
     error?.response?.data?.message
       ? error.response.data.message
-      : 'ERROR! Please Try agin later',
+      : 'ERROR! Please Try again later',
   );
   return {
     type: basketActionsTypes.UPDATE_PRODUCT_FAILURE,

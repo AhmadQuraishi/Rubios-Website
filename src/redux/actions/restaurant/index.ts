@@ -21,7 +21,7 @@ export function getResturantInfoRequestFailure(error: any) {
     'ERROR',
     error?.response?.data?.message
       ? error.response.data.message
-      : 'ERROR! Please Try agin later',
+      : 'ERROR! Please Try again later',
   );
   return {
     type: restaurantActionsTypes.GET_RESTAURANT_INFO_FAILURE,
@@ -56,7 +56,7 @@ export function setResturantInfoRequestFailure(error: any) {
     'ERROR',
     error?.response?.data?.message
       ? error.response.data.message
-      : 'ERROR! Please Try agin later',
+      : 'ERROR! Please Try again later',
   );
   return {
     type: restaurantActionsTypes.SET_RESTAURANT_INFO_FAILURE,

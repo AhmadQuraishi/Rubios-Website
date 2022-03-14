@@ -61,7 +61,7 @@ const Checkout = () => {
           selectedTime,
         ),
       );
-      dispatch(validateBasket(basket.id, null))
+      dispatch(validateBasket(basket.id, null, null))
       setRunOnce(false);
     }
   }, [basket]);
@@ -184,19 +184,18 @@ const Checkout = () => {
 
     if(basket){
       setButtonDisabled(false);
-      dispatch(validateBasket(basket.id, basketPayload));
+      let user: any = null;
       if(authToken?.authtoken && authToken.authtoken !== ''){
-        const user: any = {
+        user = {
             email: providerToken.email,
             first_name: providerToken?.first_name,
             last_name: providerToken?.last_name,
             favourite_locations: providerToken?.favourite_locations,
             marketing_email_subscription: formData.emailNotification,
             phone: formData.phone
-          }
-        dispatch(updateUser(user, false));
+        }
       }
-
+      dispatch(validateBasket(basket.id, basketPayload, user));
     }
   }
 

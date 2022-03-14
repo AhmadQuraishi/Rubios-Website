@@ -17,7 +17,7 @@ export function getAuthRequestSuccess(successMsg: string, data: any) {
 }
 
 export function getAuthRequestFailure(error: any) {
-  displayToast('ERROR', error?.response?.data?.message  ? error.response.data.message : 'ERROR! Please Try agin later')
+  displayToast('ERROR', error?.response?.data?.message  ? error.response.data.message : 'ERROR! Please Try again later')
   return {
     type: Type.GET_AUTHTOKEN_FAILURE,
     error: error,
