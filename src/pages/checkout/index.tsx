@@ -1,12 +1,5 @@
 import React, { forwardRef, useRef } from 'react';
-import {
-  Box,
-  Button,
-  Card,
-  Grid,
-  TextField,
-  Typography
-} from '@mui/material';
+import { Box, Button, Card, Grid, TextField, Typography } from '@mui/material';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,11 +15,18 @@ import OrderTime from '../../components/order-time';
 import PaymentInfo from '../../components/payment-info';
 import StoreInfoBar from '../../components/restaurant-info-bar';
 import './checkout.css';
-import {  ResponseBasket, ResponseBasketValidation, ResponseContactOptions } from '../../types/olo-api';
+import {
+  ResponseBasket,
+  ResponseBasketValidation,
+  ResponseContactOptions,
+} from '../../types/olo-api';
 import { IMaskInput } from 'react-imask';
 import moment from 'moment';
 import { HoursListing } from '../../helpers/hoursListing';
-import { getSingleRestaurantCalendar, validateBasket } from '../../redux/actions/basket/checkout';
+import {
+  getSingleRestaurantCalendar,
+  validateBasket,
+} from '../../redux/actions/basket/checkout';
 import { displayToast } from '../../helpers/toast';
 import { generateSubmitBasketPayload } from '../../helpers/checkout';
 import { updateUser } from '../../redux/actions/user';
@@ -37,7 +37,6 @@ const Checkout = () => {
 
   const pickupFormRef = React.useRef<any>(null);
   const paymentInfoRef = React.useRef<any>();
-
 
   const [runOnce, setRunOnce] = React.useState<boolean>(true);
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
@@ -51,8 +50,10 @@ const Checkout = () => {
   React.useEffect(() => {
     if (basket && runOnce) {
       let selectedTime = moment().format('YYYYMMDD');
-      if(basket.timewanted){
-        selectedTime = moment(basket.timewanted, 'YYYYMMDD HH:mm').format('YYYYMMDD')
+      if (basket.timewanted) {
+        selectedTime = moment(basket.timewanted, 'YYYYMMDD HH:mm').format(
+          'YYYYMMDD',
+        );
       }
       dispatch(
         getSingleRestaurantCalendar(
@@ -61,18 +62,18 @@ const Checkout = () => {
           selectedTime,
         ),
       );
-      dispatch(validateBasket(basket.id, null, null))
+      dispatch(validateBasket(basket.id, null, null));
       setRunOnce(false);
     }
   }, [basket]);
 
   React.useEffect(() => {
     if (basketObj.orderConfirmation) {
-      navigate('/orderconfirmation')
+      navigate('/orderconfirmation');
     } else if (basketObj.basket) {
       setBasket(basketObj.basket);
     } else {
-      navigate('/location')
+      navigate('/location');
     }
   }, [basketObj.basket, basketObj.calendar]);
 
@@ -110,16 +111,15 @@ const Checkout = () => {
   const scrollToTop = () => {
     window.scrollTo({
       top: 300,
-      behavior: "smooth"
+      behavior: 'smooth',
     });
   };
 
-  const validatePickupForm = () : any => {
-
+  const validatePickupForm = (): any => {
     let data = {
       isValidForm: false,
-      formData: null
-    }
+      formData: null,
+    };
 
     console.log('pickupFormRef', pickupFormRef)
 
@@ -127,79 +127,73 @@ const Checkout = () => {
     }
     else if (!pickupFormRef.current.dirty){
       pickupFormRef.current.submitForm();
-    }
-    else if (Object.keys(pickupFormRef.current.errors).length > 0){
-    }
-    else {
+    } else if (Object.keys(pickupFormRef.current.errors).length > 0) {
+    } else {
       data.isValidForm = true;
       data.formData = pickupFormRef.current.values;
     }
 
     return data;
+  };
 
-  }
-
-  const validatePaymentForm = async ()  => {
-
+  const validatePaymentForm = async () => {
     let data: any = {
       isValidCard: false,
       cardDetails: null,
-      errors: {}
-    }
+      errors: {},
+    };
 
     const cardDetails = await paymentInfoRef.current.getCardDetails();
 
-    if(cardDetails.error){
+    if (cardDetails.error) {
       data.errors = cardDetails.error;
-    } else if(cardDetails.paymentMethod){
+    } else if (cardDetails.paymentMethod) {
       data.cardDetails = cardDetails.paymentMethod;
       data.isValidCard = true;
     }
 
     return data;
-
-  }
+  };
 
   const placeOrder = async () => {
-
     setButtonDisabled(true);
-   const {isValidForm, formData} =  validatePickupForm();
+    const { isValidForm, formData } = validatePickupForm();
 
-   if(!isValidForm){
-        displayToast('ERROR', 'Pickup fields are required.');
-        scrollToTop();
-        setButtonDisabled(false);
-        return;
-   }
+    if (!isValidForm) {
+      displayToast('ERROR', 'Pickup fields are required.');
+      scrollToTop();
+      setButtonDisabled(false);
+      return;
+    }
 
-   const {isValidCard, cardDetails, errors } = await validatePaymentForm();
+    const { isValidCard, cardDetails, errors } = await validatePaymentForm();
 
-   if(!isValidCard){
-        displayToast('ERROR', errors?.message);
-        setButtonDisabled(false);
-        return;
-   }
+    if (!isValidCard) {
+      displayToast('ERROR', errors?.message);
+      setButtonDisabled(false);
+      return;
+    }
 
-   formData.phone = formData.phone.replace(/\D/g, '')
+    formData.phone = formData.phone.replace(/\D/g, '');
 
    const basketPayload = generateSubmitBasketPayload(formData, cardDetails, authToken?.authtoken);
    
     if(basket){
       setButtonDisabled(false);
       let user: any = null;
-      if(authToken?.authtoken && authToken.authtoken !== ''){
+      if (authToken?.authtoken && authToken.authtoken !== '') {
         user = {
-            email: providerToken.email,
-            first_name: providerToken?.first_name,
-            last_name: providerToken?.last_name,
-            favourite_locations: providerToken?.favourite_locations,
-            marketing_email_subscription: formData.emailNotification,
-            phone: formData.phone
-        }
+          email: providerToken.email,
+          first_name: providerToken?.first_name,
+          last_name: providerToken?.last_name,
+          favourite_locations: providerToken?.favourite_locations,
+          marketing_email_subscription: formData.emailNotification,
+          phone: formData.phone,
+        };
       }
       dispatch(validateBasket(basket.id, basketPayload, user));
     }
-  }
+  };
 
   return (
     <>
@@ -294,24 +288,26 @@ const Checkout = () => {
                         />
                       </Grid>
 
-                      <Grid item xs={12}>
-                        <TextField
-                          aria-label="Last Name"
-                          disabled={authToken?.authtoken ? true : false}
-                          onBlur={handleBlur}
-                          label="Last Name"
-                          aria-required="true"
-                          title="Last Name"
-                          type="text"
-                          name="lastName"
-                          value={values.lastName}
-                          onChange={handleChange}
-                          error={Boolean(touched.lastName && errors.lastName)}
-                          helperText={errors.lastName}
-                        />
-                      </Grid>
+                            <Grid item xs={12}>
+                              <TextField
+                                aria-label="Last Name"
+                                disabled={authToken?.authtoken ? true : false}
+                                onBlur={handleBlur}
+                                label="Last Name"
+                                aria-required="true"
+                                title="Last Name"
+                                type="text"
+                                name="lastName"
+                                value={values.lastName}
+                                onChange={handleChange}
+                                error={Boolean(
+                                  touched.lastName && errors.lastName,
+                                )}
+                                helperText={errors.lastName}
+                              />
+                            </Grid>
 
-                      <Grid item xs={12}>
+                            <Grid item xs={12}>
                               <TextField
                                 className="mobile-field"
                                 aria-label="Phone Number"
@@ -336,7 +332,7 @@ const Checkout = () => {
                                 error={Boolean(touched.phone && errors.phone)}
                                 helperText={errors.phone}
                               />
-                      </Grid>
+                            </Grid>
                             <Grid item xs={12}>
                               <TextField
                                 aria-label="Email"
@@ -354,19 +350,24 @@ const Checkout = () => {
                               />
                             </Grid>
 
-                              <Grid item xs={12}>
-                                <FormGroup>
-                                  <FormControlLabel
-                                    control={<Checkbox checked={values.emailNotification} onChange={handleChange}  />}
-                                    label="Send me emails with special offers and updates."
-                                    aria-label="Send me emails with special offers and updates"
-                                    aria-required="true"
-                                    title="Send me emails with special offers and updates"
-                                    name="emailNotification"
-                                    className="size"
-                                  />
-                                </FormGroup>
-                              </Grid>
+                            <Grid item xs={12}>
+                              <FormGroup>
+                                <FormControlLabel
+                                  control={
+                                    <Checkbox
+                                      checked={values.emailNotification}
+                                      onChange={handleChange}
+                                    />
+                                  }
+                                  label="Send me emails with special offers and updates."
+                                  aria-label="Send me emails with special offers and updates"
+                                  aria-required="true"
+                                  title="Send me emails with special offers and updates"
+                                  name="emailNotification"
+                                  className="size"
+                                />
+                              </FormGroup>
+                            </Grid>
                           </form>
                         )}
                       </Formik>
@@ -411,11 +412,16 @@ const Checkout = () => {
               {/*second section ends here*/}
               <Grid container className="add-order">
                 <Grid item xs={12} sm={12} md={4} lg={4}>
-                    <Button disabled={buttonDisabled || basketObj?.loading} onClick={placeOrder} variant="contained" title="PLACE ORDER">
-                      PLACE ORDER
-                    </Button>
+                  <Button
+                    disabled={buttonDisabled || basketObj?.loading}
+                    onClick={placeOrder}
+                    variant="contained"
+                    title="PLACE ORDER"
+                  >
+                    PLACE ORDER
+                  </Button>
                 </Grid>
-             </Grid>
+              </Grid>
             </Card>
           </Grid>
         </Grid>

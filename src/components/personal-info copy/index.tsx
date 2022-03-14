@@ -124,20 +124,20 @@ const PersonalInfo = () => {
             }}
             validationSchema={Yup.object({
               firstName: Yup.string()
-                .max(15, 'Must be 15 characters or less')
-                .min(3, 'Must be at least 3 characters')
-                .matches(
-                  /^[aA-zZ\s]+$/,
-                  'Only letters are allowed for this field ',
-                )
+                .max(30, 'Must be 30 characters or less')
+                // .min(3, 'Must be at least 3 characters')
+                // .matches(
+                //   /^[aA-zZ\s]+$/,
+                //   'Only letters are allowed for this field ',
+                // )
                 .required('Name is required'),
               lastName: Yup.string()
-                .max(20, 'Must be 20 characters or less')
-                .min(3, 'Must be at least 3 characters')
-                .matches(
-                  /^[aA-zZ\s]+$/,
-                  'Only letters are allowed for this field ',
-                )
+                .max(30, 'Must be 30 characters or less')
+                // .min(3, 'Must be at least 3 characters')
+                // .matches(
+                //   /^[aA-zZ\s]+$/,
+                //   'Only letters are allowed for this field ',
+                // )
                 .required('Last name is required'),
               email: Yup.string()
                 .matches(
