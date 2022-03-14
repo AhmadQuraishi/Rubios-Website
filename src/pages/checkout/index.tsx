@@ -372,26 +372,34 @@ const Checkout = () => {
               </Grid>
               <br />
               <br />
+              <br />
               <Divider />
+              <br />
               <br />
               <br />
               <Rewards />
               <br />
               <br />
+              <br />
               <Divider />
+              <br />
               <br />
               <br />
               <Tip basket={basket} />
               <br />
               <br />
+              <br />
               <Divider />
+              <br />
               <br />
               <br />
               {/*second section*/}
               <OrderDetail basket={basket} validate={validate} />
               <br />
               <br />
+              <br />
               <Divider />
+              <br />
               <br />
               <br />
               <PaymentInfo ref={paymentInfoRef} />
