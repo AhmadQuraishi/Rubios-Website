@@ -69,17 +69,17 @@ const OrderTime = ()  => {
     }
   }, [basketObj.calendar]);
 
-  React.useEffect(() => {
-    if (basket) {
-      dispatch(
-        getSingleRestaurantCalendar(
-          basket.vendorid,
-          moment(selectedDate).format('YYYYMMDD'),
-          moment(selectedDate).format('YYYYMMDD'),
-        ),
-      );
-    }
-  }, [selectedDate]);
+  // React.useEffect(() => {
+  //   if (basket) {
+  //     dispatch(
+  //       getSingleRestaurantCalendar(
+  //         basket.vendorid,
+  //         moment(selectedDate).format('YYYYMMDD'),
+  //         moment(selectedDate).format('YYYYMMDD'),
+  //       ),
+  //     );
+  //   }
+  // }, [selectedDate]);
 
   React.useEffect(() => {
     if (restaurantHours && restaurantHours.length) {
@@ -116,9 +116,11 @@ const OrderTime = ()  => {
   };
 
   const handleDateChange = (e: any) => {
-    setSelectedDate(e);
-    setOpen(!open);
-    if (basket) {
+    console.log('eeeeeeeeeeee', e)
+    console.log('date 1', moment(e).format('YYYYMMDD'))
+    console.log('date 2', moment(selectedDate).format('YYYYMMDD'))
+    if (basket && (moment(e).format('YYYYMMDD') !== moment(selectedDate).format('YYYYMMDD') )) {
+      setSelectedDate(e);
       dispatch(
         getSingleRestaurantCalendar(
           basket.vendorid,
@@ -127,6 +129,7 @@ const OrderTime = ()  => {
         ),
       );
     }
+    setOpen(!open);
   };
 
   return (
@@ -168,7 +171,7 @@ const OrderTime = ()  => {
                           maxDate={moment().add('days', 7)}
                           inputFormat="MM/dd/yyyy"
                           value={selectedDate}
-                          onChange={handleDateChange}
+                          onChange={(e) => handleDateChange(e)}
                           renderInput={({
                             inputRef,
                             inputProps,

@@ -395,12 +395,6 @@ const Checkout = () => {
               <Divider />
               <br />
               <br />
-              <Rewards />
-              <br />
-              <br />
-              <Divider />
-              <br />
-              <br />
               <PaymentInfo ref={paymentInfoRef} />
               {/*second section ends here*/}
               <Grid container className="add-order">

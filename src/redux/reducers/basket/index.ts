@@ -25,7 +25,12 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
         basketType: 'New',
         error: {},
       };
-
+    case basketActionsTypes.VALIDETE_BASKET:
+    case basketActionsTypes.SUBMIT_BASKET_SINGLE_PAYMENT:
+      return {
+        ...state,
+        loading: true
+    };
     case basketActionsTypes.GET_BASKET_SUCCESS:
     case basketActionsTypes.UPDATE_BASKET_TIME_WANTED_SUCCESS:
     case basketActionsTypes.DELETE_BASKET_TIME_WANTED_SUCCESS:
