@@ -68,20 +68,7 @@
 }
 
 
-@media screen and (max-width: 800px) {
-  .checkout-wrapper {
-    padding: 0px !important;
-  }
-  .checkout-wrapper .order {
-    border-radius: 0px !important;
-    padding: 30px !important;
-  }
-  .order .left-col {
-    padding: 0px 55px 0px 0px !important;
-  }
-}
-
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 900px) {
   .order .add-order button {
     width: auto;
     padding: 0px 35px;
@@ -93,6 +80,16 @@
     float: left;
     width: 47.2%;
     margin-bottom: 10px !important;
+  }
+  .checkout-wrapper {
+    padding: 0px !important;
+  }
+  .checkout-wrapper .order {
+    border-radius: 0px !important;
+    padding: 30px !important;
+  }
+  .order .left-col {
+    padding: 0px 55px 0px 0px !important;
   }
 }
 @media screen and (max-width: 468px) {
