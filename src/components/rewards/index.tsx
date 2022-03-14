@@ -20,7 +20,7 @@ const Rewards = () => {
       desc: 'Free Regular Sized Drink',
     },
     {
-      icon: food,
+      icon: drinks,
       desc: 'Buy One Get One Free',
     }
   ];
