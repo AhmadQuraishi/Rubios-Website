@@ -121,6 +121,8 @@ const Checkout = () => {
       formData: null
     }
 
+    console.log('pickupFormRef', pickupFormRef)
+
     if(!pickupFormRef.current){
     }
     else if (!pickupFormRef.current.dirty){
@@ -181,7 +183,7 @@ const Checkout = () => {
    formData.phone = formData.phone.replace(/\D/g, '')
 
    const basketPayload = generateSubmitBasketPayload(formData, cardDetails, authToken?.authtoken);
-
+   
     if(basket){
       setButtonDisabled(false);
       let user: any = null;
@@ -272,7 +274,7 @@ const Checkout = () => {
                             touched,
                             values,
                             isValid,
-                            dirty,
+                            dirty
                           }) => (
                     <form style={{width: '100%'}} onSubmit={handleSubmit}>
                       <Grid item xs={12}>
@@ -322,7 +324,10 @@ const Checkout = () => {
                                 name="phone"
                                 InputLabelProps={
                                   {
-                                    shrink: touched && values.phone == '' ? false : true
+                                    shrink: touched && values.phone == '' ? false : true,
+                                    classes: {
+                                      root: values.phone !== '' ? 'custom-phone-label' : '',
+                                    }
                                   }
                                 }
                                 InputProps={{
