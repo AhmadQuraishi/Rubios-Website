@@ -8,7 +8,6 @@ axiosInstance.interceptors.request.use(
         const url = config.url || '';
       let origin = window.location.origin; // http://localhost:3000
       let check = url?.toString().includes('punchh_api');
-      const access_token = store.getState().providerReducer.providerToken.access_token;
         let mobile = url?.toString().includes('mobile');
         let preppedUrl = url.replace('/punchh_api/', '/');
 
@@ -30,7 +29,7 @@ axiosInstance.interceptors.request.use(
             const signature = CryptoJS.HmacSHA256(concatString, secretString).toString();
             config.headers = {
               'x-pch-digest': signature,
-               'Authorization': `Bearer ${access_token}`,
+               'Authorization': `Bearer ${store.getState().providerReducer.providerToken.access_token}`,
              'punchh-app-device-id' : 'sasewqee234324'
             };
           }
