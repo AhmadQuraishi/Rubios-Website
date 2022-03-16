@@ -1,0 +1,5 @@
+export enum redemptionTypes {
+  GET_CODE = 'GET_CODE',
+  GET_CODE_SUCCESS = 'GET_CODE_SUCCESS',
+  GET_CODE_FAILURE = 'GET_CODE_FAILURE',
+}

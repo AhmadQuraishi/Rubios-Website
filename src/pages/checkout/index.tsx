@@ -121,11 +121,10 @@ const Checkout = () => {
       formData: null,
     };
 
-    console.log('pickupFormRef', pickupFormRef)
+    console.log('pickupFormRef', pickupFormRef);
 
-    if(!pickupFormRef.current){
-    }
-    else if (!pickupFormRef.current.dirty){
+    if (!pickupFormRef.current) {
+    } else if (!pickupFormRef.current.dirty) {
       pickupFormRef.current.submitForm();
     } else if (Object.keys(pickupFormRef.current.errors).length > 0) {
     } else {
@@ -176,9 +175,13 @@ const Checkout = () => {
 
     formData.phone = formData.phone.replace(/\D/g, '');
 
-   const basketPayload = generateSubmitBasketPayload(formData, cardDetails, authToken?.authtoken);
-   
-    if(basket){
+    const basketPayload = generateSubmitBasketPayload(
+      formData,
+      cardDetails,
+      authToken?.authtoken,
+    );
+
+    if (basket) {
       setButtonDisabled(false);
       let user: any = null;
       if (authToken?.authtoken && authToken.authtoken !== '') {
@@ -221,72 +224,82 @@ const Checkout = () => {
                         </Typography>
                       </Grid>
                       <Formik
-                          innerRef={pickupFormRef}
-                          enableReinitialize={true}
-                          initialValues={{
-                            firstName: providerToken?.first_name ? providerToken?.first_name : '',
-                            lastName: providerToken?.last_name ? providerToken?.last_name : '',
-                            phone: providerToken?.phone ? providerToken?.phone : '',
-                            email: providerToken?.email ? providerToken?.email : '',
-                            emailNotification: providerToken?.marketing_email_subscription ? providerToken?.marketing_email_subscription : false
-                          }}
-                          validationSchema={Yup.object({
-                            firstName: Yup.string()
-                              .max(15, 'Must be 15 characters or less')
-                              .min(3, 'Must be at least 3 characters')
-                              .matches(
-                                /^[aA-zZ\s]+$/,
-                                'Only letters are allowed for this field ',
-                              )
-                              .required('First Name is required'),
-                            lastName: Yup.string()
-                              .max(15, 'Must be 15 characters or less')
-                              .min(3, 'Must be at least 3 characters')
-                              .matches(
-                                /^[aA-zZ\s]+$/,
-                                'Only letters are allowed for this field ',
-                              )
-                              .required('Last Name is required'),
-                            email: Yup.string()
-                              .matches(
-                                /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-                                'Invalid Email ',
-                              )
-                              .email('Invalid email address')
-                              .required('Email is required'),
+                        innerRef={pickupFormRef}
+                        enableReinitialize={true}
+                        initialValues={{
+                          firstName: providerToken?.first_name
+                            ? providerToken?.first_name
+                            : '',
+                          lastName: providerToken?.last_name
+                            ? providerToken?.last_name
+                            : '',
+                          phone: providerToken?.phone
+                            ? providerToken?.phone
+                            : '',
+                          email: providerToken?.email
+                            ? providerToken?.email
+                            : '',
+                          emailNotification:
+                            providerToken?.marketing_email_subscription
+                              ? providerToken?.marketing_email_subscription
+                              : false,
+                        }}
+                        validationSchema={Yup.object({
+                          firstName: Yup.string()
+                            .max(30, 'Must be 30 characters or less')
 
-                            phone: Yup.string().min(14, 'Enter valid number').required('Phone is required'),
-                            emailNotification: Yup.bool().optional()
-                          })}
-                          onSubmit={(values, actions) => {}}
-                        >
-                          {({
-                            errors,
-                            handleBlur,
-                            handleChange,
-                            handleSubmit,
-                            touched,
-                            values,
-                            isValid,
-                            dirty
-                          }) => (
-                    <form style={{width: '100%'}} onSubmit={handleSubmit}>
-                      <Grid item xs={12}>
-                        <TextField
-                          aria-label="First Name"
-                          disabled={authToken?.authtoken ? true : false}
-                          onBlur={handleBlur}
-                          label="First Name"
-                          aria-required="true"
-                          title="First Name"
-                          type="text"
-                          name="firstName"
-                          value={values.firstName}
-                          onChange={handleChange}
-                          error={Boolean(touched.firstName && errors.firstName)}
-                          helperText={errors.firstName}
-                        />
-                      </Grid>
+                            .required('First Name is required'),
+                          lastName: Yup.string()
+                            .max(30, 'Must be 30 characters or less')
+
+                            .required('Last Name is required'),
+                          email: Yup.string()
+                            .matches(
+                              /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+                              'Invalid Email ',
+                            )
+                            .email('Invalid email address')
+                            .required('Email is required'),
+
+                          phone: Yup.string()
+                            .min(14, 'Enter valid number')
+                            .required('Phone is required'),
+                          emailNotification: Yup.bool().optional(),
+                        })}
+                        onSubmit={(values, actions) => {}}
+                      >
+                        {({
+                          errors,
+                          handleBlur,
+                          handleChange,
+                          handleSubmit,
+                          touched,
+                          values,
+                          isValid,
+                          dirty,
+                        }) => (
+                          <form
+                            style={{ width: '100%' }}
+                            onSubmit={handleSubmit}
+                          >
+                            <Grid item xs={12}>
+                              <TextField
+                                aria-label="First Name"
+                                disabled={authToken?.authtoken ? true : false}
+                                onBlur={handleBlur}
+                                label="First Name"
+                                aria-required="true"
+                                title="First Name"
+                                type="text"
+                                name="firstName"
+                                value={values.firstName}
+                                onChange={handleChange}
+                                error={Boolean(
+                                  touched.firstName && errors.firstName,
+                                )}
+                                helperText={errors.firstName}
+                              />
+                            </Grid>
 
                             <Grid item xs={12}>
                               <TextField
@@ -318,14 +331,18 @@ const Checkout = () => {
                                 value={values.phone}
                                 onChange={handleChange}
                                 name="phone"
-                                InputLabelProps={
-                                  {
-                                    shrink: touched && values.phone == '' ? false : true,
-                                    classes: {
-                                      root: values.phone !== '' ? 'mobile-field-label' : '',
-                                    }
-                                  }
-                                }
+                                InputLabelProps={{
+                                  shrink:
+                                    touched && values.phone == ''
+                                      ? false
+                                      : true,
+                                  classes: {
+                                    root:
+                                      values.phone !== ''
+                                        ? 'mobile-field-label'
+                                        : '',
+                                  },
+                                }}
                                 InputProps={{
                                   inputComponent: NumberFormatCustom as any,
                                 }}

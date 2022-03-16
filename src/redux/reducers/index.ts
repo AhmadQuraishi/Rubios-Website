@@ -22,6 +22,7 @@ import removeProductReducer from './basket/product/remove';
 import checkInReducer from './check-in';
 import updateProductReducer from './basket/product/update';
 import favRestaurantReducer from './restaurant/fav-restaurant';
+import accountHistoryReducer from './account-history';
 
 const persistConfig = {
   key: 'root',
@@ -50,7 +51,8 @@ const rootReducers = combineReducers({
   removeProductReducer,
   checkInReducer,
   updateProductReducer,
-  favRestaurantReducer
+  favRestaurantReducer,
+  accountHistoryReducer
 });
 
 const persistReducers = persistReducer(persistConfig, rootReducers);

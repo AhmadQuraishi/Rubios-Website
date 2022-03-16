@@ -1,14 +1,14 @@
 import axios from "axios";
 import * as CryptoJS from "crypto-js";
-
+import { store } from "../../redux/store";
 const axiosInstance = axios.create();
 axiosInstance.interceptors.request.use(
   function (config) {
     try {
-    
         const url = config.url || '';
-        let origin = window.location.origin; // http://localhost:3000
-        let check = url?.toString().includes('punchh_api');
+      let origin = window.location.origin; // http://localhost:3000
+      let check = url?.toString().includes('punchh_api');
+      const access_token = store.getState().providerReducer.providerToken.access_token;
         let mobile = url?.toString().includes('mobile');
         let preppedUrl = url.replace('/punchh_api/', '/');
 
@@ -30,7 +30,7 @@ axiosInstance.interceptors.request.use(
             const signature = CryptoJS.HmacSHA256(concatString, secretString).toString();
             config.headers = {
               'x-pch-digest': signature,
-               'Authorization': 'Bearer ede0074cdd8df2f60ff81037cae9358ca9cdf9030c1698d5d3709b65456ce2c1',
+               'Authorization': `Bearer ${access_token}`,
              'punchh-app-device-id' : 'sasewqee234324'
             };
           }

@@ -1,27 +1,26 @@
 import { rewardTypes as Type } from '../../types/reward';
 
 const initialState = {
-    userRedeemRewards: null,
+    rewards: null,
     loading: false,
     error: {},
-    success: 0
   };
 
 
   const rewardReducer = (state = initialState, action: any) => {
     switch (action.type) {
       // Case get requests
-      case Type.GET_REDEEM_REWARDS:
+      case Type.GET_REWARDS:
         return { ...state, loading: true };
 
-      case Type.GET_REDEEM_REWARDS_SUCCESS:
+      case Type.GET_REWARDS_SUCCESS:
         return {
           ...state,
           loading: false,
-          userRedeemRewards: action.payload,
+          rewards: action.payload,
           error: null
         };
-      case Type.GET_REDEEM_REWARDS_FAILURE:
+      case Type.GET_REWARDS_FAILURE:
         return { ...state, loading: false, error: action.error  , success: 0};
   
       default:
