@@ -8,8 +8,14 @@ import RecentOrders from '../../components/recent-orders';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    padding: '0px 15px 20px 15px',
-    maxWidth: '990px',
+    padding: '30px 20px 40px 70px',
+    [theme.breakpoints.down('lg')]: {
+      padding: '30px 30px 40px 30px',
+    },
+    [theme.breakpoints.down('sm')]: {
+      padding: '30px 20px 40px 20px',
+    },
+    maxWidth: '1100px',
     boxSizing: 'border-box',
   },
   heading: {

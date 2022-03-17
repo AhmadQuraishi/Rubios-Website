@@ -12,7 +12,7 @@ const OrderListSkeletonUI = () => {
       <Grid
         item
         xs={12}
-        lg={6}
+        md={6}
         sx={{ paddingLeft: '0px !important', marginBottom: '20px' }}
       >
         <Skeleton
@@ -24,7 +24,7 @@ const OrderListSkeletonUI = () => {
       <Grid
         item
         xs={12}
-        lg={6}
+        md={6}
         sx={{ paddingLeft: '0px !important', marginBottom: '20px' }}
       >
         <Skeleton
@@ -36,7 +36,7 @@ const OrderListSkeletonUI = () => {
       <Grid
         item
         xs={12}
-        lg={6}
+        md={6}
         sx={{ paddingLeft: '0px !important', marginBottom: '20px' }}
       >
         <Skeleton
@@ -48,7 +48,7 @@ const OrderListSkeletonUI = () => {
       <Grid
         item
         xs={12}
-        lg={6}
+        md={6}
         sx={{ paddingLeft: '0px !important', marginBottom: '20px' }}
       >
         <Skeleton
@@ -60,7 +60,7 @@ const OrderListSkeletonUI = () => {
       <Grid
         item
         xs={12}
-        lg={6}
+        md={6}
         sx={{ paddingLeft: '0px !important', marginBottom: '20px' }}
       >
         <Skeleton
@@ -72,7 +72,7 @@ const OrderListSkeletonUI = () => {
       <Grid
         item
         xs={12}
-        lg={6}
+        md={6}
         sx={{ paddingLeft: '0px !important', marginBottom: '20px' }}
       >
         <Skeleton
