@@ -25,6 +25,10 @@ const LoginForm = () => {
   const { loading: loadingProvider } = useSelector((state: any) => state.providerReducer);
   const { loading: loadingAuth } = useSelector((state: any) => state.authReducer);
 
+  const forgotPassword = () => {
+    window.open(`${process.env.REACT_APP_PUNCHH_FORGOT_PASSWORD_URL}`, 'newwin', 'height=400px,width=400px');
+  }
+
   return (
     <div className={classes.root}>
         <Grid container columns={16}>
@@ -101,6 +105,8 @@ const LoginForm = () => {
                       <Link
                         className="forgot-pass"
                         title="forgot-password"
+                        onClick={() => forgotPassword()}
+                        style={{cursor: 'pointer'}}
                       >
                         Forgot Password?
                       </Link>

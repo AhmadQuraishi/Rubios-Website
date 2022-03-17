@@ -1,4 +1,5 @@
 import { tokenActionsTypes as Type } from '../../types/token';
+import {userTypes } from '../../types/user';
 
 const INITIAL_STATE = {
   loading: false,
@@ -14,6 +15,10 @@ const tokenReducer = (state = INITIAL_STATE, action: any) => {
       return { ...state, loading: false, accessToken: action.payload };
     case Type.GET_TOKEN_FAILURE:
       return { ...state, loading: false, error: action.error };
+    case userTypes.USER_LOGOUT: 
+      return {
+        ...INITIAL_STATE
+      }  
     default:
       return state;
   }

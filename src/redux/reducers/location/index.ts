@@ -1,4 +1,5 @@
 import { locationTypes as Type } from '../../types/location';
+import { userTypes } from '../../types/user';
 
 const initialState = {
   location: null,
@@ -21,7 +22,10 @@ const locationReducer = (state = initialState, action: any) => {
 
     case Type.GET_LOCATIONS_FAILURE:
       return { ...state, loading: false, error: action.error };
-
+    case userTypes.USER_LOGOUT: 
+      return {
+        ...initialState
+      }   
     default:
       return state;
   }

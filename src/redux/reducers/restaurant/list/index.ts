@@ -1,4 +1,6 @@
 import { restaurantListDataActionsTypes } from '../../../types/restaurant/list';
+import { userTypes } from '../../../types/user';
+
 
 const INITIAL_STATE = {
   loading: false,
@@ -19,6 +21,10 @@ const restaurantListReducer = (state = INITIAL_STATE, action: any) => {
       };
     case restaurantListDataActionsTypes.GET_RESTAURANT_LIST_FAILURE:
       return { ...state, loading: false, error: action.error };
+    case userTypes.USER_LOGOUT: 
+      return {
+        ...INITIAL_STATE
+      }    
     default:
       return state;
   }

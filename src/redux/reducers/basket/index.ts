@@ -1,4 +1,5 @@
 import { basketActionsTypes } from '../../types/basket';
+import { userTypes } from '../../types/user';
 
 const INITIAL_STATE = {
   loading: false,
@@ -106,6 +107,10 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
         ...state,
         orderConfirmation: false,
     };
+    case userTypes.USER_LOGOUT: 
+      return {
+        ...INITIAL_STATE
+      }   
     default:
       return state;
   }

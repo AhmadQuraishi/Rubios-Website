@@ -21,6 +21,7 @@
   color: #2b4b62;
   font-family: 'Poppins-Medium' !important;
   text-decoration: none;
+  cursor: 'pointer';
 }
 
 @media screen and (max-width: 900px) {

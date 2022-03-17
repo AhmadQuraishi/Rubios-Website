@@ -1,4 +1,5 @@
 import { basketActionsTypes } from '../../../types/basket';
+import { userTypes } from '../../../types/user';
 
 const INITIAL_STATE = {
   loading: false,
@@ -19,6 +20,8 @@ const addMultipleProductsReducer = (state = INITIAL_STATE, action: any) => {
       };
     case basketActionsTypes.ADD_MULTIPLE_PRODUCT_FAILURE:
       return { ...state, loading: false, error: action.error };
+    case userTypes.USER_LOGOUT: 
+      return { ...INITIAL_STATE }  
     default:
       return state;
   }

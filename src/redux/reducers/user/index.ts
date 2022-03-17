@@ -142,7 +142,10 @@ const userReducer = (state = initialState, action: any) => {
     case Type.GET_GIFT_CARDS_FAILURE:
     case Type.DEL_FAV_ORDER__FAILURE:
       return { ...state, loading: false, error: action.error  , success: 0};
-
+    case Type.USER_LOGOUT: 
+    return {
+      ...initialState
+    }  
     default:
       return state;
   }
