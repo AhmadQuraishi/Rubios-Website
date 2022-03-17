@@ -157,33 +157,35 @@ const Header = (props: any) => {
               >
                 <MenuIcon fontSize="large" titleAccess="Menu Icon" />
               </IconButton>
-              <Grid
-                container
-                sx={{
-                  background: '#0073BD',
-                  alignItems: 'center',
-                  fontFamily: 'Poppins-Medium',
-                  textAlign: 'center',
-                  textTransform: 'uppercase',
-                  fontSize: '14px',
-                  height: '70px',
-                  width: '65px',
-                }}
-                onClick={() => {
-                  setShowAccountMenu(!showAccountMenu);
-                }}
-              >
+              {providerToken && providerToken.first_name && (
                 <Grid
-                  item
-                  xs={12}
-                  sx={{ display: 'flex', justifyContent: 'center' }}
+                  container
+                  sx={{
+                    background: '#0073BD',
+                    alignItems: 'center',
+                    fontFamily: 'Poppins-Medium',
+                    textAlign: 'center',
+                    textTransform: 'uppercase',
+                    fontSize: '14px',
+                    height: '70px',
+                    width: '65px',
+                  }}
+                  onClick={() => {
+                    setShowAccountMenu(!showAccountMenu);
+                  }}
                 >
-                  <img
-                    src={require('../../assets/imgs/user-icon.png')}
-                    alt="Profile Icon"
-                  />
+                  <Grid
+                    item
+                    xs={12}
+                    sx={{ display: 'flex', justifyContent: 'center' }}
+                  >
+                    <img
+                      src={require('../../assets/imgs/user-icon.png')}
+                      alt="Profile Icon"
+                    />
+                  </Grid>
                 </Grid>
-              </Grid>
+              )}
               {!removeCart && !removeCartForLocation && (
                 <div
                   style={{
@@ -241,75 +243,76 @@ const Header = (props: any) => {
                 title="Main Menu"
                 onClick={() => setShowAccountMenu(false)}
               >
-                Main Menu
+                Main Menu {console.log(providerToken)}
               </Link>
-              {/* //{providerToken && providerToken.first_name && ( */}
-              <Grid
-                container
-                sx={{
-                  width: { sm: '170px', md: '200px' },
-                  marginLeft: '15px',
-                  background: '#0073BD',
-                  alignItems: 'center',
-                  cursor: 'pointer',
-                }}
-                onClick={() => {
-                  setShowAccountMenu(!showAccountMenu);
-                }}
-              >
+              {providerToken == null && removeCart && <p>&nbsp;&nbsp;&nbsp;&nbsp;</p>}
+              {providerToken && providerToken.first_name && (
                 <Grid
-                  item
-                  xs={12}
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'center',
+                  container
+                  sx={{
+                    width: { sm: '170px', md: '200px' },
+                    marginLeft: '15px',
+                    background: '#0073BD',
                     alignItems: 'center',
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => {
+                    setShowAccountMenu(!showAccountMenu);
                   }}
                 >
-                  <img
-                    src={require('../../assets/imgs/user-icon.png')}
-                    alt="Profile Icon"
-                  />{' '}
-                  <Typography
-                    sx={{
-                      paddingLeft: '5px',
-                      display: 'block',
-                      maxWidth: { sm: '100px', lg: '130px' },
-                      whiteSpace: 'nowrap',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      fontFamily: 'Poppins-Medium',
-                      textAlign: 'center',
-                      textTransform: 'uppercase',
-                      fontSize: '14px',
+                  <Grid
+                    item
+                    xs={12}
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
                     }}
                   >
-                    Hi {(providerToken && providerToken.first_name) || 'Stacey'}
-                    !
-                  </Typography>
-                  {!showAccountMenu && (
-                    <span
-                      style={{
+                    <img
+                      src={require('../../assets/imgs/user-icon.png')}
+                      alt="Profile Icon"
+                    />{' '}
+                    <Typography
+                      sx={{
                         paddingLeft: '5px',
-                        fontSize: '12px',
+                        display: 'block',
+                        maxWidth: { sm: '100px', lg: '120px' },
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        fontFamily: 'Poppins-Medium',
+                        textAlign: 'center',
+                        textTransform: 'uppercase',
+                        fontSize: '14px',
                       }}
                     >
-                      &#9660;
-                    </span>
-                  )}
-                  {showAccountMenu && (
-                    <span
-                      style={{
-                        paddingLeft: '5px',
-                        fontSize: '12px',
-                      }}
-                    >
-                      &#9650;
-                    </span>
-                  )}
+                      Hi{' '}
+                      {(providerToken && providerToken.first_name) || 'Stacey'}!
+                    </Typography>
+                    {!showAccountMenu && (
+                      <span
+                        style={{
+                          paddingLeft: '5px',
+                          fontSize: '12px',
+                        }}
+                      >
+                        &#9660;
+                      </span>
+                    )}
+                    {showAccountMenu && (
+                      <span
+                        style={{
+                          paddingLeft: '5px',
+                          fontSize: '12px',
+                        }}
+                      >
+                        &#9650;
+                      </span>
+                    )}
+                  </Grid>
                 </Grid>
-              </Grid>
-              {/* //)} */}
+              )}
               {!removeCart && (
                 <Button
                   component="div"
