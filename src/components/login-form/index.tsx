@@ -26,7 +26,7 @@ const LoginForm = () => {
   const { loading: loadingAuth } = useSelector((state: any) => state.authReducer);
 
   const forgotPassword = () => {
-    window.open("https://sandbox.punchh.com/customers/password/new.iframe?slug=rubios", 'newwin', 'height=400px,width=400px');
+    window.open(`${process.env.REACT_APP_PUNCHH_FORGOT_PASSWORD_URL}`, 'newwin', 'height=400px,width=400px');
   }
 
   return (
@@ -106,6 +106,7 @@ const LoginForm = () => {
                         className="forgot-pass"
                         title="forgot-password"
                         onClick={() => forgotPassword()}
+                        style={{cursor: 'pointer'}}
                       >
                         Forgot Password?
                       </Link>
