@@ -74,7 +74,7 @@ const Login = () => {
         <OAuth2Login
           className={classes.signinBtn}
           buttonText={'Punchh SSO Sign In'}
-          authorizationUrl={process.env.REACT_APP_AUTHORIZATION_URL}
+          authorizationUrl={process.env.REACT_APP_PUNCHH_FACEBOOK_LOGIN_URL}
           responseType="code"
           clientId={process.env.REACT_APP_PUNCHH_CLIENT_ID}
           redirectUri={window.location.href}
