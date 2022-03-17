@@ -1,4 +1,6 @@
 import { productOptionActionsTypes } from '../../../types/product/option';
+import { userTypes } from '../../../types/user';
+
 
 const INITIAL_STATE = {
   loading: false,
@@ -14,6 +16,10 @@ const productOptionsReducer = (state = INITIAL_STATE, action: any) => {
       return { ...state, loading: false, options: action.payload, error: {} };
     case productOptionActionsTypes.GET_PRODUCT_OPTION_FAILURE:
       return { ...state, loading: false, error: action.error };
+    case userTypes.USER_LOGOUT: 
+      return {
+        ...INITIAL_STATE
+      }   
     default:
       return state;
   }

@@ -1,4 +1,5 @@
 import { restaurantActionsTypes } from '../../types/restaurant';
+import { userTypes } from '../../types/user';
 
 const INITIAL_STATE = {
   loading: false,
@@ -38,6 +39,10 @@ const restaurantInfoReducer = (state = INITIAL_STATE, action: any) => {
       };
     case restaurantActionsTypes.SET_RESTAURANT_INFO_FAILURE:
       return { ...state, loading: false, error: action.error };
+    case userTypes.USER_LOGOUT: 
+      return {
+        ...INITIAL_STATE
+      }    
     default:
       return state;
   }

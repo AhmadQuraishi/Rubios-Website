@@ -1,4 +1,5 @@
 import { restaurantCalendarActionsTypes } from '../../../types/restaurant/calendar';
+import { userTypes } from '../../../types/user';
 
 const INITIAL_STATE = {
   loading: false,
@@ -14,6 +15,10 @@ const restaurantCalendarReducer = (state = INITIAL_STATE, action: any) => {
       return { ...state, loading: false, calendar: action.payload, error: {} };
     case restaurantCalendarActionsTypes.GET_RESTAURANT_CALENDAR_FAILURE:
       return { ...state, loading: false, error: action.error };
+    case userTypes.USER_LOGOUT: 
+      return {
+        ...INITIAL_STATE
+      }    
     default:
       return state;
   }

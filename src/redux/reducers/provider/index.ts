@@ -21,6 +21,10 @@ const providerReducer = (state = INITIAL_STATE, action: any) => {
     case userTypes.USER_LOGIN_FAILURE:
     case userTypes.USER_REGISTER_FAILURE:
       return { ...state, loading: false, error: action.error };
+    case userTypes.USER_LOGOUT: 
+      return {
+        ...INITIAL_STATE
+      }  
     default:
       return state;
   }

@@ -407,3 +407,9 @@ export function userRegisterFailure(error: any) {
   };
 }
 
+export function userLogout() {
+  return {
+    type: Type.USER_LOGOUT
+  };
+}
+

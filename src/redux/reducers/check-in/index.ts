@@ -1,4 +1,5 @@
 import { checkinTypes as Type } from '../../types/check-in';
+import { userTypes } from '../../types/user';
 
 const initialState = {
   
@@ -26,6 +27,10 @@ const checkInReducer = (state = initialState, action: any) => {
   
     case Type.CHECK_IN_FAILURE:
       return { ...state, error: action.error  , loading :  false};
+    case userTypes.USER_LOGOUT: 
+      return {
+        ...initialState
+      }     
 
     default:
       return state;

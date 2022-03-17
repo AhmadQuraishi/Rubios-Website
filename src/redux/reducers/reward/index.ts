@@ -1,4 +1,6 @@
 import { rewardTypes as Type } from '../../types/reward';
+import { userTypes } from '../../types/user';
+
 
 const initialState = {
     rewards: null,
@@ -22,7 +24,10 @@ const initialState = {
         };
       case Type.GET_REWARDS_FAILURE:
         return { ...state, loading: false, error: action.error  , success: 0};
-  
+      case userTypes.USER_LOGOUT: 
+        return {
+          ...initialState
+        }  
       default:
         return state;
     }

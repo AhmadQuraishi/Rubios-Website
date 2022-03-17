@@ -25,6 +25,10 @@ const LoginForm = () => {
   const { loading: loadingProvider } = useSelector((state: any) => state.providerReducer);
   const { loading: loadingAuth } = useSelector((state: any) => state.authReducer);
 
+  const forgotPassword = () => {
+    window.open("https://sandbox.punchh.com/customers/password/new.iframe?slug=rubios", 'newwin', 'height=400px,width=400px');
+  }
+
   return (
     <div className={classes.root}>
         <Grid container columns={16}>
@@ -101,6 +105,7 @@ const LoginForm = () => {
                       <Link
                         className="forgot-pass"
                         title="forgot-password"
+                        onClick={() => forgotPassword()}
                       >
                         Forgot Password?
                       </Link>

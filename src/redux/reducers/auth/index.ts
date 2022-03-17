@@ -1,4 +1,6 @@
 import { authActionsTypes as Type } from '../../types/auth';
+import { userTypes } from '../../types/user';
+
 
 const INITIAL_STATE = {
   loading: false,
@@ -14,6 +16,10 @@ const authReducer = (state = INITIAL_STATE, action: any) => {
       return { ...state, loading: false, authToken: action.payload };
     case Type.GET_AUTHTOKEN_FAILURE:
       return { ...state, loading: false, error: action.error };
+    case userTypes.USER_LOGOUT: 
+      return {
+        ...INITIAL_STATE
+      }     
     default:
       return state;
   }

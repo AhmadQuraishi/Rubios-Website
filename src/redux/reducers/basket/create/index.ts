@@ -1,4 +1,5 @@
 import { basketActionsTypes } from '../../../types/basket';
+import { userTypes } from '../../../types/user';
 
 const INITIAL_STATE = {
   loading: false,
@@ -26,6 +27,8 @@ const createBasketReducer = (state = INITIAL_STATE, action: any) => {
     case basketActionsTypes.CREATE_BASKET_FROM_PREV_ORDER_FAILURE:
     case basketActionsTypes.CREATE_BASKET_FROM_FAV_ORDER_FAILURE:
       return { ...state, loading: false, error: action.error };
+    case userTypes.USER_LOGOUT: 
+      return { ...INITIAL_STATE }  
     default:
       return state;
   }
