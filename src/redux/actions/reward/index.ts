@@ -8,10 +8,10 @@ export function getRewards() {
     };
   }
   
-  export function getRewardsSuccess(data: ResponseLoyaltyRewards) {
+  export function getRewardsSuccess(data: any) {
     return {
       type: Type.GET_REWARDS_SUCCESS,
-      payload: data,
+      payload: data &&  data.rewards && data.rewards,
     };
   }
   
