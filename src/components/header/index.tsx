@@ -245,7 +245,9 @@ const Header = (props: any) => {
               >
                 Main Menu {console.log(providerToken)}
               </Link>
-              {providerToken == null && removeCart && <p>&nbsp;&nbsp;&nbsp;&nbsp;</p>}
+              {providerToken == null && removeCart && (
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;</p>
+              )}
               {providerToken && providerToken.first_name && (
                 <Grid
                   container

@@ -23,11 +23,20 @@ import checkInReducer from './check-in';
 import updateProductReducer from './basket/product/update';
 import favRestaurantReducer from './restaurant/fav-restaurant';
 import accountHistoryReducer from './account-history';
+import pageStateReducer from './page-state';
 
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['restaurantInfoReducer', 'basketReducer', 'authReducer', 'tokenReducer','userReducer','providerReducer'],
+  whitelist: [
+    'restaurantInfoReducer',
+    'basketReducer',
+    'authReducer',
+    'tokenReducer',
+    'userReducer',
+    'providerReducer',
+    'pageStateReducer',
+  ],
 };
 
 const rootReducers = combineReducers({
@@ -52,7 +61,8 @@ const rootReducers = combineReducers({
   checkInReducer,
   updateProductReducer,
   favRestaurantReducer,
-  accountHistoryReducer
+  accountHistoryReducer,
+  pageStateReducer,
 });
 
 const persistReducers = persistReducer(persistConfig, rootReducers);

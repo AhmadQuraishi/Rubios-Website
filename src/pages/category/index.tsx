@@ -46,13 +46,27 @@ const CategoryList = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const body = document;
   useEffect(() => {
     if (restaurant === null) {
       navigate('/location');
     } else {
       dispatch(getCategoriesRequest(restaurant.id));
     }
+    body.addEventListener('scroll', (e) => {
+      e.preventDefault();
+      var testDiv = document.getElementById('categoryMenu');
+      if (testDiv) {
+        console.log(window.scrollY + ' ' + testDiv.offsetTop);
+        if (window.scrollY > testDiv.offsetTop) {
+          testDiv.style.position = 'fixed';
+          testDiv.style.top = '60px';
+        } else {
+          testDiv.style.position = 'relative';
+          testDiv.style.top = '0px';
+        }
+      }
+    });
   }, []);
 
   useEffect(() => {
@@ -65,7 +79,7 @@ const CategoryList = () => {
     setTimeout(() => {
       var elem = document.getElementById('#panel-' + newValue);
       elem?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 500);
+    }, 700);
     setValue(newValue);
   };
 
@@ -81,6 +95,8 @@ const CategoryList = () => {
           <Box
             sx={{
               width: '100%',
+              background: '#FFF',
+              zIndex: "1099",
               padding: {
                 xs: '20px 5px 10px 5px',
                 sm: '20px 30px 5px 30px',
@@ -88,6 +104,7 @@ const CategoryList = () => {
                 boxSizing: 'border-box',
               },
             }}
+            id="categoryMenu"
           >
             <Tabs
               value={value}
@@ -135,7 +152,7 @@ const CategoryList = () => {
               <Grid item xs={12}>
                 <div
                   id={'#panel-' + index}
-                  style={{ position: 'absolute', top: '-75px' }}
+                  style={{ position: 'absolute', top: '-120px' }}
                 ></div>
                 <Grid container>
                   <Grid item xs={item.products.length > 4 ? 8 : 12}>
