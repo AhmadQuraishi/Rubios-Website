@@ -13,8 +13,7 @@ import './register.css';
 
 const useStyle = makeStyles(() => ({
     root: {
-      minHeight: '100vh',
-      backgroundImage: `url(${bgImage})`,
+      background: `url(${bgImage}) center center fixed`,
       backgroundRepeat: "no-repeat",
       backgroundSize: "cover",
       justifyContent: 'center'

@@ -24,8 +24,7 @@ import { displayToast } from '../../helpers/toast';
 import { handleCart } from '../../components/header';
 const useStyle = makeStyles(() => ({
   root: {
-    minHeight: '100vh',
-    backgroundImage: `url(https://upload.wikimedia.org/wikipedia/commons/6/6d/Good_Food_Display_-_NCI_Visuals_Online.jpg)`,
+    background: `url(https://upload.wikimedia.org/wikipedia/commons/6/6d/Good_Food_Display_-_NCI_Visuals_Online.jpg) center center fixed`,
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
     justifyContent: 'center',

@@ -14,11 +14,10 @@ import bgImage from '../../assets/imgs/login-bg.png';
 
 const useStyle = makeStyles(() => ({
   root: {
-    minHeight: '100vh',
-    backgroundImage: `url(${bgImage})`,
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'cover',
-    justifyContent: 'center',
+    background: `url(${bgImage}) center center fixed`,
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "cover",
+    justifyContent: 'center'
   },
   caption: {},
 }));
