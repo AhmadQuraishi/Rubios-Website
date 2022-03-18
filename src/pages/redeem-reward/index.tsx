@@ -1,11 +1,11 @@
 import { Card, CardContent, Grid, Theme, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import FoodMenuCard from '../../components/food-menu-card';
 import './redeem-reward.css';
 import { useEffect, Fragment, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRewards } from '../../redux/actions/reward';
 import RewardListSkeletonUI from '../../components/rewards-list-skeleton';
+import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -23,12 +23,18 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const RedeemRewards = () => {
   const classes = useStyles();
-
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const { rewards, loading } = useSelector((state: any) => state.rewardReducer);
+
   useEffect(() => {
     dispatch(getRewards());
   }, []);
+
+  const handler = (id: number) => {
+    navigate(`reward/${id}`);
+  };
 
   return (
     <Fragment>
@@ -62,7 +68,12 @@ const RedeemRewards = () => {
               rewards.length > 0 &&
               rewards.map((reward: any, index: number) => (
                 <Grid item xs={12} sm={6} md={4} key={Math.random() + index}>
-                  <Card className="reward-item">
+                  <Card
+                    className="reward-item"
+                    onClick={() => {
+                      handler(reward.reward_id);
+                    }}
+                  >
                     <Grid container className="rewards">
                       <Grid item xs={5}>
                         {reward.reward_image_url ? (
