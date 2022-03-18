@@ -262,3 +262,14 @@ fieldset{
 
 /* mobile field custom css end */
 
+
+.select-custom-css {
+  font-weight: 400 !important;
+  font-size: 1rem !important;
+  line-height: 1.4375em !important;
+  letter-spacing: 0.00938em !important;
+  padding: 0 !important;
+  width: calc(100% - 24px) !important;
+  position: absolute !important;
+  text-align: center !important;
+}

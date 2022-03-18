@@ -9,8 +9,10 @@ import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    padding: '0px 15px',
+    padding: '30px 20px 40px 20px',
+    maxWidth: '1260px',
     boxSizing: 'border-box',
+    margin: 'auto',
   },
   heading: {
     paddingBottom: '5px',

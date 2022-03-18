@@ -38,6 +38,7 @@ const OrderTime = ()  => {
   const [open, setOpen] = React.useState<boolean>(false);
   const [basket, setBasket] = React.useState<ResponseBasket>();
   const [notAvailableSlots, setNotAvailableSlots] = useState(false);
+  const [selectShrink, setSelectShrink] = useState(false);
 
 
   const basketObj = useSelector((state: any) => state.basketReducer);
@@ -244,6 +245,11 @@ const OrderTime = ()  => {
                               id="select-more-times"
                               aria-label="More Times"
                               title="More Times"
+                              classes={{
+                                root: !selectShrink && !timeSlots.slice(4).includes(selectedTime)  ? 'select-custom-css' : ''
+                              }}
+                              style={{textAlign: 'center'}}
+                              shrink={selectShrink || timeSlots.slice(4).includes(selectedTime)}
                             >
                               MORE TIMES
                             </InputLabel>
@@ -254,6 +260,8 @@ const OrderTime = ()  => {
                               onChange={(event) => onTimeSlotSelect(event)}
                               label="Select More times"
                               title="Select More times"
+                              onClose={() => {setSelectShrink(false)}}
+                              onOpen={() => {setSelectShrink(true)}}
                             >
                               {
                                     timeSlots.slice(4).map(time => {

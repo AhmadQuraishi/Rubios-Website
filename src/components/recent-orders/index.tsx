@@ -107,7 +107,7 @@ const RecentOrders = () => {
           {recentorders
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((order: any, index: number) => (
-              <Grid key={Math.random() + index} item xs={12} lg={6}>
+              <Grid key={Math.random() + index} item xs={12} md={6}>
                 <Card elevation={0} className="card-panel">
                   <Grid container>
                     <Grid item xs={10}>

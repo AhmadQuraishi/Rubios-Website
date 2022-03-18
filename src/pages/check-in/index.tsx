@@ -10,9 +10,10 @@ import { IMaskInput } from 'react-imask';
 import { forwardRef } from 'react';
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    padding: '0px 15px',
-    maxWidth: '990px',
+    padding: '30px 20px 40px 20px',
+    maxWidth: '1260px',
     boxSizing: 'border-box',
+    margin: 'auto',
   },
   heading: {
     paddingBottom: '0px',
@@ -161,14 +162,14 @@ const CheckIn = () => {
                     </Grid>
                   </Grid>
 
-                  {/*column for space*/}
-                  <Grid item xs={0} md={2} />
-
                   <Grid
                     item
                     xs={12}
                     md={5}
-                    sx={{ display: { xs: 'none', md: 'flex' } }}
+                    sx={{
+                      display: { xs: 'none', md: 'flex' },
+                      paddingLeft: '80px',
+                    }}
                   >
                     <Box
                       component="img"

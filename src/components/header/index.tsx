@@ -8,6 +8,7 @@ import {
   Drawer,
   IconButton,
   Button,
+  Grid,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
@@ -17,12 +18,11 @@ import { useState } from 'react';
 
 import MenuIcon from '@mui/icons-material/Menu';
 import logo from '../../assets/imgs/rubios-logo-color.png';
-import cartIcon from '../../assets/imgs/cart-icon.svg';
 import cartIconMobile from '../../assets/imgs/cart-icon-mobile.svg';
 
 import Cart from '../cart';
-import AccountLinks from '../account-links';
 import { useSelector } from 'react-redux';
+import LeftMenuBar from '../left-menu-bar';
 
 const useStyles = makeStyles((theme: Theme) => ({
   navBar: {
@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     '& img': {
       width: '90%',
-      [theme.breakpoints.down('sm')]: {
+      [theme.breakpoints.down('md')]: {
         width: '80%',
       },
     },
@@ -59,7 +59,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     textTransform: 'uppercase',
     display: 'block',
     paddingTop: '30px',
-    paddingRight: '25px',
+    paddingRight: '5px',
+    [theme.breakpoints.down('md')]: {
+      paddingTop: '25px',
+    },
     color: theme.palette.primary.main,
     fontFamily: 'Poppins-Medium !important',
     textDecoration: 'none',
@@ -96,8 +99,10 @@ const Header = (props: any) => {
   const { restaurant } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
+  const [showAccountMenu, setShowAccountMenu] = useState(false);
 
   const handleShowCart = () => {
+    setShowAccountMenu(false);
     if (fromEditOrder == true) {
       setShowCart(true);
       setState(!state);
@@ -117,53 +122,19 @@ const Header = (props: any) => {
           }}
         >
           <Typography variant="h4" className={classes.logo}>
-            {!showUserName ? (
-              <Link to="/location" className={classes.logoImg}>
-                <img
-                  aria-label="Rubio's Cosatal Grill"
-                  src={logo}
-                  style={{ display: 'flex' }}
-                  alt="Rubio's Cosatal Grill"
-                  title="Rubio's Cosatal Grill Logo"
-                />
-              </Link>
-            ) : (
-              <>
-                <Link
-                  to="/location"
-                  className={classes.logoImg}
-                  style={{ padding: '20px 0px 20px 15px' }}
-                >
-                  <img
-                    aria-label="Rubio's Cosatal Grill"
-                    src={logo}
-                    style={{ display: 'flex' }}
-                    alt="Rubio's Cosatal Grill"
-                    title="Rubio's Cosatal Grill Logo"
-                  />
-                </Link>
-                <Typography
-                  variant="body1"
-                  component="span"
-                  fontWeight="700"
-                  paddingTop="5px"
-                  sx={{
-                    fontSize: { xs: '11px', md: '13px' },
-                    paddingLeft: {
-                      xs: '0px',
-                      sm: '0px',
-                      md: '25px',
-                      lg: '36px',
-                    },
-                  }}
-                  color="primary.main"
-                  textTransform="uppercase"
-                  title={providerToken && providerToken.first_name ? `Hi ${providerToken.first_name}` : ''} 
-                >
-                  {providerToken && providerToken.first_name ? `Hi, ${providerToken.first_name}!` : ''}                 
-                </Typography>
-              </>
-            )}
+            <Link
+              to="/location"
+              className={classes.logoImg}
+              onClick={() => setShowAccountMenu(false)}
+            >
+              <img
+                aria-label="Rubio's Cosatal Grill"
+                src={logo}
+                style={{ display: 'flex' }}
+                alt="Rubio's Cosatal Grill"
+                title="Rubio's Cosatal Grill Logo"
+              />
+            </Link>
           </Typography>
 
           {isMobile ? (
@@ -179,21 +150,58 @@ const Header = (props: any) => {
                     Main Menu
                   </Link>
                 </div>
-                {removeCart && (
-                  <AccountLinks
-                    closeDrawer={removeCart ? setOpenDrawer : null}
-                  />
-                )}
               </Drawer>
+              <IconButton
+                onClick={() => setOpenDrawer(!openDrawer)}
+                className={classes.icon}
+              >
+                <MenuIcon fontSize="large" titleAccess="Menu Icon" />
+              </IconButton>
+              <Grid
+                container
+                sx={{
+                  background: '#0073BD',
+                  alignItems: 'center',
+                  fontFamily: 'Poppins-Medium',
+                  textAlign: 'center',
+                  textTransform: 'uppercase',
+                  fontSize: '14px',
+                  height: '70px',
+                  width: '65px',
+                }}
+                onClick={() => {
+                  setShowAccountMenu(!showAccountMenu);
+                }}
+              >
+                <Grid
+                  item
+                  xs={12}
+                  sx={{ display: 'flex', justifyContent: 'center' }}
+                >
+                  <img
+                    src={require('../../assets/imgs/user-icon.png')}
+                    alt="Profile Icon"
+                  />
+                </Grid>
+              </Grid>
               {!removeCart && !removeCartForLocation && (
                 <div
-                  style={{ position: 'relative', cursor: 'pointer' }}
+                  style={{
+                    position: 'relative',
+                    cursor: 'pointer',
+                    textAlign: 'center',
+                    width: '72px',
+                  }}
                   onClick={handleShowCart}
                 >
                   <img
                     src={cartIconMobile}
                     alt="Cart Icon"
-                    style={{ width: '28px', paddingRight: '10px' }}
+                    style={{
+                      width: '32px',
+                      display: 'block',
+                      margin: 'auto',
+                    }}
                     title="Cart Icon"
                   />
                   <div
@@ -209,7 +217,6 @@ const Header = (props: any) => {
                       right: 0,
                       bottom: 0,
                       textAlign: 'center',
-                      marginRight: '10px',
                       fontSize: '13px',
                     }}
                   >
@@ -225,12 +232,6 @@ const Header = (props: any) => {
                   </div>
                 </div>
               )}
-              <IconButton
-                onClick={() => setOpenDrawer(!openDrawer)}
-                className={classes.icon}
-              >
-                <MenuIcon fontSize="large" titleAccess="Menu Icon" />
-              </IconButton>
             </>
           ) : (
             <>
@@ -238,43 +239,106 @@ const Header = (props: any) => {
                 to={restaurant ? '/menu/' + restaurant.slug : '/'}
                 className={classes.menuLink}
                 title="Main Menu"
+                onClick={() => setShowAccountMenu(false)}
               >
                 Main Menu
               </Link>
+              {/* //{providerToken && providerToken.first_name && ( */}
+              <Grid
+                container
+                sx={{
+                  width: { sm: '170px', md: '200px' },
+                  marginLeft: '15px',
+                  background: '#0073BD',
+                  alignItems: 'center',
+                  cursor: 'pointer',
+                }}
+                onClick={() => {
+                  setShowAccountMenu(!showAccountMenu);
+                }}
+              >
+                <Grid
+                  item
+                  xs={12}
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <img
+                    src={require('../../assets/imgs/user-icon.png')}
+                    alt="Profile Icon"
+                  />{' '}
+                  <Typography
+                    sx={{
+                      paddingLeft: '5px',
+                      display: 'block',
+                      maxWidth: { sm: '100px', lg: '130px' },
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      fontFamily: 'Poppins-Medium',
+                      textAlign: 'center',
+                      textTransform: 'uppercase',
+                      fontSize: '14px',
+                    }}
+                  >
+                    Hi {(providerToken && providerToken.first_name) || 'Stacey'}
+                    !
+                  </Typography>
+                  {!showAccountMenu && (
+                    <span
+                      style={{
+                        paddingLeft: '5px',
+                        fontSize: '12px',
+                      }}
+                    >
+                      &#9660;
+                    </span>
+                  )}
+                  {showAccountMenu && (
+                    <span
+                      style={{
+                        paddingLeft: '5px',
+                        fontSize: '12px',
+                      }}
+                    >
+                      &#9650;
+                    </span>
+                  )}
+                </Grid>
+              </Grid>
+              {/* //)} */}
               {!removeCart && (
                 <Button
                   component="div"
                   onClick={handleShowCart}
                   aria-label="Open the cart"
                   sx={{
-                    backgroundColor: 'primary.main',
-                    width: '140px',
-                    cursor: 'pointer',
-                    float: 'right',
-                    justifyContent: 'center',
-                    borderRadius: 0,
-                    position: 'relative',
-                    display: { xs: 'none', sm: 'flex' },
+                    paddingRight: { xs: '20px', md: '40px' },
+                    paddingLeft: '20px',
+                    paddingTop: '5px',
+                    backgroundColor: 'transparent',
                     '&:hover': {
-                      backgroundColor: 'success.main',
+                      backgroundColor: 'transparent',
                     },
-                    transition: 'background-color 0.3s ease',
                   }}
                 >
                   <img
-                    src={cartIcon}
-                    style={{ width: '38px' }}
+                    src={cartIconMobile}
+                    style={{ width: '36px' }}
                     alt="Cart Icon"
                     title="Cart Icon"
                   />
                   <div
                     style={{
-                      color: '#fff',
                       position: 'absolute',
                       margin: 'auto',
                       inset: 'auto',
+                      fontFamily: 'Poppins-Medium',
                       display: 'inline',
-                      paddingTop: '15px',
+                      paddingTop: '10px',
                     }}
                   >
                     {basketObj.basket &&
@@ -289,6 +353,9 @@ const Header = (props: any) => {
       </AppBar>
       {(fromEditOrder === true && <Cart showCart={handleShowCart} />) ||
         (showCart && <Cart showCart={handleShowCart} />)}
+      {showAccountMenu && (
+        <LeftMenuBar closeDrawer={setShowAccountMenu} removeCart={removeCart} />
+      )}
     </>
   );
 };
