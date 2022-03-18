@@ -28,7 +28,7 @@ import redemptionReducer from './redemption';
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['restaurantInfoReducer', 'basketReducer', 'authReducer', 'tokenReducer','userReducer','providerReducer'],
+  whitelist: ['restaurantInfoReducer', 'basketReducer', 'authReducer', 'tokenReducer','userReducer','providerReducer' , 'redemptionReducer'],
 };
 
 const rootReducers = combineReducers({

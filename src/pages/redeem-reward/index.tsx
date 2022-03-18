@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getRewards } from '../../redux/actions/reward';
 import RewardListSkeletonUI from '../../components/rewards-list-skeleton';
 import { useNavigate } from 'react-router-dom';
+import { getRedemptionCode } from '../../redux/actions/reward/redemption';
+import { displayToast } from '../../helpers/toast';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -27,15 +29,29 @@ const RedeemRewards = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const [isRedeem, setIsredeem] = useState(false);
   const { rewards, loading } = useSelector((state: any) => state.rewardReducer);
-
+  const { redemption, error, loading1 } = useSelector(
+    (state: any) => state.redemptionReducer,
+  );
   useEffect(() => {
     dispatch(getRewards());
   }, []);
 
-  const handler = (id: number) => {
-    navigate(`reward/${id}`);
+  const handler = (id: string) => {
+    console.log(rewards);
+    dispatch(getRedemptionCode(id));
+    setIsredeem(true);
   };
+  useEffect(() => {
+    if (redemption !== null && !loading1 && isRedeem) {
+      setIsredeem(false);
+      navigate(`reward`);
+    } else if (error && error.message && !loading1 && isRedeem) {
+      displayToast('ERROR', 'failed to redeem this reward');
+      setIsredeem(false);
+    }
+  }, [redemption]);
 
   return (
     <Fragment>
@@ -62,7 +78,10 @@ const RedeemRewards = () => {
           <Grid container spacing={2}>
             {loading && <RewardListSkeletonUI />}
             {!loading && rewards && rewards.length == 0 && (
-              <Typography>You havn't earned any rewards yet!</Typography>
+              <Typography>
+                No rewards available. Keep checking in and we'll let you know
+                when it's time to be rewarded.
+              </Typography>
             )}
             {!loading &&
               rewards &&

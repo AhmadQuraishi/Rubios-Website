@@ -30,30 +30,22 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const ScanToRedeem = () => {
-  const [code, setCode] = useState('');
   const [qrCode, setQrCode] = useState('');
-  const { redemption, loading } = useSelector(
-    (state: any) => state.redemptionReducer,
-  );
-  const { id } = useParams();
-  const dispatch = useDispatch();
+  const { redemption } = useSelector((state: any) => state.redemptionReducer);
 
   useEffect(() => {
-    console.log(id);
-    if (id) dispatch(getRedemptionCode(id));
-  }, []);
-
-  useEffect(() => {
-    setCode('12345678');
-    setQrCode(
-      `http://api.qrserver.com/v1/create-qr-code/?data=${code}!&size=${2}`,
-    );
+    if (redemption && redemption.internal_tracking_code)
+      setQrCode(
+        `http://api.qrserver.com/v1/create-qr-code/?data=${
+          redemption.internal_tracking_code
+        }!&size=${2}`,
+      );
   }, []);
 
   const classes = useStyles();
-  const barcode = 'ABRAHAM12344';
-  const copy = async () => {
-    await navigator.clipboard.writeText(barcode);
+
+  const copy = async (code: string) => {
+    await navigator.clipboard.writeText(code);
   };
   return (
     <div className={classes.root}>
@@ -64,7 +56,7 @@ const ScanToRedeem = () => {
       >
         REDEEM YOUR REWARDS
       </Typography>
-      {!loading && redemption && redemption !== null && (
+      {redemption && redemption !== null && (
         <Grid container className="invite-section">
           <Grid item xs={12} md={8} lg={6}>
             <Grid container>
@@ -111,13 +103,16 @@ const ScanToRedeem = () => {
 
               <Grid item xs={12}>
                 <Button
-                  onClick={copy}
-                  aria-label={`Tab to copy: ${barcode}`}
-                  title={`Tab to copy: ${barcode}`}
+                  onClick={() => {
+                    copy(redemption.internal_tracking_code);
+                  }}
+                  aria-label={`Tab to copy: ${redemption.internal_tracking_code}`}
+                  title={`Tab to copy: ${redemption.internal_tracking_code}`}
                   sx={{ width: { xs: '100%' } }}
                   className="tab-to-copy"
                 >
-                  <span className="copy-text">Tab to copy.</span> {barcode}
+                  <span className="copy-text">Tab to copy.</span>{' '}
+                  {redemption.internal_tracking_code}
                 </Button>
               </Grid>
               <Grid item xs={12}>

@@ -5,6 +5,7 @@ const axiosInstance = axios.create();
 axiosInstance.interceptors.request.use(
   function (config) {
     try {
+      
         const url = config.url || '';
       let origin = window.location.origin; // http://localhost:3000
       let check = url?.toString().includes('punchh_api');
@@ -36,8 +37,7 @@ axiosInstance.interceptors.request.use(
           else {
             const signature = CryptoJS.HmacSHA1(concatString, secretString).toString();
             config.headers = {
-              'x-pch-digest': signature,
-              
+              'x-pch-digest': signature
             };
           }
         }
