@@ -6,7 +6,6 @@ import { useEffect } from 'react';
 import { changePassword } from '../../redux/actions/user';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import ErrorMessageAlert from '../error-message-alert';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {

@@ -4,6 +4,7 @@ import {
   RequestCreateBasket,
   RequestNewBasketProduct,
   RequestBasketProductBatch,
+  RequestBasketAddUpsell,
 } from '../../types/olo-api';
 
 export const getBasket = (basketid: string) => {
@@ -131,6 +132,36 @@ export const requestCreateBasketForFav = (
     const url = process.env.REACT_APP_OLO_API || '';
     return axios
       .post(url + `/baskets/createfromfave?authtoken=` + auth_token, body)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.log(error.response);
+        throw error;
+      });
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getUpSells = (basketid: string) => {
+  try {
+    const url = process.env.REACT_APP_OLO_API || '';
+    return axios
+      .get(url + `/baskets/${basketid}/upsell`)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.log(error.response);
+        throw error;
+      });
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const addUpSells = (basketid: string, body: RequestBasketAddUpsell) => {
+  try {
+    const url = process.env.REACT_APP_OLO_API || '';
+    return axios
+      .post(url + `/baskets/${basketid}/upsell`, body)
       .then((response) => response.data)
       .catch((error) => {
         console.log(error.response);

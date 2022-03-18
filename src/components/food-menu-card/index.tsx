@@ -2,6 +2,7 @@ import { Grid, Typography, Card, CardContent } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Option, OptionGroup } from '../../types/olo-api';
 import './food-menu-card.css';
+import getIngredientImage from '../../helpers/getIngredientImages';
 
 const FoodMenuCard = (props: any) => {
   const { menuItems, options, isSingleSelect, showDDL } = props;
@@ -199,7 +200,10 @@ const FoodMenuCard = (props: any) => {
                   ) : (
                     <img
                       className="item-image"
-                      src={require('../../assets/imgs/default_img.png')}
+                      src={
+                        getIngredientImage(menuItem.id) ||
+                        require('../../assets/imgs/default_img.png')
+                      }
                       alt={menuItem.name}
                       title={menuItem.name}
                     />

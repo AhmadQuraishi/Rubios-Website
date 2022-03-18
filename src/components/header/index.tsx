@@ -243,7 +243,7 @@ const Header = (props: any) => {
                 title="Main Menu"
                 onClick={() => setShowAccountMenu(false)}
               >
-                Main Menu {console.log(providerToken)}
+                Main Menu
               </Link>
               {providerToken == null && removeCart && (
                 <p>&nbsp;&nbsp;&nbsp;&nbsp;</p>
