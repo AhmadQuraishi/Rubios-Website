@@ -37,7 +37,7 @@
 .product-detail .menu-items h4 {
   text-transform: uppercase;
   width: 100%;
-  font-size: 26px;
+  font-size: 30px;
   padding-bottom: 10px;
 }
 
@@ -49,7 +49,7 @@
   color: #0069aa;
   font-weight: 500;
   font-family: 'Poppins-Medium', sans-serif !important;
-  font-size: 16px;
+  font-size: 18px;
   padding-bottom: 10px;
 }
 .product-detail .add-to-bag {
@@ -180,4 +180,91 @@
   align-content: center;
   align-items: center;
   justify-items: center;
+}
+
+.product-detail .menu-items .content-panel {
+  padding: 10px 20px 10px 0px;
+  cursor: pointer;
+  font-family: 'Poppins-Medium', sans-serif !important;
+  color: #2b4b62;
+  /* max-width: 354px; */
+  min-height: 170px;
+  font-size: 18px;
+}
+.product-detail .menu-items .content-panel .card-panel {
+  padding: 10px;
+  border: 1px solid #d3d3d3;
+  box-sizing: border-box;
+  height: 100%;
+  border-radius: 0;
+  box-shadow: 0px 2px 3px 0px rgb(0 0 0 / 20%) !important;
+}
+.product-detail .menu-items .content-panel.selected .card-panel {
+  border: 1px solid #e58734;
+  position: relative;
+}
+.product-detail .menu-items .content-panel.selected .card-panel .check-mark {
+  border-radius: 30px;
+  height: 55px;
+  width: 55px;
+  background-color: #e58734;
+  position: absolute;
+  top: 32%;
+  bottom: 0;
+  left: 50px;
+  right: 0;
+}
+.product-detail .menu-items .content-panel .card-panel .check-mark .checkmark {
+  display: none;
+}
+.product-detail
+  .menu-items
+  .content-panel.selected
+  .card-panel
+  .check-mark
+  .checkmark {
+  color: #fff;
+  display: block;
+  font-size: 40px;
+  font-weight: bold;
+  font-family: 'Poppins-Medium';
+  text-align: center;
+  margin-top: -5px;
+  -ms-transform: scaleX(-1) rotate(-35deg); /* IE 9 */
+  -webkit-transform: scaleX(-1) rotate(-35deg); /* Chrome, Safari, Opera */
+  transform: scaleX(-1) rotate(-35deg);
+}
+
+.product-detail .menu-items .content-panel .card-panel .name-img-panel {
+  align-items: center;
+  display: flex;
+  height: 100%;
+}
+.product-detail
+  .menu-items
+  .content-panel.selected
+  .card-panel
+  .name-img-panel
+  .name-panel {
+  color: #e58734;
+}
+
+.product-detail
+  .menu-items
+  .content-panel
+  .card-panel
+  .name-img-panel
+  .name-panel {
+  padding-left: 20px;
+  color: #2b4b62;
+}
+
+.product-detail
+  .menu-items
+  .content-panel
+  .card-panel
+  .name-img-panel
+  .item-image {
+  width: 100%;
+  display: block;
 }
