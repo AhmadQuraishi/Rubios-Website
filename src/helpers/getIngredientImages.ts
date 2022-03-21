@@ -1,28 +1,16 @@
 import axios from 'axios';
 
-const getIngredientImage = (id: string): string => {
+function getIngredientImage(id: string) {
   try {
     const url =
       process.env.REACT_APP_INGREDIENT_URL?.replaceAll('*yourplu*', id) || '';
-    axios
-      .get(url)
-      .then((response) => {
-        if (response.data) {
-          if (
-            response.data.yoast_head_json &&
-            response.data.yoast_head_json.og_image.length > 0
-          ) {
-            return response.data.yoast_head_json.og_image[0].url;
-          }
-        }
-      })
-      .catch((error) => {
-        console.log(error.response);
-        throw error;
-      });
+    const promise = axios.get(url);
+    // using .then, create a new promise which extracts the data
+    const dataPromise = promise.then((response) => response.data);
+    // return it
+    return dataPromise;
   } catch (error) {
     throw error;
   }
-  return '';
-};
+}
 export default getIngredientImage;

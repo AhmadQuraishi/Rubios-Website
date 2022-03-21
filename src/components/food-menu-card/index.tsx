@@ -200,10 +200,7 @@ const FoodMenuCard = (props: any) => {
                   ) : (
                     <img
                       className="item-image"
-                      src={
-                        getIngredientImage(menuItem.id) ||
-                        require('../../assets/imgs/default_img.png')
-                      }
+                      src={require('../../assets/imgs/default_img.png')}
                       alt={menuItem.name}
                       title={menuItem.name}
                     />
