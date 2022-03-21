@@ -21,6 +21,9 @@ import { updateProductSaga } from './basket/product/update';
 import { checkinSaga } from './check-in';
 import { favRestaurantSaga } from './restaurant/fav-restaurant';
 import { pageStateSaga } from './page-state';
+import { redemptionSaga } from './reward/redemption';
+import { accountHistorySaga } from './account-history';
+import { createFaveSaga } from './create-fave';
 
 export default function* rootSaga() {
   yield all([
@@ -46,5 +49,8 @@ export default function* rootSaga() {
     checkinSaga(),
     favRestaurantSaga(),
     pageStateSaga(),
+    redemptionSaga(),
+    accountHistorySaga(),
+    createFaveSaga()
   ]);
 }

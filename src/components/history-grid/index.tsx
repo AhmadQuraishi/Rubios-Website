@@ -1,28 +1,19 @@
 import { Grid, Typography } from '@mui/material';
+import moment from 'moment';
+import { Fragment, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAccountHistory } from '../../redux/actions/account-history';
+import HistorySkeletonUI from '../history-grid-skeleton-ui';
 
 const HistoryGrid = () => {
-  const data = [
-    {
-      date: '12/07/2021',
-      category: 'Item Gifted',
-      activity: "Gifted from Rubio's website on 50% off",
-    },
-    {
-      date: '13/07/2021',
-      category: 'Refund',
-      activity: 'Refund $123.0 on order #RW33456',
-    },
-    {
-      date: '06/12/2021',
-      category: 'Item Gifted',
-      activity: "Gifted from Rubio's website on 50% off",
-    },
-    {
-      date: '12/12/2021',
-      category: 'Item Gifted',
-      activity: "Gifted from Rubio's website on 50% off",
-    },
-  ];
+  const dispatch = useDispatch();
+  const { accountHistory, loading } = useSelector(
+    (state: any) => state.accountHistoryReducer,
+  );
+  useEffect(() => {
+    dispatch(getAccountHistory());
+  }, []);
+
   return (
     <Grid container spacing={0}>
       <Grid item xs={12}>
@@ -73,65 +64,68 @@ const HistoryGrid = () => {
           >
             Activity
           </Grid>
-          {data.map((item, index) => (
-            <>
-              <Grid
-                item
-                key={index + '-col1'}
-                xs={0}
-                sm={3}
-                sx={{
-                  fontWeight: '500',
-                  textTransform: 'uppercase',
-                  borderBottom: '1px solid #CCC',
-                  padding: '10px 0',
-                  fontSize: '12px',
-                  color: 'secondary.main',
-                  display: { xs: 'none', sm: 'grid' },
-                }}
-              >
-                {item.date}
-              </Grid>
-              <Grid
-                item
-                key={index + '-col2'}
-                xs={4}
-                sm={3}
-                sx={{
-                  fontWeight: '500',
-                  textTransform: 'uppercase',
-                  borderBottom: '1px solid #CCC',
-                  padding: '10px 0',
-                  fontSize: '12px',
-                  color: 'secondary.main',
-                }}
-              >
-                <Typography
-                  variant="caption"
-                  sx={{ display: { xs: 'block', sm: 'none' } }}
+          {loading && <HistorySkeletonUI />}
+          {!loading &&
+            accountHistory &&
+            accountHistory.length > 0 &&
+            accountHistory.map((item: any, index: number) => (
+              <Fragment key={Math.random() + index}>
+                <Grid
+                  item
+                  xs={0}
+                  sm={3}
+                  sx={{
+                    fontWeight: '500',
+                    textTransform: 'uppercase',
+                    borderBottom: '1px solid #CCC',
+                    padding: '10px 0',
+                    fontSize: '12px',
+                    color: 'secondary.main',
+                    display: { xs: 'none', sm: 'grid' },
+                  }}
                 >
-                  {item.date}
-                </Typography>
-                {item.category}
-              </Grid>
-              <Grid
-                item
-                key={index + '-col3'}
-                xs={8}
-                sm={6}
-                sx={{
-                  fontWeight: '500',
-                  textTransform: 'uppercase',
-                  borderBottom: '1px solid #CCC',
-                  padding: '10px 0',
-                  fontSize: '12px',
-                  color: 'secondary.main',
-                }}
-              >
-                {item.activity}
-              </Grid>
-            </>
-          ))}
+                  {moment(item.date).format('MM/DD/YYYY')}
+                </Grid>
+                <Grid
+                  item
+                  key={index + '-col2'}
+                  xs={4}
+                  sm={3}
+                  sx={{
+                    fontWeight: '500',
+                    textTransform: 'uppercase',
+                    borderBottom: '1px solid #CCC',
+                    padding: '10px 0',
+                    fontSize: '12px',
+                    color: 'secondary.main',
+                  }}
+                >
+                  <Typography
+                    variant="caption"
+                    sx={{ display: { xs: 'block', sm: 'none' } }}
+                  >
+                    {moment(item.date).format('MM/DD/YYYY')}
+                  </Typography>
+                  {item.event_title}
+                </Grid>
+                <Grid
+                  item
+                  key={index + '-col3'}
+                  xs={8}
+                  sm={6}
+                  sx={{
+                    fontWeight: '500',
+                    textTransform: 'uppercase',
+                    borderBottom: '1px solid #CCC',
+                    padding: '10px 0',
+                    fontSize: '12px',
+                    color: 'secondary.main',
+                  }}
+                >
+                  {item.description}
+                </Grid>
+              </Fragment>
+            ))}
         </Grid>
       </Grid>
     </Grid>

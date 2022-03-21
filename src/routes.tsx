@@ -66,7 +66,7 @@ const AppRoutes = () => {
         path="/account/updatepaymentcard/:id"
         element={<UpdatePaymentCard />}
       />
-      <Route path="/account/reward/:id" element={<ScanToRedeem />} />
+      <Route path="/account/reward/" element={<ScanToRedeem />} />
       <Route path="/account/orders" element={<OrdersHistory />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>

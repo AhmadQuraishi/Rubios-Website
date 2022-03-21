@@ -239,22 +239,33 @@ const Header = (props: any) => {
             <>
               <Link
                 to={restaurant ? '/menu/' + restaurant.slug : '/'}
+                style={{paddingRight: 30}}
                 className={classes.menuLink}
                 title="Main Menu"
                 onClick={() => setShowAccountMenu(false)}
               >
                 Main Menu
               </Link>
-              {providerToken == null && removeCart && (
-                <p>&nbsp;&nbsp;&nbsp;&nbsp;</p>
-              )}
-              {providerToken && providerToken.first_name && (
-                <Grid
-                  container
-                  sx={{
-                    width: { sm: '170px', md: '200px' },
-                    marginLeft: '15px',
-                    background: '#0073BD',
+              {/* //{providerToken && providerToken.first_name && ( */}
+              {/* <Grid
+                container
+                sx={{
+                  width: { sm: '170px', md: '200px' },
+                  marginLeft: '15px',
+                  background: '#0073BD',
+                  alignItems: 'center',
+                  cursor: 'pointer',
+                }}
+                onClick={() => {
+                  setShowAccountMenu(!showAccountMenu);
+                }}
+              > */}
+                {/* <Grid
+                  item
+                  xs={12}
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
                     alignItems: 'center',
                     cursor: 'pointer',
                   }}
@@ -289,32 +300,12 @@ const Header = (props: any) => {
                         fontSize: '14px',
                       }}
                     >
-                      Hi{' '}
-                      {(providerToken && providerToken.first_name) || 'Stacey'}!
-                    </Typography>
-                    {!showAccountMenu && (
-                      <span
-                        style={{
-                          paddingLeft: '5px',
-                          fontSize: '12px',
-                        }}
-                      >
-                        &#9660;
-                      </span>
-                    )}
-                    {showAccountMenu && (
-                      <span
-                        style={{
-                          paddingLeft: '5px',
-                          fontSize: '12px',
-                        }}
-                      >
-                        &#9650;
-                      </span>
-                    )}
-                  </Grid>
-                </Grid>
-              )}
+                      &#9650;
+                    </span>
+                  )}
+                </Grid> */}
+              {/* </Grid> */}
+              {/* //)} */}
               {!removeCart && (
                 <Button
                   component="div"
