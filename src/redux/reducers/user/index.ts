@@ -1,5 +1,6 @@
 import { type } from 'os';
 import { userTypes as Type } from '../../types/user';
+import { createFaveTypes } from '../../types/create-fave';
 
 const initialState = {
   userProfile: null,
@@ -59,6 +60,7 @@ const userReducer = (state = initialState, action: any) => {
         userRecentOrders: action.payload,
       };
     case Type.GET_USER_FAVORITE_ORDERS_SUCCESS:
+      case createFaveTypes.CREATE_FAVE_SUCCESS:
       return {
         ...state,
         userFavoriteOrders: action.payload,
@@ -141,6 +143,7 @@ const userReducer = (state = initialState, action: any) => {
     case Type.UPDATE_BILLING_ACCOUNTS_FAILURE:
     case Type.GET_GIFT_CARDS_FAILURE:
     case Type.DEL_FAV_ORDER__FAILURE:
+      case createFaveTypes.CREATE_FAVE_FAILURE:
       return { ...state, loading: false, error: action.error  , success: 0};
     case Type.USER_LOGOUT: 
     return {

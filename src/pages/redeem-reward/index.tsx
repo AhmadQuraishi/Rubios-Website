@@ -65,24 +65,30 @@ const RedeemRewards = () => {
             REDEEM YOUR REWARDS
           </Typography>
         </Grid>
-        <Grid item xs={12}>
-          <Typography
-            variant="body2"
-            title="REDEEM YOUR REWARDS"
-            className="body-text"
-          >
-            click a reward to start your order
-          </Typography>
-        </Grid>
+
         <Grid item xs={12} lg={10}>
           <Grid container spacing={2}>
             {loading && <RewardListSkeletonUI />}
             {!loading && rewards && rewards.length == 0 && (
-              <Typography>
-                No rewards available. Keep checking in and we'll let you know
-                when it's time to be rewarded.
-              </Typography>
+              <Grid item xs={12}>
+                <Typography>
+                  No rewards available. Keep checking in and we'll let you know
+                  when it's time to be rewarded.
+                </Typography>
+              </Grid>
             )}
+            {!loading && rewards && rewards.length > 0 && (
+              <Grid item xs={12}>
+                <Typography
+                  variant="body2"
+                  title="REDEEM YOUR REWARDS"
+                  className="body-text"
+                >
+                  click a reward to start your order
+                </Typography>
+              </Grid>
+            )}
+
             {!loading &&
               rewards &&
               rewards.length > 0 &&
