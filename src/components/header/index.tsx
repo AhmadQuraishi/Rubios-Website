@@ -237,6 +237,7 @@ const Header = (props: any) => {
             <>
               <Link
                 to={restaurant ? '/menu/' + restaurant.slug : '/'}
+                style={{paddingRight: 30}}
                 className={classes.menuLink}
                 title="Main Menu"
                 onClick={() => setShowAccountMenu(false)}
@@ -244,7 +245,7 @@ const Header = (props: any) => {
                 Main Menu
               </Link>
               {/* //{providerToken && providerToken.first_name && ( */}
-              <Grid
+              {/* <Grid
                 container
                 sx={{
                   width: { sm: '170px', md: '200px' },
@@ -256,8 +257,8 @@ const Header = (props: any) => {
                 onClick={() => {
                   setShowAccountMenu(!showAccountMenu);
                 }}
-              >
-                <Grid
+              > */}
+                {/* <Grid
                   item
                   xs={12}
                   style={{
@@ -307,8 +308,8 @@ const Header = (props: any) => {
                       &#9650;
                     </span>
                   )}
-                </Grid>
-              </Grid>
+                </Grid> */}
+              {/* </Grid> */}
               {/* //)} */}
               {!removeCart && (
                 <Button
