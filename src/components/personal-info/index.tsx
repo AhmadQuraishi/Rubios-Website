@@ -24,7 +24,6 @@ import { getlocations } from '../../redux/actions/location';
 import LoadingBar from '../../components/loading-bar';
 import { IMaskInput } from 'react-imask';
 import { forwardRef } from 'react';
-import ErrorMessageAlert from '../../components/error-message-alert';
 import moment from 'moment';
 
 const useStyles = makeStyles((theme: Theme) => ({

@@ -1,9 +1,17 @@
-import { Card, CardMedia, Grid, Typography, Button } from '@mui/material';
+import {
+  Card,
+  CardMedia,
+  Grid,
+  Typography,
+  Button,
+  Dialog,
+  DialogActions,
+  TextField,
+} from '@mui/material';
 import './index.css';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserRecentOrders } from '../../redux/actions/user';
-import { TablePagination } from '@mui/material';
 import { createBasketFromPrevOrderRequest } from '../../redux/actions/basket/create';
 import { useNavigate } from 'react-router-dom';
 import { getBasketRequest } from '../../redux/actions/basket';
@@ -13,10 +21,16 @@ import {
 } from '../../redux/actions/restaurant';
 import OrderListSkeletonUI from '../order-list-skeleton-ui';
 import { displayToast } from '../../helpers/toast';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
+import { createFave } from '../../redux/actions/create-fave';
 
 const RecentOrders = () => {
   const [recentorders, setOrders] = React.useState([]);
   const [clickAction, setClickAction] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [idtoFav, setId] = useState('');
+  const [items, setItems] = useState([]);
   const [prevOrderType, setPrevOrderType] = useState<string>();
   const { restaurant, error } = useSelector(
     (state: any) => state.restaurantInfoReducer,
@@ -70,18 +84,6 @@ const RecentOrders = () => {
     }
   }, [userRecentOrders]);
 
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-
-  const handleChangePage = (event: any, newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event: any) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
-
   const addProductToBag = (orderref: any, id: any, orderType: string) => {
     setClickAction(true);
     setPrevOrderType(orderType);
@@ -92,8 +94,20 @@ const RecentOrders = () => {
     };
     dispatch(createBasketFromPrevOrderRequest(requestBody));
   };
+  //Set order as favorite
+  const handleClickOpen = (favid: string, products: any) => {
+    console.log(items);
+    if (products && products.length > 0) {
+      setItems(products);
+    }
+    setId(favid);
+    setOpen(true);
+  };
 
-  let x = 0;
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <Fragment>
       {(loading || clickAction) && <OrderListSkeletonUI />}
@@ -104,97 +118,209 @@ const RecentOrders = () => {
       )}
       {!loading && !clickAction && recentorders.length > 0 && (
         <Grid container spacing={3} className="order-history-card">
-          {recentorders
-            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            .map((order: any, index: number) => (
-              <Grid key={Math.random() + index} item xs={12} md={6}>
-                <Card elevation={0} className="card-panel">
-                  <Grid container>
-                    <Grid item xs={10}>
-                      <Typography
-                        variant="caption"
-                        className="order-date"
-                        title={`LAST ORDERED ${order.timeplaced}`}
-                      >
-                        LAST ORDERED {order.timeplaced.substr(6, 2)}/
-                        {order.timeplaced.substr(4, 2)}
-                      </Typography>
-                      <Typography
-                        variant="caption"
-                        className="order-name"
-                        title={order.vendorname}
-                      >
-                        {order.vendorname}
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                  <Grid container>
-                    <Grid item xs={12} sm={4}>
-                      <CardMedia
-                        component="img"
-                        title="image"
-                        image={require('../../assets/imgs/order-hidtory-icon.png')}
-                        alt="image"
-                        className="order-img"
-                      />
-                    </Grid>
-                    <Grid
-                      item
-                      xs={12}
-                      sm={8}
-                      sx={{
-                        padding: {
-                          xs: '20px 10px 20px 10px',
-                          sm: '0px 0px 10px 20px',
-                        },
-                      }}
-                      className="order-detail-panel"
+          {recentorders.map((order: any, index: number) => (
+            <Grid key={Math.random() + index} item xs={12} md={6}>
+              <Card elevation={0} className="card-panel">
+                <Grid container>
+                  <Grid item xs={10}>
+                    <Typography
+                      variant="caption"
+                      className="order-date"
+                      title={`LAST ORDERED ${order.timeplaced}`}
                     >
-                      {order.products
-                        .slice(0, 3)
-                        .map((product: any, index: number) => (
-                          <Typography
-                            className="order-detail"
-                            variant="body2"
-                            title={product.name}
-                            key={
-                              Math.random() + product.name + product.quantity
-                            }
-                          >
-                            {product.quantity} x {product.name}
-                          </Typography>
-                        ))}
-                      <Typography
-                        className="order-Link"
-                        variant="button"
-                        title="Reorder"
-                        onClick={() =>
-                          addProductToBag(
-                            order.orderref,
-                            order.id,
-                            order.vendorid,
-                          )
-                        }
-                      >
-                        REORDER
-                      </Typography>
+                      LAST ORDERED {order.timeplaced.substr(6, 2)}/
+                      {order.timeplaced.substr(4, 2)}
+                    </Typography>
+                    <Typography
+                      variant="caption"
+                      className="order-name"
+                      title={order.vendorname}
+                    >
+                      {order.vendorname}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={2} className="order-fav-icon">
+                    <img
+                      src={require('../../assets/imgs/favrouite-icon.png')}
+                      alt="Set Order as favorite"
+                      title="Set Order as favorite"
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => {
+                        handleClickOpen(order.id, order.products);
+                      }}
+                    />
+                  </Grid>
+                </Grid>
+                <Grid container>
+                  <Grid item xs={12} sm={4}>
+                    <CardMedia
+                      component="img"
+                      title="image"
+                      image={require('../../assets/imgs/order-hidtory-icon.png')}
+                      alt="image"
+                      className="order-img"
+                    />
+                  </Grid>
+                  <Grid
+                    item
+                    xs={12}
+                    sm={8}
+                    sx={{
+                      padding: {
+                        xs: '20px 10px 20px 10px',
+                        sm: '0px 0px 10px 20px',
+                      },
+                    }}
+                    className="order-detail-panel"
+                  >
+                    {order.products
+                      .slice(0, 3)
+                      .map((product: any, index: number) => (
+                        <Fragment>
+                          {index == 2 && order.products.length > 3 ? (
+                            <Typography
+                              className="order-detail"
+                              variant="body2"
+                              title={product.name}
+                              key={
+                                Math.random() + product.name + product.quantity
+                              }
+                            >
+                              {product.quantity}x{' '}
+                              {product.name.substring(0, 19)}...
+                            </Typography>
+                          ) : (
+                            <Typography
+                              className="order-detail"
+                              variant="body2"
+                              title={product.name}
+                              key={
+                                Math.random() + product.name + product.quantity
+                              }
+                            >
+                              {product.quantity} x {product.name}
+                            </Typography>
+                          )}
+                        </Fragment>
+                      ))}
+                    <Typography
+                      className="order-Link"
+                      variant="button"
+                      title="Reorder"
+                      onClick={() =>
+                        addProductToBag(
+                          order.orderref,
+                          order.id,
+                          order.vendorid,
+                        )
+                      }
+                    >
+                      REORDER
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </Card>
+            </Grid>
+          ))}
+          <Dialog open={open} onClose={handleClose}>
+            <Typography variant="body2" title="Save Order as favorite">
+              Save Order as favorite
+            </Typography>
+            <Typography variant="body2" title="Save Order as favorite">
+              Favorite Name
+            </Typography>
+            <Formik
+              initialValues={{
+                favorite_name: '',
+              }}
+              validationSchema={Yup.object({
+                favorite_name: Yup.string()
+                  .max(32, 'Must be at most 32 characters')
+                  .required('Favorite Name is required'),
+              })}
+              onSubmit={async (values) => {
+                const body = {
+                  basketid: idtoFav,
+                  description: values.favorite_name,
+                  isdefault: false,
+                };
+                dispatch(createFave(body));
+              }}
+            >
+              {({
+                errors,
+                handleBlur,
+                handleChange,
+                handleSubmit,
+                touched,
+                values,
+              }) => (
+                <form onSubmit={handleSubmit}>
+                  <Grid item xs={12} md={12} lg={12}>
+                    <Grid container>
+                      <Grid item xs={12}>
+                        <TextField
+                          aria-label="Favorite Name"
+                          label="Favorite Name"
+                          title="Favorite Name"
+                          type="text"
+                          name="favorite_name"
+                          sx={{ width: '100%' }}
+                          value={values.favorite_name}
+                          onChange={handleChange('favorite_name')}
+                          error={Boolean(touched && errors.favorite_name)}
+                          helperText={touched && errors.favorite_name}
+                        />
+                      </Grid>
                     </Grid>
                   </Grid>
-                </Card>
-              </Grid>
-            ))}
+                  {items.slice(0, 3).map((item: any, index: number) => (
+                    <Fragment>
+                      {index == 2 && items.length > 3 ? (
+                        <Typography
+                          className="order-detail"
+                          variant="body2"
+                          title={item.name}
+                          key={Math.random() + item.name + item.quantity}
+                        >
+                          {item.quantity}x {item.name.substring(0, 19)}...
+                        </Typography>
+                      ) : (
+                        <Typography
+                          className="order-detail"
+                          variant="body2"
+                          title={item.name}
+                          key={Math.random() + item.name + item.quantity}
+                        >
+                          {item.quantity} x {item.name}
+                        </Typography>
+                      )}
+                    </Fragment>
+                  ))}
+                  <DialogActions>
+                    <Button
+                      aria-label="Cancel"
+                      title="Cancel"
+                      className="link"
+                      onClick={handleClose}
+                    >
+                      Cancel{' '}
+                    </Button>
+                    <Button
+                      aria-label="Save Favorite"
+                      title="Save Favorite"
+                      type="submit"
+                      className="link default"
+                      autoFocus
+                    >
+                      Save Favorite
+                    </Button>
+                  </DialogActions>
+                </form>
+              )}
+            </Formik>
+          </Dialog>
         </Grid>
-      )}
-      {!loading && recentorders.length > 10 && (
-        <TablePagination
-          rowsPerPageOptions={[10, 25, 100]}
-          component="div"
-          count={recentorders.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
       )}
     </Fragment>
   );

@@ -10,7 +10,10 @@ import LoadingBar from '../loading-bar';
 import { TablePagination } from '@mui/material';
 import DialogBox from '../dialog-box';
 import { createBasketFromFavOrderRequest } from '../../redux/actions/basket/create';
-import { getResturantInfoRequest, setResturantInfoRequest } from '../../redux/actions/restaurant';
+import {
+  getResturantInfoRequest,
+  setResturantInfoRequest,
+} from '../../redux/actions/restaurant';
 import { getBasketRequest } from '../../redux/actions/basket';
 import { useNavigate } from 'react-router-dom';
 import OrderListSkeletonUI from '../order-list-skeleton-ui';
@@ -32,7 +35,7 @@ const FavoriteOrders = () => {
   );
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [clickAction, setClickAction] = useState(false);  
+  const [clickAction, setClickAction] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -136,6 +139,7 @@ const FavoriteOrders = () => {
                       <img
                         src={require('../../assets/imgs/favrouite-icon.png')}
                         alt="Favrouite Order Icon"
+                        title="UnFavrouite Order "
                         style={{ cursor: 'pointer' }}
                         onClick={() => {
                           handleClickOpen(forder.id);
@@ -149,7 +153,7 @@ const FavoriteOrders = () => {
                         component="img"
                         title="food item image"
                         image={require('../../assets/imgs/order-hidtory-icon.png')}
-                        alt="Live from space album cover"
+                        alt="Foot item"
                         className="order-img"
                       />
                     </Grid>

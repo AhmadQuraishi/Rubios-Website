@@ -63,7 +63,7 @@ export const requestChangePassword = (body: object) => {
 //Recent Orders
 export const requestUserRecentOrders = () => {
   try {
-    const authtoken =  store.getState().authReducer.authToken.authtoken
+    const authtoken = store.getState().authReducer.authToken.authtoken;
     const url = process.env.REACT_APP_OLO_API || "";
     return axiosInstance
       .get(url + `/users/${authtoken}/recentorders`)
@@ -80,7 +80,7 @@ export const requestUserRecentOrders = () => {
 //Favorite Orders
 export const requestUserFavoriteOrders = () => {
   try {
-    const authtoken =  process.env.REACT_APP_AUTH_TOKEN  ? process.env.REACT_APP_AUTH_TOKEN : store.getState().authReducer.authToken.authtoken
+    const authtoken = store.getState().authReducer.authToken.authtoken;
     const url = process.env.REACT_APP_OLO_API || "";
     return axiosInstance
       .get(url + `/users/${authtoken}/faves`)
@@ -98,7 +98,7 @@ export const requestUserFavoriteOrders = () => {
 export const requestDeleteFavOrder = ( favid: number) => {
   try {
     const url = process.env.REACT_APP_OLO_API || "";
-    const authtoken =  process.env.REACT_APP_AUTH_TOKEN  ? process.env.REACT_APP_AUTH_TOKEN : store.getState().authReducer.authToken.authtoken
+    const authtoken =  store.getState().authReducer.authToken.authtoken
     return axiosInstance
       .delete(url + `/users/${authtoken}/faves/${favid}`)
       .then((response) => response.data)
@@ -114,9 +114,9 @@ export const requestDeleteFavOrder = ( favid: number) => {
 //Delivery Addresses
 export const requestUserDeliiveryAddresses = () => {
   try {
-    // const auth = store.getState().authReducer.authToken.authtoken;
+    
+    const authtoken = store.getState().authReducer.authToken.authtoken;
     const url = process.env.REACT_APP_OLO_API || "";
-    const authtoken =  process.env.REACT_APP_AUTH_TOKEN  ? process.env.REACT_APP_AUTH_TOKEN : store.getState().authReducer.authToken.authtoken
     return axiosInstance
       .get(url + `/users/${authtoken}/userdeliveryaddresses`)
       .then((response) => response.data)
@@ -134,7 +134,7 @@ export const requestSetUserDefDelAddress = (body: RequestUserDefaultAddress) => 
 
   try {
     const url = process.env.REACT_APP_OLO_API || "";
-    const authtoken =  process.env.REACT_APP_AUTH_TOKEN  ? process.env.REACT_APP_AUTH_TOKEN : store.getState().authReducer.authToken.authtoken
+    const authtoken = store.getState().authReducer.authToken.authtoken;
     return axiosInstance
       .put(url + `/users/${authtoken}/userdeliveryaddresses/default`, body)
       .then((response) => response.data)
@@ -153,7 +153,7 @@ export const requestDelUserDelAddress = (addressid: number) => {
 
   try {
     const url = process.env.REACT_APP_OLO_API || "";
-    const authtoken =  process.env.REACT_APP_AUTH_TOKEN  ? process.env.REACT_APP_AUTH_TOKEN : store.getState().authReducer.authToken.authtoken
+    const authtoken = store.getState().authReducer.authToken.authtoken;
     return axiosInstance
       .delete(url + `/users/${authtoken}/userdeliveryaddresses/${addressid}`)
       .then((response) => response.data)

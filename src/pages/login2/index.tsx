@@ -1,24 +1,18 @@
 import { makeStyles } from '@mui/styles';
-import {
-  Grid,
-  Typography,
-  Button,
-} from '@mui/material';
-import {  useNavigate } from 'react-router-dom';
+import { Grid, Typography, Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import './login2.css';
-import {  Fragment, useEffect } from 'react';
+import { Fragment, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import LoginForm from '../../components/login-form';
 import bgImage from '../../assets/imgs/login-bg.png';
 
-
 const useStyle = makeStyles(() => ({
   root: {
-    minHeight: '100vh',
-    backgroundImage: `url(${bgImage})`,
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'cover',
-    justifyContent: 'center',
+    background: `url(${bgImage}) center center fixed`,
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "cover",
+    justifyContent: 'center'
   },
   caption: {},
 }));
@@ -29,11 +23,17 @@ const Login2 = () => {
 
   const { providerToken } = useSelector((state: any) => state.providerReducer);
 
+  const { pageURL } = useSelector((state: any) => state.pageStateReducer);
+
   useEffect(() => {
-    if(providerToken){
-      navigate('/welcome')
+    if (providerToken) {
+      if (pageURL == undefined || pageURL == null) {
+        navigate('/welcome');
+      } else {
+        navigate(pageURL);
+      }
     }
-  }, [providerToken])
+  }, [providerToken]);
 
   return (
     <Fragment>
@@ -52,7 +52,8 @@ const Login2 = () => {
                   providerToken.first_name
                 }
               >
-                SIGN IN TO <br/>RUBIO'S REWARDS{' '}
+                SIGN IN TO <br />
+                RUBIO'S REWARDS{' '}
                 {providerToken &&
                   providerToken.first_name &&
                   providerToken.first_name}
@@ -60,7 +61,11 @@ const Login2 = () => {
               <LoginForm />
             </Grid>
             <Grid item xs={16} sm={16} md={14} lg={5.5} className="right-col">
-              <Typography variant="caption" className="label" title="More Options">
+              <Typography
+                variant="caption"
+                className="label"
+                title="More Options"
+              >
                 More Options
               </Typography>
               <Button
@@ -71,7 +76,7 @@ const Login2 = () => {
                 variant="contained"
                 className="sign-in-btn"
               >
-                <img src={require('../../assets/imgs/fb-icon.png')}/>
+                <img src={require('../../assets/imgs/fb-icon.png')} />
                 Sign in with facebook
               </Button>
               <Button
@@ -82,7 +87,10 @@ const Login2 = () => {
                 variant="contained"
                 className="sign-in-btn"
               >
-                <img className="apple-icon" src={require('../../assets/imgs/apple-icon.png')}/>
+                <img
+                  className="apple-icon"
+                  src={require('../../assets/imgs/apple-icon.png')}
+                />
                 Sign in with apple
               </Button>
               <Button
@@ -93,7 +101,7 @@ const Login2 = () => {
                 variant="contained"
                 className="sign-in-btn"
               >
-                <img src={require('../../assets/imgs/g-icon.png')}/>
+                <img src={require('../../assets/imgs/g-icon.png')} />
                 Sign in with google
               </Button>
               <Button
@@ -107,7 +115,13 @@ const Login2 = () => {
               >
                 Create Account
               </Button>
-              <Typography onClick={() => navigate('/')} style={{cursor: 'pointer'}} variant="caption" className="label bold" title="continue as guest">
+              <Typography
+                onClick={() => navigate('/')}
+                style={{ cursor: 'pointer' }}
+                variant="caption"
+                className="label bold"
+                title="continue as guest"
+              >
                 Continue as guest
               </Typography>
             </Grid>

@@ -56,7 +56,6 @@ import {
   userRegisterSuccess,
   userRegisterFailure
 } from '../../actions/user';
-import ErrorMessageAlert from '../../../components/error-message-alert';
 import { displayToast } from '../../../helpers/toast';
 import { getProviderRequestSuccess } from '../../actions/provider';
 

@@ -93,6 +93,9 @@
   }
 }
 @media screen and (max-width: 468px) {
+  .checkout-wrapper .order {
+    padding: 45px !important;
+  }
   .order .add-order button {
     width: 100%;
   }

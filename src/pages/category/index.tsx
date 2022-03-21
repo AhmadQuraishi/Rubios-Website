@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getCategoriesRequest } from '../../redux/actions/category';
 import { Category, ResponseMenu } from '../../types/olo-api';
 import ProductListingSkeletonUI from '../../components/product-listing-skeleton-ui';
-import ErrorMessageAlert from '../../components/error-message-alert';
 
 const useStyles = makeStyles((theme: Theme) => ({
   heading: {
@@ -46,13 +45,29 @@ const CategoryList = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const body = document;
   useEffect(() => {
     if (restaurant === null) {
       navigate('/location');
     } else {
       dispatch(getCategoriesRequest(restaurant.id));
     }
+    body.addEventListener('scroll', (e) => {
+      e.preventDefault();
+      var categoryPanel = document.getElementById('categoryMenu');
+      var dummyCategoryPanel = document.getElementById('dummyCategoryPanel');
+      if (categoryPanel && dummyCategoryPanel) {
+        if (window.scrollY > categoryPanel.offsetTop) {
+          categoryPanel.style.position = 'fixed';
+          categoryPanel.style.top = '60px';
+          dummyCategoryPanel.style.display = 'block';
+        } else {
+          categoryPanel.style.position = 'relative';
+          categoryPanel.style.top = '0px';
+          dummyCategoryPanel.style.display = 'none';
+        }
+      }
+    });
   }, []);
 
   useEffect(() => {
@@ -65,55 +80,61 @@ const CategoryList = () => {
     setTimeout(() => {
       var elem = document.getElementById('#panel-' + newValue);
       elem?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 500);
+    }, 700);
     setValue(newValue);
   };
 
   return (
     <div style={{ minHeight: '500px' }}>
-      {loading === false && error.message && (
-        <ErrorMessageAlert message={error.message} />
-      )}
       <StoreInfoBar />
       {loading === true && <ProductListingSkeletonUI />}
       {categoriesWithProducts?.categories &&
         categoriesWithProducts?.categories.length > 0 && (
-          <Box
-            sx={{
-              width: '100%',
-              padding: {
-                xs: '20px 5px 10px 5px',
-                sm: '20px 30px 5px 30px',
-                lg: '20px 60px 5px 60px',
-                boxSizing: 'border-box',
-              },
-            }}
-          >
-            <Tabs
-              value={value}
-              onChange={handleChange}
-              textColor="secondary"
-              indicatorColor="primary"
-              aria-label="Menu Tabs"
-              variant="scrollable"
-              scrollButtons
-              allowScrollButtonsMobile
-              sx={{ fontFamily: 'Poppins-Medium !important' }}
+          <>
+            <div
+              style={{ display: 'none', height: '80px' }}
+              id="dummyCategoryPanel"
+            ></div>
+            <Box
+              sx={{
+                width: '100%',
+                background: '#FFF',
+                zIndex: '1099',
+                padding: {
+                  xs: '20px 5px 10px 5px',
+                  sm: '20px 30px 5px 30px',
+                  lg: '20px 60px 5px 60px',
+                  boxSizing: 'border-box',
+                },
+              }}
+              id="categoryMenu"
             >
-              {categoriesWithProducts?.categories.map(
-                (item: Category, index: number) => (
-                  <Tab
-                    key={item.id}
-                    value={`${index}`}
-                    label={item.name}
-                    title={item.name}
-                    color="secondary.main"
-                    sx={{ fontFamily: 'Poppins-Medium !important' }}
-                  />
-                ),
-              )}
-            </Tabs>
-          </Box>
+              <Tabs
+                value={value}
+                onChange={handleChange}
+                textColor="secondary"
+                indicatorColor="primary"
+                aria-label="Menu Tabs"
+                variant="scrollable"
+                scrollButtons
+                allowScrollButtonsMobile
+                sx={{ fontFamily: 'Poppins-Medium !important' }}
+              >
+                {categoriesWithProducts?.categories.map(
+                  (item: Category, index: number) => (
+                    <Tab
+                      key={item.id}
+                      value={`${index}`}
+                      label={item.name}
+                      title={item.name}
+                      color="secondary.main"
+                      sx={{ fontFamily: 'Poppins-Medium !important' }}
+                    />
+                  ),
+                )}
+              </Tabs>
+            </Box>
+          </>
         )}
       {categoriesWithProducts?.categories &&
         categoriesWithProducts?.categories.length > 0 &&
@@ -135,7 +156,7 @@ const CategoryList = () => {
               <Grid item xs={12}>
                 <div
                   id={'#panel-' + index}
-                  style={{ position: 'absolute', top: '-75px' }}
+                  style={{ position: 'absolute', top: '-120px' }}
                 ></div>
                 <Grid container>
                   <Grid item xs={item.products.length > 4 ? 8 : 12}>
