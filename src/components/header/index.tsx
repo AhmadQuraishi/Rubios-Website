@@ -22,7 +22,7 @@ import cartIconMobile from '../../assets/imgs/cart-icon-mobile.svg';
 
 import Cart from '../cart';
 import { useSelector } from 'react-redux';
-import LeftMenuBar from '../left-menu-bar';
+import RightMenuBar from '../right-menu-bar';
 
 const useStyles = makeStyles((theme: Theme) => ({
   navBar: {
@@ -246,8 +246,8 @@ const Header = (props: any) => {
               >
                 Main Menu
               </Link>
-              {/* //{providerToken && providerToken.first_name && ( */}
-              {/* <Grid
+              {providerToken && providerToken.first_name && ( 
+               <Grid
                 container
                 sx={{
                   width: { sm: '170px', md: '200px' },
@@ -259,8 +259,8 @@ const Header = (props: any) => {
                 onClick={() => {
                   setShowAccountMenu(!showAccountMenu);
                 }}
-              > */}
-                {/* <Grid
+              > 
+                <Grid
                   item
                   xs={12}
                   style={{
@@ -303,9 +303,9 @@ const Header = (props: any) => {
                       &#9650;
                     </span>
                   )}
-                </Grid> */}
-              {/* </Grid> */}
-              {/* //)} */}
+                </Grid> 
+             </Grid> 
+               )} 
               {!removeCart && (
                 <Button
                   component="div"
@@ -350,7 +350,7 @@ const Header = (props: any) => {
       {(fromEditOrder === true && <Cart showCart={handleShowCart} />) ||
         (showCart && <Cart showCart={handleShowCart} />)}
       {showAccountMenu && (
-        <LeftMenuBar closeDrawer={setShowAccountMenu} removeCart={removeCart} />
+        <RightMenuBar closeDrawer={setShowAccountMenu} removeCart={removeCart} />
       )}
     </>
   );
