@@ -68,6 +68,7 @@ const NumberFormatCustom = forwardRef<HTMLElement, CustomProps>(
 
 const PersonalInfo = () => {
   const classes = useStyles();
+  const [selectShrink, setSelectShrink] = useState(false);
   const dispatch = useDispatch();
   const { userProfile, loading, error, success } = useSelector(
     (state: any) => state.userReducer,
@@ -404,6 +405,11 @@ const PersonalInfo = () => {
                       <FormControl fullWidth>
                         <InputLabel id="fav-location-label">
                           Favorite Location
+                          classes={{
+                          root: !selectShrink && !favlocation ? 'select-custom-css' : ''
+                        }}
+                          style={{textAlign: 'left'}}
+                          shrink={selectShrink || favlocation}
                         </InputLabel>
                         <Select
                           labelId="fav-location-label"
@@ -412,6 +418,8 @@ const PersonalInfo = () => {
                           value={favlocation && favlocation}
                           label="Favorite Location"
                           onChange={handleChangeLocation}
+                          onClose={() => {setSelectShrink(false)}}
+                          onOpen={() => {setSelectShrink(true)}}
                         >
                           {locations &&
                             locations.map((location: any, index: number) => (
