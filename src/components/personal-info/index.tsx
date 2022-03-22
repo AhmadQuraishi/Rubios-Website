@@ -25,6 +25,7 @@ import LoadingBar from '../../components/loading-bar';
 import { IMaskInput } from 'react-imask';
 import { forwardRef } from 'react';
 import moment from 'moment';
+import { displayToast } from '../../helpers/toast';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -120,23 +121,16 @@ const PersonalInfo = () => {
               lastName: userProfile.last_name,
               phone: userProfile.phone,
               favlocation: '',
+              newpassword: '',
+              confirmpassword: '',
+              currentpassword: '',
             }}
             validationSchema={Yup.object({
               firstName: Yup.string()
                 .max(30, 'Must be 30 characters or less')
-                // .min(3, 'Must be at least 3 characters')
-                // .matches(
-                //   /^[aA-zZ\s]+$/,
-                //   'Only letters are allowed for this field ',
-                // )
                 .required('Name is required'),
               lastName: Yup.string()
                 .max(30, 'Must be 30 characters or less')
-                // .min(3, 'Must be at least 3 characters')
-                // .matches(
-                //   /^[aA-zZ\s]+$/,
-                //   'Only letters are allowed for this field ',
-                // )
                 .required('Last name is required'),
               email: Yup.string()
                 .matches(
@@ -147,21 +141,90 @@ const PersonalInfo = () => {
                 .required('Email is required'),
 
               phone: Yup.string().min(14, 'Enter valid number'),
+              currentpassword: Yup.string()
+                .min(8, 'Must be at least 8 characters')
+                .max(16, 'Must be at most 16 characters'),
+              newpassword: Yup.string()
+                .min(8, 'Must be at least 8 characters')
+                .max(16, 'Must be at most 16 characters'),
+              confirmpassword: Yup.string()
+                .min(8, 'Must be at least 8 characters')
+                .max(16, 'Must be at most 16 characters')
+                .oneOf([Yup.ref('newpassword'), null], 'Passwords must match'),
             })}
             onSubmit={async (values) => {
-              const obj = {
-                email: values.email,
-                first_name: values.firstName,
-                last_name: values.lastName,
-                favourite_locations: favlocation,
-                marketing_email_subscription: state.emailnotification,
-                marketing_pn_subscription: state.pushnotification,
-                phone: values.phone
-                  ? values.phone.replace(/\D/g, '')
-                  : userProfile.phone,
-              };
-
-              const data: any = await dispatch(updateUser(obj, true));
+              if (values.confirmpassword === '' && values.newpassword === '') {
+                if (values.currentpassword === '') {
+                  const obj = {
+                    email: values.email,
+                    first_name: values.firstName,
+                    last_name: values.lastName,
+                    favourite_locations: favlocation,
+                    marketing_email_subscription: state.emailnotification,
+                    marketing_pn_subscription: state.pushnotification,
+                    phone: values.phone
+                      ? values.phone.replace(/\D/g, '')
+                      : userProfile.phone,
+                    // current_password: "qwerty",
+                    // password: "p@ssw0rd",
+                    // password_confirmation: "p@ssw0rd"
+                  };
+                  const data: any = await dispatch(updateUser(obj, true));
+                  setTimeout(() => {
+                    dispatch(getUserprofile());
+                  }, 400);
+                } else {
+                  const obj = {
+                    email: values.email,
+                    first_name: values.firstName,
+                    last_name: values.lastName,
+                    favourite_locations: favlocation,
+                    marketing_email_subscription: state.emailnotification,
+                    marketing_pn_subscription: state.pushnotification,
+                    phone: values.phone
+                      ? values.phone.replace(/\D/g, '')
+                      : userProfile.phone,
+                    current_password: values.currentpassword,
+                    // password: "p@ssw0rd",
+                    // password_confirmation: "p@ssw0rd"
+                  };
+                  const data: any = await dispatch(updateUser(obj, true));
+                  setTimeout(() => {
+                    dispatch(getUserprofile());
+                  }, 400);
+                }
+              } else {
+                if (values.currentpassword === '') {
+                  displayToast('ERROR', 'Current Password is required');
+                } else if (values.newpassword === '') {
+                  displayToast('ERROR', 'New Password is required');
+                } else if (values.confirmpassword === '') {
+                  displayToast('ERROR', 'Confirm Password is required');
+                } else if (
+                  values.confirmpassword !== '' &&
+                  values.newpassword !== '' &&
+                  values.currentpassword !== ''
+                ) {
+                  const obj = {
+                    email: values.email,
+                    first_name: values.firstName,
+                    last_name: values.lastName,
+                    favourite_locations: favlocation,
+                    marketing_email_subscription: state.emailnotification,
+                    marketing_pn_subscription: state.pushnotification,
+                    phone: values.phone
+                      ? values.phone.replace(/\D/g, '')
+                      : userProfile.phone,
+                    current_password: values.currentpassword,
+                    password: values.newpassword,
+                    password_confirmation: values.confirmpassword,
+                  };
+                  const data: any = await dispatch(updateUser(obj, true));
+                  setTimeout(() => {
+                    dispatch(getUserprofile());
+                  }, 400);
+                }
+              }
             }}
           >
             {({
@@ -229,19 +292,92 @@ const PersonalInfo = () => {
                         onChange={handleChange}
                         name="phone"
                         id="formatted-numberformat-input"
-                        InputLabelProps={
-                          {
-                            shrink: touched && values.phone == '' ? false : true,
-                            classes: {
-                              root: values.phone !== '' ? 'mobile-field-label' : '',
-                            }
-                          }
-                        }
+                        InputLabelProps={{
+                          shrink: touched && values.phone == '' ? false : true,
+                          classes: {
+                            root:
+                              values.phone !== '' ? 'mobile-field-label' : '',
+                          },
+                        }}
                         InputProps={{
                           inputComponent: NumberFormatCustom as any,
                         }}
                         error={Boolean(touched && errors.phone)}
                         helperText={errors.phone}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        aria-label="current password"
+                        label="Current Password"
+                        title="Current Password"
+                        type="password"
+                        name="currentpassword"
+                        sx={{ width: '100%' }}
+                        value={values.currentpassword}
+                        onChange={handleChange('currentpassword')}
+                        onBlur={handleBlur('currentpassword')}
+                        error={Boolean(
+                          touched.currentpassword && errors.currentpassword,
+                        )}
+                        helperText={
+                          touched.currentpassword && errors.currentpassword
+                        }
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Typography
+                        variant="body2"
+                        className="body-text"
+                        title="Password must be at least 8 characters."
+                        sx={{ width: '100%' }}
+                      >
+                        Your current password. Required to update your personal
+                        details.
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        aria-label="new password"
+                        label="New Password"
+                        title="New Password"
+                        type="password"
+                        name="newpassword"
+                        sx={{ width: '100%' }}
+                        value={values.newpassword}
+                        onChange={handleChange('newpassword')}
+                        onBlur={handleBlur('newpassword')}
+                        error={Boolean(
+                          touched.newpassword && errors.newpassword,
+                        )}
+                        helperText={touched.newpassword && errors.newpassword}
+                      />
+                    </Grid>
+                    {/* <Typography>{errors.newpassword}</Typography> */}
+                    <Grid item xs={12}>
+                      <Typography
+                        variant="body2"
+                        className="body-text"
+                        title="Password must be at least 8 characters."
+                        sx={{ width: '100%' }}
+                      >
+                        Password must be at least 8 characters.
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        aria-label="confirm password "
+                        label="Confirm Password"
+                        title="Confirm Password"
+                        name="confirmpassword"
+                        type="password"
+                        sx={{ width: '100%' }}
+                        value={values.confirmpassword}
+                        onChange={handleChange('confirmpassword')}
+                        error={Boolean(touched && errors.confirmpassword)}
+                        helperText={
+                          touched.confirmpassword && errors.confirmpassword
+                        }
                       />
                     </Grid>
                     <Grid item xs={12}>

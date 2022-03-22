@@ -162,6 +162,7 @@ export function updateUserSuccess(data: any) {
 }
 
 export function updateUserFailure(error: any) {
+  displayToast("ERROR"  , error && error.current_password && error.current_password[0] || error && error.phone && error.phone[0] || error && error.email && error.email[0] )
   return {
     type: Type.UPDATE_USER_FAILURE,
     error: error,
