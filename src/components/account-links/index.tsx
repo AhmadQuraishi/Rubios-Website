@@ -1,6 +1,8 @@
-import { List, ListItem, ListItemText, Divider, Theme } from '@mui/material';
+import { List, ListItem, ListItemText, Divider, Theme, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { userLogout } from '../../redux/actions/user';
 
 const useStyles = makeStyles((theme: Theme) => ({
   link: {
@@ -17,6 +19,15 @@ const useStyles = makeStyles((theme: Theme) => ({
 const AccountLinks = (props: any) => {
   const { closeDrawer } = props;
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const logout = () => {
+    dispatch(userLogout());
+    closeDrawer(false);
+    navigate('/login');
+  };
+
   return (
     <List component="nav" aria-label="Account Menu">
       <ListItem>
@@ -100,13 +111,13 @@ const AccountLinks = (props: any) => {
       </ListItem>
       <Divider />
       <ListItem>
-        <Link
-          to="/"
-          onClick={() => (closeDrawer ? closeDrawer(false) : false)}
-          className={classes.link}
-        >
-          <ListItemText primary="Logout" />
-        </Link>
+           <Typography
+              onClick={() => logout()}
+              className={classes.link}
+              style={{ cursor: 'pointer' }}
+            >
+              <ListItemText title="Logout" primary="Logout" />
+            </Typography>
       </ListItem>
     </List>
   );
