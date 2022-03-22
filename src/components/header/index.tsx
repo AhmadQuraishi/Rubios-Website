@@ -22,7 +22,7 @@ import cartIconMobile from '../../assets/imgs/cart-icon-mobile.svg';
 
 import Cart from '../cart';
 import { useSelector } from 'react-redux';
-import LeftMenuBar from '../left-menu-bar';
+import RightMenuBar from '../right-menu-bar';
 
 const useStyles = makeStyles((theme: Theme) => ({
   navBar: {
@@ -355,7 +355,7 @@ const Header = (props: any) => {
       {(fromEditOrder === true && <Cart showCart={handleShowCart} />) ||
         (showCart && <Cart showCart={handleShowCart} />)}
       {showAccountMenu && (
-        <LeftMenuBar closeDrawer={setShowAccountMenu} removeCart={removeCart} />
+        <RightMenuBar closeDrawer={setShowAccountMenu} removeCart={removeCart} />
       )}
     </>
   );
