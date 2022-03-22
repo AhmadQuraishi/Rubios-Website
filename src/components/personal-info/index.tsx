@@ -267,13 +267,16 @@ const PersonalInfo = () => {
 
                     <Grid item xs={12}>
                       <FormControl fullWidth>
-                        <InputLabel id="fav-location-label">
-                          Favorite Location
-                          classes={{
+                        <InputLabel 
+                        id="fav-location-label"
+                        classes={{
                           root: !selectShrink && !favlocation ? 'select-custom-css' : ''
                         }}
                           style={{textAlign: 'left'}}
-                          shrink={selectShrink || favlocation}
+                          shrink={selectShrink}
+                        >
+                          Favorite Location              
+
                         </InputLabel>
                         <Select
                           labelId="fav-location-label"
