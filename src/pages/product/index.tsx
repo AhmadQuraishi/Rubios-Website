@@ -33,6 +33,7 @@ import { updateProductRequest } from '../../redux/actions/basket/product/update'
 import { displayToast } from '../../helpers/toast';
 import Checkmarkicon from '../../assets/imgs/check-mark.svg';
 import { padding } from '@mui/system';
+import getIngredientImage from '../../helpers/getIngredientImages';
 
 const Product = () => {
   const [productDetails, setProductDetails] = useState<ProductInfo>();
@@ -147,7 +148,6 @@ const Product = () => {
       request.quantity = count;
       let options = '';
       optionsSelectionArray.map((option: any) => {
-        debugger;
         if (option.selected) {
           option.selectedOptions.map((item: any) => {
             options = options + item + ',';
@@ -228,6 +228,7 @@ const Product = () => {
   const [optionsSelectionArray, setOptionsSelectionArray] = useState<any>([]);
 
   const [prepapreUI, setPrepareUI] = useState(false);
+
   const prepareProductOptionsArray = (
     options: any,
     parentID: any,
@@ -288,7 +289,8 @@ const Product = () => {
           options: optionsArray,
           parentOptionID: parentID || itemMain.id,
           selected:
-            parentDefaultOptionID.includes(parentID) || parentID == null
+            (edit && parentDefaultOptionID.includes(parentID)) ||
+            parentID == null
               ? true
               : false,
         },
@@ -753,6 +755,7 @@ const Product = () => {
                             className="name-img-panel"
                           >
                             <Grid item xs={5} sm={5}>
+                              <></>
                               <img
                                 className="item-image"
                                 src={require('../../assets/imgs/default_img.png')}
