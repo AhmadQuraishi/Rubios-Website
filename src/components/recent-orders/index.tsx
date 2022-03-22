@@ -245,6 +245,7 @@ const RecentOrders = () => {
                   isdefault: false,
                 };
                 dispatch(createFave(body));
+                handleClose();
               }}
             >
               {({
