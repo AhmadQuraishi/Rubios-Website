@@ -14,7 +14,7 @@ import { displayToast } from '../../helpers/toast';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    padding: '30px 20px 40px 20px',
+    padding: '0px 20px 40px 20px',
     maxWidth: '1260px',
     boxSizing: 'border-box',
     margin: 'auto',
@@ -74,7 +74,7 @@ const RedeemRewards = () => {
           </Typography>
         </Grid>
 
-        <Grid item xs={12} lg={10}>
+        <Grid item xs={12} lg={10} className="redeem-sec">
           <Grid container spacing={2}>
             {loading && <RewardListSkeletonUI />}
             {!loading && rewards && rewards.length == 0 && (
@@ -92,7 +92,7 @@ const RedeemRewards = () => {
                   title="REDEEM YOUR REWARDS"
                   className="body-text"
                 >
-                  click a reward to start your order
+                  Click a reward to start your order
                 </Typography>
               </Grid>
             )}
@@ -126,22 +126,13 @@ const RedeemRewards = () => {
                           />
                         )}
                       </Grid>
-                      <Grid item xs={7}>
-                        <CardContent
-                          sx={{
-                            flex: '1 0 auto',
-                            textAlign: 'left',
-                            paddingLeft: '20px',
-                          }}
-                        >
+                      <Grid item xs={7}  className="item-name">
                           <Typography
                             variant="caption"
                             title={reward.name || reward.description}
-                            className="item-name"
                           >
                             {reward.name || reward.description}
                           </Typography>
-                        </CardContent>
                       </Grid>
                     </Grid>
                   </Card>

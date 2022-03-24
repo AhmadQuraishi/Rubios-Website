@@ -4,12 +4,13 @@ import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { userLogout } from '../../redux/actions/user';
 
+
 const useStyles = makeStyles((theme: Theme) => ({
   link: {
     color: theme.palette.primary.main,
     textDecoration: 'none',
     textTransform: 'uppercase',
-    padding: '5px 0px',
+    padding: '5px 5px',
     '& span': {
       fontSize: '13px !important',
       fontFamily: 'Poppins-Medium !important',
@@ -112,6 +113,9 @@ const AccountLinks = (props: any) => {
       <Divider />
       <ListItem>
            <Typography
+              // to="/"
+              // aria-label="Logout"
+              // onClick={() => (closeDrawer ? closeDrawer(false) : false)}
               onClick={() => logout()}
               className={classes.link}
               style={{ cursor: 'pointer' }}
