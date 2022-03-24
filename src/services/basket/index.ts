@@ -54,6 +54,23 @@ export const setBasketDeliveryMode = (basketid: string, body: RequestSetDelivery
   }
 };
 
+export const setBasketCustomFields = (basketid: string, customFields: any) => {
+  try {
+    const url = process.env.REACT_APP_OLO_API || '';
+    const requests: any = [];
+    customFields.forEach((element: any) => {
+      requests.push(axios.put(url + `/baskets/${basketid}/customfields`, element))
+    });
+    return axios.all(requests)
+          .catch((error) => {
+            console.log(error.response);
+            throw error;
+          });
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const addSingleProduct = (
   basketid: string,
   body: RequestNewBasketProduct,

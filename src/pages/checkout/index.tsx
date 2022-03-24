@@ -29,7 +29,7 @@ import {
   validateBasket,
 } from '../../redux/actions/basket/checkout';
 import { displayToast } from '../../helpers/toast';
-import { generateSubmitBasketPayload } from '../../helpers/checkout';
+import { generateSubmitBasketPayload, formatCustomFields } from '../../helpers/checkout';
 import { updateUser } from '../../redux/actions/user';
 
 
@@ -90,6 +90,7 @@ const Checkout = () => {
   const basketObj = useSelector((state: any) => state.basketReducer);
   const { authToken } = useSelector((state: any) => state.authReducer);
   const { providerToken } = useSelector((state: any) => state.providerReducer);
+  const { restaurant } = useSelector((state: any) => state.restaurantInfoReducer);
 
   React.useEffect(() => {
     if (basket && runOnce) {
@@ -106,7 +107,7 @@ const Checkout = () => {
           selectedTime,
         ),
       );
-      dispatch(validateBasket(basket.id, null, null));
+      dispatch(validateBasket(basket.id, null, null, []));
       setRunOnce(false);
     }
   }, [basket]);
@@ -210,6 +211,7 @@ const Checkout = () => {
 
   const placeOrder = async () => {
     setButtonDisabled(true);
+    let customFields = [];
     const { isValidForm, formData } = validatePickupForm();
 
     if (!isValidForm) {
@@ -232,8 +234,13 @@ const Checkout = () => {
     const basketPayload = generateSubmitBasketPayload(
       formData,
       cardDetails,
+      basket?.deliverymode,
       authToken?.authtoken,
     );
+
+    if(basket?.deliverymode === DeliveryModeEnum.curbside){
+      customFields = formatCustomFields(restaurant.customfields, formData)
+    }
 
     if (basket) {
       setButtonDisabled(false);
@@ -248,7 +255,7 @@ const Checkout = () => {
           phone: formData.phone,
         };
       }
-      dispatch(validateBasket(basket.id, basketPayload, user));
+      dispatch(validateBasket(basket?.id, basketPayload, user, customFields));
     }
   };
 

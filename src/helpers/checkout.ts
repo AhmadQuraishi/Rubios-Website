@@ -1,5 +1,5 @@
 import { RequestBasketSubmit, ResponseRestaurantCalendars, RequestUpdateBasketTimeWanted } from '../types/olo-api';
-import {BillingMethodEnum, UserTypeEnum, SaveOnFileEnum, CountryEnum} from '../types/olo-api/olo-api.enums';
+import {BillingMethodEnum, UserTypeEnum, SaveOnFileEnum, CountryEnum, DeliveryModeEnum} from '../types/olo-api/olo-api.enums';
 import { CalendarTypeEnum, HoursListing } from './hoursListing';
 import moment from 'moment';
 
@@ -10,21 +10,11 @@ const cardTypes: any = {
     mastercard: 'Mastercard'
 }
 
-export function generateSubmitBasketPayload(pickupInfo: any, cardDetails: any, authtoken: string): RequestBasketSubmit  {
+export function generateSubmitBasketPayload(formData: any, cardDetails: any, deliverymode: string, authtoken: string): RequestBasketSubmit  {
 
-    const payload: RequestBasketSubmit = {
+    let payload: RequestBasketSubmit = {
         billingmethod: BillingMethodEnum.creditcardtoken,
-        usertype: UserTypeEnum.guest,       
-        firstname: pickupInfo.firstName,
-        lastname: pickupInfo.lastName,
-        emailaddress: pickupInfo.email,
-        contactnumber: pickupInfo.phone,
-        receivinguser: {
-          firstname: pickupInfo.firstName,
-          lastname: pickupInfo.lastName,
-          emailaddress: pickupInfo.email,
-          contactnumber: pickupInfo.phone,
-        },
+        usertype: UserTypeEnum.guest,
         token: cardDetails.id,
         cardtype: cardTypes[cardDetails.card.brand],
         expiryyear: cardDetails.card.exp_year,
@@ -36,10 +26,24 @@ export function generateSubmitBasketPayload(pickupInfo: any, cardDetails: any, a
         zip: '20500',
         country: CountryEnum.US,
         saveonfile: SaveOnFileEnum.true,
-        guestoptin: pickupInfo.emailNotification
+        guestoptin: formData.emailNotification
     }
 
-    console.log('authtoken', authtoken)
+    if(deliverymode === DeliveryModeEnum.curbside || deliverymode === DeliveryModeEnum.pickup){
+      payload = {
+        ...payload,
+        firstname: formData.firstName,
+        lastname: formData.lastName,
+        emailaddress: formData.email,
+        contactnumber: formData.phone,
+        receivinguser: {
+          firstname: formData.firstName,
+          lastname: formData.lastName,
+          emailaddress: formData.email,
+          contactnumber: formData.phone
+        }
+      }      
+    }
 
     if(authtoken && authtoken !== ''){
         payload.authtoken = authtoken;
@@ -53,6 +57,41 @@ export function generateSubmitBasketPayload(pickupInfo: any, cardDetails: any, a
 
     return payload;  
 };
+
+export function formatCustomFields(customFields: any, formData: any)  {
+
+  console.log('customFields', customFields)
+
+  let formatArray: any = [];
+
+  customFields.forEach((field: any) => {
+
+    let obj = {}
+
+    if(field.label === 'Model'){
+      obj = {
+        id: field.id,
+        value: formData.vehicleModal
+      }
+    } else if (field.label === 'Make'){
+      obj = {
+        id: field.id,
+        value: formData.vehicleMake
+      }
+    } else if (field.label === 'Color'){
+      obj = {
+        id: field.id,
+        value: formData.vehicleColor
+      }
+    }
+    if(Object.keys(obj).length){
+      formatArray.push(obj)
+    }
+
+  })
+
+  return formatArray;
+}
 
 
 const isTimeSame = (fTime: string, sTime: string): boolean => {
