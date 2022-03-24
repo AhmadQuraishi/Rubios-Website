@@ -51,7 +51,7 @@ const Product = () => {
     (state: any) => state.updateProductReducer,
   );
   const { options } = useSelector((state: any) => state.productOptionsReducer);
-  const { restaurant } = useSelector(
+  const { restaurant, orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
 
@@ -140,8 +140,9 @@ const Product = () => {
   const addProductToBag = () => {
     if (basketObj.basket == null) {
       const request: any = {};
+      let deliverymode = orderType || '';
       request.vendorid = restaurant.id;
-      dispatch(setBasketRequest(request));
+      dispatch(setBasketRequest(request, deliverymode));
     } else {
       const request: any = {};
       request.productid = productDetails?.id;
