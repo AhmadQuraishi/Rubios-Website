@@ -62,6 +62,8 @@ let userInfoValidation = Yup.object({
   .required('Vehicle Color is required'),
 })
 
+console.log('userInfoValidation', userInfoValidation)
+
 const vehicleValidation = Yup.object({
   vehicleModal: Yup.string()
   .max(15, 'Must be 15 characters or less')
@@ -325,15 +327,9 @@ const Checkout = () => {
                           phone: Yup.string()
                             .min(14, 'Enter valid number')
                             .required('Phone is required'),
-                          vehicleModal: Yup.string()
-                            .max(15, 'Must be 15 characters or less')
-                            .required('Vehicle Modal is required'),
-                          vehicleMake: Yup.string()
-                            .max(15, 'Must be 15 characters or less')
-                            .required('Vehicle Make is required'),  
-                          vehicleColor: Yup.string()
-                            .max(15, 'Must be 15 characters or less')
-                            .required('Vehicle Color is required'),
+                          vehicleModal: basket && basket.deliverymode === DeliveryModeEnum.curbside ? Yup.string().max(15, 'Must be 15 characters or less').required('Vehicle Modal is required') : Yup.string(),
+                          vehicleMake: basket && basket.deliverymode === DeliveryModeEnum.curbside ? Yup.string().max(15, 'Must be 15 characters or less').required('Vehicle Make is required') : Yup.string(),
+                          vehicleColor: basket && basket.deliverymode === DeliveryModeEnum.curbside ? Yup.string().max(15, 'Must be 15 characters or less').required('Vehicle Color is required') : Yup.string(),
                           emailNotification: Yup.bool().optional()
                         })}
                         onSubmit={(values, actions) => {}}

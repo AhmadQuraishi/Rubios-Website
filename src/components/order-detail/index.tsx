@@ -62,11 +62,28 @@ const OrderDetail = ({basket, validate}: any)  => {
             </Typography>
           </Grid>
           <Grid item xs={2} sm={2} md={2} lg={1}>
-           <Typography variant="h6" title={validate && validate.subtotal}>
-              ${validate && validate.subtotal}
+           <Typography variant="h6" title={basket && basket.subtotal}>
+              ${basket && basket.subtotal}
             </Typography>
           </Grid>
         </Grid>
+        {
+          basket && basket.tip && basket.tip > 0 ? (
+            <Grid container>
+              <Grid item xs={10} sm={10} md={10} lg={11}>
+                <Typography variant="h6" title="TIP">
+                  TIP
+                </Typography>
+              </Grid>
+              <Grid item xs={2} sm={2} md={2} lg={1}>
+              <Typography variant="h6" title={basket && basket.tip}>
+                  +{basket && basket.tip}
+                </Typography>
+              </Grid>
+            </Grid>
+          ) : (null)
+        }
+        
         <Grid container>
           <Grid item xs={10} sm={10} md={10} lg={11}>
             <Typography variant="h6" className="n-bold" title="Tax">
@@ -75,7 +92,7 @@ const OrderDetail = ({basket, validate}: any)  => {
           </Grid>
            <Grid item xs={2} sm={2} md={2} lg={1}>
             <Typography variant="h6" >
-            ${validate && validate.taxes && validate.taxes.reduce((sum: number, tax: any) => sum + tax.tax, 0)}
+            ${basket && basket.taxes && basket.taxes.reduce((sum: number, tax: any) => sum + tax.tax, 0)}
             </Typography>
           </Grid>
         </Grid>
@@ -87,7 +104,7 @@ const OrderDetail = ({basket, validate}: any)  => {
           </Grid>
            <Grid item xs={2} sm={2} md={2} lg={1}>
             <Typography variant="h6" >
-            ${validate && validate.totalfees && validate.totalfees.toFixed(2)}
+            ${basket && basket.totalfees && basket.totalfees.toFixed(2)}
             </Typography>
           </Grid>
         </Grid>
@@ -101,8 +118,8 @@ const OrderDetail = ({basket, validate}: any)  => {
             </Typography>
           </Grid>
           <Grid item xs={2} sm={2} md={2} lg={1}>
-            <Typography variant="h6" title={validate && validate.total}>
-              ${validate && validate.total}
+            <Typography variant="h6" title={basket && basket.total}>
+              ${basket && basket.total}
             </Typography>
           </Grid>
         </Grid>
