@@ -18,7 +18,8 @@ import {
   requestUserFavoriteOrders,
   updateUserContactOptions,
   requestUserLogin,
-  requestUserRegister
+  requestUserRegister,
+  requestUpdateProfile
 } from '../../../services/user';
 import {
   deleteUserDelAddFailure,
@@ -64,6 +65,7 @@ function* userProfileHandler(): any {
   try {
     const response = yield call(RequestUserProfile); 
     yield put(getUserprofileSuccess(response));
+    yield put(getProviderRequestSuccess(response));
   } catch (error) {
     yield put(getUserprofileFailure(error));
   }
@@ -141,20 +143,23 @@ function* deleleteDelAddressHandler(action: any): any {
 // Update User
 function* updateUserHandler(action: any): any {
   try {
-    const response = yield call(
-      requestUpdateUser,
-      action.payload,
-    );
-    yield put(updateUserSuccess(response));
-    yield put(getProviderRequestSuccess(response));
-    if(action.profileCheck){
+   
+    if (action.profileCheck) {
+      const response = yield call(
+        requestUpdateProfile,
+        action.payload,
+      );
       displayToast("SUCCESS" , "profile updated successfully");
+    } else {
+      const response = yield call(
+        requestUpdateUser,
+        action.payload,
+      );
+      yield put(updateUserSuccess(response));
+      yield put(getProviderRequestSuccess(response));
     }    
   } catch (error) {
     yield put(updateUserFailure(error));
-    if(action.profileCheck){
-      displayToast("ERROR" , "profile not updated");
-    }
   }
 }
 

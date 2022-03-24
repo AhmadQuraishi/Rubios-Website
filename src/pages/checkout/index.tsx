@@ -20,6 +20,7 @@ import {
   ResponseBasketValidation,
   ResponseContactOptions,
 } from '../../types/olo-api';
+import {DeliveryModeEnum} from '../../types/olo-api/olo-api.enums';
 import { IMaskInput } from 'react-imask';
 import moment from 'moment';
 import { HoursListing } from '../../helpers/hoursListing';
@@ -31,12 +32,55 @@ import { displayToast } from '../../helpers/toast';
 import { generateSubmitBasketPayload } from '../../helpers/checkout';
 import { updateUser } from '../../redux/actions/user';
 
+
+let userInfoValidation = Yup.object({
+  firstName: Yup.string()
+    .max(30, 'Must be 30 characters or less')
+    .required('First Name is required'),
+  lastName: Yup.string()
+    .max(30, 'Must be 30 characters or less')
+    .required('Last Name is required'),
+  email: Yup.string()
+    .matches(
+      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+      'Invalid Email ',
+    )
+    .email('Invalid email address')
+    .required('Email is required'),
+  phone: Yup.string()
+    .min(14, 'Enter valid number')
+    .required('Phone is required'),
+  emailNotification: Yup.bool().optional(),
+  vehicleModal: Yup.string()
+  .max(15, 'Must be 15 characters or less')
+  .required('Vehicle Modal is required'),
+  vehicleMake: Yup.string()
+  .max(15, 'Must be 15 characters or less')
+  .required('Vehicle Make is required'),  
+  vehicleColor: Yup.string()
+  .max(15, 'Must be 15 characters or less')
+  .required('Vehicle Color is required'),
+})
+
+const vehicleValidation = Yup.object({
+  vehicleModal: Yup.string()
+  .max(15, 'Must be 15 characters or less')
+  .required('Vehicle Modal is required'),
+  vehicleMake: Yup.string()
+  .max(15, 'Must be 15 characters or less')
+  .required('Vehicle Make is required'),  
+  vehicleColor: Yup.string()
+  .max(15, 'Must be 15 characters or less')
+  .required('Vehicle Color is required'),
+})
+
 const Checkout = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const pickupFormRef = React.useRef<any>(null);
   const paymentInfoRef = React.useRef<any>();
+  const [formValidation, setFormValidation] = React.useState<any>(userInfoValidation);
 
   const [runOnce, setRunOnce] = React.useState<boolean>(true);
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
@@ -64,6 +108,16 @@ const Checkout = () => {
       );
       dispatch(validateBasket(basket.id, null, null));
       setRunOnce(false);
+    }
+  }, [basket]);
+
+  React.useEffect(() => {
+    if (basket && basket.deliverymode === DeliveryModeEnum.curbside) {
+      const obj = {
+        ...userInfoValidation,
+        ...vehicleValidation
+      }
+      setFormValidation(obj)
     }
   }, [basket]);
 
@@ -243,15 +297,16 @@ const Checkout = () => {
                             providerToken?.marketing_email_subscription
                               ? providerToken?.marketing_email_subscription
                               : false,
+                          vehicleModal: '',  
+                          vehicleMake: '',  
+                          vehicleColor: ''
                         }}
                         validationSchema={Yup.object({
                           firstName: Yup.string()
                             .max(30, 'Must be 30 characters or less')
-
                             .required('First Name is required'),
                           lastName: Yup.string()
                             .max(30, 'Must be 30 characters or less')
-
                             .required('Last Name is required'),
                           email: Yup.string()
                             .matches(
@@ -260,11 +315,19 @@ const Checkout = () => {
                             )
                             .email('Invalid email address')
                             .required('Email is required'),
-
                           phone: Yup.string()
                             .min(14, 'Enter valid number')
                             .required('Phone is required'),
-                          emailNotification: Yup.bool().optional(),
+                          vehicleModal: Yup.string()
+                            .max(15, 'Must be 15 characters or less')
+                            .required('Vehicle Modal is required'),
+                          vehicleMake: Yup.string()
+                            .max(15, 'Must be 15 characters or less')
+                            .required('Vehicle Make is required'),  
+                          vehicleColor: Yup.string()
+                            .max(15, 'Must be 15 characters or less')
+                            .required('Vehicle Color is required'),
+                          emailNotification: Yup.bool().optional()
                         })}
                         onSubmit={(values, actions) => {}}
                       >
@@ -350,6 +413,7 @@ const Checkout = () => {
                                 helperText={errors.phone}
                               />
                             </Grid>
+
                             <Grid item xs={12}>
                               <TextField
                                 aria-label="Email"
@@ -366,6 +430,70 @@ const Checkout = () => {
                                 helperText={errors.email}
                               />
                             </Grid>
+
+                            {
+                          basket && basket.deliverymode === DeliveryModeEnum.curbside ? (
+                          <>
+                                    <Grid container spacing={1}>
+
+                                        <Grid item xs={6}>
+                                          <TextField
+                                            aria-label="Vehicle Modal"
+                                            onBlur={handleBlur}
+                                            label="Vehicle Modal"
+                                            aria-required="true"
+                                            title="Vehicle Modal"
+                                            type="text"
+                                            name="vehicleModal"
+                                            value={values.vehicleModal}
+                                            onChange={handleChange}
+                                            error={Boolean(
+                                              touched.vehicleModal && errors.vehicleModal,
+                                            )}
+                                            helperText={errors.vehicleModal}
+                                          />
+                                        </Grid>
+
+                                        <Grid item xs={6}>
+                                          <TextField
+                                            aria-label="Vehicle Make"
+                                            onBlur={handleBlur}
+                                            label="Vehicle Make"
+                                            aria-required="true"
+                                            title="Vehicle Make"
+                                            type="text"
+                                            name="vehicleMake"
+                                            value={values.vehicleMake}
+                                            onChange={handleChange}
+                                            error={Boolean(
+                                              touched.vehicleMake && errors.vehicleMake,
+                                            )}
+                                            helperText={errors.vehicleMake}
+                                          />
+                                        </Grid> 
+                                    
+                                    </Grid>
+
+                                    <Grid item xs={12}>
+                                      <TextField
+                                        aria-label="Vehicle Color"
+                                        onBlur={handleBlur}
+                                        label="Vehicle Color"
+                                        aria-required="true"
+                                        title="Vehicle Color"
+                                        type="text"
+                                        name="vehicleColor"
+                                        value={values.vehicleColor}
+                                        onChange={handleChange}
+                                        error={Boolean(
+                                          touched.vehicleColor && errors.vehicleColor,
+                                        )}
+                                        helperText={errors.vehicleColor}
+                                      />
+                                    </Grid>
+                          </>
+                          ) : (null)
+                      } 
 
                             <Grid item xs={12}>
                               <FormGroup>
@@ -388,6 +516,7 @@ const Checkout = () => {
                           </form>
                         )}
                       </Formik>
+                     
                     </Grid>
                   </Grid>
                   <OrderTime />

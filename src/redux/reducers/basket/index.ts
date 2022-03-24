@@ -38,6 +38,7 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
     case basketActionsTypes.UPDATE_BASKET_TIP_AMOUNT_SUCCESS:
     case basketActionsTypes.UPDATE_BASKET_COUPON_CODE_SUCCESS:
     case basketActionsTypes.CREATE_BASKET_FROM_PREV_SUCCESS:
+    case basketActionsTypes.SET_BASKET_DELIVERY_MODE_SUCCESS:
       return {
         ...state,
         loading: false,
@@ -55,6 +56,7 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
     case basketActionsTypes.CREATE_BASKET_FROM_PREV_FAILURE:
     case basketActionsTypes.VALIDETE_BASKET_FAILURE:
     case basketActionsTypes.VALIDETE_BASKET_PHONE_FAILURE: 
+    case basketActionsTypes.SET_BASKET_DELIVERY_MODE_FAILURE:
       return {
         ...state,
         loading: false,

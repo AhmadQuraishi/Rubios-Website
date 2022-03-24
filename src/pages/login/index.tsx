@@ -82,7 +82,7 @@ const Login = () => {
           onFailure={onAuthFailure}
         />
       </Grid>
-      
+
     </Fragment>
   );
 };
@@ -96,23 +96,6 @@ const getAccessTokenByAuthCode = async (
 ): Promise<any> => {
   const token = dispatch(getTokenRequest(code));
   return token;
-  // return axios.post(
-  //   `https://sandbox.punchh.com/oauth/token`,
-  //   {
-  //     grant_type: "authorization_code",
-  //     code: code,
-  //     client_id: process.env.REACT_APP_PUNCHH_CLIENT_ID,
-  //     client_secret: process.env.REACT_APP_PUNCHH_CLIENT_SECRET,
-  //     redirect_uri: window.location.origin + "/login"
-  //   },
-  //   {
-  //     headers: {
-  //       "accept": "application/json",
-  //       "Content-Type": "application/json",
-  //       "Origin": window.location.origin
-  //     }
-  //   }
-  // );
 };
 
 const getUser = async ( dispatch: any): Promise<any> => {

@@ -5,6 +5,7 @@ import { userTypes } from "../../types/user";
 const initialState = {
   
   redemption: null,
+  reward_name:'',
   loading1: true,
   error: null,
   
@@ -20,6 +21,11 @@ const redemptionReducer = (state = initialState, action: any) => {
           ...state,
           redemption: action.payload,
           loading1: false
+      };
+      case Type.SET_REWARD:
+        return {
+          ...state,
+          reward_name: action.payload,
         };
     case Type.GET_CODE_FAILURE:
       return { ...state, error: action.error  , loading1 :  false};

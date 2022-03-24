@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Fragment } from 'react';
 
 import HistoryGrid from '../../components/history-grid';
+import TransactionHistory from '../../components/transaction-history';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -105,7 +106,7 @@ const AccountHistory = () => {
             <HistoryGrid />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <HistoryGrid />
+            <TransactionHistory />
           </TabPanel>
         </Grid>
       </Grid>

@@ -36,6 +36,7 @@ const RegisterForm = () => {
   const [favLocation, setFavLocation] = useState('');
   const [birthDay, setBirthDay] = useState<Date | undefined>();
   const [termsAndConditions, setTermsAndconditions] = useState(false);
+  const [selectShrink, setSelectShrink] = useState(false);
 
   useEffect(() => {
     dispatch(getlocations());
@@ -306,7 +307,14 @@ const RegisterForm = () => {
                 </Grid>
                 <Grid item xs={12}>
                   <FormControl fullWidth>
-                    <InputLabel id="fav-location-label">
+                    <InputLabel 
+                    id="fav-location-label"
+                    classes={{
+                      root: !selectShrink && favLocation == '' ? 'select-custom-css' : ''
+                    }}
+                    shrink={selectShrink || favLocation !== ''}
+                    style={{textAlign: 'left'}}
+                    >
                       Favorite Location
                     </InputLabel>
                     <Select
@@ -316,6 +324,8 @@ const RegisterForm = () => {
                       value={favLocation && favLocation}
                       label="Favorite Location"
                       onChange={handleChangeLocation}
+                      onClose={() => {setSelectShrink(false)}}
+                      onOpen={() => {setSelectShrink(true)}}
                     >
                       {locations &&
                         locations.map((location: any, index: number) => (
