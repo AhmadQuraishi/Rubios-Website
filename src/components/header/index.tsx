@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   logoImg: {
     display: 'inline-block',
-    padding: '18px 70px',
+    padding: '18px 70px 18px 20px',
     [theme.breakpoints.down('lg')]: {
       padding: '18px 0 14px 30px',
     },
@@ -244,7 +244,7 @@ const Header = (props: any) => {
               >
                 Main Menu
               </Link>
-              {providerToken && providerToken.first_name && ( 
+              {providerToken && providerToken.first_name && (
                <Grid
                 container
                 sx={{
@@ -257,7 +257,7 @@ const Header = (props: any) => {
                 onClick={() => {
                   setShowAccountMenu(!showAccountMenu);
                 }}
-              > 
+              >
                 <Grid
                   item
                   xs={12}
@@ -308,9 +308,9 @@ const Header = (props: any) => {
                       &#9650;
                     </span>
                   )}
-                </Grid> 
-             </Grid> 
-               )} 
+                </Grid>
+             </Grid>
+               )}
               {!removeCart && (
                 <Button
                   component="div"

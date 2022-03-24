@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: theme.palette.primary.main,
     textDecoration: 'none',
     textTransform: 'uppercase',
-    padding: '5px 0px',
+    padding: '5px 5px',
     '& span': {
       fontSize: '13px !important',
       fontFamily: 'Poppins-Medium !important',
