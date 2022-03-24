@@ -6,7 +6,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getRewards } from '../../redux/actions/reward';
 import RewardListSkeletonUI from '../../components/rewards-list-skeleton';
 import { useNavigate } from 'react-router-dom';
-import { getRedemptionCode } from '../../redux/actions/reward/redemption';
+import {
+  getRedemptionCode,
+  setReward,
+} from '../../redux/actions/reward/redemption';
 import { displayToast } from '../../helpers/toast';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -30,6 +33,7 @@ const RedeemRewards = () => {
   const navigate = useNavigate();
 
   const [isRedeem, setIsredeem] = useState(false);
+  const [reward_name, setRewardName] = useState('');
   const { rewards, loading } = useSelector((state: any) => state.rewardReducer);
   const { redemption, error, loading1 } = useSelector(
     (state: any) => state.redemptionReducer,
@@ -38,15 +42,19 @@ const RedeemRewards = () => {
     dispatch(getRewards());
   }, []);
 
-  const handler = (id: string) => {
-    console.log(rewards);
+  const handler = (id: string, name: string) => {
+    setRewardName(name);
     dispatch(getRedemptionCode(id));
     setIsredeem(true);
   };
   useEffect(() => {
     if (redemption !== null && !loading1 && isRedeem) {
       setIsredeem(false);
+      dispatch(setReward(reward_name));
       navigate(`reward`);
+      setTimeout(() => {
+        dispatch(setReward(''));
+      }, 86400000);
     } else if (error && error.message && !loading1 && isRedeem) {
       displayToast('ERROR', 'failed to redeem this reward');
       setIsredeem(false);
@@ -97,7 +105,7 @@ const RedeemRewards = () => {
                   <Card
                     className="reward-item"
                     onClick={() => {
-                      handler(reward.reward_id);
+                      handler(reward.reward_id, reward.name);
                     }}
                   >
                     <Grid container className="rewards">

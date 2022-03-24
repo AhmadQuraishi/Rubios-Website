@@ -24,5 +24,11 @@ export function getRedemptionCodeFailure(error: any) {
     error: error,
   };
 }
+export function setReward(reward_name: string) {
+  return {
+    type: Type.SET_REWARD,
+    payload: reward_name
+  };
+}
 
 

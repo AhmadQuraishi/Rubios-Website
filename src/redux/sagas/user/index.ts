@@ -160,9 +160,6 @@ function* updateUserHandler(action: any): any {
     }    
   } catch (error) {
     yield put(updateUserFailure(error));
-    if(action.profileCheck){
-      displayToast("ERROR" , "profile not updated");
-    }
   }
 }
 

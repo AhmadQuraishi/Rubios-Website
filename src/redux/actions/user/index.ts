@@ -162,7 +162,7 @@ export function updateUserSuccess(data: any) {
 }
 
 export function updateUserFailure(error: any) {
-  displayToast("ERROR"  , error && error.current_password && error.current_password[0] || error && error.phone && error.phone[0] || error && error.email && error.email[0] )
+  displayToast("ERROR"  , error && error.current_password && error.current_password[0] || error && error.phone && error.phone[0] || error && error.email && error.email[0] || error && error.password && error.password[0] || error && "profile not updated" )
   return {
     type: Type.UPDATE_USER_FAILURE,
     error: error,
