@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { userLogout } from '../../redux/actions/user';
 
+
 const useStyles = makeStyles((theme: Theme) => ({
   link: {
     color: theme.palette.primary.main,
@@ -112,6 +113,9 @@ const AccountLinks = (props: any) => {
       <Divider />
       <ListItem>
            <Typography
+              // to="/"
+              // aria-label="Logout"
+              // onClick={() => (closeDrawer ? closeDrawer(false) : false)}
               onClick={() => logout()}
               className={classes.link}
               style={{ cursor: 'pointer' }}
