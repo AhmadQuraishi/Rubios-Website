@@ -4,19 +4,17 @@ import {
   CardContent,
   CardMedia,
   Grid,
-  TextField,
   Theme,
   Typography,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { getRedemptionCode } from '../../redux/actions/reward/redemption';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import './scan-to-redeem.css';
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    padding: '30px 20px 40px 20px',
+    padding: '0px 20px 40px 20px',
     maxWidth: '1260px',
     boxSizing: 'border-box',
     margin: 'auto',
@@ -30,8 +28,11 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const ScanToRedeem = () => {
+  const navigate = useNavigate();
   const [qrCode, setQrCode] = useState('');
-  const { redemption } = useSelector((state: any) => state.redemptionReducer);
+  const { redemption, reward_name } = useSelector(
+    (state: any) => state.redemptionReducer,
+  );
 
   useEffect(() => {
     if (redemption && redemption.internal_tracking_code)
@@ -56,7 +57,7 @@ const ScanToRedeem = () => {
       >
         REDEEM YOUR REWARDS
       </Typography>
-      {redemption && redemption !== null && (
+      {redemption && redemption !== null && reward_name !== '' && (
         <Grid container className="invite-section">
           <Grid item xs={12} md={8} lg={6}>
             <Grid container>
@@ -84,7 +85,7 @@ const ScanToRedeem = () => {
                         />
                       </Grid>
                       <Grid item xs={6}>
-                        <Typography variant="h6">Free regular Sized</Typography>
+                        <Typography variant="h6">{reward_name}</Typography>
                       </Grid>
                     </Grid>
                   </CardContent>
@@ -121,6 +122,9 @@ const ScanToRedeem = () => {
                   title="invite"
                   variant="contained"
                   sx={{ width: { xs: '100%', sm: '400px' } }}
+                  onClick={() => {
+                    navigate('/account');
+                  }}
                 >
                   VIEW REWARDS
                 </Button>

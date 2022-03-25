@@ -11,11 +11,12 @@
   text-transform: initial;
   padding-right: 20px;
 }
-.body-text {
-  font-size: 15px;
+.invite-section .body-text {
+  font-size: 16px !important;
   font-family: 'Poppins-Medium', sans-serif !important;
   color: #414141;
   padding-top: 8px;
+  padding-bottom: 25px;
 }
 .qrcode-img {
   max-width: 100px;

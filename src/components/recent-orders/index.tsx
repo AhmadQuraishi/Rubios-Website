@@ -31,6 +31,8 @@ const RecentOrders = () => {
   const [open, setOpen] = useState(false);
   const [idtoFav, setId] = useState('');
   const [items, setItems] = useState([]);
+  const [price, setPrice] = useState('');
+
   const [prevOrderType, setPrevOrderType] = useState<string>();
   const { restaurant, error } = useSelector(
     (state: any) => state.restaurantInfoReducer,
@@ -95,12 +97,13 @@ const RecentOrders = () => {
     dispatch(createBasketFromPrevOrderRequest(requestBody));
   };
   //Set order as favorite
-  const handleClickOpen = (favid: string, products: any) => {
+  const handleClickOpen = (favid: string, products: any, price: string) => {
     console.log(items);
     if (products && products.length > 0) {
       setItems(products);
     }
     setId(favid);
+    setPrice(price);
     setOpen(true);
   };
 
@@ -145,8 +148,9 @@ const RecentOrders = () => {
                       alt="Set Order as favorite"
                       title="Set Order as favorite"
                       style={{ cursor: 'pointer' }}
+                      className="grey"
                       onClick={() => {
-                        handleClickOpen(order.id, order.products);
+                        handleClickOpen(order.id, order.products, order.total);
                       }}
                     />
                   </Grid>
@@ -222,58 +226,66 @@ const RecentOrders = () => {
               </Card>
             </Grid>
           ))}
-          <Dialog open={open} onClose={handleClose}>
-            <Typography variant="body2" title="Save Order as favorite">
-              Save Order as favorite
-            </Typography>
-            <Typography variant="body2" title="Save Order as favorite">
-              Favorite Name
-            </Typography>
-            <Formik
-              initialValues={{
-                favorite_name: '',
-              }}
-              validationSchema={Yup.object({
-                favorite_name: Yup.string()
-                  .max(32, 'Must be at most 32 characters')
-                  .required('Favorite Name is required'),
-              })}
-              onSubmit={async (values) => {
-                const body = {
-                  basketid: idtoFav,
-                  description: values.favorite_name,
-                  isdefault: false,
-                };
-                dispatch(createFave(body));
-              }}
-            >
-              {({
-                errors,
-                handleBlur,
-                handleChange,
-                handleSubmit,
-                touched,
-                values,
-              }) => (
-                <form onSubmit={handleSubmit}>
-                  <Grid item xs={12} md={12} lg={12}>
-                    <Grid container>
-                      <Grid item xs={12}>
-                        <TextField
-                          aria-label="Favorite Name"
-                          label="Favorite Name"
-                          title="Favorite Name"
-                          type="text"
-                          name="favorite_name"
-                          sx={{ width: '100%' }}
-                          value={values.favorite_name}
-                          onChange={handleChange('favorite_name')}
-                          error={Boolean(touched && errors.favorite_name)}
-                          helperText={touched && errors.favorite_name}
-                        />
-                      </Grid>
-                    </Grid>
-                  </Grid>
+        </Grid>
+      )}
+      <Dialog open={open} onClose={handleClose} className="fav-dialog">
+        <Typography
+          variant="h5"
+          title="Save Order as favorite"
+          className="fav-name"
+        >
+          Save Order as favorite
+        </Typography>
+        <Typography
+          variant="caption"
+          title="Save Order as favorite"
+          className="fav-name space"
+        >
+          Favorite Name
+        </Typography>
+        <Formik
+          initialValues={{
+            favorite_name: '',
+          }}
+          validationSchema={Yup.object({
+            favorite_name: Yup.string()
+              .max(32, 'Must be at most 32 characters')
+              .required('Favorite Name is required'),
+          })}
+          onSubmit={async (values) => {
+            const body = {
+              basketid: idtoFav,
+              description: values.favorite_name,
+              isdefault: false,
+            };
+            dispatch(createFave(body));
+            handleClose();
+          }}
+        >
+          {({
+            errors,
+            handleBlur,
+            handleChange,
+            handleSubmit,
+            touched,
+            values,
+          }) => (
+            <form onSubmit={handleSubmit}>
+              <TextField
+                aria-label="Favorite Name"
+                label="Favorite Name"
+                title="Favorite Name"
+                type="text"
+                name="favorite_name"
+                sx={{ width: '100%' }}
+                value={values.favorite_name}
+                onChange={handleChange('favorite_name')}
+                error={Boolean(touched && errors.favorite_name)}
+                helperText={touched && errors.favorite_name}
+                className="space"
+              />
+              <Grid container className="space">
+                <Grid item xs={8} md={6}>
                   {items.slice(0, 3).map((item: any, index: number) => (
                     <Fragment>
                       {index == 2 && items.length > 3 ? (
@@ -297,31 +309,34 @@ const RecentOrders = () => {
                       )}
                     </Fragment>
                   ))}
-                  <DialogActions>
-                    <Button
-                      aria-label="Cancel"
-                      title="Cancel"
-                      className="link"
-                      onClick={handleClose}
-                    >
-                      Cancel{' '}
-                    </Button>
-                    <Button
-                      aria-label="Save Favorite"
-                      title="Save Favorite"
-                      type="submit"
-                      className="link default"
-                      autoFocus
-                    >
-                      Save Favorite
-                    </Button>
-                  </DialogActions>
-                </form>
-              )}
-            </Formik>
-          </Dialog>
-        </Grid>
-      )}
+                </Grid>
+                <Grid item xs={4} md={6}>
+                  <Typography className="price"> {price}</Typography>
+                </Grid>
+              </Grid>
+              <DialogActions>
+                <Button
+                  aria-label="Cancel"
+                  title="Cancel"
+                  className="link"
+                  onClick={handleClose}
+                >
+                  Cancel{' '}
+                </Button>
+                <Button
+                  aria-label="Save Favorite"
+                  title="Save Favorite"
+                  type="submit"
+                  className="link default"
+                  autoFocus
+                >
+                  Save Favorite
+                </Button>
+              </DialogActions>
+            </form>
+          )}
+        </Formik>
+      </Dialog>
     </Fragment>
   );
 };

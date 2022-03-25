@@ -1,29 +1,38 @@
 import { Grid, Typography } from '@mui/material';
 import moment from 'moment';
-import { Fragment, useEffect } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAccountHistory } from '../../redux/actions/account-history';
+import { getUserRecentOrders } from '../../redux/actions/user';
 import HistorySkeletonUI from '../history-grid-skeleton-ui';
 
-const HistoryGrid = () => {
+const TransactionHistory = () => {
   const dispatch = useDispatch();
-  const { accountHistory, loading } = useSelector(
-    (state: any) => state.accountHistoryReducer,
+  const [recentorders, setOrders] = useState([]);
+  const { userRecentOrders, loading } = useSelector(
+    (state: any) => state.userReducer,
   );
+
   useEffect(() => {
-    dispatch(getAccountHistory());
+    dispatch(getUserRecentOrders());
   }, []);
 
+  useEffect(() => {
+    if (userRecentOrders && userRecentOrders.orders) {
+      setOrders(userRecentOrders.orders);
+      console.log(userRecentOrders.orders);
+    }
+  }, [userRecentOrders]);
   return (
     <Grid container spacing={0}>
       <Grid item xs={12}>
         {loading && <HistorySkeletonUI />}
-        {!loading && accountHistory.length == 0 && (
+        {!loading && recentorders.length == 0 && (
           <Typography variant="h6" className="no-orders">
-            You don't have any Account History
+            You don't have any Transaction History
           </Typography>
         )}
-        {!loading && accountHistory && accountHistory.length > 0 && (
+        {!loading && recentorders.length > 0 && (
           <Grid container spacing={0}>
             <Grid
               item
@@ -42,7 +51,6 @@ const HistoryGrid = () => {
             >
               Date
             </Grid>
-
             <Grid
               item
               xs={4}
@@ -57,9 +65,8 @@ const HistoryGrid = () => {
                 color: 'secondary.main',
               }}
             >
-              Category
+              Order Id
             </Grid>
-
             <Grid
               item
               xs={8}
@@ -74,9 +81,10 @@ const HistoryGrid = () => {
                 color: 'secondary.main',
               }}
             >
-              Activity
+              Amount
             </Grid>
-            {accountHistory.map((item: any, index: number) => (
+
+            {recentorders.map((item: any, index: number) => (
               <Fragment key={Math.random() + index}>
                 <Grid
                   item
@@ -114,7 +122,7 @@ const HistoryGrid = () => {
                   >
                     {moment(item.date).format('MM/DD/YYYY')}
                   </Typography>
-                  {item.event_title}
+                  {item.oloid}
                 </Grid>
                 <Grid
                   item
@@ -130,7 +138,7 @@ const HistoryGrid = () => {
                     color: 'secondary.main',
                   }}
                 >
-                  {item.description}
+                  ${item.total}
                 </Grid>
               </Fragment>
             ))}
@@ -141,4 +149,4 @@ const HistoryGrid = () => {
   );
 };
 
-export default HistoryGrid;
+export default TransactionHistory;

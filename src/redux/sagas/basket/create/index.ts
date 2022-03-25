@@ -8,20 +8,38 @@ import {
   createBasketFromPrevOrderSuccess,
   createBasketFromPrevOrderFailure,
   createBasketFromFavOrderSuccess,
-  createBasketFromFavOrderFailure
+  createBasketFromFavOrderFailure,
+  setBasketDeliveryModeSuccess,
+  setBasketDeliveryModeFailure
 } from '../../../actions/basket/create';
 import {
   getDummyBasket,
   requestCreateBasket,
-  requestCreateBasketForFav
+  requestCreateBasketForFav,
+  setBasketDeliveryMode
 } from '../../../../services/basket';
 
 function* asyncCreateBasketRequest(action: any): any {
   try {
     const response = yield call(getDummyBasket, action.request);
+    action.basketid = response.id;
+    console.log('responsessss', response)
+    yield put({type: basketActionsTypes.SET_BASKET_DELIVERY_MODE_REQUEST, action});
     yield put(setBasketRequestSuccess(response));
   } catch (error) {
     yield put(setBasketRequestFailure(error));
+  }
+}
+
+function* asyncSetBasketDeliveryModeRequest(action: any): any {
+  try {
+    const payload = {
+      deliverymode: action.action.deliverymode
+    }
+    const response = yield call(setBasketDeliveryMode, action.action.basketid, payload);
+    yield put(setBasketDeliveryModeSuccess(response));
+  } catch (error) {
+    yield put(setBasketDeliveryModeFailure(error));
   }
 }
 
@@ -68,5 +86,9 @@ export function* createBasketSaga() {
   yield takeEvery(
     basketActionsTypes.CREATE_BASKET_FROM_FAV_ORDER_REQUEST,
     asyncCreateBasketFromFavRequest,
+  );
+  yield takeEvery(
+    basketActionsTypes.SET_BASKET_DELIVERY_MODE_REQUEST,
+    asyncSetBasketDeliveryModeRequest,
   );
 }

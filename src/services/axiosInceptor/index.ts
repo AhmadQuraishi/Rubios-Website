@@ -1,3 +1,17 @@
+// import axios from "axios";
+
+// const axiosInstance = axios.create();
+// axiosInstance.interceptors.request.use(
+//   function (config) {
+//     return config;
+//   },
+//   function (error) {
+//     return Promise.reject(error);
+//   },
+// );
+
+// export default axiosInstance;
+
 import axios from "axios";
 import * as CryptoJS from "crypto-js";
 import { store } from "../../redux/store";
@@ -5,7 +19,7 @@ const axiosInstance = axios.create();
 axiosInstance.interceptors.request.use(
   function (config) {
     try {
-      
+
         const url = config.url || '';
       let origin = window.location.origin; // http://localhost:3000
       let check = url?.toString().includes('punchh_api');
@@ -50,6 +64,5 @@ axiosInstance.interceptors.request.use(
     return Promise.reject(error);
   },
 );
-
 export default axiosInstance;
 

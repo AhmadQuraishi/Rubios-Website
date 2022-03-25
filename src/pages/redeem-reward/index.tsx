@@ -6,12 +6,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getRewards } from '../../redux/actions/reward';
 import RewardListSkeletonUI from '../../components/rewards-list-skeleton';
 import { useNavigate } from 'react-router-dom';
-import { getRedemptionCode } from '../../redux/actions/reward/redemption';
+import {
+  getRedemptionCode,
+  setReward,
+} from '../../redux/actions/reward/redemption';
 import { displayToast } from '../../helpers/toast';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    padding: '30px 20px 40px 20px',
+    padding: '0px 20px 40px 20px',
     maxWidth: '1260px',
     boxSizing: 'border-box',
     margin: 'auto',
@@ -30,6 +33,7 @@ const RedeemRewards = () => {
   const navigate = useNavigate();
 
   const [isRedeem, setIsredeem] = useState(false);
+  const [reward_name, setRewardName] = useState('');
   const { rewards, loading } = useSelector((state: any) => state.rewardReducer);
   const { redemption, error, loading1 } = useSelector(
     (state: any) => state.redemptionReducer,
@@ -38,15 +42,19 @@ const RedeemRewards = () => {
     dispatch(getRewards());
   }, []);
 
-  const handler = (id: string) => {
-    console.log(rewards);
+  const handler = (id: string, name: string) => {
+    setRewardName(name);
     dispatch(getRedemptionCode(id));
     setIsredeem(true);
   };
   useEffect(() => {
     if (redemption !== null && !loading1 && isRedeem) {
       setIsredeem(false);
+      dispatch(setReward(reward_name));
       navigate(`reward`);
+      setTimeout(() => {
+        dispatch(setReward(''));
+      }, 86400000);
     } else if (error && error.message && !loading1 && isRedeem) {
       displayToast('ERROR', 'failed to redeem this reward');
       setIsredeem(false);
@@ -66,7 +74,7 @@ const RedeemRewards = () => {
           </Typography>
         </Grid>
 
-        <Grid item xs={12} lg={10}>
+        <Grid item xs={12} lg={10} className="redeem-sec">
           <Grid container spacing={2}>
             {loading && <RewardListSkeletonUI />}
             {!loading && rewards && rewards.length == 0 && (
@@ -84,7 +92,7 @@ const RedeemRewards = () => {
                   title="REDEEM YOUR REWARDS"
                   className="body-text"
                 >
-                  click a reward to start your order
+                  Click a reward to start your order
                 </Typography>
               </Grid>
             )}
@@ -97,7 +105,7 @@ const RedeemRewards = () => {
                   <Card
                     className="reward-item"
                     onClick={() => {
-                      handler(reward.reward_id);
+                      handler(reward.reward_id, reward.name);
                     }}
                   >
                     <Grid container className="rewards">
@@ -118,22 +126,13 @@ const RedeemRewards = () => {
                           />
                         )}
                       </Grid>
-                      <Grid item xs={7}>
-                        <CardContent
-                          sx={{
-                            flex: '1 0 auto',
-                            textAlign: 'left',
-                            paddingLeft: '20px',
-                          }}
-                        >
+                      <Grid item xs={7}  className="item-name">
                           <Typography
                             variant="caption"
                             title={reward.name || reward.description}
-                            className="item-name"
                           >
                             {reward.name || reward.description}
                           </Typography>
-                        </CardContent>
                       </Grid>
                     </Grid>
                   </Card>

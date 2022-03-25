@@ -1,9 +1,7 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Button, Grid, RadioGroup, TextField, Typography, ToggleButtonGroup, ToggleButton } from '@mui/material';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import { useDispatch } from 'react-redux';
-import Radio from '@mui/material/Radio';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import './tip.css';
 import {updateBasketTipAmount, updateBasketCouponCode} from '../../redux/actions/basket/checkout';
@@ -12,10 +10,16 @@ const Tip = ({basket}: any)  => {
   const dispatch = useDispatch();
  
   const [tipPercentage, setTipPercentage] = React.useState(0);
-  const [tipCustomAmount, setTipCustomAmount] = React.useState(0);
+  const [tipCustomAmount, setTipCustomAmount] = React.useState<any>(null);
   const [couponCode, setCouponCode] = React.useState('');
 
-  const updateTipAmountCall = (tip: number) => {
+  useEffect(() => {
+    if(basket && basket.tip){
+      setTipCustomAmount(basket.tip)
+    }
+  }, [basket])
+
+  const updateTipAmountCall = (tip: any) => {
     const payload = {
       amount: tip
     }
@@ -31,10 +35,10 @@ const Tip = ({basket}: any)  => {
 
   const handleTipPercentage = (event: React.MouseEvent<HTMLElement>, value: number ) => {
     console.log('setTipPercentage', value)
-    setTipPercentage(value);
-    setTipCustomAmount(0);
-    const totalPerc = (value * basket.total) / 100;
-    updateTipAmountCall(totalPerc)
+    setTipPercentage(value);    
+    let totalPerc = ((value * basket.subtotal) / 100).toFixed(2);
+    setTipCustomAmount(totalPerc);
+    updateTipAmountCall(totalPerc);
   };
 
   const handleTipCustomAmountChange = (event: any) => {
@@ -47,7 +51,10 @@ const Tip = ({basket}: any)  => {
   }
 
   const IconTip = () => (
-    <Button onClick={() => updateTipAmountCall(tipCustomAmount)} aria-label="proceed">
+    <Button onClick={() => {
+    updateTipAmountCall(tipCustomAmount)
+    setTipPercentage(0)
+    }} aria-label="proceed">
       <ArrowRightAltIcon />
     </Button>
   );
@@ -86,20 +93,20 @@ const Tip = ({basket}: any)  => {
                       {/* </Grid>
                       <Grid item xs={4} sm={4} md={3} lg={3}> */}
                       <ToggleButton                              
+                          selected={ tipPercentage === 15 ? true : false}
+                          value={15} 
+                          className="selected-btn"
+                        >
+                          15%
+                        </ToggleButton>
+                      {/* </Grid> */}
+                      {/* <Grid item xs={4} sm={4} md={3} lg={3}> */}
+                      <ToggleButton                              
                           selected={ tipPercentage === 20 ? true : false}
                           value={20} 
                           className="selected-btn"
                         >
                           20%
-                        </ToggleButton>
-                      {/* </Grid> */}
-                      {/* <Grid item xs={4} sm={4} md={3} lg={3}> */}
-                      <ToggleButton                              
-                          selected={ tipPercentage === 30 ? true : false}
-                          value={30} 
-                          className="selected-btn"
-                        >
-                          30%
                         </ToggleButton>
                       {/* </Grid>
                     </Grid> */}

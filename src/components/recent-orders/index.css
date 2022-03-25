@@ -9,6 +9,10 @@
 .order-history-card .card-panel .order-fav-icon {
   text-align: right;
 }
+.grey {
+  filter: grayscale(1);
+  opacity: 0.5;
+}
 .order-history-card .card-panel .order-date {
   font-size: 11px;
   font-family: 'Poppins-Medium', sans-serif !important;
@@ -52,4 +56,19 @@
 
 .no-orders {
   text-align: center;
+}
+
+.fav-dialog .MuiDialog-paper {
+  padding: 20px 30px 0px 30px;
+}
+.fav-name {
+  text-align: center;
+}
+
+.space {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.price {
+  text-align: end;
 }

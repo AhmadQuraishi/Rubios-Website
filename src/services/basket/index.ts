@@ -5,6 +5,8 @@ import {
   RequestNewBasketProduct,
   RequestBasketProductBatch,
   RequestBasketAddUpsell,
+  RequestSetDeliveryMode,
+  RequestDeliveryAddress
 } from '../../types/olo-api';
 
 export const getBasket = (basketid: string) => {
@@ -32,6 +34,53 @@ export const getDummyBasket = (body: RequestCreateBasket) => {
         console.log(error.response);
         throw error;
       });
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const setBasketDeliveryMode = (basketid: string, body: RequestSetDeliveryMode) => {
+  try {
+    const url = process.env.REACT_APP_OLO_API || '';
+    return axios
+      .put(url + `/baskets/${basketid}/deliverymode`, body)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.log(error.response);
+        throw error;
+      });
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const setBasketDeliveryAddress = (basketid: string, body: RequestDeliveryAddress) => {
+  try {
+    const url = process.env.REACT_APP_OLO_API || '';
+    return axios
+      .put(url + `/baskets/${basketid}/deliveryaddress`, body)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.log(error.response);
+        throw error;
+      });
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const setBasketCustomFields = (basketid: string, customFields: any) => {
+  try {
+    const url = process.env.REACT_APP_OLO_API || '';
+    const requests: any = [];
+    customFields.forEach((element: any) => {
+      requests.push(axios.put(url + `/baskets/${basketid}/customfields`, element))
+    });
+    return axios.all(requests)
+          .catch((error) => {
+            console.log(error.response);
+            throw error;
+          });
   } catch (error) {
     throw error;
   }
