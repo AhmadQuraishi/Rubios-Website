@@ -23,6 +23,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontFamily: 'Poppins-Medium !important',
     fontSize: '14px !important',
     color: theme.palette.secondary.main + ' !important',
+    paddingLeft: '0px !important',
+    paddingRight: '0px !important',
+    marginRight: '40px !important',
   },
 }));
 
@@ -84,7 +87,7 @@ const AccountHistory = () => {
               aria-label="Account History Tabs"
               TabIndicatorProps={{
                 style: {
-                  backgroundColor: '#79C043',
+                  backgroundColor: '#79C043', bottom: '5px',
                 },
               }}
             >
