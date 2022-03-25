@@ -25,7 +25,7 @@ import {
 import { requestUpdateUser } from '../../../../services/user';
 import { updateUserSuccess } from '../../../actions/user';
 import { getProviderRequestSuccess } from '../../../actions/provider';
-import { getBasket, setBasketCustomFields } from '../../../../services/basket';
+import { getBasket, setBasketCustomFields, setBasketDeliveryAddress } from '../../../../services/basket';
 import { getBasketRequestSuccess } from '../../../actions/basket';
 
 function* asyncgetSingleRestaurantCalendarRequest(action: any): any {
@@ -102,6 +102,9 @@ function* asyncValidateBasket(action: any): any {
     }
     if(action.customFields.length){
       const customFieldsResponse = yield call(setBasketCustomFields, action.basketId, action.customFields);
+    }
+    if(action.deliveryaddress){
+      const deliveryResponse = yield call(setBasketDeliveryAddress, action.basketId, action.deliveryaddress);
     }
     const validateResponse = yield call(validateBasket, action.basketId);
     yield put(validateBasketSuccess(validateResponse));

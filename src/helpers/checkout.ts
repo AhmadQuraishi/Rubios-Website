@@ -93,6 +93,19 @@ export function formatCustomFields(customFields: any, formData: any)  {
   return formatArray;
 }
 
+export function formatDeliveryAddress(formData: any)  {
+
+  const obj = {
+    building: formData.apartment,
+    streetaddress: formData.streetAddress,
+    city: formData.city,
+    zipcode: formData.zipcode,
+    phonenumber: formData.phone,
+    isdefault: false
+    }
+
+  return obj;
+}
 
 const isTimeSame = (fTime: string, sTime: string): boolean => {
     return fTime.split(' ')[1] === sTime.split(' ')[1];
