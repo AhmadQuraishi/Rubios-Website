@@ -39,12 +39,13 @@ const TransactionHistory = () => {
               xs={0}
               sm={3}
               sx={{
-                fontWeight: '700',
+                fontFamily: 'Poppins-Bold',
                 textTransform: 'uppercase',
                 borderBottom: '1px solid #CCC',
                 borderTop: '1px solid #CCC',
                 padding: '10px 0',
                 fontSize: '14px',
+                color: 'secondary.main',
                 display: { xs: 'none', sm: 'grid' },
               }}
             >
@@ -55,12 +56,13 @@ const TransactionHistory = () => {
               xs={4}
               sm={3}
               sx={{
-                fontWeight: '700',
+                fontFamily: 'Poppins-Bold',
                 textTransform: 'uppercase',
                 borderBottom: '1px solid #CCC',
                 borderTop: '1px solid #CCC',
                 padding: '10px 0',
                 fontSize: '14px',
+                color: 'secondary.main',
               }}
             >
               Order Id
@@ -70,12 +72,13 @@ const TransactionHistory = () => {
               xs={8}
               sm={6}
               sx={{
-                fontWeight: '700',
+                fontFamily: 'Poppins-Bold',
                 textTransform: 'uppercase',
                 borderBottom: '1px solid #CCC',
                 borderTop: '1px solid #CCC',
                 padding: '10px 0',
                 fontSize: '14px',
+                color: 'secondary.main',
               }}
             >
               Amount
@@ -88,10 +91,11 @@ const TransactionHistory = () => {
                   xs={0}
                   sm={3}
                   sx={{
+                    fontFamily: 'Poppins-Medium',
                     fontWeight: '500',
                     borderBottom: '1px solid #CCC',
                     padding: '10px 0',
-                    fontSize: '12px',
+                    fontSize: '10px',
                     color: 'secondary.main',
                     display: { xs: 'none', sm: 'grid' },
                   }}
@@ -104,10 +108,11 @@ const TransactionHistory = () => {
                   xs={4}
                   sm={3}
                   sx={{
+                    fontFamily: 'Poppins-Medium',
                     fontWeight: '500',
                     borderBottom: '1px solid #CCC',
                     padding: '10px 0',
-                    fontSize: '12px',
+                    fontSize: '10px',
                     color: 'secondary.main',
                   }}
                 >
@@ -125,10 +130,11 @@ const TransactionHistory = () => {
                   xs={8}
                   sm={6}
                   sx={{
+                    fontFamily: 'Poppins-Medium',
                     fontWeight: '500',
                     borderBottom: '1px solid #CCC',
                     padding: '10px 0',
-                    fontSize: '12px',
+                    fontSize: '10px',
                     color: 'secondary.main',
                   }}
                 >

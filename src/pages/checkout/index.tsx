@@ -29,8 +29,10 @@ import {
   validateBasket,
 } from '../../redux/actions/basket/checkout';
 import { displayToast } from '../../helpers/toast';
-import { generateSubmitBasketPayload, formatCustomFields } from '../../helpers/checkout';
+import { generateSubmitBasketPayload, formatCustomFields, formatDeliveryAddress } from '../../helpers/checkout';
 import { updateUser } from '../../redux/actions/user';
+import PickupForm from '../../components/pickup-form';
+import DeliveryForm from '../../components/delivery-form';
 
 
 let userInfoValidation = Yup.object({
@@ -81,6 +83,7 @@ const Checkout = () => {
   const navigate = useNavigate();
 
   const pickupFormRef = React.useRef<any>(null);
+  const deliveryFormRef = React.useRef<any>(null);
   const paymentInfoRef = React.useRef<any>();
   const [formValidation, setFormValidation] = React.useState<any>(userInfoValidation);
 
@@ -178,8 +181,6 @@ const Checkout = () => {
       formData: null,
     };
 
-    console.log('pickupFormRef', pickupFormRef);
-
     if (!pickupFormRef.current) {
     } else if (!pickupFormRef.current.dirty) {
       pickupFormRef.current.submitForm();
@@ -187,6 +188,24 @@ const Checkout = () => {
     } else {
       data.isValidForm = true;
       data.formData = pickupFormRef.current.values;
+    }
+
+    return data;
+  };
+
+  const validateDeliveryForm = (): any => {
+    let data = {
+      isValidForm: false,
+      formData: null,
+    };
+
+    if (!deliveryFormRef.current) {
+    } else if (!deliveryFormRef.current.dirty) {
+      deliveryFormRef.current.submitForm();
+    } else if (Object.keys(deliveryFormRef.current.errors).length > 0) {
+    } else {
+      data.isValidForm = true;
+      data.formData = deliveryFormRef.current.values;
     }
 
     return data;
@@ -214,14 +233,31 @@ const Checkout = () => {
   const placeOrder = async () => {
     setButtonDisabled(true);
     let customFields = [];
-    const { isValidForm, formData } = validatePickupForm();
+    let deliveryAddress = null;
+    let formDataValue;
 
-    if (!isValidForm) {
-      displayToast('ERROR', 'Pickup fields are required.');
-      scrollToTop();
-      setButtonDisabled(false);
-      return;
+    if(basket?.deliverymode === DeliveryModeEnum.pickup || basket?.deliverymode === DeliveryModeEnum.curbside){
+      const { isValidForm, formData } = validatePickupForm();
+      if (!isValidForm) {
+        displayToast('ERROR', 'Pickup fields are required.');
+        scrollToTop();
+        setButtonDisabled(false);
+        return;
+      }
+      formDataValue = formData
     }
+
+    if(basket?.deliverymode === DeliveryModeEnum.delivery){
+      const { isValidForm, formData } = validateDeliveryForm();
+      if (!isValidForm) {
+        displayToast('ERROR', 'Delivery fields are required.');
+        scrollToTop();
+        setButtonDisabled(false);
+        return;
+      }
+      formDataValue = formData
+    }
+    
 
     const { isValidCard, cardDetails, errors } = await validatePaymentForm();
 
@@ -231,17 +267,21 @@ const Checkout = () => {
       return;
     }
 
-    formData.phone = formData.phone.replace(/\D/g, '');
+    formDataValue.phone = formDataValue.phone.replace(/\D/g, '');
 
     const basketPayload = generateSubmitBasketPayload(
-      formData,
+      formDataValue,
       cardDetails,
       basket?.deliverymode,
       authToken?.authtoken,
     );
 
     if(basket?.deliverymode === DeliveryModeEnum.curbside){
-      customFields = formatCustomFields(restaurant.customfields, formData)
+      customFields = formatCustomFields(restaurant.customfields, formDataValue)
+    }
+
+    if(basket?.deliverymode === DeliveryModeEnum.delivery){
+      deliveryAddress = formatDeliveryAddress(formDataValue)
     }
 
     if (basket) {
@@ -253,8 +293,8 @@ const Checkout = () => {
           first_name: providerToken?.first_name,
           last_name: providerToken?.last_name,
           favourite_locations: providerToken?.favourite_locations,
-          marketing_email_subscription: formData.emailNotification,
-          phone: formData.phone,
+          marketing_email_subscription: formDataValue.emailNotification,
+          phone: formDataValue.phone,
         };
       }
       dispatch(validateBasket(basket?.id, basketPayload, user, customFields));
@@ -286,240 +326,16 @@ const Checkout = () => {
                           PICK UP INFO
                         </Typography>
                       </Grid>
-                      <Formik
-                        innerRef={pickupFormRef}
-                        enableReinitialize={true}
-                        initialValues={{
-                          firstName: providerToken?.first_name
-                            ? providerToken?.first_name
-                            : '',
-                          lastName: providerToken?.last_name
-                            ? providerToken?.last_name
-                            : '',
-                          phone: providerToken?.phone
-                            ? providerToken?.phone
-                            : '',
-                          email: providerToken?.email
-                            ? providerToken?.email
-                            : '',
-                          emailNotification:
-                            providerToken?.marketing_email_subscription
-                              ? providerToken?.marketing_email_subscription
-                              : false,
-                          vehicleModal: '',  
-                          vehicleMake: '',  
-                          vehicleColor: ''
-                        }}
-                        validationSchema={Yup.object({
-                          firstName: Yup.string()
-                            .max(30, 'Must be 30 characters or less')
-                            .required('First Name is required'),
-                          lastName: Yup.string()
-                            .max(30, 'Must be 30 characters or less')
-                            .required('Last Name is required'),
-                          email: Yup.string()
-                            .matches(
-                              /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-                              'Invalid Email ',
-                            )
-                            .email('Invalid email address')
-                            .required('Email is required'),
-                          phone: Yup.string()
-                            .min(14, 'Enter valid number')
-                            .required('Phone is required'),
-                          vehicleModal: basket && basket.deliverymode === DeliveryModeEnum.curbside ? Yup.string().max(15, 'Must be 15 characters or less').required('Vehicle Modal is required') : Yup.string(),
-                          vehicleMake: basket && basket.deliverymode === DeliveryModeEnum.curbside ? Yup.string().max(15, 'Must be 15 characters or less').required('Vehicle Make is required') : Yup.string(),
-                          vehicleColor: basket && basket.deliverymode === DeliveryModeEnum.curbside ? Yup.string().max(15, 'Must be 15 characters or less').required('Vehicle Color is required') : Yup.string(),
-                          emailNotification: Yup.bool().optional()
-                        })}
-                        onSubmit={(values, actions) => {}}
-                      >
-                        {({
-                          errors,
-                          handleBlur,
-                          handleChange,
-                          handleSubmit,
-                          touched,
-                          values,
-                          isValid,
-                          dirty,
-                        }) => (
-                          <form
-                            style={{ width: '100%' }}
-                            onSubmit={handleSubmit}
-                          >
-                            <Grid item xs={12}>
-                              <TextField
-                                aria-label="First Name"
-                                disabled={authToken?.authtoken ? true : false}
-                                onBlur={handleBlur}
-                                label="First Name"
-                                aria-required="true"
-                                title="First Name"
-                                type="text"
-                                name="firstName"
-                                value={values.firstName}
-                                onChange={handleChange}
-                                error={Boolean(
-                                  touched.firstName && errors.firstName,
-                                )}
-                                helperText={errors.firstName}
-                              />
-                            </Grid>
-
-                            <Grid item xs={12}>
-                              <TextField
-                                aria-label="Last Name"
-                                disabled={authToken?.authtoken ? true : false}
-                                onBlur={handleBlur}
-                                label="Last Name"
-                                aria-required="true"
-                                title="Last Name"
-                                type="text"
-                                name="lastName"
-                                value={values.lastName}
-                                onChange={handleChange}
-                                error={Boolean(
-                                  touched.lastName && errors.lastName,
-                                )}
-                                helperText={errors.lastName}
-                              />
-                            </Grid>
-
-                            <Grid item xs={12}>
-                              <TextField
-                                className="mobile-field"
-                                aria-label="Phone Number"
-                                onBlur={handleBlur}
-                                label="Phone Number"
-                                aria-required="true"
-                                title="Phone Number"
-                                value={values.phone}
-                                onChange={handleChange}
-                                name="phone"
-                                InputLabelProps={{
-                                  shrink:
-                                    touched && values.phone == ''
-                                      ? false
-                                      : true,
-                                  classes: {
-                                    root:
-                                      values.phone !== ''
-                                        ? 'mobile-field-label'
-                                        : '',
-                                  },
-                                }}
-                                InputProps={{
-                                  inputComponent: NumberFormatCustom as any,
-                                }}
-                                error={Boolean(touched.phone && errors.phone)}
-                                helperText={errors.phone}
-                              />
-                            </Grid>
-
-                            <Grid item xs={12}>
-                              <TextField
-                                aria-label="Email"
-                                disabled={authToken?.authtoken ? true : false}
-                                onBlur={handleBlur}
-                                label="Email"
-                                aria-required="true"
-                                title="Email"
-                                type="text"
-                                name="email"
-                                value={values.email}
-                                onChange={handleChange}
-                                error={Boolean(touched.email && errors.email)}
-                                helperText={errors.email}
-                              />
-                            </Grid>
-
-                            {
-                          basket && basket.deliverymode === DeliveryModeEnum.curbside ? (
-                          <>
-                                    <Grid container spacing={1}>
-
-                                        <Grid item xs={6}>
-                                          <TextField
-                                            aria-label="Vehicle Modal"
-                                            onBlur={handleBlur}
-                                            label="Vehicle Modal"
-                                            aria-required="true"
-                                            title="Vehicle Modal"
-                                            type="text"
-                                            name="vehicleModal"
-                                            value={values.vehicleModal}
-                                            onChange={handleChange}
-                                            error={Boolean(
-                                              touched.vehicleModal && errors.vehicleModal,
-                                            )}
-                                            helperText={errors.vehicleModal}
-                                          />
-                                        </Grid>
-
-                                        <Grid item xs={6}>
-                                          <TextField
-                                            aria-label="Vehicle Make"
-                                            onBlur={handleBlur}
-                                            label="Vehicle Make"
-                                            aria-required="true"
-                                            title="Vehicle Make"
-                                            type="text"
-                                            name="vehicleMake"
-                                            value={values.vehicleMake}
-                                            onChange={handleChange}
-                                            error={Boolean(
-                                              touched.vehicleMake && errors.vehicleMake,
-                                            )}
-                                            helperText={errors.vehicleMake}
-                                          />
-                                        </Grid> 
-                                    
-                                    </Grid>
-
-                                    <Grid item xs={12}>
-                                      <TextField
-                                        aria-label="Vehicle Color"
-                                        onBlur={handleBlur}
-                                        label="Vehicle Color"
-                                        aria-required="true"
-                                        title="Vehicle Color"
-                                        type="text"
-                                        name="vehicleColor"
-                                        value={values.vehicleColor}
-                                        onChange={handleChange}
-                                        error={Boolean(
-                                          touched.vehicleColor && errors.vehicleColor,
-                                        )}
-                                        helperText={errors.vehicleColor}
-                                      />
-                                    </Grid>
-                          </>
-                          ) : (null)
-                      } 
-
-                            <Grid item xs={12}>
-                              <FormGroup>
-                                <FormControlLabel
-                                  control={
-                                    <Checkbox
-                                      checked={values.emailNotification}
-                                      onChange={handleChange}
-                                    />
-                                  }
-                                  label="Send me emails with special offers and updates."
-                                  aria-label="Send me emails with special offers and updates"
-                                  aria-required="true"
-                                  title="Send me emails with special offers and updates"
-                                  name="emailNotification"
-                                  className="size"
-                                />
-                              </FormGroup>
-                            </Grid>
-                          </form>
-                        )}
-                      </Formik>
-                     
+                      {
+                        basket && (basket.deliverymode === DeliveryModeEnum.pickup || basket.deliverymode === DeliveryModeEnum.curbside) ? (
+                            <PickupForm basket={basket} pickupFormRef={pickupFormRef} />
+                        ) : (null)
+                      }
+                      {
+                        basket && (basket.deliverymode === DeliveryModeEnum.delivery) ? (
+                            <DeliveryForm basket={basket} deliveryFormRef={deliveryFormRef} />
+                        ) : (null)
+                      }
                     </Grid>
                   </Grid>
                   <OrderTime />
