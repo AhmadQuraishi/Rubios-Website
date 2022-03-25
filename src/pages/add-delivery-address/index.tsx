@@ -4,12 +4,12 @@ import { useParams } from 'react-router-dom';
 import './add-delivery-address.css';
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    padding: '30px 20px 40px 70px',
+    padding: '0px 20px 40px 70px',
     [theme.breakpoints.down('lg')]: {
-      padding: '30px 30px 40px 30px',
+      padding: '0px 30px 40px 30px',
     },
     [theme.breakpoints.down('sm')]: {
-      padding: '30px 20px 40px 20px',
+      padding: '0px 20px 40px 20px',
     },
     maxWidth: '1024px',
     boxSizing: 'border-box',

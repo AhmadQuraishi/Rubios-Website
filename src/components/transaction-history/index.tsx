@@ -26,67 +26,76 @@ const TransactionHistory = () => {
   return (
     <Grid container spacing={0}>
       <Grid item xs={12}>
-        <Grid container spacing={0}>
-          <Grid
-            item
-            xs={0}
-            sm={3}
-            sx={{
-              fontWeight: '700',
-              textTransform: 'uppercase',
-              borderBottom: '1px solid #CCC',
-              borderTop: '1px solid #CCC',
-              padding: '10px 0',
-              fontSize: '14px',
-              display: { xs: 'none', sm: 'grid' },
-            }}
-          >
-            Date
-          </Grid>
-          <Grid
-            item
-            xs={4}
-            sm={3}
-            sx={{
-              fontWeight: '700',
-              textTransform: 'uppercase',
-              borderBottom: '1px solid #CCC',
-              borderTop: '1px solid #CCC',
-              padding: '10px 0',
-              fontSize: '14px',
-            }}
-          >
-            Order Id
-          </Grid>
-          <Grid
-            item
-            xs={8}
-            sm={6}
-            sx={{
-              fontWeight: '700',
-              textTransform: 'uppercase',
-              borderBottom: '1px solid #CCC',
-              borderTop: '1px solid #CCC',
-              padding: '10px 0',
-              fontSize: '14px',
-            }}
-          >
-            Amount
-          </Grid>
-          {loading && <HistorySkeletonUI />}
-          {!loading &&
-            recentorders.length > 0 &&
-            recentorders.map((item: any, index: number) => (
+        {loading && <HistorySkeletonUI />}
+        {!loading && recentorders.length == 0 && (
+          <Typography variant="h6" className="no-orders">
+            You don't have any Transaction History
+          </Typography>
+        )}
+        {!loading && recentorders.length > 0 && (
+          <Grid container spacing={0}>
+            <Grid
+              item
+              xs={0}
+              sm={3}
+              sx={{
+                fontFamily: 'Poppins-Bold',
+                textTransform: 'uppercase',
+                borderBottom: '1px solid #CCC',
+                borderTop: '1px solid #CCC',
+                padding: '10px 0',
+                fontSize: '14px',
+                color: 'secondary.main',
+                display: { xs: 'none', sm: 'grid' },
+              }}
+            >
+              Date
+            </Grid>
+            <Grid
+              item
+              xs={4}
+              sm={3}
+              sx={{
+                fontFamily: 'Poppins-Bold',
+                textTransform: 'uppercase',
+                borderBottom: '1px solid #CCC',
+                borderTop: '1px solid #CCC',
+                padding: '10px 0',
+                fontSize: '14px',
+                color: 'secondary.main',
+              }}
+            >
+              Order Id
+            </Grid>
+            <Grid
+              item
+              xs={8}
+              sm={6}
+              sx={{
+                fontFamily: 'Poppins-Bold',
+                textTransform: 'uppercase',
+                borderBottom: '1px solid #CCC',
+                borderTop: '1px solid #CCC',
+                padding: '10px 0',
+                fontSize: '14px',
+                color: 'secondary.main',
+              }}
+            >
+              Amount
+            </Grid>
+
+            {recentorders.map((item: any, index: number) => (
               <Fragment key={Math.random() + index}>
                 <Grid
                   item
                   xs={0}
                   sm={3}
                   sx={{
+                    fontFamily: 'Poppins-Medium',
                     fontWeight: '500',
                     borderBottom: '1px solid #CCC',
                     padding: '10px 0',
-                    fontSize: '12px',
+                    fontSize: '10px',
                     color: 'secondary.main',
                     display: { xs: 'none', sm: 'grid' },
                   }}
@@ -99,10 +108,11 @@ const TransactionHistory = () => {
                   xs={4}
                   sm={3}
                   sx={{
+                    fontFamily: 'Poppins-Medium',
                     fontWeight: '500',
                     borderBottom: '1px solid #CCC',
                     padding: '10px 0',
-                    fontSize: '12px',
+                    fontSize: '10px',
                     color: 'secondary.main',
                   }}
                 >
@@ -120,10 +130,11 @@ const TransactionHistory = () => {
                   xs={8}
                   sm={6}
                   sx={{
+                    fontFamily: 'Poppins-Medium',
                     fontWeight: '500',
                     borderBottom: '1px solid #CCC',
                     padding: '10px 0',
-                    fontSize: '12px',
+                    fontSize: '10px',
                     color: 'secondary.main',
                   }}
                 >
@@ -131,7 +142,8 @@ const TransactionHistory = () => {
                 </Grid>
               </Fragment>
             ))}
-        </Grid>
+          </Grid>
+        )}
       </Grid>
     </Grid>
   );
