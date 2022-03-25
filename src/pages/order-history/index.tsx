@@ -8,12 +8,12 @@ import RecentOrders from '../../components/recent-orders';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    padding: '30px 20px 40px 70px',
+    padding: '0px 20px 40px 20px',
     [theme.breakpoints.down('lg')]: {
-      padding: '30px 30px 40px 30px',
+      padding: '0px 30px 40px 30px',
     },
     [theme.breakpoints.down('sm')]: {
-      padding: '30px 20px 40px 20px',
+      padding: '0px 20px 40px 20px',
     },
     maxWidth: '1100px',
     boxSizing: 'border-box',
@@ -28,6 +28,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontFamily: 'Poppins-Medium !important',
     fontSize: '14px !important',
     color: theme.palette.secondary.main + ' !important',
+    paddingLeft: '0px !important',
+    paddingRight: '0px !important',
+    marginRight: '40px !important',
   },
 }));
 
@@ -57,7 +60,7 @@ const OrdersHistory = () => {
           title="Order History tabs"
           TabIndicatorProps={{
             style: {
-              backgroundColor: '#79C043',
+              backgroundColor: '#79C043', bottom: '5px',
             },
           }}
         >
