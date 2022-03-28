@@ -1,23 +1,34 @@
 import { memo, useEffect, useState } from 'react';
 import axios from 'axios';
+import { Box, CircularProgress } from '@mui/material';
 
 const ItemImage = (props: any) => {
   const { name, id, className } = props;
 
   const [imageURL, setImageURL] = useState<any>();
+  const [loading, setLoading] = useState<any>(false);
 
   const getIngredientImage = (id: string) => {
     try {
       const url =
         process.env.REACT_APP_INGREDIENT_URL?.replace('*yourplu*', id) || '';
       const promise = axios.get(url);
+      setLoading(true);
       promise.then((response) => {
+        setTimeout(() => {
+          setLoading(false);
+        }, 150);
         if (response.data.length > 0) {
           setImageURL(response.data[0].yoast_head_json.schema['@graph'][1]);
+        } else {
+          setImageURL([]);
         }
       });
     } catch (error) {
-      setImageURL(undefined);
+      setImageURL([]);
+      setTimeout(() => {
+        setLoading(false);
+      }, 150);
       throw error;
     }
   };
@@ -27,15 +38,37 @@ const ItemImage = (props: any) => {
   }, []);
 
   return (
-    <img
-      src={
-        imageURL == undefined || imageURL.contentUrl == null
-          ? require('../../assets/imgs/default_img.png')
-          : imageURL.contentUrl
-      }
-      alt=""
-      className={`${className}`}
-    />
+    <>
+      {loading && (
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <CircularProgress />
+        </Box>
+      )}
+      {imageURL && imageURL.contentUrl == null && (
+        <img
+          src={require('../../assets/imgs/default_img.jpg')}
+          alt=""
+          style={{
+            height: '120px',
+            width: '100%',
+            display: !loading ? 'block' : 'none',
+          }}
+          className={`${className}`}
+        />
+      )}
+      {imageURL && imageURL.contentUrl && (
+        <img
+          src={imageURL.contentUrl}
+          alt=""
+          style={{
+            height: '120px',
+            width: 'auto',
+            display: !loading ? 'block' : 'none',
+          }}
+          className={`${className}`}
+        />
+      )}
+    </>
   );
 };
 
