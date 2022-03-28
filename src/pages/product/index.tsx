@@ -140,9 +140,9 @@ const Product = () => {
   const addProductToBag = () => {
     if (basketObj.basket == null) {
       const request: any = {};
-      let deliverymode = orderType || '';
+      // let deliverymode = orderType || '';
       request.vendorid = restaurant.id;
-      dispatch(setBasketRequest(request, deliverymode));
+      dispatch(setBasketRequest(request));
     } else {
       const request: any = {};
       request.productid = productDetails?.id;

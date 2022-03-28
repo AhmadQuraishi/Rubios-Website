@@ -62,7 +62,8 @@ const DeliveryForm = ({basket, deliveryFormRef}: any) => {
             apartment: '',
             streetAddress: '',  
             city: '',  
-            zipcode: ''
+            zipcode: '',
+            saveAddressCheck: false
             }}
             validationSchema={Yup.object({
             firstName: Yup.string()
@@ -93,6 +94,7 @@ const DeliveryForm = ({basket, deliveryFormRef}: any) => {
             zipcode: Yup.string()
                 .max(30, 'Must be 30 characters or less')
                 .required('Zip Code is required'),
+            saveAddressCheck: Yup.bool().optional()
             })}
             onSubmit={(values, actions) => {}}
                                 >
@@ -198,11 +200,11 @@ const DeliveryForm = ({basket, deliveryFormRef}: any) => {
 
                 <Grid item xs={12}>
                     <TextField
-                        aria-label="Apt, Floor, Suite, Building, Company - Optional"
+                        aria-label="Apt, Building, Company - Optional"
                         onBlur={handleBlur}
-                        label="Apt, Floor, Suite, Building, Company - Optional"
+                        label="Apt, Building, Company - Optional"
                         aria-required="true"
-                        title="Apt, Floor, Suite, Building, Company - Optional"
+                        title="Apt, Building, Company - Optional"
                         type="text"
                         name="apartment"
                         value={values.apartment}
@@ -268,24 +270,24 @@ const DeliveryForm = ({basket, deliveryFormRef}: any) => {
                     />
                 </Grid>
 
-                {/* <Grid item xs={12}>
+                 <Grid item xs={12}>
                 <FormGroup>
                     <FormControlLabel
                     control={
                         <Checkbox
-                        checked={values.emailNotification}
+                        checked={values.saveAddressCheck}
                         onChange={handleChange}
                         />
                     }
-                    label="Send me emails with special offers and updates."
-                    aria-label="Send me emails with special offers and updates"
+                    label="Save Delivery Address to My account."
+                    aria-label="Save Delivery Address to My account"
                     aria-required="true"
-                    title="Send me emails with special offers and updates"
-                    name="emailNotification"
+                    title="Save Delivery Address to My account"
+                    name="saveAddressCheck"
                     className="size"
                     />
                 </FormGroup>
-                </Grid> */}
+                </Grid> 
             </form>
             )}
     </Formik>

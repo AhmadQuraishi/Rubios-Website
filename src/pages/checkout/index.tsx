@@ -95,7 +95,7 @@ const Checkout = () => {
   const basketObj = useSelector((state: any) => state.basketReducer);
   const { authToken } = useSelector((state: any) => state.authReducer);
   const { providerToken } = useSelector((state: any) => state.providerReducer);
-  const { restaurant } = useSelector((state: any) => state.restaurantInfoReducer);
+  const { restaurant, orderType } = useSelector((state: any) => state.restaurantInfoReducer);
 
   React.useEffect(() => {
     if (basket && runOnce) {
@@ -112,13 +112,13 @@ const Checkout = () => {
           selectedTime,
         ),
       );
-      dispatch(validateBasket(basket.id, null, null, []));
+      dispatch(validateBasket(basket.id, null, null, [], null));
       setRunOnce(false);
     }
   }, [basket]);
 
   React.useEffect(() => {
-    if (basket && basket.deliverymode === DeliveryModeEnum.curbside) {
+    if (orderType && orderType !== '' && orderType === DeliveryModeEnum.curbside) {
       const obj = {
         ...userInfoValidation,
         ...vehicleValidation
@@ -234,9 +234,12 @@ const Checkout = () => {
     setButtonDisabled(true);
     let customFields = [];
     let deliveryAddress = null;
+    let deliverymode = {
+      deliverymode: orderType || ''
+    }
     let formDataValue;
 
-    if(basket?.deliverymode === DeliveryModeEnum.pickup || basket?.deliverymode === DeliveryModeEnum.curbside){
+    if(orderType && (orderType === '' || orderType === DeliveryModeEnum.pickup || orderType === DeliveryModeEnum.curbside)){
       const { isValidForm, formData } = validatePickupForm();
       if (!isValidForm) {
         displayToast('ERROR', 'Pickup fields are required.');
@@ -247,7 +250,7 @@ const Checkout = () => {
       formDataValue = formData
     }
 
-    if(basket?.deliverymode === DeliveryModeEnum.delivery){
+    if(orderType && orderType === DeliveryModeEnum.delivery){
       const { isValidForm, formData } = validateDeliveryForm();
       if (!isValidForm) {
         displayToast('ERROR', 'Delivery fields are required.');
@@ -276,11 +279,11 @@ const Checkout = () => {
       authToken?.authtoken,
     );
 
-    if(basket?.deliverymode === DeliveryModeEnum.curbside){
+    if(orderType && orderType === DeliveryModeEnum.curbside){
       customFields = formatCustomFields(restaurant.customfields, formDataValue)
     }
 
-    if(basket?.deliverymode === DeliveryModeEnum.delivery){
+    if(orderType && orderType === DeliveryModeEnum.delivery){
       deliveryAddress = formatDeliveryAddress(formDataValue)
     }
 
@@ -297,7 +300,7 @@ const Checkout = () => {
           phone: formDataValue.phone,
         };
       }
-      dispatch(validateBasket(basket?.id, basketPayload, user, customFields));
+      dispatch(validateBasket(basket?.id, basketPayload, user, customFields, deliverymode));
     }
   };
 
@@ -327,12 +330,12 @@ const Checkout = () => {
                         </Typography>
                       </Grid>
                       {
-                        basket && (basket.deliverymode === DeliveryModeEnum.pickup || basket.deliverymode === DeliveryModeEnum.curbside) ? (
+                       orderType && ( orderType === '' || orderType === DeliveryModeEnum.pickup || orderType === DeliveryModeEnum.curbside) ? (
                             <PickupForm basket={basket} pickupFormRef={pickupFormRef} />
                         ) : (null)
                       }
                       {
-                        basket && (basket.deliverymode === DeliveryModeEnum.delivery) ? (
+                        orderType && (orderType === DeliveryModeEnum.delivery) ? (
                             <DeliveryForm basket={basket} deliveryFormRef={deliveryFormRef} />
                         ) : (null)
                       }

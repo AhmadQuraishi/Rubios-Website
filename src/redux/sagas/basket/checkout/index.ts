@@ -101,11 +101,14 @@ function* asyncValidateBasket(action: any): any {
       yield put(getProviderRequestSuccess(userResponse));
     }
     if(action.customFields.length){
-      const customFieldsResponse = yield call(setBasketCustomFields, action.basketId, action.customFields);
+      yield call(setBasketCustomFields, action.basketId, action.customFields);
     }
     if(action.deliveryaddress){
-      const deliveryResponse = yield call(setBasketDeliveryAddress, action.basketId, action.deliveryaddress);
+      yield call(setBasketDeliveryAddress, action.basketId, action.deliveryaddress);
     }
+    if(action.deliverymode){
+      yield put({type: basketActionsTypes.SET_BASKET_DELIVERY_MODE_REQUEST, action});
+    }    
     const validateResponse = yield call(validateBasket, action.basketId);
     yield put(validateBasketSuccess(validateResponse));
     const basketResponse = yield call(getBasket, action.basketId);

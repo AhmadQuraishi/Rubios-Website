@@ -2,11 +2,10 @@ import { basketActionsTypes } from '../../../types/basket';
 import { ResponseBasket, RequestSetDeliveryMode } from '../../../../types/olo-api';
 import { displayToast } from '../../../../helpers/toast';
 
-export function setBasketRequest(request: any, deliverymode: string) {
+export function setBasketRequest(request: any) {
   return {
     type: basketActionsTypes.SET_BASKET_REQUEST,
-    request,
-    deliverymode
+    request
   };
 }
 

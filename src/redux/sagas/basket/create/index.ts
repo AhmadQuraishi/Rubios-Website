@@ -24,7 +24,7 @@ function* asyncCreateBasketRequest(action: any): any {
     const response = yield call(getDummyBasket, action.request);
     action.basketid = response.id;
     console.log('responsessss', response)
-    yield put({type: basketActionsTypes.SET_BASKET_DELIVERY_MODE_REQUEST, action});
+    // yield put({type: basketActionsTypes.SET_BASKET_DELIVERY_MODE_REQUEST, action});
     yield put(setBasketRequestSuccess(response));
   } catch (error) {
     yield put(setBasketRequestFailure(error));
@@ -33,10 +33,7 @@ function* asyncCreateBasketRequest(action: any): any {
 
 function* asyncSetBasketDeliveryModeRequest(action: any): any {
   try {
-    const payload = {
-      deliverymode: action.action.deliverymode
-    }
-    const response = yield call(setBasketDeliveryMode, action.action.basketid, payload);
+    const response = yield call(setBasketDeliveryMode, action.action.basketId, action.action.deliverymode);
     yield put(setBasketDeliveryModeSuccess(response));
   } catch (error) {
     yield put(setBasketDeliveryModeFailure(error));

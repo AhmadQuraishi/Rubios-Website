@@ -129,13 +129,14 @@ export function updateBasketCouponCodeFailure(error: any) {
   };
 }
 
-export function validateBasket(basketId: string, basketPayload: RequestBasketSubmit | null, userData: any, customFields: any) {
+export function validateBasket(basketId: string, basketPayload: RequestBasketSubmit | null, userData: any, customFields: any, deliverymode: any) {
   return {
     type: basketActionsTypes.VALIDETE_BASKET,
     basketId,
     basketPayload,
     userData,
-    customFields
+    customFields,
+    deliverymode
   };
 }
 
