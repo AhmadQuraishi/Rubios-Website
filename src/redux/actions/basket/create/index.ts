@@ -1,5 +1,5 @@
 import { basketActionsTypes } from '../../../types/basket';
-import { ResponseBasket, RequestSetDeliveryMode } from '../../../../types/olo-api';
+import { ResponseBasket } from '../../../../types/olo-api';
 import { displayToast } from '../../../../helpers/toast';
 
 export function setBasketRequest(request: any) {
@@ -110,34 +110,6 @@ export function createBasketFromFavOrderFailure(error: any) {
   );
   return {
     type: basketActionsTypes.CREATE_BASKET_FROM_FAV_ORDER_FAILURE,
-    error: error,
-  };
-}
-
-export function setBasketDeliveryMode(basketid: string, payload: RequestSetDeliveryMode) {
-  return {
-    type: basketActionsTypes.SET_BASKET_DELIVERY_MODE_REQUEST,
-    basketid,
-    payload
-  };
-}
-
-export function setBasketDeliveryModeSuccess(data: ResponseBasket) {
-  return {
-    type: basketActionsTypes.SET_BASKET_DELIVERY_MODE_SUCCESS,
-    payload: data,
-  };
-}
-
-export function setBasketDeliveryModeFailure(error: any) {
-  displayToast(
-    'ERROR',
-    error?.response?.data?.message
-      ? error.response.data.message
-      : 'ERROR! Please Try again later',
-  );
-  return {
-    type: basketActionsTypes.SET_BASKET_DELIVERY_MODE_FAILURE,
     error: error,
   };
 }

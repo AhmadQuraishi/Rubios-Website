@@ -19,13 +19,17 @@ import {
   validateBasketFailure,
   submitBasketSinglePaymentSuccess,
   submitBasketSinglePaymentFailure,
-  validateBasketPhoneFailure
+  validateBasketPhoneFailure,
+  setBasketDeliveryModeSuccess,
+  setBasketDeliveryModeFailure,
+  setBasketDeliveryAddressSuccess,
+  setBasketDeliveryAddressFailure
 } from '../../../actions/basket/checkout';
 
 import { requestUpdateUser } from '../../../../services/user';
 import { updateUserSuccess } from '../../../actions/user';
 import { getProviderRequestSuccess } from '../../../actions/provider';
-import { getBasket, setBasketCustomFields, setBasketDeliveryAddress } from '../../../../services/basket';
+import { getBasket, setBasketCustomFields, setBasketDeliveryAddress, setBasketDeliveryMode } from '../../../../services/basket';
 import { getBasketRequestSuccess } from '../../../actions/basket';
 
 function* asyncgetSingleRestaurantCalendarRequest(action: any): any {
@@ -93,6 +97,24 @@ function* asyncUpdateBasketCouponCode(action: any): any {
   }
 }
 
+function* asyncSetBasketDeliveryModeRequest(action: any): any {
+  try {
+    const response = yield call(setBasketDeliveryMode, action.action.basketId, action.action.deliverymode);
+    yield put(setBasketDeliveryModeSuccess(response));
+  } catch (error) {
+    yield put(setBasketDeliveryModeFailure(error));
+  }
+}
+
+function* asyncSetBasketDeliveryAddressRequest(action: any): any {
+  try {
+    const response = yield call(setBasketDeliveryAddress, action.action.basketId, action.action.deliveryAddress);
+    yield put(setBasketDeliveryAddressSuccess(response));
+  } catch (error) {
+    yield put(setBasketDeliveryAddressFailure(error));
+  }
+}
+
 function* asyncValidateBasket(action: any): any {
   try {
     if(action.userData){
@@ -101,13 +123,14 @@ function* asyncValidateBasket(action: any): any {
       yield put(getProviderRequestSuccess(userResponse));
     }
     if(action.customFields.length){
-      yield call(setBasketCustomFields, action.basketId, action.customFields);
+      const customFieldsResponse = yield call(setBasketCustomFields, action.basketId, action.customFields);
     }
-    if(action.deliveryaddress){
-      yield call(setBasketDeliveryAddress, action.basketId, action.deliveryaddress);
+    if(action.deliveryAddress){
+      // const deliveryAddressResponse = yield call(setBasketDeliveryAddress, action.basketId, action.deliveryAddress);
+      const deliveryAddressResponse = yield put({type: basketActionsTypes.SET_BASKET_DELIVERY_ADDRESS_REQUEST, action});
     }
-    if(action.deliverymode){
-      yield put({type: basketActionsTypes.SET_BASKET_DELIVERY_MODE_REQUEST, action});
+    if(action.deliverymode && !action.deliveryAddress){
+      const deliveryModeResponse = yield put({type: basketActionsTypes.SET_BASKET_DELIVERY_MODE_REQUEST, action});
     }    
     const validateResponse = yield call(validateBasket, action.basketId);
     yield put(validateBasketSuccess(validateResponse));
@@ -166,5 +189,13 @@ export function* checkoutSaga() {
   yield takeEvery(
     basketActionsTypes.SUBMIT_BASKET_SINGLE_PAYMENT,
     asyncSubmitBasketSinglePayment
+  );
+  yield takeEvery(
+    basketActionsTypes.SET_BASKET_DELIVERY_MODE_REQUEST,
+    asyncSetBasketDeliveryModeRequest,
+  );
+  yield takeEvery(
+    basketActionsTypes.SET_BASKET_DELIVERY_ADDRESS_REQUEST,
+    asyncSetBasketDeliveryAddressRequest,
   );
 }

@@ -112,7 +112,7 @@ const Checkout = () => {
           selectedTime,
         ),
       );
-      dispatch(validateBasket(basket.id, null, null, [], null));
+      dispatch(validateBasket(basket.id, null, null, [], null, null));
       setRunOnce(false);
     }
   }, [basket]);
@@ -300,7 +300,7 @@ const Checkout = () => {
           phone: formDataValue.phone,
         };
       }
-      dispatch(validateBasket(basket?.id, basketPayload, user, customFields, deliverymode));
+      dispatch(validateBasket(basket?.id, basketPayload, user, customFields, deliverymode, deliveryAddress));
     }
   };
 

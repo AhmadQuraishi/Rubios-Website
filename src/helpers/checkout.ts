@@ -101,7 +101,7 @@ export function formatDeliveryAddress(formData: any)  {
     city: formData.city,
     zipcode: formData.zipcode,
     phonenumber: formData.phone,
-    isdefault: false
+    isdefault: formData.saveAddressCheck
     }
 
   return obj;
