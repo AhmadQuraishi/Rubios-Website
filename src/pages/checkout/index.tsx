@@ -11,7 +11,7 @@ import PaymentInfo from '../../components/payment-info';
 import StoreInfoBar from '../../components/restaurant-info-bar';
 import './checkout.css';
 import { ResponseBasket, ResponseBasketValidation } from '../../types/olo-api';
-import { DeliveryModeEnum } from '../../types/olo-api';
+import { DeliveryModeEnum } from '../../types/olo-api/olo-api.enums';
 import moment from 'moment';
 import {
   getSingleRestaurantCalendar,
