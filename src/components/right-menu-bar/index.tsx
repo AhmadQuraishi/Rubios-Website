@@ -12,7 +12,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { userLogout } from '../../redux/actions/user';
 import AccountLinks from '../account-links';
 
-
 const useStyles = makeStyles((theme: Theme) => ({
   dimPanel: {
     position: 'fixed',
@@ -61,11 +60,6 @@ const RightMenuBar = (props: any) => {
           boxShadow: 2,
           bgcolor: 'background.paper',
           height: '100%',
-          paddingLeft: {
-            xs: '20px',
-            sm: removeCart ? '20px' : '50px',
-            md: removeCart ? '20px' : '65px',
-          },
           position: 'fixed',
           width: {
             xs: '100%',
@@ -77,9 +71,12 @@ const RightMenuBar = (props: any) => {
           boxSizing: 'border-box',
         }}
       >
-
-        <AccountLinks closeDrawer={(value: boolean) => {closeDrawer(value)}} />
-         {/* <List component="nav" aria-label="Account Menu">
+        <AccountLinks
+          closeDrawer={(value: boolean) => {
+            closeDrawer(value);
+          }}
+        />
+        {/* <List component="nav" aria-label="Account Menu">
           <ListItem style={{ padding: '3px' }}>
             <Link
               to="/account/"
