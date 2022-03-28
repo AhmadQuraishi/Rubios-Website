@@ -28,7 +28,12 @@ const TransactionHistory = () => {
       <Grid item xs={12}>
         {loading && <HistorySkeletonUI />}
         {!loading && recentorders.length == 0 && (
-          <Typography variant="h6" className="no-orders">
+          <Typography
+            variant="h6"
+            sx={{
+              textAlign: 'center',
+            }}
+          >
             You don't have any Transaction History
           </Typography>
         )}

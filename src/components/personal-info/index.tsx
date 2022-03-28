@@ -159,7 +159,7 @@ const PersonalInfo = () => {
                     email: values.email,
                     first_name: values.firstName,
                     last_name: values.lastName,
-                    favourite_locations: favlocation,
+                    favourite_location_ids: favlocation,
                     marketing_email_subscription: state.emailnotification,
                     marketing_pn_subscription: state.pushnotification,
                     phone: values.phone
@@ -178,7 +178,7 @@ const PersonalInfo = () => {
                     email: values.email,
                     first_name: values.firstName,
                     last_name: values.lastName,
-                    favourite_locations: favlocation,
+                    favourite_location_ids: favlocation,
                     marketing_email_subscription: state.emailnotification,
                     marketing_pn_subscription: state.pushnotification,
                     phone: values.phone
@@ -209,7 +209,7 @@ const PersonalInfo = () => {
                     email: values.email,
                     first_name: values.firstName,
                     last_name: values.lastName,
-                    favourite_locations: favlocation,
+                    favourite_location_ids: favlocation,
                     marketing_email_subscription: state.emailnotification,
                     marketing_pn_subscription: state.pushnotification,
                     phone: values.phone
@@ -219,6 +219,7 @@ const PersonalInfo = () => {
                     password: values.newpassword,
                     password_confirmation: values.confirmpassword,
                   };
+
                   const data: any = await dispatch(updateUser(obj, true));
                   setTimeout(() => {
                     dispatch(getUserprofile());
@@ -402,11 +403,8 @@ const PersonalInfo = () => {
 
                     <Grid item xs={12}>
                       <FormControl fullWidth>
-                        <InputLabel 
-                        id="fav-location-label"
-                        >
-                          Favorite Location              
-
+                        <InputLabel id="fav-location-label">
+                          Favorite Location
                         </InputLabel>
                         <Select
                           labelId="fav-location-label"

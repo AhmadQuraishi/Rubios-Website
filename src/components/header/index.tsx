@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'inline-block',
     padding: '18px 70px 18px 20px',
     [theme.breakpoints.down('lg')]: {
-      padding: '18px 0 14px 30px',
+      padding: '18px 0 14px 20px',
     },
     [theme.breakpoints.down('sm')]: {
       padding: '18px 0 14px 20px',
