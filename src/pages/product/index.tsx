@@ -31,9 +31,7 @@ import { addProductRequest } from '../../redux/actions/basket/product/add';
 import { getBasketRequest } from '../../redux/actions/basket';
 import { updateProductRequest } from '../../redux/actions/basket/product/update';
 import { displayToast } from '../../helpers/toast';
-import Checkmarkicon from '../../assets/imgs/check-mark.svg';
-import { padding } from '@mui/system';
-import getIngredientImage from '../../helpers/getIngredientImages';
+import ItemImage from '../../components/item-image';
 
 const Product = () => {
   const [productDetails, setProductDetails] = useState<ProductInfo>();
@@ -756,12 +754,10 @@ const Product = () => {
                             className="name-img-panel"
                           >
                             <Grid item xs={5} sm={5}>
-                              <></>
-                              <img
+                              <ItemImage
                                 className="item-image"
-                                src={require('../../assets/imgs/default_img.png')}
-                                alt={itemChild.option.name}
-                                title={itemChild.option.name}
+                                name={itemChild.option.name}
+                                id={itemChild.option.chainoptionid}
                               />
                             </Grid>
                             <Grid item xs={7} sm={7} className="name-panel">
