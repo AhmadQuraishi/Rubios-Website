@@ -144,6 +144,7 @@ const CategoryList = () => {
               key={index}
               container
               spacing={0}
+              id={`cat-panel-${index}`}
               sx={{
                 padding: {
                   xs: '20px 20px 0px 20px',
