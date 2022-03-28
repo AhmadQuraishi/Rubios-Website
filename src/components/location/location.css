@@ -1,0 +1,94 @@
+.list-wrapper {
+  padding: 0px;
+}
+.location-sidebar .MuiOutlinedInput-input,
+.location-sidebar .MuiInputLabel {
+  font-family: 'Poppins-Regular', sans-serif !important;
+  font-size: 16px;
+}
+.MuiInputLabel.Mui-focused {
+  padding: 0px !important;
+}
+.list-wrapper .MuiPaper-root {
+  padding: 30px;
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  border-radius: 30px;
+  width: 55%;
+  height: auto; /*calc(100vh - 80px); */
+}
+.list-wrapper .listing {
+  padding: 0px;
+}
+.list-wrapper .listing .MuiListItemButton-root {
+  padding: 0px !important;
+}
+.search-field {
+  width: auto !important;
+}
+.location-sidebar .selected-btn {
+  width: 100%;
+  margin-bottom: 10px !important;
+}
+.location-sidebar .selected-btn.Mui-selected:before {
+  content: '';
+  display: inline-block;
+  transform: rotate(45deg);
+  height: 14px;
+  width: 6px;
+  border-bottom: 3px solid white;
+  border-right: 3px solid white;
+  position: absolute;
+  left: calc(50% - 28%);
+  top: 30%;
+}
+.location-sidebar .MuiToggleButtonGroup-root {
+  display: flex;
+  flex-direction: column;
+}
+.location-sidebar .address-list {
+  height: auto !important;
+  max-height: 400px !important;
+}
+
+.location-sidebar .name span {
+  font-family: 'Poppins-Bold', sans-serif !important;
+  color: #414141;
+  font-size: 18px;
+  padding: 0px;
+}
+.location-sidebar .address {
+  font-size: 13px;
+  margin-bottom: 0px !important;
+}
+.location-sidebar .label {
+  text-align: left;
+  margin-bottom: 0px !important;
+}
+.location-sidebar .label span {
+  margin: 0;
+  font-size: 13px !important;
+}
+.location-sidebar .label.msg {
+  color: #666;
+  text-transform: none;
+  padding: 20px 0px;
+  text-align: center;
+  padding-top: 0;
+}
+@media screen and (max-width: 1024px) {
+  .list-wrapper .MuiPaper-root {
+    width: 70%;
+  }
+}
+@media screen and (max-width: 768px) {
+  .list-wrapper .MuiPaper-root {
+    padding: 20px;
+    border-radius: 30px;
+    width: calc(100% - 40px);
+    height: auto;
+  }
+  .list-wrapper button {
+    width: auto;
+  }
+}

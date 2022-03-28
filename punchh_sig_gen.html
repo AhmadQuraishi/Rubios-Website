@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <title>utility for Punnch Signature Generator</title>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
+  <!-- Custom fonts for this template-->
+  <link href='https://startbootstrap.github.io/startbootstrap-sb-admin-2/vendor/fontawesome-free/css/all.min.css'
+        rel='stylesheet' type='text/css'>
+  <link
+    href='https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i'
+    rel='stylesheet'>
+  <!-- Custom styles for this template-->
+  <link href='https://startbootstrap.github.io/startbootstrap-sb-admin-2/css/sb-admin-2.min.css' rel='stylesheet'>
+</head>
+
+</head>
+<body id='page-top'>
+
+<!-- Page Wrapper -->
+<div id='wrapper'>
+
+
+  <!-- Content Wrapper -->
+  <div id='content-wrapper' class='d-flex flex-column'>
+
+    <!-- Main Content -->
+    <div id='content'>
+
+      <!-- Begin Page Content -->
+      <div class='container-fluid'>
+
+        <!-- Page Heading -->
+        <hr>
+        <h1 class='h3 mb-4 text-gray-800'>Punchh Payload Signature Generator - Utility</h1>
+        <hr>
+        <div class='row justify-content-center'>
+
+          <div class='col-xl-10 col-lg-12 col-md-9'>
+
+            <div class='card o-hidden border-0 shadow-lg my-5'>
+              <div class='card-body p-0'>
+                <!-- Nested Row within Card Body -->
+                <div class='row'>
+                  <div class='col-lg-8'>
+                    <div class='p-5'>
+                      <div class='form-group'>
+                        <label for='clientSecret'>Punchh Client Secret</label>
+                        <input id='clientSecret' type='text' class='form-control' readonly
+                               value='a2e83d96525d4d6d3db3823ec86cbd0d935f223f9d7e8df6167187cb95e7fbca' />
+                      </div>
+                      <div class='form-group'>
+                        <label for='apiUri'>API Uri</label>
+                        <input id='apiUri' type='text' class='form-control' required
+                               placeholder='/api/auth/users/change_password' />
+                      </div>
+                      <div class='form-group'>
+                        <label for='payload'>API Payload</label>
+                        <textarea style='height: 200px' id='payload' class='form-control'
+                                  placeholder='{"user":{"password":"Qwerty123@","password_confirmation":"Qwerty123@"},"client":"c7f0b80300f53da0f25b52b06c8b9b89afcb47397e8e2c1f3fe9b58200171a41","authentication_token":"JckRvf5eQoHPFNb8-Uhm","access_token":"ede0074cdd8df2f60ff81037cae9358ca9cdf9030c1698d5d3709b65456ce2c1"}'></textarea>
+                      </div>
+                      <button id='generateSignature' type='button' onclick='generateSingature()'
+                              class='btn btn-primary btn-user btn-block'>
+                        Generate Signature
+                      </button>
+                      <hr>
+                    </div>
+                  </div>
+                  <div class='col-lg-4'>
+                    <div class='p-5'>
+                      <div class='form-group'>
+                        <label for='hashResult'>Generated Hash</label>
+                        <textarea style='height: 300px' id='hashResult' class='form-control' readonly></textarea>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+  <!-- /.container-fluid -->
+
+</div>
+<!-- End of Main Content -->
+
+
+</div>
+<!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<script>
+
+  function generateSingature() {
+    const url = document.getElementById('apiUri').value;
+    let check = url?.toString().includes('/sandbox.punchh.com/api/');
+    if (check) {
+      var uri = new URL(url?.toString());
+      const body = document.getElementById('payload').value;
+      let uriData = uri.pathname.concat(uri.search);
+      let secretString =  document.getElementById('clientSecret').value;
+      let concatString = '';
+      if (body === undefined) {
+        concatString = uriData;
+      } else {
+        concatString = uriData.concat(JSON.stringify(body));
+      }
+      const signature = CryptoJS.HmacSHA1(
+        concatString,
+        secretString,
+      ).toString();
+      document.getElementById('hashResult').innerHTML = signature;
+    } else {
+      alert('invalid url');
+    }
+  }
+</script>
+
+<script
+  src='https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js'></script>
+<!-- Bootstrap core JavaScript-->
+<script src='https://startbootstrap.github.io/startbootstrap-sb-admin-2/vendor/jquery/jquery.min.js'></script>
+<script
+  src='https://startbootstrap.github.io/startbootstrap-sb-admin-2/vendor/bootstrap/js/bootstrap.bundle.min.js'></script>
+
+<!-- Core plugin JavaScript-->
+<script
+  src='https://startbootstrap.github.io/startbootstrap-sb-admin-2/vendor/jquery-easing/jquery.easing.min.js'></script>
+
+<!-- Custom scripts for all pages-->
+<script src='https://startbootstrap.github.io/startbootstrap-sb-admin-2/js/sb-admin-2.min.js'></script>
+</body>
+
+</html>

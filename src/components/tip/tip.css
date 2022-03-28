@@ -1,0 +1,19 @@
+.tip-wrapper .selected-btn {
+  min-width: 85px;
+  height: 60px;
+  margin: 20px 18px 0px 0px !important;
+}
+.tip-wrapper .action-btn {
+  margin-top: 20px;
+}
+.tip-wrapper .action-btn button {
+  background: #214F66;
+  color: white;
+  height: 56px;
+}
+
+@media screen and (max-width: 468px) {
+  .tip-wrapper .coupon-sec {
+    margin: 10px 0px;
+  }
+}

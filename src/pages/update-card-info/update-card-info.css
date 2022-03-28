@@ -1,0 +1,8 @@
+.payment-info-update .MuiFilledInput-root {
+  background-color: #fff !important;
+}
+.payment-info-update .MuiFilledInput-root:hover,
+.payment-info-update .MuiFilledInput-root::before,
+.payment-info-update .MuiFilledInput-root::after {
+  border: 0 !important;
+}

@@ -1,0 +1,105 @@
+.reward-item {
+  height: 140px;
+  border-radius: 0 !important;
+  padding: 10px;
+  box-shadow: 0px 2px 3px 0px rgb(0 0 0 / 20%) !important;
+  border: 1px solid #e6e6e6;
+  cursor: pointer;
+  position: relative;
+}
+.price-tag{
+  color: #6AC0BD;
+  font-size: 13px;
+  font-weight: 600;
+}
+.reward-item h5{
+  text-transform: uppercase;
+  color: #0069aa;
+  font-weight: 500;
+  font-family: 'Poppins-Medium', sans-serif !important;
+  font-size: 18px;
+  padding-bottom: 10px;
+}
+.reward-item.reward-item-selected {
+  border: 1px solid #e58530 !important;
+  box-shadow: none !important;
+}
+.reward-item.reward-item-selected:after {
+  content: " ";
+  display: block;
+  width: 10px;
+  height: 22px;
+  border: solid #fff;
+  border-width: 0 5px 5px 0;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-top: -6%;
+  transform: rotate(45deg);
+  margin-left: -32%;
+}
+.reward-item.reward-item-selected:before {
+  content: " ";
+  display: block;
+  border: solid 25px #e58530;
+  border-radius: 45px;
+  height: 0px;
+  width: 0px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-top: -8%;
+  margin-left: -37%;
+}
+.rewards {
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  height: 100%;
+  margin: 0px !important;
+}
+.reward-item .item-image {
+  width: 95%;
+  display: block;
+  margin: auto;
+}
+
+.item-name {
+  font-family: 'Poppins-Medium' !important;
+  font-size: 1rem !important;
+  color: rgba(0, 0, 0, 0.54);
+  min-height: 40px;
+  display: block;
+}
+.selected .item-name{
+  color: #000
+}
+.rewards .select {
+  font-size: 12px;
+  padding: 5px;
+  border-radius: 5px;
+  margin-top: 30px;
+  color: #526c7f;
+  border: 2px solid #e1e1e1;
+}
+.rewards .select:focus,
+.rewards .select:active
+{
+  outline:none !important;
+}
+
+@media screen and (max-width: 768px) {
+  .reward-item .item-image {
+    width: 95% !important;
+  }
+}
+
+@media screen and (max-width: 475px) {
+  .reward-item {
+    margin-right: 0px;
+    margin-top: 20px;
+  }
+  .reward-item .item-image {
+    width: 90% !important;
+  }
+}

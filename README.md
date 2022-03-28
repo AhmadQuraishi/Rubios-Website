@@ -3,8 +3,8 @@
 
 An application used for taking online orders of Rubio's Coastal Frill, built with 
 - React, 
-- Redux, 
-- JavaScript
+- TypeScript,
+- Redux-Saga, 
 - CSS
 - HTML
 
@@ -26,46 +26,8 @@ Rubios uses a number of open source projects to work properly:
 - **Reactjs** - HTML enhanced for web apps!
 - **Material UI** - For using buildin controls and responsivness
 - **Nodejs** - ented I/O for the backend
-
-
-## Installation
-
-Rubios requires [Node.js](https://nodejs.org/) v10+ to run.
-
-Install the dependencies and devDependencies and start the server.
-
-```sh
-cd rubios-app
-npm i
-npm start
-```
-
-For production environments...
-
-```sh
-npm install --production
-```
-
-## Run
-This application can be started through index.js.
-```sh
-$ npm start
-```
-
-
-#### Building for source
-
-For production release:
-
-```sh
-npm build --prod
-```
-
-Generating pre-built zip archives for distribution:
-
-```sh
-npm build dist --prod
-```
+- **FORMIK** - For Form Inputs validation
+- **Redux-Saga** - For State Management
 
 ## Configuration
 Before running, copy .sample_env as .env to application's root path. File .sample_env defines the correct environment file .env format. Update .env to use latest environment values
@@ -76,18 +38,42 @@ _This information will update future or might be with the completion of differen
 
 ## Project Requirements
 OS: Linux (recommended) or Windows
+NodeJS: v14
+Npm: 6
 
 ## Conventions
-- All file and folder names must be in rubios_app.
-- All variable names must be in rubiosApp.
-- All constants must be in RubiosApp.
+- All file and folder names must be in snake casing e.g. rubios_app.
+- All variable names must be in camel casing e.g. rubiosApp.
+- All constants must be in pascal casing e.g. RubiosApp.
 - Developer must adhere to .editorconfig and .eslintrc.json configurations, to have a consistent coding standard.
-- According to the type of change being pushed, a commit message must contain [major], [minor], [refactor] or [fix] keyword.
---> [major] for any breaking change.
---> [minor] for feature additions.
---> [refactor] for refactoring existing code.
---> [fix] for any bug fixing.
+- According to the type of change being pushed, a commit message must contain [major], [minor], [refactor] or [fix]
+  keyword. --> [major] for any breaking change. --> [minor] for feature additions. --> [refactor] for refactoring
+  existing code. --> [fix] for any bug fixing.
 - Developer must update this Document during Sprint 0 and update sections as per project requirement.
 
 ## Project Structure
+
 _This information will update when project structure will be finalized_
+
+## Nginx Config
+
+#### This site requires following rules to be added in the server nginx config
+
+`Please set upstream for php as per your environment. Example, fastcgi_pass `
+
+```
+location ~ \.php$ {
+  fastcgi_pass   127.0.0.1:9000;
+  fastcgi_index  index.php;
+  fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+  include        fastcgi_params;
+}
+location ~ /punchh_api/(.*) {
+  index index.php;
+  try_files $uri $uri/ /punchh_api/index.php?$args;
+}
+location ~ /olo_api/(.*) {
+  index index.php;
+  try_files $uri $uri/ /olo_api/index.php?$args;
+}
+```

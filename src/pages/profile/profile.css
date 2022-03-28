@@ -1,0 +1,39 @@
+.profile-section .MuiGrid-grid-xs-12{
+  padding-top: 20px
+}
+.profile-section .MuiFilledInput-root{
+  background-color: #FFF !important;
+}
+.profile-section .MuiFilledInput-root:hover,
+.profile-section .MuiFilledInput-root::before,
+.profile-section .MuiFilledInput-root::after{
+  border: 0 !important;
+}
+.birthday-button
+{
+  background-color: #EAEAEA !important;
+  color: black !important;
+  justify-content: left !important;
+  padding-left: 20px !important;
+  text-transform: initial;
+}
+
+.profile-section .date {
+  width: 80%;
+  text-align: left;
+}
+.profile-section .bday-text{
+  font-family: 'Poppins-Bold';
+  padding-right: 10px;
+  letter-spacing: 0px !important;
+}
+.birthday-button span{
+  text-transform: initial;
+}
+.body-text
+{
+  font-size: 15px;
+  font-family: 'Poppins-Medium', sans-serif !important;
+  color: #414141;
+  padding-top: 8px;
+}

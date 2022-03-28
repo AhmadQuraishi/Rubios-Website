@@ -1,0 +1,6 @@
+
+interface ResponseUpdateCreditCard {
+
+    isdefault: boolean
+
+}

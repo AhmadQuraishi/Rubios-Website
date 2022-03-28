@@ -1,0 +1,4329 @@
+# Retrieve Configuration
+/brand:
+  get:
+    tags:
+    - retrieveConfiguration
+    summary: Retrieve Brand Level Settings
+    description: Returns brand level settings pertaining to advance order days, supported delivery modes, login providers and time modes.
+    operationId: RetrieveBrandLevelSettings
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseBrand'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+/restaurants/near:
+  get:
+    tags:
+    - retrieveConfiguration
+    summary: Find Nearby Participating Restaurants
+    description: |
+      Returns a list of Public restaurants filtered by their proximity to a set of coordinates. Limits results to restaurants that are within +/- 1 degree of the provided lat/long coordinates. 
+      
+      > Check the `isavailable` field for whether the restaurant is currently available to take orders.
+    operationId: FindNearbyParticipatingRestaurants
+    parameters:
+    - name: lat
+      in: query
+      description: Latitude to search near.
+      required: true
+      schema:
+        type: number
+        format: float
+        example: 40.7054008
+    - name: long
+      in: query
+      description: Longitude to search near.
+      required: true
+      schema:
+        type: number
+        format: float
+        example: -74.0132198
+    - name: radius
+      in: query
+      description: Search radius in miles.
+      required: true
+      schema:
+        type: number
+        format: float
+        example: 15
+    - name: limit
+      in: query
+      description: Maximum number of results to return.
+      required: true
+      schema:
+        type: integer
+        format: int32
+        example: 10
+    - name: calendarstart
+      in: query
+      description: Start date for retrieval of restaurant operating hours in "yyyymmdd" format. If this is provided along with a valid value for `calendarend` in the query string, the response will include restaurant hours for the provided date range for each restaurant in the `calendars` array.
+      required: false
+      schema:
+        type: string
+        example: '20210205'
+    - name: calendarend
+      in: query
+      description: End date for retrieval of restaurant operating hours in "yyyymmdd" format. If this is provided along with a valid value for `calendarstart` in the query string, the response will include restaurant hours for the provided date range for each restaurant in the `calendars` array.
+      required: false
+      schema:
+        type: string
+        example: '20210206'
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseRestaurantList'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+/restaurants/deliveringto:
+  get:
+    tags:
+    - retrieveConfiguration
+    summary: Find Nearby Participating Restaurants with In-House Delivery
+    description: |
+      This endpoint only considers Public restaurants that support the handoff method "delivery" (i.e. in-house delivery). Restaurants that support Dispatch but not Delivery will not be returned by this endpoint. 
+      
+      > Check the `isavailable` field for whether the restaurant is currently available to take orders.
+    operationId: FindNearbyParticipatingRestaurantswithInHouseDelivery
+    parameters:
+    - name: lat
+      in: query
+      description: Latitude to deliver to.
+      required: true
+      schema:
+        type: number
+        format: float
+        example: 40.7054008
+    - name: long
+      in: query
+      description: Longitude to deliver to.
+      required: true
+      schema:
+        type: number
+        format: float
+        example: -74.0132198
+    - name: limit
+      in: query
+      description: Maximum number of results to return.
+      required: true
+      schema:
+        type: integer
+        format: int32
+        example: 5
+    - name: calendarstart
+      in: query
+      description: Start date for retrieval of restaurant operating hours in "yyyymmdd" format. If this is provided along with a valid value for `calendarend` in the query string, the response will include restaurant hours for the provided date range for each restaurant in the `calendars` array.
+      required: false
+      schema:
+        type: string
+        example: '20210105'
+    - name: calendarend
+      in: query
+      description: End date for retrieval of restaurant operating hours in "yyyymmdd" format. If this is provided along with a valid value for `calendarstart` in the query string, the response will include restaurant hours for the provided date range for each restaurant in the `calendars` array.
+      required: false
+      schema:
+        type: string
+        example: '20210106'
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseRestaurantList'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+/restaurants/bytelephone/{number}:
+  get:
+    tags:
+    - retrieveConfiguration
+    summary: Find Restaurants by Telephone Number
+    description: |
+      Returns a list of Public restaurants filtered by the restaurant phone number. Uses International 11-digit format, no spaces or punctuation (e.g. 15055555555).
+
+      > Check the `isavailable` field for whether the restaurant is currently available to take orders.
+    operationId: FindRestaurantsbyTelephoneNumber
+    parameters:
+    - name: number
+      in: path
+      description: Telephone number of the restaurant.
+      required: true
+      schema:
+        type: string
+        minLength: 11
+        maxLength: 11
+        example: '15055555555'
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseRestaurantList'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+/restaurants/{restaurant_id}:
+  get:
+    tags:
+    - retrieveConfiguration
+    summary: Retrieve Single Restaurant Information
+    description: |
+      Returns a single restaurant and its configuration settings. Will work for Public or Private restaurants. Includes an optional collection of custom fields that can be passed through at checkout. If you intend to store or bulk load restaurant and menu data, you need to use the [Vendor Export](#operation/DownloadRestaurantMenuData) endpoint rather than iterating through each restaurant and menu. Please reach out to your Olo Customer Success representative to get started with Vendor Export access.
+
+      > Check the `isavailable` field for whether the restaurant is currently available to take orders.
+    operationId: RetrieveSingleRestaurantInformation
+    parameters:
+    - name: restaurant_id
+      in: path
+      description: The Olo restaurant id.
+      required: true
+      schema:
+        type: integer
+        format: int64
+        example: 27739
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseRestaurant'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+/restaurants/byref/{store_number}:
+  get:
+    tags:
+    - retrieveConfiguration
+    summary: Retrieve Single Restaurant Information by Brand-Specific Store Number
+    description: |
+      Returns a single restaurant and its configuration settings based on the store number (a.k.a. external reference). Will work for Public or Private restaurants. Includes an optional collection of custom fields that can be passed through at checkout.
+
+      > Check the `isavailable` field for whether the restaurant is currently available to take orders.
+    operationId: RetrieveSingleRestaurantInformationbyBrandSpecificStoreNumber
+    parameters:
+    - name: store_number
+      in: path
+      description: External reference of the restaurant.
+      required: true
+      schema:
+        type: string
+        example: 109
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseRestaurantList'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+/restaurants/byslug/{slug}:
+  get:
+    tags:
+    - retrieveConfiguration
+    summary: Retrieve Single Restaurant by Slug
+    description: |
+      Returns a single restaurant and its configuration settings based on the store slug. Will work for Public or Private restaurants. Includes an optional collection of custom fields that can be passed through at checkout.
+
+      > Check the `isavailable` field for whether the restaurant is currently available to take orders.
+    operationId: RetrieveSingleRestaurantbySlug
+    parameters:
+    - name: slug
+      in: path
+      description: Slug of the restaurant.
+      required: true
+      schema:
+        type: string
+        example: kitchen-sink-seaport
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseRestaurant'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+/restaurants/{restaurant_id}/checkdeliverycoverage:
+  post:
+    tags:
+    - retrieveConfiguration
+    summary: Check Restaurant Delivery
+    description: |
+      Checks if a restaurant delivers to the specified address. Do not use this endpoint without first checking with your Olo Customer Success Manager as some brand settings may cause this endpoint to be unreliable. 
+    
+      > In the case of Dispatch this queries many delivery partners, which may take several seconds.
+    operationId: CheckRestaurantDelivery
+    parameters:
+    - name: restaurant_id
+      in: path
+      description: Olo restaurant id. Also referred to as "vendor id".
+      required: true
+      schema:
+        type: integer
+        format: int64
+        example: 27739
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestCheckDeliveryCoverage'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseCheckDeliveryCoverage'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+/restaurants:
+  get:
+    tags:
+    - retrieveConfiguration
+    summary: Retrieve All Participating Restaurants [Planned Deprecation]
+    description: _Endpoint is planned to be deprecated in the future. Date of deprecation is TBD and will be communicated to brands and partners as information becomes available. New implementations should avoid this endpoint. Alternatives to accessing multiple restaurant locations are [Vendor Export](#tag/vendorExport) for all restaurants or [Find Nearby Participating Restaurants](#operation/FindNearbyParticipatingRestaurants)._
+    operationId: RetrieveAllParticipatingRestaurants
+    parameters:
+    - name: includePrivate
+      in: query
+      description: When set to true, the endpoint will include restaurants configured as both Public AND Private (i.e. restaurants that typically won't show up in a restaurant search).
+      schema:
+        type: boolean
+        default: false
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseRestaurantList'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+
+# Retrieve Calendars & Disclaimers
+/restaurants/{restaurant_id}/calendars:
+  get:
+    tags:
+    - retrieveCalendarsDisclaimers
+    summary: Retrieve Restaurant Operating Hours
+    description: Lists the restaurant's operating hours for multiple types of calendars over the period specified, incorporating holiday hours. Examples of possible calendar types include "business", "delivery", "dispatch", and more.
+    operationId: RetrieveRestaurantOperatingHours
+    parameters:
+    - name: restaurant_id
+      in: path
+      description: The Olo id of the restaurant.
+      required: true
+      schema:
+        type: integer
+        format: int64
+        example: 27739
+    - name: from
+      in: query
+      description: '''From'' date in "yyyymmdd" format.'
+      required: true
+      schema:
+        type: string
+        example: '20210202'
+    - name: to
+      in: query
+      description: '''To'' date in "yyyymmdd" format.'
+      required: true
+      schema:
+        type: string
+        example: '20210203'
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseRestaurantCalendars'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+/restaurants/{restaurant_id}/disclaimers:
+  get:
+    tags:
+    - retrieveCalendarsDisclaimers
+    summary: Retrieve Restaurant Disclaimers
+    description: Lists disclaimers set up for the brand and/or for individual restaurants.
+    operationId: RetrieveRestaurantDisclaimers
+    parameters:
+    - name: restaurant_id
+      in: path
+      description: The Olo id of the restaurant.
+      required: true
+      schema:
+        type: integer
+        format: int64
+        example: 27739
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseRestaurantDisclaimers'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+
+# Retrieve Menu Products
+/restaurants/{restaurant_id}/menu:
+  get:
+    tags:
+    - retrieveMenuProducts
+    summary: Retrieve Restaurant Menu
+    description: Returns the absolute latest copy of a single restaurant's menu as a list of categories and their products. If the brand does not want to show time-limited products outside of the item's ordering hours, they will not show up here. You can include unavailable (86’d) products by using the `includedisabled` query parameter. Note that prices only update twice a day. This endpoint will not include any modifiers or options -- please [click here](#tag/retrieveProductModifiers) to retrieve product modifiers. If you need all possible restaurant and menu data for every restaurant with one call, you'll want to request access to the [Vendor Export](#operation/DownloadRestaurantMenuData) endpoint via your Customer Success representative.
+    operationId: RetrieveRestaurantMenu
+    parameters:
+    - name: restaurant_id
+      in: path
+      description: The Olo id of the restaurant.
+      required: true
+      schema:
+        type: integer
+        format: int64
+        example: 27739
+    - name: includedisabled
+      in: query
+      description: Whether or not to include disabled (i.e. 86’d) menu items in the response.
+      required: false
+      schema:
+        type: boolean
+        default: false
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseMenu'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+/restaurants/{restaurant_id}/eightysixeditems:
+  get:
+    tags:
+    - retrieveMenuProducts
+    summary: Retrieve Eighty-Sixed Menu Items
+    description: Returns all products and options (a.k.a. choices) that are eighty-sixed (currently unavailable) for a single restaurant. This endpoint can be called every time your integration refreshes a menu using the [Vendor Export](#operation/DownloadRestaurantMenuData), but it is important that you also subscribe to the [MenuItemAvailabilityChanged webhook](#section/Webhooks) to stay informed of availability changes between menu refreshes. Use of this endpoint is not required if your integration is using the [Menu](#operation/RetrieveRestaurantMenu) and [Product](#tag/retrieveProductModifiers) endpoints. This endpoint requires special permissions, please reach out to your Olo Customer Success representative for access.
+    operationId: RetrieveEightySixedMenuItemsforRestaurant
+    parameters:
+    - name: restaurant_id
+      in: path
+      description: The Olo id of the restaurant.
+      required: true
+      schema:
+        type: integer
+        format: int64
+        example: 27739
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseEightySixedItems'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+
+# Retrieve Product Modifiers
+/products/{productId}/modifiers:
+  get:
+    tags:
+    - retrieveProductModifiers
+    summary: Retrieve Product Modifiers and Options
+    description: Returns a collection of option groups (product modifiers), their options (a.k.a. choices), free-text fields, and all recursive levels of nested option groups that may occur below that.
+    operationId: RetrieveProductModifiersandOptions
+    parameters:
+    - name: productId
+      in: path
+      description: Olo product id.
+      required: true
+      schema:
+        type: integer
+        format: int64
+        example: 392371331
+    - name: includedisabled
+      in: query
+      description: Whether or not to include disabled (i.e. 86’d) menu items in the response.
+      required: false
+      schema:
+        type: boolean
+        default: false
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseModifiers'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+/products/{productId}/options:
+  get:
+    tags:
+    - retrieveProductModifiers
+    summary: Retrieve Top-level Product Modifiers and Options
+    description: Returns a shallow collection of option groups (product modifiers) and their options (a.k.a. choices) available for a given product. Excludes nested option groups and is therefore best when either bandwidth is constrained or the menu is known to be simple. If you intend to store or bulk load restaurant and menu data, you need to use the [Vendor Export](#operation/DownloadRestaurantMenuData) endpoint rather than iterating through each restaurant and menu. Please reach out to your Olo Customer Success representative to get started with Vendor Export access.
+    operationId: RetrieveToplevelProductModifiersandOptions
+    parameters:
+    - name: productId
+      in: path
+      description: Olo product id.
+      required: true
+      schema:
+        type: integer
+        format: int64
+        example: 392371331
+    - name: includedisabled
+      in: query
+      description: Whether or not to include disabled (i.e. 86’d) menu items in the response.
+      required: false
+      schema:
+        type: boolean
+        default: false
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseModifiers'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+/options/{optionId}/nested:
+  get:
+    tags:
+    - retrieveProductModifiers
+    summary: Retrieve Option Children
+    description: Returns nested option groups (product modifiers) for an option (a.k.a. choice) with child option groups. If you intend to store or bulk load restaurant and menu data, you need to use the [Vendor Export](#operation/DownloadRestaurantMenuData) endpoint rather than iterating through each restaurant and menu. Please reach out to your Olo Customer Success representative to get started with Vendor Export access.
+    operationId: RetrieveOptionChildren
+    parameters:
+    - name: optionId
+      in: path
+      description: Olo option id.
+      required: true
+      schema:
+        type: integer
+        format: int64
+        example: 392371331
+    - name: includedisabled
+      in: query
+      description: Whether or not to include disabled (i.e. 86’d) menu items in the response.
+      required: false
+      schema:
+        type: boolean
+        default: false
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseModifiers'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+/menuitemlabels:
+  get:
+    tags:
+    - retrieveProductModifiers
+    summary: Retrieve Menu Item Labels
+    description: Returns all menu item labels.
+    operationId: RetrieveMenuItemLabels
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseMenuItemLabels'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+
+# Basket Creation, Retrieval, & Group Ordering
+/baskets/create:
+  post:
+    tags:
+    - creationRetrievalGroupOrdering
+    summary: Create Basket
+    description: |
+      Creates a new basket that will automatically expire in a week. Once a basket is successfully converted to an order it will no longer be available. There are several basket fields that can change as products are added to the basket, such as the `earliestreadytime`. 
+      
+      > The `vendoronline` field is comparable to the restaurant object's `isavailable` field and will tell you whether the restaurant is currently available to take orders.
+    operationId: CreateBasket
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestCreateBasket'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseBasket'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+/baskets/createfromorder:
+  post:
+    tags:
+    - creationRetrievalGroupOrdering
+    summary: Create Basket from Previous Order
+    description: Creates a new basket using the contents of a user's previously submitted order. If there are any products from the original order that are either removed or temporarily disabled, an error will be returned unless `ignoreunavailableproducts` is set to true. If there are any options (a.k.a. choices) that are either removed or temporarily disabled, the new basket will only get created if the modifier requirements are met without said options, otherwise an error will be returned.
+    operationId: CreateBasketfromPreviousOrder
+    parameters:
+    - name: authtoken
+      in: query
+      description: Olo user authentication token.
+      schema:
+        type: string
+        example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestCreateBasketFromOrder'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseBasket'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+/baskets/createfromfave:
+  post:
+    tags:
+    - creationRetrievalGroupOrdering
+    summary: Create Basket from Fave
+    description: Creates a new basket using the contents of a user's previously saved favorite ("fave"). If there are any products from the favorite that are either removed or temporarily disabled, an error will be returned unless `ignoreunavailableproducts` is set to true. If there are any options (a.k.a. choices) that are either removed or temporarily disabled, the new basket will only get created if the modifier requirements are met without said options, otherwise an error will be returned.
+    operationId: CreateBasketfromFave
+    parameters:
+    - name: authtoken
+      in: query
+      description: Olo user authentication token.
+      required: true
+      schema:
+        type: string
+        example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestCreateBasketFromFave'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseBasket'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+/baskets/{basketGuid}:
+  get:
+    tags:
+    - creationRetrievalGroupOrdering
+    summary: Retrieve Basket
+    description: Returns a basket entity. After a basket has either expired or been converted to an order you will no longer be able to retrieve it.
+    operationId: RetrieveBasket
+    parameters:
+    - name: basketGuid
+      in: path
+      description: Olo basket guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseBasket'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+/grouporders:
+  put:
+    tags:
+    - creationRetrievalGroupOrdering
+    summary: Create Group Order
+    description: |
+      Create a new group order. Group orders allow a 'host' (the creator) to control and provide payment for a shared basket that can be utilized by others to add products to an order. Can only be used by a logged in user, i.e. an Olo user's 'authtoken'. 
+    
+      > Note that this endpoint behaves like a POST call, even though PUT is expected.
+    operationId: CreateGroupOrder
+    parameters:
+    - name: authtoken
+      in: query
+      description: Olo user authentication token.
+      required: true
+      schema:
+        type: string
+        example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestCreateGroupOrder'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseGroupOrder'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+  post:
+    tags:
+    - creationRetrievalGroupOrdering
+    summary: Update Group Order
+    description: |
+      Modify the deadline or note of an existing group order. Can only be used by a logged in user, i.e. an Olo user's 'authtoken'.	
+    
+      > Note that this endpoint behaves like a PUT call, even though POST is expected.
+    operationId: UpdateGroupOrder
+    parameters:
+    - name: authtoken
+      in: query
+      description: Olo user authentication token.
+      required: true
+      schema:
+        type: string
+        example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestUpdateGroupOrder'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseGroupOrder'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+/grouporders/{groupOrderGuid}/invite:
+  post:
+    tags:
+    - creationRetrievalGroupOrdering
+    summary: Send Group Order Invites
+    description: Sends group order invites to the provided email addresses. Recipients will see a link in the email to join the group order that will take them to a website where they can choose their items. The email is created from a customizable
+      template. If you would like to make changes to the email template, please reach out to your Customer Success representative. Can only be used by a logged in user, i.e. an Olo user's 'authtoken'.
+    operationId: SendGroupOrderInvites
+    parameters:
+    - name: groupOrderGuid
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 23d639c2-602b-472c-bb33-9686ef1dea83
+    - name: authtoken
+      in: query
+      description: Olo user authentication token.
+      required: true
+      schema:
+        type: string
+        example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestGroupOrderInvite'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content: {}
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+/grouporders/{groupOrderGuid}:
+  get:
+    tags:
+    - creationRetrievalGroupOrdering
+    summary: Retrieve Group Order
+    description: Returns the detail and basket content of a group order. If you wish to have guest users interact with a group order they can do so directly via the returned basket.  *You must use either 'authtoken' OR 'basket' as a query parameter.  Only one of them is required.*
+    operationId: RetrieveGroupOrder
+    parameters:
+    - name: groupOrderGuid
+      in: path
+      description: ' Olo group order guid.'
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 23d639c2-602b-472c-bb33-9686ef1dea83
+    - name: authtoken
+      in: query
+      description: Optional. Only used for registered users with an Olo account.
+      required: false
+      schema:
+        type: string
+        example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    - name: basket
+      in: query
+      description: Optional. Only used for guest users.
+      required: false
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseGroupOrder'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+
+# Basket Products: Add, Update & Upsell
+/baskets/{basketGuid}/products:
+  post:
+    tags:
+    - productsAddUpdateUpsell
+    summary: Add Single Product to Basket
+    description: Options that are not applicable to the current product will be ignored. When posting nested modifiers to a basket, post both the parent and child choice ids. For options with multiple quantities or for multiple different
+      products, please use the [Add Batch Products endpoint](#operation/AddMultipleProductstoBasket). If a product category's
+      Make Time Calculation (as specified during the construction of the menu) is Fixed or Catering, the basket's time mode will be automatically switched to Advance (i.e. later). Lastly, note that some products may not be supported by the handoff method of the basket and will result in error.
+    operationId: AddSingleProducttoBasket
+    parameters:
+    - name: basketGuid
+      in: path
+      description: Olo basket guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestNewBasketProduct'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseBasket'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+/baskets/{basketGuid}/products/bychainid:
+  post:
+    tags:
+    - productsAddUpdateUpsell
+    summary: Add Single Product by Chain ID to Basket
+    description: Options that are not applicable to the current product will be ignored. When posting nested modifiers to a basket, post both the parent and child choice ids. For options with multiple quantities or for multiple different
+      products, please use the [Add Batch Products By ChainID endpoint](#operation/AddMultipleProductsbyChainIDtoBasket). If a product category's Make Time Calculation (as specified during the construction of the menu) is Fixed or Catering, the basket's time mode will be automatically switched to Advance (i.e. later). Lastly, note that some products may not be supported by the handoff method of the basket and will result in error.
+    operationId: AddSingleProductbyChainIDtoBasket
+    parameters:
+    - name: basketGuid
+      in: path
+      description: Olo basket guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestNewBasketProductByChainId'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseBasket'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+/baskets/{basketGuid}/products/{basketProductId}:
+  put:
+    tags:
+    - productsAddUpdateUpsell
+    summary: Update Single Product in Basket
+    description: Modifies the existing product already in a basket. Note that the {basketProductId} request parameter is to be retrieved from the basket-specific product `id` field, whereas the basket's `productId` field can be provided as the value for the `productid` in the request. Parameters and rules are otherwise the same as the equivalent POST call.
+    operationId: UpdateSingleProductinBasket
+    parameters:
+    - name: basketGuid
+      in: path
+      description: Olo basket guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    - name: basketProductId
+      in: path
+      description: Olo product "id" that is unique to the basket.
+      required: true
+      schema:
+        type: integer
+        format: int64
+        example: 1389289824
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestNewBasketProduct'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseBasket'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+  delete:
+    tags:
+    - productsAddUpdateUpsell
+    summary: Remove Single Product from Basket
+    description: Removes the specified product from the basket.
+    operationId: RemoveSingleProductfromBasket
+    parameters:
+    - name: basketGuid
+      in: path
+      description: Olo basket guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    - name: basketProductId
+      in: path
+      description: Olo product "id" that is unique to the basket.
+      required: true
+      schema:
+        type: integer
+        format: int64
+        example: 2301394231
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseBasket'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+/baskets/{basketGuid}/products/batch:
+  put:
+    tags:
+    - productsAddUpdateUpsell
+    summary: Update Multiple Products in Basket
+    description: Modifies the existing product(s) already in a basket. Note that the `productid` request field is to be retrieved from the basket-specific product `id` field. Parameters and rules are otherwise the same as the equivalent POST call.
+    operationId: UpdateMultipleProductsinBasket
+    parameters:
+    - name: basketGuid
+      in: path
+      description: Olo basket guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestBasketProductBatch'
+      required: true
+    responses:
+      200:
+        description: Success or partial success. Be sure to check the response body's "errors" array for any partial failures.
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseBasketProductBatchResult'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+  post:
+    tags:
+    - productsAddUpdateUpsell
+    summary: Add Multiple Products to Basket
+    description: |
+      Options that are not applicable to the current product will be ignored. Due to the complexity of this request, it will only work with a JSON-formatted body. Returns a `basketbatchresult` entity (which includes the resulting basket along with an `errors` array). Some products may be added and others may fail (as they may not be currently available). It is the client's responsibility to check the response of this operation for problems listed in the `errors`
+      array. 
+      
+      When posting nested modifiers to a basket, post both the parent and child choice ids. If a product category's Make Time Calculation (as specified during the construction of the menu) is Fixed or Catering, the basket's time mode will be automatically switched to Advance (i.e. later). Lastly, note that some products may not be supported by the handoff method of the basket and will result in error.
+    operationId: AddMultipleProductstoBasket
+    parameters:
+    - name: basketGuid
+      in: path
+      description: Olo basket guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestBasketProductBatch'
+      required: true
+    responses:
+      200:
+        description: Success or partial success. Be sure to check the response body's "errors" array for any partial failures.
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseBasketProductBatchResult'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+/baskets/{basketGuid}/products/batch/bychainid:
+  post:
+    tags:
+    - productsAddUpdateUpsell
+    summary: Add Multiple Products by Chain ID to Basket
+    description: Returns a `basketbatchresult` entity (which includes the resulting basket along with an `errors` array). Some products may be added and others may fail (as they may not be currently available). It is the client's responsibility
+      to check the response of this operation for problems listed in the `errors` array. When posting nested modifiers to a basket, post both the parent and child choice ids. If a product category's Make Time Calculation (as specified during the construction of the menu) is Fixed or Catering, the basket's time mode will be automatically switched to Advance (i.e. later). Lastly, note that some products may not be supported by the handoff method of the basket and will result in error.
+    operationId: AddMultipleProductsbyChainIDtoBasket
+    parameters:
+    - name: basketGuid
+      in: path
+      description: Olo basket guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestBasketProductByChainIdBatch'
+      required: true
+    responses:
+      200:
+        description: Success or partial success. Be sure to check the response body's "errors" array for any partial failures.
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseBasketProductByChainIdBatchResult'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+/baskets/{basketGuid}/products/byfave:
+  post:
+    tags:
+    - productsAddUpdateUpsell
+    summary: Add Products from Fave to Basket
+    description: Attempts to add all the products from a favorite ("fave") into the specified basket. Returns a `basketbatchresult` entity (which includes the resulting basket along with an `errors` array). It is the client's responsibility to check the response of this operation for problems listed in the `errors` array.
+    operationId: AddProductsfromFavetoBasket
+    parameters:
+    - name: basketGuid
+      in: path
+      description: Olo basket guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    - name: authtoken
+      in: query
+      description: Olo user authentication token.
+      required: true
+      schema:
+        type: string
+        example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestAddProductsFromFave'
+      required: true
+    responses:
+      200:
+        description: Success or partial success. Be sure to check the response body's "errors" array for any partial failures.
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseBasketProductBatchResult'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+/baskets/{basketGuid}/upsell:
+  get:
+    tags:
+    - productsAddUpdateUpsell
+    summary: Retrieve Eligible Upsell Items
+    description: Returns group(s) of eligible upsell items for the current basket. If an upsell item is added to the basket, subsequent calls to this endpoint will exclude that item's group.
+    operationId: RetrieveEligibleUpsellItems
+    parameters:
+    - name: basketGuid
+      in: path
+      description: Olo basket guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseUpsellGroups'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+  post:
+    tags:
+    - productsAddUpdateUpsell
+    summary: Add Upsell Items
+    description: Adds upsell items to the basket.
+    operationId: AddUpsellItems
+    parameters:
+    - name: basketGuid
+      in: path
+      description: Olo basket guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestBasketAddUpsell'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseBasket'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+
+# Basket Tip, Coupon, & Loyalty Rewards
+/baskets/{basketGuid}/tip:
+  put:
+    tags:
+    - tipCouponLoyaltyRewards
+    summary: Set Tip Amount
+    description: Applies the specified tip amount to the basket. Note that the basket's handoff mode must support tips for the operation to be successful. Handoff mode tip configuration can be adjusted by reaching out to your Olo Customer Success representative.
+    operationId: SetTipAmount
+    parameters:
+    - name: basketGuid
+      in: path
+      description: Olo basket guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestUpdateBasketTip'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseBasket'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+/baskets/{basketGuid}/coupon:
+  put:
+    tags:
+    - tipCouponLoyaltyRewards
+    summary: Apply Coupon to Basket
+    description: Attempts to apply a coupon to the basket. If an invalid or non-applicable
+      coupon code is requested, error num 201 will be returned.  Aloha POS systems may be able to use <a href="https://olosupport.zendesk.com/hc/en-us/articles/360017432872-Aloha-POS-Coupon-Setup-and-Discounts-for-Online-Ordering-via-a-Comp" target="blank">Open Dollar Comps</a>, discuss this with your CSM before use and for more information.
+    operationId: ApplyCoupontoBasket
+    parameters:
+    - name: basketGuid
+      in: path
+      description: Olo basket guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestApplyCoupon'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseBasket'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+  delete:
+    tags:
+    - tipCouponLoyaltyRewards
+    summary: Remove Coupon from Basket
+    description: Removes the coupon from the basket.
+    operationId: RemoveCouponfromBasket
+    parameters:
+    - name: basketGuid
+      in: path
+      description: Olo basket guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseBasket'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+/baskets/{basketGuid}/promotions:
+  put:
+    tags:
+    - tipCouponLoyaltyRewards
+    summary: Apply Coupon or Comp Code to Basket
+    description: Attempts to apply a coupon or comp code to the basket. When applying a coupon, this endpoint and [Apply Coupon to Basket](#operation/ApplyCoupontoBasket) endpoint achieve the same result. Please contact your Olo CSM for more information about the promotion type of `compcode`.
+    operationId: ApplyCouponOrCompcode
+    parameters:
+    - name: basketGuid
+      in: path
+      description: Olo basket guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestApplyCouponCompCode'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseBasket'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+/baskets/{basketGuid}/promotions/bytype/{type}:
+  delete:
+    tags:
+    - tipCouponLoyaltyRewards
+    summary: Remove a Coupon or Comp Code
+    description: Remove a coupon or comp code from the basket. When removing a coupon, this endpoint and [Remove Coupon from Basket](#operation/RemoveCouponfromBasket) endpoint achieve the same result.
+    operationId: RemoveCouponOrCompcode
+    parameters:
+    - name: basketGuid
+      in: path
+      description: Olo basket guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    - name: type
+      in: path
+      description: Type of promotion.
+      required: true
+      schema:
+        type: string
+        enum: 
+          - coupon
+          - compcode
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseBasket'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+/baskets/{basketGuid}/loyaltyschemes:
+  get:
+    tags:
+    - tipCouponLoyaltyRewards
+    summary: Retrieve Eligible Loyalty Schemes
+    description: Returns a collection of loyalty schemes (`loyaltyscheme` entities) representing all of the programs the current basket's restaurant (a.k.a. vendor) is enrolled in. If the specified user has a membership at that scheme, the membership details are returned.
+    operationId: RetrieveEligibleLoyaltySchemes
+    parameters:
+    - name: basketGuid
+      in: path
+      description: Olo basket guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    - name: authtoken
+      in: query
+      description: Olo user authentication token.
+      required: true
+      schema:
+        type: string
+        example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    - name: checkbalance
+      in: query
+      description: Whether or not to check for balances associated with the user's
+        loyalty memberships.
+      schema:
+        type: boolean
+        default: false
+    - name: checkrewards
+      in: query
+      description: Whether or not to check for rewards associated with the user's
+        loyalty memberships.
+      schema:
+        type: boolean
+        default: false
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseLoyaltySchemes'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+  post:
+    tags:
+    - tipCouponLoyaltyRewards
+    summary: Add User Membership to Loyalty Scheme
+    description: Returns a collection of loyalty schemes (`loyaltyscheme` entities)
+      including the added user membership and any other programs the current basket's
+      restaurant (a.k.a. vendor) is enrolled in.
+    operationId: AddUserMembershiptoLoyaltyScheme
+    parameters:
+    - name: basketGuid
+      in: path
+      description: Olo basket guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestLoyaltyScheme'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseLoyaltySchemes'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+/baskets/{basketGuid}/loyaltyrewards:
+  get:
+    tags:
+    - tipCouponLoyaltyRewards
+    summary: Retrieve Basket Loyalty Rewards
+    description: Returns all the rewards that have been applied to a basket.
+    operationId: RetrieveBasketLoyaltyRewards
+    parameters:
+    - name: basketGuid
+      in: path
+      description: Olo basket guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    - name: membershipid
+      in: query
+      description: Membership id to check for loyalty rewards.
+      required: true
+      schema:
+        type: integer
+        format: int64
+        example: 308183984981
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseLoyaltyRewards'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+/baskets/{basketGuid}/loyaltyrewards/qualifying:
+  get:
+    tags:
+    - tipCouponLoyaltyRewards
+    summary: Retrieve Basket Qualifying Rewards
+    description: Returns all of the loyalty rewards that the basket qualifies for. This does not filter qualifying rewards based on basket contents, instead all available rewards are returned for the user associated with the basket.
+    operationId: RetrieveBasketQualifyingRewards
+    parameters:
+    - name: basketGuid
+      in: path
+      description: Olo basket guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    - name: authtoken
+      in: query
+      description: Olo user authentication token.
+      required: true
+      schema:
+        type: string
+        example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    - name: membershipid
+      in: query
+      description: Membership id to check for qualifying loyalty rewards.
+      required: true
+      schema:
+        type: integer
+        format: int64
+        example: 2382948913
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseLoyaltyRewards'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+/baskets/{basketGuid}/loyaltyrewards/byref:
+  put:
+    tags:
+    - tipCouponLoyaltyRewards
+    summary: Apply to Rewards to Basket
+    description: |
+      Applies the specified reward (`references`) to the basket for the associated membership id. Basket user must match the user associated with loyalty membership. Not for use with group orders. 
+      
+      > Although this field is an array, only one reward can be applied to a basket at time.
+    operationId: ApplytoRewardstoBasket
+    parameters:
+    - name: basketGuid
+      in: path
+      description: Olo basket guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestApplyReward'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseBasket'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+/baskets/{basketGuid}/loyaltyrewards/{rewardId}:
+  delete:
+    tags:
+    - tipCouponLoyaltyRewards
+    summary: Remove Applied Reward
+    description: Removes the specified reward from the basket.
+    operationId: RemoveAppliedReward
+    parameters:
+    - name: basketGuid
+      in: path
+      description: Olo basket guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    - name: rewardId
+      in: path
+      description: Olo id for the reward.
+      required: true
+      schema:
+        type: integer
+        format: int64
+        example: 23808104
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseBasket'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+
+# Basket Handoff, Delivery, & Dispatch
+/baskets/{basketGuid}/deliverymode:
+  put:
+    tags:
+    - handoffDeliveryDispatch
+    summary: Set Basket Handoff Method
+    description: |
+      Delivery mode (a.k.a. handoff method) is the way in which the order will be handed off to a customer (e.g. Pickup, Curbside, Dispatch, etc.).
+     
+      The restaurant (a.k.a. vendor) must be configured to accept the chosen handoff method for it to be applied to the basket. For Delivery and Dispatch the basket must already have an address attached to the basket or an error will be returned. Be aware that some products may not be supported by the chosen handoff method.
+    operationId: SetBasketHandoffMethod
+    parameters:
+    - name: basketGuid
+      in: path
+      description: Olo basket guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestSetDeliveryMode'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseBasket'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+/baskets/{basketGuid}/deliveryaddress:
+  get:
+    tags:
+    - handoffDeliveryDispatch
+    summary: Retrieve Basket Delivery Address
+    description: Retrieves the delivery address assigned to the basket. To be used for in-house delivery, not Dispatch. Will return an error if no delivery address is available.
+    operationId: RetrieveBasketDeliveryAddress
+    parameters:
+    - name: basketGuid
+      in: path
+      description: Olo basket guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseDeliveryAddress'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+  put:
+    tags:
+    - handoffDeliveryDispatch
+    summary: Set Basket Delivery Address
+    description: Sets the basket's delivery address and the handoff method to "delivery". To be used for in-house delivery, not Dispatch. When an existing address `id` is specified, will apply that address to the the basket. If a user is already attached to the basket, each new address will get saved to the user's account and can be later retrieved via [GET /users/{authtoken}/userdeliveryaddresses](#operation/GetUserDeliveryAddresses).
+    operationId: SetBasketDeliveryAddress
+    parameters:
+    - name: basketGuid
+      in: path
+      description: Olo basket guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestDeliveryAddress'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseBasket'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+/baskets/{basketGuid}/dispatchaddress:
+  get:
+    tags:
+    - handoffDeliveryDispatch
+    summary: Retrieve Basket Dispatch Address
+    description: Retrieves the Dispatch address assigned to the basket (i.e. where the order will be delivered to). Will return an error if no Dispatch address is available.
+    operationId: RetrieveBasketDispatchAddress
+    parameters:
+    - name: basketGuid
+      in: path
+      description: Olo basket guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/RequestDeliveryAddress'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+  put:
+    tags:
+    - handoffDeliveryDispatch
+    summary: Set Basket Dispatch Address
+    description: |
+      Sets the basket's Dispatch address (i.e. where the order will be delivered to) and the handoff method to "dispatch". When an existing address `id` is specified, will apply that address to the the basket. If a user is already attached to the basket, each new address will get saved to the user's account and can be later retrieved via [GET /users/{authtoken}/userdeliveryaddresses](#operation/GetUserDeliveryAddresses).
+      
+      > If fake addresses or phone numbers are used during testing, it is possible that the Dispatch Service Provider (DSP) will return an error when Olo attempts to get a quote.
+    operationId: SetBasketDispatchAddress
+    parameters:
+    - name: basketGuid
+      in: path
+      description: Olo basket guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/ResponseDeliveryAddress'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseBasket'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+
+# Basket Time Wanted (& Manual Fire)
+/baskets/{basketGuid}/timewanted:
+  put:
+    tags:
+    - timeWantedManualFire
+    summary: Set Time Wanted
+    description: Sets a time at which the order should be handed off to the customer. Will change the time mode of the basket to Advance (later) or Manual Fire (if `ismanualfire` is set to "true").
+    operationId: SetTimeWanted
+    parameters:
+    - name: basketGuid
+      in: path
+      description: Olo basket guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestUpdateBasketTimeWanted'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseBasket'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+  delete:
+    tags:
+    - timeWantedManualFire
+    summary: Set Basket Time Mode to ASAP
+    description: Deletes the time wanted on a basket and changes the time mode to "ASAP" (i.e. the order is to be prepared as soon as possible, which is generally the default time mode).
+    operationId: SetBasketTimeModetoASAP
+    parameters:
+    - name: basketGuid
+      in: path
+      description: Olo basket guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseBasket'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+
+# Basket Custom Fields
+/baskets/{basketGuid}/customfields:
+  put:
+    tags:
+    - customFields
+    summary: Set Basket Custom Field Value
+    description: Custom Fields (a.k.a. "Checkout Fields") are preconfigured by Olo's Customer Success team (in coordination with the brand) on a per-restaurant basis and typically used for specifying information like the Make, Model, and Color of a car for a Curbside Pickup order. When configured as such, Custom Fields may only be available under certain conditions, e.g. when the handoff mode is cash, delivery, or curbside, or by thresholds such as time wanted, order amount, or product quantity.
+    operationId: SetBasketCustomFieldValue
+    parameters:
+    - name: basketGuid
+      in: path
+      description: Olo basket guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestBasketSetCustomField'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseBasket'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+/baskets/{basketGuid}/customfields/{customFieldId}:
+  delete:
+    tags:
+    - customFields
+    summary: Remove Basket Custom Field Value
+    description: Removes the specified custom field value from the basket.
+    operationId: RemoveBasketCustomFieldValue
+    parameters:
+    - name: basketGuid
+      in: path
+      description: Olo basket guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    - name: customFieldId
+      in: path
+      description: Olo custom field id.
+      required: true
+      schema:
+        type: integer
+        format: int64
+        example: 3413481323
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseBasket'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+
+# Basket Donations
+/basket/{basketGuid}/donations:
+  put:
+    tags:
+    - customFields
+    summary: Update Donation on a Basket
+    description: Adjusts the amount of a specified available donation on a basket.
+    operationId: UpdateDonationOnBasket
+    parameters:
+    - name: basketGuid
+      in: path
+      description: Olo basket guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestDonationUpdate'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseBasket'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+
+
+# Basket Transfers
+/baskets/{basketGuid}/transfer:
+  post:
+    tags:
+    - transfers
+    summary: Transfer Basket to Different Restaurant
+    description: Will attempt to transfer a basket to another restaurant (a.k.a. vendor), including all of that basket's content and settings. However, this will not always be possible -- some settings may revert to the new restaurant's defaults. Any items not transferred will be noted in the `itemsnottransferred` repsonse property. Also note that the brand itself must allow basket transfers in their Olo configuration or you will receive an error. To have this configuration changed, please reach out to your Olo Customer Success representative.
+    operationId: TransferBaskettoDifferentRestaurant
+    parameters:
+    - name: basketGuid
+      in: path
+      description: Olo basket guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestBasketTransfer'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseBasketTransferResult'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+/baskets/{basketGuid}/platformtransfer:
+  post:
+    tags:
+    - transfers
+    summary: Transfer Basket from API to Olo Website for Checkout
+    description: |
+      Returns URLs to transfer an API basket to Olo's whitelabel web (or mobile web) site, if such websites exist for the brand. Once transferred, the basket may not be further modified nor submitted via the API. The endpoint may not be used as a workaround for handling payment for web and mobile app orders.
+
+      Common use cases for this endpoint include chatbots and voice ordering. **Please consult with your Olo Customer Success representative regarding your use case prior to implementing**.
+    operationId: TransferBasketfromAPItoOloWebsiteforCheckout
+    parameters:
+    - name: basketGuid
+      in: path
+      description: Olo basket guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseBasketPlatformTransfer'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+
+# Basket Billing Options
+/baskets/{basketGuid}/billingschemes:
+  get:
+    tags:
+    - billingOptions
+    summary: Retrieve All Billing Schemes and Accounts
+    description: Returns all supported billing methods/schemes (e.g. credit card, pay in store ["cash"], or a gift card scheme) associated with the specified basket's restaurant. If there is an Olo user associated with the basket, each of the user's billing accounts on file will be returned as well.
+    operationId: RetrieveAllBillingSchemesandAccounts
+    parameters:
+    - name: basketGuid
+      in: path
+      description: Olo basket guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseBillingSchemes'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+/baskets/{basketGuid}/billingschemes/{billingSchemeId}:
+  get:
+    tags:
+    - billingOptions
+    summary: Retrieve Billing Scheme
+    description: Returns the billing method/scheme (e.g. credit card, pay in store [cash], or a gift card scheme) associated with the scheme id at the specified basket's restaurant. If there is an Olo user associated with the basket, each of the user's billing accounts on file will be returned alongside each billing method.
+    operationId: RetrieveBillingScheme
+    parameters:
+    - name: basketGuid
+      in: path
+      description: Olo basket guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    - name: billingSchemeId
+      in: path
+      description: Olo billing scheme id.
+      required: true
+      schema:
+        type: integer
+        format: int64
+        example: 232489841
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseBillingScheme'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+/baskets/{basketGuid}/billingschemes/{billingSchemeId}/retrievebalance:
+  post:
+    tags:
+    - billingOptions
+    summary: Retrieve Gift Card Balance
+    description: Returns the balance remaining on a specified gift card.
+    operationId: RetrieveGiftCardBalance
+    parameters:
+    - name: basketGuid
+      in: path
+      description: Olo basket guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    - name: billingSchemeId
+      in: path
+      description: Olo billing scheme id.
+      required: true
+      schema:
+        type: integer
+        format: int64
+        example: 232341424
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestCardBalanceRetrieval'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseBillingBalance'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+/billingschemes/{billingSchemeId}/binvalidation:
+  post:
+    tags:
+    - billingOptions
+    summary: Verify Gift Card PIN Requirement
+    description: Returns true if number is valid and in a range that requires PIN entry; else false.
+    operationId: VerifyGiftCardPINRequirement
+    parameters:
+    - name: billingSchemeId
+      in: path
+      description: Olo billing scheme id.
+      required: true
+      schema:
+        type: integer
+        format: int64
+        example: 23132431
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestBinPinValidation'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseBinValidation'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+
+# Basket Validation & Submission
+/baskets/{basketGuid}/validate:
+  post:
+    tags:
+    - validationSubmission
+    summary: Validate Basket against the POS; Calculate Tax and Totals
+    description: |
+      Obtains final tax and total amounts from the associated restaurant's Point of Sale (POS) system (when applicable) and completes a validation round-trip of the full basket and its contents. The tax and totals may differ from the estimate presented prior to this call, as the POS is the final source of authority for this information. An HTTP 200 result implies that the restaurant is ready to receive the order. It is strongly recommended to run this call before submitting the order to reduce the chance of unexpected submission failure. 
+
+      Validates the following:
+      
+      * Vendor is available for online ordering
+      * Vendor supports the specified timemode
+      * Timewanted is within vendor's hours
+      * Handoff mode is supported by vendor and products within basket
+      * If handoff mode is dispatch, a delivery address is set
+      * Products and options are available, i.e. haven't been 86'd
+      * Subtotal meets the minimum required amount
+      * Handoff fees, if applicable, are accurate
+      * If an advanced order, it can be ready by time wanted
+      * Vendor has the capacity to take the order
+      * Order can be ready before the vendor closes
+      * Basket qualifies for coupon, if one is present
+      * Third party loyalty reward is valid and applicable
+    operationId: ValidateBasketagainstthePOS
+    parameters:
+    - name: basketGuid
+      in: path
+      description: Olo basket guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    - name: checkupsell
+      in: query
+      description: Include upsellgroups in validation response.
+      schema:
+        type: boolean
+        default: false
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseBasketValidation'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+/baskets/{basketGuid}/checkout:
+  post:
+    tags:
+    - validationSubmission
+    summary: Request CCSF Payment Token
+    description: Use this endpoint to generate a GUID token that will be used to identify your transaction request when submitting an order through the [Credit Card Submission Frame](#section/Tutorials/Credit-Card-Submission-Frame) (CCSF). Using this approach will act as a replacement for the normal bakset submission flow (see linked documentation above). This token will be short-lived (2 hours) and can only be used once when submitting a successful order. If an order fails to submit, the token can be reused until the order is successful or the token expires.
+    operationId: request-ccsf-payment-token
+    parameters:
+    - name: basketGuid
+      in: path
+      description: Olo basket guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    requestBody:
+      required: false
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestPaymentToken'
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponsePaymentToken'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+/baskets/{basketGuid}/submit:
+  post:
+    tags:
+    - validationSubmission
+    summary: Submit Order with Single Payment
+    description: Be sure to make a [validation call](#operation/ValidateBasketagainstthePOS) before calling this endpoint to ensure the basket is in a proper state to succeed during submission. What should be sent to this endpoint can vary depending on the billing method and the user type (see request property descriptions for more information). For more detail about the errors that may get returned by this endpoint, please check out the [Customer-Friendly Errors](#section/Usage-Basics/Olo-Error-Numbers) documentation.
+    operationId: SubmitOrderwithSinglePayment
+    parameters:
+    - name: basketGuid
+      in: path
+      description: Olo basket guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestBasketSubmit'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseOrderStatus'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+/baskets/{basketGuid}/submit/multiplepayments:
+  post:
+    tags:
+    - validationSubmission
+    summary: Submit Order with Multiple Payments
+    description: The same guidelines apply as the single payment submission endpoint above, with the exception of now taking an array of `billingaccounts` (each with its own `amount` and `tipportion`) in the request body rather than a single billing account. Note that the restaurant and their POS must support split payments for this endpoint to work. This can be checked from a restaurant's `supportssplitpayments` field. Some POS systems do not support multiple payments, please check with your CSM.
+    operationId: SubmitOrderwithMultiplePayments
+    parameters:
+    - name: basketGuid
+      in: path
+      description: Olo basket guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestBasketSubmitMultiple'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseOrderStatus'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+
+# Order Modification, Retrieval, & Delivery Status
+/orders/{orderGuid}/edit:
+  post:
+    tags:
+    - modificationRetrievalDeliveryStatus
+    summary: Edit Order
+    description: Creates a new basket for an existing order. Once this new basket is successfully submitted (with the desired modifications) the order generated replaces the old order (i.e. the old order will be cancelled). Not all orders can be edited (e.g. scheduled orders already fired to the restaurant cannot be edited). Edit eligibility is determined by the `iseditable` field on the orderstatus entity.
+    operationId: EditOrder
+    parameters:
+    - name: orderGuid
+      in: path
+      description: Olo order guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: cea27ddd-06cd-4a62-93af-858cb3e32dc9
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseBasket'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+/orders/{orderGuid}/cancel:
+  post:
+    tags:
+    - modificationRetrievalDeliveryStatus
+    summary: Cancel Order
+    description: Attempts to cancel an existing order. Not all all orders can be cancelled. The order must have a status of "Scheduled" or "Pending Manual Fire".
+    operationId: CancelOrder
+    parameters:
+    - name: orderGuid
+      in: path
+      description: Olo order guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: cea27ddd-06cd-4a62-93af-858cb3e32dc9
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseOrderStatus'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+/orders/{orderGuid}:
+  get:
+    tags:
+    - modificationRetrievalDeliveryStatus
+    summary: Check Order Status
+    description: Returns an orderstatus entity using the Olo order `id` (Guid) that is returned when submitting the order (i.e. basket submission). The `status` will change as the order progresses.
+    operationId: CheckOrderStatus
+    parameters:
+    - name: orderGuid
+      in: path
+      description: Olo order guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: cea27ddd-06cd-4a62-93af-858cb3e32dc9
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseOrderStatus'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+/orders/byref/{orderref}:
+  get:
+    tags:
+    - modificationRetrievalDeliveryStatus
+    summary: Check Order Status by External Reference
+    description: Returns an orderstatus entity about the order matching the calling system's reference as passed into the submit method's `orderref` argument.
+    operationId: CheckOrderStatusbyExternalReference
+    parameters:
+    - name: orderref
+      in: path
+      description: Order reference in the calling system, as provided during basket
+        submission.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: zie892-se8912nd34iae
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseOrderStatus'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+/orders/{orderGuid}/deliverystatus:
+  get:
+    tags:
+    - modificationRetrievalDeliveryStatus
+    summary: Check Order Dispatch Status
+    description: Find status and other information about an order's Dispatch delivery.
+    operationId: CheckOrderDispatchStatus
+    parameters:
+    - name: orderGuid
+      in: path
+      description: Olo order guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: cea27ddd-06cd-4a62-93af-858cb3e32dc9
+    - name: authToken
+      in: query
+      deprecated: true
+      description: Olo user authentication token.
+      schema:
+        type: string
+        example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseDeliveryStatus'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+
+# Order Manual Fire
+/orders/{orderref}/manualfire:
+  post:
+    tags:
+    - manualFire
+    summary: Submit Manual Fire Order by External Reference
+    description: Submit a manual fire order for preparation by order reference (`orderref`). Manual fire allows the order to get sent down to the POS for preparation right when this endpoint is called rather than near immediately upon submission (ASAP) or at a specific time (Advance). To configure a basket with a time  mode of Manual Fire, be sure to make a call to the [Time Wanted endpoint](#operation/SetTimeWanted) and set `ismanualfire` to "true".
+    operationId: SubmitManualFireOrderbyExternalReference
+    parameters:
+    - name: orderref
+      in: path
+      description: Order reference in the calling system, as provided during basket
+        submission.
+      required: true
+      schema:
+        type: string
+        example: zie892-se8912nd34iae
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestManualFireOrder'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseManualFireResult'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+/orders/byid/{orderGuid}/manualfire:
+  post:
+    tags:
+    - manualFire
+    summary: Submit Manual Fire Order
+    description: Submit a manual fire order for preparation by order Guid (`id`).
+      Manual fire allows the order to get sent down to the POS for preparation right when this endpoint is called rather than near immediately upon submission (ASAP) or at a specific time (Advance). To configure a basket with a time  mode of Manual Fire, be sure to make a call to the [Time Wanted endpoint](#operation/SetTimeWanted) and set `ismanualfire` to "true".
+    operationId: SubmitManualFireOrder
+    parameters:
+    - name: orderGuid
+      in: path
+      description: Olo order guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: cea27ddd-06cd-4a62-93af-858cb3e32dc9
+    requestBody:
+      description: The body is only required if the brand configuration supports
+        'Choose Handoff at Check-in'.
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestManualFireOrder'
+      required: false
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseManualFireResult'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+
+# Order Customer Arrival
+/orders/{orderGuid}/arrival:
+  post:
+    tags:
+    - customerArrival
+    summary: Submit Customer Arrival Notification
+    description: Submit a signal to the restaurant that the customer has arrived, so that a restaurant employee can bring out the order. The primary use case for the feature is for curbside orders, but it is not limited to curbside handoff specifically, and can be utilized for other handoff modes such as pickup as well. To use this feature, the brand’s Customer Success contact will have to enable the desired handoff method (e.g. curbside pickup, pickup) for the desired restaurant. At that point, orders placed for the enabled handoff methods will become eligible for Arrival Notifications.
+    operationId: SubmitCustomerArrivalNotification
+    parameters:
+    - name: orderGuid
+      in: path
+      description: Olo order guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: cea27ddd-06cd-4a62-93af-858cb3e32dc9
+    requestBody:
+      description: The request body can include a message string. For example, if you wish to allow the guest to send their parking spot number to the recipient inside the restaurant.
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestSubmitCustomerArrivalNotification'
+      required: false
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseOrderStatus'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+
+# User Creation & Authentication
+/users/create:
+  post:
+    tags:
+    - creationAuthentication
+    summary: Create Olo User
+    description: Creates an Olo user. These are user accounts that have no associations with other login providers -- i.e. the Olo user is the source of truth. With a successful response you will get a user authentication token, i.e. `authtoken`, which will be used to identify this user within Olo's Ordering API going forward. (For logging in with third party/SSO login providers, please see the [SSO endpoint](#operation/CreateorGetSSOLinkedOloUser) endpoint.) This authtoken may be stored by the application but the user's password may not. All reasonable security measures must be taken to secure the authtoken since it can be linked to the customer's credit card.
+    operationId: CreateOloUser
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestNewUser'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseNewUser'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+/users/getorcreate:
+  post:
+    tags:
+    - creationAuthentication
+    summary: Create or Get SSO-Linked Olo User
+    description: |
+      Links a user from an authorized (OAuth) third party login provider to a new Olo user. (Can also retrieve the details for an existing user previously created via this endpoint.) The source of truth for these users comes from the login provider, not Olo. Login providers, excluding Apple ID, are required to provide "firstname", "lastname" and "emailaddress". Please provide a `provider` slug (which can be found by contacting your Olo Customer Success representative) and the `providertoken` (to be retrieved from the third party login provider).
+      
+      With a successful response you will get an Olo user authentication token, i.e. `authtoken`, which will be used to identify this user within Olo's Ordering API going forward. All reasonable security measures must be taken to secure the authtoken since it can be linked to the customer's credit card. 
+    
+      > This endpoint will return HTTP 204 if the login provider you provided is not yet authorized for the brand associated with your API credentials (in the respective Olo environment). If this happens, please reach out to your Olo Customer Success representative for more information.
+    operationId: CreateorGetSSOLinkedOloUser
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestUserSingleSignOn'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseUserSingleSignOn'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+/orders/{orderGuid}/createuser:
+  post:
+    tags:
+    - creationAuthentication
+    summary: Create Olo User from Guest Order
+    description: |
+      Creates a new Olo user from the details provided in a previous guest order. 
+    
+      > This endpoint is not compatible with the flow outlined in the [SSO endpoint](#operation/CreateorGetSSOLinkedOloUser).
+    operationId: CreateOloUserfromGuestOrder
+    parameters:
+    - name: orderGuid
+      in: path
+      description: Olo order guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: cea27ddd-06cd-4a62-93af-858cb3e32dc9
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestConvertGuestToUser'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseLoginUser'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+/users/authenticate:
+  post:
+    tags:
+    - creationAuthentication
+    summary: Authenticate Olo User
+    description: |
+      Generates a new user authtoken and returns the user''s basic information.
+      The old authtoken is not replaced (please see the [Delete Authtoken endpoint](#operation/DisableUserAuthenticationToken)
+      for how to disable a user authtoken.) 
+      
+      > This endpoint is not compatible with the flow outlined in the [SSO endpoint](#operation/CreateorGetSSOLinkedOloUser).
+    operationId: AuthenticateOloUser
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestLogin'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseLogin'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+/users/{authtoken}/password:
+  post:
+    tags:
+    - creationAuthentication
+    summary: Change Password for Olo User
+    description: |
+      Change an Olo user's password. 
+      
+      > This endpoint is not compatible with the flow outlined in the [SSO endpoint](#operation/CreateorGetSSOLinkedOloUser).
+    operationId: ChangePasswordforOloUser
+    parameters:
+    - name: authtoken
+      in: path
+      description: Olo user authentication token.
+      required: true
+      schema:
+        type: string
+        example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestChangePassword'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content: {}
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+/users/forgotpassword:
+  post:
+    tags:
+    - creationAuthentication
+    summary: Start Forgot Password Process for Olo User
+    description: |
+      The user matching the email address will be e-mailed a link to
+      a page on the website where they can reset their password. There is a velocity
+      check on the number of times this call can be made per client IP address per
+      hour.
+      
+      > This endpoint is not compatible with the flow outlined in the [SSO endpoint](#operation/CreateorGetSSOLinkedOloUser).
+    operationId: StartForgotPasswordProcessforOloUser
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestForgotPassword'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content: {}
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+
+# User Modification, Deletion, & Retrieval
+/users/{authtoken}:
+  get:
+    tags:
+    - modificationDeletionRetrieval
+    summary: Retrieve User Details
+    description: Confirms whether an authentication token, i.e. `authtoken`, is valid, and returns a user entity with their associated basic information.
+    operationId: RetrieveUserDetails
+    parameters:
+    - name: authtoken
+      in: path
+      description: Olo user authentication token.
+      required: true
+      schema:
+        type: string
+        example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseUser'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+  put:
+    tags:
+    - modificationDeletionRetrieval
+    summary: Update User Details
+    description: Updates the user's personal details. For users linked to
+      third party login providers, contact information must be updated with the
+      login provider, not Olo. Once updated, please call the [SSO endpoint](#operation/CreateorGetSSOLinkedOloUser) again,
+      which will automatically update the linked Olo user's information.
+    operationId: UpdateUserDetails
+    parameters:
+    - name: authtoken
+      in: path
+      description: Olo user authentication token.
+      required: true
+      schema:
+        type: string
+        example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestUserPersonalDetails'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseUser'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+  delete:
+    tags:
+    - modificationDeletionRetrieval
+    summary: Disable User Authentication Token
+    description: Disables the user authentication token, i.e. `authtoken`, so that the device or application can no longer access the user account. An Olo user will still be able to log into Olo websites with their login and password.
+    operationId: DisableUserAuthenticationToken
+    parameters:
+    - name: authtoken
+      in: path
+      description: Olo user authentication token.
+      required: true
+      schema:
+        type: string
+        example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseUser'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+/users/{authtoken}/account:
+  delete:
+    tags:
+    - modificationDeletionRetrieval
+    summary: Delete User Account
+    description: Deletes the user account associated with the provided Olo authentication token. Please note that this action cannot be reversed and the user will need to create a new account if they wish to login in the future. All previously issued authentication tokens for the user will no longer be usable. Calling this endpoint using an authentication token obtained for an SSO linked user will only delete the user account in Olo's system.
+    operationId: DeleteUserAccount
+    parameters:
+    - name: authtoken
+      in: path
+      description: Olo user authentication token.
+      required: true
+      schema:
+        type: string
+        example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    responses:
+      200:
+        description: Success!
+        content: {}
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+/users/exists:
+  post:
+    tags:
+    - modificationDeletionRetrieval
+    summary: Determine User Existence
+    description: Returns a list of brand-supported login providers that have accounts with the user's email address.
+    operationId: DetermineUserExistence
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestUserExists'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseUserExists'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+
+# User Contact Information
+/users/{authtoken}/contactdetails:
+  get:
+    tags:
+    - contactInformation
+    summary: Retrieve User Contact Number
+    description: Returns the user's Contact Number.
+    operationId: RetrieveUserContactNumber
+    parameters:
+    - name: authtoken
+      in: path
+      description: Olo user authentication token.
+      required: true
+      schema:
+        type: string
+        example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseContactDetails'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+  put:
+    tags:
+    - contactInformation
+    summary: Update User Contact Number
+    description: Sets the user's Contact Number in case of issues with orders. Must include a full telephone number of at least 10 digits.
+    operationId: UpdateUserContactNumber
+    parameters:
+    - name: authtoken
+      in: path
+      description: Olo user authentication token.
+      required: true
+      schema:
+        type: string
+        example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/ResponseContactDetails'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseContactDetails'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+/users/{authtoken}/contactoptions:
+  get:
+    tags:
+    - contactInformation
+    summary: Get User Communication Preferences
+    description: Returns the user's current communication preferences, i.e. marketing email opt-in, upsell prompts, email receipts, and feedback follow-up.
+    operationId: GetUserCommunicationPreferences
+    parameters:
+    - name: authtoken
+      in: path
+      description: Olo user authentication token.
+      required: true
+      schema:
+        type: string
+        example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseContactOptions'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+  put:
+    tags:
+    - contactInformation
+    summary: Update User Communication Preferences
+    description: Updates the user's current communication preferences, i.e. marketing email opt-in, upsell prompts, email receipts, and feedback follow-up.
+    operationId: UpdateUserCommunicationPreferences
+    parameters:
+    - name: authtoken
+      in: path
+      description: Olo user authentication token.
+      required: true
+      schema:
+        type: string
+        example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/ResponseContactOptions'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseContactOptions'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+/users/{authtoken}/userdeliveryaddresses:
+  get:
+    tags:
+    - contactInformation
+    summary: Get User Delivery Addresses
+    description: Returns the user's previously used delivery addresses.
+    operationId: GetUserDeliveryAddresses
+    parameters:
+    - name: authtoken
+      in: path
+      description: Olo user authentication token.
+      required: true
+      schema:
+        type: string
+        example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseUserDeliveryAddresses'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+/users/{authtoken}/userdeliveryaddresses/default:
+  put:
+    tags:
+    - contactInformation
+    summary: Set User's Default Delivery Address
+    description: Sets the user's default delivery address to the provided id. If  the user already has a default delivery address set, it will be overriden with the provided delivery address id.
+    operationId: SetUsersDefaultDeliveryAddress
+    parameters:
+    - name: authtoken
+      in: path
+      description: Olo user authentication token.
+      required: true
+      schema:
+        type: string
+        example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestUserDefaultAddress'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseUserDeliveryAddresses'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+/users/{authtoken}/userdeliveryaddresses/{addressId}:
+  delete:
+    tags:
+    - contactInformation
+    summary: Delete User Delivery Address
+    description: Deletes the user's address.
+    operationId: DeleteUserDeliveryAddress
+    parameters:
+    - name: authtoken
+      in: path
+      description: Olo user authentication token.
+      required: true
+      schema:
+        type: string
+        example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    - name: addressId
+      in: path
+      description: The id of the address to remove.
+      required: true
+      schema:
+        type: integer
+        format: int64
+        example: 234315231
+    responses:
+      200:
+        description: Success!
+        content: {}
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+
+# User Billing Information
+/users/{authtoken}/billingaccounts:
+  get:
+    tags:
+    - billingInformation
+    summary: Retrieve User Billing Accounts
+    description: Lists all of the user's billing accounts. The billing `accountid` value can be used in the basket submission call as the `billingaccountid` when the billing method is set to "billingaccount". Billing accounts are intended to be displayed on or near the checkout page.
+    operationId: RetrieveUserBillingAccounts
+    parameters:
+    - name: authtoken
+      in: path
+      description: Olo user authentication token.
+      required: true
+      schema:
+        type: string
+        example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    - name: basket
+      in: query
+      description: Olo basket guid to check for qualifying billing accounts.
+      schema:
+        type: string
+        format: uuid
+        example: 73d6f9c2-60cb-474c-bb36-9686bf1dea83
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseUserBillingAccounts'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+/users/{authtoken}/billingaccounts/{billingAccountId}:
+  delete:
+    tags:
+    - billingInformation
+    summary: Remove User Billing Account
+    description: Removes a user's billing account. Note that some accounts cannot be deleted. Also note that this call will not impact prior orders utilizing this account -- it is a soft removal (not a permanent deletion) that only prevents the account from getting returned.
+    operationId: RemoveUserBillingAccount
+    parameters:
+    - name: authtoken
+      in: path
+      description: Olo user authentication token.
+      required: true
+      schema:
+        type: string
+        example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    - name: billingAccountId
+      in: path
+      description: The id of the billing account to remove.
+      required: true
+      schema:
+        type: integer
+        format: int64
+        example: 84289281314
+    responses:
+      200:
+        description: Success!
+        content: {}
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+/users/{authtoken}/billingaccounts/storedvalue:
+  get:
+    tags:
+    - billingInformation
+    summary: Retrieve User Gift Card Balances
+    description: Returns a collection of gift cards balances.
+    operationId: RetrieveUserGiftCardBalances
+    parameters:
+    - name: authtoken
+      in: path
+      description: Olo user authentication token.
+      required: true
+      schema:
+        type: string
+        example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseStoredValueCards'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+/users/{authtoken}/billingaccounts/storedvalue/{billingAccountId}:
+  get:
+    tags:
+    - billingInformation
+    summary: Retrieve Specific User Gift Card Balance
+    description: Get balance of stored-value card
+    operationId: Returns the balance of the gift card associated with the provided
+      billing account.
+    parameters:
+    - name: authtoken
+      in: path
+      description: Olo user authentication token.
+      required: true
+      schema:
+        type: string
+        example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    - name: billingAccountId
+      in: path
+      description: The billing account id associated with a saved gift card.
+      required: true
+      schema:
+        type: integer
+        format: int64
+        example: 23248183941
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseBillingBalance'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+/users/{authtoken}/creditcards/{billingAccountId}:
+  put:
+    tags:
+    - billingInformation
+    summary: Update User Default Credit Card
+    description: Updates a user's default credit card. If they already have an existing default credit card, it will be replaced.
+    operationId: UpdateUserDefaultCreditCard
+    parameters:
+    - name: authtoken
+      in: path
+      description: Olo user authentication token
+      required: true
+      schema:
+        type: string
+        example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    - name: billingAccountId
+      in: path
+      description: The billing account id the user would like to update. Please
+        note that this must be a credit card billing account or else an error will
+        be returned.
+      required: true
+      schema:
+        type: integer
+        format: int64
+        example: 2302308130
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/ResponseUpdateCreditCard'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content: {}
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+
+# User Favorites
+/users/{authtoken}/faves:
+  get:
+    tags:
+    - favoritesBasketsLocations
+    summary: Retrieve User Faves
+    description: Returns a collection of favorites ("fave" entities) for the user, which are effectively saved snapshots of a basket's contents.
+    operationId: RetrieveUserFaves
+    parameters:
+    - name: authtoken
+      in: path
+      description: Olo user authentication token.
+      required: true
+      schema:
+        type: string
+        example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseUserFaves'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+  post:
+    tags:
+    - favoritesBasketsLocations
+    summary: Create User Fave
+    description: Creates a new favorite ("fave") for the user based on the contents of the basket provided. Each favorite is effectively a saved snapshot of a basket's contents.
+    operationId: CreateUserFave
+    parameters:
+    - name: authtoken
+      in: path
+      description: Olo user authentication token.
+      required: true
+      schema:
+        type: string
+        example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestNewFave'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseUserFaves'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+/users/{authtoken}/faves/{faveId}:
+  delete:
+    tags:
+    - favoritesBasketsLocations
+    summary: Delete User Fave
+    description: Removes a specific favorite ("fave") from the user's account.
+    operationId: DeleteUserFave
+    parameters:
+    - name: authtoken
+      in: path
+      description: Olo user authentication token.
+      required: true
+      schema:
+        type: string
+        example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    - name: faveId
+      in: path
+      description: The id of the favorite to remove.
+      required: true
+      schema:
+        type: integer
+        format: int64
+        example: 23423849831
+    responses:
+      200:
+        description: Success!
+        content: {}
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+/users/{authtoken}/favelocations/{restaurant_id}:
+  post:
+    tags:
+    - favoritesBasketsLocations
+    summary: Create User Fave Location
+    description: Adds the specific restaurant (i.e. vendor) as a favorite location ("favelocation") for the user.
+    operationId: CreateUserFaveLocation
+    parameters:
+    - name: authtoken
+      in: path
+      description: Olo user authentication token.
+      required: true
+      schema:
+        type: string
+        example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    - name: restaurant_id
+      in: path
+      description: The Olo restaurant id (a.k.a. vendor id) the user wishes to save
+        as a favorite.
+      required: true
+      schema:
+        type: integer
+        format: int64
+        example: 22739
+    - name: isdefault
+      in: query
+      description: Whether or not the restaurant will be the default favorite restaurant.
+        A user can only have one default restaurant at a time.
+      schema:
+        type: boolean
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseFaveLocation'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+  delete:
+    tags:
+    - favoritesBasketsLocations
+    summary: Delete User Fave Location
+    description: Removes a specific favorite location ("favelocation") from the user's account.
+    operationId: DeleteUserFaveLocation
+    parameters:
+    - name: authtoken
+      in: path
+      description: Olo user authentication token.
+      required: true
+      schema:
+        type: string
+        example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    - name: restaurant_id
+      in: path
+      description: The Olo restaurant id (a.k.a. vendor id) the user wishes to save
+        as a favorite.
+      required: true
+      schema:
+        type: integer
+        format: int64
+        example: 27739
+    responses:
+      200:
+        description: Success!
+        content: {}
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+/users/{authtoken}/favelocations:
+  get:
+    tags:
+    - favoritesBasketsLocations
+    summary: Retrieve User Fave Locations
+    description: Returns a collection of favorite locations ("favelocation" entities) for the user.
+    operationId: RetrieveUserFaveLocations
+    parameters:
+    - name: authtoken
+      in: path
+      description: Olo user authentication token.
+      required: true
+      schema:
+        type: string
+        example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseUserFaveLocations'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+
+# User Recent & Open Orders (Manual Fire)
+/users/{authtoken}/recentorders:
+  get:
+    tags:
+    - recentOpenOrdersManualFire
+    summary: Retrieve User Recent Orders
+    description: Returns the user's last 5 orders as a collection of `orderstatus`  entities. The number of recent orders returned is not configurable.
+    operationId: RetrieveUserRecentOrders
+    parameters:
+    - name: authtoken
+      in: path
+      description: Olo user authentication token.
+      required: true
+      schema:
+        type: string
+        example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseRecentOrders'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+/users/byref/{reference}/recentorders:
+  get:
+    tags:
+    - recentOpenOrdersManualFire
+    summary: Retrieve User Recent Orders by External Reference
+    description: Returns the user's last 5 orders -- retrieved based on the user's external `reference` (see user creation and basket submission) -- as a collection of `orderstatus` entities. The number of recent orders returned is not configurable.
+    operationId: RetrieveUserRecentOrdersbyExternalReference
+    parameters:
+    - name: reference
+      in: path
+      description: User reference in the calling system, as provided to the basket
+        submission call.
+      required: true
+      schema:
+        type: string
+        example: f50abf1a9a8c74375da9669ed
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseRecentOrders'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+/users/{authtoken}/openorders/manualfire:
+  get:
+    tags:
+    - recentOpenOrdersManualFire
+    summary: Retrieve User Open Manual Fire Orders
+    description: Returns a list of open Manual Fire orders that are waiting to be [fired](#operation/SubmitManualFireOrderbyExternalReference). Manual Fire orders utilize the third possible time mode (the others being ASAP and Advance), where the order will get fired down to the POS for preparation only when explicitly fired.
+    operationId: RetrieveUserOpenManualFireOrders
+    parameters:
+    - name: authtoken
+      in: path
+      description: Olo user authentication token.
+      required: true
+      schema:
+        type: string
+        example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseManualFireOrders'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+
+# User Loyalty Rewards
+/users/{authtoken}/qualifyingrewards:
+  get:
+    tags:
+    - loyaltyRewards
+    summary: Retrieve User Qualifying Rewards
+    description: Returns a list of qualifying rewards for the user.
+    operationId: RetrieveUserQualifyingRewards
+    parameters:
+    - name: authtoken
+      in: path
+      description: Olo user authentication token.
+      required: true
+      schema:
+        type: string
+        example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    - name: vendorId
+      in: query
+      description: Olo restaurant id.
+      required: true
+      schema:
+        type: string
+        example: 27739
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseLoyaltyRewards'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+/users/{authtoken}/rewardsnear:
+  get:
+    tags:
+    - loyaltyRewards
+    summary: Retrieve Nearby User Qualifying Rewards
+    description: Returns a list of nearby restaurants (`vendor` entities) with their respective rewards for the user.
+    operationId: RetrieveNearbyUserQualifyingRewards
+    parameters:
+    - name: authtoken
+      in: path
+      description: Olo user authentication token.
+      required: true
+      schema:
+        type: string
+        example: zqd4AeF7lkal12bEPGeLO4sZ4gOleydt
+    - name: lat
+      in: query
+      description: Latitude to search near.
+      required: true
+      schema:
+        type: number
+        format: float
+        example: 40.7054008
+    - name: long
+      in: query
+      description: Longitude to search near.
+      required: true
+      schema:
+        type: number
+        format: float
+        example: -74.0132198
+    - name: radius
+      in: query
+      description: Search radius in miles.
+      required: true
+      schema:
+        type: number
+        format: float
+        example: 25
+    - name: limit
+      in: query
+      description: ' Maximum number of results to return.'
+      required: true
+      schema:
+        type: integer
+        format: int32
+        example: 10
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseLoyaltyRewardsByVendor'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+
+# User Unauthorized
+/users/byid/{userGuid}:
+  get:
+    tags:
+    - unauthorized
+    summary: Retrieve User Details by User Guid
+    description: |
+      Returns a user's personal details.
+
+      This endpoint requires the "Access Unauthenticated Users" permission to use. A certification in a lower environment is also required. Please reach out to your Customer Success representative to enable this permission on your API key.
+
+      To pass certification, an application must demonstrate the following security capabilities:
+      
+      * Verify the end-user's identity (e.g. through a verification email)
+      * Ensure that the third party system cannot be made to initiate a password reset without a successful identify verification. (This means, for example, that the implementer must not blindly proxy end-user requests to the Olo API)
+      * Prevent replay attacks (e.g. using one-time, expiring verification links)
+      * Rate-limiting and bot protection (e.g. captchas)
+      * Discourage weak or reused passwords
+      * Ensure that passwords are never stored by the service.
+      
+      > Despite the required certification, Olo assumes no liability for the security of front-end applications provided by external parties.
+    operationId: RetrieveUserDetailsbyUserGuid
+    parameters:
+    - name: userGuid
+      in: path
+      description: Olo user guid.
+      required: true
+      schema:
+        type: string
+        example: f8dac5dd-d3b2-w76c-b969-a668c699637c
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseUser'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+  put:
+    tags:
+    - unauthorized
+    summary: Update User Details by User Guid
+    description: |
+      Updates the user's personal details. For users linked to third party login providers, contact information must be updated with the login provider, not Olo. Once updated, please call the [SSO endpoint](#operation/CreateorGetSSOLinkedOloUser) again, which will automatically update the linked Olo user's information.
+
+      This endpoint requires the "Access Unauthenticated Users" permission to use. A certification in a lower environment is also required. Please reach out to your Customer Success representative to enable this permission on your API key.
+
+      To pass certification, an application must demonstrate the following security capabilities:
+      
+      * Verify the end-user's identity (e.g. through a verification email)
+      * Ensure that the third party system cannot be made to initiate a password reset without a successful identify verification. (This means, for example, that the implementer must not blindly proxy end-user requests to the Olo API)
+      * Prevent replay attacks (e.g. using one-time, expiring verification links)
+      * Rate-limiting and bot protection (e.g. captchas)
+      * Discourage weak or reused passwords
+      * Ensure that passwords are never stored by the service.
+      
+      > Despite the required certification, Olo assumes no liability for the security of front-end applications provided by external parties.
+    operationId: UpdateUserDetailsbyUserGuid
+    parameters:
+    - name: userGuid
+      in: path
+      description: Olo user guid.
+      required: true
+      schema:
+        type: string
+        example: f8dac5dd-d3b2-w76c-b969-a668c699637c
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestUserPersonalDetails'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseUser'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+/users/byid/{userGuid}/contactdetails:
+  get:
+    tags:
+    - unauthorized
+    summary: Retrieve User Contact Number by User Guid
+    description: |
+      Returns the user's contact number.
+
+      This endpoint requires the "Access Unauthenticated Users" permission to use. A certification in a lower environment is also required. Please reach out to your Customer Success representative to enable this permission on your API key.
+
+      To pass certification, an application must demonstrate the following security capabilities:
+      
+      * Verify the end-user's identity (e.g. through a verification email)
+      * Ensure that the third party system cannot be made to initiate a password reset without a successful identify verification. (This means, for example, that the implementer must not blindly proxy end-user requests to the Olo API)
+      * Prevent replay attacks (e.g. using one-time, expiring verification links)
+      * Rate-limiting and bot protection (e.g. captchas)
+      * Discourage weak or reused passwords
+      * Ensure that passwords are never stored by the service.
+      
+      > Despite the required certification, Olo assumes no liability for the security of front-end applications provided by external parties.
+    operationId: RetrieveUserContactNumberbyUserGuid
+    parameters:
+    - name: userGuid
+      in: path
+      description: Olo user guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: f8dac5dd-d3b2-w76c-b969-a668c699637c
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseContactDetails'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+  put:
+    tags:
+    - unauthorized
+    summary: Update User Contact Number by User Guid
+    description: |
+      Sets the user's contact number in case of issues with orders. Must include a full telephone number of at least 10 digits.
+
+      This endpoint requires the "Access Unauthenticated Users" permission to use. A certification in a lower environment is also required. Please reach out to your Customer Success representative to enable this permission on your API key.
+
+      To pass certification, an application must demonstrate the following security capabilities:
+      
+      * Verify the end-user's identity (e.g. through a verification email)
+      * Ensure that the third party system cannot be made to initiate a password reset without a successful identify verification. (This means, for example, that the implementer must not blindly proxy end-user requests to the Olo API)
+      * Prevent replay attacks (e.g. using one-time, expiring verification links)
+      * Rate-limiting and bot protection (e.g. captchas)
+      * Discourage weak or reused passwords
+      * Ensure that passwords are never stored by the service.
+      
+      > Despite the required certification, Olo assumes no liability for the security of front-end applications provided by external parties.
+    operationId: UpdateUserContactNumberbyUserGuid
+    parameters:
+    - name: userGuid
+      in: path
+      description: Olo user guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: f8dac5dd-d3b2-w76c-b969-a668c699637c
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/ResponseContactDetails'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseContactDetails'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+/users/byid/{userGuid}/contactoptions:
+  get:
+    tags:
+    - unauthorized
+    summary: Retrieve User Communication Preferences by User Guid
+    description: |
+      Returns the user's current communication preferences, i.e. marketing email opt-in, upsell prompts, email receipts, and feedback follow-up.
+
+      This endpoint requires the "Access Unauthenticated Users" permission to use. A certification in a lower environment is also required. Please reach out to your Customer Success representative to enable this permission on your API key.
+
+      To pass certification, an application must demonstrate the following security capabilities:
+      
+      * Verify the end-user's identity (e.g. through a verification email)
+      * Ensure that the third party system cannot be made to initiate a password reset without a successful identify verification. (This means, for example, that the implementer must not blindly proxy end-user requests to the Olo API)
+      * Prevent replay attacks (e.g. using one-time, expiring verification links)
+      * Rate-limiting and bot protection (e.g. captchas)
+      * Discourage weak or reused passwords
+      * Ensure that passwords are never stored by the service.
+      
+      > Despite the required certification, Olo assumes no liability for the security of front-end applications provided by external parties.
+    operationId: RetrieveUserCommunicationPreferencesbyUserGuid
+    parameters:
+    - name: userGuid
+      in: path
+      description: Olo user guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: f8dac5dd-d3b2-w76c-b969-a668c699637c
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseContactOptions'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+  put:
+    tags:
+    - unauthorized
+    summary: Update User Communication Preferences by User Guid
+    description: |
+      Updates the user's current communication preferences, i.e. marketing email opt-in, upsell prompts, email receipts, and feedback follow-up.
+
+      This endpoint requires the "Access Unauthenticated Users" permission to use. A certification in a lower environment is also required. Please reach out to your Customer Success representative to enable this permission on your API key.
+
+      To pass certification, an application must demonstrate the following security capabilities:
+      
+      * Verify the end-user's identity (e.g. through a verification email)
+      * Ensure that the third party system cannot be made to initiate a password reset without a successful identify verification. (This means, for example, that the implementer must not blindly proxy end-user requests to the Olo API)
+      * Prevent replay attacks (e.g. using one-time, expiring verification links)
+      * Rate-limiting and bot protection (e.g. captchas)
+      * Discourage weak or reused passwords
+      * Ensure that passwords are never stored by the service.
+      
+      > Despite the required certification, Olo assumes no liability for the security of front-end applications provided by external parties.
+    operationId: UpdateUserCommunicationPreferencesbyUserGuid
+    parameters:
+    - name: userGuid
+      in: path
+      description: Olo user guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: f8dac5dd-d3b2-w76c-b969-a668c699637c
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/ResponseContactOptions'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseContactOptions'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+/users/byid/{userGuid}/password:
+  put:
+    tags:
+    - unauthorized
+    summary: Change Password for Olo User by User Guid
+    description: |
+      Change an Olo user's password. This endpoint is not compatible with the flow outlined in the [SSO endpoint](#operation/CreateorGetSSOLinkedOloUser).
+
+      This endpoint requires the "Access Unauthenticated Users" permission to use. A certification in a lower environment is also required. Please reach out to your Customer Success representative to enable this permission on your API key.
+
+      To pass certification, an application must demonstrate the following security capabilities:
+      
+      * Verify the end-user's identity (e.g. through a verification email)
+      * Ensure that the third party system cannot be made to initiate a password reset without a successful identify verification. (This means, for example, that the implementer must not blindly proxy end-user requests to the Olo API)
+      * Prevent replay attacks (e.g. using one-time, expiring verification links)
+      * Rate-limiting and bot protection (e.g. captchas)
+      * Discourage weak or reused passwords
+      * Ensure that passwords are never stored by the service.
+      
+      > Despite the required certification, Olo assumes no liability for the security of front-end applications provided by external parties.
+    operationId: ChangePasswordforOloUserbyUserGuid
+    parameters:
+    - name: userGuid
+      in: path
+      description: Olo user guid.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: f8dac5dd-d3b2-w76c-b969-a668c699637c
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestChangePasswordByUserGuid'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseChangePasswordByUserGuid'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: body
+
+# Export
+/vendorexport/status:
+  get:
+    tags:
+    - vendorExport
+    summary: Retrieve Vendor Export Status
+    description: Provides a list of brands and their respective vendors (a.k.a restaurants), where each brand entry indicates when the brand's menu was last updated, and each vendor entry indicates when the vendor's menu was last updated as well as when it was last exported.
+    operationId: RetrieveVendorExportStatus
+    parameters:
+    - name: changedsince
+      in: query
+      description: Filters the results to only include vendors (a.k.a restaurants)
+        whose menus have changed sinced the provided datetime.
+      schema:
+        type: string
+        format: date
+        example: 20210122
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseBrandExportStatusList'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+/vendorexport/xml:
+  get:
+    tags:
+    - vendorExport
+    summary: Download Restaurant & Menu Data
+    description: |
+      Downloads a zipped Vendor Export XML file containing restaurant and menu data for the provided restaurant id. The Ordering API will respond with an HTTP 301 containing a redirect URL in the "Location" header pointed at the file location in S3. This is a temporary, signed URL that will only work for 10 minutes. The Vendor Export files are only updated after restaurant or menu data changes. 
+      
+      Download [Vendor Export XSD](/docs/VendorExport?docSlug=ordering-api)
+
+      If you wish to download Vendor Export files for all restaurants associated with your project, first send a request to [GET /vendorexport/status](#operation/RetrieveVendorExportStatus) to retrieve a list of all restaurants along with the date of their last file change. You can filter the result set by sending a value for the `changedsince` query string parameter. After you have a list of which restaurant to download files for, send a request for each restaurant to this endpoint with the `vendorid` specified in the query string.
+    operationId: DownloadRestaurantMenuData
+    parameters:
+    - name: vendorid
+      in: query
+      description: Restaurant id to download the Vendor Export file for
+      required: true
+      schema:
+        type: integer
+        format: int64
+        example: 27739
+    responses:
+      200:
+        description: Success!
+        content:
+          application/zip:
+            schema:
+              type: string
+              format: file
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+/orderexports:
+  get:
+    tags:
+    - orderExport
+    summary: Retrieve All Order Batches
+    description: Typically there will be one order batch (of closed orders) per
+      24 hour period, generated in the morning, although this may differ occasionally.
+      Please note that if a batch doesn't show up one day, all of that day's closed
+      orders will show up in the next batch that is generated, so you won't ever
+      be missing data.
+    operationId: RetrieveAllOrderBatches
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/ResponseOrderBatches'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+/orderexports/{batchId}:
+  post:
+    tags:
+    - orderExport
+    summary: Retrieve Download Redirect for Order Batch
+    description: This will return a HTTP redirect to a URL of the order batch's .zip file. This is a temporary, signed URL that will only stick around for 5 minutes. Inside this .zip file is an XML file containing the order (including customer) data.
+    operationId: RetrieveDownloadRedirectforOrderBatch
+    parameters:
+    - name: batchId
+      in: path
+      description: The id of the closed order batch to download. Retrieved from [GET /orderexports](#operation/RetrieveAllOrderBatches).
+      required: true
+      schema:
+        type: integer
+        format: int64
+        example: 238134
+    responses:
+      200:
+        description: Success!
+        content:
+          application/zip:
+            schema:
+              type: string
+              format: binary
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+  delete:
+    tags:
+    - orderExport
+    summary: Mark Order Batch as Processed
+    description: Once the file has been successfully downloaded and imported, this will let us know to remove the file from the download list.
+    operationId: MarkOrderBatchasProcessed
+    parameters:
+    - name: batchId
+      in: path
+      description: The id of the closed order batch to remove.
+      required: true
+      schema:
+        type: integer
+        format: int64
+        example: 387281
+    responses:
+      200:
+        description: Success!
+        content: {}
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+
+# Feedback
+/feedback:
+  post:
+    tags:
+    - feedback
+    summary: Submit Feedback to Brand
+    description: Will pass along feedback to the brand associated with these API credentials. The brand's 'Feedback Email Address' must be previously configured for this endpoint to work. To have this email address configured, please reach out to your Olo Customer Success representative.
+    operationId: SubmitFeedbacktoBrand
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: 'ordering-schemas-11.yaml#/RequestFeedback'
+      required: true
+    responses:
+      200:
+        description: Success!
+        content:
+          application/json:
+            schema:
+              $ref: 'ordering-schemas-11.yaml#/RequestFeedback'
+      400:
+        $ref: 'ordering-schemas-11.yaml#/400'
+      403:
+        $ref: 'ordering-schemas-11.yaml#/403'
+      500:
+        $ref: 'ordering-schemas-11.yaml#/500'
+    x-codegen-request-body-name: post

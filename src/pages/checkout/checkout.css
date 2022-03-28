@@ -1,0 +1,117 @@
+.checkout-wrapper {
+  background: #73AAC7;
+  padding: 100px 135px;
+}
+.checkout-wrapper .order {
+  padding: 75px 45px;
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  border-radius: 30px;
+}
+
+.order .left-col {
+  padding: 0px 90px 0px 60px;
+}
+.order .left-col .MuiTextField-root {
+  margin-bottom: 10px;
+}
+.order .left-col h4 {
+  margin-bottom: 20px;
+}
+.order .right-col button.caption-grey {
+  color: #707070;
+  text-transform: uppercase;
+  padding: 0px;
+}
+.order .right-col .time-slot {
+  background: #214F66;
+  margin-top: 10px;
+  width: calc(100% - 8px);
+}
+.order .right-col .time-slot-selected {
+  background: #79C043;
+  margin-top: 10px;
+  width: calc(100% - 8px);
+}
+.order .right-col #select-more-times,
+.order .right-col .MuiSelect-select {
+  width: 100%;
+  text-align: center;
+  color: white;
+  font-family: 'Poppins-Bold', sans-serif;
+}
+.order .right-col .MuiSelect-icon {
+  color: white;
+}
+.order .right-col #select-more-times.Mui-focused,
+.order .right-col #select-more-times.MuiFormLabel-filled {
+  width: auto;
+  font-family: 'Poppins-Bold', sans-serif !important;
+  padding: 14px 14px 14px 0px;
+  color: white !important;
+  font-size: 12px;
+}
+.size span {
+  font-size: 11px !important;
+  font-family: 'Poppins-Regular';
+}
+.order .add-order {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+.order .add-order a {
+  text-decoration: none;
+}
+.order .add-order button {
+  width: 100%;
+}
+
+
+@media screen and (max-width: 900px) {
+  .order .add-order button {
+    width: auto;
+    padding: 0px 35px;
+  }
+  .order .selected-btn-group {
+    display: inline-block;
+  }
+  .order .selected-btn {
+    float: left;
+    width: 47.2%;
+    margin-bottom: 10px !important;
+  }
+  .checkout-wrapper {
+    padding: 0px !important;
+  }
+  .checkout-wrapper .order {
+    border-radius: 0px !important;
+    padding: 30px !important;
+  }
+  .order .left-col {
+    padding: 0px 55px 0px 0px !important;
+  }
+}
+@media screen and (max-width: 468px) {
+  .checkout-wrapper .order {
+    padding: 45px !important;
+  }
+  .order .add-order button {
+    width: 100%;
+  }
+  .order .selected-btn-group {
+    display: inline-block;
+  }
+  .order .selected-btn {
+    float: left;
+    width: 47.2%;
+    margin-bottom: 10px !important;
+  }
+  .order .time-slot-wrapper {
+    margin-top: 35px;
+  }
+  .order .time-slot,
+  .order .time-slot-selected {
+    margin-bottom: 64px;
+  }
+}

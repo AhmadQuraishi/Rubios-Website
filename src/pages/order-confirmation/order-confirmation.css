@@ -1,0 +1,59 @@
+.order-confirmation {
+  position: relative;
+}
+.order-confirmation .MuiPaper-root {
+  padding: 95px;
+  min-height: 435px;
+}
+.order-confirmation .MuiTextField-root {
+  width: 100%;
+}
+.white {
+  color: white;
+}
+.order-confirmation button {
+  width: 40%;
+  margin-top: 7px;
+  float: right !important;
+}
+.order-confirmation input {
+  background: white;
+  width: 100%;
+  height: 23px;
+  padding: 5px;
+  margin: 0px 5px 5px 0px;
+}
+.order-confirmation fieldset {
+  border: none;
+}
+.order-confirmation .card {
+  background-color: #2b4b62;
+  background-color: #2b4b62;
+  background-image: url("../../assets/imgs/bg1.png");
+  background-size: 70% auto;
+  background-position: bottom -45px right -40px;
+  background-repeat: no-repeat;
+
+}
+.order-confirmation .phone-icon {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  margin-left: -165px;
+}
+
+@media screen and (max-width: 800px) {
+  .order-confirmation .MuiPaper-root {
+    padding: 85px 30px;
+    min-height: auto;
+  }
+  .order-confirmation .phone-icon {
+    left: 0 !important;
+    margin-left: 0px !important;
+  }
+}
+@media screen and (max-width: 468px) {
+  .order-confirmation .card.MuiPaper-root {
+    min-height: 700px;
+  }
+}
