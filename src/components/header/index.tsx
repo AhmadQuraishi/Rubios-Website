@@ -87,7 +87,7 @@ export const handleCart = () => {
 };
 
 const Header = (props: any) => {
-  const { removeCart, showUserName, removeCartForLocation } = props;
+  const { removeCart, hideLoginPanel, removeCartForLocation } = props;
   const classes = useStyles();
   const theme = useTheme();
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -187,34 +187,36 @@ const Header = (props: any) => {
                   </Grid>
                 </Grid>
               ) : (
-                <Grid
-                  container
-                  sx={{
-                    background: '#0073BD',
-                    alignItems: 'center',
-                    fontFamily: 'Poppins-Medium',
-                    textAlign: 'center',
-                    textTransform: 'uppercase',
-                    fontSize: '14px',
-                    height: '70px',
-                    width: '65px',
-                  }}
-                  onClick={() => {
-                    navigate('/login');
-                  }}
-                >
+                !hideLoginPanel && (
                   <Grid
-                    item
-                    xs={12}
-                    sx={{ display: 'flex', justifyContent: 'center' }}
+                    container
+                    sx={{
+                      background: '#0073BD',
+                      alignItems: 'center',
+                      fontFamily: 'Poppins-Medium',
+                      textAlign: 'center',
+                      textTransform: 'uppercase',
+                      fontSize: '14px',
+                      height: '70px',
+                      width: '65px',
+                    }}
+                    onClick={() => {
+                      navigate('/login');
+                    }}
                   >
-                    <img
-                      style={{ width: '75%', display: 'block' }}
-                      src={require('../../assets/imgs/logout-icon.png')}
-                      alt="Login Icon"
-                    />
+                    <Grid
+                      item
+                      xs={12}
+                      sx={{ display: 'flex', justifyContent: 'center' }}
+                    >
+                      <img
+                        style={{ width: '75%', display: 'block' }}
+                        src={require('../../assets/imgs/logout-icon.png')}
+                        alt="Login Icon"
+                      />
+                    </Grid>
                   </Grid>
-                </Grid>
+                )
               )}
               {!removeCart && !removeCartForLocation && (
                 <div
@@ -342,50 +344,52 @@ const Header = (props: any) => {
                   </Grid>
                 </Grid>
               ) : (
-                <Grid
-                  container
-                  sx={{
-                    width: { sm: '170px', md: '200px' },
-                    marginLeft: '15px',
-                    background: '#0073BD',
-                    alignItems: 'center',
-                    cursor: 'pointer',
-                  }}
-                  onClick={() => {
-                    navigate('/login');
-                  }}
-                >
+                !hideLoginPanel && (
                   <Grid
-                    item
-                    xs={12}
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'center',
+                    container
+                    sx={{
+                      width: { sm: '170px', md: '200px' },
+                      marginLeft: '15px',
+                      background: '#0073BD',
                       alignItems: 'center',
+                      cursor: 'pointer',
+                    }}
+                    onClick={() => {
+                      navigate('/login');
                     }}
                   >
-                    <img
-                      src={require('../../assets/imgs/user-icon.png')}
-                      alt="Profile Icon"
-                    />{' '}
-                    <Typography
-                      sx={{
-                        paddingLeft: '5px',
-                        display: 'block',
-                        maxWidth: { sm: '100px', lg: '130px' },
-                        whiteSpace: 'nowrap',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        fontFamily: 'Poppins-Medium',
-                        textAlign: 'center',
-                        textTransform: 'uppercase',
-                        fontSize: '14px',
+                    <Grid
+                      item
+                      xs={12}
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
                       }}
                     >
-                      Hi Guest!
-                    </Typography>
+                      <img
+                        src={require('../../assets/imgs/user-icon.png')}
+                        alt="Profile Icon"
+                      />{' '}
+                      <Typography
+                        sx={{
+                          paddingLeft: '5px',
+                          display: 'block',
+                          maxWidth: { sm: '100px', lg: '130px' },
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          fontFamily: 'Poppins-Medium',
+                          textAlign: 'center',
+                          textTransform: 'uppercase',
+                          fontSize: '14px',
+                        }}
+                      >
+                        Hi Guest!
+                      </Typography>
+                    </Grid>
                   </Grid>
-                </Grid>
+                )
               )}
               {!removeCart && (
                 <Button

@@ -1,26 +1,56 @@
 import './App.css';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Header from './components/header';
 import Footer from './components/footer';
-import { Fragment, useLayoutEffect, useMemo, useState } from 'react';
+import { Fragment, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import AppRoutes from './routes';
 import { Grid } from '@mui/material';
 import LeftMenuBar from './components/left-menu-bar';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { setPageStateRequest } from './redux/actions/page-state';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 function App(props: any) {
   const location = useLocation();
   const [isAccountSection, setIsAccountSection] = useState(false);
+  const [hideLoginPanel, setHideLoginPanel] = useState(true);
   const dispatch = useDispatch();
+  const { providerToken } = useSelector((state: any) => state.providerReducer);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (window.location.href.toLocaleLowerCase().indexOf('/account') != -1) {
+      if (providerToken == null || providerToken == undefined) {
+        navigate('/login');
+      }
+    }
+    if (
+      window.location.href.toLocaleLowerCase().indexOf('/menu') != -1 ||
+      window.location.href.toLocaleLowerCase().indexOf('/checkout') != -1
+    ) {
+      setHideLoginPanel(false);
+    } else {
+      setHideLoginPanel(true);
+    }
+  }, []);
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
     if (window.location.href.toLocaleLowerCase().indexOf('/account') != -1) {
       setIsAccountSection(true);
+      if (providerToken == null || providerToken == undefined) {
+        navigate('/login');
+      }
     } else {
       setIsAccountSection(false);
+    }
+    if (
+      window.location.href.toLocaleLowerCase().indexOf('/menu') != -1 ||
+      window.location.href.toLocaleLowerCase().indexOf('/checkout') != -1
+    ) {
+      setHideLoginPanel(false);
+    } else {
+      setHideLoginPanel(true);
     }
     if (
       window.location.href.toLocaleLowerCase().indexOf('/login') != -1 ||
@@ -40,6 +70,7 @@ function App(props: any) {
         removeCartForLocation={
           window.location.href.toLocaleLowerCase().indexOf('/location') != -1
         }
+        hideLoginPanel={hideLoginPanel}
         showUserName={isAccountSection}
         removeCart={
           isAccountSection ||
