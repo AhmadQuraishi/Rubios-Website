@@ -13,7 +13,7 @@ import { forwardRef } from 'react';
 import { IMaskInput } from 'react-imask';
 import { DeliveryModeEnum } from '../../types/olo-api/olo-api.enums';
 
-const PickupForm = ({basket, pickupFormRef}: any) => {
+const PickupForm = ({basket, pickupFormRef, orderType}: any) => {
   const dispatch = useDispatch();
 
   const { providerToken } = useSelector((state: any) => state.providerReducer);
@@ -86,9 +86,9 @@ const PickupForm = ({basket, pickupFormRef}: any) => {
             phone: Yup.string()
                 .min(14, 'Enter valid number')
                 .required('Phone is required'),
-            vehicleModal: basket && basket.deliverymode === DeliveryModeEnum.curbside ? Yup.string().max(15, 'Must be 15 characters or less').required('Vehicle Modal is required') : Yup.string(),
-            vehicleMake: basket && basket.deliverymode === DeliveryModeEnum.curbside ? Yup.string().max(15, 'Must be 15 characters or less').required('Vehicle Make is required') : Yup.string(),
-            vehicleColor: basket && basket.deliverymode === DeliveryModeEnum.curbside ? Yup.string().max(15, 'Must be 15 characters or less').required('Vehicle Color is required') : Yup.string(),
+            vehicleModal: orderType === DeliveryModeEnum.curbside ? Yup.string().max(15, 'Must be 15 characters or less').required('Vehicle Modal is required') : Yup.string(),
+            vehicleMake: orderType === DeliveryModeEnum.curbside ? Yup.string().max(15, 'Must be 15 characters or less').required('Vehicle Make is required') : Yup.string(),
+            vehicleColor: orderType === DeliveryModeEnum.curbside ? Yup.string().max(15, 'Must be 15 characters or less').required('Vehicle Color is required') : Yup.string(),
             emailNotification: Yup.bool().optional()
             })}
             onSubmit={(values, actions) => {}}
@@ -194,7 +194,7 @@ const PickupForm = ({basket, pickupFormRef}: any) => {
                 </Grid>
 
                 {
-            basket && basket.deliverymode === DeliveryModeEnum.curbside ? (
+            orderType === DeliveryModeEnum.curbside ? (
                     <>
                         <Grid container spacing={1}>
 

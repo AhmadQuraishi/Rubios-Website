@@ -1,12 +1,7 @@
-import React, { forwardRef, useRef } from 'react';
-import { Box, Button, Card, Grid, TextField, Typography } from '@mui/material';
-import { Formik } from 'formik';
-import * as Yup from 'yup';
+import React from 'react';
+import { Box, Button, Card, Grid, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Divider from '@mui/material/Divider';
 import OrderDetail from '../../components/order-detail';
 import Tip from '../../components/tip';
@@ -15,68 +10,22 @@ import OrderTime from '../../components/order-time';
 import PaymentInfo from '../../components/payment-info';
 import StoreInfoBar from '../../components/restaurant-info-bar';
 import './checkout.css';
-import {
-  ResponseBasket,
-  ResponseBasketValidation,
-  ResponseContactOptions,
-} from '../../types/olo-api';
-import {DeliveryModeEnum} from '../../types/olo-api/olo-api.enums';
-import { IMaskInput } from 'react-imask';
+import { ResponseBasket, ResponseBasketValidation } from '../../types/olo-api';
+import { DeliveryModeEnum } from '../../types/olo-api';
 import moment from 'moment';
-import { HoursListing } from '../../helpers/hoursListing';
 import {
   getSingleRestaurantCalendar,
   validateBasket,
 } from '../../redux/actions/basket/checkout';
 import { displayToast } from '../../helpers/toast';
-import { generateSubmitBasketPayload, formatCustomFields, formatDeliveryAddress } from '../../helpers/checkout';
-import { updateUser } from '../../redux/actions/user';
+import {
+  generateSubmitBasketPayload,
+  formatCustomFields,
+  formatDeliveryAddress,
+} from '../../helpers/checkout';
+import { getUserDeliveryAddresses } from '../../redux/actions/user';
 import PickupForm from '../../components/pickup-form';
 import DeliveryForm from '../../components/delivery-form';
-
-
-let userInfoValidation = Yup.object({
-  firstName: Yup.string()
-    .max(30, 'Must be 30 characters or less')
-    .required('First Name is required'),
-  lastName: Yup.string()
-    .max(30, 'Must be 30 characters or less')
-    .required('Last Name is required'),
-  email: Yup.string()
-    .matches(
-      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-      'Invalid Email ',
-    )
-    .email('Invalid email address')
-    .required('Email is required'),
-  phone: Yup.string()
-    .min(14, 'Enter valid number')
-    .required('Phone is required'),
-  emailNotification: Yup.bool().optional(),
-  vehicleModal: Yup.string()
-  .max(15, 'Must be 15 characters or less')
-  .required('Vehicle Modal is required'),
-  vehicleMake: Yup.string()
-  .max(15, 'Must be 15 characters or less')
-  .required('Vehicle Make is required'),  
-  vehicleColor: Yup.string()
-  .max(15, 'Must be 15 characters or less')
-  .required('Vehicle Color is required'),
-})
-
-console.log('userInfoValidation', userInfoValidation)
-
-const vehicleValidation = Yup.object({
-  vehicleModal: Yup.string()
-  .max(15, 'Must be 15 characters or less')
-  .required('Vehicle Modal is required'),
-  vehicleMake: Yup.string()
-  .max(15, 'Must be 15 characters or less')
-  .required('Vehicle Make is required'),  
-  vehicleColor: Yup.string()
-  .max(15, 'Must be 15 characters or less')
-  .required('Vehicle Color is required'),
-})
 
 const Checkout = () => {
   const dispatch = useDispatch();
@@ -85,17 +34,22 @@ const Checkout = () => {
   const pickupFormRef = React.useRef<any>(null);
   const deliveryFormRef = React.useRef<any>(null);
   const paymentInfoRef = React.useRef<any>();
-  const [formValidation, setFormValidation] = React.useState<any>(userInfoValidation);
 
   const [runOnce, setRunOnce] = React.useState<boolean>(true);
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
   const [basket, setBasket] = React.useState<ResponseBasket>();
   const [validate, setValidate] = React.useState<ResponseBasketValidation>();
+  const [defaultDeliveryAddress, setDefaultDeliveryAddress] = React.useState<any>(null);
 
   const basketObj = useSelector((state: any) => state.basketReducer);
   const { authToken } = useSelector((state: any) => state.authReducer);
   const { providerToken } = useSelector((state: any) => state.providerReducer);
-  const { restaurant, orderType } = useSelector((state: any) => state.restaurantInfoReducer);
+  const { restaurant, orderType } = useSelector(
+    (state: any) => state.restaurantInfoReducer,
+  );
+  const { userDeliveryAddresses } = useSelector(
+    (state: any) => state.userReducer,
+  );
 
   React.useEffect(() => {
     if (basket && runOnce) {
@@ -118,14 +72,26 @@ const Checkout = () => {
   }, [basket]);
 
   React.useEffect(() => {
-    if (orderType && orderType !== '' && orderType === DeliveryModeEnum.curbside) {
-      const obj = {
-        ...userInfoValidation,
-        ...vehicleValidation
-      }
-      setFormValidation(obj)
+    if (authToken?.authtoken && authToken.authtoken !== '') {
+      dispatch(getUserDeliveryAddresses());
     }
-  }, [basket]);
+  }, []);
+
+  React.useEffect(() => {
+    if (
+      userDeliveryAddresses &&
+      userDeliveryAddresses.deliveryaddresses &&
+      userDeliveryAddresses.deliveryaddresses.length
+    ) {
+      let defaultAddress = userDeliveryAddresses.deliveryaddresses.filter(
+        (address: any) => {
+          return address.isdefault === true;
+        },
+      );
+      defaultAddress = defaultAddress.length ? defaultAddress[0] : null;
+      setDefaultDeliveryAddress(defaultAddress);
+    }
+  }, [userDeliveryAddresses]);
 
   React.useEffect(() => {
     if (basketObj.orderConfirmation) {
@@ -142,31 +108,6 @@ const Checkout = () => {
       setValidate(basketObj.validate);
     }
   }, [basketObj.validate]);
-
-  interface CustomProps {
-    onChange: (event: { target: { name: string; value: string } }) => void;
-    name: string;
-  }
-
-  const NumberFormatCustom = forwardRef<HTMLElement, CustomProps>(
-    function NumberFormatCustom(props, ref) {
-      const { onChange, ...other } = props;
-
-      return (
-        <IMaskInput
-          {...other}
-          mask="(#00) 000-0000"
-          definitions={{
-            '#': /[1-9]/,
-          }}
-          onAccept={(value: any) =>
-            onChange({ target: { name: props.name, value } })
-          }
-          overwrite
-        />
-      );
-    },
-  );
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -235,11 +176,16 @@ const Checkout = () => {
     let customFields = [];
     let deliveryAddress = null;
     let deliverymode = {
-      deliverymode: orderType || ''
-    }
+      deliverymode: orderType || '',
+    };
     let formDataValue;
 
-    if(orderType && (orderType === '' || orderType === DeliveryModeEnum.pickup || orderType === DeliveryModeEnum.curbside)){
+    if (
+      orderType &&
+      (orderType === '' ||
+        orderType === DeliveryModeEnum.pickup ||
+        orderType === DeliveryModeEnum.curbside)
+    ) {
       const { isValidForm, formData } = validatePickupForm();
       if (!isValidForm) {
         displayToast('ERROR', 'Pickup fields are required.');
@@ -247,10 +193,10 @@ const Checkout = () => {
         setButtonDisabled(false);
         return;
       }
-      formDataValue = formData
+      formDataValue = formData;
     }
 
-    if(orderType && orderType === DeliveryModeEnum.delivery){
+    if (orderType && orderType === DeliveryModeEnum.delivery) {
       const { isValidForm, formData } = validateDeliveryForm();
       if (!isValidForm) {
         displayToast('ERROR', 'Delivery fields are required.');
@@ -258,9 +204,8 @@ const Checkout = () => {
         setButtonDisabled(false);
         return;
       }
-      formDataValue = formData
+      formDataValue = formData;
     }
-    
 
     const { isValidCard, cardDetails, errors } = await validatePaymentForm();
 
@@ -279,12 +224,12 @@ const Checkout = () => {
       authToken?.authtoken,
     );
 
-    if(orderType && orderType === DeliveryModeEnum.curbside){
-      customFields = formatCustomFields(restaurant.customfields, formDataValue)
+    if (orderType && orderType === DeliveryModeEnum.curbside) {
+      customFields = formatCustomFields(restaurant.customfields, formDataValue);
     }
 
-    if(orderType && orderType === DeliveryModeEnum.delivery){
-      deliveryAddress = formatDeliveryAddress(formDataValue)
+    if (orderType && orderType === DeliveryModeEnum.delivery) {
+      deliveryAddress = formatDeliveryAddress(formDataValue);
     }
 
     if (basket) {
@@ -300,7 +245,16 @@ const Checkout = () => {
           phone: formDataValue.phone,
         };
       }
-      dispatch(validateBasket(basket?.id, basketPayload, user, customFields, deliverymode, deliveryAddress));
+      dispatch(
+        validateBasket(
+          basket?.id,
+          basketPayload,
+          user,
+          customFields,
+          deliverymode,
+          deliveryAddress,
+        ),
+      );
     }
   };
 
@@ -329,16 +283,23 @@ const Checkout = () => {
                           PICK UP INFO
                         </Typography>
                       </Grid>
-                      {
-                       orderType && ( orderType === '' || orderType === DeliveryModeEnum.pickup || orderType === DeliveryModeEnum.curbside) ? (
-                            <PickupForm basket={basket} pickupFormRef={pickupFormRef} />
-                        ) : (null)
-                      }
-                      {
-                        orderType && (orderType === DeliveryModeEnum.delivery) ? (
-                            <DeliveryForm basket={basket} deliveryFormRef={deliveryFormRef} />
-                        ) : (null)
-                      }
+                      {basket &&
+                      (orderType === '' ||
+                        orderType === DeliveryModeEnum.pickup ||
+                        orderType === DeliveryModeEnum.curbside) ? (
+                        <PickupForm
+                          basket={basket}
+                          pickupFormRef={pickupFormRef}
+                          orderType={orderType}
+                        />
+                      ) : null}
+                      {orderType && orderType === DeliveryModeEnum.delivery ? (
+                        <DeliveryForm
+                          basket={basket}
+                          defaultAddress={defaultDeliveryAddress}
+                          deliveryFormRef={deliveryFormRef}
+                        />
+                      ) : null}
                     </Grid>
                   </Grid>
                   <OrderTime />
