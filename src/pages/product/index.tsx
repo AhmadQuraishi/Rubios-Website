@@ -10,16 +10,14 @@ import {
 } from '@mui/material';
 import './product.css';
 import * as React from 'react';
-import FoodMenuCard from '../../components/food-menu-card';
+import ProductOptionsSkeletonUI from '../../components/product-options-skeleton-ui';
 import StoreInfoBar from '../../components/restaurant-info-bar';
-import { Fragment, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategoriesRequest } from '../../redux/actions/category';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
   Category,
-  Option,
-  OptionGroup,
   Product as ProductInfo,
   ResponseBasket,
   ResponseModifiers,
@@ -31,9 +29,7 @@ import { addProductRequest } from '../../redux/actions/basket/product/add';
 import { getBasketRequest } from '../../redux/actions/basket';
 import { updateProductRequest } from '../../redux/actions/basket/product/update';
 import { displayToast } from '../../helpers/toast';
-import Checkmarkicon from '../../assets/imgs/check-mark.svg';
-import { padding } from '@mui/system';
-import getIngredientImage from '../../helpers/getIngredientImages';
+import ItemImage from '../../components/item-image';
 
 const Product = () => {
   const [productDetails, setProductDetails] = useState<ProductInfo>();
@@ -340,8 +336,12 @@ const Product = () => {
     }
     return isExist;
   };
-
+  const [selectionExecute, setSelectionExecute] = useState(false);
   const showChildOptions = (optionId: number, parnetOptionID: number) => {
+    setSelectionExecute(false);
+    setTimeout(() => {
+      setSelectionExecute(false);
+    }, 200);
     optionsSelectionArray.map((item: any) => {
       if (item.id === parnetOptionID) {
         if (item.mandatory) {
@@ -682,148 +682,152 @@ const Product = () => {
             </Grid>
             <br />
             <br />
-            {optionsSelectionArray.length > 0 &&
-              optionsSelectionArray.map((itemMain: any, index0: number) => (
-                <Grid
-                  key={Math.random() + index0}
-                  container
-                  sx={{
-                    display:
-                      itemMain.id == itemMain.parentOptionID ||
-                      selectedParentOption(itemMain.parentOptionID)
-                        ? 'flex'
-                        : 'none',
-                  }}
-                  className="menu-items"
-                  parent-mandatory-option={itemMain.mandatory.toString()}
-                  parent-option-id={itemMain.parentOptionID}
-                >
-                  <Grid item xs={12} option-id={itemMain.id}>
-                    <Typography
-                      variant={
-                        itemMain.parentOptionID == itemMain.id ? 'h4' : 'h5'
-                      }
-                      sx={{ marginTop: '20px' }}
-                      title={itemMain.name}
-                    >
-                      {itemMain.name}
-                      {IsItemSelected(itemMain.id) && (
-                        <span
-                          style={{
-                            fontSize: '16px',
-                            color: 'red',
-                            paddingLeft: '10px',
-                          }}
-                        >
-                          (Required)
-                        </span>
-                      )}
-                    </Typography>
-                  </Grid>
-                  {itemMain.options &&
-                    itemMain.options.map((itemChild: any, index1: number) => (
-                      <Grid
-                        key={Math.random() + index1}
-                        option-id={itemChild.option.id}
-                        className={
-                          checkOptionSelected(
-                            itemChild.option.id,
-                            itemMain.id,
-                          ) == true
-                            ? 'content-panel selected'
-                            : 'content-panel'
+            {selectionExecute && <ProductOptionsSkeletonUI />}
+            <div style={{ display: !selectionExecute ? 'block' : 'none' }}>
+              {optionsSelectionArray.length > 0 &&
+                optionsSelectionArray.map((itemMain: any, index0: number) => (
+                  <Grid
+                    key={Math.random() + index0}
+                    container
+                    sx={{
+                      display:
+                        itemMain.id == itemMain.parentOptionID ||
+                        selectedParentOption(itemMain.parentOptionID)
+                          ? 'flex'
+                          : 'none',
+                    }}
+                    className="menu-items"
+                    parent-mandatory-option={itemMain.mandatory.toString()}
+                    parent-option-id={itemMain.parentOptionID}
+                  >
+                    <Grid item xs={12} option-id={itemMain.id}>
+                      <Typography
+                        variant={
+                          itemMain.parentOptionID == itemMain.id ? 'h4' : 'h5'
                         }
-                        item
-                        xs={12}
-                        sm={6}
-                        md={4}
+                        sx={{ marginTop: '20px' }}
+                        title={itemMain.name}
                       >
-                        <Card
-                          className="card-panel"
-                          title={itemChild.option.name}
-                          is-mandatory={itemMain.mandatory.toString()}
-                          parent-option-id={itemMain.parentOptionID}
-                          onClick={() => {
-                            showChildOptions(itemChild.option.id, itemMain.id);
-                          }}
-                        >
-                          <div className="check-mark">
-                            <div className="checkmark">L</div>
-                          </div>
-                          <Grid
-                            container
-                            spacing={1}
-                            className="name-img-panel"
+                        {itemMain.name}
+                        {IsItemSelected(itemMain.id) && (
+                          <span
+                            style={{
+                              fontSize: '16px',
+                              color: 'red',
+                              paddingLeft: '10px',
+                            }}
                           >
-                            <Grid item xs={5} sm={5}>
-                              <></>
-                              <img
-                                className="item-image"
-                                src={require('../../assets/imgs/default_img.png')}
-                                alt={itemChild.option.name}
-                                title={itemChild.option.name}
-                              />
-                            </Grid>
-                            <Grid item xs={7} sm={7} className="name-panel">
-                              {itemChild.option.name}
-                              {itemChild.dropDownValues && (
-                                <>
-                                  {itemChild.option.cost > 0 && (
-                                    <Grid
-                                      item
-                                      xs={6}
-                                      title={`$${parseFloat(
-                                        itemChild.option.cost,
-                                      ).toFixed(2)}`}
-                                      sx={{
-                                        paddingTop: '5px',
-                                        fontSize: '14px',
-                                        fontFamily: 'Poppins-Bold',
-                                        color: '#7CC8C5',
-                                      }}
-                                    >
-                                      $
-                                      {parseFloat(
-                                        itemChild.option.cost,
-                                      ).toFixed(2)}
-                                    </Grid>
-                                  )}
-                                  <select
-                                    style={{
-                                      marginTop: '8px',
-                                      display: 'block',
-                                    }}
-                                    parent-select-option-id={itemChild.id}
-                                    onClick={(e) => e.stopPropagation()}
-                                    value={itemChild.selectedValue || '0'}
-                                    onChange={(e) =>
-                                      dropDownValue(
-                                        itemChild.option.id,
-                                        e.target.value,
-                                      )
-                                    }
-                                  >
-                                    <option value="0">Please Choose</option>
-                                    {itemChild.dropDownValues.map(
-                                      (option: any, index: number) => (
-                                        <option
-                                          key={Math.random() + index}
-                                          value={option.id}
-                                        >
-                                          {option.name}
-                                        </option>
-                                      ),
+                            (Required)
+                          </span>
+                        )}
+                      </Typography>
+                    </Grid>
+                    {itemMain.options &&
+                      itemMain.options.map((itemChild: any, index1: number) => (
+                        <Grid
+                          key={Math.random() + index1}
+                          option-id={itemChild.option.id}
+                          className={
+                            checkOptionSelected(
+                              itemChild.option.id,
+                              itemMain.id,
+                            ) == true
+                              ? 'content-panel selected'
+                              : 'content-panel'
+                          }
+                          item
+                          xs={12}
+                          sm={6}
+                          md={4}
+                        >
+                          <Card
+                            className="card-panel"
+                            title={itemChild.option.name}
+                            is-mandatory={itemMain.mandatory.toString()}
+                            parent-option-id={itemMain.parentOptionID}
+                            onClick={() => {
+                              showChildOptions(
+                                itemChild.option.id,
+                                itemMain.id,
+                              );
+                            }}
+                          >
+                            <div className="check-mark">
+                              <div className="checkmark">L</div>
+                            </div>
+                            <Grid
+                              container
+                              spacing={1}
+                              className="name-img-panel"
+                            >
+                              <Grid item xs={5} sm={5}>
+                                <ItemImage
+                                  className="item-image"
+                                  name={itemChild.option.name}
+                                  id={itemChild.option.chainoptionid}
+                                />
+                              </Grid>
+                              <Grid item xs={7} sm={7} className="name-panel">
+                                {itemChild.option.name}
+                                {itemChild.dropDownValues && (
+                                  <>
+                                    {itemChild.option.cost > 0 && (
+                                      <Grid
+                                        item
+                                        xs={6}
+                                        title={`$${parseFloat(
+                                          itemChild.option.cost,
+                                        ).toFixed(2)}`}
+                                        sx={{
+                                          paddingTop: '5px',
+                                          fontSize: '14px',
+                                          fontFamily: 'Poppins-Bold',
+                                          color: '#7CC8C5',
+                                        }}
+                                      >
+                                        $
+                                        {parseFloat(
+                                          itemChild.option.cost,
+                                        ).toFixed(2)}
+                                      </Grid>
                                     )}
-                                  </select>
-                                </>
-                              )}
+                                    <select
+                                      style={{
+                                        marginTop: '8px',
+                                        display: 'block',
+                                      }}
+                                      parent-select-option-id={itemChild.id}
+                                      onClick={(e) => e.stopPropagation()}
+                                      value={itemChild.selectedValue || '0'}
+                                      onChange={(e) =>
+                                        dropDownValue(
+                                          itemChild.option.id,
+                                          e.target.value,
+                                        )
+                                      }
+                                    >
+                                      <option value="0">Please Choose</option>
+                                      {itemChild.dropDownValues.map(
+                                        (option: any, index: number) => (
+                                          <option
+                                            key={Math.random() + index}
+                                            value={option.id}
+                                          >
+                                            {option.name}
+                                          </option>
+                                        ),
+                                      )}
+                                    </select>
+                                  </>
+                                )}
+                              </Grid>
                             </Grid>
-                          </Grid>
-                        </Card>
-                      </Grid>
-                    ))}
-                </Grid>
-              ))}
+                          </Card>
+                        </Grid>
+                      ))}
+                  </Grid>
+                ))}
+            </div>
             <Grid container className="action-panel">
               <Grid item xs={12} className="content-panel">
                 <Typography

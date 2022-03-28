@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { useState } from 'react';
 
@@ -100,6 +100,7 @@ const Header = (props: any) => {
     (state: any) => state.restaurantInfoReducer,
   );
   const [showAccountMenu, setShowAccountMenu] = useState(false);
+  const navigate = useNavigate();
 
   const handleShowCart = () => {
     setShowAccountMenu(false);
@@ -157,33 +158,64 @@ const Header = (props: any) => {
               >
                 <MenuIcon fontSize="large" titleAccess="Menu Icon" />
               </IconButton>
-              <Grid
-                container
-                sx={{
-                  background: '#0073BD',
-                  alignItems: 'center',
-                  fontFamily: 'Poppins-Medium',
-                  textAlign: 'center',
-                  textTransform: 'uppercase',
-                  fontSize: '14px',
-                  height: '70px',
-                  width: '65px',
-                }}
-                onClick={() => {
-                  setShowAccountMenu(!showAccountMenu);
-                }}
-              >
+              {providerToken && providerToken.first_name ? (
                 <Grid
-                  item
-                  xs={12}
-                  sx={{ display: 'flex', justifyContent: 'center' }}
+                  container
+                  sx={{
+                    background: '#0073BD',
+                    alignItems: 'center',
+                    fontFamily: 'Poppins-Medium',
+                    textAlign: 'center',
+                    textTransform: 'uppercase',
+                    fontSize: '14px',
+                    height: '70px',
+                    width: '65px',
+                  }}
+                  onClick={() => {
+                    setShowAccountMenu(!showAccountMenu);
+                  }}
                 >
-                  <img
-                    src={require('../../assets/imgs/user-icon.png')}
-                    alt="Profile Icon"
-                  />
+                  <Grid
+                    item
+                    xs={12}
+                    sx={{ display: 'flex', justifyContent: 'center' }}
+                  >
+                    <img
+                      src={require('../../assets/imgs/user-icon.png')}
+                      alt="Profile Icon"
+                    />
+                  </Grid>
                 </Grid>
-              </Grid>
+              ) : (
+                <Grid
+                  container
+                  sx={{
+                    background: '#0073BD',
+                    alignItems: 'center',
+                    fontFamily: 'Poppins-Medium',
+                    textAlign: 'center',
+                    textTransform: 'uppercase',
+                    fontSize: '14px',
+                    height: '70px',
+                    width: '65px',
+                  }}
+                  onClick={() => {
+                    navigate('/login');
+                  }}
+                >
+                  <Grid
+                    item
+                    xs={12}
+                    sx={{ display: 'flex', justifyContent: 'center' }}
+                  >
+                    <img
+                      style={{ width: '75%', display: 'block' }}
+                      src={require('../../assets/imgs/logout-icon.png')}
+                      alt="Login Icon"
+                    />
+                  </Grid>
+                </Grid>
+              )}
               {!removeCart && !removeCartForLocation && (
                 <div
                   style={{
@@ -237,80 +269,124 @@ const Header = (props: any) => {
             <>
               <Link
                 to={restaurant ? '/menu/' + restaurant.slug : '/'}
-                style={{paddingRight: 30}}
                 className={classes.menuLink}
                 title="Main Menu"
                 onClick={() => setShowAccountMenu(false)}
               >
                 Main Menu
               </Link>
-              {providerToken && providerToken.first_name && (
-               <Grid
-                container
-                sx={{
-                  width: { sm: '170px', md: '200px' },
-                  marginLeft: '15px',
-                  background: '#0073BD',
-                  alignItems: 'center',
-                  cursor: 'pointer',
-                }}
-                onClick={() => {
-                  setShowAccountMenu(!showAccountMenu);
-                }}
-              >
+              {providerToken && providerToken.first_name ? (
                 <Grid
-                  item
-                  xs={12}
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'center',
+                  container
+                  sx={{
+                    width: { sm: '170px', md: '200px' },
+                    marginLeft: '15px',
+                    background: '#0073BD',
                     alignItems: 'center',
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => {
+                    setShowAccountMenu(!showAccountMenu);
                   }}
                 >
-                  <img
-                    src={require('../../assets/imgs/user-icon.png')}
-                    alt="Profile Icon"
-                  />{' '}
-                  <Typography
-                    sx={{
-                      paddingLeft: '5px',
-                      display: 'block',
-                      maxWidth: { sm: '100px', lg: '130px' },
-                      whiteSpace: 'nowrap',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      fontFamily: 'Poppins-Medium',
-                      textAlign: 'center',
-                      textTransform: 'uppercase',
-                      fontSize: '14px',
+                  <Grid
+                    item
+                    xs={12}
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
                     }}
                   >
-                    Hi {(providerToken && providerToken.first_name) || 'Stacey'}
-                    !
-                  </Typography>
-                  {!showAccountMenu && (
-                    <span
-                      style={{
+                    <img
+                      src={require('../../assets/imgs/user-icon.png')}
+                      alt="Profile Icon"
+                    />{' '}
+                    <Typography
+                      sx={{
                         paddingLeft: '5px',
-                        fontSize: '12px',
+                        display: 'block',
+                        maxWidth: { sm: '100px', lg: '130px' },
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        fontFamily: 'Poppins-Medium',
+                        textAlign: 'center',
+                        textTransform: 'uppercase',
+                        fontSize: '14px',
                       }}
                     >
-                      &#9660;
-                    </span>
-                  )}
-                  {showAccountMenu && (
-                    <span
-                      style={{
-                        paddingLeft: '5px',
-                        fontSize: '12px',
-                      }}
-                    >
-                      &#9650;
-                    </span>
-                  )}
+                      Hi{' '}
+                      {(providerToken && providerToken.first_name) || 'Stacey'}!
+                    </Typography>
+                    {!showAccountMenu && (
+                      <span
+                        style={{
+                          paddingLeft: '5px',
+                          fontSize: '12px',
+                        }}
+                      >
+                        &#9660;
+                      </span>
+                    )}
+                    {showAccountMenu && (
+                      <span
+                        style={{
+                          paddingLeft: '5px',
+                          fontSize: '12px',
+                        }}
+                      >
+                        &#9650;
+                      </span>
+                    )}
+                  </Grid>
                 </Grid>
-             </Grid>
-               )}
+              ) : (
+                <Grid
+                  container
+                  sx={{
+                    width: { sm: '170px', md: '200px' },
+                    marginLeft: '15px',
+                    background: '#0073BD',
+                    alignItems: 'center',
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => {
+                    navigate('/login');
+                  }}
+                >
+                  <Grid
+                    item
+                    xs={12}
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <img
+                      src={require('../../assets/imgs/user-icon.png')}
+                      alt="Profile Icon"
+                    />{' '}
+                    <Typography
+                      sx={{
+                        paddingLeft: '5px',
+                        display: 'block',
+                        maxWidth: { sm: '100px', lg: '130px' },
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        fontFamily: 'Poppins-Medium',
+                        textAlign: 'center',
+                        textTransform: 'uppercase',
+                        fontSize: '14px',
+                      }}
+                    >
+                      Hi Guest!
+                    </Typography>
+                  </Grid>
+                </Grid>
+              )}
               {!removeCart && (
                 <Button
                   component="div"
@@ -355,7 +431,10 @@ const Header = (props: any) => {
       {(fromEditOrder === true && <Cart showCart={handleShowCart} />) ||
         (showCart && <Cart showCart={handleShowCart} />)}
       {showAccountMenu && (
-        <RightMenuBar closeDrawer={setShowAccountMenu} removeCart={removeCart} />
+        <RightMenuBar
+          closeDrawer={setShowAccountMenu}
+          removeCart={removeCart}
+        />
       )}
     </>
   );
