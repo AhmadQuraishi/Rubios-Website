@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setResturantInfoRequest } from '../../redux/actions/restaurant';
 import { displayToast } from '../../helpers/toast';
+import { SyntheticEventData } from 'react-dom/test-utils';
 
 const LocationCard = (props: any) => {
   const { restaurants, isNearByRestaurantList, setShowNearBy } = props;
@@ -241,6 +242,12 @@ const LocationCard = (props: any) => {
                 label="City, Zip Code, State"
                 title="City, Zip Code, State"
                 aria-required="true"
+                onKeyPress={(e: any) => {
+                  if (e.key === 'Enter') {
+                    setSearchText(e.target.value);
+                    getSearchResults();
+                  }
+                }}
                 value={searchText || ''}
                 type="search"
                 onChange={handleChange}
