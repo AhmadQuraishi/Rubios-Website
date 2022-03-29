@@ -104,6 +104,7 @@ const RedeemRewards = () => {
                 <Grid item xs={12} sm={6} md={4} key={Math.random() + index}>
                   <Card
                     className="reward-item"
+                    sx={{ cursor: 'pointer' }}
                     onClick={() => {
                       handler(reward.reward_id, reward.name);
                     }}
@@ -126,13 +127,13 @@ const RedeemRewards = () => {
                           />
                         )}
                       </Grid>
-                      <Grid item xs={7}  className="item-name">
-                          <Typography
-                            variant="caption"
-                            title={reward.name || reward.description}
-                          >
-                            {reward.name || reward.description}
-                          </Typography>
+                      <Grid item xs={7} className="item-name">
+                        <Typography
+                          variant="caption"
+                          title={reward.name || reward.description}
+                        >
+                          {reward.name || reward.description}
+                        </Typography>
                       </Grid>
                     </Grid>
                   </Card>
