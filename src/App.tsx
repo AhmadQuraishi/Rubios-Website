@@ -15,6 +15,7 @@ function App(props: any) {
   const location = useLocation();
   const [isAccountSection, setIsAccountSection] = useState(false);
   const [hideLoginPanel, setHideLoginPanel] = useState(true);
+  const [hideLoginedPanel, setHideLoginedPanel] = useState(false);
   const dispatch = useDispatch();
   const { providerToken } = useSelector((state: any) => state.providerReducer);
   const navigate = useNavigate();
@@ -27,11 +28,19 @@ function App(props: any) {
     }
     if (
       window.location.href.toLocaleLowerCase().indexOf('/menu') != -1 ||
-      window.location.href.toLocaleLowerCase().indexOf('/checkout') != -1
+      window.location.href.toLocaleLowerCase().indexOf('/checkout') != -1 
     ) {
       setHideLoginPanel(false);
     } else {
       setHideLoginPanel(true);
+    }
+    if (
+      window.location.href.toLocaleLowerCase().indexOf('/welcome') != -1 ||
+      window.location.href.toLocaleLowerCase().indexOf('/account') != -1 
+    ) {
+      setHideLoginedPanel(true);
+    } else {
+      setHideLoginedPanel(false);
     }
   }, []);
   useLayoutEffect(() => {
@@ -46,11 +55,19 @@ function App(props: any) {
     }
     if (
       window.location.href.toLocaleLowerCase().indexOf('/menu') != -1 ||
-      window.location.href.toLocaleLowerCase().indexOf('/checkout') != -1
+      window.location.href.toLocaleLowerCase().indexOf('/checkout') != -1 
     ) {
       setHideLoginPanel(false);
     } else {
       setHideLoginPanel(true);
+    }
+    if (
+      window.location.href.toLocaleLowerCase().indexOf('/welcome') != -1 ||
+      window.location.href.toLocaleLowerCase().indexOf('/account') != -1 
+    ) {
+      setHideLoginedPanel(true);
+    } else {
+      setHideLoginedPanel(false);
     }
     if (
       window.location.href.toLocaleLowerCase().indexOf('/login') != -1 ||
@@ -71,6 +88,7 @@ function App(props: any) {
           window.location.href.toLocaleLowerCase().indexOf('/location') != -1
         }
         hideLoginPanel={hideLoginPanel}
+        hideLoginedPanel={hideLoginedPanel}
         showUserName={isAccountSection}
         removeCart={
           isAccountSection ||

@@ -10,9 +10,9 @@ import bgImage from '../../assets/imgs/login-bg.png';
 const useStyle = makeStyles(() => ({
   root: {
     background: `url(${bgImage}) center center fixed`,
-    backgroundRepeat: "no-repeat",
-    backgroundSize: "cover",
-    justifyContent: 'center'
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+    justifyContent: 'center',
   },
   caption: {},
 }));
@@ -24,6 +24,9 @@ const Login2 = () => {
   const { providerToken } = useSelector((state: any) => state.providerReducer);
 
   const { pageURL } = useSelector((state: any) => state.pageStateReducer);
+  const { restaurant } = useSelector(
+    (state: any) => state.restaurantInfoReducer,
+  );
 
   useEffect(() => {
     if (providerToken) {
@@ -116,7 +119,11 @@ const Login2 = () => {
                 Create Account
               </Button>
               <Typography
-                onClick={() => navigate('/')}
+                onClick={() => {
+                  restaurant
+                    ? navigate('/menu/' + restaurant.slug)
+                    : navigate('/');
+                }}
                 style={{ cursor: 'pointer' }}
                 variant="caption"
                 className="label bold"
