@@ -1,21 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Grid,
   Checkbox,
   TextField,
   FormControlLabel,
-  FormGroup
+  FormGroup,
 } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { forwardRef } from 'react';
 import { IMaskInput } from 'react-imask';
 
-const DeliveryForm = ({basket, deliveryFormRef}: any) => {
-
+const DeliveryForm = ({ basket, deliveryFormRef, defaultAddress } : any) => {
+  const [address, setAddress] = useState<any>(null);  
   const { providerToken } = useSelector((state: any) => state.providerReducer);
   const { authToken } = useSelector((state: any) => state.authReducer);
+
+  useEffect(() => {
+      if(basket && basket.deliveryaddress){
+        setAddress(basket.deliveryaddress)
+      } else if (defaultAddress){
+        setAddress(defaultAddress)
+      } else {
+        setAddress(null)
+      }    
+  }, [defaultAddress, basket])
+  
 
   interface CustomProps {
     onChange: (event: { target: { name: string; value: string } }) => void;
@@ -44,250 +55,235 @@ const DeliveryForm = ({basket, deliveryFormRef}: any) => {
 
   return (
     <Formik
-            innerRef={deliveryFormRef}
-            enableReinitialize={true}
-            initialValues={{
-            firstName: providerToken?.first_name
-                ? providerToken?.first_name
-                : '',
-            lastName: providerToken?.last_name
-                ? providerToken?.last_name
-                : '',
-            phone: providerToken?.phone
-                ? providerToken?.phone
-                : '',
-            email: providerToken?.email
-                ? providerToken?.email
-                : '',
-            apartment: '',
-            streetAddress: '',  
-            city: '',  
-            zipcode: ''
-            }}
-            validationSchema={Yup.object({
-            firstName: Yup.string()
-                .max(30, 'Must be 30 characters or less')
-                .required('First Name is required'),
-            lastName: Yup.string()
-                .max(30, 'Must be 30 characters or less')
-                .required('Last Name is required'),
-            email: Yup.string()
-                .matches(
-                /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-                'Invalid Email ',
-                )
-                .email('Invalid email address')
-                .required('Email is required'),
-            phone: Yup.string()
-                .min(14, 'Enter valid number')
-                .required('Phone is required'),
-            apartment: Yup.string()
-                .max(30, 'Must be 30 characters or less')
-                .optional(),
-            streetAddress: Yup.string()
-                .max(30, 'Must be 45 characters or less')
-                .required('Street Address is required'),
-            city: Yup.string()
-                .max(30, 'Must be 30 characters or less')
-                .required('City is required'),
-            zipcode: Yup.string()
-                .max(30, 'Must be 30 characters or less')
-                .required('Zip Code is required'),
-            })}
-            onSubmit={(values, actions) => {}}
-                                >
-            {({
-            errors,
-            handleBlur,
-            handleChange,
-            handleSubmit,
-            touched,
-            values,
-            isValid,
-            dirty,
-            }) => (
-            <form
-                style={{ width: '100%' }}
-                onSubmit={handleSubmit}
-            >
-                <Grid item xs={12}>
-                    <TextField
-                        aria-label="First Name"
-                        disabled={authToken?.authtoken ? true : false}
-                        onBlur={handleBlur}
-                        label="First Name"
-                        aria-required="true"
-                        title="First Name"
-                        type="text"
-                        name="firstName"
-                        value={values.firstName}
-                        onChange={handleChange}
-                        error={Boolean(
-                        touched.firstName && errors.firstName,
-                        )}
-                        helperText={errors.firstName}
-                    />
-                </Grid>
+      innerRef={deliveryFormRef}
+      enableReinitialize={true}
+      initialValues={{
+        firstName: providerToken?.first_name ? providerToken?.first_name : '',
+        lastName: providerToken?.last_name ? providerToken?.last_name : '',
+        phone: providerToken?.phone ? providerToken?.phone : '',
+        email: providerToken?.email ? providerToken?.email : '',
+        addressId: address && address.id ? address.id : null,
+        apartment:
+        address && address.building
+            ? address.building
+            : '',
+        streetAddress:
+          address && address.streetaddress
+            ? address.streetaddress
+            : '',
+        city:
+          address && address.city ? address.city : '',
+        zipcode:
+          address && address.zipcode
+            ? address.zipcode
+            : '',
+        saveAddressCheck:
+          address && address.isdefault
+            ? address.isdefault
+            : false,
+      }}
+      validationSchema={Yup.object({
+        firstName: Yup.string()
+          .max(30, 'Must be 30 characters or less')
+          .required('First Name is required'),
+        lastName: Yup.string()
+          .max(30, 'Must be 30 characters or less')
+          .required('Last Name is required'),
+        email: Yup.string()
+          .matches(
+            /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+            'Invalid Email ',
+          )
+          .email('Invalid email address')
+          .required('Email is required'),
+        phone: Yup.string()
+          .min(14, 'Enter valid number')
+          .required('Phone is required'),
+        apartment: Yup.string()
+          .max(30, 'Must be 30 characters or less')
+          .optional(),
+        streetAddress: Yup.string()
+          .max(30, 'Must be 45 characters or less')
+          .required('Street Address is required'),
+        city: Yup.string()
+          .max(30, 'Must be 30 characters or less')
+          .required('City is required'),
+        zipcode: Yup.string()
+          .max(30, 'Must be 30 characters or less')
+          .required('Zip Code is required'),
+        saveAddressCheck: Yup.bool().optional(),
+      })}
+      onSubmit={(values, actions) => {}}
+    >
+      {({
+        errors,
+        handleBlur,
+        handleChange,
+        handleSubmit,
+        touched,
+        values,
+      }) => (
+        <form style={{ width: '100%' }} onSubmit={handleSubmit}>
+          <Grid item xs={12}>
+            <TextField
+              aria-label="First Name"
+              disabled={authToken?.authtoken ? true : false}
+              onBlur={handleBlur}
+              label="First Name"
+              aria-required="true"
+              title="First Name"
+              type="text"
+              name="firstName"
+              value={values.firstName}
+              onChange={handleChange}
+              error={Boolean(touched.firstName && errors.firstName)}
+              helperText={errors.firstName}
+            />
+          </Grid>
 
-                <Grid item xs={12}>
-                <TextField
-                    aria-label="Last Name"
-                    disabled={authToken?.authtoken ? true : false}
-                    onBlur={handleBlur}
-                    label="Last Name"
-                    aria-required="true"
-                    title="Last Name"
-                    type="text"
-                    name="lastName"
-                    value={values.lastName}
+          <Grid item xs={12}>
+            <TextField
+              aria-label="Last Name"
+              disabled={authToken?.authtoken ? true : false}
+              onBlur={handleBlur}
+              label="Last Name"
+              aria-required="true"
+              title="Last Name"
+              type="text"
+              name="lastName"
+              value={values.lastName}
+              onChange={handleChange}
+              error={Boolean(touched.lastName && errors.lastName)}
+              helperText={errors.lastName}
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <TextField
+              className="mobile-field"
+              aria-label="Phone Number"
+              onBlur={handleBlur}
+              label="Phone Number"
+              aria-required="true"
+              title="Phone Number"
+              value={values.phone}
+              onChange={handleChange}
+              name="phone"
+              InputLabelProps={{
+                shrink: touched && values.phone == '' ? false : true,
+                classes: {
+                  root: values.phone !== '' ? 'mobile-field-label' : '',
+                },
+              }}
+              InputProps={{
+                inputComponent: NumberFormatCustom as any,
+              }}
+              error={Boolean(touched.phone && errors.phone)}
+              helperText={errors.phone}
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <TextField
+              aria-label="Email"
+              disabled={authToken?.authtoken ? true : false}
+              onBlur={handleBlur}
+              label="Email"
+              aria-required="true"
+              title="Email"
+              type="text"
+              name="email"
+              value={values.email}
+              onChange={handleChange}
+              error={Boolean(touched.email && errors.email)}
+              helperText={errors.email}
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <TextField
+              aria-label="Apt, Building, Company - Optional"
+              onBlur={handleBlur}
+              label="Apt, Building, Company - Optional"
+              aria-required="true"
+              title="Apt, Building, Company - Optional"
+              type="text"
+              name="apartment"
+              value={values.apartment}
+              onChange={handleChange}
+              error={Boolean(touched.apartment && errors.apartment)}
+              helperText={errors.apartment}
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <TextField
+              aria-label="Street Address"
+              onBlur={handleBlur}
+              label="Street Address"
+              aria-required="true"
+              title="Street Address"
+              type="text"
+              name="streetAddress"
+              value={values.streetAddress}
+              onChange={handleChange}
+              error={Boolean(touched.streetAddress && errors.streetAddress)}
+              helperText={errors.streetAddress}
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <TextField
+              aria-label="City"
+              onBlur={handleBlur}
+              label="City"
+              aria-required="true"
+              title="City"
+              type="text"
+              name="city"
+              value={values.city}
+              onChange={handleChange}
+              error={Boolean(touched.city && errors.city)}
+              helperText={errors.city}
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <TextField
+              aria-label="Zip Code"
+              onBlur={handleBlur}
+              label="Zip Code"
+              aria-required="true"
+              title="Zip Code"
+              type="text"
+              name="zipcode"
+              value={values.zipcode}
+              onChange={handleChange}
+              error={Boolean(touched.zipcode && errors.zipcode)}
+              helperText={errors.zipcode}
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={values.saveAddressCheck}
                     onChange={handleChange}
-                    error={Boolean(
-                    touched.lastName && errors.lastName,
-                    )}
-                    helperText={errors.lastName}
-                />
-                </Grid>
-
-                <Grid item xs={12}>
-                <TextField
-                    className="mobile-field"
-                    aria-label="Phone Number"
-                    onBlur={handleBlur}
-                    label="Phone Number"
-                    aria-required="true"
-                    title="Phone Number"
-                    value={values.phone}
-                    onChange={handleChange}
-                    name="phone"
-                    InputLabelProps={{
-                    shrink:
-                        touched && values.phone == ''
-                        ? false
-                        : true,
-                    classes: {
-                        root:
-                        values.phone !== ''
-                            ? 'mobile-field-label'
-                            : '',
-                    },
-                    }}
-                    InputProps={{
-                    inputComponent: NumberFormatCustom as any,
-                    }}
-                    error={Boolean(touched.phone && errors.phone)}
-                    helperText={errors.phone}
-                />
-                </Grid>
-
-                <Grid item xs={12}>
-                <TextField
-                    aria-label="Email"
-                    disabled={authToken?.authtoken ? true : false}
-                    onBlur={handleBlur}
-                    label="Email"
-                    aria-required="true"
-                    title="Email"
-                    type="text"
-                    name="email"
-                    value={values.email}
-                    onChange={handleChange}
-                    error={Boolean(touched.email && errors.email)}
-                    helperText={errors.email}
-                />
-                </Grid>
-
-                <Grid item xs={12}>
-                    <TextField
-                        aria-label="Apt, Floor, Suite, Building, Company - Optional"
-                        onBlur={handleBlur}
-                        label="Apt, Floor, Suite, Building, Company - Optional"
-                        aria-required="true"
-                        title="Apt, Floor, Suite, Building, Company - Optional"
-                        type="text"
-                        name="apartment"
-                        value={values.apartment}
-                        onChange={handleChange}
-                        error={Boolean(
-                        touched.apartment && errors.apartment,
-                        )}
-                        helperText={errors.apartment}
-                    />
-                </Grid>
-
-                <Grid item xs={12}>
-                    <TextField
-                        aria-label="Street Address"
-                        onBlur={handleBlur}
-                        label="Street Address"
-                        aria-required="true"
-                        title="Street Address"
-                        type="text"
-                        name="streetAddress"
-                        value={values.streetAddress}
-                        onChange={handleChange}
-                        error={Boolean(
-                        touched.streetAddress && errors.streetAddress,
-                        )}
-                        helperText={errors.streetAddress}
-                    />
-                </Grid>
-
-                <Grid item xs={12}>
-                    <TextField
-                        aria-label="City"
-                        onBlur={handleBlur}
-                        label="City"
-                        aria-required="true"
-                        title="City"
-                        type="text"
-                        name="city"
-                        value={values.city}
-                        onChange={handleChange}
-                        error={Boolean(
-                        touched.city && errors.city,
-                        )}
-                        helperText={errors.city}
-                    />
-                </Grid>
-
-                <Grid item xs={12}>
-                    <TextField
-                        aria-label="Zip Code"
-                        onBlur={handleBlur}
-                        label="Zip Code"
-                        aria-required="true"
-                        title="Zip Code"
-                        type="text"
-                        name="zipcode"
-                        value={values.zipcode}
-                        onChange={handleChange}
-                        error={Boolean(
-                        touched.zipcode && errors.zipcode,
-                        )}
-                        helperText={errors.zipcode}
-                    />
-                </Grid>
-
-                {/* <Grid item xs={12}>
-                <FormGroup>
-                    <FormControlLabel
-                    control={
-                        <Checkbox
-                        checked={values.emailNotification}
-                        onChange={handleChange}
-                        />
-                    }
-                    label="Send me emails with special offers and updates."
-                    aria-label="Send me emails with special offers and updates"
-                    aria-required="true"
-                    title="Send me emails with special offers and updates"
-                    name="emailNotification"
-                    className="size"
-                    />
-                </FormGroup>
-                </Grid> */}
-            </form>
-            )}
+                  />
+                }
+                label="Save Delivery Address to My account."
+                aria-label="Save Delivery Address to My account"
+                aria-required="true"
+                title="Save Delivery Address to My account"
+                name="saveAddressCheck"
+                className="size"
+              />
+            </FormGroup>
+          </Grid>
+        </form>
+      )}
     </Formik>
   );
 };
