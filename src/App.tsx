@@ -71,7 +71,7 @@ function App(props: any) {
     }
     if (
       window.location.href.toLocaleLowerCase().indexOf('/login') != -1 ||
-      window.location.href.toLocaleLowerCase().indexOf('/signup') != -1
+      window.location.href.toLocaleLowerCase().indexOf('/register') != -1
     ) {
       //dispatch(setPageStateRequest(undefined));
     } else {
