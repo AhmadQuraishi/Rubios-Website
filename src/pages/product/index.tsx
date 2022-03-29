@@ -228,12 +228,15 @@ const Product = () => {
 
   const [optionsSelectionArray, setOptionsSelectionArray] = useState<any>([]);
 
-  const [prepapreUI, setPrepareUI] = useState(false);
+  useEffect(() => {
+    console.log(optionsSelectionArray);
+  }, [optionsSelectionArray]);
 
   const prepareProductOptionsArray = (
     options: any,
     parentID: any,
     parentDefaultOptionID: any[],
+    isParentSelected: any = false,
   ) => {
     options.map((itemMain: any, index0: number) => {
       let defaultOptionID: any = null;
@@ -290,7 +293,7 @@ const Product = () => {
           options: optionsArray,
           parentOptionID: parentID || itemMain.id,
           selected:
-            (edit && parentDefaultOptionID.includes(parentID)) ||
+            (isParentSelected && parentDefaultOptionID.includes(parentID)) ||
             parentID == null
               ? true
               : false,
@@ -307,6 +310,8 @@ const Product = () => {
               item.modifiers,
               item.id,
               selectedOptions,
+              (isParentSelected && parentDefaultOptionID.includes(parentID)) ||
+                parentID == null,
             ),
         );
       }

@@ -102,7 +102,7 @@ const ScanToRedeem = () => {
                 your order in order to redeem the reward.
               </Typography>
 
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <Button
                   onClick={() => {
                     copy(redemption.internal_tracking_code);
@@ -115,7 +115,7 @@ const ScanToRedeem = () => {
                   <span className="copy-text">Tab to copy.</span>{' '}
                   {redemption.internal_tracking_code}
                 </Button>
-              </Grid>
+              </Grid> */}
               <Grid item xs={12}>
                 <Button
                   aria-label="invite"

@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const CategoryList = () => {
   const classes = useStyles();
   const [value, setValue] = useState('0');
+  const [categoryPanels, setCategoryPanels] = useState<{}[]>([]);
   const [categoriesWithProducts, setCategoriesWithProducts] =
     useState<ResponseMenu>();
   const { categories, loading, error } = useSelector(
@@ -46,33 +47,50 @@ const CategoryList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const body = document;
+
+  useEffect(() => {
+    console.log(categoryPanels);
+  }, [categoryPanels]);
+
   useEffect(() => {
     if (restaurant === null) {
       navigate('/location');
     } else {
       dispatch(getCategoriesRequest(restaurant.id));
     }
-    body.addEventListener('scroll', (e) => {
-      e.preventDefault();
-      var categoryPanel = document.getElementById('categoryMenu');
-      var dummyCategoryPanel = document.getElementById('dummyCategoryPanel');
-      if (categoryPanel && dummyCategoryPanel) {
-        if (window.scrollY > categoryPanel.offsetTop) {
-          categoryPanel.style.position = 'fixed';
-          categoryPanel.style.top = '60px';
-          dummyCategoryPanel.style.display = 'block';
-        } else {
-          categoryPanel.style.position = 'relative';
-          categoryPanel.style.top = '0px';
-          dummyCategoryPanel.style.display = 'none';
-        }
-      }
-    });
   }, []);
 
   useEffect(() => {
     if (categories && categories.categories) {
       setCategoriesWithProducts(categories);
+
+      body.addEventListener('scroll', (e) => {
+        e.preventDefault();
+        // if (categories && categories.categories && categoryPanels.length == 0) {
+        //   setCategoryPanels([]);
+        //   categories.categories.map((item: any, index: number) => {
+        //     setCategoryPanels((categoryPanels) => [
+        //       ...categoryPanels,
+        //       {
+        //         panel: document.getElementById('#panel-' + index),
+        //       },
+        //     ]);
+        //   });
+        // }
+        var categoryPanel = document.getElementById('categoryMenu');
+        var dummyCategoryPanel = document.getElementById('dummyCategoryPanel');
+        if (categoryPanel && dummyCategoryPanel) {
+          if (window.scrollY > categoryPanel.offsetTop) {
+            categoryPanel.style.position = 'fixed';
+            categoryPanel.style.top = '60px';
+            dummyCategoryPanel.style.display = 'block';
+          } else {
+            categoryPanel.style.position = 'relative';
+            categoryPanel.style.top = '0px';
+            dummyCategoryPanel.style.display = 'none';
+          }
+        }
+      });
     }
   }, [categories]);
 
@@ -144,6 +162,7 @@ const CategoryList = () => {
               key={index}
               container
               spacing={0}
+              id={`cat-panel-${index}`}
               sx={{
                 padding: {
                   xs: '20px 20px 0px 20px',
