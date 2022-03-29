@@ -34,7 +34,7 @@ const Tip = ({basket}: any)  => {
   }
 
   const handleTipPercentage = (event: React.MouseEvent<HTMLElement>, value: number ) => {
-    console.log('setTipPercentage', value)
+    // console.log('event', ev)
     setTipPercentage(value);    
     let totalPerc = ((value * basket.subtotal) / 100).toFixed(2);
     setTipCustomAmount(totalPerc);
@@ -115,7 +115,7 @@ const Tip = ({basket}: any)  => {
                 <Grid item xs={12} md={9} lg={9}>
                   <TextField
                     className="action-btn"
-                    value={tipCustomAmount}
+                    value={tipCustomAmount || ''}
                     type="number"
                     onChange={handleTipCustomAmountChange}
                     label="Custom Amount"
