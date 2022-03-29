@@ -376,8 +376,7 @@ const Header = (props: any) => {
                         }}
                       >
                         <img
-                          style={{ width: '35px' }}
-                          src={require('../../assets/imgs/logout-icon.png')}
+                          src={require('../../assets/imgs/user-icon.png')}
                           alt="Profile Icon"
                         />{' '}
                         <Typography
