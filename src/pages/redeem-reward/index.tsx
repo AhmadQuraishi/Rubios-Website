@@ -33,6 +33,7 @@ const RedeemRewards = () => {
   const navigate = useNavigate();
 
   const [isRedeem, setIsredeem] = useState(false);
+  const [isProgress, setIsProgress] = useState(false);
   const [reward_name, setRewardName] = useState('');
   const { rewards, loading } = useSelector((state: any) => state.rewardReducer);
   const { redemption, error, loading1 } = useSelector(
@@ -43,6 +44,7 @@ const RedeemRewards = () => {
   }, []);
 
   const handler = (id: string, name: string) => {
+    setIsProgress(true);
     setRewardName(name);
     dispatch(getRedemptionCode(id));
     setIsredeem(true);
@@ -51,6 +53,7 @@ const RedeemRewards = () => {
     if (redemption !== null && !loading1 && isRedeem) {
       setIsredeem(false);
       dispatch(setReward(reward_name));
+      setIsProgress(true);
       navigate(`reward`);
       setTimeout(() => {
         dispatch(setReward(''));
@@ -58,6 +61,7 @@ const RedeemRewards = () => {
     } else if (error && error.message && !loading1 && isRedeem) {
       displayToast('ERROR', 'failed to redeem this reward');
       setIsredeem(false);
+      setIsProgress(true);
     }
   }, [redemption]);
 
@@ -76,7 +80,7 @@ const RedeemRewards = () => {
 
         <Grid item xs={12} lg={10} className="redeem-sec">
           <Grid container spacing={2}>
-            {loading && <RewardListSkeletonUI />}
+            {(loading || isProgress) && <RewardListSkeletonUI />}
             {!loading && rewards && rewards.length == 0 && (
               <Grid item xs={12}>
                 <Typography>
@@ -85,7 +89,7 @@ const RedeemRewards = () => {
                 </Typography>
               </Grid>
             )}
-            {!loading && rewards && rewards.length > 0 && (
+            {!loading && !isProgress && rewards && rewards.length > 0 && (
               <Grid item xs={12}>
                 <Typography
                   variant="body2"
@@ -98,6 +102,7 @@ const RedeemRewards = () => {
             )}
 
             {!loading &&
+              !isProgress &&
               rewards &&
               rewards.length > 0 &&
               rewards.map((reward: any, index: number) => (
