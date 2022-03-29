@@ -1,4 +1,4 @@
-import { RequestBasketSubmit, ResponseRestaurantCalendars, RequestUpdateBasketTimeWanted } from '../types/olo-api';
+import { RequestBasketSubmit, ResponseRestaurantCalendars, RequestUpdateBasketTimeWanted, RequestDeliveryAddress } from '../types/olo-api';
 import {BillingMethodEnum, UserTypeEnum, SaveOnFileEnum, CountryEnum, DeliveryModeEnum} from '../types/olo-api/olo-api.enums';
 import { CalendarTypeEnum, HoursListing } from './hoursListing';
 import moment from 'moment';
@@ -95,14 +95,17 @@ export function formatCustomFields(customFields: any, formData: any)  {
 
 export function formatDeliveryAddress(formData: any)  {
 
-  const obj = {
+  let obj: RequestDeliveryAddress = {
     building: formData.apartment,
     streetaddress: formData.streetAddress,
     city: formData.city,
     zipcode: formData.zipcode,
     phonenumber: formData.phone,
     isdefault: formData.saveAddressCheck
-    }
+  }
+  if(formData.addressId){
+    obj.id =  formData.addressId
+  }
 
   return obj;
 }

@@ -43,6 +43,7 @@ const Product = () => {
   const dummyBasketObj = useSelector((state: any) => state.createBasketReducer);
   const basketObj = useSelector((state: any) => state.basketReducer);
   const productAddObj = useSelector((state: any) => state.addProductReducer);
+  const { authToken } = useSelector((state: any) => state.authReducer);
   const productUpdateObj = useSelector(
     (state: any) => state.updateProductReducer,
   );
@@ -138,6 +139,9 @@ const Product = () => {
       const request: any = {};
       // let deliverymode = orderType || '';
       request.vendorid = restaurant.id;
+      if (authToken?.authtoken && authToken.authtoken !== '') {
+        request.authtoken = authToken.authtoken;
+      }
       dispatch(setBasketRequest(request));
     } else {
       const request: any = {};
@@ -573,6 +577,11 @@ const Product = () => {
       ...optionsSelectionArray,
     ]);
   };
+
+  useEffect(() => {
+    console.log('optionsSelectionArray', optionsSelectionArray)
+  }, [optionsSelectionArray])
+  
 
   return (
     <div style={{ minHeight: '500px' }}>

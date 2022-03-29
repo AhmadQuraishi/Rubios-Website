@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Grid,
   Checkbox,
@@ -13,8 +13,20 @@ import { forwardRef } from 'react';
 import { IMaskInput } from 'react-imask';
 
 const DeliveryForm = ({ basket, deliveryFormRef, defaultAddress } : any) => {
+  const [address, setAddress] = useState<any>(null);  
   const { providerToken } = useSelector((state: any) => state.providerReducer);
   const { authToken } = useSelector((state: any) => state.authReducer);
+
+  useEffect(() => {
+      if(basket && basket.deliveryaddress){
+        setAddress(basket.deliveryaddress)
+      } else if (defaultAddress){
+        setAddress(defaultAddress)
+      } else {
+        setAddress(null)
+      }    
+  }, [defaultAddress, basket])
+  
 
   interface CustomProps {
     onChange: (event: { target: { name: string; value: string } }) => void;
@@ -50,23 +62,24 @@ const DeliveryForm = ({ basket, deliveryFormRef, defaultAddress } : any) => {
         lastName: providerToken?.last_name ? providerToken?.last_name : '',
         phone: providerToken?.phone ? providerToken?.phone : '',
         email: providerToken?.email ? providerToken?.email : '',
+        addressId: address && address.id ? address.id : null,
         apartment:
-          basket && basket.deliveryaddress
-            ? basket.deliveryaddress.building
+        address && address.building
+            ? address.building
             : '',
         streetAddress:
-          basket && basket.deliveryaddress
-            ? basket.deliveryaddress.streetaddress
+          address && address.streetaddress
+            ? address.streetaddress
             : '',
         city:
-          basket && basket.deliveryaddress ? basket.deliveryaddress.city : '',
+          address && address.city ? address.city : '',
         zipcode:
-          basket && basket.deliveryaddress
-            ? basket.deliveryaddress.zipcode
+          address && address.zipcode
+            ? address.zipcode
             : '',
         saveAddressCheck:
-          basket && basket.deliveryaddress
-            ? basket.deliveryaddress.isdefault
+          address && address.isdefault
+            ? address.isdefault
             : false,
       }}
       validationSchema={Yup.object({
