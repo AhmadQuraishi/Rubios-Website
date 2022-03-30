@@ -69,10 +69,11 @@ const NumberFormatCustom = forwardRef<HTMLElement, CustomProps>(
 const PersonalInfo = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { userProfile, loading, error, success } = useSelector(
+  const { userProfile, loading, error, profile } = useSelector(
     (state: any) => state.userReducer,
   );
   const [favlocation, setFavLoc] = useState('');
+  const [isupdate, setIsUpdate] = useState(false);
   const { locations } = useSelector((state: any) => state.locationReducer);
   const [state, setState] = useState({
     emailnotification: true,
@@ -108,6 +109,13 @@ const PersonalInfo = () => {
       [event.target.name]: event.target.checked,
     });
   };
+
+  useEffect(() => {
+    if (isupdate == true) {
+      dispatch(getUserprofile());
+      setIsUpdate(false);
+    }
+  }, [profile]);
 
   return (
     <div className={classes.root}>
@@ -169,10 +177,10 @@ const PersonalInfo = () => {
                     // password: "p@ssw0rd",
                     // password_confirmation: "p@ssw0rd"
                   };
-                  const data: any = await dispatch(updateUser(obj, true));
-                  setTimeout(() => {
-                    dispatch(getUserprofile());
-                  }, 600);
+                  setIsUpdate(true);
+                  // setTimeout(() => {
+                  //   dispatch(getUserprofile());
+                  // }, 600);
                 } else {
                   const obj = {
                     email: values.email,
@@ -189,9 +197,10 @@ const PersonalInfo = () => {
                     // password_confirmation: "p@ssw0rd"
                   };
                   const data: any = await dispatch(updateUser(obj, true));
-                  setTimeout(() => {
-                    dispatch(getUserprofile());
-                  }, 600);
+                  setIsUpdate(true);
+                  // setTimeout(() => {
+                  //   dispatch(getUserprofile());
+                  // }, 600);
                 }
               } else {
                 if (values.currentpassword === '') {
@@ -220,10 +229,10 @@ const PersonalInfo = () => {
                     password_confirmation: values.confirmpassword,
                   };
 
-                  const data: any = await dispatch(updateUser(obj, true));
-                  setTimeout(() => {
-                    dispatch(getUserprofile());
-                  }, 600);
+                  setIsUpdate(true);
+                  // setTimeout(() => {
+                  //   dispatch(getUserprofile());
+                  // }, 600);
                 }
               }
             }}

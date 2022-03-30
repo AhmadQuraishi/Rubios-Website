@@ -18,7 +18,8 @@ const initialState = {
   },
   loading: false,
   error: {},
-  success: 0
+  success: 0,
+  profile: null
 };
 
 const userReducer = (state = initialState, action: any) => {
@@ -91,6 +92,11 @@ const userReducer = (state = initialState, action: any) => {
         error: null,
         success : 1
         
+      };
+    case Type.UPDATE_PROFILE_SUCCESS:
+      return {
+        ...state,
+        profile: action.payload,
       };
     case Type.GET_BILLING_ACCOUNTS_SUCCESS:
       return {
