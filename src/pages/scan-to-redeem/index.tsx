@@ -15,6 +15,9 @@ import './scan-to-redeem.css';
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     padding: '0px 20px 40px 20px',
+    [theme.breakpoints.down('sm')]: {
+      padding: '0px 0px 40px 0px',
+    },
     maxWidth: '1260px',
     boxSizing: 'border-box',
     margin: 'auto',
@@ -71,10 +74,10 @@ const ScanToRedeem = () => {
                 code and apply it to your order.
               </Typography>
               <Grid item sm={2}></Grid>
-              <Grid item xs={12} sm={8}>
+              <Grid item xs={12} sm={8} className="scan-reward">
                 <Card elevation={0}>
                   <CardContent>
-                    <Grid container>
+                    <Grid container sx={{display: 'flex', alignItems: 'center'}}>
                       <Grid item xs={6}>
                         <CardMedia
                           component="img"
@@ -116,12 +119,12 @@ const ScanToRedeem = () => {
                   {redemption.internal_tracking_code}
                 </Button>
               </Grid> */}
-              <Grid item xs={12}>
+              <Grid item xs={12} sm={9} md={9} lg={9}>
                 <Button
                   aria-label="invite"
                   title="invite"
                   variant="contained"
-                  sx={{ width: { xs: '100%', sm: '400px' } }}
+                  sx={{ width:'100%' }}
                   onClick={() => {
                     navigate('/account');
                   }}
