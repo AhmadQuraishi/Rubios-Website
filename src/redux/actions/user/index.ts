@@ -169,6 +169,13 @@ export function updateUserFailure(error: any) {
   };
 }
 
+
+export function updateProfileSuccess(data: any) {
+  return {
+    type: Type.UPDATE_PROFILE_SUCCESS,
+    payload: data
+  };
+}
 //Change Password
 
 export function changePassword(data: any) {
