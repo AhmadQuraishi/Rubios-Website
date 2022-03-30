@@ -1,6 +1,3 @@
-.invite-section .MuiGrid-grid-xs-12 {
-  padding-top: 20px;
-}
 .tab-to-copy {
   background-color: #eaeaea !important;
   color: black !important;
@@ -17,6 +14,19 @@
   color: #414141;
   padding-top: 8px;
   padding-bottom: 25px;
+}
+.invite-section .scan-reward {
+  margin: 10px 0px 30px 0px;
+  padding-top: 0px;
+  border-radius: 0px;
+  border: 1px solid #c6c6c6;
+  box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.2);
+}
+.invite-section .scan-reward h6 {
+  font-size: 20px !important;
+  line-height: 1;
+  font-family: "Poppins-Medium" !important;
+  color: #2B4B62;
 }
 .qrcode-img {
   max-width: 100px;

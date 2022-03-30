@@ -333,3 +333,22 @@ export const requestUserRegister = (body: object) => {
     throw error;
   }
 };
+
+//User Forgot Password
+export const requestUserForgotPassword = (body: object) => {
+
+  const data = {
+    user: body,
+    client: process.env.REACT_APP_PUNCHH_CLIENT_ID
+  }
+
+  try {
+    const url = `${process.env.REACT_APP_PUNCHH_API}/api/auth/users/forgot_password`;
+
+    return axiosInstance.post(url, data).then((response) => response.data).catch((error) => {
+      throw error.response;
+    });
+  } catch (error) {
+    throw error;
+  }
+};

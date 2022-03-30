@@ -78,7 +78,7 @@ const RedeemRewards = () => {
           </Typography>
         </Grid>
 
-        <Grid item xs={12} lg={10} className="redeem-sec">
+        <Grid item xs={12} className="redeem-sec">
           <Grid container spacing={2}>
             {(loading || isProgress) && <RewardListSkeletonUI />}
             {!loading && rewards && rewards.length == 0 && (
@@ -96,7 +96,7 @@ const RedeemRewards = () => {
                   title="REDEEM YOUR REWARDS"
                   className="body-text"
                 >
-                  Click a reward to start your order
+                  Click a reward to start your order.
                 </Typography>
               </Grid>
             )}
