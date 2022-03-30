@@ -172,7 +172,7 @@ const PersonalInfo = () => {
                   const data: any = await dispatch(updateUser(obj, true));
                   setTimeout(() => {
                     dispatch(getUserprofile());
-                  }, 400);
+                  }, 600);
                 } else {
                   const obj = {
                     email: values.email,
@@ -191,7 +191,7 @@ const PersonalInfo = () => {
                   const data: any = await dispatch(updateUser(obj, true));
                   setTimeout(() => {
                     dispatch(getUserprofile());
-                  }, 400);
+                  }, 600);
                 }
               } else {
                 if (values.currentpassword === '') {
@@ -223,7 +223,7 @@ const PersonalInfo = () => {
                   const data: any = await dispatch(updateUser(obj, true));
                   setTimeout(() => {
                     dispatch(getUserprofile());
-                  }, 400);
+                  }, 600);
                 }
               }
             }}
