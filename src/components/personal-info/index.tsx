@@ -177,6 +177,7 @@ const PersonalInfo = () => {
                     // password: "p@ssw0rd",
                     // password_confirmation: "p@ssw0rd"
                   };
+                  const data: any = await dispatch(updateUser(obj, true));
                   setIsUpdate(true);
                   // setTimeout(() => {
                   //   dispatch(getUserprofile());
@@ -228,7 +229,7 @@ const PersonalInfo = () => {
                     password: values.newpassword,
                     password_confirmation: values.confirmpassword,
                   };
-
+                  const data: any = await dispatch(updateUser(obj, true));
                   setIsUpdate(true);
                   // setTimeout(() => {
                   //   dispatch(getUserprofile());
