@@ -55,7 +55,8 @@ import {
   userLoginSuccess,
   userLoginFailure,
   userRegisterSuccess,
-  userRegisterFailure
+  userRegisterFailure,
+  updateProfileSuccess
 } from '../../actions/user';
 import { displayToast } from '../../../helpers/toast';
 import { getProviderRequestSuccess } from '../../actions/provider';
@@ -149,6 +150,7 @@ function* updateUserHandler(action: any): any {
         requestUpdateProfile,
         action.payload,
       );
+      yield put(updateProfileSuccess(response));
       displayToast("SUCCESS" , "profile updated successfully");
     } else {
       const response = yield call(
