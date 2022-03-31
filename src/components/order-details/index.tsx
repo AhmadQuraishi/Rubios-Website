@@ -31,12 +31,14 @@ const OrderDetails = (props: any) => {
         <Grid container>
           <Grid item xs={10} sm={10} md={10} lg={11}>
             <Typography variant="h6" title={props.subTotal}>{props.subTotal}</Typography>
+            <br/>
             <Typography variant="h6" title={props.tax}>{props.tax}</Typography>
           </Grid>
           <Grid item xs={2} sm={2} md={2} lg={1}>
             <Typography variant="h6" title={props.subTotalPrice}>
               {props.subTotalPrice}
             </Typography>
+            <br/>
             <Typography variant="h6" title={props.taxPrice}>{props.taxPrice}</Typography>
           </Grid>
         </Grid>
