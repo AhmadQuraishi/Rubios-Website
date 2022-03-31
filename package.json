@@ -33,6 +33,7 @@
     "formik": "2.2.9",
     "moment": "2.29.1",
     "node-sass": "7.0.1",
+    "qrcode.react": "3.0.1",
     "react": "^17.0.2",
     "react-date-inputs": "1.5.1",
     "react-dom": "^17.0.2",
