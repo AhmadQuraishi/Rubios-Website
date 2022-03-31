@@ -15,6 +15,9 @@ import { displayToast } from '../../helpers/toast';
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     padding: '0px 20px 40px 20px',
+    [theme.breakpoints.down('sm')]: {
+      padding: '0px 0px 40px 0px',
+    },
     maxWidth: '1260px',
     boxSizing: 'border-box',
     margin: 'auto',
