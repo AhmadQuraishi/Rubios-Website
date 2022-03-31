@@ -60,11 +60,13 @@ const OrderDetail = ({basket, validate}: any)  => {
             <Typography variant="h6" title="SUB TOTAL">
               SUB TOTAL
             </Typography>
+            <br/>
           </Grid>
           <Grid item xs={2} sm={2} md={2} lg={1}>
            <Typography variant="h6" title={basket && basket.subtotal}>
               ${basket && basket.subtotal}
             </Typography>
+            <br/>
           </Grid>
         </Grid>
         {
@@ -83,7 +85,7 @@ const OrderDetail = ({basket, validate}: any)  => {
             </Grid>
           ) : (null)
         }
-        
+
         <Grid container>
           <Grid item xs={10} sm={10} md={10} lg={11}>
             <Typography variant="h6" className="n-bold" title="Tax">

@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { userLogout } from '../../redux/actions/user';
 import AccountLinks from '../account-links';
+import "./right-menu-bar.css";
 
 const useStyles = makeStyles((theme: Theme) => ({
   dimPanel: {
@@ -55,7 +56,7 @@ const RightMenuBar = (props: any) => {
         className={classes.dimPanel}
         onClick={() => closeDrawer(false)}
       ></div>
-      <Box
+      <Box className="list-sec"
         sx={{
           boxShadow: 2,
           bgcolor: 'background.paper',
