@@ -11,12 +11,13 @@ import { makeStyles } from '@mui/styles';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { QRCodeSVG } from 'qrcode.react';
 import './scan-to-redeem.css';
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     padding: '0px 20px 40px 20px',
     [theme.breakpoints.down('sm')]: {
-      padding: '0px 0px 40px 0px',
+      padding: '0px 0px 0px 0px',
     },
     maxWidth: '1260px',
     boxSizing: 'border-box',
@@ -32,19 +33,19 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const ScanToRedeem = () => {
   const navigate = useNavigate();
-  const [qrCode, setQrCode] = useState('');
+  // const [qrCode, setQrCode] = useState('');
   const { redemption, reward_name } = useSelector(
     (state: any) => state.redemptionReducer,
   );
 
-  useEffect(() => {
-    if (redemption && redemption.internal_tracking_code)
-      setQrCode(
-        `http://api.qrserver.com/v1/create-qr-code/?data=${
-          redemption.internal_tracking_code
-        }!&size=${2}`,
-      );
-  }, []);
+  // useEffect(() => {
+  //   if (redemption && redemption.internal_tracking_code)
+  //     setQrCode(
+  //       `http://api.qrserver.com/v1/create-qr-code/?data=${
+  //         redemption.internal_tracking_code
+  //       }!&size=${2}`,
+  //     );
+  // }, []);
 
   const classes = useStyles();
 
@@ -77,15 +78,23 @@ const ScanToRedeem = () => {
               <Grid item xs={12} sm={8} className="scan-reward">
                 <Card elevation={0}>
                   <CardContent>
-                    <Grid container sx={{display: 'flex', alignItems: 'center', minHeight: '125px',}}>
+                    <Grid
+                      container
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        minHeight: '125px',
+                      }}
+                    >
                       <Grid item xs={6}>
-                        <CardMedia
+                        {/* <CardMedia
                           component="img"
                           title="QRcode"
                           image={qrCode}
                           alt="QRcode"
                           className="qrcode-img"
-                        />
+                        /> */}
+                        <QRCodeSVG value={redemption.internal_tracking_code} />
                       </Grid>
                       <Grid item xs={6}>
                         <Typography variant="h6">{reward_name}</Typography>
@@ -124,12 +133,24 @@ const ScanToRedeem = () => {
                   aria-label="invite"
                   title="invite"
                   variant="contained"
-                  sx={{ width:'100%' }}
+                  sx={{
+                    width: '100%',
+                    background: '#0075bf',
+                    fontSize: '15px',
+                  }}
                   onClick={() => {
                     navigate('/account');
                   }}
                 >
                   VIEW REWARDS
+                </Button>
+                <Button
+                  className="label back-btn"
+                  onClick={() => {
+                    navigate('/account');
+                  }}
+                >
+                  Back
                 </Button>
               </Grid>
             </Grid>

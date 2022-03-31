@@ -311,7 +311,6 @@ const RecentOrders = () => {
                     </Fragment>
                   ))}
                 </Grid>
-                5
                 <Grid item xs={4} md={6}>
                   <Typography className="price"> ${price}</Typography>
                 </Grid>
