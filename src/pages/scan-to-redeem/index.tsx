@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     padding: '0px 20px 40px 20px',
     [theme.breakpoints.down('sm')]: {
-      padding: '0px 0px 40px 0px',
+      padding: '0px 0px 0px 0px',
     },
     maxWidth: '1260px',
     boxSizing: 'border-box',
@@ -133,12 +133,24 @@ const ScanToRedeem = () => {
                   aria-label="invite"
                   title="invite"
                   variant="contained"
-                  sx={{ width: '100%' }}
+                  sx={{
+                    width: '100%',
+                    background: '#0075bf',
+                    fontSize: '15px',
+                  }}
                   onClick={() => {
                     navigate('/account');
                   }}
                 >
                   VIEW REWARDS
+                </Button>
+                <Button
+                  className="label back-btn"
+                  onClick={() => {
+                    navigate('/account');
+                  }}
+                >
+                  Back
                 </Button>
               </Grid>
             </Grid>
