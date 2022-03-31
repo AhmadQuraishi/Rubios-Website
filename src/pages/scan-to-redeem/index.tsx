@@ -62,7 +62,7 @@ const ScanToRedeem = () => {
       </Typography>
       {redemption && redemption !== null && reward_name !== '' && (
         <Grid container className="invite-section">
-          <Grid item xs={12} md={8} lg={6}>
+          <Grid item xs={12} md={8} lg={7}>
             <Grid container>
               <Typography
                 variant="body2"
@@ -77,7 +77,7 @@ const ScanToRedeem = () => {
               <Grid item xs={12} sm={8} className="scan-reward">
                 <Card elevation={0}>
                   <CardContent>
-                    <Grid container sx={{display: 'flex', alignItems: 'center'}}>
+                    <Grid container sx={{display: 'flex', alignItems: 'center', minHeight: '125px',}}>
                       <Grid item xs={6}>
                         <CardMedia
                           component="img"
@@ -119,7 +119,7 @@ const ScanToRedeem = () => {
                   {redemption.internal_tracking_code}
                 </Button>
               </Grid> */}
-              <Grid item xs={12} sm={9} md={9} lg={9}>
+              <Grid item xs={12} sm={8.5} md={8.5} lg={8.5}>
                 <Button
                   aria-label="invite"
                   title="invite"
