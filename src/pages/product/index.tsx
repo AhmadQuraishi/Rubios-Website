@@ -583,11 +583,6 @@ const Product = () => {
     ]);
   };
 
-  useEffect(() => {
-    console.log('optionsSelectionArray', optionsSelectionArray)
-  }, [optionsSelectionArray])
-  
-
   return (
     <div style={{ minHeight: '500px' }}>
       <StoreInfoBar />
@@ -783,28 +778,29 @@ const Product = () => {
                               </Grid>
                               <Grid item xs={7} sm={7} className="name-panel">
                                 {itemChild.option.name}
+
+                                {itemChild.option.cost > 0 && (
+                                  <Grid
+                                    item
+                                    xs={6}
+                                    title={`$${parseFloat(
+                                      itemChild.option.cost,
+                                    ).toFixed(2)}`}
+                                    sx={{
+                                      paddingTop: '5px',
+                                      fontSize: '14px',
+                                      fontFamily: 'Poppins-Bold',
+                                      color: '#7CC8C5',
+                                    }}
+                                  >
+                                    $
+                                    {parseFloat(itemChild.option.cost).toFixed(
+                                      2,
+                                    )}
+                                  </Grid>
+                                )}
                                 {itemChild.dropDownValues && (
                                   <>
-                                    {itemChild.option.cost > 0 && (
-                                      <Grid
-                                        item
-                                        xs={6}
-                                        title={`$${parseFloat(
-                                          itemChild.option.cost,
-                                        ).toFixed(2)}`}
-                                        sx={{
-                                          paddingTop: '5px',
-                                          fontSize: '14px',
-                                          fontFamily: 'Poppins-Bold',
-                                          color: '#7CC8C5',
-                                        }}
-                                      >
-                                        $
-                                        {parseFloat(
-                                          itemChild.option.cost,
-                                        ).toFixed(2)}
-                                      </Grid>
-                                    )}
                                     <select
                                       style={{
                                         marginTop: '8px',
