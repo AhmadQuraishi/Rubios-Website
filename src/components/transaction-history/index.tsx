@@ -105,7 +105,7 @@ const TransactionHistory = () => {
                     display: { xs: 'none', sm: 'grid' },
                   }}
                 >
-                  {moment(item.date).format('MM/DD/YYYY')}
+                  {moment(item.timeplaced.split(' ')[0]).format('MM/DD/YYYY')}
                 </Grid>
                 <Grid
                   item
@@ -125,7 +125,7 @@ const TransactionHistory = () => {
                     variant="caption"
                     sx={{ display: { xs: 'block', sm: 'none' } }}
                   >
-                    {moment(item.date).format('MM/DD/YYYY')}
+                    {moment(item.timeplaced.split(' ')[0]).format('MM/DD/YYYY')}
                   </Typography>
                   {item.oloid}
                 </Grid>

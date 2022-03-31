@@ -24,6 +24,7 @@ import { displayToast } from '../../helpers/toast';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { createFave } from '../../redux/actions/create-fave';
+import moment from 'moment';
 
 const RecentOrders = () => {
   const [recentorders, setOrders] = React.useState([]);
@@ -131,8 +132,8 @@ const RecentOrders = () => {
                       className="order-date"
                       title={`LAST ORDERED ${order.timeplaced}`}
                     >
-                      LAST ORDERED {order.timeplaced.substr(6, 2)}/
-                      {order.timeplaced.substr(4, 2)}
+                      LAST ORDERED{' '}
+                      {moment(order.timeplaced.split(' ')[0]).format('MM/DD')}
                     </Typography>
                     <Typography
                       variant="caption"
@@ -310,8 +311,9 @@ const RecentOrders = () => {
                     </Fragment>
                   ))}
                 </Grid>
+                5
                 <Grid item xs={4} md={6}>
-                  <Typography className="price"> {price}</Typography>
+                  <Typography className="price"> ${price}</Typography>
                 </Grid>
               </Grid>
               <DialogActions>
