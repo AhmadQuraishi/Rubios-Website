@@ -28,6 +28,18 @@
   font-family: "Poppins-Medium" !important;
   color: #2B4B62;
 }
+.invite-section .back-btn {
+  margin-top: 40px;
+  padding: 0px;
+  min-width: auto;
+  display: none;
+}
 .qrcode-img {
   max-width: 100px;
+}
+
+@media screen and (max-width: 468px) {
+  .invite-section .back-btn {
+    display: block;
+  }
 }

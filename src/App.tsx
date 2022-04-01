@@ -28,7 +28,7 @@ function App(props: any) {
     }
     if (
       window.location.href.toLocaleLowerCase().indexOf('/menu') != -1 ||
-      window.location.href.toLocaleLowerCase().indexOf('/checkout') != -1 
+      window.location.href.toLocaleLowerCase().indexOf('/checkout') != -1
     ) {
       setHideLoginPanel(false);
     } else {
@@ -36,7 +36,7 @@ function App(props: any) {
     }
     if (
       window.location.href.toLocaleLowerCase().indexOf('/welcome') != -1 ||
-      window.location.href.toLocaleLowerCase().indexOf('/account') != -1 
+      window.location.href.toLocaleLowerCase().indexOf('/account') != -1
     ) {
       setHideLoginedPanel(true);
     } else {
@@ -55,7 +55,7 @@ function App(props: any) {
     }
     if (
       window.location.href.toLocaleLowerCase().indexOf('/menu') != -1 ||
-      window.location.href.toLocaleLowerCase().indexOf('/checkout') != -1 
+      window.location.href.toLocaleLowerCase().indexOf('/checkout') != -1
     ) {
       setHideLoginPanel(false);
     } else {
@@ -63,7 +63,7 @@ function App(props: any) {
     }
     if (
       window.location.href.toLocaleLowerCase().indexOf('/welcome') != -1 ||
-      window.location.href.toLocaleLowerCase().indexOf('/account') != -1 
+      window.location.href.toLocaleLowerCase().indexOf('/account') != -1
     ) {
       setHideLoginedPanel(true);
     } else {
@@ -114,7 +114,7 @@ function App(props: any) {
                 xs={12}
                 sm={8.5}
                 lg={9}
-                sx={{ padding: { xs: '30px 20px', sm: '30px 40px' } }}
+                sx={{ padding: { xs: '30px 20px 10px', sm: '30px 40px' } }}
               >
                 <AppRoutes />
               </Grid>

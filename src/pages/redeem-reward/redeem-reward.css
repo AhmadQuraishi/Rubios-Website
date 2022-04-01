@@ -37,5 +37,6 @@
 @media screen and (max-width: 468px) {
   .redeem-sec .rewards {
     min-height: auto;
+    max-height: inherit;
   }
 }
