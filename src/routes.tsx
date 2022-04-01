@@ -33,7 +33,16 @@ const ScanToRedeem = lazy(() => import('./pages/scan-to-redeem'));
 const AppRoutes = () => {
   return (
     <>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div
+        style={{
+          display: 'flex',
+          height: '100vh',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <img src="./logo.png" />
+      </div>}>
         <Routes>
           <Route path="/" element={<CategoryList />} />
           <Route path="/login" element={<Login2 />} />
