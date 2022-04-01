@@ -1,9 +1,7 @@
 import React, { lazy, Suspense } from 'react';
 import {
-  BrowserRouter as Router,
   Routes,
   Route,
-  Navigate,
 } from 'react-router-dom';
 
 const Login = lazy(() => import('./pages/login'));
@@ -12,6 +10,8 @@ const Location = lazy(() => import('./pages/location'));
 const Checkout = lazy(() => import('./pages/checkout'));
 const Welcome = lazy(() => import('./pages/welcome'));
 const Login2 = lazy(() => import('./pages/login2'));
+const ForgotPassword = lazy(() => import('./pages/forgot-password'));
+const ResetPassword = lazy(() => import('./pages/reset-password'));
 const Register = lazy(() => import('./pages/register'));
 const OrderConfirmation = lazy(() => import('./pages/order-confirmation'));
 const RewardConfirmation = lazy(() => import('./pages/reward-confirmation'));
@@ -33,12 +33,23 @@ const ScanToRedeem = lazy(() => import('./pages/scan-to-redeem'));
 const AppRoutes = () => {
   return (
     <>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div
+        style={{
+          display: 'flex',
+          height: '100vh',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <img src="./logo.png" />
+      </div>}>
         <Routes>
-          <Route path="/login" element={<Login2 />} />
-          <Route path="/login2" element={<Login />} />
           <Route path="/" element={<CategoryList />} />
+          <Route path="/login" element={<Login2 />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/category/:id" element={<CategoryDetail />} />
+          <Route path="/login2" element={<Login />} />
           <Route path="/product/:id" element={<Product />} />
           <Route path="/product/:id/:edit" element={<Product />} />
           <Route path="/location" element={<Location />} />

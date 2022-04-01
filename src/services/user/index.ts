@@ -75,6 +75,26 @@ export const requestChangePassword = (body: object) => {
   }
 };
 
+//Reset Password
+export const resetPasswordRequest = (
+  body: object,
+  reset_password_token: string,
+) => {
+  const obj = {
+    user: body,
+    client: process.env.REACT_APP_PUNCHH_CLIENT_ID,
+    reset_password_token: reset_password_token
+  };
+
+  try {
+    const url = `${process.env.REACT_APP_PUNCHH_API}/api/auth/users/change_password`;
+    return axiosInstance.patch(url, obj).then((response) => response.data).catch((error) => {
+        throw error.response;
+      });
+  } catch (error) {
+    throw error;
+  }
+};
 
 //Recent Orders
 export const requestUserRecentOrders = () => {
@@ -130,7 +150,7 @@ export const requestDeleteFavOrder = ( favid: number) => {
 //Delivery Addresses
 export const requestUserDeliiveryAddresses = () => {
   try {
-    
+
     const authtoken = store.getState().authReducer.authToken.authtoken;
     const url = process.env.REACT_APP_OLO_API || "";
     return axiosInstance

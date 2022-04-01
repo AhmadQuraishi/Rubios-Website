@@ -150,9 +150,9 @@ const OrderTime = ()  => {
                       <Typography
                         style={{ textTransform: 'uppercase' }}
                         variant="h4"
-                        title={moment(selectedDate).format('dddd MMM.Do')}
+                        title={moment(selectedDate).format('dddd MMM. Do')}
                       >
-                        {moment(selectedDate).format('dddd MMM.Do')}
+                        {moment(selectedDate).format('dddd MMM. Do')}
                       </Typography>
                     </Grid>
                     <Grid item xs={12}>
