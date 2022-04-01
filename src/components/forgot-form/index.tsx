@@ -1,12 +1,11 @@
 import React from 'react';
-import { Grid, TextField, Button, Theme, Link } from '@mui/material';
+import { Grid, TextField, Button, Theme } from '@mui/material';
 import './index.css';
 import { makeStyles } from '@mui/styles';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { userLogin } from '../../redux/actions/user';
+import { userForgotPasswordRequest } from '../../redux/actions/user';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -14,20 +13,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const LoginForm = () => {
+const ForgotForm = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { loading: loadingProvider } = useSelector(
-    (state: any) => state.providerReducer,
-  );
-  const { loading: loadingAuth } = useSelector(
-    (state: any) => state.authReducer,
-  );
-
-  const forgotPassword = () => {
-    navigate('/forgot-password');
-  };
+  const { loading } = useSelector((state: any) => state.userReducer);
 
   return (
     <div className={classes.root}>
@@ -35,7 +24,6 @@ const LoginForm = () => {
         <Formik
           initialValues={{
             email: '',
-            password: '',
           }}
           validationSchema={Yup.object({
             email: Yup.string()
@@ -45,20 +33,12 @@ const LoginForm = () => {
               )
               .email('Invalid email address')
               .required('Email is required'),
-            password: Yup.string()
-              .min(8, 'Must be at least 8 characters')
-              .max(16, 'Must be at most 16 characters')
-              .required('required'),
           })}
           onSubmit={async (values) => {
             const obj = {
               email: values.email,
-              password: values.password,
             };
-
-            console.log('obj', obj);
-
-            dispatch(userLogin(obj));
+            dispatch(userForgotPasswordRequest(obj));
           }}
         >
           {({
@@ -87,30 +67,6 @@ const LoginForm = () => {
                       helperText={errors.email}
                     />
                   </Grid>
-                  <Grid item xs={16} sm={8} md={8} lg={16}>
-                    <TextField
-                      aria-label="password"
-                      label="Enter Password"
-                      title=" Password"
-                      type="password"
-                      name="password"
-                      className="form-field"
-                      sx={{ width: '100%' }}
-                      value={values.password}
-                      onChange={handleChange('password')}
-                      onBlur={handleBlur('password')}
-                      error={Boolean(touched.password && errors.password)}
-                      helperText={touched.password && errors.password}
-                    />
-                    <Link
-                      className="forgot-pass"
-                      title="forgot-password"
-                      onClick={() => forgotPassword()}
-                      style={{ cursor: 'pointer' }}
-                    >
-                      Forgot Password?
-                    </Link>
-                  </Grid>
                   <Grid
                     item
                     xs={16}
@@ -132,13 +88,13 @@ const LoginForm = () => {
                     >
                       <Button
                         type="submit"
-                        disabled={loadingProvider || loadingAuth}
+                        disabled={loading}
                         aria-label="sign in"
                         name="submit"
                         title="sign in"
                         variant="contained"
                       >
-                        Sign in
+                        Reset Password
                       </Button>
                     </Grid>
                   </Grid>
@@ -152,4 +108,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default ForgotForm;
