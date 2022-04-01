@@ -63,20 +63,19 @@ const CategoryList = () => {
   useEffect(() => {
     if (categories && categories.categories) {
       setCategoriesWithProducts(categories);
-
+      // if (categories && categories.categories && categoryPanels.length == 0) {
+      //   setCategoryPanels([]);
+      //   categories.categories.map((item: any, index: number) => {
+      //     setCategoryPanels((categoryPanels) => [
+      //       ...categoryPanels,
+      //       {
+      //         panel: document.getElementById('#panel-' + index),
+      //       },
+      //     ]);
+      //   });
+      // }
       body.addEventListener('scroll', (e) => {
         e.preventDefault();
-        // if (categories && categories.categories && categoryPanels.length == 0) {
-        //   setCategoryPanels([]);
-        //   categories.categories.map((item: any, index: number) => {
-        //     setCategoryPanels((categoryPanels) => [
-        //       ...categoryPanels,
-        //       {
-        //         panel: document.getElementById('#panel-' + index),
-        //       },
-        //     ]);
-        //   });
-        // }
         var categoryPanel = document.getElementById('categoryMenu');
         var dummyCategoryPanel = document.getElementById('dummyCategoryPanel');
         if (categoryPanel && dummyCategoryPanel) {
