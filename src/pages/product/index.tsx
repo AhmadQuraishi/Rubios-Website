@@ -30,6 +30,7 @@ import { getBasketRequest } from '../../redux/actions/basket';
 import { updateProductRequest } from '../../redux/actions/basket/product/update';
 import { displayToast } from '../../helpers/toast';
 import ItemImage from '../../components/item-image';
+import { getUpsellsRequest } from '../../redux/actions/basket/upsell/Get';
 
 const Product = () => {
   const [productDetails, setProductDetails] = useState<ProductInfo>();
@@ -44,6 +45,7 @@ const Product = () => {
   const basketObj = useSelector((state: any) => state.basketReducer);
   const productAddObj = useSelector((state: any) => state.addProductReducer);
   const { authToken } = useSelector((state: any) => state.authReducer);
+  const upsellsObj = useSelector((state: any) => state.getUpsellsReducer);
   const productUpdateObj = useSelector(
     (state: any) => state.updateProductReducer,
   );
@@ -193,6 +195,15 @@ const Product = () => {
       request.options = options;
       setActionStatus(true);
       dispatch(addProductRequest(dummyBasketObj.basket.id || '', request));
+    }
+    
+    if (
+      dummyBasketObj &&
+      dummyBasketObj.basket &&
+      dummyBasketObj.basket.id &&
+      upsellsObj.upsells == null
+    ) {
+      dispatch(getUpsellsRequest(dummyBasketObj.basket.id));
     }
   }, [dummyBasketObj.basket]);
 

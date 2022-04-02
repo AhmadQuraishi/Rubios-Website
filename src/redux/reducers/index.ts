@@ -25,11 +25,23 @@ import favRestaurantReducer from './restaurant/fav-restaurant';
 import accountHistoryReducer from './account-history';
 import pageStateReducer from './page-state';
 import redemptionReducer from './redemption';
+import addUpsellReducer from './basket/upsell/add';
+import getUpsellsReducer from './basket/upsell/get';
 
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['restaurantInfoReducer', 'basketReducer', 'authReducer', 'tokenReducer','userReducer','providerReducer' , 'redemptionReducer', 'pageStateReducer'],
+  whitelist: [
+    'restaurantInfoReducer',
+    'basketReducer',
+    'authReducer',
+    'tokenReducer',
+    'userReducer',
+    'providerReducer',
+    'redemptionReducer',
+    'pageStateReducer',
+    'getUpsellsReducer',
+  ],
 };
 
 const rootReducers = combineReducers({
@@ -56,8 +68,9 @@ const rootReducers = combineReducers({
   favRestaurantReducer,
   accountHistoryReducer,
   pageStateReducer,
-  redemptionReducer
-  
+  redemptionReducer,
+  addUpsellReducer,
+  getUpsellsReducer,
 });
 
 const persistReducers = persistReducer(persistConfig, rootReducers);
