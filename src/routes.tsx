@@ -1,8 +1,5 @@
 import React, { lazy, Suspense } from 'react';
-import {
-  Routes,
-  Route,
-} from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
 const Login = lazy(() => import('./pages/login'));
 const CategoryList = lazy(() => import('./pages/category'));
@@ -33,16 +30,20 @@ const ScanToRedeem = lazy(() => import('./pages/scan-to-redeem'));
 const AppRoutes = () => {
   return (
     <>
-      <Suspense fallback={<div
-        style={{
-          display: 'flex',
-          height: '100vh',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
+      <Suspense
+        fallback={
+          <div
+            style={{
+              display: 'flex',
+              height: '100vh',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <img alt="Logo" src="./logo.png" />
+          </div>
+        }
       >
-        <img src="./logo.png" />
-      </div>}>
         <Routes>
           <Route path="/" element={<CategoryList />} />
           <Route path="/login" element={<Login2 />} />

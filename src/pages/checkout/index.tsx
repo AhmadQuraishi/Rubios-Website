@@ -24,8 +24,8 @@ import {
   formatDeliveryAddress,
 } from '../../helpers/checkout';
 import { getUserDeliveryAddresses } from '../../redux/actions/user';
-import PickupForm from '../../components/pickup-form';
-import DeliveryForm from '../../components/delivery-form';
+import PickupForm from '../../components/pickup-form/index';
+import DeliveryForm from '../../components/delivery-form/index';
 
 const Checkout = () => {
   const dispatch = useDispatch();
@@ -39,7 +39,8 @@ const Checkout = () => {
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
   const [basket, setBasket] = React.useState<ResponseBasket>();
   const [validate, setValidate] = React.useState<ResponseBasketValidation>();
-  const [defaultDeliveryAddress, setDefaultDeliveryAddress] = React.useState<any>(null);
+  const [defaultDeliveryAddress, setDefaultDeliveryAddress] =
+    React.useState<any>(null);
 
   const basketObj = useSelector((state: any) => state.basketReducer);
   const { authToken } = useSelector((state: any) => state.authReducer);
@@ -229,7 +230,11 @@ const Checkout = () => {
     }
 
     if (orderType && orderType === DeliveryModeEnum.delivery) {
-      deliveryAddress = formatDeliveryAddress(formDataValue);
+      deliveryAddress = formatDeliveryAddress(
+        formDataValue,
+        defaultDeliveryAddress,
+      );
+      console.log('deliveryAddress', deliveryAddress);
     }
 
     if (basket) {
@@ -269,20 +274,44 @@ const Checkout = () => {
                 <Grid container>
                   <Grid item xs={12} sm={6} md={6} lg={6} className="left-col">
                     <Grid container>
-                      <Grid item xs={12}>
-                        <Typography
-                          variant="caption"
-                          className="label"
-                          title="WHO'S IS PICKING UP?"
-                        >
-                          WHO'S PICKING UP?
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Typography variant="h4" title="PICK UP INFO">
-                          PICK UP INFO
-                        </Typography>
-                      </Grid>
+                      {basket &&
+                      (orderType === '' ||
+                        orderType === DeliveryModeEnum.pickup ||
+                        orderType === DeliveryModeEnum.curbside) ? (
+                        <>
+                          <Grid item xs={12}>
+                            <Typography
+                              variant="caption"
+                              className="label"
+                              title="WHO'S IS PICKING UP?"
+                            >
+                              WHO'S PICKING UP?
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={12}>
+                            <Typography variant="h4" title="PICK UP INFO">
+                              PICK UP INFO
+                            </Typography>
+                          </Grid>
+                        </>
+                      ) : basket && orderType === DeliveryModeEnum.delivery ? (
+                        <>
+                          <Grid item xs={12}>
+                            <Typography
+                              variant="caption"
+                              className="label"
+                              title="WHO'S IS PICKING UP?"
+                            >
+                              WHERE TO DELIVER
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={12}>
+                            <Typography variant="h4" title="PICK UP INFO">
+                              DELIVERY INFO
+                            </Typography>
+                          </Grid>
+                        </>
+                      ) : null}
                       {basket &&
                       (orderType === '' ||
                         orderType === DeliveryModeEnum.pickup ||
