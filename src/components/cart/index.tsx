@@ -17,6 +17,8 @@ import { removeProductRequest } from '../../redux/actions/basket/product/remove'
 import { addProductRequest } from '../../redux/actions/basket/product/add';
 import LoadingBar from '../loading-bar';
 import { displayToast } from '../../helpers/toast';
+import { getUpsellsRequest } from '../../redux/actions/basket/upsell/Get';
+import { addUpsellsRequest } from '../../redux/actions/basket/upsell/Add';
 
 const useStyles = makeStyles((theme: Theme) => ({
   dimPanel: {
@@ -102,6 +104,8 @@ const Cart = (props: any) => {
   const classes = useStyles();
   const [actionStatus, setActionStatus] = useState(false);
   const [clickAction, setClickAction] = useState('');
+  const [upsells, setUpsells] = useState<any>();
+
   const productRemoveObj = useSelector(
     (state: any) => state.removeProductReducer,
   );
@@ -110,6 +114,8 @@ const Cart = (props: any) => {
     (state: any) => state.restaurantInfoReducer,
   );
   const basketObj = useSelector((state: any) => state.basketReducer);
+  const upsellsObj = useSelector((state: any) => state.getUpsellsReducer);
+  const addUpsellsObj = useSelector((state: any) => state.addUpsellReducer);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -118,7 +124,18 @@ const Cart = (props: any) => {
   useEffect(() => {
     window.scrollTo(0, 0);
     setBasketType((basketObj && basketObj.basketType) || '');
+    if (upsellsObj && upsellsObj.upsells && basketObj && basketObj.basket) {
+      setUpsells(upsellsObj.upsells);
+    }
   }, []);
+
+  useEffect(() => {
+    if (addUpsellsObj && addUpsellsObj.basket && clickAction != '') {
+      setClickAction('');
+      displayToast('SUCCESS', '1 item added to cart.');
+      dispatch(getBasketRequest('', addUpsellsObj.basket, basketType));
+    }
+  }, [addUpsellsObj]);
 
   useEffect(() => {
     if (productRemoveObj && productRemoveObj.basket && actionStatus) {
@@ -161,6 +178,19 @@ const Cart = (props: any) => {
     }
   };
 
+  const addUpsells = (upsellID: number) => {
+    const request = {
+      items: [
+        {
+          id: upsellID,
+          quantity: 1,
+        },
+      ],
+    };
+    setClickAction('clicked');
+    dispatch(addUpsellsRequest(basketObj.basket.id, request));
+  };
+
   const getOptions = (options: any) => {
     let val = '';
     options.map((item: any) => {
@@ -168,6 +198,22 @@ const Cart = (props: any) => {
     });
     return val.trim().replace(/,*$/, '');
   };
+
+  const checkItemIsUpsells = (id: number) => {
+    let aval = false;
+    if (upsellsObj && upsellsObj.upsells) {
+      upsellsObj.upsells.groups.map((obj: any, index: number) => {
+        obj.items.map((item: any, index: number) => {
+          if (item.id == id) {
+            aval = true;
+          }
+        });
+      });
+    }
+    return aval;
+  };
+
+  const removeAddedUpsells = () => {};
 
   return (
     <>
@@ -325,41 +371,43 @@ const Cart = (props: any) => {
                           </span>
                         )}
                       </Grid>
-                      <Grid item xs={3} sx={{ textAlign: 'center' }}>
-                        {(productRemoveObj && productRemoveObj.loading) ||
-                        (productAddObj && productAddObj.loading) ? (
-                          <span
-                            key={Math.random() + 'disable-edit'}
-                            onClick={() => false}
-                            title="Edit"
-                            className={classes.smallLink}
-                            aria-label="Make changes to the current menu item"
-                          >
-                            Edit
-                          </span>
-                        ) : (
-                          <span
-                            onClick={() => {
-                              showCart();
-                              navigate(
-                                `product/${item.productId}/${item.id}${
-                                  window.location.href
-                                    .toLowerCase()
-                                    .indexOf('product') == -1
-                                    ? '?edit=true'
-                                    : ''
-                                }`,
-                              );
-                            }}
-                            key={Math.random() + 'active-edit'}
-                            title="Edit"
-                            className={classes.smallLink}
-                            aria-label="Make changes to the current menu item"
-                          >
-                            Edit
-                          </span>
-                        )}
-                      </Grid>
+                      {!checkItemIsUpsells(item.productId) && (
+                        <Grid item xs={3} sx={{ textAlign: 'center' }}>
+                          {(productRemoveObj && productRemoveObj.loading) ||
+                          (productAddObj && productAddObj.loading) ? (
+                            <span
+                              key={Math.random() + 'disable-edit'}
+                              onClick={() => false}
+                              title="Edit"
+                              className={classes.smallLink}
+                              aria-label="Make changes to the current menu item"
+                            >
+                              Edit
+                            </span>
+                          ) : (
+                            <span
+                              onClick={() => {
+                                showCart();
+                                navigate(
+                                  `product/${item.productId}/${item.id}${
+                                    window.location.href
+                                      .toLowerCase()
+                                      .indexOf('product') == -1
+                                      ? '?edit=true'
+                                      : ''
+                                  }`,
+                                );
+                              }}
+                              key={Math.random() + 'active-edit'}
+                              title="Edit"
+                              className={classes.smallLink}
+                              aria-label="Make changes to the current menu item"
+                            >
+                              Edit
+                            </span>
+                          )}
+                        </Grid>
+                      )}
                       <Grid item xs={3} sx={{ textAlign: 'center' }}>
                         {productAddObj &&
                         productAddObj.loading &&
@@ -397,108 +445,82 @@ const Cart = (props: any) => {
                 </Grid>
               </Grid>
             ))}
-          {/* {basketObj && basketObj.basket && (
-            <Grid item xs={12}>
-              <Grid container spacing={0} justifyContent="space-around">
-                <Grid item xs={3}>
-                  <img
-                    style={{ display: 'block', margin: 'auto' }}
-                    src={require('../../assets/imgs/pic1.png')}
-                    alt="Chips"
-                    title="Chips"
-                  />
-                  <Typography
-                    variant="h6"
-                    component="p"
-                    fontSize="14px !important"
-                    textAlign="center"
-                    padding="5px 0 0 0"
-                    textTransform="capitalize"
-                    className={classes.cartTitle}
-                    title="Chips"
+          {basketObj &&
+            basketObj.basket &&
+            basketObj.basket.products.length > 0 &&
+            upsells &&
+            upsells.groups && (
+              <Grid item xs={12}>
+                {upsells.groups.map((item: any, index: number) => (
+                  <Grid
+                    key={Math.random() + '-' + index}
+                    container
+                    spacing={0}
+                    justifyContent="space-around"
+                    sx={{ paddingTop: '10px' }}
                   >
-                    Chips
-                  </Typography>
-                  <Typography
-                    variant="caption"
-                    component="p"
-                    fontSize="14px !important"
-                    textAlign="center"
-                    paddingTop="0px"
-                    fontFamily="Poppins-Regular !important"
-                    className={classes.cartTitle}
-                    title="$3.09"
-                  >
-                    $3.09
-                  </Typography>
-                </Grid>
-                <Grid item xs={3}>
-                  <img
-                    style={{ display: 'block', margin: 'auto' }}
-                    src={require('../../assets/imgs/pic2.png')}
-                    alt="Churros"
-                    title="Churros"
-                  />
-                  <Typography
-                    variant="h6"
-                    component="p"
-                    fontSize="14px !important"
-                    textAlign="center"
-                    padding="5px 0 0 0"
-                    textTransform="capitalize"
-                    className={classes.cartTitle}
-                    title="Churros"
-                  >
-                    Churros
-                  </Typography>
-                  <Typography
-                    variant="caption"
-                    component="p"
-                    fontSize="14px !important"
-                    textAlign="center"
-                    paddingTop="0px"
-                    fontFamily="Poppins-Regular !important"
-                    className={classes.cartTitle}
-                    title="$3.09"
-                  >
-                    $3.09
-                  </Typography>
-                </Grid>
-                <Grid item xs={3}>
-                  <img
-                    style={{ display: 'block', margin: 'auto' }}
-                    src={require('../../assets/imgs/pic3.png')}
-                    alt="Drinks"
-                    title="Drinks"
-                  />
-                  <Typography
-                    variant="h6"
-                    component="p"
-                    fontSize="14px !important"
-                    textAlign="center"
-                    padding="5px 0 0 0"
-                    textTransform="capitalize"
-                    className={classes.cartTitle}
-                    title="drinks"
-                  >
-                    drinks
-                  </Typography>
-                  <Typography
-                    variant="caption"
-                    component="p"
-                    fontSize="14px !important"
-                    textAlign="center"
-                    paddingTop="0px"
-                    fontFamily="Poppins-Regular !important"
-                    className={classes.cartTitle}
-                    title="$3.09"
-                  >
-                    $3.09
-                  </Typography>
-                </Grid>
+                    <Grid item xs={12}>
+                      <Typography
+                        variant="h6"
+                        component="p"
+                        fontSize="16px !important"
+                        padding="5px 0 10px 0"
+                        className={classes.cartTitle}
+                        title={item.title}
+                      >
+                        {item.title}
+                      </Typography>
+                    </Grid>
+                    {item.items.map((option: any, index: any) => (
+                      <Grid
+                        key={Math.random() + '-' + index}
+                        item
+                        xs={4}
+                        sx={{ cursor: 'pointer' }}
+                        onClick={() => {
+                          addUpsells(option.id);
+                        }}
+                      >
+                        <img
+                          style={{
+                            display: 'block',
+                            margin: 'auto',
+                            width: '75%',
+                          }}
+                          src={require('../../assets/imgs/default_img.png')}
+                          alt={option.name}
+                          title={option.name}
+                        />
+                        <Typography
+                          variant="h6"
+                          component="p"
+                          fontSize="14px !important"
+                          textAlign="center"
+                          padding="5px 0 0 0"
+                          textTransform="capitalize"
+                          className={classes.cartTitle}
+                          title={option.name}
+                        >
+                          {option.name}
+                        </Typography>
+                        <Typography
+                          variant="caption"
+                          component="p"
+                          fontSize="14px !important"
+                          textAlign="center"
+                          paddingTop="0px"
+                          fontFamily="Poppins-Regular !important"
+                          className={classes.cartTitle}
+                          title={`${option.cost}`}
+                        >
+                          {option.cost}
+                        </Typography>
+                      </Grid>
+                    ))}
+                  </Grid>
+                ))}
               </Grid>
-            </Grid>
-          )} */}
+            )}
           {basketObj &&
             basketObj.basket &&
             basketObj.basket.products.length > 0 && (
