@@ -72,9 +72,11 @@ const DeliveryForm = ({ basket, deliveryFormRef, defaultAddress }: any) => {
       }}
       validationSchema={Yup.object({
         firstName: Yup.string()
+          .trim()
           .max(30, 'Must be 30 characters or less')
           .required('First Name is required'),
         lastName: Yup.string()
+          .trim()
           .max(30, 'Must be 30 characters or less')
           .required('Last Name is required'),
         email: Yup.string()
@@ -88,15 +90,19 @@ const DeliveryForm = ({ basket, deliveryFormRef, defaultAddress }: any) => {
           .min(14, 'Enter valid number')
           .required('Phone is required'),
         apartment: Yup.string()
+          .trim()
           .max(30, 'Must be 30 characters or less')
           .optional(),
         streetAddress: Yup.string()
+          .trim()
           .max(30, 'Must be 45 characters or less')
           .required('Street Address is required'),
         city: Yup.string()
+          .trim()
           .max(30, 'Must be 30 characters or less')
           .required('City is required'),
         zipcode: Yup.string()
+          .trim()
           .max(30, 'Must be 30 characters or less')
           .required('Zip Code is required'),
         saveAddressCheck: Yup.bool().optional(),
@@ -150,7 +156,9 @@ const DeliveryForm = ({ basket, deliveryFormRef, defaultAddress }: any) => {
             <TextField
               className="mobile-field"
               aria-label="Phone Number"
-              disabled={authToken?.authtoken ? true : false}
+              disabled={
+                authToken?.authtoken && values.phone !== '' ? true : false
+              }
               onBlur={handleBlur}
               label="Phone Number"
               aria-required="true"
@@ -254,24 +262,26 @@ const DeliveryForm = ({ basket, deliveryFormRef, defaultAddress }: any) => {
             </Grid>
           </Grid>
 
-          <Grid item xs={12}>
-            <FormGroup>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={values.saveAddressCheck}
-                    onChange={handleChange}
-                  />
-                }
-                label="Make default delivery address."
-                aria-label="Make default delivery address"
-                aria-required="true"
-                title="Make default delivery address"
-                name="saveAddressCheck"
-                className="size"
-              />
-            </FormGroup>
-          </Grid>
+          {authToken?.authtoken ? (
+            <Grid item xs={12}>
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={values.saveAddressCheck}
+                      onChange={handleChange}
+                    />
+                  }
+                  label="Make default delivery address."
+                  aria-label="Make default delivery address"
+                  aria-required="true"
+                  title="Make default delivery address"
+                  name="saveAddressCheck"
+                  className="size"
+                />
+              </FormGroup>
+            </Grid>
+          ) : null}
         </form>
       )}
     </Formik>

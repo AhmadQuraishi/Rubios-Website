@@ -62,9 +62,11 @@ const PickupForm = ({ basket, pickupFormRef, orderType }: any) => {
       }}
       validationSchema={Yup.object({
         firstName: Yup.string()
+          .trim()
           .max(30, 'Must be 30 characters or less')
           .required('First Name is required'),
         lastName: Yup.string()
+          .trim()
           .max(30, 'Must be 30 characters or less')
           .required('Last Name is required'),
         email: Yup.string()
@@ -80,19 +82,19 @@ const PickupForm = ({ basket, pickupFormRef, orderType }: any) => {
         vehicleModal:
           orderType === DeliveryModeEnum.curbside
             ? Yup.string()
-                .max(15, 'Must be 15 characters or less')
-                .required('Vehicle Modal is required')
+                .trim()
+                .required('Vehicle Model is required')
             : Yup.string(),
         vehicleMake:
           orderType === DeliveryModeEnum.curbside
             ? Yup.string()
-                .max(15, 'Must be 15 characters or less')
+                .trim()
                 .required('Vehicle Make is required')
             : Yup.string(),
         vehicleColor:
           orderType === DeliveryModeEnum.curbside
             ? Yup.string()
-                .max(15, 'Must be 15 characters or less')
+                .trim()
                 .required('Vehicle Color is required')
             : Yup.string(),
         emailNotification: Yup.bool().optional(),
@@ -191,11 +193,11 @@ const PickupForm = ({ basket, pickupFormRef, orderType }: any) => {
               <Grid container spacing={1}>
                 <Grid item xs={6}>
                   <TextField
-                    aria-label="Vehicle Modal"
+                    aria-label="Vehicle Model"
                     onBlur={handleBlur}
-                    label="Vehicle Modal"
+                    label="Vehicle Model"
                     aria-required="true"
-                    title="Vehicle Modal"
+                    title="Vehicle Model"
                     type="text"
                     name="vehicleModal"
                     value={values.vehicleModal}

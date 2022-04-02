@@ -275,9 +275,7 @@ const Checkout = () => {
                   <Grid item xs={12} sm={6} md={6} lg={6} className="left-col">
                     <Grid container>
                       {basket &&
-                      (orderType === '' ||
-                        orderType === DeliveryModeEnum.pickup ||
-                        orderType === DeliveryModeEnum.curbside) ? (
+                      (orderType === '' ||  orderType === DeliveryModeEnum.pickup) ? (
                         <>
                           <Grid item xs={12}>
                             <Typography
@@ -291,6 +289,23 @@ const Checkout = () => {
                           <Grid item xs={12}>
                             <Typography variant="h4" title="PICK UP INFO">
                               PICK UP INFO
+                            </Typography>
+                          </Grid>
+                        </>
+                      ) : basket && orderType === DeliveryModeEnum.curbside ? (
+                        <>
+                          <Grid item xs={12}>
+                            <Typography
+                              variant="caption"
+                              className="label"
+                              title="WHO'S IS PICKING UP?"
+                            >
+                              WHO'S PICKING UP?
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={12}>
+                            <Typography variant="h4" title="PICK UP INFO">
+                              CURBSIDE PICK UP
                             </Typography>
                           </Grid>
                         </>
