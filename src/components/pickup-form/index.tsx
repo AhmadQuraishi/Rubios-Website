@@ -83,21 +83,18 @@ const PickupForm = ({ basket, pickupFormRef, orderType }: any) => {
           orderType === DeliveryModeEnum.curbside
             ? Yup.string()
                 .trim()
-                .max(15, 'Must be 15 characters or less')
                 .required('Vehicle Model is required')
             : Yup.string(),
         vehicleMake:
           orderType === DeliveryModeEnum.curbside
             ? Yup.string()
                 .trim()
-                .max(15, 'Must be 15 characters or less')
                 .required('Vehicle Make is required')
             : Yup.string(),
         vehicleColor:
           orderType === DeliveryModeEnum.curbside
             ? Yup.string()
                 .trim()
-                .max(15, 'Must be 15 characters or less')
                 .required('Vehicle Color is required')
             : Yup.string(),
         emailNotification: Yup.bool().optional(),
