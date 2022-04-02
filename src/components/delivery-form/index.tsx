@@ -12,21 +12,20 @@ import * as Yup from 'yup';
 import { forwardRef } from 'react';
 import { IMaskInput } from 'react-imask';
 
-const DeliveryForm = ({ basket, deliveryFormRef, defaultAddress } : any) => {
-  const [address, setAddress] = useState<any>(null);  
+const DeliveryForm = ({ basket, deliveryFormRef, defaultAddress }: any) => {
+  const [address, setAddress] = useState<any>(null);
   const { providerToken } = useSelector((state: any) => state.providerReducer);
   const { authToken } = useSelector((state: any) => state.authReducer);
 
   useEffect(() => {
-      if(basket && basket.deliveryaddress){
-        setAddress(basket.deliveryaddress)
-      } else if (defaultAddress){
-        setAddress(defaultAddress)
-      } else {
-        setAddress(null)
-      }    
-  }, [defaultAddress, basket])
-  
+    if (basket && basket.deliveryaddress) {
+      setAddress(basket.deliveryaddress);
+    } else if (defaultAddress) {
+      setAddress(defaultAddress);
+    } else {
+      setAddress(null);
+    }
+  }, [defaultAddress, basket]);
 
   interface CustomProps {
     onChange: (event: { target: { name: string; value: string } }) => void;
@@ -63,24 +62,13 @@ const DeliveryForm = ({ basket, deliveryFormRef, defaultAddress } : any) => {
         phone: providerToken?.phone ? providerToken?.phone : '',
         email: providerToken?.email ? providerToken?.email : '',
         addressId: address && address.id ? address.id : null,
-        apartment:
-        address && address.building
-            ? address.building
-            : '',
+        apartment: address && address.building ? address.building : '',
         streetAddress:
-          address && address.streetaddress
-            ? address.streetaddress
-            : '',
-        city:
-          address && address.city ? address.city : '',
-        zipcode:
-          address && address.zipcode
-            ? address.zipcode
-            : '',
+          address && address.streetaddress ? address.streetaddress : '',
+        city: address && address.city ? address.city : '',
+        zipcode: address && address.zipcode ? address.zipcode : '',
         saveAddressCheck:
-          address && address.isdefault
-            ? address.isdefault
-            : false,
+          address && address.isdefault ? address.isdefault : false,
       }}
       validationSchema={Yup.object({
         firstName: Yup.string()
@@ -162,6 +150,7 @@ const DeliveryForm = ({ basket, deliveryFormRef, defaultAddress } : any) => {
             <TextField
               className="mobile-field"
               aria-label="Phone Number"
+              disabled={authToken?.authtoken ? true : false}
               onBlur={handleBlur}
               label="Phone Number"
               aria-required="true"
@@ -231,37 +220,38 @@ const DeliveryForm = ({ basket, deliveryFormRef, defaultAddress } : any) => {
               helperText={errors.streetAddress}
             />
           </Grid>
+          <Grid container spacing={1}>
+            <Grid item xs={6}>
+              <TextField
+                aria-label="City"
+                onBlur={handleBlur}
+                label="City"
+                aria-required="true"
+                title="City"
+                type="text"
+                name="city"
+                value={values.city}
+                onChange={handleChange}
+                error={Boolean(touched.city && errors.city)}
+                helperText={errors.city}
+              />
+            </Grid>
 
-          <Grid item xs={12}>
-            <TextField
-              aria-label="City"
-              onBlur={handleBlur}
-              label="City"
-              aria-required="true"
-              title="City"
-              type="text"
-              name="city"
-              value={values.city}
-              onChange={handleChange}
-              error={Boolean(touched.city && errors.city)}
-              helperText={errors.city}
-            />
-          </Grid>
-
-          <Grid item xs={12}>
-            <TextField
-              aria-label="Zip Code"
-              onBlur={handleBlur}
-              label="Zip Code"
-              aria-required="true"
-              title="Zip Code"
-              type="text"
-              name="zipcode"
-              value={values.zipcode}
-              onChange={handleChange}
-              error={Boolean(touched.zipcode && errors.zipcode)}
-              helperText={errors.zipcode}
-            />
+            <Grid item xs={6}>
+              <TextField
+                aria-label="Zip Code"
+                onBlur={handleBlur}
+                label="Zip Code"
+                aria-required="true"
+                title="Zip Code"
+                type="text"
+                name="zipcode"
+                value={values.zipcode}
+                onChange={handleChange}
+                error={Boolean(touched.zipcode && errors.zipcode)}
+                helperText={errors.zipcode}
+              />
+            </Grid>
           </Grid>
 
           <Grid item xs={12}>
@@ -273,10 +263,10 @@ const DeliveryForm = ({ basket, deliveryFormRef, defaultAddress } : any) => {
                     onChange={handleChange}
                   />
                 }
-                label="Save Delivery Address to My account."
-                aria-label="Save Delivery Address to My account"
+                label="Make default delivery address."
+                aria-label="Make default delivery address"
                 aria-required="true"
-                title="Save Delivery Address to My account"
+                title="Make default delivery address"
                 name="saveAddressCheck"
                 className="size"
               />
