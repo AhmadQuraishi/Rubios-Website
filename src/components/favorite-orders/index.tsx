@@ -18,6 +18,7 @@ import { getBasketRequest } from '../../redux/actions/basket';
 import { useNavigate } from 'react-router-dom';
 import OrderListSkeletonUI from '../order-list-skeleton-ui';
 import { displayToast } from '../../helpers/toast';
+import { getUpsellsRequest } from '../../redux/actions/basket/upsell/Get';
 
 const FavoriteOrders = () => {
   const dispatch = useDispatch();
@@ -77,6 +78,7 @@ const FavoriteOrders = () => {
     if (createBasketObj && clickAction) {
       if (createBasketObj.basket && clickAction) {
         dispatch(getResturantInfoRequest(createBasketObj.basket.vendorid));
+        dispatch(getUpsellsRequest(createBasketObj.basket.id));
       } else if (createBasketObj.error && createBasketObj.error.message) {
         setClickAction(false);
       }

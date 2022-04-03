@@ -25,6 +25,7 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { createFave } from '../../redux/actions/create-fave';
 import moment from 'moment';
+import { getUpsellsRequest } from '../../redux/actions/basket/upsell/Get';
 
 const RecentOrders = () => {
   const [recentorders, setOrders] = React.useState([]);
@@ -57,6 +58,7 @@ const RecentOrders = () => {
     if (createBasketObj && clickAction) {
       if (createBasketObj.basket && clickAction) {
         dispatch(getResturantInfoRequest(createBasketObj.basket.vendorid));
+        dispatch(getUpsellsRequest(createBasketObj.basket.id));
       } else if (createBasketObj.error && createBasketObj.error.message) {
         setClickAction(false);
       }
