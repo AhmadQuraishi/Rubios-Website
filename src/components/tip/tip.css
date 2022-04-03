@@ -12,6 +12,10 @@
   height: 56px;
 }
 
+.tip-wrapper .action-btn .Mui-disabled {
+  background: #d3d3d3;
+}
+
 @media screen and (max-width: 468px) {
   .tip-wrapper .coupon-sec {
     margin: 10px 0px;

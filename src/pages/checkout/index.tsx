@@ -37,6 +37,7 @@ const Checkout = () => {
 
   const [runOnce, setRunOnce] = React.useState<boolean>(true);
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
+  const [tipPercentage, setTipPercentage] = React.useState<any>(null);
   const [basket, setBasket] = React.useState<ResponseBasket>();
   const [validate, setValidate] = React.useState<ResponseBasketValidation>();
   const [defaultDeliveryAddress, setDefaultDeliveryAddress] =
@@ -275,7 +276,8 @@ const Checkout = () => {
                   <Grid item xs={12} sm={6} md={6} lg={6} className="left-col">
                     <Grid container>
                       {basket &&
-                      (orderType === '' ||  orderType === DeliveryModeEnum.pickup) ? (
+                      (orderType === '' ||
+                        orderType === DeliveryModeEnum.pickup) ? (
                         <>
                           <Grid item xs={12}>
                             <Typography
@@ -364,7 +366,11 @@ const Checkout = () => {
               <br />
               <br />
               <br />
-              <Tip basket={basket} />
+              <Tip
+                basket={basket}
+                loading={basketObj?.loading}
+                updateOrderDetailTipPercent={setTipPercentage}
+              />
               <br />
               <br />
               <br />
@@ -373,7 +379,7 @@ const Checkout = () => {
               <br />
               <br />
               {/*second section*/}
-              <OrderDetail basket={basket} validate={validate} />
+              <OrderDetail basket={basket} tipPercentage={tipPercentage} />
               <br />
               <br />
               <br />
