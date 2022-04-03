@@ -1,7 +1,7 @@
 import { basketActionsTypes } from '../../../types/basket';
 import {
-  ResponseRestaurantCalendars, 
-  RequestUpdateBasketTimeWanted, 
+  ResponseRestaurantCalendars,
+  RequestUpdateBasketTimeWanted,
   ResponseBasket,
   RequestUpdateBasketTip,
   RequestApplyCoupon,
@@ -87,7 +87,7 @@ export function updateBasketTipAmount(basketId: string, data: RequestUpdateBaske
   return {
     type: basketActionsTypes.UPDATE_BASKET_TIP_AMOUNT,
     basketId,
-    data
+    data,
   };
 }
 
@@ -144,7 +144,7 @@ export function validateBasket(basketId: string, basketPayload: RequestBasketSub
 }
 
 export function validateBasketSuccess(response: ResponseBasketValidation) {
-  
+
   return {
     type: basketActionsTypes.VALIDETE_BASKET_SUCCESS,
     payload: response
