@@ -15,9 +15,7 @@ import crossIcon from '../../assets/imgs/close.png';
 import { getBasketRequest } from '../../redux/actions/basket';
 import { removeProductRequest } from '../../redux/actions/basket/product/remove';
 import { addProductRequest } from '../../redux/actions/basket/product/add';
-import LoadingBar from '../loading-bar';
 import { displayToast } from '../../helpers/toast';
-import { getUpsellsRequest } from '../../redux/actions/basket/upsell/Get';
 import { addUpsellsRequest } from '../../redux/actions/basket/upsell/Add';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -104,7 +102,7 @@ const Cart = (props: any) => {
   const classes = useStyles();
   const [actionStatus, setActionStatus] = useState(false);
   const [clickAction, setClickAction] = useState('');
-  const [upsells, setUpsells] = useState<any>();
+  const [upsells, setUpsells] = useState<any[]>();
 
   const productRemoveObj = useSelector(
     (state: any) => state.removeProductReducer,
@@ -124,10 +122,19 @@ const Cart = (props: any) => {
   useEffect(() => {
     window.scrollTo(0, 0);
     setBasketType((basketObj && basketObj.basketType) || '');
-    if (upsellsObj && upsellsObj.upsells && basketObj && basketObj.basket) {
-      setUpsells(upsellsObj.upsells);
-    }
   }, []);
+
+  const updateUpsells = (upsells: any) => {
+    let finalOptionsInArray: any = [];
+    upsells.groups.map((g: any) => {
+      g.items.map((item: any) => {
+        if (!checkUpsellIsAdded(item.id)) {
+          finalOptionsInArray.push(item);
+        }
+      });
+    });
+    setUpsells(finalOptionsInArray);
+  };
 
   useEffect(() => {
     if (addUpsellsObj && addUpsellsObj.basket && clickAction != '') {
@@ -145,6 +152,12 @@ const Cart = (props: any) => {
       navigate(restaurant ? '/menu/' + restaurant.slug : '/');
     }
   }, [productRemoveObj]);
+
+  useEffect(() => {
+    if (upsellsObj && upsellsObj.upsells && basketObj && basketObj.basket) {
+      updateUpsells(upsellsObj.upsells);
+    }
+  }, [basketObj]);
 
   useEffect(() => {
     if (productAddObj && productAddObj.basket && actionStatus) {
@@ -213,7 +226,17 @@ const Cart = (props: any) => {
     return aval;
   };
 
-  const removeAddedUpsells = () => {};
+  const checkUpsellIsAdded = (id: number) => {
+    let aval = false;
+    if (basketObj && basketObj.basket && basketObj.basket.products.length) {
+      basketObj.basket.products.map((obj: any, index: number) => {
+        if (obj.productId == id) {
+          aval = true;
+        }
+      });
+    }
+    return aval;
+  };
 
   return (
     <>
@@ -449,76 +472,73 @@ const Cart = (props: any) => {
             basketObj.basket &&
             basketObj.basket.products.length > 0 &&
             upsells &&
-            upsells.groups && (
+            upsells.length > 0 && (
               <Grid item xs={12}>
-                {upsells.groups.map((item: any, index: number) => (
-                  <Grid
-                    key={Math.random() + '-' + index}
-                    container
-                    spacing={0}
-                    justifyContent="space-around"
-                    sx={{ paddingTop: '10px' }}
-                  >
-                    <Grid item xs={12}>
+                <Typography
+                  variant="h6"
+                  component="p"
+                  fontSize="15px !important"
+                  textAlign="center"
+                  padding="10px 0 10px 0"
+                  textTransform="uppercase"
+                  className={classes.cartTitle}
+                  title="Complete Your Meal"
+                >
+                  Complete Your Meal
+                </Typography>
+                <Grid
+                  container
+                  spacing={0}
+                  justifyContent="space-around"
+                  sx={{ paddingTop: '10px' }}
+                >
+                  {upsells.map((option: any, index: number) => (
+                    <Grid
+                      key={Math.random() + '-' + index}
+                      item
+                      xs={4}
+                      sx={{ cursor: 'pointer' }}
+                      onClick={() => {
+                        addUpsells(option.id);
+                      }}
+                    >
+                      <img
+                        style={{
+                          display: 'block',
+                          margin: 'auto',
+                          width: '75%',
+                        }}
+                        src={require('../../assets/imgs/default_img.png')}
+                        alt={option.name}
+                        title={option.name}
+                      />
                       <Typography
                         variant="h6"
                         component="p"
-                        fontSize="16px !important"
-                        padding="5px 0 10px 0"
+                        fontSize="14px !important"
+                        textAlign="center"
+                        padding="5px 0 0 0"
+                        textTransform="capitalize"
                         className={classes.cartTitle}
-                        title={item.title}
+                        title={option.name}
                       >
-                        {item.title}
+                        {option.name}
+                      </Typography>
+                      <Typography
+                        variant="caption"
+                        component="p"
+                        fontSize="14px !important"
+                        textAlign="center"
+                        paddingTop="0px"
+                        fontFamily="Poppins-Regular !important"
+                        className={classes.cartTitle}
+                        title={`${option.cost}`}
+                      >
+                        {option.cost}
                       </Typography>
                     </Grid>
-                    {item.items.map((option: any, index: any) => (
-                      <Grid
-                        key={Math.random() + '-' + index}
-                        item
-                        xs={4}
-                        sx={{ cursor: 'pointer' }}
-                        onClick={() => {
-                          addUpsells(option.id);
-                        }}
-                      >
-                        <img
-                          style={{
-                            display: 'block',
-                            margin: 'auto',
-                            width: '75%',
-                          }}
-                          src={require('../../assets/imgs/default_img.png')}
-                          alt={option.name}
-                          title={option.name}
-                        />
-                        <Typography
-                          variant="h6"
-                          component="p"
-                          fontSize="14px !important"
-                          textAlign="center"
-                          padding="5px 0 0 0"
-                          textTransform="capitalize"
-                          className={classes.cartTitle}
-                          title={option.name}
-                        >
-                          {option.name}
-                        </Typography>
-                        <Typography
-                          variant="caption"
-                          component="p"
-                          fontSize="14px !important"
-                          textAlign="center"
-                          paddingTop="0px"
-                          fontFamily="Poppins-Regular !important"
-                          className={classes.cartTitle}
-                          title={`${option.cost}`}
-                        >
-                          {option.cost}
-                        </Typography>
-                      </Grid>
-                    ))}
-                  </Grid>
-                ))}
+                  ))}
+                </Grid>
               </Grid>
             )}
           {basketObj &&
