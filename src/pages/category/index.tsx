@@ -3,7 +3,7 @@ import ProductListing from '../../components/product-listing';
 import { Grid, Theme, Typography, Tabs, Tab, Box } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Link, useNavigate } from 'react-router-dom';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategoriesRequest } from '../../redux/actions/category';
 import { Category, ResponseMenu } from '../../types/olo-api';
@@ -49,10 +49,6 @@ const CategoryList = () => {
   const body = document;
 
   useEffect(() => {
-    console.log(categoryPanels);
-  }, [categoryPanels]);
-
-  useEffect(() => {
     if (restaurant === null) {
       navigate('/location');
     } else {
@@ -63,21 +59,72 @@ const CategoryList = () => {
   useEffect(() => {
     if (categories && categories.categories) {
       setCategoriesWithProducts(categories);
-      // if (categories && categories.categories && categoryPanels.length == 0) {
-      //   setCategoryPanels([]);
-      //   categories.categories.map((item: any, index: number) => {
-      //     setCategoryPanels((categoryPanels) => [
-      //       ...categoryPanels,
-      //       {
-      //         panel: document.getElementById('#panel-' + index),
-      //       },
-      //     ]);
-      //   });
-      // }
+      let scrollValues: any[] = [];
+      setTimeout(() => {
+        categories.categories.map((item: any, index: number) => {
+          const elem: HTMLElement = document.getElementById(
+            'cat-panel-' + index,
+          ) as HTMLElement;
+          if (document.getElementById('cat-panel-' + index)) {
+            scrollValues.push({
+              panel: elem,
+              start: elem.offsetTop - 100,
+              end: elem.offsetTop - 100 + elem.clientHeight,
+              index: index,
+            });
+          }
+        });
+      }, 500);
+
+      window.addEventListener(
+        'orientationchange',
+        function () {
+          scrollValues = [];
+          categories.categories.map((item: any, index: number) => {
+            const elem: HTMLElement = document.getElementById(
+              'cat-panel-' + index,
+            ) as HTMLElement;
+            if (document.getElementById('cat-panel-' + index)) {
+              scrollValues.push({
+                panel: elem,
+                start: elem.offsetTop - 100,
+                end: elem.offsetTop - 100 + elem.clientHeight,
+                index: index,
+              });
+            }
+          });
+        },
+        false,
+      );
+
+      // Listen for resize changes
+      window.addEventListener(
+        'resize',
+        function () {
+          scrollValues = [];
+          categories.categories.map((item: any, index: number) => {
+            const elem: HTMLElement = document.getElementById(
+              'cat-panel-' + index,
+            ) as HTMLElement;
+            if (document.getElementById('cat-panel-' + index)) {
+              scrollValues.push({
+                panel: elem,
+                start: elem.offsetTop - 100,
+                end: elem.offsetTop - 100 + elem.clientHeight,
+                index: index,
+              });
+            }
+          });
+        },
+        false,
+      );
+
       body.addEventListener('scroll', (e) => {
         e.preventDefault();
         var categoryPanel = document.getElementById('categoryMenu');
         var dummyCategoryPanel = document.getElementById('dummyCategoryPanel');
+
+        checkScrollIndex(scrollValues, window.scrollY);
         if (categoryPanel && dummyCategoryPanel) {
           if (window.scrollY > categoryPanel.offsetTop) {
             categoryPanel.style.position = 'fixed';
@@ -92,6 +139,17 @@ const CategoryList = () => {
       });
     }
   }, [categories]);
+
+  const checkScrollIndex = (scrollValues: any[], scrollValue: number) => {
+    const val: any = scrollValues.find(
+      (x: any) => x.start < scrollValue && x.end > scrollValue,
+    );
+    if (val) {
+      if (value != val.index) setValue(val.index.toString() || '0');
+    } else {
+      setValue('0');
+    }
+  };
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setTimeout(() => {
