@@ -168,6 +168,9 @@ const Product = () => {
           updateProductRequest(basket?.id || '', parseInt(edit), request),
         );
       } else {
+        if (upsellsObj.upsells == null && basket) {
+          dispatch(getUpsellsRequest(basket.id));
+        }
         dispatch(addProductRequest(basket?.id || '', request));
       }
     }
@@ -196,7 +199,7 @@ const Product = () => {
       setActionStatus(true);
       dispatch(addProductRequest(dummyBasketObj.basket.id || '', request));
     }
-    
+
     if (
       dummyBasketObj &&
       dummyBasketObj.basket &&
