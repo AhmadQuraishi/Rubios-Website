@@ -24,6 +24,8 @@ import { pageStateSaga } from './page-state';
 import { redemptionSaga } from './reward/redemption';
 import { accountHistorySaga } from './account-history';
 import { createFaveSaga } from './create-fave';
+import { addUpsellsSaga } from './basket/upsell/Add';
+import { getUpsellsSaga } from './basket/upsell/Get';
 
 export default function* rootSaga() {
   yield all([
@@ -51,6 +53,8 @@ export default function* rootSaga() {
     pageStateSaga(),
     redemptionSaga(),
     accountHistorySaga(),
-    createFaveSaga()
+    createFaveSaga(),
+    addUpsellsSaga(),
+    getUpsellsSaga()
   ]);
 }
