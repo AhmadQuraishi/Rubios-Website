@@ -16,8 +16,17 @@
   background: #d3d3d3;
 }
 
+@media screen and (max-width: 900px) {
+  .tip-wrapper .action-btn {
+    width: calc(100% - 20px);
+  }
+}
+
 @media screen and (max-width: 468px) {
   .tip-wrapper .coupon-sec {
     margin: 10px 0px;
+  }
+  .tip-wrapper .action-btn {
+    width: calc(100% - 10px);
   }
 }
