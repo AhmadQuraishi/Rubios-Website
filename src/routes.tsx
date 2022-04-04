@@ -1,75 +1,101 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
-import React from 'react';
-import CategoryList from './pages/category';
-import Location from './pages/location';
-import Checkout from './pages/checkout';
-import Welcome from './pages/welcome';
-import Login2 from './pages/login2';
-import Login from './pages/login';
-import Register from './pages/register';
-import OrderConfirmation from './pages/order-confirmation';
-import RewardConfirmation from './pages/reward-confirmation';
-import DeliveryAddress from './pages/delivery-address';
-import RedeemRewards from './pages/redeem-reward';
-import Product from './pages/product';
-import AccountHistory from './pages/account-history';
-import CheckIn from './pages/check-in';
-import Invite from './pages/invite';
-import PaymentInformation from './pages/payment-information';
-import UpdatePaymentCard from './pages/update-card-info';
-import OrdersHistory from './pages/order-history';
-import Profile from './pages/profile';
-import AddDeliveryAddress from './pages/add-delivery-address';
-import CategoryDetail from './pages/category-detail';
-import PageNotFound from './pages/page-not-found';
-import ScanToRedeem from './pages/scan-to-redeem';
+import React, { lazy, Suspense } from 'react';
+import { Routes, Route } from 'react-router-dom';
+
+const Login = lazy(() => import('./pages/login'));
+const CategoryList = lazy(() => import('./pages/category'));
+const Location = lazy(() => import('./pages/location'));
+const Checkout = lazy(() => import('./pages/checkout'));
+const Welcome = lazy(() => import('./pages/welcome'));
+const Login2 = lazy(() => import('./pages/login2'));
+const ForgotPassword = lazy(() => import('./pages/forgot-password'));
+const ResetPassword = lazy(() => import('./pages/reset-password'));
+const Register = lazy(() => import('./pages/register'));
+const OrderConfirmation = lazy(() => import('./pages/order-confirmation'));
+const RewardConfirmation = lazy(() => import('./pages/reward-confirmation'));
+const DeliveryAddress = lazy(() => import('./pages/delivery-address'));
+const RedeemRewards = lazy(() => import('./pages/redeem-reward'));
+const Product = lazy(() => import('./pages/product'));
+const AccountHistory = lazy(() => import('./pages/account-history'));
+const CheckIn = lazy(() => import('./pages/check-in'));
+const Invite = lazy(() => import('./pages/invite'));
+const PaymentInformation = lazy(() => import('./pages/payment-information'));
+const UpdatePaymentCard = lazy(() => import('./pages/update-card-info'));
+const OrdersHistory = lazy(() => import('./pages/order-history'));
+const Profile = lazy(() => import('./pages/profile'));
+const AddDeliveryAddress = lazy(() => import('./pages/add-delivery-address'));
+const CategoryDetail = lazy(() => import('./pages/category-detail'));
+const PageNotFound = lazy(() => import('./pages/page-not-found'));
+const ScanToRedeem = lazy(() => import('./pages/scan-to-redeem'));
 
 const AppRoutes = () => {
   return (
-    <Routes>
-      <Route path="/" element={<CategoryList />} />
-      <Route path="/category/:id" element={<CategoryDetail />} />
-      <Route path="/product/:id" element={<Product />} />
-      <Route path="/product/:id/:edit" element={<Product />} />
-      <Route path="/location" element={<Location />} />
-      <Route path="/menu/:store" element={<CategoryList />} />
-      <Route path="/checkout" element={<Checkout />} />
-      <Route path="/login" element={<Login2 />} />
-      <Route path="/login2" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/welcome" element={<Welcome />} />
-      <Route path="/orderconfirmation" element={<OrderConfirmation />} />
-      <Route path="/rewardconfirmation" element={<RewardConfirmation />} />
-      <Route path="/account" element={<RedeemRewards />} />
-      <Route path="/account/deliveryaddress" element={<DeliveryAddress />} />
-      <Route
-        path="/account/addDeliveryAddress"
-        element={<AddDeliveryAddress />}
-      />
-      <Route
-        path="/account/addDeliveryAddress/:id"
-        element={<AddDeliveryAddress />}
-      />
-      <Route path="/account/history" element={<AccountHistory />} />
-      <Route path="/account/checkin" element={<CheckIn />} />
-      <Route path="/account/invite" element={<Invite />} />
-      <Route path="/account/profile" element={<Profile />} />
-      <Route
-        path="/account/paymentinformation"
-        element={<PaymentInformation />}
-      />
-      <Route
-        path="/account/updatepaymentcard"
-        element={<UpdatePaymentCard />}
-      />
-      <Route
-        path="/account/updatepaymentcard/:id"
-        element={<UpdatePaymentCard />}
-      />
-      <Route path="/account/reward/" element={<ScanToRedeem />} />
-      <Route path="/account/orders" element={<OrdersHistory />} />
-      <Route path="*" element={<PageNotFound />} />
-    </Routes>
+    <>
+      <Suspense
+        fallback={
+          <div
+            style={{
+              display: 'flex',
+              height: '100vh',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <img alt="Logo" src="./logo.png" />
+          </div>
+        }
+      >
+        <Routes>
+          <Route path="/" element={<CategoryList />} />
+          <Route path="/login" element={<Login2 />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/category/:id" element={<CategoryDetail />} />
+          <Route path="/login2" element={<Login />} />
+          <Route path="/product/:id" element={<Product />} />
+          <Route path="/product/:id/:edit" element={<Product />} />
+          <Route path="/location" element={<Location />} />
+          <Route path="/menu/:store" element={<CategoryList />} />
+          <Route path="/checkout" element={<Checkout />} />
+
+          <Route path="/register" element={<Register />} />
+          <Route path="/welcome" element={<Welcome />} />
+          <Route path="/orderconfirmation" element={<OrderConfirmation />} />
+          <Route path="/rewardconfirmation" element={<RewardConfirmation />} />
+          <Route path="/account" element={<RedeemRewards />} />
+          <Route
+            path="/account/deliveryaddress"
+            element={<DeliveryAddress />}
+          />
+          <Route
+            path="/account/addDeliveryAddress"
+            element={<AddDeliveryAddress />}
+          />
+          <Route
+            path="/account/addDeliveryAddress/:id"
+            element={<AddDeliveryAddress />}
+          />
+          <Route path="/account/history" element={<AccountHistory />} />
+          <Route path="/account/checkin" element={<CheckIn />} />
+          <Route path="/account/invite" element={<Invite />} />
+          <Route path="/account/profile" element={<Profile />} />
+          <Route
+            path="/account/paymentinformation"
+            element={<PaymentInformation />}
+          />
+          <Route
+            path="/account/updatepaymentcard"
+            element={<UpdatePaymentCard />}
+          />
+          <Route
+            path="/account/updatepaymentcard/:id"
+            element={<UpdatePaymentCard />}
+          />
+          <Route path="/account/reward" element={<ScanToRedeem />} />
+          <Route path="/account/orders" element={<OrdersHistory />} />
+          <Route path="*" element={<PageNotFound />} />
+        </Routes>
+      </Suspense>
+    </>
   );
 };
 

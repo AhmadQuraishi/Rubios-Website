@@ -5,7 +5,7 @@ import { displayToast } from '../../../../helpers/toast';
 export function setBasketRequest(request: any) {
   return {
     type: basketActionsTypes.SET_BASKET_REQUEST,
-    request,
+    request
   };
 }
 

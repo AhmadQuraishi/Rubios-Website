@@ -1,12 +1,7 @@
-import React, { forwardRef, useRef } from 'react';
-import { Box, Button, Card, Grid, TextField, Typography } from '@mui/material';
-import { Formik } from 'formik';
-import * as Yup from 'yup';
+import React from 'react';
+import { Box, Button, Card, Grid, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Divider from '@mui/material/Divider';
 import OrderDetail from '../../components/order-detail';
 import Tip from '../../components/tip';
@@ -15,37 +10,48 @@ import OrderTime from '../../components/order-time';
 import PaymentInfo from '../../components/payment-info';
 import StoreInfoBar from '../../components/restaurant-info-bar';
 import './checkout.css';
-import {
-  ResponseBasket,
-  ResponseBasketValidation,
-  ResponseContactOptions,
-} from '../../types/olo-api';
-import { IMaskInput } from 'react-imask';
+import { ResponseBasket, ResponseBasketValidation } from '../../types/olo-api';
+import { DeliveryModeEnum } from '../../types/olo-api/olo-api.enums';
 import moment from 'moment';
-import { HoursListing } from '../../helpers/hoursListing';
 import {
   getSingleRestaurantCalendar,
   validateBasket,
 } from '../../redux/actions/basket/checkout';
 import { displayToast } from '../../helpers/toast';
-import { generateSubmitBasketPayload } from '../../helpers/checkout';
-import { updateUser } from '../../redux/actions/user';
+import {
+  generateSubmitBasketPayload,
+  formatCustomFields,
+  formatDeliveryAddress,
+} from '../../helpers/checkout';
+import { getUserDeliveryAddresses } from '../../redux/actions/user';
+import PickupForm from '../../components/pickup-form/index';
+import DeliveryForm from '../../components/delivery-form/index';
 
 const Checkout = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const pickupFormRef = React.useRef<any>(null);
+  const deliveryFormRef = React.useRef<any>(null);
   const paymentInfoRef = React.useRef<any>();
 
   const [runOnce, setRunOnce] = React.useState<boolean>(true);
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
+  const [tipPercentage, setTipPercentage] = React.useState<any>(null);
   const [basket, setBasket] = React.useState<ResponseBasket>();
   const [validate, setValidate] = React.useState<ResponseBasketValidation>();
+  const [defaultDeliveryAddress, setDefaultDeliveryAddress] =
+    React.useState<any>(null);
 
   const basketObj = useSelector((state: any) => state.basketReducer);
   const { authToken } = useSelector((state: any) => state.authReducer);
   const { providerToken } = useSelector((state: any) => state.providerReducer);
+  const { restaurant, orderType } = useSelector(
+    (state: any) => state.restaurantInfoReducer,
+  );
+  const { userDeliveryAddresses } = useSelector(
+    (state: any) => state.userReducer,
+  );
 
   React.useEffect(() => {
     if (basket && runOnce) {
@@ -62,10 +68,32 @@ const Checkout = () => {
           selectedTime,
         ),
       );
-      dispatch(validateBasket(basket.id, null, null));
+      dispatch(validateBasket(basket.id, null, null, [], null, null));
       setRunOnce(false);
     }
   }, [basket]);
+
+  React.useEffect(() => {
+    if (authToken?.authtoken && authToken.authtoken !== '') {
+      dispatch(getUserDeliveryAddresses());
+    }
+  }, []);
+
+  React.useEffect(() => {
+    if (
+      userDeliveryAddresses &&
+      userDeliveryAddresses.deliveryaddresses &&
+      userDeliveryAddresses.deliveryaddresses.length
+    ) {
+      let defaultAddress = userDeliveryAddresses.deliveryaddresses.filter(
+        (address: any) => {
+          return address.isdefault === true;
+        },
+      );
+      defaultAddress = defaultAddress.length ? defaultAddress[0] : null;
+      setDefaultDeliveryAddress(defaultAddress);
+    }
+  }, [userDeliveryAddresses]);
 
   React.useEffect(() => {
     if (basketObj.orderConfirmation) {
@@ -83,31 +111,6 @@ const Checkout = () => {
     }
   }, [basketObj.validate]);
 
-  interface CustomProps {
-    onChange: (event: { target: { name: string; value: string } }) => void;
-    name: string;
-  }
-
-  const NumberFormatCustom = forwardRef<HTMLElement, CustomProps>(
-    function NumberFormatCustom(props, ref) {
-      const { onChange, ...other } = props;
-
-      return (
-        <IMaskInput
-          {...other}
-          mask="(#00) 000-0000"
-          definitions={{
-            '#': /[1-9]/,
-          }}
-          onAccept={(value: any) =>
-            onChange({ target: { name: props.name, value } })
-          }
-          overwrite
-        />
-      );
-    },
-  );
-
   const scrollToTop = () => {
     window.scrollTo({
       top: 300,
@@ -121,8 +124,6 @@ const Checkout = () => {
       formData: null,
     };
 
-    console.log('pickupFormRef', pickupFormRef);
-
     if (!pickupFormRef.current) {
     } else if (!pickupFormRef.current.dirty) {
       pickupFormRef.current.submitForm();
@@ -130,6 +131,24 @@ const Checkout = () => {
     } else {
       data.isValidForm = true;
       data.formData = pickupFormRef.current.values;
+    }
+
+    return data;
+  };
+
+  const validateDeliveryForm = (): any => {
+    let data = {
+      isValidForm: false,
+      formData: null,
+    };
+
+    if (!deliveryFormRef.current) {
+    } else if (!deliveryFormRef.current.dirty) {
+      deliveryFormRef.current.submitForm();
+    } else if (Object.keys(deliveryFormRef.current.errors).length > 0) {
+    } else {
+      data.isValidForm = true;
+      data.formData = deliveryFormRef.current.values;
     }
 
     return data;
@@ -156,13 +175,38 @@ const Checkout = () => {
 
   const placeOrder = async () => {
     setButtonDisabled(true);
-    const { isValidForm, formData } = validatePickupForm();
+    let customFields = [];
+    let deliveryAddress = null;
+    let deliverymode = {
+      deliverymode: orderType || '',
+    };
+    let formDataValue;
 
-    if (!isValidForm) {
-      displayToast('ERROR', 'Pickup fields are required.');
-      scrollToTop();
-      setButtonDisabled(false);
-      return;
+    if (
+      orderType &&
+      (orderType === '' ||
+        orderType === DeliveryModeEnum.pickup ||
+        orderType === DeliveryModeEnum.curbside)
+    ) {
+      const { isValidForm, formData } = validatePickupForm();
+      if (!isValidForm) {
+        displayToast('ERROR', 'Pickup fields are required.');
+        scrollToTop();
+        setButtonDisabled(false);
+        return;
+      }
+      formDataValue = formData;
+    }
+
+    if (orderType && orderType === DeliveryModeEnum.delivery) {
+      const { isValidForm, formData } = validateDeliveryForm();
+      if (!isValidForm) {
+        displayToast('ERROR', 'Delivery fields are required.');
+        scrollToTop();
+        setButtonDisabled(false);
+        return;
+      }
+      formDataValue = formData;
     }
 
     const { isValidCard, cardDetails, errors } = await validatePaymentForm();
@@ -173,13 +217,26 @@ const Checkout = () => {
       return;
     }
 
-    formData.phone = formData.phone.replace(/\D/g, '');
+    formDataValue.phone = formDataValue.phone.replace(/\D/g, '');
 
     const basketPayload = generateSubmitBasketPayload(
-      formData,
+      formDataValue,
       cardDetails,
+      basket?.deliverymode,
       authToken?.authtoken,
     );
+
+    if (orderType && orderType === DeliveryModeEnum.curbside) {
+      customFields = formatCustomFields(restaurant.customfields, formDataValue);
+    }
+
+    if (orderType && orderType === DeliveryModeEnum.delivery) {
+      deliveryAddress = formatDeliveryAddress(
+        formDataValue,
+        defaultDeliveryAddress,
+      );
+      console.log('deliveryAddress', deliveryAddress);
+    }
 
     if (basket) {
       setButtonDisabled(false);
@@ -190,11 +247,20 @@ const Checkout = () => {
           first_name: providerToken?.first_name,
           last_name: providerToken?.last_name,
           favourite_locations: providerToken?.favourite_locations,
-          marketing_email_subscription: formData.emailNotification,
-          phone: formData.phone,
+          marketing_email_subscription: formDataValue.emailNotification,
+          phone: formDataValue.phone,
         };
       }
-      dispatch(validateBasket(basket.id, basketPayload, user));
+      dispatch(
+        validateBasket(
+          basket?.id,
+          basketPayload,
+          user,
+          customFields,
+          deliverymode,
+          deliveryAddress,
+        ),
+      );
     }
   };
 
@@ -209,185 +275,77 @@ const Checkout = () => {
                 <Grid container>
                   <Grid item xs={12} sm={6} md={6} lg={6} className="left-col">
                     <Grid container>
-                      <Grid item xs={12}>
-                        <Typography
-                          variant="caption"
-                          className="label"
-                          title="WHO'S IS PICKING UP?"
-                        >
-                          WHO'S PICKING UP?
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Typography variant="h4" title="PICK UP INFO">
-                          PICK UP INFO
-                        </Typography>
-                      </Grid>
-                      <Formik
-                        innerRef={pickupFormRef}
-                        enableReinitialize={true}
-                        initialValues={{
-                          firstName: providerToken?.first_name
-                            ? providerToken?.first_name
-                            : '',
-                          lastName: providerToken?.last_name
-                            ? providerToken?.last_name
-                            : '',
-                          phone: providerToken?.phone
-                            ? providerToken?.phone
-                            : '',
-                          email: providerToken?.email
-                            ? providerToken?.email
-                            : '',
-                          emailNotification:
-                            providerToken?.marketing_email_subscription
-                              ? providerToken?.marketing_email_subscription
-                              : false,
-                        }}
-                        validationSchema={Yup.object({
-                          firstName: Yup.string()
-                            .max(30, 'Must be 30 characters or less')
-
-                            .required('First Name is required'),
-                          lastName: Yup.string()
-                            .max(30, 'Must be 30 characters or less')
-
-                            .required('Last Name is required'),
-                          email: Yup.string()
-                            .matches(
-                              /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-                              'Invalid Email ',
-                            )
-                            .email('Invalid email address')
-                            .required('Email is required'),
-
-                          phone: Yup.string()
-                            .min(14, 'Enter valid number')
-                            .required('Phone is required'),
-                          emailNotification: Yup.bool().optional(),
-                        })}
-                        onSubmit={(values, actions) => {}}
-                      >
-                        {({
-                          errors,
-                          handleBlur,
-                          handleChange,
-                          handleSubmit,
-                          touched,
-                          values,
-                          isValid,
-                          dirty,
-                        }) => (
-                          <form
-                            style={{ width: '100%' }}
-                            onSubmit={handleSubmit}
-                          >
-                            <Grid item xs={12}>
-                              <TextField
-                                aria-label="First Name"
-                                disabled={authToken?.authtoken ? true : false}
-                                onBlur={handleBlur}
-                                label="First Name"
-                                aria-required="true"
-                                title="First Name"
-                                type="text"
-                                name="firstName"
-                                value={values.firstName}
-                                onChange={handleChange}
-                                error={Boolean(
-                                  touched.firstName && errors.firstName,
-                                )}
-                                helperText={errors.firstName}
-                              />
-                            </Grid>
-
-                            <Grid item xs={12}>
-                              <TextField
-                                aria-label="Last Name"
-                                disabled={authToken?.authtoken ? true : false}
-                                onBlur={handleBlur}
-                                label="Last Name"
-                                aria-required="true"
-                                title="Last Name"
-                                type="text"
-                                name="lastName"
-                                value={values.lastName}
-                                onChange={handleChange}
-                                error={Boolean(
-                                  touched.lastName && errors.lastName,
-                                )}
-                                helperText={errors.lastName}
-                              />
-                            </Grid>
-
-                            <Grid item xs={12}>
-                              <TextField
-                                className="mobile-field"
-                                aria-label="Phone Number"
-                                onBlur={handleBlur}
-                                label="Phone Number"
-                                aria-required="true"
-                                title="Phone Number"
-                                value={values.phone}
-                                onChange={handleChange}
-                                name="phone"
-                                InputLabelProps={{
-                                  shrink:
-                                    touched && values.phone == ''
-                                      ? false
-                                      : true,
-                                  classes: {
-                                    root:
-                                      values.phone !== ''
-                                        ? 'mobile-field-label'
-                                        : '',
-                                  },
-                                }}
-                                InputProps={{
-                                  inputComponent: NumberFormatCustom as any,
-                                }}
-                                error={Boolean(touched.phone && errors.phone)}
-                                helperText={errors.phone}
-                              />
-                            </Grid>
-                            <Grid item xs={12}>
-                              <TextField
-                                aria-label="Email"
-                                disabled={authToken?.authtoken ? true : false}
-                                onBlur={handleBlur}
-                                label="Email"
-                                aria-required="true"
-                                title="Email"
-                                type="text"
-                                name="email"
-                                value={values.email}
-                                onChange={handleChange}
-                                error={Boolean(touched.email && errors.email)}
-                                helperText={errors.email}
-                              />
-                            </Grid>
-
-                            <Grid item xs={12}>
-                              <FormGroup>
-                                <FormControlLabel
-                                  control={
-                                    <Checkbox
-                                      checked={values.emailNotification}
-                                      onChange={handleChange}
-                                    />
-                                  }
-                                  label="Send me emails with special offers and updates."
-                                  aria-label="Send me emails with special offers and updates"
-                                  aria-required="true"
-                                  title="Send me emails with special offers and updates"
-                                  name="emailNotification"
-                                  className="size"
-                                />
-                              </FormGroup>
-                            </Grid>
-                          </form>
-                        )}
-                      </Formik>
+                      {basket &&
+                      (orderType === '' ||
+                        orderType === DeliveryModeEnum.pickup) ? (
+                        <>
+                          <Grid item xs={12}>
+                            <Typography
+                              variant="caption"
+                              className="label"
+                              title="WHO'S IS PICKING UP?"
+                            >
+                              WHO'S PICKING UP?
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={12}>
+                            <Typography variant="h4" title="PICK UP INFO">
+                              PICK UP INFO
+                            </Typography>
+                          </Grid>
+                        </>
+                      ) : basket && orderType === DeliveryModeEnum.curbside ? (
+                        <>
+                          <Grid item xs={12}>
+                            <Typography
+                              variant="caption"
+                              className="label"
+                              title="WHO'S IS PICKING UP?"
+                            >
+                              WHO'S PICKING UP?
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={12}>
+                            <Typography variant="h4" title="PICK UP INFO">
+                              CURBSIDE PICK UP
+                            </Typography>
+                          </Grid>
+                        </>
+                      ) : basket && orderType === DeliveryModeEnum.delivery ? (
+                        <>
+                          <Grid item xs={12}>
+                            <Typography
+                              variant="caption"
+                              className="label"
+                              title="WHO'S IS PICKING UP?"
+                            >
+                              WHERE TO DELIVER
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={12}>
+                            <Typography variant="h4" title="PICK UP INFO">
+                              DELIVERY INFO
+                            </Typography>
+                          </Grid>
+                        </>
+                      ) : null}
+                      {basket &&
+                      (orderType === '' ||
+                        orderType === DeliveryModeEnum.pickup ||
+                        orderType === DeliveryModeEnum.curbside) ? (
+                        <PickupForm
+                          basket={basket}
+                          pickupFormRef={pickupFormRef}
+                          orderType={orderType}
+                        />
+                      ) : null}
+                      {orderType && orderType === DeliveryModeEnum.delivery ? (
+                        <DeliveryForm
+                          basket={basket}
+                          defaultAddress={defaultDeliveryAddress}
+                          deliveryFormRef={deliveryFormRef}
+                        />
+                      ) : null}
                     </Grid>
                   </Grid>
                   <OrderTime />
@@ -408,7 +366,11 @@ const Checkout = () => {
               <br />
               <br />
               <br />
-              <Tip basket={basket} />
+              <Tip
+                basket={basket}
+                loading={basketObj?.loading}
+                updateOrderDetailTipPercent={setTipPercentage}
+              />
               <br />
               <br />
               <br />
@@ -417,7 +379,7 @@ const Checkout = () => {
               <br />
               <br />
               {/*second section*/}
-              <OrderDetail basket={basket} validate={validate} />
+              <OrderDetail basket={basket} tipPercentage={tipPercentage} />
               <br />
               <br />
               <br />

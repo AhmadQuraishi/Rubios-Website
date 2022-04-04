@@ -18,7 +18,8 @@ import {
   requestUserFavoriteOrders,
   updateUserContactOptions,
   requestUserLogin,
-  requestUserRegister
+  requestUserRegister,
+  requestUpdateProfile, requestUserForgotPassword, resetPasswordRequest
 } from '../../../services/user';
 import {
   deleteUserDelAddFailure,
@@ -54,7 +55,12 @@ import {
   userLoginSuccess,
   userLoginFailure,
   userRegisterSuccess,
-  userRegisterFailure
+  userRegisterFailure,
+  updateProfileSuccess,
+  userForgotPasswordSuccess,
+  userForgotPasswordFailure,
+  userResetPasswordSuccess,
+  userResetPasswordFailure
 } from '../../actions/user';
 import { displayToast } from '../../../helpers/toast';
 import { getProviderRequestSuccess } from '../../actions/provider';
@@ -62,8 +68,9 @@ import { getProviderRequestSuccess } from '../../actions/provider';
 //profile
 function* userProfileHandler(): any {
   try {
-    const response = yield call(RequestUserProfile); 
+    const response = yield call(RequestUserProfile);
     yield put(getUserprofileSuccess(response));
+    yield put(getProviderRequestSuccess(response));
   } catch (error) {
     yield put(getUserprofileFailure(error));
   }
@@ -141,20 +148,24 @@ function* deleleteDelAddressHandler(action: any): any {
 // Update User
 function* updateUserHandler(action: any): any {
   try {
-    const response = yield call(
-      requestUpdateUser,
-      action.payload,
-    );
-    yield put(updateUserSuccess(response));
-    yield put(getProviderRequestSuccess(response));
-    if(action.profileCheck){
+
+    if (action.profileCheck) {
+      const response = yield call(
+        requestUpdateProfile,
+        action.payload,
+      );
+      yield put(updateProfileSuccess(response));
       displayToast("SUCCESS" , "profile updated successfully");
-    }    
+    } else {
+      const response = yield call(
+        requestUpdateUser,
+        action.payload,
+      );
+      yield put(updateUserSuccess(response));
+      yield put(getProviderRequestSuccess(response));
+    }
   } catch (error) {
     yield put(updateUserFailure(error));
-    if(action.profileCheck){
-      displayToast("ERROR" , "profile not updated");
-    }
   }
 }
 
@@ -166,11 +177,25 @@ function* changePasswordHandler(action: any): any {
       action.payload,
     );
     yield put(changePasswordSuccess(response));
-    displayToast("SUCCESS" , "password updated successfully");
+    displayToast('SUCCESS', 'password updated successfully');
   } catch (error) {
-  
     yield put(changePasswordFailure(error));
-    displayToast("ERROR" , "Password need to be new and unused");
+    displayToast('ERROR', 'Password need to be new and unused');
+  }
+}
+
+// Reset Password User
+function* userResetPasswordHandler(action: any): any {
+  try {
+    console.log('reset_password_token 1', action.reset_password_token)
+    const response = yield call(
+      resetPasswordRequest,
+      action.data,
+      action.reset_password_token,
+    );
+    yield put(userResetPasswordSuccess(response));
+  } catch (error) {
+    yield put(userResetPasswordFailure(error));
   }
 }
 
@@ -188,7 +213,7 @@ function* getUserBillingAccountHandler(action: any): any {
 }
 
 
-// Delete User BillingAccount 
+// Delete User BillingAccount
 function* deleteUserBillingAccountHandler(action: any): any {
   try {
     const response = yield call(
@@ -282,6 +307,15 @@ function* userRegisterHandler(action: any): any {
   }
 }
 
+// User Register
+function* userForgotPasswordHandler(action: any): any {
+  try {
+    const response = yield call(requestUserForgotPassword, action.data);
+    yield put(userForgotPasswordSuccess(response));
+  } catch (error) {
+    yield put(userForgotPasswordFailure(error));
+  }
+}
 
 export function* userSaga() {
   yield takeEvery(Type.GET_USER_PROFILE, userProfileHandler);
@@ -314,11 +348,11 @@ export function* userSaga() {
   yield takeEvery(
     Type.GET_BILLING_ACCOUNT_BY_ID,
     getBillingAccountByIdHandler,
-  ); 
+  );
   yield takeEvery(
     Type.DELETE_BILLING_ACCOUNTS,
     deleteUserBillingAccountHandler,
-  ); 
+  );
    yield takeEvery(
     Type.UPDATE_BILLING_ACCOUNTS,
     updateUserBillingAccountHandler,
@@ -342,6 +376,14 @@ export function* userSaga() {
   yield takeEvery(
     Type.USER_REGISTER_REQUEST,
     userRegisterHandler,
+  );
+  yield takeEvery(
+    Type.USER_FORGOT_PASSWORD_REQUEST,
+    userForgotPasswordHandler,
+  );
+  yield takeEvery(
+    Type.USER_RESET_PASSWORD_REQUEST,
+    userResetPasswordHandler,
   );
 }
 

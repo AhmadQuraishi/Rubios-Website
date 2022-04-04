@@ -8,7 +8,6 @@ import {
 } from '../../../types/olo-api';
 import { displayToast } from '../../../helpers/toast';
 
-
 //profile actions
 export function getUserprofile() {
   return {
@@ -162,12 +161,20 @@ export function updateUserSuccess(data: any) {
 }
 
 export function updateUserFailure(error: any) {
+  displayToast("ERROR"  , error && error.current_password && error.current_password[0] || error && error.phone && error.phone[0] || error && error.email && error.email[0] || error && error.password && error.password[0] || error && "profile not updated" )
   return {
     type: Type.UPDATE_USER_FAILURE,
     error: error,
   };
 }
 
+
+export function updateProfileSuccess(data: any) {
+  return {
+    type: Type.UPDATE_PROFILE_SUCCESS,
+    payload: data
+  };
+}
 //Change Password
 
 export function changePassword(data: any) {
@@ -178,7 +185,7 @@ export function changePassword(data: any) {
 }
 
 export function changePasswordSuccess(data: any) {
- 
+
   return {
     type: Type.CHANGE_PASSWORD_SUCCESS,
     payload: data
@@ -259,7 +266,7 @@ export function deleteBillingAccountFailure(error: any) {
   };
 }
 
-// update Billing Account 
+// update Billing Account
 
 export function updateBillingAccount(data: RequestUserDefaultBillingAccount,billingAccountId: number ) {
   return {
@@ -365,8 +372,10 @@ export function userLoginSuccess(data: any) {
 }
 
 export function userLoginFailure(error: any) {
-  console.log('errrrrrr', error)
-  displayToast('ERROR', error?.data?.error  ? error.data.error : 'ERROR! Please Try again later')
+  displayToast(
+    'ERROR',
+    error?.data?.error ? error.data.error : 'ERROR! Please Try again later',
+  );
   return {
     type: Type.USER_LOGIN_FAILURE,
     error: error
@@ -390,16 +399,16 @@ export function userRegisterSuccess(data: any) {
 export function userRegisterFailure(error: any) {
   if(error?.data?.errors?.base && error.data.errors.base.length){
     error?.data?.errors.base.forEach((msg: string) => {
-      displayToast('ERROR', msg)
+      displayToast('ERROR', msg);
     });
   } else {
-    displayToast('ERROR', 'ERROR! Please Try again later')
+    displayToast('ERROR', 'ERROR! Please Try again later');
   }
   if (error?.data?.errors?.email) {
-    displayToast('ERROR', `Email ${error?.data?.errors?.email[0]}`)
+    displayToast('ERROR', `Email ${error?.data?.errors?.email[0]}`);
   }
   if (error?.data?.errors?.phone) {
-    displayToast('ERROR', `Phone ${error?.data?.errors?.phone[0]}`)
+    displayToast('ERROR', `Phone ${error?.data?.errors?.phone[0]}`);
   }
   return {
     type: Type.USER_REGISTER_FAILURE,
@@ -407,9 +416,71 @@ export function userRegisterFailure(error: any) {
   };
 }
 
-export function userLogout() {
+export function userForgotPasswordRequest(data: any) {
   return {
-    type: Type.USER_LOGOUT
+    type: Type.USER_FORGOT_PASSWORD_REQUEST,
+    data,
   };
 }
 
+export function userForgotPasswordSuccess(response: any) {
+  displayToast('SUCCESS', 'We have e-mailed your password reset link!');
+  window.location.replace('/login');
+  return {
+    type: Type.USER_FORGOT_PASSWORD_SUCCESS,
+  };
+}
+
+export function userForgotPasswordFailure(error: any) {
+  displayToast(
+    'ERROR',
+    error?.data?.error ? error.data.error : 'ERROR! Please Try again later',
+  );
+  return {
+    type: Type.USER_FORGOT_PASSWORD_FAILURE,
+    error: error,
+  };
+}
+
+export function userResetPasswordRequest(
+  data: any,
+  reset_password_token: string | null,
+) {
+  return {
+    type: Type.USER_RESET_PASSWORD_REQUEST,
+    data,
+    reset_password_token,
+  };
+}
+
+export function userResetPasswordSuccess(response: any) {
+  displayToast('SUCCESS', 'password updated successfully');
+  window.location.replace('/login');
+  return {
+    type: Type.USER_RESET_PASSWORD_SUCCESS,
+  };
+}
+
+export function userResetPasswordFailure(error: any) {
+  console.log('errr', error);
+  if (error?.status === 401) {
+    displayToast('ERROR', 'Reset code has been expired!');
+  } else if (error?.status === 422) {
+    displayToast('ERROR', 'Password need to be new and unused');
+  } else {
+    displayToast(
+      'ERROR',
+      error?.data?.error ? error.data.error : 'ERROR! Please Try again later',
+    );
+  }
+  return {
+    type: Type.USER_RESET_PASSWORD_FAILURE,
+    error: error,
+  };
+}
+
+export function userLogout() {
+  return {
+    type: Type.USER_LOGOUT,
+  };
+}

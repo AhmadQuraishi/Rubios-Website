@@ -11,20 +11,21 @@ const getOptions = (options: any) => {
   return val.trim().replace(/,*$/, '');
 };
 
-const OrderDetail = ({basket, validate}: any)  => {
+const OrderDetail = ({ basket, tipPercentage }: any) => {
   return (
     <Grid container>
       <Grid item xs={12} sm={12} md={8} lg={8} className="order-detail">
         <Typography fontWeight={500} title="ORDER DETAILS" variant="h4">
           ORDER DETAILS
         </Typography>
-        <br/>
-        {
-          basket && basket.products && basket.products.map((item: any) => {
+        <br />
+        {basket &&
+          basket.products &&
+          basket.products.map((item: any) => {
             return (
               <>
                 <Grid key={item.id} container>
-                <Grid item xs={1} sm={1} md={1} lg={1}>
+                  <Grid item xs={1} sm={1} md={1} lg={1}>
                     <Typography variant="h6" title={item.name}>
                       {item.quantity}
                     </Typography>
@@ -48,34 +49,56 @@ const OrderDetail = ({basket, validate}: any)  => {
                     </Typography>
                   </Grid>
                 </Grid>
-                <br/>
+                <br />
               </>
-            )
-          })
-        }
+            );
+          })}
         <Divider />
-        <br/>
+        <br />
         <Grid container>
           <Grid item xs={10} sm={10} md={10} lg={11}>
             <Typography variant="h6" title="SUB TOTAL">
               SUB TOTAL
             </Typography>
+            <br />
           </Grid>
           <Grid item xs={2} sm={2} md={2} lg={1}>
-           <Typography variant="h6" title={validate && validate.subtotal}>
-              ${validate && validate.subtotal}
+            <Typography variant="h6" title={basket && basket.subtotal}>
+              ${basket && basket.subtotal}
             </Typography>
+            <br />
           </Grid>
         </Grid>
+        {basket && basket.tip && basket.tip > 0 ? (
+          <Grid container>
+            <Grid item xs={10} sm={10} md={10} lg={11}>
+              <Typography variant="h6" title="TIP">
+                {tipPercentage ? `${tipPercentage}% ` : ''}TIP
+              </Typography>
+            </Grid>
+            <Grid item xs={2} sm={2} md={2} lg={1}>
+              <Typography variant="h6" title={basket && basket.tip}>
+                +{basket && basket.tip}
+              </Typography>
+            </Grid>
+          </Grid>
+        ) : null}
+
         <Grid container>
           <Grid item xs={10} sm={10} md={10} lg={11}>
             <Typography variant="h6" className="n-bold" title="Tax">
               TAX
             </Typography>
           </Grid>
-           <Grid item xs={2} sm={2} md={2} lg={1}>
-            <Typography variant="h6" >
-            ${validate && validate.taxes && validate.taxes.reduce((sum: number, tax: any) => sum + tax.tax, 0)}
+          <Grid item xs={2} sm={2} md={2} lg={1}>
+            <Typography variant="h6">
+              $
+              {basket &&
+                basket.taxes &&
+                basket.taxes.reduce(
+                  (sum: number, tax: any) => sum + tax.tax,
+                  0,
+                )}
             </Typography>
           </Grid>
         </Grid>
@@ -85,15 +108,15 @@ const OrderDetail = ({basket, validate}: any)  => {
               TOTAL FEE
             </Typography>
           </Grid>
-           <Grid item xs={2} sm={2} md={2} lg={1}>
-            <Typography variant="h6" >
-            ${validate && validate.totalfees && validate.totalfees.toFixed(2)}
+          <Grid item xs={2} sm={2} md={2} lg={1}>
+            <Typography variant="h6">
+              ${basket && basket.totalfees && basket.totalfees.toFixed(2)}
             </Typography>
           </Grid>
         </Grid>
-        <br/>
+        <br />
         <Divider />
-        <br/>
+        <br />
         <Grid container>
           <Grid item xs={10} sm={10} md={10} lg={11}>
             <Typography variant="h6" title="Total">
@@ -101,8 +124,8 @@ const OrderDetail = ({basket, validate}: any)  => {
             </Typography>
           </Grid>
           <Grid item xs={2} sm={2} md={2} lg={1}>
-            <Typography variant="h6" title={validate && validate.total}>
-              ${validate && validate.total}
+            <Typography variant="h6" title={basket && basket.total}>
+              ${basket && basket.total}
             </Typography>
           </Grid>
         </Grid>

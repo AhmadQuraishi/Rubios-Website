@@ -8,12 +8,13 @@ import {
   createBasketFromPrevOrderSuccess,
   createBasketFromPrevOrderFailure,
   createBasketFromFavOrderSuccess,
-  createBasketFromFavOrderFailure
+  createBasketFromFavOrderFailure,
 } from '../../../actions/basket/create';
 import {
   getDummyBasket,
   requestCreateBasket,
-  requestCreateBasketForFav
+  requestCreateBasketForFav,
+  setBasketDeliveryMode
 } from '../../../../services/basket';
 
 function* asyncCreateBasketRequest(action: any): any {

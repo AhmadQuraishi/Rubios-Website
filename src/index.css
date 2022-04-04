@@ -194,6 +194,7 @@ fieldset{
   font-size: 12px !important;
   font-family: 'Poppins-Bold' !important;
   padding: 8px 0px !important;
+  letter-spacing: 1.5px !important;
 }
 
 /***** Scrollbar Style *****/
@@ -271,5 +272,5 @@ fieldset{
   padding: 0 !important;
   width: calc(100% - 24px) !important;
   position: absolute !important;
-  text-align: center !important;
+  text-align: center;
 }

@@ -20,15 +20,33 @@ export const requestUpdateUser = (body: object) => {
     client: process.env.REACT_APP_PUNCHH_CLIENT_ID,
     authentication_token: store.getState().providerReducer.providerToken.authentication_token
   }
-
-  //  console.log(store.getState().TokensReducer.providertoken);
   try {
 
     const url = `${process.env.REACT_APP_PUNCHH_API}/api/auth/users`;
 
     return axiosInstance.put(url, obj).then((response) => response.data).catch((error) => {
-      // console.log(error.response);
       throw error.response;
+    });
+
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+//Update user profile from Profile Screen
+export const requestUpdateProfile = (body: object) => {
+  const obj = {
+    user: body,
+    client: process.env.REACT_APP_PUNCHH_CLIENT_ID,
+  }
+
+  try {
+
+    const url = `${process.env.REACT_APP_PUNCHH_API}/api2/mobile/users`;
+    return axiosInstance.put(url, obj).then((response) => response.data).catch((error) => {
+       console.log(error.response.data.errors);
+      throw error.response.data.errors;
     });
 
   } catch (error) {
@@ -44,11 +62,9 @@ export const requestChangePassword = (body: object) => {
     authentication_token: store.getState().providerReducer.providerToken.authentication_token
   }
 
-  // console.log(store.getState().TokensReducer.providertoken);
   try {
 
     const url = `${process.env.REACT_APP_PUNCHH_API}/api/auth/users/change_password`;
-
     return axiosInstance.patch(url, obj).then((response) => response.data).catch((error) => {
 
       throw error.response;
@@ -59,6 +75,26 @@ export const requestChangePassword = (body: object) => {
   }
 };
 
+//Reset Password
+export const resetPasswordRequest = (
+  body: object,
+  reset_password_token: string,
+) => {
+  const obj = {
+    user: body,
+    client: process.env.REACT_APP_PUNCHH_CLIENT_ID,
+    reset_password_token: reset_password_token
+  };
+
+  try {
+    const url = `${process.env.REACT_APP_PUNCHH_API}/api/auth/users/change_password`;
+    return axiosInstance.patch(url, obj).then((response) => response.data).catch((error) => {
+        throw error.response;
+      });
+  } catch (error) {
+    throw error;
+  }
+};
 
 //Recent Orders
 export const requestUserRecentOrders = () => {
@@ -114,7 +150,7 @@ export const requestDeleteFavOrder = ( favid: number) => {
 //Delivery Addresses
 export const requestUserDeliiveryAddresses = () => {
   try {
-    
+
     const authtoken = store.getState().authReducer.authToken.authtoken;
     const url = process.env.REACT_APP_OLO_API || "";
     return axiosInstance
@@ -309,6 +345,25 @@ export const requestUserRegister = (body: object) => {
 
   try {
     const url = `${process.env.REACT_APP_PUNCHH_API}/api/auth/customers.json`;
+
+    return axiosInstance.post(url, data).then((response) => response.data).catch((error) => {
+      throw error.response;
+    });
+  } catch (error) {
+    throw error;
+  }
+};
+
+//User Forgot Password
+export const requestUserForgotPassword = (body: object) => {
+
+  const data = {
+    user: body,
+    client: process.env.REACT_APP_PUNCHH_CLIENT_ID
+  }
+
+  try {
+    const url = `${process.env.REACT_APP_PUNCHH_API}/api/auth/users/forgot_password`;
 
     return axiosInstance.post(url, data).then((response) => response.data).catch((error) => {
       throw error.response;

@@ -3,7 +3,7 @@ import ProductListing from '../../components/product-listing';
 import { Grid, Theme, Typography, Tabs, Tab, Box } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Link, useNavigate } from 'react-router-dom';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategoriesRequest } from '../../redux/actions/category';
 import { Category, ResponseMenu } from '../../types/olo-api';
@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const CategoryList = () => {
   const classes = useStyles();
   const [value, setValue] = useState('0');
+  const [categoryPanels, setCategoryPanels] = useState<{}[]>([]);
   const [categoriesWithProducts, setCategoriesWithProducts] =
     useState<ResponseMenu>();
   const { categories, loading, error } = useSelector(
@@ -46,35 +47,109 @@ const CategoryList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const body = document;
+
   useEffect(() => {
     if (restaurant === null) {
       navigate('/location');
     } else {
       dispatch(getCategoriesRequest(restaurant.id));
     }
-    body.addEventListener('scroll', (e) => {
-      e.preventDefault();
-      var categoryPanel = document.getElementById('categoryMenu');
-      var dummyCategoryPanel = document.getElementById('dummyCategoryPanel');
-      if (categoryPanel && dummyCategoryPanel) {
-        if (window.scrollY > categoryPanel.offsetTop) {
-          categoryPanel.style.position = 'fixed';
-          categoryPanel.style.top = '60px';
-          dummyCategoryPanel.style.display = 'block';
-        } else {
-          categoryPanel.style.position = 'relative';
-          categoryPanel.style.top = '0px';
-          dummyCategoryPanel.style.display = 'none';
-        }
-      }
-    });
   }, []);
 
   useEffect(() => {
     if (categories && categories.categories) {
       setCategoriesWithProducts(categories);
+      let scrollValues: any[] = [];
+      setTimeout(() => {
+        categories.categories.map((item: any, index: number) => {
+          const elem: HTMLElement = document.getElementById(
+            'cat-panel-' + index,
+          ) as HTMLElement;
+          if (document.getElementById('cat-panel-' + index)) {
+            scrollValues.push({
+              panel: elem,
+              start: elem.offsetTop - 100,
+              end: elem.offsetTop - 100 + elem.clientHeight,
+              index: index,
+            });
+          }
+        });
+      }, 500);
+
+      window.addEventListener(
+        'orientationchange',
+        function () {
+          scrollValues = [];
+          categories.categories.map((item: any, index: number) => {
+            const elem: HTMLElement = document.getElementById(
+              'cat-panel-' + index,
+            ) as HTMLElement;
+            if (document.getElementById('cat-panel-' + index)) {
+              scrollValues.push({
+                panel: elem,
+                start: elem.offsetTop - 100,
+                end: elem.offsetTop - 100 + elem.clientHeight,
+                index: index,
+              });
+            }
+          });
+        },
+        false,
+      );
+
+      // Listen for resize changes
+      window.addEventListener(
+        'resize',
+        function () {
+          scrollValues = [];
+          categories.categories.map((item: any, index: number) => {
+            const elem: HTMLElement = document.getElementById(
+              'cat-panel-' + index,
+            ) as HTMLElement;
+            if (document.getElementById('cat-panel-' + index)) {
+              scrollValues.push({
+                panel: elem,
+                start: elem.offsetTop - 100,
+                end: elem.offsetTop - 100 + elem.clientHeight,
+                index: index,
+              });
+            }
+          });
+        },
+        false,
+      );
+
+      body.addEventListener('scroll', (e) => {
+        e.preventDefault();
+        var categoryPanel = document.getElementById('categoryMenu');
+        var dummyCategoryPanel = document.getElementById('dummyCategoryPanel');
+
+        checkScrollIndex(scrollValues, window.scrollY);
+        if (categoryPanel && dummyCategoryPanel) {
+          if (window.scrollY > categoryPanel.offsetTop) {
+            categoryPanel.style.position = 'fixed';
+            categoryPanel.style.top = '60px';
+            dummyCategoryPanel.style.display = 'block';
+          } else {
+            categoryPanel.style.position = 'relative';
+            categoryPanel.style.top = '0px';
+            dummyCategoryPanel.style.display = 'none';
+          }
+        }
+      });
     }
   }, [categories]);
+
+  const checkScrollIndex = (scrollValues: any[], scrollValue: number) => {
+    const val: any = scrollValues.find(
+      (x: any) => x.start < scrollValue && x.end > scrollValue,
+    );
+    if (val) {
+      if (value != val.index) setValue(val.index.toString() || '0');
+    } else {
+      setValue('0');
+    }
+  };
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setTimeout(() => {
@@ -144,6 +219,7 @@ const CategoryList = () => {
               key={index}
               container
               spacing={0}
+              id={`cat-panel-${index}`}
               sx={{
                 padding: {
                   xs: '20px 20px 0px 20px',

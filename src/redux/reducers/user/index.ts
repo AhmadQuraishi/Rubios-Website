@@ -1,4 +1,3 @@
-import { type } from 'os';
 import { userTypes as Type } from '../../types/user';
 import { createFaveTypes } from '../../types/create-fave';
 
@@ -14,11 +13,12 @@ const initialState = {
   updatedUserprofile: {
     data: null,
     passerror: {},
-    passsuccess : 0
+    passsuccess: 0,
   },
   loading: false,
   error: {},
-  success: 0
+  success: 0,
+  profile: null,
 };
 
 const userReducer = (state = initialState, action: any) => {
@@ -26,7 +26,6 @@ const userReducer = (state = initialState, action: any) => {
     // Case get requests
     case Type.GET_USER_RECENT_ORDERS:
     case Type.GET_USER_FAVORITE_ORDERS:
-    case Type.GET_USER_PROFILE:
     case Type.GET_USER_DELIVERY_ADDRESSES:
     case Type.GET_USER_PROFILE:
     case Type.CHANGE_PASSWORD:
@@ -34,24 +33,33 @@ const userReducer = (state = initialState, action: any) => {
     case Type.GET_BILLING_ACCOUNTS:
     case Type.GET_BILLING_ACCOUNT_BY_ID:
     case Type.GET_GIFT_CARDS:
+    case Type.USER_FORGOT_PASSWORD_REQUEST:
+    case Type.USER_RESET_PASSWORD_REQUEST:
       return { ...state, loading: true };
-
+    case Type.USER_FORGOT_PASSWORD_SUCCESS:
+    case Type.USER_RESET_PASSWORD_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+      };
     //Success cases
     case Type.CHANGE_PASSWORD_SUCCESS:
       return {
         ...state,
         loading: false,
-        updatedUserprofile: { data : action.payload , error : null , passsuccess : 1},
+        updatedUserprofile: {
+          data: action.payload,
+          error: null,
+          passsuccess: 1,
+        },
         error: null,
-        
-        
       };
     case Type.GET_USER_PROFILE_SUCCESS:
       return {
         ...state,
         loading: false,
         userProfile: action.payload,
-        error: null
+        error: null,
       };
     case Type.GET_USER_RECENT_ORDERS_SUCCESS:
       return {
@@ -60,7 +68,7 @@ const userReducer = (state = initialState, action: any) => {
         userRecentOrders: action.payload,
       };
     case Type.GET_USER_FAVORITE_ORDERS_SUCCESS:
-      case createFaveTypes.CREATE_FAVE_SUCCESS:
+    case createFaveTypes.CREATE_FAVE_SUCCESS:
       return {
         ...state,
         userFavoriteOrders: action.payload,
@@ -89,8 +97,12 @@ const userReducer = (state = initialState, action: any) => {
         userProfile: action.payload,
         loading: false,
         error: null,
-        success : 1
-        
+        success: 1,
+      };
+    case Type.UPDATE_PROFILE_SUCCESS:
+      return {
+        ...state,
+        profile: action.payload,
       };
     case Type.GET_BILLING_ACCOUNTS_SUCCESS:
       return {
@@ -108,7 +120,7 @@ const userReducer = (state = initialState, action: any) => {
       return {
         ...state,
         loading: false,
-      }; 
+      };
     case Type.UPDATE_BILLING_ACCOUNTS_SUCCESS:
       return {
         ...state,
@@ -116,19 +128,23 @@ const userReducer = (state = initialState, action: any) => {
         userBillingAccounts: action.payload,
       };
     case Type.GET_GIFT_CARDS_SUCCESS:
-        return {
-          ...state,
-          loading: false,
-          userGiftCards: action.payload,
-        };
+      return {
+        ...state,
+        loading: false,
+        userGiftCards: action.payload,
+      };
 
     // error cases
     case Type.CHANGE_PASSWORD_FAILURE:
       return {
         ...state,
         loading: false,
-        updatedUserprofile: { ...state.updatedUserprofile, passerror: action.payload , passsuccess : 0 },
- };
+        updatedUserprofile: {
+          ...state.updatedUserprofile,
+          passerror: action.payload,
+          passsuccess: 0,
+        },
+      };
     case Type.GET_USER_RECENT_ORDERS_FAILURE:
     case Type.GET_USER_FAVORITE_ORDERS_FAILURE:
     case Type.GET_USER_PROFILE_FAILURE:
@@ -143,12 +159,14 @@ const userReducer = (state = initialState, action: any) => {
     case Type.UPDATE_BILLING_ACCOUNTS_FAILURE:
     case Type.GET_GIFT_CARDS_FAILURE:
     case Type.DEL_FAV_ORDER__FAILURE:
-      case createFaveTypes.CREATE_FAVE_FAILURE:
-      return { ...state, loading: false, error: action.error  , success: 0};
-    case Type.USER_LOGOUT: 
-    return {
-      ...initialState
-    }  
+    case Type.USER_FORGOT_PASSWORD_FAILURE:
+    case Type.USER_RESET_PASSWORD_FAILURE:
+    case createFaveTypes.CREATE_FAVE_FAILURE:
+      return { ...state, loading: false, error: action.error, success: 0 };
+    case Type.USER_LOGOUT:
+      return {
+        ...initialState,
+      };
     default:
       return state;
   }

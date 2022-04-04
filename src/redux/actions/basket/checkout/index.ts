@@ -1,13 +1,15 @@
 import { basketActionsTypes } from '../../../types/basket';
 import {
-  ResponseRestaurantCalendars, 
-  RequestUpdateBasketTimeWanted, 
+  ResponseRestaurantCalendars,
+  RequestUpdateBasketTimeWanted,
   ResponseBasket,
   RequestUpdateBasketTip,
   RequestApplyCoupon,
   ResponseBasketValidation,
   RequestBasketSubmit,
-  ResponseContactOptions
+  ResponseContactOptions,
+  RequestSetDeliveryMode,
+  RequestDeliveryAddress
  } from '../../../../types/olo-api';
 import {displayToast} from '../../../../helpers/toast'
 export function getSingleRestaurantCalendar(id: number, dateFrom: string, dateTo: string,) {
@@ -85,7 +87,7 @@ export function updateBasketTipAmount(basketId: string, data: RequestUpdateBaske
   return {
     type: basketActionsTypes.UPDATE_BASKET_TIP_AMOUNT,
     basketId,
-    data
+    data,
   };
 }
 
@@ -129,17 +131,20 @@ export function updateBasketCouponCodeFailure(error: any) {
   };
 }
 
-export function validateBasket(basketId: string, basketPayload: RequestBasketSubmit | null, userData: any) {
+export function validateBasket(basketId: string, basketPayload: RequestBasketSubmit | null, userData: any, customFields: any, deliverymode: RequestSetDeliveryMode | null, deliveryAddress: RequestDeliveryAddress | null) {
   return {
     type: basketActionsTypes.VALIDETE_BASKET,
     basketId,
     basketPayload,
-    userData
+    userData,
+    customFields,
+    deliverymode,
+    deliveryAddress
   };
 }
 
 export function validateBasketSuccess(response: ResponseBasketValidation) {
-  
+
   return {
     type: basketActionsTypes.VALIDETE_BASKET_SUCCESS,
     payload: response
@@ -195,6 +200,62 @@ export function submitBasketSinglePaymentFailure(error: any) {
 export function removeBasketOrderConfirmation() {
   return {
     type: basketActionsTypes.REMOVE_BASKET_ORDER_CONFIRMATION
+  };
+}
+
+export function setBasketDeliveryMode(basketid: string, payload: RequestSetDeliveryMode) {
+  return {
+    type: basketActionsTypes.SET_BASKET_DELIVERY_MODE_REQUEST,
+    basketid,
+    payload
+  };
+}
+
+export function setBasketDeliveryModeSuccess(data: ResponseBasket) {
+  return {
+    type: basketActionsTypes.SET_BASKET_DELIVERY_MODE_SUCCESS,
+    payload: data,
+  };
+}
+
+export function setBasketDeliveryModeFailure(error: any) {
+  displayToast(
+    'ERROR',
+    error?.response?.data?.message
+      ? error.response.data.message
+      : 'ERROR! Please Try again later',
+  );
+  return {
+    type: basketActionsTypes.SET_BASKET_DELIVERY_MODE_FAILURE,
+    error: error,
+  };
+}
+
+export function setBasketDeliveryAddress(basketid: string, payload: RequestDeliveryAddress) {
+  return {
+    type: basketActionsTypes.SET_BASKET_DELIVERY_ADDRESS_REQUEST,
+    basketid,
+    payload
+  };
+}
+
+export function setBasketDeliveryAddressSuccess(data: ResponseBasket) {
+  return {
+    type: basketActionsTypes.SET_BASKET_DELIVERY_ADDRESS_SUCCESS,
+    payload: data,
+  };
+}
+
+export function setBasketDeliveryAddressFailure(error: any) {
+  displayToast(
+    'ERROR',
+    error?.response?.data?.message
+      ? error.response.data.message
+      : 'ERROR! Please Try again later',
+  );
+  return {
+    type: basketActionsTypes.SET_BASKET_DELIVERY_ADDRESS_FAILURE,
+    error: error,
   };
 }
 

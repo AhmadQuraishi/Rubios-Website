@@ -3,6 +3,7 @@ import { Grid, TextField, Button, Theme, Link } from '@mui/material';
 import './index.css';
 import { makeStyles } from '@mui/styles';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { userLogin } from '../../redux/actions/user';
@@ -16,6 +17,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const LoginForm = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { loading: loadingProvider } = useSelector(
     (state: any) => state.providerReducer,
   );
@@ -24,11 +26,7 @@ const LoginForm = () => {
   );
 
   const forgotPassword = () => {
-    window.open(
-      `${process.env.REACT_APP_PUNCHH_FORGOT_PASSWORD_URL}`,
-      'newwin',
-      'height=400px,width=400px',
-    );
+    navigate('/forgot-password');
   };
 
   return (

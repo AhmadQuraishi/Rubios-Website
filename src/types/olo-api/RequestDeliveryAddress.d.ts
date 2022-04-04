@@ -1,4 +1,4 @@
-interface RequestDeliveryAddress {
+export interface RequestDeliveryAddress {
 
     id?: number,
     //Olo delivery address id.

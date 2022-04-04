@@ -84,7 +84,7 @@
   .left-col {
     border-right: none !important;
     padding: 0px !important;
-    margin: 0px 0px 15px 0px !important;
+    margin: 0px 0px 35px 0px !important;
   }
   .p-card {
     display: block !important;
@@ -92,13 +92,17 @@
   .p-card img {
     float: left;
   }
-}
-
-@media screen and (max-width: 900px) {
   .welcome-wrapper {
     margin: 70px 50px !important;
   }
+  .welcome-content h4 {
+    margin: 0px 0px 10px 0px;
+  }
+  .welcome-wrapper .action-btn {
+    margin-top: -30px;
+  }
 }
+
 
 @media screen and (max-width: 468px) {
   .welcome-wrapper {
@@ -109,6 +113,9 @@
   }
   .welcome-content h4 {
     font-size: 25px;
+  }
+  .welcome-wrapper .action-btn {
+    margin-top: 0px;
   }
   .p-card img {
     width: 100% !important;
