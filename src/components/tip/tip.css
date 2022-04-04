@@ -16,8 +16,32 @@
   background: #d3d3d3;
 }
 
+@media screen and (max-width: 900px) {
+  .tip-wrapper .action-btn {
+    width: calc(100% - 20px);
+  }
+  .tip-wrapper .selected-btn {
+    margin: 20px 48px 0px 0px !important;
+  }
+  .tip-wrapper .action-btn button {
+    width: 105px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .tip-wrapper .selected-btn {
+    margin: 20px 35px 0px 0px !important;
+  }
+}
+
 @media screen and (max-width: 468px) {
   .tip-wrapper .coupon-sec {
     margin: 10px 0px;
+  }
+  .tip-wrapper .action-btn {
+    width: calc(100% - 10px);
+  }
+  .tip-wrapper .selected-btn {
+    margin: 20px 16px 0px 0px !important;
   }
 }
