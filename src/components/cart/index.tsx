@@ -518,7 +518,7 @@ const Cart = (props: any) => {
                         fontSize="14px !important"
                         textAlign="center"
                         padding="5px 0 0 0"
-                        lineHeight: '1.2px !important'
+                        lineHeight="1.2px !important"
                         textTransform="capitalize"
                         className={classes.cartTitle}
                         title={option.name}
