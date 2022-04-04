@@ -86,7 +86,7 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
   const handleTipCustomAmountChange = (event: any) => {
     let newValue = event.target.value >= 0 ? event.target.value : 0;
     console.log('newValue', newValue);
-    setTipCustomAmount(newValue);
+    setTipCustomAmount(newValue.trim());
     setTipPercentage(0);
   };
 
