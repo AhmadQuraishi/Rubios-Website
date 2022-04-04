@@ -10,7 +10,7 @@
 }
 
 .order .left-col {
-  padding: 0px 90px 0px 60px;
+  padding: 0px 80px 0px 60px;
 }
 .order .left-col .MuiTextField-root {
   margin-bottom: 10px;
@@ -90,7 +90,7 @@
     padding: 30px !important;
   }
   .order .left-col {
-    padding: 0px 55px 0px 0px !important;
+    padding: 0px 40px 0px 0px !important;
   }
 }
 @media screen and (max-width: 468px) {
@@ -100,12 +100,15 @@
   .order .add-order button {
     width: 100%;
   }
+  .order .left-col {
+    padding-left: 0px !important;
+  }
   .order .selected-btn-group {
     display: inline-block;
   }
   .order .selected-btn {
     float: left;
-    width: 47.2%;
+    width: 47%;
     margin-bottom: 10px !important;
   }
   .order .time-slot-wrapper {
