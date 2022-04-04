@@ -170,7 +170,7 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
                   <TextField
                     className="action-btn"
                     value={tipCustomAmount || ''}
-                    type="number"
+                    type="text"
                     onChange={handleTipCustomAmountChange}
                     label="Custom Amount"
                     aria-label="custom amount"
