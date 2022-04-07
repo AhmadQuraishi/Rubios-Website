@@ -27,6 +27,9 @@ import pageStateReducer from './page-state';
 import redemptionReducer from './redemption';
 import addUpsellReducer from './basket/upsell/add';
 import getUpsellsReducer from './basket/upsell/get';
+import getRewardForCheckoutReducer from './reward/checkout';
+import applyRewardOnBasketReducer from './reward/checkout/apply';
+import removeRewardFromBasketReducer from './reward/checkout/remove';
 
 const persistConfig = {
   key: 'root',
@@ -71,6 +74,9 @@ const rootReducers = combineReducers({
   redemptionReducer,
   addUpsellReducer,
   getUpsellsReducer,
+  getRewardForCheckoutReducer,
+  applyRewardOnBasketReducer,
+  removeRewardFromBasketReducer,
 });
 
 const persistReducers = persistReducer(persistConfig, rootReducers);

@@ -4,7 +4,7 @@ import { userTypes } from '../../../types/user';
 const INITIAL_STATE = {
   loading: false,
   basket: null,
-  error: {},
+  error: null,
 };
 
 const createBasketReducer = (state = INITIAL_STATE, action: any) => {
@@ -12,7 +12,7 @@ const createBasketReducer = (state = INITIAL_STATE, action: any) => {
     case basketActionsTypes.SET_BASKET_REQUEST:
     case basketActionsTypes.CREATE_BASKET_FROM_PREV_ORDER_REQUEST:
     case basketActionsTypes.CREATE_BASKET_FROM_FAV_ORDER_REQUEST:
-      return { ...state, loading: true, basket: null, error: {} };
+      return { ...state, loading: true, basket: null, error: null };
 
     case basketActionsTypes.SET_BASKET_SUCCESS:
     case basketActionsTypes.CREATE_BASKET_FROM_PREV_ORDER_SUCCESS:
@@ -21,7 +21,7 @@ const createBasketReducer = (state = INITIAL_STATE, action: any) => {
         ...state,
         loading: false,
         basket: action.payload,
-        error: {},
+        error: null,
       };
     case basketActionsTypes.SET_BASKET_FAILURE:
     case basketActionsTypes.CREATE_BASKET_FROM_PREV_ORDER_FAILURE:
