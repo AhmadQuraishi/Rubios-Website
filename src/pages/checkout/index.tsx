@@ -77,21 +77,13 @@ const Checkout = () => {
     }
   }, [basket]);
 
-  useEffect(() => {
-    debugger;
-    if (
-      providerToken &&
-      providerToken.first_name &&
-      restaurant &&
-      restaurant.id
-    ) {
-      dispatch(getRewardsForCheckoutRequest(restaurant.id));
-    }
-  }, [providerToken]);
 
   React.useEffect(() => {
     if (authToken?.authtoken && authToken.authtoken !== '') {
       dispatch(getUserDeliveryAddresses());
+      dispatch(
+        getRewardsForCheckoutRequest(restaurant.id, authToken.authtoken),
+      );
     }
   }, []);
 

@@ -1,10 +1,11 @@
 import { displayToast } from '../../../../helpers/toast';
 import { rewardTypes as Type } from '../../../types/reward';
 
-export function getRewardsForCheckoutRequest(vendorID: any) {
+export function getRewardsForCheckoutRequest(vendorID: any, authToken: any ) {
   return {
     type: Type.GET_USER_REWARDS_FOR_CHECKOUT_REQUEST,
     vendorID,
+    authToken
   };
 }
 
