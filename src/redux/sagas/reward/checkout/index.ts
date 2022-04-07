@@ -8,7 +8,11 @@ import { getRewardsByTokenAndVendorID } from '../../../../services/reward/checko
 
 function* getRewardForCheckoutHandler(action: any): any {
   try {
-    const response = yield call(getRewardsByTokenAndVendorID, action.vendorID);
+    const response = yield call(
+      getRewardsByTokenAndVendorID,
+      action.vendorID,
+      action.authToken,
+    );
     yield put(getRewardsForCheckoutRequestSuccess(response));
   } catch (error) {
     yield put(getRewardsForCheckoutRequestFailure(error));

@@ -11,9 +11,7 @@ import FormControl from '@mui/material/FormControl';
 import './rewards.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { applyRewardOnBasketRequest } from '../../redux/actions/reward/checkout/apply';
-import { validateBasket } from '../../redux/actions/basket/checkout';
 import { displayToast } from '../../helpers/toast';
-import { getBasketRequest } from '../../redux/actions/basket';
 import { removeRewardFromBasketRequest } from '../../redux/actions/reward/checkout/remove';
 
 const Rewards = (props: any) => {
