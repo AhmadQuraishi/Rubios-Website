@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Box, Button, Card, Grid, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -26,6 +26,7 @@ import {
 import { getUserDeliveryAddresses } from '../../redux/actions/user';
 import PickupForm from '../../components/pickup-form/index';
 import DeliveryForm from '../../components/delivery-form/index';
+import { getRewardsForCheckoutRequest } from '../../redux/actions/reward/checkout';
 
 const Checkout = () => {
   const dispatch = useDispatch();
@@ -46,6 +47,9 @@ const Checkout = () => {
   const basketObj = useSelector((state: any) => state.basketReducer);
   const { authToken } = useSelector((state: any) => state.authReducer);
   const { providerToken } = useSelector((state: any) => state.providerReducer);
+  const { rewards } = useSelector(
+    (state: any) => state.getRewardForCheckoutReducer,
+  );
   const { restaurant, orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
@@ -72,6 +76,18 @@ const Checkout = () => {
       setRunOnce(false);
     }
   }, [basket]);
+
+  useEffect(() => {
+    debugger;
+    if (
+      providerToken &&
+      providerToken.first_name &&
+      restaurant &&
+      restaurant.id
+    ) {
+      dispatch(getRewardsForCheckoutRequest(restaurant.id));
+    }
+  }, [providerToken]);
 
   React.useEffect(() => {
     if (authToken?.authtoken && authToken.authtoken !== '') {
@@ -358,14 +374,18 @@ const Checkout = () => {
               <br />
               <br />
               <br />
-              <Rewards />
-              <br />
-              <br />
-              <br />
-              <Divider />
-              <br />
-              <br />
-              <br />
+              {providerToken && providerToken.first_name && rewards && (
+                <>
+                  <Rewards rewardsList={rewards} />
+                  <br />
+                  <br />
+                  <br />
+                  <Divider />
+                  <br />
+                  <br />
+                  <br />
+                </>
+              )}
               <Tip
                 basket={basket}
                 loading={basketObj?.loading}
