@@ -9,6 +9,8 @@ import {
   Box,
   Modal,
   Button,
+  Dialog,
+  CircularProgress,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -235,8 +237,23 @@ const CategoryList = () => {
   };
   return (
     <div style={{ minHeight: '500px' }}>
+      {getResutarnts && (
+        <div
+          style={{
+            display: 'flex',
+            width: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
+            background: 'rgba(0,0,0,0.2)',
+            position: 'fixed',
+            height: '100%',
+          }}
+        >
+          <CircularProgress />
+        </div>
+      )}
       {restaurantSelected && (
-        <Modal
+        <Dialog
           open={open}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
@@ -330,7 +347,7 @@ const CategoryList = () => {
               </Button>
             )}
           </div>
-        </Modal>
+        </Dialog>
       )}
       <StoreInfoBar />
       {loading === true && <ProductListingSkeletonUI />}
