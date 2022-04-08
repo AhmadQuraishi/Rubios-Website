@@ -70,17 +70,21 @@ const CategoryList = () => {
   const objResturantsList = useSelector(
     (state: any) => state.restaurantListReducer,
   );
-
+  const { providerToken } = useSelector((state: any) => state.providerReducer);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const body = document;
 
   useEffect(() => {
     if (window.location.href.toLocaleLowerCase().indexOf('selection=1') != -1) {
-      setGetResutrants(true);
-      dispatch(getResturantListRequest());
-      if (restaurant && restaurant.id) {
-        dispatch(getCategoriesRequest(restaurant.id));
+      if (providerToken && providerToken.first_name) {
+        navigate('/location');
+      } else {
+        setGetResutrants(true);
+        dispatch(getResturantListRequest());
+        if (restaurant && restaurant.id) {
+          dispatch(getCategoriesRequest(restaurant.id));
+        }
       }
     } else {
       if (restaurant === null) {
