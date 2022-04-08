@@ -1,15 +1,15 @@
 import { displayToast } from '../../../helpers/toast';
 import { authActionsTypes as Type } from '../../types/auth';
 
-
-export function getAuthRequest() {
+export function getAuthRequest(basketID: string = '') {
   return {
     type: Type.GET_AUTHTOKEN_REQUEST,
+    basketID,
   };
 }
 
 export function getAuthRequestSuccess(successMsg: string, data: any) {
-  displayToast('SUCCESS', successMsg)
+  displayToast('SUCCESS', successMsg);
   return {
     type: Type.GET_AUTHTOKEN_SUCCESS,
     payload: data,

@@ -12,7 +12,7 @@ const INITIAL_STATE = {
   },
   basketType: 'New',
   orderConfirmation: false,
-  error: {},
+  error: null,
 };
 
 const basketReducer = (state = INITIAL_STATE, action: any) => {
@@ -24,7 +24,7 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
         loading: true,
         basket: null,
         basketType: 'New',
-        error: {},
+        error: null,
       };
     case basketActionsTypes.VALIDETE_BASKET:
     case basketActionsTypes.SUBMIT_BASKET_SINGLE_PAYMENT:
@@ -47,7 +47,7 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
         basket: action.payload,
         basketType: action.basketType || 'New',
         validate: null,
-        error: {},
+        error: null,
       };
     case basketActionsTypes.GET_BASKET_FAILURE:
     case basketActionsTypes.UPDATE_BASKET_TIME_WANTED_FAILURE:
@@ -78,7 +78,7 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
         calendar: {
           loading: false,
           data: action.payload,
-          error: {},
+          error: null,
         },
       };
     case basketActionsTypes.GET_BASKET_FAILURE:
@@ -105,7 +105,7 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
           error: {},
         },
         orderConfirmation: true,
-        error: {},
+        error: null,
       };
     case basketActionsTypes.REMOVE_BASKET_ORDER_CONFIRMATION:
       return {

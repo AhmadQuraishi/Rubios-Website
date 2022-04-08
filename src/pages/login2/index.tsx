@@ -22,6 +22,7 @@ const Login2 = () => {
   const classes = useStyle();
 
   const { providerToken } = useSelector((state: any) => state.providerReducer);
+  const { authToken } = useSelector((state: any) => state.authReducer);
 
   const { pageURL } = useSelector((state: any) => state.pageStateReducer);
   const { restaurant } = useSelector(
@@ -29,14 +30,19 @@ const Login2 = () => {
   );
 
   useEffect(() => {
-    if (providerToken) {
+    if (
+      providerToken &&
+      authToken &&
+      authToken.authtoken &&
+      authToken.authtoken !== ''
+    ) {
       if (pageURL == undefined || pageURL == null) {
         navigate('/welcome');
       } else {
         navigate(pageURL);
       }
     }
-  }, [providerToken]);
+  }, [authToken, providerToken]);
 
   return (
     <Fragment>
