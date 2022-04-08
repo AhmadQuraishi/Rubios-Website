@@ -1,33 +1,34 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   Grid,
   Typography,
   ToggleButtonGroup,
   ToggleButton,
+  CircularProgress,
 } from '@mui/material';
-import drinks from '../../assets/imgs/drinks.svg';
-import food from '../../assets/imgs/food.svg';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Radio from '@mui/material/Radio';
 import FormControl from '@mui/material/FormControl';
 import './rewards.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { applyRewardOnBasketRequest } from '../../redux/actions/reward/checkout/apply';
+import { displayToast } from '../../helpers/toast';
+import { removeRewardFromBasketRequest } from '../../redux/actions/reward/checkout/remove';
 
-const Rewards = () => {
-  const rewardsArray = [
-    {
-      icon: drinks,
-      desc: 'Free Regular Sized Drink',
-    },
-    {
-      icon: drinks,
-      desc: 'Buy One Get One Free',
-    }
-  ];
-  const [view, setView] = useState(true);
-  const handler = () => {
-    setView(!view);
-  };
+const Rewards = (props: any) => {
+  const objApplyReward = useSelector(
+    (state: any) => state.applyRewardOnBasketReducer,
+  );
+  const objRemoveReward = useSelector(
+    (state: any) => state.removeRewardFromBasketReducer,
+  );
+  const basketObj = useSelector((state: any) => state.basketReducer);
+  const dispatch = useDispatch();
+  const { rewardsList } = props;
+  const rewardsArray: any[] = rewardsList;
+
+  const [actionClicked, setActionClicked] = useState(false);
+  const [removedActionClicked, setRemovedActionClicked] = useState(false);
+  const [selectedRewardID, setSelectedRewardID] = useState('');
 
   const [alignment, setAlignment] = React.useState('web');
   const onRewardSelect = (
@@ -37,21 +38,90 @@ const Rewards = () => {
     setAlignment(newAlignment);
   };
 
+  useEffect(() => {
+    if (
+      basketObj &&
+      basketObj.basket &&
+      basketObj.basket.appliedrewards &&
+      basketObj.basket.appliedrewards.length > 0
+    ) {
+      setSelectedRewardID(basketObj.basket.appliedrewards[0].reference);
+      setAlignment(basketObj.basket.appliedrewards[0].reference);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (objRemoveReward && objRemoveReward.basket && removedActionClicked) {
+      setRemovedActionClicked(false);
+      setSelectedRewardID('');
+      displayToast('SUCCESS', 'Reward removed successfully.');
+    }
+  }, [objRemoveReward]);
+
+  const applyReward = (membershipid: number, refID: string) => {
+    const request = {
+      membershipid: membershipid,
+      references: [refID],
+    };
+    if (
+      selectedRewardID == refID &&
+      basketObj &&
+      basketObj.basket &&
+      basketObj.basket.appliedrewards &&
+      basketObj.basket.appliedrewards.length > 0
+    ) {
+      setRemovedActionClicked(true);
+      setSelectedRewardID(refID);
+      dispatch(
+        removeRewardFromBasketRequest(
+          basketObj.basket.id,
+          parseInt(basketObj.basket.appliedrewards[0].rewardid),
+        ),
+      );
+    } else {
+      setActionClicked(true);
+      setSelectedRewardID(refID);
+      dispatch(applyRewardOnBasketRequest(basketObj.basket.id, request));
+    }
+  };
+  useEffect(() => {
+    if (
+      objApplyReward &&
+      (objApplyReward.basket || objApplyReward.error) &&
+      actionClicked
+    ) {
+      setActionClicked(false);
+      if (objApplyReward.basket) {
+        displayToast('SUCCESS', 'Reward applied successfully.');
+      }
+      if (objApplyReward.error) {
+        setAlignment('web');
+      }
+    }
+  }, [objApplyReward]);
+
   return (
-    <Grid container>
-      <Grid item xs={0} sm={0} md={2} lg={2} />
-
-      {view && (
-        <Grid container className="rewards">
-          <Grid item xs={12} sm={12} md={12} lg={12}>
-            <Button onClick={handler} title="VIEW REWARDS" className="label">
-              VIEW REWARDS
-            </Button>
-          </Grid>
-        </Grid>
+    <div style={{ position: 'relative' }}>
+      {(actionClicked || removedActionClicked) && (
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            margin: 'auto',
+            width: '100%',
+            height: '100%',
+            background: 'rgba(255, 255, 255, 0)',
+            zIndex: 100001,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <CircularProgress />
+        </div>
       )}
-
-      {!view && (
+      <Grid container>
+        <Grid item xs={0} sm={0} md={2} lg={2} />
         <Grid item xs={12} sm={12} md={8} lg={8} className="choose-reward">
           <Typography variant="h4" title="APPLY REWARDS">
             APPLY REWARDS
@@ -59,22 +129,6 @@ const Rewards = () => {
           <br />
           <Grid container>
             <FormControl>
-              {/*<RadioGroup row aria-labelledby="rewards" name="Rubio,s rewards">*/}
-              {/*{rewardsArray.map((reward, index) => (*/}
-              {/*<Grid item xs={12} sm={12} md={6} key={reward.desc + index}>*/}
-              {/*<Card>*/}
-              {/*<FormControlLabel*/}
-              {/*value={reward.desc}*/}
-              {/*control={<Radio />}*/}
-              {/*label={reward.desc}*/}
-              {/*aria-label={reward.desc}*/}
-              {/*title={reward.desc}*/}
-              {/*/>*/}
-              {/*<img src={require('../../assets/imgs/taco-original-fish.jpg')} />*/}
-              {/*</Card>*/}
-              {/*</Grid>*/}
-              {/*))}*/}
-              {/*</RadioGroup>*/}
               <ToggleButtonGroup
                 value={alignment}
                 exclusive
@@ -82,13 +136,30 @@ const Rewards = () => {
                 aria-labelledby="rewards"
               >
                 {rewardsArray.map((reward, index) => (
-                  <ToggleButton value={reward.desc} className="choose-btn">
+                  <ToggleButton
+                    onClick={() => {
+                      applyReward(reward.membershipid, reward.reference);
+                    }}
+                    value={reward.reference}
+                    className="choose-btn"
+                  >
                     <Grid container spacing={2}>
                       <Grid item xs={12} sm={5} md={5} lg={5}>
-                        <img src={reward.icon} />
+                        <img src={reward.imageurl} alt="Reward Image" />
                       </Grid>
-                      <Grid item xs={12} sm={7} md={7} lg={7} className="icon-content">
-                        <Typography>{reward.desc}</Typography>
+                      <Grid
+                        item
+                        xs={12}
+                        sm={7}
+                        md={7}
+                        lg={7}
+                        className="icon-content"
+                      >
+                        <Typography>
+                          {reward.quantityavailable > 1
+                            ? reward.quantityavailable + ' x ' + reward.label
+                            : reward.label}
+                        </Typography>
                       </Grid>
                     </Grid>
                   </ToggleButton>
@@ -97,10 +168,9 @@ const Rewards = () => {
             </FormControl>
           </Grid>
         </Grid>
-      )}
-
-      <Grid item xs={0} sm={0} md={2} lg={2} />
-    </Grid>
+        <Grid item xs={0} sm={0} md={2} lg={2} />
+      </Grid>
+    </div>
   );
 };
 
