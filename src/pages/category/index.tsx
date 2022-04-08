@@ -106,6 +106,12 @@ const CategoryList = () => {
       if (objRestaurant) {
         setRestaurantSelected(objRestaurant);
         setOpen(true);
+      } else {
+        displayToast(
+          'ERROR',
+          'Your restaurant does not exist, Please search your restaurant here',
+        );
+        navigate('/location');
       }
       setGetResutrants(false);
     }
