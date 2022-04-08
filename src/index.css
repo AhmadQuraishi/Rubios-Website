@@ -124,9 +124,9 @@ h6 {
 .MuiTextField-root .MuiInputLabel-root.MuiFormLabel-filled.Mui-focused,
 .MuiTextField-root .MuiInputLabel-root.Mui-error {
   font-family: 'Poppins-Bold', sans-serif !important;
-  padding: 14px 14px 14px 0px;
+  padding: 20px 0px 0px 9px;
   color: #214F66;
-  font-size: 12px;
+  font-size: 10px;
 }
 .MuiTextField-root .MuiInputLabel-root.Mui-focused {
   padding: 0px;
@@ -137,7 +137,7 @@ h6 {
 }
 .MuiTextField-root .MuiInputLabel-root.Mui-error.Mui-focused,
 .MuiTextField-root .MuiInputLabel-root.Mui-error.MuiFormLabel-filled {
-  padding: 14px 14px 14px 0px !important;
+  padding: 20px 0px 0px 9px !important;
   color: red !important;
 }
 .MuiFormControl-root {
@@ -147,9 +147,9 @@ h6 {
 .MuiFormControl-root .MuiInputLabel-root.MuiFormLabel-filled,
 .MuiFormControl-root .MuiInputLabel-root.MuiFormLabel-filled.Mui-focused {
   font-family: 'Poppins-Bold', sans-serif !important;
-  padding: 14px 14px 14px 0px;
+  padding: 20px 0px 0px 9px;
   color: #214F66;
-  font-size: 12px;
+  font-size: 10px;
 }
 .MuiInputBase-root {
   border-radius: 0px !important;
@@ -164,6 +164,7 @@ h6 {
   border-radius: 0;
   font-family: 'Poppins-Regular', sans-serif !important;
   caret-color: black !important;
+  padding: 16px 20px !important;
 }
 
 fieldset{
@@ -216,8 +217,8 @@ fieldset{
 .mobile-field .MuiInputLabel-root.Mui-focused,
 .mobile-field .MuiInputLabel-root.Mui-focused.Mui-error {
   font-family: 'Poppins-Bold', sans-serif !important;
-  padding: 14px 14px 14px 0px !important;
-  font-size: 12px !important;
+  padding: 20px 0px 0px 9px !important;
+  font-size: 10px !important;
     font-family: "Roboto","Helvetica","Arial",sans-serif;
     font-weight: 400;
     font-size: 1rem;
@@ -249,16 +250,16 @@ fieldset{
 }
 .mobile-field .MuiInputLabel-root.MuiFormLabel-filled.Mui-focused {
   font-family: 'Poppins-Bold', sans-serif !important;
-  padding: 14px 14px 14px 0px !important;
+  padding: 20px 0px 0px 9px !important;
   color: #214F66 !important;
-  font-size: 12px !important;
+  font-size: 10px !important;
 }
 
 .mobile-field-label {
   font-family: 'Poppins-Bold', sans-serif !important;
-  padding: 14px 14px 14px 0px !important;
-  color: #214F66 !important;;
-  font-size: 12px !important;;
+  padding: 20px 0px 0px 9px !important;
+  color: #214F66 !important;
+  font-size: 10px !important;
 }
 
 /* mobile field custom css end */
