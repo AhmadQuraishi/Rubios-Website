@@ -111,10 +111,17 @@ const Header = (props: any) => {
     setShowAccountMenu(false);
     if (fromEditOrder == true) {
       setShowCart(true);
+      document.body.style.overflow = 'hidden';
       setState(!state);
       fromEditOrder = false;
       setShowCart(false);
+      document.body.style.overflow = 'auto';
     } else {
+      if (!showCart) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = 'auto';
+      }
       setShowCart(!showCart);
     }
   };
