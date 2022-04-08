@@ -9,7 +9,7 @@ import {
 
 function* asyncAuthItemRequest(action: any): any {
     try {
-      const response = yield call(getAuthToken);
+      const response = yield call(getAuthToken, action.basketID);
       yield put(getAuthRequestSuccess(action.successMsg, response.data));
     } catch (error) {
       yield put(getAuthRequestFailure(error));
