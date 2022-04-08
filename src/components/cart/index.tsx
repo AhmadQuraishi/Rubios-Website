@@ -38,12 +38,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     border: '1px solid #666',
     borderTop: '0',
     borderRight: '0',
-    position: 'absolute',
+    position: 'fixed',
     background: '#fff',
     top: 0,
     right: 0,
     width: '100%',
-    minHeight: '300px',
+    height: '100%',
     zIndex: 1101,
     [theme.breakpoints.up('md')]: {
       maxWidth: '375px',
@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   cartRoot: {
     position: 'relative',
-    padding: '35px 30px 10px 30px',
+    padding: '35px 5px 10px 30px',
   },
   cartTitle: {
     color: theme.palette.secondary.main,
@@ -119,8 +119,41 @@ const Cart = (props: any) => {
   const navigate = useNavigate();
   const [basketType, setBasketType] = useState();
 
+  const fitContainer = () => {
+    const elem = document.getElementById('cart-main-conatiner');
+    const cartBox = document.getElementById('cart-box');
+    if (elem && cartBox) {
+      if (
+        basketObj &&
+        basketObj.basket &&
+        basketObj.basket.products.length > 0
+      ) {
+        elem.style.height = cartBox?.clientHeight - 172 + 'px';
+      } else {
+        elem.style.height = cartBox?.clientHeight - 100 + 'px';
+      }
+      elem.style.overflow = 'auto';
+    }
+  };
+  window.addEventListener(
+    'orientationchange',
+    function () {
+      fitContainer();
+    },
+    false,
+  );
+
+  window.addEventListener(
+    'resize',
+    function () {
+      fitContainer();
+    },
+    false,
+  );
+
   useEffect(() => {
     window.scrollTo(0, 0);
+    fitContainer();
     setBasketType((basketObj && basketObj.basketType) || '');
   }, []);
 
@@ -157,6 +190,7 @@ const Cart = (props: any) => {
     if (upsellsObj && upsellsObj.upsells && basketObj && basketObj.basket) {
       updateUpsells(upsellsObj.upsells);
     }
+    fitContainer();
   }, [basketObj]);
 
   useEffect(() => {
@@ -241,7 +275,7 @@ const Cart = (props: any) => {
   return (
     <>
       <div className={classes.dimPanel} onClick={showCart}></div>
-      <Box className={classes.cartBox}>
+      <Box className={classes.cartBox} id="cart-box">
         <Grid container spacing={0} className={classes.cartRoot}>
           <Grid item xs={12}>
             <Typography
@@ -264,6 +298,7 @@ const Cart = (props: any) => {
             basketObj.basket.products.length == 0) ||
             (basketObj && basketObj.basket == null)) && (
             <Grid
+              id="cart-main-conatiner"
               item
               xs={12}
               style={{
@@ -272,6 +307,7 @@ const Cart = (props: any) => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 flexDirection: 'column',
+                paddingRight: '25px'
               }}
             >
               <svg
@@ -315,404 +351,416 @@ const Cart = (props: any) => {
             )}
           {basketObj &&
             basketObj.basket &&
-            basketObj.basket.products.map((item: any, index: number) => (
-              <Grid
-                key={Math.random() + index}
-                item
-                xs={12}
-                sx={{ padding: '0px' }}
-              >
-                <Grid container spacing={0}>
-                  <Grid item xs={9}>
-                    <Typography
-                      variant="caption"
-                      title={item.name}
-                      sx={{
-                        fontSize: '14px',
-                        color: 'secondary.main',
-                        fontFamily: "'Poppins-Medium' !important",
-                      }}
-                    >
-                      {item.quantity.toString() + ' x ' + item.name.toString()}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={3} sx={{ textAlign: 'right' }}>
-                    <Typography
-                      variant="caption"
-                      title={'$' + item.totalcost.toFixed(2)}
-                      sx={{
-                        textAlign: 'right',
-                        fontSize: '14px',
-                        fontWeight: '700',
-                        fontFamily: 'Poppins-Bold !important',
-                        color: 'secondary.main',
-                      }}
-                    >
-                      ${item.totalcost.toFixed(2)}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={12} sx={{ padding: '10px 0 10px 0' }}>
-                    <Divider sx={{ borderColor: 'rgba(0, 0, 0, 1);' }} />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Typography
-                      title={getOptions(item.choices)}
-                      variant="caption"
-                      fontSize={11}
-                      sx={{ paddingBottom: '5px', display: 'block' }}
-                    >
-                      {getOptions(item.choices)}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={12} sx={{ padding: '0' }}>
-                    <Grid container spacing={0}>
-                      <Grid item xs={2}>
-                        {productRemoveObj &&
-                        productRemoveObj.loading &&
-                        clickAction == item.id + '-remove' ? (
-                          <span
-                            key={Math.random() + 'disable-remove'}
-                            title="Remove"
-                            className={classes.disabledLink}
-                            aria-label="Remove the item from basket"
-                            onClick={() => false}
-                          >
-                            Remove
-                          </span>
-                        ) : (
-                          <span
-                            title="Remove"
-                            key={Math.random() + 'active-remove'}
-                            className={classes.smallLink}
-                            aria-label="Remove the item from basket"
-                            onClick={() => {
-                              removeProductHandle(item.id);
-                              setClickAction(item.id + '-remove');
-                            }}
-                          >
-                            Remove
-                          </span>
-                        )}
-                      </Grid>
-                      {!checkItemIsUpsells(item.productId) && (
-                        <Grid item xs={3} sx={{ textAlign: 'center' }}>
-                          {(productRemoveObj && productRemoveObj.loading) ||
-                          (productAddObj && productAddObj.loading) ? (
-                            <span
-                              key={Math.random() + 'disable-edit'}
-                              onClick={() => false}
-                              title="Edit"
-                              className={classes.smallLink}
-                              aria-label="Make changes to the current menu item"
-                            >
-                              Edit
-                            </span>
-                          ) : (
-                            <span
-                              onClick={() => {
-                                showCart();
-                                navigate(
-                                  `product/${item.productId}/${item.id}${
-                                    window.location.href
-                                      .toLowerCase()
-                                      .indexOf('product') == -1
-                                      ? '?edit=true'
-                                      : ''
-                                  }`,
-                                );
-                              }}
-                              key={Math.random() + 'active-edit'}
-                              title="Edit"
-                              className={classes.smallLink}
-                              aria-label="Make changes to the current menu item"
-                            >
-                              Edit
-                            </span>
-                          )}
-                        </Grid>
-                      )}
-                      <Grid item xs={3} sx={{ textAlign: 'center' }}>
-                        {productAddObj &&
-                        productAddObj.loading &&
-                        clickAction == item.id + '-add' ? (
-                          <span
-                            key={Math.random() + 'disable-duplicate'}
-                            onClick={() => false}
-                            className={classes.disabledLink}
-                            title="Duplicate"
-                            aria-label="Duplicate the basket item"
-                          >
-                            Duplicate
-                          </span>
-                        ) : (
-                          <span
-                            key={Math.random() + 'active-duplicate'}
-                            onClick={() => {
-                              duplicateProductHandle(item.id);
-                              setClickAction(item.id + '-add');
-                            }}
-                            className={classes.smallLink}
-                            title="Duplicate"
-                            aria-label="Duplicate the basket item"
-                          >
-                            Duplicate
-                          </span>
-                        )}
-                      </Grid>
-                      <Grid item xs={3}></Grid>
-                    </Grid>
-                  </Grid>
-                </Grid>
-                <Grid item xs={12}>
-                  <div style={{ height: '15px' }}></div>
-                </Grid>
-              </Grid>
-            ))}
-          {basketObj &&
-            basketObj.basket &&
-            basketObj.basket.products.length > 0 &&
-            upsells &&
-            upsells.length > 0 && (
-              <Grid item xs={12}>
-                <Typography
-                  variant="h6"
-                  component="p"
-                  fontSize="15px !important"
-                  textAlign="center"
-                  padding="10px 0 10px 0"
-                  textTransform="uppercase"
-                  className={classes.cartTitle}
-                  title="Complete Your Meal"
-                >
-                  Complete Your Meal
-                </Typography>
-                <Grid
-                  container
-                  spacing={0}
-                  justifyContent="space-around"
-                  sx={{ paddingTop: '10px' }}
-                >
-                  {upsells.map((option: any, index: number) => (
+            basketObj.basket.products.length > 0 && (
+              <Grid item xs={12} id="cart-main-conatiner" sx={{paddingRight: '25px'}}>
+                {basketObj &&
+                  basketObj.basket &&
+                  basketObj.basket.products.map((item: any, index: number) => (
                     <Grid
-                      key={Math.random() + '-' + index}
+                      key={Math.random() + index}
                       item
-                      xs={4}
-                      sx={{ cursor: 'pointer' }}
-                      onClick={() => {
-                        addUpsells(option.id);
-                      }}
+                      xs={12}
+                      sx={{ padding: '0px' }}
                     >
-                      <img
-                        style={{
-                          display: 'block',
-                          margin: 'auto',
-                          width: '75%',
-                        }}
-                        src={require('../../assets/imgs/default_img.png')}
-                        alt={option.name}
-                        title={option.name}
-                      />
+                      <Grid container spacing={0}>
+                        <Grid item xs={9}>
+                          <Typography
+                            variant="caption"
+                            title={item.name}
+                            sx={{
+                              fontSize: '14px',
+                              color: 'secondary.main',
+                              fontFamily: "'Poppins-Medium' !important",
+                            }}
+                          >
+                            {item.quantity.toString() +
+                              ' x ' +
+                              item.name.toString()}
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={3} sx={{ textAlign: 'right' }}>
+                          <Typography
+                            variant="caption"
+                            title={'$' + item.totalcost.toFixed(2)}
+                            sx={{
+                              textAlign: 'right',
+                              fontSize: '14px',
+                              fontWeight: '700',
+                              fontFamily: 'Poppins-Bold !important',
+                              color: 'secondary.main',
+                            }}
+                          >
+                            ${item.totalcost.toFixed(2)}
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={12} sx={{ padding: '10px 0 10px 0' }}>
+                          <Divider sx={{ borderColor: 'rgba(0, 0, 0, 1);' }} />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <Typography
+                            title={getOptions(item.choices)}
+                            variant="caption"
+                            fontSize={11}
+                            sx={{ paddingBottom: '5px', display: 'block' }}
+                          >
+                            {getOptions(item.choices)}
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={12} sx={{ padding: '0' }}>
+                          <Grid container spacing={0}>
+                            <Grid item xs={2}>
+                              {productRemoveObj &&
+                              productRemoveObj.loading &&
+                              clickAction == item.id + '-remove' ? (
+                                <span
+                                  key={Math.random() + 'disable-remove'}
+                                  title="Remove"
+                                  className={classes.disabledLink}
+                                  aria-label="Remove the item from basket"
+                                  onClick={() => false}
+                                >
+                                  Remove
+                                </span>
+                              ) : (
+                                <span
+                                  title="Remove"
+                                  key={Math.random() + 'active-remove'}
+                                  className={classes.smallLink}
+                                  aria-label="Remove the item from basket"
+                                  onClick={() => {
+                                    removeProductHandle(item.id);
+                                    setClickAction(item.id + '-remove');
+                                  }}
+                                >
+                                  Remove
+                                </span>
+                              )}
+                            </Grid>
+                            {!checkItemIsUpsells(item.productId) && (
+                              <Grid item xs={3} sx={{ textAlign: 'center' }}>
+                                {(productRemoveObj &&
+                                  productRemoveObj.loading) ||
+                                (productAddObj && productAddObj.loading) ? (
+                                  <span
+                                    key={Math.random() + 'disable-edit'}
+                                    onClick={() => false}
+                                    title="Edit"
+                                    className={classes.smallLink}
+                                    aria-label="Make changes to the current menu item"
+                                  >
+                                    Edit
+                                  </span>
+                                ) : (
+                                  <span
+                                    onClick={() => {
+                                      showCart();
+                                      navigate(
+                                        `product/${item.productId}/${item.id}${
+                                          window.location.href
+                                            .toLowerCase()
+                                            .indexOf('product') == -1
+                                            ? '?edit=true'
+                                            : ''
+                                        }`,
+                                      );
+                                    }}
+                                    key={Math.random() + 'active-edit'}
+                                    title="Edit"
+                                    className={classes.smallLink}
+                                    aria-label="Make changes to the current menu item"
+                                  >
+                                    Edit
+                                  </span>
+                                )}
+                              </Grid>
+                            )}
+                            <Grid item xs={3} sx={{ textAlign: 'center' }}>
+                              {productAddObj &&
+                              productAddObj.loading &&
+                              clickAction == item.id + '-add' ? (
+                                <span
+                                  key={Math.random() + 'disable-duplicate'}
+                                  onClick={() => false}
+                                  className={classes.disabledLink}
+                                  title="Duplicate"
+                                  aria-label="Duplicate the basket item"
+                                >
+                                  Duplicate
+                                </span>
+                              ) : (
+                                <span
+                                  key={Math.random() + 'active-duplicate'}
+                                  onClick={() => {
+                                    duplicateProductHandle(item.id);
+                                    setClickAction(item.id + '-add');
+                                  }}
+                                  className={classes.smallLink}
+                                  title="Duplicate"
+                                  aria-label="Duplicate the basket item"
+                                >
+                                  Duplicate
+                                </span>
+                              )}
+                            </Grid>
+                            <Grid item xs={3}></Grid>
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <div style={{ height: '15px' }}></div>
+                      </Grid>
+                    </Grid>
+                  ))}
+                {basketObj &&
+                  basketObj.basket &&
+                  basketObj.basket.products.length > 0 &&
+                  upsells &&
+                  upsells.length > 0 && (
+                    <Grid item xs={12}>
                       <Typography
                         variant="h6"
                         component="p"
-                        fontSize="14px !important"
+                        fontSize="15px !important"
                         textAlign="center"
-                        padding="5px 0 0 0"
-                        lineHeight="1.2 !important"
-                        textTransform="capitalize"
+                        padding="10px 0 10px 0"
+                        textTransform="uppercase"
                         className={classes.cartTitle}
-                        title={option.name}
+                        title="Complete Your Meal"
                       >
-                        {option.name}
+                        Complete Your Meal
                       </Typography>
-                      <Typography
-                        variant="caption"
-                        component="p"
-                        fontSize="14px !important"
-                        textAlign="center"
-                        paddingTop="0px"
-                        fontFamily="Poppins-Regular !important"
-                        className={classes.cartTitle}
-                        title={`${option.cost}`}
+                      <Grid
+                        container
+                        spacing={0}
+                        justifyContent="space-around"
+                        sx={{ paddingTop: '10px' }}
                       >
-                        {option.cost}
-                      </Typography>
+                        {upsells.map((option: any, index: number) => (
+                          <Grid
+                            key={Math.random() + '-' + index}
+                            item
+                            xs={4}
+                            sx={{ cursor: 'pointer' }}
+                            onClick={() => {
+                              addUpsells(option.id);
+                            }}
+                          >
+                            <img
+                              style={{
+                                display: 'block',
+                                margin: 'auto',
+                                width: '75%',
+                              }}
+                              src={require('../../assets/imgs/default_img.png')}
+                              alt={option.name}
+                              title={option.name}
+                            />
+                            <Typography
+                              variant="h6"
+                              component="p"
+                              fontSize="14px !important"
+                              textAlign="center"
+                              padding="5px 0 0 0"
+                              lineHeight="1.2 !important"
+                              textTransform="capitalize"
+                              className={classes.cartTitle}
+                              title={option.name}
+                            >
+                              {option.name}
+                            </Typography>
+                            <Typography
+                              variant="caption"
+                              component="p"
+                              fontSize="14px !important"
+                              textAlign="center"
+                              paddingTop="0px"
+                              fontFamily="Poppins-Regular !important"
+                              className={classes.cartTitle}
+                              title={`${option.cost}`}
+                            >
+                              {option.cost}
+                            </Typography>
+                          </Grid>
+                        ))}
+                      </Grid>
                     </Grid>
-                  ))}
-                </Grid>
-              </Grid>
-            )}
-          {basketObj &&
-            basketObj.basket &&
-            basketObj.basket.products.length > 0 && (
-              <Grid item xs={12} textAlign="center" padding="10px 0">
-                <Button
-                  variant="contained"
-                  title="Add Another Menu Item"
-                  onClick={() => {
-                    showCart();
-                    navigate(restaurant ? '/menu/' + restaurant.slug : '/');
-                  }}
-                  sx={{
-                    textTransform: 'uppercase',
-                    backgroundColor: 'secondary.main',
-                    margin: 'auto',
-                    width: '100%',
-                    borderRadius: 0,
-                    padding: '30px',
-                    fontFamily: "'Poppins-Medium', sans-serif !important;",
-                    fontSize: '15px',
-                  }}
-                >
-                  Add Another Menu Item
-                </Button>
-              </Grid>
-            )}
-          {basketObj &&
-            basketObj.basket &&
-            basketObj.basket.products.length > 0 && (
-              <Grid item xs={12} padding="20px 0px 20px 0px">
-                <Grid container spacing={0}>
-                  <Grid
-                    item
-                    xs={9}
-                    sx={{
-                      fontFamily: 'Poppins-Bold !important',
-                      color: 'secondary.main',
-                      fontSize: '14px',
-                      paddingBottom: '2px',
-                    }}
-                    title="Sub Total"
-                  >
-                    SUB TOTAL
-                  </Grid>
-                  <Grid
-                    item
-                    xs={3}
-                    sx={{
-                      fontFamily: 'Poppins-Bold !important',
-                      color: 'secondary.main',
-                      fontSize: '14px',
-                      textAlign: 'right',
-                      paddingBottom: '2px',
-                    }}
-                    title={
-                      '$' +
-                      (basketObj &&
-                        basketObj.basket &&
-                        basketObj.basket.subtotal.toFixed(2))
-                    }
-                  >
-                    $
-                    {basketObj &&
-                      basketObj.basket &&
-                      basketObj.basket.subtotal.toFixed(2)}
-                  </Grid>
-                  <Grid
-                    item
-                    xs={9}
-                    sx={{
-                      color: 'secondary.main',
-                      fontSize: '14px',
-                      paddingBottom: '2px',
-                      fontFamily: 'Poppins-Regular',
-                    }}
-                    title="Tax"
-                  >
-                    SALES TAX
-                  </Grid>
-                  <Grid
-                    item
-                    xs={3}
-                    sx={{
-                      color: 'secondary.main',
-                      fontSize: '14px',
-                      textAlign: 'right',
-                      paddingBottom: '2px',
-                      fontFamily: 'Poppins-Regular',
-                    }}
-                    title={
-                      '$' +
-                      (basketObj &&
-                        basketObj.basket &&
-                        basketObj.basket.salestax.toFixed(2))
-                    }
-                  >
-                    $
-                    {basketObj &&
-                      basketObj.basket &&
-                      basketObj.basket.salestax.toFixed(2)}
-                  </Grid>
-                  <Grid
-                    item
-                    xs={9}
-                    sx={{
-                      color: 'secondary.main',
-                      fontSize: '14px',
-                      fontFamily: 'Poppins-Regular',
-                    }}
-                    title="Tax"
-                  >
-                    TOTAL FEE
-                  </Grid>
-                  <Grid
-                    item
-                    xs={3}
-                    sx={{
-                      color: 'secondary.main',
-                      fontSize: '14px',
-                      textAlign: 'right',
-                      fontFamily: 'Poppins-Regular',
-                    }}
-                    title={
-                      '$' +
-                      (basketObj &&
-                        basketObj.basket &&
-                        basketObj.basket.totalfees.toFixed(2))
-                    }
-                  >
-                    $
-                    {basketObj &&
-                      basketObj.basket &&
-                      basketObj.basket.totalfees.toFixed(2)}
-                  </Grid>
-                  <Grid item xs={12} sx={{ padding: '20px 0px' }}>
-                    <Divider sx={{ borderColor: '#224c65' }} />
-                  </Grid>
-                  <Grid
-                    item
-                    xs={9}
-                    sx={{
-                      fontFamily: 'Poppins-Bold !important',
-                      color: 'secondary.main',
-                      fontSize: '15px',
-                    }}
-                    title="Total"
-                  >
-                    TOTAL
-                  </Grid>
-                  <Grid
-                    item
-                    xs={3}
-                    sx={{
-                      fontFamily: 'Poppins-Bold !important',
-                      color: 'secondary.main',
-                      fontSize: '15px',
-                      textAlign: 'right',
-                    }}
-                    title={
-                      '$' +
-                      (basketObj &&
-                        basketObj.basket &&
-                        basketObj.basket.total.toFixed(2))
-                    }
-                  >
-                    $
-                    {basketObj &&
-                      basketObj.basket &&
-                      basketObj.basket.total.toFixed(2)}
-                  </Grid>
-                </Grid>
+                  )}
+                {basketObj &&
+                  basketObj.basket &&
+                  basketObj.basket.products.length > 0 && (
+                    <Grid item xs={12} textAlign="center" padding="10px 0">
+                      <Button
+                        variant="contained"
+                        title="Add Another Menu Item"
+                        onClick={() => {
+                          showCart();
+                          navigate(
+                            restaurant ? '/menu/' + restaurant.slug : '/',
+                          );
+                        }}
+                        sx={{
+                          textTransform: 'uppercase',
+                          backgroundColor: 'secondary.main',
+                          margin: 'auto',
+                          width: '100%',
+                          borderRadius: 0,
+                          padding: '30px',
+                          fontFamily:
+                            "'Poppins-Medium', sans-serif !important;",
+                          fontSize: '15px',
+                        }}
+                      >
+                        Add Another Menu Item
+                      </Button>
+                    </Grid>
+                  )}
+                {basketObj &&
+                  basketObj.basket &&
+                  basketObj.basket.products.length > 0 && (
+                    <Grid item xs={12} padding="20px 0px 20px 0px">
+                      <Grid container spacing={0}>
+                        <Grid
+                          item
+                          xs={9}
+                          sx={{
+                            fontFamily: 'Poppins-Bold !important',
+                            color: 'secondary.main',
+                            fontSize: '14px',
+                            paddingBottom: '2px',
+                          }}
+                          title="Sub Total"
+                        >
+                          SUB TOTAL
+                        </Grid>
+                        <Grid
+                          item
+                          xs={3}
+                          sx={{
+                            fontFamily: 'Poppins-Bold !important',
+                            color: 'secondary.main',
+                            fontSize: '14px',
+                            textAlign: 'right',
+                            paddingBottom: '2px',
+                          }}
+                          title={
+                            '$' +
+                            (basketObj &&
+                              basketObj.basket &&
+                              basketObj.basket.subtotal.toFixed(2))
+                          }
+                        >
+                          $
+                          {basketObj &&
+                            basketObj.basket &&
+                            basketObj.basket.subtotal.toFixed(2)}
+                        </Grid>
+                        <Grid
+                          item
+                          xs={9}
+                          sx={{
+                            color: 'secondary.main',
+                            fontSize: '14px',
+                            paddingBottom: '2px',
+                            fontFamily: 'Poppins-Regular',
+                          }}
+                          title="Tax"
+                        >
+                          SALES TAX
+                        </Grid>
+                        <Grid
+                          item
+                          xs={3}
+                          sx={{
+                            color: 'secondary.main',
+                            fontSize: '14px',
+                            textAlign: 'right',
+                            paddingBottom: '2px',
+                            fontFamily: 'Poppins-Regular',
+                          }}
+                          title={
+                            '$' +
+                            (basketObj &&
+                              basketObj.basket &&
+                              basketObj.basket.salestax.toFixed(2))
+                          }
+                        >
+                          $
+                          {basketObj &&
+                            basketObj.basket &&
+                            basketObj.basket.salestax.toFixed(2)}
+                        </Grid>
+                        <Grid
+                          item
+                          xs={9}
+                          sx={{
+                            color: 'secondary.main',
+                            fontSize: '14px',
+                            fontFamily: 'Poppins-Regular',
+                          }}
+                          title="Tax"
+                        >
+                          TOTAL FEE
+                        </Grid>
+                        <Grid
+                          item
+                          xs={3}
+                          sx={{
+                            color: 'secondary.main',
+                            fontSize: '14px',
+                            textAlign: 'right',
+                            fontFamily: 'Poppins-Regular',
+                          }}
+                          title={
+                            '$' +
+                            (basketObj &&
+                              basketObj.basket &&
+                              basketObj.basket.totalfees.toFixed(2))
+                          }
+                        >
+                          $
+                          {basketObj &&
+                            basketObj.basket &&
+                            basketObj.basket.totalfees.toFixed(2)}
+                        </Grid>
+                        <Grid item xs={12} sx={{ padding: '20px 0px' }}>
+                          <Divider sx={{ borderColor: '#224c65' }} />
+                        </Grid>
+                        <Grid
+                          item
+                          xs={9}
+                          sx={{
+                            fontFamily: 'Poppins-Bold !important',
+                            color: 'secondary.main',
+                            fontSize: '15px',
+                          }}
+                          title="Total"
+                        >
+                          TOTAL
+                        </Grid>
+                        <Grid
+                          item
+                          xs={3}
+                          sx={{
+                            fontFamily: 'Poppins-Bold !important',
+                            color: 'secondary.main',
+                            fontSize: '15px',
+                            textAlign: 'right',
+                          }}
+                          title={
+                            '$' +
+                            (basketObj &&
+                              basketObj.basket &&
+                              basketObj.basket.total.toFixed(2))
+                          }
+                        >
+                          $
+                          {basketObj &&
+                            basketObj.basket &&
+                            basketObj.basket.total.toFixed(2)}
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  )}
               </Grid>
             )}
         </Grid>
