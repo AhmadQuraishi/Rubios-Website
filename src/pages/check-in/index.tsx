@@ -88,10 +88,10 @@ const CheckIn = () => {
                       <Typography
                         variant="body2"
                         className="body-text"
-                        title="To check-in for your visit , Enter the Rubio's Rewards barcode
+                        title="To check-in for your visit, enter the Rubio's Rewards barcode
               number located at the bottom of your receipt."
                       >
-                        To check-in for your visit , Enter the Rubio's Rewards
+                        To check-in for your visit, enter the Rubio's Rewards
                         barcode number located at the bottom of your receipt.
                       </Typography>
                     </Grid>
@@ -127,17 +127,17 @@ const CheckIn = () => {
                         sx={{ width: '100%' }}
                       />
                     </Grid>
-                    <Grid item xs={12}>
-                      <Typography
-                        variant="body2"
-                        className="body-text"
-                        title="Please enter the 12 or 13 digits numeric barcode at the bottom of
-              your receipt."
-                      >
-                        Please enter the 12 or 13 digit numeric barcode at the
-                        bottom of your receipt.
-                      </Typography>
-                    </Grid>
+                    {/*<Grid item xs={12}>*/}
+                      {/*<Typography*/}
+                        {/*variant="body2"*/}
+                        {/*className="body-text"*/}
+                        {/*title="Please enter the 12 or 13 digits numeric barcode at the bottom of*/}
+              {/*your receipt."*/}
+                      {/*>*/}
+                        {/*Please enter the 12 or 13 digit numeric barcode at the*/}
+                        {/*bottom of your receipt.*/}
+                      {/*</Typography>*/}
+                    {/*</Grid>*/}
                     <Grid item xs={12}>
                       <Typography
                         variant="body2"
