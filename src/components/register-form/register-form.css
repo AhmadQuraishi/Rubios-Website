@@ -5,7 +5,7 @@
   display: block;
   width: 100%;
 }
-.sign-up-section h4 {
+.sign-up-section h1 {
   margin: 5px 0px 10px 0px;
   font-size: 45px;
 }
@@ -28,6 +28,7 @@
   font-family: 'Poppins-Regular' !important;
 }
 .sign-up-section .body-text {
+  color: #5C5757 !important;
   font-size: 14px !important;
   font-family: 'Poppins-Regular', sans-serif !important;
   padding-top: 8px;
@@ -38,7 +39,7 @@
 }
 
 @media screen and (max-width: 900px) {
-  .sign-up-section h4 {
+  .sign-up-section h1 {
     font-size: 42px;
   }
 }
@@ -52,7 +53,7 @@
     margin-bottom: 50px !important;
     display: flow-root;
   }
-  .sign-up-section h4 {
+  .sign-up-section h1 {
     font-size: 28px;
   }
 }

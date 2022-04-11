@@ -48,7 +48,7 @@ const OrdersHistory = () => {
         <Typography
           className={classes.heading}
           aria-label="your orders"
-          variant="h4"
+          variant="h1"
           title="your orders"
         >
           YOUR ORDERS
@@ -60,7 +60,8 @@ const OrdersHistory = () => {
           title="Order History tabs"
           TabIndicatorProps={{
             style: {
-              backgroundColor: '#79C043', bottom: '5px',
+              backgroundColor: '#79C043',
+              bottom: '5px',
             },
           }}
         >

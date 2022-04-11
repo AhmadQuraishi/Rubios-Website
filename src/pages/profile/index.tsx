@@ -32,7 +32,7 @@ const Profile = () => {
         <Typography
           className={classes.heading}
           aria-label="edit profile"
-          variant="h4"
+          variant="h1"
           title="Edit Profile"
         >
           EDIT PROFILE

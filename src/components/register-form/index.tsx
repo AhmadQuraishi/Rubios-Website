@@ -85,7 +85,7 @@ const RegisterForm = () => {
       <Typography variant="caption" className="label" title="Create Account">
         Create Account
       </Typography>
-      <Typography variant="h4">
+      <Typography variant="h1">
         SIGN UP FOR <br /> RUBIO'S REWARDS
       </Typography>
       <Formik
@@ -170,6 +170,7 @@ const RegisterForm = () => {
                     name="first_name"
                     sx={{ width: '100%' }}
                     value={values.first_name}
+                    autoComplete="first_name"
                     onChange={handleChange('first_name')}
                     onBlur={handleBlur('first_name')}
                     error={Boolean(touched.first_name && errors.first_name)}
@@ -183,6 +184,7 @@ const RegisterForm = () => {
                     title="Last Name"
                     type="text"
                     name="last_name"
+                    autoComplete="last_name"
                     sx={{ width: '100%' }}
                     value={values.last_name}
                     onChange={handleChange('last_name')}
@@ -198,6 +200,7 @@ const RegisterForm = () => {
                     title="Email"
                     type="text"
                     name="email"
+                    autoComplete="email"
                     sx={{ width: '100%' }}
                     value={values.email}
                     onChange={handleChange('email')}
@@ -217,14 +220,12 @@ const RegisterForm = () => {
                     onChange={handleChange}
                     name="phone"
                     id="formatted-numberformat-input"
-                    InputLabelProps={
-                      {
-                        shrink: touched && values.phone == '' ? false : true,
-                        classes: {
-                          root: values.phone !== '' ? 'mobile-field-label' : '',
-                        }
-                      }
-                    }
+                    InputLabelProps={{
+                      shrink: touched && values.phone == '' ? false : true,
+                      classes: {
+                        root: values.phone !== '' ? 'mobile-field-label' : '',
+                      },
+                    }}
                     InputProps={{
                       inputComponent: NumberFormatCustom as any,
                     }}
@@ -239,6 +240,7 @@ const RegisterForm = () => {
                     title="Password"
                     type="password"
                     name="password"
+                    autoComplete="password"
                     sx={{ width: '100%' }}
                     value={values.password}
                     onChange={handleChange('password')}
@@ -261,6 +263,7 @@ const RegisterForm = () => {
                     label="Confirm Password"
                     title="Confirm Password"
                     name="password_confirmation"
+                    autoComplete="password_confirmation"
                     type="password"
                     sx={{ width: '100%' }}
                     value={values.password_confirmation}
@@ -292,40 +295,50 @@ const RegisterForm = () => {
                   />
                 </Grid>
                 <Grid item xs={12} className="date-field">
-                  <Typography
+                  {/* <Typography
                     variant="body2"
                     className="body-text"
                     title="Birthday (Optional)"
                     sx={{ width: '100%' }}
                   >
                     Birthday (Optional)
-                  </Typography>
+                  </Typography> */}
                   <ReactDateInputs
+                    className="body-text"
+                    label="Birthday (Optional)"
                     onChange={(value) => handleBirthDayChange(value)}
                     value={birthDay}
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <FormControl fullWidth>
-                    <InputLabel 
-                    id="fav-location-label"
-                    classes={{
-                      root: !selectShrink && favLocation == '' ? 'select-custom-css' : ''
-                    }}
-                    shrink={selectShrink || favLocation !== ''}
-                    style={{textAlign: 'left'}}
+                    <InputLabel
+                      id="fav-location-label"
+                      classes={{
+                        root:
+                          !selectShrink && favLocation == ''
+                            ? 'select-custom-css'
+                            : '',
+                      }}
+                      shrink={selectShrink || favLocation !== ''}
+                      style={{ textAlign: 'left' }}
                     >
                       Favorite Location
                     </InputLabel>
                     <Select
                       labelId="fav-location-label"
+                      role="select"
                       id="fav-location"
                       name="favLocation"
                       value={favLocation && favLocation}
                       label="Favorite Location"
                       onChange={handleChangeLocation}
-                      onClose={() => {setSelectShrink(false)}}
-                      onOpen={() => {setSelectShrink(true)}}
+                      onClose={() => {
+                        setSelectShrink(false);
+                      }}
+                      onOpen={() => {
+                        setSelectShrink(true);
+                      }}
                     >
                       {locations &&
                         locations.map((location: any, index: number) => (
@@ -340,10 +353,17 @@ const RegisterForm = () => {
                   <Typography
                     variant="body2"
                     className="body-text"
-                    title="Password must be at least 8 characters."
+                    title="I agree to the  Rubios terms and conditions and to receiving marketing communications from Rubios."
                     sx={{ width: '100%' }}
                   >
-                    <Checkbox onChange={handleChangeCheckbox} /> I agree to the{' '}
+                    <Checkbox
+                      onChange={handleChangeCheckbox}
+                      inputProps={{
+                        'aria-label':
+                          ' I agree to the  Rubios terms and conditions and to receiving marketing communications from Rubios ',
+                      }}
+                    />{' '}
+                    I agree to the{' '}
                     <Link
                       href="https://www.rubios.com/terms-and-conditions?app=1"
                       underline="hover"
@@ -357,7 +377,7 @@ const RegisterForm = () => {
                   <Button
                     type="submit"
                     disabled={loadingProvider || loadingAuth}
-                    aria-label="submit"
+                    aria-label="submit form to sign upm for rubios rewards"
                     name="submit"
                     title="submit"
                     variant="contained"

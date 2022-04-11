@@ -154,7 +154,7 @@ const Welcome = () => {
                 WELCOME
               </Typography>
               <Typography
-                variant="h4"
+                variant="h1"
                 className="user-name"
                 title={
                   providerToken &&
@@ -326,7 +326,14 @@ const Welcome = () => {
                         </Typography>
                       )}
                     </Grid>
-                    <Grid item xs={16} sm={8} md={16} lg={16} className="action-btn">
+                    <Grid
+                      item
+                      xs={16}
+                      sm={8}
+                      md={16}
+                      lg={16}
+                      className="action-btn"
+                    >
                       {favRestaurant.canpickup === true && (
                         <Button
                           aria-label="pickup button"
