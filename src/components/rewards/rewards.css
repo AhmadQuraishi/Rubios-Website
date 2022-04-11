@@ -15,6 +15,9 @@
   width: 45% !important;
 
 }
+.choose-reward .apply-reward {
+  display: inline-block !important;
+}
 .choose-reward .choose-btn img {
   width: 85%;
 }
@@ -77,7 +80,7 @@
     width: 100% !important;
   }
   .choose-reward .choose-btn img {
-    width: auto;
+    width: 100%;
   }
   .choose-reward .choose-btn .icon-content {
     justify-content: center;
