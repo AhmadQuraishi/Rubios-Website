@@ -111,7 +111,7 @@ const Rewards = (props: any) => {
             width: '100%',
             height: '100%',
             background: 'rgba(255, 255, 255, 0)',
-            zIndex: 100001,
+            zIndex: 1000,
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',

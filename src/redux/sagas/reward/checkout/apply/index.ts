@@ -47,6 +47,8 @@ function* applyRewardForCheckoutHandler(action: any): any {
           basketResponse?.appliedrewards[0].rewardid,
         );
         yield put(removeRewardFromBasketRequestSuccess(response));
+        const validateResponse = yield call(validateBasket, action.basketID);
+        yield put(validateBasketSuccess(validateResponse));
         basketResponse = yield call(getBasket, action.basketID);
         yield put(getBasketRequestSuccess(basketResponse));
       }
