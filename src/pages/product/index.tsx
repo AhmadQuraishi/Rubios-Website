@@ -616,7 +616,7 @@ const Product = () => {
                   PICK UP YOUR
                 </Typography>
                 <Typography
-                  variant="h4"
+                  variant="h1"
                   className="heading"
                   title={productDetails.name}
                 >

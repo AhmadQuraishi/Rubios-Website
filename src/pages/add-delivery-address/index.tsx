@@ -29,7 +29,7 @@ const AddDeliveryAddress = () => {
     <div className={classes.root}>
       <Typography
         className={classes.heading}
-        variant="h4"
+        variant="h1"
         title="Delivery Address"
       >
         Delivery Address

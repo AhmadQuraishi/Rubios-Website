@@ -111,7 +111,7 @@ const Rewards = (props: any) => {
             width: '100%',
             height: '100%',
             background: 'rgba(255, 255, 255, 0)',
-            zIndex: 100001,
+            zIndex: 1000,
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
@@ -123,7 +123,7 @@ const Rewards = (props: any) => {
       <Grid container>
         <Grid item xs={0} sm={0} md={2} lg={2} />
         <Grid item xs={12} sm={12} md={8} lg={8} className="choose-reward">
-          <Typography variant="h4" title="APPLY REWARDS">
+          <Typography variant="h1" title="APPLY REWARDS">
             APPLY REWARDS
           </Typography>
           <br />

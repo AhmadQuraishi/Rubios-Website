@@ -1,55 +1,51 @@
-import React, {forwardRef, useImperativeHandle} from 'react';
+import React, { forwardRef, useImperativeHandle } from 'react';
 import { Button, Grid, IconButton, TextField, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { CreditCardElements, PaymentMethodResult } from "@olo/pay";
+import { CreditCardElements, PaymentMethodResult } from '@olo/pay';
 import './payment-info.css';
 
 const styleObject = {
-      base: {
-      color: 'lightslategrey',
-      fontSize: '5rem',
-      fontFamily: 'sans-serif',
-      '::placeholder': {
-        color: '#000',
-        fontFamily: 'Poppins-Regular, sans-serif'
-      },
+  base: {
+    color: 'lightslategrey',
+    fontSize: '5rem',
+    fontFamily: 'sans-serif',
+    '::placeholder': {
+      color: '#000',
+      fontFamily: 'Poppins-Regular, sans-serif',
     },
-    // complete: {
-    //   color: 'peachpuff',
-    //   fontFamily: 'Mr Dafoe, cursive',
-    // },
-    // invalid: {
-    //   color: 'tomato',
-    //   ':hover': {
-    //     color: 'orangered',
-    //   },
-    // }
+  },
+  // complete: {
+  //   color: 'peachpuff',
+  //   fontFamily: 'Mr Dafoe, cursive',
+  // },
+  // invalid: {
+  //   color: 'tomato',
+  //   ':hover': {
+  //     color: 'orangered',
+  //   },
+  // }
 };
 
 const PaymentInfo = forwardRef((props, _ref) => {
+  const [creditCardElements, setCreditCardElements] =
+    React.useState<CreditCardElements | null>(null);
 
-  const [
-    creditCardElements,
-    setCreditCardElements
-  ] = React.useState<CreditCardElements | null>(null);
-
-  const [
-    paymentMethod,
-    setPaymentMethod
-  ] = React.useState<PaymentMethodResult | null>(null);
+  const [paymentMethod, setPaymentMethod] =
+    React.useState<PaymentMethodResult | null>(null);
 
   useImperativeHandle(_ref, () => ({
     getCardDetails: async () => {
-      const response = (await creditCardElements!.createPaymentMethod()) as PaymentMethodResult;
+      const response =
+        (await creditCardElements!.createPaymentMethod()) as PaymentMethodResult;
       setPaymentMethod(response);
       return response;
-    }
+    },
   }));
 
   React.useEffect(() => {
     const initializeCreditCardElements = async () => {
       const elements = new CreditCardElements();
-      // for production use 
+      // for production use
       // const elements = new CreditCardElements('production');
 
       elements.applyStyles(styleObject);
@@ -68,10 +64,10 @@ const PaymentInfo = forwardRef((props, _ref) => {
       <Grid item xs={0} sm={0} md={2} lg={2} />
 
       <Grid item xs={12} sm={12} md={8} lg={8}>
-        <Typography variant="h4" title="PAYMENT INFO">
+        <Typography variant="h1" title="PAYMENT INFO">
           PAYMENT INFO
         </Typography>
-        <br/>
+        <br />
         <Grid container spacing={2} className="payment-form">
           {/* <Grid item xs={12}>
             <Grid container spacing={2}>
@@ -95,18 +91,32 @@ const PaymentInfo = forwardRef((props, _ref) => {
           </Grid> */}
           <Grid item xs={12}>
             <Grid container spacing={2}>
-            <Grid item xs={12} sm={6} md={6} lg={6} className="payment-form image-field align">
-                <div className='card-fields' data-olo-pay-card-number></div>             
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                md={6}
+                lg={6}
+                className="payment-form image-field align"
+              >
+                <div className="card-fields" data-olo-pay-card-number></div>
                 <img src={require('../../assets/imgs/card-icon.png')} />
               </Grid>
               <Grid item xs={12} sm={6} md={6} lg={6}>
                 <Grid container spacing={2}>
-                  <Grid item xs={6} sm={6} md={6} lg={6} className="payment-form image-field align">
-                    <div className='card-fields' data-olo-pay-card-cvc></div>
+                  <Grid
+                    item
+                    xs={6}
+                    sm={6}
+                    md={6}
+                    lg={6}
+                    className="payment-form image-field align"
+                  >
+                    <div className="card-fields" data-olo-pay-card-cvc></div>
                     <img src={require('../../assets/imgs/ccv-icon.png')} />
                   </Grid>
                   <Grid item xs={6} sm={6} md={6} lg={6}>
-                  <div className='card-fields' data-olo-pay-card-expiry></div>
+                    <div className="card-fields" data-olo-pay-card-expiry></div>
                   </Grid>
                 </Grid>
               </Grid>
@@ -115,7 +125,9 @@ const PaymentInfo = forwardRef((props, _ref) => {
 
           <Grid container>
             <Grid item xs={12} sm={12} md={12} lg={12} className="add-gift">
-              <Button title="ADD A GIFT CARD" className="label">ADD GIFT CARD</Button>
+              <Button title="ADD A GIFT CARD" className="label">
+                ADD GIFT CARD
+              </Button>
             </Grid>
           </Grid>
         </Grid>

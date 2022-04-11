@@ -45,7 +45,7 @@ const Login2 = () => {
   }, [authToken, providerToken]);
 
   return (
-    <Fragment>
+    <main>
       <Grid container component="main" columns={16} className={classes.root}>
         <Grid item xs={13} className="login-wrapper">
           <Grid container columns={16} className="login-content">
@@ -54,7 +54,7 @@ const Login2 = () => {
                 LOGIN
               </Typography>
               <Typography
-                variant="h4"
+                variant="h1"
                 title={
                   providerToken &&
                   providerToken.first_name &&
@@ -74,6 +74,7 @@ const Login2 = () => {
                 variant="caption"
                 className="label"
                 title="More Options"
+                aria-label="More options for sign in"
               >
                 More Options
               </Typography>
@@ -141,7 +142,7 @@ const Login2 = () => {
           </Grid>
         </Grid>
       </Grid>
-    </Fragment>
+    </main>
   );
 };
 
