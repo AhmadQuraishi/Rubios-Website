@@ -130,6 +130,7 @@ const Rewards = (props: any) => {
           <Grid container>
             <FormControl>
               <ToggleButtonGroup
+                className="apply-reward"
                 value={alignment}
                 exclusive
                 onChange={onRewardSelect}
