@@ -1,11 +1,10 @@
-import React, {useState } from 'react';
+import React, { useState } from 'react';
 import { Grid, Theme, Typography } from '@mui/material';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import CreditCards from '../../components/credit-cards';
 import GiftCards from '../../components/gift-cards';
 import { makeStyles } from '@mui/styles';
-
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -31,7 +30,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-
 const PaymentInformation = () => {
   const [value, setValue] = React.useState('1');
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -43,7 +41,7 @@ const PaymentInformation = () => {
   return (
     <Grid container className={classes.root}>
       <Grid item xs={12}>
-        <Typography variant="h4" className={classes.heading}>
+        <Typography variant="h1" className={classes.heading}>
           PAYMENT INFORMATION
         </Typography>
         <Tabs
@@ -52,7 +50,8 @@ const PaymentInformation = () => {
           textColor="primary"
           TabIndicatorProps={{
             style: {
-              backgroundColor: '#79C043', bottom: '5px',
+              backgroundColor: '#79C043',
+              bottom: '5px',
             },
           }}
           aria-label="Payment Information Tabs"

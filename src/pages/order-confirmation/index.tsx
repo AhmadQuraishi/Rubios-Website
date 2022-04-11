@@ -25,10 +25,10 @@ const OrderConfirmation = () => {
   const classes = useStyle();
   const dispatch = useDispatch();
 
-  useEffect(()=> {
-    dispatch(removeBasketOrderConfirmation())
-  }, [])
-  
+  useEffect(() => {
+    dispatch(removeBasketOrderConfirmation());
+  }, []);
+
   return (
     <Fragment>
       <Grid container component="main" className={classes.root}>
@@ -41,72 +41,105 @@ const OrderConfirmation = () => {
               <Card className="card">
                 <Grid container>
                   <Grid item xs={12} sm={6} md={6} lg={12}>
-                    <Typography variant="caption" className="label white" title="EARN REWARDS">EARN REWARDS</Typography>
-                    <Typography variant="h4" className="white" title="GET $5 OFF YOUR">GET $5 OFF YOUR</Typography>
-                    <Typography variant="h4" className="white" title="NEXT ORDER">NEXT ORDER</Typography>
-                    <br/>
-                    <Typography variant="h6" className="white" title="Join today for completing the form below">Join today for completing the form below</Typography>
-                    <br/>
-                    <img className="phone-icon" src={require('../../assets/imgs/phone-icon.png')} />
+                    <Typography
+                      variant="caption"
+                      className="label white"
+                      title="EARN REWARDS"
+                    >
+                      EARN REWARDS
+                    </Typography>
+                    <Typography
+                      variant="h1"
+                      className="white"
+                      title="GET $5 OFF YOUR"
+                    >
+                      GET $5 OFF YOUR
+                    </Typography>
+                    <Typography
+                      variant="h1"
+                      className="white"
+                      title="NEXT ORDER"
+                    >
+                      NEXT ORDER
+                    </Typography>
+                    <br />
+                    <Typography
+                      variant="h6"
+                      className="white"
+                      title="Join today for completing the form below"
+                    >
+                      Join today for completing the form below
+                    </Typography>
+                    <br />
+                    <img
+                      className="phone-icon"
+                      src={require('../../assets/imgs/phone-icon.png')}
+                    />
                   </Grid>
                   <Grid item xs={12} sm={6} md={6} lg={12}>
                     <Grid container>
-                    <Grid item xs={12} sm={12} md={12} lg={6}>
-                      <TextField
-                        aria-label="first name"
-                        placeholder="Jhonathen"
-                        title="first name"
-                      />
+                      <Grid item xs={12} sm={12} md={12} lg={6}>
+                        <TextField
+                          aria-label="first name"
+                          placeholder="Jhonathen"
+                          title="first name"
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={12} md={12} lg={6}>
+                        <TextField
+                          aria-label="last name"
+                          placeholder="Doe"
+                          title="last name"
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={12} md={12} lg={6}>
+                        <TextField
+                          aria-label="email"
+                          placeholder="ilovetacos@email.com"
+                          title="email"
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={12} md={12} lg={6}>
+                        <TextField
+                          aria-label="date of birth"
+                          placeholder="11/19/1993"
+                          title="date of birth"
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={12} md={12} lg={12}>
+                        <TextField
+                          fullWidth
+                          placeholder="#000 Broadway St.San Diego Ca."
+                          aria-label="street address"
+                          title="street address"
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={12} md={12} lg={6}>
+                        <TextField
+                          aria-label="password"
+                          placeholder="*****"
+                          type="password"
+                          title="password"
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={12} md={12} lg={6}>
+                        <TextField
+                          aria-label="confirm password"
+                          placeholder="*****"
+                          type="confirm password"
+                          title="confirm password"
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={12} md={12} lg={12}>
+                        <Button
+                          aria-label="view account"
+                          variant="contained"
+                          title="Sign Up"
+                        >
+                          SIGN UP
+                        </Button>
+                      </Grid>
                     </Grid>
-                    <Grid item xs={12} sm={12} md={12} lg={6}>
-                      <TextField
-                        aria-label="last name"
-                        placeholder="Doe"
-                        title="last name"
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={12} md={12} lg={6}>
-                      <TextField
-                        aria-label="email"
-                        placeholder="ilovetacos@email.com"
-                        title="email"
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={12} md={12} lg={6}>
-                      <TextField
-                        aria-label="date of birth"
-                        placeholder="11/19/1993"
-                        title="date of birth"
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={12} md={12} lg={12}>
-                      <TextField
-                        fullWidth
-                        placeholder="#000 Broadway St.San Diego Ca."
-                        aria-label="street address"
-                        title="street address"
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={12} md={12} lg={6}>
-                      <TextField
-                        aria-label="password"
-                        placeholder="*****"
-                        type="password"
-                        title="password"
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={12} md={12} lg={6}>
-                      <TextField
-                        aria-label="confirm password"
-                        placeholder="*****"
-                        type="confirm password"
-                        title="confirm password"
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={12} md={12} lg={12}>
-                      <Button aria-label="view account" variant="contained" title="Sign Up">SIGN UP</Button>
-                    </Grid>
-                  </Grid>
                   </Grid>
                 </Grid>
               </Card>

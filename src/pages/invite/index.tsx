@@ -26,7 +26,7 @@ const Invite = () => {
   return (
     <div className={classes.root}>
       <Typography
-        variant="h4"
+        variant="h1"
         className={classes.heading}
         title="Give $5, Get $5"
       >
