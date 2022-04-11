@@ -22,7 +22,7 @@ const Rewards = () => {
     {
       icon: drinks,
       desc: 'Buy One Get One Free',
-    }
+    },
   ];
   const [view, setView] = useState(true);
   const handler = () => {
@@ -53,7 +53,7 @@ const Rewards = () => {
 
       {!view && (
         <Grid item xs={12} sm={12} md={8} lg={8} className="choose-reward">
-          <Typography variant="h4" title="APPLY REWARDS">
+          <Typography variant="h1" title="APPLY REWARDS">
             APPLY REWARDS
           </Typography>
           <br />
@@ -87,7 +87,14 @@ const Rewards = () => {
                       <Grid item xs={12} sm={5} md={5} lg={5}>
                         <img src={reward.icon} />
                       </Grid>
-                      <Grid item xs={12} sm={7} md={7} lg={7} className="icon-content">
+                      <Grid
+                        item
+                        xs={12}
+                        sm={7}
+                        md={7}
+                        lg={7}
+                        className="icon-content"
+                      >
                         <Typography>{reward.desc}</Typography>
                       </Grid>
                     </Grid>

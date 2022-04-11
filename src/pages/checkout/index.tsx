@@ -289,7 +289,7 @@ const Checkout = () => {
                             </Typography>
                           </Grid>
                           <Grid item xs={12}>
-                            <Typography variant="h4" title="PICK UP INFO">
+                            <Typography variant="h1" title="PICK UP INFO">
                               PICK UP INFO
                             </Typography>
                           </Grid>
@@ -306,7 +306,7 @@ const Checkout = () => {
                             </Typography>
                           </Grid>
                           <Grid item xs={12}>
-                            <Typography variant="h4" title="PICK UP INFO">
+                            <Typography variant="h1" title="PICK UP INFO">
                               CURBSIDE PICK UP
                             </Typography>
                           </Grid>
@@ -323,7 +323,7 @@ const Checkout = () => {
                             </Typography>
                           </Grid>
                           <Grid item xs={12}>
-                            <Typography variant="h4" title="PICK UP INFO">
+                            <Typography variant="h1" title="PICK UP INFO">
                               DELIVERY INFO
                             </Typography>
                           </Grid>

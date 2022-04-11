@@ -53,7 +53,7 @@ const CheckIn = () => {
   const dispatch = useDispatch();
   return (
     <div className={classes.root}>
-      <Typography className={classes.heading} variant="h4" title="CHECK-IN">
+      <Typography className={classes.heading} variant="h1" title="CHECK-IN">
         CHECK-IN
       </Typography>
       <Grid container>

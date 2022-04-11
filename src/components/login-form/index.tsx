@@ -1,9 +1,9 @@
 import React from 'react';
-import { Grid, TextField, Button, Theme, Link } from '@mui/material';
+import { Grid, TextField, Button, Theme } from '@mui/material';
 import './index.css';
 import { makeStyles } from '@mui/styles';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { userLogin } from '../../redux/actions/user';
@@ -105,7 +105,7 @@ const LoginForm = () => {
                     <Link
                       className="forgot-pass"
                       title="forgot-password"
-                      onClick={() => forgotPassword()}
+                      to="/forgot-password"
                       style={{ cursor: 'pointer' }}
                     >
                       Forgot Password?

@@ -69,10 +69,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   crossIcon: {
     position: 'absolute',
-    top: '15px',
-    right: '10px',
-    display: 'flex',
-    justifyContent: 'right',
+    top: '15px !important',
+    right: '10px !important',
+    display: 'flex !important',
+
+    justifyContent: 'right !important',
     '& img': {
       cursor: 'pointer',
     },
@@ -241,10 +242,22 @@ const Cart = (props: any) => {
   return (
     <>
       <div className={classes.dimPanel} onClick={showCart}></div>
-      <Box className={classes.cartBox}>
-        <Grid container spacing={0} className={classes.cartRoot}>
+      <Box
+        className={classes.cartBox}
+        aria-label="view your cart"
+        role="dialog"
+        aria-modal="true"
+      >
+        <Grid
+          container
+          spacing={0}
+          className={classes.cartRoot}
+          aria-label="view your cart"
+          role="dialog"
+          aria-modal="true"
+        >
           <Grid item xs={12}>
-            <Typography
+            {/* <Typography
               variant="caption"
               component="div"
               className={classes.crossIcon}
@@ -257,7 +270,20 @@ const Cart = (props: any) => {
                 width="20px"
                 alt="Close Cart"
               />
-            </Typography>
+            </Typography> */}
+            <Button
+              className={classes.crossIcon}
+              sx={{ position: 'absolute', minWidth: 'fit-content' }}
+            >
+              <img
+                src={crossIcon}
+                title="Close Cart"
+                height="20px"
+                onClick={showCart}
+                width="20px"
+                alt="Close Cart"
+              />
+            </Button>
           </Grid>
           {((basketObj &&
             basketObj.basket &&
@@ -739,6 +765,7 @@ const Cart = (props: any) => {
                   fontFamily: "'Poppins-Medium', sans-serif !important;",
                 }}
                 title="Checkout"
+                aria-label="Checkout"
               >
                 CHECKOUT
               </Button>
@@ -757,6 +784,7 @@ const Cart = (props: any) => {
                   fontFamily: "'Poppins-Medium', sans-serif !important;",
                 }}
                 title="Checkout"
+                aria-label="Checkout Button  disabled"
               >
                 CHECKOUT
               </Button>

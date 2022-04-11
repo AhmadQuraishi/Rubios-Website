@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const PageNotFound = () => {
   return (
     <div style={{ padding: '40px 30px', height: '120px', textAlign: 'center' }}>
-      <Typography variant="h4">Page Not Found</Typography>
+      <Typography variant="h1">Page Not Found</Typography>
       <br />
       <Typography variant="body1">
         Sorry, that doesn't seem to be a valid URL. Your best bet is to head

@@ -60,7 +60,7 @@ const UpdatePaymentCard = () => {
     >
       <Grid item xs={12}>
         <Typography
-          variant="h4"
+          variant="h1"
           aria-label={
             id ? 'Edit Payment Information' : 'Add Payment Information'
           }

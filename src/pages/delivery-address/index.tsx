@@ -76,7 +76,7 @@ const DeliveryAddress = () => {
   return (
     <Fragment>
       <Grid container className={`${classes.root} delivery-address-container`}>
-        <Typography variant="h4" className={classes.heading}>
+        <Typography variant="h1" className={classes.heading}>
           DELIVERY ADDRESSES
         </Typography>
         {loading && <LoadingBar />}

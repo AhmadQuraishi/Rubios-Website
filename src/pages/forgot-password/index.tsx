@@ -48,7 +48,7 @@ const ForgotPassword = () => {
                 Forgot Password
               </Typography>
               <Typography
-                variant="h4"
+                variant="h1"
                 title="Enter the email address you use to sign in with us"
               >
                 Enter the email address you use to sign in with us
