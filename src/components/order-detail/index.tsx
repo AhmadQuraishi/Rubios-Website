@@ -15,7 +15,7 @@ const OrderDetail = ({ basket, tipPercentage }: any) => {
   return (
     <Grid container>
       <Grid item xs={12} sm={12} md={8} lg={8} className="order-detail">
-        <Typography fontWeight={500} title="ORDER DETAILS" variant="h4">
+        <Typography fontWeight={500} title="ORDER DETAILS" variant="h1">
           ORDER DETAILS
         </Typography>
         <br />

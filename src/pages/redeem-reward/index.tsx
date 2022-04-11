@@ -73,7 +73,7 @@ const RedeemRewards = () => {
       <Grid container className={classes.root}>
         <Grid item xs={12}>
           <Typography
-            variant="h4"
+            variant="h1"
             className={classes.heading}
             title="REDEEM YOUR REWARDS"
           >
