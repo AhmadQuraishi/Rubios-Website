@@ -10,6 +10,8 @@ import {
   getBasketRequestSuccess,
 } from '../../../../actions/basket';
 import { getBasket } from '../../../../../services/basket';
+import { validateBasketSuccess } from '../../../../actions/basket/checkout';
+import { validateBasket } from '../../../../../services/checkout';
 
 function* removeRewardFromCheckoutHandler(action: any): any {
   try {
@@ -18,9 +20,11 @@ function* removeRewardFromCheckoutHandler(action: any): any {
       action.basketID,
       action.rewardID,
     );
-    yield put(removeRewardFromBasketRequestSuccess(response));
+    const validateResponse = yield call(validateBasket, action.basketID);
+    yield put(validateBasketSuccess(validateResponse));
     const basketResponse = yield call(getBasket, action.basketID);
     yield put(getBasketRequestSuccess(basketResponse));
+    yield put(removeRewardFromBasketRequestSuccess(response));
   } catch (error) {
     yield put(removeRewardFromBasketRequestFailure(error));
   }

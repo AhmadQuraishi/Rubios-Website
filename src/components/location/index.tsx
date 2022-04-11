@@ -15,10 +15,50 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setResturantInfoRequest } from '../../redux/actions/restaurant';
 import { displayToast } from '../../helpers/toast';
-import { SyntheticEventData } from 'react-dom/test-utils';
+import usePlacesAutocomplete, {
+  getGeocode,
+  getLatLng,
+} from 'use-places-autocomplete';
+import useOnclickOutside from 'react-cool-onclickoutside';
 
 const LocationCard = (props: any) => {
-  const { restaurants, isNearByRestaurantList, setShowNearBy } = props;
+  const {
+    ready,
+    value,
+    suggestions: { status, data },
+    setValue,
+    clearSuggestions,
+  } = usePlacesAutocomplete({
+    requestOptions: {
+      location: new google.maps.LatLng({ lat: 37.772, lng: -122.214 }),
+      radius: 200 * 1000,
+    },
+  });
+  const ref = useOnclickOutside(() => {
+    // When user clicks outside of the component, we can dismiss
+    // the searched suggestions by calling this method
+    clearSuggestions();
+  });
+  const handleSelect = (description: any) => {
+    debugger;
+    // When user selects a place, we can replace the keyword without request data from API
+    // by setting the second parameter to "false"
+    setValue(description, false);
+    clearSuggestions();
+
+    // Get latitude and longitude via utility functions
+    getGeocode({ address: description })
+      .then((results) => getLatLng(results[0]))
+      .then(({ lat, lng }) => {
+        setLatLng({ lat: lat, lng: lng });
+      })
+      .catch((error) => {
+        console.log('Error: ', error);
+      });
+  };
+
+  const { restaurants, isNearByRestaurantList, setShowNearBy, setLatLng } =
+    props;
   const [searchText, setSearchText] = useState<string>();
   const [resturantOrderType, setresturantOrderType] = useState<string>();
   const [showNotFoundMessage, setShowNotFoundMessage] = useState(false);
@@ -68,8 +108,12 @@ const LocationCard = (props: any) => {
   };
 
   useEffect(() => {
+    setShowNotFoundMessage(false);
     if (isNearByRestaurantList) {
-      setfilteredRestaurants(restaurants);
+      setfilteredRestaurants(restaurants);      
+      if(restaurants.length === 0){
+        setShowNotFoundMessage(true);
+      }
     } else {
       setfilteredRestaurants(undefined);
     }
@@ -78,7 +122,10 @@ const LocationCard = (props: any) => {
   const getSearchResults = () => {
     setShowNotFoundMessage(false);
     setfilteredRestaurants(isNearByRestaurantList ? restaurants : []);
-    if (resturantOrderType || searchText) {
+    if (
+      (resturantOrderType || searchText) &&
+      resturantOrderType != 'delivery'
+    ) {
       let updatedRestaurants = [];
       let resultsFound = false;
       if (resturantOrderType && resturantOrderType !== '') {
@@ -177,6 +224,7 @@ const LocationCard = (props: any) => {
 
   const findNearByRestaurants = () => {
     setShowNearBy(true);
+    setLatLng(null);
   };
 
   return (
@@ -236,27 +284,73 @@ const LocationCard = (props: any) => {
                 </ToggleButton>
               </ToggleButtonGroup>
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                aria-label="City, Zip Code, State"
-                label="City, Zip Code, State"
-                title="City, Zip Code, State"
-                aria-required="true"
-                onKeyPress={(e: any) => {
-                  if (e.key === 'Enter') {
-                    setSearchText(e.target.value);
-                    getSearchResults();
-                  }
-                }}
-                value={searchText || ''}
-                type="search"
-                onChange={handleChange}
-                sx={{ fontSize: '14px' }}
-                InputProps={{
-                  endAdornment: <Icon />,
-                }}
-                variant="outlined"
-              />
+            <Grid item xs={12} style={{ position: 'relative' }} ref={ref}>
+              {resturantOrderType == 'delivery' ? (
+                <TextField
+                  aria-label="Please enter your location"
+                  label="Please enter your location"
+                  title="Please enter your location"
+                  aria-required="true"
+                  autoComplete="false"
+                  value={value}
+                  type="text"
+                  onChange={(e) => setValue(e.target.value)}
+                  sx={{ fontSize: '14px', paddingRight: '0px' }}
+                  variant="outlined"
+                />
+              ) : (
+                <TextField
+                  aria-label="City, Zip Code, State"
+                  label="City, Zip Code, State"
+                  title="City, Zip Code, State"
+                  aria-required="true"
+                  value={searchText || ''}
+                  autoComplete="false"
+                  type="search"
+                  onChange={handleChange}
+                  sx={{ fontSize: '14px', paddingRight: '0px' }}
+                  onKeyPress={(e: any) => {
+                    if (e.key === 'Enter') {
+                      setSearchText(e.target.value);
+                      getSearchResults();
+                    }
+                  }}
+                  InputProps={{
+                    endAdornment: <Icon />,
+                  }}
+                  variant="outlined"
+                />
+              )}
+              {status === 'OK' && (
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: '72px',
+                    padding: '10px 5px',
+                    background: '#fff',
+                    boxShadow: 'rgb(0 0 0 / 30%) 0px 1px 4px -1px',
+                    borderRadius: '0px 0px 5px 5px',
+                  }}
+                >
+                  {data.map(({ place_id, description }) => (
+                    <p
+                      style={{
+                        padding: '5px',
+                        fontFamily: 'Poppins-Regular',
+                        fontSize: '13px',
+                        cursor: 'pointer',
+                      }}
+                      onClick={() => {
+                        alert('');
+                        handleSelect(description);
+                      }}
+                      key={place_id}
+                    >
+                      {description}
+                    </p>
+                  ))}
+                </div>
+              )}
             </Grid>
             <Grid item xs={12}>
               <Typography className="label">

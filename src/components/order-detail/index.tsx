@@ -69,6 +69,23 @@ const OrderDetail = ({ basket, tipPercentage }: any) => {
             <br />
           </Grid>
         </Grid>
+        {basket && basket.discounts && basket.discounts.length > 0 ? (
+          <Grid container>
+            <Grid item xs={10} sm={10} md={10} lg={11}>
+              <Typography variant="h6" className="n-bold" title="discount">
+                DISCOUNT: {basket.discounts[0].description}
+              </Typography>
+            </Grid>
+            <Grid item xs={2} sm={2} md={2} lg={1}>
+              <Typography variant="h6" title={basket.discounts[0].amount}>
+                -$
+                {basket.discounts[0].amount < basket.subtotal 
+                  ? parseFloat(basket.discounts[0].amount).toFixed(2)
+                  : parseFloat(basket.total).toFixed(2)}
+              </Typography>
+            </Grid>
+          </Grid>
+        ) : null}
         {basket && basket.tip && basket.tip > 0 ? (
           <Grid container>
             <Grid item xs={10} sm={10} md={10} lg={11}>

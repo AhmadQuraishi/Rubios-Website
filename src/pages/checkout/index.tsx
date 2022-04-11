@@ -392,7 +392,10 @@ const Checkout = () => {
               <br />
               <br />
               {/*second section*/}
-              <OrderDetail basket={basket} tipPercentage={tipPercentage} />
+              <OrderDetail
+                basket={basketObj.basket}
+                tipPercentage={tipPercentage}
+              />
               <br />
               <br />
               <br />
