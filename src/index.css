@@ -22,6 +22,7 @@
 h1 {
   font-family: 'Poppins-Bold', sans-serif !important;
   color: #214F66;
+  font-size: 45px !important;
 }
 h5 {
   font-family: 'Poppins-Bold', sans-serif !important;
@@ -283,4 +284,10 @@ fieldset{
 .css-tattg4-MuiButtonBase-root-MuiButton-root.Mui-disabled {
 
   color: #474747 !important;
+}
+
+@media screen and (max-width: 468px){
+ h1 {
+    font-size: 28px;
+}
 }
