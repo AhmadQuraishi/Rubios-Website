@@ -51,14 +51,21 @@ const LocationCard = (props: any) => {
       .then((results) => getLatLng(results[0]))
       .then(({ lat, lng }) => {
         setLatLng({ lat: lat, lng: lng });
+        setActionPerform(true);
       })
       .catch((error) => {
         console.log('Error: ', error);
       });
   };
 
-  const { restaurants, isNearByRestaurantList, setShowNearBy, setLatLng } =
-    props;
+  const {
+    restaurants,
+    isNearByRestaurantList,
+    setShowNearBy,
+    setLatLng,
+    setActionPerform,
+    deliveryRasturants,
+  } = props;
   const [searchText, setSearchText] = useState<string>();
   const [resturantOrderType, setresturantOrderType] = useState<string>();
   const [showNotFoundMessage, setShowNotFoundMessage] = useState(false);
@@ -91,7 +98,12 @@ const LocationCard = (props: any) => {
       displayToast('ERROR', 'Please select atleast one order type');
       return false;
     }
-    const restaurantObj = restaurants.find((x: any) => x.id === storeID);
+    let restaurantObj = null;
+    if (resturantOrderType == 'delivery') {
+      restaurantObj = deliveryRasturants.find((x: any) => x.id === storeID);
+    } else {
+      restaurantObj = restaurants.find((x: any) => x.id === storeID);
+    }
     if (restaurantObj) {
       if (
         restaurant == null ||
@@ -109,15 +121,14 @@ const LocationCard = (props: any) => {
 
   useEffect(() => {
     setShowNotFoundMessage(false);
-    if (isNearByRestaurantList) {
-      setfilteredRestaurants(restaurants);      
-      if(restaurants.length === 0){
-        setShowNotFoundMessage(true);
-      }
+    if (isNearByRestaurantList && resturantOrderType != 'delivery') {
+      setfilteredRestaurants(restaurants);
+    } else if (resturantOrderType == 'delivery') {
+      setfilteredRestaurants(deliveryRasturants);
     } else {
       setfilteredRestaurants(undefined);
     }
-  }, [isNearByRestaurantList, restaurants]);
+  }, [isNearByRestaurantList, restaurants, deliveryRasturants]);
 
   const getSearchResults = () => {
     setShowNotFoundMessage(false);
@@ -225,6 +236,7 @@ const LocationCard = (props: any) => {
   const findNearByRestaurants = () => {
     setShowNearBy(true);
     setLatLng(null);
+    setActionPerform(true);
   };
 
   return (
@@ -271,13 +283,13 @@ const LocationCard = (props: any) => {
                 </ToggleButton>
                 <ToggleButton
                   value="Delivery"
-                  onClick={() =>
+                  onClick={() => {
                     setresturantOrderType(
                       resturantOrderType === 'delivery'
                         ? undefined
                         : 'delivery',
-                    )
-                  }
+                    );
+                  }}
                   className="selected-btn"
                 >
                   Delivery
@@ -287,14 +299,17 @@ const LocationCard = (props: any) => {
             <Grid item xs={12} style={{ position: 'relative' }} ref={ref}>
               {resturantOrderType == 'delivery' ? (
                 <TextField
-                  aria-label="Please enter your location"
-                  label="Please enter your location"
-                  title="Please enter your location"
+                  aria-label="Enter your address..."
+                  label="Enter your address..."
+                  title="Enter your address..."
                   aria-required="true"
                   autoComplete="false"
                   value={value}
                   type="text"
-                  onChange={(e) => setValue(e.target.value)}
+                  onChange={(e) => {
+                    setValue(e.target.value);
+                    setActionPerform(true);
+                  }}
                   sx={{ fontSize: '14px', paddingRight: '0px' }}
                   variant="outlined"
                 />
@@ -341,7 +356,6 @@ const LocationCard = (props: any) => {
                         cursor: 'pointer',
                       }}
                       onClick={() => {
-                        alert('');
                         handleSelect(description);
                       }}
                       key={place_id}
@@ -431,11 +445,6 @@ const LocationCard = (props: any) => {
                       {item.distance > 0 && (
                         <Typography variant="body2" sx={{ color: '#5FA625' }}>
                           {item.distance} Miles Away
-                        </Typography>
-                      )}
-                      {item.iscurrentlyopen && item.distance == 0 && (
-                        <Typography variant="body2" sx={{ color: '#5FA625' }}>
-                          Online
                         </Typography>
                       )}
                     </Grid>
