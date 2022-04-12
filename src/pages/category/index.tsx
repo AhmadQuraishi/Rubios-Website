@@ -79,15 +79,15 @@ const CategoryList = () => {
 
   useEffect(() => {
     if (window.location.href.toLocaleLowerCase().indexOf('selection=1') != -1) {
-      if (providerToken && providerToken.first_name) {
-        navigate('/location');
-      } else {
-        setGetResutrants(true);
-        dispatch(getResturantListRequest());
-        if (restaurant && restaurant.id) {
-          dispatch(getCategoriesRequest(restaurant.id));
-        }
+      //if (providerToken && providerToken.first_name) {
+      //navigate('/location');
+      //} else {
+      setGetResutrants(true);
+      dispatch(getResturantListRequest());
+      if (restaurant && restaurant.id) {
+        dispatch(getCategoriesRequest(restaurant.id));
       }
+      // }
     } else {
       if (restaurant === null) {
         navigate('/location');
@@ -242,11 +242,13 @@ const CategoryList = () => {
           style={{
             display: 'flex',
             width: '100%',
+            top: 0,
             justifyContent: 'center',
             alignItems: 'center',
             background: 'rgba(0,0,0,0.2)',
             position: 'fixed',
             height: '100%',
+            zIndex: 1000000
           }}
         >
           <CircularProgress />
