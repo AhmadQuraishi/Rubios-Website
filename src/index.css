@@ -19,9 +19,10 @@
 
 /***** Heading Styles *****/
 
-h4 {
+h1 {
   font-family: 'Poppins-Bold', sans-serif !important;
   color: #214F66;
+  font-size: 45px !important;
 }
 h5 {
   font-family: 'Poppins-Bold', sans-serif !important;
@@ -132,13 +133,13 @@ h6 {
   padding: 0px;
 }
 .MuiTextField-root .MuiInputLabel-root.Mui-error {
-  color: red;
+  color: #E61F00;
   padding: 0px;
 }
 .MuiTextField-root .MuiInputLabel-root.Mui-error.Mui-focused,
 .MuiTextField-root .MuiInputLabel-root.Mui-error.MuiFormLabel-filled {
   padding: 20px 0px 0px 9px !important;
-  color: red !important;
+  color: #E61F00 !important;
 }
 .MuiFormControl-root {
   width: 100%;
@@ -274,4 +275,19 @@ fieldset{
   width: calc(100% - 24px) !important;
   position: absolute !important;
   text-align: center;
+}
+
+.css-1wc848c-MuiFormHelperText-root.Mui-error {
+  color: #E61F00 !important;
+}
+
+.css-tattg4-MuiButtonBase-root-MuiButton-root.Mui-disabled {
+
+  color: #474747 !important;
+}
+
+@media screen and (max-width: 468px){
+ h1 {
+    font-size: 28px;
+}
 }

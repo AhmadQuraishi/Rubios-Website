@@ -74,7 +74,7 @@ const AccountHistory = () => {
       <Grid container className={classes.root}>
         <Grid item xs={12}>
           <Typography
-            variant="h4"
+            variant="h1"
             className={classes.heading}
             title="Account History"
           >
@@ -87,7 +87,8 @@ const AccountHistory = () => {
               aria-label="Account History Tabs"
               TabIndicatorProps={{
                 style: {
-                  backgroundColor: '#79C043', bottom: '5px',
+                  backgroundColor: '#79C043',
+                  bottom: '5px',
                 },
               }}
             >
