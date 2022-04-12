@@ -217,14 +217,12 @@ const RegisterForm = () => {
                     onChange={handleChange}
                     name="phone"
                     id="formatted-numberformat-input"
-                    InputLabelProps={
-                      {
-                        shrink: touched && values.phone == '' ? false : true,
-                        classes: {
-                          root: values.phone !== '' ? 'mobile-field-label' : '',
-                        }
-                      }
-                    }
+                    InputLabelProps={{
+                      shrink: touched && values.phone == '' ? false : true,
+                      classes: {
+                        root: values.phone !== '' ? 'mobile-field-label' : '',
+                      },
+                    }}
                     InputProps={{
                       inputComponent: NumberFormatCustom as any,
                     }}
@@ -307,13 +305,16 @@ const RegisterForm = () => {
                 </Grid>
                 <Grid item xs={12}>
                   <FormControl fullWidth>
-                    <InputLabel 
-                    id="fav-location-label"
-                    classes={{
-                      root: !selectShrink && favLocation == '' ? 'select-custom-css' : ''
-                    }}
-                    shrink={selectShrink || favLocation !== ''}
-                    style={{textAlign: 'left'}}
+                    <InputLabel
+                      id="fav-location-label"
+                      classes={{
+                        root:
+                          !selectShrink && favLocation == ''
+                            ? 'select-custom-css'
+                            : '',
+                      }}
+                      shrink={selectShrink || favLocation !== ''}
+                      style={{ textAlign: 'left' }}
                     >
                       Favorite Location
                     </InputLabel>
@@ -324,8 +325,12 @@ const RegisterForm = () => {
                       value={favLocation && favLocation}
                       label="Favorite Location"
                       onChange={handleChangeLocation}
-                      onClose={() => {setSelectShrink(false)}}
-                      onOpen={() => {setSelectShrink(true)}}
+                      onClose={() => {
+                        setSelectShrink(false);
+                      }}
+                      onOpen={() => {
+                        setSelectShrink(true);
+                      }}
                     >
                       {locations &&
                         locations.map((location: any, index: number) => (

@@ -29,6 +29,7 @@ import { getUpsellsSaga } from './basket/upsell/Get';
 import { getRewardsForCheckoutSaga } from './reward/checkout';
 import { applyRewardsForCheckoutSaga } from './reward/checkout/apply';
 import { removeRewardFromBasketSaga } from './reward/checkout/remove';
+import { storeOrder } from './order';
 
 export default function* rootSaga() {
   yield all([
@@ -62,5 +63,6 @@ export default function* rootSaga() {
     getRewardsForCheckoutSaga(),
     applyRewardsForCheckoutSaga(),
     removeRewardFromBasketSaga(),
+    storeOrder(),
   ]);
 }

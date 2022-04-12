@@ -57,3 +57,8 @@
     min-height: 700px;
   }
 }
+
+.register-confirmation-select {
+  background-color: #ffffff;
+  margin: 0px 5px 5px 0px;
+}
