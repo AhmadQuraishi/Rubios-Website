@@ -106,11 +106,11 @@ const Location = () => {
     } else if (showNearBy) {
       navigator.geolocation.getCurrentPosition(
         function (position) {
-          getNearByRestaurants(40.7054008, -74.0132198);
-          // getNearByRestaurants(
-          //   position.coords.latitude,
-          //   position.coords.longitude,
-          // );
+          //getNearByRestaurants(40.7054008, -74.0132198);
+          getNearByRestaurants(
+            position.coords.latitude,
+            position.coords.longitude,
+          );
           setShowNearBy(true);
           setZoom(7);
         },
