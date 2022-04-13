@@ -102,15 +102,16 @@ const Location = () => {
     if (showNearBy || LatLng) {
       navigator.geolocation.getCurrentPosition(
         function (position) {
-          //getNearByRestaurants(40.7054008, -74.0132198);
           if (LatLng) {
             getNearByRestaurants(LatLng.lat, LatLng.lng);
           } else {
-            getNearByRestaurants(
-              position.coords.latitude,
-              position.coords.longitude,
-            );
+            getNearByRestaurants(40.7054008, -74.0132198);
+            // getNearByRestaurants(
+            //   position.coords.latitude,
+            //   position.coords.longitude,
+            // );
           }
+          setShowNearBy(true);
           setZoom(7);
         },
         function () {
@@ -252,6 +253,7 @@ const Location = () => {
               setShowNearBy={setShowNearBy}
               setLatLng={setLatLng}
               setActionPerform={setActionPerform}
+              setDeliveryRasturants={setDeliveryRasturants}
             />
           </GoogleMap>
         </div>

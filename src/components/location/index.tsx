@@ -65,6 +65,7 @@ const LocationCard = (props: any) => {
     setLatLng,
     setActionPerform,
     deliveryRasturants,
+    setDeliveryRasturants,
   } = props;
   const [searchText, setSearchText] = useState<string>();
   const [resturantOrderType, setresturantOrderType] = useState<string>();
@@ -132,11 +133,13 @@ const LocationCard = (props: any) => {
 
   const getSearchResults = () => {
     setShowNotFoundMessage(false);
+    if (resturantOrderType === 'delivery') {
+      setfilteredRestaurants(deliveryRasturants);
+      return false;
+    }
+    debugger;
     setfilteredRestaurants(isNearByRestaurantList ? restaurants : []);
-    if (
-      (resturantOrderType || searchText) &&
-      resturantOrderType != 'delivery'
-    ) {
+    if (resturantOrderType || searchText) {
       let updatedRestaurants = [];
       let resultsFound = false;
       if (resturantOrderType && resturantOrderType !== '') {
@@ -307,8 +310,14 @@ const LocationCard = (props: any) => {
                   value={value}
                   type="text"
                   onChange={(e) => {
-                    setValue(e.target.value);
-                    setActionPerform(true);
+                    if (e.target.value === '') {
+                      setValue('');
+                      setActionPerform(false);
+                      setDeliveryRasturants([]);
+                    } else {
+                      setValue(e.target.value);
+                      setActionPerform(true);
+                    }
                   }}
                   sx={{ fontSize: '14px', paddingRight: '0px' }}
                   variant="outlined"
@@ -347,30 +356,35 @@ const LocationCard = (props: any) => {
                     borderRadius: '0px 0px 5px 5px',
                   }}
                 >
-                  {data.map(({ place_id, description }) => (
-                    <p
-                      style={{
-                        padding: '5px',
-                        fontFamily: 'Poppins-Regular',
-                        fontSize: '13px',
-                        cursor: 'pointer',
-                      }}
-                      onClick={() => {
-                        handleSelect(description);
-                      }}
-                      key={place_id}
-                    >
-                      {description}
-                    </p>
-                  ))}
+                  {value !== '' &&
+                    data.map(({ place_id, description }) => (
+                      <p
+                        style={{
+                          padding: '5px',
+                          fontFamily: 'Poppins-Regular',
+                          fontSize: '13px',
+                          cursor: 'pointer',
+                        }}
+                        onClick={() => {
+                          handleSelect(description);
+                        }}
+                        key={place_id}
+                      >
+                        {description}
+                      </p>
+                    ))}
                 </div>
               )}
             </Grid>
             <Grid item xs={12}>
               <Typography className="label">
-                {isNearByRestaurantList &&
+                {((isNearByRestaurantList &&
                   filteredRestaurants &&
-                  filteredRestaurants.length > 0 &&
+                  filteredRestaurants.length > 0) ||
+                  (value &&
+                    deliveryRasturants &&
+                    value != '' &&
+                    deliveryRasturants.length > 0)) &&
                   'NEARBY LOCATIONS'}
                 {!isNearByRestaurantList &&
                   (filteredRestaurants == undefined ||
@@ -385,7 +399,8 @@ const LocationCard = (props: any) => {
                         textDecoration: 'underline',
                       }}
                       title="USE YOUR CURRENT LOCATION?"
-                      onClick={() => {
+                      onClick={() => {                        
+                        setresturantOrderType(undefined);
                         findNearByRestaurants();
                         setShowNotFoundMessage(false);
                       }}
