@@ -1,6 +1,6 @@
 import { makeStyles } from '@mui/styles';
 import { Grid, Typography, Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './login2.css';
 import { Fragment, useEffect } from 'react';
 import { useSelector } from 'react-redux';
@@ -78,42 +78,58 @@ const Login2 = () => {
               >
                 More Options
               </Typography>
-              <Button
-                type="submit"
-                aria-label="sign in with facebook"
-                name="facebook"
-                title="sign in with facebook"
-                variant="contained"
-                className="sign-in-btn"
-              >
-                <img src={require('../../assets/imgs/fb-icon.png')} />
-                Sign in with facebook
-              </Button>
-              <Button
-                type="submit"
-                aria-label="Sign in with apple"
-                name="Sign in with apple"
-                title="Sign in with apple"
-                variant="contained"
-                className="sign-in-btn"
-              >
-                <img
-                  className="apple-icon"
-                  src={require('../../assets/imgs/apple-icon.png')}
-                />
-                Sign in with apple
-              </Button>
-              <Button
-                type="submit"
-                aria-label="Sign in with google"
-                name="Sign in with google"
-                title="Sign in with google"
-                variant="contained"
-                className="sign-in-btn"
-              >
-                <img src={require('../../assets/imgs/g-icon.png')} />
-                Sign in with google
-              </Button>
+              <ul className="button-list">
+                <li>
+                  <Button
+                    type="submit"
+                    aria-label="sign in with facebook"
+                    name="facebook"
+                    title="sign in with facebook"
+                    variant="contained"
+                    className="sign-in-btn"
+                  >
+                    <img
+                      src={require('../../assets/imgs/fb-icon.png')}
+                      alt="Sign in with facebook"
+                    />
+                    Sign in with facebook
+                  </Button>
+                </li>
+                <li>
+                  <Button
+                    type="submit"
+                    aria-label="Sign in with apple"
+                    name="Sign in with apple"
+                    title="Sign in with apple"
+                    variant="contained"
+                    className="sign-in-btn"
+                  >
+                    <img
+                      className="apple-icon"
+                      src={require('../../assets/imgs/apple-icon.png')}
+                      alt=" Sign in with apple"
+                    />
+                    Sign in with apple
+                  </Button>
+                </li>
+                <li>
+                  <Button
+                    type="submit"
+                    aria-label="Sign in with google"
+                    name="Sign in with google"
+                    title="Sign in with google"
+                    variant="contained"
+                    className="sign-in-btn"
+                  >
+                    <img
+                      src={require('../../assets/imgs/g-icon.png')}
+                      alt="Sign in with google"
+                    />
+                    Sign in with google
+                  </Button>
+                </li>
+              </ul>
+
               <Button
                 type="submit"
                 aria-label="Create Account"
@@ -125,19 +141,14 @@ const Login2 = () => {
               >
                 Create Account
               </Button>
-              <Typography
-                onClick={() => {
-                  restaurant
-                    ? navigate('/menu/' + restaurant.slug)
-                    : navigate('/');
-                }}
+              <Link
+                to={restaurant ? '/menu/' + restaurant.slug : '/'}
                 style={{ cursor: 'pointer' }}
-                variant="caption"
                 className="label bold"
                 title="continue as guest"
               >
                 Continue as guest
-              </Typography>
+              </Link>
             </Grid>
           </Grid>
         </Grid>

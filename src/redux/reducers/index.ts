@@ -30,6 +30,7 @@ import getUpsellsReducer from './basket/upsell/get';
 import getRewardForCheckoutReducer from './reward/checkout';
 import applyRewardOnBasketReducer from './reward/checkout/apply';
 import removeRewardFromBasketReducer from './reward/checkout/remove';
+import orderReducer from './order';
 
 const persistConfig = {
   key: 'root',
@@ -44,6 +45,7 @@ const persistConfig = {
     'redemptionReducer',
     'pageStateReducer',
     'getUpsellsReducer',
+    'orderReducer',
   ],
 };
 
@@ -63,6 +65,7 @@ const rootReducers = combineReducers({
   restaurantListReducer,
   createBasketReducer,
   basketReducer,
+  orderReducer,
   addMultipleProductsReducer,
   addProductReducer,
   removeProductReducer,

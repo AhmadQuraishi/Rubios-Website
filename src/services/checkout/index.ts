@@ -4,10 +4,15 @@ import {
   RequestApplyCoupon,
   RequestUpdateBasketTip,
   RequestBasketSubmit,
-  RequestUpdateBasketTimeWanted
+  RequestUpdateBasketTimeWanted,
 } from '../../types/olo-api';
+import { store } from '../../redux/store';
+import axiosInstance from '../axiosInceptor';
 
-export const applyCouponBasket = (basketid: string, body: RequestApplyCoupon) => {
+export const applyCouponBasket = (
+  basketid: string,
+  body: RequestApplyCoupon,
+) => {
   try {
     const url = process.env.REACT_APP_OLO_API || '';
     return axios
@@ -20,7 +25,7 @@ export const applyCouponBasket = (basketid: string, body: RequestApplyCoupon) =>
   } catch (error) {
     throw error;
   }
-}
+};
 
 export const deleteCouponBasket = (basketid: string) => {
   try {
@@ -35,9 +40,12 @@ export const deleteCouponBasket = (basketid: string) => {
   } catch (error) {
     throw error;
   }
-}
+};
 
-export const setTipAmountBasket = (basketid: string, body: RequestUpdateBasketTip) => {
+export const setTipAmountBasket = (
+  basketid: string,
+  body: RequestUpdateBasketTip,
+) => {
   try {
     const url = process.env.REACT_APP_OLO_API || '';
     return axios
@@ -50,9 +58,12 @@ export const setTipAmountBasket = (basketid: string, body: RequestUpdateBasketTi
   } catch (error) {
     throw error;
   }
-}
+};
 
-export const setTimeWantedBasket = (basketid: string, body: RequestUpdateBasketTimeWanted) => {
+export const setTimeWantedBasket = (
+  basketid: string,
+  body: RequestUpdateBasketTimeWanted,
+) => {
   try {
     const url = process.env.REACT_APP_OLO_API || '';
     return axios
@@ -65,7 +76,7 @@ export const setTimeWantedBasket = (basketid: string, body: RequestUpdateBasketT
   } catch (error) {
     throw error;
   }
-}
+};
 
 export const deleteTimeWantedBasket = (basketid: string) => {
   try {
@@ -80,24 +91,27 @@ export const deleteTimeWantedBasket = (basketid: string) => {
   } catch (error) {
     throw error;
   }
-}
+};
 
 export const validateBasket = (basketid: string) => {
-    try {
-      const url = process.env.REACT_APP_OLO_API || '';
-      return axios
-        .post(url + `/baskets/${basketid}/validate`)
-        .then((response) => response.data)
-        .catch((error) => {
-          console.log(error.response);
-          throw error;
-        });
-    } catch (error) {
-      throw error;
-    }
+  try {
+    const url = process.env.REACT_APP_OLO_API || '';
+    return axios
+      .post(url + `/baskets/${basketid}/validate`)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.log(error.response);
+        throw error;
+      });
+  } catch (error) {
+    throw error;
   }
+};
 
-export const submitSinglePaymentBasket = (basketid: string, body: RequestBasketSubmit) => {
+export const submitSinglePaymentBasket = (
+  basketid: string,
+  body: RequestBasketSubmit,
+) => {
   try {
     const url = process.env.REACT_APP_OLO_API || '';
     return axios
@@ -110,4 +124,4 @@ export const submitSinglePaymentBasket = (basketid: string, body: RequestBasketS
   } catch (error) {
     throw error;
   }
-}
+};

@@ -50,6 +50,8 @@
   margin-top: 30px;
   text-align: center;
   display: block;
+  text-decoration: none;
+  letter-spacing: 1px;
 }
 .login-content .right-col .res-info {
   margin-bottom: 15px;
@@ -110,4 +112,7 @@
     width: 100%;
     margin: 20px 0px 25px 0px;
   }
+}
+.button-list{
+  list-style: none;
 }
