@@ -379,11 +379,12 @@ const CategoryList = () => {
                 onChange={handleChange}
                 textColor="secondary"
                 indicatorColor="primary"
-                aria-label="Menu Tabs"
                 variant="scrollable"
                 scrollButtons
                 allowScrollButtonsMobile
                 sx={{ fontFamily: 'Poppins-Medium !important' }}
+                role="region"
+                aria-label="Food Menu"
               >
                 {categoriesWithProducts?.categories.map(
                   (item: Category, index: number) => (
@@ -441,7 +442,7 @@ const CategoryList = () => {
                   )}
                 </Grid>
               </Grid>
-              <Grid item xs={12} sx={{ paddingBottom: '20px' }}>
+              <Grid item xs={12} sx={{ paddingBottom: '20px' }} role="list">
                 <ProductListing
                   productList={item.products}
                   categoryID={item.id}

@@ -96,6 +96,17 @@ const useStyles = makeStyles((theme: Theme) => ({
     textDecoration: 'underline',
     textTransform: 'uppercase',
   },
+  btnsList: {
+    width: '100%',
+    display: 'flex',
+    listStyle: 'none',
+    textDecoration: 'underline',
+    height: '40px',
+  },
+  btn: {
+    paddingLeft: '0px  !important',
+    letterSpacing: 'normal !important',
+  },
 }));
 
 const Cart = (props: any) => {
@@ -273,6 +284,46 @@ const Cart = (props: any) => {
     return aval;
   };
 
+  useEffect(() => {
+    const focusableElements =
+      'button, [href], input, ul , li ,  select, textarea, [tabindex]:not([tabindex="-1"])';
+    const modal = document.querySelector('#cart-box'); // select the modal by it's id
+    if (modal) {
+      const firstFocusableElement =
+        modal.querySelectorAll(focusableElements)[0]; // get first element to be focused inside modal
+      const focusableContent = modal.querySelectorAll(focusableElements);
+      const lastFocusableElement =
+        focusableContent[focusableContent.length - 1]; // get last element to be focused inside modal
+
+      document.addEventListener('keydown', function (e) {
+        let isTabPressed = e.key === 'Tab' || e.keyCode === 9;
+
+        if (!isTabPressed) {
+          return;
+        }
+
+        if (e.shiftKey) {
+          // if shift key pressed for shift + tab combination
+          if (document.activeElement === firstFocusableElement) {
+            // add focus for the last focusable element
+            lastFocusableElement &&
+              (lastFocusableElement as HTMLElement)?.focus();
+            e.preventDefault();
+          }
+        } else {
+          // if tab key is pressed
+          if (document.activeElement === lastFocusableElement) {
+            // if focused has reached to last focusable element then focus first focusable element after pressing tab
+            firstFocusableElement &&
+              (firstFocusableElement as HTMLElement)?.focus(); // add focus for the first focusable element
+            e.preventDefault();
+          }
+        }
+      });
+
+      firstFocusableElement && (firstFocusableElement as HTMLElement)?.focus();
+    }
+  }, []);
   return (
     <>
       <div className={classes.dimPanel} onClick={showCart}></div>
@@ -310,6 +361,8 @@ const Cart = (props: any) => {
             <Button
               className={classes.crossIcon}
               sx={{ position: 'absolute', minWidth: 'fit-content' }}
+              aria-label="Close Cart"
+              onClick={showCart}
             >
               <img
                 src={crossIcon}
@@ -398,7 +451,7 @@ const Cart = (props: any) => {
                       <Grid container spacing={0}>
                         <Grid item xs={9}>
                           <Typography
-                            variant="caption"
+                            variant="h2"
                             title={item.name}
                             sx={{
                               fontSize: '14px',
@@ -441,101 +494,119 @@ const Cart = (props: any) => {
                         </Grid>
                         <Grid item xs={12} sx={{ padding: '0' }}>
                           <Grid container spacing={0}>
-                            <Grid item xs={2}>
-                              {productRemoveObj &&
-                              productRemoveObj.loading &&
-                              clickAction == item.id + '-remove' ? (
-                                <span
-                                  key={Math.random() + 'disable-remove'}
-                                  title="Remove"
-                                  className={classes.disabledLink}
-                                  aria-label="Remove the item from basket"
-                                  onClick={() => false}
-                                >
-                                  Remove
-                                </span>
-                              ) : (
-                                <span
-                                  title="Remove"
-                                  key={Math.random() + 'active-remove'}
-                                  className={classes.smallLink}
-                                  aria-label="Remove the item from basket"
-                                  onClick={() => {
-                                    removeProductHandle(item.id);
-                                    setClickAction(item.id + '-remove');
-                                  }}
-                                >
-                                  Remove
-                                </span>
-                              )}
-                            </Grid>
-                            {!checkItemIsUpsells(item.productId) && (
-                              <Grid item xs={3} sx={{ textAlign: 'center' }}>
-                                {(productRemoveObj &&
-                                  productRemoveObj.loading) ||
-                                (productAddObj && productAddObj.loading) ? (
-                                  <span
-                                    key={Math.random() + 'disable-edit'}
-                                    onClick={() => false}
-                                    title="Edit"
-                                    className={classes.smallLink}
-                                    aria-label="Make changes to the current menu item"
-                                  >
-                                    Edit
-                                  </span>
+                            <ul className={`btnslist ${classes.btnsList}`}>
+                              <Grid item xs={3}>
+                                {productRemoveObj &&
+                                productRemoveObj.loading &&
+                                clickAction == item.id + '-remove' ? (
+                                  <li>
+                                    <Button
+                                      key={Math.random() + 'disable-remove'}
+                                      title="Remove"
+                                      className={`${classes.disabledLink}  ${classes.btn}`}
+                                      aria-label="Remove the item from basket"
+                                      onClick={() => false}
+                                    >
+                                      Remove
+                                    </Button>
+                                  </li>
                                 ) : (
-                                  <span
-                                    onClick={() => {
-                                      showCart();
-                                      navigate(
-                                        `product/${item.productId}/${item.id}${
-                                          window.location.href
-                                            .toLowerCase()
-                                            .indexOf('product') == -1
-                                            ? '?edit=true'
-                                            : ''
-                                        }`,
-                                      );
-                                    }}
-                                    key={Math.random() + 'active-edit'}
-                                    title="Edit"
-                                    className={classes.smallLink}
-                                    aria-label="Make changes to the current menu item"
-                                  >
-                                    Edit
-                                  </span>
+                                  <li>
+                                    <Button
+                                      title="Remove"
+                                      key={Math.random() + 'active-remove'}
+                                      className={`${classes.smallLink}  ${classes.btn}`}
+                                      aria-label="Remove the item from basket"
+                                      onClick={() => {
+                                        removeProductHandle(item.id);
+                                        setClickAction(item.id + '-remove');
+                                      }}
+                                      tabIndex={0}
+                                    >
+                                      Remove
+                                    </Button>
+                                  </li>
                                 )}
                               </Grid>
-                            )}
-                            <Grid item xs={3} sx={{ textAlign: 'center' }}>
-                              {productAddObj &&
-                              productAddObj.loading &&
-                              clickAction == item.id + '-add' ? (
-                                <span
-                                  key={Math.random() + 'disable-duplicate'}
-                                  onClick={() => false}
-                                  className={classes.disabledLink}
-                                  title="Duplicate"
-                                  aria-label="Duplicate the basket item"
-                                >
-                                  Duplicate
-                                </span>
-                              ) : (
-                                <span
-                                  key={Math.random() + 'active-duplicate'}
-                                  onClick={() => {
-                                    duplicateProductHandle(item.id);
-                                    setClickAction(item.id + '-add');
-                                  }}
-                                  className={classes.smallLink}
-                                  title="Duplicate"
-                                  aria-label="Duplicate the basket item"
-                                >
-                                  Duplicate
-                                </span>
+                              {!checkItemIsUpsells(item.productId) && (
+                                <Grid item xs={3}>
+                                  {(productRemoveObj &&
+                                    productRemoveObj.loading) ||
+                                  (productAddObj && productAddObj.loading) ? (
+                                    <li>
+                                      <Button
+                                        key={Math.random() + 'disable-edit'}
+                                        onClick={() => false}
+                                        title="Edit"
+                                        className={`${classes.smallLink}  ${classes.btn}`}
+                                        aria-label="Make changes to the current menu item"
+                                      >
+                                        Edit
+                                      </Button>
+                                    </li>
+                                  ) : (
+                                    <li>
+                                      <Button
+                                        onClick={() => {
+                                          showCart();
+                                          navigate(
+                                            `product/${item.productId}/${
+                                              item.id
+                                            }${
+                                              window.location.href
+                                                .toLowerCase()
+                                                .indexOf('product') == -1
+                                                ? '?edit=true'
+                                                : ''
+                                            }`,
+                                          );
+                                        }}
+                                        key={Math.random() + 'active-edit'}
+                                        title="Edit"
+                                        className={`${classes.smallLink}  ${classes.btn}`}
+                                        aria-label="Make changes to the current menu item"
+                                      >
+                                        Edit
+                                      </Button>
+                                    </li>
+                                  )}
+                                </Grid>
                               )}
-                            </Grid>
-                            <Grid item xs={3}></Grid>
+                              <Grid item xs={3}>
+                                {productAddObj &&
+                                productAddObj.loading &&
+                                clickAction == item.id + '-add' ? (
+                                  <li>
+                                    <Button
+                                      key={Math.random() + 'disable-duplicate'}
+                                      onClick={() => false}
+                                      className={`${classes.disabledLink}  ${classes.btn}`}
+                                      title="Duplicate"
+                                      aria-label="Duplicate the basket item"
+                                    >
+                                      Duplicate
+                                    </Button>
+                                  </li>
+                                ) : (
+                                  <li>
+                                    <Button
+                                      key={Math.random() + 'active-duplicate'}
+                                      onClick={() => {
+                                        duplicateProductHandle(item.id);
+                                        setClickAction(item.id + '-add');
+                                      }}
+                                      className={`${classes.smallLink}  ${classes.btn}`}
+                                      title="Duplicate"
+                                      aria-label="Duplicate the basket item"
+                                      tabIndex={0}
+                                    >
+                                      Duplicate
+                                    </Button>
+                                  </li>
+                                )}
+                              </Grid>
+                              <Grid item xs={3}></Grid>
+                            </ul>{' '}
                           </Grid>
                         </Grid>
                       </Grid>

@@ -223,7 +223,7 @@ const Location = () => {
         </div>
       )}
       {window.google && (
-        <div>
+        <div role="region" aria-label="map">
           <GoogleMap
             mapContainerStyle={mapContainerStyle}
             zoom={zoom}
