@@ -3,7 +3,14 @@ import { basketActionsTypes } from '../../../types/basket';
 import { userTypes } from '../../../types/user';
 
 import { getRestaurantCalendar } from '../../../../services/restaurant/calendar';
-import { setTimeWantedBasket, deleteTimeWantedBasket, setTipAmountBasket, applyCouponBasket, validateBasket, submitSinglePaymentBasket } from '../../../../services/checkout';
+import {
+  setTimeWantedBasket,
+  deleteTimeWantedBasket,
+  setTipAmountBasket,
+  applyCouponBasket,
+  validateBasket,
+  submitSinglePaymentBasket,
+} from '../../../../services/checkout';
 import {
   getSingleRestaurantCalendarSuccess,
   getSingleRestaurantCalendarFailure,
@@ -23,14 +30,20 @@ import {
   setBasketDeliveryModeSuccess,
   setBasketDeliveryModeFailure,
   setBasketDeliveryAddressSuccess,
-  setBasketDeliveryAddressFailure
+  setBasketDeliveryAddressFailure,
 } from '../../../actions/basket/checkout';
 
 import { requestUpdateUser } from '../../../../services/user';
 import { updateUserSuccess } from '../../../actions/user';
 import { getProviderRequestSuccess } from '../../../actions/provider';
-import { getBasket, setBasketCustomFields, setBasketDeliveryAddress, setBasketDeliveryMode } from '../../../../services/basket';
+import {
+  getBasket,
+  setBasketCustomFields,
+  setBasketDeliveryAddress,
+  setBasketDeliveryMode,
+} from '../../../../services/basket';
 import { getBasketRequestSuccess } from '../../../actions/basket';
+import { navigateAppAction } from '../../../actions/navigate-app';
 
 function* asyncgetSingleRestaurantCalendarRequest(action: any): any {
   try {
@@ -51,7 +64,7 @@ function* asyncUpdateBasketTimeWanted(action: any): any {
     const response = yield call(
       setTimeWantedBasket,
       action.basketId,
-      action.data
+      action.data,
     );
     yield put(updateBasketTimeWantedSuccess(response));
   } catch (error) {
@@ -61,10 +74,7 @@ function* asyncUpdateBasketTimeWanted(action: any): any {
 
 function* asyncDeleteBasketTimeWanted(action: any): any {
   try {
-    const response = yield call(
-      deleteTimeWantedBasket,
-      action.basketId
-    );
+    const response = yield call(deleteTimeWantedBasket, action.basketId);
     yield put(deleteBasketTimeWantedSuccess(response));
   } catch (error) {
     yield put(deleteBasketTimeWantedFailure(error));
@@ -76,7 +86,7 @@ function* asyncUpdateBasketTipAmount(action: any): any {
     const response = yield call(
       setTipAmountBasket,
       action.basketId,
-      action.data
+      action.data,
     );
     yield put(updateBasketTipAmountSuccess(response));
   } catch (error) {
@@ -89,7 +99,7 @@ function* asyncUpdateBasketCouponCode(action: any): any {
     const response = yield call(
       applyCouponBasket,
       action.basketId,
-      action.data
+      action.data,
     );
     yield put(updateBasketCouponCodeSuccess(response));
   } catch (error) {
@@ -99,7 +109,11 @@ function* asyncUpdateBasketCouponCode(action: any): any {
 
 function* asyncSetBasketDeliveryModeRequest(action: any): any {
   try {
-    const response = yield call(setBasketDeliveryMode, action.action.basketId, action.action.deliverymode);
+    const response = yield call(
+      setBasketDeliveryMode,
+      action.action.basketId,
+      action.action.deliverymode,
+    );
     yield put(setBasketDeliveryModeSuccess(response));
   } catch (error) {
     yield put(setBasketDeliveryModeFailure(error));
@@ -108,7 +122,11 @@ function* asyncSetBasketDeliveryModeRequest(action: any): any {
 
 function* asyncSetBasketDeliveryAddressRequest(action: any): any {
   try {
-    const response = yield call(setBasketDeliveryAddress, action.action.basketId, action.action.deliveryAddress);
+    const response = yield call(
+      setBasketDeliveryAddress,
+      action.action.basketId,
+      action.action.deliveryAddress,
+    );
     yield put(setBasketDeliveryAddressSuccess(response));
   } catch (error) {
     yield put(setBasketDeliveryAddressFailure(error));
@@ -170,9 +188,10 @@ function* asyncSubmitBasketSinglePayment(action: any): any {
     const response = yield call(
       submitSinglePaymentBasket,
       action.action.basketId,
-      action.action.basketPayload
+      action.action.basketPayload,
     );
     yield put(submitBasketSinglePaymentSuccess(response));
+    yield put(navigateAppAction(`/order-confirmation/${response.id}`));
   } catch (error) {
     yield put(submitBasketSinglePaymentFailure(error));
   }
@@ -181,31 +200,28 @@ function* asyncSubmitBasketSinglePayment(action: any): any {
 export function* checkoutSaga() {
   yield takeEvery(
     basketActionsTypes.GET_SINGLE_RESTAURANT_CALENDAR,
-    asyncgetSingleRestaurantCalendarRequest
+    asyncgetSingleRestaurantCalendarRequest,
   );
   yield takeEvery(
     basketActionsTypes.UPDATE_BASKET_TIME_WANTED,
-    asyncUpdateBasketTimeWanted
+    asyncUpdateBasketTimeWanted,
   );
   yield takeEvery(
     basketActionsTypes.DELETE_BASKET_TIME_WANTED,
-    asyncDeleteBasketTimeWanted
+    asyncDeleteBasketTimeWanted,
   );
   yield takeEvery(
     basketActionsTypes.UPDATE_BASKET_TIP_AMOUNT,
-    asyncUpdateBasketTipAmount
+    asyncUpdateBasketTipAmount,
   );
   yield takeEvery(
     basketActionsTypes.UPDATE_BASKET_COUPON_CODE,
-    asyncUpdateBasketCouponCode
+    asyncUpdateBasketCouponCode,
   );
-  yield takeEvery(
-    basketActionsTypes.VALIDETE_BASKET,
-    asyncValidateBasket
-  );
+  yield takeEvery(basketActionsTypes.VALIDETE_BASKET, asyncValidateBasket);
   yield takeEvery(
     basketActionsTypes.SUBMIT_BASKET_SINGLE_PAYMENT,
-    asyncSubmitBasketSinglePayment
+    asyncSubmitBasketSinglePayment,
   );
   yield takeEvery(
     basketActionsTypes.SET_BASKET_DELIVERY_MODE_REQUEST,
