@@ -110,8 +110,8 @@ const LocationCard = (props: any) => {
   useEffect(() => {
     setShowNotFoundMessage(false);
     if (isNearByRestaurantList) {
-      setfilteredRestaurants(restaurants);      
-      if(restaurants.length === 0){
+      setfilteredRestaurants(restaurants);
+      if (restaurants.length === 0) {
         setShowNotFoundMessage(true);
       }
     } else {
@@ -253,6 +253,7 @@ const LocationCard = (props: any) => {
                     )
                   }
                   className="selected-btn"
+                  aria-label=" PickUp"
                 >
                   PickUp
                 </ToggleButton>
@@ -266,6 +267,7 @@ const LocationCard = (props: any) => {
                     )
                   }
                   className="selected-btn"
+                  aria-label=" Curbside"
                 >
                   Curbside
                 </ToggleButton>
@@ -279,6 +281,7 @@ const LocationCard = (props: any) => {
                     )
                   }
                   className="selected-btn"
+                  aria-label=" Delivery"
                 >
                   Delivery
                 </ToggleButton>
@@ -371,6 +374,9 @@ const LocationCard = (props: any) => {
                         textDecoration: 'underline',
                       }}
                       title="USE YOUR CURRENT LOCATION?"
+                      role="button"
+                      tabIndex={0}
+                      aria-label="USE YOUR CURRENT LOCATION"
                       onClick={() => {
                         findNearByRestaurants();
                         setShowNotFoundMessage(false);
@@ -412,6 +418,7 @@ const LocationCard = (props: any) => {
                       onClick={() => {
                         gotoCategoryPage(item.id);
                       }}
+                      tabIndex={0}
                       key={index}
                     >
                       <Typography

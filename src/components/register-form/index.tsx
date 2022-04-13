@@ -327,7 +327,6 @@ const RegisterForm = () => {
                     </InputLabel>
                     <Select
                       labelId="fav-location-label"
-                      role="select"
                       id="fav-location"
                       name="favLocation"
                       value={favLocation && favLocation}
