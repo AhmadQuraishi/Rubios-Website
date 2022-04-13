@@ -16,10 +16,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setResturantInfoRequest } from '../../redux/actions/restaurant';
 import { displayToast } from '../../helpers/toast';
 import usePlacesAutocomplete, {
+  getDetails,
   getGeocode,
   getLatLng,
 } from 'use-places-autocomplete';
 import useOnclickOutside from 'react-cool-onclickoutside';
+import { TwentyOneMpSharp } from '@mui/icons-material';
+import { setDeliveryAddress } from '../../redux/actions/location/delivery-address';
 
 const LocationCard = (props: any) => {
   const {
@@ -35,27 +38,60 @@ const LocationCard = (props: any) => {
     },
   });
   const ref = useOnclickOutside(() => {
-    // When user clicks outside of the component, we can dismiss
-    // the searched suggestions by calling this method
     clearSuggestions();
   });
   const handleSelect = (description: any) => {
-    debugger;
-    // When user selects a place, we can replace the keyword without request data from API
-    // by setting the second parameter to "false"
     setValue(description, false);
     clearSuggestions();
-
-    // Get latitude and longitude via utility functions
+    setActionPerform(true);
     getGeocode({ address: description })
-      .then((results) => getLatLng(results[0]))
-      .then(({ lat, lng }) => {
-        setLatLng({ lat: lat, lng: lng });
-        setActionPerform(true);
+      .then((results) => {
+        getLatLng(results[0]).then(({ lat, lng }) => {
+          setLatLng({ lat: lat, lng: lng });
+          setDeliveryAddressString(getAddress(results[0]));
+        });
       })
+
       .catch((error) => {
         console.log('Error: ', error);
+        displayToast('ERROR', 'Selected address not found');
+        setActionPerform(false);
       });
+  };
+
+  const getAddress = (place: any) => {
+    debugger;
+    const address = {
+      address1: '',
+      address2: '',
+      city: '',
+      zip: '',
+    };
+
+    if (!Array.isArray(place?.address_components)) {
+      return address;
+    }
+
+    place.address_components.forEach((component: any) => {
+      const types = component.types;
+      const value = component.long_name;
+
+      if (types.includes('locality')) {
+        address.city = value;
+      } else if (types.includes('street_number')) {
+        address.address1 = address.address1 + value + ' ';
+      } else if (types.includes('route')) {
+        address.address1 = address.address1 + value + '';
+      } else if (types.includes('neighborhood')) {
+        address.address2 = address.address2 + value + ' ';
+      } else if (types.includes('administrative_area_level_2')) {
+        address.address2 = address.address2 + value + '';
+      } else if (types.includes('postal_code')) {
+        address.zip = value;
+      }
+    });
+
+    return address;
   };
 
   const {
@@ -74,7 +110,8 @@ const LocationCard = (props: any) => {
     useState<ResponseRestaurant[]>();
   const { restaurant, orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
-  );
+  );  
+  const [deliveryAddressString, setDeliveryAddressString] = useState<any>();
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -114,6 +151,7 @@ const LocationCard = (props: any) => {
         dispatch(
           setResturantInfoRequest(restaurantObj, resturantOrderType || ''),
         );
+        dispatch(setDeliveryAddress(deliveryAddressString));
         displayToast('SUCCESS', 'Location changed to ' + restaurantObj.name);
       }
       navigate('/menu/' + restaurantObj.slug);
@@ -125,7 +163,11 @@ const LocationCard = (props: any) => {
     if (isNearByRestaurantList && resturantOrderType != 'delivery') {
       setfilteredRestaurants(restaurants);
     } else if (resturantOrderType == 'delivery') {
-      setfilteredRestaurants(deliveryRasturants);
+      setfilteredRestaurants(
+        (deliveryRasturants &&
+          deliveryRasturants.filter((x: any) => x.candeliver === true)) ||
+          [],
+      );
     } else {
       setfilteredRestaurants(undefined);
     }
@@ -134,10 +176,13 @@ const LocationCard = (props: any) => {
   const getSearchResults = () => {
     setShowNotFoundMessage(false);
     if (resturantOrderType === 'delivery') {
-      setfilteredRestaurants(deliveryRasturants);
+      setfilteredRestaurants(
+        (deliveryRasturants &&
+          deliveryRasturants.filter((x: any) => x.candeliver === true)) ||
+          [],
+      );
       return false;
     }
-    debugger;
     setfilteredRestaurants(isNearByRestaurantList ? restaurants : []);
     if (resturantOrderType || searchText) {
       let updatedRestaurants = [];
@@ -319,7 +364,6 @@ const LocationCard = (props: any) => {
                       setDeliveryRasturants([]);
                     } else {
                       setValue(e.target.value);
-                      setActionPerform(true);
                     }
                   }}
                   sx={{ fontSize: '14px', paddingRight: '0px' }}
@@ -349,32 +393,19 @@ const LocationCard = (props: any) => {
                 />
               )}
               {status === 'OK' && (
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: '72px',
-                    padding: '10px 5px',
-                    background: '#fff',
-                    boxShadow: 'rgb(0 0 0 / 30%) 0px 1px 4px -1px',
-                    borderRadius: '0px 0px 5px 5px',
-                  }}
-                >
+                <div className="autocomplete-combo">
                   {value !== '' &&
                     data.map(({ place_id, description }) => (
-                      <p
-                        style={{
-                          padding: '5px',
-                          fontFamily: 'Poppins-Regular',
-                          fontSize: '13px',
-                          cursor: 'pointer',
-                        }}
+                      <a
+                        href="javascript:void(0);"
+                        className="prg"
                         onClick={() => {
                           handleSelect(description);
                         }}
                         key={place_id}
                       >
                         {description}
-                      </p>
+                      </a>
                     ))}
                 </div>
               )}
@@ -387,7 +418,9 @@ const LocationCard = (props: any) => {
                   (value &&
                     deliveryRasturants &&
                     value != '' &&
-                    deliveryRasturants.length > 0)) &&
+                    deliveryRasturants.length > 0 &&
+                    resturantOrderType &&
+                    resturantOrderType == 'delivery')) &&
                   'NEARBY LOCATIONS'}
                 {!isNearByRestaurantList &&
                   (filteredRestaurants == undefined ||
@@ -407,6 +440,7 @@ const LocationCard = (props: any) => {
                       aria-label="USE YOUR CURRENT LOCATION"
                       onClick={() => {
                         setresturantOrderType(undefined);
+                        setAlignment('web');
                         findNearByRestaurants();
                         setShowNotFoundMessage(false);
                       }}
