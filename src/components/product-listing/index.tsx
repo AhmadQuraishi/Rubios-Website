@@ -65,12 +65,13 @@ const ProductListing = (props: any) => {
             sm={6}
             md={3}
           >
-            <Link
-              to={`/product/${item.id}`}
-              aria-label={item.name}
-              style={{ textDecoration: 'none' }}
-            >
-              <Card elevation={0} style={{ borderRadius: 0 }}>
+            <Link to={`/product/${item.id}`} style={{ textDecoration: 'none' }}>
+              <Card
+                elevation={0}
+                style={{ borderRadius: 0 }}
+                role="group"
+                aria-label={item.name}
+              >
                 {item.imagefilename ? (
                   <img
                     className={classes.img}
