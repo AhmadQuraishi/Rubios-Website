@@ -29,6 +29,7 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
     case basketActionsTypes.VALIDETE_BASKET:
     case basketActionsTypes.SUBMIT_BASKET_SINGLE_PAYMENT:
     case basketActionsTypes.UPDATE_BASKET_TIP_AMOUNT:
+    case basketActionsTypes.UPDATE_BASKET_COUPON_CODE:
       return {
         ...state,
         loading: true,

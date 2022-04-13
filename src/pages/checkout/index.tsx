@@ -3,7 +3,7 @@ import { Box, Button, Card, Grid, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Divider from '@mui/material/Divider';
-import OrderDetail from '../../components/order-detail';
+import OrderDetails from '../../components/order-details';
 import Tip from '../../components/tip';
 import Rewards from '../../components/rewards';
 import OrderTime from '../../components/order-time';
@@ -105,9 +105,7 @@ const Checkout = () => {
   }, [userDeliveryAddresses]);
 
   React.useEffect(() => {
-    if (basketObj.orderConfirmation) {
-      navigate('/orderconfirmation');
-    } else if (basketObj.basket) {
+    if (basketObj.basket) {
       setBasket(basketObj.basket);
     } else {
       navigate('/location');
@@ -392,9 +390,10 @@ const Checkout = () => {
               <br />
               <br />
               {/*second section*/}
-              <OrderDetail
-                basket={basketObj.basket}
+              <OrderDetails
+                basket={basket}
                 tipPercentage={tipPercentage}
+                page="checkout"
               />
               <br />
               <br />

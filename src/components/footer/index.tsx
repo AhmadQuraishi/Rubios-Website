@@ -43,8 +43,7 @@ const Footer = () => {
     dispatch(getMenuRequest());
   }, []);
 
-  useEffect(() => {
-  }, [menu]);
+  useEffect(() => {}, [menu]);
 
   return (
     <footer>
@@ -72,7 +71,9 @@ const Footer = () => {
             }}
           >
             <Grid item xs={12}>
-              <Button
+              <Typography
+                variant="h1"
+                tabIndex={0}
                 sx={{
                   display: 'flex',
                   padding: {
@@ -90,7 +91,7 @@ const Footer = () => {
                   alt="Rubios Coastal Grill"
                   title="Rubios Coastal Grill"
                 />
-              </Button>
+              </Typography>
             </Grid>
             <Grid item xs={12}>
               <Grid
