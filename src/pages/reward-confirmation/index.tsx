@@ -80,18 +80,20 @@ const RewardConfirmation = () => {
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={10}>
           <OrderDetails
-            name1="Maxicon street Corn Toca Plate"
-            price1="$12.50"
-            name2="Regular Mango Tea"
-            price2="$2.50"
-            reward="Rubios Reward"
-            rewardPrice="-$2.50"
-            subTotal="SUB TOTAL"
-            subTotalPrice="$15.00"
-            tax="TAX"
-            taxPrice="$1.53"
-            total="TOTAL"
-            totalPrice="$16.53"
+            // name1="Maxicon street Corn Toca Plate"
+            // price1="$12.50"
+            // name2="Regular Mango Tea"
+            // price2="$2.50"
+            // reward="Rubios Reward"
+            // rewardPrice="-$2.50"
+            // subTotal="SUB TOTAL"
+            // subTotalPrice="$15.00"
+            // tax="TAX"
+            // taxPrice="$1.53"
+            // total="TOTAL"
+            // totalPrice="$16.53"
+            basket={null}
+            page={'confirmation'}
           />
         </Grid>
       </Grid>

@@ -11,7 +11,8 @@ import {
   RequestSetDeliveryMode,
   RequestDeliveryAddress
  } from '../../../../types/olo-api';
-import {displayToast} from '../../../../helpers/toast'
+import {displayToast} from '../../../../helpers/toast';
+
 export function getSingleRestaurantCalendar(id: number, dateFrom: string, dateTo: string,) {
   return {
     type: basketActionsTypes.GET_SINGLE_RESTAURANT_CALENDAR,
@@ -182,7 +183,8 @@ export function submitBasketSinglePayment(basketId: string, data: RequestBasketS
 }
 
 export function submitBasketSinglePaymentSuccess(data: ResponseBasket) {
-  displayToast('SUCCESS', 'Order has been placed.')
+  displayToast('SUCCESS', 'Order has been placed.');
+  console.log('data', data);
   return {
     type: basketActionsTypes.SUBMIT_BASKET_SINGLE_PAYMENT_SUCCESS,
     payload: data

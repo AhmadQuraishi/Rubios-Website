@@ -63,7 +63,10 @@ const Location = () => {
   const [orderType, setOrderType] = useState<string>();
   const [zoom, setZoom] = useState<number>(7);
   const [nearByRestaurantsFound, setNearByRestaurantsFound] = useState(false);
+  const [actionPerform, setActionPerform] = useState(false);
   const dispatch = useDispatch();
+  const [deliveryRasturants, setDeliveryRasturants] = useState<any[]>();
+  const [allResturants, setAllResturants] = useState<any[]>();
 
   useEffect(() => {
     setMapCenter({
@@ -124,19 +127,33 @@ const Location = () => {
         if (showNearBy || LatLng) {
           setShowNearBy(false);
           setNearByRestaurantsFound(false);
-          displayToast(
-            'ERROR',
-            "We could not find any Rubio's within 10 Miles of Your Current Location.",
-          );
+          if (LatLng) {
+            displayToast(
+              'ERROR',
+              "We could not find any Rubio's within 10 miles of your location.",
+            );
+          } else {
+            displayToast(
+              'ERROR',
+              "We could not find any Rubio's within 10 miles of your current location.",
+            );
+          }
           setLatLng(null);
           dispatch(getResturantListRequest());
           setZoom(7);
         }
       } else {
         if (showNearBy || LatLng) {
-          setShowNearBy(false);
+          if (LatLng) {
+            setDeliveryRasturants(restaurants.restaurants);
+          }
           setLatLng(null);
-          setNearByRestaurantsFound(true);
+          if (showNearBy) {
+            setShowNearBy(false);
+            setNearByRestaurantsFound(true);
+          }
+        } else {
+          setAllResturants(restaurants.restaurants);
         }
         setMapCenter({
           lat: restaurants.restaurants[0].latitude,
@@ -229,10 +246,12 @@ const Location = () => {
             </div>
             <LocationCard
               isNearByRestaurantList={nearByRestaurantsFound}
-              restaurants={(restaurants && restaurants.restaurants) || []}
+              restaurants={allResturants}
+              deliveryRasturants={deliveryRasturants}
               setOrderTypeMain={setOrderType}
               setShowNearBy={setShowNearBy}
               setLatLng={setLatLng}
+              setActionPerform={setActionPerform}
             />
           </GoogleMap>
         </div>
