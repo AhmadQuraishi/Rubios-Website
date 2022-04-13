@@ -92,3 +92,24 @@
     width: auto;
   }
 }
+
+.autocomplete-combo {
+  position: absolute;
+  top: 72px;
+  background: #fff;
+  box-shadow: rgb(0 0 0 / 30%) 0px 1px 4px -1px;
+  border-radius: 0px 0px 5px 5px;
+}
+.autocomplete-combo .prg {
+  padding: 6px 10px;
+  border-bottom: 1px dotted #ddd;
+  font-family: 'Poppins-Medium';
+  font-size: 12px;
+  display: block;
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+.autocomplete-combo .prg:hover {
+  background-color: #eee;
+}

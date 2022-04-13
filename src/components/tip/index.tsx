@@ -52,6 +52,9 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
         }
         setRunOnce(false);
       }
+      if (basket.coupon && basket.coupon.couponcode) {
+        setCouponCode(basket.coupon.couponcode);
+      }
       setTipCustomAmount(basket.tip);
     }
   }, [basket]);
@@ -66,10 +69,12 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
   };
 
   const updateCouponCodeCall = (coupon: string) => {
-    const payload = {
-      couponcode: coupon,
-    };
-    dispatch(updateBasketCouponCode(basket.id, payload));
+    if (coupon.length) {
+      const payload = {
+        couponcode: coupon,
+      };
+      dispatch(updateBasketCouponCode(basket.id, payload));
+    }
   };
 
   const handleTipPercentage = (
@@ -91,7 +96,7 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
   };
 
   const handleCouponCodeChange = (event: any) => {
-    setCouponCode(event.target.value);
+    setCouponCode(event.target.value.trim());
   };
 
   const IconTip = () => (
@@ -110,6 +115,7 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
   const IconCoupon = () => (
     <Button
       onClick={() => updateCouponCodeCall(couponCode)}
+      disabled={loading || !couponCode}
       aria-label="proceed"
     >
       <ArrowRightAltIcon />
@@ -197,6 +203,7 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
                   aria-label="Enter Code"
                   InputProps={{ endAdornment: <IconCoupon /> }}
                   title="Enter Code"
+                  value={couponCode || '' }
                 />
               </Grid>
             </Grid>

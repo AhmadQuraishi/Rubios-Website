@@ -105,9 +105,7 @@ const Checkout = () => {
   }, [userDeliveryAddresses]);
 
   React.useEffect(() => {
-    if (basketObj.orderConfirmation) {
-      navigate('/orderconfirmation');
-    } else if (basketObj.basket) {
+    if (basketObj.basket) {
       setBasket(basketObj.basket);
     } else {
       navigate('/location');

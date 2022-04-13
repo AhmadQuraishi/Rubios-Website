@@ -37,7 +37,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                         {item.quantity}
                       </Typography>
                     </Grid>
-                    <Grid item xs={9} sm={9} md={9} lg={10}>
+                    <Grid item xs={8} sm={8} md={8} lg={8}>
                       <Typography variant="h6" title={item.name}>
                         {item.name}
                       </Typography>
@@ -50,8 +50,8 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                         {getOptions(item.choices)}
                       </Typography>
                     </Grid>
-                    <Grid item xs={2} sm={2} md={2} lg={1}>
-                      <Typography variant="h6" title={item.totalcost}>
+                    <Grid item xs={3} sm={3} md={3} lg={3}>
+                      <Typography align={'right'} variant="h6" title={item.totalcost}>
                         ${item.totalcost}
                       </Typography>
                     </Grid>
@@ -63,14 +63,14 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
           <Divider />
           <br />
           <Grid container>
-            <Grid item xs={10} sm={10} md={10} lg={11}>
+            <Grid item xs={9} sm={9} md={9} lg={9}>
               <Typography variant="h6" title="SUB TOTAL">
                 SUB TOTAL
               </Typography>
               <br />
             </Grid>
-            <Grid item xs={2} sm={2} md={2} lg={1}>
-              <Typography variant="h6" title={basket && basket.subtotal}>
+            <Grid item xs={3} sm={3} md={3} lg={3}>
+              <Typography align={'right'} variant="h6" title={basket && basket.subtotal}>
                 ${basket && basket.subtotal}
               </Typography>
               <br />
@@ -78,27 +78,42 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
           </Grid>
           {basket && basket.tip && basket.tip > 0 ? (
             <Grid container>
-              <Grid item xs={10} sm={10} md={10} lg={11}>
+              <Grid item xs={9} sm={9} md={9} lg={9}>
                 <Typography variant="h6" title="TIP">
                   {tipPercentage ? `${tipPercentage}% ` : ''}TIP
                 </Typography>
               </Grid>
-              <Grid item xs={2} sm={2} md={2} lg={1}>
-                <Typography variant="h6" title={basket && basket.tip}>
+              <Grid item xs={3} sm={3} md={3} lg={3}>
+                <Typography align={'right'} variant="h6" title={basket && basket.tip}>
                   +{basket && basket.tip}
                 </Typography>
               </Grid>
             </Grid>
           ) : null}
 
+          {basket && basket.coupon ? (
+            <Grid container>
+              <Grid item xs={9} sm={9} md={9} lg={9}>
+                <Typography variant="h6" title="TIP">
+                  Coupon Code - {basket.coupon.couponcode}
+                </Typography>
+              </Grid>
+              <Grid item xs={3} sm={3} md={3} lg={3}>
+                <Typography align={'right'} variant="h6">
+                  -${basket.coupondiscount}
+                </Typography>
+              </Grid>
+            </Grid>
+          ) : null}
+
           <Grid container>
-            <Grid item xs={10} sm={10} md={10} lg={11}>
+            <Grid item xs={9} sm={9} md={9} lg={9}>
               <Typography variant="h6" className="n-bold" title="Tax">
                 TAX
               </Typography>
             </Grid>
-            <Grid item xs={2} sm={2} md={2} lg={1}>
-              <Typography variant="h6">
+            <Grid item xs={3} sm={3} md={3} lg={3}>
+              <Typography  align={'right'} variant="h6">
                 $
                 {basket &&
                   basket.taxes &&
@@ -110,13 +125,13 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
             </Grid>
           </Grid>
           <Grid container>
-            <Grid item xs={10} sm={10} md={10} lg={11}>
+            <Grid item xs={9} sm={9} md={9} lg={9}>
               <Typography variant="h6" className="n-bold" title="Tax">
                 TOTAL FEE
               </Typography>
             </Grid>
-            <Grid item xs={2} sm={2} md={2} lg={1}>
-              <Typography variant="h6">
+            <Grid item xs={3} sm={3} md={3} lg={3}>
+              <Typography align={'right'} variant="h6">
                 ${basket && basket.totalfees && basket.totalfees.toFixed(2)}
               </Typography>
             </Grid>
@@ -125,13 +140,13 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
           <Divider />
           <br />
           <Grid container>
-            <Grid item xs={10} sm={10} md={10} lg={11}>
+            <Grid item xs={9} sm={9} md={9} lg={9}>
               <Typography variant="h6" title="Total">
                 TOTAL
               </Typography>
             </Grid>
-            <Grid item xs={2} sm={2} md={2} lg={1}>
-              <Typography variant="h6" title={basket && basket.total}>
+            <Grid item xs={3} sm={3} md={3} lg={3}>
+              <Typography align={'right'} variant="h6" title={basket && basket.total}>
                 ${basket && basket.total}
               </Typography>
             </Grid>

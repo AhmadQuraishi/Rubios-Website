@@ -99,18 +99,19 @@ const Location = () => {
   };
 
   useEffect(() => {
-    if (showNearBy || LatLng) {
+    if (LatLng && actionPerform) {
+      if (LatLng) {
+        getNearByRestaurants(LatLng.lat, LatLng.lng);
+      }
+    } else if (showNearBy) {
       navigator.geolocation.getCurrentPosition(
         function (position) {
           //getNearByRestaurants(40.7054008, -74.0132198);
-          if (LatLng) {
-            getNearByRestaurants(LatLng.lat, LatLng.lng);
-          } else {
-            getNearByRestaurants(
-              position.coords.latitude,
-              position.coords.longitude,
-            );
-          }
+          getNearByRestaurants(
+            position.coords.latitude,
+            position.coords.longitude,
+          );
+          setShowNearBy(true);
           setZoom(7);
         },
         function () {
@@ -128,9 +129,10 @@ const Location = () => {
           setShowNearBy(false);
           setNearByRestaurantsFound(false);
           if (LatLng) {
+            setDeliveryRasturants([]);
             displayToast(
               'ERROR',
-              "We could not find any Rubio's within 10 miles of your location.",
+              "We could not find any Rubio's within 10 miles of your address.",
             );
           } else {
             displayToast(
@@ -141,11 +143,13 @@ const Location = () => {
           setLatLng(null);
           dispatch(getResturantListRequest());
           setZoom(7);
+          setActionPerform(false);
         }
       } else {
         if (showNearBy || LatLng) {
           if (LatLng) {
             setDeliveryRasturants(restaurants.restaurants);
+            setActionPerform(false);
           }
           setLatLng(null);
           if (showNearBy) {
@@ -217,7 +221,7 @@ const Location = () => {
 
   return (
     <div style={{ minHeight: '300px', position: 'relative' }}>
-      {loading && (
+      {(loading || window.google == undefined || actionPerform) && (
         <div className={classes.dummyBg}>
           <LoadingBar />
         </div>
@@ -252,37 +256,11 @@ const Location = () => {
               setShowNearBy={setShowNearBy}
               setLatLng={setLatLng}
               setActionPerform={setActionPerform}
+              setDeliveryRasturants={setDeliveryRasturants}
             />
           </GoogleMap>
         </div>
       )}
-      {/* <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_API_KEY || ''}>
-        <GoogleMap
-          center={mapCenter}
-          zoom={zoom}
-          options={{
-            streetViewControl: false,
-            mapTypeControl: false,
-            fullscreenControl: false,
-          }}
-        >
-          <div
-            onClick={() => {
-              setMayLocation();
-            }}
-            className="location-icon-panel"
-          >
-            <span className="icon"></span>
-          </div>
-          {markers}
-          <LocationCard
-            isNearByRestaurantList={nearByRestaurantsFound}
-            restaurants={(restaurants && restaurants.restaurants) || []}
-            setOrderTypeMain={setOrderType}
-            setShowNearBy={setShowNearBy}
-          />
-        </GoogleMap>
-      </LoadScript> */}
     </div>
   );
 };
