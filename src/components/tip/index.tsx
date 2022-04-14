@@ -172,7 +172,7 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
                     </Grid> */}
                   </ToggleButtonGroup>
                 </FormControl>
-                <Grid item xs={12} md={9} lg={9}>
+                <Grid item xs={12} md={10} lg={10}>
                   <TextField
                     className="action-btn"
                     value={tipCustomAmount || ''}
