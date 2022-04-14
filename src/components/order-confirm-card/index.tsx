@@ -73,8 +73,8 @@ const deliveryAddress = (order: any) => {
         {order && order.deliveryaddress && order.deliveryaddress.city
           ? `${order.deliveryaddress.city}, `
           : ''}
-        {order && order.deliveryaddress && order.deliveryaddress.state
-          ? `${order.deliveryaddress.state}`
+        {order && order.deliveryaddress && order.deliveryaddress.zipcode
+          ? `${order.deliveryaddress.zipcode}`
           : ''}
       </Typography>
       {/*<Typography variant="h6" title="42 Miles Away">*/}

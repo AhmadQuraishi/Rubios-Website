@@ -60,12 +60,12 @@ const LocationCard = (props: any) => {
   };
 
   const getAddress = (place: any) => {
-    debugger;
     const address = {
       address1: '',
       address2: '',
       city: '',
       zip: '',
+      state: '',
     };
 
     if (!Array.isArray(place?.address_components)) {
@@ -75,6 +75,7 @@ const LocationCard = (props: any) => {
     place.address_components.forEach((component: any) => {
       const types = component.types;
       const value = component.long_name;
+      const svalue = component.short_name;
 
       if (types.includes('locality')) {
         address.city = value;
@@ -86,6 +87,8 @@ const LocationCard = (props: any) => {
         address.address2 = address.address2 + value + ' ';
       } else if (types.includes('administrative_area_level_2')) {
         address.address2 = address.address2 + value + '';
+      } else if (types.includes('administrative_area_level_1')) {
+        address.state = svalue;
       } else if (types.includes('postal_code')) {
         address.zip = value;
       }
@@ -110,7 +113,7 @@ const LocationCard = (props: any) => {
     useState<ResponseRestaurant[]>();
   const { restaurant, orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
-  );  
+  );
   const [deliveryAddressString, setDeliveryAddressString] = useState<any>();
 
   const navigate = useNavigate();
@@ -397,7 +400,7 @@ const LocationCard = (props: any) => {
                   {value !== '' &&
                     data.map(({ place_id, description }) => (
                       <a
-                        href="javascript:void(0);"
+                        href="#"
                         className="prg"
                         onClick={() => {
                           handleSelect(description);

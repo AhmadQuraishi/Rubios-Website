@@ -99,9 +99,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                 >
                   -$
                   {basket.discounts[0].amount > basket.subtotal
-                    ? parseFloat(
-                        basket.subtotal.toString()
-                      ).toFixed(2)
+                    ? parseFloat(basket.subtotal.toString()).toFixed(2)
                     : parseFloat(basket.discounts[0].amount.toString()).toFixed(
                         2,
                       )}
