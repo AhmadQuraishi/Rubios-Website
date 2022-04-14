@@ -51,7 +51,11 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                       </Typography>
                     </Grid>
                     <Grid item xs={3} sm={3} md={3} lg={3}>
-                      <Typography align={'right'} variant="h6" title={item.totalcost}>
+                      <Typography
+                        align={'right'}
+                        variant="h6"
+                        title={item.totalcost}
+                      >
                         ${item.totalcost}
                       </Typography>
                     </Grid>
@@ -70,12 +74,42 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
               <br />
             </Grid>
             <Grid item xs={3} sm={3} md={3} lg={3}>
-              <Typography align={'right'} variant="h6" title={basket && basket.subtotal}>
+              <Typography
+                align={'right'}
+                variant="h6"
+                title={basket && basket.subtotal}
+              >
                 ${basket && basket.subtotal}
               </Typography>
               <br />
             </Grid>
           </Grid>
+          {basket && basket.discounts && basket.discounts.length > 0 ? (
+            <Grid container>
+              <Grid item xs={9} sm={9} md={9} lg={9}>
+                <Typography variant="h6" title="TIP">
+                  DISCOUNT: {basket.discounts[0].description}
+                </Typography>
+              </Grid>
+              <Grid item xs={3} sm={3} md={3} lg={3}>
+                <Typography
+                  align={'right'}
+                  variant="h6"
+                  title={basket.discounts[0].amount}
+                >
+                  -$
+                  {basket.discounts[0].amount > basket.subtotal
+                    ? parseFloat(
+                        basket.subtotal.toString()
+                      ).toFixed(2)
+                    : parseFloat(basket.discounts[0].amount.toString()).toFixed(
+                        2,
+                      )}
+                </Typography>
+              </Grid>
+            </Grid>
+          ) : null}
+
           {basket && basket.tip && basket.tip > 0 ? (
             <Grid container>
               <Grid item xs={9} sm={9} md={9} lg={9}>
@@ -84,7 +118,11 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                 </Typography>
               </Grid>
               <Grid item xs={3} sm={3} md={3} lg={3}>
-                <Typography align={'right'} variant="h6" title={basket && basket.tip}>
+                <Typography
+                  align={'right'}
+                  variant="h6"
+                  title={basket && basket.tip}
+                >
                   +{basket && basket.tip}
                 </Typography>
               </Grid>
@@ -113,7 +151,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
               </Typography>
             </Grid>
             <Grid item xs={3} sm={3} md={3} lg={3}>
-              <Typography  align={'right'} variant="h6">
+              <Typography align={'right'} variant="h6">
                 $
                 {basket &&
                   basket.taxes &&
@@ -146,7 +184,11 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
               </Typography>
             </Grid>
             <Grid item xs={3} sm={3} md={3} lg={3}>
-              <Typography align={'right'} variant="h6" title={basket && basket.total}>
+              <Typography
+                align={'right'}
+                variant="h6"
+                title={basket && basket.total}
+              >
                 ${basket && basket.total}
               </Typography>
             </Grid>
