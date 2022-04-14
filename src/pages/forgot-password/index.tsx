@@ -22,19 +22,13 @@ const ForgotPassword = () => {
   const classes = useStyle();
 
   const { providerToken } = useSelector((state: any) => state.providerReducer);
-
-  const { pageURL } = useSelector((state: any) => state.pageStateReducer);
   const { restaurant } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
 
   useEffect(() => {
     if (providerToken) {
-      if (pageURL === undefined || pageURL === null) {
-        navigate('/welcome');
-      } else {
-        navigate(pageURL);
-      }
+      navigate('/account/');
     }
   }, [providerToken]);
 
