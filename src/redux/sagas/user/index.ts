@@ -66,6 +66,7 @@ import {
 } from '../../actions/user';
 import { displayToast } from '../../../helpers/toast';
 import { getProviderRequestSuccess } from '../../actions/provider';
+import {navigateAppAction} from "../../actions/navigate-app";
 
 //profile
 function* userProfileHandler(): any {
@@ -175,6 +176,7 @@ function* userResetPasswordHandler(action: any): any {
       action.reset_password_token,
     );
     yield put(userResetPasswordSuccess(response));
+    yield put(navigateAppAction(`/login`));
   } catch (error) {
     yield put(userResetPasswordFailure(error));
   }
@@ -284,6 +286,7 @@ function* userForgotPasswordHandler(action: any): any {
   try {
     const response = yield call(requestUserForgotPassword, action.data);
     yield put(userForgotPasswordSuccess(response));
+    yield put(navigateAppAction(`/login`));
   } catch (error) {
     yield put(userForgotPasswordFailure(error));
   }
