@@ -331,7 +331,7 @@ const DeliveryForm = ({ basket, deliveryFormRef, defaultAddress }: any) => {
                   {objDeliveryAddress.address.address1}
                   <br />
                   {objDeliveryAddress.address.address2}
-                  <br />
+                  {objDeliveryAddress.address.address2 != '' && <br />}
                   {objDeliveryAddress.address.city},&nbsp;
                   {objDeliveryAddress.address.zip}
                 </Typography>

@@ -1,8 +1,10 @@
-import {useEffect, useState} from 'react';
-import {Card, Typography} from '@mui/material';
-import {DeliveryModeEnum} from '../../types/olo-api/olo-api.enums';
-import {ResponseOrderStatus} from '../../types/olo-api';
+import { useEffect, useState } from 'react';
+import { Card, Typography } from '@mui/material';
+import { DeliveryModeEnum } from '../../types/olo-api/olo-api.enums';
+import { ResponseOrderStatus } from '../../types/olo-api';
 import moment from 'moment';
+import { LensTwoTone } from '@mui/icons-material';
+import { useSelector } from 'react-redux';
 
 const locationTitle = (type: string) => {
   switch (type) {
@@ -86,11 +88,32 @@ const deliveryAddress = (order: any) => {
 
 const OrderConfirmedCard = ({ orderObj, restaurantObj }: any) => {
   const [order, setOrder] = useState<ResponseOrderStatus>(orderObj);
+  const { providerToken } = useSelector((state: any) => state.providerReducer);
   const [restaurant, setRestaurant] =
     useState<ResponseOrderStatus>(restaurantObj);
 
   useEffect(() => {
     setOrder(orderObj);
+    if (orderObj) {
+      let recentorders = localStorage.getItem('recentorders');
+      if (recentorders) recentorders = JSON.parse(recentorders);
+      const items = JSON.stringify([
+        {
+          userid: '',
+          recentorders: [
+            {
+              orderid: orderObj.oloid,
+              orderref: orderObj.orderref,
+              basketid: orderObj.id,
+              date: moment(new Date()).format('DD/MM/YYYY'),
+            },
+          ],
+        },
+      ]);
+      if (orderObj) {
+        localStorage.setItem('recentorders', items);
+      }
+    }
   }, [orderObj]);
 
   useEffect(() => {
@@ -110,7 +133,9 @@ const OrderConfirmedCard = ({ orderObj, restaurantObj }: any) => {
           SEE YOU SOON.
         </Typography>
         <br />
-        {order && order.deliverymode === DeliveryModeEnum.delivery ? deliveryAddress(order) : pickupAddress(restaurant, order)}
+        {order && order.deliverymode === DeliveryModeEnum.delivery
+          ? deliveryAddress(order)
+          : pickupAddress(restaurant, order)}
         <br />
         <br />
         {order && order.readytime ? pickupTime(order.readytime) : ''}
