@@ -10,6 +10,7 @@ import { requestGiftCardBalance } from '../../services/user';
 const GiftCards = () => {
   const [open, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState<any>(null);
+  const [balanceLoading, setBalanceLoading] = useState(false);
   const [giftCards, setGiftCards] = useState([]);
   const dispatch = useDispatch();
   const { userBillingAccounts, loading } = useSelector(
@@ -17,43 +18,55 @@ const GiftCards = () => {
   );
 
   useEffect(() => {
-    if (userBillingAccounts) {
+    const updateGiftCard = async () => {
       const gift = userBillingAccounts.billingaccounts.filter(
         (cardType: any) =>
           cardType.accounttype !== 'creditcard' &&
           cardType.accounttype !== 'payinstore (cash)',
       );
-      setGiftCards(gift);
+      setBalanceLoading(true);
+      const giftCardBalance = await getGiftCardBalance(gift);
+      setBalanceLoading(false);
+
+      setGiftCards(giftCardBalance);
+    };
+    if (userBillingAccounts) {
+      updateGiftCard();
     }
   }, [userBillingAccounts, loading]);
 
-  useEffect(() => {
-    const getGiftCardBalance = async () => {
-      const giftCardIds = giftCards.map((card: any) => {
-        return card.accountidstring;
-      });
-      // giftCardIds.push('asdasd');
-      let balacnceResponse = await requestGiftCardBalance(giftCardIds);
+  const getGiftCardBalance = async (gift: any) => {
+    const giftCardIds = gift.map((card: any) => {
+      return card.accountidstring;
+    });
+    let balanceResponse = await requestGiftCardBalance(giftCardIds);
 
-      if (balacnceResponse.length) {
-        let giftCardsBalance: any = giftCards.map((e: any, i) => {
-          let temp: any = giftCards.find(
-            (element: any) => element.accountid === e.accountid
+    if (balanceResponse.length) {
+      let giftCardsBalance: any = gift.map((e: any, i: any) => {
+        let temp: any = balanceResponse.find((element: any) => {
+          const id = element.config.url.substring(
+            element.config.url.lastIndexOf('/') + 1,
           );
-          if (temp && temp.balance) {
-            e.balance = temp.balance;
-          }
-          return e;
+          console.log('id', id);
+          console.log('accountidstring', e.accountidstring);
+          return id === e.accountidstring;
         });
-        console.log('giftCardsBalance', giftCardsBalance);
-        // setGiftCards(giftCardsBalance);
-
-      }
-    };
-    if (giftCards.length) {
-      getGiftCardBalance();
+        console.log('temp', temp);
+        if (temp && temp.data.balance) {
+          e.balance = temp.data.balance;
+        }
+        return e;
+      });
+      console.log('giftCardsBalance', giftCardsBalance);
+      return giftCardsBalance;
     }
-  }, [giftCards]);
+  };
+  // useEffect(() => {
+  //
+  //   if (giftCards.length) {
+  //     getGiftCardBalance();
+  //   }
+  // }, [giftCards]);
 
   const deleteBillingAccountHandler = (id: number) => {
     dispatch(deleteBillingAccount(id));
@@ -83,8 +96,8 @@ const GiftCards = () => {
       />
       <Grid item xs={12}>
         <Grid container spacing={3} className="gift-cards-panel">
-          {loading && <LoadingBar />}
-          {!loading && giftCards.length < 1 && <h6>No Gift Cards Found</h6>}
+          {loading || (balanceLoading && <LoadingBar />)}
+          {!loading && !balanceLoading && giftCards.length < 1 && <h6>No Gift Cards Found</h6>}
           {!loading &&
             giftCards.length > 0 &&
             giftCards.map((card: any, index) => (
