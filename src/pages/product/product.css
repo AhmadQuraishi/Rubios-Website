@@ -14,12 +14,17 @@
   font-size: 18px !important;
   text-transform: capitalize !important;
 }
-.product-detail h6 {
+.product-detail .desc {
   margin-bottom: 25px;
   color: #214f66;
+  font-family: 'Poppins-Regular', sans-serif !Important;
+    font-size: 16px !important;
 }
-.product-detail h6.price {
+.product-detail .price {
   font-family: 'Poppins-Bold', SansSerif !important;
+    margin-bottom: 25px;
+    color: #214f66;
+    font-size: 16px !important;
 }
 .product-detail .single-product {
   -webkit-border-radius: 30px;
@@ -268,3 +273,4 @@
   width: 100%;
   display: block;
 }
+

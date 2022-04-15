@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: '18px !important',
     fontWeight: '600 !important',
     fontFamily: 'Poppins-Medium !important',
+    letterSpacing: '0.00938em !important',
   },
   content: {
     color: theme.palette.secondary.main,
@@ -76,20 +77,18 @@ const ProductListing = (props: any) => {
                   <img
                     className={classes.img}
                     src={imgPath + changeImageSize(item.imagefilename)}
-                    alt={item.name}
                     title={item.name}
                   />
                 ) : (
                   <img
                     className={classes.img}
                     src={require('../../assets/imgs/default_img.png')}
-                    alt={item.name}
                     title={item.name}
                   />
                 )}
                 <CardContent sx={{ padding: '0' }}>
                   <Typography
-                    variant="body1"
+                    variant="h2"
                     title={item.name}
                     className={classes.title}
                   >

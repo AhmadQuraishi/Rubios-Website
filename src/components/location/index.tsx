@@ -11,7 +11,7 @@ import React, { useEffect, useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import './location.css';
 import { ResponseRestaurant } from '../../types/olo-api';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setResturantInfoRequest } from '../../redux/actions/restaurant';
 import { displayToast } from '../../helpers/toast';
@@ -259,13 +259,13 @@ const LocationCard = (props: any) => {
               >
                 <ToggleButton
                   value="Pick up"
-                  onClick={() =>
+                  onClick={() => {
                     setresturantOrderType(
                       resturantOrderType === 'pickup' ? undefined : 'pickup',
-                    )
-                  }
+                    );
+                  }}
                   className="selected-btn"
-                  aria-label=" PickUp"
+                  aria-label="PickUp ,  Activating this element will cause results to load below "
                 >
                   PickUp
                 </ToggleButton>
@@ -279,9 +279,22 @@ const LocationCard = (props: any) => {
                     )
                   }
                   className="selected-btn"
-                  aria-label=" Curbside"
+                  aria-label=" Curbside ,  Activating this element will cause results to load below "
                 >
                   Curbside
+                  {/* <span
+                    style={{
+                      position: 'absolute',
+                      left: '-10000px',
+                      top: 'auto',
+                      width: '1px',
+                      height: '1px',
+                      overflow: 'hidden',
+                    }}
+                  >
+                    {' '}
+                    Activating this element will cause results to load below
+                  </span> */}
                 </ToggleButton>
                 <ToggleButton
                   value="Delivery"
@@ -293,7 +306,7 @@ const LocationCard = (props: any) => {
                     );
                   }}
                   className="selected-btn"
-                  aria-label=" Delivery"
+                  aria-label=" Delivery , Enter your address below to get nearby restaurants"
                 >
                   Delivery
                 </ToggleButton>
@@ -379,13 +392,14 @@ const LocationCard = (props: any) => {
                   (filteredRestaurants == undefined ||
                     (filteredRestaurants &&
                       filteredRestaurants.length == 0)) && (
-                    <span
+                    <Link
                       style={{
                         textAlign: 'center',
                         display: 'block',
                         cursor: 'pointer',
                         fontWeight: 500,
                         textDecoration: 'underline',
+                        color: '#0075BF',
                       }}
                       title="USE YOUR CURRENT LOCATION?"
                       role="button"
@@ -395,9 +409,10 @@ const LocationCard = (props: any) => {
                         findNearByRestaurants();
                         setShowNotFoundMessage(false);
                       }}
+                      to="#"
                     >
                       USE YOUR CURRENT LOCATION?
-                    </span>
+                    </Link>
                   )}
               </Typography>
             </Grid>
@@ -433,6 +448,11 @@ const LocationCard = (props: any) => {
                         gotoCategoryPage(item.id);
                       }}
                       tabIndex={0}
+                      onKeyUp={(e) => {
+                        if (e.keyCode === 13) {
+                          gotoCategoryPage(item.id);
+                        }
+                      }}
                       key={index}
                     >
                       <Typography
