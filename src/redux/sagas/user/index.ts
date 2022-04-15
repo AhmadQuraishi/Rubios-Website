@@ -66,7 +66,8 @@ import {
 } from '../../actions/user';
 import { displayToast } from '../../../helpers/toast';
 import { getProviderRequestSuccess } from '../../actions/provider';
-import {navigateAppAction} from "../../actions/navigate-app";
+import { navigateAppAction } from '../../actions/navigate-app';
+import { basketActionsTypes } from '../../types/basket';
 
 //profile
 function* userProfileHandler(): any {
@@ -195,11 +196,9 @@ function* getUserBillingAccountHandler(action: any): any {
 // Delete User BillingAccount
 function* deleteUserBillingAccountHandler(action: any): any {
   try {
-    const response = yield call(
-      deleteUserBillingAccount,
-      action.billingAccountId,
-    );
+    yield call(deleteUserBillingAccount, action.billingAccountId);
     yield put(deleteBillingAccountSuccess());
+    yield put({ type: Type.GET_BILLING_ACCOUNTS });
   } catch (error) {
     yield put(deleteBillingAccountFailure(error));
   }
@@ -227,6 +226,7 @@ function* updateUserBillingAccountHandler(action: any): any {
       action.billingAccountId,
     );
     yield put(updateBillingAccountSuccess(response));
+    yield put({ type: Type.GET_BILLING_ACCOUNTS });
   } catch (error) {
     yield put(updateBillingAccountFailure(error));
   }

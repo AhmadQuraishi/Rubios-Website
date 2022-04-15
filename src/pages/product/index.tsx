@@ -15,7 +15,7 @@ import StoreInfoBar from '../../components/restaurant-info-bar';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategoriesRequest } from '../../redux/actions/category';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import {
   Category,
   Product as ProductInfo,
@@ -31,6 +31,9 @@ import { updateProductRequest } from '../../redux/actions/basket/product/update'
 import { displayToast } from '../../helpers/toast';
 import ItemImage from '../../components/item-image';
 import { getUpsellsRequest } from '../../redux/actions/basket/upsell/Get';
+const inputProps = {
+  'aria-label': 'quantity',
+};
 
 const Product = () => {
   const [productDetails, setProductDetails] = useState<ProductInfo>();
@@ -622,7 +625,11 @@ const Product = () => {
                 >
                   {productDetails.name}
                 </Typography>
-                <Typography variant="h6" title={productDetails.description}>
+                <Typography
+                  variant="body1"
+                  title={productDetails.description}
+                  className="desc"
+                >
                   {productDetails.description}
                 </Typography>
                 <Grid container>
@@ -688,16 +695,12 @@ const Product = () => {
                       changeImageSize(productDetails.imagefilename)
                     }
                     className="img"
-                    alt={productDetails.name}
-                    aria-label={productDetails.name}
                     title={productDetails.name}
                   />
                 ) : (
                   <img
                     style={{ width: '80%', display: 'block', margin: 'auto' }}
                     src={require('../../assets/imgs/default_img.png')}
-                    alt={productDetails.name}
-                    aria-label={productDetails.name}
                     title={productDetails.name}
                   />
                 )}
@@ -765,6 +768,7 @@ const Product = () => {
                         >
                           <Card
                             className="card-panel"
+                            tabIndex={0}
                             title={itemChild.option.name}
                             is-mandatory={itemMain.mandatory.toString()}
                             parent-option-id={itemMain.parentOptionID}
@@ -774,9 +778,18 @@ const Product = () => {
                                 itemMain.id,
                               );
                             }}
+                            onKeyUp={(e) => {
+                              if (e.keyCode === 13)
+                                showChildOptions(
+                                  itemChild.option.id,
+                                  itemMain.id,
+                                );
+                            }}
                           >
                             <div className="check-mark">
-                              <div className="checkmark">L</div>
+                              <div aria-hidden="true" className="checkmark">
+                                L
+                              </div>
                             </div>
                             <Grid
                               container
@@ -875,9 +888,8 @@ const Product = () => {
                   </Button>
                   <TextField
                     value={count}
-                    aria-label=""
-                    placeholder="0"
-                    title=""
+                    inputProps={inputProps}
+                    title="quantity"
                   />
                   <Button
                     title=""
@@ -897,7 +909,6 @@ const Product = () => {
                 productUpdateObj.loading ||
                 !validateOptionsSelection() ? (
                   <Button
-                    aria-label="add to bag"
                     title="ADD TO Bag"
                     className="add-to-bag"
                     variant="contained"
@@ -907,7 +918,6 @@ const Product = () => {
                   </Button>
                 ) : (
                   <Button
-                    aria-label="add to bag"
                     title="ADD TO Bag"
                     className="add-to-bag"
                     variant="contained"

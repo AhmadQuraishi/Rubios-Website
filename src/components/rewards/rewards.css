@@ -44,9 +44,9 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  margin-top: -6%;
+  margin-top: -5%;
   transform: rotate(45deg);
-  margin-left: -32%;
+  margin-left: -31%;
 }
 .choose-reward .choose-btn.Mui-selected:before {
   content: " ";

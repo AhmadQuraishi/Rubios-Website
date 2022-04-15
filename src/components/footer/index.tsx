@@ -32,6 +32,9 @@ const useStyles = makeStyles((theme: Theme) => ({
       color: theme.palette.success.main,
     },
   },
+  list: {
+    listStyle: 'none',
+  },
 }));
 
 const Footer = () => {
@@ -94,28 +97,32 @@ const Footer = () => {
               </Typography>
             </Grid>
             <Grid item xs={12}>
-              <Grid
-                container
-                spacing={1}
-                sx={{
-                  flexWrap: { xs: 'wrap', md: 'nowrap' },
-                  maxWidth: '1024px',
-                }}
-              >
-                {menu &&
-                  menu.items.map((item: any, index: number) => (
-                    <Grid item xs={6} md={2} key={index}>
-                      <a
-                        className={classes.links}
-                        href={item.url}
-                        title={item.title}
-                        aria-label={item.title}
-                      >
-                        {item.title}
-                      </a>
-                    </Grid>
-                  ))}
-              </Grid>
+              <ul className={classes.list}>
+                <Grid
+                  container
+                  spacing={1}
+                  sx={{
+                    flexWrap: { xs: 'wrap', md: 'nowrap' },
+                    maxWidth: '1024px',
+                  }}
+                >
+                  {menu &&
+                    menu.items.map((item: any, index: number) => (
+                      <Grid item xs={6} md={2} key={index}>
+                        <li>
+                          <a
+                            className={classes.links}
+                            href={item.url}
+                            title={item.title}
+                            aria-label={item.title}
+                          >
+                            {item.title}
+                          </a>
+                        </li>
+                      </Grid>
+                    ))}
+                </Grid>
+              </ul>
             </Grid>
           </Grid>
         </Grid>

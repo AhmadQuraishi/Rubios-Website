@@ -248,7 +248,7 @@ const CategoryList = () => {
             background: 'rgba(0,0,0,0.2)',
             position: 'fixed',
             height: '100%',
-            zIndex: 1000000
+            zIndex: 1000000,
           }}
         >
           <CircularProgress />
@@ -395,6 +395,9 @@ const CategoryList = () => {
                       title={item.name}
                       color="secondary.main"
                       sx={{ fontFamily: 'Poppins-Medium !important' }}
+                      tabIndex={0}
+                      role="link"
+                      href={`#cat-panel-${index}`}
                     />
                   ),
                 )}
