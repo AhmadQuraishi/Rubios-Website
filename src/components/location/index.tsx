@@ -21,7 +21,6 @@ import usePlacesAutocomplete, {
   getLatLng,
 } from 'use-places-autocomplete';
 import useOnclickOutside from 'react-cool-onclickoutside';
-import { TwentyOneMpSharp } from '@mui/icons-material';
 import { setDeliveryAddress } from '../../redux/actions/location/delivery-address';
 
 const LocationCard = (props: any) => {
@@ -47,8 +46,17 @@ const LocationCard = (props: any) => {
     getGeocode({ address: description })
       .then((results) => {
         getLatLng(results[0]).then(({ lat, lng }) => {
-          setLatLng({ lat: lat, lng: lng });
-          setDeliveryAddressString(getAddress(results[0]));
+          const address = getAddress(results[0]);
+          if (address.address1 !== '') {
+            setLatLng({ lat: lat, lng: lng });
+            setDeliveryAddressString(getAddress(results[0]));
+          } else {
+            setActionPerform(false);
+            displayToast(
+              'ERROR',
+              'Invalid Address, Please enter another address',
+            );
+          }
         });
       })
 
@@ -60,6 +68,7 @@ const LocationCard = (props: any) => {
   };
 
   const getAddress = (place: any) => {
+    debugger;
     const address = {
       address1: '',
       address2: '',
@@ -79,6 +88,8 @@ const LocationCard = (props: any) => {
 
       if (types.includes('locality')) {
         address.city = value;
+      } else if (types.includes('sublocality') && address.city === '') {
+        address.city = value;
       } else if (types.includes('street_number')) {
         address.address1 = address.address1 + value + ' ';
       } else if (types.includes('route')) {
@@ -93,6 +104,16 @@ const LocationCard = (props: any) => {
         address.zip = value;
       }
     });
+
+    if (address.address1 === '' || address.city === '' || address.zip == '') {
+      return {
+        address1: '',
+        address2: '',
+        city: '',
+        zip: '',
+        state: '',
+      };
+    }
 
     return address;
   };
@@ -139,6 +160,7 @@ const LocationCard = (props: any) => {
       displayToast('ERROR', 'Please select atleast one order type');
       return false;
     }
+    debugger;
     let restaurantObj = null;
     if (resturantOrderType == 'delivery') {
       restaurantObj = deliveryRasturants.find((x: any) => x.id === storeID);
