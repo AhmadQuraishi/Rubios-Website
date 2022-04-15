@@ -13,6 +13,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     boxSizing: 'border-box',
   },
 }));
+const inputProps = {
+  ' aria-required': 'true',
+};
 
 const LoginForm = () => {
   const classes = useStyles();
@@ -75,8 +78,7 @@ const LoginForm = () => {
                 <Grid container spacing={1} className="sign-in-section">
                   <Grid item xs={16} sm={8} md={8} lg={16}>
                     <TextField
-                      aria-label="email"
-                      label="Email Address"
+                      label="Email Address*"
                       title="Email"
                       type="text"
                       name="email"
@@ -86,12 +88,14 @@ const LoginForm = () => {
                       onChange={handleChange}
                       error={Boolean(touched && errors.email)}
                       helperText={errors.email}
+                      inputProps={inputProps}
                     />
                   </Grid>
+
                   <Grid item xs={16} sm={8} md={8} lg={16}>
                     <TextField
                       aria-label="password"
-                      label="Enter Password"
+                      label="Enter Password*"
                       title=" Password"
                       type="password"
                       name="password"
@@ -102,6 +106,7 @@ const LoginForm = () => {
                       onBlur={handleBlur('password')}
                       error={Boolean(touched.password && errors.password)}
                       helperText={touched.password && errors.password}
+                      inputProps={inputProps}
                     />
                     <Link
                       className="forgot-pass"

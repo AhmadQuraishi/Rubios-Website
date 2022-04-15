@@ -65,30 +65,35 @@ const DeliveryForm = ({ basket, deliveryFormRef, defaultAddress }: any) => {
         lastName: providerToken?.last_name ? providerToken?.last_name : '',
         phone: providerToken?.phone ? providerToken?.phone : '',
         email: providerToken?.email ? providerToken?.email : '',
-        addressId: address && address.id ? address.id : null,
+        addressId:
+          objDeliveryAddress && objDeliveryAddress.address
+            ? null
+            : address && address.id
+            ? address.id
+            : null,
         apartment:
-          address && address.building
-            ? address.building
-            : objDeliveryAddress && objDeliveryAddress.address
+          objDeliveryAddress && objDeliveryAddress.address
             ? objDeliveryAddress.address.address2
+            : address && address.building
+            ? address.building
             : '',
         streetAddress:
-          address && address.streetaddress
-            ? address.streetaddress
-            : objDeliveryAddress && objDeliveryAddress.address
+          objDeliveryAddress && objDeliveryAddress.address
             ? objDeliveryAddress.address.address1
+            : address && address.streetaddress
+            ? address.streetaddress
             : '',
         city:
-          address && address.city
-            ? address.city
-            : objDeliveryAddress && objDeliveryAddress.address
+          objDeliveryAddress && objDeliveryAddress.address
             ? objDeliveryAddress.address.city
+            : address && address.city
+            ? address.city
             : '',
         zipcode:
-          address && address.zipcode
-            ? address.zipcode
-            : objDeliveryAddress && objDeliveryAddress.address
+          objDeliveryAddress && objDeliveryAddress.address
             ? objDeliveryAddress.address.zip
+            : address && address.zipcode
+            ? address.zipcode
             : '',
         saveAddressCheck:
           address && address.isdefault ? address.isdefault : false,
@@ -224,11 +229,7 @@ const DeliveryForm = ({ basket, deliveryFormRef, defaultAddress }: any) => {
             xs={12}
             sx={{
               display:
-                objDeliveryAddress &&
-                objDeliveryAddress.address &&
-                providerToken == null
-                  ? 'none'
-                  : 'grid',
+                objDeliveryAddress == null && providerToken ? 'grid' : 'none',
             }}
           >
             <Grid item xs={12}>
@@ -301,9 +302,7 @@ const DeliveryForm = ({ basket, deliveryFormRef, defaultAddress }: any) => {
             xs={12}
             sx={{
               display:
-                objDeliveryAddress &&
-                objDeliveryAddress.address &&
-                providerToken == null
+                objDeliveryAddress && objDeliveryAddress.address
                   ? 'flex'
                   : 'none',
             }}
@@ -340,7 +339,13 @@ const DeliveryForm = ({ basket, deliveryFormRef, defaultAddress }: any) => {
             </Grid>
           </Grid>
           {authToken?.authtoken ? (
-            <Grid item xs={12}>
+            <Grid
+              item
+              xs={12}
+              style={{
+                paddingBottom: '20px',
+              }}
+            >
               <FormGroup>
                 <FormControlLabel
                   control={

@@ -138,6 +138,9 @@ const Rewards = (props: any) => {
               >
                 {rewardsArray.map((reward, index) => (
                   <ToggleButton
+                    onClick={() => {
+                      applyReward(reward.membershipid, reward.reference);
+                    }}
                     value={reward.reference}
                     className="choose-btn"
                   >
