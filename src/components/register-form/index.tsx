@@ -158,19 +158,19 @@ const RegisterForm = () => {
           touched,
           values,
         }) => (
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} autoComplete="on">
             <Grid item xs={12} md={12} lg={12}>
               <Grid container>
                 <Grid item xs={12}>
                   <TextField
                     aria-label="first name"
-                    label="First Name"
+                    label="First Name *"
                     title="First Name"
                     type="text"
                     name="first_name"
                     sx={{ width: '100%' }}
                     value={values.first_name}
-                    autoComplete="first_name"
+                    autoComplete="on"
                     onChange={handleChange('first_name')}
                     onBlur={handleBlur('first_name')}
                     error={Boolean(touched.first_name && errors.first_name)}
@@ -180,11 +180,11 @@ const RegisterForm = () => {
                 <Grid item xs={12}>
                   <TextField
                     aria-label="last name"
-                    label="Last Name"
+                    label="Last Name *"
                     title="Last Name"
                     type="text"
                     name="last_name"
-                    autoComplete="last_name"
+                    autoComplete="on"
                     sx={{ width: '100%' }}
                     value={values.last_name}
                     onChange={handleChange('last_name')}
@@ -196,11 +196,11 @@ const RegisterForm = () => {
                 <Grid item xs={12}>
                   <TextField
                     aria-label="email"
-                    label="Email"
+                    label="Email *"
                     title="Email"
                     type="text"
                     name="email"
-                    autoComplete="email"
+                    autoComplete="on"
                     sx={{ width: '100%' }}
                     value={values.email}
                     onChange={handleChange('email')}
@@ -218,6 +218,7 @@ const RegisterForm = () => {
                     value={values.phone}
                     sx={{ width: '100%' }}
                     onChange={handleChange}
+                    autoComplete="on"
                     name="phone"
                     id="formatted-numberformat-input"
                     InputLabelProps={{
@@ -236,11 +237,11 @@ const RegisterForm = () => {
                 <Grid item xs={12}>
                   <TextField
                     aria-label="password"
-                    label="Password"
+                    label="Password *"
                     title="Password"
                     type="password"
                     name="password"
-                    autoComplete="password"
+                    autoComplete="on"
                     sx={{ width: '100%' }}
                     value={values.password}
                     onChange={handleChange('password')}
@@ -260,10 +261,10 @@ const RegisterForm = () => {
                 <Grid item xs={12}>
                   <TextField
                     aria-label="confirm password "
-                    label="Confirm Password"
+                    label="Confirm Password *"
                     title="Confirm Password"
                     name="password_confirmation"
-                    autoComplete="password_confirmation"
+                    autoComplete="on"
                     type="password"
                     sx={{ width: '100%' }}
                     value={values.password_confirmation}
@@ -285,6 +286,7 @@ const RegisterForm = () => {
                     label="Invite Code (Optional)"
                     title="Invite Code (Optional)"
                     name="invitecode"
+                    autoComplete="on"
                     type="text"
                     sx={{ width: '100%' }}
                     value={values.invitecode}
@@ -322,8 +324,9 @@ const RegisterForm = () => {
                       }}
                       shrink={selectShrink || favLocation !== ''}
                       style={{ textAlign: 'left' }}
+                      aria-controls="fav-location"
                     >
-                      Favorite Location
+                      Favorite Location *
                     </InputLabel>
                     <Select
                       labelId="fav-location-label"

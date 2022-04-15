@@ -47,7 +47,6 @@ const ItemImage = (props: any) => {
       {imageURL && imageURL.contentUrl == null && (
         <img
           src={require('../../assets/imgs/default_img.jpg')}
-          alt=""
           style={{
             height: '120px',
             width: '100%',
@@ -59,7 +58,6 @@ const ItemImage = (props: any) => {
       {imageURL && imageURL.contentUrl && (
         <img
           src={imageURL.contentUrl}
-          alt=""
           style={{
             height: '120px',
             width: 'auto',
