@@ -22,7 +22,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
           lg={8}
           className={`order-details order-details-${page}`}
         >
-          <Typography fontWeight={500} title="ORDER DETAILS" variant="h4">
+          <Typography fontWeight={500} title="ORDER DETAILS" variant="h1">
             ORDER DETAILS
           </Typography>
           <br />
@@ -38,7 +38,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                       </Typography>
                     </Grid>
                     <Grid item xs={8} sm={8} md={8} lg={8}>
-                      <Typography variant="h6" title={item.name}>
+                     <Typography variant="h6" title={item.name}>
                         {item.name}
                       </Typography>
                       <Typography
