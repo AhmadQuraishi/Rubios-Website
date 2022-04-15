@@ -6,7 +6,7 @@ import {
   RequestBasketProductBatch,
   RequestBasketAddUpsell,
   RequestSetDeliveryMode,
-  RequestDeliveryAddress
+  RequestDeliveryAddress,
 } from '../../types/olo-api';
 
 export const getBasket = (basketid: string) => {
@@ -39,7 +39,10 @@ export const getDummyBasket = (body: RequestCreateBasket) => {
   }
 };
 
-export const setBasketDeliveryMode = (basketid: string, body: RequestSetDeliveryMode) => {
+export const setBasketDeliveryMode = (
+  basketid: string,
+  body: RequestSetDeliveryMode,
+) => {
   try {
     const url = process.env.REACT_APP_OLO_API || '';
     return axios
@@ -54,7 +57,10 @@ export const setBasketDeliveryMode = (basketid: string, body: RequestSetDelivery
   }
 };
 
-export const setBasketDeliveryAddress = (basketid: string, body: RequestDeliveryAddress) => {
+export const setBasketDeliveryAddress = (
+  basketid: string,
+  body: RequestDeliveryAddress,
+) => {
   try {
     const url = process.env.REACT_APP_OLO_API || '';
     return axios
@@ -74,13 +80,14 @@ export const setBasketCustomFields = (basketid: string, customFields: any) => {
     const url = process.env.REACT_APP_OLO_API || '';
     const requests: any = [];
     customFields.forEach((element: any) => {
-      requests.push(axios.put(url + `/baskets/${basketid}/customfields`, element))
+      requests.push(
+        axios.put(url + `/baskets/${basketid}/customfields`, element),
+      );
     });
-    return axios.all(requests)
-          .catch((error) => {
-            console.log(error.response);
-            throw error;
-          });
+    return axios.all(requests).catch((error) => {
+      console.log(error.response);
+      throw error;
+    });
   } catch (error) {
     throw error;
   }
@@ -175,9 +182,7 @@ export const requestCreateBasketForFav = (
   body: RequestCreateBasketFromFave,
 ) => {
   try {
-    const auth_token = process.env.REACT_APP_AUTH_TOKEN
-      ? process.env.REACT_APP_AUTH_TOKEN
-      : store.getState().authReducer.authToken.authtoken;
+    const auth_token = store.getState().authReducer.authToken.authtoken;
     const url = process.env.REACT_APP_OLO_API || '';
     return axios
       .post(url + `/baskets/createfromfave?authtoken=` + auth_token, body)

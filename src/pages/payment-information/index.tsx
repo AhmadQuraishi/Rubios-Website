@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { Grid, Theme, Typography } from '@mui/material';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import CreditCards from '../../components/credit-cards';
 import GiftCards from '../../components/gift-cards';
 import { makeStyles } from '@mui/styles';
+import { getAllBillingAccounts } from '../../redux/actions/user';
+import { useDispatch } from 'react-redux';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -31,12 +33,17 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const PaymentInformation = () => {
+  const classes = useStyles();
+  const dispatch = useDispatch();
   const [value, setValue] = React.useState('1');
+
+  useEffect(() => {
+    dispatch(getAllBillingAccounts());
+  }, []);
+
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
-
-  const classes = useStyles();
 
   return (
     <Grid container className={classes.root}>
