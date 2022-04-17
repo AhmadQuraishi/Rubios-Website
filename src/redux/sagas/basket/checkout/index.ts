@@ -9,7 +9,7 @@ import {
   setTipAmountBasket,
   applyCouponBasket,
   validateBasket,
-  submitSinglePaymentBasket,
+  submitSinglePaymentBasket, getBasketAllowedCards,
 } from '../../../../services/checkout';
 import {
   getSingleRestaurantCalendarSuccess,
@@ -31,6 +31,8 @@ import {
   setBasketDeliveryModeFailure,
   setBasketDeliveryAddressSuccess,
   setBasketDeliveryAddressFailure,
+  getBasketAllowedCardsRequestSuccess,
+  getBasketAllowedCardsRequestFailure,
 } from '../../../actions/basket/checkout';
 
 import { requestUpdateUser } from '../../../../services/user';
@@ -197,6 +199,15 @@ function* asyncSubmitBasketSinglePayment(action: any): any {
   }
 }
 
+function* asyncGetBasketAllowedCardsRequest(action: any): any {
+  try {
+    const response = yield call(getBasketAllowedCards, action.basketid);
+    yield put(getBasketAllowedCardsRequestSuccess(response));
+  } catch (error) {
+    yield put(getBasketAllowedCardsRequestFailure(error));
+  }
+}
+
 export function* checkoutSaga() {
   yield takeEvery(
     basketActionsTypes.GET_SINGLE_RESTAURANT_CALENDAR,
@@ -230,5 +241,9 @@ export function* checkoutSaga() {
   yield takeEvery(
     basketActionsTypes.SET_BASKET_DELIVERY_ADDRESS_REQUEST,
     asyncSetBasketDeliveryAddressRequest,
+  );
+  yield takeEvery(
+    basketActionsTypes.GET_BASKET_ALLOWED_CARDS_REQUEST,
+    asyncGetBasketAllowedCardsRequest,
   );
 }

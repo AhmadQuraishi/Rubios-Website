@@ -11,7 +11,7 @@ import {
   getOrderRequest,
   getOrderRestaurantRequest,
 } from '../../redux/actions/order';
-import {useNavigate, useParams} from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import RegisterConfirmation from '../../components/register-confirmation';
 
 const useStyle = makeStyles(() => ({
