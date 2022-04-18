@@ -333,15 +333,12 @@ const LocationCard = (props: any) => {
               >
                 <ToggleButton
                   value="Pick up"
-                  // role="link"
-                  // href="#"
                   onClick={() => {
                     setresturantOrderType(
                       resturantOrderType === 'pickup' ? undefined : 'pickup',
                     );
                   }}
                   className="selected-btn"
-                  aria-label="PickUp ,  Activating this element will cause results to load below "
                 >
                   PickUp
                 </ToggleButton>
@@ -355,22 +352,8 @@ const LocationCard = (props: any) => {
                     )
                   }
                   className="selected-btn"
-                  aria-label=" Curbside ,  Activating this element will cause results to load below "
                 >
                   Curbside
-                  {/* <span
-                    style={{
-                      position: 'absolute',
-                      left: '-10000px',
-                      top: 'auto',
-                      width: '1px',
-                      height: '1px',
-                      overflow: 'hidden',
-                    }}
-                  >
-                    {' '}
-                    Activating this element will cause results to load below
-                  </span> */}
                 </ToggleButton>
                 <ToggleButton
                   value="Delivery"
@@ -382,7 +365,6 @@ const LocationCard = (props: any) => {
                     );
                   }}
                   className="selected-btn"
-                  aria-label=" Delivery , Enter your address below to get nearby restaurants"
                 >
                   Delivery
                 </ToggleButton>
