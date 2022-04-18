@@ -13,7 +13,7 @@ import {
   Dialog,
   DialogActions,
 } from '@mui/material';
-import { CreditCardElements, PaymentMethodResult } from '@olo/pay';
+// import { CreditCardElements, PaymentMethodResult } from '@olo/pay';
 import './payment-info.css';
 import { createFave } from '../../redux/actions/create-fave';
 import { Formik } from 'formik';
@@ -23,9 +23,10 @@ import {
   verifyGiftCardPinRequirement,
 } from '../../services/checkout';
 import { DeliveryModeEnum, ResponseBasket } from '../../types/olo-api';
-import { useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { displayToast } from '../../helpers/toast';
 import { updateBasketBillingSchemes } from '../../redux/actions/basket/checkout';
+import AddCreditCard from './add-credit-card';
 
 // const billingAccounts = [
 //   {
@@ -88,19 +89,23 @@ const styleObject = {
 };
 
 const PaymentInfo = forwardRef((props, _ref) => {
-  const [creditCardElements, setCreditCardElements] =
-    React.useState<CreditCardElements | null>(null);
+  // const [creditCardElements, setCreditCardElements] =
+  //   React.useState<CreditCardElements | null>(null);
+  const dispatch = useDispatch();
   const basketObj = useSelector((state: any) => state.basketReducer);
   const [basket, setBasket] = React.useState<ResponseBasket>();
   const [allowedCards, setAllowedCards] = React.useState<any>();
   const [billingSchemes, setBillingSchemes] = React.useState<any>([]);
   const [pinCheck, setPinCheck] = React.useState<any>(false);
+  const [billingDetails, setBillingDetails] = React.useState<any>();
 
-  const [paymentMethod, setPaymentMethod] =
-    React.useState<PaymentMethodResult | null>(null);
+  // const [paymentMethod, setPaymentMethod] =
+  //   React.useState<PaymentMethodResult | null>(null);
 
   const [checkBox, setCheckBox] = React.useState<boolean>(false);
   const [openAddGiftCard, setOpenAddGiftCard] = React.useState<boolean>(false);
+  const [openAddCreditCard, setOpenAddCreditCard] =
+    React.useState<boolean>(false);
 
   React.useEffect(() => {
     if (basketObj.basket) {
@@ -141,30 +146,31 @@ const PaymentInfo = forwardRef((props, _ref) => {
     }
   }, [allowedCards]);
 
-  useImperativeHandle(_ref, () => ({
-    getCardDetails: async () => {
-      const response =
-        (await creditCardElements!.createPaymentMethod()) as PaymentMethodResult;
-      setPaymentMethod(response);
-      return response;
-    },
-  }));
+  // useImperativeHandle(_ref, () => ({
+  //   getCardDetails: async () => {
+  //     const response = (await creditCardElements!.createPaymentMethod(
+  //       billingDetails,
+  //     )) as PaymentMethodResult;
+  //     setPaymentMethod(response);
+  //     return response;
+  //   },
+  // }));
 
-  React.useEffect(() => {
-    const initializeCreditCardElements = async () => {
-      const elements = new CreditCardElements();
-      // for production use
-      // const elements = new CreditCardElements('production');
-
-      elements.applyStyles(styleObject);
-
-      setCreditCardElements(elements);
-
-      await elements.create();
-    };
-
-    initializeCreditCardElements();
-  }, []);
+  // React.useEffect(() => {
+  //   const initializeCreditCardElements = async () => {
+  //     const elements = new CreditCardElements();
+  //     // for production use
+  //     // const elements = new CreditCardElements('production');
+  //
+  //     elements.applyStyles(styleObject);
+  //
+  //     setCreditCardElements(elements);
+  //
+  //     await elements.create();
+  //   };
+  //
+  //   initializeCreditCardElements();
+  // }, []);
 
   const handleCheckBox = (e: ChangeEvent<HTMLInputElement>) => {
     setCheckBox(e.target.checked);
@@ -173,6 +179,10 @@ const PaymentInfo = forwardRef((props, _ref) => {
   const handleCloseAddGiftCard = () => {
     setPinCheck(false);
     setOpenAddGiftCard(!openAddGiftCard);
+  };
+
+  const handleCloseAddCreditCard = () => {
+    setOpenAddCreditCard(!openAddCreditCard);
   };
 
   const handleGiftCardSubmit = async (values: any) => {
@@ -236,7 +246,7 @@ const PaymentInfo = forwardRef((props, _ref) => {
 
               console.log('cardObj', cardObj);
               console.log('billingSchemesNewArray', billingSchemesNewArray);
-              updateBasketBillingSchemes(billingSchemesNewArray);
+              dispatch(updateBasketBillingSchemes(billingSchemesNewArray));
               displayToast('SUCCESS', 'Card Added');
               handleCloseAddGiftCard();
             } else {
@@ -247,6 +257,14 @@ const PaymentInfo = forwardRef((props, _ref) => {
         }
       }
     }
+  };
+
+  const handleZipCodeChange = (event: any) => {
+    setBillingDetails({
+      address: {
+        postal_code: event.target.value.trim(),
+      },
+    });
   };
 
   return (
@@ -281,37 +299,65 @@ const PaymentInfo = forwardRef((props, _ref) => {
             </Grid>
           </Grid> */}
           <Grid item xs={12}>
-            <Grid container spacing={2}>
-              <Grid
-                item
-                xs={12}
-                sm={6}
-                md={6}
-                lg={6}
-                className="payment-form image-field align"
-              >
-                <div className="card-fields" data-olo-pay-card-number></div>
-                <img src={require('../../assets/imgs/card-icon.png')} />
-              </Grid>
-              <Grid item xs={12} sm={6} md={6} lg={6}>
-                <Grid container spacing={2}>
-                  <Grid
-                    item
-                    xs={6}
-                    sm={6}
-                    md={6}
-                    lg={6}
-                    className="payment-form image-field align"
-                  >
-                    <div className="card-fields" data-olo-pay-card-cvc></div>
-                    <img src={require('../../assets/imgs/ccv-icon.png')} />
-                  </Grid>
-                  <Grid item xs={6} sm={6} md={6} lg={6}>
-                    <div className="card-fields" data-olo-pay-card-expiry></div>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Grid>
+            {/*<Grid container spacing={2}>*/}
+            {/*  <Grid*/}
+            {/*    item*/}
+            {/*    xs={12}*/}
+            {/*    sm={12}*/}
+            {/*    md={12}*/}
+            {/*    lg={12}*/}
+            {/*    className="payment-form image-field align"*/}
+            {/*  >*/}
+            {/*    <Grid container spacing={2}>*/}
+            {/*      <Grid*/}
+            {/*        item*/}
+            {/*        xs={6}*/}
+            {/*        sm={6}*/}
+            {/*        md={6}*/}
+            {/*        lg={6}*/}
+            {/*        className="payment-form image-field align"*/}
+            {/*      >*/}
+            {/*        <div className="card-fields" data-olo-pay-card-number></div>*/}
+            {/*        <img src={require('../../assets/imgs/card-icon.png')} />*/}
+            {/*      </Grid>*/}
+            {/*      <Grid item xs={6} sm={6} md={6} lg={6}>*/}
+            {/*        <div className="card-fields" data-olo-pay-card-cvc></div>*/}
+            {/*        <img src={require('../../assets/imgs/ccv-icon.png')} />*/}
+            {/*      </Grid>*/}
+            {/*    </Grid>*/}
+            {/*  </Grid>*/}
+            {/*  <Grid item xs={12} sm={12} md={12} lg={12}>*/}
+            {/*    <Grid container spacing={2}>*/}
+            {/*      <Grid*/}
+            {/*        item*/}
+            {/*        xs={6}*/}
+            {/*        sm={6}*/}
+            {/*        md={6}*/}
+            {/*        lg={6}*/}
+            {/*        className="payment-form image-field align"*/}
+            {/*      >*/}
+            {/*        <div className="card-fields" data-olo-pay-card-expiry></div>*/}
+            {/*      </Grid>*/}
+            {/*      <Grid item xs={6} sm={6} md={6} lg={6}>*/}
+            {/*        <TextField*/}
+            {/*          aria-label="Zip Code"*/}
+            {/*          // onBlur={handleBlur}*/}
+            {/*          // label="Zip Code"*/}
+            {/*          // aria-required="true"*/}
+            {/*          // title="Zip Code"*/}
+            {/*          placeholder="Zip Code"*/}
+            {/*          type="text"*/}
+            {/*          name="zipcode"*/}
+            {/*          inputProps={{ shrink: false }}*/}
+            {/*          // value={values.zipcode}*/}
+            {/*          onChange={handleZipCodeChange}*/}
+            {/*          // error={Boolean(touched.zipcode && errors.zipcode)}*/}
+            {/*          // helperText={errors.zipcode}*/}
+            {/*        />*/}
+            {/*      </Grid>*/}
+            {/*    </Grid>*/}
+            {/*  </Grid>*/}
+            {/*</Grid>*/}
           </Grid>
 
           {billingSchemes &&
@@ -512,18 +558,138 @@ const PaymentInfo = forwardRef((props, _ref) => {
                   </Formik>
                 </DialogContent>
               </Dialog>
+              <AddCreditCard />
+              {/*<Dialog*/}
+              {/*  open={openAddCreditCard}*/}
+              {/*  onClose={handleCloseAddCreditCard}*/}
+              {/*  className="fav-dialog"*/}
+              {/*  fullWidth*/}
+              {/*>*/}
+              {/*  <DialogTitle>Add Credit Card</DialogTitle>*/}
+              {/*  <DialogContent>*/}
+              {/*    {openAddCreditCard && (*/}
+              {/*      <Grid container className="payment-form" spacing={2}>*/}
+              {/*        <Grid*/}
+              {/*          item*/}
+              {/*          xs={12}*/}
+              {/*          sm={12}*/}
+              {/*          md={12}*/}
+              {/*          lg={12}*/}
+              {/*          className="payment-form image-field align"*/}
+              {/*        >*/}
+              {/*          <Grid container spacing={2}>*/}
+              {/*            <Grid*/}
+              {/*              item*/}
+              {/*              xs={6}*/}
+              {/*              sm={6}*/}
+              {/*              md={6}*/}
+              {/*              lg={6}*/}
+              {/*              className="payment-form image-field align"*/}
+              {/*            >*/}
+              {/*              <div*/}
+              {/*                className="card-fields"*/}
+              {/*                data-olo-pay-card-number*/}
+              {/*              ></div>*/}
+              {/*              <img*/}
+              {/*                src={require('../../assets/imgs/card-icon.png')}*/}
+              {/*              />*/}
+              {/*            </Grid>*/}
+              {/*            <Grid item xs={6} sm={6} md={6} lg={6}>*/}
+              {/*              <div*/}
+              {/*                className="card-fields"*/}
+              {/*                data-olo-pay-card-cvc*/}
+              {/*              ></div>*/}
+              {/*              <img*/}
+              {/*                src={require('../../assets/imgs/ccv-icon.png')}*/}
+              {/*              />*/}
+              {/*            </Grid>*/}
+              {/*          </Grid>*/}
+              {/*        </Grid>*/}
+              {/*        <Grid item xs={12} sm={12} md={12} lg={12}>*/}
+              {/*          <Grid container spacing={2}>*/}
+              {/*            <Grid*/}
+              {/*              item*/}
+              {/*              xs={6}*/}
+              {/*              sm={6}*/}
+              {/*              md={6}*/}
+              {/*              lg={6}*/}
+              {/*              className="payment-form image-field align"*/}
+              {/*            >*/}
+              {/*              <div*/}
+              {/*                className="card-fields"*/}
+              {/*                data-olo-pay-card-expiry*/}
+              {/*              ></div>*/}
+              {/*            </Grid>*/}
+              {/*            <Grid item xs={6} sm={6} md={6} lg={6}>*/}
+              {/*              <TextField*/}
+              {/*                aria-label="Zip Code"*/}
+              {/*                // onBlur={handleBlur}*/}
+              {/*                // label="Zip Code"*/}
+              {/*                // aria-required="true"*/}
+              {/*                // title="Zip Code"*/}
+              {/*                placeholder="Zip Code"*/}
+              {/*                type="text"*/}
+              {/*                name="zipcode"*/}
+              {/*                inputProps={{ shrink: false }}*/}
+              {/*                // value={values.zipcode}*/}
+              {/*                onChange={handleZipCodeChange}*/}
+              {/*                // error={Boolean(touched.zipcode && errors.zipcode)}*/}
+              {/*                // helperText={errors.zipcode}*/}
+              {/*              />*/}
+              {/*            </Grid>*/}
+              {/*          </Grid>*/}
+              {/*        </Grid>*/}
+              {/*      </Grid>*/}
+              {/*    )}*/}
+              {/*    <DialogActions>*/}
+              {/*      <Button*/}
+              {/*        aria-label="Cancel"*/}
+              {/*        title="Cancel"*/}
+              {/*        className="link"*/}
+              {/*        onClick={handleCloseAddCreditCard}*/}
+              {/*      >*/}
+              {/*        Cancel{' '}*/}
+              {/*      </Button>*/}
+              {/*      <Button*/}
+              {/*        aria-label="Add Gift Card"*/}
+              {/*        title="Add Gift Card"*/}
+              {/*        type="submit"*/}
+              {/*        className="link default"*/}
+              {/*        autoFocus*/}
+              {/*      >*/}
+              {/*        Add Credit Card*/}
+              {/*      </Button>*/}
+              {/*    </DialogActions>*/}
+              {/*  </DialogContent>*/}
+              {/*</Dialog>*/}
+              {/*<Grid container>*/}
+              {/*  <Grid item xs={12} sm={12} md={12} lg={12}>*/}
+              {/*    <Button*/}
+              {/*      onClick={handleCloseAddCreditCard}*/}
+              {/*      title="ADD CREDIT CARD"*/}
+              {/*      className="label"*/}
+              {/*    >*/}
+              {/*      ADD Credit CARD*/}
+              {/*    </Button>*/}
+              {/*  </Grid>*/}
+              {/*</Grid>*/}
+
               {allowedCards &&
                 allowedCards.length &&
                 allowedCards.filter((element: any) => {
                   return element.type === 'giftcard';
                 }) && (
-                  <Button
-                    onClick={handleCloseAddGiftCard}
-                    title="ADD A GIFT CARD"
-                    className="label"
-                  >
-                    ADD GIFT CARD
-                  </Button>
+                  <Grid container>
+                    <Grid item xs={12} sm={12} md={12} lg={12}>
+                      <Button
+                        onClick={handleCloseAddGiftCard}
+                        title="ADD GIFT CARD"
+                        className="label"
+                      >
+                        ADD Gift CARD
+                      </Button>
+                    </Grid>
+                  </Grid>
                 )}
             </Grid>
           </Grid>

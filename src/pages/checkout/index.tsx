@@ -175,8 +175,18 @@ const Checkout = () => {
     if (cardDetails.error) {
       data.errors = cardDetails.error;
     } else if (cardDetails.paymentMethod) {
-      data.cardDetails = cardDetails.paymentMethod;
-      data.isValidCard = true;
+      if (
+        cardDetails.paymentMethod &&
+        cardDetails.paymentMethod.billing_details &&
+        cardDetails.paymentMethod.billing_details.address.postal_code &&
+        cardDetails.paymentMethod.billing_details.address.postal_code !== ''
+      ) {
+        data.cardDetails = cardDetails.paymentMethod;
+        data.isValidCard = true;
+      } else {
+        data.isValidCard = false;
+        data.errors.message = 'Zip Code is required';
+      }
     }
 
     return data;
@@ -260,17 +270,17 @@ const Checkout = () => {
           phone: formDataValue.phone,
         };
       }
-      console.log('basketPayload', basketPayload)
-      dispatch(
-        validateBasket(
-          basket?.id,
-          basketPayload,
-          user,
-          customFields,
-          deliverymode,
-          deliveryAddress,
-        ),
-      );
+      console.log('basketPayload', basketPayload);
+      // dispatch(
+      //   validateBasket(
+      //     basket?.id,
+      //     basketPayload,
+      //     user,
+      //     customFields,
+      //     deliverymode,
+      //     deliveryAddress,
+      //   ),
+      // );
     }
   };
 

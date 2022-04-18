@@ -35,11 +35,7 @@ export function generateSubmitBasketPayload(
     expiryyear: cardDetails.card.exp_year,
     expirymonth: cardDetails.card.exp_month,
     cardlastfour: cardDetails.card.last4,
-    streetaddress: 'Pennsylvania Ave',
-    streetaddress2: 'NW Washington, DC.',
-    city: 'Washington',
-    zip: '20500',
-    country: CountryEnum.US,
+    zip: cardDetails.billing_details.address.postal_code,
     saveonfile: SaveOnFileEnum.true,
     guestoptin: formData.emailNotification,
   };
