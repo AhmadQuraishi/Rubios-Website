@@ -327,22 +327,22 @@ const PaymentInfo = forwardRef((props, _ref) => {
                     lg={12}
                     className="card-details"
                   >
-                    <Grid container>
-                      <Grid item xs={1} sm={1} md={1} lg={1}>
-                        <FormGroup>
-                          <FormControlLabel
-                            control={
-                              <Checkbox
-                                checked={checkBox}
-                                onChange={(e) => handleCheckBox(e)}
-                              />
-                            }
-                            label=""
-                            name="saveAddressCheck"
-                            className="size"
-                          />
-                        </FormGroup>
-                      </Grid>
+                    <Grid item xs={1} sm={1} md={1} lg={1}>
+                      <FormGroup>
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              checked={checkBox}
+                              onChange={(e) => handleCheckBox(e)}
+                            />
+                          }
+                          label=""
+                          name="saveAddressCheck"
+                          className="size"
+                        />
+                      </FormGroup>
+                    </Grid>
+                    <Grid container className="payment-bar">
                       <Grid
                         item
                         style={{ display: 'flex' }}
@@ -363,15 +363,15 @@ const PaymentInfo = forwardRef((props, _ref) => {
                         style={{ display: 'flex' }}
                         alignItems="center"
                         justifyContent="flex-start"
-                        xs={6}
-                        sm={6}
-                        md={6}
-                        lg={6}
+                        xs={7}
+                        sm={7}
+                        md={7}
+                        lg={7}
                       >
                         <Typography variant="h6">x-9345</Typography>
                       </Grid>
                       <Grid
-                        style={{ display: 'flex' }}
+                        style={{ display: 'flex', justifyContent: 'right' }}
                         alignItems="center"
                         item
                         xs={2}
