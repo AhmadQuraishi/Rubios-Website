@@ -6,7 +6,7 @@ import { Fragment, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import LoginForm from '../../components/login-form';
 import bgImage from '../../assets/imgs/login-bg.png';
-// import ReactFacebookLogin from 'react-facebook-login';
+import ReactFacebookLogin from 'react-facebook-login';
 
 const useStyle = makeStyles(() => ({
   root: {
@@ -84,15 +84,15 @@ const Login2 = () => {
                 More Options
               </Typography>
               <ul className="button-list">
-                {/*<li>*/}
-                {/*  <ReactFacebookLogin*/}
-                {/*    appId=""*/}
-                {/*    autoLoad*/}
-                {/*    callback={handleCallBackfacebook}*/}
-                {/*    textButton="SIGN IN WITH FACEBOOK"*/}
-                {/*    cssClass='fb-button'*/}
-                {/*  />*/}
-                {/*</li>*/}
+                <li>
+                  <ReactFacebookLogin
+                    appId="380212609388497"
+                    autoLoad
+                    callback={handleCallBackfacebook}
+                    textButton="SIGN IN WITH FACEBOOK"
+                    cssClass="fb-button"
+                  />
+                </li>
                 <li>
                   <Button
                     type="submit"

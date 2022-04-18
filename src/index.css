@@ -291,3 +291,12 @@ fieldset{
     font-size: 28px;
 }
 }
+.sr-only{
+  position : absolute;
+  left: -1000px;
+  top:auto;
+  overflow: hidden;
+  width:1px;
+  height:1px;
+
+}
