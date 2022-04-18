@@ -20,7 +20,6 @@ import usePlacesAutocomplete, {
   getGeocode,
   getLatLng,
 } from 'use-places-autocomplete';
-import useOnclickOutside from 'react-cool-onclickoutside';
 import { setDeliveryAddress } from '../../redux/actions/location/delivery-address';
 
 const LocationCard = (props: any) => {
@@ -35,9 +34,6 @@ const LocationCard = (props: any) => {
       location: new google.maps.LatLng({ lat: 37.772, lng: -122.214 }),
       radius: 200 * 1000,
     },
-  });
-  const ref = useOnclickOutside(() => {
-    clearSuggestions();
   });
   const handleSelect = (description: any) => {
     setValue(description, false);
@@ -333,15 +329,12 @@ const LocationCard = (props: any) => {
               >
                 <ToggleButton
                   value="Pick up"
-                  // role="link"
-                  // href="#"
                   onClick={() => {
                     setresturantOrderType(
                       resturantOrderType === 'pickup' ? undefined : 'pickup',
                     );
                   }}
                   className="selected-btn"
-                  aria-label="PickUp ,  Activating this element will cause results to load below "
                 >
                   PickUp
                 </ToggleButton>
@@ -355,22 +348,8 @@ const LocationCard = (props: any) => {
                     )
                   }
                   className="selected-btn"
-                  aria-label=" Curbside ,  Activating this element will cause results to load below "
                 >
                   Curbside
-                  {/* <span
-                    style={{
-                      position: 'absolute',
-                      left: '-10000px',
-                      top: 'auto',
-                      width: '1px',
-                      height: '1px',
-                      overflow: 'hidden',
-                    }}
-                  >
-                    {' '}
-                    Activating this element will cause results to load below
-                  </span> */}
                 </ToggleButton>
                 <ToggleButton
                   value="Delivery"
@@ -382,13 +361,12 @@ const LocationCard = (props: any) => {
                     );
                   }}
                   className="selected-btn"
-                  aria-label=" Delivery , Enter your address below to get nearby restaurants"
                 >
                   Delivery
                 </ToggleButton>
               </ToggleButtonGroup>
             </Grid>
-            <Grid item xs={12} style={{ position: 'relative' }} ref={ref}>
+            <Grid item xs={12} style={{ position: 'relative' }}>
               {resturantOrderType == 'delivery' ? (
                 <TextField
                   aria-label="Enter your address..."
@@ -492,7 +470,6 @@ const LocationCard = (props: any) => {
                       aria-label="USE YOUR CURRENT LOCATION"
                       onClick={() => {
                         setresturantOrderType(undefined);
-                        setAlignment('web');
                         findNearByRestaurants();
                         setShowNotFoundMessage(false);
                       }}
