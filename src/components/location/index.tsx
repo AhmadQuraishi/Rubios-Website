@@ -192,6 +192,9 @@ const LocationCard = (props: any) => {
         <Card>
           <Grid container spacing={2} className="location-sidebar">
             <Grid item xs={12}>
+              <Typography variant="h1" className="sr-only">
+                Choose your location
+              </Typography>
               <ToggleButtonGroup
                 value={alignment}
                 exclusive
@@ -205,6 +208,7 @@ const LocationCard = (props: any) => {
                     )
                   }
                   className="selected-btn"
+                  aria-label="PickUp ,  Activating this element will cause results to load below "
                 >
                   PickUp
                 </ToggleButton>
@@ -218,6 +222,7 @@ const LocationCard = (props: any) => {
                     )
                   }
                   className="selected-btn"
+                  aria-label=" Curbside ,  Activating this element will cause results to load below "
                 >
                   Curbside
                 </ToggleButton>
@@ -231,6 +236,7 @@ const LocationCard = (props: any) => {
                     )
                   }
                   className="selected-btn"
+                  aria-label=" Delivery , Enter your address below to get nearby restaurants"
                 >
                   Delivery
                 </ToggleButton>
