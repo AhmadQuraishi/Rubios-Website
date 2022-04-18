@@ -94,26 +94,6 @@ const OrderConfirmedCard = ({ orderObj, restaurantObj }: any) => {
 
   useEffect(() => {
     setOrder(orderObj);
-    if (orderObj) {
-      let recentorders = localStorage.getItem('recentorders');
-      if (recentorders) recentorders = JSON.parse(recentorders);
-      const items = JSON.stringify([
-        {
-          userid: '',
-          recentorders: [
-            {
-              orderid: orderObj.oloid,
-              orderref: orderObj.orderref,
-              basketid: orderObj.id,
-              date: moment(new Date()).format('DD/MM/YYYY'),
-            },
-          ],
-        },
-      ]);
-      if (orderObj) {
-        localStorage.setItem('recentorders', items);
-      }
-    }
   }, [orderObj]);
 
   useEffect(() => {

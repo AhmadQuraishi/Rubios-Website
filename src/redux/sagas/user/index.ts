@@ -102,6 +102,8 @@ function* userFavoriteOrdersHandler(action: any): any {
 function* deleleteFavOrderHandler(action: any): any {
   try {
     const response = yield call(requestDeleteFavOrder, action.favid);
+    const favOrders = yield call(requestUserFavoriteOrders);
+    yield put(getUserFavoritetOrdersSuccess(favOrders));
     yield put(deleteFavOrderSuccess());
   } catch (error) {
     yield put(deleteFavOrderFailure(error));
