@@ -260,7 +260,7 @@ const Checkout = () => {
           phone: formDataValue.phone,
         };
       }
-      console.log('basketPayload', basketPayload)
+      console.log('basketPayload', basketPayload);
       dispatch(
         validateBasket(
           basket?.id,
@@ -299,7 +299,7 @@ const Checkout = () => {
                             </Typography>
                           </Grid>
                           <Grid item xs={12}>
-                            <Typography variant="h1" title="PICK UP INFO">
+                            <Typography variant="h2" title="PICK UP INFO">
                               PICK UP INFO
                             </Typography>
                           </Grid>
@@ -316,7 +316,7 @@ const Checkout = () => {
                             </Typography>
                           </Grid>
                           <Grid item xs={12}>
-                            <Typography variant="h1" title="PICK UP INFO">
+                            <Typography variant="h2" title="PICK UP INFO">
                               CURBSIDE PICK UP
                             </Typography>
                           </Grid>
@@ -333,7 +333,7 @@ const Checkout = () => {
                             </Typography>
                           </Grid>
                           <Grid item xs={12}>
-                            <Typography variant="h1" title="PICK UP INFO">
+                            <Typography variant="h2" title="PICK UP INFO">
                               DELIVERY INFO
                             </Typography>
                           </Grid>
