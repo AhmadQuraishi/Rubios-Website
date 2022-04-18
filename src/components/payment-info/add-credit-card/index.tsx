@@ -14,6 +14,7 @@ import { ResponseBasket } from '../../../types/olo-api';
 import { useDispatch, useSelector } from 'react-redux';
 import { displayToast } from '../../../helpers/toast';
 import { updateBasketBillingSchemes } from '../../../redux/actions/basket/checkout';
+import { getUniqueId } from '../../../helpers/checkout';
 
 const cardTypes: any = {
   amex: 'Amex',
@@ -93,19 +94,22 @@ const AddCreditCard = () => {
   }));
 
   React.useEffect(() => {
-    const initializeCreditCardElements = async () => {
-      const elements = new CreditCardElements();
-      // for production use
-      // const elements = new CreditCardElements('production');
+    if(openAddCreditCard){
+      const initializeCreditCardElements = async () => {
+        const elements = new CreditCardElements();
+        // for production use
+        // const elements = new CreditCardElements('production');
 
-      elements.applyStyles(styleObject);
+        elements.applyStyles(styleObject);
 
-      setCreditCardElements(elements);
+        setCreditCardElements(elements);
 
-      await elements.create();
-    };
+        await elements.create();
+      };
 
-    initializeCreditCardElements();
+      initializeCreditCardElements();
+    }
+
   }, [openAddCreditCard]);
 
   const handleCloseAddCreditCard = () => {
@@ -157,8 +161,10 @@ const AddCreditCard = () => {
       return;
     }
 
-    const cardObj: any = [
+    let cardObj: any = [
       {
+        localId: getUniqueId(),
+        selected: false,
         billingmethod: 'creditcardtoken',
         amount: 0,
         tipportion: 0.0,
@@ -172,11 +178,17 @@ const AddCreditCard = () => {
       },
     ];
 
+    if (billingSchemes && billingSchemes.length === 0) {
+      cardObj[0].amount = basket && basket?.total ? basket?.total : 0;
+    }
+
+    console.log('cardObj', cardObj)
+    console.log('billingSchemes.length', billingSchemes.length)
+    console.log('billingSchemes.length === 0', billingSchemes.length === 0)
+
     let billingSchemesNewArray = billingSchemes;
     Array.prototype.push.apply(billingSchemesNewArray, cardObj);
 
-    console.log('cardObj', cardObj);
-    console.log('billingSchemesNewArray', billingSchemesNewArray);
     dispatch(updateBasketBillingSchemes(billingSchemesNewArray));
     displayToast('SUCCESS', 'Card Added');
     handleCloseAddCreditCard();

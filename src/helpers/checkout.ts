@@ -233,3 +233,37 @@ export function createTimeWantedPayload(time: string) {
   };
   return payload;
 }
+
+export function getUniqueId() {
+  return Date.now().toString(36) + Math.random().toString(36).substr(2);
+}
+
+export function getBillingSchemesStats(billingSchemes: any) {
+  let billingSchemeStats: any = {
+    creditCard: 0,
+    giftCard: 0,
+    selectedCreditCard: 0,
+    selectedGiftCard: 0,
+  };
+
+  billingSchemes.forEach((account: any) => {
+    billingSchemeStats = {
+      creditCard:
+        account.billingmethod === 'creditcardtoken'
+          ? billingSchemeStats.creditCard + 1
+          : billingSchemeStats.creditCard,
+      giftCard:
+        account.billingmethod === 'storedvalue'
+          ? billingSchemeStats.giftCard + 1
+          : billingSchemeStats.giftCard,
+      selectedCreditCard: account.selected
+        ? billingSchemeStats.selectedCreditCard + 1
+        : billingSchemeStats.selectedCreditCard,
+      selectedGiftCard: account.selected
+        ? billingSchemeStats.selectedGiftCard + 1
+        : billingSchemeStats.selectedGiftCard,
+    };
+  });
+
+  return billingSchemeStats;
+}
