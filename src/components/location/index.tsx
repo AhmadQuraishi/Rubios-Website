@@ -474,7 +474,6 @@ const LocationCard = (props: any) => {
                       aria-label="USE YOUR CURRENT LOCATION"
                       onClick={() => {
                         setresturantOrderType(undefined);
-                        setAlignment('web');
                         findNearByRestaurants();
                         setShowNotFoundMessage(false);
                       }}
