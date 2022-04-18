@@ -261,16 +261,16 @@ const Checkout = () => {
         };
       }
       console.log('basketPayload', basketPayload)
-      // dispatch(
-      //   validateBasket(
-      //     basket?.id,
-      //     basketPayload,
-      //     user,
-      //     customFields,
-      //     deliverymode,
-      //     deliveryAddress,
-      //   ),
-      // );
+      dispatch(
+        validateBasket(
+          basket?.id,
+          basketPayload,
+          user,
+          customFields,
+          deliverymode,
+          deliveryAddress,
+        ),
+      );
     }
   };
 
