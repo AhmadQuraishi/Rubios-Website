@@ -38,7 +38,7 @@ const pickupAddress = (restaurant: any, order: any) => {
       <Typography variant="caption" className="label">
         {order && order.deliverymode ? locationTitle(order.deliverymode) : ''}
       </Typography>
-      <Typography variant="h4">
+      <Typography style={{ textTransform: 'uppercase' }} variant="h1">
         {restaurant && restaurant.slug ? restaurant.slug : ''}
       </Typography>
       <Typography variant="h6">
@@ -61,7 +61,7 @@ const deliveryAddress = (order: any) => {
       <Typography variant="caption" className="label">
         {order && order.deliverymode ? locationTitle(order.deliverymode) : ''}
       </Typography>
-      <Typography variant="h4">
+      <Typography style={{ textTransform: 'uppercase' }} variant="h1">
         {order && order.deliveryaddress && order.deliveryaddress.building
           ? order.deliveryaddress.building
           : ''}
@@ -94,26 +94,6 @@ const OrderConfirmedCard = ({ orderObj, restaurantObj }: any) => {
 
   useEffect(() => {
     setOrder(orderObj);
-    if (orderObj) {
-      let recentorders = localStorage.getItem('recentorders');
-      if (recentorders) recentorders = JSON.parse(recentorders);
-      const items = JSON.stringify([
-        {
-          userid: '',
-          recentorders: [
-            {
-              orderid: orderObj.oloid,
-              orderref: orderObj.orderref,
-              basketid: orderObj.id,
-              date: moment(new Date()).format('DD/MM/YYYY'),
-            },
-          ],
-        },
-      ]);
-      if (orderObj) {
-        localStorage.setItem('recentorders', items);
-      }
-    }
   }, [orderObj]);
 
   useEffect(() => {
@@ -126,12 +106,12 @@ const OrderConfirmedCard = ({ orderObj, restaurantObj }: any) => {
         <Typography variant="caption" className="label" title="ORDER CONFIRMED">
           ORDER CONFIRMED
         </Typography>
-        <Typography variant="h4" title="WE'LL TAKE IT FROM HERE.">
-          WE'LL TAKE IT FROM HERE.
+        <Typography variant="h1" title="WE'LL TAKE IT FROM HERE. SEE YOU SOON.">
+          WE'LL TAKE IT FROM HERE. SEE YOU SOON.
         </Typography>
-        <Typography variant="h4" title="SEE YOU SOON.">
-          SEE YOU SOON.
-        </Typography>
+        {/*<Typography variant="h1" title="SEE YOU SOON.">*/}
+        {/*  */}
+        {/*</Typography>*/}
         <br />
         {order && order.deliverymode === DeliveryModeEnum.delivery
           ? deliveryAddress(order)

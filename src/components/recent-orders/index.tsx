@@ -28,7 +28,7 @@ import moment from 'moment';
 import { getUpsellsRequest } from '../../redux/actions/basket/upsell/Get';
 
 const RecentOrders = () => {
-  const [recentorders, setOrders] = React.useState([]);
+  const [recentorders, setOrders] = React.useState<any>([]);
   const [clickAction, setClickAction] = useState(false);
   const [open, setOpen] = useState(false);
   const [idtoFav, setId] = useState('');
@@ -39,7 +39,7 @@ const RecentOrders = () => {
   const { restaurant, error } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
-
+  const { providerToken } = useSelector((state: any) => state.providerReducer);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const createBasketObj = useSelector(
@@ -85,7 +85,13 @@ const RecentOrders = () => {
 
   useEffect(() => {
     if (userRecentOrders && userRecentOrders.orders) {
-      setOrders(userRecentOrders.orders);
+      let orders: any[] = [];
+      userRecentOrders.orders.map((item: any) => {
+        if (isWebRecentOrder(item.oloid)) {
+          orders.push(item);
+        }
+      });
+      setOrders(orders);
     }
   }, [userRecentOrders]);
 
@@ -101,13 +107,33 @@ const RecentOrders = () => {
   };
   //Set order as favorite
   const handleClickOpen = (favid: string, products: any, price: string) => {
-    console.log(items);
+    debugger;
     if (products && products.length > 0) {
       setItems(products);
     }
-    setId(favid);
-    setPrice(price);
-    setOpen(true);
+    let recentorders = localStorage.getItem('recentorders');
+    if (recentorders) {
+      let recentordersList = JSON.parse(recentorders);
+      let order = recentordersList.find((x: any) => x.orderid == favid);
+      if (order) {
+        setId(order.basketid);
+        setPrice(price);
+        setOpen(true);
+      }
+    }
+  };
+
+  const isWebRecentOrder = (id: any) => {
+    let result = false;
+    let recentorders = localStorage.getItem('recentorders');
+    if (recentorders) {
+      let recentordersList = JSON.parse(recentorders);
+      let order = recentordersList.find((x: any) => x.orderid == id);
+      if (order && order.isMarkFav === false) {
+        result = true;
+      }
+    }
+    return result;
   };
 
   const handleClose = () => {
@@ -153,7 +179,11 @@ const RecentOrders = () => {
                       style={{ cursor: 'pointer' }}
                       className="grey"
                       onClick={() => {
-                        handleClickOpen(order.id, order.products, order.total);
+                        handleClickOpen(
+                          order.oloid,
+                          order.products,
+                          order.total,
+                        );
                       }}
                     />
                   </Grid>
@@ -257,7 +287,7 @@ const RecentOrders = () => {
           })}
           onSubmit={async (values) => {
             const body = {
-              basketid: 'a68dfa18-c063-4a59-a007-a048d42bf75d',
+              basketid: idtoFav,
               description: values.favorite_name,
               isdefault: false,
             };

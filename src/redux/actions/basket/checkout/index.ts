@@ -13,6 +13,7 @@ import {
 } from '../../../../types/olo-api';
 import { displayToast } from '../../../../helpers/toast';
 import { navigateAppAction } from '../../navigate-app';
+import { setRecentOrders } from '../../../../helpers/setRecentOrders';
 
 export function getSingleRestaurantCalendar(
   id: number,
@@ -232,9 +233,13 @@ export function submitBasketSinglePayment(
   };
 }
 
-export function submitBasketSinglePaymentSuccess(data: ResponseBasket) {
+export function submitBasketSinglePaymentSuccess(
+  data: ResponseBasket,
+  basketid: string = '',
+) {
   displayToast('SUCCESS', 'Order has been placed.');
   navigateAppAction(`/order-confirmation/${data.id}`);
+  setRecentOrders(data, basketid);
   return {
     type: basketActionsTypes.SUBMIT_BASKET_SINGLE_PAYMENT_SUCCESS,
     payload: data,
@@ -319,5 +324,39 @@ export function setBasketDeliveryAddressFailure(error: any) {
   return {
     type: basketActionsTypes.SET_BASKET_DELIVERY_ADDRESS_FAILURE,
     error: error,
+  };
+}
+
+export function getBasketAllowedCardsRequest(basketid: string) {
+  return {
+    type: basketActionsTypes.GET_BASKET_ALLOWED_CARDS_REQUEST,
+    basketid,
+  };
+}
+
+export function getBasketAllowedCardsRequestSuccess(data: ResponseBasket) {
+  return {
+    type: basketActionsTypes.GET_BASKET_ALLOWED_CARDS_REQUEST_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getBasketAllowedCardsRequestFailure(error: any) {
+  displayToast(
+    'ERROR',
+    error?.response?.data?.message
+      ? error.response.data.message
+      : 'ERROR! Please Try again later',
+  );
+  return {
+    type: basketActionsTypes.GET_BASKET_ALLOWED_CARDS_REQUEST_FAILURE,
+    error: error,
+  };
+}
+
+export function updateBasketBillingSchemes(data: any) {
+  return {
+    type: basketActionsTypes.UPDATE_BASKET_BILLING_SCHEMES,
+    payload: data,
   };
 }

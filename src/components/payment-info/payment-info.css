@@ -5,6 +5,10 @@
   text-align: center;
   margin: 40px 0px;
 }
+.payment-form .card-details {
+  text-align: center;
+  margin: 40px 0px;
+}
 .payment-form .add-gift .label {
   font-size: 16px !important;
 }
@@ -44,6 +48,9 @@
     padding: 0px 35px;
   }
   .payment-form .add-gift {
+    margin: 40px 0px 20px;
+  }
+  .payment-form .card-details {
     margin: 40px 0px 20px;
   }
 }

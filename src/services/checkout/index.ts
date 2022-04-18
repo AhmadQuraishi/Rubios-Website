@@ -125,3 +125,61 @@ export const submitSinglePaymentBasket = (
     throw error;
   }
 };
+
+export const getBasketAllowedCards = (basketid: string) => {
+  try {
+    const url = process.env.REACT_APP_OLO_API || '';
+    return axios
+      .get(url + `/baskets/${basketid}/billingschemes`)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.log(error.response);
+        throw error;
+      });
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getGiftCardBalance = (
+  basketId: string,
+  billingSchemeId: string,
+  body: any,
+) => {
+  try {
+    console.log('works 2');
+    const url = process.env.REACT_APP_OLO_API || '';
+    return axios
+      .post(
+        url +
+          `/baskets/${basketId}/billingschemes/${billingSchemeId}/retrievebalance`,
+        body,
+      )
+      .then((response) => response.data)
+      .catch((error) => {
+        console.log(error.response);
+        throw error;
+      });
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const verifyGiftCardPinRequirement = (
+  billingSchemeId: string,
+  body: any,
+) => {
+  try {
+    console.log('works 2');
+    const url = process.env.REACT_APP_OLO_API || '';
+    return axios
+      .post(url + `/billingschemes/${billingSchemeId}/binvalidation`, body)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.log(error.response);
+        throw error;
+      });
+  } catch (error) {
+    throw error;
+  }
+};

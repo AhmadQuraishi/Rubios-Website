@@ -68,10 +68,6 @@ const FavoriteOrders = () => {
   };
   const deleteFavOrderHandler = () => {
     dispatch(deleteFavOrder(idtoDelete));
-    setTimeout(() => {
-      dispatch(getUserFavoritetOrders());
-      setId(0);
-    }, 200);
     setOpen(false);
   };
   useEffect(() => {
@@ -171,32 +167,33 @@ const FavoriteOrders = () => {
                       }}
                       className="order-detail-panel"
                     >
-                      {forder.products
-                        .slice(0, 3)
-                        .map((product: any, index: number) => (
-                          <Fragment>
-                            {index == 2 && forder.products.length > 3 ? (
-                              <Typography
-                                className="order-detail"
-                                variant="body2"
-                                title={product.name}
-                                key={product.index + product.quantity}
-                              >
-                                {product.quantity}x{' '}
-                                {product.name.substring(0, 19)}...
-                              </Typography>
-                            ) : (
-                              <Typography
-                                className="order-detail"
-                                variant="body2"
-                                title={product.name}
-                                key={product.index + product.quantity}
-                              >
-                                {product.quantity}x {product.name}
-                              </Typography>
-                            )}
-                          </Fragment>
-                        ))}
+                      {forder.products &&
+                        forder.products
+                          .slice(0, 3)
+                          .map((product: any, index: number) => (
+                            <Fragment>
+                              {index == 2 && forder.products.length > 3 ? (
+                                <Typography
+                                  className="order-detail"
+                                  variant="body2"
+                                  title={product.name}
+                                  key={product.index + product.quantity}
+                                >
+                                  {product.quantity}x{' '}
+                                  {product.name.substring(0, 19)}...
+                                </Typography>
+                              ) : (
+                                <Typography
+                                  className="order-detail"
+                                  variant="body2"
+                                  title={product.name}
+                                  key={product.index + product.quantity}
+                                >
+                                  {product.quantity}x {product.name}
+                                </Typography>
+                              )}
+                            </Fragment>
+                          ))}
 
                       <Typography
                         className="order-Link"

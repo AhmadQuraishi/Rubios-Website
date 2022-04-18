@@ -10,8 +10,22 @@ const INITIAL_STATE = {
     data: null,
     error: {},
   },
+  payment: {
+    allowedCards: {
+      loading: false,
+      data: null,
+      error: null,
+    },
+    defaultCards: {
+      loading: false,
+      data: null,
+      error: null,
+    },
+    billingSchemes: [],
+  },
   basketType: 'New',
   orderConfirmation: false,
+
   error: null,
 };
 
@@ -112,6 +126,47 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
       return {
         ...state,
         orderConfirmation: false,
+      };
+    case basketActionsTypes.GET_BASKET_ALLOWED_CARDS_REQUEST:
+      return {
+        ...state,
+        payment: {
+          ...state.payment,
+          allowedCards: {
+            loading: false,
+          },
+        },
+      };
+    case basketActionsTypes.GET_BASKET_ALLOWED_CARDS_REQUEST_SUCCESS:
+      return {
+        ...state,
+        payment: {
+          ...state.payment,
+          allowedCards: {
+            loading: false,
+            data: action.payload,
+            error: null,
+          },
+        },
+      };
+    case basketActionsTypes.GET_BASKET_ALLOWED_CARDS_REQUEST_FAILURE:
+      return {
+        ...state,
+        payment: {
+          ...state.payment,
+          allowedCards: {
+            loading: false,
+            error: action.error,
+          },
+        },
+      };
+    case basketActionsTypes.UPDATE_BASKET_BILLING_SCHEMES:
+      return {
+        ...state,
+        payment: {
+          ...state.payment,
+          billingSchemes: action.payload,
+        },
       };
     case userTypes.USER_LOGOUT:
       return {
