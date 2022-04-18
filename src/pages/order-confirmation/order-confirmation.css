@@ -64,7 +64,7 @@
 }
 @media screen and (max-width: 468px) {
   .order-confirmation .card.MuiPaper-root {
-    min-height: 890px;
+    max-height: 890px;
   }
 }
 

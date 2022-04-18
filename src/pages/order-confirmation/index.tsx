@@ -85,10 +85,13 @@ const OrderConfirmation = () => {
                         : 'Join today for completing the form below'}
                     </Typography>
                     <br />
-                    <img
-                      className="phone-icon"
-                      src={require('../../assets/imgs/phone-icon.png')}
-                    />
+                    {authToken?.authtoken
+                    ? ''
+                    : (<img
+                        className="phone-icon"
+                        src={require('../../assets/imgs/phone-icon.png')}
+                      />)
+                    }
                   </Grid>
                   {authToken?.authtoken ? (
                     <Grid item xs={12} sm={12} md={12} lg={12}>
