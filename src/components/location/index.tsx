@@ -68,7 +68,6 @@ const LocationCard = (props: any) => {
   };
 
   const getAddress = (place: any) => {
-    debugger;
     const address = {
       address1: '',
       address2: '',
@@ -160,7 +159,6 @@ const LocationCard = (props: any) => {
       displayToast('ERROR', 'Please select atleast one order type');
       return false;
     }
-    debugger;
     let restaurantObj = null;
     if (resturantOrderType == 'delivery') {
       restaurantObj = deliveryRasturants.find((x: any) => x.id === storeID);

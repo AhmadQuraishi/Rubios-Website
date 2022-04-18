@@ -14,6 +14,7 @@ import { ResponseBasket, ResponseBasketValidation } from '../../types/olo-api';
 import { DeliveryModeEnum } from '../../types/olo-api/olo-api.enums';
 import moment from 'moment';
 import {
+  getBasketAllowedCardsRequest,
   getSingleRestaurantCalendar,
   validateBasket,
 } from '../../redux/actions/basket/checkout';
@@ -73,6 +74,7 @@ const Checkout = () => {
         ),
       );
       dispatch(validateBasket(basket.id, null, null, [], null, null));
+      dispatch(getBasketAllowedCardsRequest(basket.id));
       setRunOnce(false);
     }
   }, [basket]);
@@ -258,6 +260,7 @@ const Checkout = () => {
           phone: formDataValue.phone,
         };
       }
+      console.log('basketPayload', basketPayload)
       dispatch(
         validateBasket(
           basket?.id,
