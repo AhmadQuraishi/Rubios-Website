@@ -41,10 +41,14 @@ const Location = () => {
 
   const [mapCenter, setMapCenter] = useState<any>();
   const [showNearBy, setShowNearBy] = useState(false);
+  const [LatLng, setLatLng] = useState<any>();
   const [orderType, setOrderType] = useState<string>();
   const [zoom, setZoom] = useState<number>(7);
   const [nearByRestaurantsFound, setNearByRestaurantsFound] = useState(false);
+  const [actionPerform, setActionPerform] = useState(false);
   const dispatch = useDispatch();
+  const [deliveryRasturants, setDeliveryRasturants] = useState<any[]>();
+  const [allResturants, setAllResturants] = useState<any[]>();
 
   useEffect(() => {
     setMapCenter({
@@ -77,7 +81,11 @@ const Location = () => {
   };
 
   useEffect(() => {
-    if (showNearBy) {
+    if (LatLng && actionPerform) {
+      if (LatLng) {
+        getNearByRestaurants(LatLng.lat, LatLng.lng);
+      }
+    } else if (showNearBy) {
       navigator.geolocation.getCurrentPosition(
         function (position) {
           //getNearByRestaurants(40.7054008, -74.0132198);
@@ -85,6 +93,7 @@ const Location = () => {
             position.coords.latitude,
             position.coords.longitude,
           );
+          setShowNearBy(true);
           setZoom(7);
         },
         function () {
@@ -93,25 +102,45 @@ const Location = () => {
         },
       );
     }
-  }, [showNearBy]);
+  }, [showNearBy, LatLng]);
+
 
   useEffect(() => {
     if (restaurants && restaurants.restaurants) {
       if (restaurants.restaurants.length === 0) {
-        if (showNearBy) {
+        if (showNearBy || LatLng) {
           setShowNearBy(false);
           setNearByRestaurantsFound(false);
-          displayToast(
-            'ERROR',
-            "We could not find any Rubio's within 10 Miles of Your Current Location.",
-          );
+          if (LatLng) {
+            setDeliveryRasturants([]);
+            displayToast(
+              'ERROR',
+              "We could not find any Rubio's within 10 miles of your address.",
+            );
+          } else {
+            displayToast(
+              'ERROR',
+              "We could not find any Rubio's within 10 miles of your current location.",
+            );
+          }
+          setLatLng(null);
           dispatch(getResturantListRequest());
           setZoom(7);
+          setActionPerform(false);
         }
       } else {
-        if (showNearBy) {
-          setShowNearBy(false);
-          setNearByRestaurantsFound(true);
+        if (showNearBy || LatLng) {
+          if (LatLng) {
+            setDeliveryRasturants(restaurants.restaurants);
+            setActionPerform(false);
+          }
+          setLatLng(null);
+          if (showNearBy) {
+            setShowNearBy(false);
+            setNearByRestaurantsFound(true);
+          }
+        } else {
+          setAllResturants(restaurants.restaurants);
         }
         setMapCenter({
           lat: restaurants.restaurants[0].latitude,
@@ -173,7 +202,12 @@ const Location = () => {
           <LoadingBar />
         </div>
       )}
-      <LoadScript googleMapsApiKey="AIzaSyCWKuRHEkeFWOy0JDMBT7Z4YApPVkZYHFI">
+      <LoadScript
+        googleMapsApiKey={
+          process.env.REACT_APP_GOOGLE_API_KEY?.toString() || ''
+        }
+        libraries={['places']}
+      >
         <GoogleMap
           center={mapCenter}
           zoom={zoom}
@@ -193,10 +227,14 @@ const Location = () => {
           </div>
           {markers}
           <LocationCard
-            isNearByRestaurantList={nearByRestaurantsFound}
-            restaurants={(restaurants && restaurants.restaurants) || []}
-            setOrderTypeMain={setOrderType}
-            setShowNearBy={setShowNearBy}
+             isNearByRestaurantList={nearByRestaurantsFound}
+             restaurants={allResturants}
+             deliveryRasturants={deliveryRasturants}
+             setOrderTypeMain={setOrderType}
+             setShowNearBy={setShowNearBy}
+             setLatLng={setLatLng}
+             setActionPerform={setActionPerform}
+             setDeliveryRasturants={setDeliveryRasturants}
           />
         </GoogleMap>
       </LoadScript>

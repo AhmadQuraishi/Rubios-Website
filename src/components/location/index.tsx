@@ -11,14 +11,121 @@ import React, { useEffect, useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import './location.css';
 import { ResponseRestaurant } from '../../types/olo-api';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setResturantInfoRequest } from '../../redux/actions/restaurant';
 import { displayToast } from '../../helpers/toast';
-import { SyntheticEventData } from 'react-dom/test-utils';
+import usePlacesAutocomplete, {
+  getDetails,
+  getGeocode,
+  getLatLng,
+} from 'use-places-autocomplete';
+import useOnclickOutside from 'react-cool-onclickoutside';
+import { setDeliveryAddress } from '../../redux/actions/location/delivery-address';
 
 const LocationCard = (props: any) => {
-  const { restaurants, isNearByRestaurantList, setShowNearBy } = props;
+  const {
+    ready,
+    value,
+    suggestions: { status, data },
+    setValue,
+    clearSuggestions,
+  } = usePlacesAutocomplete({
+    requestOptions: {
+      location: new google.maps.LatLng({ lat: 37.772, lng: -122.214 }),
+      radius: 200 * 1000,
+    },
+  });
+  const ref = useOnclickOutside(() => {
+    clearSuggestions();
+  });
+  const handleSelect = (description: any) => {
+    setValue(description, false);
+    clearSuggestions();
+    setActionPerform(true);
+    getGeocode({ address: description })
+      .then((results) => {
+        getLatLng(results[0]).then(({ lat, lng }) => {
+          const address = getAddress(results[0]);
+          if (address.address1 !== '') {
+            setLatLng({ lat: lat, lng: lng });
+            setDeliveryAddressString(getAddress(results[0]));
+          } else {
+            setActionPerform(false);
+            displayToast(
+              'ERROR',
+              'Invalid Address, Please enter another address',
+            );
+          }
+        });
+      })
+
+      .catch((error) => {
+        console.log('Error: ', error);
+        displayToast('ERROR', 'Selected address not found');
+        setActionPerform(false);
+      });
+  };
+
+  const getAddress = (place: any) => {
+    const address = {
+      address1: '',
+      address2: '',
+      city: '',
+      zip: '',
+      state: '',
+    };
+
+    if (!Array.isArray(place?.address_components)) {
+      return address;
+    }
+
+    place.address_components.forEach((component: any) => {
+      const types = component.types;
+      const value = component.long_name;
+      const svalue = component.short_name;
+
+      if (types.includes('locality')) {
+        address.city = value;
+      } else if (types.includes('sublocality') && address.city === '') {
+        address.city = value;
+      } else if (types.includes('street_number')) {
+        address.address1 = address.address1 + value + ' ';
+      } else if (types.includes('route')) {
+        address.address1 = address.address1 + value + '';
+      } else if (types.includes('neighborhood')) {
+        address.address2 = address.address2 + value + ' ';
+      } else if (types.includes('administrative_area_level_2')) {
+        address.address2 = address.address2 + value + '';
+      } else if (types.includes('administrative_area_level_1')) {
+        address.state = svalue;
+      } else if (types.includes('postal_code')) {
+        address.zip = value;
+      }
+    });
+
+    if (address.address1 === '' || address.city === '' || address.zip == '') {
+      return {
+        address1: '',
+        address2: '',
+        city: '',
+        zip: '',
+        state: '',
+      };
+    }
+
+    return address;
+  };
+
+  const {
+    restaurants,
+    isNearByRestaurantList,
+    setShowNearBy,
+    setLatLng,
+    setActionPerform,
+    deliveryRasturants,
+    setDeliveryRasturants,
+  } = props;
   const [searchText, setSearchText] = useState<string>();
   const [resturantOrderType, setresturantOrderType] = useState<string>();
   const [showNotFoundMessage, setShowNotFoundMessage] = useState(false);
@@ -27,6 +134,7 @@ const LocationCard = (props: any) => {
   const { restaurant, orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
+  const [deliveryAddressString, setDeliveryAddressString] = useState<any>();
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -51,7 +159,12 @@ const LocationCard = (props: any) => {
       displayToast('ERROR', 'Please select atleast one order type');
       return false;
     }
-    const restaurantObj = restaurants.find((x: any) => x.id === storeID);
+    let restaurantObj = null;
+    if (resturantOrderType == 'delivery') {
+      restaurantObj = deliveryRasturants.find((x: any) => x.id === storeID);
+    } else {
+      restaurantObj = restaurants.find((x: any) => x.id === storeID);
+    }
     if (restaurantObj) {
       if (
         restaurant == null ||
@@ -61,6 +174,7 @@ const LocationCard = (props: any) => {
         dispatch(
           setResturantInfoRequest(restaurantObj, resturantOrderType || ''),
         );
+        dispatch(setDeliveryAddress(deliveryAddressString));
         displayToast('SUCCESS', 'Location changed to ' + restaurantObj.name);
       }
       navigate('/menu/' + restaurantObj.slug);
@@ -68,15 +182,30 @@ const LocationCard = (props: any) => {
   };
 
   useEffect(() => {
-    if (isNearByRestaurantList) {
+    setShowNotFoundMessage(false);
+    if (isNearByRestaurantList && resturantOrderType != 'delivery') {
       setfilteredRestaurants(restaurants);
+    } else if (resturantOrderType == 'delivery') {
+      setfilteredRestaurants(
+        (deliveryRasturants &&
+          deliveryRasturants.filter((x: any) => x.candeliver === true)) ||
+          [],
+      );
     } else {
       setfilteredRestaurants(undefined);
     }
-  }, [isNearByRestaurantList, restaurants]);
+  }, [isNearByRestaurantList, restaurants, deliveryRasturants]);
 
   const getSearchResults = () => {
     setShowNotFoundMessage(false);
+    if (resturantOrderType === 'delivery') {
+      setfilteredRestaurants(
+        (deliveryRasturants &&
+          deliveryRasturants.filter((x: any) => x.candeliver === true)) ||
+          [],
+      );
+      return false;
+    }
     setfilteredRestaurants(isNearByRestaurantList ? restaurants : []);
     if (resturantOrderType || searchText) {
       let updatedRestaurants = [];
@@ -177,6 +306,8 @@ const LocationCard = (props: any) => {
 
   const findNearByRestaurants = () => {
     setShowNearBy(true);
+    setLatLng(null);
+    setActionPerform(true);
   };
 
   return (
@@ -192,6 +323,9 @@ const LocationCard = (props: any) => {
         <Card>
           <Grid container spacing={2} className="location-sidebar">
             <Grid item xs={12}>
+              <Typography variant="h1" className="sr-only">
+                Choose your location
+              </Typography>
               <ToggleButtonGroup
                 value={alignment}
                 exclusive
@@ -199,11 +333,11 @@ const LocationCard = (props: any) => {
               >
                 <ToggleButton
                   value="Pick up"
-                  onClick={() =>
+                  onClick={() => {
                     setresturantOrderType(
                       resturantOrderType === 'pickup' ? undefined : 'pickup',
-                    )
-                  }
+                    );
+                  }}
                   className="selected-btn"
                 >
                   PickUp
@@ -223,67 +357,130 @@ const LocationCard = (props: any) => {
                 </ToggleButton>
                 <ToggleButton
                   value="Delivery"
-                  onClick={() =>
+                  onClick={() => {
                     setresturantOrderType(
                       resturantOrderType === 'delivery'
                         ? undefined
                         : 'delivery',
-                    )
-                  }
+                    );
+                  }}
                   className="selected-btn"
                 >
                   Delivery
                 </ToggleButton>
               </ToggleButtonGroup>
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                aria-label="City, Zip Code, State"
-                label="City, Zip Code, State"
-                title="City, Zip Code, State"
-                aria-required="true"
-                onKeyPress={(e: any) => {
-                  if (e.key === 'Enter') {
-                    setSearchText(e.target.value);
-                    getSearchResults();
-                  }
-                }}
-                value={searchText || ''}
-                type="search"
-                onChange={handleChange}
-                sx={{ fontSize: '14px' }}
-                InputProps={{
-                  endAdornment: <Icon />,
-                }}
-                variant="outlined"
-              />
+            <Grid item xs={12} style={{ position: 'relative' }} ref={ref}>
+              {resturantOrderType == 'delivery' ? (
+                <TextField
+                  aria-label="Enter your address..."
+                  label="Enter your address..."
+                  title="Enter your address..."
+                  aria-required="true"
+                  autoComplete="false"
+                  value={value}
+                  type="text"
+                  onChange={(e) => {
+                    setShowNotFoundMessage(false);
+                    if (e.target.value === '') {
+                      setValue('');
+                      setActionPerform(false);
+                      setDeliveryRasturants([]);
+                    } else {
+                      setValue(e.target.value);
+                    }
+                  }}
+                  sx={{ fontSize: '14px', paddingRight: '0px' }}
+                  variant="outlined"
+                  onKeyPress={(e: any) => {
+                    if (e.key === 'Enter' && e.target.value !== '') {
+                      if (data.length === 0) {
+                        setShowNotFoundMessage(true);
+                      } else {
+                        setShowNotFoundMessage(false);
+                      }
+                    }
+                  }}
+                />
+              ) : (
+                <TextField
+                  aria-label="City, Zip Code, State"
+                  label="City, Zip Code, State"
+                  title="City, Zip Code, State"
+                  aria-required="true"
+                  value={searchText || ''}
+                  autoComplete="false"
+                  type="search"
+                  onChange={handleChange}
+                  sx={{ fontSize: '14px', paddingRight: '0px' }}
+                  onKeyPress={(e: any) => {
+                    if (e.key === 'Enter') {
+                      setSearchText(e.target.value);
+                      getSearchResults();
+                    }
+                  }}
+                  InputProps={{
+                    endAdornment: <Icon />,
+                  }}
+                  variant="outlined"
+                />
+              )}
+              {status === 'OK' && (
+                <div className="autocomplete-combo">
+                  {value !== '' &&
+                    data.map(({ place_id, description }) => (
+                      <a
+                        href="#"
+                        className="prg"
+                        onClick={() => {
+                          handleSelect(description);
+                        }}
+                        key={place_id}
+                      >
+                        {description}
+                      </a>
+                    ))}
+                </div>
+              )}
             </Grid>
             <Grid item xs={12}>
               <Typography className="label">
-                {isNearByRestaurantList &&
+                {((isNearByRestaurantList &&
                   filteredRestaurants &&
-                  filteredRestaurants.length > 0 &&
+                  filteredRestaurants.length > 0) ||
+                  (value &&
+                    deliveryRasturants &&
+                    value != '' &&
+                    deliveryRasturants.length > 0 &&
+                    resturantOrderType &&
+                    resturantOrderType == 'delivery')) &&
                   'NEARBY LOCATIONS'}
                 {!isNearByRestaurantList &&
                   (filteredRestaurants == undefined ||
                     (filteredRestaurants &&
                       filteredRestaurants.length == 0)) && (
-                    <span
+                    <Link
                       style={{
                         textAlign: 'center',
                         display: 'block',
                         cursor: 'pointer',
                         fontWeight: 500,
                         textDecoration: 'underline',
+                        color: '#0075BF',
                       }}
                       title="USE YOUR CURRENT LOCATION?"
+                      role="button"
+                      tabIndex={0}
+                      aria-label="USE YOUR CURRENT LOCATION"
                       onClick={() => {
+                        setresturantOrderType(undefined);
                         findNearByRestaurants();
                         setShowNotFoundMessage(false);
                       }}
+                      to="#"
                     >
                       USE YOUR CURRENT LOCATION?
-                    </span>
+                    </Link>
                   )}
               </Typography>
             </Grid>
@@ -318,6 +515,12 @@ const LocationCard = (props: any) => {
                       onClick={() => {
                         gotoCategoryPage(item.id);
                       }}
+                      tabIndex={0}
+                      onKeyUp={(e) => {
+                        if (e.keyCode === 13) {
+                          gotoCategoryPage(item.id);
+                        }
+                      }}
                       key={index}
                     >
                       <Typography
@@ -337,11 +540,6 @@ const LocationCard = (props: any) => {
                       {item.distance > 0 && (
                         <Typography variant="body2" sx={{ color: '#5FA625' }}>
                           {item.distance} Miles Away
-                        </Typography>
-                      )}
-                      {item.iscurrentlyopen && item.distance == 0 && (
-                        <Typography variant="body2" sx={{ color: '#5FA625' }}>
-                          Online
                         </Typography>
                       )}
                     </Grid>
