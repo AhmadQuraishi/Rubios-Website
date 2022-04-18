@@ -86,7 +86,7 @@ const Login2 = () => {
               <ul className="button-list">
                 <li>
                   <ReactFacebookLogin
-                    appId=""
+                    appId="3126327474351480"
                     autoLoad
                     callback={handleCallBackfacebook}
                     textButton="SIGN IN WITH FACEBOOK"
