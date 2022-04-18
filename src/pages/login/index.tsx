@@ -112,7 +112,7 @@
 // export default Login;
 
 import React, { useState } from 'react';
-import FacebookLogin from 'react-facebook-login';
+// import FacebookLogin from 'react-facebook-login';
 // import './App.css';
 
 const Login = () => {
@@ -133,17 +133,17 @@ const Login = () => {
 
   return (
     <div className="container">
-      {!login && (
-        <FacebookLogin
-          // appId="3126327474351480"
-          appId="380212609388497"
-          // autoLoad={true}
-          fields="name,email,picture"
-          scope="public_profile"
-          callback={responseFacebook}
-          icon="fa-facebook"
-        />
-      )}
+      {/*{!login && (*/}
+      {/*  <FacebookLogin*/}
+      {/*    // appId="3126327474351480"*/}
+      {/*    appId="380212609388497"*/}
+      {/*    // autoLoad={true}*/}
+      {/*    fields="name,email,picture"*/}
+      {/*    scope="public_profile"*/}
+      {/*    callback={responseFacebook}*/}
+      {/*    icon="fa-facebook"*/}
+      {/*  />*/}
+      {/*)}*/}
       {/*{ login &&*/}
       {/*  <Image src={picture} roundedCircle />*/}
       {/*}*/}
