@@ -90,7 +90,7 @@ const Login2 = () => {
                     autoLoad
                     callback={handleCallBackfacebook}
                     textButton="SIGN IN WITH FACEBOOK"
-                    cssClass='fb-button'
+                    cssClass="fb-button"
                   />
                 </li>
                 <li>

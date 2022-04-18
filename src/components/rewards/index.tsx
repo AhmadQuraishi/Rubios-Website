@@ -123,7 +123,7 @@ const Rewards = (props: any) => {
       <Grid container>
         <Grid item xs={0} sm={0} md={2} lg={2} />
         <Grid item xs={12} sm={12} md={8} lg={8} className="choose-reward">
-          <Typography variant="h1" title="APPLY REWARDS">
+          <Typography variant="h2" title="APPLY REWARDS">
             APPLY REWARDS
           </Typography>
           <br />
