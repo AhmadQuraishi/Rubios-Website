@@ -25,7 +25,7 @@ const pickupTime = (readytime: string) => {
       <Typography variant="caption" className="label" title="PICKUP TIME">
         PICKUP TIME
       </Typography>
-      <Typography variant="h4" title="6:10 PM">
+      <Typography variant="h1" title="6:10 PM">
         {moment(readytime, 'YYYYMMDD HH:mm').format('h:mm A')}
       </Typography>
     </>
@@ -113,11 +113,15 @@ const OrderConfirmedCard = ({ orderObj, restaurantObj }: any) => {
         {/*  */}
         {/*</Typography>*/}
         <br />
+        <br/>
+        <br/>
         {order && order.deliverymode === DeliveryModeEnum.delivery
           ? deliveryAddress(order)
           : pickupAddress(restaurant, order)}
         <br />
         <br />
+        <br/>
+        <br/>
         {order && order.readytime ? pickupTime(order.readytime) : ''}
       </Card>
     </>
