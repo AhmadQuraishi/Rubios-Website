@@ -323,6 +323,9 @@ const LocationCard = (props: any) => {
         <Card>
           <Grid container spacing={2} className="location-sidebar">
             <Grid item xs={12}>
+              <Typography variant="h1" className="sr-only">
+                Choose your location
+              </Typography>
               <ToggleButtonGroup
                 value={alignment}
                 exclusive
@@ -330,6 +333,8 @@ const LocationCard = (props: any) => {
               >
                 <ToggleButton
                   value="Pick up"
+                  // role="link"
+                  // href="#"
                   onClick={() => {
                     setresturantOrderType(
                       resturantOrderType === 'pickup' ? undefined : 'pickup',

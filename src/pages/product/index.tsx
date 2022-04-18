@@ -602,6 +602,9 @@ const Product = () => {
 
   return (
     <div style={{ minHeight: '500px' }}>
+      <Typography variant="h1" className="sr-only">
+        Product details
+      </Typography>
       <StoreInfoBar />
       {loading == true && productDetails == null && productOptions == null && (
         <ProductSkeletonUI />
@@ -619,7 +622,7 @@ const Product = () => {
                   PICK UP YOUR
                 </Typography>
                 <Typography
-                  variant="h1"
+                  variant="h2"
                   className="heading"
                   title={productDetails.name}
                 >
@@ -867,13 +870,13 @@ const Product = () => {
             </div>
             <Grid container className="action-panel">
               <Grid item xs={12} className="content-panel">
-                <Typography
-                  variant="caption"
+                <label
                   title="Quantity"
                   className="label bold quantity-label"
+                  htmlFor="quantityfield"
                 >
                   QUANTITY
-                </Typography>
+                </label>
                 <div className="quantity">
                   <Button
                     title=""
@@ -886,9 +889,11 @@ const Product = () => {
                     {' '}
                     +{' '}
                   </Button>
-                  <TextField
+                  <input
                     value={count}
-                    inputProps={inputProps}
+                    // inputProps={inputProps}
+                    id="quantityfield"
+                    className="input-quantity"
                     title="quantity"
                   />
                   <Button
