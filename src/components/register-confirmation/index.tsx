@@ -19,6 +19,7 @@ import { getlocations } from '../../redux/actions/location';
 // import ReactDateInputs from "react-date-inputs";
 // import {userRegister} from "../../redux/actions/user";
 import { userRegister } from '../../redux/actions/user';
+import "./register-confirmation.css";
 
 
 const RegisterConfirmation = () => {
@@ -133,7 +134,7 @@ const RegisterConfirmation = () => {
         }) => (
           <form onSubmit={handleSubmit}>
             <Grid item xs={12} sm={6} md={6} lg={12}>
-              <Grid container>
+              <Grid container className="confirmation-form">
                 <Grid item xs={12} sm={12} md={12} lg={6}>
                   <TextField
                     aria-label="first name"

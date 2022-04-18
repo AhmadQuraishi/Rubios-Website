@@ -68,11 +68,12 @@ const OrderConfirmation = () => {
                     <Typography variant="caption" className="label white">
                       {authToken?.authtoken ? 'YOUR REWARDS' : 'EARN REWARDS'}
                     </Typography>
-                    <Typography variant="h4" className="white">
+                    <Typography variant="h1" className="white">
                       {authToken?.authtoken
                         ? 'YOUR EARNED 18 POINTS!'
                         : 'GET $5 OFF YOUR NEXT ORDER'}
                     </Typography>
+                    <br />
                     <br />
                     <Typography
                       variant="h6"

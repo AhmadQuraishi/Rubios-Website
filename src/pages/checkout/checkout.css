@@ -68,6 +68,11 @@
   width: 100%;
 }
 
+.checkout-wrapper h2 {
+  font-family: 'Poppins-Bold', sans-serif !important;
+  color: #214F66;
+  font-size: 36px !important;
+}
 
 @media screen and (max-width: 900px) {
   .order .add-order button {

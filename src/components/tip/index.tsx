@@ -133,7 +133,7 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
           <Grid item xs={12} sm={0} md={2} lg={2} />
           {basket?.allowstip ? (
             <Grid item xs={12} sm={6} md={4} lg={4}>
-              <Typography variant="h1">TIP</Typography>
+              <Typography variant="h2">TIP</Typography>
               <Grid container>
                 <FormControl>
                   <ToggleButtonGroup
@@ -193,7 +193,7 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
 
           <Grid item xs={12} sm={6} md={4} lg={4} className="coupon-sec">
             <Grid container>
-              <Typography variant="h1">COUPON CODE</Typography>
+              <Typography variant="h2">COUPON CODE</Typography>
               <Grid item xs={12}>
                 <TextField
                   className="action-btn"
@@ -203,7 +203,7 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
                   aria-label="Enter Code"
                   InputProps={{ endAdornment: <IconCoupon /> }}
                   title="Enter Code"
-                  value={couponCode || '' }
+                  value={couponCode || ''}
                 />
               </Grid>
             </Grid>

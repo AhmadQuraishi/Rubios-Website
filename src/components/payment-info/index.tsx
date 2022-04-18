@@ -255,7 +255,7 @@ const PaymentInfo = forwardRef((props, _ref) => {
       <Grid item xs={0} sm={0} md={2} lg={2} />
 
       <Grid item xs={12} sm={12} md={8} lg={8}>
-        <Typography variant="h1" title="PAYMENT INFO">
+        <Typography variant="h2" title="PAYMENT INFO">
           PAYMENT INFO
         </Typography>
         <br />
