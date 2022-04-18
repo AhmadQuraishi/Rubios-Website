@@ -381,6 +381,7 @@ const LocationCard = (props: any) => {
                   value={value}
                   type="text"
                   onChange={(e) => {
+                    setShowNotFoundMessage(false);
                     if (e.target.value === '') {
                       setValue('');
                       setActionPerform(false);
@@ -391,6 +392,15 @@ const LocationCard = (props: any) => {
                   }}
                   sx={{ fontSize: '14px', paddingRight: '0px' }}
                   variant="outlined"
+                  onKeyPress={(e: any) => {
+                    if (e.key === 'Enter' && e.target.value !== '') {
+                      if (data.length === 0) {
+                        setShowNotFoundMessage(true);
+                      } else {
+                        setShowNotFoundMessage(false);
+                      }
+                    }
+                  }}
                 />
               ) : (
                 <TextField
