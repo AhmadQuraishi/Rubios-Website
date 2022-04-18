@@ -23,3 +23,14 @@
   background: #285169;
   height: 1px;
 }
+
+
+
+@media screen and (max-width: 900px) {
+  .order-details-confirmation {
+    background: white;
+    padding: 50px;
+    border-radius: 0;
+    margin: 0 !important;
+  }
+}
