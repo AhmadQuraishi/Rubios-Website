@@ -22,7 +22,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
           lg={8}
           className={`order-details order-details-${page}`}
         >
-          <Typography fontWeight={500} title="ORDER DETAILS" variant="h1">
+          <Typography fontWeight={500} title="ORDER DETAILS" variant="h2">
             ORDER DETAILS
           </Typography>
           <br />
@@ -89,7 +89,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                 return (
                   <Grid container>
                     <Grid item xs={9} sm={9} md={9} lg={9}>
-                      <Typography variant="h6" >
+                      <Typography variant="h6">
                         {discount.type === 'Coupon'
                           ? 'Coupon Code: '
                           : 'DISCOUNT: '}

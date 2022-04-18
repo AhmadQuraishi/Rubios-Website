@@ -1,0 +1,24 @@
+@media screen and (max-width: 900px) {
+  .confirmation-form {
+    position: absolute;
+    right: 20px;
+    width: calc(100% - 55%);
+  }
+  .confirmation-form input {
+    margin-bottom: 20px;
+  }
+  .confirmation-form .register-confirmation-select {
+    margin-bottom: 20px !important;
+  }
+  .confirmation-form fieldset {
+    box-shadow: none !important;
+  }
+}
+
+@media screen and (max-width: 468px) {
+  .confirmation-form {
+    position: relative;
+    right: auto;
+    width: 100%;
+  }
+}

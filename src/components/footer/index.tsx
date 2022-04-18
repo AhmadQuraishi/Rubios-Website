@@ -74,9 +74,7 @@ const Footer = () => {
             }}
           >
             <Grid item xs={12}>
-              <Typography
-                variant="h1"
-                tabIndex={0}
+              <Button
                 sx={{
                   display: 'flex',
                   padding: {
@@ -94,7 +92,7 @@ const Footer = () => {
                   alt="Rubios Coastal Grill"
                   title="Rubios Coastal Grill"
                 />
-              </Typography>
+              </Button>
             </Grid>
             <Grid item xs={12}>
               <ul className={classes.list}>

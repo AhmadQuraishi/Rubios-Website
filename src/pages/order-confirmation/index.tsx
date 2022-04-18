@@ -68,11 +68,12 @@ const OrderConfirmation = () => {
                     <Typography variant="caption" className="label white">
                       {authToken?.authtoken ? 'YOUR REWARDS' : 'EARN REWARDS'}
                     </Typography>
-                    <Typography variant="h4" className="white">
+                    <Typography variant="h1" className="white">
                       {authToken?.authtoken
                         ? 'YOUR EARNED 18 POINTS!'
                         : 'GET $5 OFF YOUR NEXT ORDER'}
                     </Typography>
+                    <br />
                     <br />
                     <Typography
                       variant="h6"
@@ -84,10 +85,13 @@ const OrderConfirmation = () => {
                         : 'Join today for completing the form below'}
                     </Typography>
                     <br />
-                    <img
-                      className="phone-icon"
-                      src={require('../../assets/imgs/phone-icon.png')}
-                    />
+                    {authToken?.authtoken
+                    ? ''
+                    : (<img
+                        className="phone-icon"
+                        src={require('../../assets/imgs/phone-icon.png')}
+                      />)
+                    }
                   </Grid>
                   {authToken?.authtoken ? (
                     <Grid item xs={12} sm={12} md={12} lg={12}>
