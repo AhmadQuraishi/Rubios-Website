@@ -198,14 +198,14 @@ const LocationCard = (props: any) => {
 
   const getSearchResults = () => {
     setShowNotFoundMessage(false);
-    if (resturantOrderType === 'delivery') {
-      setfilteredRestaurants(
-        (deliveryRasturants &&
-          deliveryRasturants.filter((x: any) => x.candeliver === true)) ||
-          [],
-      );
-      return false;
-    }
+    // if (resturantOrderType === 'delivery') {
+    //   setfilteredRestaurants(
+    //     (deliveryRasturants &&
+    //       deliveryRasturants.filter((x: any) => x.candeliver === true)) ||
+    //       [],
+    //   );
+    //   return false;
+    // }
     setfilteredRestaurants(isNearByRestaurantList ? restaurants : []);
     if (resturantOrderType || searchText) {
       let updatedRestaurants = [];
