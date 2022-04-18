@@ -16,9 +16,113 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setResturantInfoRequest } from '../../redux/actions/restaurant';
 import { displayToast } from '../../helpers/toast';
 import { SyntheticEventData } from 'react-dom/test-utils';
+import { setDeliveryAddress } from '../../redux/actions/location/delivery-address';
+import usePlacesAutocomplete, {
+  getDetails,
+  getGeocode,
+  getLatLng,
+} from 'use-places-autocomplete';
 
 const LocationCard = (props: any) => {
-  const { restaurants, isNearByRestaurantList, setShowNearBy } = props;
+  const {
+    ready,
+    value,
+    suggestions: { status, data },
+    setValue,
+    clearSuggestions,
+  } = usePlacesAutocomplete({
+    requestOptions: {
+      location: new google.maps.LatLng({ lat: 37.772, lng: -122.214 }),
+      radius: 200 * 1000,
+    },
+  });
+  const handleSelect = (description: any) => {
+    setValue(description, false);
+    clearSuggestions();
+    setActionPerform(true);
+    getGeocode({ address: description })
+      .then((results) => {
+        getLatLng(results[0]).then(({ lat, lng }) => {
+          const address = getAddress(results[0]);
+          if (address.address1 !== '') {
+            setLatLng({ lat: lat, lng: lng });
+            setDeliveryAddressString(getAddress(results[0]));
+          } else {
+            setActionPerform(false);
+            displayToast(
+              'ERROR',
+              'Invalid Address, Please enter another address',
+            );
+          }
+        });
+      })
+
+      .catch((error) => {
+        console.log('Error: ', error);
+        displayToast('ERROR', 'Selected address not found');
+        setActionPerform(false);
+      });
+  };
+
+  const getAddress = (place: any) => {
+    const address = {
+      address1: '',
+      address2: '',
+      city: '',
+      zip: '',
+      state: '',
+    };
+
+    if (!Array.isArray(place?.address_components)) {
+      return address;
+    }
+
+    place.address_components.forEach((component: any) => {
+      const types = component.types;
+      const value = component.long_name;
+      const svalue = component.short_name;
+
+      if (types.includes('locality')) {
+        address.city = value;
+      } else if (types.includes('sublocality') && address.city === '') {
+        address.city = value;
+      } else if (types.includes('street_number')) {
+        address.address1 = address.address1 + value + ' ';
+      } else if (types.includes('route')) {
+        address.address1 = address.address1 + value + '';
+      } else if (types.includes('neighborhood')) {
+        address.address2 = address.address2 + value + ' ';
+      } else if (types.includes('administrative_area_level_2')) {
+        address.address2 = address.address2 + value + '';
+      } else if (types.includes('administrative_area_level_1')) {
+        address.state = svalue;
+      } else if (types.includes('postal_code')) {
+        address.zip = value;
+      }
+    });
+
+    if (address.address1 === '' || address.city === '' || address.zip == '') {
+      return {
+        address1: '',
+        address2: '',
+        city: '',
+        zip: '',
+        state: '',
+      };
+    }
+
+    return address;
+  };
+
+  const {
+    restaurants,
+    isNearByRestaurantList,
+    setShowNearBy,
+    setLatLng,
+    setActionPerform,
+    deliveryRasturants,
+    setDeliveryRasturants,
+  } = props;
   const [searchText, setSearchText] = useState<string>();
   const [resturantOrderType, setresturantOrderType] = useState<string>();
   const [showNotFoundMessage, setShowNotFoundMessage] = useState(false);
@@ -27,6 +131,7 @@ const LocationCard = (props: any) => {
   const { restaurant, orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
+  const [deliveryAddressString, setDeliveryAddressString] = useState<any>();
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
