@@ -167,7 +167,11 @@ const Location = () => {
   }, [restaurants]);
 
   return (
-    <div style={{ minHeight: '300px', position: 'relative' }}>
+    <div
+      style={{ minHeight: '300px', position: 'relative' }}
+      role="region"
+      aria-label="map"
+    >
       {loading && (
         <div className={classes.dummyBg}>
           <LoadingBar />
