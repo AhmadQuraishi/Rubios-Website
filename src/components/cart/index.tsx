@@ -291,13 +291,13 @@ const Cart = (props: any) => {
   };
 
   useEffect(() => {
-    const focusableElements =
-      'button, [href], input, ul , li ,  select, textarea, [tabindex]:not([tabindex="-1"])';
+    // const focusableElements =
+    //   'button, [href], input, ul , li ,  select, textarea, [tabindex]:not([tabindex="-1"])';
     const modal = document.querySelector('#cart-box'); // select the modal by it's id
     if (modal) {
-      const firstFocusableElement =
-        modal.querySelectorAll(focusableElements)[0]; // get first element to be focused inside modal
-      const focusableContent = modal.querySelectorAll(focusableElements);
+      const focusableContent = modal.querySelectorAll('[tabindex="0"]');
+      const firstFocusableElement = focusableContent[0]; // get first element to be focused inside modal
+
       const lastFocusableElement =
         focusableContent[focusableContent.length - 1]; // get last element to be focused inside modal
 
@@ -416,6 +416,12 @@ const Cart = (props: any) => {
                 onClick={() => {
                   showCart();
                   return false;
+                }}
+                onKeyUp={(e) => {
+                  if (e.keyCode === 13) {
+                    showCart();
+                    return false;
+                  }
                 }}
               >
                 Start Your Order
