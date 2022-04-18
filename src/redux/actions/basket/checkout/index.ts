@@ -326,3 +326,37 @@ export function setBasketDeliveryAddressFailure(error: any) {
     error: error,
   };
 }
+
+export function getBasketAllowedCardsRequest(basketid: string) {
+  return {
+    type: basketActionsTypes.GET_BASKET_ALLOWED_CARDS_REQUEST,
+    basketid,
+  };
+}
+
+export function getBasketAllowedCardsRequestSuccess(data: ResponseBasket) {
+  return {
+    type: basketActionsTypes.GET_BASKET_ALLOWED_CARDS_REQUEST_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getBasketAllowedCardsRequestFailure(error: any) {
+  displayToast(
+    'ERROR',
+    error?.response?.data?.message
+      ? error.response.data.message
+      : 'ERROR! Please Try again later',
+  );
+  return {
+    type: basketActionsTypes.GET_BASKET_ALLOWED_CARDS_REQUEST_FAILURE,
+    error: error,
+  };
+}
+
+export function updateBasketBillingSchemes(data: any) {
+  return {
+    type: basketActionsTypes.UPDATE_BASKET_BILLING_SCHEMES,
+    payload: data,
+  };
+}

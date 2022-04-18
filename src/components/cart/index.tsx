@@ -8,7 +8,7 @@ import {
   Link as MUILink,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import crossIcon from '../../assets/imgs/close.png';
@@ -770,6 +770,79 @@ const Cart = (props: any) => {
                             basketObj.basket &&
                             basketObj.basket.subtotal.toFixed(2)}
                         </Grid>
+                        {basketObj &&
+                        basketObj.basket &&
+                        basketObj.basket.discounts &&
+                        basketObj.basket.discounts.length > 0
+                          ? basketObj.basket.discounts.map((discount: any) => {
+                              return (
+                                <>
+                                  <Grid
+                                    item
+                                    xs={9}
+                                    sx={{
+                                      color: 'secondary.main',
+                                      fontSize: '14px',
+                                      paddingBottom: '2px',
+                                      fontFamily: 'Poppins-Regular',
+                                    }}
+                                  >
+                                    {discount.type === 'Coupon'
+                                      ? 'Coupon Code: '
+                                      : 'DISCOUNT: '}
+                                    {discount.description}
+                                  </Grid>
+                                  <Grid
+                                    item
+                                    xs={3}
+                                    sx={{
+                                      color: 'secondary.main',
+                                      fontSize: '14px',
+                                      textAlign: 'right',
+                                      paddingBottom: '2px',
+                                      fontFamily: 'Poppins-Regular',
+                                    }}
+                                  >
+                                    -${discount.amount}
+                                  </Grid>
+                                </>
+                              );
+                            })
+                          : null}
+
+                        {basketObj.basket &&
+                        basketObj.basket.tip &&
+                        basketObj.basket.tip > 0 ? (
+                          <>
+                            <Grid
+                              item
+                              xs={9}
+                              sx={{
+                                color: 'secondary.main',
+                                fontSize: '14px',
+                                paddingBottom: '2px',
+                                fontFamily: 'Poppins-Regular',
+                              }}
+                              title="TIP"
+                            >
+                              TIP
+                            </Grid>
+                            <Grid
+                              item
+                              xs={3}
+                              sx={{
+                                color: 'secondary.main',
+                                fontSize: '14px',
+                                textAlign: 'right',
+                                paddingBottom: '2px',
+                                fontFamily: 'Poppins-Regular',
+                              }}
+                            >
+                              +${basketObj.basket && basketObj.basket.tip}
+                            </Grid>
+                          </>
+                        ) : null}
+
                         <Grid
                           item
                           xs={9}

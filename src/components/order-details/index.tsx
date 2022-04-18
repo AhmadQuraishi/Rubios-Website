@@ -38,7 +38,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                       </Typography>
                     </Grid>
                     <Grid item xs={8} sm={8} md={8} lg={8}>
-                     <Typography variant="h6" title={item.name}>
+                      <Typography variant="h6" title={item.name}>
                         {item.name}
                       </Typography>
                       <Typography
@@ -84,29 +84,33 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
               <br />
             </Grid>
           </Grid>
-          {basket && basket.discounts && basket.discounts.length > 0 ? (
-            <Grid container>
-              <Grid item xs={9} sm={9} md={9} lg={9}>
-                <Typography variant="h6" title="TIP">
-                  DISCOUNT: {basket.discounts[0].description}
-                </Typography>
-              </Grid>
-              <Grid item xs={3} sm={3} md={3} lg={3}>
-                <Typography
-                  align={'right'}
-                  variant="h6"
-                  title={basket.discounts[0].amount}
-                >
-                  -$
-                  {basket.discounts[0].amount > basket.subtotal
-                    ? parseFloat(basket.subtotal.toString()).toFixed(2)
-                    : parseFloat(basket.discounts[0].amount.toString()).toFixed(
-                        2,
-                      )}
-                </Typography>
-              </Grid>
-            </Grid>
-          ) : null}
+          {basket && basket.discounts && basket.discounts.length > 0
+            ? basket.discounts.map((discount: any) => {
+                return (
+                  <Grid container>
+                    <Grid item xs={9} sm={9} md={9} lg={9}>
+                      <Typography variant="h6" >
+                        {discount.type === 'Coupon'
+                          ? 'Coupon Code: '
+                          : 'DISCOUNT: '}
+                        {discount.description}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={3} sm={3} md={3} lg={3}>
+                      <Typography align={'right'} variant="h6">
+                        {/*-$*/}
+                        {/*{basket.discounts[0].amount > basket.subtotal*/}
+                        {/*  ? parseFloat(basket.subtotal.toString()).toFixed(2)*/}
+                        {/*  : parseFloat(*/}
+                        {/*      basket.discounts[0].amount.toString(),*/}
+                        {/*    ).toFixed(2)}*/}
+                        -${discount.amount}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                );
+              })
+            : null}
 
           {basket && basket.tip && basket.tip > 0 ? (
             <Grid container>
@@ -121,26 +125,26 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                   variant="h6"
                   title={basket && basket.tip}
                 >
-                  +{basket && basket.tip}
+                  +${basket && basket.tip}
                 </Typography>
               </Grid>
             </Grid>
           ) : null}
 
-          {basket && basket.coupon ? (
-            <Grid container>
-              <Grid item xs={9} sm={9} md={9} lg={9}>
-                <Typography variant="h6" title="TIP">
-                  Coupon Code - {basket.coupon.couponcode}
-                </Typography>
-              </Grid>
-              <Grid item xs={3} sm={3} md={3} lg={3}>
-                <Typography align={'right'} variant="h6">
-                  -${basket.coupondiscount}
-                </Typography>
-              </Grid>
-            </Grid>
-          ) : null}
+          {/*{basket && basket.coupon ? (*/}
+          {/*  <Grid container>*/}
+          {/*    <Grid item xs={9} sm={9} md={9} lg={9}>*/}
+          {/*      <Typography variant="h6" title="TIP">*/}
+          {/*        Coupon Code - {basket.coupon.couponcode}*/}
+          {/*      </Typography>*/}
+          {/*    </Grid>*/}
+          {/*    <Grid item xs={3} sm={3} md={3} lg={3}>*/}
+          {/*      <Typography align={'right'} variant="h6">*/}
+          {/*        -${basket.coupondiscount}*/}
+          {/*      </Typography>*/}
+          {/*    </Grid>*/}
+          {/*  </Grid>*/}
+          {/*) : null}*/}
 
           <Grid container>
             <Grid item xs={9} sm={9} md={9} lg={9}>
