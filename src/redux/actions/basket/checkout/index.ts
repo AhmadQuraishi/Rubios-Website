@@ -13,6 +13,7 @@ import {
 } from '../../../../types/olo-api';
 import { displayToast } from '../../../../helpers/toast';
 import { navigateAppAction } from '../../navigate-app';
+import { setRecentOrders } from '../../../../helpers/setRecentOrders';
 
 export function getSingleRestaurantCalendar(
   id: number,
@@ -232,9 +233,13 @@ export function submitBasketSinglePayment(
   };
 }
 
-export function submitBasketSinglePaymentSuccess(data: ResponseBasket) {
+export function submitBasketSinglePaymentSuccess(
+  data: ResponseBasket,
+  basketid: string = '',
+) {
   displayToast('SUCCESS', 'Order has been placed.');
   navigateAppAction(`/order-confirmation/${data.id}`);
+  setRecentOrders(data, basketid);
   return {
     type: basketActionsTypes.SUBMIT_BASKET_SINGLE_PAYMENT_SUCCESS,
     payload: data,

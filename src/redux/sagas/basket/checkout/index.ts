@@ -192,7 +192,9 @@ function* asyncSubmitBasketSinglePayment(action: any): any {
       action.action.basketId,
       action.action.basketPayload,
     );
-    yield put(submitBasketSinglePaymentSuccess(response));
+    yield put(
+      submitBasketSinglePaymentSuccess(response, action.action.basketId),
+    );
     yield put(navigateAppAction(`/order-confirmation/${response.id}`));
   } catch (error) {
     yield put(submitBasketSinglePaymentFailure(error));
