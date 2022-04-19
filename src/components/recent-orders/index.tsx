@@ -315,7 +315,6 @@ const RecentOrders = () => {
                 onChange={handleChange('favorite_name')}
                 error={Boolean(touched && errors.favorite_name)}
                 helperText={touched && errors.favorite_name}
-                className="space"
               />
               <Grid container className="space">
                 <Grid item xs={8} md={6}>

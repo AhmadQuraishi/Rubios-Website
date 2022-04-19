@@ -53,11 +53,11 @@ const Login2 = () => {
           const fname = name[0];
           const lname = name[1];
           navigate(
-            `{/register?fname=${fname}&lname=${lname}&email=${response.email}`,
+            `/register?fname=${fname}&lname=${lname}&email=${response.email}`,
           );
         } else {
           const fname = name[0];
-          navigate(`{/register?fname=${fname}&email=${response.email}`);
+          navigate(`/register?fname=${fname}&email=${response.email}`);
         }
       }
     } catch (e) {
