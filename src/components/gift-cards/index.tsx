@@ -30,7 +30,7 @@ const GiftCards = () => {
 
       setGiftCards(giftCardBalance);
     };
-    if (userBillingAccounts) {
+    if (userBillingAccounts && userBillingAccounts.billingaccounts && userBillingAccounts.billingaccounts.length) {
       updateGiftCard();
     }
   }, [userBillingAccounts, loading]);
@@ -97,8 +97,9 @@ const GiftCards = () => {
       <Grid item xs={12}>
         <Grid container spacing={3} className="gift-cards-panel">
           {loading || (balanceLoading && <LoadingBar />)}
-          {!loading && !balanceLoading && giftCards.length < 1 && <h6>No Gift Cards Found</h6>}
+          {!loading && !balanceLoading && giftCards && giftCards.length < 1 && <h6>No Gift Cards Found</h6>}
           {!loading &&
+          giftCards &&
             giftCards.length > 0 &&
             giftCards.map((card: any, index) => (
               <Grid item xs={12} md={6} key={index}>
