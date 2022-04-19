@@ -62,9 +62,9 @@ const OrderConfirmation = () => {
               <OrderConfirmedCard orderObj={order} restaurantObj={restaurant} />
             </Grid>
             <Grid item xs={12} sm={12} md={12} lg={6}>
-              <Card className="card">
+              <Card className={authToken?.authtoken ? 'card ' : 'card next-order'}>
                 <Grid container>
-                  <Grid item xs={12} sm={6} md={6} lg={12}>
+                  <Grid item xs={12} sm={6} md={6} lg={12} className="earn-reward">
                     <Typography variant="caption" className="label white">
                       {authToken?.authtoken ? 'YOUR REWARDS' : 'EARN REWARDS'}
                     </Typography>
