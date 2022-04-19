@@ -41,6 +41,7 @@ const Checkout = () => {
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
   const [tipPercentage, setTipPercentage] = React.useState<any>(null);
   const [basket, setBasket] = React.useState<ResponseBasket>();
+  const [billingSchemes, setBillingSchemes] = React.useState<any>([]);
   const [validate, setValidate] = React.useState<ResponseBasketValidation>();
   const [defaultDeliveryAddress, setDefaultDeliveryAddress] =
     React.useState<any>(null);
@@ -78,6 +79,10 @@ const Checkout = () => {
       setRunOnce(false);
     }
   }, [basket]);
+
+  React.useEffect(() => {
+    setBillingSchemes(basketObj.payment.billingSchemes);
+  }, [basketObj.payment.billingSchemes]);
 
   React.useEffect(() => {
     if (authToken?.authtoken && authToken.authtoken !== '') {
@@ -228,19 +233,23 @@ const Checkout = () => {
       formDataValue = formData;
     }
 
-    const { isValidCard, cardDetails, errors } = await validatePaymentForm();
-
-    if (!isValidCard) {
-      displayToast('ERROR', errors?.message);
-      setButtonDisabled(false);
+    if (billingSchemes.length === 0) {
+      displayToast('ERROR', 'Payment method is required');
       return;
     }
+    // const { isValidCard, cardDetails, errors } = await validatePaymentForm();
+    //
+    // if (!isValidCard) {
+    //   displayToast('ERROR', errors?.message);
+    //   setButtonDisabled(false);
+    //   return;
+    // }
 
     formDataValue.phone = formDataValue.phone.replace(/\D/g, '');
 
     const basketPayload = generateSubmitBasketPayload(
       formDataValue,
-      cardDetails,
+      billingSchemes,
       basket?.deliverymode,
       authToken?.authtoken,
     );
@@ -271,16 +280,16 @@ const Checkout = () => {
         };
       }
       console.log('basketPayload', basketPayload);
-      // dispatch(
-      //   validateBasket(
-      //     basket?.id,
-      //     basketPayload,
-      //     user,
-      //     customFields,
-      //     deliverymode,
-      //     deliveryAddress,
-      //   ),
-      // );
+      dispatch(
+        validateBasket(
+          basket?.id,
+          basketPayload,
+          user,
+          customFields,
+          deliverymode,
+          deliveryAddress,
+        ),
+      );
     }
   };
 

@@ -27,7 +27,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { displayToast } from '../../helpers/toast';
 import { updateBasketBillingSchemes } from '../../redux/actions/basket/checkout';
 import AddCreditCard from './add-credit-card';
-import {getBillingSchemesStats, getUniqueId} from '../../helpers/checkout';
+import { getBillingSchemesStats, getUniqueId } from '../../helpers/checkout';
 
 // const billingAccounts = [
 //   {
@@ -171,9 +171,40 @@ const PaymentInfo = forwardRef((props, _ref) => {
   //   initializeCreditCardElements();
   // }, []);
 
-  const handleCheckBox = (e: ChangeEvent<HTMLInputElement>, localId: any) => {
-    console.log('e.target.checked', e.target.checked);
-    console.log('localId', localId);
+  const handleCheckBox = (
+    e: ChangeEvent<HTMLInputElement>,
+    localId: any,
+    billingmethod: string,
+  ) => {
+    const billingSchemeStats = getBillingSchemesStats(billingSchemes);
+    if (
+      billingSchemeStats.selectedGiftCard === 1 &&
+      e.target.checked &&
+      billingmethod === 'storedvalue'
+    ) {
+      displayToast('ERROR', 'Only 1 Gift Card can be used to make a payment');
+      return;
+    }
+    if (
+      billingSchemeStats.selectedCreditCard === 2 &&
+      e.target.checked &&
+      billingmethod === 'creditcardtoken'
+    ) {
+      displayToast('ERROR', 'Only 2 Credit Card can be used to make a payment');
+      return;
+    }
+    if (
+      billingSchemeStats.selectedCreditCard === 1 &&
+      !e.target.checked &&
+      billingmethod === 'creditcardtoken'
+    ) {
+      displayToast(
+        'ERROR',
+        'Minimum 1 Credit Card is required to make a payment',
+      );
+      return;
+    }
+
     const accountIndex = billingSchemes.findIndex(
       (element: any) => element.localId === localId,
     );
@@ -229,8 +260,9 @@ const PaymentInfo = forwardRef((props, _ref) => {
           );
           if (balanceResponse) {
             if (balanceResponse.success) {
+              let billingSchemesNewArray = billingSchemes;
               const billingSchemeStats = getBillingSchemesStats(billingSchemes);
-              console.log('billingSchemeStats', billingSchemeStats)
+              console.log('billingSchemeStats', billingSchemeStats);
               const cardObj = [
                 {
                   localId: getUniqueId(),
@@ -249,6 +281,59 @@ const PaymentInfo = forwardRef((props, _ref) => {
                 },
               ];
 
+              if (
+                billingSchemeStats.giftCard === 0 &&
+                billingSchemeStats.creditCard === 1
+              ) {
+                const giftCardAmount =
+                  cardObj[0].balance > basket.subtotal
+                    ? basket.subtotal
+                    : cardObj[0].balance;
+                const creditCardAmount = basket.total - giftCardAmount;
+
+                cardObj[0].amount = giftCardAmount;
+                cardObj[0].selected = true;
+
+                const giftCardIndex = billingSchemesNewArray.findIndex(
+                  (account: any) => account.billingmethod === 'creditcardtoken',
+                );
+                if (giftCardIndex !== -1) {
+                  let updatedCreditCard = billingSchemesNewArray[giftCardIndex];
+                  updatedCreditCard.amount = creditCardAmount;
+                  updatedCreditCard.selected = true;
+                  billingSchemesNewArray[giftCardIndex] = updatedCreditCard;
+                }
+              } else if (
+                billingSchemeStats.giftCard === 0 &&
+                billingSchemeStats.creditCard > 1
+              ) {
+                const giftCardAmount =
+                  cardObj[0].balance > basket.subtotal
+                    ? basket.subtotal
+                    : cardObj[0].balance;
+                let creditCardAmount: any = basket.total - giftCardAmount;
+                creditCardAmount = creditCardAmount.toFixed(2) / 2;
+
+                cardObj[0].amount = giftCardAmount;
+                cardObj[0].selected = true;
+
+                let count = 0;
+
+                billingSchemesNewArray = billingSchemesNewArray.map(
+                  (account: any) => {
+                    if (
+                      account.billingmethod === 'creditcardtoken' &&
+                      count < 2
+                    ) {
+                      account.amount = creditCardAmount;
+                      account.selected = true;
+                      count++;
+                    }
+                    return account;
+                  },
+                );
+              }
+
               if (body.pin && body.pin !== '') {
                 cardObj[0].billingfields.push({
                   name: 'pin',
@@ -256,7 +341,6 @@ const PaymentInfo = forwardRef((props, _ref) => {
                 });
               }
 
-              let billingSchemesNewArray = billingSchemes;
               Array.prototype.push.apply(billingSchemesNewArray, cardObj);
               // billingSchemesNewArray.push(cardObj);
 
@@ -275,9 +359,7 @@ const PaymentInfo = forwardRef((props, _ref) => {
     }
   };
 
-
   const handleAmountChanges = (event: any, localId: any) => {
-
     let newValue =
       event.target.value && event.target.value >= 0 ? event.target.value : 0;
     if (Number.isInteger(newValue)) {
@@ -294,6 +376,10 @@ const PaymentInfo = forwardRef((props, _ref) => {
       updatedBillingSchemes[accountIndex].amount = newValue;
       dispatch(updateBasketBillingSchemes(updatedBillingSchemes));
     }
+  };
+
+  const giftCardLastFourDigits = (account: any) => {
+    return account.billingfields[0].value.slice(-3);
   };
 
   return (
@@ -410,7 +496,11 @@ const PaymentInfo = forwardRef((props, _ref) => {
                               name={`${account.localId}`}
                               checked={account.selected}
                               onChange={(e) =>
-                                handleCheckBox(e, account.localId)
+                                handleCheckBox(
+                                  e,
+                                  account.localId,
+                                  account.billingmethod,
+                                )
                               }
                             />
                           }
@@ -437,7 +527,12 @@ const PaymentInfo = forwardRef((props, _ref) => {
                       </Grid>
                       <Grid
                         item
-                        style={{ display: 'flex' }}
+                        style={{
+                          display: 'flex',
+                          flexDirection: account.billingmethod === 'storedvalue' ? 'column' : 'inherit',
+                          alignItems: account.billingmethod === 'storedvalue' ? 'flex-start' : 'center',
+                          paddingLeft: 20,
+                        }}
                         alignItems="center"
                         justifyContent="flex-start"
                         xs={6}
@@ -445,11 +540,28 @@ const PaymentInfo = forwardRef((props, _ref) => {
                         md={6}
                         lg={6}
                       >
-                        <Typography variant="h6">
-                          {account.cardlastfour
-                            ? `x-${account.cardlastfour}`
-                            : ''}
-                        </Typography>
+                        {account.billingmethod === 'creditcardtoken' && (
+                          <Typography variant="h6">
+                            {account.cardlastfour
+                              ? `x-${account.cardlastfour}`
+                              : ''}
+                          </Typography>
+                        )}
+                        {account.billingmethod === 'storedvalue' && (
+                          <>
+                            <Typography variant="h6">
+                              {account.billingfields
+                                ? `Gift Card x${giftCardLastFourDigits(account)}`
+                                : ''}
+                            </Typography>
+                            <Typography
+                              style={{ color: '#0069aa', fontWeight: '600', fontSize: 13 }}
+                              variant="h4"
+                            >
+                              BALANCE ${account.balance ? account.balance : 0}
+                            </Typography>
+                          </>
+                        )}
                       </Grid>
                       <Grid
                         style={{ display: 'flex', justifyContent: 'right' }}
@@ -480,6 +592,7 @@ const PaymentInfo = forwardRef((props, _ref) => {
                           // label="Custom Amount"
                           // aria-label="custom amount"
                           // title="Custom Amount"
+                          disabled={!account.selected}
                           value={account.amount || 0}
                           inputProps={{ shrink: false }}
                           InputProps={{
@@ -730,8 +843,10 @@ const PaymentInfo = forwardRef((props, _ref) => {
               {/*  </Grid>*/}
               {/*</Grid>*/}
 
-              {billingSchemes &&
+              {basket &&
+                billingSchemes &&
                 billingSchemes.length > 0 &&
+                billingSchemes.length !== 5 &&
                 billingSchemes.filter((element: any) => {
                   return element.type === 'creditcardtoken';
                 }) &&

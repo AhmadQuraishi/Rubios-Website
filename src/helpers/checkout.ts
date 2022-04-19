@@ -23,21 +23,66 @@ const cardTypes: any = {
 
 export function generateSubmitBasketPayload(
   formData: any,
-  cardDetails: any,
+  billingSchemes: any,
   deliverymode: string,
   authtoken: string,
 ): RequestBasketSubmit {
+  const billingSchemeStats = getBillingSchemesStats(billingSchemes);
+  console.log('billingSchemeStats', billingSchemeStats);
+  let paymentPayload: any = {};
+  if (
+    billingSchemeStats.selectedCreditCard === 1 &&
+    billingSchemeStats.selectedGiftCard === 0
+  ) {
+    const cardIndex = billingSchemes.findIndex(
+      (account: any) =>
+        account.billingmethod === 'creditcardtoken' && account.selected,
+    );
+    const cardDetails = billingSchemes[cardIndex];
+    paymentPayload = {
+      token: cardDetails.token,
+      billingmethod: BillingMethodEnum.creditcardtoken,
+      cardtype: cardDetails.cardtype,
+      expiryyear: cardDetails.expiryyear,
+      expirymonth: cardDetails.expirymonth,
+      cardlastfour: cardDetails.cardlastfour,
+      zip: cardDetails.zip,
+      saveonfile: SaveOnFileEnum.true,
+    };
+  }
+
+  if (
+    billingSchemeStats.selectedCreditCard > 1 ||
+    billingSchemeStats.selectedGiftCard === 1
+  ) {
+    let billingaccounts: any = [];
+    billingSchemes.forEach((account: any) => {
+      let obj = {
+        ...account,
+      };
+      delete obj.selected;
+      delete obj.localId;
+      delete obj.balance;
+      billingaccounts.push(obj);
+    });
+    // billingaccounts = billingaccounts.reduce((filtered: any, account: any) => {
+    //   if (account.selected) {
+    //     delete account.localId;
+    //     delete account.selected;
+    //     filtered.push(account);
+    //   }
+    //   return filtered;
+    // }, []);
+    console.log('billingaccounts', billingaccounts);
+    paymentPayload = {
+      billingaccounts: billingaccounts,
+    };
+  }
+
   let payload: RequestBasketSubmit = {
-    billingmethod: BillingMethodEnum.creditcardtoken,
     usertype: UserTypeEnum.guest,
-    token: cardDetails.id,
-    cardtype: cardTypes[cardDetails.card.brand],
-    expiryyear: cardDetails.card.exp_year,
-    expirymonth: cardDetails.card.exp_month,
-    cardlastfour: cardDetails.card.last4,
-    zip: cardDetails.billing_details.address.postal_code,
-    saveonfile: SaveOnFileEnum.true,
     guestoptin: formData.emailNotification,
+    ...paymentPayload,
   };
 
   if (
@@ -256,12 +301,14 @@ export function getBillingSchemesStats(billingSchemes: any) {
         account.billingmethod === 'storedvalue'
           ? billingSchemeStats.giftCard + 1
           : billingSchemeStats.giftCard,
-      selectedCreditCard: account.selected
-        ? billingSchemeStats.selectedCreditCard + 1
-        : billingSchemeStats.selectedCreditCard,
-      selectedGiftCard: account.selected
-        ? billingSchemeStats.selectedGiftCard + 1
-        : billingSchemeStats.selectedGiftCard,
+      selectedCreditCard:
+        account.billingmethod === 'creditcardtoken' && account.selected
+          ? billingSchemeStats.selectedCreditCard + 1
+          : billingSchemeStats.selectedCreditCard,
+      selectedGiftCard:
+        account.billingmethod === 'storedvalue' && account.selected
+          ? billingSchemeStats.selectedGiftCard + 1
+          : billingSchemeStats.selectedGiftCard,
     };
   });
 

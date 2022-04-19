@@ -119,6 +119,19 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
           data: null,
           error: {},
         },
+        payment: {
+          allowedCards: {
+            loading: false,
+            data: null,
+            error: null,
+          },
+          defaultCards: {
+            loading: false,
+            data: null,
+            error: null,
+          },
+          billingSchemes: [],
+        },
         orderConfirmation: true,
         error: null,
       };
