@@ -60,6 +60,9 @@ export function generateSubmitBasketPayload(
       let obj = {
         ...account,
       };
+      if (account.billingaccountid) {
+        obj.billingmethod = 'billingaccount';
+      }
       delete obj.selected;
       delete obj.localId;
       delete obj.balance;

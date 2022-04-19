@@ -289,7 +289,9 @@ const PaymentInfo = forwardRef((props, _ref) => {
                   cardObj[0].balance > basket.subtotal
                     ? basket.subtotal
                     : cardObj[0].balance;
-                const creditCardAmount = basket.total - giftCardAmount;
+                const creditCardAmount = (
+                  basket.total - giftCardAmount
+                ).toFixed(2);
 
                 cardObj[0].amount = giftCardAmount;
                 cardObj[0].selected = true;
@@ -311,7 +313,9 @@ const PaymentInfo = forwardRef((props, _ref) => {
                   cardObj[0].balance > basket.subtotal
                     ? basket.subtotal
                     : cardObj[0].balance;
-                let creditCardAmount: any = basket.total - giftCardAmount;
+                let creditCardAmount: any = (
+                  basket.total - giftCardAmount
+                ).toFixed(2);
                 creditCardAmount = creditCardAmount.toFixed(2) / 2;
 
                 cardObj[0].amount = giftCardAmount;
