@@ -313,9 +313,7 @@ const PaymentInfo = forwardRef((props, _ref) => {
                   cardObj[0].balance > basket.subtotal
                     ? basket.subtotal
                     : cardObj[0].balance;
-                let creditCardAmount: any = (
-                  basket.total - giftCardAmount
-                ).toFixed(2);
+                let creditCardAmount: any = basket.total - giftCardAmount;
                 creditCardAmount = creditCardAmount.toFixed(2) / 2;
 
                 cardObj[0].amount = giftCardAmount;
@@ -384,6 +382,46 @@ const PaymentInfo = forwardRef((props, _ref) => {
 
   const giftCardLastFourDigits = (account: any) => {
     return account.billingfields[0].value.slice(-3);
+  };
+
+  const cardTypes: any = {
+    amex: 'Amex',
+    visa: 'Visa',
+    discover: 'Discover',
+    mastercard: 'Mastercard',
+  };
+
+  const getCardImage = (account: any) => {
+    let cardImage = '';
+    if (account.billingmethod === 'creditcardtoken') {
+      cardImage = `${account.cardtype}.png`;
+    } else {
+      cardImage = 'gc-card-icon.png';
+    }
+    return (
+      <img
+        src={require(`../../assets/imgs/${cardImage}`)}
+        width={'45px'}
+        alt="card image"
+      />
+    );
+  };
+
+  const remainingAmount = () => {
+    if (basket) {
+      const amountSelected = billingSchemes.reduce((sum: any, account: any) => {
+        if (account.selected) {
+          sum = sum + account.amount;
+        }
+        return sum;
+      }, 0);
+
+      let remainingAmount = (basket?.total - amountSelected).toFixed(2);
+
+      return remainingAmount;
+    } else {
+      return 0;
+    }
   };
 
   return (
@@ -523,18 +561,20 @@ const PaymentInfo = forwardRef((props, _ref) => {
                         md={1}
                         lg={1}
                       >
-                        <img
-                          src={require('../../assets/imgs/mastercard.png')}
-                          width={'45px'}
-                          alt="Sign in with facebook"
-                        />
+                        {getCardImage(account)}
                       </Grid>
                       <Grid
                         item
                         style={{
                           display: 'flex',
-                          flexDirection: account.billingmethod === 'storedvalue' ? 'column' : 'inherit',
-                          alignItems: account.billingmethod === 'storedvalue' ? 'flex-start' : 'center',
+                          flexDirection:
+                            account.billingmethod === 'storedvalue'
+                              ? 'column'
+                              : 'inherit',
+                          alignItems:
+                            account.billingmethod === 'storedvalue'
+                              ? 'flex-start'
+                              : 'center',
                           paddingLeft: 20,
                         }}
                         alignItems="center"
@@ -555,11 +595,17 @@ const PaymentInfo = forwardRef((props, _ref) => {
                           <>
                             <Typography variant="h6">
                               {account.billingfields
-                                ? `Gift Card x${giftCardLastFourDigits(account)}`
+                                ? `Gift Card x${giftCardLastFourDigits(
+                                    account,
+                                  )}`
                                 : ''}
                             </Typography>
                             <Typography
-                              style={{ color: '#0069aa', fontWeight: '600', fontSize: 13 }}
+                              style={{
+                                color: '#0069aa',
+                                fontWeight: '600',
+                                fontSize: 13,
+                              }}
                               variant="h4"
                             >
                               BALANCE ${account.balance ? account.balance : 0}
@@ -632,6 +678,14 @@ const PaymentInfo = forwardRef((props, _ref) => {
                 </Grid>
               );
             })}
+
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={12} md={12} lg={12}>
+              <Typography align={'center'} variant="h6">
+                Remaining Amount: ${remainingAmount()}
+              </Typography>
+            </Grid>
+          </Grid>
 
           <Grid container>
             <Grid item xs={12} sm={12} md={12} lg={12} className="add-gift">

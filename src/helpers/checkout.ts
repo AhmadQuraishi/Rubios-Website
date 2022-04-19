@@ -49,6 +49,10 @@ export function generateSubmitBasketPayload(
       zip: cardDetails.zip,
       saveonfile: SaveOnFileEnum.true,
     };
+    if (cardDetails.billingaccountid) {
+      paymentPayload.billingmethod = 'billingaccount';
+      paymentPayload.billingaccountid = cardDetails.billingaccountid;
+    }
   }
 
   if (
@@ -57,16 +61,19 @@ export function generateSubmitBasketPayload(
   ) {
     let billingaccounts: any = [];
     billingSchemes.forEach((account: any) => {
-      let obj = {
-        ...account,
-      };
-      if (account.billingaccountid) {
-        obj.billingmethod = 'billingaccount';
+      if(account.selected){
+        let obj = {
+          ...account,
+        };
+        if (account.billingaccountid) {
+          obj.billingmethod = 'billingaccount';
+        }
+        delete obj.selected;
+        delete obj.localId;
+        delete obj.balance;
+        billingaccounts.push(obj);
       }
-      delete obj.selected;
-      delete obj.localId;
-      delete obj.balance;
-      billingaccounts.push(obj);
+
     });
     // billingaccounts = billingaccounts.reduce((filtered: any, account: any) => {
     //   if (account.selected) {
