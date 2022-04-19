@@ -46,7 +46,23 @@ const Login2 = () => {
   }, [authToken, providerToken]);
 
   const handleCallBackfacebook = (response: any) => {
-    console.log(response);
+    try {
+      if (response && response.name && response.email) {
+        const name = response.name.split(' ');
+        if (name.length > 1) {
+          const fname = name[0];
+          const lname = name[1];
+          navigate(
+            `/register?fname=${fname}&lname=${lname}&email=${response.email}`,
+          );
+        } else {
+          const fname = name[0];
+          navigate(`/register?fname=${fname}&email=${response.email}`);
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -87,7 +103,6 @@ const Login2 = () => {
                 <li>
                   <ReactFacebookLogin
                     appId="380212609388497"
-                    autoLoad
                     fields="name,email,picture"
                     callback={handleCallBackfacebook}
                     textButton="SIGN IN WITH FACEBOOK"

@@ -31,6 +31,18 @@ const RegisterForm = () => {
   const { loading: loadingAuth } = useSelector(
     (state: any) => state.authReducer,
   );
+  function findGetParameter(parameterName: any) {
+    var result = null,
+      tmp = [];
+    window.location.search
+      .substr(1)
+      .split('&')
+      .forEach(function (item) {
+        tmp = item.split('=');
+        if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+      });
+    return result;
+  }
   const { locations } = useSelector((state: any) => state.locationReducer);
 
   const [favLocation, setFavLocation] = useState('');
@@ -40,6 +52,7 @@ const RegisterForm = () => {
 
   useEffect(() => {
     dispatch(getlocations());
+    console.log(findGetParameter('fnameq'));
   }, []);
 
   const handleChangeLocation = (event: SelectChangeEvent) => {
@@ -90,9 +103,11 @@ const RegisterForm = () => {
       </Typography>
       <Formik
         initialValues={{
-          first_name: '',
-          last_name: '',
-          email: '',
+          first_name: findGetParameter('fname')
+            ? findGetParameter('fname')
+            : '',
+          last_name: findGetParameter('lname') ? findGetParameter('lname') : '',
+          email: findGetParameter('email') ? findGetParameter('email') : '',
           phone: '',
           password: '',
           password_confirmation: '',
