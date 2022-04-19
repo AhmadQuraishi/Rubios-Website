@@ -13,7 +13,7 @@ import {
   Dialog,
   DialogActions,
 } from '@mui/material';
-import { CreditCardElements, PaymentMethodResult } from '@olo/pay';
+// import { CreditCardElements, PaymentMethodResult } from '@olo/pay';
 import './payment-info.css';
 import { createFave } from '../../redux/actions/create-fave';
 import { Formik } from 'formik';
@@ -23,9 +23,11 @@ import {
   verifyGiftCardPinRequirement,
 } from '../../services/checkout';
 import { DeliveryModeEnum, ResponseBasket } from '../../types/olo-api';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { displayToast } from '../../helpers/toast';
 import { updateBasketBillingSchemes } from '../../redux/actions/basket/checkout';
+import AddCreditCard from './add-credit-card';
+import { getBillingSchemesStats, getUniqueId } from '../../helpers/checkout';
 
 // const billingAccounts = [
 //   {
@@ -88,19 +90,21 @@ const styleObject = {
 };
 
 const PaymentInfo = forwardRef((props, _ref) => {
-  const [creditCardElements, setCreditCardElements] =
-    React.useState<CreditCardElements | null>(null);
+  // const [creditCardElements, setCreditCardElements] =
+  //   React.useState<CreditCardElements | null>(null);
+  const dispatch = useDispatch();
   const basketObj = useSelector((state: any) => state.basketReducer);
   const [basket, setBasket] = React.useState<ResponseBasket>();
   const [allowedCards, setAllowedCards] = React.useState<any>();
   const [billingSchemes, setBillingSchemes] = React.useState<any>([]);
   const [pinCheck, setPinCheck] = React.useState<any>(false);
 
-  const [paymentMethod, setPaymentMethod] =
-    React.useState<PaymentMethodResult | null>(null);
+  // const [paymentMethod, setPaymentMethod] =
+  //   React.useState<PaymentMethodResult | null>(null);
 
-  const [checkBox, setCheckBox] = React.useState<boolean>(false);
   const [openAddGiftCard, setOpenAddGiftCard] = React.useState<boolean>(false);
+  const [openAddCreditCard, setOpenAddCreditCard] =
+    React.useState<boolean>(false);
 
   React.useEffect(() => {
     if (basketObj.basket) {
@@ -141,38 +145,87 @@ const PaymentInfo = forwardRef((props, _ref) => {
     }
   }, [allowedCards]);
 
-  useImperativeHandle(_ref, () => ({
-    getCardDetails: async () => {
-      const response =
-        (await creditCardElements!.createPaymentMethod()) as PaymentMethodResult;
-      setPaymentMethod(response);
-      return response;
-    },
-  }));
+  // useImperativeHandle(_ref, () => ({
+  //   getCardDetails: async () => {
+  //     const response = (await creditCardElements!.createPaymentMethod(
+  //       billingDetails,
+  //     )) as PaymentMethodResult;
+  //     setPaymentMethod(response);
+  //     return response;
+  //   },
+  // }));
 
-  React.useEffect(() => {
-    const initializeCreditCardElements = async () => {
-      const elements = new CreditCardElements();
-      // for production use
-      // const elements = new CreditCardElements('production');
+  // React.useEffect(() => {
+  //   const initializeCreditCardElements = async () => {
+  //     const elements = new CreditCardElements();
+  //     // for production use
+  //     // const elements = new CreditCardElements('production');
+  //
+  //     elements.applyStyles(styleObject);
+  //
+  //     setCreditCardElements(elements);
+  //
+  //     await elements.create();
+  //   };
+  //
+  //   initializeCreditCardElements();
+  // }, []);
 
-      elements.applyStyles(styleObject);
+  const handleCheckBox = (
+    e: ChangeEvent<HTMLInputElement>,
+    localId: any,
+    billingmethod: string,
+  ) => {
+    const billingSchemeStats = getBillingSchemesStats(billingSchemes);
+    if (
+      billingSchemeStats.selectedGiftCard === 1 &&
+      e.target.checked &&
+      billingmethod === 'storedvalue'
+    ) {
+      displayToast('ERROR', 'Only 1 Gift Card can be used to make a payment');
+      return;
+    }
+    if (
+      billingSchemeStats.selectedCreditCard === 2 &&
+      e.target.checked &&
+      billingmethod === 'creditcardtoken'
+    ) {
+      displayToast('ERROR', 'Only 2 Credit Card can be used to make a payment');
+      return;
+    }
+    if (
+      billingSchemeStats.selectedCreditCard === 1 &&
+      !e.target.checked &&
+      billingmethod === 'creditcardtoken'
+    ) {
+      displayToast(
+        'ERROR',
+        'Minimum 1 Credit Card is required to make a payment',
+      );
+      return;
+    }
 
-      setCreditCardElements(elements);
-
-      await elements.create();
-    };
-
-    initializeCreditCardElements();
-  }, []);
-
-  const handleCheckBox = (e: ChangeEvent<HTMLInputElement>) => {
-    setCheckBox(e.target.checked);
+    const accountIndex = billingSchemes.findIndex(
+      (element: any) => element.localId === localId,
+    );
+    if (accountIndex !== -1) {
+      let updatedBillingSchemes: any = billingSchemes;
+      updatedBillingSchemes[accountIndex].selected = e.target.checked;
+      console.log('updatedBillingSchemes', updatedBillingSchemes);
+      dispatch(updateBasketBillingSchemes(updatedBillingSchemes));
+    }
   };
 
   const handleCloseAddGiftCard = () => {
     setPinCheck(false);
     setOpenAddGiftCard(!openAddGiftCard);
+  };
+
+  const removeSingleBasketBillingSchemes = (localId: any) => {
+    const updatedBillingSchemes = billingSchemes.filter(
+      (element: any) => element.localId !== localId,
+    );
+    dispatch(updateBasketBillingSchemes(updatedBillingSchemes));
   };
 
   const handleGiftCardSubmit = async (values: any) => {
@@ -207,8 +260,13 @@ const PaymentInfo = forwardRef((props, _ref) => {
           );
           if (balanceResponse) {
             if (balanceResponse.success) {
+              let billingSchemesNewArray = billingSchemes;
+              const billingSchemeStats = getBillingSchemesStats(billingSchemes);
+              console.log('billingSchemeStats', billingSchemeStats);
               const cardObj = [
                 {
+                  localId: getUniqueId(),
+                  selected: false,
                   billingmethod: 'storedvalue',
                   balance: balanceResponse.balance,
                   amount: 0,
@@ -223,6 +281,61 @@ const PaymentInfo = forwardRef((props, _ref) => {
                 },
               ];
 
+              if (
+                billingSchemeStats.giftCard === 0 &&
+                billingSchemeStats.creditCard === 1
+              ) {
+                const giftCardAmount =
+                  cardObj[0].balance > basket.subtotal
+                    ? basket.subtotal
+                    : cardObj[0].balance;
+                const creditCardAmount = (
+                  basket.total - giftCardAmount
+                ).toFixed(2);
+
+                cardObj[0].amount = giftCardAmount;
+                cardObj[0].selected = true;
+
+                const giftCardIndex = billingSchemesNewArray.findIndex(
+                  (account: any) => account.billingmethod === 'creditcardtoken',
+                );
+                if (giftCardIndex !== -1) {
+                  let updatedCreditCard = billingSchemesNewArray[giftCardIndex];
+                  updatedCreditCard.amount = creditCardAmount;
+                  updatedCreditCard.selected = true;
+                  billingSchemesNewArray[giftCardIndex] = updatedCreditCard;
+                }
+              } else if (
+                billingSchemeStats.giftCard === 0 &&
+                billingSchemeStats.creditCard > 1
+              ) {
+                const giftCardAmount =
+                  cardObj[0].balance > basket.subtotal
+                    ? basket.subtotal
+                    : cardObj[0].balance;
+                let creditCardAmount: any = basket.total - giftCardAmount;
+                creditCardAmount = creditCardAmount.toFixed(2) / 2;
+
+                cardObj[0].amount = giftCardAmount;
+                cardObj[0].selected = true;
+
+                let count = 0;
+
+                billingSchemesNewArray = billingSchemesNewArray.map(
+                  (account: any) => {
+                    if (
+                      account.billingmethod === 'creditcardtoken' &&
+                      count < 2
+                    ) {
+                      account.amount = creditCardAmount;
+                      account.selected = true;
+                      count++;
+                    }
+                    return account;
+                  },
+                );
+              }
+
               if (body.pin && body.pin !== '') {
                 cardObj[0].billingfields.push({
                   name: 'pin',
@@ -230,13 +343,12 @@ const PaymentInfo = forwardRef((props, _ref) => {
                 });
               }
 
-              let billingSchemesNewArray = billingSchemes;
               Array.prototype.push.apply(billingSchemesNewArray, cardObj);
               // billingSchemesNewArray.push(cardObj);
 
               console.log('cardObj', cardObj);
               console.log('billingSchemesNewArray', billingSchemesNewArray);
-              updateBasketBillingSchemes(billingSchemesNewArray);
+              dispatch(updateBasketBillingSchemes(billingSchemesNewArray));
               displayToast('SUCCESS', 'Card Added');
               handleCloseAddGiftCard();
             } else {
@@ -249,12 +361,75 @@ const PaymentInfo = forwardRef((props, _ref) => {
     }
   };
 
+  const handleAmountChanges = (event: any, localId: any) => {
+    let newValue =
+      event.target.value && event.target.value >= 0 ? event.target.value : 0;
+    if (Number.isInteger(newValue)) {
+      newValue = parseInt(newValue);
+    } else {
+      newValue = parseFloat(newValue).toFixed(2);
+    }
+    console.log('newValue', newValue);
+    const accountIndex = billingSchemes.findIndex(
+      (element: any) => element.localId === localId,
+    );
+    if (accountIndex !== -1) {
+      let updatedBillingSchemes: any = billingSchemes;
+      updatedBillingSchemes[accountIndex].amount = newValue;
+      dispatch(updateBasketBillingSchemes(updatedBillingSchemes));
+    }
+  };
+
+  const giftCardLastFourDigits = (account: any) => {
+    return account.billingfields[0].value.slice(-3);
+  };
+
+  const cardTypes: any = {
+    amex: 'Amex',
+    visa: 'Visa',
+    discover: 'Discover',
+    mastercard: 'Mastercard',
+  };
+
+  const getCardImage = (account: any) => {
+    let cardImage = '';
+    if (account.billingmethod === 'creditcardtoken') {
+      cardImage = `${account.cardtype}.png`;
+    } else {
+      cardImage = 'gc-card-icon.png';
+    }
+    return (
+      <img
+        src={require(`../../assets/imgs/${cardImage}`)}
+        width={'45px'}
+        alt="card image"
+      />
+    );
+  };
+
+  const remainingAmount = () => {
+    if (basket) {
+      const amountSelected = billingSchemes.reduce((sum: any, account: any) => {
+        if (account.selected) {
+          sum = sum + account.amount;
+        }
+        return sum;
+      }, 0);
+
+      let remainingAmount = (basket?.total - amountSelected).toFixed(2);
+
+      return remainingAmount;
+    } else {
+      return 0;
+    }
+  };
+
   return (
     <Grid container>
       {/*column for space*/}
       <Grid item xs={0} sm={0} md={2} lg={2} />
 
-      <Grid item xs={12} sm={12} md={8} lg={8}>
+      <Grid item style={{ paddingBottom: 30 }} xs={12} sm={12} md={8} lg={8}>
         <Typography variant="h2" title="PAYMENT INFO">
           PAYMENT INFO
         </Typography>
@@ -281,44 +456,72 @@ const PaymentInfo = forwardRef((props, _ref) => {
             </Grid>
           </Grid> */}
           <Grid item xs={12}>
-            <Grid container spacing={2}>
-              <Grid
-                item
-                xs={12}
-                sm={6}
-                md={6}
-                lg={6}
-                className="payment-form image-field align"
-              >
-                <div className="card-fields" data-olo-pay-card-number></div>
-                <img src={require('../../assets/imgs/card-icon.png')} />
-              </Grid>
-              <Grid item xs={12} sm={6} md={6} lg={6}>
-                <Grid container spacing={2}>
-                  <Grid
-                    item
-                    xs={6}
-                    sm={6}
-                    md={6}
-                    lg={6}
-                    className="payment-form image-field align"
-                  >
-                    <div className="card-fields" data-olo-pay-card-cvc></div>
-                    <img src={require('../../assets/imgs/ccv-icon.png')} />
-                  </Grid>
-                  <Grid item xs={6} sm={6} md={6} lg={6}>
-                    <div className="card-fields" data-olo-pay-card-expiry></div>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Grid>
+            {/*<Grid container spacing={2}>*/}
+            {/*  <Grid*/}
+            {/*    item*/}
+            {/*    xs={12}*/}
+            {/*    sm={12}*/}
+            {/*    md={12}*/}
+            {/*    lg={12}*/}
+            {/*    className="payment-form image-field align"*/}
+            {/*  >*/}
+            {/*    <Grid container spacing={2}>*/}
+            {/*      <Grid*/}
+            {/*        item*/}
+            {/*        xs={6}*/}
+            {/*        sm={6}*/}
+            {/*        md={6}*/}
+            {/*        lg={6}*/}
+            {/*        className="payment-form image-field align"*/}
+            {/*      >*/}
+            {/*        <div className="card-fields" data-olo-pay-card-number></div>*/}
+            {/*        <img src={require('../../assets/imgs/card-icon.png')} />*/}
+            {/*      </Grid>*/}
+            {/*      <Grid item xs={6} sm={6} md={6} lg={6}>*/}
+            {/*        <div className="card-fields" data-olo-pay-card-cvc></div>*/}
+            {/*        <img src={require('../../assets/imgs/ccv-icon.png')} />*/}
+            {/*      </Grid>*/}
+            {/*    </Grid>*/}
+            {/*  </Grid>*/}
+            {/*  <Grid item xs={12} sm={12} md={12} lg={12}>*/}
+            {/*    <Grid container spacing={2}>*/}
+            {/*      <Grid*/}
+            {/*        item*/}
+            {/*        xs={6}*/}
+            {/*        sm={6}*/}
+            {/*        md={6}*/}
+            {/*        lg={6}*/}
+            {/*        className="payment-form image-field align"*/}
+            {/*      >*/}
+            {/*        <div className="card-fields" data-olo-pay-card-expiry></div>*/}
+            {/*      </Grid>*/}
+            {/*      <Grid item xs={6} sm={6} md={6} lg={6}>*/}
+            {/*        <TextField*/}
+            {/*          aria-label="Zip Code"*/}
+            {/*          // onBlur={handleBlur}*/}
+            {/*          // label="Zip Code"*/}
+            {/*          // aria-required="true"*/}
+            {/*          // title="Zip Code"*/}
+            {/*          placeholder="Zip Code"*/}
+            {/*          type="text"*/}
+            {/*          name="zipcode"*/}
+            {/*          inputProps={{ shrink: false }}*/}
+            {/*          // value={values.zipcode}*/}
+            {/*          onChange={handleZipCodeChange}*/}
+            {/*          // error={Boolean(touched.zipcode && errors.zipcode)}*/}
+            {/*          // helperText={errors.zipcode}*/}
+            {/*        />*/}
+            {/*      </Grid>*/}
+            {/*    </Grid>*/}
+            {/*  </Grid>*/}
+            {/*</Grid>*/}
           </Grid>
 
           {billingSchemes &&
             billingSchemes.length > 0 &&
             billingSchemes.map((account: any, index: any) => {
               return (
-                <Grid key={index} container spacing={2}>
+                <Grid key={account.localId} container spacing={2}>
                   <Grid
                     item
                     xs={12}
@@ -332,12 +535,18 @@ const PaymentInfo = forwardRef((props, _ref) => {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={checkBox}
-                              onChange={(e) => handleCheckBox(e)}
+                              name={`${account.localId}`}
+                              checked={account.selected}
+                              onChange={(e) =>
+                                handleCheckBox(
+                                  e,
+                                  account.localId,
+                                  account.billingmethod,
+                                )
+                              }
                             />
                           }
                           label=""
-                          name="saveAddressCheck"
                           className="size"
                         />
                       </FormGroup>
@@ -352,23 +561,57 @@ const PaymentInfo = forwardRef((props, _ref) => {
                         md={1}
                         lg={1}
                       >
-                        <img
-                          src={require('../../assets/imgs/mastercard.png')}
-                          width={'45px'}
-                          alt="Sign in with facebook"
-                        />
+                        {getCardImage(account)}
                       </Grid>
                       <Grid
                         item
-                        style={{ display: 'flex' }}
+                        style={{
+                          display: 'flex',
+                          flexDirection:
+                            account.billingmethod === 'storedvalue'
+                              ? 'column'
+                              : 'inherit',
+                          alignItems:
+                            account.billingmethod === 'storedvalue'
+                              ? 'flex-start'
+                              : 'center',
+                          paddingLeft: 20,
+                        }}
                         alignItems="center"
                         justifyContent="flex-start"
-                        xs={7}
-                        sm={7}
-                        md={7}
-                        lg={7}
+                        xs={6}
+                        sm={6}
+                        md={6}
+                        lg={6}
                       >
-                        <Typography variant="h6">x-9345</Typography>
+                        {account.billingmethod === 'creditcardtoken' && (
+                          <Typography variant="h6">
+                            {account.cardlastfour
+                              ? `x-${account.cardlastfour}`
+                              : ''}
+                          </Typography>
+                        )}
+                        {account.billingmethod === 'storedvalue' && (
+                          <>
+                            <Typography variant="h6">
+                              {account.billingfields
+                                ? `Gift Card x${giftCardLastFourDigits(
+                                    account,
+                                  )}`
+                                : ''}
+                            </Typography>
+                            <Typography
+                              style={{
+                                color: '#0069aa',
+                                fontWeight: '600',
+                                fontSize: 13,
+                              }}
+                              variant="h4"
+                            >
+                              BALANCE ${account.balance ? account.balance : 0}
+                            </Typography>
+                          </>
+                        )}
                       </Grid>
                       <Grid
                         style={{ display: 'flex', justifyContent: 'right' }}
@@ -385,19 +628,22 @@ const PaymentInfo = forwardRef((props, _ref) => {
                         style={{ display: 'flex' }}
                         alignItems="center"
                         item
-                        xs={2}
-                        sm={2}
-                        md={2}
-                        lg={2}
+                        xs={3}
+                        sm={3}
+                        md={3}
+                        lg={3}
                       >
                         <TextField
                           // className="action-btn"
-                          value={10}
                           type="text"
-                          // onChange={handleTipCustomAmountChange}
+                          onChange={(e) =>
+                            handleAmountChanges(e, account.localId)
+                          }
                           // label="Custom Amount"
                           // aria-label="custom amount"
                           // title="Custom Amount"
+                          disabled={!account.selected}
+                          value={account.amount || 0}
                           inputProps={{ shrink: false }}
                           InputProps={{
                             startAdornment: (
@@ -410,9 +656,36 @@ const PaymentInfo = forwardRef((props, _ref) => {
                       </Grid>
                     </Grid>
                   </Grid>
+                  <Grid
+                    item
+                    style={{ paddingTop: 5 }}
+                    xs={12}
+                    sm={12}
+                    md={12}
+                    lg={12}
+                  >
+                    <Typography
+                      onClick={() =>
+                        removeSingleBasketBillingSchemes(account.localId)
+                      }
+                      style={{ cursor: 'pointer' }}
+                      align={'right'}
+                      variant="h6"
+                    >
+                      REMOVE
+                    </Typography>
+                  </Grid>
                 </Grid>
               );
             })}
+
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={12} md={12} lg={12}>
+              <Typography align={'center'} variant="h6">
+                Remaining Amount: ${remainingAmount()}
+              </Typography>
+            </Grid>
+          </Grid>
 
           <Grid container>
             <Grid item xs={12} sm={12} md={12} lg={12} className="add-gift">
@@ -512,18 +785,145 @@ const PaymentInfo = forwardRef((props, _ref) => {
                   </Formik>
                 </DialogContent>
               </Dialog>
-              {allowedCards &&
+              <AddCreditCard />
+              {/*<Dialog*/}
+              {/*  open={openAddCreditCard}*/}
+              {/*  onClose={handleCloseAddCreditCard}*/}
+              {/*  className="fav-dialog"*/}
+              {/*  fullWidth*/}
+              {/*>*/}
+              {/*  <DialogTitle>Add Credit Card</DialogTitle>*/}
+              {/*  <DialogContent>*/}
+              {/*    {openAddCreditCard && (*/}
+              {/*      <Grid container className="payment-form" spacing={2}>*/}
+              {/*        <Grid*/}
+              {/*          item*/}
+              {/*          xs={12}*/}
+              {/*          sm={12}*/}
+              {/*          md={12}*/}
+              {/*          lg={12}*/}
+              {/*          className="payment-form image-field align"*/}
+              {/*        >*/}
+              {/*          <Grid container spacing={2}>*/}
+              {/*            <Grid*/}
+              {/*              item*/}
+              {/*              xs={6}*/}
+              {/*              sm={6}*/}
+              {/*              md={6}*/}
+              {/*              lg={6}*/}
+              {/*              className="payment-form image-field align"*/}
+              {/*            >*/}
+              {/*              <div*/}
+              {/*                className="card-fields"*/}
+              {/*                data-olo-pay-card-number*/}
+              {/*              ></div>*/}
+              {/*              <img*/}
+              {/*                src={require('../../assets/imgs/card-icon.png')}*/}
+              {/*              />*/}
+              {/*            </Grid>*/}
+              {/*            <Grid item xs={6} sm={6} md={6} lg={6}>*/}
+              {/*              <div*/}
+              {/*                className="card-fields"*/}
+              {/*                data-olo-pay-card-cvc*/}
+              {/*              ></div>*/}
+              {/*              <img*/}
+              {/*                src={require('../../assets/imgs/ccv-icon.png')}*/}
+              {/*              />*/}
+              {/*            </Grid>*/}
+              {/*          </Grid>*/}
+              {/*        </Grid>*/}
+              {/*        <Grid item xs={12} sm={12} md={12} lg={12}>*/}
+              {/*          <Grid container spacing={2}>*/}
+              {/*            <Grid*/}
+              {/*              item*/}
+              {/*              xs={6}*/}
+              {/*              sm={6}*/}
+              {/*              md={6}*/}
+              {/*              lg={6}*/}
+              {/*              className="payment-form image-field align"*/}
+              {/*            >*/}
+              {/*              <div*/}
+              {/*                className="card-fields"*/}
+              {/*                data-olo-pay-card-expiry*/}
+              {/*              ></div>*/}
+              {/*            </Grid>*/}
+              {/*            <Grid item xs={6} sm={6} md={6} lg={6}>*/}
+              {/*              <TextField*/}
+              {/*                aria-label="Zip Code"*/}
+              {/*                // onBlur={handleBlur}*/}
+              {/*                // label="Zip Code"*/}
+              {/*                // aria-required="true"*/}
+              {/*                // title="Zip Code"*/}
+              {/*                placeholder="Zip Code"*/}
+              {/*                type="text"*/}
+              {/*                name="zipcode"*/}
+              {/*                inputProps={{ shrink: false }}*/}
+              {/*                // value={values.zipcode}*/}
+              {/*                onChange={handleZipCodeChange}*/}
+              {/*                // error={Boolean(touched.zipcode && errors.zipcode)}*/}
+              {/*                // helperText={errors.zipcode}*/}
+              {/*              />*/}
+              {/*            </Grid>*/}
+              {/*          </Grid>*/}
+              {/*        </Grid>*/}
+              {/*      </Grid>*/}
+              {/*    )}*/}
+              {/*    <DialogActions>*/}
+              {/*      <Button*/}
+              {/*        aria-label="Cancel"*/}
+              {/*        title="Cancel"*/}
+              {/*        className="link"*/}
+              {/*        onClick={handleCloseAddCreditCard}*/}
+              {/*      >*/}
+              {/*        Cancel{' '}*/}
+              {/*      </Button>*/}
+              {/*      <Button*/}
+              {/*        aria-label="Add Gift Card"*/}
+              {/*        title="Add Gift Card"*/}
+              {/*        type="submit"*/}
+              {/*        className="link default"*/}
+              {/*        autoFocus*/}
+              {/*      >*/}
+              {/*        Add Credit Card*/}
+              {/*      </Button>*/}
+              {/*    </DialogActions>*/}
+              {/*  </DialogContent>*/}
+              {/*</Dialog>*/}
+              {/*<Grid container>*/}
+              {/*  <Grid item xs={12} sm={12} md={12} lg={12}>*/}
+              {/*    <Button*/}
+              {/*      onClick={handleCloseAddCreditCard}*/}
+              {/*      title="ADD CREDIT CARD"*/}
+              {/*      className="label"*/}
+              {/*    >*/}
+              {/*      ADD Credit CARD*/}
+              {/*    </Button>*/}
+              {/*  </Grid>*/}
+              {/*</Grid>*/}
+
+              {basket &&
+                billingSchemes &&
+                billingSchemes.length > 0 &&
+                billingSchemes.length !== 5 &&
+                billingSchemes.filter((element: any) => {
+                  return element.type === 'creditcardtoken';
+                }) &&
+                allowedCards &&
                 allowedCards.length &&
                 allowedCards.filter((element: any) => {
                   return element.type === 'giftcard';
                 }) && (
-                  <Button
-                    onClick={handleCloseAddGiftCard}
-                    title="ADD A GIFT CARD"
-                    className="label"
-                  >
-                    ADD GIFT CARD
-                  </Button>
+                  <Grid container>
+                    <Grid item xs={12} sm={12} md={12} lg={12}>
+                      <Button
+                        onClick={handleCloseAddGiftCard}
+                        title="ADD GIFT CARD"
+                        className="label"
+                      >
+                        ADD Gift CARD
+                      </Button>
+                    </Grid>
+                  </Grid>
                 )}
             </Grid>
           </Grid>

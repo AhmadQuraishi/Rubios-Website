@@ -23,25 +23,76 @@ const cardTypes: any = {
 
 export function generateSubmitBasketPayload(
   formData: any,
-  cardDetails: any,
+  billingSchemes: any,
   deliverymode: string,
   authtoken: string,
 ): RequestBasketSubmit {
+  const billingSchemeStats = getBillingSchemesStats(billingSchemes);
+  console.log('billingSchemeStats', billingSchemeStats);
+  let paymentPayload: any = {};
+  if (
+    billingSchemeStats.selectedCreditCard === 1 &&
+    billingSchemeStats.selectedGiftCard === 0
+  ) {
+    const cardIndex = billingSchemes.findIndex(
+      (account: any) =>
+        account.billingmethod === 'creditcardtoken' && account.selected,
+    );
+    const cardDetails = billingSchemes[cardIndex];
+    paymentPayload = {
+      token: cardDetails.token,
+      billingmethod: BillingMethodEnum.creditcardtoken,
+      cardtype: cardDetails.cardtype,
+      expiryyear: cardDetails.expiryyear,
+      expirymonth: cardDetails.expirymonth,
+      cardlastfour: cardDetails.cardlastfour,
+      zip: cardDetails.zip,
+      saveonfile: SaveOnFileEnum.true,
+    };
+    if (cardDetails.billingaccountid) {
+      paymentPayload.billingmethod = 'billingaccount';
+      paymentPayload.billingaccountid = cardDetails.billingaccountid;
+    }
+  }
+
+  if (
+    billingSchemeStats.selectedCreditCard > 1 ||
+    billingSchemeStats.selectedGiftCard === 1
+  ) {
+    let billingaccounts: any = [];
+    billingSchemes.forEach((account: any) => {
+      if(account.selected){
+        let obj = {
+          ...account,
+        };
+        if (account.billingaccountid) {
+          obj.billingmethod = 'billingaccount';
+        }
+        delete obj.selected;
+        delete obj.localId;
+        delete obj.balance;
+        billingaccounts.push(obj);
+      }
+
+    });
+    // billingaccounts = billingaccounts.reduce((filtered: any, account: any) => {
+    //   if (account.selected) {
+    //     delete account.localId;
+    //     delete account.selected;
+    //     filtered.push(account);
+    //   }
+    //   return filtered;
+    // }, []);
+    console.log('billingaccounts', billingaccounts);
+    paymentPayload = {
+      billingaccounts: billingaccounts,
+    };
+  }
+
   let payload: RequestBasketSubmit = {
-    billingmethod: BillingMethodEnum.creditcardtoken,
     usertype: UserTypeEnum.guest,
-    token: cardDetails.id,
-    cardtype: cardTypes[cardDetails.card.brand],
-    expiryyear: cardDetails.card.exp_year,
-    expirymonth: cardDetails.card.exp_month,
-    cardlastfour: cardDetails.card.last4,
-    streetaddress: 'Pennsylvania Ave',
-    streetaddress2: 'NW Washington, DC.',
-    city: 'Washington',
-    zip: '20500',
-    country: CountryEnum.US,
-    saveonfile: SaveOnFileEnum.true,
     guestoptin: formData.emailNotification,
+    ...paymentPayload,
   };
 
   if (
@@ -236,4 +287,40 @@ export function createTimeWantedPayload(time: string) {
     minute: date.minute(),
   };
   return payload;
+}
+
+export function getUniqueId() {
+  return Date.now().toString(36) + Math.random().toString(36).substr(2);
+}
+
+export function getBillingSchemesStats(billingSchemes: any) {
+  let billingSchemeStats: any = {
+    creditCard: 0,
+    giftCard: 0,
+    selectedCreditCard: 0,
+    selectedGiftCard: 0,
+  };
+
+  billingSchemes.forEach((account: any) => {
+    billingSchemeStats = {
+      creditCard:
+        account.billingmethod === 'creditcardtoken'
+          ? billingSchemeStats.creditCard + 1
+          : billingSchemeStats.creditCard,
+      giftCard:
+        account.billingmethod === 'storedvalue'
+          ? billingSchemeStats.giftCard + 1
+          : billingSchemeStats.giftCard,
+      selectedCreditCard:
+        account.billingmethod === 'creditcardtoken' && account.selected
+          ? billingSchemeStats.selectedCreditCard + 1
+          : billingSchemeStats.selectedCreditCard,
+      selectedGiftCard:
+        account.billingmethod === 'storedvalue' && account.selected
+          ? billingSchemeStats.selectedGiftCard + 1
+          : billingSchemeStats.selectedGiftCard,
+    };
+  });
+
+  return billingSchemeStats;
 }
