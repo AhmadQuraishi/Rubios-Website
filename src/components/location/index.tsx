@@ -20,7 +20,6 @@ import usePlacesAutocomplete, {
   getGeocode,
   getLatLng,
 } from 'use-places-autocomplete';
-import useOnclickOutside from 'react-cool-onclickoutside';
 import { setDeliveryAddress } from '../../redux/actions/location/delivery-address';
 
 const LocationCard = (props: any) => {
@@ -35,9 +34,6 @@ const LocationCard = (props: any) => {
       location: new google.maps.LatLng({ lat: 37.772, lng: -122.214 }),
       radius: 200 * 1000,
     },
-  });
-  const ref = useOnclickOutside(() => {
-    clearSuggestions();
   });
   const handleSelect = (description: any) => {
     setValue(description, false);
@@ -323,6 +319,9 @@ const LocationCard = (props: any) => {
         <Card>
           <Grid container spacing={2} className="location-sidebar">
             <Grid item xs={12}>
+              <Typography variant="h1" className="sr-only">
+                Choose your location
+              </Typography>
               <ToggleButtonGroup
                 value={alignment}
                 exclusive
@@ -353,19 +352,6 @@ const LocationCard = (props: any) => {
                   aria-label=" Curbside ,  Activating this element will cause results to load below "
                 >
                   Curbside
-                  {/* <span
-                    style={{
-                      position: 'absolute',
-                      left: '-10000px',
-                      top: 'auto',
-                      width: '1px',
-                      height: '1px',
-                      overflow: 'hidden',
-                    }}
-                  >
-                    {' '}
-                    Activating this element will cause results to load below
-                  </span> */}
                 </ToggleButton>
                 <ToggleButton
                   value="Delivery"
@@ -383,7 +369,7 @@ const LocationCard = (props: any) => {
                 </ToggleButton>
               </ToggleButtonGroup>
             </Grid>
-            <Grid item xs={12} style={{ position: 'relative' }} ref={ref}>
+            <Grid item xs={12} style={{ position: 'relative' }}>
               {resturantOrderType == 'delivery' ? (
                 <TextField
                   aria-label="Enter your address..."
@@ -394,6 +380,7 @@ const LocationCard = (props: any) => {
                   value={value}
                   type="text"
                   onChange={(e) => {
+                    setShowNotFoundMessage(false);
                     if (e.target.value === '') {
                       setValue('');
                       setActionPerform(false);
@@ -404,6 +391,15 @@ const LocationCard = (props: any) => {
                   }}
                   sx={{ fontSize: '14px', paddingRight: '0px' }}
                   variant="outlined"
+                  onKeyPress={(e: any) => {
+                    if (e.key === 'Enter' && e.target.value !== '') {
+                      if (data.length === 0) {
+                        setShowNotFoundMessage(true);
+                      } else {
+                        setShowNotFoundMessage(false);
+                      }
+                    }
+                  }}
                 />
               ) : (
                 <TextField
@@ -477,7 +473,6 @@ const LocationCard = (props: any) => {
                       aria-label="USE YOUR CURRENT LOCATION"
                       onClick={() => {
                         setresturantOrderType(undefined);
-                        setAlignment('web');
                         findNearByRestaurants();
                         setShowNotFoundMessage(false);
                       }}

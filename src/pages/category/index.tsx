@@ -237,6 +237,9 @@ const CategoryList = () => {
   };
   return (
     <div style={{ minHeight: '500px' }}>
+      <Typography variant="h1" className="sr-only">
+        Main Menu
+      </Typography>
       {getResutarnts && (
         <div
           style={{

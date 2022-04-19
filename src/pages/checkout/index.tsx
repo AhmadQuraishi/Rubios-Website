@@ -359,6 +359,9 @@ const Checkout = () => {
 
   return (
     <>
+      <Typography variant="h1" className="sr-only">
+        Checkout
+      </Typography>
       <StoreInfoBar />
       <Box className="checkout-wrapper">
         <Grid container>
