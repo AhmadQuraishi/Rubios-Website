@@ -9,6 +9,7 @@ import iosLogo from '../../assets/imgs/button-apple.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { getMenuRequest } from '../../redux/actions/footer';
 import { useEffect, useState } from 'react';
+import './footer.css';
 
 const useStyles = makeStyles((theme: Theme) => ({
   links: {
@@ -34,6 +35,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   list: {
     listStyle: 'none',
+    width: '100%',
+    display: 'grid',
+    gridTemplateColumns: ' auto auto auto auto auto auto auto',
   },
 }));
 
@@ -95,32 +99,30 @@ const Footer = () => {
               </Button>
             </Grid>
             <Grid item xs={12}>
-              <ul className={classes.list}>
-                <Grid
-                  container
-                  spacing={1}
-                  sx={{
-                    flexWrap: { xs: 'wrap', md: 'nowrap' },
-                    maxWidth: '1024px',
-                  }}
-                >
+              <Grid
+                container
+                spacing={1}
+                sx={{
+                  flexWrap: { xs: 'wrap', md: 'nowrap' },
+                  maxWidth: '1024px',
+                }}
+              >
+                <ul className="list">
                   {menu &&
                     menu.items.map((item: any, index: number) => (
-                      <Grid item xs={6} md={2} key={index}>
-                        <li>
-                          <a
-                            className={classes.links}
-                            href={item.url}
-                            title={item.title}
-                            aria-label={item.title}
-                          >
-                            {item.title}
-                          </a>
-                        </li>
-                      </Grid>
+                      <li>
+                        <a
+                          className={classes.links}
+                          href={item.url}
+                          title={item.title}
+                          aria-label={item.title}
+                        >
+                          {item.title}
+                        </a>
+                      </li>
                     ))}
-                </Grid>
-              </ul>
+                </ul>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
