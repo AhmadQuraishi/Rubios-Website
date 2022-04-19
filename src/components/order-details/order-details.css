@@ -19,6 +19,9 @@
   font-size: 16px !important;
   color: #285169;
 }
+.order-details h6.n-bold {
+  font-family: 'Poppins-Regular' !important;
+}
 .order-details hr {
   background: #285169;
   height: 1px;
