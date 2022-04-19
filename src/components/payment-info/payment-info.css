@@ -84,4 +84,8 @@
   .payment-form .add-order button {
     width: 100%;
   }
+  .payment-form .image-field.align img {
+    top: 30px;
+    width: 30px;
+  }
 }

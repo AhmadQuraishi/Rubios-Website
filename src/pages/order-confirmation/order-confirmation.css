@@ -46,25 +46,72 @@
 }
 
 @media screen and (max-width: 900px) {
-  .order-confirmation .MuiPaper-root {
-    padding: 85px 30px;
-    max-height: initial;
+  .order-confirmation .card {
+    padding: 55px 30px 65px;
+    max-height: initial !important;
+    min-height: 265px;
+  }
+  .order-confirmation .card .earn-reward {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex-basis: 100%;
+  }
+  .order-confirmation .card.next-order {
+    background-image: none !important;
+    max-height: 435px;
+    min-height: 435px;
+  }
+  .order-confirmation .card.next-order .earn-reward {
+    flex-basis: 50% !important;
+    max-width: 50% !important;
+  }
+  .order-confirmation .order-info {
+    padding: 45px 30px 15px;
+    min-height: 325px;
+  }
+  .order-confirmation .order-info br:nth-child(1) {
+    display: none;
+  }
+  .order-confirmation h1 {
+    font-size: 30px !important;
+    padding-right: 25px;
   }
   .order-confirmation .phone-icon {
     left: 0 !important;
     margin-left: 0px !important;
   }
-  .order-confirmation button {
+  .order-confirmation .card.next-order button {
     width: 100%;
-    padding: 30px 0px;
   }
-  .order-confirmation .card {
-    background-image: none !important;
+  .order-confirmation button {
+    width: 50%;
+    padding: 30px 0px;
+    float: left !important;
   }
 }
 @media screen and (max-width: 468px) {
-  .order-confirmation .card.MuiPaper-root {
+  .order-confirmation .card.next-order {
     max-height: 890px;
+    min-height: 890px;
+  }
+  .order-confirmation .order-info {
+    padding: 45px 30px 55px;
+  }
+  .order-confirmation .card {
+    background-size: cover;
+  }
+  .order-confirmation .white {
+    padding-right: 0px;
+  }
+  .order-confirmation button {
+    width: 100%;
+  }
+  .order-confirmation h1 {
+    font-size: 28px !important;
+  }
+  .order-confirmation .card.next-order .earn-reward {
+    flex-basis: 100% !important;
+    max-width: 100% !important;
   }
 }
 
