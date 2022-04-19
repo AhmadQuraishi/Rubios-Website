@@ -16,6 +16,7 @@ import moment from 'moment';
 import {
   getBasketAllowedCardsRequest,
   getSingleRestaurantCalendar,
+  updateBasketBillingSchemes,
   validateBasket,
 } from '../../redux/actions/basket/checkout';
 import { displayToast } from '../../helpers/toast';
@@ -23,6 +24,7 @@ import {
   generateSubmitBasketPayload,
   formatCustomFields,
   formatDeliveryAddress,
+  getUniqueId,
 } from '../../helpers/checkout';
 import { getUserDeliveryAddresses } from '../../redux/actions/user';
 import PickupForm from '../../components/pickup-form/index';
@@ -38,10 +40,13 @@ const Checkout = () => {
   const paymentInfoRef = React.useRef<any>();
 
   const [runOnce, setRunOnce] = React.useState<boolean>(true);
+  const [defaultCard, setDefaultCard] = React.useState<boolean>(true);
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
   const [tipPercentage, setTipPercentage] = React.useState<any>(null);
   const [basket, setBasket] = React.useState<ResponseBasket>();
-  const [validate, setValidate] = React.useState<ResponseBasketValidation>();
+  const [billingSchemes, setBillingSchemes] = React.useState<any>([]);
+  const [validate, setValidate] =
+    React.useState<ResponseBasketValidation | null>(null);
   const [defaultDeliveryAddress, setDefaultDeliveryAddress] =
     React.useState<any>(null);
 
@@ -78,6 +83,70 @@ const Checkout = () => {
       setRunOnce(false);
     }
   }, [basket]);
+
+  React.useEffect(() => {
+    setBillingSchemes(basketObj.payment.billingSchemes);
+  }, [basketObj.payment.billingSchemes]);
+
+  React.useEffect(() => {
+    if (
+      defaultCard &&
+      !basketObj?.loading &&
+      validate &&
+      basket &&
+      basketObj.payment.allowedCards.data &&
+      basketObj.payment.allowedCards.data.billingschemes &&
+      basketObj.payment.allowedCards.data.billingschemes.length
+    ) {
+      const creditCardIndex =
+        basketObj.payment.allowedCards.data.billingschemes.findIndex(
+          (schemes: any) => schemes.type === 'creditcard',
+        );
+      if (creditCardIndex !== -1) {
+        const defaultCardIndex =
+          basketObj.payment.allowedCards.data.billingschemes[
+            creditCardIndex
+          ].accounts.findIndex((card: any) => card.isdefault);
+        if (defaultCardIndex !== -1) {
+          const defaultCard =
+            basketObj.payment.allowedCards.data.billingschemes[creditCardIndex]
+              .accounts[defaultCardIndex];
+          console.log('Mubashir', defaultCard);
+          let cardObj: any = [
+            {
+              localId: getUniqueId(),
+              selected: false,
+              billingmethod: 'creditcardtoken',
+              amount: 0,
+              tipportion: 0.0,
+              cardtype: defaultCard.cardtype,
+              cardlastfour: defaultCard.cardsuffix,
+              billingaccountid: parseInt(defaultCard.accountidstring),
+            },
+          ];
+
+          cardObj[0].amount =
+            validate && validate.total
+              ? validate.total
+              : basket && basket?.total
+              ? basket?.total
+              : 0;
+          cardObj[0].selected = true;
+
+          // let billingSchemesNewArray = billingSchemes;
+
+          // console.log('cardObj', cardObj);
+          // console.log('billingSchemes.length', billingSchemes.length);
+          // console.log('billingSchemes.length === 0', billingSchemes.length === 0);
+
+          // Array.prototype.push.apply(billingSchemesNewArray, cardObj);
+
+          dispatch(updateBasketBillingSchemes(cardObj));
+        }
+      }
+      setDefaultCard(false);
+    }
+  }, [basketObj.payment.allowedCards, validate]);
 
   React.useEffect(() => {
     if (authToken?.authtoken && authToken.authtoken !== '') {
@@ -175,8 +244,18 @@ const Checkout = () => {
     if (cardDetails.error) {
       data.errors = cardDetails.error;
     } else if (cardDetails.paymentMethod) {
-      data.cardDetails = cardDetails.paymentMethod;
-      data.isValidCard = true;
+      if (
+        cardDetails.paymentMethod &&
+        cardDetails.paymentMethod.billing_details &&
+        cardDetails.paymentMethod.billing_details.address.postal_code &&
+        cardDetails.paymentMethod.billing_details.address.postal_code !== ''
+      ) {
+        data.cardDetails = cardDetails.paymentMethod;
+        data.isValidCard = true;
+      } else {
+        data.isValidCard = false;
+        data.errors.message = 'Zip Code is required';
+      }
     }
 
     return data;
@@ -218,19 +297,23 @@ const Checkout = () => {
       formDataValue = formData;
     }
 
-    const { isValidCard, cardDetails, errors } = await validatePaymentForm();
-
-    if (!isValidCard) {
-      displayToast('ERROR', errors?.message);
-      setButtonDisabled(false);
+    if (billingSchemes.length === 0) {
+      displayToast('ERROR', 'Payment method is required');
       return;
     }
+    // const { isValidCard, cardDetails, errors } = await validatePaymentForm();
+    //
+    // if (!isValidCard) {
+    //   displayToast('ERROR', errors?.message);
+    //   setButtonDisabled(false);
+    //   return;
+    // }
 
     formDataValue.phone = formDataValue.phone.replace(/\D/g, '');
 
     const basketPayload = generateSubmitBasketPayload(
       formDataValue,
-      cardDetails,
+      billingSchemes,
       basket?.deliverymode,
       authToken?.authtoken,
     );

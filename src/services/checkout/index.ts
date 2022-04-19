@@ -4,6 +4,7 @@ import {
   RequestApplyCoupon,
   RequestUpdateBasketTip,
   RequestBasketSubmit,
+  RequestBasketSubmitMultiple,
   RequestUpdateBasketTimeWanted,
 } from '../../types/olo-api';
 import { store } from '../../redux/store';
@@ -110,12 +111,31 @@ export const validateBasket = (basketid: string) => {
 
 export const submitSinglePaymentBasket = (
   basketid: string,
-  body: RequestBasketSubmit,
+  body: any,
+) => {
+  try {
+    const url = process.env.REACT_APP_OLO_API || '';
+    const multiplePaymentCheck = body.billingaccounts && body.billingaccounts.length;
+    return axios
+      .post(url + `/baskets/${basketid}/submit${multiplePaymentCheck ? '/multiplepayments' : ''}`, body)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.log(error.response);
+        throw error;
+      });
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const submitMultiplePaymentBasket = (
+  basketid: string,
+  body: any,
 ) => {
   try {
     const url = process.env.REACT_APP_OLO_API || '';
     return axios
-      .post(url + `/baskets/${basketid}/submit`, body)
+      .post(url + `/baskets/${basketid}/submit/multiplepayments`, body)
       .then((response) => response.data)
       .catch((error) => {
         console.log(error.response);
