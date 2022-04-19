@@ -335,6 +335,7 @@ const LocationCard = (props: any) => {
                     );
                   }}
                   className="selected-btn"
+                  aria-label="PickUp ,  Activating this element will cause results to load below "
                 >
                   PickUp
                 </ToggleButton>
@@ -348,6 +349,7 @@ const LocationCard = (props: any) => {
                     )
                   }
                   className="selected-btn"
+                  aria-label=" Curbside ,  Activating this element will cause results to load below "
                 >
                   Curbside
                 </ToggleButton>
@@ -361,6 +363,7 @@ const LocationCard = (props: any) => {
                     );
                   }}
                   className="selected-btn"
+                  aria-label=" Delivery , Enter your address below to get nearby restaurants"
                 >
                   Delivery
                 </ToggleButton>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Card, Typography } from '@mui/material';
+import { Card, Typography, Grid } from '@mui/material';
 import { DeliveryModeEnum } from '../../types/olo-api/olo-api.enums';
 import { ResponseOrderStatus } from '../../types/olo-api';
 import moment from 'moment';
@@ -102,27 +102,32 @@ const OrderConfirmedCard = ({ orderObj, restaurantObj }: any) => {
 
   return (
     <>
-      <Card style={{ backgroundColor: 'white' }}>
-        <Typography variant="caption" className="label" title="ORDER CONFIRMED">
-          ORDER CONFIRMED
-        </Typography>
-        <Typography variant="h1" title="WE'LL TAKE IT FROM HERE. SEE YOU SOON.">
-          WE'LL TAKE IT FROM HERE. SEE YOU SOON.
-        </Typography>
+      <Card style={{ backgroundColor: 'white' }} className="order-info">
+        <Grid container spacing={0}>
+          <Grid xs={12} sm={6} md={6} lg={12}>
+            <Typography variant="caption" className="label" title="ORDER CONFIRMED">
+              ORDER CONFIRMED
+            </Typography>
+            <Typography variant="h1" title="WE'LL TAKE IT FROM HERE. SEE YOU SOON.">
+              WE'LL TAKE IT FROM HERE. SEE YOU SOON.
+            </Typography>
+
         {/*<Typography variant="h1" title="SEE YOU SOON.">*/}
         {/*  */}
         {/*</Typography>*/}
-        <br />
         <br/>
         <br/>
         {order && order.deliverymode === DeliveryModeEnum.delivery
           ? deliveryAddress(order)
           : pickupAddress(restaurant, order)}
         <br />
-        <br />
         <br/>
         <br/>
-        {order && order.readytime ? pickupTime(order.readytime) : ''}
+          </Grid>
+          <Grid xs={12} sm={6} md={6} lg={12}>
+            {order && order.readytime ? pickupTime(order.readytime) : ''}
+          </Grid>
+        </Grid>
       </Card>
     </>
   );

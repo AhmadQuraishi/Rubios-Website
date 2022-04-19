@@ -507,45 +507,41 @@ const Cart = (props: any) => {
                         <Grid item xs={12} sx={{ padding: '0' }}>
                           <Grid container spacing={0}>
                             <ul className={`btnslist ${classes.btnsList}`}>
-                              <Grid item xs={3}>
+                              <li>
                                 {productRemoveObj &&
                                 productRemoveObj.loading &&
                                 clickAction == item.id + '-remove' ? (
-                                  <li>
-                                    <Button
-                                      key={Math.random() + 'disable-remove'}
-                                      title="Remove"
-                                      className={`${classes.disabledLink}  ${classes.btn}`}
-                                      aria-label="Remove the item from basket"
-                                      onClick={() => false}
-                                    >
-                                      Remove
-                                    </Button>
-                                  </li>
+                                  <Button
+                                    key={Math.random() + 'disable-remove'}
+                                    title="Remove"
+                                    className={`${classes.disabledLink}  ${classes.btn}`}
+                                    aria-label="Remove the item from basket"
+                                    onClick={() => false}
+                                  >
+                                    Remove
+                                  </Button>
                                 ) : (
-                                  <li>
-                                    <Button
-                                      title="Remove"
-                                      key={Math.random() + 'active-remove'}
-                                      className={`${classes.smallLink}  ${classes.btn}`}
-                                      aria-label="Remove the item from basket"
-                                      onClick={() => {
-                                        removeProductHandle(item.id);
-                                        setClickAction(item.id + '-remove');
-                                      }}
-                                      tabIndex={0}
-                                    >
-                                      Remove
-                                    </Button>
-                                  </li>
-                                )}
-                              </Grid>
-                              {!checkItemIsUpsells(item.productId) && (
-                                <Grid item xs={3}>
-                                  {(productRemoveObj &&
-                                    productRemoveObj.loading) ||
-                                  (productAddObj && productAddObj.loading) ? (
-                                    <li>
+                                  <Button
+                                    title="Remove"
+                                    key={Math.random() + 'active-remove'}
+                                    className={`${classes.smallLink}  ${classes.btn}`}
+                                    aria-label="Remove the item from basket"
+                                    onClick={() => {
+                                      removeProductHandle(item.id);
+                                      setClickAction(item.id + '-remove');
+                                    }}
+                                    tabIndex={0}
+                                  >
+                                    Remove
+                                  </Button>
+                                )}{' '}
+                              </li>
+                              <li>
+                                {!checkItemIsUpsells(item.productId) && (
+                                  <Grid item xs={3}>
+                                    {(productRemoveObj &&
+                                      productRemoveObj.loading) ||
+                                    (productAddObj && productAddObj.loading) ? (
                                       <Button
                                         key={Math.random() + 'disable-edit'}
                                         onClick={() => false}
@@ -555,9 +551,7 @@ const Cart = (props: any) => {
                                       >
                                         Edit
                                       </Button>
-                                    </li>
-                                  ) : (
-                                    <li>
+                                    ) : (
                                       <Button
                                         onClick={() => {
                                           showCart();
@@ -580,44 +574,39 @@ const Cart = (props: any) => {
                                       >
                                         Edit
                                       </Button>
-                                    </li>
-                                  )}
-                                </Grid>
-                              )}
-                              <Grid item xs={3}>
+                                    )}
+                                  </Grid>
+                                )}
+                              </li>
+                              <li>
                                 {productAddObj &&
                                 productAddObj.loading &&
                                 clickAction == item.id + '-add' ? (
-                                  <li>
-                                    <Button
-                                      key={Math.random() + 'disable-duplicate'}
-                                      onClick={() => false}
-                                      className={`${classes.disabledLink}  ${classes.btn}`}
-                                      title="Duplicate"
-                                      aria-label="Duplicate the basket item"
-                                    >
-                                      Duplicate
-                                    </Button>
-                                  </li>
+                                  <Button
+                                    key={Math.random() + 'disable-duplicate'}
+                                    onClick={() => false}
+                                    className={`${classes.disabledLink}  ${classes.btn}`}
+                                    title="Duplicate"
+                                    aria-label="Duplicate the basket item"
+                                  >
+                                    Duplicate
+                                  </Button>
                                 ) : (
-                                  <li>
-                                    <Button
-                                      key={Math.random() + 'active-duplicate'}
-                                      onClick={() => {
-                                        duplicateProductHandle(item.id);
-                                        setClickAction(item.id + '-add');
-                                      }}
-                                      className={`${classes.smallLink}  ${classes.btn}`}
-                                      title="Duplicate"
-                                      aria-label="Duplicate the basket item"
-                                      tabIndex={0}
-                                    >
-                                      Duplicate
-                                    </Button>
-                                  </li>
+                                  <Button
+                                    key={Math.random() + 'active-duplicate'}
+                                    onClick={() => {
+                                      duplicateProductHandle(item.id);
+                                      setClickAction(item.id + '-add');
+                                    }}
+                                    className={`${classes.smallLink}  ${classes.btn}`}
+                                    title="Duplicate"
+                                    aria-label="Duplicate the basket item"
+                                    tabIndex={0}
+                                  >
+                                    Duplicate
+                                  </Button>
                                 )}
-                              </Grid>
-                              <Grid item xs={3}></Grid>
+                              </li>
                             </ul>{' '}
                           </Grid>
                         </Grid>
