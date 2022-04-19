@@ -293,7 +293,7 @@ const PaymentInfo = forwardRef((props, _ref) => {
                   basket.total - giftCardAmount
                 ).toFixed(2);
 
-                cardObj[0].amount = giftCardAmount;
+                cardObj[0].amount = parseFloat(giftCardAmount);
                 cardObj[0].selected = true;
 
                 const giftCardIndex = billingSchemesNewArray.findIndex(
@@ -301,7 +301,7 @@ const PaymentInfo = forwardRef((props, _ref) => {
                 );
                 if (giftCardIndex !== -1) {
                   let updatedCreditCard = billingSchemesNewArray[giftCardIndex];
-                  updatedCreditCard.amount = creditCardAmount;
+                  updatedCreditCard.amount = parseFloat(creditCardAmount);
                   updatedCreditCard.selected = true;
                   billingSchemesNewArray[giftCardIndex] = updatedCreditCard;
                 }
@@ -316,7 +316,7 @@ const PaymentInfo = forwardRef((props, _ref) => {
                 let creditCardAmount: any = basket.total - giftCardAmount;
                 creditCardAmount = creditCardAmount.toFixed(2) / 2;
 
-                cardObj[0].amount = giftCardAmount;
+                cardObj[0].amount = parseFloat(giftCardAmount);
                 cardObj[0].selected = true;
 
                 let count = 0;

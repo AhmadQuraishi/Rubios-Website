@@ -214,12 +214,12 @@ const AddCreditCard = () => {
       );
       if (creditCardIndex !== -1) {
         let updatedCreditCard = billingSchemesNewArray[creditCardIndex];
-        updatedCreditCard.amount = halfAmount;
+        updatedCreditCard.amount = parseFloat(halfAmount);
         updatedCreditCard.selected = true;
         billingSchemesNewArray[creditCardIndex] = updatedCreditCard;
       }
 
-      cardObj[0].amount = halfAmount;
+      cardObj[0].amount = parseFloat(halfAmount);
       cardObj[0].selected = true;
     } else if (
       billingSchemeStats.creditCard === 1 &&
@@ -232,12 +232,12 @@ const AddCreditCard = () => {
       );
       if (creditCardIndex !== -1) {
         let updatedCreditCard = billingSchemesNewArray[creditCardIndex];
-        updatedCreditCard.amount = halfAmount;
+        updatedCreditCard.amount = parseFloat(halfAmount);
         updatedCreditCard.selected = true;
         billingSchemesNewArray[creditCardIndex] = updatedCreditCard;
       }
 
-      cardObj[0].amount = halfAmount;
+      cardObj[0].amount = parseFloat(halfAmount);
       cardObj[0].selected = true;
     }
 

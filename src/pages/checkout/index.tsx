@@ -309,7 +309,9 @@ const Checkout = () => {
     //   return;
     // }
 
-    formDataValue.phone = formDataValue.phone.replace(/\D/g, '');
+    if (formDataValue.phone) {
+      formDataValue.phone = formDataValue.phone.replace(/\D/g, '');
+    }
 
     const basketPayload = generateSubmitBasketPayload(
       formDataValue,
