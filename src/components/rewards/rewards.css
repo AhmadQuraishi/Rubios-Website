@@ -72,7 +72,9 @@
     width: 47% !important;
     margin-right: 40px;
   }
-  .choose-reward .choose-btn:nth-child(2) {
+  .choose-reward .choose-btn:nth-child(2),
+  .choose-reward .choose-btn:nth-child(4),
+  .choose-reward .choose-btn:nth-child(6){
     margin-right: 0px;
   }
 }
