@@ -294,9 +294,6 @@ function* facebookUserHandler(action: any): any {
       successMsg: 'Login Success',
       basketID: action.basketID,
     });
-    setTimeout(() => {
-      window.location.href = '/account/profile';
-    }, 500);
   } catch (error) {
     yield put(userLoginFailure(error));
   }
