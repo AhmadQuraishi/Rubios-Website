@@ -25,6 +25,8 @@ import {
   formatCustomFields,
   formatDeliveryAddress,
   getUniqueId,
+  getCreditCardObj,
+  updatePaymentCardsAmount,
 } from '../../helpers/checkout';
 import { getUserDeliveryAddresses } from '../../redux/actions/user';
 import PickupForm from '../../components/pickup-form/index';
@@ -112,6 +114,7 @@ const Checkout = () => {
             basketObj.payment.allowedCards.data.billingschemes[creditCardIndex]
               .accounts[defaultCardIndex];
           console.log('Mubashir', defaultCard);
+
           let cardObj: any = [
             {
               localId: getUniqueId(),
@@ -133,13 +136,7 @@ const Checkout = () => {
               : 0;
           cardObj[0].selected = true;
 
-          // let billingSchemesNewArray = billingSchemes;
-
-          // console.log('cardObj', cardObj);
-          // console.log('billingSchemes.length', billingSchemes.length);
-          // console.log('billingSchemes.length === 0', billingSchemes.length === 0);
-
-          // Array.prototype.push.apply(billingSchemesNewArray, cardObj);
+          cardObj = updatePaymentCardsAmount(cardObj, basket);
 
           dispatch(updateBasketBillingSchemes(cardObj));
         }
@@ -299,8 +296,32 @@ const Checkout = () => {
 
     if (billingSchemes.length === 0) {
       displayToast('ERROR', 'Payment method is required');
+      setButtonDisabled(false);
       return;
     }
+
+    if (billingSchemes.length) {
+      const tip = (basket && basket.tip) || 0;
+      const creditCardTotal = billingSchemes.reduce(
+        (sum: any, account: any) => {
+          if (account.billingmethod === 'creditcardtoken' && account.selected) {
+            sum = sum + account.amount;
+          }
+          return sum;
+        },
+        0,
+      );
+
+      if (creditCardTotal < tip) {
+        displayToast(
+          'ERROR',
+          'Credit Card amount should be greater than Tip amount.',
+        );
+        setButtonDisabled(false);
+        return;
+      }
+    }
+
     // const { isValidCard, cardDetails, errors } = await validatePaymentForm();
     //
     // if (!isValidCard) {
@@ -318,6 +339,7 @@ const Checkout = () => {
       billingSchemes,
       basket?.deliverymode,
       authToken?.authtoken,
+      basket,
     );
 
     if (orderType && orderType === DeliveryModeEnum.curbside) {
@@ -346,6 +368,7 @@ const Checkout = () => {
         };
       }
       console.log('basketPayload', basketPayload);
+
       dispatch(
         validateBasket(
           basket?.id,
