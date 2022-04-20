@@ -2,7 +2,7 @@ import { makeStyles } from '@mui/styles';
 import { Grid, Typography, Button } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import './login2.css';
-import { Fragment, useEffect } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import LoginForm from '../../components/login-form';
 import bgImage from '../../assets/imgs/login-bg.png';
@@ -77,19 +77,6 @@ const Login2 = () => {
     }
   };
 
-  const loginfacebookuser = () => {
-    const obj = {
-      access_token:
-        'EAAFZAzSWFj9EBACx8ZCTiArI1DZBvEjp1o0OFJtKSlZBpxyX6krPaGBfcxbYZBZAxlOURfAO15svRLQATfd7AnZCll6wRVs4pZClu23vNwQwMj4eb33GaPEuIhzV4uaDMKe8g0k8bHjgrAnjOjhR6bE8Amb21FKLdZA13M2bppQBuzXyZAetrdmlp8QY77EH9mb8elF75YUUENxTpvKEEaa3rGPIunEtZCOcf0ZD',
-      email: 'fashion.fitness388@gmail.com',
-      client:
-        'c7f0b80300f53da0f25b52b06c8b9b89afcb47397e8e2c1f3fe9b58200171a41',
-      fb_uid: '1173560663420508',
-    };
-
-    dispatch(facebookUserLogin(obj));
-  };
-
   return (
     <main>
       <Grid container component="main" columns={16} className={classes.root}>
@@ -126,9 +113,6 @@ const Login2 = () => {
               </Typography>
               <ul className="button-list">
                 <li>
-                  <span onClick={() => loginfacebookuser()}>
-                    Login FaceBook
-                  </span>
                   <ReactFacebookLogin
                     appId="380212609388497"
                     fields="name,email,picture"
