@@ -2,6 +2,7 @@ import { store } from '../../redux/store';
 import axiosInstance from '../axiosInceptor';
 import { ResponseContactOptions } from '../../types/olo-api';
 import axios from 'axios';
+import { TableBody } from '@mui/material';
 
 //profile
 export const RequestUserProfile = () => {
@@ -422,6 +423,23 @@ export const requestGiftCardBalance = async (billingAccountIds: any) => {
       });
 
     return await finalResponse;
+  } catch (error) {
+    throw error;
+  }
+};
+
+//Facebook User Login
+export const requestFacebookUserLogin = (body: object) => {
+  const data = body;
+  try {
+    const url = `${process.env.REACT_APP_PUNCHH_API}/api/auth/users/connect_with_facebook`;
+
+    return axiosInstance
+      .post(url, data)
+      .then((response) => response.data)
+      .catch((error) => {
+        throw error.response;
+      });
   } catch (error) {
     throw error;
   }

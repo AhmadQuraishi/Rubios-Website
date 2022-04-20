@@ -3,10 +3,11 @@ import { Grid, Typography, Button } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import './login2.css';
 import { Fragment, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import LoginForm from '../../components/login-form';
 import bgImage from '../../assets/imgs/login-bg.png';
 import ReactFacebookLogin from 'react-facebook-login';
+import { facebookUserLogin } from '../../redux/actions/user';
 
 const useStyle = makeStyles(() => ({
   root: {
@@ -29,6 +30,7 @@ const Login2 = () => {
   const { restaurant } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (
@@ -53,17 +55,39 @@ const Login2 = () => {
         if (name.length > 1) {
           const fname = name[0];
           const lname = name[1];
-          navigate(
-            `/register?fname=${fname}&lname=${lname}&email=${response.email}`,
-          );
+          // navigate(
+          //   `/register?fname=${fname}&lname=${lname}&email=${response.email}`,
+          // );
         } else {
           const fname = name[0];
-          navigate(`/register?fname=${fname}&email=${response.email}`);
+          // navigate(`/register?fname=${fname}&email=${response.email}`);
         }
+
+        const obj = {
+          access_token: response.accessToken,
+          email: response.email,
+          client: process.env.REACT_APP_PUNCHH_CLIENT_ID,
+          fb_uid: response.userID,
+        };
+
+        dispatch(facebookUserLogin(obj));
       }
     } catch (e) {
       console.log(e);
     }
+  };
+
+  const loginfacebookuser = () => {
+    const obj = {
+      access_token:
+        'EAAFZAzSWFj9EBACx8ZCTiArI1DZBvEjp1o0OFJtKSlZBpxyX6krPaGBfcxbYZBZAxlOURfAO15svRLQATfd7AnZCll6wRVs4pZClu23vNwQwMj4eb33GaPEuIhzV4uaDMKe8g0k8bHjgrAnjOjhR6bE8Amb21FKLdZA13M2bppQBuzXyZAetrdmlp8QY77EH9mb8elF75YUUENxTpvKEEaa3rGPIunEtZCOcf0ZD',
+      email: 'fashion.fitness388@gmail.com',
+      client:
+        'c7f0b80300f53da0f25b52b06c8b9b89afcb47397e8e2c1f3fe9b58200171a41',
+      fb_uid: '1173560663420508',
+    };
+
+    dispatch(facebookUserLogin(obj));
   };
 
   return (
@@ -102,6 +126,9 @@ const Login2 = () => {
               </Typography>
               <ul className="button-list">
                 <li>
+                  <span onClick={() => loginfacebookuser()}>
+                    Login FaceBook
+                  </span>
                   <ReactFacebookLogin
                     appId="380212609388497"
                     fields="name,email,picture"
