@@ -69,6 +69,7 @@ import { displayToast } from '../../../helpers/toast';
 import { getProviderRequestSuccess } from '../../actions/provider';
 import { navigateAppAction } from '../../actions/navigate-app';
 import { basketActionsTypes } from '../../types/basket';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 //profile
 function* userProfileHandler(): any {
@@ -290,9 +291,12 @@ function* facebookUserHandler(action: any): any {
     yield put(userLoginSuccess(response));
     yield put({
       type: authActionsTypes.GET_AUTHTOKEN_REQUEST,
-      successMsg: 'Login Success',      
+      successMsg: 'Login Success',
       basketID: action.basketID,
     });
+    setTimeout(() => {
+      window.location.href = '/account/profile';
+    }, 500);
   } catch (error) {
     yield put(userLoginFailure(error));
   }
