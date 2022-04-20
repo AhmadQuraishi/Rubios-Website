@@ -14,7 +14,7 @@ import { ResponseBasket } from '../../../types/olo-api';
 import { useDispatch, useSelector } from 'react-redux';
 import { displayToast } from '../../../helpers/toast';
 import { updateBasketBillingSchemes } from '../../../redux/actions/basket/checkout';
-import { getBillingSchemesStats, getUniqueId } from '../../../helpers/checkout';
+import {getBillingSchemesStats, getCreditCardObj, updatePaymentCardsAmount, getUniqueId} from '../../../helpers/checkout';
 
 const cardTypes: any = {
   amex: 'Amex',
@@ -56,6 +56,8 @@ const AddCreditCard = () => {
   const [billingSchemes, setBillingSchemes] = React.useState<any>([]);
   const [pinCheck, setPinCheck] = React.useState<any>(false);
   const [billingDetails, setBillingDetails] = React.useState<any>();
+  const [zipCode, setZipCode] = React.useState<any>();
+  const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
 
   const [paymentMethod, setPaymentMethod] =
     React.useState<PaymentMethodResult | null>(null);
@@ -113,12 +115,19 @@ const AddCreditCard = () => {
 
   const handleCloseAddCreditCard = () => {
     setOpenAddCreditCard(!openAddCreditCard);
+    setZipCode('');
+    setBillingDetails({});
   };
 
   const handleZipCodeChange = (event: any) => {
+    let newValue = event.target.value.trim();
+    newValue = newValue && newValue >= 0 ? parseInt(newValue) : '';
+
+    setZipCode(newValue);
+
     setBillingDetails({
       address: {
-        postal_code: event.target.value.trim(),
+        postal_code: newValue,
       },
     });
   };
@@ -141,8 +150,15 @@ const AddCreditCard = () => {
         cardDetails.paymentMethod.billing_details.address.postal_code &&
         cardDetails.paymentMethod.billing_details.address.postal_code !== ''
       ) {
-        data.cardDetails = cardDetails.paymentMethod;
-        data.isValidCard = true;
+        let zipcode =
+          cardDetails.paymentMethod.billing_details.address.postal_code;
+        if (zipcode > 99 && zipcode < 99999) {
+          data.cardDetails = cardDetails.paymentMethod;
+          data.isValidCard = true;
+        } else {
+          data.isValidCard = false;
+          data.errors.message = 'Zip Code must be between 3 and 5 digits.';
+        }
       } else {
         data.isValidCard = false;
         data.errors.message = 'Zip Code is required';
@@ -153,102 +169,111 @@ const AddCreditCard = () => {
   };
 
   const handleCreditCardSubmit = async () => {
+    setButtonDisabled(true);
     const { isValidCard, cardDetails, errors } = await validatePaymentForm();
 
     if (!isValidCard) {
       displayToast('ERROR', errors?.message);
+      setButtonDisabled(false);
       return;
     }
 
     let billingSchemesNewArray = billingSchemes;
-    const billingSchemeStats = getBillingSchemesStats(billingSchemes);
-
-    let cardObj: any = [
-      {
-        localId: getUniqueId(),
-        selected: false,
-        billingmethod: 'creditcardtoken',
-        amount: 0,
-        tipportion: 0.0,
-        token: cardDetails.id,
-        cardtype: cardTypes[cardDetails.card.brand],
-        expiryyear: cardDetails.card.exp_year,
-        expirymonth: cardDetails.card.exp_month,
-        cardlastfour: cardDetails.card.last4,
-        zip: cardDetails.billing_details.address.postal_code,
-        saveonfile: false,
-      },
-    ];
-
-    if (
-      billingSchemeStats.creditCard === 0 &&
-      billingSchemeStats.giftCard === 0
-    ) {
-      cardObj[0].amount = basket && basket?.total ? basket?.total : 0;
-      cardObj[0].selected = true;
-    } else if (
-      billingSchemeStats.creditCard === 1 &&
-      billingSchemeStats.giftCard === 1
-    ) {
-      let giftCardAmount = 0;
-      let halfAmount: any = 0;
-      const giftCardIndex = billingSchemesNewArray.findIndex(
-        (account: any) => account.billingmethod === 'storedvalue',
-      );
-      if (giftCardIndex !== -1) {
-        let updatedCreditCard = billingSchemesNewArray[giftCardIndex];
-        giftCardAmount =
-          basket && updatedCreditCard.balance > basket.subtotal
-            ? basket.subtotal
-            : updatedCreditCard.balance;
-        updatedCreditCard.amount = giftCardAmount;
-        updatedCreditCard.selected = true;
-        billingSchemesNewArray[giftCardIndex] = updatedCreditCard;
-      }
-
-      halfAmount = basket ? basket.total - giftCardAmount : 0;
-      halfAmount = halfAmount.toFixed(2) / 2;
-
-      const creditCardIndex = billingSchemesNewArray.findIndex(
-        (account: any) => account.billingmethod === 'creditcardtoken',
-      );
-      if (creditCardIndex !== -1) {
-        let updatedCreditCard = billingSchemesNewArray[creditCardIndex];
-        updatedCreditCard.amount = parseFloat(halfAmount);
-        updatedCreditCard.selected = true;
-        billingSchemesNewArray[creditCardIndex] = updatedCreditCard;
-      }
-
-      cardObj[0].amount = parseFloat(halfAmount);
-      cardObj[0].selected = true;
-    } else if (
-      billingSchemeStats.creditCard === 1 &&
-      billingSchemeStats.giftCard === 0
-    ) {
-      let halfAmount: any = basket ? basket.total : 0;
-      halfAmount = halfAmount.toFixed(2) / 2;
-      const creditCardIndex = billingSchemesNewArray.findIndex(
-        (account: any) => account.billingmethod === 'creditcardtoken',
-      );
-      if (creditCardIndex !== -1) {
-        let updatedCreditCard = billingSchemesNewArray[creditCardIndex];
-        updatedCreditCard.amount = parseFloat(halfAmount);
-        updatedCreditCard.selected = true;
-        billingSchemesNewArray[creditCardIndex] = updatedCreditCard;
-      }
-
-      cardObj[0].amount = parseFloat(halfAmount);
-      cardObj[0].selected = true;
-    }
-
-    console.log('cardObj', cardObj);
-    console.log('billingSchemes.length', billingSchemes.length);
-    console.log('billingSchemes.length === 0', billingSchemes.length === 0);
+    // const billingSchemeStats = getBillingSchemesStats(billingSchemes);
+    let cardObj: any = getCreditCardObj(cardDetails, billingSchemes);
 
     Array.prototype.push.apply(billingSchemesNewArray, cardObj);
 
+    billingSchemesNewArray = updatePaymentCardsAmount(
+      billingSchemesNewArray,
+      basket,
+    );
+
+    // let cardObj: any = [
+    //   {
+    //     localId: getUniqueId(),
+    //     selected: false,
+    //     billingmethod: 'creditcardtoken',
+    //     amount: 0,
+    //     tipportion: 0.0,
+    //     token: cardDetails.id,
+    //     cardtype: cardTypes[cardDetails.card.brand],
+    //     expiryyear: cardDetails.card.exp_year,
+    //     expirymonth: cardDetails.card.exp_month,
+    //     cardlastfour: cardDetails.card.last4,
+    //     zip: cardDetails.billing_details.address.postal_code,
+    //     saveonfile: false,
+    //   },
+    // ];
+
+    // if (
+    //   billingSchemeStats.creditCard === 0 &&
+    //   billingSchemeStats.giftCard === 0
+    // ) {
+    //   cardObj[0].amount = basket && basket?.total ? basket?.total : 0;
+    //   cardObj[0].selected = true;
+    // } else if (
+    //   billingSchemeStats.creditCard === 1 &&
+    //   billingSchemeStats.giftCard === 1
+    // ) {
+    //   let giftCardAmount = 0;
+    //   let halfAmount: any = 0;
+    //   const giftCardIndex = billingSchemesNewArray.findIndex(
+    //     (account: any) => account.billingmethod === 'storedvalue',
+    //   );
+    //   if (giftCardIndex !== -1) {
+    //     let updatedCreditCard = billingSchemesNewArray[giftCardIndex];
+    //     giftCardAmount =
+    //       basket && updatedCreditCard.balance > basket.subtotal
+    //         ? basket.subtotal
+    //         : updatedCreditCard.balance;
+    //     updatedCreditCard.amount = giftCardAmount;
+    //     updatedCreditCard.selected = true;
+    //     billingSchemesNewArray[giftCardIndex] = updatedCreditCard;
+    //   }
+    //
+    //   halfAmount = basket ? basket.total - giftCardAmount : 0;
+    //   halfAmount = halfAmount / 2;
+    //   halfAmount = halfAmount.toFixed(2);
+    //
+    //   const creditCardIndex = billingSchemesNewArray.findIndex(
+    //     (account: any) => account.billingmethod === 'creditcardtoken',
+    //   );
+    //   if (creditCardIndex !== -1) {
+    //     let updatedCreditCard = billingSchemesNewArray[creditCardIndex];
+    //     updatedCreditCard.amount = parseFloat(halfAmount);
+    //     updatedCreditCard.selected = true;
+    //     billingSchemesNewArray[creditCardIndex] = updatedCreditCard;
+    //   }
+    //
+    //   cardObj[0].amount = parseFloat(halfAmount);
+    //   cardObj[0].selected = true;
+    // } else if (
+    //   billingSchemeStats.creditCard === 1 &&
+    //   billingSchemeStats.giftCard === 0
+    // ) {
+    //   let halfAmount: any = basket ? basket.total : 0;
+    //   halfAmount = halfAmount / 2;
+    //   halfAmount = halfAmount.toFixed(2);
+    //   const creditCardIndex = billingSchemesNewArray.findIndex(
+    //     (account: any) => account.billingmethod === 'creditcardtoken',
+    //   );
+    //   if (creditCardIndex !== -1) {
+    //     let updatedCreditCard = billingSchemesNewArray[creditCardIndex];
+    //     updatedCreditCard.amount = parseFloat(halfAmount);
+    //     updatedCreditCard.selected = true;
+    //     billingSchemesNewArray[creditCardIndex] = updatedCreditCard;
+    //   }
+    //
+    //   cardObj[0].amount = parseFloat(halfAmount);
+    //   cardObj[0].selected = true;
+    // }
+    //
+    // Array.prototype.push.apply(billingSchemesNewArray, cardObj);
+
     dispatch(updateBasketBillingSchemes(billingSchemesNewArray));
-    displayToast('SUCCESS', 'Card Added');
+    displayToast('SUCCESS', 'Credit Card Added');
+    setButtonDisabled(false);
     handleCloseAddCreditCard();
   };
 
@@ -317,7 +342,7 @@ const AddCreditCard = () => {
                         type="text"
                         name="zipcode"
                         inputProps={{ shrink: false }}
-                        // value={values.zipcode}
+                        value={zipCode}
                         onChange={handleZipCodeChange}
                         // error={Boolean(touched.zipcode && errors.zipcode)}
                         // helperText={errors.zipcode}
@@ -342,6 +367,7 @@ const AddCreditCard = () => {
                 type="submit"
                 className="link default"
                 onClick={handleCreditCardSubmit}
+                disabled={buttonDisabled}
                 autoFocus
               >
                 Add Credit Card
