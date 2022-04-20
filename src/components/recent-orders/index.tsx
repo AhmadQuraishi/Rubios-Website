@@ -107,7 +107,6 @@ const RecentOrders = () => {
   };
   //Set order as favorite
   const handleClickOpen = (favid: string, products: any, price: string) => {
-    debugger;
     if (products && products.length > 0) {
       setItems(products);
     }

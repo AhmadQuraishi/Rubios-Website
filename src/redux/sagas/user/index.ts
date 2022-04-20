@@ -22,6 +22,7 @@ import {
   requestUpdateProfile,
   requestUserForgotPassword,
   resetPasswordRequest,
+  requestFacebookUserLogin,
 } from '../../../services/user';
 import {
   deleteUserDelAddFailure,
@@ -283,6 +284,20 @@ function* userRegisterHandler(action: any): any {
   }
 }
 
+function* facebookUserHandler(action: any): any {
+  try {
+    const response = yield call(requestFacebookUserLogin, action.data);
+    yield put(userLoginSuccess(response));
+    yield put({
+      type: authActionsTypes.GET_AUTHTOKEN_REQUEST,
+      successMsg: 'Login Success',      
+      basketID: action.basketID,
+    });
+  } catch (error) {
+    yield put(userLoginFailure(error));
+  }
+}
+
 // User Register
 function* userForgotPasswordHandler(action: any): any {
   try {
@@ -327,6 +342,7 @@ export function* userSaga() {
   );
   yield takeEvery(Type.USER_LOGIN_REQUEST, userLoginHandler);
   yield takeEvery(Type.USER_REGISTER_REQUEST, userRegisterHandler);
+  yield takeEvery(Type.USER_FACEBOOK_REQUEST, facebookUserHandler);
   yield takeEvery(Type.USER_FORGOT_PASSWORD_REQUEST, userForgotPasswordHandler);
   yield takeEvery(Type.USER_RESET_PASSWORD_REQUEST, userResetPasswordHandler);
 }
