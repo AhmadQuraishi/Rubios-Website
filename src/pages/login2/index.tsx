@@ -48,6 +48,7 @@ const Login2 = () => {
   const handleCallBackfacebook = (response: any) => {
     try {
       if (response && response.name && response.email) {
+        console.log(response);
         const name = response.name.split(' ');
         if (name.length > 1) {
           const fname = name[0];
