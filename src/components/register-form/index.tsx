@@ -52,7 +52,6 @@ const RegisterForm = () => {
 
   useEffect(() => {
     dispatch(getlocations());
-    console.log(findGetParameter('fnameq'));
   }, []);
 
   const handleChangeLocation = (event: SelectChangeEvent) => {
