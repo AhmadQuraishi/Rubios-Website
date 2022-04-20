@@ -23,7 +23,6 @@ const Login2 = () => {
   const navigate = useNavigate();
   const classes = useStyle();
 
-  const [socialLogin, setSocialLogin] = useState();
   const { providerToken } = useSelector((state: any) => state.providerReducer);
   const { authToken } = useSelector((state: any) => state.authReducer);
 
@@ -63,8 +62,6 @@ const Login2 = () => {
           const fname = name[0];
           // navigate(`/register?fname=${fname}&email=${response.email}`);
         }
-
-        setSocialLogin(true);
 
         const obj = {
           access_token: response.accessToken,
