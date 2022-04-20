@@ -2,11 +2,12 @@ import { makeStyles } from '@mui/styles';
 import { Grid, Typography, Button } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import './login2.css';
-import { Fragment, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { Fragment, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import LoginForm from '../../components/login-form';
 import bgImage from '../../assets/imgs/login-bg.png';
 import ReactFacebookLogin from 'react-facebook-login';
+import { facebookUserLogin } from '../../redux/actions/user';
 
 const useStyle = makeStyles(() => ({
   root: {
@@ -29,6 +30,7 @@ const Login2 = () => {
   const { restaurant } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (
@@ -53,13 +55,22 @@ const Login2 = () => {
         if (name.length > 1) {
           const fname = name[0];
           const lname = name[1];
-          navigate(
-            `/register?fname=${fname}&lname=${lname}&email=${response.email}`,
-          );
+          // navigate(
+          //   `/register?fname=${fname}&lname=${lname}&email=${response.email}`,
+          // );
         } else {
           const fname = name[0];
-          navigate(`/register?fname=${fname}&email=${response.email}`);
+          // navigate(`/register?fname=${fname}&email=${response.email}`);
         }
+
+        const obj = {
+          access_token: response.accessToken,
+          email: response.email,
+          client: process.env.REACT_APP_PUNCHH_CLIENT_ID,
+          fb_uid: response.userID,
+        };
+
+        dispatch(facebookUserLogin(obj));
       }
     } catch (e) {
       console.log(e);
