@@ -5,6 +5,7 @@ import { ResponseOrderStatus } from '../../types/olo-api';
 import moment from 'moment';
 import { LensTwoTone } from '@mui/icons-material';
 import { useSelector } from 'react-redux';
+import "./order-confirm-card.css";
 
 const locationTitle = (type: string) => {
   switch (type) {
@@ -124,7 +125,7 @@ const OrderConfirmedCard = ({ orderObj, restaurantObj }: any) => {
         <br/>
         <br/>
           </Grid>
-          <Grid xs={12} sm={6} md={6} lg={12}>
+          <Grid xs={12} sm={6} md={6} lg={12} className="adjust-space">
             {order && order.readytime ? pickupTime(order.readytime) : ''}
           </Grid>
         </Grid>
