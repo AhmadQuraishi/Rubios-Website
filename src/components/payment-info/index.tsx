@@ -27,45 +27,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { displayToast } from '../../helpers/toast';
 import { updateBasketBillingSchemes } from '../../redux/actions/basket/checkout';
 import AddCreditCard from './add-credit-card';
-import { getBillingSchemesStats, getUniqueId } from '../../helpers/checkout';
-
-// const billingAccounts = [
-//   {
-//     billingmethod: 'creditcard',
-//     amount: 36.4,
-//     tipportion: 0.0,
-//     firstname: 'Hussnain',
-//     lastname: 'Hashmi',
-//     emailaddress: 'hashmih9211@gmail.com',
-//     cardnumber: '4111111111111111',
-//     expiryyear: 2024,
-//     expirymonth: 2,
-//     cvv: '222',
-//     streetaddress: '26 Broadway',
-//     streetaddress2: 'Unit 4',
-//     city: 'New York',
-//     state: 'New York',
-//     zip: '10004',
-//     country: 'US',
-//     saveonfile: true,
-//   },
-//   {
-//     billingmethod: 'storedvalue',
-//     amount: 10.0,
-//     tipportion: 0.0,
-//     billingschemeid: 1282,
-//     billingfields: [
-//       {
-//         name: 'pin',
-//         value: '123',
-//       },
-//       {
-//         name: 'number',
-//         value: '1111222233334444',
-//       },
-//     ],
-//   },
-// ];
+import {
+  getBillingSchemesStats,
+  getCreditCardObj,
+  getGiftCardObj,
+  getUniqueId,
+  updatePaymentCardsAmount,
+} from '../../helpers/checkout';
 
 const styleObject = {
   base: {
@@ -98,6 +66,7 @@ const PaymentInfo = forwardRef((props, _ref) => {
   const [allowedCards, setAllowedCards] = React.useState<any>();
   const [billingSchemes, setBillingSchemes] = React.useState<any>([]);
   const [pinCheck, setPinCheck] = React.useState<any>(false);
+  const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
 
   // const [paymentMethod, setPaymentMethod] =
   //   React.useState<PaymentMethodResult | null>(null);
@@ -123,8 +92,10 @@ const PaymentInfo = forwardRef((props, _ref) => {
   }, [basketObj.payment.allowedCards]);
 
   React.useEffect(() => {
-    setBillingSchemes(basketObj.payment.billingSchemes);
-  }, [basketObj.payment.billingSchemes]);
+    if (basketObj.payment && basketObj.payment.billingSchemes) {
+      setBillingSchemes(basketObj.payment.billingSchemes);
+    }
+  }, [basketObj.payment]);
 
   React.useEffect(() => {
     if (allowedCards && allowedCards.length) {
@@ -211,7 +182,10 @@ const PaymentInfo = forwardRef((props, _ref) => {
     if (accountIndex !== -1) {
       let updatedBillingSchemes: any = billingSchemes;
       updatedBillingSchemes[accountIndex].selected = e.target.checked;
-      console.log('updatedBillingSchemes', updatedBillingSchemes);
+      updatedBillingSchemes = updatePaymentCardsAmount(
+        updatedBillingSchemes,
+        basket,
+      );
       dispatch(updateBasketBillingSchemes(updatedBillingSchemes));
     }
   };
@@ -222,13 +196,18 @@ const PaymentInfo = forwardRef((props, _ref) => {
   };
 
   const removeSingleBasketBillingSchemes = (localId: any) => {
-    const updatedBillingSchemes = billingSchemes.filter(
+    let updatedBillingSchemes = billingSchemes.filter(
       (element: any) => element.localId !== localId,
+    );
+    updatedBillingSchemes = updatePaymentCardsAmount(
+      updatedBillingSchemes,
+      basket,
     );
     dispatch(updateBasketBillingSchemes(updatedBillingSchemes));
   };
 
   const handleGiftCardSubmit = async (values: any) => {
+    setButtonDisabled(true);
     const body: any = {
       cardnumber: values.giftCardNumber,
     };
@@ -251,6 +230,7 @@ const PaymentInfo = forwardRef((props, _ref) => {
         console.log('pinResponse', pinResponse);
         if (pinResponse && pinResponse.ispinrequired && !pinCheck) {
           displayToast('SUCCESS', 'Please add gift card pin.');
+          setButtonDisabled(false);
           setPinCheck(true);
         } else {
           const balanceResponse = await getGiftCardBalance(
@@ -261,101 +241,115 @@ const PaymentInfo = forwardRef((props, _ref) => {
           if (balanceResponse) {
             if (balanceResponse.success) {
               let billingSchemesNewArray = billingSchemes;
-              const billingSchemeStats = getBillingSchemesStats(billingSchemes);
-              console.log('billingSchemeStats', billingSchemeStats);
-              const cardObj = [
-                {
-                  localId: getUniqueId(),
-                  selected: false,
-                  billingmethod: 'storedvalue',
-                  balance: balanceResponse.balance,
-                  amount: 0,
-                  tipportion: 0.0,
-                  billingschemeid: billingSchemeId,
-                  billingfields: [
-                    {
-                      name: 'number',
-                      value: body.cardnumber,
-                    },
-                  ],
-                },
-              ];
+              // const billingSchemeStats = getBillingSchemesStats(billingSchemes);
 
-              if (
-                billingSchemeStats.giftCard === 0 &&
-                billingSchemeStats.creditCard === 1
-              ) {
-                const giftCardAmount =
-                  cardObj[0].balance > basket.subtotal
-                    ? basket.subtotal
-                    : cardObj[0].balance;
-                const creditCardAmount = (
-                  basket.total - giftCardAmount
-                ).toFixed(2);
-
-                cardObj[0].amount = parseFloat(giftCardAmount);
-                cardObj[0].selected = true;
-
-                const giftCardIndex = billingSchemesNewArray.findIndex(
-                  (account: any) => account.billingmethod === 'creditcardtoken',
-                );
-                if (giftCardIndex !== -1) {
-                  let updatedCreditCard = billingSchemesNewArray[giftCardIndex];
-                  updatedCreditCard.amount = parseFloat(creditCardAmount);
-                  updatedCreditCard.selected = true;
-                  billingSchemesNewArray[giftCardIndex] = updatedCreditCard;
-                }
-              } else if (
-                billingSchemeStats.giftCard === 0 &&
-                billingSchemeStats.creditCard > 1
-              ) {
-                const giftCardAmount =
-                  cardObj[0].balance > basket.subtotal
-                    ? basket.subtotal
-                    : cardObj[0].balance;
-                let creditCardAmount: any = basket.total - giftCardAmount;
-                creditCardAmount = creditCardAmount.toFixed(2) / 2;
-
-                cardObj[0].amount = parseFloat(giftCardAmount);
-                cardObj[0].selected = true;
-
-                let count = 0;
-
-                billingSchemesNewArray = billingSchemesNewArray.map(
-                  (account: any) => {
-                    if (
-                      account.billingmethod === 'creditcardtoken' &&
-                      count < 2
-                    ) {
-                      account.amount = creditCardAmount;
-                      account.selected = true;
-                      count++;
-                    }
-                    return account;
-                  },
-                );
-              }
-
-              if (body.pin && body.pin !== '') {
-                cardObj[0].billingfields.push({
-                  name: 'pin',
-                  value: body.pin,
-                });
-              }
+              let cardObj: any = getGiftCardObj(
+                balanceResponse,
+                billingSchemeId,
+                body,
+                billingSchemesNewArray,
+              );
 
               Array.prototype.push.apply(billingSchemesNewArray, cardObj);
-              // billingSchemesNewArray.push(cardObj);
 
-              console.log('cardObj', cardObj);
-              console.log('billingSchemesNewArray', billingSchemesNewArray);
+              billingSchemesNewArray = updatePaymentCardsAmount(
+                billingSchemesNewArray,
+                basket,
+              );
+
+              // console.log('billingSchemeStats', billingSchemeStats);
+              // const cardObj = [
+              //   {
+              //     localId: getUniqueId(),
+              //     selected: false,
+              //     billingmethod: 'storedvalue',
+              //     balance: balanceResponse.balance,
+              //     amount: 0,
+              //     tipportion: 0.0,
+              //     billingschemeid: billingSchemeId,
+              //     billingfields: [
+              //       {
+              //         name: 'number',
+              //         value: body.cardnumber,
+              //       },
+              //     ],
+              //   },
+              // ];
+
+              // if (
+              //   billingSchemeStats.giftCard === 0 &&
+              //   billingSchemeStats.creditCard === 1
+              // ) {
+              //   const giftCardAmount =
+              //     cardObj[0].balance > basket.subtotal
+              //       ? basket.subtotal
+              //       : cardObj[0].balance;
+              //   const creditCardAmount = (
+              //     basket.total - giftCardAmount
+              //   ).toFixed(2);
+              //
+              //   cardObj[0].amount = parseFloat(giftCardAmount);
+              //   cardObj[0].selected = true;
+              //
+              //   const giftCardIndex = billingSchemesNewArray.findIndex(
+              //     (account: any) => account.billingmethod === 'creditcardtoken',
+              //   );
+              //   if (giftCardIndex !== -1) {
+              //     let updatedCreditCard = billingSchemesNewArray[giftCardIndex];
+              //     updatedCreditCard.amount = parseFloat(creditCardAmount);
+              //     updatedCreditCard.selected = true;
+              //     billingSchemesNewArray[giftCardIndex] = updatedCreditCard;
+              //   }
+              // } else if (
+              //   billingSchemeStats.giftCard === 0 &&
+              //   billingSchemeStats.creditCard > 1
+              // ) {
+              //   const giftCardAmount =
+              //     cardObj[0].balance > basket.subtotal
+              //       ? basket.subtotal
+              //       : cardObj[0].balance;
+              //   let creditCardAmount: any = basket.total - giftCardAmount;
+              //   creditCardAmount = creditCardAmount.toFixed(2) / 2;
+              //
+              //   cardObj[0].amount = parseFloat(giftCardAmount);
+              //   cardObj[0].selected = true;
+              //
+              //   let count = 0;
+              //
+              //   billingSchemesNewArray = billingSchemesNewArray.map(
+              //     (account: any) => {
+              //       if (
+              //         account.billingmethod === 'creditcardtoken' &&
+              //         count < 2
+              //       ) {
+              //         account.amount = parseFloat(creditCardAmount);
+              //         account.selected = true;
+              //         count++;
+              //       }
+              //       return account;
+              //     },
+              //   );
+              // }
+
+              // if (body.pin && body.pin !== '') {
+              //   cardObj[0].billingfields.push({
+              //     name: 'pin',
+              //     value: body.pin,
+              //   });
+              // }
+
+              // Array.prototype.push.apply(billingSchemesNewArray, cardObj);
               dispatch(updateBasketBillingSchemes(billingSchemesNewArray));
-              displayToast('SUCCESS', 'Card Added');
+              displayToast('SUCCESS', 'Gift Card Added');
               handleCloseAddGiftCard();
+              setButtonDisabled(false);
             } else {
               displayToast('ERROR', `${balanceResponse.message}`);
+              setButtonDisabled(false);
             }
           }
           console.log('balanceResponse', balanceResponse);
+          setButtonDisabled(false);
         }
       }
     }
@@ -363,13 +357,15 @@ const PaymentInfo = forwardRef((props, _ref) => {
 
   const handleAmountChanges = (event: any, localId: any) => {
     let newValue =
-      event.target.value && event.target.value >= 0 ? event.target.value : 0;
-    if (Number.isInteger(newValue)) {
-      newValue = parseInt(newValue);
-    } else {
-      newValue = parseFloat(newValue).toFixed(2);
-    }
+      event.target.value && event.target.value >= 0
+        ? parseFloat(event.target.value)
+        : 0;
+
+    newValue = +newValue.toFixed(2);
+
     console.log('newValue', newValue);
+    console.log('typeof', typeof newValue);
+
     const accountIndex = billingSchemes.findIndex(
       (element: any) => element.localId === localId,
     );
@@ -381,7 +377,18 @@ const PaymentInfo = forwardRef((props, _ref) => {
   };
 
   const giftCardLastFourDigits = (account: any) => {
-    return account.billingfields[0].value.slice(-3);
+    const giftCardNumber =
+      (account &&
+        account.billingfields &&
+        account.billingfields.length &&
+        account.billingfields[0].name === 'number' &&
+        account.billingfields[0].value) ||
+      '';
+    if (giftCardNumber !== '') {
+      return giftCardNumber.toString().slice(-3);
+    } else {
+      return '';
+    }
   };
 
   const cardTypes: any = {
@@ -408,7 +415,8 @@ const PaymentInfo = forwardRef((props, _ref) => {
   };
 
   const remainingAmount = () => {
-    if (basket) {
+    if (basket && billingSchemes) {
+      console.log('billingSchemes', billingSchemes);
       const amountSelected = billingSchemes.reduce((sum: any, account: any) => {
         if (account.selected) {
           sum = sum + account.amount;
@@ -416,9 +424,15 @@ const PaymentInfo = forwardRef((props, _ref) => {
         return sum;
       }, 0);
 
+      console.log('amountSelected', amountSelected);
+
       let remainingAmount = (basket?.total - amountSelected).toFixed(2);
 
-      return remainingAmount;
+      if (remainingAmount !== 'NAN') {
+        return remainingAmount;
+      } else {
+        return 0;
+      }
     } else {
       return 0;
     }
@@ -635,7 +649,7 @@ const PaymentInfo = forwardRef((props, _ref) => {
                       >
                         <TextField
                           // className="action-btn"
-                          type="text"
+                          type="number"
                           onChange={(e) =>
                             handleAmountChanges(e, account.localId)
                           }
@@ -658,7 +672,7 @@ const PaymentInfo = forwardRef((props, _ref) => {
                   </Grid>
                   <Grid
                     item
-                    style={{ paddingTop: 5 }}
+                    style={{ paddingTop: 5, display: 'flex', justifyContent: 'end' }}
                     xs={12}
                     sm={12}
                     md={12}
@@ -668,7 +682,7 @@ const PaymentInfo = forwardRef((props, _ref) => {
                       onClick={() =>
                         removeSingleBasketBillingSchemes(account.localId)
                       }
-                      style={{ cursor: 'pointer' }}
+                      style={{ cursor: 'pointer', display: 'inline-block' }}
                       align={'right'}
                       variant="h6"
                     >
@@ -682,7 +696,7 @@ const PaymentInfo = forwardRef((props, _ref) => {
           <Grid container spacing={2}>
             <Grid item xs={12} sm={12} md={12} lg={12}>
               <Typography align={'center'} variant="h6">
-                Remaining Amount: ${remainingAmount()}
+                Remaining Amount: $ {remainingAmount()}
               </Typography>
             </Grid>
           </Grid>
@@ -704,15 +718,15 @@ const PaymentInfo = forwardRef((props, _ref) => {
                     }}
                     validationSchema={Yup.object({
                       giftCardNumber: Yup.string()
-                        .trim()
-                        .min(10, 'Must be at least 10 characters')
-                        .max(19, 'Must be at most 19 characters')
+                        .matches(/^[0-9]+$/, 'Must be only digits')
+                        .min(10, 'Must be at least 10 digits')
+                        .max(19, 'Must be at most 19 digits')
                         .required('Gift Card Number is required'),
                       pin: pinCheck
                         ? Yup.string()
-                            .trim()
-                            .min(1, 'Must be at least 1 characters')
-                            .max(16, 'Must be at most 16 characters')
+                            .matches(/^[0-9]+$/, 'Must be only digits')
+                            .min(1, 'Must be at least 1 digits')
+                            .max(16, 'Must be at most 16 digits')
                             .required('PIN is required')
                         : Yup.string(),
                     })}
@@ -733,7 +747,7 @@ const PaymentInfo = forwardRef((props, _ref) => {
                           className="action-btn"
                           label="Gift Card Number"
                           fullWidth
-                          type="text"
+                          type="number"
                           onChange={handleChange}
                           title="Enter Code"
                           name="giftCardNumber"
@@ -751,7 +765,7 @@ const PaymentInfo = forwardRef((props, _ref) => {
                             className="action-btn"
                             label="PIN"
                             fullWidth
-                            type="text"
+                            type="number"
                             onChange={handleChange}
                             title="PIN"
                             name="pin"
@@ -775,6 +789,7 @@ const PaymentInfo = forwardRef((props, _ref) => {
                             title="Add Gift Card"
                             type="submit"
                             className="link default"
+                            disabled={buttonDisabled}
                             autoFocus
                           >
                             Add Gift Card
