@@ -107,6 +107,8 @@
   }
   .order .left-col {
     padding-left: 0px !important;
+    margin-bottom: 45px;
+    padding-right: 0px !important;
   }
   .order .selected-btn-group {
     display: inline-block;
