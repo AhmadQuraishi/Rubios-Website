@@ -114,7 +114,7 @@ const Login2 = () => {
               <ul className="button-list">
                 <li>
                   <ReactFacebookLogin
-                    appId="380212609388497"
+                    appId="3126327474351480"
                     fields="name,email,picture"
                     callback={handleCallBackfacebook}
                     textButton="SIGN IN WITH FACEBOOK"
