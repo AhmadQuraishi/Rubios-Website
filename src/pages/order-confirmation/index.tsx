@@ -74,7 +74,6 @@ const OrderConfirmation = () => {
                         : 'GET $5 OFF YOUR NEXT ORDER'}
                     </Typography>
                     <br />
-                    <br />
                     <Typography
                       variant="h6"
                       className="white"

@@ -289,7 +289,10 @@ fieldset{
 @media screen and (max-width: 468px){
  h1 {
     font-size: 28px;
-}
+  }
+  button {
+    letter-spacing: inherit !important;
+  }
 }
 .sr-only{
   position : absolute;
