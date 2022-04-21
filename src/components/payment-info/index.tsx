@@ -678,6 +678,7 @@ const PaymentInfo = forwardRef((props, _ref) => {
                       paddingTop: 5,
                       display: 'flex',
                       justifyContent: 'end',
+                      zIndex: 999
                     }}
                     xs={12}
                     sm={12}
@@ -724,20 +725,20 @@ const PaymentInfo = forwardRef((props, _ref) => {
                     }}
                     validationSchema={Yup.object({
                       giftCardNumber: Yup.string()
-                        .matches(/^[0-9]+$/, 'Must be only digits')
                         .min(10, 'Must be at least 10 digits')
                         .max(19, 'Must be at most 19 digits')
+                        .matches(/^[0-9]+$/, 'Must be only digits')
                         .required('Gift Card Number is required'),
                       pin: pinCheck
                         ? Yup.string()
-                            .matches(/^[0-9]+$/, 'Must be only digits')
                             .min(1, 'Must be at least 1 digits')
                             .max(16, 'Must be at most 16 digits')
+                            .matches(/^[0-9]+$/, 'Must be only digits')
                             .required('PIN is required')
                         : Yup.string(),
                     })}
                     onSubmit={async (values) => {
-                      handleGiftCardSubmit(values);
+                      await handleGiftCardSubmit(values);
                     }}
                   >
                     {({

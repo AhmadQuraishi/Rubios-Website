@@ -98,7 +98,8 @@ const Checkout = () => {
       basket &&
       basketObj.payment.allowedCards.data &&
       basketObj.payment.allowedCards.data.billingschemes &&
-      basketObj.payment.allowedCards.data.billingschemes.length
+      basketObj.payment.allowedCards.data.billingschemes.length &&
+      !billingSchemes.length
     ) {
       const creditCardIndex =
         basketObj.payment.allowedCards.data.billingschemes.findIndex(
