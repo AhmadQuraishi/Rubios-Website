@@ -195,14 +195,33 @@ const PaymentInfo = forwardRef((props, _ref) => {
     setOpenAddGiftCard(!openAddGiftCard);
   };
 
-  const removeSingleBasketBillingSchemes = (localId: any) => {
+  const removeSingleBasketBillingSchemes = (
+    localId: any,
+    billingmethod: string,
+  ) => {
+    if (billingmethod === 'creditcardtoken') {
+      const checkLastCreditCard = billingSchemes.filter(
+        (element: any) =>
+          element.selected && element.billingmethod === 'creditcardtoken',
+      );
+
+      if (checkLastCreditCard && checkLastCreditCard.length === 1) {
+        displayToast(
+          'ERROR',
+          'Minimum 1 Credit Card is required to make a payment',
+        );
+        return;
+      }
+    }
     let updatedBillingSchemes = billingSchemes.filter(
       (element: any) => element.localId !== localId,
     );
+
     updatedBillingSchemes = updatePaymentCardsAmount(
       updatedBillingSchemes,
       basket,
     );
+
     dispatch(updateBasketBillingSchemes(updatedBillingSchemes));
   };
 
@@ -693,7 +712,10 @@ const PaymentInfo = forwardRef((props, _ref) => {
                     {billingSchemes && billingSchemes.length !== 1 && (
                       <Typography
                         onClick={() =>
-                          removeSingleBasketBillingSchemes(account.localId)
+                          removeSingleBasketBillingSchemes(
+                            account.localId,
+                            account.billingmethod,
+                          )
                         }
                         style={{ cursor: 'pointer', display: 'inline-block' }}
                         align={'right'}

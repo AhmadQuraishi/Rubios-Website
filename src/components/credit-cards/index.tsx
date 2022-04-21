@@ -10,20 +10,10 @@ import {
 import LoadingBar from '../loading-bar';
 import DialogBox from '../../components/dialog-box';
 
-const CreditCards = () => {
+const CreditCards = ({ billingAccounts, loading }: any) => {
   const [open, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState<any>(null);
-  const [billingAccounts, setBillingAccounts] = useState([]);
   const dispatch = useDispatch();
-  const { userBillingAccounts, loading } = useSelector(
-    (state: any) => state.userReducer,
-  );
-  useEffect(() => {
-    if (userBillingAccounts) {
-      setBillingAccounts(userBillingAccounts.billingaccounts);
-    }
-  }, [userBillingAccounts, loading]);
-
   const deleteBillingAccountHandler = (id: number) => {
     dispatch(deleteBillingAccount(id));
   };
@@ -40,7 +30,7 @@ const CreditCards = () => {
   };
 
   const handleClickOpen = (id: any) => {
-    setDeleteId(id)
+    setDeleteId(id);
     setOpen(true);
   };
 
@@ -59,15 +49,16 @@ const CreditCards = () => {
           handleDeleteFunction={() => handleDeleteFunction()}
         />
         <Grid container spacing={3} className="credit-cards-panel">
-          {loading && <LoadingBar />}
-          {!loading && billingAccounts.length < 1 && (
+          {!loading && billingAccounts && billingAccounts.length === 0 ? (
             <h6>No Billing Account Found</h6>
-          )}
+          ) : loading ? (
+            <LoadingBar />
+          ) : null}
           {!loading &&
             billingAccounts.length > 0 &&
             billingAccounts
               .filter((cardType: any) => cardType.accounttype === 'creditcard')
-              .map((cardData: any, index) => (
+              .map((cardData: any, index: any) => (
                 <Fragment key={index}>
                   <Grid item xs={12} md={6}>
                     <Card className="card-panel">
@@ -116,7 +107,12 @@ const CreditCards = () => {
                         Edit
                       </Link> */}
                           {cardData.removable ? (
-                            <Button title="Delete" onClick={() => handleClickOpen(cardData.accountidstring)}>
+                            <Button
+                              title="Delete"
+                              onClick={() =>
+                                handleClickOpen(cardData.accountidstring)
+                              }
+                            >
                               Delete
                             </Button>
                           ) : null}
