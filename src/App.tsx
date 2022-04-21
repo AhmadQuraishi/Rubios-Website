@@ -94,7 +94,10 @@ function App(props: any) {
         showUserName={isAccountSection}
         removeCart={
           isAccountSection ||
-          window.location.href.toLocaleLowerCase().indexOf('/checkout') != -1
+          window.location.href.toLocaleLowerCase().indexOf('/checkout') != -1 ||
+          window.location.href
+            .toLocaleLowerCase()
+            .indexOf('/order-confirmation') != -1
         }
       />
       <main>

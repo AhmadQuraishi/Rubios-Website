@@ -9,7 +9,7 @@ import {
   setTipAmountBasket,
   applyCouponBasket,
   validateBasket,
-  submitSinglePaymentBasket, getBasketAllowedCards,
+  submitSinglePaymentBasket, getBasketAllowedCards, removeCouponBasket,
 } from '../../../../services/checkout';
 import {
   getSingleRestaurantCalendarSuccess,
@@ -22,6 +22,8 @@ import {
   updateBasketTipAmountFailure,
   updateBasketCouponCodeSuccess,
   updateBasketCouponCodeFailure,
+  removeBasketCouponCodeSuccess,
+  removeBasketCouponCodeFailure,
   validateBasketSuccess,
   validateBasketFailure,
   submitBasketSinglePaymentSuccess,
@@ -106,6 +108,15 @@ function* asyncUpdateBasketCouponCode(action: any): any {
     yield put(updateBasketCouponCodeSuccess(response));
   } catch (error) {
     yield put(updateBasketCouponCodeFailure(error));
+  }
+}
+
+function* asyncRemoveBasketCouponCode(action: any): any {
+  try {
+    const response = yield call(removeCouponBasket, action.basketId);
+    yield put(removeBasketCouponCodeSuccess(response));
+  } catch (error) {
+    yield put(removeBasketCouponCodeFailure(error));
   }
 }
 
@@ -230,6 +241,10 @@ export function* checkoutSaga() {
   yield takeEvery(
     basketActionsTypes.UPDATE_BASKET_COUPON_CODE,
     asyncUpdateBasketCouponCode,
+  );
+  yield takeEvery(
+    basketActionsTypes.REMOVE_BASKET_COUPON_CODE,
+    asyncRemoveBasketCouponCode,
   );
   yield takeEvery(basketActionsTypes.VALIDETE_BASKET, asyncValidateBasket);
   yield takeEvery(
