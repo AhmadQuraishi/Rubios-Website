@@ -494,3 +494,11 @@ export function userLogout() {
     type: Type.USER_LOGOUT,
   };
 }
+
+export function facebookUserLogin(data: any, basketID: string = '') {
+  return {
+    type: Type.USER_FACEBOOK_REQUEST,
+    data,
+    basketID
+  };
+}
