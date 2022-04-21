@@ -8,6 +8,10 @@
 .tip-wrapper .action-btn {
   margin-top: 20px;
 }
+
+.tip-wrapper .action-btn .MuiInputLabel-root {
+  background: transparent !important;
+}
 .tip-wrapper .action-btn button {
   background: #214F66;
   color: white;

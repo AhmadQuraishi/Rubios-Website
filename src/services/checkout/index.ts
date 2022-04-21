@@ -28,7 +28,7 @@ export const applyCouponBasket = (
   }
 };
 
-export const deleteCouponBasket = (basketid: string) => {
+export const removeCouponBasket = (basketid: string) => {
   try {
     const url = process.env.REACT_APP_OLO_API || '';
     return axios

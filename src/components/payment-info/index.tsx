@@ -656,7 +656,9 @@ const PaymentInfo = forwardRef((props, _ref) => {
                           // label="Custom Amount"
                           // aria-label="custom amount"
                           // title="Custom Amount"
-                          disabled={!account.selected}
+                          disabled={
+                            !account.selected || billingSchemes.length === 1
+                          }
                           value={account.amount || 0}
                           inputProps={{ shrink: false }}
                           InputProps={{
@@ -672,7 +674,11 @@ const PaymentInfo = forwardRef((props, _ref) => {
                   </Grid>
                   <Grid
                     item
-                    style={{ paddingTop: 5, display: 'flex', justifyContent: 'end' }}
+                    style={{
+                      paddingTop: 5,
+                      display: 'flex',
+                      justifyContent: 'end',
+                    }}
                     xs={12}
                     sm={12}
                     md={12}

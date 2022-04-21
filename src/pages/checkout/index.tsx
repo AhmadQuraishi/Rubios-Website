@@ -107,7 +107,9 @@ const Checkout = () => {
       if (creditCardIndex !== -1) {
         if (
           basketObj.payment.allowedCards.data.billingschemes[creditCardIndex]
-            .accounts
+            .accounts &&
+          basketObj.payment.allowedCards.data.billingschemes[creditCardIndex]
+            .accounts.length
         ) {
           const defaultCardIndex =
             basketObj.payment.allowedCards.data.billingschemes[
@@ -118,7 +120,6 @@ const Checkout = () => {
               basketObj.payment.allowedCards.data.billingschemes[
                 creditCardIndex
               ].accounts[defaultCardIndex];
-            console.log('Mubashir', defaultCard);
 
             let cardObj: any = [
               {
@@ -181,6 +182,13 @@ const Checkout = () => {
   React.useEffect(() => {
     if (basketObj.basket) {
       setBasket(basketObj.basket);
+      if (billingSchemes && billingSchemes.length) {
+        const updatedBillingScheme = updatePaymentCardsAmount(
+          billingSchemes,
+          basketObj.basket,
+        );
+        dispatch(updateBasketBillingSchemes(updatedBillingScheme));
+      }
     } else {
       navigate('/location');
     }
