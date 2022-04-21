@@ -302,7 +302,7 @@ const AddCreditCard = () => {
                   <Grid container spacing={2}>
                     <Grid
                       item
-                      xs={6}
+                      xs={12}
                       sm={6}
                       md={6}
                       lg={6}
@@ -313,7 +313,7 @@ const AddCreditCard = () => {
                         src={require('../../../assets/imgs/card-icon.png')}
                       />
                     </Grid>
-                    <Grid item xs={6} sm={6} md={6} lg={6}>
+                    <Grid item xs={12} sm={6} md={6} lg={6}>
                       <div className="card-fields" data-olo-pay-card-cvc />
                       <img src={require('../../../assets/imgs/ccv-icon.png')} />
                     </Grid>
@@ -323,7 +323,7 @@ const AddCreditCard = () => {
                   <Grid container spacing={2}>
                     <Grid
                       item
-                      xs={6}
+                      xs={12}
                       sm={6}
                       md={6}
                       lg={6}
@@ -331,7 +331,7 @@ const AddCreditCard = () => {
                     >
                       <div className="card-fields" data-olo-pay-card-expiry />
                     </Grid>
-                    <Grid item xs={6} sm={6} md={6} lg={6}>
+                    <Grid item xs={12} sm={6} md={6} lg={6}>
                       <TextField
                         aria-label="Zip Code"
                         // onBlur={handleBlur}
