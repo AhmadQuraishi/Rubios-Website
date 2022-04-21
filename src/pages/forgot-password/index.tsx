@@ -3,9 +3,11 @@ import { Grid, Typography, Button } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import './forgot.css';
 import { Fragment, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ForgotForm from '../../components/forgot-form';
 import bgImage from '../../assets/imgs/login-bg.png';
+import ReactFacebookLogin from 'react-facebook-login';
+import { facebookUserLogin } from '../../redux/actions/user';
 
 const useStyle = makeStyles(() => ({
   root: {
@@ -31,6 +33,38 @@ const ForgotPassword = () => {
       navigate('/account/');
     }
   }, [providerToken]);
+
+  const dispatch = useDispatch();
+
+  const handleCallBackfacebook = (response: any) => {
+    try {
+      if (response && response.name && response.email) {
+        console.log(response);
+        const name = response.name.split(' ');
+        if (name.length > 1) {
+          const fname = name[0];
+          const lname = name[1];
+          // navigate(
+          //   `/register?fname=${fname}&lname=${lname}&email=${response.email}`,
+          // );
+        } else {
+          const fname = name[0];
+          // navigate(`/register?fname=${fname}&email=${response.email}`);
+        }
+
+        const obj = {
+          access_token: response.accessToken,
+          email: response.email,
+          client: process.env.REACT_APP_PUNCHH_CLIENT_ID,
+          fb_uid: response.userID,
+        };
+
+        dispatch(facebookUserLogin(obj));
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <Fragment>
@@ -60,20 +94,13 @@ const ForgotPassword = () => {
               </Typography>
               <ul className="button-list">
                 <li>
-                  <Button
-                    type="submit"
-                    aria-label="sign in with facebook"
-                    name="facebook"
-                    title="sign in with facebook"
-                    variant="contained"
-                    className="sign-in-btn"
-                  >
-                    <img
-                      src={require('../../assets/imgs/fb-icon.png')}
-                      alt="Sign in with facebook"
-                    />
-                    Sign in with facebook
-                  </Button>
+                <ReactFacebookLogin
+                    appId="3126327474351480"
+                    fields="name,email,picture"
+                    callback={handleCallBackfacebook}
+                    textButton="SIGN IN WITH FACEBOOK"
+                    cssClass="fb-button"
+                  />
                 </li>
                 <li>
                   <Button
