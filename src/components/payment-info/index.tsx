@@ -636,7 +636,7 @@ const PaymentInfo = forwardRef((props, _ref) => {
                         md={2}
                         lg={2}
                       >
-                        <Typography variant="h6">AMOUNT</Typography>
+                        <Typography variant="h6" fontWeight="bold">AMOUNT</Typography>
                       </Grid>
                       <Grid
                         style={{ display: 'flex' }}
