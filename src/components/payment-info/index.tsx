@@ -636,7 +636,12 @@ const PaymentInfo = forwardRef((props, _ref) => {
                         md={2}
                         lg={2}
                       >
-                        <Typography variant="h6" fontFamily="Poppins-Bold !important">AMOUNT</Typography>
+                        <Typography
+                          variant="h6"
+                          fontFamily="Poppins-Bold !important"
+                        >
+                          AMOUNT
+                        </Typography>
                       </Grid>
                       <Grid
                         style={{ display: 'flex' }}
@@ -678,22 +683,25 @@ const PaymentInfo = forwardRef((props, _ref) => {
                       paddingTop: 5,
                       display: 'flex',
                       justifyContent: 'end',
+                      zIndex: 999,
                     }}
                     xs={12}
                     sm={12}
                     md={12}
                     lg={12}
                   >
-                    <Typography
-                      onClick={() =>
-                        removeSingleBasketBillingSchemes(account.localId)
-                      }
-                      style={{ cursor: 'pointer', display: 'inline-block' }}
-                      align={'right'}
-                      variant="h6"
-                    >
-                      REMOVE
-                    </Typography>
+                    {billingSchemes && billingSchemes.length !== 1 && (
+                      <Typography
+                        onClick={() =>
+                          removeSingleBasketBillingSchemes(account.localId)
+                        }
+                        style={{ cursor: 'pointer', display: 'inline-block' }}
+                        align={'right'}
+                        variant="h6"
+                      >
+                        REMOVE
+                      </Typography>
+                    )}
                   </Grid>
                 </Grid>
               );
@@ -724,20 +732,20 @@ const PaymentInfo = forwardRef((props, _ref) => {
                     }}
                     validationSchema={Yup.object({
                       giftCardNumber: Yup.string()
-                        .matches(/^[0-9]+$/, 'Must be only digits')
                         .min(10, 'Must be at least 10 digits')
                         .max(19, 'Must be at most 19 digits')
+                        .matches(/^[0-9]+$/, 'Must be only digits')
                         .required('Gift Card Number is required'),
                       pin: pinCheck
                         ? Yup.string()
-                            .matches(/^[0-9]+$/, 'Must be only digits')
                             .min(1, 'Must be at least 1 digits')
                             .max(16, 'Must be at most 16 digits')
+                            .matches(/^[0-9]+$/, 'Must be only digits')
                             .required('PIN is required')
                         : Yup.string(),
                     })}
                     onSubmit={async (values) => {
-                      handleGiftCardSubmit(values);
+                      await handleGiftCardSubmit(values);
                     }}
                   >
                     {({
