@@ -636,7 +636,12 @@ const PaymentInfo = forwardRef((props, _ref) => {
                         md={2}
                         lg={2}
                       >
-                        <Typography variant="h6" fontFamily="Poppins-Bold !important">AMOUNT</Typography>
+                        <Typography
+                          variant="h6"
+                          fontFamily="Poppins-Bold !important"
+                        >
+                          AMOUNT
+                        </Typography>
                       </Grid>
                       <Grid
                         style={{ display: 'flex' }}
@@ -678,23 +683,25 @@ const PaymentInfo = forwardRef((props, _ref) => {
                       paddingTop: 5,
                       display: 'flex',
                       justifyContent: 'end',
-                      zIndex: 999
+                      zIndex: 999,
                     }}
                     xs={12}
                     sm={12}
                     md={12}
                     lg={12}
                   >
-                    <Typography
-                      onClick={() =>
-                        removeSingleBasketBillingSchemes(account.localId)
-                      }
-                      style={{ cursor: 'pointer', display: 'inline-block' }}
-                      align={'right'}
-                      variant="h6"
-                    >
-                      REMOVE
-                    </Typography>
+                    {billingSchemes && billingSchemes.length !== 1 && (
+                      <Typography
+                        onClick={() =>
+                          removeSingleBasketBillingSchemes(account.localId)
+                        }
+                        style={{ cursor: 'pointer', display: 'inline-block' }}
+                        align={'right'}
+                        variant="h6"
+                      >
+                        REMOVE
+                      </Typography>
+                    )}
                   </Grid>
                 </Grid>
               );
