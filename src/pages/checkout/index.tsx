@@ -105,40 +105,47 @@ const Checkout = () => {
           (schemes: any) => schemes.type === 'creditcard',
         );
       if (creditCardIndex !== -1) {
-        const defaultCardIndex =
-          basketObj.payment.allowedCards.data.billingschemes[
-            creditCardIndex
-          ].accounts.findIndex((card: any) => card.isdefault);
-        if (defaultCardIndex !== -1) {
-          const defaultCard =
-            basketObj.payment.allowedCards.data.billingschemes[creditCardIndex]
-              .accounts[defaultCardIndex];
-          console.log('Mubashir', defaultCard);
+        if (
+          basketObj.payment.allowedCards.data.billingschemes[creditCardIndex]
+            .accounts &&
+          basketObj.payment.allowedCards.data.billingschemes[creditCardIndex]
+            .accounts.length
+        ) {
+          const defaultCardIndex =
+            basketObj.payment.allowedCards.data.billingschemes[
+              creditCardIndex
+            ].accounts.findIndex((card: any) => card.isdefault);
+          if (defaultCardIndex !== -1) {
+            const defaultCard =
+              basketObj.payment.allowedCards.data.billingschemes[
+                creditCardIndex
+              ].accounts[defaultCardIndex];
 
-          let cardObj: any = [
-            {
-              localId: getUniqueId(),
-              selected: false,
-              billingmethod: 'creditcardtoken',
-              amount: 0,
-              tipportion: 0.0,
-              cardtype: defaultCard.cardtype,
-              cardlastfour: defaultCard.cardsuffix,
-              billingaccountid: parseInt(defaultCard.accountidstring),
-            },
-          ];
+            let cardObj: any = [
+              {
+                localId: getUniqueId(),
+                selected: false,
+                billingmethod: 'creditcardtoken',
+                amount: 0,
+                tipportion: 0.0,
+                cardtype: defaultCard.cardtype,
+                cardlastfour: defaultCard.cardsuffix,
+                billingaccountid: parseInt(defaultCard.accountidstring),
+              },
+            ];
 
-          cardObj[0].amount =
-            validate && validate.total
-              ? validate.total
-              : basket && basket?.total
-              ? basket?.total
-              : 0;
-          cardObj[0].selected = true;
+            cardObj[0].amount =
+              validate && validate.total
+                ? validate.total
+                : basket && basket?.total
+                ? basket?.total
+                : 0;
+            cardObj[0].selected = true;
 
-          cardObj = updatePaymentCardsAmount(cardObj, basket);
+            cardObj = updatePaymentCardsAmount(cardObj, basket);
 
-          dispatch(updateBasketBillingSchemes(cardObj));
+            dispatch(updateBasketBillingSchemes(cardObj));
+          }
         }
       }
       setDefaultCard(false);
@@ -175,6 +182,13 @@ const Checkout = () => {
   React.useEffect(() => {
     if (basketObj.basket) {
       setBasket(basketObj.basket);
+      if (billingSchemes && billingSchemes.length) {
+        const updatedBillingScheme = updatePaymentCardsAmount(
+          billingSchemes,
+          basketObj.basket,
+        );
+        dispatch(updateBasketBillingSchemes(updatedBillingScheme));
+      }
     } else {
       navigate('/location');
     }

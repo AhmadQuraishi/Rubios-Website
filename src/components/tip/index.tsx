@@ -14,6 +14,7 @@ import './tip.css';
 import {
   updateBasketTipAmount,
   updateBasketCouponCode,
+  removeBasketCouponCode,
 } from '../../redux/actions/basket/checkout';
 
 const getPercentageSelected = (basket: any) => {
@@ -69,7 +70,9 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
   };
 
   const updateCouponCodeCall = (coupon: string) => {
-    if (coupon.length) {
+    if (basket && basket.coupon && basket.coupon.couponcode) {
+      dispatch(removeBasketCouponCode(basket.id, ''));
+    } else if (coupon.length) {
       const payload = {
         couponcode: coupon,
       };
@@ -115,10 +118,20 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
   const IconCoupon = () => (
     <Button
       onClick={() => updateCouponCodeCall(couponCode)}
+      style={{
+        fontSize:
+          basket && basket.coupon && basket.coupon.couponcode
+            ? '8px'
+            : '0.875rem',
+      }}
       disabled={loading || !couponCode}
       aria-label="proceed"
     >
-      <ArrowRightAltIcon />
+      {basket && basket.coupon && basket.coupon.couponcode ? (
+        <>Remove</>
+      ) : (
+        <ArrowRightAltIcon />
+      )}
     </Button>
   );
 
@@ -197,6 +210,7 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
               <Grid item xs={12}>
                 <TextField
                   className="action-btn"
+                  disabled={basket && basket.coupon && basket.coupon.couponcode}
                   label="Enter Code"
                   type="text"
                   onChange={handleCouponCodeChange}

@@ -169,6 +169,35 @@ export function updateBasketCouponCodeFailure(error: any) {
   };
 }
 
+export function removeBasketCouponCode(basketId: string, couponType: string) {
+  return {
+    type: basketActionsTypes.REMOVE_BASKET_COUPON_CODE,
+    basketId,
+    couponType,
+  };
+}
+
+export function removeBasketCouponCodeSuccess(data: ResponseBasket) {
+  displayToast('SUCCESS', 'Coupon removed.');
+  return {
+    type: basketActionsTypes.REMOVE_BASKET_COUPON_CODE_SUCCESS,
+    payload: data,
+  };
+}
+
+export function removeBasketCouponCodeFailure(error: any) {
+  displayToast(
+    'ERROR',
+    error?.response?.data?.message
+      ? error.response.data.message
+      : 'ERROR! Please Try again later',
+  );
+  return {
+    type: basketActionsTypes.REMOVE_BASKET_COUPON_CODE_FAILURE,
+    error: error,
+  };
+}
+
 export function validateBasket(
   basketId: string,
   basketPayload: RequestBasketSubmit | null,

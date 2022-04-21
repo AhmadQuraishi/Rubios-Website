@@ -57,6 +57,7 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
     case basketActionsTypes.SUBMIT_BASKET_SINGLE_PAYMENT:
     case basketActionsTypes.UPDATE_BASKET_TIP_AMOUNT:
     case basketActionsTypes.UPDATE_BASKET_COUPON_CODE:
+    case basketActionsTypes.REMOVE_BASKET_COUPON_CODE:
       return {
         ...state,
         loading: true,
@@ -66,6 +67,7 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
     case basketActionsTypes.DELETE_BASKET_TIME_WANTED_SUCCESS:
     case basketActionsTypes.UPDATE_BASKET_TIP_AMOUNT_SUCCESS:
     case basketActionsTypes.UPDATE_BASKET_COUPON_CODE_SUCCESS:
+    case basketActionsTypes.REMOVE_BASKET_COUPON_CODE_SUCCESS:
     case basketActionsTypes.CREATE_BASKET_FROM_PREV_SUCCESS:
     case basketActionsTypes.SET_BASKET_DELIVERY_MODE_SUCCESS:
     case basketActionsTypes.SET_BASKET_DELIVERY_ADDRESS_SUCCESS:
@@ -74,7 +76,6 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
         loading: false,
         basket: action.payload,
         basketType: action.basketType || 'New',
-        validate: null,
         error: null,
       };
     case basketActionsTypes.GET_BASKET_FAILURE:
@@ -82,6 +83,7 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
     case basketActionsTypes.DELETE_BASKET_TIME_WANTED_FAILURE:
     case basketActionsTypes.UPDATE_BASKET_TIP_AMOUNT_FAILURE:
     case basketActionsTypes.UPDATE_BASKET_COUPON_CODE_FAILURE:
+    case basketActionsTypes.REMOVE_BASKET_COUPON_CODE_FAILURE:
     case basketActionsTypes.SUBMIT_BASKET_SINGLE_PAYMENT_FAILURE:
     case basketActionsTypes.CREATE_BASKET_FROM_PREV_FAILURE:
     case basketActionsTypes.VALIDETE_BASKET_FAILURE:
