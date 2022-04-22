@@ -24,8 +24,7 @@ const INITIAL_STATE = {
     billingSchemes: [],
   },
   basketType: 'New',
-  orderConfirmation: false,
-
+  orderSubmit: false,
   error: null,
 };
 
@@ -86,6 +85,7 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
         error: action.error,
         validate: null,
         basketType: action.basketType || 'New',
+        orderSubmit: false,
       };
     case basketActionsTypes.GET_SINGLE_RESTAURANT_CALENDAR:
       return { ...state, calendar: { loading: true, data: null, error: {} } };
@@ -137,13 +137,18 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
           },
           billingSchemes: [],
         },
-        orderConfirmation: true,
+        orderSubmit: false,
         error: null,
       };
-    case basketActionsTypes.REMOVE_BASKET_ORDER_CONFIRMATION:
+    case basketActionsTypes.ADD_BASKET_ORDER_SUBMIT:
       return {
         ...state,
-        orderConfirmation: false,
+        orderSubmit: true,
+      };
+    case basketActionsTypes.REMOVE_BASKET_ORDER_SUBMIT:
+      return {
+        ...state,
+        orderSubmit: false,
       };
     case basketActionsTypes.GET_BASKET_ALLOWED_CARDS_REQUEST:
       return {

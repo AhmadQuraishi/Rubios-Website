@@ -7,19 +7,16 @@ import LoadingBar from '../loading-bar';
 import DialogBox from '../../components/dialog-box';
 import { requestGiftCardBalance } from '../../services/user';
 
-const GiftCards = () => {
+const GiftCards = ({ billingAccounts, loading }: any) => {
   const [open, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState<any>(null);
   const [balanceLoading, setBalanceLoading] = useState(false);
   const [giftCards, setGiftCards] = useState([]);
   const dispatch = useDispatch();
-  const { userBillingAccounts, loading } = useSelector(
-    (state: any) => state.userReducer,
-  );
 
   useEffect(() => {
     const updateGiftCard = async () => {
-      const gift = userBillingAccounts.billingaccounts.filter(
+      const gift = billingAccounts.filter(
         (cardType: any) =>
           cardType.accounttype !== 'creditcard' &&
           cardType.accounttype !== 'payinstore (cash)',
@@ -30,10 +27,10 @@ const GiftCards = () => {
 
       setGiftCards(giftCardBalance);
     };
-    if (userBillingAccounts && userBillingAccounts.billingaccounts && userBillingAccounts.billingaccounts.length) {
+    if (billingAccounts && billingAccounts.length) {
       updateGiftCard();
     }
-  }, [userBillingAccounts, loading]);
+  }, [billingAccounts, loading]);
 
   const getGiftCardBalance = async (gift: any) => {
     const giftCardIds = gift.map((card: any) => {
@@ -96,10 +93,17 @@ const GiftCards = () => {
       />
       <Grid item xs={12}>
         <Grid container spacing={3} className="gift-cards-panel">
-          {loading || (balanceLoading && <LoadingBar />)}
-          {!loading && !balanceLoading && giftCards && giftCards.length < 1 && <h6>No Gift Cards Found</h6>}
+          {loading || balanceLoading ? (
+            <LoadingBar />
+          ) : !loading &&
+            !balanceLoading &&
+            billingAccounts &&
+            billingAccounts.length === 0 ? (
+            <h6>No Gift Cards Found</h6>
+          ) : null}
           {!loading &&
-          giftCards &&
+            !balanceLoading &&
+            giftCards &&
             giftCards.length > 0 &&
             giftCards.map((card: any, index) => (
               <Grid item xs={12} md={6} key={index}>

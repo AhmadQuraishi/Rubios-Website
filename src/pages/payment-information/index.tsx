@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Grid, Theme, Typography } from '@mui/material';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -6,7 +6,7 @@ import CreditCards from '../../components/credit-cards';
 import GiftCards from '../../components/gift-cards';
 import { makeStyles } from '@mui/styles';
 import { getAllBillingAccounts } from '../../redux/actions/user';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -36,9 +36,23 @@ const PaymentInformation = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [value, setValue] = React.useState('1');
+  const [runOnce, setRunOnce] = React.useState(true);
+  const [billingAccounts, setBillingAccounts] = useState([]);
+  const { userBillingAccounts, loading } = useSelector(
+    (state: any) => state.userReducer,
+  );
 
   useEffect(() => {
-    dispatch(getAllBillingAccounts());
+    if (userBillingAccounts) {
+      setBillingAccounts(userBillingAccounts.billingaccounts);
+    }
+  }, [userBillingAccounts, loading]);
+
+  useEffect(() => {
+    if (runOnce) {
+      dispatch(getAllBillingAccounts());
+      setRunOnce(false);
+    }
   }, []);
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -78,8 +92,12 @@ const PaymentInformation = () => {
             className={classes.tabspanel}
           />
         </Tabs>
-        {value === '1' && <CreditCards />}
-        {value === '2' && <GiftCards />}
+        {value === '1' && (
+          <CreditCards billingAccounts={billingAccounts} loading={loading} />
+        )}
+        {value === '2' && (
+          <GiftCards billingAccounts={billingAccounts} loading={loading} />
+        )}
       </Grid>
     </Grid>
   );
