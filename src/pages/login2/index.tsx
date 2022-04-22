@@ -8,6 +8,7 @@ import LoginForm from '../../components/login-form';
 import bgImage from '../../assets/imgs/login-bg.png';
 import ReactFacebookLogin from 'react-facebook-login';
 import { facebookUserLogin } from '../../redux/actions/user';
+import { displayToast } from '../../helpers/toast';
 
 const useStyle = makeStyles(() => ({
   root: {
@@ -73,6 +74,11 @@ const Login2 = () => {
         };
 
         dispatch(facebookUserLogin(obj));
+      } else {
+        displayToast(
+          'ERROR',
+          'Unable To login with Facebook. Please try again later',
+        );
       }
     } catch (e) {
       console.log(e);
@@ -117,8 +123,8 @@ const Login2 = () => {
                 <li>
                   <ReactFacebookLogin
                     appId="3126327474351480"
-                    fields="name, email, picture, birthday"
-                    scope="public_profile, email, user_birthday"
+                    fields="name, email, picture"
+                    scope="email"
                     callback={handleCallBackfacebook}
                     textButton="SIGN IN WITH FACEBOOK"
                     cssClass="fb-button"
