@@ -435,13 +435,15 @@ const PaymentInfo = forwardRef((props, _ref) => {
 
   const remainingAmount = () => {
     if (basket && billingSchemes) {
-      console.log('billingSchemes', billingSchemes);
-      const amountSelected = billingSchemes.reduce((sum: any, account: any) => {
+      let amountSelected = billingSchemes.reduce((sum: any, account: any) => {
         if (account.selected) {
           sum = sum + account.amount;
         }
         return sum;
       }, 0);
+
+      amountSelected = amountSelected.toFixed(2);
+      amountSelected = parseFloat(amountSelected);
 
       console.log('amountSelected', amountSelected);
 
