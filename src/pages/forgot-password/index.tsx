@@ -8,6 +8,7 @@ import ForgotForm from '../../components/forgot-form';
 import bgImage from '../../assets/imgs/login-bg.png';
 import ReactFacebookLogin from 'react-facebook-login';
 import { facebookUserLogin } from '../../redux/actions/user';
+import { displayToast } from '../../helpers/toast';
 
 const useStyle = makeStyles(() => ({
   root: {
@@ -37,9 +38,9 @@ const ForgotPassword = () => {
   const dispatch = useDispatch();
 
   const handleCallBackfacebook = (response: any) => {
+    console.log(response);
     try {
       if (response && response.name && response.email) {
-        console.log(response);
         const name = response.name.split(' ');
         if (name.length > 1) {
           const fname = name[0];
@@ -60,6 +61,11 @@ const ForgotPassword = () => {
         };
 
         dispatch(facebookUserLogin(obj));
+      } else {
+        displayToast(
+          'ERROR',
+          'Unable to login with Facebook. Please try it again later.',
+        );
       }
     } catch (e) {
       console.log(e);
@@ -95,7 +101,7 @@ const ForgotPassword = () => {
               <ul className="button-list">
                 <li>
                 <ReactFacebookLogin
-                    appId="3126327474351480"
+                    appId={process.env.REACT_APP_FACEBOOK_APP_ID || ''}
                     fields="name,email,picture"
                     callback={handleCallBackfacebook}
                     textButton="SIGN IN WITH FACEBOOK"
