@@ -148,6 +148,11 @@ function* asyncSetBasketDeliveryAddressRequest(action: any): any {
 
 function* asyncValidateBasket(action: any): any {
   try {
+    if (action.basketPayload) {
+      yield put({
+        type: basketActionsTypes.ADD_BASKET_ORDER_SUBMIT,
+      });
+    }
     if (action.userData) {
       const userResponse = yield call(requestUpdateUser, action.userData);
       yield put(updateUserSuccess(userResponse));
@@ -188,6 +193,9 @@ function* asyncValidateBasket(action: any): any {
       });
     }
   } catch (error: any) {
+    yield put({
+      type: basketActionsTypes.REMOVE_BASKET_ORDER_SUBMIT,
+    });
     if (error?.config?.url && error.config.url.includes('api/auth/users')) {
       yield put(validateBasketPhoneFailure(error));
     } else {

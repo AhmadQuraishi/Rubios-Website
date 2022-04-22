@@ -14,6 +14,7 @@ import { ResponseBasket, ResponseBasketValidation } from '../../types/olo-api';
 import { DeliveryModeEnum } from '../../types/olo-api/olo-api.enums';
 import moment from 'moment';
 import {
+  removeBasketOrderSubmit,
   getBasketAllowedCardsRequest,
   getSingleRestaurantCalendar,
   updateBasketBillingSchemes,
@@ -82,6 +83,7 @@ const Checkout = () => {
       );
       dispatch(validateBasket(basket.id, null, null, [], null, null));
       dispatch(getBasketAllowedCardsRequest(basket.id));
+      dispatch(removeBasketOrderSubmit());
       setRunOnce(false);
     }
   }, [basket]);
@@ -183,7 +185,12 @@ const Checkout = () => {
   React.useEffect(() => {
     if (basketObj.basket) {
       setBasket(basketObj.basket);
-      if (billingSchemes && billingSchemes.length) {
+      if (
+        billingSchemes &&
+        billingSchemes.length &&
+        !basketObj?.orderSubmit &&
+        !basketObj.error
+      ) {
         const updatedBillingScheme = updatePaymentCardsAmount(
           billingSchemes,
           basketObj.basket,
@@ -273,6 +280,18 @@ const Checkout = () => {
     return data;
   };
 
+  const getGiftCardAmount = () => {
+    const giftCardIndex = billingSchemes.findIndex(
+      (account: any) =>
+        account.billingmethod === 'storedvalue' && account.selected,
+    );
+    if (giftCardIndex !== -1) {
+      return billingSchemes[giftCardIndex].amount || 0;
+    } else {
+      return 0;
+    }
+  };
+
   const placeOrder = async () => {
     setButtonDisabled(true);
     let customFields = [];
@@ -309,10 +328,22 @@ const Checkout = () => {
       formDataValue = formData;
     }
 
-    if (billingSchemes.length === 0) {
+    if (billingSchemes && billingSchemes.length === 0) {
       displayToast('ERROR', 'Payment method is required');
       setButtonDisabled(false);
       return;
+    }
+
+    if (basket && billingSchemes && billingSchemes.length) {
+      const giftCardAmount = getGiftCardAmount();
+      if (giftCardAmount > basket.subtotal) {
+        displayToast(
+          'ERROR',
+          'Gift Card amount must be less than order subtotal.',
+        );
+        setButtonDisabled(false);
+        return;
+      }
     }
 
     if (billingSchemes.length) {
@@ -330,7 +361,7 @@ const Checkout = () => {
       if (creditCardTotal < tip) {
         displayToast(
           'ERROR',
-          'Credit Card amount should be greater than Tip amount.',
+          'Credit Card amount must be greater than Tip amount.',
         );
         setButtonDisabled(false);
         return;
@@ -394,6 +425,23 @@ const Checkout = () => {
           deliveryAddress,
         ),
       );
+    }
+  };
+
+  const totalPaymentCardAmount = () => {
+    if (billingSchemes && basket) {
+      let totalAmount = billingSchemes.reduce((sum: any, account: any) => {
+        if (account.selected) {
+          sum = sum + account.amount;
+        }
+        return sum;
+      }, 0);
+      totalAmount = totalAmount.toFixed(2);
+      totalAmount = parseFloat(totalAmount);
+      console.log('totalAmount', totalAmount)
+      return totalAmount !== basket.total;
+    } else {
+      return true;
     }
   };
 
@@ -536,7 +584,12 @@ const Checkout = () => {
               <Grid container className="add-order">
                 <Grid item xs={12} sm={12} md={4} lg={4}>
                   <Button
-                    disabled={buttonDisabled || basketObj?.loading}
+                    disabled={
+                      buttonDisabled ||
+                      basketObj?.loading ||
+                      basketObj?.orderSubmit ||
+                      totalPaymentCardAmount()
+                    }
                     onClick={placeOrder}
                     variant="contained"
                     title="PLACE ORDER"
