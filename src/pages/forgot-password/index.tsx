@@ -8,6 +8,7 @@ import ForgotForm from '../../components/forgot-form';
 import bgImage from '../../assets/imgs/login-bg.png';
 import ReactFacebookLogin from 'react-facebook-login';
 import { facebookUserLogin } from '../../redux/actions/user';
+import { displayToast } from '../../helpers/toast';
 
 const useStyle = makeStyles(() => ({
   root: {
