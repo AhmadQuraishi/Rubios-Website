@@ -39,8 +39,18 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
         basketType: 'New',
         error: null,
         payment: {
-          ...state.payment,
-        },
+          allowedCards: {
+            loading: false,
+            data: null,
+            error: null,
+          },
+          defaultCards: {
+            loading: false,
+            data: null,
+            error: null,
+          },
+          billingSchemes: [],
+        }
       };
     case basketActionsTypes.VALIDETE_BASKET:
     case basketActionsTypes.SUBMIT_BASKET_SINGLE_PAYMENT:
