@@ -273,7 +273,7 @@ const PaymentInfo = forwardRef((props, _ref) => {
                 billingSchemesNewArray,
               );
 
-              console.log('cardObj', cardObj)
+              console.log('cardObj', cardObj);
 
               Array.prototype.push.apply(billingSchemesNewArray, cardObj);
 
@@ -282,7 +282,7 @@ const PaymentInfo = forwardRef((props, _ref) => {
                 basket,
               );
 
-              console.log('billingSchemesNewArray', billingSchemesNewArray)
+              console.log('billingSchemesNewArray', billingSchemesNewArray);
 
               // console.log('billingSchemeStats', billingSchemeStats);
               // const cardObj = [
@@ -470,6 +470,44 @@ const PaymentInfo = forwardRef((props, _ref) => {
   const handleClosePopup = () => {
     setOpenPopup(!openPopup);
     setRemoveData(null);
+  };
+
+  const limitGiftCardNumber = (e: any, giftCardnumber: any) => {
+    let newValue = e.target.value.trim();
+    newValue =
+      newValue && newValue >= 0 && newValue <= 9999999999999999999
+        ? newValue
+        : newValue > 9999999999999999999
+        ? giftCardnumber
+        : '';
+
+    const newEvent = {
+      target: {
+        value: newValue,
+        name: 'giftCardNumber',
+      },
+    };
+
+    return newEvent;
+  };
+
+  const limitGiftCardPin = (e: any, pinNumber: any) => {
+    let newValue = e.target.value.trim();
+    newValue =
+      newValue && newValue >= 0 && newValue <= 9999999999999999
+        ? newValue
+        : newValue > 9999999999999999
+        ? pinNumber
+        : '';
+
+    const newEvent = {
+      target: {
+        value: newValue,
+        name: 'pin',
+      },
+    };
+
+    return newEvent;
   };
 
   return (
@@ -808,7 +846,11 @@ const PaymentInfo = forwardRef((props, _ref) => {
                           label="Gift Card Number"
                           fullWidth
                           type="number"
-                          onChange={handleChange}
+                          onChange={(e) => {
+                            handleChange(
+                              limitGiftCardNumber(e, values.giftCardNumber),
+                            );
+                          }}
                           title="Enter Code"
                           name="giftCardNumber"
                           value={values.giftCardNumber}
@@ -826,7 +868,9 @@ const PaymentInfo = forwardRef((props, _ref) => {
                             label="PIN"
                             fullWidth
                             type="number"
-                            onChange={handleChange}
+                            onChange={(e) => {
+                              handleChange(limitGiftCardPin(e, values.pin));
+                            }}
                             title="PIN"
                             name="pin"
                             value={values.pin}
