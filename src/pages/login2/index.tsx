@@ -50,7 +50,6 @@ const Login2 = () => {
   }, [authToken, providerToken]);
 
   const handleCallBackfacebook = (response: any) => {
-    
     console.log(response);
     try {
       if (response && response.name && response.email) {
@@ -118,7 +117,8 @@ const Login2 = () => {
                 <li>
                   <ReactFacebookLogin
                     appId="3126327474351480"
-                    fields="name,email,picture"
+                    fields="name, email, picture, birthday"
+                    scope="public_profile, email, user_birthday"
                     callback={handleCallBackfacebook}
                     textButton="SIGN IN WITH FACEBOOK"
                     cssClass="fb-button"
