@@ -50,9 +50,10 @@ const Login2 = () => {
   }, [authToken, providerToken]);
 
   const handleCallBackfacebook = (response: any) => {
+    
+    console.log(response);
     try {
       if (response && response.name && response.email) {
-        console.log(response);
         const name = response.name.split(' ');
         if (name.length > 1) {
           const fname = name[0];
