@@ -33,7 +33,12 @@
   display: block;
 }
 
-
+@media screen and (max-width: 900px) {
+  .redeem-sec .item-name span {
+    font-size: 16px;
+    padding: 10px;
+  }
+}
 @media screen and (max-width: 468px) {
   .redeem-sec .rewards {
     min-height: auto;
