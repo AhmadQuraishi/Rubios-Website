@@ -207,12 +207,14 @@ const PaymentInfo = forwardRef((props, _ref) => {
         );
 
         if (checkLastCreditCard && checkLastCreditCard.length === 1) {
-          displayToast(
-            'ERROR',
-            'Minimum 1 Credit Card is required to make a payment',
-          );
-          handleClosePopup();
-          return;
+          if (checkLastCreditCard[0].localId === removeData.localId) {
+            displayToast(
+              'ERROR',
+              'Minimum 1 Credit Card is required to make a payment',
+            );
+            handleClosePopup();
+            return;
+          }
         }
       }
       let updatedBillingSchemes = billingSchemes.filter(
