@@ -107,6 +107,11 @@ const Checkout = () => {
         basketObj.payment.allowedCards.data.billingschemes.findIndex(
           (schemes: any) => schemes.type === 'creditcard',
         );
+      const giftCardIndex =
+        basketObj.payment.allowedCards.data.billingschemes.findIndex(
+          (schemes: any) => schemes.type === 'giftcard',
+        );
+      let billingArray = [];
       if (creditCardIndex !== -1) {
         if (
           basketObj.payment.allowedCards.data.billingschemes[creditCardIndex]
@@ -124,32 +129,70 @@ const Checkout = () => {
                 creditCardIndex
               ].accounts[defaultCardIndex];
 
-            let cardObj: any = [
-              {
-                localId: getUniqueId(),
-                selected: false,
-                billingmethod: 'creditcardtoken',
-                amount: 0,
-                tipportion: 0.0,
-                cardtype: defaultCard.cardtype,
-                cardlastfour: defaultCard.cardsuffix,
-                billingaccountid: parseInt(defaultCard.accountidstring),
-              },
-            ];
+            let cardObj: any = {
+              localId: getUniqueId(),
+              selected: true,
+              billingmethod: 'creditcardtoken',
+              amount: 0,
+              tipportion: 0.0,
+              cardtype: defaultCard.cardtype,
+              cardlastfour: defaultCard.cardsuffix,
+              billingaccountid: defaultCard.accountidstring,
+              billingschemeid:
+                basketObj.payment.allowedCards.data.billingschemes[
+                  creditCardIndex
+                ].id,
+            };
 
-            cardObj[0].amount =
-              validate && validate.total
-                ? validate.total
-                : basket && basket?.total
-                ? basket?.total
-                : 0;
-            cardObj[0].selected = true;
+            // cardObj.amount =
+            //   validate && validate.total
+            //     ? validate.total
+            //     : basket && basket?.total
+            //     ? basket?.total
+            //     : 0;
+            // cardObj.selected = true;
 
-            cardObj = updatePaymentCardsAmount(cardObj, basket);
-
-            dispatch(updateBasketBillingSchemes(cardObj));
+            billingArray.push(cardObj);
           }
         }
+      }
+      if (giftCardIndex !== -1 && billingArray.length) {
+        if (
+          basketObj.payment.allowedCards.data.billingschemes[giftCardIndex]
+            .accounts &&
+          basketObj.payment.allowedCards.data.billingschemes[giftCardIndex]
+            .accounts.length
+        ) {
+          const defaultGiftCard =
+            basketObj.payment.allowedCards.data.billingschemes[giftCardIndex]
+              .accounts[0];
+
+          let gitfCardObj: any = {
+            localId: getUniqueId(),
+            selected: true,
+            billingmethod: 'storedvalue',
+            amount: 0,
+            balance:
+              (defaultGiftCard.balance && defaultGiftCard.balance.balance) || 0,
+            tipportion: 0.0,
+            cardlastfour: defaultGiftCard.cardsuffix,
+            billingaccountid: defaultGiftCard.accountidstring,
+            billingschemeid:
+              basketObj.payment.allowedCards.data.billingschemes[giftCardIndex]
+                .id,
+          };
+
+          console.log('gitfCardObj', gitfCardObj)
+
+          billingArray.push(gitfCardObj);
+
+          // }
+        }
+      }
+      if (billingArray.length) {
+        billingArray = updatePaymentCardsAmount(billingArray, basket);
+        console.log('billingArray', billingArray)
+        dispatch(updateBasketBillingSchemes(billingArray));
       }
       setDefaultCard(false);
     }
@@ -438,7 +481,7 @@ const Checkout = () => {
       }, 0);
       totalAmount = totalAmount.toFixed(2);
       totalAmount = parseFloat(totalAmount);
-      console.log('totalAmount', totalAmount)
+      console.log('totalAmount', totalAmount);
       return totalAmount !== basket.total;
     } else {
       return true;
