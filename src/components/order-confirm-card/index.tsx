@@ -20,14 +20,16 @@ const locationTitle = (type: string) => {
   }
 };
 
-const pickupTime = (readytime: string) => {
+const pickupTime = (order: any) => {
   return (
     <>
       <Typography variant="caption" className="label" title="PICKUP TIME">
-        PICKUP TIME
+        {order && order.deliverymode === DeliveryModeEnum.delivery
+          ? 'DELIVERY TIME'
+          : 'PICKUP TIME'}
       </Typography>
       <Typography variant="h1" title="6:10 PM">
-        {moment(readytime, 'YYYYMMDD HH:mm').format('h:mm A')}
+        {moment(order.readytime, 'YYYYMMDD HH:mm').format('h:mm A')}
       </Typography>
     </>
   );
@@ -179,7 +181,7 @@ const OrderConfirmedCard = ({ orderObj, restaurantObj }: any) => {
             : ''}
 
           <Grid xs={12} sm={6} md={6} lg={12} className="adjust-space">
-            {order && order.readytime ? pickupTime(order.readytime) : ''}
+            {order && order.readytime ? pickupTime(order) : ''}
           </Grid>
         </Grid>
       </Card>

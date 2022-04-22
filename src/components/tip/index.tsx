@@ -44,8 +44,7 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
   const [runOnce, setRunOnce] = React.useState(true);
 
   useEffect(() => {
-    if (basket && basket.tip) {
-      console.log('working', basket);
+    if (basket) {
       if (basket.tip && basket.tip !== 0 && runOnce) {
         const selectedValue = getPercentageSelected(basket);
         if (selectedValue) {
@@ -56,7 +55,9 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
       if (basket.coupon && basket.coupon.couponcode) {
         setCouponCode(basket.coupon.couponcode);
       }
-      setTipCustomAmount(basket.tip);
+      if (basket.tip) {
+        setTipCustomAmount(basket.tip);
+      }
     }
   }, [basket]);
 

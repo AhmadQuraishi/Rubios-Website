@@ -34,6 +34,7 @@ import {
   getUniqueId,
   updatePaymentCardsAmount,
 } from '../../helpers/checkout';
+import DialogBox from '../dialog-box';
 
 const styleObject = {
   base: {
@@ -67,6 +68,8 @@ const PaymentInfo = forwardRef((props, _ref) => {
   const [billingSchemes, setBillingSchemes] = React.useState<any>([]);
   const [pinCheck, setPinCheck] = React.useState<any>(false);
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
+  const [openPopup, setOpenPopup] = React.useState<boolean>(false);
+  const [removeData, setRemoveData] = React.useState<any>(null);
 
   // const [paymentMethod, setPaymentMethod] =
   //   React.useState<PaymentMethodResult | null>(null);
@@ -195,15 +198,34 @@ const PaymentInfo = forwardRef((props, _ref) => {
     setOpenAddGiftCard(!openAddGiftCard);
   };
 
-  const removeSingleBasketBillingSchemes = (localId: any) => {
-    let updatedBillingSchemes = billingSchemes.filter(
-      (element: any) => element.localId !== localId,
-    );
-    updatedBillingSchemes = updatePaymentCardsAmount(
-      updatedBillingSchemes,
-      basket,
-    );
-    dispatch(updateBasketBillingSchemes(updatedBillingSchemes));
+  const removeSingleBasketBillingSchemes = () => {
+    if (removeData) {
+      if (removeData.billingmethod === 'creditcardtoken') {
+        const checkLastCreditCard = billingSchemes.filter(
+          (element: any) =>
+            element.selected && element.billingmethod === 'creditcardtoken',
+        );
+
+        if (checkLastCreditCard && checkLastCreditCard.length === 1) {
+          displayToast(
+            'ERROR',
+            'Minimum 1 Credit Card is required to make a payment',
+          );
+          return;
+        }
+      }
+      let updatedBillingSchemes = billingSchemes.filter(
+        (element: any) => element.localId !== removeData.localId,
+      );
+
+      updatedBillingSchemes = updatePaymentCardsAmount(
+        updatedBillingSchemes,
+        basket,
+      );
+      dispatch(updateBasketBillingSchemes(updatedBillingSchemes));
+      displayToast('SUCCESS', 'Card Removed.');
+    }
+    handleClosePopup();
   };
 
   const handleGiftCardSubmit = async (values: any) => {
@@ -416,13 +438,15 @@ const PaymentInfo = forwardRef((props, _ref) => {
 
   const remainingAmount = () => {
     if (basket && billingSchemes) {
-      console.log('billingSchemes', billingSchemes);
-      const amountSelected = billingSchemes.reduce((sum: any, account: any) => {
+      let amountSelected = billingSchemes.reduce((sum: any, account: any) => {
         if (account.selected) {
           sum = sum + account.amount;
         }
         return sum;
       }, 0);
+
+      amountSelected = amountSelected.toFixed(2);
+      amountSelected = parseFloat(amountSelected);
 
       console.log('amountSelected', amountSelected);
 
@@ -438,9 +462,20 @@ const PaymentInfo = forwardRef((props, _ref) => {
     }
   };
 
+  const handleClosePopup = () => {
+    setOpenPopup(false);
+    setRemoveData(null);
+  };
+
   return (
     <Grid container>
       {/*column for space*/}
+      <DialogBox
+        open={openPopup}
+        handleClose={handleClosePopup}
+        message={'Do You Really Want To Delete This Card?'}
+        handleDeleteFunction={() => removeSingleBasketBillingSchemes()}
+      />
       <Grid item xs={0} sm={0} md={2} lg={2} />
 
       <Grid item style={{ paddingBottom: 30 }} xs={12} sm={12} md={8} lg={8}>
@@ -636,7 +671,12 @@ const PaymentInfo = forwardRef((props, _ref) => {
                         md={2}
                         lg={2}
                       >
-                        <Typography variant="h6">AMOUNT</Typography>
+                        <Typography
+                          variant="h6"
+                          fontFamily="Poppins-Bold !important"
+                        >
+                          AMOUNT
+                        </Typography>
                       </Grid>
                       <Grid
                         style={{ display: 'flex' }}
@@ -678,22 +718,29 @@ const PaymentInfo = forwardRef((props, _ref) => {
                       paddingTop: 5,
                       display: 'flex',
                       justifyContent: 'end',
+                      zIndex: 999,
                     }}
                     xs={12}
                     sm={12}
                     md={12}
                     lg={12}
                   >
-                    <Typography
-                      onClick={() =>
-                        removeSingleBasketBillingSchemes(account.localId)
-                      }
-                      style={{ cursor: 'pointer', display: 'inline-block' }}
-                      align={'right'}
-                      variant="h6"
-                    >
-                      REMOVE
-                    </Typography>
+                    {billingSchemes && billingSchemes.length !== 1 && (
+                      <Typography
+                        onClick={() => {
+                          setOpenPopup(true);
+                          setRemoveData({
+                            localId: account.localId,
+                            billingmethod: account.billingmethod,
+                          });
+                        }}
+                        style={{ cursor: 'pointer', display: 'inline-block' }}
+                        align={'right'}
+                        variant="h6"
+                      >
+                        REMOVE
+                      </Typography>
+                    )}
                   </Grid>
                 </Grid>
               );
@@ -724,20 +771,20 @@ const PaymentInfo = forwardRef((props, _ref) => {
                     }}
                     validationSchema={Yup.object({
                       giftCardNumber: Yup.string()
-                        .matches(/^[0-9]+$/, 'Must be only digits')
                         .min(10, 'Must be at least 10 digits')
                         .max(19, 'Must be at most 19 digits')
+                        .matches(/^[0-9]+$/, 'Must be only digits')
                         .required('Gift Card Number is required'),
                       pin: pinCheck
                         ? Yup.string()
-                            .matches(/^[0-9]+$/, 'Must be only digits')
                             .min(1, 'Must be at least 1 digits')
                             .max(16, 'Must be at most 16 digits')
+                            .matches(/^[0-9]+$/, 'Must be only digits')
                             .required('PIN is required')
                         : Yup.string(),
                     })}
                     onSubmit={async (values) => {
-                      handleGiftCardSubmit(values);
+                      await handleGiftCardSubmit(values);
                     }}
                   >
                     {({

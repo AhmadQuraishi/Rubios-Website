@@ -41,6 +41,8 @@ const Login2 = () => {
     ) {
       if (pageURL == undefined || pageURL == null) {
         navigate('/welcome');
+      } else if (pageURL && pageURL.includes('reset-password')) {
+        navigate('/welcome');
       } else {
         navigate(pageURL);
       }

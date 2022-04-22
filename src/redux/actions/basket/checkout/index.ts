@@ -288,9 +288,15 @@ export function submitBasketSinglePaymentFailure(error: any) {
   };
 }
 
-export function removeBasketOrderConfirmation() {
+export function addBasketOrderSubmit() {
   return {
-    type: basketActionsTypes.REMOVE_BASKET_ORDER_CONFIRMATION,
+    type: basketActionsTypes.ADD_BASKET_ORDER_SUBMIT,
+  };
+}
+
+export function removeBasketOrderSubmit() {
+  return {
+    type: basketActionsTypes.REMOVE_BASKET_ORDER_SUBMIT,
   };
 }
 

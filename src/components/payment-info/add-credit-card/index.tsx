@@ -14,7 +14,12 @@ import { ResponseBasket } from '../../../types/olo-api';
 import { useDispatch, useSelector } from 'react-redux';
 import { displayToast } from '../../../helpers/toast';
 import { updateBasketBillingSchemes } from '../../../redux/actions/basket/checkout';
-import {getBillingSchemesStats, getCreditCardObj, updatePaymentCardsAmount, getUniqueId} from '../../../helpers/checkout';
+import {
+  getBillingSchemesStats,
+  getCreditCardObj,
+  updatePaymentCardsAmount,
+  getUniqueId,
+} from '../../../helpers/checkout';
 
 const cardTypes: any = {
   amex: 'Amex',
@@ -121,7 +126,12 @@ const AddCreditCard = () => {
 
   const handleZipCodeChange = (event: any) => {
     let newValue = event.target.value.trim();
-    newValue = newValue && newValue >= 0 ? parseInt(newValue) : '';
+    newValue =
+      newValue && newValue >= 0 && newValue <= 99999
+        ? parseInt(newValue)
+        : newValue > 99999
+        ? zipCode
+        : '';
 
     setZipCode(newValue);
 
@@ -333,6 +343,7 @@ const AddCreditCard = () => {
                     </Grid>
                     <Grid item xs={12} sm={6} md={6} lg={6}>
                       <TextField
+                        className="zipcode"
                         aria-label="Zip Code"
                         // onBlur={handleBlur}
                         // label="Zip Code"

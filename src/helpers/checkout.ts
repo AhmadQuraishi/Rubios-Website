@@ -402,6 +402,8 @@ export function getGiftCardObj(
 export function updatePaymentCardsAmount(billingSchemes: any, basket: any) {
   const billingSchemeStats = getBillingSchemesStats(billingSchemes);
 
+  console.log('billingSchemeStats', billingSchemeStats)
+
   if (
     billingSchemeStats.selectedCreditCard === 0 &&
     billingSchemeStats.selectedGiftCard === 0
@@ -503,7 +505,7 @@ export function updatePaymentCardsAmount(billingSchemes: any, basket: any) {
     });
     return billingSchemes;
   }
-
+  return [];
   // if (
   //   billingSchemeStats.creditCard === 0 &&
   //   billingSchemeStats.giftCard === 0
