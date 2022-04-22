@@ -77,7 +77,7 @@ const Login2 = () => {
       } else {
         displayToast(
           'ERROR',
-          'Unable To login with Facebook. Please try again later',
+          'Unable to login with Facebook. Please try it again later.',
         );
       }
     } catch (e) {
@@ -122,9 +122,9 @@ const Login2 = () => {
               <ul className="button-list">
                 <li>
                   <ReactFacebookLogin
-                    appId="3126327474351480"
-                    fields="name, email, picture"
-                    scope="email"
+                    appId="380212609388497"
+                    fields="name,email,picture"
+                    scope="public_profile,email"
                     callback={handleCallBackfacebook}
                     textButton="SIGN IN WITH FACEBOOK"
                     cssClass="fb-button"
