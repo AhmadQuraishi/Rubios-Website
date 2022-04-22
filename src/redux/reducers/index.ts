@@ -27,6 +27,12 @@ import pageStateReducer from './page-state';
 import redemptionReducer from './redemption';
 import addUpsellReducer from './basket/upsell/add';
 import getUpsellsReducer from './basket/upsell/get';
+import getRewardForCheckoutReducer from './reward/checkout';
+import applyRewardOnBasketReducer from './reward/checkout/apply';
+import removeRewardFromBasketReducer from './reward/checkout/remove';
+import orderReducer from './order';
+import navigateAppReducer from './navigate-app';
+import deliveryAddressReducer from './location/delivery-address';
 
 const persistConfig = {
   key: 'root',
@@ -41,6 +47,9 @@ const persistConfig = {
     'redemptionReducer',
     'pageStateReducer',
     'getUpsellsReducer',
+    'orderReducer',
+    'navigateAppReducer',
+    'deliveryAddressReducer',
   ],
 };
 
@@ -60,6 +69,7 @@ const rootReducers = combineReducers({
   restaurantListReducer,
   createBasketReducer,
   basketReducer,
+  orderReducer,
   addMultipleProductsReducer,
   addProductReducer,
   removeProductReducer,
@@ -71,6 +81,11 @@ const rootReducers = combineReducers({
   redemptionReducer,
   addUpsellReducer,
   getUpsellsReducer,
+  getRewardForCheckoutReducer,
+  applyRewardOnBasketReducer,
+  removeRewardFromBasketReducer,
+  navigateAppReducer,
+  deliveryAddressReducer,
 });
 
 const persistReducers = persistReducer(persistConfig, rootReducers);

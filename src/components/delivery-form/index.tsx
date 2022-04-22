@@ -5,6 +5,7 @@ import {
   TextField,
   FormControlLabel,
   FormGroup,
+  Typography,
 } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { Formik } from 'formik';
@@ -15,6 +16,9 @@ import { IMaskInput } from 'react-imask';
 const DeliveryForm = ({ basket, deliveryFormRef, defaultAddress }: any) => {
   const [address, setAddress] = useState<any>(null);
   const { providerToken } = useSelector((state: any) => state.providerReducer);
+  const objDeliveryAddress = useSelector(
+    (state: any) => state.deliveryAddressReducer,
+  );
   const { authToken } = useSelector((state: any) => state.authReducer);
 
   useEffect(() => {
@@ -61,12 +65,36 @@ const DeliveryForm = ({ basket, deliveryFormRef, defaultAddress }: any) => {
         lastName: providerToken?.last_name ? providerToken?.last_name : '',
         phone: providerToken?.phone ? providerToken?.phone : '',
         email: providerToken?.email ? providerToken?.email : '',
-        addressId: address && address.id ? address.id : null,
-        apartment: address && address.building ? address.building : '',
+        addressId:
+          objDeliveryAddress && objDeliveryAddress.address
+            ? null
+            : address && address.id
+            ? address.id
+            : null,
+        apartment:
+          objDeliveryAddress && objDeliveryAddress.address
+            ? objDeliveryAddress.address.address2
+            : address && address.building
+            ? address.building
+            : '',
         streetAddress:
-          address && address.streetaddress ? address.streetaddress : '',
-        city: address && address.city ? address.city : '',
-        zipcode: address && address.zipcode ? address.zipcode : '',
+          objDeliveryAddress && objDeliveryAddress.address
+            ? objDeliveryAddress.address.address1
+            : address && address.streetaddress
+            ? address.streetaddress
+            : '',
+        city:
+          objDeliveryAddress && objDeliveryAddress.address
+            ? objDeliveryAddress.address.city
+            : address && address.city
+            ? address.city
+            : '',
+        zipcode:
+          objDeliveryAddress && objDeliveryAddress.address
+            ? objDeliveryAddress.address.zip
+            : address && address.zipcode
+            ? address.zipcode
+            : '',
         saveAddressCheck:
           address && address.isdefault ? address.isdefault : false,
       }}
@@ -196,74 +224,128 @@ const DeliveryForm = ({ basket, deliveryFormRef, defaultAddress }: any) => {
               helperText={errors.email}
             />
           </Grid>
-
-          <Grid item xs={12}>
-            <TextField
-              aria-label="Apt, Building, Company - Optional"
-              onBlur={handleBlur}
-              label="Apt, Building, Company - Optional"
-              aria-required="true"
-              title="Apt, Building, Company - Optional"
-              type="text"
-              name="apartment"
-              value={values.apartment}
-              onChange={handleChange}
-              error={Boolean(touched.apartment && errors.apartment)}
-              helperText={errors.apartment}
-            />
-          </Grid>
-
-          <Grid item xs={12}>
-            <TextField
-              aria-label="Street Address"
-              onBlur={handleBlur}
-              label="Street Address"
-              aria-required="true"
-              title="Street Address"
-              type="text"
-              name="streetAddress"
-              value={values.streetAddress}
-              onChange={handleChange}
-              error={Boolean(touched.streetAddress && errors.streetAddress)}
-              helperText={errors.streetAddress}
-            />
-          </Grid>
-          <Grid container spacing={1}>
-            <Grid item xs={6}>
-              <TextField
-                aria-label="City"
-                onBlur={handleBlur}
-                label="City"
-                aria-required="true"
-                title="City"
-                type="text"
-                name="city"
-                value={values.city}
-                onChange={handleChange}
-                error={Boolean(touched.city && errors.city)}
-                helperText={errors.city}
-              />
-            </Grid>
-
-            <Grid item xs={6}>
-              <TextField
-                aria-label="Zip Code"
-                onBlur={handleBlur}
-                label="Zip Code"
-                aria-required="true"
-                title="Zip Code"
-                type="text"
-                name="zipcode"
-                value={values.zipcode}
-                onChange={handleChange}
-                error={Boolean(touched.zipcode && errors.zipcode)}
-                helperText={errors.zipcode}
-              />
-            </Grid>
-          </Grid>
-
-          {authToken?.authtoken ? (
+          <Grid
+            item
+            xs={12}
+            sx={{
+              display:
+                objDeliveryAddress == null && providerToken ? 'grid' : 'none',
+            }}
+          >
             <Grid item xs={12}>
+              <TextField
+                aria-label="Apt, Building, Company - Optional"
+                onBlur={handleBlur}
+                label="Apt, Building, Company - Optional"
+                aria-required="true"
+                title="Apt, Building, Company - Optional"
+                type="text"
+                name="apartment"
+                value={values.apartment}
+                onChange={handleChange}
+                error={Boolean(touched.apartment && errors.apartment)}
+                helperText={errors.apartment}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                aria-label="Street Address"
+                onBlur={handleBlur}
+                label="Street Address"
+                aria-required="true"
+                title="Street Address"
+                type="text"
+                name="streetAddress"
+                value={values.streetAddress}
+                onChange={handleChange}
+                error={Boolean(touched.streetAddress && errors.streetAddress)}
+                helperText={errors.streetAddress}
+              />
+            </Grid>
+            <Grid container spacing={1}>
+              <Grid item xs={6}>
+                <TextField
+                  aria-label="City"
+                  onBlur={handleBlur}
+                  label="City"
+                  aria-required="true"
+                  title="City"
+                  type="text"
+                  name="city"
+                  value={values.city}
+                  onChange={handleChange}
+                  error={Boolean(touched.city && errors.city)}
+                  helperText={errors.city}
+                />
+              </Grid>
+
+              <Grid item xs={6}>
+                <TextField
+                  aria-label="Zip Code"
+                  onBlur={handleBlur}
+                  label="Zip Code"
+                  aria-required="true"
+                  title="Zip Code"
+                  type="text"
+                  name="zipcode"
+                  value={values.zipcode}
+                  onChange={handleChange}
+                  error={Boolean(touched.zipcode && errors.zipcode)}
+                  helperText={errors.zipcode}
+                />
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            sx={{
+              display:
+                objDeliveryAddress && objDeliveryAddress.address
+                  ? 'flex'
+                  : 'none',
+            }}
+          >
+            <Grid container>
+              <Grid item xs={12}>
+                <br />
+                <Typography
+                  variant="body1"
+                  className="label"
+                  style={{
+                    paddingTop: '10px',
+                  }}
+                >
+                  Your delivery Address
+                </Typography>
+                <Typography
+                  variant="body1"
+                  style={{
+                    fontSize: '14px',
+                    fontFamily: 'Poppins-Medium',
+                    color: '#333',
+                    paddingTop: '5px',
+                  }}
+                >
+                  {objDeliveryAddress.address.address1}
+                  <br />
+                  {objDeliveryAddress.address.address2}
+                  {objDeliveryAddress.address.address2 != '' && <br />}
+                  {objDeliveryAddress.address.city},&nbsp;
+                  {objDeliveryAddress.address.zip}
+                </Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+          {authToken?.authtoken ? (
+            <Grid
+              item
+              xs={12}
+              style={{
+                paddingBottom: '20px',
+              }}
+            >
               <FormGroup>
                 <FormControlLabel
                   control={

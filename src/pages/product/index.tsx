@@ -15,7 +15,7 @@ import StoreInfoBar from '../../components/restaurant-info-bar';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategoriesRequest } from '../../redux/actions/category';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import {
   Category,
   Product as ProductInfo,
@@ -31,6 +31,9 @@ import { updateProductRequest } from '../../redux/actions/basket/product/update'
 import { displayToast } from '../../helpers/toast';
 import ItemImage from '../../components/item-image';
 import { getUpsellsRequest } from '../../redux/actions/basket/upsell/Get';
+const inputProps = {
+  'aria-label': 'quantity',
+};
 
 const Product = () => {
   const [productDetails, setProductDetails] = useState<ProductInfo>();
@@ -599,6 +602,9 @@ const Product = () => {
 
   return (
     <div style={{ minHeight: '500px' }}>
+      <Typography variant="h1" className="sr-only">
+        Product details
+      </Typography>
       <StoreInfoBar />
       {loading == true && productDetails == null && productOptions == null && (
         <ProductSkeletonUI />
@@ -616,13 +622,17 @@ const Product = () => {
                   PICK UP YOUR
                 </Typography>
                 <Typography
-                  variant="h4"
+                  variant="h2"
                   className="heading"
                   title={productDetails.name}
                 >
                   {productDetails.name}
                 </Typography>
-                <Typography variant="h6" title={productDetails.description}>
+                <Typography
+                  variant="body1"
+                  title={productDetails.description}
+                  className="desc"
+                >
                   {productDetails.description}
                 </Typography>
                 <Grid container>
@@ -688,16 +698,12 @@ const Product = () => {
                       changeImageSize(productDetails.imagefilename)
                     }
                     className="img"
-                    alt={productDetails.name}
-                    aria-label={productDetails.name}
                     title={productDetails.name}
                   />
                 ) : (
                   <img
                     style={{ width: '80%', display: 'block', margin: 'auto' }}
                     src={require('../../assets/imgs/default_img.png')}
-                    alt={productDetails.name}
-                    aria-label={productDetails.name}
                     title={productDetails.name}
                   />
                 )}
@@ -730,8 +736,9 @@ const Product = () => {
                         }
                         sx={{ marginTop: '20px' }}
                         title={itemMain.name}
+                        aria-required={itemMain.mandatory ? 'true' : 'false'}
                       >
-                        {itemMain.name}
+                        {itemMain.name + (itemMain.mandatory ? '*' : '')}
                         {IsItemSelected(itemMain.id) && (
                           <span
                             style={{
@@ -763,90 +770,149 @@ const Product = () => {
                           sm={6}
                           md={4}
                         >
-                          <Card
-                            className="card-panel"
-                            title={itemChild.option.name}
-                            is-mandatory={itemMain.mandatory.toString()}
-                            parent-option-id={itemMain.parentOptionID}
-                            onClick={() => {
-                              showChildOptions(
-                                itemChild.option.id,
-                                itemMain.id,
-                              );
-                            }}
-                          >
-                            <div className="check-mark">
-                              <div className="checkmark">L</div>
-                            </div>
-                            <Grid
-                              container
-                              spacing={1}
-                              className="name-img-panel"
+                          {itemMain.mandatory ? (
+                            checkOptionSelected(
+                              itemChild.option.id,
+                              itemMain.id,
+                            ) ? (
+                              <input
+                                type="radio"
+                                checked
+                                name={itemChild.option.id}
+                                style={{ display: 'none' }}
+                                aria-invalid={
+                                  IsItemSelected(itemMain.id) ? 'false' : 'true'
+                                }
+                              />
+                            ) : (
+                              <input
+                                type="radio"
+                                style={{ display: 'none' }}
+                                name={itemChild.option.id}
+                                aria-invalid={
+                                  IsItemSelected(itemMain.id) ? 'false' : 'true'
+                                }
+                              />
+                            )
+                          ) : checkOptionSelected(
+                              itemChild.option.id,
+                              itemMain.id,
+                            ) ? (
+                            <input
+                              type="checkbox"
+                              checked
+                              name={itemChild.option.id}
+                              style={{ display: 'none' }}
+                              aria-invalid={
+                                IsItemSelected(itemMain.id) ? 'false' : 'true'
+                              }
+                            />
+                          ) : (
+                            <input
+                              type="checkbox"
+                              name={itemChild.option.id}
+                              style={{ display: 'none' }}
+                              aria-invalid={
+                                IsItemSelected(itemMain.id) ? 'false' : 'true'
+                              }
+                            />
+                          )}
+                          <label htmlFor={itemChild.option.id}>
+                            <Card
+                              className="card-panel"
+                              tabIndex={0}
+                              title={itemChild.option.name}
+                              is-mandatory={itemMain.mandatory.toString()}
+                              parent-option-id={itemMain.parentOptionID}
+                              onClick={() => {
+                                showChildOptions(
+                                  itemChild.option.id,
+                                  itemMain.id,
+                                );
+                              }}
+                              onKeyUp={(e) => {
+                                if (e.keyCode === 13)
+                                  showChildOptions(
+                                    itemChild.option.id,
+                                    itemMain.id,
+                                  );
+                              }}
                             >
-                              <Grid item xs={5} sm={5}>
-                                <ItemImage
-                                  className="item-image"
-                                  name={itemChild.option.name}
-                                  id={itemChild.option.chainoptionid}
-                                />
-                              </Grid>
-                              <Grid item xs={7} sm={7} className="name-panel">
-                                {itemChild.option.name}
+                              <div className="check-mark">
+                                <div aria-hidden="true" className="checkmark">
+                                  L
+                                </div>
+                              </div>
+                              <Grid
+                                container
+                                spacing={1}
+                                className="name-img-panel"
+                              >
+                                <Grid item xs={5} sm={5}>
+                                  <ItemImage
+                                    className="item-image"
+                                    name={itemChild.option.name}
+                                    id={itemChild.option.chainoptionid}
+                                  />
+                                </Grid>
+                                <Grid item xs={7} sm={7} className="name-panel">
+                                  {itemChild.option.name}
 
-                                {itemChild.option.cost > 0 && (
-                                  <Grid
-                                    item
-                                    xs={6}
-                                    title={`$${parseFloat(
-                                      itemChild.option.cost,
-                                    ).toFixed(2)}`}
-                                    sx={{
-                                      paddingTop: '5px',
-                                      fontSize: '14px',
-                                      fontFamily: 'Poppins-Bold',
-                                      color: '#7CC8C5',
-                                    }}
-                                  >
-                                    $
-                                    {parseFloat(itemChild.option.cost).toFixed(
-                                      2,
-                                    )}
-                                  </Grid>
-                                )}
-                                {itemChild.dropDownValues && (
-                                  <>
-                                    <select
-                                      style={{
-                                        marginTop: '8px',
-                                        display: 'block',
+                                  {itemChild.option.cost > 0 && (
+                                    <Grid
+                                      item
+                                      xs={6}
+                                      title={`$${parseFloat(
+                                        itemChild.option.cost,
+                                      ).toFixed(2)}`}
+                                      sx={{
+                                        paddingTop: '5px',
+                                        fontSize: '14px',
+                                        fontFamily: 'Poppins-Bold',
+                                        color: '#7CC8C5',
                                       }}
-                                      parent-select-option-id={itemChild.id}
-                                      onClick={(e) => e.stopPropagation()}
-                                      value={itemChild.selectedValue || '0'}
-                                      onChange={(e) =>
-                                        dropDownValue(
-                                          itemChild.option.id,
-                                          e.target.value,
-                                        )
-                                      }
                                     >
-                                      <option value="0">Please Choose</option>
-                                      {itemChild.dropDownValues.map(
-                                        (option: any, index: number) => (
-                                          <option
-                                            key={Math.random() + index}
-                                            value={option.id}
-                                          >
-                                            {option.name}
-                                          </option>
-                                        ),
-                                      )}
-                                    </select>
-                                  </>
-                                )}
+                                      $
+                                      {parseFloat(
+                                        itemChild.option.cost,
+                                      ).toFixed(2)}
+                                    </Grid>
+                                  )}
+                                  {itemChild.dropDownValues && (
+                                    <>
+                                      <select
+                                        style={{
+                                          marginTop: '8px',
+                                          display: 'block',
+                                        }}
+                                        parent-select-option-id={itemChild.id}
+                                        onClick={(e) => e.stopPropagation()}
+                                        value={itemChild.selectedValue || '0'}
+                                        onChange={(e) =>
+                                          dropDownValue(
+                                            itemChild.option.id,
+                                            e.target.value,
+                                          )
+                                        }
+                                      >
+                                        <option value="0">Please Choose</option>
+                                        {itemChild.dropDownValues.map(
+                                          (option: any, index: number) => (
+                                            <option
+                                              key={Math.random() + index}
+                                              value={option.id}
+                                            >
+                                              {option.name}
+                                            </option>
+                                          ),
+                                        )}
+                                      </select>
+                                    </>
+                                  )}
+                                </Grid>
                               </Grid>
-                            </Grid>
-                          </Card>
+                            </Card>
+                          </label>
                         </Grid>
                       ))}
                   </Grid>
@@ -854,13 +920,13 @@ const Product = () => {
             </div>
             <Grid container className="action-panel">
               <Grid item xs={12} className="content-panel">
-                <Typography
-                  variant="caption"
+                <label
                   title="Quantity"
                   className="label bold quantity-label"
+                  htmlFor="quantityfield"
                 >
                   QUANTITY
-                </Typography>
+                </label>
                 <div className="quantity">
                   <Button
                     title=""
@@ -873,11 +939,12 @@ const Product = () => {
                     {' '}
                     +{' '}
                   </Button>
-                  <TextField
+                  <input
                     value={count}
-                    aria-label=""
-                    placeholder="0"
-                    title=""
+                    // inputProps={inputProps}
+                    id="quantityfield"
+                    className="input-quantity"
+                    title="quantity"
                   />
                   <Button
                     title=""
@@ -897,7 +964,6 @@ const Product = () => {
                 productUpdateObj.loading ||
                 !validateOptionsSelection() ? (
                   <Button
-                    aria-label="add to bag"
                     title="ADD TO Bag"
                     className="add-to-bag"
                     variant="contained"
@@ -907,7 +973,6 @@ const Product = () => {
                   </Button>
                 ) : (
                   <Button
-                    aria-label="add to bag"
                     title="ADD TO Bag"
                     className="add-to-bag"
                     variant="contained"

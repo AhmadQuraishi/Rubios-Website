@@ -9,6 +9,7 @@ import {
   IconButton,
   Button,
   Grid,
+  Dialog,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
@@ -96,6 +97,7 @@ const Header = (props: any) => {
   const classes = useStyles();
   const theme = useTheme();
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [open, setOpen] = useState(false);
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [showCart, setShowCart] = useState(false);
   const [state, setState] = useState(false);
@@ -111,10 +113,18 @@ const Header = (props: any) => {
     setShowAccountMenu(false);
     if (fromEditOrder == true) {
       setShowCart(true);
+      //document.body.style.overflow = 'hidden';
       setState(!state);
       fromEditOrder = false;
       setShowCart(false);
+      //document.body.style.overflow = 'auto';
     } else {
+      if (!showCart) {
+       // document.body.style.overflow = 'hidden';
+      } else {
+       // document.body.style.overflow = 'auto';
+      }
+      setOpen(!showCart);
       setShowCart(!showCart);
     }
   };
@@ -127,7 +137,7 @@ const Header = (props: any) => {
             padding: { xs: '0 !important' },
           }}
         >
-          <Typography variant="h4" className={classes.logo}>
+          <Typography variant="h1" className={classes.logo}>
             <Link
               to="/location"
               className={classes.logoImg}
@@ -440,7 +450,16 @@ const Header = (props: any) => {
         </Toolbar>
       </AppBar>
       {(fromEditOrder === true && <Cart showCart={handleShowCart} />) ||
-        (showCart && <Cart showCart={handleShowCart} />)}
+        (showCart && (
+          <Dialog
+            open={open}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+            sx={{ border: '0' }}
+          >
+            <Cart showCart={handleShowCart} />
+          </Dialog>
+        ))}
       {showAccountMenu && (
         <RightMenuBar
           closeDrawer={setShowAccountMenu}

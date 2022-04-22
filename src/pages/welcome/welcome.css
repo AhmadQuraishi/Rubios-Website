@@ -10,7 +10,7 @@
   -moz-border-radius: 30px;
   border-radius: 30px;
 }
-.welcome-content h4 {
+.welcome-content h1 {
   margin: 0px 0px 23px 0px;
   font-size: 49px;
 }
@@ -95,7 +95,7 @@
   .welcome-wrapper {
     margin: 70px 50px !important;
   }
-  .welcome-content h4 {
+  .welcome-content h1 {
     margin: 0px 0px 10px 0px;
   }
   .welcome-wrapper .action-btn {
@@ -111,7 +111,7 @@
   .welcome-content {
     padding: 30px 20px !important;
   }
-  .welcome-content h4 {
+  .welcome-content h1 {
     font-size: 25px;
   }
   .welcome-wrapper .action-btn {

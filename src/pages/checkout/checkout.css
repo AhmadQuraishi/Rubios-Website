@@ -15,7 +15,7 @@
 .order .left-col .MuiTextField-root {
   margin-bottom: 10px;
 }
-.order .left-col h4 {
+.order .left-col h1 {
   margin-bottom: 20px;
 }
 .order .right-col button.caption-grey {
@@ -68,6 +68,11 @@
   width: 100%;
 }
 
+.checkout-wrapper h2 {
+  font-family: 'Poppins-Bold', sans-serif !important;
+  color: #214F66;
+  font-size: 36px !important;
+}
 
 @media screen and (max-width: 900px) {
   .order .add-order button {
@@ -102,6 +107,8 @@
   }
   .order .left-col {
     padding-left: 0px !important;
+    margin-bottom: 45px;
+    padding-right: 0px !important;
   }
   .order .selected-btn-group {
     display: inline-block;

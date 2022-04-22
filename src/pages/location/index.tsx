@@ -1,5 +1,11 @@
-import { useEffect, useState } from 'react';
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+
+import { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  GoogleMap,
+  LoadScript,
+  Marker,
+  useLoadScript,
+} from '@react-google-maps/api';
 import LocationCard from '../../components/location';
 import { useDispatch, useSelector } from 'react-redux';
 import { ResponseRestaurant } from '../../types/olo-api';
@@ -33,18 +39,35 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
+const mapContainerStyle = {
+  width: '100%',
+  height: 'auto',
+};
 const Location = () => {
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY?.toString() || '',
+    libraries: ['places'],
+  });
   const classes = useStyles();
   const { restaurants, loading } = useSelector(
     (state: any) => state.restaurantListReducer,
   );
 
+  const mapRef = useRef();
+  const loadMap = useCallback((map: any) => {
+    mapRef.current = map;
+  }, []);
+
   const [mapCenter, setMapCenter] = useState<any>();
   const [showNearBy, setShowNearBy] = useState(false);
+  const [LatLng, setLatLng] = useState<any>();
   const [orderType, setOrderType] = useState<string>();
   const [zoom, setZoom] = useState<number>(7);
   const [nearByRestaurantsFound, setNearByRestaurantsFound] = useState(false);
+  const [actionPerform, setActionPerform] = useState(false);
   const dispatch = useDispatch();
+  const [deliveryRasturants, setDeliveryRasturants] = useState<any[]>();
+  const [allResturants, setAllResturants] = useState<any[]>();
 
   useEffect(() => {
     setMapCenter({
@@ -77,7 +100,11 @@ const Location = () => {
   };
 
   useEffect(() => {
-    if (showNearBy) {
+    if (LatLng && actionPerform) {
+      if (LatLng) {
+        getNearByRestaurants(LatLng.lat, LatLng.lng);
+      }
+    } else if (showNearBy) {
       navigator.geolocation.getCurrentPosition(
         function (position) {
           //getNearByRestaurants(40.7054008, -74.0132198);
@@ -85,6 +112,7 @@ const Location = () => {
             position.coords.latitude,
             position.coords.longitude,
           );
+          setShowNearBy(true);
           setZoom(7);
         },
         function () {
@@ -93,25 +121,44 @@ const Location = () => {
         },
       );
     }
-  }, [showNearBy]);
+  }, [showNearBy, LatLng]);
 
   useEffect(() => {
     if (restaurants && restaurants.restaurants) {
       if (restaurants.restaurants.length === 0) {
-        if (showNearBy) {
+        if (showNearBy || LatLng) {
           setShowNearBy(false);
           setNearByRestaurantsFound(false);
-          displayToast(
-            'ERROR',
-            "We could not find any Rubio's within 10 Miles of Your Current Location.",
-          );
+          if (LatLng) {
+            setDeliveryRasturants([]);
+            displayToast(
+              'ERROR',
+              "We could not find any Rubio's within 10 miles of your address.",
+            );
+          } else {
+            displayToast(
+              'ERROR',
+              "We could not find any Rubio's within 10 miles of your current location.",
+            );
+          }
+          setLatLng(null);
           dispatch(getResturantListRequest());
           setZoom(7);
+          setActionPerform(false);
         }
       } else {
-        if (showNearBy) {
-          setShowNearBy(false);
-          setNearByRestaurantsFound(true);
+        if (showNearBy || LatLng) {
+          if (LatLng) {
+            setDeliveryRasturants(restaurants.restaurants);
+            setActionPerform(false);
+          }
+          setLatLng(null);
+          if (showNearBy) {
+            setShowNearBy(false);
+            setNearByRestaurantsFound(true);
+          }
+        } else {
+          setAllResturants(restaurants.restaurants);
         }
         setMapCenter({
           lat: restaurants.restaurants[0].latitude,
@@ -160,7 +207,14 @@ const Location = () => {
         };
         setMarkers((markers) => [
           ...markers,
-          <Marker key={Math.random() + index} position={latLong} />,
+          <Marker
+            key={Math.random() + index}
+            position={latLong}
+            // icon={{
+            //   url: '/marker.png',
+            //   scaledSize: new google.maps.Size(40, 40),
+            // }}
+          />,
         ]);
       });
     }
@@ -168,40 +222,49 @@ const Location = () => {
 
   return (
     <div style={{ minHeight: '300px', position: 'relative' }}>
-      {loading && (
+      {(loading || window.google == undefined || actionPerform) && (
         <div className={classes.dummyBg}>
           <LoadingBar />
         </div>
       )}
-      <LoadScript googleMapsApiKey="AIzaSyCWKuRHEkeFWOy0JDMBT7Z4YApPVkZYHFI">
-        <GoogleMap
-          center={mapCenter}
-          zoom={zoom}
-          options={{
-            streetViewControl: false,
-            mapTypeControl: false,
-            fullscreenControl: false,
-          }}
-        >
-          <div
-            onClick={() => {
-              setMayLocation();
+      {window.google && (
+        <div role="region" aria-label="map">
+          <GoogleMap
+            mapContainerStyle={mapContainerStyle}
+            zoom={zoom}
+            center={mapCenter}
+            options={{
+              streetViewControl: false,
+              mapTypeControl: false,
+              fullscreenControl: false,
             }}
-            className="location-icon-panel"
+            onLoad={loadMap}
           >
-            <span className="icon"></span>
-          </div>
-          {markers}
-          <LocationCard
-            isNearByRestaurantList={nearByRestaurantsFound}
-            restaurants={(restaurants && restaurants.restaurants) || []}
-            setOrderTypeMain={setOrderType}
-            setShowNearBy={setShowNearBy}
-          />
-        </GoogleMap>
-      </LoadScript>
+            {markers}
+            <div
+              onClick={() => {
+                setMayLocation();
+              }}
+              className="location-icon-panel"
+            >
+              <span className="icon"></span>
+            </div>
+            <LocationCard
+              isNearByRestaurantList={nearByRestaurantsFound}
+              restaurants={allResturants}
+              deliveryRasturants={deliveryRasturants}
+              setOrderTypeMain={setOrderType}
+              setShowNearBy={setShowNearBy}
+              setLatLng={setLatLng}
+              setActionPerform={setActionPerform}
+              setDeliveryRasturants={setDeliveryRasturants}
+            />
+          </GoogleMap>
+        </div>
+      )}
     </div>
   );
 };
 
 export default Location;
+

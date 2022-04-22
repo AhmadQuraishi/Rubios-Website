@@ -1,11 +1,8 @@
 import React, { useEffect, Fragment, useState } from 'react';
 import { Button, Card, CardContent, Grid, Typography } from '@mui/material';
-import card from '../../assets/imgs/card.png';
-import { Link } from 'react-router-dom';
 import './index.css';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  getAllBillingAccounts,
   deleteBillingAccount,
   updateBillingAccount,
 } from '../../redux/actions/user';
@@ -13,61 +10,55 @@ import {
 import LoadingBar from '../loading-bar';
 import DialogBox from '../../components/dialog-box';
 
-const CreditCards = () => {
+const CreditCards = ({ billingAccounts, loading }: any) => {
   const [open, setOpen] = useState(false);
-  const [billingAccounts, setBillingAccounts] = useState([]);
+  const [deleteId, setDeleteId] = useState<any>(null);
   const dispatch = useDispatch();
-  const { userBillingAccounts, loading } = useSelector(
-    (state: any) => state.userReducer,
-  );
-  useEffect(() => {
-    dispatch(getAllBillingAccounts());
-  }, []);
-
-  useEffect(() => {
-    if (userBillingAccounts) {
-      setBillingAccounts(userBillingAccounts.billingaccounts);
-    }
-  }, [userBillingAccounts, loading]);
-
   const deleteBillingAccountHandler = (id: number) => {
     dispatch(deleteBillingAccount(id));
-    setTimeout(() => {
-      dispatch(getAllBillingAccounts());
-    }, 600);
   };
 
-  const makeBillingCardDefaultHandler = (isdefault: boolean, id: number) => {
+  const makeBillingCardDefaultHandler = (isdefault: boolean, id: any) => {
     const obj = {
       isdefault: isdefault,
     };
     dispatch(updateBillingAccount(obj, id));
-    setTimeout(() => {
-      dispatch(getAllBillingAccounts());
-    }, 800);
   };
 
   const handleClose = () => {
     setOpen(false);
   };
 
-  const handleClickOpen = () => {
+  const handleClickOpen = (id: any) => {
+    setDeleteId(id);
     setOpen(true);
+  };
+
+  const handleDeleteFunction = () => {
+    deleteBillingAccountHandler(deleteId);
+    setOpen(false);
   };
 
   return (
     <Grid container>
       <Grid item xs={12}>
+        <DialogBox
+          open={open}
+          handleClose={handleClose}
+          message={'Do You Really Want To Delete This Credit Card?'}
+          handleDeleteFunction={() => handleDeleteFunction()}
+        />
         <Grid container spacing={3} className="credit-cards-panel">
-          {loading && <LoadingBar />}
-          {!loading && billingAccounts.length < 1 && (
+          {!loading && billingAccounts && billingAccounts.length === 0 ? (
             <h6>No Billing Account Found</h6>
-          )}
+          ) : loading ? (
+            <LoadingBar />
+          ) : null}
           {!loading &&
             billingAccounts.length > 0 &&
             billingAccounts
               .filter((cardType: any) => cardType.accounttype === 'creditcard')
-              .map((cardData: any, index) => (
+              .map((cardData: any, index: any) => (
                 <Fragment key={index}>
                   <Grid item xs={12} md={6}>
                     <Card className="card-panel">
@@ -115,19 +106,17 @@ const CreditCards = () => {
                       >
                         Edit
                       </Link> */}
-                          <Button title="Delete" onClick={handleClickOpen}>
-                            Delete
-                          </Button>
-                          <DialogBox
-                            open={open}
-                            handleClose={handleClose}
-                            message={
-                              'Do You Really Want To Delete This Credit Card?'
-                            }
-                            handleDeleteFunction={() =>
-                              deleteBillingAccountHandler(cardData.accountid)
-                            }
-                          />
+                          {cardData.removable ? (
+                            <Button
+                              title="Delete"
+                              onClick={() =>
+                                handleClickOpen(cardData.accountidstring)
+                              }
+                            >
+                              Delete
+                            </Button>
+                          ) : null}
+
                           {!cardData.isdefault && (
                             <Button
                               title="Make default"
@@ -135,7 +124,7 @@ const CreditCards = () => {
                               onClick={() =>
                                 makeBillingCardDefaultHandler(
                                   true,
-                                  cardData.accountid,
+                                  cardData.accountidstring,
                                 )
                               }
                             >

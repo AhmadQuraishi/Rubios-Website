@@ -26,6 +26,11 @@ import { accountHistorySaga } from './account-history';
 import { createFaveSaga } from './create-fave';
 import { addUpsellsSaga } from './basket/upsell/Add';
 import { getUpsellsSaga } from './basket/upsell/Get';
+import { getRewardsForCheckoutSaga } from './reward/checkout';
+import { applyRewardsForCheckoutSaga } from './reward/checkout/apply';
+import { removeRewardFromBasketSaga } from './reward/checkout/remove';
+import { storeOrder } from './order';
+import { deliveryAddressSaga } from './location/delivery-address';
 
 export default function* rootSaga() {
   yield all([
@@ -55,6 +60,11 @@ export default function* rootSaga() {
     accountHistorySaga(),
     createFaveSaga(),
     addUpsellsSaga(),
-    getUpsellsSaga()
+    getUpsellsSaga(),
+    getRewardsForCheckoutSaga(),
+    applyRewardsForCheckoutSaga(),
+    removeRewardFromBasketSaga(),
+    storeOrder(),
+    deliveryAddressSaga(),
   ]);
 }

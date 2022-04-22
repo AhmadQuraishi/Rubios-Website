@@ -10,9 +10,22 @@ const INITIAL_STATE = {
     data: null,
     error: {},
   },
+  payment: {
+    allowedCards: {
+      loading: false,
+      data: null,
+      error: null,
+    },
+    defaultCards: {
+      loading: false,
+      data: null,
+      error: null,
+    },
+    billingSchemes: [],
+  },
   basketType: 'New',
-  orderConfirmation: false,
-  error: {},
+  orderSubmit: false,
+  error: null,
 };
 
 const basketReducer = (state = INITIAL_STATE, action: any) => {
@@ -24,11 +37,26 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
         loading: true,
         basket: null,
         basketType: 'New',
-        error: {},
+        error: null,
+        payment: {
+          allowedCards: {
+            loading: false,
+            data: null,
+            error: null,
+          },
+          defaultCards: {
+            loading: false,
+            data: null,
+            error: null,
+          },
+          billingSchemes: [],
+        }
       };
     case basketActionsTypes.VALIDETE_BASKET:
     case basketActionsTypes.SUBMIT_BASKET_SINGLE_PAYMENT:
     case basketActionsTypes.UPDATE_BASKET_TIP_AMOUNT:
+    case basketActionsTypes.UPDATE_BASKET_COUPON_CODE:
+    case basketActionsTypes.REMOVE_BASKET_COUPON_CODE:
       return {
         ...state,
         loading: true,
@@ -38,6 +66,7 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
     case basketActionsTypes.DELETE_BASKET_TIME_WANTED_SUCCESS:
     case basketActionsTypes.UPDATE_BASKET_TIP_AMOUNT_SUCCESS:
     case basketActionsTypes.UPDATE_BASKET_COUPON_CODE_SUCCESS:
+    case basketActionsTypes.REMOVE_BASKET_COUPON_CODE_SUCCESS:
     case basketActionsTypes.CREATE_BASKET_FROM_PREV_SUCCESS:
     case basketActionsTypes.SET_BASKET_DELIVERY_MODE_SUCCESS:
     case basketActionsTypes.SET_BASKET_DELIVERY_ADDRESS_SUCCESS:
@@ -46,14 +75,14 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
         loading: false,
         basket: action.payload,
         basketType: action.basketType || 'New',
-        validate: null,
-        error: {},
+        error: null,
       };
     case basketActionsTypes.GET_BASKET_FAILURE:
     case basketActionsTypes.UPDATE_BASKET_TIME_WANTED_FAILURE:
     case basketActionsTypes.DELETE_BASKET_TIME_WANTED_FAILURE:
     case basketActionsTypes.UPDATE_BASKET_TIP_AMOUNT_FAILURE:
     case basketActionsTypes.UPDATE_BASKET_COUPON_CODE_FAILURE:
+    case basketActionsTypes.REMOVE_BASKET_COUPON_CODE_FAILURE:
     case basketActionsTypes.SUBMIT_BASKET_SINGLE_PAYMENT_FAILURE:
     case basketActionsTypes.CREATE_BASKET_FROM_PREV_FAILURE:
     case basketActionsTypes.VALIDETE_BASKET_FAILURE:
@@ -66,6 +95,7 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
         error: action.error,
         validate: null,
         basketType: action.basketType || 'New',
+        orderSubmit: false,
       };
     case basketActionsTypes.GET_SINGLE_RESTAURANT_CALENDAR:
       return { ...state, calendar: { loading: true, data: null, error: {} } };
@@ -78,7 +108,7 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
         calendar: {
           loading: false,
           data: action.payload,
-          error: {},
+          error: null,
         },
       };
     case basketActionsTypes.GET_BASKET_FAILURE:
@@ -104,13 +134,72 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
           data: null,
           error: {},
         },
-        orderConfirmation: true,
-        error: {},
+        payment: {
+          allowedCards: {
+            loading: false,
+            data: null,
+            error: null,
+          },
+          defaultCards: {
+            loading: false,
+            data: null,
+            error: null,
+          },
+          billingSchemes: [],
+        },
+        orderSubmit: false,
+        error: null,
       };
-    case basketActionsTypes.REMOVE_BASKET_ORDER_CONFIRMATION:
+    case basketActionsTypes.ADD_BASKET_ORDER_SUBMIT:
       return {
         ...state,
-        orderConfirmation: false,
+        orderSubmit: true,
+      };
+    case basketActionsTypes.REMOVE_BASKET_ORDER_SUBMIT:
+      return {
+        ...state,
+        orderSubmit: false,
+      };
+    case basketActionsTypes.GET_BASKET_ALLOWED_CARDS_REQUEST:
+      return {
+        ...state,
+        payment: {
+          ...state.payment,
+          allowedCards: {
+            loading: false,
+          },
+        },
+      };
+    case basketActionsTypes.GET_BASKET_ALLOWED_CARDS_REQUEST_SUCCESS:
+      return {
+        ...state,
+        payment: {
+          ...state.payment,
+          allowedCards: {
+            loading: false,
+            data: action.payload,
+            error: null,
+          },
+        },
+      };
+    case basketActionsTypes.GET_BASKET_ALLOWED_CARDS_REQUEST_FAILURE:
+      return {
+        ...state,
+        payment: {
+          ...state.payment,
+          allowedCards: {
+            loading: false,
+            error: action.error,
+          },
+        },
+      };
+    case basketActionsTypes.UPDATE_BASKET_BILLING_SCHEMES:
+      return {
+        ...state,
+        payment: {
+          ...state.payment,
+          billingSchemes: action.payload,
+        },
       };
     case userTypes.USER_LOGOUT:
       return {

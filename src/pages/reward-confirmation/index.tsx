@@ -31,10 +31,26 @@ const RewardConfirmation = () => {
             </Grid>
             <Grid item xs={12} sm={12} md={12} lg={6}>
               <Card className="card">
-                <Typography variant="caption" className="label white" title="YOUR REWARDS">YOUR REWARDS</Typography>
-                <Typography variant="h4" className="white" title="YOU EARNED 18 POINTS!">YOU EARNED 18 POINTS!</Typography>
-                <br/>
-                <Typography variant="h6" className="white" title="Lorem ipsum dolor sit amet, consectetur adipiscing elit.">
+                <Typography
+                  variant="caption"
+                  className="label white"
+                  title="YOUR REWARDS"
+                >
+                  YOUR REWARDS
+                </Typography>
+                <Typography
+                  variant="h1"
+                  className="white"
+                  title="YOU EARNED 18 POINTS!"
+                >
+                  YOU EARNED 18 POINTS!
+                </Typography>
+                <br />
+                <Typography
+                  variant="h6"
+                  className="white"
+                  title="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                >
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                   Praesent velit neque, vehicula vel magna ultricies, eleifend
                   bibendum ex. Donec id neque dui. Cras ac sodales risus. In at
@@ -43,7 +59,14 @@ const RewardConfirmation = () => {
                 <Grid container>
                   <Grid item xs={12} md={7} lg={7}></Grid>
                   <Grid item xs={12} md={5} lg={5}>
-                    <Button aria-label="view account" className="custom-btn cta1-btn" variant="contained" title="VIEW ACCOUNT">VIEW ACCOUNT</Button>
+                    <Button
+                      aria-label="view account"
+                      className="custom-btn cta1-btn"
+                      variant="contained"
+                      title="VIEW ACCOUNT"
+                    >
+                      VIEW ACCOUNT
+                    </Button>
                   </Grid>
                 </Grid>
                 <br />
@@ -57,18 +80,20 @@ const RewardConfirmation = () => {
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={10}>
           <OrderDetails
-            name1="Maxicon street Corn Toca Plate"
-            price1="$12.50"
-            name2="Regular Mango Tea"
-            price2="$2.50"
-            reward="Rubios Reward"
-            rewardPrice="-$2.50"
-            subTotal="SUB TOTAL"
-            subTotalPrice="$15.00"
-            tax="TAX"
-            taxPrice="$1.53"
-            total="TOTAL"
-            totalPrice="$16.53"
+            // name1="Maxicon street Corn Toca Plate"
+            // price1="$12.50"
+            // name2="Regular Mango Tea"
+            // price2="$2.50"
+            // reward="Rubios Reward"
+            // rewardPrice="-$2.50"
+            // subTotal="SUB TOTAL"
+            // subTotalPrice="$15.00"
+            // tax="TAX"
+            // taxPrice="$1.53"
+            // total="TOTAL"
+            // totalPrice="$16.53"
+            basket={null}
+            page={'confirmation'}
           />
         </Grid>
       </Grid>

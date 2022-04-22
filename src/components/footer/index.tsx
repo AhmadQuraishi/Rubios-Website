@@ -9,6 +9,7 @@ import iosLogo from '../../assets/imgs/button-apple.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { getMenuRequest } from '../../redux/actions/footer';
 import { useEffect, useState } from 'react';
+import './footer.css';
 
 const useStyles = makeStyles((theme: Theme) => ({
   links: {
@@ -32,6 +33,12 @@ const useStyles = makeStyles((theme: Theme) => ({
       color: theme.palette.success.main,
     },
   },
+  list: {
+    listStyle: 'none',
+    width: '100%',
+    display: 'grid',
+    gridTemplateColumns: ' auto auto auto auto auto auto auto',
+  },
 }));
 
 const Footer = () => {
@@ -43,8 +50,7 @@ const Footer = () => {
     dispatch(getMenuRequest());
   }, []);
 
-  useEffect(() => {
-  }, [menu]);
+  useEffect(() => {}, [menu]);
 
   return (
     <footer>
@@ -101,19 +107,21 @@ const Footer = () => {
                   maxWidth: '1024px',
                 }}
               >
-                {menu &&
-                  menu.items.map((item: any, index: number) => (
-                    <Grid item xs={6} md={2} key={index}>
-                      <a
-                        className={classes.links}
-                        href={item.url}
-                        title={item.title}
-                        aria-label={item.title}
-                      >
-                        {item.title}
-                      </a>
-                    </Grid>
-                  ))}
+                <ul className="list">
+                  {menu &&
+                    menu.items.map((item: any, index: number) => (
+                      <li>
+                        <a
+                          className={classes.links}
+                          href={item.url}
+                          title={item.title}
+                          aria-label={item.title}
+                        >
+                          {item.title}
+                        </a>
+                      </li>
+                    ))}
+                </ul>
               </Grid>
             </Grid>
           </Grid>

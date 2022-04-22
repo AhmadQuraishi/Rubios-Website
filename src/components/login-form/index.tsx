@@ -1,9 +1,9 @@
 import React from 'react';
-import { Grid, TextField, Button, Theme, Link } from '@mui/material';
+import { Grid, TextField, Button, Theme } from '@mui/material';
 import './index.css';
 import { makeStyles } from '@mui/styles';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { userLogin } from '../../redux/actions/user';
@@ -13,6 +13,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     boxSizing: 'border-box',
   },
 }));
+const inputProps = {
+  ' aria-required': 'true',
+};
 
 const LoginForm = () => {
   const classes = useStyles();
@@ -24,6 +27,7 @@ const LoginForm = () => {
   const { loading: loadingAuth } = useSelector(
     (state: any) => state.authReducer,
   );
+  const { basket } = useSelector((state: any) => state.basketReducer);
 
   const forgotPassword = () => {
     navigate('/forgot-password');
@@ -58,7 +62,7 @@ const LoginForm = () => {
 
             console.log('obj', obj);
 
-            dispatch(userLogin(obj));
+            dispatch(userLogin(obj, basket ? basket.id : ''));
           }}
         >
           {({
@@ -74,8 +78,7 @@ const LoginForm = () => {
                 <Grid container spacing={1} className="sign-in-section">
                   <Grid item xs={16} sm={8} md={8} lg={16}>
                     <TextField
-                      aria-label="email"
-                      label="Email Address"
+                      label="Email Address*"
                       title="Email"
                       type="text"
                       name="email"
@@ -85,12 +88,14 @@ const LoginForm = () => {
                       onChange={handleChange}
                       error={Boolean(touched && errors.email)}
                       helperText={errors.email}
+                      inputProps={inputProps}
                     />
                   </Grid>
+
                   <Grid item xs={16} sm={8} md={8} lg={16}>
                     <TextField
                       aria-label="password"
-                      label="Enter Password"
+                      label="Enter Password*"
                       title=" Password"
                       type="password"
                       name="password"
@@ -101,11 +106,12 @@ const LoginForm = () => {
                       onBlur={handleBlur('password')}
                       error={Boolean(touched.password && errors.password)}
                       helperText={touched.password && errors.password}
+                      inputProps={inputProps}
                     />
                     <Link
                       className="forgot-pass"
                       title="forgot-password"
-                      onClick={() => forgotPassword()}
+                      to="/forgot-password"
                       style={{ cursor: 'pointer' }}
                     >
                       Forgot Password?

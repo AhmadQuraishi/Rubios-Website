@@ -10,6 +10,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { setPageStateRequest } from './redux/actions/page-state';
 import { useDispatch, useSelector } from 'react-redux';
+import NavigateApp from './components/navigate-app';
 
 function App(props: any) {
   const location = useLocation();
@@ -83,6 +84,7 @@ function App(props: any) {
 
   return (
     <div id="wapper">
+      <NavigateApp />
       <Header
         removeCartForLocation={
           window.location.href.toLocaleLowerCase().indexOf('/location') != -1
@@ -92,7 +94,10 @@ function App(props: any) {
         showUserName={isAccountSection}
         removeCart={
           isAccountSection ||
-          window.location.href.toLocaleLowerCase().indexOf('/checkout') != -1
+          window.location.href.toLocaleLowerCase().indexOf('/checkout') != -1 ||
+          window.location.href
+            .toLocaleLowerCase()
+            .indexOf('/order-confirmation') != -1
         }
       />
       <main>

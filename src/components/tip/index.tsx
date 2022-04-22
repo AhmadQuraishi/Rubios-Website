@@ -14,6 +14,7 @@ import './tip.css';
 import {
   updateBasketTipAmount,
   updateBasketCouponCode,
+  removeBasketCouponCode,
 } from '../../redux/actions/basket/checkout';
 
 const getPercentageSelected = (basket: any) => {
@@ -43,8 +44,7 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
   const [runOnce, setRunOnce] = React.useState(true);
 
   useEffect(() => {
-    if (basket && basket.tip) {
-      console.log('working', basket);
+    if (basket) {
       if (basket.tip && basket.tip !== 0 && runOnce) {
         const selectedValue = getPercentageSelected(basket);
         if (selectedValue) {
@@ -52,7 +52,12 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
         }
         setRunOnce(false);
       }
-      setTipCustomAmount(basket.tip);
+      if (basket.coupon && basket.coupon.couponcode) {
+        setCouponCode(basket.coupon.couponcode);
+      }
+      if (basket.tip) {
+        setTipCustomAmount(basket.tip);
+      }
     }
   }, [basket]);
 
@@ -66,10 +71,14 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
   };
 
   const updateCouponCodeCall = (coupon: string) => {
-    const payload = {
-      couponcode: coupon,
-    };
-    dispatch(updateBasketCouponCode(basket.id, payload));
+    if (basket && basket.coupon && basket.coupon.couponcode) {
+      dispatch(removeBasketCouponCode(basket.id, ''));
+    } else if (coupon.length) {
+      const payload = {
+        couponcode: coupon,
+      };
+      dispatch(updateBasketCouponCode(basket.id, payload));
+    }
   };
 
   const handleTipPercentage = (
@@ -91,7 +100,7 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
   };
 
   const handleCouponCodeChange = (event: any) => {
-    setCouponCode(event.target.value);
+    setCouponCode(event.target.value.trim());
   };
 
   const IconTip = () => (
@@ -110,9 +119,20 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
   const IconCoupon = () => (
     <Button
       onClick={() => updateCouponCodeCall(couponCode)}
+      style={{
+        fontSize:
+          basket && basket.coupon && basket.coupon.couponcode
+            ? '8px'
+            : '0.875rem',
+      }}
+      disabled={loading || !couponCode}
       aria-label="proceed"
     >
-      <ArrowRightAltIcon />
+      {basket && basket.coupon && basket.coupon.couponcode ? (
+        <>Remove</>
+      ) : (
+        <ArrowRightAltIcon />
+      )}
     </Button>
   );
 
@@ -127,7 +147,7 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
           <Grid item xs={12} sm={0} md={2} lg={2} />
           {basket?.allowstip ? (
             <Grid item xs={12} sm={6} md={4} lg={4}>
-              <Typography variant="h4">TIP</Typography>
+              <Typography variant="h2">TIP</Typography>
               <Grid container>
                 <FormControl>
                   <ToggleButtonGroup
@@ -166,7 +186,7 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
                     </Grid> */}
                   </ToggleButtonGroup>
                 </FormControl>
-                <Grid item xs={12} md={9} lg={9}>
+                <Grid item xs={12} md={10} lg={10}>
                   <TextField
                     className="action-btn"
                     value={tipCustomAmount || ''}
@@ -187,16 +207,18 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
 
           <Grid item xs={12} sm={6} md={4} lg={4} className="coupon-sec">
             <Grid container>
-              <Typography variant="h4">COUPON CODE</Typography>
+              <Typography variant="h2">COUPON CODE</Typography>
               <Grid item xs={12}>
                 <TextField
                   className="action-btn"
+                  disabled={basket && basket.coupon && basket.coupon.couponcode}
                   label="Enter Code"
                   type="text"
                   onChange={handleCouponCodeChange}
                   aria-label="Enter Code"
                   InputProps={{ endAdornment: <IconCoupon /> }}
                   title="Enter Code"
+                  value={couponCode || ''}
                 />
               </Grid>
             </Grid>

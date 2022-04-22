@@ -34,7 +34,9 @@ const AccountLinks = (props: any) => {
     if (closeDrawer) {
       closeDrawer(false);
     }
-    navigate('/login');
+    setTimeout(() => {
+      window.location.href = '/login';
+    }, 500);
   };
 
   return (

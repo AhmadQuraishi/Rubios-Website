@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: '18px !important',
     fontWeight: '600 !important',
     fontFamily: 'Poppins-Medium !important',
+    letterSpacing: '0.00938em !important',
   },
   content: {
     color: theme.palette.secondary.main,
@@ -65,30 +66,29 @@ const ProductListing = (props: any) => {
             sm={6}
             md={3}
           >
-            <Link
-              to={`/product/${item.id}`}
-              aria-label={item.name}
-              style={{ textDecoration: 'none' }}
-            >
-              <Card elevation={0} style={{ borderRadius: 0 }}>
+            <Link to={`/product/${item.id}`} style={{ textDecoration: 'none' }}>
+              <Card
+                elevation={0}
+                style={{ borderRadius: 0 }}
+                role="group"
+                aria-label={item.name}
+              >
                 {item.imagefilename ? (
                   <img
                     className={classes.img}
                     src={imgPath + changeImageSize(item.imagefilename)}
-                    alt={item.name}
                     title={item.name}
                   />
                 ) : (
                   <img
                     className={classes.img}
                     src={require('../../assets/imgs/default_img.png')}
-                    alt={item.name}
                     title={item.name}
                   />
                 )}
                 <CardContent sx={{ padding: '0' }}>
                   <Typography
-                    variant="body1"
+                    variant="h2"
                     title={item.name}
                     className={classes.title}
                   >

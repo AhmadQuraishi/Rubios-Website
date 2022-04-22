@@ -97,7 +97,7 @@ const StoreInfoBar = () => {
                   {orderType && orderType != 'delivery' && 'Pick Up From'}
                 </Typography>
                 <Typography
-                  variant="body2"
+                  variant="h2"
                   color="#fff"
                   textTransform="uppercase"
                   fontWeight={700}
@@ -180,6 +180,7 @@ const StoreInfoBar = () => {
                             fontWeight: '600',
                             color: 'background.paper',
                           }}
+                          role="presentation"
                         >
                           <ListItem
                             sx={{
@@ -201,6 +202,7 @@ const StoreInfoBar = () => {
                             color: 'background.paper',
                             fontFamily: "'Poppins-Medium' !important",
                           }}
+                          role="presentation"
                         >
                           <ListItem
                             sx={{

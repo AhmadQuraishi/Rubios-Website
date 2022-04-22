@@ -46,8 +46,8 @@ const ItemImage = (props: any) => {
       )}
       {imageURL && imageURL.contentUrl == null && (
         <img
+          aria-hidden="true"
           src={require('../../assets/imgs/default_img.jpg')}
-          alt=""
           style={{
             height: '120px',
             width: '100%',
@@ -58,8 +58,8 @@ const ItemImage = (props: any) => {
       )}
       {imageURL && imageURL.contentUrl && (
         <img
+          aria-hidden="true"
           src={imageURL.contentUrl}
-          alt=""
           style={{
             height: '120px',
             width: 'auto',

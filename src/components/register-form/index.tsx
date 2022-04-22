@@ -31,6 +31,18 @@ const RegisterForm = () => {
   const { loading: loadingAuth } = useSelector(
     (state: any) => state.authReducer,
   );
+  function findGetParameter(parameterName: any) {
+    var result = null,
+      tmp = [];
+    window.location.search
+      .substr(1)
+      .split('&')
+      .forEach(function (item) {
+        tmp = item.split('=');
+        if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+      });
+    return result;
+  }
   const { locations } = useSelector((state: any) => state.locationReducer);
 
   const [favLocation, setFavLocation] = useState('');
@@ -85,14 +97,16 @@ const RegisterForm = () => {
       <Typography variant="caption" className="label" title="Create Account">
         Create Account
       </Typography>
-      <Typography variant="h4">
+      <Typography variant="h1">
         SIGN UP FOR <br /> RUBIO'S REWARDS
       </Typography>
       <Formik
         initialValues={{
-          first_name: '',
-          last_name: '',
-          email: '',
+          first_name: findGetParameter('fname')
+            ? findGetParameter('fname')
+            : '',
+          last_name: findGetParameter('lname') ? findGetParameter('lname') : '',
+          email: findGetParameter('email') ? findGetParameter('email') : '',
           phone: '',
           password: '',
           password_confirmation: '',
@@ -158,18 +172,19 @@ const RegisterForm = () => {
           touched,
           values,
         }) => (
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} autoComplete="on">
             <Grid item xs={12} md={12} lg={12}>
               <Grid container>
                 <Grid item xs={12}>
                   <TextField
                     aria-label="first name"
-                    label="First Name"
+                    label="First Name *"
                     title="First Name"
                     type="text"
                     name="first_name"
                     sx={{ width: '100%' }}
                     value={values.first_name}
+                    autoComplete="on"
                     onChange={handleChange('first_name')}
                     onBlur={handleBlur('first_name')}
                     error={Boolean(touched.first_name && errors.first_name)}
@@ -179,10 +194,11 @@ const RegisterForm = () => {
                 <Grid item xs={12}>
                   <TextField
                     aria-label="last name"
-                    label="Last Name"
+                    label="Last Name *"
                     title="Last Name"
                     type="text"
                     name="last_name"
+                    autoComplete="on"
                     sx={{ width: '100%' }}
                     value={values.last_name}
                     onChange={handleChange('last_name')}
@@ -194,10 +210,11 @@ const RegisterForm = () => {
                 <Grid item xs={12}>
                   <TextField
                     aria-label="email"
-                    label="Email"
+                    label="Email *"
                     title="Email"
                     type="text"
                     name="email"
+                    autoComplete="on"
                     sx={{ width: '100%' }}
                     value={values.email}
                     onChange={handleChange('email')}
@@ -215,16 +232,15 @@ const RegisterForm = () => {
                     value={values.phone}
                     sx={{ width: '100%' }}
                     onChange={handleChange}
+                    autoComplete="on"
                     name="phone"
                     id="formatted-numberformat-input"
-                    InputLabelProps={
-                      {
-                        shrink: touched && values.phone == '' ? false : true,
-                        classes: {
-                          root: values.phone !== '' ? 'mobile-field-label' : '',
-                        }
-                      }
-                    }
+                    InputLabelProps={{
+                      shrink: touched && values.phone == '' ? false : true,
+                      classes: {
+                        root: values.phone !== '' ? 'mobile-field-label' : '',
+                      },
+                    }}
                     InputProps={{
                       inputComponent: NumberFormatCustom as any,
                     }}
@@ -235,10 +251,11 @@ const RegisterForm = () => {
                 <Grid item xs={12}>
                   <TextField
                     aria-label="password"
-                    label="Password"
+                    label="Password *"
                     title="Password"
                     type="password"
                     name="password"
+                    autoComplete="on"
                     sx={{ width: '100%' }}
                     value={values.password}
                     onChange={handleChange('password')}
@@ -258,9 +275,10 @@ const RegisterForm = () => {
                 <Grid item xs={12}>
                   <TextField
                     aria-label="confirm password "
-                    label="Confirm Password"
+                    label="Confirm Password *"
                     title="Confirm Password"
                     name="password_confirmation"
+                    autoComplete="on"
                     type="password"
                     sx={{ width: '100%' }}
                     value={values.password_confirmation}
@@ -282,6 +300,7 @@ const RegisterForm = () => {
                     label="Invite Code (Optional)"
                     title="Invite Code (Optional)"
                     name="invitecode"
+                    autoComplete="on"
                     type="text"
                     sx={{ width: '100%' }}
                     value={values.invitecode}
@@ -292,30 +311,36 @@ const RegisterForm = () => {
                   />
                 </Grid>
                 <Grid item xs={12} className="date-field">
-                  <Typography
+                  {/* <Typography
                     variant="body2"
                     className="body-text"
                     title="Birthday (Optional)"
                     sx={{ width: '100%' }}
                   >
                     Birthday (Optional)
-                  </Typography>
+                  </Typography> */}
                   <ReactDateInputs
+                    className="body-text"
+                    label="Birthday (Optional)"
                     onChange={(value) => handleBirthDayChange(value)}
                     value={birthDay}
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <FormControl fullWidth>
-                    <InputLabel 
-                    id="fav-location-label"
-                    classes={{
-                      root: !selectShrink && favLocation == '' ? 'select-custom-css' : ''
-                    }}
-                    shrink={selectShrink || favLocation !== ''}
-                    style={{textAlign: 'left'}}
+                    <InputLabel
+                      id="fav-location-label"
+                      classes={{
+                        root:
+                          !selectShrink && favLocation == ''
+                            ? 'select-custom-css'
+                            : '',
+                      }}
+                      shrink={selectShrink || favLocation !== ''}
+                      style={{ textAlign: 'left' }}
+                      aria-controls="fav-location"
                     >
-                      Favorite Location
+                      Favorite Location *
                     </InputLabel>
                     <Select
                       labelId="fav-location-label"
@@ -324,8 +349,12 @@ const RegisterForm = () => {
                       value={favLocation && favLocation}
                       label="Favorite Location"
                       onChange={handleChangeLocation}
-                      onClose={() => {setSelectShrink(false)}}
-                      onOpen={() => {setSelectShrink(true)}}
+                      onClose={() => {
+                        setSelectShrink(false);
+                      }}
+                      onOpen={() => {
+                        setSelectShrink(true);
+                      }}
                     >
                       {locations &&
                         locations.map((location: any, index: number) => (
@@ -340,10 +369,17 @@ const RegisterForm = () => {
                   <Typography
                     variant="body2"
                     className="body-text"
-                    title="Password must be at least 8 characters."
+                    title="I agree to the  Rubios terms and conditions and to receiving marketing communications from Rubios."
                     sx={{ width: '100%' }}
                   >
-                    <Checkbox onChange={handleChangeCheckbox} /> I agree to the{' '}
+                    <Checkbox
+                      onChange={handleChangeCheckbox}
+                      inputProps={{
+                        'aria-label':
+                          ' I agree to the  Rubios terms and conditions and to receiving marketing communications from Rubios ',
+                      }}
+                    />{' '}
+                    I agree to the{' '}
                     <Link
                       href="https://www.rubios.com/terms-and-conditions?app=1"
                       underline="hover"
@@ -357,7 +393,7 @@ const RegisterForm = () => {
                   <Button
                     type="submit"
                     disabled={loadingProvider || loadingAuth}
-                    aria-label="submit"
+                    aria-label="submit form to sign upm for rubios rewards"
                     name="submit"
                     title="submit"
                     variant="contained"

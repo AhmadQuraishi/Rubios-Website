@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Box, Button, Card, Grid, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Divider from '@mui/material/Divider';
-import OrderDetail from '../../components/order-detail';
+import OrderDetails from '../../components/order-details';
 import Tip from '../../components/tip';
 import Rewards from '../../components/rewards';
 import OrderTime from '../../components/order-time';
@@ -14,7 +14,10 @@ import { ResponseBasket, ResponseBasketValidation } from '../../types/olo-api';
 import { DeliveryModeEnum } from '../../types/olo-api/olo-api.enums';
 import moment from 'moment';
 import {
+  removeBasketOrderSubmit,
+  getBasketAllowedCardsRequest,
   getSingleRestaurantCalendar,
+  updateBasketBillingSchemes,
   validateBasket,
 } from '../../redux/actions/basket/checkout';
 import { displayToast } from '../../helpers/toast';
@@ -22,10 +25,14 @@ import {
   generateSubmitBasketPayload,
   formatCustomFields,
   formatDeliveryAddress,
+  getUniqueId,
+  getCreditCardObj,
+  updatePaymentCardsAmount,
 } from '../../helpers/checkout';
 import { getUserDeliveryAddresses } from '../../redux/actions/user';
 import PickupForm from '../../components/pickup-form/index';
 import DeliveryForm from '../../components/delivery-form/index';
+import { getRewardsForCheckoutRequest } from '../../redux/actions/reward/checkout';
 
 const Checkout = () => {
   const dispatch = useDispatch();
@@ -36,16 +43,22 @@ const Checkout = () => {
   const paymentInfoRef = React.useRef<any>();
 
   const [runOnce, setRunOnce] = React.useState<boolean>(true);
+  const [defaultCard, setDefaultCard] = React.useState<boolean>(true);
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
   const [tipPercentage, setTipPercentage] = React.useState<any>(null);
   const [basket, setBasket] = React.useState<ResponseBasket>();
-  const [validate, setValidate] = React.useState<ResponseBasketValidation>();
+  const [billingSchemes, setBillingSchemes] = React.useState<any>([]);
+  const [validate, setValidate] =
+    React.useState<ResponseBasketValidation | null>(null);
   const [defaultDeliveryAddress, setDefaultDeliveryAddress] =
     React.useState<any>(null);
 
   const basketObj = useSelector((state: any) => state.basketReducer);
   const { authToken } = useSelector((state: any) => state.authReducer);
   const { providerToken } = useSelector((state: any) => state.providerReducer);
+  const { rewards } = useSelector(
+    (state: any) => state.getRewardForCheckoutReducer,
+  );
   const { restaurant, orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
@@ -69,13 +82,130 @@ const Checkout = () => {
         ),
       );
       dispatch(validateBasket(basket.id, null, null, [], null, null));
+      dispatch(getBasketAllowedCardsRequest(basket.id));
+      dispatch(removeBasketOrderSubmit());
       setRunOnce(false);
     }
   }, [basket]);
 
   React.useEffect(() => {
+    setBillingSchemes(basketObj.payment.billingSchemes);
+  }, [basketObj.payment.billingSchemes]);
+
+  React.useEffect(() => {
+    if (
+      defaultCard &&
+      !basketObj?.loading &&
+      validate &&
+      basket &&
+      basketObj.payment.allowedCards.data &&
+      basketObj.payment.allowedCards.data.billingschemes &&
+      basketObj.payment.allowedCards.data.billingschemes.length &&
+      !billingSchemes.length
+    ) {
+      const creditCardIndex =
+        basketObj.payment.allowedCards.data.billingschemes.findIndex(
+          (schemes: any) => schemes.type === 'creditcard',
+        );
+      const giftCardIndex =
+        basketObj.payment.allowedCards.data.billingschemes.findIndex(
+          (schemes: any) => schemes.type === 'giftcard',
+        );
+      let billingArray = [];
+      if (creditCardIndex !== -1) {
+        if (
+          basketObj.payment.allowedCards.data.billingschemes[creditCardIndex]
+            .accounts &&
+          basketObj.payment.allowedCards.data.billingschemes[creditCardIndex]
+            .accounts.length
+        ) {
+          const defaultCardIndex =
+            basketObj.payment.allowedCards.data.billingschemes[
+              creditCardIndex
+            ].accounts.findIndex((card: any) => card.isdefault);
+          if (defaultCardIndex !== -1) {
+            const defaultCard =
+              basketObj.payment.allowedCards.data.billingschemes[
+                creditCardIndex
+              ].accounts[defaultCardIndex];
+
+            let cardObj: any = {
+              localId: getUniqueId(),
+              selected: true,
+              billingmethod: 'creditcardtoken',
+              amount: 0,
+              tipportion: 0.0,
+              cardtype: defaultCard.cardtype,
+              cardlastfour: defaultCard.cardsuffix,
+              billingaccountid: defaultCard.accountidstring,
+              billingschemeid:
+                basketObj.payment.allowedCards.data.billingschemes[
+                  creditCardIndex
+                ].id,
+            };
+
+            // cardObj.amount =
+            //   validate && validate.total
+            //     ? validate.total
+            //     : basket && basket?.total
+            //     ? basket?.total
+            //     : 0;
+            // cardObj.selected = true;
+
+            billingArray.push(cardObj);
+          }
+        }
+      }
+      if (giftCardIndex !== -1 && billingArray.length) {
+        if (
+          basketObj.payment.allowedCards.data.billingschemes[giftCardIndex]
+            .accounts &&
+          basketObj.payment.allowedCards.data.billingschemes[giftCardIndex]
+            .accounts.length
+        ) {
+          const defaultGiftCard =
+            basketObj.payment.allowedCards.data.billingschemes[giftCardIndex]
+              .accounts[0];
+
+          let gitfCardObj: any = {
+            localId: getUniqueId(),
+            selected: true,
+            billingmethod: 'storedvalue',
+            amount: 0,
+            balance:
+              (defaultGiftCard.balance && defaultGiftCard.balance.balance) || 0,
+            tipportion: 0.0,
+            cardlastfour: defaultGiftCard.cardsuffix,
+            billingaccountid: defaultGiftCard.accountidstring,
+            billingschemeid:
+              basketObj.payment.allowedCards.data.billingschemes[giftCardIndex]
+                .id,
+          };
+
+          console.log('gitfCardObj', gitfCardObj)
+
+          billingArray.push(gitfCardObj);
+
+          // }
+        }
+      }
+      if (billingArray.length) {
+        billingArray = updatePaymentCardsAmount(billingArray, basket);
+        console.log('billingArray', billingArray)
+        dispatch(updateBasketBillingSchemes(billingArray));
+      }
+      setDefaultCard(false);
+    }
+  }, [basketObj.payment.allowedCards, validate]);
+
+  React.useEffect(() => {
     if (authToken?.authtoken && authToken.authtoken !== '') {
       dispatch(getUserDeliveryAddresses());
+      if (restaurant && restaurant.id) {
+        dispatch(
+          getRewardsForCheckoutRequest(restaurant.id, authToken.authtoken),
+        );
+      }
     }
   }, []);
 
@@ -96,10 +226,20 @@ const Checkout = () => {
   }, [userDeliveryAddresses]);
 
   React.useEffect(() => {
-    if (basketObj.orderConfirmation) {
-      navigate('/orderconfirmation');
-    } else if (basketObj.basket) {
+    if (basketObj.basket) {
       setBasket(basketObj.basket);
+      if (
+        billingSchemes &&
+        billingSchemes.length &&
+        !basketObj?.orderSubmit &&
+        !basketObj.error
+      ) {
+        const updatedBillingScheme = updatePaymentCardsAmount(
+          billingSchemes,
+          basketObj.basket,
+        );
+        dispatch(updateBasketBillingSchemes(updatedBillingScheme));
+      }
     } else {
       navigate('/location');
     }
@@ -166,11 +306,33 @@ const Checkout = () => {
     if (cardDetails.error) {
       data.errors = cardDetails.error;
     } else if (cardDetails.paymentMethod) {
-      data.cardDetails = cardDetails.paymentMethod;
-      data.isValidCard = true;
+      if (
+        cardDetails.paymentMethod &&
+        cardDetails.paymentMethod.billing_details &&
+        cardDetails.paymentMethod.billing_details.address.postal_code &&
+        cardDetails.paymentMethod.billing_details.address.postal_code !== ''
+      ) {
+        data.cardDetails = cardDetails.paymentMethod;
+        data.isValidCard = true;
+      } else {
+        data.isValidCard = false;
+        data.errors.message = 'Zip Code is required';
+      }
     }
 
     return data;
+  };
+
+  const getGiftCardAmount = () => {
+    const giftCardIndex = billingSchemes.findIndex(
+      (account: any) =>
+        account.billingmethod === 'storedvalue' && account.selected,
+    );
+    if (giftCardIndex !== -1) {
+      return billingSchemes[giftCardIndex].amount || 0;
+    } else {
+      return 0;
+    }
   };
 
   const placeOrder = async () => {
@@ -209,21 +371,64 @@ const Checkout = () => {
       formDataValue = formData;
     }
 
-    const { isValidCard, cardDetails, errors } = await validatePaymentForm();
-
-    if (!isValidCard) {
-      displayToast('ERROR', errors?.message);
+    if (billingSchemes && billingSchemes.length === 0) {
+      displayToast('ERROR', 'Payment method is required');
       setButtonDisabled(false);
       return;
     }
 
-    formDataValue.phone = formDataValue.phone.replace(/\D/g, '');
+    if (basket && billingSchemes && billingSchemes.length) {
+      const giftCardAmount = getGiftCardAmount();
+      if (giftCardAmount > basket.subtotal) {
+        displayToast(
+          'ERROR',
+          'Gift Card amount must be less than order subtotal.',
+        );
+        setButtonDisabled(false);
+        return;
+      }
+    }
+
+    if (billingSchemes.length) {
+      const tip = (basket && basket.tip) || 0;
+      const creditCardTotal = billingSchemes.reduce(
+        (sum: any, account: any) => {
+          if (account.billingmethod === 'creditcardtoken' && account.selected) {
+            sum = sum + account.amount;
+          }
+          return sum;
+        },
+        0,
+      );
+
+      if (creditCardTotal < tip) {
+        displayToast(
+          'ERROR',
+          'Credit Card amount must be greater than Tip amount.',
+        );
+        setButtonDisabled(false);
+        return;
+      }
+    }
+
+    // const { isValidCard, cardDetails, errors } = await validatePaymentForm();
+    //
+    // if (!isValidCard) {
+    //   displayToast('ERROR', errors?.message);
+    //   setButtonDisabled(false);
+    //   return;
+    // }
+
+    if (formDataValue.phone) {
+      formDataValue.phone = formDataValue.phone.replace(/\D/g, '');
+    }
 
     const basketPayload = generateSubmitBasketPayload(
       formDataValue,
-      cardDetails,
+      billingSchemes,
       basket?.deliverymode,
       authToken?.authtoken,
+      basket,
     );
 
     if (orderType && orderType === DeliveryModeEnum.curbside) {
@@ -251,6 +456,8 @@ const Checkout = () => {
           phone: formDataValue.phone,
         };
       }
+      console.log('basketPayload', basketPayload);
+
       dispatch(
         validateBasket(
           basket?.id,
@@ -264,8 +471,28 @@ const Checkout = () => {
     }
   };
 
+  const totalPaymentCardAmount = () => {
+    if (billingSchemes && basket) {
+      let totalAmount = billingSchemes.reduce((sum: any, account: any) => {
+        if (account.selected) {
+          sum = sum + account.amount;
+        }
+        return sum;
+      }, 0);
+      totalAmount = totalAmount.toFixed(2);
+      totalAmount = parseFloat(totalAmount);
+      console.log('totalAmount', totalAmount);
+      return totalAmount !== basket.total;
+    } else {
+      return true;
+    }
+  };
+
   return (
     <>
+      <Typography variant="h1" className="sr-only">
+        Checkout
+      </Typography>
       <StoreInfoBar />
       <Box className="checkout-wrapper">
         <Grid container>
@@ -289,7 +516,7 @@ const Checkout = () => {
                             </Typography>
                           </Grid>
                           <Grid item xs={12}>
-                            <Typography variant="h4" title="PICK UP INFO">
+                            <Typography variant="h2" title="PICK UP INFO">
                               PICK UP INFO
                             </Typography>
                           </Grid>
@@ -306,7 +533,7 @@ const Checkout = () => {
                             </Typography>
                           </Grid>
                           <Grid item xs={12}>
-                            <Typography variant="h4" title="PICK UP INFO">
+                            <Typography variant="h2" title="PICK UP INFO">
                               CURBSIDE PICK UP
                             </Typography>
                           </Grid>
@@ -323,7 +550,7 @@ const Checkout = () => {
                             </Typography>
                           </Grid>
                           <Grid item xs={12}>
-                            <Typography variant="h4" title="PICK UP INFO">
+                            <Typography variant="h2" title="PICK UP INFO">
                               DELIVERY INFO
                             </Typography>
                           </Grid>
@@ -358,14 +585,18 @@ const Checkout = () => {
               <br />
               <br />
               <br />
-              <Rewards />
-              <br />
-              <br />
-              <br />
-              <Divider />
-              <br />
-              <br />
-              <br />
+              {providerToken && providerToken.first_name && rewards && (
+                <>
+                  <Rewards rewardsList={rewards} />
+                  <br />
+                  <br />
+                  <br />
+                  <Divider />
+                  <br />
+                  <br />
+                  <br />
+                </>
+              )}
               <Tip
                 basket={basket}
                 loading={basketObj?.loading}
@@ -379,7 +610,11 @@ const Checkout = () => {
               <br />
               <br />
               {/*second section*/}
-              <OrderDetail basket={basket} tipPercentage={tipPercentage} />
+              <OrderDetails
+                basket={basket}
+                tipPercentage={tipPercentage}
+                page="checkout"
+              />
               <br />
               <br />
               <br />
@@ -392,7 +627,12 @@ const Checkout = () => {
               <Grid container className="add-order">
                 <Grid item xs={12} sm={12} md={4} lg={4}>
                   <Button
-                    disabled={buttonDisabled || basketObj?.loading}
+                    disabled={
+                      buttonDisabled ||
+                      basketObj?.loading ||
+                      basketObj?.orderSubmit ||
+                      totalPaymentCardAmount()
+                    }
                     onClick={placeOrder}
                     variant="contained"
                     title="PLACE ORDER"

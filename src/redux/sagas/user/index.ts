@@ -19,7 +19,10 @@ import {
   updateUserContactOptions,
   requestUserLogin,
   requestUserRegister,
-  requestUpdateProfile, requestUserForgotPassword, resetPasswordRequest
+  requestUpdateProfile,
+  requestUserForgotPassword,
+  resetPasswordRequest,
+  requestFacebookUserLogin,
 } from '../../../services/user';
 import {
   deleteUserDelAddFailure,
@@ -60,10 +63,13 @@ import {
   userForgotPasswordSuccess,
   userForgotPasswordFailure,
   userResetPasswordSuccess,
-  userResetPasswordFailure
+  userResetPasswordFailure,
 } from '../../actions/user';
 import { displayToast } from '../../../helpers/toast';
 import { getProviderRequestSuccess } from '../../actions/provider';
+import { navigateAppAction } from '../../actions/navigate-app';
+import { basketActionsTypes } from '../../types/basket';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 //profile
 function* userProfileHandler(): any {
@@ -97,10 +103,9 @@ function* userFavoriteOrdersHandler(action: any): any {
 
 function* deleleteFavOrderHandler(action: any): any {
   try {
-    const response = yield call(
-      requestDeleteFavOrder,
-      action.favid,
-    );
+    const response = yield call(requestDeleteFavOrder, action.favid);
+    const favOrders = yield call(requestUserFavoriteOrders);
+    yield put(getUserFavoritetOrdersSuccess(favOrders));
     yield put(deleteFavOrderSuccess());
   } catch (error) {
     yield put(deleteFavOrderFailure(error));
@@ -110,9 +115,7 @@ function* deleleteFavOrderHandler(action: any): any {
 //delivery address
 function* userDeliveryAddressesHandler(action: any): any {
   try {
-    const response = yield call(
-      requestUserDeliiveryAddresses,
-    );
+    const response = yield call(requestUserDeliiveryAddresses);
     yield put(getUserDeliveryAddressesSuccess(response));
   } catch (error) {
     yield put(getUserDeliveryAddressesFailure(error));
@@ -122,10 +125,7 @@ function* userDeliveryAddressesHandler(action: any): any {
 //// set user default delivery address
 function* userDefaultDelAddressHandler(action: any): any {
   try {
-    const response = yield call(
-      requestSetUserDefDelAddress,
-      action.payload,
-    );
+    const response = yield call(requestSetUserDefDelAddress, action.payload);
     yield put(setUserDefaultDelAddressSuccess(response));
   } catch (error) {
     yield put(setUserDefaultDelAddFailure(error));
@@ -135,10 +135,7 @@ function* userDefaultDelAddressHandler(action: any): any {
 // delete delivery address
 function* deleleteDelAddressHandler(action: any): any {
   try {
-    const response = yield call(
-      requestDelUserDelAddress,
-      action.addressid,
-    );
+    const response = yield call(requestDelUserDelAddress, action.addressid);
     yield put(deleteUserDelAddSuccess());
   } catch (error) {
     yield put(deleteUserDelAddFailure(error));
@@ -148,19 +145,12 @@ function* deleleteDelAddressHandler(action: any): any {
 // Update User
 function* updateUserHandler(action: any): any {
   try {
-
     if (action.profileCheck) {
-      const response = yield call(
-        requestUpdateProfile,
-        action.payload,
-      );
+      const response = yield call(requestUpdateProfile, action.payload);
       yield put(updateProfileSuccess(response));
-      displayToast("SUCCESS" , "profile updated successfully");
+      displayToast('SUCCESS', 'profile updated successfully');
     } else {
-      const response = yield call(
-        requestUpdateUser,
-        action.payload,
-      );
+      const response = yield call(requestUpdateUser, action.payload);
       yield put(updateUserSuccess(response));
       yield put(getProviderRequestSuccess(response));
     }
@@ -172,10 +162,7 @@ function* updateUserHandler(action: any): any {
 // Update User
 function* changePasswordHandler(action: any): any {
   try {
-    const response = yield call(
-      requestChangePassword,
-      action.payload,
-    );
+    const response = yield call(requestChangePassword, action.payload);
     yield put(changePasswordSuccess(response));
     displayToast('SUCCESS', 'password updated successfully');
   } catch (error) {
@@ -187,40 +174,35 @@ function* changePasswordHandler(action: any): any {
 // Reset Password User
 function* userResetPasswordHandler(action: any): any {
   try {
-    console.log('reset_password_token 1', action.reset_password_token)
+    console.log('reset_password_token 1', action.reset_password_token);
     const response = yield call(
       resetPasswordRequest,
       action.data,
       action.reset_password_token,
     );
     yield put(userResetPasswordSuccess(response));
+    yield put(navigateAppAction(`/login`));
   } catch (error) {
     yield put(userResetPasswordFailure(error));
   }
 }
 
-
 // Get User BillingAccount Info
 function* getUserBillingAccountHandler(action: any): any {
   try {
-    const response = yield call(
-      requestUserBillingAccount,
-    );
+    const response = yield call(requestUserBillingAccount);
     yield put(getAllBillingAccountsSuccess(response));
   } catch (error) {
     yield put(getAllBillingAccountsFailure(error));
   }
 }
 
-
 // Delete User BillingAccount
 function* deleteUserBillingAccountHandler(action: any): any {
   try {
-    const response = yield call(
-      deleteUserBillingAccount,
-      action.billingAccountId
-    );
+    yield call(deleteUserBillingAccount, action.billingAccountId);
     yield put(deleteBillingAccountSuccess());
+    yield put({ type: Type.GET_BILLING_ACCOUNTS });
   } catch (error) {
     yield put(deleteBillingAccountFailure(error));
   }
@@ -231,7 +213,7 @@ function* getBillingAccountByIdHandler(action: any): any {
   try {
     const response = yield call(
       requestUserBillingAccountById,
-      action.billingAccountId
+      action.billingAccountId,
     );
     yield put(getBillingAccountByIdSuccess(response));
   } catch (error) {
@@ -239,16 +221,16 @@ function* getBillingAccountByIdHandler(action: any): any {
   }
 }
 
-
 // Update User BillingAccount Info
 function* updateUserBillingAccountHandler(action: any): any {
   try {
     const response = yield call(
       updateUserBillingAccount,
       action.payload,
-      action.billingAccountId
+      action.billingAccountId,
     );
     yield put(updateBillingAccountSuccess(response));
+    yield put({ type: Type.GET_BILLING_ACCOUNTS });
   } catch (error) {
     yield put(updateBillingAccountFailure(error));
   }
@@ -257,9 +239,7 @@ function* updateUserBillingAccountHandler(action: any): any {
 // Get User GiftCards Info
 function* getUserGiftCardsHandler(action: any): any {
   try {
-    const response = yield call(
-      requestUseGiftCards,
-    );
+    const response = yield call(requestUseGiftCards);
     yield put(getAllGiftCardsSuccess(response));
   } catch (error) {
     yield put(getAllGiftCardsFailure(error));
@@ -269,10 +249,7 @@ function* getUserGiftCardsHandler(action: any): any {
 // Update user contact options
 function* updateUserContactOptionsHandler(action: any): any {
   try {
-    const response = yield call(
-      updateUserContactOptions,
-      action.data
-    );
+    const response = yield call(updateUserContactOptions, action.data);
     yield put(updateUserContactOptionsSuccess());
   } catch (error) {
     yield put(updateUserContactOptionsFailure(error));
@@ -282,12 +259,13 @@ function* updateUserContactOptionsHandler(action: any): any {
 // User Login
 function* userLoginHandler(action: any): any {
   try {
-    const response = yield call(
-      requestUserLogin,
-      action.data
-    );
+    const response = yield call(requestUserLogin, action.data);
     yield put(userLoginSuccess(response));
-    yield put({type: authActionsTypes.GET_AUTHTOKEN_REQUEST, successMsg: 'Login Success'});
+    yield put({
+      type: authActionsTypes.GET_AUTHTOKEN_REQUEST,
+      successMsg: 'Login Success',
+      basketID: action.basketID,
+    });
   } catch (error) {
     yield put(userLoginFailure(error));
   }
@@ -296,14 +274,28 @@ function* userLoginHandler(action: any): any {
 // User Register
 function* userRegisterHandler(action: any): any {
   try {
-    const response = yield call(
-      requestUserRegister,
-      action.data
-    );
+    const response = yield call(requestUserRegister, action.data);
     yield put(userRegisterSuccess(response));
-    yield put({type: authActionsTypes.GET_AUTHTOKEN_REQUEST, successMsg: 'Signup Success'});
+    yield put({
+      type: authActionsTypes.GET_AUTHTOKEN_REQUEST,
+      successMsg: 'Signup Success',
+    });
   } catch (error) {
     yield put(userRegisterFailure(error));
+  }
+}
+
+function* facebookUserHandler(action: any): any {
+  try {
+    const response = yield call(requestFacebookUserLogin, action.data);
+    yield put(userLoginSuccess(response));
+    yield put({
+      type: authActionsTypes.GET_AUTHTOKEN_REQUEST,
+      successMsg: 'Login Success',
+      basketID: action.basketID,
+    });
+  } catch (error) {
+    yield put(userLoginFailure(error));
   }
 }
 
@@ -312,6 +304,7 @@ function* userForgotPasswordHandler(action: any): any {
   try {
     const response = yield call(requestUserForgotPassword, action.data);
     yield put(userForgotPasswordSuccess(response));
+    yield put(navigateAppAction(`/login`));
   } catch (error) {
     yield put(userForgotPasswordFailure(error));
   }
@@ -329,62 +322,28 @@ export function* userSaga() {
     Type.SET_USER_DEFAULT_DELIVERY_ADDRESS,
     userDefaultDelAddressHandler,
   );
-  yield takeEvery(
-    Type.DELETE_USER_DELIVERY_ADDRESS,
-    deleleteDelAddressHandler,
-  );
-  yield takeEvery(
-    Type.UPDATE_USER,
-    updateUserHandler,
-  );
-  yield takeEvery(
-    Type.CHANGE_PASSWORD,
-    changePasswordHandler,
-  );
-  yield takeEvery(
-    Type.GET_BILLING_ACCOUNTS,
-    getUserBillingAccountHandler,
-  );
-  yield takeEvery(
-    Type.GET_BILLING_ACCOUNT_BY_ID,
-    getBillingAccountByIdHandler,
-  );
+  yield takeEvery(Type.DELETE_USER_DELIVERY_ADDRESS, deleleteDelAddressHandler);
+  yield takeEvery(Type.UPDATE_USER, updateUserHandler);
+  yield takeEvery(Type.CHANGE_PASSWORD, changePasswordHandler);
+  yield takeEvery(Type.GET_BILLING_ACCOUNTS, getUserBillingAccountHandler);
+  yield takeEvery(Type.GET_BILLING_ACCOUNT_BY_ID, getBillingAccountByIdHandler);
   yield takeEvery(
     Type.DELETE_BILLING_ACCOUNTS,
     deleteUserBillingAccountHandler,
   );
-   yield takeEvery(
+  yield takeEvery(
     Type.UPDATE_BILLING_ACCOUNTS,
     updateUserBillingAccountHandler,
   );
-  yield takeEvery(
-    Type.GET_GIFT_CARDS,
-    getUserGiftCardsHandler,
-  );
-  yield takeEvery(
-    Type.DELETE_FAV_ORDER,
-    deleleteFavOrderHandler,
-  );
+  yield takeEvery(Type.GET_GIFT_CARDS, getUserGiftCardsHandler);
+  yield takeEvery(Type.DELETE_FAV_ORDER, deleleteFavOrderHandler);
   yield takeEvery(
     Type.UPDATE_USER_CONTACT_OPTIONS,
     updateUserContactOptionsHandler,
   );
-  yield takeEvery(
-    Type.USER_LOGIN_REQUEST,
-    userLoginHandler,
-  );
-  yield takeEvery(
-    Type.USER_REGISTER_REQUEST,
-    userRegisterHandler,
-  );
-  yield takeEvery(
-    Type.USER_FORGOT_PASSWORD_REQUEST,
-    userForgotPasswordHandler,
-  );
-  yield takeEvery(
-    Type.USER_RESET_PASSWORD_REQUEST,
-    userResetPasswordHandler,
-  );
+  yield takeEvery(Type.USER_LOGIN_REQUEST, userLoginHandler);
+  yield takeEvery(Type.USER_REGISTER_REQUEST, userRegisterHandler);
+  yield takeEvery(Type.USER_FACEBOOK_REQUEST, facebookUserHandler);
+  yield takeEvery(Type.USER_FORGOT_PASSWORD_REQUEST, userForgotPasswordHandler);
+  yield takeEvery(Type.USER_RESET_PASSWORD_REQUEST, userResetPasswordHandler);
 }
-
-

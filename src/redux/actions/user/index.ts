@@ -4,7 +4,7 @@ import {
   ResponseUserDeliveryAddresses,
   ResponseUserFaves,
   ResponseUserBillingAccounts,
-  ResponseContactOptions
+  ResponseContactOptions,
 } from '../../../types/olo-api';
 import { displayToast } from '../../../helpers/toast';
 
@@ -81,7 +81,9 @@ export function getUserDeliveryAddresses() {
   };
 }
 
-export function getUserDeliveryAddressesSuccess(data: ResponseUserDeliveryAddresses) {
+export function getUserDeliveryAddressesSuccess(
+  data: ResponseUserDeliveryAddresses,
+) {
   return {
     type: Type.GET_USER_DELIVERY_ADDRESSES_SUCCESS,
     payload: data,
@@ -97,17 +99,18 @@ export function getUserDeliveryAddressesFailure(error: any) {
 
 //set User default delivery address , Setting only , No retrieval
 
-export function setUserDefaultDelAddress(data: RequestUserDefaultAddress ) {
+export function setUserDefaultDelAddress(data: RequestUserDefaultAddress) {
   return {
     type: Type.SET_USER_DEFAULT_DELIVERY_ADDRESS,
     payload: data,
   };
 }
-export function setUserDefaultDelAddressSuccess(data: ResponseUserDeliveryAddresses) {
+export function setUserDefaultDelAddressSuccess(
+  data: ResponseUserDeliveryAddresses,
+) {
   return {
     type: Type.SET_USER_DEF_DEL_ADD_SUCCESS,
     payload: data,
-
   };
 }
 
@@ -118,10 +121,9 @@ export function setUserDefaultDelAddFailure(error: any) {
   };
 }
 
-
 //Delete user delivery address
 
-export function deleteUserDeliveryAddress(addressid: number,) {
+export function deleteUserDeliveryAddress(addressid: number) {
   return {
     type: Type.DELETE_USER_DELIVERY_ADDRESS,
     addressid: addressid,
@@ -131,7 +133,6 @@ export function deleteUserDeliveryAddress(addressid: number,) {
 export function deleteUserDelAddSuccess() {
   return {
     type: Type.DEL_USER_DEL_ADD_SUCCESS,
-
   };
 }
 
@@ -142,37 +143,42 @@ export function deleteUserDelAddFailure(error: any) {
   };
 }
 
-
 //Update user
 
 export function updateUser(data: any, profileCheck: boolean) {
   return {
     type: Type.UPDATE_USER,
     payload: data,
-    profileCheck: profileCheck
+    profileCheck: profileCheck,
   };
 }
 
 export function updateUserSuccess(data: any) {
   return {
     type: Type.UPDATE_USER_SUCCESS,
-    payload: data
+    payload: data,
   };
 }
 
 export function updateUserFailure(error: any) {
-  displayToast("ERROR"  , error && error.current_password && error.current_password[0] || error && error.phone && error.phone[0] || error && error.email && error.email[0] || error && error.password && error.password[0] || error && "profile not updated" )
+  displayToast(
+    'ERROR',
+    (error && error.current_password && error.current_password[0]) ||
+      (error && error.phone && error.phone[0]) ||
+      (error && error.email && error.email[0]) ||
+      (error && error.password && error.password[0]) ||
+      (error && 'profile not updated'),
+  );
   return {
     type: Type.UPDATE_USER_FAILURE,
     error: error,
   };
 }
 
-
 export function updateProfileSuccess(data: any) {
   return {
     type: Type.UPDATE_PROFILE_SUCCESS,
-    payload: data
+    payload: data,
   };
 }
 //Change Password
@@ -180,15 +186,14 @@ export function updateProfileSuccess(data: any) {
 export function changePassword(data: any) {
   return {
     type: Type.CHANGE_PASSWORD,
-    payload: data
+    payload: data,
   };
 }
 
 export function changePasswordSuccess(data: any) {
-
   return {
     type: Type.CHANGE_PASSWORD_SUCCESS,
-    payload: data
+    payload: data,
   };
 }
 export function changePasswordFailure(error: any) {
@@ -206,10 +211,12 @@ export function getAllBillingAccounts() {
   };
 }
 
-export function getAllBillingAccountsSuccess(data: ResponseUserBillingAccounts) {
+export function getAllBillingAccountsSuccess(
+  data: ResponseUserBillingAccounts,
+) {
   return {
     type: Type.GET_BILLING_ACCOUNTS_SUCCESS,
-    payload: data
+    payload: data,
   };
 }
 
@@ -222,17 +229,19 @@ export function getAllBillingAccountsFailure(error: any) {
 
 //  Get Billing Account By Id
 
-export function getBillingAccountById( billingAccountId: number) {
+export function getBillingAccountById(billingAccountId: number) {
   return {
     type: Type.GET_BILLING_ACCOUNT_BY_ID,
-    billingAccountId: billingAccountId
+    billingAccountId: billingAccountId,
   };
 }
 
-export function getBillingAccountByIdSuccess(data: ResponseUserBillingAccounts) {
+export function getBillingAccountByIdSuccess(
+  data: ResponseUserBillingAccounts,
+) {
   return {
     type: Type.GET_BILLING_ACCOUNT_BY_ID_SUCCESS,
-    payload: data
+    payload: data,
   };
 }
 
@@ -243,19 +252,18 @@ export function getBillingAccountByIdFailure(error: any) {
   };
 }
 
-
 // Delete Billing Account
 
-export function deleteBillingAccount( billingAccountId: number ) {
+export function deleteBillingAccount(billingAccountId: number) {
   return {
     type: Type.DELETE_BILLING_ACCOUNTS,
-    billingAccountId: billingAccountId
+    billingAccountId: billingAccountId,
   };
 }
 
 export function deleteBillingAccountSuccess() {
   return {
-    type: Type.DELETE_BILLING_ACCOUNTS_SUCCESS
+    type: Type.DELETE_BILLING_ACCOUNTS_SUCCESS,
   };
 }
 
@@ -268,18 +276,21 @@ export function deleteBillingAccountFailure(error: any) {
 
 // update Billing Account
 
-export function updateBillingAccount(data: RequestUserDefaultBillingAccount,billingAccountId: number ) {
+export function updateBillingAccount(
+  data: RequestUserDefaultBillingAccount,
+  billingAccountId: number,
+) {
   return {
     type: Type.UPDATE_BILLING_ACCOUNTS,
     payload: data,
-    billingAccountId: billingAccountId
+    billingAccountId: billingAccountId,
   };
 }
 
-export function updateBillingAccountSuccess(data: ResponseUserBillingAccounts ) {
+export function updateBillingAccountSuccess(data: ResponseUserBillingAccounts) {
   return {
     type: Type.UPDATE_BILLING_ACCOUNTS_SUCCESS,
-    payload: data
+    payload: data,
   };
 }
 
@@ -301,7 +312,7 @@ export function getAllGiftCards() {
 export function getAllGiftCardsSuccess(data: ResponseUserBillingAccounts) {
   return {
     type: Type.GET_GIFT_CARDS_SUCCESS,
-    payload: data
+    payload: data,
   };
 }
 
@@ -325,7 +336,6 @@ export function deleteFavOrder(favid: number) {
 export function deleteFavOrderSuccess() {
   return {
     type: Type.DEL_FAV_ORDER_SUCCESS,
-
   };
 }
 
@@ -336,17 +346,16 @@ export function deleteFavOrderFailure(error: any) {
   };
 }
 
-export function updateUserContactOptions( data: ResponseContactOptions) {
+export function updateUserContactOptions(data: ResponseContactOptions) {
   return {
     type: Type.UPDATE_USER_CONTACT_OPTIONS,
-    data
+    data,
   };
 }
 
 export function updateUserContactOptionsSuccess() {
   return {
     type: Type.UPDATE_USER_CONTACT_OPTIONS_SUCCESS,
-
   };
 }
 
@@ -357,17 +366,18 @@ export function updateUserContactOptionsFailure(error: any) {
   };
 }
 
-export function userLogin(data: any) {
+export function userLogin(data: any, basketID: string = '') {
   return {
     type: Type.USER_LOGIN_REQUEST,
-    data
+    data,
+    basketID
   };
 }
 
 export function userLoginSuccess(data: any) {
   return {
     type: Type.USER_LOGIN_SUCCESS,
-    payload: data
+    payload: data,
   };
 }
 
@@ -378,26 +388,26 @@ export function userLoginFailure(error: any) {
   );
   return {
     type: Type.USER_LOGIN_FAILURE,
-    error: error
+    error: error,
   };
 }
 
 export function userRegister(data: any) {
   return {
     type: Type.USER_REGISTER_REQUEST,
-    data
+    data,
   };
 }
 
 export function userRegisterSuccess(data: any) {
   return {
     type: Type.USER_REGISTER_SUCCESS,
-    payload: data
+    payload: data,
   };
 }
 
 export function userRegisterFailure(error: any) {
-  if(error?.data?.errors?.base && error.data.errors.base.length){
+  if (error?.data?.errors?.base && error.data.errors.base.length) {
     error?.data?.errors.base.forEach((msg: string) => {
       displayToast('ERROR', msg);
     });
@@ -412,7 +422,7 @@ export function userRegisterFailure(error: any) {
   }
   return {
     type: Type.USER_REGISTER_FAILURE,
-    error: error
+    error: error,
   };
 }
 
@@ -425,7 +435,7 @@ export function userForgotPasswordRequest(data: any) {
 
 export function userForgotPasswordSuccess(response: any) {
   displayToast('SUCCESS', 'We have e-mailed your password reset link!');
-  window.location.replace('/login');
+  // window.location.replace('/login');
   return {
     type: Type.USER_FORGOT_PASSWORD_SUCCESS,
   };
@@ -455,7 +465,7 @@ export function userResetPasswordRequest(
 
 export function userResetPasswordSuccess(response: any) {
   displayToast('SUCCESS', 'password updated successfully');
-  window.location.replace('/login');
+  // window.location.replace('/login');
   return {
     type: Type.USER_RESET_PASSWORD_SUCCESS,
   };
@@ -482,5 +492,13 @@ export function userResetPasswordFailure(error: any) {
 export function userLogout() {
   return {
     type: Type.USER_LOGOUT,
+  };
+}
+
+export function facebookUserLogin(data: any, basketID: string = '') {
+  return {
+    type: Type.USER_FACEBOOK_REQUEST,
+    data,
+    basketID
   };
 }
