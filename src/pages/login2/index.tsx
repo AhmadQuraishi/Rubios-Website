@@ -122,7 +122,7 @@ const Login2 = () => {
               <ul className="button-list">
                 <li>
                   <ReactFacebookLogin
-                    appId="3126327474351480"
+                    appId="380212609388497"
                     fields="name,email,picture"
                     scope="public_profile,email"
                     callback={handleCallBackfacebook}
