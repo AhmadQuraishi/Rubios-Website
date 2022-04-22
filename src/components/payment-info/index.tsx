@@ -211,6 +211,7 @@ const PaymentInfo = forwardRef((props, _ref) => {
             'ERROR',
             'Minimum 1 Credit Card is required to make a payment',
           );
+          handleClosePopup();
           return;
         }
       }
@@ -272,12 +273,16 @@ const PaymentInfo = forwardRef((props, _ref) => {
                 billingSchemesNewArray,
               );
 
+              console.log('cardObj', cardObj)
+
               Array.prototype.push.apply(billingSchemesNewArray, cardObj);
 
               billingSchemesNewArray = updatePaymentCardsAmount(
                 billingSchemesNewArray,
                 basket,
               );
+
+              console.log('billingSchemesNewArray', billingSchemesNewArray)
 
               // console.log('billingSchemeStats', billingSchemeStats);
               // const cardObj = [
@@ -463,7 +468,7 @@ const PaymentInfo = forwardRef((props, _ref) => {
   };
 
   const handleClosePopup = () => {
-    setOpenPopup(false);
+    setOpenPopup(!openPopup);
     setRemoveData(null);
   };
 
@@ -647,6 +652,8 @@ const PaymentInfo = forwardRef((props, _ref) => {
                                 ? `Gift Card x${giftCardLastFourDigits(
                                     account,
                                   )}`
+                                : account.cardlastfour
+                                ? `Gift Card x${account.cardlastfour}`
                                 : ''}
                             </Typography>
                             <Typography
@@ -717,7 +724,7 @@ const PaymentInfo = forwardRef((props, _ref) => {
                     style={{
                       paddingTop: 5,
                       display: 'flex',
-                      justifyContent: 'end',
+                      justifyContent: 'flex-end',
                       zIndex: 999,
                     }}
                     xs={12}

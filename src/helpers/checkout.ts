@@ -71,14 +71,6 @@ export function generateSubmitBasketPayload(
         if (account.billingaccountid) {
           obj.billingmethod = 'billingaccount';
         }
-        // tip = 8
-        // giftcard = 15;
-        // card1 = 8;
-        // card2 = 2;
-
-        // tip = 8
-        //
-        // card = 2
 
         if (account.billingmethod === 'creditcardtoken' && tip > 0) {
           if (obj.amount >= tip) {
@@ -402,7 +394,7 @@ export function getGiftCardObj(
 export function updatePaymentCardsAmount(billingSchemes: any, basket: any) {
   const billingSchemeStats = getBillingSchemesStats(billingSchemes);
 
-  console.log('billingSchemeStats', billingSchemeStats)
+  console.log('billingSchemeStats', billingSchemeStats);
 
   if (
     billingSchemeStats.selectedCreditCard === 0 &&
@@ -483,6 +475,7 @@ export function updatePaymentCardsAmount(billingSchemes: any, basket: any) {
       (account: any) => account.billingmethod === 'storedvalue',
     );
 
+    console.log('giftCardIndex', giftCardIndex)
     let giftCardAmount: any =
       basket && billingSchemes[giftCardIndex].balance > basket.subtotal
         ? basket.subtotal
