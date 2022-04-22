@@ -99,6 +99,7 @@
   }
   .payment-form .payment-bar h6 {
     font-size: 14px !important;
+    padding-right: 20px;
   }
   .payment-form .size span {
     padding: 10px 0px;
