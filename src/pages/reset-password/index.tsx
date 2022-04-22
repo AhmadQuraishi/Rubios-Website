@@ -8,6 +8,7 @@ import ResetForm from '../../components/reset-form';
 import bgImage from '../../assets/imgs/login-bg.png';
 import { facebookUserLogin } from '../../redux/actions/user';
 import ReactFacebookLogin from 'react-facebook-login';
+import { displayToast } from '../../helpers/toast';
 const useStyle = makeStyles(() => ({
   root: {
     background: `url(${bgImage}) center center fixed`,
