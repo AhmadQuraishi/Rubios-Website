@@ -94,4 +94,17 @@
     top: 30px;
     width: 30px;
   }
+  .payment-form .payment-bar img {
+    width: 30px;
+  }
+  .payment-form .payment-bar h6 {
+    font-size: 14px !important;
+  }
+  .payment-form .size span {
+    padding: 10px 0px;
+  }
+  .payment-form .payment-bar .MuiTextField-root {
+    padding-left: 5px;
+    margin-left: 5px;
+  }
 }

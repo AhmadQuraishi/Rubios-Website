@@ -717,7 +717,7 @@ const PaymentInfo = forwardRef((props, _ref) => {
                     style={{
                       paddingTop: 5,
                       display: 'flex',
-                      justifyContent: 'end',
+                      justifyContent: 'flex-end',
                       zIndex: 999,
                     }}
                     xs={12}
