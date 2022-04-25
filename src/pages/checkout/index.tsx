@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React  from 'react';
 import { Box, Button, Card, Grid, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -26,7 +26,6 @@ import {
   formatCustomFields,
   formatDeliveryAddress,
   getUniqueId,
-  getCreditCardObj,
   updatePaymentCardsAmount,
 } from '../../helpers/checkout';
 import { getUserDeliveryAddresses } from '../../redux/actions/user';
@@ -143,15 +142,6 @@ const Checkout = () => {
                   creditCardIndex
                 ].id,
             };
-
-            // cardObj.amount =
-            //   validate && validate.total
-            //     ? validate.total
-            //     : basket && basket?.total
-            //     ? basket?.total
-            //     : 0;
-            // cardObj.selected = true;
-
             billingArray.push(cardObj);
           }
         }
@@ -410,14 +400,6 @@ const Checkout = () => {
         return;
       }
     }
-
-    // const { isValidCard, cardDetails, errors } = await validatePaymentForm();
-    //
-    // if (!isValidCard) {
-    //   displayToast('ERROR', errors?.message);
-    //   setButtonDisabled(false);
-    //   return;
-    // }
 
     if (formDataValue.phone) {
       formDataValue.phone = formDataValue.phone.replace(/\D/g, '');
