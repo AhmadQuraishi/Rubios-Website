@@ -141,11 +141,12 @@ const RegisterConfirmation = () => {
                     label="First Name"
                     title="First Name"
                     type="text"
-                    name="first_name"
+                    name="first name"
                     sx={{ width: '100%' }}
                     value={values.first_name}
                     onChange={handleChange('first_name')}
                     onBlur={handleBlur('first_name')}
+                    autoComplete="first name"
                     error={Boolean(touched.first_name && errors.first_name)}
                     helperText={touched.first_name && errors.first_name}
                   />
@@ -156,7 +157,8 @@ const RegisterConfirmation = () => {
                     label="Last Name"
                     title="Last Name"
                     type="text"
-                    name="last_name"
+                    name="last name"
+                    autoComplete="last name"
                     sx={{ width: '100%' }}
                     value={values.last_name}
                     onChange={handleChange('last_name')}
@@ -172,6 +174,7 @@ const RegisterConfirmation = () => {
                     title="Email"
                     type="text"
                     name="email"
+                    autoComplete="email"
                     sx={{ width: '100%' }}
                     value={values.email}
                     onChange={handleChange('email')}
@@ -198,9 +201,10 @@ const RegisterConfirmation = () => {
                     <Select
                       labelId="fav-location-label"
                       id="fav-location"
-                      name="favLocation"
+                      name="favorite location"
                       value={favLocation && favLocation}
                       label="Favorite Location"
+                      autoComplete='favorite location'
                       onChange={handleChangeLocation}
                       onClose={() => {
                         setSelectShrink(false);
@@ -230,16 +234,18 @@ const RegisterConfirmation = () => {
                     value={values.password}
                     onChange={handleChange('password')}
                     onBlur={handleBlur('password')}
+                    autoComplete="password"
                     error={Boolean(touched.password && errors.password)}
                     helperText={touched.password && errors.password}
                   />
                 </Grid>
                 <Grid item xs={12} sm={12} md={12} lg={6}>
                   <TextField
-                    aria-label="confirm password "
+                    aria-label="confirm password"
+                    autoComplete="password"
                     label="Confirm Password"
                     title="Confirm Password"
-                    name="password_confirmation"
+                    name="confirm password"
                     type="password"
                     sx={{ width: '100%' }}
                     value={values.password_confirmation}

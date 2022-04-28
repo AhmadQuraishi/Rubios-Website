@@ -9,7 +9,7 @@ import { HoursListing } from '../../helpers/hoursListing';
 import { CalendarTypeEnum } from '../../helpers/hoursListing';
 const useStyle = makeStyles({
   heading: {
-    fontSize: '13px',
+    fontSize: '13px !important',
     color: '#fff',
     fontFamily: 'Poppins-Medium !important',
   },
@@ -89,7 +89,7 @@ const StoreInfoBar = () => {
               >
                 <Typography
                   className={classes.heading}
-                  variant="body2"
+                  variant="h2"
                   textTransform="uppercase"
                   title="Pick Up From"
                 >
@@ -97,13 +97,19 @@ const StoreInfoBar = () => {
                   {orderType && orderType != 'delivery' && 'Pick Up From'}
                 </Typography>
                 <Typography
-                  variant="h2"
+                  variant="h1"
                   color="#fff"
                   textTransform="uppercase"
                   fontWeight={700}
                   lineHeight={1.3}
                   fontFamily="Poppins-Bold !important"
-                  sx={{ fontSize: { xs: 30, sm: 35, lg: 40 } }}
+                  sx={{
+                    fontSize: {
+                      xs: '30px !important',
+                      sm: '35px !important',
+                      lg: '40px !important',
+                    },
+                  }}
                   title={restaurantInfo.name}
                 >
                   {restaurantInfo.name}
@@ -122,7 +128,7 @@ const StoreInfoBar = () => {
               >
                 <Typography
                   className={classes.heading}
-                  variant="body2"
+                  variant="h2"
                   textTransform="uppercase"
                   title="Address"
                 >
@@ -159,7 +165,7 @@ const StoreInfoBar = () => {
               >
                 <Typography
                   className={classes.heading}
-                  variant="body2"
+                  variant="h2"
                   textTransform="uppercase"
                   title="Hours"
                   sx={{

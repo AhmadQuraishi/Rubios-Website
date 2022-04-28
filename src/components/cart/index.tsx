@@ -847,9 +847,9 @@ const Cart = (props: any) => {
                             paddingBottom: '2px',
                             fontFamily: 'Poppins-Regular',
                           }}
-                          title="Tax"
+                          title="ESTIMATED Tax"
                         >
-                          SALES TAX
+                          EXTIMATED TAX
                         </Grid>
                         <Grid
                           item
@@ -881,9 +881,9 @@ const Cart = (props: any) => {
                             fontSize: '14px',
                             fontFamily: 'Poppins-Regular',
                           }}
-                          title="Tax"
+                          title="DELIVERY FEE"
                         >
-                          TOTAL FEE
+                          DELIVERY FEE
                         </Grid>
                         <Grid
                           item

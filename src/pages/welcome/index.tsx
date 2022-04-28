@@ -150,7 +150,7 @@ const Welcome = () => {
         <Grid item xs={16} className="welcome-wrapper">
           <Grid container columns={16} className="welcome-content">
             <Grid item xs={16} sm={16} md={14} lg={9} className="left-col">
-              <Typography variant="caption" className="label" title="Welcome">
+              <Typography variant="h2" className="label" title="Welcome">
                 WELCOME
               </Typography>
               <Typography
@@ -186,7 +186,7 @@ const Welcome = () => {
                       .map((order: any, index: number) => (
                         <Fragment key={index + order.id}>
                           <Typography
-                            variant="caption"
+                            variant="h2"
                             className="label"
                             title="LAST ORDER 11/01"
                           >
@@ -201,8 +201,9 @@ const Welcome = () => {
                             <CardMedia
                               component="img"
                               title="image"
+                              aria-label="Recent Order Image Icon"
                               image={require('../../assets/imgs/order-hidtory-icon.png')}
-                              alt="image"
+                              alt="Recent Order Image Icon"
                               className="order-img"
                             />
                             <CardContent className="product-content">
@@ -232,7 +233,6 @@ const Welcome = () => {
                                 ))}
                               <Grid className="order-action">
                                 <Button
-                                  aria-label="edit order"
                                   className="caption-grey"
                                   title="EDIT ORDER"
                                   onClick={() => {
@@ -242,7 +242,6 @@ const Welcome = () => {
                                   Edit Order
                                 </Button>
                                 <Button
-                                  aria-label="re order"
                                   className="button"
                                   title="order"
                                   onClick={() => {
@@ -271,7 +270,7 @@ const Welcome = () => {
             </Grid>
             <Grid item xs={16} sm={16} md={14} lg={5.5} className="right-col">
               <Typography
-                variant="caption"
+                variant="h2"
                 className="label"
                 title="YOUR FAVORITE LOCATION"
               >
@@ -300,7 +299,7 @@ const Welcome = () => {
                       lg={16}
                       className="res-info"
                     >
-                      <Typography variant="h5" title="Broadway Blvd">
+                      <Typography variant="h5" title={favRestaurant.name}>
                         {favRestaurant.name}
                         <Link
                           className="caption-grey"
@@ -313,15 +312,21 @@ const Welcome = () => {
 
                       <Typography
                         variant="h6"
-                        title="20212 North 59th Ave, Ste.465A"
+                        title={`${favRestaurant.streetaddress}, ${favRestaurant.zip}`}
                       >
                         {favRestaurant.streetaddress}, {favRestaurant.zip}
                       </Typography>
-                      <Typography variant="h6" title="San Diego, CA">
+                      <Typography
+                        variant="h6"
+                        title={`${favRestaurant.city}, ${favRestaurant.state}`}
+                      >
                         {favRestaurant.city}, {favRestaurant.state}
                       </Typography>
                       {favRestaurant.distance > 0 && (
-                        <Typography variant="h6" title="distance">
+                        <Typography
+                          variant="h6"
+                          title={`${favRestaurant.distance} Miles Away`}
+                        >
                           {favRestaurant.distance} Miles Away
                         </Typography>
                       )}
@@ -334,40 +339,48 @@ const Welcome = () => {
                       lg={16}
                       className="action-btn"
                     >
-                      {favRestaurant.canpickup === true && (
-                        <Button
-                          aria-label="pickup button"
-                          variant="contained"
-                          title="PICKUP"
-                          name="pickup"
-                          onClick={gotoCategoryPage}
-                        >
-                          PICKUP
-                        </Button>
-                      )}
-                      {favRestaurant.candeliver === true && (
-                        <Button
-                          aria-label="delivery button"
-                          variant="contained"
-                          title="DELIVERY"
-                          name="delivery"
-                          onClick={gotoCategoryPage}
-                        >
-                          DELIVERY
-                        </Button>
-                      )}
+                      <ul style={{ listStyle: 'none' }}>
+                        {favRestaurant.canpickup === true && (
+                          <li>
+                            <Button
+                              aria-label="pickup button"
+                              variant="contained"
+                              title="PICKUP"
+                              name="pickup"
+                              onClick={gotoCategoryPage}
+                            >
+                              PICKUP
+                            </Button>
+                          </li>
+                        )}
+                        {favRestaurant.candeliver === true && (
+                          <li>
+                            <Button
+                              aria-label="delivery button"
+                              variant="contained"
+                              title="DELIVERY"
+                              name="delivery"
+                              onClick={gotoCategoryPage}
+                            >
+                              DELIVERY
+                            </Button>
+                          </li>
+                        )}
 
-                      {favRestaurant.supportscurbside === true && (
-                        <Button
-                          aria-label="curbside button"
-                          variant="contained"
-                          title="CURBSIDE"
-                          name="curbside"
-                          onClick={gotoCategoryPage}
-                        >
-                          CURBSIDE
-                        </Button>
-                      )}
+                        {favRestaurant.supportscurbside === true && (
+                          <li>
+                            <Button
+                              aria-label="curbside button"
+                              variant="contained"
+                              title="CURBSIDE"
+                              name="curbside"
+                              onClick={gotoCategoryPage}
+                            >
+                              CURBSIDE
+                            </Button>
+                          </li>
+                        )}
+                      </ul>
                     </Grid>
                   </Grid>
                 )}

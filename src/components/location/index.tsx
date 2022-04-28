@@ -131,6 +131,7 @@ const LocationCard = (props: any) => {
     (state: any) => state.restaurantInfoReducer,
   );
   const [deliveryAddressString, setDeliveryAddressString] = useState<any>();
+  const [showAllResturants, setShowAllResturants] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -316,6 +317,33 @@ const LocationCard = (props: any) => {
         lg={4}
         sx={{ zIndex: 1, margin: '20px 30px' }}
       >
+        {showAllResturants && (
+          <div
+            style={{
+              position: 'absolute',
+              width: '100%',
+              height: '100%',
+              background: '#FFF',
+              top: 0,
+              left: 0,
+            }}
+          >
+            <div style={{ marginLeft: '350px', paddingTop: '40px' }}>
+              <Typography
+                variant="h2"
+                sx={{
+                  fontFamily: 'Poppins-Bold !important',
+                  color: '#214F66',
+                  fontSize: '36px !important',
+                  textTransform: 'uppercase',
+                }}
+              >
+                SELECT A {resturantOrderType} LOCATION
+              </Typography>
+              {restaurants && restaurants.map((item: any, index: number) => {})}
+            </div>
+          </div>
+        )}
         <Card>
           <Grid container spacing={2} className="location-sidebar">
             <Grid item xs={12}>
@@ -369,7 +397,7 @@ const LocationCard = (props: any) => {
                 </ToggleButton>
               </ToggleButtonGroup>
             </Grid>
-            <Grid item xs={12} style={{ position: 'relative' }}>
+            <Grid item xs={12} style={{ position: 'relative', zIndex: 1 }}>
               {resturantOrderType == 'delivery' ? (
                 <TextField
                   aria-label="Enter your address..."
@@ -442,10 +470,64 @@ const LocationCard = (props: any) => {
                 </div>
               )}
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} style={{ position: 'relative', zIndex: 1 }}>
+              {(!showAllResturants &&
+                resturantOrderType &&
+                resturantOrderType != 'delivery') ||
+                (resturantOrderType == 'delivery' &&
+                  deliveryRasturants &&
+                  deliveryRasturants.length > 0 && (
+                    <Typography className="label">
+                      <Link
+                        style={{
+                          display: 'block',
+                          cursor: 'pointer',
+                          textDecoration: 'none',
+                          fontWeight: 500,
+                          color: '#0075BF',
+                          paddingBottom: '10px',
+                        }}
+                        title="View All Resturants"
+                        role="button"
+                        tabIndex={0}
+                        aria-label="View All Resturants"
+                        onClick={() => {
+                          setShowAllResturants(true);
+                        }}
+                        to="#"
+                      >
+                        View All Restaurants
+                      </Link>
+                    </Typography>
+                  ))}
+              {showAllResturants && (
+                <Typography className="label">
+                  <Link
+                    style={{
+                      zIndex: 1,
+                      display: 'block',
+                      cursor: 'pointer',
+                      textDecoration: 'none',
+                      fontWeight: 500,
+                      color: '#0075BF',
+                    }}
+                    title="BACK TO MAP"
+                    role="button"
+                    tabIndex={0}
+                    aria-label="BACK TO MAP"
+                    onClick={() => {
+                      setShowAllResturants(false);
+                    }}
+                    to="#"
+                  >
+                    BACK TO MAP
+                  </Link>
+                </Typography>
+              )}
               <Typography className="label">
                 {((isNearByRestaurantList &&
                   filteredRestaurants &&
+                  !showAllResturants &&
                   filteredRestaurants.length > 0) ||
                   (value &&
                     deliveryRasturants &&
@@ -455,6 +537,7 @@ const LocationCard = (props: any) => {
                     resturantOrderType == 'delivery')) &&
                   'NEARBY LOCATIONS'}
                 {!isNearByRestaurantList &&
+                  !showAllResturants &&
                   (filteredRestaurants == undefined ||
                     (filteredRestaurants &&
                       filteredRestaurants.length == 0)) && (

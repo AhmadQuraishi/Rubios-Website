@@ -120,57 +120,65 @@ const Rewards = (props: any) => {
           <CircularProgress />
         </div>
       )}
-      <Grid container>
-        <Grid item xs={0} sm={0} md={2} lg={2} />
-        <Grid item xs={12} sm={12} md={8} lg={8} className="choose-reward">
-          <Typography variant="h2" title="APPLY REWARDS">
-            APPLY REWARDS
-          </Typography>
-          <br />
-          <Grid container>
-            <FormControl>
-              <ToggleButtonGroup
-                className="apply-reward"
-                value={alignment}
-                exclusive
-                onChange={onRewardSelect}
-                aria-labelledby="rewards"
-              >
-                {rewardsArray.map((reward, index) => (
-                  <ToggleButton
-                    onClick={() => {
-                      applyReward(reward.membershipid, reward.reference);
-                    }}
-                    value={reward.reference}
-                    className="choose-btn"
-                  >
-                    <Grid container spacing={2}>
-                      <Grid item xs={12} sm={5} md={5} lg={5}>
-                        <img src={reward.imageurl} alt="Reward Image" />
-                      </Grid>
-                      <Grid
-                        item
-                        xs={12}
-                        sm={7}
-                        md={7}
-                        lg={7}
-                        className="icon-content"
-                      >
-                        <Typography>
-                          {reward.quantityavailable > 1
-                            ? reward.quantityavailable + ' x ' + reward.label
-                            : reward.label}
-                        </Typography>
-                      </Grid>
-                    </Grid>
-                  </ToggleButton>
-                ))}
-              </ToggleButtonGroup>
-            </FormControl>
+      {rewardsArray && rewardsArray.length > 0 && (
+        <Grid container>
+          <Grid item xs={0} sm={0} md={2} lg={2} />
+          <Grid item xs={12} sm={12} md={8} lg={8} className="choose-reward">
+            <Typography variant="h2" title="APPLY REWARDS">
+              APPLY REWARDS
+            </Typography>
+            <br />
+            <Grid container>
+              <FormControl>
+                <ToggleButtonGroup
+                  className="apply-reward"
+                  value={alignment}
+                  exclusive
+                  onChange={onRewardSelect}
+                  aria-labelledby="rewards"
+                >
+                  <ul style={{ listStyle: 'none' }}>
+                    {rewardsArray.map((reward, index) => (
+                      <li>
+                        <ToggleButton
+                          onClick={() => {
+                            applyReward(reward.membershipid, reward.reference);
+                          }}
+                          value={reward.reference}
+                          className="choose-btn"
+                        >
+                          <Grid container spacing={2}>
+                            <Grid item xs={12} sm={5} md={5} lg={5}>
+                              <img src={reward.imageurl} alt="" />
+                            </Grid>
+                            <Grid
+                              item
+                              xs={12}
+                              sm={7}
+                              md={7}
+                              lg={7}
+                              className="icon-content"
+                            >
+                              <Typography>
+                                {reward.quantityavailable > 1
+                                  ? reward.quantityavailable +
+                                    ' x ' +
+                                    reward.label
+                                  : reward.label}
+                              </Typography>
+                            </Grid>
+                          </Grid>
+                        </ToggleButton>
+                      </li>
+                    ))}
+                  </ul>
+                </ToggleButtonGroup>
+              </FormControl>
+            </Grid>
           </Grid>
+          <Grid item xs={0} sm={0} md={2} lg={2} />
         </Grid>
-        <Grid item xs={0} sm={0} md={2} lg={2} />
-      </Grid>
+      )}
     </div>
   );
 };

@@ -23,12 +23,20 @@ const locationTitle = (type: string) => {
 const pickupTime = (order: any) => {
   return (
     <>
-      <Typography variant="caption" className="label" title="PICKUP TIME">
+      <Typography variant="h2" className="label" title="PICKUP TIME">
         {order && order.deliverymode === DeliveryModeEnum.delivery
           ? 'DELIVERY TIME'
           : 'PICKUP TIME'}
       </Typography>
-      <Typography variant="h1" title="6:10 PM">
+      <Typography
+        variant="h3"
+        title="6:10 PM"
+        sx={{
+          fontFamily: 'Poppins-Bold !important',
+          color: '#214F66',
+          fontSize: '36px !important',
+        }}
+      >
         {moment(order.readytime, 'YYYYMMDD HH:mm').format('h:mm A')}
       </Typography>
     </>
@@ -80,10 +88,18 @@ const vehicleInfo = (order: any) => {
 const pickupAddress = (restaurant: any, order: any) => {
   return (
     <>
-      <Typography variant="caption" className="label">
+      <Typography variant="h2" className="label">
         {order && order.deliverymode ? locationTitle(order.deliverymode) : ''}
       </Typography>
-      <Typography style={{ textTransform: 'uppercase' }} variant="h1">
+      <Typography
+        variant="h3"
+        sx={{
+          textTransform: 'uppercase',
+          fontFamily: 'Poppins-Bold !important',
+          color: '#214F66',
+          fontSize: '36px !important',
+        }}
+      >
         {restaurant && restaurant.slug ? restaurant.slug : ''}
       </Typography>
       <Typography variant="h6">
@@ -103,10 +119,18 @@ const pickupAddress = (restaurant: any, order: any) => {
 const deliveryAddress = (order: any) => {
   return (
     <>
-      <Typography variant="caption" className="label">
+      <Typography variant="h2" className="label">
         {order && order.deliverymode ? locationTitle(order.deliverymode) : ''}
       </Typography>
-      <Typography style={{ textTransform: 'uppercase' }} variant="h1">
+      <Typography
+        sx={{
+          textTransform: 'uppercase',
+          fontFamily: 'Poppins-Bold !important',
+          color: '#214F66',
+          fontSize: '36px !important',
+        }}
+        variant="h3"
+      >
         {order && order.deliveryaddress && order.deliveryaddress.building
           ? order.deliveryaddress.building
           : ''}
@@ -151,15 +175,27 @@ const OrderConfirmedCard = ({ orderObj, restaurantObj }: any) => {
         <Grid container spacing={0}>
           <Grid xs={12} sm={6} md={6} lg={12}>
             <Typography
-              variant="caption"
-              className="label"
+              variant="h1"
+              className="heading-one"
               title="ORDER CONFIRMED"
+              sx={{
+                color: '#0075BF',
+                fontFamily: 'Poppins-Medium !important',
+                fontSize: { xs: '14px !important' },
+                fontWeight: 400,
+                textTransform: 'uppercase',
+              }}
             >
-              ORDER CONFIRMED
+              <span className="heading-one">ORDER CONFIRMED</span>
             </Typography>
             <Typography
-              variant="h1"
+              variant="h2"
               title="WE'LL TAKE IT FROM HERE. SEE YOU SOON."
+              sx={{
+                fontFamily: 'Poppins-Bold !important',
+                color: '#214F66',
+                fontSize: '36px !important',
+              }}
             >
               WE'LL TAKE IT FROM HERE. SEE YOU SOON.
             </Typography>
