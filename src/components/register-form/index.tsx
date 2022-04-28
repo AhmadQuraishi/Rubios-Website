@@ -339,6 +339,7 @@ const RegisterForm = () => {
                       shrink={selectShrink || favLocation !== ''}
                       style={{ textAlign: 'left' }}
                       aria-controls="fav-location"
+                      aria-haspopup="false"
                     >
                       Favorite Location *
                     </InputLabel>
