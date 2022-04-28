@@ -3,17 +3,29 @@
   margin: 20px 0px;
 }
 .rewards .label {
-  border: 1px solid #0075BF;
+  border: 1px solid #0075bf;
   padding: 20px;
+}
+.choose-reward ul {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.choose-reward li {
+  min-height: 150px;
+  min-width: 50% !important;
+  width: 50% !important;
 }
 .choose-reward .choose-btn {
   min-height: 150px;
   background: white;
   box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.2) !important;
   margin: 0px 15px 30px 0;
-  min-width: 45% !important;
-  width: 45% !important;
+  width: 100%;
   border: 1px solid #e4e4e4;
+  min-width: 95% !important;
+  width: 95% !important;
 }
 .choose-reward .apply-reward {
   display: inline-block !important;
@@ -35,7 +47,7 @@
   background: transparent;
 }
 .choose-reward .choose-btn.Mui-selected:after {
-  content: " ";
+  content: ' ';
   display: block;
   width: 10px;
   height: 22px;
@@ -49,7 +61,7 @@
   margin-left: -31%;
 }
 .choose-reward .choose-btn.Mui-selected:before {
-  content: " ";
+  content: ' ';
   display: block;
   border: solid 25px #e58530;
   border-radius: 45px;
@@ -67,14 +79,14 @@
     margin-top: -5%;
     margin-left: -32%;
   }
-  .choose-reward .choose-btn {
+  .choose-reward li {
     margin-top: 20px;
     width: 47% !important;
     margin-right: 40px;
   }
   .choose-reward .choose-btn:nth-child(2),
   .choose-reward .choose-btn:nth-child(4),
-  .choose-reward .choose-btn:nth-child(6){
+  .choose-reward .choose-btn:nth-child(6) {
     margin-right: 0px;
   }
 }
@@ -85,10 +97,15 @@
     flex-direction: column;
   }
   .choose-reward .choose-btn {
+    height: auto;
+    width: 100% !important;
+  }
+  .choose-reward li {
     margin: 0px 0px 15px 0px;
     height: auto;
     width: 100% !important;
   }
+  
   .choose-reward .choose-btn img {
     width: 65%;
   }

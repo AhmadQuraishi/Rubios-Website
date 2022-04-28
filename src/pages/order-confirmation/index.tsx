@@ -62,13 +62,29 @@ const OrderConfirmation = () => {
               <OrderConfirmedCard orderObj={order} restaurantObj={restaurant} />
             </Grid>
             <Grid item xs={12} sm={12} md={12} lg={6}>
-              <Card className={authToken?.authtoken ? 'card ' : 'card next-order'}>
+              <Card
+                className={authToken?.authtoken ? 'card ' : 'card next-order'}
+              >
                 <Grid container>
-                  <Grid item xs={12} sm={6} md={6} lg={12} className="earn-reward">
-                    <Typography variant="caption" className="label white">
+                  <Grid
+                    item
+                    xs={12}
+                    sm={6}
+                    md={6}
+                    lg={12}
+                    className="earn-reward"
+                  >
+                    <Typography variant="h2" className="label white">
                       {authToken?.authtoken ? 'YOUR REWARDS' : 'EARN REWARDS'}
                     </Typography>
-                    <Typography variant="h1" className="white">
+                    <Typography
+                      variant="h3"
+                      className="white"
+                      sx={{
+                        fontFamily: 'Poppins-Bold !important',
+                        fontSize: '36px !important',
+                      }}
+                    >
                       {authToken?.authtoken
                         ? 'YOUR EARNED 18 POINTS!'
                         : 'GET $5 OFF YOUR NEXT ORDER'}
@@ -84,13 +100,15 @@ const OrderConfirmation = () => {
                         : 'Join today for completing the form below'}
                     </Typography>
                     <br />
-                    {authToken?.authtoken
-                    ? ''
-                    : (<img
+                    {authToken?.authtoken ? (
+                      ''
+                    ) : (
+                      <img
                         className="phone-icon"
+                        alt="Join Today For Getting Rewards"
                         src={require('../../assets/imgs/phone-icon.png')}
-                      />)
-                    }
+                      />
+                    )}
                   </Grid>
                   {authToken?.authtoken ? (
                     <Grid item xs={12} sm={12} md={12} lg={12}>
@@ -111,7 +129,7 @@ const OrderConfirmation = () => {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={12} sm={12} md={12} lg={10}>
+        <Grid item xs={12} sm={12} md={12} lg={10} className="order-details">
           <OrderDetails basket={order} page="confirmation" />
         </Grid>
       </Grid>

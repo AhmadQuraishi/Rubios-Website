@@ -1,4 +1,4 @@
-import React  from 'react';
+import React from 'react';
 import { Box, Button, Card, Grid, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -172,7 +172,7 @@ const Checkout = () => {
                 .id,
           };
 
-          console.log('gitfCardObj', gitfCardObj)
+          console.log('gitfCardObj', gitfCardObj);
 
           billingArray.push(gitfCardObj);
 
@@ -181,7 +181,7 @@ const Checkout = () => {
       }
       if (billingArray.length) {
         billingArray = updatePaymentCardsAmount(billingArray, basket);
-        console.log('billingArray', billingArray)
+        console.log('billingArray', billingArray);
         dispatch(updateBasketBillingSchemes(billingArray));
       }
       setDefaultCard(false);
@@ -490,7 +490,7 @@ const Checkout = () => {
                         <>
                           <Grid item xs={12}>
                             <Typography
-                              variant="caption"
+                              variant="h3"
                               className="label"
                               title="WHO'S IS PICKING UP?"
                             >
@@ -498,7 +498,11 @@ const Checkout = () => {
                             </Typography>
                           </Grid>
                           <Grid item xs={12}>
-                            <Typography variant="h2" title="PICK UP INFO">
+                            <Typography
+                              variant="h1"
+                              style={{ marginBottom: '0px' }}
+                              title="PICK UP INFO"
+                            >
                               PICK UP INFO
                             </Typography>
                           </Grid>
@@ -507,7 +511,7 @@ const Checkout = () => {
                         <>
                           <Grid item xs={12}>
                             <Typography
-                              variant="caption"
+                              variant="h3"
                               className="label"
                               title="WHO'S IS PICKING UP?"
                             >
@@ -515,7 +519,11 @@ const Checkout = () => {
                             </Typography>
                           </Grid>
                           <Grid item xs={12}>
-                            <Typography variant="h2" title="PICK UP INFO">
+                            <Typography
+                              variant="h1"
+                              style={{ marginBottom: '0px' }}
+                              title="CURBSIDE PICK INFO"
+                            >
                               CURBSIDE PICK UP
                             </Typography>
                           </Grid>
@@ -532,7 +540,11 @@ const Checkout = () => {
                             </Typography>
                           </Grid>
                           <Grid item xs={12}>
-                            <Typography variant="h2" title="PICK UP INFO">
+                            <Typography
+                              variant="h1"
+                              style={{ marginBottom: '0px' }}
+                              title="DELIVERY INFO"
+                            >
                               DELIVERY INFO
                             </Typography>
                           </Grid>

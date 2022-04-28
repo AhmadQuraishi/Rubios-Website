@@ -22,7 +22,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
           lg={8}
           className={`order-details order-details-${page}`}
         >
-          <Typography fontWeight={500} title="ORDER DETAILS" variant="h1">
+          <Typography fontWeight={500} title="ORDER DETAILS" variant="h2">
             ORDER DETAILS
           </Typography>
           <br />
@@ -149,8 +149,8 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
 
           <Grid container>
             <Grid item xs={9} sm={9} md={9} lg={9}>
-              <Typography variant="h6" className="n-bold" title="Tax">
-                TAX
+              <Typography variant="h6" className="n-bold" title="ESTIMATED Tax">
+                EXTIMATED TAX
               </Typography>
             </Grid>
             <Grid item xs={3} sm={3} md={3} lg={3}>
@@ -167,8 +167,8 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
           </Grid>
           <Grid container>
             <Grid item xs={9} sm={9} md={9} lg={9}>
-              <Typography variant="h6" title="Tax">
-                TOTAL FEE
+              <Typography variant="h6" title="DELIVERY FEE">
+                DELIVERY FEE
               </Typography>
             </Grid>
             <Grid item xs={3} sm={3} md={3} lg={3}>

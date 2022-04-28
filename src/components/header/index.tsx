@@ -137,7 +137,7 @@ const Header = (props: any) => {
             padding: { xs: '0 !important' },
           }}
         >
-          <Typography variant="h1" className={classes.logo}>
+          <Typography variant="body1" className={classes.logo}>
             <Link
               to="/location"
               className={classes.logoImg}
