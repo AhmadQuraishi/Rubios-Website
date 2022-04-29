@@ -10,6 +10,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getMenuRequest } from '../../redux/actions/footer';
 import { useEffect, useState } from 'react';
 import './footer.css';
+import fbIcon from '../../assets/imgs/facebook-icon.png';
+import instaIcon from '../../assets/imgs/insta-icon.png';
+import twitterIcon from '../../assets/imgs/twitter-icon.png';
 
 const useStyles = makeStyles((theme: Theme) => ({
   links: {
@@ -159,31 +162,25 @@ const Footer = () => {
                 sx={{ padding: { xs: '10px 0 0 0', md: '20px 0 0 0' } }}
               >
                 <Grid item xs={4}>
-                  <p
-                    style={{
-                      border: '2px solid #FFF',
-                      width: '30px',
-                      height: '30px',
-                    }}
-                  ></p>
+                  <img
+                    src={fbIcon}
+                    style={{ width: '50%' }}
+                    alt="Facebook Icon"
+                  />
                 </Grid>
                 <Grid item xs={4}>
-                  <p
-                    style={{
-                      border: '2px solid #FFF',
-                      width: '30px',
-                      height: '30px',
-                    }}
-                  ></p>
+                  <img
+                    src={instaIcon}
+                    style={{ width: '50%' }}
+                    alt="Instagram Icon"
+                  />
                 </Grid>
                 <Grid item xs={4}>
-                  <p
-                    style={{
-                      border: '2px solid #FFF',
-                      width: '30px',
-                      height: '30px',
-                    }}
-                  ></p>
+                  <img
+                    src={twitterIcon}
+                    style={{ width: '50%' }}
+                    alt="Twitter Icon"
+                  />
                 </Grid>
               </Grid>
             </Grid>
