@@ -99,7 +99,9 @@ const RedeemRewards = () => {
                   title="REDEEM YOUR REWARDS"
                   className="body-text"
                 >
-                  Click a reward to start your order.
+                  If ordering in a restaurant, click a reward below to scan and redeem.
+                  <br/>
+                  If ordering online, you can select a reward during the checkout process.
                 </Typography>
               </Grid>
             )}
