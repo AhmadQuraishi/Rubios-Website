@@ -78,19 +78,19 @@
 }
 
 .list-sx{
-  width: 33%
+  flex-basis: 33%
 }
 @media screen and (max-width: 1024px) {
   .list-wrapper .MuiPaper-root {
     width: 70%;
   }
   .list-sx {
-    width: 50%
+    flex-basis: 50%
   }
 }
 @media screen and (max-width: 768px) {
   .list-sx {
-    width: 100%
+    flex-basis: 100%
   }
   .list-wrapper .MuiPaper-root {
     padding: 20px;
