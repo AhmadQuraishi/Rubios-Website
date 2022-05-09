@@ -92,6 +92,17 @@ const RegisterForm = () => {
     },
   );
 
+  React.useEffect(() => {
+    const monthField = document.getElementsByClassName(
+      'react-date-inputs__month',
+    );
+    const dayField = document.getElementsByClassName('react-date-inputs__day');
+
+    if (monthField && monthField.length && dayField && dayField.length) {
+      monthField[0].after(dayField[0]);
+    }
+  }, []);
+
   return (
     <Grid container className="sign-up-section">
       <Typography variant="caption" className="label" title="Create Account">
@@ -324,6 +335,7 @@ const RegisterForm = () => {
                     label="Birthday (Optional)"
                     onChange={(value) => handleBirthDayChange(value)}
                     value={birthDay}
+                    show={['month', 'day', 'year']}
                   />
                 </Grid>
                 <Grid item xs={12}>
