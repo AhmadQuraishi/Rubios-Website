@@ -22,9 +22,12 @@ import { IMaskInput } from 'react-imask';
 import ReactDateInputs from 'react-date-inputs';
 import moment from 'moment';
 import './register-form.css';
+import { useLocation } from 'react-router-dom';
 
 const RegisterForm = () => {
   const dispatch = useDispatch();
+  const query = new URLSearchParams(useLocation().search);
+  const invite_code = query.get('invite_code');
   const { loading: loadingProvider } = useSelector(
     (state: any) => state.providerReducer,
   );
@@ -110,7 +113,7 @@ const RegisterForm = () => {
           phone: '',
           password: '',
           password_confirmation: '',
-          invitecode: '',
+          invitecode: invite_code && invite_code !== '' ? invite_code : '',
           favLocation: '',
           birthday: '',
           // termsAndConditions: false
