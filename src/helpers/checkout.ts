@@ -394,8 +394,6 @@ export function getGiftCardObj(
 export function updatePaymentCardsAmount(billingSchemes: any, basket: any) {
   const billingSchemeStats = getBillingSchemesStats(billingSchemes);
 
-  console.log('billingSchemeStats', billingSchemeStats);
-
   if (
     billingSchemeStats.selectedCreditCard === 0 &&
     billingSchemeStats.selectedGiftCard === 0
@@ -452,7 +450,7 @@ export function updatePaymentCardsAmount(billingSchemes: any, basket: any) {
     let halfAmount: any = 0;
     halfAmount = basket ? basket.total - giftCardAmount : 0;
     console.log('halfAmount', halfAmount);
-    halfAmount = (halfAmount / 2).toFixed(2);
+    halfAmount = halfAmount > 0 ? (halfAmount / 2).toFixed(2) : 0;
 
     billingSchemes = billingSchemes.map((account: any) => {
       if (account.selected) {
@@ -487,7 +485,7 @@ export function updatePaymentCardsAmount(billingSchemes: any, basket: any) {
     billingSchemes = billingSchemes.map((account: any) => {
       if (account.selected) {
         if (account.billingmethod === 'creditcardtoken') {
-          account.amount = parseFloat(creditCardAmount);
+          account.amount = creditCardAmount > 0 ? parseFloat(creditCardAmount) : 0;
         } else if (account.billingmethod === 'storedvalue') {
           account.amount = parseFloat(giftCardAmount);
         }
@@ -499,66 +497,4 @@ export function updatePaymentCardsAmount(billingSchemes: any, basket: any) {
     return billingSchemes;
   }
   return [];
-  // if (
-  //   billingSchemeStats.creditCard === 0 &&
-  //   billingSchemeStats.giftCard === 0
-  // ) {
-  //   cardObj[0].amount = basket && basket?.total ? basket?.total : 0;
-  //   cardObj[0].selected = true;
-  // } else if (
-  //   billingSchemeStats.creditCard === 1 &&
-  //   billingSchemeStats.giftCard === 1
-  // ) {
-  //   let giftCardAmount = 0;
-  //   let halfAmount: any = 0;
-  //   const giftCardIndex = billingSchemesNewArray.findIndex(
-  //     (account: any) => account.billingmethod === 'storedvalue',
-  //   );
-  //   if (giftCardIndex !== -1) {
-  //     let updatedCreditCard = billingSchemesNewArray[giftCardIndex];
-  //     giftCardAmount =
-  //       basket && updatedCreditCard.balance > basket.subtotal
-  //         ? basket.subtotal
-  //         : updatedCreditCard.balance;
-  //     updatedCreditCard.amount = giftCardAmount;
-  //     updatedCreditCard.selected = true;
-  //     billingSchemesNewArray[giftCardIndex] = updatedCreditCard;
-  //   }
-  //
-  //   halfAmount = basket ? basket.total - giftCardAmount : 0;
-  //   halfAmount = halfAmount / 2;
-  //   halfAmount = halfAmount.toFixed(2);
-  //
-  //   const creditCardIndex = billingSchemesNewArray.findIndex(
-  //     (account: any) => account.billingmethod === 'creditcardtoken',
-  //   );
-  //   if (creditCardIndex !== -1) {
-  //     let updatedCreditCard = billingSchemesNewArray[creditCardIndex];
-  //     updatedCreditCard.amount = parseFloat(halfAmount);
-  //     updatedCreditCard.selected = true;
-  //     billingSchemesNewArray[creditCardIndex] = updatedCreditCard;
-  //   }
-  //
-  //   cardObj[0].amount = parseFloat(halfAmount);
-  //   cardObj[0].selected = true;
-  // } else if (
-  //   billingSchemeStats.creditCard === 1 &&
-  //   billingSchemeStats.giftCard === 0
-  // ) {
-  //   let halfAmount: any = basket ? basket.total : 0;
-  //   halfAmount = halfAmount / 2;
-  //   halfAmount = halfAmount.toFixed(2);
-  //   const creditCardIndex = billingSchemesNewArray.findIndex(
-  //     (account: any) => account.billingmethod === 'creditcardtoken',
-  //   );
-  //   if (creditCardIndex !== -1) {
-  //     let updatedCreditCard = billingSchemesNewArray[creditCardIndex];
-  //     updatedCreditCard.amount = parseFloat(halfAmount);
-  //     updatedCreditCard.selected = true;
-  //     billingSchemesNewArray[creditCardIndex] = updatedCreditCard;
-  //   }
-  //
-  //   cardObj[0].amount = parseFloat(halfAmount);
-  //   cardObj[0].selected = true;
-  // }
 }
