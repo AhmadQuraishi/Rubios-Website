@@ -30,7 +30,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: '9px',
     textAlign: 'center',
     display: 'inline-block',
-    paddingRight: '10px',
+    paddingLeft: '30px',
+    fontFamily: 'Roboto,Helvetica,Arial,sans-serif !important',
     textDecoration: 'none',
     '&:hover': {
       color: theme.palette.success.main,
