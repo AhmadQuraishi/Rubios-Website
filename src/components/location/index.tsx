@@ -280,8 +280,10 @@ const LocationCard = (props: any) => {
   };
 
   useEffect(() => {
-    setShowAllResturants(false);
-    getSearchResults();
+    if (restaurants) {
+      setShowAllResturants(false);
+      getSearchResults();
+    }
   }, [resturantOrderType]);
 
   const [alignment, setAlignment] = React.useState('web');
@@ -352,13 +354,13 @@ const LocationCard = (props: any) => {
                 style={{
                   listStyle: 'none',
                   display: 'flex',
-                  flexWrap: 'wrap',
+                  flexFlow: 'row wrap',
                   marginTop: '10px',
                 }}
               >
                 {AllResturants.length > 0 &&
                   AllResturants.map((item: any, index: number) => (
-                    <li className='list-sx'>
+                    <li className="list-sx">
                       <div
                         style={{
                           boxShadow: '0px 2px 3px 0px rgb(0 0 0 / 20%)',
