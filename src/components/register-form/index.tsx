@@ -22,9 +22,12 @@ import { IMaskInput } from 'react-imask';
 import ReactDateInputs from 'react-date-inputs';
 import moment from 'moment';
 import './register-form.css';
+import { useLocation } from 'react-router-dom';
 
 const RegisterForm = () => {
   const dispatch = useDispatch();
+  const query = new URLSearchParams(useLocation().search);
+  const invite_code = query.get('invite_code');
   const { loading: loadingProvider } = useSelector(
     (state: any) => state.providerReducer,
   );
@@ -92,6 +95,17 @@ const RegisterForm = () => {
     },
   );
 
+  React.useEffect(() => {
+    const monthField = document.getElementsByClassName(
+      'react-date-inputs__month',
+    );
+    const dayField = document.getElementsByClassName('react-date-inputs__day');
+
+    if (monthField && monthField.length && dayField && dayField.length) {
+      monthField[0].after(dayField[0]);
+    }
+  }, []);
+
   return (
     <Grid container className="sign-up-section">
       <Typography variant="caption" className="label" title="Create Account">
@@ -110,7 +124,7 @@ const RegisterForm = () => {
           phone: '',
           password: '',
           password_confirmation: '',
-          invitecode: '',
+          invitecode: invite_code && invite_code !== '' ? invite_code : '',
           favLocation: '',
           birthday: '',
           // termsAndConditions: false
@@ -324,6 +338,7 @@ const RegisterForm = () => {
                     label="Birthday (Optional)"
                     onChange={(value) => handleBirthDayChange(value)}
                     value={birthDay}
+                    show={['month', 'day', 'year']}
                   />
                 </Grid>
                 <Grid item xs={12}>

@@ -305,7 +305,11 @@ const SplitPayment = forwardRef((props, _ref) => {
                     )}
                   </Grid>
                   <Grid
-                    style={{ display: 'flex', justifyContent: 'right' }}
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'right',
+                      padding: { xs: '0px 20px 0px 0px', sm: '0px 20px 0px 0px', md: '0px', lg: '0px'}
+                    }}
                     alignItems="center"
                     item
                     xs={2}
