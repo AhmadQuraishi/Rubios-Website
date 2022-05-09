@@ -1,7 +1,9 @@
-import { Button, Grid, TextField, Theme, Typography } from '@mui/material';
+import { Button, Grid, Theme, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { Fragment } from 'react';
+import { useEffect, useState } from 'react';
 import './invite.css';
+import { useSelector } from 'react-redux';
+import { displayToast } from '../../helpers/toast';
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     padding: '0px 20px 40px 20px',
@@ -19,9 +21,33 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const Invite = () => {
   const classes = useStyles();
-  const barcode = 'ABRAHAM12344';
+  const [inviteCode, setInviteCode] = useState('');
+  const { providerToken } = useSelector((state: any) => state.providerReducer);
+
+  useEffect(() => {
+    if (providerToken && providerToken.referral_code) {
+      setInviteCode(providerToken.referral_code);
+    }
+  }, [providerToken]);
   const copy = async () => {
-    await navigator.clipboard.writeText(barcode);
+    await navigator.clipboard.writeText(inviteCode);
+    displayToast('SUCCESS', 'Invite Code copied to clipboard.');
+  };
+  const handleClick = () => {
+    if (navigator.share) {
+      navigator
+        .share({
+          title: 'Sign up Rubios and GET $5 OFF YOUR NEXT ORDER',
+          text: "Here's the link to Join Us!",
+          url: `/register?invite_code=${inviteCode}`,
+        })
+        .then(() => {
+          console.log('Successfully shared');
+        })
+        .catch((error) => {
+          console.error('Something went wrong', error);
+        });
+    }
   };
   return (
     <div className={classes.root}>
@@ -48,19 +74,20 @@ const Invite = () => {
             <Grid item xs={12}>
               <Button
                 onClick={copy}
-                aria-label={`Tab to copy: ${barcode}`}
-                title={`Tab to copy: ${barcode}`}
+                aria-label={`Tab to copy: ${inviteCode}`}
+                title={`Tab to copy: ${inviteCode}`}
                 sx={{ width: { xs: '100%' } }}
                 className="tab-to-copy"
               >
-                <span className="copy-text">Tab to copy.</span> {barcode}
+                <span className="copy-text">Tab to copy.</span> {inviteCode}
               </Button>
             </Grid>
-            <Grid item xs={12}>
+            <Grid sx={{ display: { lg: 'none', md: 'flex' } }} item xs={12}>
               <Button
                 aria-label="invite"
                 title="invite"
                 variant="contained"
+                onClick={handleClick}
                 sx={{ width: { xs: '100%', sm: '400px' } }}
               >
                 INVITE
