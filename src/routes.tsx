@@ -1,5 +1,6 @@
 import React, { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import image from './assets/imgs/loading-logo.png';
 
 const Login = lazy(() => import('./pages/login'));
 const CategoryList = lazy(() => import('./pages/category'));
@@ -35,12 +36,17 @@ const AppRoutes = () => {
           <div
             style={{
               display: 'flex',
-              height: '100vh',
+              height: 'calc(100vh - 30vh)',
               alignItems: 'center',
               justifyContent: 'center',
             }}
           >
-            <img alt="Logo" src="./logo.png" />
+            <div style={{
+              backgroundImage:`url(${image})`,
+              width: '100px',
+              height: '100px',
+              display: 'block'
+            }} />
           </div>
         }
       >

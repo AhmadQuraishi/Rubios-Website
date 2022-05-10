@@ -2,7 +2,7 @@ import { makeStyles } from '@mui/styles';
 import { Grid, Typography, Button } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import './login2.css';
-import { Fragment, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import LoginForm from '../../components/login-form';
 import bgImage from '../../assets/imgs/login-bg.png';
