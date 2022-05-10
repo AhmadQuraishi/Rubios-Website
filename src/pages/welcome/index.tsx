@@ -23,9 +23,11 @@ import { getFavRestaurant } from '../../redux/actions/restaurant/fav-restaurant'
 import { displayToast } from '../../helpers/toast';
 import { handleCart } from '../../components/header';
 import WelcomeNewUser from '../../components/welcome/new-user';
+import BgImage from '../../assets/imgs/Family_Burrito_Box_mainA573LR.jpg';
+
 const useStyle = makeStyles(() => ({
   root: {
-    background: `url(https://upload.wikimedia.org/wikipedia/commons/6/6d/Good_Food_Display_-_NCI_Visuals_Online.jpg) center center fixed`,
+    background: `url(${BgImage}) center center fixed`,
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
     justifyContent: 'center',
