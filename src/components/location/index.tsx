@@ -160,6 +160,7 @@ const LocationCard = (props: any) => {
     let restaurantObj = null;
     if (resturantOrderType == 'delivery') {
       restaurantObj = deliveryRasturants.find((x: any) => x.id === storeID);
+      dispatch(setDeliveryAddress(deliveryAddressString));
     } else {
       restaurantObj = restaurants.find((x: any) => x.id === storeID);
     }
@@ -172,7 +173,6 @@ const LocationCard = (props: any) => {
         dispatch(
           setResturantInfoRequest(restaurantObj, resturantOrderType || ''),
         );
-        dispatch(setDeliveryAddress(deliveryAddressString));
         displayToast('SUCCESS', 'Location changed to ' + restaurantObj.name);
       }
       navigate('/menu/' + restaurantObj.slug);

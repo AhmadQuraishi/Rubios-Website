@@ -25,10 +25,11 @@ const Register = () => {
   const navigate = useNavigate();
 
   const { providerToken } = useSelector((state: any) => state.providerReducer);
+  const { authToken } = useSelector((state: any) => state.authReducer);
   const { pageURL } = useSelector((state: any) => state.pageStateReducer);
 
   useEffect(() => {
-    if (providerToken) {
+    if (providerToken && authToken) {
       if (pageURL == undefined || pageURL == null) {
         navigate('/welcome');
       } else {
