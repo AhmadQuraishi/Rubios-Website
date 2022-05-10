@@ -42,6 +42,8 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
   const [tipCustomAmount, setTipCustomAmount] = React.useState<any>(null);
   const [couponCode, setCouponCode] = React.useState('');
   const [runOnce, setRunOnce] = React.useState(true);
+  const [tipLoading, setTipLoading] = React.useState(true);
+  const [couponLoading, setCouponLoading] = React.useState(true);
 
   useEffect(() => {
     if (basket) {
@@ -61,22 +63,32 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
     }
   }, [basket]);
 
+  useEffect(() => {
+    if (!loading) {
+      setTipLoading(false);
+      setCouponLoading(false);
+    }
+  }, [loading]);
+
   const updateTipAmountCall = (tip: any) => {
     if (tip) {
       const payload = {
         amount: tip,
       };
+      setTipLoading(true);
       dispatch(updateBasketTipAmount(basket.id, payload));
     }
   };
 
   const updateCouponCodeCall = (coupon: string) => {
     if (basket && basket.coupon && basket.coupon.couponcode) {
+      setCouponLoading(true);
       dispatch(removeBasketCouponCode(basket.id, ''));
     } else if (coupon.length) {
       const payload = {
         couponcode: coupon,
       };
+      setCouponLoading(true);
       dispatch(updateBasketCouponCode(basket.id, payload));
     }
   };
@@ -109,7 +121,7 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
         updateTipAmountCall(tipCustomAmount);
         setTipPercentage(0);
       }}
-      disabled={loading || !tipCustomAmount}
+      disabled={(loading && tipLoading) || !tipCustomAmount}
       aria-label="proceed"
     >
       <ArrowRightAltIcon />
@@ -125,7 +137,7 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
             ? '8px'
             : '0.875rem',
       }}
-      disabled={loading || !couponCode}
+      disabled={(loading && couponLoading) || !couponCode}
       aria-label="proceed"
     >
       {basket && basket.coupon && basket.coupon.couponcode ? (
