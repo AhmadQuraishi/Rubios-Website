@@ -24,6 +24,7 @@ import { displayToast } from '../../helpers/toast';
 import { handleCart } from '../../components/header';
 import WelcomeNewUser from '../../components/welcome/new-user';
 import BgImage from '../../assets/imgs/Family_Burrito_Box_mainA573LR.jpg';
+import BgImageNewUser from '../../assets/imgs/rubios-welcome-background.png';
 
 const useStyle = makeStyles(() => ({
   root: {
@@ -44,6 +45,7 @@ const Welcome = () => {
   const new_user = query.get('new_user');
 
   const [recentorders, setOrders] = useState([]);
+  const [pageBackground, setPageBackground] = useState(BgImage);
   const [isEdit, setIsEdit] = useState(false);
   const [isError, setIserror] = useState(false);
   const [isReoder, setIsReoder] = useState(false);
@@ -68,6 +70,10 @@ const Welcome = () => {
   const { favRestaurant, favloading } = useSelector(
     (state: any) => state.favRestaurantReducer,
   );
+
+  useEffect(() => {
+    setPageBackground(new_user === 'true' ? BgImageNewUser : BgImage);
+  }, []);
 
   useEffect(() => {
     if (
@@ -164,7 +170,17 @@ const Welcome = () => {
 
   return (
     <Fragment>
-      <Grid container component="main" columns={16} className={classes.root}>
+      <Grid
+        style={{
+          backgroundImage: `url(${pageBackground})`,
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
+          justifyContent: 'center',
+        }}
+        container
+        component="main"
+        columns={16}
+      >
         <Grid item xs={16} className="welcome-wrapper">
           <Grid container columns={16} className="welcome-content">
             <Grid item xs={16} sm={16} md={14} lg={9} className="left-col">
