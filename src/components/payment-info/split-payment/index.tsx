@@ -121,13 +121,9 @@ const SplitPayment = forwardRef((props, _ref) => {
   };
 
   const handleAmountChanges = (event: any, localId: any) => {
-    let newValue =
-      event.target.value && event.target.value >= 0
-        ? parseFloat(event.target.value)
-        : 0;
-
+    let newValue = event.target.value;
+    newValue = newValue && newValue >= 0 ? parseFloat(newValue) : 0;
     newValue = +newValue.toFixed(2);
-
     const accountIndex = billingSchemes.findIndex(
       (element: any) => element.localId === localId,
     );
@@ -288,8 +284,8 @@ const SplitPayment = forwardRef((props, _ref) => {
                           {account.billingfields
                             ? `Gift Card x${giftCardLastFourDigits(account)}`
                             : account.cardlastfour
-                              ? `Gift Card x${account.cardlastfour}`
-                              : ''}
+                            ? `Gift Card x${account.cardlastfour}`
+                            : ''}
                         </Typography>
                         <Typography
                           style={{
@@ -308,7 +304,12 @@ const SplitPayment = forwardRef((props, _ref) => {
                     sx={{
                       display: 'flex',
                       justifyContent: 'flex-end',
-                      padding: { xs: '0px 20px 0px 0px', sm: '0px 20px 0px 0px', md: '0px', lg: '0px'}
+                      padding: {
+                        xs: '0px 20px 0px 0px',
+                        sm: '0px 20px 0px 0px',
+                        md: '0px',
+                        lg: '0px',
+                      },
                     }}
                     alignItems="center"
                     item
@@ -333,15 +334,14 @@ const SplitPayment = forwardRef((props, _ref) => {
                     md={3}
                     lg={3}
                   >
+                    {console.log('new Value 4', account.amount )}
                     <TextField
                       type="number"
-                      onChange={(e) =>
-                        handleAmountChanges(e, account.localId)
-                      }
+                      onChange={(e) => handleAmountChanges(e, account.localId)}
                       disabled={
                         !account.selected || billingSchemes.length === 1
                       }
-                      value={account.amount || 0}
+                      value={account.amount.toString() || 0}
                       inputProps={{ shrink: false }}
                       InputProps={{
                         startAdornment: (
