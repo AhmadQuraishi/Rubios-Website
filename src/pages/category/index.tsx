@@ -191,7 +191,7 @@ const CategoryList = () => {
         var categoryPanel = document.getElementById('categoryMenu');
         var dummyCategoryPanel = document.getElementById('dummyCategoryPanel');
 
-        checkScrollIndex(scrollValues, window.scrollY);
+        //checkScrollIndex(scrollValues, window.scrollY);
         if (categoryPanel && dummyCategoryPanel) {
           if (window.scrollY > categoryPanel.offsetTop) {
             categoryPanel.style.position = 'fixed';
