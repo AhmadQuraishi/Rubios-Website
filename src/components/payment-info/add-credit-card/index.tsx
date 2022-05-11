@@ -179,6 +179,7 @@ const AddCreditCard = () => {
         onClose={handleCloseAddCreditCard}
         className="fav-dialog"
         fullWidth
+
       >
         <DialogTitle>Add Credit Card</DialogTitle>
 
@@ -203,7 +204,7 @@ const AddCreditCard = () => {
                       lg={6}
                       className="payment-form image-field align"
                     >
-                      <div className="card-fields" data-olo-pay-card-number />
+                      <div tabIndex={0} className="card-fields" data-olo-pay-card-number />
                       <img
                         src={require('../../../assets/imgs/card-icon.png')}
                       />
