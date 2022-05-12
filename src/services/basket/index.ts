@@ -225,3 +225,25 @@ export const addUpSells = (basketid: string, body: RequestBasketAddUpsell) => {
     throw error;
   }
 };
+
+export const createGuestUser = () => {
+  try {
+    const url = process.env.REACT_APP_OLO_API || '';
+    const payload = {
+      password: 'asdf1234',
+      optin: true,
+    };
+    return axios
+      .post(
+        url + `/orders/a98726df-1cd1-ec11-a9c9-aad2a287f600/createuser`,
+        payload,
+      )
+      .then((response) => response.data)
+      .catch((error) => {
+        console.log(error.response);
+        throw error;
+      });
+  } catch (error) {
+    throw error;
+  }
+};

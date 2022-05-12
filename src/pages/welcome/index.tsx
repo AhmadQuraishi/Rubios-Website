@@ -53,6 +53,7 @@ const Welcome = () => {
   const [deliverymode, setDeliveryMode] = useState('');
   const [restInfo, setRestInfo] = useState(false);
   const [isbasket, setIsbasket] = useState(false);
+  const [newUser, setNewUser] = useState(false);
   const [body, setBody] = useState({
     id: '',
     ignoreunavailableproducts: true,
@@ -72,7 +73,20 @@ const Welcome = () => {
   );
 
   useEffect(() => {
-    setPageBackground(new_user === 'true' ? BgImageNewUser : BgImage);
+    setPageBackground(newUser ? BgImageNewUser : BgImage);
+    if (
+      new_user === 'true' &&
+      userRecentOrders &&
+      userRecentOrders.orders &&
+      userRecentOrders.orders.length &&
+      userRecentOrders.orders[0]
+    ) {
+      setNewUser(false);
+    } else if (new_user === 'true') {
+      setNewUser(true);
+    } else {
+      setNewUser(false);
+    }
   }, []);
 
   useEffect(() => {
@@ -185,7 +199,7 @@ const Welcome = () => {
           <Grid container columns={16} className="welcome-content">
             <Grid item xs={16} sm={16} md={14} lg={9} className="left-col">
               <Typography variant="h2" className="label" title="Welcome">
-                {new_user === 'true' ? 'CONGRATULATIONS!' : 'WELCOME'}
+                {newUser ? 'CONGRATULATIONS!' : 'WELCOME'}
               </Typography>
               <Typography
                 variant="h1"
@@ -196,12 +210,9 @@ const Welcome = () => {
                   providerToken.first_name
                 }
               >
-                {new_user === 'true'
-                  ? "WELCOME TO RUBIO'S REWARDS"
-                  : 'WELCOME BACK'}{' '}
-                <br />
+                {newUser ? "WELCOME TO RUBIO'S REWARDS" : 'WELCOME BACK'} <br />
                 {providerToken &&
-                  new_user !== 'true' &&
+                  newUser &&
                   providerToken.first_name &&
                   `${providerToken.first_name}!`}
               </Typography>
@@ -300,12 +311,12 @@ const Welcome = () => {
                 userRecentOrders.orders.length === 0 &&
                 authToken &&
                 authToken.authtoken &&
-                new_user !== 'true' &&
+                !newUser &&
                 !isEdit &&
                 !isReoder && (
                   <Typography>You don't have any recent orders</Typography>
                 )}
-              {new_user === 'true' && (
+              {newUser && (
                 <>
                   <Typography variant={'h6'} style={{ marginBottom: 23 }}>
                     Begin your order to start earning rewards today!
@@ -332,13 +343,9 @@ const Welcome = () => {
                 className="label"
                 title="YOUR FAVORITE LOCATION"
               >
-                {new_user === 'true'
-                  ? 'DOWNLOAD THE APP'
-                  : 'YOUR FAVORITE LOCATION'}
+                {newUser ? 'DOWNLOAD THE APP' : 'YOUR FAVORITE LOCATION'}
               </Typography>
-              {new_user === 'true' ? (
-                <WelcomeNewUser />
-              ) : (
+              {!newUser ? (
                 <>
                   {(favloading && <CardSkeletonUI />) ||
                     (isEdit && <CardSkeletonUI />) ||
@@ -448,6 +455,8 @@ const Welcome = () => {
                     </Grid>
                   )}
                 </>
+              ) : (
+                <WelcomeNewUser />
               )}
             </Grid>
           </Grid>
