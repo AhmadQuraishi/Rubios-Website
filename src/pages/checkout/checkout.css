@@ -16,7 +16,7 @@
   margin-bottom: 10px;
 }
 .order .left-col h1 {
-  margin-bottom: 20px;
+  margin-bottom: 20px !important;
 }
 .order .right-col button.caption-grey {
   color: #707070;
