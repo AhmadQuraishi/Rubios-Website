@@ -95,6 +95,7 @@ function App(props: any) {
         removeCart={
           isAccountSection ||
           window.location.href.toLocaleLowerCase().indexOf('/checkout') != -1 ||
+          window.location.href.toLocaleLowerCase().indexOf('/welcome') != -1 ||
           window.location.href
             .toLocaleLowerCase()
             .indexOf('/order-confirmation') != -1
