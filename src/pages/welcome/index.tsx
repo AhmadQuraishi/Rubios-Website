@@ -78,6 +78,7 @@ const Welcome = () => {
       new_user === 'true' &&
       userRecentOrders &&
       userRecentOrders.orders &&
+      userRecentOrders.orders.length &&
       userRecentOrders.orders[0]
     ) {
       setNewUser(false);
