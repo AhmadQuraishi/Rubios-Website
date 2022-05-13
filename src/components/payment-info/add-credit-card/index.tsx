@@ -1,4 +1,4 @@
-import React, { ChangeEvent, forwardRef, useImperativeHandle } from 'react';
+import React, { useImperativeHandle } from 'react';
 import {
   Button,
   Grid,
@@ -9,24 +9,14 @@ import {
   DialogActions,
 } from '@mui/material';
 import { CreditCardElements, PaymentMethodResult } from '@olo/pay';
-// import './payment-info.css';
 import { ResponseBasket } from '../../../types/olo-api';
 import { useDispatch, useSelector } from 'react-redux';
 import { displayToast } from '../../../helpers/toast';
 import { updateBasketBillingSchemes } from '../../../redux/actions/basket/checkout';
 import {
-  getBillingSchemesStats,
   getCreditCardObj,
   updatePaymentCardsAmount,
-  getUniqueId,
 } from '../../../helpers/checkout';
-
-const cardTypes: any = {
-  amex: 'Amex',
-  visa: 'Visa',
-  discover: 'Discover',
-  mastercard: 'Mastercard',
-};
 
 const styleObject = {
   base: {
@@ -38,16 +28,6 @@ const styleObject = {
       fontFamily: 'Poppins-Regular, sans-serif',
     },
   },
-  // complete: {
-  //   color: 'peachpuff',
-  //   fontFamily: 'Mr Dafoe, cursive',
-  // },
-  // invalid: {
-  //   color: 'tomato',
-  //   ':hover': {
-  //     color: 'orangered',
-  //   },
-  // }
 };
 
 const AddCreditCard = () => {
@@ -57,9 +37,7 @@ const AddCreditCard = () => {
   const creditCardInfo = React.useRef<any>();
   const basketObj = useSelector((state: any) => state.basketReducer);
   const [basket, setBasket] = React.useState<ResponseBasket>();
-  const [allowedCards, setAllowedCards] = React.useState<any>();
   const [billingSchemes, setBillingSchemes] = React.useState<any>([]);
-  const [pinCheck, setPinCheck] = React.useState<any>(false);
   const [billingDetails, setBillingDetails] = React.useState<any>();
   const [zipCode, setZipCode] = React.useState<any>();
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
@@ -75,16 +53,6 @@ const AddCreditCard = () => {
       setBasket(basketObj.basket);
     }
   }, [basketObj.basket]);
-
-  React.useEffect(() => {
-    if (
-      basketObj.payment.allowedCards &&
-      basketObj.payment.allowedCards.data &&
-      basketObj.payment.allowedCards.data.billingschemes
-    ) {
-      setAllowedCards(basketObj.payment.allowedCards.data.billingschemes);
-    }
-  }, [basketObj.payment.allowedCards]);
 
   React.useEffect(() => {
     setBillingSchemes(basketObj.payment.billingSchemes);
@@ -189,7 +157,6 @@ const AddCreditCard = () => {
     }
 
     let billingSchemesNewArray = billingSchemes;
-    // const billingSchemeStats = getBillingSchemesStats(billingSchemes);
     let cardObj: any = getCreditCardObj(cardDetails, billingSchemes);
 
     Array.prototype.push.apply(billingSchemesNewArray, cardObj);
@@ -198,88 +165,6 @@ const AddCreditCard = () => {
       billingSchemesNewArray,
       basket,
     );
-
-    // let cardObj: any = [
-    //   {
-    //     localId: getUniqueId(),
-    //     selected: false,
-    //     billingmethod: 'creditcardtoken',
-    //     amount: 0,
-    //     tipportion: 0.0,
-    //     token: cardDetails.id,
-    //     cardtype: cardTypes[cardDetails.card.brand],
-    //     expiryyear: cardDetails.card.exp_year,
-    //     expirymonth: cardDetails.card.exp_month,
-    //     cardlastfour: cardDetails.card.last4,
-    //     zip: cardDetails.billing_details.address.postal_code,
-    //     saveonfile: false,
-    //   },
-    // ];
-
-    // if (
-    //   billingSchemeStats.creditCard === 0 &&
-    //   billingSchemeStats.giftCard === 0
-    // ) {
-    //   cardObj[0].amount = basket && basket?.total ? basket?.total : 0;
-    //   cardObj[0].selected = true;
-    // } else if (
-    //   billingSchemeStats.creditCard === 1 &&
-    //   billingSchemeStats.giftCard === 1
-    // ) {
-    //   let giftCardAmount = 0;
-    //   let halfAmount: any = 0;
-    //   const giftCardIndex = billingSchemesNewArray.findIndex(
-    //     (account: any) => account.billingmethod === 'storedvalue',
-    //   );
-    //   if (giftCardIndex !== -1) {
-    //     let updatedCreditCard = billingSchemesNewArray[giftCardIndex];
-    //     giftCardAmount =
-    //       basket && updatedCreditCard.balance > basket.subtotal
-    //         ? basket.subtotal
-    //         : updatedCreditCard.balance;
-    //     updatedCreditCard.amount = giftCardAmount;
-    //     updatedCreditCard.selected = true;
-    //     billingSchemesNewArray[giftCardIndex] = updatedCreditCard;
-    //   }
-    //
-    //   halfAmount = basket ? basket.total - giftCardAmount : 0;
-    //   halfAmount = halfAmount / 2;
-    //   halfAmount = halfAmount.toFixed(2);
-    //
-    //   const creditCardIndex = billingSchemesNewArray.findIndex(
-    //     (account: any) => account.billingmethod === 'creditcardtoken',
-    //   );
-    //   if (creditCardIndex !== -1) {
-    //     let updatedCreditCard = billingSchemesNewArray[creditCardIndex];
-    //     updatedCreditCard.amount = parseFloat(halfAmount);
-    //     updatedCreditCard.selected = true;
-    //     billingSchemesNewArray[creditCardIndex] = updatedCreditCard;
-    //   }
-    //
-    //   cardObj[0].amount = parseFloat(halfAmount);
-    //   cardObj[0].selected = true;
-    // } else if (
-    //   billingSchemeStats.creditCard === 1 &&
-    //   billingSchemeStats.giftCard === 0
-    // ) {
-    //   let halfAmount: any = basket ? basket.total : 0;
-    //   halfAmount = halfAmount / 2;
-    //   halfAmount = halfAmount.toFixed(2);
-    //   const creditCardIndex = billingSchemesNewArray.findIndex(
-    //     (account: any) => account.billingmethod === 'creditcardtoken',
-    //   );
-    //   if (creditCardIndex !== -1) {
-    //     let updatedCreditCard = billingSchemesNewArray[creditCardIndex];
-    //     updatedCreditCard.amount = parseFloat(halfAmount);
-    //     updatedCreditCard.selected = true;
-    //     billingSchemesNewArray[creditCardIndex] = updatedCreditCard;
-    //   }
-    //
-    //   cardObj[0].amount = parseFloat(halfAmount);
-    //   cardObj[0].selected = true;
-    // }
-    //
-    // Array.prototype.push.apply(billingSchemesNewArray, cardObj);
 
     dispatch(updateBasketBillingSchemes(billingSchemesNewArray));
     displayToast('SUCCESS', 'Credit Card Added');
@@ -294,6 +179,7 @@ const AddCreditCard = () => {
         onClose={handleCloseAddCreditCard}
         className="fav-dialog"
         fullWidth
+
       >
         <DialogTitle>Add Credit Card</DialogTitle>
 
@@ -318,7 +204,7 @@ const AddCreditCard = () => {
                       lg={6}
                       className="payment-form image-field align"
                     >
-                      <div className="card-fields" data-olo-pay-card-number />
+                      <div tabIndex={0} className="card-fields" data-olo-pay-card-number />
                       <img
                         src={require('../../../assets/imgs/card-icon.png')}
                       />
@@ -345,18 +231,12 @@ const AddCreditCard = () => {
                       <TextField
                         className="zipcode"
                         aria-label="Zip Code"
-                        // onBlur={handleBlur}
-                        // label="Zip Code"
-                        // aria-required="true"
-                        // title="Zip Code"
                         placeholder="Zip Code"
                         type="text"
                         name="zipcode"
                         inputProps={{ shrink: false }}
                         value={zipCode}
                         onChange={handleZipCodeChange}
-                        // error={Boolean(touched.zipcode && errors.zipcode)}
-                        // helperText={errors.zipcode}
                       />
                     </Grid>
                   </Grid>

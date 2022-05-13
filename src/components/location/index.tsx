@@ -15,8 +15,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setResturantInfoRequest } from '../../redux/actions/restaurant';
 import { displayToast } from '../../helpers/toast';
+import ListHours from '../location/listHours';
 import usePlacesAutocomplete, {
-  getDetails,
   getGeocode,
   getLatLng,
 } from 'use-places-autocomplete';
@@ -127,10 +127,12 @@ const LocationCard = (props: any) => {
   const [showNotFoundMessage, setShowNotFoundMessage] = useState(false);
   const [filteredRestaurants, setfilteredRestaurants] =
     useState<ResponseRestaurant[]>();
+  const [AllResturants, setAllResturants] = useState([]);
   const { restaurant, orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
   const [deliveryAddressString, setDeliveryAddressString] = useState<any>();
+  const [showAllResturants, setShowAllResturants] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -158,6 +160,7 @@ const LocationCard = (props: any) => {
     let restaurantObj = null;
     if (resturantOrderType == 'delivery') {
       restaurantObj = deliveryRasturants.find((x: any) => x.id === storeID);
+      dispatch(setDeliveryAddress(deliveryAddressString));
     } else {
       restaurantObj = restaurants.find((x: any) => x.id === storeID);
     }
@@ -170,7 +173,6 @@ const LocationCard = (props: any) => {
         dispatch(
           setResturantInfoRequest(restaurantObj, resturantOrderType || ''),
         );
-        dispatch(setDeliveryAddress(deliveryAddressString));
         displayToast('SUCCESS', 'Location changed to ' + restaurantObj.name);
       }
       navigate('/menu/' + restaurantObj.slug);
@@ -278,7 +280,10 @@ const LocationCard = (props: any) => {
   };
 
   useEffect(() => {
-    getSearchResults();
+    if (restaurants) {
+      setShowAllResturants(false);
+      getSearchResults();
+    }
   }, [resturantOrderType]);
 
   const [alignment, setAlignment] = React.useState('web');
@@ -316,6 +321,104 @@ const LocationCard = (props: any) => {
         lg={4}
         sx={{ zIndex: 1, margin: '20px 30px' }}
       >
+        {showAllResturants && (
+          <div
+            style={{
+              position: 'absolute',
+              width: '100%',
+              height: '100%',
+              background: '#FFF',
+              top: 0,
+              left: 0,
+            }}
+          >
+            <div
+              style={{
+                marginLeft: '350px',
+                paddingTop: '40px',
+                paddingRight: '40px',
+              }}
+            >
+              <Typography
+                variant="h2"
+                sx={{
+                  fontFamily: 'Poppins-Bold !important',
+                  color: '#214F66',
+                  fontSize: '36px !important',
+                  textTransform: 'uppercase',
+                }}
+              >
+                SELECT A {resturantOrderType} LOCATION
+              </Typography>
+              <ul
+                style={{
+                  listStyle: 'none',
+                  display: 'flex',
+                  flexFlow: 'row wrap',
+                  marginTop: '10px',
+                }}
+              >
+                {AllResturants.length > 0 &&
+                  AllResturants.map((item: any, index: number) => (
+                    <li className="list-sx">
+                      <div
+                        style={{
+                          boxShadow: '0px 2px 3px 0px rgb(0 0 0 / 20%)',
+                          margin: '10px 20px 10px 0px',
+                          padding: '20px 12px 5px 20px',
+                          border: '1px solid #CCC',
+                          overflow: 'hidden',
+                        }}
+                      >
+                        <Typography
+                          variant="h5"
+                          sx={{
+                            fontWeight: 'bold',
+                            fontSize: '18px',
+                            paddingBottom: '5px',
+                          }}
+                        >
+                          {item.name}
+                        </Typography>
+                        <Typography variant="body2">
+                          {item.streetaddress}, <br /> {item.city}, {item.state}
+                          , {item.zip}
+                        </Typography>
+                        {item.distance > 0 && (
+                          <Typography variant="body2" sx={{ color: '#0069aa' }}>
+                            {item.distance} Miles Away
+                          </Typography>
+                        )}
+                        <Typography
+                          variant="h5"
+                          textTransform="uppercase"
+                          title="Hours"
+                          sx={{
+                            paddingBottom: '5px',
+                            paddingTop: '15px',
+                            fontSize: '13px',
+                            fontWeight: '500',
+                            fontFamily: 'Poppins-Medium !important',
+                          }}
+                        >
+                          Hours
+                        </Typography>
+                        <ListHours id={item.id} />
+                        <Button
+                          sx={{ float: 'right', marginTop: '5px' }}
+                          onClick={() => {
+                            gotoCategoryPage(item.id);
+                          }}
+                        >
+                          ORDER NOW
+                        </Button>
+                      </div>
+                    </li>
+                  ))}
+              </ul>
+            </div>
+          </div>
+        )}
         <Card>
           <Grid container spacing={2} className="location-sidebar">
             <Grid item xs={12}>
@@ -369,7 +472,7 @@ const LocationCard = (props: any) => {
                 </ToggleButton>
               </ToggleButtonGroup>
             </Grid>
-            <Grid item xs={12} style={{ position: 'relative' }}>
+            <Grid item xs={12} style={{ position: 'relative', zIndex: 1 }}>
               {resturantOrderType == 'delivery' ? (
                 <TextField
                   aria-label="Enter your address..."
@@ -442,19 +545,98 @@ const LocationCard = (props: any) => {
                 </div>
               )}
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} style={{ position: 'relative' }}>
+              {showAllResturants}
+              {((!showAllResturants &&
+                resturantOrderType &&
+                resturantOrderType != 'delivery') ||
+                (!showAllResturants &&
+                  resturantOrderType == 'delivery' &&
+                  deliveryRasturants &&
+                  deliveryRasturants.length > 0)) && (
+                <Typography
+                  className="label"
+                  sx={{ display: { xs: 'none', sm: 'block' } }}
+                >
+                  <Link
+                    style={{
+                      display: 'block',
+                      cursor: 'pointer',
+                      textDecoration: 'none',
+                      fontWeight: 500,
+                      color: '#0075BF',
+                    }}
+                    title="View All Resturants"
+                    role="button"
+                    tabIndex={0}
+                    aria-label="View All Resturants"
+                    onClick={() => {
+                      let updatedRestaurants = [];
+                      if (resturantOrderType === 'pickup') {
+                        updatedRestaurants = restaurants.filter(
+                          (x: any) => x.canpickup === true,
+                        );
+                      } else if (resturantOrderType === 'curbside') {
+                        updatedRestaurants = restaurants.filter(
+                          (x: any) => x.supportscurbside === true,
+                        );
+                      } else if (resturantOrderType === 'delivery') {
+                        updatedRestaurants = deliveryRasturants.filter(
+                          (x: any) => x.candeliver === true,
+                        );
+                      }
+                      setAllResturants(updatedRestaurants);
+                      setShowAllResturants(true);
+                    }}
+                    to="#"
+                  >
+                    View All Restaurants
+                  </Link>
+                </Typography>
+              )}
+              {showAllResturants && (
+                <Typography className="label">
+                  <Link
+                    style={{
+                      zIndex: 1,
+                      display: 'block',
+                      cursor: 'pointer',
+                      textDecoration: 'none',
+                      fontWeight: 500,
+                      color: '#0075BF',
+                    }}
+                    title="BACK TO MAP"
+                    role="button"
+                    tabIndex={0}
+                    aria-label="BACK TO MAP"
+                    onClick={() => {
+                      setAllResturants([]);
+                      setShowAllResturants(false);
+                    }}
+                    to="#"
+                  >
+                    BACK TO MAP
+                  </Link>
+                </Typography>
+              )}
               <Typography className="label">
                 {((isNearByRestaurantList &&
                   filteredRestaurants &&
+                  !showAllResturants &&
                   filteredRestaurants.length > 0) ||
-                  (value &&
+                  (!showAllResturants &&
+                    value &&
                     deliveryRasturants &&
                     value != '' &&
                     deliveryRasturants.length > 0 &&
                     resturantOrderType &&
-                    resturantOrderType == 'delivery')) &&
-                  'NEARBY LOCATIONS'}
+                    resturantOrderType == 'delivery')) && (
+                  <>
+                    <p style={{ paddingTop: '5px' }}>NEARBY LOCATIONS</p>
+                  </>
+                )}
                 {!isNearByRestaurantList &&
+                  !showAllResturants &&
                   (filteredRestaurants == undefined ||
                     (filteredRestaurants &&
                       filteredRestaurants.length == 0)) && (

@@ -76,12 +76,22 @@
   text-align: center;
   padding-top: 0;
 }
+
+.list-sx{
+  flex-basis: 33%
+}
 @media screen and (max-width: 1024px) {
   .list-wrapper .MuiPaper-root {
     width: 70%;
   }
+  .list-sx {
+    flex-basis: 50%
+  }
 }
 @media screen and (max-width: 768px) {
+  .list-sx {
+    flex-basis: 100%
+  }
   .list-wrapper .MuiPaper-root {
     padding: 20px;
     border-radius: 30px;

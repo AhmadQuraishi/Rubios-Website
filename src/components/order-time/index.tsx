@@ -13,6 +13,7 @@ import {
   Box,
 } from '@mui/material';
 import moment from 'moment';
+import './index.css';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 import AdapterMoment from '@mui/lab/AdapterMoment';
@@ -140,7 +141,7 @@ const OrderTime = () => {
     <Grid item xs={12} sm={6} md={6} lg={6} className="right-col">
       <Grid container>
         <Grid item xs={12}>
-          <Typography variant="caption" title="PICKUP TIME" className="label">
+          <Typography variant="h3" title="PICKUP TIME" className="label">
             PICKUP TIME
           </Typography>
         </Grid>
@@ -244,6 +245,7 @@ const OrderTime = () => {
               id="select-more-times"
               aria-label="More Times"
               title="More Times"
+              className="time-picker"
               classes={{
                 root:
                   !selectShrink && !timeSlots.slice(4).includes(selectedTime)
@@ -258,6 +260,9 @@ const OrderTime = () => {
             <Select
               id="select-label"
               labelId="select-more-times"
+              role="dialog"
+              aria-modal="true"
+              aria-label="select more time"
               value={
                 timeSlots.slice(4).includes(selectedTime) ? selectedTime : ''
               }

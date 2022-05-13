@@ -7,7 +7,7 @@ import {
   CardContent,
   Button,
 } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './welcome.css';
 import { BaseSyntheticEvent, Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,9 +22,13 @@ import { createBasketFromPrev } from '../../redux/actions/basket/create';
 import { getFavRestaurant } from '../../redux/actions/restaurant/fav-restaurant';
 import { displayToast } from '../../helpers/toast';
 import { handleCart } from '../../components/header';
+import WelcomeNewUser from '../../components/welcome/new-user';
+import BgImage from '../../assets/imgs/Family_Burrito_Box_mainA573LR.jpg';
+import BgImageNewUser from '../../assets/imgs/rubios-welcome-background.png';
+
 const useStyle = makeStyles(() => ({
   root: {
-    background: `url(https://upload.wikimedia.org/wikipedia/commons/6/6d/Good_Food_Display_-_NCI_Visuals_Online.jpg) center center fixed`,
+    background: `url(${BgImage}) center center fixed`,
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
     justifyContent: 'center',
@@ -37,7 +41,11 @@ const Welcome = () => {
   const navigate = useNavigate();
   const classes = useStyle();
 
+  const query = new URLSearchParams(useLocation().search);
+  const new_user = query.get('new_user');
+
   const [recentorders, setOrders] = useState([]);
+  const [pageBackground, setPageBackground] = useState(BgImage);
   const [isEdit, setIsEdit] = useState(false);
   const [isError, setIserror] = useState(false);
   const [isReoder, setIsReoder] = useState(false);
@@ -45,6 +53,7 @@ const Welcome = () => {
   const [deliverymode, setDeliveryMode] = useState('');
   const [restInfo, setRestInfo] = useState(false);
   const [isbasket, setIsbasket] = useState(false);
+  const [newUser, setNewUser] = useState(false);
   const [body, setBody] = useState({
     id: '',
     ignoreunavailableproducts: true,
@@ -62,6 +71,35 @@ const Welcome = () => {
   const { favRestaurant, favloading } = useSelector(
     (state: any) => state.favRestaurantReducer,
   );
+
+  useEffect(() => {
+    setPageBackground(newUser ? BgImageNewUser : BgImage);
+    if (
+      new_user === 'true' &&
+      userRecentOrders &&
+      userRecentOrders.orders &&
+      userRecentOrders.orders.length &&
+      userRecentOrders.orders[0]
+    ) {
+      setNewUser(false);
+    } else if (new_user === 'true') {
+      setNewUser(true);
+    } else {
+      setNewUser(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (
+      providerToken &&
+      authToken &&
+      authToken.authtoken &&
+      authToken.authtoken !== ''
+    ) {
+    } else {
+      navigate('/login');
+    }
+  }, [authToken, providerToken]);
   useEffect(() => {
     if (authToken && authToken.authtoken) dispatch(getUserRecentOrders());
   }, [authToken]);
@@ -146,12 +184,22 @@ const Welcome = () => {
 
   return (
     <Fragment>
-      <Grid container component="main" columns={16} className={classes.root}>
+      <Grid
+        style={{
+          backgroundImage: `url(${pageBackground})`,
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
+          justifyContent: 'center',
+        }}
+        container
+        component="main"
+        columns={16}
+      >
         <Grid item xs={16} className="welcome-wrapper">
           <Grid container columns={16} className="welcome-content">
             <Grid item xs={16} sm={16} md={14} lg={9} className="left-col">
-              <Typography variant="caption" className="label" title="Welcome">
-                WELCOME
+              <Typography variant="h2" className="label" title="Welcome">
+                {newUser ? 'CONGRATULATIONS!' : 'WELCOME'}
               </Typography>
               <Typography
                 variant="h1"
@@ -162,15 +210,15 @@ const Welcome = () => {
                   providerToken.first_name
                 }
               >
-                WELCOME BACK <br></br>
+                {newUser ? "WELCOME TO RUBIO'S REWARDS" : 'WELCOME BACK'} <br />
                 {providerToken &&
+                  newUser &&
                   providerToken.first_name &&
-                  providerToken.first_name}
-                !
+                  `${providerToken.first_name}!`}
               </Typography>
               {(loading && <CardSkeletonUI />) ||
-                (isEdit == true && <CardSkeletonUI />) ||
-                (isReoder == true && <CardSkeletonUI />)}
+                (isEdit && <CardSkeletonUI />) ||
+                (isReoder && <CardSkeletonUI />)}
 
               {!loading &&
                 userRecentOrders &&
@@ -178,15 +226,15 @@ const Welcome = () => {
                 userRecentOrders.orders.length > 0 &&
                 authToken &&
                 authToken.authtoken &&
-                isEdit == false &&
-                isReoder == false && (
+                !isEdit &&
+                !isReoder && (
                   <Fragment>
                     {userRecentOrders.orders
                       .slice(0, 1)
                       .map((order: any, index: number) => (
                         <Fragment key={index + order.id}>
                           <Typography
-                            variant="caption"
+                            variant="h2"
                             className="label"
                             title="LAST ORDER 11/01"
                           >
@@ -201,8 +249,9 @@ const Welcome = () => {
                             <CardMedia
                               component="img"
                               title="image"
+                              aria-label="Recent Order Image Icon"
                               image={require('../../assets/imgs/order-hidtory-icon.png')}
-                              alt="image"
+                              alt="Recent Order Image Icon"
                               className="order-img"
                             />
                             <CardContent className="product-content">
@@ -232,7 +281,6 @@ const Welcome = () => {
                                 ))}
                               <Grid className="order-action">
                                 <Button
-                                  aria-label="edit order"
                                   className="caption-grey"
                                   title="EDIT ORDER"
                                   onClick={() => {
@@ -242,7 +290,6 @@ const Welcome = () => {
                                   Edit Order
                                 </Button>
                                 <Button
-                                  aria-label="re order"
                                   className="button"
                                   title="order"
                                   onClick={() => {
@@ -264,113 +311,153 @@ const Welcome = () => {
                 userRecentOrders.orders.length === 0 &&
                 authToken &&
                 authToken.authtoken &&
-                isEdit == false &&
-                isReoder == false && (
+                !newUser &&
+                !isEdit &&
+                !isReoder && (
                   <Typography>You don't have any recent orders</Typography>
                 )}
+              {newUser && (
+                <>
+                  <Typography variant={'h6'} style={{ marginBottom: 23 }}>
+                    Begin your order to start earning rewards today!
+                  </Typography>
+                  <Grid item xs={12} sm={12} md={10} lg={10}>
+                    <Button
+                      className="button"
+                      variant="contained"
+                      title="ORDER NOW"
+                      style={{ width: '100%' }}
+                      onClick={() => {
+                        navigate('/location');
+                      }}
+                    >
+                      ORDER NOW
+                    </Button>
+                  </Grid>
+                </>
+              )}
             </Grid>
             <Grid item xs={16} sm={16} md={14} lg={5.5} className="right-col">
               <Typography
-                variant="caption"
+                variant="h2"
                 className="label"
                 title="YOUR FAVORITE LOCATION"
               >
-                YOUR FAVORITE LOCATION
+                {newUser ? 'DOWNLOAD THE APP' : 'YOUR FAVORITE LOCATION'}
               </Typography>
-              {(favloading && <CardSkeletonUI />) ||
-                (isEdit === true && <CardSkeletonUI />) ||
-                (isReoder === true && <CardSkeletonUI />)}
-              {!favloading &&
-                favRestaurant == null &&
-                isEdit == false &&
-                isReoder == false && (
-                  <Typography>You don't have any favorite location</Typography>
-                )}
-
-              {!favloading &&
-                favRestaurant &&
-                isEdit == false &&
-                isReoder == false && (
-                  <Grid container spacing={1} columns={16}>
-                    <Grid
-                      item
-                      xs={16}
-                      sm={8}
-                      md={16}
-                      lg={16}
-                      className="res-info"
-                    >
-                      <Typography variant="h5" title="Broadway Blvd">
-                        {favRestaurant.name}
-                        <Link
-                          className="caption-grey"
-                          title="change"
-                          to="/location"
-                        >
-                          (change)
-                        </Link>
+              {!newUser ? (
+                <>
+                  {(favloading && <CardSkeletonUI />) ||
+                    (isEdit && <CardSkeletonUI />) ||
+                    (isReoder && <CardSkeletonUI />)}
+                  {!favloading &&
+                    favRestaurant == null &&
+                    !isEdit &&
+                    !isReoder && (
+                      <Typography>
+                        You don't have any favorite location
                       </Typography>
+                    )}
 
-                      <Typography
-                        variant="h6"
-                        title="20212 North 59th Ave, Ste.465A"
+                  {!favloading && favRestaurant && !isEdit && !isReoder && (
+                    <Grid container spacing={1} columns={16}>
+                      <Grid
+                        item
+                        xs={16}
+                        sm={8}
+                        md={16}
+                        lg={16}
+                        className="res-info"
                       >
-                        {favRestaurant.streetaddress}, {favRestaurant.zip}
-                      </Typography>
-                      <Typography variant="h6" title="San Diego, CA">
-                        {favRestaurant.city}, {favRestaurant.state}
-                      </Typography>
-                      {favRestaurant.distance > 0 && (
-                        <Typography variant="h6" title="distance">
-                          {favRestaurant.distance} Miles Away
+                        <Typography variant="h5" title={favRestaurant.name}>
+                          {favRestaurant.name}
+                          <Link
+                            className="caption-grey"
+                            title="change"
+                            to="/location"
+                          >
+                            (change)
+                          </Link>
                         </Typography>
-                      )}
-                    </Grid>
-                    <Grid
-                      item
-                      xs={16}
-                      sm={8}
-                      md={16}
-                      lg={16}
-                      className="action-btn"
-                    >
-                      {favRestaurant.canpickup === true && (
-                        <Button
-                          aria-label="pickup button"
-                          variant="contained"
-                          title="PICKUP"
-                          name="pickup"
-                          onClick={gotoCategoryPage}
-                        >
-                          PICKUP
-                        </Button>
-                      )}
-                      {favRestaurant.candeliver === true && (
-                        <Button
-                          aria-label="delivery button"
-                          variant="contained"
-                          title="DELIVERY"
-                          name="delivery"
-                          onClick={gotoCategoryPage}
-                        >
-                          DELIVERY
-                        </Button>
-                      )}
 
-                      {favRestaurant.supportscurbside === true && (
-                        <Button
-                          aria-label="curbside button"
-                          variant="contained"
-                          title="CURBSIDE"
-                          name="curbside"
-                          onClick={gotoCategoryPage}
+                        <Typography
+                          variant="h6"
+                          title={`${favRestaurant.streetaddress}, ${favRestaurant.zip}`}
                         >
-                          CURBSIDE
-                        </Button>
-                      )}
+                          {favRestaurant.streetaddress}, {favRestaurant.zip}
+                        </Typography>
+                        <Typography
+                          variant="h6"
+                          title={`${favRestaurant.city}, ${favRestaurant.state}`}
+                        >
+                          {favRestaurant.city}, {favRestaurant.state}
+                        </Typography>
+                        {favRestaurant.distance > 0 && (
+                          <Typography
+                            variant="h6"
+                            title={`${favRestaurant.distance} Miles Away`}
+                          >
+                            {favRestaurant.distance} Miles Away
+                          </Typography>
+                        )}
+                      </Grid>
+                      <Grid
+                        item
+                        xs={16}
+                        sm={8}
+                        md={16}
+                        lg={16}
+                        className="action-btn"
+                      >
+                        <ul style={{ listStyle: 'none' }}>
+                          {favRestaurant.canpickup === true && (
+                            <li>
+                              <Button
+                                aria-label="pickup button"
+                                variant="contained"
+                                title="PICKUP"
+                                name="pickup"
+                                onClick={gotoCategoryPage}
+                              >
+                                PICKUP
+                              </Button>
+                            </li>
+                          )}
+                          {favRestaurant.candeliver === true && (
+                            <li>
+                              <Button
+                                aria-label="delivery button"
+                                variant="contained"
+                                title="DELIVERY"
+                                name="delivery"
+                                onClick={gotoCategoryPage}
+                              >
+                                DELIVERY
+                              </Button>
+                            </li>
+                          )}
+
+                          {favRestaurant.supportscurbside === true && (
+                            <li>
+                              <Button
+                                aria-label="curbside button"
+                                variant="contained"
+                                title="CURBSIDE"
+                                name="curbside"
+                                onClick={gotoCategoryPage}
+                              >
+                                CURBSIDE
+                              </Button>
+                            </li>
+                          )}
+                        </ul>
+                      </Grid>
                     </Grid>
-                  </Grid>
-                )}
+                  )}
+                </>
+              ) : (
+                <WelcomeNewUser />
+              )}
             </Grid>
           </Grid>
         </Grid>

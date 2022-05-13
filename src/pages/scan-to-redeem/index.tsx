@@ -68,11 +68,9 @@ const ScanToRedeem = () => {
               <Typography
                 variant="body2"
                 className="body-text"
-                title=" Congratulations! Scan your reward at the register or copy the code
-              and apply it to your order."
+                title=" Congratulations! Scan your reward at the register."
               >
-                Congratulations! Scan your reward at the register or copy the
-                code and apply it to your order.
+                Congratulations! Scan your reward at the register.
               </Typography>
               <Grid item sm={2}></Grid>
               <Grid item xs={12} sm={8} className="scan-reward">
