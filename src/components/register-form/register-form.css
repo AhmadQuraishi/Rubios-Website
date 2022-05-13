@@ -58,4 +58,7 @@
   .sign-up-section h1 {
     font-size: 28px;
   }
+  .sign-up-section .MuiSelect-select {
+    max-width: 195px !important;
+  }
 }
