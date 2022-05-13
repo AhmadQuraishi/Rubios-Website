@@ -11,8 +11,9 @@
   border-radius: 30px;
 }
 .welcome-content h1 {
-  margin: 0px 0px 23px 0px;
+  margin: 0px 0px 17px 0px;
   font-size: 49px;
+  line-height: 38px;
 }
 .welcome-content h5 {
   margin: 8px 0px 23px 0px;
