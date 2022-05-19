@@ -463,7 +463,6 @@ const Checkout = () => {
       }, 0);
       totalAmount = totalAmount.toFixed(2);
       totalAmount = parseFloat(totalAmount);
-      console.log('totalAmount', totalAmount);
       return totalAmount !== basket.total;
     } else {
       return true;
