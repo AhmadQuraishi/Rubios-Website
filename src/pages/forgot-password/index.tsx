@@ -108,39 +108,39 @@ const ForgotPassword = () => {
                     cssClass="fb-button"
                   />
                 </li>
-                <li>
-                  <Button
-                    type="submit"
-                    aria-label="Sign in with apple"
-                    name="Sign in with apple"
-                    title="Sign in with apple"
-                    variant="contained"
-                    className="sign-in-btn"
-                  >
-                    <img
-                      className="apple-icon"
-                      src={require('../../assets/imgs/apple-icon.png')}
-                      alt=" Sign in with apple"
-                    />
-                    Sign in with apple
-                  </Button>
-                </li>
-                <li>
-                  <Button
-                    type="submit"
-                    aria-label="Sign in with google"
-                    name="Sign in with google"
-                    title="Sign in with google"
-                    variant="contained"
-                    className="sign-in-btn"
-                  >
-                    <img
-                      src={require('../../assets/imgs/g-icon.png')}
-                      alt="Sign in with google"
-                    />
-                    Sign in with google
-                  </Button>
-                </li>
+                {/*<li>*/}
+                  {/*<Button*/}
+                    {/*type="submit"*/}
+                    {/*aria-label="Sign in with apple"*/}
+                    {/*name="Sign in with apple"*/}
+                    {/*title="Sign in with apple"*/}
+                    {/*variant="contained"*/}
+                    {/*className="sign-in-btn"*/}
+                  {/*>*/}
+                    {/*<img*/}
+                      {/*className="apple-icon"*/}
+                      {/*src={require('../../assets/imgs/apple-icon.png')}*/}
+                      {/*alt=" Sign in with apple"*/}
+                    {/*/>*/}
+                    {/*Sign in with apple*/}
+                  {/*</Button>*/}
+                {/*</li>*/}
+                {/*<li>*/}
+                  {/*<Button*/}
+                    {/*type="submit"*/}
+                    {/*aria-label="Sign in with google"*/}
+                    {/*name="Sign in with google"*/}
+                    {/*title="Sign in with google"*/}
+                    {/*variant="contained"*/}
+                    {/*className="sign-in-btn"*/}
+                  {/*>*/}
+                    {/*<img*/}
+                      {/*src={require('../../assets/imgs/g-icon.png')}*/}
+                      {/*alt="Sign in with google"*/}
+                    {/*/>*/}
+                    {/*Sign in with google*/}
+                  {/*</Button>*/}
+                {/*</li>*/}
               </ul>
 
               <Button

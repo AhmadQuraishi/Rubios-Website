@@ -99,9 +99,10 @@ const RedeemRewards = () => {
                   title="REDEEM YOUR REWARDS"
                   className="body-text"
                 >
-                  If ordering in a restaurant, click a reward below to scan and redeem.
+                  Click a reward below to redeem in restaurant. For online orders,<br/> you may select a reward during checkout.
                   <br/>
-                  If ordering online, you can select a reward during the checkout process.
+                  <br/>
+                  Please note, you will need to add the appropriate free or discounted <br/>item to your order before redeeming the reward.
                 </Typography>
               </Grid>
             )}
