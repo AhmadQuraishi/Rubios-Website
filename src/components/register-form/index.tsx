@@ -405,7 +405,8 @@ const RegisterForm = () => {
                     and to receiving marketing communications from Rubio's.
                   </Typography>
                 </Grid>
-                <Grid item xs={12} sm={8} md={8} lg={8}>
+                <Grid item xs={12} sx={{display: 'flex', justifyContent: 'center'}}>
+                  <Grid item xs={12} sm={8} md={8} lg={8}>
                   <Button
                     type="submit"
                     disabled={loadingProvider || loadingAuth}
@@ -417,6 +418,7 @@ const RegisterForm = () => {
                   >
                     Submit
                   </Button>
+                </Grid>
                 </Grid>
               </Grid>
             </Grid>
