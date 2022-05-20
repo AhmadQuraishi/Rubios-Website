@@ -130,9 +130,6 @@ const LocationCard = (props: any) => {
   const { restaurant, orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
-  const verifyAddress = useSelector(
-    (state: any) => state.verifyDeliveryAddressReducer,
-  );
   const [deliveryAddressString, setDeliveryAddressString] = useState<any>();
   const [showAllResturants, setShowAllResturants] = useState(false);
 
@@ -152,13 +149,6 @@ const LocationCard = (props: any) => {
   }, [isNearByRestaurantList]);
 
   const [selectedStoreID, setSelectedStoreID] = useState('');
-
-  useEffect(() => {
-    if (verifyAddress.data) {
-      console.log(verifyAddress.data);
-    }
-    //selectedStoreID;
-  }, [verifyAddress]);
 
   useEffect(() => {
     setShowNotFoundMessage(false);
@@ -341,60 +331,20 @@ const LocationCard = (props: any) => {
               >
                 {AllResturants.length > 0 &&
                   AllResturants.map((item: any, index: number) => (
-                    <li className="list-sx">
-                      <div
-                        style={{
-                          boxShadow: '0px 2px 3px 0px rgb(0 0 0 / 20%)',
-                          margin: '10px 20px 10px 0px',
-                          padding: '20px 12px 5px 20px',
-                          border: '1px solid #CCC',
-                          overflow: 'hidden',
-                        }}
-                      >
-                        <Typography
-                          variant="h5"
-                          sx={{
-                            fontWeight: 'bold',
-                            fontSize: '18px',
-                            paddingBottom: '5px',
-                          }}
-                        >
-                          {item.name}
-                        </Typography>
-                        <Typography variant="body2">
-                          {item.streetaddress}, <br /> {item.city}, {item.state}
-                          , {item.zip}
-                        </Typography>
-                        {item.distance > 0 && (
-                          <Typography variant="body2" sx={{ color: '#0069aa' }}>
-                            {item.distance} Miles Away
-                          </Typography>
-                        )}
-                        <Typography
-                          variant="h5"
-                          textTransform="uppercase"
-                          title="Hours"
-                          sx={{
-                            paddingBottom: '5px',
-                            paddingTop: '15px',
-                            fontSize: '13px',
-                            fontWeight: '500',
-                            fontFamily: 'Poppins-Medium !important',
-                          }}
-                        >
-                          Hours
-                        </Typography>
-                        <ListHours id={item.id} />
-                        <Button
-                          sx={{ float: 'right', marginTop: '5px' }}
-                          onClick={() => {
-                            //gotoCategoryPage(item.id);
-                          }}
-                        >
-                          ORDER NOW
-                        </Button>
-                      </div>
-                    </li>
+                    <StoreInfo
+                      setSelectedStoreID={setSelectedStoreID}
+                      resturantOrderType={resturantOrderType}
+                      deliveryRasturants={deliveryRasturants}
+                      deliveryAddressString={deliveryAddressString}
+                      restaurants={restaurants}
+                      orderType={orderType}
+                      setDeliveryAddressString={setDeliveryAddressString}
+                      item={item}
+                      index={index + Math.random()}
+                      key={index + Math.random()}
+                      restaurant={restaurant}
+                      allStores={true}
+                    />
                   ))}
               </ul>
             </div>
@@ -465,6 +415,7 @@ const LocationCard = (props: any) => {
                   type="text"
                   onChange={(e) => {
                     setShowNotFoundMessage(false);
+                    setDeliveryRasturants([]);
                     if (e.target.value === '') {
                       setValue('');
                       setActionPerform(false);
@@ -679,8 +630,10 @@ const LocationCard = (props: any) => {
                       orderType={orderType}
                       setDeliveryAddressString={setDeliveryAddressString}
                       item={item}
-                      index={index}
+                      index={index + Math.random()}
+                      key={index + Math.random()}
                       restaurant={restaurant}
+                      allStores={false}
                     />
                   ),
                 )}
