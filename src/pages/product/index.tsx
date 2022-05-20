@@ -239,8 +239,19 @@ const Product = () => {
     }
   }, [productUpdateObj]);
 
-  const changeImageSize = (path: string) => {
-    return path.replaceAll('w=210', 'w=520').replaceAll('h=140', 'w=520');
+  const changeImageSize = (path: string, images: any) => {
+    if (images && images.length > 0) {
+      const dektopImage: any = images.find(
+        (obj: any) => obj.groupname == 'desktop-menu',
+      );
+      if (dektopImage) {
+        return dektopImage.filename;
+      } else {
+        return path;
+      }
+    } else {
+      return path;
+    }
   };
 
   const [optionsSelectionArray, setOptionsSelectionArray] = useState<any>([]);
@@ -695,7 +706,10 @@ const Product = () => {
                     }}
                     src={
                       ((categories && categories.imagepath) || '') +
-                      changeImageSize(productDetails.imagefilename)
+                      changeImageSize(
+                        productDetails.imagefilename,
+                        productDetails.images,
+                      )
                     }
                     className="img"
                     title={productDetails.name}
@@ -734,11 +748,15 @@ const Product = () => {
                         variant={
                           itemMain.parentOptionID == itemMain.id ? 'h4' : 'h5'
                         }
+                        className="heading-ui"
                         sx={{ marginTop: '20px' }}
                         title={itemMain.name}
                         aria-required={itemMain.mandatory ? 'true' : 'false'}
                       >
-                        {itemMain.name + (itemMain.mandatory ? '*' : '')}
+                        {itemMain.name}
+                        <span style={{ color: '#ff0000' }}>
+                          {itemMain.mandatory ? '*' : ''}
+                        </span>
                         {IsItemSelected(itemMain.id) && (
                           <span
                             style={{
@@ -850,6 +868,15 @@ const Product = () => {
                               >
                                 <Grid item xs={5} sm={5}>
                                   <ItemImage
+                                    productImageURL={
+                                      productDetails &&
+                                      ((categories && categories.imagepath) ||
+                                        '') +
+                                        changeImageSize(
+                                          productDetails.imagefilename || '',
+                                          productDetails.images || '',
+                                        )
+                                    }
                                     className="item-image"
                                     name={itemChild.option.name}
                                     id={itemChild.option.chainoptionid}
@@ -872,7 +899,7 @@ const Product = () => {
                                         color: '#7CC8C5',
                                       }}
                                     >
-                                      $
+                                      +$
                                       {parseFloat(
                                         itemChild.option.cost,
                                       ).toFixed(2)}
