@@ -50,8 +50,19 @@ const ProductListing = (props: any) => {
     products = productList.slice(0, shownItemsCount);
   }
 
-  const changeImageSize = (path: string) => {
-    return path.replaceAll('w=210', 'w=640').replaceAll('h=140', 'w=640');
+  const changeImageSize = (path: string, images: any) => {
+    if (images && images.length > 0) {
+      const dektopImage: any = images.find(
+        (obj: any) => obj.groupname == 'desktop-menu',
+      );
+      if (dektopImage) {
+        return dektopImage.filename;
+      } else {
+        return path;
+      }
+    } else {
+      return path;
+    }
   };
 
   return (
@@ -76,7 +87,9 @@ const ProductListing = (props: any) => {
                 {item.imagefilename ? (
                   <img
                     className={classes.img}
-                    src={imgPath + changeImageSize(item.imagefilename)}
+                    src={
+                      imgPath + changeImageSize(item.imagefilename, item.images)
+                    }
                     title={item.name}
                   />
                 ) : (

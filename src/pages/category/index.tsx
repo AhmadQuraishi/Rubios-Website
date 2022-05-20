@@ -58,6 +58,7 @@ const CategoryList = () => {
   };
   const classes = useStyles();
   const [getResutarnts, setGetResutrants] = useState(false);
+  const [getDineInResutarnts, setGetDineInResutarnts] = useState(false);
   const [restaurantSelected, setRestaurantSelected] = useState<any>();
   const [value, setValue] = useState('0');
   const { store } = useParams();
@@ -78,16 +79,22 @@ const CategoryList = () => {
   const body = document;
 
   useEffect(() => {
-    if (window.location.href.toLocaleLowerCase().indexOf('selection=1') != -1) {
-      //if (providerToken && providerToken.first_name) {
-      //navigate('/location');
-      //} else {
+    if (window.location.href.toLowerCase().indexOf('selection=1') != -1) {
       setGetResutrants(true);
       dispatch(getResturantListRequest());
       if (restaurant && restaurant.id) {
         dispatch(getCategoriesRequest(restaurant.id));
       }
-      // }
+    } else if (
+      window.location.href.toLowerCase().indexOf('handoff=dinein') != -1
+    ) {
+      debugger;
+      setGetDineInResutarnts(true);
+      setGetResutrants(true);
+      dispatch(getResturantListRequest());
+      if (restaurant && restaurant.id) {
+        dispatch(getCategoriesRequest(restaurant.id));
+      }
     } else {
       if (restaurant === null) {
         navigate('/location');
@@ -109,9 +116,20 @@ const CategoryList = () => {
       const objRestaurant = restaurants.find(
         (x: any) => x.slug.toLowerCase() == store.toLowerCase(),
       );
-      if (objRestaurant) {
+      if (objRestaurant && getDineInResutarnts == false) {
         setRestaurantSelected(objRestaurant);
         setOpen(true);
+      } else if (objRestaurant && getDineInResutarnts == true) {
+        if (objRestaurant.supportsdinein) {
+          dispatch(setResturantInfoRequest(objRestaurant, 'dine-in'));
+          displayToast('SUCCESS', 'Location changed to ' + objRestaurant.name);
+          navigate('/menu/' + objRestaurant.slug);
+          dispatch(getCategoriesRequest(objRestaurant.id));
+        } else {
+          displayToast('ERROR', 'Dine-in is not available at this time.');
+          navigate('/location');
+        }
+        setGetDineInResutarnts(false);
       } else {
         displayToast(
           'ERROR',
