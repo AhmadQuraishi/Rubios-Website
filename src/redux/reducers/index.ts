@@ -33,6 +33,7 @@ import removeRewardFromBasketReducer from './reward/checkout/remove';
 import orderReducer from './order';
 import navigateAppReducer from './navigate-app';
 import deliveryAddressReducer from './location/delivery-address';
+import verifyDeliveryAddressReducer from './location/verify-delivery-address';
 
 const persistConfig = {
   key: 'root',
@@ -86,6 +87,7 @@ const rootReducers = combineReducers({
   removeRewardFromBasketReducer,
   navigateAppReducer,
   deliveryAddressReducer,
+  verifyDeliveryAddressReducer,
 });
 
 const persistReducers = persistReducer(persistConfig, rootReducers);

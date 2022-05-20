@@ -31,6 +31,7 @@ import { applyRewardsForCheckoutSaga } from './reward/checkout/apply';
 import { removeRewardFromBasketSaga } from './reward/checkout/remove';
 import { storeOrder } from './order';
 import { deliveryAddressSaga } from './location/delivery-address';
+import { verifyDeliveryAddressSaga } from './location/verify-delivery-address';
 
 export default function* rootSaga() {
   yield all([
@@ -66,5 +67,6 @@ export default function* rootSaga() {
     removeRewardFromBasketSaga(),
     storeOrder(),
     deliveryAddressSaga(),
+    verifyDeliveryAddressSaga(),
   ]);
 }

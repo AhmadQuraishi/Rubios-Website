@@ -11,16 +11,15 @@ import React, { useEffect, useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import './location.css';
 import { ResponseRestaurant } from '../../types/olo-api';
-import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { setResturantInfoRequest } from '../../redux/actions/restaurant';
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import StoreInfo from './info';
 import { displayToast } from '../../helpers/toast';
 import ListHours from '../location/listHours';
 import usePlacesAutocomplete, {
   getGeocode,
   getLatLng,
 } from 'use-places-autocomplete';
-import { setDeliveryAddress } from '../../redux/actions/location/delivery-address';
 
 const LocationCard = (props: any) => {
   const {
@@ -45,7 +44,7 @@ const LocationCard = (props: any) => {
           const address = getAddress(results[0]);
           if (address.address1 !== '') {
             setLatLng({ lat: lat, lng: lng });
-            setDeliveryAddressString(getAddress(results[0]));
+            setDeliveryAddressString(address);
           } else {
             setActionPerform(false);
             displayToast(
@@ -131,11 +130,11 @@ const LocationCard = (props: any) => {
   const { restaurant, orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
+  const verifyAddress = useSelector(
+    (state: any) => state.verifyDeliveryAddressReducer,
+  );
   const [deliveryAddressString, setDeliveryAddressString] = useState<any>();
   const [showAllResturants, setShowAllResturants] = useState(false);
-
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const handleChange = (e: any) => {
     setSearchText(e.target.value);
@@ -152,32 +151,14 @@ const LocationCard = (props: any) => {
     }
   }, [isNearByRestaurantList]);
 
-  const gotoCategoryPage = (storeID: number) => {
-    if (resturantOrderType == undefined) {
-      displayToast('ERROR', 'Please select atleast one order type');
-      return false;
+  const [selectedStoreID, setSelectedStoreID] = useState('');
+
+  useEffect(() => {
+    if (verifyAddress.data) {
+      console.log(verifyAddress.data);
     }
-    let restaurantObj = null;
-    if (resturantOrderType == 'delivery') {
-      restaurantObj = deliveryRasturants.find((x: any) => x.id === storeID);
-      dispatch(setDeliveryAddress(deliveryAddressString));
-    } else {
-      restaurantObj = restaurants.find((x: any) => x.id === storeID);
-    }
-    if (restaurantObj) {
-      if (
-        restaurant == null ||
-        (restaurant && restaurant.id != storeID) ||
-        resturantOrderType != orderType
-      ) {
-        dispatch(
-          setResturantInfoRequest(restaurantObj, resturantOrderType || ''),
-        );
-        displayToast('SUCCESS', 'Location changed to ' + restaurantObj.name);
-      }
-      navigate('/menu/' + restaurantObj.slug);
-    }
-  };
+    //selectedStoreID;
+  }, [verifyAddress]);
 
   useEffect(() => {
     setShowNotFoundMessage(false);
@@ -407,7 +388,7 @@ const LocationCard = (props: any) => {
                         <Button
                           sx={{ float: 'right', marginTop: '5px' }}
                           onClick={() => {
-                            gotoCategoryPage(item.id);
+                            //gotoCategoryPage(item.id);
                           }}
                         >
                           ORDER NOW
@@ -689,41 +670,18 @@ const LocationCard = (props: any) => {
               <Grid container spacing={1}>
                 {filteredRestaurants?.map(
                   (item: ResponseRestaurant, index: number) => (
-                    <Grid
-                      item
-                      xs={12}
-                      sx={{ marginBottom: '10px', cursor: 'pointer' }}
-                      onClick={() => {
-                        gotoCategoryPage(item.id);
-                      }}
-                      tabIndex={0}
-                      onKeyUp={(e) => {
-                        if (e.keyCode === 13) {
-                          gotoCategoryPage(item.id);
-                        }
-                      }}
-                      key={index}
-                    >
-                      <Typography
-                        variant="h5"
-                        sx={{
-                          fontWeight: 'bold',
-                          fontSize: '18px',
-                          paddingBottom: '5px',
-                        }}
-                      >
-                        {item.name}
-                      </Typography>
-                      <Typography variant="body2">
-                        {item.streetaddress}, <br /> {item.city}, {item.state},{' '}
-                        {item.zip}
-                      </Typography>
-                      {item.distance > 0 && (
-                        <Typography variant="body2" sx={{ color: '#5FA625' }}>
-                          {item.distance} Miles Away
-                        </Typography>
-                      )}
-                    </Grid>
+                    <StoreInfo
+                      setSelectedStoreID={setSelectedStoreID}
+                      resturantOrderType={resturantOrderType}
+                      deliveryRasturants={deliveryRasturants}
+                      deliveryAddressString={deliveryAddressString}
+                      restaurants={restaurants}
+                      orderType={orderType}
+                      setDeliveryAddressString={setDeliveryAddressString}
+                      item={item}
+                      index={index}
+                      restaurant={restaurant}
+                    />
                   ),
                 )}
               </Grid>
