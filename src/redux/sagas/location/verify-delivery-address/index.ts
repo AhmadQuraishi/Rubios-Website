@@ -21,5 +21,5 @@ function* verifyDeliveryAddressHandler(action: any): any {
 }
 
 export function* verifyDeliveryAddressSaga() {
-  yield takeEvery(Type.SET_DELIVERY_ADDRESS, verifyDeliveryAddressHandler);
+  yield takeEvery(Type.VERIFY_DELIVERY_ADDRESS_REQUEST, verifyDeliveryAddressHandler);
 }
