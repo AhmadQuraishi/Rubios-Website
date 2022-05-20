@@ -138,6 +138,7 @@ const Product = () => {
       setUpdatedOptions(false);
       setProductOptions(options);
       prepareProductOptionsArray(options.optiongroups, null, []);
+      setTotalCost(ptotalCost)
     }
   }, [options]);
 
@@ -262,6 +263,8 @@ const Product = () => {
     console.log(optionsSelectionArray);
   }, [optionsSelectionArray]);
 
+  let ptotalCost = totalCost;
+
   const prepareProductOptionsArray = (
     options: any,
     parentID: any,
@@ -300,6 +303,7 @@ const Product = () => {
           });
         }
         if (isExistInEdit(option.id)) {
+          ptotalCost = ptotalCost + option.cost;
           editOptions.push(option.id);
         }
       });
@@ -382,7 +386,6 @@ const Product = () => {
     setTimeout(() => {
       setSelectionExecute(false);
     }, 200);
-    debugger;
     optionsSelectionArray.map((item: any) => {
       if (item.id === parnetOptionID) {
         if (item.mandatory) {
@@ -445,7 +448,6 @@ const Product = () => {
             if (option) {
               setTotalCost(totalCost + option.option.cost);
             }
-            debugger;
             elems = optionsSelectionArray.filter(
               (x: any) => x.parentOptionID == optionId,
             );
@@ -476,6 +478,12 @@ const Product = () => {
             const index = item.selectedOptions.indexOf(optionId);
             if (index > -1) {
               item.selectedOptions.splice(index, 1);
+              const option = item.options.find(
+                (option: any) => option.optionID == optionId,
+              );
+              if (option) {
+                setTotalCost((totalCost || 0) - option.option.cost);
+              }
               item.selected = !(item.selectedOptions.length == 0);
               let elems = optionsSelectionArray.filter(
                 (x: any) => x.parentOptionID == optionId,
@@ -511,7 +519,6 @@ const Product = () => {
             if (option) {
               setTotalCost(totalCost + option.option.cost);
             }
-            debugger;
             let elems = optionsSelectionArray.filter(
               (x: any) => x.parentOptionID == optionId,
             );
