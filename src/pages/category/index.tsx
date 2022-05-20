@@ -88,7 +88,6 @@ const CategoryList = () => {
     } else if (
       window.location.href.toLowerCase().indexOf('handoff=dinein') != -1
     ) {
-      debugger;
       setGetDineInResutarnts(true);
       setGetResutrants(true);
       dispatch(getResturantListRequest());
