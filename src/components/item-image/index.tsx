@@ -49,9 +49,8 @@ const ItemImage = (props: any) => {
           aria-hidden="true"
           src={productImageURL}
           style={{
-            height: 'auto',
+            height: '130px',
             width: 'auto',
-            margin: 'auto',
             display: !loading ? 'block' : 'none',
           }}
           className={`${className}`}
