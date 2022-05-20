@@ -40,6 +40,7 @@ const Product = () => {
   const [productOptions, setProductOptions] = useState<ResponseModifiers>();
   const [basket, setBasket] = useState<ResponseBasket>();
   const [actionStatus, setActionStatus] = useState<boolean>(false);
+  const [totalCost, setTotalCost] = useState<number>();
   const { id, edit } = useParams();
   const { categories, loading } = useSelector(
     (state: any) => state.categoryReducer,
@@ -108,6 +109,7 @@ const Product = () => {
       setOptionsSelectionArray([]);
       dispatch(getProductOptionRequest(productDetails.id));
       setCountWithEdit();
+      setTotalCost(productDetails.cost);
     }
   }, [productDetails]);
 
@@ -320,6 +322,7 @@ const Product = () => {
           defaultOption: defaultOptionID,
           options: optionsArray,
           parentOptionID: parentID || itemMain.id,
+          cost: itemMain.cost || 0,
           selected:
             (isParentSelected && parentDefaultOptionID.includes(parentID)) ||
             parentID == null
@@ -379,6 +382,7 @@ const Product = () => {
     setTimeout(() => {
       setSelectionExecute(false);
     }, 200);
+    debugger;
     optionsSelectionArray.map((item: any) => {
       if (item.id === parnetOptionID) {
         if (item.mandatory) {
@@ -435,6 +439,13 @@ const Product = () => {
             }
             item.selectedOptions = [optionId];
             item.selected = true;
+            const option = item.options.find(
+              (option: any) => option.optionID == optionId,
+            );
+            if (option) {
+              setTotalCost(totalCost + option.option.cost);
+            }
+            debugger;
             elems = optionsSelectionArray.filter(
               (x: any) => x.parentOptionID == optionId,
             );
@@ -494,6 +505,13 @@ const Product = () => {
           } else {
             item.selectedOptions.push(optionId);
             item.selected = true;
+            const option = item.options.find(
+              (option: any) => option.optionID == optionId,
+            );
+            if (option) {
+              setTotalCost(totalCost + option.option.cost);
+            }
+            debugger;
             let elems = optionsSelectionArray.filter(
               (x: any) => x.parentOptionID == optionId,
             );
@@ -947,43 +965,48 @@ const Product = () => {
             </div>
             <Grid container className="action-panel">
               <Grid item xs={12} className="content-panel">
-                <label
-                  title="Quantity"
-                  className="label bold quantity-label"
-                  htmlFor="quantityfield"
+                <div
+                  style={{ display: 'flex', alignItems: 'center' }}
+                  className="button-panel-sx"
                 >
-                  QUANTITY
-                </label>
-                <div className="quantity">
-                  <Button
-                    title=""
-                    className="add"
-                    aria-label="increase"
-                    onClick={() => {
-                      setCount(count + 1);
-                    }}
+                  <label
+                    title="Quantity"
+                    className="label bold quantity-label"
+                    htmlFor="quantityfield"
                   >
-                    {' '}
-                    +{' '}
-                  </Button>
-                  <input
-                    value={count}
-                    // inputProps={inputProps}
-                    id="quantityfield"
-                    className="input-quantity"
-                    title="quantity"
-                  />
-                  <Button
-                    title=""
-                    className="subtract"
-                    aria-label="reduce"
-                    onClick={() => {
-                      setCount(Math.max(count - 1, 1));
-                    }}
-                  >
-                    {' '}
-                    -{' '}
-                  </Button>
+                    QUANTITY
+                  </label>
+                  <div className="quantity">
+                    <Button
+                      title=""
+                      className="add"
+                      aria-label="increase"
+                      onClick={() => {
+                        setCount(count + 1);
+                      }}
+                    >
+                      {' '}
+                      +{' '}
+                    </Button>
+                    <input
+                      value={count}
+                      // inputProps={inputProps}
+                      id="quantityfield"
+                      className="input-quantity"
+                      title="quantity"
+                    />
+                    <Button
+                      title=""
+                      className="subtract"
+                      aria-label="reduce"
+                      onClick={() => {
+                        setCount(Math.max(count - 1, 1));
+                      }}
+                    >
+                      {' '}
+                      -{' '}
+                    </Button>
+                  </div>
                 </div>
                 {productAddObj.loading ||
                 basketObj.loading ||
@@ -991,16 +1014,19 @@ const Product = () => {
                 productUpdateObj.loading ||
                 !validateOptionsSelection() ? (
                   <Button
-                    title="ADD TO Bag"
+                    title="ADD TO BAG"
                     className="add-to-bag"
                     variant="contained"
                     disabled
                   >
                     {edit ? 'UPDATE BAG' : 'ADD TO BAG'}
+                    <span style={{ position: 'absolute', right: '15px' }}>
+                      ${totalCost?.toFixed(2)}
+                    </span>
                   </Button>
                 ) : (
                   <Button
-                    title="ADD TO Bag"
+                    title="ADD TO BAG"
                     className="add-to-bag"
                     variant="contained"
                     onClick={() => {
@@ -1008,6 +1034,9 @@ const Product = () => {
                     }}
                   >
                     {edit ? 'UPDATE BAG' : 'ADD TO BAG'}
+                    <span style={{ position: 'absolute', right: '15px' }}>
+                      ${totalCost?.toFixed(2)}
+                    </span>
                   </Button>
                 )}
               </Grid>

@@ -49,7 +49,7 @@ const ItemImage = (props: any) => {
           aria-hidden="true"
           src={productImageURL}
           style={{
-            height: '110px',
+            height: 'auto',
             width: 'auto',
             margin: 'auto',
             display: !loading ? 'block' : 'none',
