@@ -40,6 +40,7 @@ const Product = () => {
   const [productOptions, setProductOptions] = useState<ResponseModifiers>();
   const [basket, setBasket] = useState<ResponseBasket>();
   const [actionStatus, setActionStatus] = useState<boolean>(false);
+  const [totalCost, setTotalCost] = useState<number>();
   const { id, edit } = useParams();
   const { categories, loading } = useSelector(
     (state: any) => state.categoryReducer,
@@ -108,6 +109,7 @@ const Product = () => {
       setOptionsSelectionArray([]);
       dispatch(getProductOptionRequest(productDetails.id));
       setCountWithEdit();
+      setTotalCost(productDetails.cost);
     }
   }, [productDetails]);
 
@@ -136,6 +138,7 @@ const Product = () => {
       setUpdatedOptions(false);
       setProductOptions(options);
       prepareProductOptionsArray(options.optiongroups, null, []);
+      setTotalCost(ptotalCost)
     }
   }, [options]);
 
@@ -239,8 +242,19 @@ const Product = () => {
     }
   }, [productUpdateObj]);
 
-  const changeImageSize = (path: string) => {
-    return path.replaceAll('w=210', 'w=520').replaceAll('h=140', 'w=520');
+  const changeImageSize = (path: string, images: any) => {
+    if (images && images.length > 0) {
+      const dektopImage: any = images.find(
+        (obj: any) => obj.groupname == 'desktop-menu',
+      );
+      if (dektopImage) {
+        return dektopImage.filename;
+      } else {
+        return path;
+      }
+    } else {
+      return path;
+    }
   };
 
   const [optionsSelectionArray, setOptionsSelectionArray] = useState<any>([]);
@@ -248,6 +262,8 @@ const Product = () => {
   useEffect(() => {
     console.log(optionsSelectionArray);
   }, [optionsSelectionArray]);
+
+  let ptotalCost = totalCost;
 
   const prepareProductOptionsArray = (
     options: any,
@@ -287,6 +303,7 @@ const Product = () => {
           });
         }
         if (isExistInEdit(option.id)) {
+          ptotalCost = ptotalCost + option.cost;
           editOptions.push(option.id);
         }
       });
@@ -309,6 +326,7 @@ const Product = () => {
           defaultOption: defaultOptionID,
           options: optionsArray,
           parentOptionID: parentID || itemMain.id,
+          cost: itemMain.cost || 0,
           selected:
             (isParentSelected && parentDefaultOptionID.includes(parentID)) ||
             parentID == null
@@ -424,6 +442,12 @@ const Product = () => {
             }
             item.selectedOptions = [optionId];
             item.selected = true;
+            const option = item.options.find(
+              (option: any) => option.optionID == optionId,
+            );
+            if (option) {
+              setTotalCost(totalCost + option.option.cost);
+            }
             elems = optionsSelectionArray.filter(
               (x: any) => x.parentOptionID == optionId,
             );
@@ -454,6 +478,12 @@ const Product = () => {
             const index = item.selectedOptions.indexOf(optionId);
             if (index > -1) {
               item.selectedOptions.splice(index, 1);
+              const option = item.options.find(
+                (option: any) => option.optionID == optionId,
+              );
+              if (option) {
+                setTotalCost((totalCost || 0) - option.option.cost);
+              }
               item.selected = !(item.selectedOptions.length == 0);
               let elems = optionsSelectionArray.filter(
                 (x: any) => x.parentOptionID == optionId,
@@ -483,6 +513,12 @@ const Product = () => {
           } else {
             item.selectedOptions.push(optionId);
             item.selected = true;
+            const option = item.options.find(
+              (option: any) => option.optionID == optionId,
+            );
+            if (option) {
+              setTotalCost(totalCost + option.option.cost);
+            }
             let elems = optionsSelectionArray.filter(
               (x: any) => x.parentOptionID == optionId,
             );
@@ -695,7 +731,10 @@ const Product = () => {
                     }}
                     src={
                       ((categories && categories.imagepath) || '') +
-                      changeImageSize(productDetails.imagefilename)
+                      changeImageSize(
+                        productDetails.imagefilename,
+                        productDetails.images,
+                      )
                     }
                     className="img"
                     title={productDetails.name}
@@ -734,11 +773,15 @@ const Product = () => {
                         variant={
                           itemMain.parentOptionID == itemMain.id ? 'h4' : 'h5'
                         }
+                        className="heading-ui"
                         sx={{ marginTop: '20px' }}
                         title={itemMain.name}
                         aria-required={itemMain.mandatory ? 'true' : 'false'}
                       >
-                        {itemMain.name + (itemMain.mandatory ? '*' : '')}
+                        {itemMain.name}
+                        <span style={{ color: '#ff0000' }}>
+                          {itemMain.mandatory ? '*' : ''}
+                        </span>
                         {IsItemSelected(itemMain.id) && (
                           <span
                             style={{
@@ -850,6 +893,15 @@ const Product = () => {
                               >
                                 <Grid item xs={5} sm={5}>
                                   <ItemImage
+                                    productImageURL={
+                                      productDetails &&
+                                      ((categories && categories.imagepath) ||
+                                        '') +
+                                        changeImageSize(
+                                          productDetails.imagefilename || '',
+                                          productDetails.images || '',
+                                        )
+                                    }
                                     className="item-image"
                                     name={itemChild.option.name}
                                     id={itemChild.option.chainoptionid}
@@ -872,7 +924,7 @@ const Product = () => {
                                         color: '#7CC8C5',
                                       }}
                                     >
-                                      $
+                                      +$
                                       {parseFloat(
                                         itemChild.option.cost,
                                       ).toFixed(2)}
@@ -920,43 +972,48 @@ const Product = () => {
             </div>
             <Grid container className="action-panel">
               <Grid item xs={12} className="content-panel">
-                <label
-                  title="Quantity"
-                  className="label bold quantity-label"
-                  htmlFor="quantityfield"
+                <div
+                  style={{ display: 'flex', alignItems: 'center' }}
+                  className="button-panel-sx"
                 >
-                  QUANTITY
-                </label>
-                <div className="quantity">
-                  <Button
-                    title=""
-                    className="add"
-                    aria-label="increase"
-                    onClick={() => {
-                      setCount(count + 1);
-                    }}
+                  <label
+                    title="Quantity"
+                    className="label bold quantity-label"
+                    htmlFor="quantityfield"
                   >
-                    {' '}
-                    +{' '}
-                  </Button>
-                  <input
-                    value={count}
-                    // inputProps={inputProps}
-                    id="quantityfield"
-                    className="input-quantity"
-                    title="quantity"
-                  />
-                  <Button
-                    title=""
-                    className="subtract"
-                    aria-label="reduce"
-                    onClick={() => {
-                      setCount(Math.max(count - 1, 1));
-                    }}
-                  >
-                    {' '}
-                    -{' '}
-                  </Button>
+                    QUANTITY
+                  </label>
+                  <div className="quantity">
+                    <Button
+                      title=""
+                      className="add"
+                      aria-label="increase"
+                      onClick={() => {
+                        setCount(count + 1);
+                      }}
+                    >
+                      {' '}
+                      +{' '}
+                    </Button>
+                    <input
+                      value={count}
+                      // inputProps={inputProps}
+                      id="quantityfield"
+                      className="input-quantity"
+                      title="quantity"
+                    />
+                    <Button
+                      title=""
+                      className="subtract"
+                      aria-label="reduce"
+                      onClick={() => {
+                        setCount(Math.max(count - 1, 1));
+                      }}
+                    >
+                      {' '}
+                      -{' '}
+                    </Button>
+                  </div>
                 </div>
                 {productAddObj.loading ||
                 basketObj.loading ||
@@ -964,16 +1021,19 @@ const Product = () => {
                 productUpdateObj.loading ||
                 !validateOptionsSelection() ? (
                   <Button
-                    title="ADD TO Bag"
+                    title="ADD TO BAG"
                     className="add-to-bag"
                     variant="contained"
                     disabled
                   >
                     {edit ? 'UPDATE BAG' : 'ADD TO BAG'}
+                    <span style={{ position: 'absolute', right: '15px' }}>
+                      ${totalCost?.toFixed(2)}
+                    </span>
                   </Button>
                 ) : (
                   <Button
-                    title="ADD TO Bag"
+                    title="ADD TO BAG"
                     className="add-to-bag"
                     variant="contained"
                     onClick={() => {
@@ -981,6 +1041,9 @@ const Product = () => {
                     }}
                   >
                     {edit ? 'UPDATE BAG' : 'ADD TO BAG'}
+                    <span style={{ position: 'absolute', right: '15px' }}>
+                      ${totalCost?.toFixed(2)}
+                    </span>
                   </Button>
                 )}
               </Grid>

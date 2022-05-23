@@ -89,15 +89,18 @@ const StoreInfoBar = () => {
               >
                 <Typography
                   className={classes.heading}
-                  variant="h2"
+                  variant="body1"
                   textTransform="uppercase"
                   title="Pick Up From"
                 >
                   {orderType && orderType == 'delivery' && 'Delivered From'}
-                  {orderType && orderType != 'delivery' && 'Pick Up From'}
+                  {orderType && orderType == 'dine-in' && 'Dine In At'}
+                  {orderType &&
+                    (orderType == 'pickup' || orderType == 'curbside') &&
+                    'Pick Up From'}
                 </Typography>
                 <Typography
-                  variant="h1"
+                  variant="body1"
                   color="#fff"
                   textTransform="uppercase"
                   fontWeight={700}

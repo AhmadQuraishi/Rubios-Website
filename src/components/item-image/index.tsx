@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Box, CircularProgress } from '@mui/material';
 
 const ItemImage = (props: any) => {
-  const { name, id, className } = props;
+  const { name, id, className, productImageURL } = props;
 
   const [imageURL, setImageURL] = useState<any>();
   const [loading, setLoading] = useState<any>(false);
@@ -44,30 +44,49 @@ const ItemImage = (props: any) => {
           <CircularProgress />
         </Box>
       )}
-      {imageURL && imageURL.contentUrl == null && (
+      {(name.toLowerCase() == 'as is' || name.toLowerCase() == 'customize') && (
         <img
           aria-hidden="true"
-          src={require('../../assets/imgs/default_img.jpg')}
+          src={productImageURL}
           style={{
-            height: '120px',
-            width: '100%',
-            display: !loading ? 'block' : 'none',
-          }}
-          className={`${className}`}
-        />
-      )}
-      {imageURL && imageURL.contentUrl && (
-        <img
-          aria-hidden="true"
-          src={imageURL.contentUrl}
-          style={{
-            height: '120px',
+            height: '130px',
             width: 'auto',
             display: !loading ? 'block' : 'none',
           }}
           className={`${className}`}
         />
       )}
+
+      {imageURL &&
+        imageURL.contentUrl == null &&
+        name.toLowerCase() != 'customize' &&
+        name.toLowerCase() != 'as is' && (
+          <img
+            aria-hidden="true"
+            src={require('../../assets/imgs/No ingredient.png')}
+            style={{
+              height: 'auto',
+              width: '100%',
+              display: !loading ? 'block' : 'none',
+            }}
+            className={`${className}`}
+          />
+        )}
+      {imageURL &&
+        imageURL.contentUrl &&
+        name.toLowerCase() != 'customize' &&
+        name.toLowerCase() != 'as is' && (
+          <img
+            aria-hidden="true"
+            src={imageURL.contentUrl}
+            style={{
+              height: '120px',
+              width: 'auto',
+              display: !loading ? 'block' : 'none',
+            }}
+            className={`${className}`}
+          />
+        )}
     </>
   );
 };
