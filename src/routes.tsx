@@ -27,6 +27,7 @@ const AddDeliveryAddress = lazy(() => import('./pages/add-delivery-address'));
 const CategoryDetail = lazy(() => import('./pages/category-detail'));
 const PageNotFound = lazy(() => import('./pages/page-not-found'));
 const ScanToRedeem = lazy(() => import('./pages/scan-to-redeem'));
+const CategoryIframe = lazy(() => import('./pages/iframe/category'));
 
 const AppRoutes = () => {
   return (
@@ -101,6 +102,7 @@ const AppRoutes = () => {
           />
           <Route path="/account/reward" element={<ScanToRedeem />} />
           <Route path="/account/orders" element={<OrdersHistory />} />
+          <Route path="/iframe/category" element={<CategoryIframe />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Suspense>
