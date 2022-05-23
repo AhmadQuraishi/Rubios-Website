@@ -109,7 +109,7 @@ const Product = () => {
       setOptionsSelectionArray([]);
       dispatch(getProductOptionRequest(productDetails.id));
       setCountWithEdit();
-      setTotalCost(productDetails.cost);
+      getTotalCost();
     }
   }, [productDetails]);
 
@@ -120,6 +120,7 @@ const Product = () => {
       );
       if (product) {
         setCount(product.quantity);
+        getTotalCost();
       } else {
         navigate('/product/' + productDetails?.id);
       }
@@ -138,7 +139,8 @@ const Product = () => {
       setUpdatedOptions(false);
       setProductOptions(options);
       prepareProductOptionsArray(options.optiongroups, null, []);
-      setTotalCost(ptotalCost)
+      getTotalCost();
+      //setTotalCost(ptotalCost);
     }
   }, [options]);
 
@@ -446,7 +448,9 @@ const Product = () => {
               (option: any) => option.optionID == optionId,
             );
             if (option) {
-              setTotalCost(totalCost + option.option.cost);
+              setOptionsCost(optionsCost + option.option.cost);
+              setTotalCost((totalCost || 0) + (option.option.cost * count));
+              //setTotalCost(totalCost + option.option.cost);
             }
             elems = optionsSelectionArray.filter(
               (x: any) => x.parentOptionID == optionId,
@@ -482,7 +486,9 @@ const Product = () => {
                 (option: any) => option.optionID == optionId,
               );
               if (option) {
-                setTotalCost((totalCost || 0) - option.option.cost);
+                setOptionsCost(optionsCost - option.option.cost);
+                setTotalCost((totalCost || 0) - (option.option.cost * count));
+                //setTotalCost((totalCost || 0) - option.option.cost);
               }
               item.selected = !(item.selectedOptions.length == 0);
               let elems = optionsSelectionArray.filter(
@@ -517,7 +523,9 @@ const Product = () => {
               (option: any) => option.optionID == optionId,
             );
             if (option) {
-              setTotalCost(totalCost + option.option.cost);
+              setOptionsCost(optionsCost + option.option.cost);
+              setTotalCost((totalCost || 0) + (option.option.cost * count));
+              //setTotalCost(totalCost + option.option.cost);
             }
             let elems = optionsSelectionArray.filter(
               (x: any) => x.parentOptionID == optionId,
@@ -636,6 +644,12 @@ const Product = () => {
     ]);
   };
 
+  const [optionsCost, setOptionsCost] = useState(0);
+
+  const getTotalCost = () => {
+    setTotalCost(((productDetails?.cost || 0) + optionsCost) * count);
+  };
+
   return (
     <div style={{ minHeight: '500px' }}>
       <Typography variant="h1" className="sr-only">
@@ -650,13 +664,13 @@ const Product = () => {
           <Grid item xs={12}>
             <Grid container>
               <Grid item xs={12} sm={6} className="ph-fix">
-                <Typography
-                  variant="caption"
-                  title="PICK UP YOUR"
-                  className="label"
-                >
-                  PICK UP YOUR
-                </Typography>
+                {/*<Typography*/}
+                  {/*variant="caption"*/}
+                  {/*title="PICK UP YOUR"*/}
+                  {/*className="label"*/}
+                {/*>*/}
+                  {/*PICK UP YOUR*/}
+                {/*</Typography>*/}
                 <Typography
                   variant="h2"
                   className="heading"
@@ -990,6 +1004,11 @@ const Product = () => {
                       aria-label="increase"
                       onClick={() => {
                         setCount(count + 1);
+                        setTotalCost(
+                          ((productDetails?.cost || 0) + optionsCost) *
+                            (count + 1),
+                        );
+                        //setTotalCost((totalCost || 0) * (count + 1));
                       }}
                     >
                       {' '}
@@ -1008,6 +1027,11 @@ const Product = () => {
                       aria-label="reduce"
                       onClick={() => {
                         setCount(Math.max(count - 1, 1));
+                        setTotalCost(
+                          ((productDetails?.cost || 0) + optionsCost) *
+                            Math.max(count - 1, 1),
+                        );
+                        //setTotalCost((totalCost || 0) * Math.max(count - 1, 1));
                       }}
                     >
                       {' '}

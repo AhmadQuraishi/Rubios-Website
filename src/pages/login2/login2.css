@@ -32,6 +32,9 @@
   display: inline-block;
   text-align: left;
 }
+.login-content .right-col .button-list li {
+  display: block;
+}
 .login-content .right-col .sign-in-btn img {
   position: absolute;
   left: 17px;
