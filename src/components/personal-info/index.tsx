@@ -336,17 +336,17 @@ const PersonalInfo = () => {
                         }
                       />
                     </Grid>
-                    <Grid item xs={12}>
-                      <Typography
-                        variant="body2"
-                        className="body-text"
-                        title="Password must be at least 8 characters."
-                        sx={{ width: '100%' }}
-                      >
-                        Your current password. Required to update your personal
-                        details.
-                      </Typography>
-                    </Grid>
+                    {/*<Grid item xs={12}>*/}
+                      {/*<Typography*/}
+                        {/*variant="body2"*/}
+                        {/*className="body-text"*/}
+                        {/*title="Password must be at least 8 characters."*/}
+                        {/*sx={{ width: '100%' }}*/}
+                      {/*>*/}
+                        {/*Your current password. Required to update your personal*/}
+                        {/*details.*/}
+                      {/*</Typography>*/}
+                    {/*</Grid>*/}
                     <Grid item xs={12}>
                       <TextField
                         aria-label="new password"
