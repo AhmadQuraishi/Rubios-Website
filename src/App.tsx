@@ -15,6 +15,7 @@ import NavigateApp from './components/navigate-app';
 function App(props: any) {
   const location = useLocation();
   const [isAccountSection, setIsAccountSection] = useState(false);
+  const [isIframe, setIsIframe] = useState(false);
   const [hideLoginPanel, setHideLoginPanel] = useState(true);
   const [hideLoginedPanel, setHideLoginedPanel] = useState(false);
   const dispatch = useDispatch();
@@ -26,6 +27,9 @@ function App(props: any) {
       if (providerToken == null || providerToken == undefined) {
         navigate('/login');
       }
+    }
+    if (window.location.href.toLocaleLowerCase().indexOf('/iframe') !== -1) {
+      setIsIframe(true);
     }
     if (
       window.location.href.toLocaleLowerCase().indexOf('/menu') != -1 ||
@@ -84,23 +88,30 @@ function App(props: any) {
 
   return (
     <div id="wapper">
-      <NavigateApp />
-      <Header
-        removeCartForLocation={
-          window.location.href.toLocaleLowerCase().indexOf('/location') != -1
-        }
-        hideLoginPanel={hideLoginPanel}
-        hideLoginedPanel={hideLoginedPanel}
-        showUserName={isAccountSection}
-        removeCart={
-          isAccountSection ||
-          window.location.href.toLocaleLowerCase().indexOf('/checkout') !== -1 ||
-          window.location.href.toLocaleLowerCase().indexOf('/welcome') !== -1 ||
-          window.location.href
-            .toLocaleLowerCase()
-            .indexOf('/order-confirmation') !== -1
-        }
-      />
+      {!isIframe ? (
+        <>
+          <NavigateApp />
+          <Header
+            removeCartForLocation={
+              window.location.href.toLocaleLowerCase().indexOf('/location') !=
+              -1
+            }
+            hideLoginPanel={hideLoginPanel}
+            hideLoginedPanel={hideLoginedPanel}
+            showUserName={isAccountSection}
+            removeCart={
+              isAccountSection ||
+              window.location.href.toLocaleLowerCase().indexOf('/checkout') !==
+                -1 ||
+              window.location.href.toLocaleLowerCase().indexOf('/welcome') !==
+                -1 ||
+              window.location.href
+                .toLocaleLowerCase()
+                .indexOf('/order-confirmation') !== -1
+            }
+          />
+        </>
+      ) : null}
       <main>
         <ToastContainer />
         {isAccountSection ? (
@@ -130,7 +141,11 @@ function App(props: any) {
           <AppRoutes />
         )}
       </main>
-      <Footer />
+      {!isIframe ? (
+        <>
+          <Footer />
+        </>
+      ) : null}
     </div>
   );
 }
