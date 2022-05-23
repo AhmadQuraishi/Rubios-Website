@@ -664,13 +664,13 @@ const Product = () => {
           <Grid item xs={12}>
             <Grid container>
               <Grid item xs={12} sm={6} className="ph-fix">
-                <Typography
-                  variant="caption"
-                  title="PICK UP YOUR"
-                  className="label"
-                >
-                  PICK UP YOUR
-                </Typography>
+                {/*<Typography*/}
+                  {/*variant="caption"*/}
+                  {/*title="PICK UP YOUR"*/}
+                  {/*className="label"*/}
+                {/*>*/}
+                  {/*PICK UP YOUR*/}
+                {/*</Typography>*/}
                 <Typography
                   variant="h2"
                   className="heading"

@@ -45,9 +45,15 @@ const CreditCards = ({ billingAccounts, loading }: any) => {
         <DialogBox
           open={open}
           handleClose={handleClose}
-          message={'Do You Really Want To Delete This Credit Card?'}
+          message={'Do you really want to delete this credit card?'}
           handleDeleteFunction={() => handleDeleteFunction()}
         />
+        <Grid item xs={12}>
+          <br/>
+          <Typography variant="h6" title="To add a credit card to your account, place an order and enter the credit card information during checkout.">
+            To add a credit card to your account, place an order and enter the credit card information during checkout.
+          </Typography>
+        </Grid>
         <Grid container spacing={3} className="credit-cards-panel">
           {!loading && billingAccounts && billingAccounts.length === 0 ? (
             <h6>No Billing Account Found</h6>

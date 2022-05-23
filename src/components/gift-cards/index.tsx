@@ -88,9 +88,15 @@ const GiftCards = ({ billingAccounts, loading }: any) => {
       <DialogBox
         open={open}
         handleClose={handleClose}
-        message={'Do You Really Want To Delete This Gift Card?'}
+        message={'Do you really want to delete this gift card?'}
         handleDeleteFunction={() => handleDeleteFunction()}
       />
+      <Grid item xs={12}>
+        <br/>
+        <Typography variant="h6" title="To add a gift card to your account, place an order and enter the gift card information during checkout.">
+          To add a gift card to your account, place an order and enter the gift card information during checkout.
+        </Typography>
+      </Grid>
       <Grid item xs={12}>
         <Grid container spacing={3} className="gift-cards-panel">
           {loading || balanceLoading ? (
