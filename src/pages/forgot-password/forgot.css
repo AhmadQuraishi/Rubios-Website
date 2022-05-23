@@ -44,6 +44,9 @@
   width: 100%;
   margin: 14px 0px 15px 0px;
 }
+.login-content .right-col .button-list li {
+  display: block;
+}
 .login-content .label.bold {
   font-family: 'Poppins-Bold', sans-serif !important;
   font-size: 15px !important;
