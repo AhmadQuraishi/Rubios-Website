@@ -16,6 +16,7 @@ import { updateBasketBillingSchemes } from '../../../redux/actions/basket/checko
 import {
   getBillingSchemesStats,
   updatePaymentCardsAmount,
+  remainingAmount,
 } from '../../../helpers/checkout';
 import DialogBox from '../../dialog-box';
 
@@ -45,16 +46,26 @@ const SplitPayment = forwardRef((props, _ref) => {
     billingmethod: string,
   ) => {
     const billingSchemeStats = getBillingSchemesStats(billingSchemes);
-    if (
-      billingSchemeStats.selectedGiftCard === 1 &&
-      e.target.checked &&
-      billingmethod === 'storedvalue'
-    ) {
-      displayToast('ERROR', 'Only 1 Gift Card can be used to make a payment');
+    const totalCardsSelected =
+      billingSchemeStats.selectedGiftCard +
+      billingSchemeStats.selectedCreditCard;
+    if (totalCardsSelected === 3 && e.target.checked) {
+      displayToast(
+        'ERROR',
+        'Maximum 3 payment methods can be used to make a payment',
+      );
       return;
     }
     if (
-      billingSchemeStats.selectedCreditCard === 2 &&
+      billingSchemeStats.selectedGiftCard === 2 &&
+      e.target.checked &&
+      billingmethod === 'storedvalue'
+    ) {
+      displayToast('ERROR', 'Only 2 Gift Card can be used to make a payment');
+      return;
+    }
+    if (
+      billingSchemeStats.selectedCreditCard === 3 &&
       e.target.checked &&
       billingmethod === 'creditcardtoken'
     ) {
@@ -62,13 +73,13 @@ const SplitPayment = forwardRef((props, _ref) => {
       return;
     }
     if (
-      billingSchemeStats.selectedCreditCard === 1 &&
-      !e.target.checked &&
-      billingmethod === 'creditcardtoken'
+      (billingSchemeStats.selectedCreditCard === 1 ||
+        billingSchemeStats.selectedGiftCard === 1) &&
+      !e.target.checked
     ) {
       displayToast(
         'ERROR',
-        'Minimum 1 Credit Card is required to make a payment',
+        'Minimum 1 payment method is required to make a payment',
       );
       return;
     }
@@ -95,16 +106,16 @@ const SplitPayment = forwardRef((props, _ref) => {
             element.selected && element.billingmethod === 'creditcardtoken',
         );
 
-        if (checkLastCreditCard && checkLastCreditCard.length === 1) {
-          if (checkLastCreditCard[0].localId === removeData.localId) {
-            displayToast(
-              'ERROR',
-              'Minimum 1 Credit Card is required to make a payment',
-            );
-            handleClosePopup();
-            return;
-          }
-        }
+        // if (checkLastCreditCard && checkLastCreditCard.length === 1) {
+        //   if (checkLastCreditCard[0].localId === removeData.localId) {
+        //     displayToast(
+        //       'ERROR',
+        //       'Minimum 1 Credit Card is required to make a payment',
+        //     );
+        //     handleClosePopup();
+        //     return;
+        //   }
+        // }
       }
       let updatedBillingSchemes = billingSchemes.filter(
         (element: any) => element.localId !== removeData.localId,
@@ -163,32 +174,6 @@ const SplitPayment = forwardRef((props, _ref) => {
         alt="card image"
       />
     );
-  };
-
-  const remainingAmount = () => {
-    if (basket && billingSchemes) {
-      let amountSelected = billingSchemes.reduce((sum: any, account: any) => {
-        if (account.selected) {
-          sum = sum + account.amount;
-        }
-        return sum;
-      }, 0);
-
-      amountSelected = amountSelected.toFixed(2);
-      amountSelected = parseFloat(amountSelected);
-
-      console.log('amountSelected', amountSelected);
-
-      let remainingAmount = (basket?.total - amountSelected).toFixed(2);
-
-      if (remainingAmount !== 'NAN') {
-        return remainingAmount;
-      } else {
-        return 0;
-      }
-    } else {
-      return 0;
-    }
   };
 
   const handleClosePopup = () => {
@@ -334,7 +319,7 @@ const SplitPayment = forwardRef((props, _ref) => {
                     md={3}
                     lg={3}
                   >
-                    {console.log('new Value 4', account.amount )}
+                    {console.log('new Value 4', account.amount)}
                     <TextField
                       type="number"
                       onChange={(e) => handleAmountChanges(e, account.localId)}
@@ -388,7 +373,7 @@ const SplitPayment = forwardRef((props, _ref) => {
       <Grid container spacing={2}>
         <Grid item xs={12} sm={12} md={12} lg={12}>
           <Typography align={'center'} variant="h6">
-            Remaining Amount: $ {remainingAmount()}
+            Remaining Amount: $ {remainingAmount(basket, billingSchemes)}
           </Typography>
         </Grid>
       </Grid>

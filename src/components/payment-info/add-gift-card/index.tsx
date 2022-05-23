@@ -287,16 +287,16 @@ const AddGiftCard = forwardRef((props, _ref) => {
 
       {basket &&
         billingSchemes &&
-        billingSchemes.length > 0 &&
-        billingSchemes.length !== 5 &&
-        billingSchemes.filter((element: any) => {
-          return element.type === 'creditcardtoken';
-        }) &&
+        // billingSchemes.length > 0 &&
+        billingSchemes.length < 5 &&
+        // billingSchemes.filter((element: any) => {
+        //   return element.type === 'creditcardtoken';
+        // }) &&
         allowedCards &&
         allowedCards.length &&
         allowedCards.filter((element: any) => {
           return element.type === 'giftcard';
-        }) && (
+        }).length > 0 && (
           <Grid container>
             <Grid item xs={12} sm={12} md={12} lg={12}>
               <Button
