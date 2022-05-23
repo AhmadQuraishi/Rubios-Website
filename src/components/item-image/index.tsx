@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Box, CircularProgress } from '@mui/material';
 
 const ItemImage = (props: any) => {
-  const { name, id, className, productImageURL } = props;
+  const { name, id, className, productImageURL, index } = props;
 
   const [imageURL, setImageURL] = useState<any>();
   const [loading, setLoading] = useState<any>(false);
@@ -14,16 +14,18 @@ const ItemImage = (props: any) => {
         process.env.REACT_APP_INGREDIENT_URL?.replace('*yourplu*', id) || '';
       const promise = axios.get(url);
       setLoading(true);
-      promise.then((response) => {
-        setTimeout(() => {
-          setLoading(false);
-        }, 150);
-        if (response.data.length > 0) {
-          setImageURL(response.data[0].yoast_head_json.schema['@graph'][1]);
-        } else {
-          setImageURL([]);
-        }
-      });
+      setTimeout(() => {
+        promise.then((response) => {
+          setTimeout(() => {
+            setLoading(false);
+          }, 150);
+          if (response.data.length > 0) {
+            setImageURL(response.data[0].yoast_head_json.schema['@graph'][1]);
+          } else {
+            setImageURL([]);
+          }
+        });
+      }, 100 * index + 1);
     } catch (error) {
       setImageURL([]);
       setTimeout(() => {

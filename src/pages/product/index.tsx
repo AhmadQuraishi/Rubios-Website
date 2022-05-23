@@ -261,9 +261,7 @@ const Product = () => {
 
   const [optionsSelectionArray, setOptionsSelectionArray] = useState<any>([]);
 
-  useEffect(() => {
-    console.log(optionsSelectionArray);
-  }, [optionsSelectionArray]);
+  useEffect(() => {}, [optionsSelectionArray]);
 
   let ptotalCost = totalCost;
 
@@ -380,6 +378,7 @@ const Product = () => {
         }
       });
     }
+    if (isExist == null) isExist = options[0].id;
     return isExist;
   };
   const [selectionExecute, setSelectionExecute] = useState(false);
@@ -449,7 +448,7 @@ const Product = () => {
             );
             if (option) {
               setOptionsCost(optionsCost + option.option.cost);
-              setTotalCost((totalCost || 0) + (option.option.cost * count));
+              setTotalCost((totalCost || 0) + option.option.cost * count);
               //setTotalCost(totalCost + option.option.cost);
             }
             elems = optionsSelectionArray.filter(
@@ -487,7 +486,7 @@ const Product = () => {
               );
               if (option) {
                 setOptionsCost(optionsCost - option.option.cost);
-                setTotalCost((totalCost || 0) - (option.option.cost * count));
+                setTotalCost((totalCost || 0) - option.option.cost * count);
                 //setTotalCost((totalCost || 0) - option.option.cost);
               }
               item.selected = !(item.selectedOptions.length == 0);
@@ -524,7 +523,7 @@ const Product = () => {
             );
             if (option) {
               setOptionsCost(optionsCost + option.option.cost);
-              setTotalCost((totalCost || 0) + (option.option.cost * count));
+              setTotalCost((totalCost || 0) + option.option.cost * count);
               //setTotalCost(totalCost + option.option.cost);
             }
             let elems = optionsSelectionArray.filter(
@@ -665,11 +664,11 @@ const Product = () => {
             <Grid container>
               <Grid item xs={12} sm={6} className="ph-fix">
                 {/*<Typography*/}
-                  {/*variant="caption"*/}
-                  {/*title="PICK UP YOUR"*/}
-                  {/*className="label"*/}
+                {/*variant="caption"*/}
+                {/*title="PICK UP YOUR"*/}
+                {/*className="label"*/}
                 {/*>*/}
-                  {/*PICK UP YOUR*/}
+                {/*PICK UP YOUR*/}
                 {/*</Typography>*/}
                 <Typography
                   variant="h2"
@@ -827,53 +826,6 @@ const Product = () => {
                           sm={6}
                           md={4}
                         >
-                          {itemMain.mandatory ? (
-                            checkOptionSelected(
-                              itemChild.option.id,
-                              itemMain.id,
-                            ) ? (
-                              <input
-                                type="radio"
-                                checked
-                                name={itemChild.option.id}
-                                style={{ display: 'none' }}
-                                aria-invalid={
-                                  IsItemSelected(itemMain.id) ? 'false' : 'true'
-                                }
-                              />
-                            ) : (
-                              <input
-                                type="radio"
-                                style={{ display: 'none' }}
-                                name={itemChild.option.id}
-                                aria-invalid={
-                                  IsItemSelected(itemMain.id) ? 'false' : 'true'
-                                }
-                              />
-                            )
-                          ) : checkOptionSelected(
-                              itemChild.option.id,
-                              itemMain.id,
-                            ) ? (
-                            <input
-                              type="checkbox"
-                              checked
-                              name={itemChild.option.id}
-                              style={{ display: 'none' }}
-                              aria-invalid={
-                                IsItemSelected(itemMain.id) ? 'false' : 'true'
-                              }
-                            />
-                          ) : (
-                            <input
-                              type="checkbox"
-                              name={itemChild.option.id}
-                              style={{ display: 'none' }}
-                              aria-invalid={
-                                IsItemSelected(itemMain.id) ? 'false' : 'true'
-                              }
-                            />
-                          )}
                           <label htmlFor={itemChild.option.id}>
                             <Card
                               className="card-panel"
@@ -906,20 +858,25 @@ const Product = () => {
                                 className="name-img-panel"
                               >
                                 <Grid item xs={5} sm={5}>
-                                  <ItemImage
-                                    productImageURL={
-                                      productDetails &&
-                                      ((categories && categories.imagepath) ||
-                                        '') +
-                                        changeImageSize(
-                                          productDetails.imagefilename || '',
-                                          productDetails.images || '',
-                                        )
-                                    }
-                                    className="item-image"
-                                    name={itemChild.option.name}
-                                    id={itemChild.option.chainoptionid}
-                                  />
+                                  {selectedParentOption(
+                                    itemMain.parentOptionID,
+                                  ) && (
+                                    <ItemImage
+                                      productImageURL={
+                                        productDetails &&
+                                        ((categories && categories.imagepath) ||
+                                          '') +
+                                          changeImageSize(
+                                            productDetails.imagefilename || '',
+                                            productDetails.images || '',
+                                          )
+                                      }
+                                      index={index1}
+                                      className="item-image"
+                                      name={itemChild.option.name}
+                                      id={itemChild.option.chainoptionid}
+                                    />
+                                  )}
                                 </Grid>
                                 <Grid item xs={7} sm={7} className="name-panel">
                                   {itemChild.option.name}
@@ -946,33 +903,40 @@ const Product = () => {
                                   )}
                                   {itemChild.dropDownValues && (
                                     <>
-                                      <select
-                                        style={{
-                                          marginTop: '8px',
-                                          display: 'block',
-                                        }}
-                                        parent-select-option-id={itemChild.id}
-                                        onClick={(e) => e.stopPropagation()}
-                                        value={itemChild.selectedValue || '0'}
-                                        onChange={(e) =>
-                                          dropDownValue(
-                                            itemChild.option.id,
-                                            e.target.value,
-                                          )
-                                        }
-                                      >
-                                        <option value="0">Please Choose</option>
-                                        {itemChild.dropDownValues.map(
-                                          (option: any, index: number) => (
-                                            <option
-                                              key={Math.random() + index}
-                                              value={option.id}
-                                            >
-                                              {option.name}
-                                            </option>
-                                          ),
-                                        )}
-                                      </select>
+                                      {checkOptionSelected(
+                                        itemChild.option.id,
+                                        itemMain.id,
+                                      ) == true && (
+                                        <select
+                                          style={{
+                                            marginTop: '8px',
+                                            display: 'block',
+                                          }}
+                                          parent-select-option-id={itemChild.id}
+                                          onClick={(e) => e.stopPropagation()}
+                                          value={itemChild.selectedValue || '0'}
+                                          onChange={(e) =>
+                                            dropDownValue(
+                                              itemChild.option.id,
+                                              e.target.value,
+                                            )
+                                          }
+                                        >
+                                          <option value="0">
+                                            Please Choose
+                                          </option>
+                                          {itemChild.dropDownValues.map(
+                                            (option: any, index: number) => (
+                                              <option
+                                                key={Math.random() + index}
+                                                value={option.id}
+                                              >
+                                                {option.name}
+                                              </option>
+                                            ),
+                                          )}
+                                        </select>
+                                      )}
                                     </>
                                   )}
                                 </Grid>
