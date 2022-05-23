@@ -1,0 +1,11 @@
+.fix-span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  line-height: 1.9 !important;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+}
+.react-multi-carousel-list {
+  /*display: block !important;*/
+}

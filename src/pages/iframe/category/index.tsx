@@ -1,20 +1,10 @@
 import StoreInfoBar from '../../../components/restaurant-info-bar';
-import ProductListing from '../../../components/product-listing';
-import {
-  Grid,
-  Theme,
-  Typography,
-  Tabs,
-  Tab,
-  Box,
-  Modal,
-  Button,
-  Dialog,
-  CircularProgress,
-} from '@mui/material';
+import ProductListing from '../../../components/iframe/product-listing';
+import { Grid, Theme, Typography, Tabs, Tab, Box } from '@mui/material';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@mui/styles';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import { Fragment, useEffect, useLayoutEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategoriesRequest } from '../../../redux/actions/category';
 import { Category, ResponseMenu } from '../../../types/olo-api';
@@ -45,6 +35,39 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: any;
+  value: any;
+}
+
+function TabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`scrollable-auto-tabpanel-${index}`}
+      aria-labelledby={`scrollable-auto-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box p={3}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+function a11yProps(index: any) {
+  return {
+    id: `scrollable-auto-tab-${index}`,
+    'aria-controls': `scrollable-auto-tabpanel-${index}`,
+  };
+}
+
 const CategoryList = () => {
   const style = {
     position: 'absolute' as 'absolute',
@@ -59,7 +82,7 @@ const CategoryList = () => {
   const classes = useStyles();
   const [getResutarnts, setGetResutrants] = useState(false);
   const [restaurantSelected, setRestaurantSelected] = useState<any>();
-  const [value, setValue] = useState('0');
+  const [value, setValue] = useState(0);
   const { store } = useParams();
   const [categoriesWithProducts, setCategoriesWithProducts] =
     useState<ResponseMenu>();
@@ -126,65 +149,65 @@ const CategoryList = () => {
   useEffect(() => {
     if (categories && categories.categories) {
       setCategoriesWithProducts(categories);
-      let scrollValues: any[] = [];
-      setTimeout(() => {
-        categories.categories.map((item: any, index: number) => {
-          const elem: HTMLElement = document.getElementById(
-            'cat-panel-' + index,
-          ) as HTMLElement;
-          if (document.getElementById('cat-panel-' + index)) {
-            scrollValues.push({
-              panel: elem,
-              start: elem.offsetTop - 100,
-              end: elem.offsetTop - 100 + elem.clientHeight,
-              index: index,
-            });
-          }
-        });
-      }, 500);
-
-      window.addEventListener(
-        'orientationchange',
-        function () {
-          scrollValues = [];
-          categories.categories.map((item: any, index: number) => {
-            const elem: HTMLElement = document.getElementById(
-              'cat-panel-' + index,
-            ) as HTMLElement;
-            if (document.getElementById('cat-panel-' + index)) {
-              scrollValues.push({
-                panel: elem,
-                start: elem.offsetTop - 100,
-                end: elem.offsetTop - 100 + elem.clientHeight,
-                index: index,
-              });
-            }
-          });
-        },
-        false,
-      );
-
-      // Listen for resize changes
-      window.addEventListener(
-        'resize',
-        function () {
-          scrollValues = [];
-          categories.categories.map((item: any, index: number) => {
-            const elem: HTMLElement = document.getElementById(
-              'cat-panel-' + index,
-            ) as HTMLElement;
-            if (document.getElementById('cat-panel-' + index)) {
-              scrollValues.push({
-                panel: elem,
-                start: elem.offsetTop - 100,
-                end: elem.offsetTop - 100 + elem.clientHeight,
-                index: index,
-              });
-            }
-          });
-        },
-        false,
-      );
+      // let scrollValues: any[] = [];
+      // setTimeout(() => {
+      //   categories.categories.map((item: any, index: number) => {
+      //     const elem: HTMLElement = document.getElementById(
+      //       'cat-panel-' + index,
+      //     ) as HTMLElement;
+      //     if (document.getElementById('cat-panel-' + index)) {
+      //       scrollValues.push({
+      //         panel: elem,
+      //         start: elem.offsetTop - 100,
+      //         end: elem.offsetTop - 100 + elem.clientHeight,
+      //         index: index,
+      //       });
+      //     }
+      //   });
+      // }, 500);
+      //
+      // window.addEventListener(
+      //   'orientationchange',
+      //   function () {
+      //     scrollValues = [];
+      //     categories.categories.map((item: any, index: number) => {
+      //       const elem: HTMLElement = document.getElementById(
+      //         'cat-panel-' + index,
+      //       ) as HTMLElement;
+      //       if (document.getElementById('cat-panel-' + index)) {
+      //         scrollValues.push({
+      //           panel: elem,
+      //           start: elem.offsetTop - 100,
+      //           end: elem.offsetTop - 100 + elem.clientHeight,
+      //           index: index,
+      //         });
+      //       }
+      //     });
+      //   },
+      //   false,
+      // );
+      //
+      // // Listen for resize changes
+      // window.addEventListener(
+      //   'resize',
+      //   function () {
+      //     scrollValues = [];
+      //     categories.categories.map((item: any, index: number) => {
+      //       const elem: HTMLElement = document.getElementById(
+      //         'cat-panel-' + index,
+      //       ) as HTMLElement;
+      //       if (document.getElementById('cat-panel-' + index)) {
+      //         scrollValues.push({
+      //           panel: elem,
+      //           start: elem.offsetTop - 100,
+      //           end: elem.offsetTop - 100 + elem.clientHeight,
+      //           index: index,
+      //         });
+      //       }
+      //     });
+      //   },
+      //   false,
+      // );
 
       body.addEventListener('scroll', (e) => {
         e.preventDefault();
@@ -195,7 +218,7 @@ const CategoryList = () => {
         if (categoryPanel && dummyCategoryPanel) {
           if (window.scrollY > categoryPanel.offsetTop) {
             categoryPanel.style.position = 'fixed';
-            categoryPanel.style.top = '60px';
+            // categoryPanel.style.top = '60px';
             dummyCategoryPanel.style.display = 'block';
           } else {
             categoryPanel.style.position = 'relative';
@@ -207,44 +230,21 @@ const CategoryList = () => {
     }
   }, [categories]);
 
-  const checkScrollIndex = (scrollValues: any[], scrollValue: number) => {
-    const val: any = scrollValues.find(
-      (x: any) => x.start < scrollValue && x.end > scrollValue,
-    );
-    if (val) {
-      if (value != val.index) setValue(val.index.toString() || '0');
-    } else {
-      setValue('0');
-    }
-  };
-
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-    setTimeout(() => {
-      var elem = document.getElementById('#panel-' + newValue);
-      elem?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 700);
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
   const [open, setOpen] = useState(true);
-
-  const changeRestaurant = (orderType: string) => {
-    dispatch(setResturantInfoRequest(restaurantSelected, orderType));
-    displayToast('SUCCESS', 'Location changed to ' + restaurantSelected.name);
-    setOpen(false);
-    navigate('/menu/' + restaurantSelected.slug);
-    dispatch(getCategoriesRequest(restaurantSelected.id));
-  };
   return (
     <div style={{ minHeight: '500px' }}>
       {loading === true && <ProductListingSkeletonUI />}
       {categoriesWithProducts?.categories &&
         categoriesWithProducts?.categories.length > 0 && (
           <>
-            <div
-              style={{ display: 'none', height: '80px' }}
-              id="dummyCategoryPanel"
-            ></div>
+            {/*<div*/}
+            {/*  style={{ display: 'none', height: '80px' }}*/}
+            {/*  id="dummyCategoryPanel"*/}
+            {/*></div>*/}
             <Box
               sx={{
                 width: '100%',
@@ -275,14 +275,14 @@ const CategoryList = () => {
                   (item: Category, index: number) => (
                     <Tab
                       key={item.id}
-                      value={`${index}`}
+                      value={index}
                       label={item.name}
                       title={item.name}
                       color="secondary.main"
                       sx={{ fontFamily: 'Poppins-Medium !important' }}
-                      tabIndex={0}
                       role="link"
                       href={`#cat-panel-${index}`}
+                      {...a11yProps(index)}
                     />
                   ),
                 )}
@@ -294,42 +294,7 @@ const CategoryList = () => {
         categoriesWithProducts?.categories.length > 0 &&
         categoriesWithProducts?.categories.map(
           (item: Category, index: number) => (
-            <Grid
-              key={index}
-              container
-              spacing={0}
-              id={`cat-panel-${index}`}
-              sx={{
-                padding: {
-                  xs: '20px 20px 0px 20px',
-                  sm: '30px 70px 0px 70px',
-                  lg: '30px 100px 0px 100px',
-                },
-                position: 'relative',
-              }}
-            >
-              <Grid item xs={12}>
-                <div
-                  id={'#panel-' + index}
-                  style={{ position: 'absolute', top: '-120px' }}
-                ></div>
-                <Grid container>
-                  <Grid item xs={item.products.length > 4 ? 8 : 12}>
-                    <Typography className={classes.heading} title={item.name}>
-                      {item.name}
-                    </Typography>
-                  </Grid>
-                  {item.products.length > 4 && (
-                    <Grid item xs={4}>
-                      <Typography className={classes.link}>
-                        <Link to={`/category/${item.id}`} title="view all">
-                          view all →
-                        </Link>
-                      </Typography>
-                    </Grid>
-                  )}
-                </Grid>
-              </Grid>
+            <TabPanel value={value} index={index}>
               <Grid item xs={12} sx={{ paddingBottom: '20px' }} role="list">
                 <ProductListing
                   productList={item.products}
@@ -338,7 +303,7 @@ const CategoryList = () => {
                   shownItemsCount={4}
                 />
               </Grid>
-            </Grid>
+            </TabPanel>
           ),
         )}
       <div style={{ paddingBottom: '30px' }}></div>
