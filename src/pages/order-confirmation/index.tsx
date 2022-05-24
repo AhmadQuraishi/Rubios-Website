@@ -86,18 +86,18 @@ const OrderConfirmation = () => {
                       }}
                     >
                       {authToken?.authtoken
-                        ? 'YOUR EARNED 18 POINTS!'
+                        ? 'You’re all set!'
                         : 'GET $5 OFF YOUR NEXT ORDER'}
                     </Typography>
                     <br />
                     <Typography
                       variant="h6"
                       className="white"
-                      title="Join today for completing the form below"
+                      title="Join Rubio’s Rewards today to start earning rewards."
                     >
                       {authToken?.authtoken
-                        ? 'Lorem Ipsum Lorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem Ipsum'
-                        : 'Join today for completing the form below'}
+                        ? 'You’ve received credit for today’s order and are one step closer to earning your next reward.'
+                        : 'Join Rubio’s Rewards today to start earning rewards.'}
                     </Typography>
                     <br />
                     {authToken?.authtoken ? (
