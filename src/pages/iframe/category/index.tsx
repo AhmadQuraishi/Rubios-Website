@@ -1,39 +1,11 @@
-import StoreInfoBar from '../../../components/restaurant-info-bar';
 import ProductListing from '../../../components/iframe/product-listing';
-import { Grid, Theme, Typography, Tabs, Tab, Box } from '@mui/material';
-import PropTypes from 'prop-types';
-import { makeStyles } from '@mui/styles';
-import { useNavigate, useParams } from 'react-router-dom';
-import { Fragment, useEffect, useState } from 'react';
+import { Grid, Typography, Tabs, Tab, Box } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategoriesRequest } from '../../../redux/actions/category';
 import { Category, ResponseMenu } from '../../../types/olo-api';
 import ProductListingSkeletonUI from '../../../components/product-listing-skeleton-ui';
-import { getResturantListRequest } from '../../../redux/actions/restaurant/list';
-import { setResturantInfoRequest } from '../../../redux/actions/restaurant';
-import { displayToast } from '../../../helpers/toast';
 
-const useStyles = makeStyles((theme: Theme) => ({
-  heading: {
-    fontFamily: 'Poppins-Bold !important',
-    color: theme.palette.secondary.main,
-    fontSize: '25px !important',
-    textTransform: 'uppercase',
-    paddingBottom: '30px',
-  },
-  link: {
-    textAlign: 'right',
-    '& a': {
-      fontFamily: 'Poppins-Medium !important',
-      color: '#6AC0BD',
-      fontSize: '13px',
-      textTransform: 'uppercase',
-      textDecoration: 'none',
-      paddingTop: '10px',
-      display: 'block',
-    },
-  },
-}));
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -79,172 +51,55 @@ const CategoryList = () => {
     background: '#FFF',
     border: '1px solid #FFF',
   };
-  const classes = useStyles();
-  const [getResutarnts, setGetResutrants] = useState(false);
-  const [restaurantSelected, setRestaurantSelected] = useState<any>();
   const [value, setValue] = useState(0);
-  const { store } = useParams();
   const [categoriesWithProducts, setCategoriesWithProducts] =
     useState<ResponseMenu>();
   const { categories, loading, error } = useSelector(
     (state: any) => state.categoryReducer,
   );
-  const { restaurant } = useSelector(
-    (state: any) => state.restaurantInfoReducer,
-  );
-  const objResturantsList = useSelector(
-    (state: any) => state.restaurantListReducer,
-  );
-  const { providerToken } = useSelector((state: any) => state.providerReducer);
+
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const body = document;
 
   useEffect(() => {
-    if (window.location.href.toLocaleLowerCase().indexOf('selection=1') != -1) {
-      //if (providerToken && providerToken.first_name) {
-      //navigate('/location');
-      //} else {
-      setGetResutrants(true);
-      dispatch(getResturantListRequest());
-      if (restaurant && restaurant.id) {
-        dispatch(getCategoriesRequest(restaurant.id));
-      }
-      // }
-    } else {
-      if (restaurant === null) {
-        navigate('/location');
-      } else {
-        dispatch(getCategoriesRequest(restaurant.id));
-      }
-    }
+    dispatch(getCategoriesRequest(60854));
   }, []);
 
-  useEffect(() => {
-    if (
-      getResutarnts &&
-      objResturantsList.restaurants &&
-      objResturantsList.restaurants.restaurants &&
-      objResturantsList.restaurants.restaurants.length > 0 &&
-      store
-    ) {
-      const restaurants = objResturantsList.restaurants.restaurants;
-      const objRestaurant = restaurants.find(
-        (x: any) => x.slug.toLowerCase() == store.toLowerCase(),
-      );
-      if (objRestaurant) {
-        setRestaurantSelected(objRestaurant);
-        setOpen(true);
-      } else {
-        displayToast(
-          'ERROR',
-          'Your restaurant does not exist, Please search your restaurant here',
-        );
-        navigate('/location');
-      }
-      setGetResutrants(false);
-    }
-  }, [objResturantsList]);
 
   useEffect(() => {
     if (categories && categories.categories) {
       setCategoriesWithProducts(categories);
-      // let scrollValues: any[] = [];
-      // setTimeout(() => {
-      //   categories.categories.map((item: any, index: number) => {
-      //     const elem: HTMLElement = document.getElementById(
-      //       'cat-panel-' + index,
-      //     ) as HTMLElement;
-      //     if (document.getElementById('cat-panel-' + index)) {
-      //       scrollValues.push({
-      //         panel: elem,
-      //         start: elem.offsetTop - 100,
-      //         end: elem.offsetTop - 100 + elem.clientHeight,
-      //         index: index,
-      //       });
+
+      // body.addEventListener('scroll', (e) => {
+      //   e.preventDefault();
+      //   var categoryPanel = document.getElementById('categoryMenu');
+      //   var dummyCategoryPanel = document.getElementById('dummyCategoryPanel');
+      //
+      //   //checkScrollIndex(scrollValues, window.scrollY);
+      //   if (categoryPanel && dummyCategoryPanel) {
+      //     if (window.scrollY > categoryPanel.offsetTop) {
+      //       categoryPanel.style.position = 'fixed';
+      //       // categoryPanel.style.top = '60px';
+      //       dummyCategoryPanel.style.display = 'block';
+      //     } else {
+      //       categoryPanel.style.position = 'relative';
+      //       categoryPanel.style.top = '0px';
+      //       dummyCategoryPanel.style.display = 'none';
       //     }
-      //   });
-      // }, 500);
-      //
-      // window.addEventListener(
-      //   'orientationchange',
-      //   function () {
-      //     scrollValues = [];
-      //     categories.categories.map((item: any, index: number) => {
-      //       const elem: HTMLElement = document.getElementById(
-      //         'cat-panel-' + index,
-      //       ) as HTMLElement;
-      //       if (document.getElementById('cat-panel-' + index)) {
-      //         scrollValues.push({
-      //           panel: elem,
-      //           start: elem.offsetTop - 100,
-      //           end: elem.offsetTop - 100 + elem.clientHeight,
-      //           index: index,
-      //         });
-      //       }
-      //     });
-      //   },
-      //   false,
-      // );
-      //
-      // // Listen for resize changes
-      // window.addEventListener(
-      //   'resize',
-      //   function () {
-      //     scrollValues = [];
-      //     categories.categories.map((item: any, index: number) => {
-      //       const elem: HTMLElement = document.getElementById(
-      //         'cat-panel-' + index,
-      //       ) as HTMLElement;
-      //       if (document.getElementById('cat-panel-' + index)) {
-      //         scrollValues.push({
-      //           panel: elem,
-      //           start: elem.offsetTop - 100,
-      //           end: elem.offsetTop - 100 + elem.clientHeight,
-      //           index: index,
-      //         });
-      //       }
-      //     });
-      //   },
-      //   false,
-      // );
-
-      body.addEventListener('scroll', (e) => {
-        e.preventDefault();
-        var categoryPanel = document.getElementById('categoryMenu');
-        var dummyCategoryPanel = document.getElementById('dummyCategoryPanel');
-
-        //checkScrollIndex(scrollValues, window.scrollY);
-        if (categoryPanel && dummyCategoryPanel) {
-          if (window.scrollY > categoryPanel.offsetTop) {
-            categoryPanel.style.position = 'fixed';
-            // categoryPanel.style.top = '60px';
-            dummyCategoryPanel.style.display = 'block';
-          } else {
-            categoryPanel.style.position = 'relative';
-            categoryPanel.style.top = '0px';
-            dummyCategoryPanel.style.display = 'none';
-          }
-        }
-      });
+      //   }
+      // });
     }
   }, [categories]);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
-
-  const [open, setOpen] = useState(true);
   return (
     <div style={{ minHeight: '500px' }}>
       {loading === true && <ProductListingSkeletonUI />}
       {categoriesWithProducts?.categories &&
         categoriesWithProducts?.categories.length > 0 && (
           <>
-            {/*<div*/}
-            {/*  style={{ display: 'none', height: '80px' }}*/}
-            {/*  id="dummyCategoryPanel"*/}
-            {/*></div>*/}
             <Box
               sx={{
                 width: '100%',
@@ -253,7 +108,7 @@ const CategoryList = () => {
                 padding: {
                   xs: '20px 5px 10px 5px',
                   sm: '20px 30px 5px 30px',
-                  lg: '20px 60px 5px 60px',
+                  lg: '20px 30px 5px 30px',
                   boxSizing: 'border-box',
                 },
               }}

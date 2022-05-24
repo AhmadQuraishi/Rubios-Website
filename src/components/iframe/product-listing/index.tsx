@@ -1,10 +1,10 @@
-import { Grid, Typography, Card, CardContent, Theme } from '@mui/material';
+import { Typography, Card, CardContent, Theme, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { Link } from 'react-router-dom';
 import { Fragment } from 'react';
 import './index.css';
 import { Product } from '../../../types/olo-api';
 import Carousel from 'react-multi-carousel';
+import { useNavigate } from 'react-router-dom';
 import 'react-multi-carousel/lib/styles.css';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -64,11 +64,9 @@ const responsive = {
 
 const ProductListing = (props: any) => {
   const classes = useStyles();
-  const { productList, shownItemsCount, categoryID, imgPath } = props;
+  const navigate = useNavigate();
+  const { productList, imgPath } = props;
   let products: [Product] = productList;
-  // if (shownItemsCount) {
-  //   products = productList.slice(0, shownItemsCount);
-  // }
 
   const changeImageSize = (path: string, images: any) => {
     if (images && images.length > 0) {
@@ -88,20 +86,22 @@ const ProductListing = (props: any) => {
   return (
     <Fragment>
       {/*<Grid container spacing={3}>*/}
+      <Typography variant="h1" title="WHAT ARE YOU CRAVING?">
+        WHAT ARE YOU CRAVING?
+      </Typography>
       <Carousel
         swipeable={true}
         draggable={false}
-        // showDots={true}
         responsive={responsive}
         ssr={true} // means to render carousel on server-side.
         infinite={true}
         // autoPlay={props.deviceType !== 'mobile' ? true : false}
         additionalTransfrom={0}
         autoPlay={false}
-        autoPlaySpeed={3000}
+        // autoPlaySpeed={3000}
         keyBoardControl={true}
         customTransition="all .5"
-        // transitionDuration={1000}
+        transitionDuration={500}
         containerClass="carousel-container"
         removeArrowOnDeviceType={['tablet', 'mobile']}
         deviceType={props.deviceType}
@@ -109,87 +109,55 @@ const ProductListing = (props: any) => {
         itemClass="carousel-item-padding-40-px"
       >
         {products.map((item: any, index: number) => (
-          <div
-            key={index}
-            style={{ padding: 10 }}
-          >
-            <Link to={`/product/${item.id}`} style={{ textDecoration: 'none' }}>
-              <Card
-                elevation={0}
-                style={{ borderRadius: 0 }}
-                role="group"
-                aria-label={item.name}
-              >
-                {item.imagefilename ? (
-                  <img
-                    className={classes.img}
-                    src={
-                      imgPath + changeImageSize(item.imagefilename, item.images)
-                    }
-                    title={item.name}
-                  />
-                ) : (
-                  <img
-                    className={classes.img}
-                    src={require('../../../assets/imgs/default_img.png')}
-                    title={item.name}
-                  />
-                )}
-                <CardContent sx={{ padding: '0' }}>
-                  <Typography
-                    variant="h2"
-                    title={item.name}
-                    className={classes.title}
-                  >
-                    {item.name}
-                  </Typography>
-                  {/*<Typography*/}
-                  {/*  variant="caption"*/}
-                  {/*  title={item.description}*/}
-                  {/*  className={classes.content + ' fix-span'}*/}
-                  {/*>*/}
-                  {/*  {item.description}*/}
-                  {/*</Typography>*/}
-                  {/*<Grid container spacing={0}>*/}
-                  {/*  {(item.basecalories > 0 || item.maxcalories > 0) && (*/}
-                  {/*    <Grid*/}
-                  {/*      item*/}
-                  {/*      xs={6}*/}
-                  {/*      title={`${*/}
-                  {/*        item.caloriesseparator*/}
-                  {/*          ? item.basecalories +*/}
-                  {/*            item.caloriesseparator +*/}
-                  {/*            item.maxcalories*/}
-                  {/*          : item.basecalories*/}
-                  {/*      } cal`}*/}
-                  {/*      className={classes.cal}*/}
-                  {/*    >*/}
-                  {/*      {item.caloriesseparator*/}
-                  {/*        ? item.basecalories +*/}
-                  {/*          item.caloriesseparator +*/}
-                  {/*          item.maxcalories*/}
-                  {/*        : item.basecalories}{' '}*/}
-                  {/*      cal*/}
-                  {/*    </Grid>*/}
-                  {/*  )}*/}
-                  {/*  {item.cost > 0 && (*/}
-                  {/*    <Grid*/}
-                  {/*      item*/}
-                  {/*      xs={6}*/}
-                  {/*      title={`$${parseFloat(item.cost).toFixed(2)}`}*/}
-                  {/*      className={classes.price}*/}
-                  {/*    >*/}
-                  {/*      ${parseFloat(item.cost).toFixed(2)}*/}
-                  {/*    </Grid>*/}
-                  {/*  )}*/}
-                  {/*</Grid>*/}
-                </CardContent>
-              </Card>
-            </Link>
+          <div key={index} style={{ padding: 10 }}>
+            <Card
+              elevation={0}
+              style={{ borderRadius: 0 }}
+              role="group"
+              aria-label={item.name}
+            >
+              {item.imagefilename ? (
+                <img
+                  className={classes.img}
+                  src={
+                    imgPath + changeImageSize(item.imagefilename, item.images)
+                  }
+                  title={item.name}
+                />
+              ) : (
+                <img
+                  className={classes.img}
+                  src={require('../../../assets/imgs/default_img.png')}
+                  title={item.name}
+                />
+              )}
+              <CardContent sx={{ padding: '0' }}>
+                <Typography
+                  variant="h2"
+                  title={item.name}
+                  className={classes.title}
+                >
+                  {item.name}
+                </Typography>
+                <Button
+                  className="button"
+                  variant="contained"
+                  title="ORDER NOW"
+                  style={{ width: '100%' }}
+                  onClick={() => {
+                    window.open(
+                      `${process.env.REACT_APP_ORDERING_URL}`,
+                      '_blank',
+                    );
+                  }}
+                >
+                  ORDER NOW
+                </Button>
+              </CardContent>
+            </Card>
           </div>
         ))}
       </Carousel>
-      {/*</Grid>*/}
     </Fragment>
   );
 };
