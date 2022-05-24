@@ -143,15 +143,17 @@ h4.heading-ui {
 }
 .product-detail .menu-items .content-panel .card-panel .name-img-panel {
   align-items: flex-start !important;
+  margin-left: -5px !important;
 }
 .product-detail .menu-items .content-panel .card-panel {
   padding: 0px 10px 20px 10px !important;
 }
 .product-detail .menu-items .content-panel .card-panel .name-img-panel .name-panel {
-  padding-left: 10px !important;
-  padding-right: 10px !important;
+  padding-left: 0px !important;
+  padding-top: 15px;
   overflow-wrap: break-word;
   text-align: center;
+  font-size: 16px;
 }
   .product-detail .action-panel {
     position: fixed;

@@ -660,7 +660,21 @@ const Product = () => {
     return isValidate;
   };
 
-  const dropDownValue = (optionID: number, value: any) => {
+  const dropDownValue = (
+    optionID: number,
+    value: any,
+    options: any,
+    target: HTMLSelectElement,
+  ) => {
+    const id = target.getAttribute('data-select-id');
+    const option = options.find((x: any) => x.id == id);
+    if (option) {
+      setTotalCost(((productDetails?.cost || 0) - option.cost) * count);
+    }
+    const optionAdd = options.find((x: any) => x.id == value);
+    if (optionAdd) {
+      setTotalCost(((productDetails?.cost || 0) + optionAdd.cost) * count);
+    }
     optionsSelectionArray.map((itemP: any) => {
       itemP.options.map((itemC: any) => {
         if (itemC.optionID == optionID) {
@@ -957,29 +971,45 @@ const Product = () => {
                                       ) == true && (
                                         <select
                                           style={{
-                                            marginTop: '8px',
                                             display: 'block',
+                                            margin: 'auto',
+                                            marginTop: '8px',
                                           }}
                                           parent-select-option-id={itemChild.id}
                                           onClick={(e) => e.stopPropagation()}
                                           value={itemChild.selectedValue || '0'}
+                                          data-select-id={
+                                            itemChild.selectedValue || '0'
+                                          }
                                           onChange={(e) =>
                                             dropDownValue(
                                               itemChild.option.id,
                                               e.target.value,
+                                              itemChild.dropDownValues,
+                                              e.target,
                                             )
                                           }
                                         >
-                                          <option value="0">
-                                            Please Choose
-                                          </option>
                                           {itemChild.dropDownValues.map(
                                             (option: any, index: number) => (
                                               <option
                                                 key={Math.random() + index}
                                                 value={option.id}
+                                                onClick={() => {
+                                                  setTotalCost(
+                                                    ((productDetails?.cost ||
+                                                      0) +
+                                                      option.cost) *
+                                                      count,
+                                                  );
+                                                }}
                                               >
-                                                {option.name}
+                                                {option.name +
+                                                  (option.cost > 0
+                                                    ? ' (+$' +
+                                                      option.cost.toFixed(2) +
+                                                      ')'
+                                                    : '')}
                                               </option>
                                             ),
                                           )}
