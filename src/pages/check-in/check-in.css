@@ -16,3 +16,11 @@
   color: #414141;
   padding-top: 8px;
 }
+
+
+@media screen and (max-width: 960px) {
+  .check-in-section img {
+    width: 50%;
+    height: auto;
+  }
+}
