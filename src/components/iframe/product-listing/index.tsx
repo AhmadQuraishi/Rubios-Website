@@ -64,7 +64,6 @@ const responsive = {
 
 const ProductListing = (props: any) => {
   const classes = useStyles();
-  const navigate = useNavigate();
   const { productList, imgPath } = props;
   let products: [Product] = productList;
 
