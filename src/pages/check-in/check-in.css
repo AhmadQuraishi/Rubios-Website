@@ -1,6 +1,10 @@
 .check-in-section .MuiGrid-grid-xs-12{
   padding-top: 20px
 }
+.check-in-section img {
+  width: 100%;
+  height: auto;
+}
 .receipt-image-box
 {
   justify-content: center;
