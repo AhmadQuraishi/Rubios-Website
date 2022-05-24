@@ -857,8 +857,8 @@ const Product = () => {
                               : 'content-panel'
                           }
                           item
-                          xs={12}
-                          sm={6}
+                          xs={6}
+                          sm={3}
                           md={4}
                         >
                           <label htmlFor={itemChild.option.id}>
@@ -891,8 +891,14 @@ const Product = () => {
                                 container
                                 spacing={1}
                                 className="name-img-panel"
+                                sx={{ padding: '0px' }}
                               >
-                                <Grid item xs={5} sm={5}>
+                                <Grid
+                                  item
+                                  xs={12}
+                                  md={5}
+                                  sx={{ padding: '0px' }}
+                                >
                                   {selectedParentOption(
                                     itemMain.parentOptionID,
                                   ) && (
@@ -914,13 +920,18 @@ const Product = () => {
                                     />
                                   )}
                                 </Grid>
-                                <Grid item xs={7} sm={7} className="name-panel">
+                                <Grid
+                                  item
+                                  xs={12}
+                                  md={7}
+                                  className="name-panel"
+                                >
                                   {itemChild.option.name}
 
                                   {itemChild.option.cost > 0 && (
                                     <Grid
                                       item
-                                      xs={6}
+                                      xs={12}
                                       title={`$${parseFloat(
                                         itemChild.option.cost,
                                       ).toFixed(2)}`}
@@ -929,6 +940,7 @@ const Product = () => {
                                         fontSize: '14px',
                                         fontFamily: 'Poppins-Bold',
                                         color: '#7CC8C5',
+                                        textAlign: { xs: 'center', md: 'left' },
                                       }}
                                     >
                                       +$
