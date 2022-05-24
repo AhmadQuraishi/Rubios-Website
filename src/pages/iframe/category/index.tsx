@@ -10,6 +10,7 @@ import {
   HOME_PAGE_CATEGORIES,
 } from '../../../helpers/category';
 import { useLocation } from 'react-router-dom';
+import "./category.css";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -82,11 +83,11 @@ const CategoryList = () => {
   };
 
   const fromatProductName = (name: string) => {
-    return name.replace('CATERING ','');
-  }
+    return name.replace('CATERING ', '');
+  };
 
   return (
-    <div style={{ minHeight: '500px' }}>
+    <div style={{ minHeight: '500px', padding: '0px 50px' }}>
       {loading === true && <ProductListingSkeletonUI />}
       {categoriesWithProducts && categoriesWithProducts.length > 0 && (
         <>
@@ -104,6 +105,13 @@ const CategoryList = () => {
             }}
             id="categoryMenu"
           >
+            <Typography
+              variant="h1"
+              title="WHAT ARE YOU CRAVING?"
+              sx={{ marginBottom: '20px' }}
+            >
+              WHAT ARE YOU CRAVING?
+            </Typography>
             <Tabs
               value={value}
               onChange={handleChange}
@@ -123,8 +131,14 @@ const CategoryList = () => {
                   label={fromatProductName(item.name)}
                   title={fromatProductName(item.name)}
                   color="secondary.main"
-                  sx={{ fontFamily: 'Poppins-Medium !important' }}
+                  sx={{
+                    fontFamily: 'Poppins-Medium !important',
+                    minWidth: 'auto',
+                    padding: '12px 0px',
+                    margin: '0px 16px',
+                  }}
                   role="link"
+                  className="tabs-btn"
                   {...a11yProps(index)}
                 />
               ))}
