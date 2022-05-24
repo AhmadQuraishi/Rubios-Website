@@ -82,8 +82,8 @@ const CategoryList = () => {
   };
 
   const fromatProductName = (name: string) => {
-    return name.replace('CATERING ','');
-  }
+    return name.replace('CATERING ', '');
+  };
 
   return (
     <div style={{ minHeight: '500px', padding: '0px 50px' }}>
@@ -104,7 +104,11 @@ const CategoryList = () => {
             }}
             id="categoryMenu"
           >
-            <Typography variant="h1" title="WHAT ARE YOU CRAVING?" sx={{marginBottom:'20px'}}>
+            <Typography
+              variant="h1"
+              title="WHAT ARE YOU CRAVING?"
+              sx={{ marginBottom: '20px' }}
+            >
               WHAT ARE YOU CRAVING?
             </Typography>
             <Tabs
@@ -126,7 +130,12 @@ const CategoryList = () => {
                   label={fromatProductName(item.name)}
                   title={fromatProductName(item.name)}
                   color="secondary.main"
-                  sx={{ fontFamily: 'Poppins-Medium !important', minWidth: 'auto', padding:'12px 0px', margin: '0px 16px' }}
+                  sx={{
+                    fontFamily: 'Poppins-Medium !important',
+                    minWidth: 'auto',
+                    padding: '12px 0px',
+                    margin: '0px 16px',
+                  }}
                   role="link"
                   className="tabs-btn"
                   {...a11yProps(index)}
