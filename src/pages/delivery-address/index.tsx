@@ -79,6 +79,9 @@ const DeliveryAddress = () => {
         <Typography variant="h1" className={classes.heading}>
           DELIVERY ADDRESSES
         </Typography>
+        <Typography variant="h6" title="" sx={{marginBottom: '20px',}}>
+          To add or update your delivery addresses, select “delivery” when placing an order and enter the updated delivery address during checkout.
+        </Typography>
         {loading && <LoadingBar />}
 
         {!loading &&
