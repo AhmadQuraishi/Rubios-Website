@@ -116,6 +116,7 @@ const Footer = () => {
                     menu.items.map((item: any, index: number) => (
                       <li>
                         <a
+                          key={Math.random() + index}
                           className={classes.links}
                           href={item.url}
                           title={item.title}
@@ -163,7 +164,10 @@ const Footer = () => {
                 sx={{ padding: { xs: '10px 0 0 0', md: '20px 0 0 0' } }}
               >
                 <Grid item xs={4}>
-                  <a href={"https://www.facebook.com/rubios/"} target={"_blank"}>
+                  <a
+                    href={'https://www.facebook.com/rubios/'}
+                    target={'_blank'}
+                  >
                     <img
                       src={fbIcon}
                       style={{ width: '50%' }}
@@ -172,21 +176,27 @@ const Footer = () => {
                   </a>
                 </Grid>
                 <Grid item xs={4}>
-                  <a href={"https://www.instagram.com/rubioscoastalgrill/"} target={"_blank"}>
-                  <img
-                    src={instaIcon}
-                    style={{ width: '50%' }}
-                    alt="Instagram Icon"
-                  />
+                  <a
+                    href={'https://www.instagram.com/rubioscoastalgrill/'}
+                    target={'_blank'}
+                  >
+                    <img
+                      src={instaIcon}
+                      style={{ width: '50%' }}
+                      alt="Instagram Icon"
+                    />
                   </a>
                 </Grid>
                 <Grid item xs={4}>
-                  <a href={"https://twitter.com/RubiosTweets"} target={"_blank"}>
-                  <img
-                    src={twitterIcon}
-                    style={{ width: '50%' }}
-                    alt="Twitter Icon"
-                  />
+                  <a
+                    href={'https://twitter.com/RubiosTweets'}
+                    target={'_blank'}
+                  >
+                    <img
+                      src={twitterIcon}
+                      style={{ width: '50%' }}
+                      alt="Twitter Icon"
+                    />
                   </a>
                 </Grid>
               </Grid>
