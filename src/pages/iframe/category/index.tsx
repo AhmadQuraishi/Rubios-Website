@@ -10,6 +10,7 @@ import {
   HOME_PAGE_CATEGORIES,
 } from '../../../helpers/category';
 import { useLocation } from 'react-router-dom';
+import "./category.css";
 
 interface TabPanelProps {
   children?: React.ReactNode;
