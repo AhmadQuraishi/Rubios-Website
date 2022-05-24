@@ -109,7 +109,7 @@ h4.heading-ui {
   padding-right: 20px;
 }
 
-@media screen and (max-width: 1150px) {
+@media screen and (max-width: 1180px) {
   .product-detail {
     padding: 40px;
   }
@@ -122,6 +122,47 @@ h4.heading-ui {
   .product-detail h2 {
     font-size: 24px;
   }
+  .product-detail .menu-items .content-panel.selected .card-panel .check-mark {
+    margin: auto;
+    left: 0 !important;
+    right: 0 !important;
+    top:  35px !important;
+    bottom: auto !important;
+  }
+  .ss-panl {
+    display: block;
+    margin: auto;
+    margin-top: 8px;
+  }
+  .product-detail
+    .menu-items
+    .content-panel
+    .card-panel
+    .name-img-panel
+    .item-image {
+    width: 100%;
+    display: block;
+    margin: auto;
+  }
+  .product-detail .menu-items .content-panel .card-panel .name-img-panel {
+    align-items: flex-start !important;
+    margin-left: -5px !important;
+  }
+  .product-detail .menu-items .content-panel .card-panel {
+    padding: 0px 10px 20px 10px !important;
+  }
+  .product-detail
+    .menu-items
+    .content-panel
+    .card-panel
+    .name-img-panel
+    .name-panel {
+    padding-left: 0px !important;
+    padding-top: 15px;
+    overflow-wrap: break-word;
+    text-align: center;
+    font-size: 16px;
+  }
 }
 
 .product-detail .action-panel .content-panel {
@@ -129,32 +170,13 @@ h4.heading-ui {
   align-items: center;
   justify-content: end;
 }
+.ss-panl {
+  display: block;
+  margin-top: 8px;
+}
 
 @media screen and (max-width: 899px) {
-  .product-detail
-  .menu-items
-  .content-panel
-  .card-panel
-  .name-img-panel
-  .item-image {
-  width: 100%;
-  display: block;
-  margin: auto;
-}
-.product-detail .menu-items .content-panel .card-panel .name-img-panel {
-  align-items: flex-start !important;
-  margin-left: -5px !important;
-}
-.product-detail .menu-items .content-panel .card-panel {
-  padding: 0px 10px 20px 10px !important;
-}
-.product-detail .menu-items .content-panel .card-panel .name-img-panel .name-panel {
-  padding-left: 0px !important;
-  padding-top: 15px;
-  overflow-wrap: break-word;
-  text-align: center;
-  font-size: 16px;
-}
+  
   .product-detail .action-panel {
     position: fixed;
     margin: auto;
