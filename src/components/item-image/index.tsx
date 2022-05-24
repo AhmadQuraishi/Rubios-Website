@@ -15,7 +15,6 @@ const ItemImage = (props: any) => {
     optionImages.map((item: any) => {
       if (process.env.NODE_ENV !== 'production') {
         if (item.sandbox_plu_names.indexOf(id.toString()) != -1) {
-          console.log(item.yoast_head_json.schema['@graph'][1].contentUrl);
           setImageURL(item.yoast_head_json.schema['@graph'][1].contentUrl);
         }
       } else {
