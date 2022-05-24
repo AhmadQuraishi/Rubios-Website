@@ -85,9 +85,6 @@ const ProductListing = (props: any) => {
   return (
     <Fragment>
       {/*<Grid container spacing={3}>*/}
-      <Typography variant="h1" title="WHAT ARE YOU CRAVING?">
-        WHAT ARE YOU CRAVING?
-      </Typography>
       <Carousel
         swipeable={true}
         draggable={false}
@@ -139,10 +136,10 @@ const ProductListing = (props: any) => {
                   {item.name}
                 </Typography>
                 <Button
-                  className="button"
+                  className="custom-btn cta2-btn"
                   variant="contained"
                   title="ORDER NOW"
-                  style={{ width: '100%' }}
+                  style={{ width: '80%', margin: '5px'}}
                   onClick={() => {
                     window.open(
                       `${process.env.REACT_APP_ORDERING_URL}`,

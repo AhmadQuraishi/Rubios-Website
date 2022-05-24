@@ -1,0 +1,7 @@
+#categoryMenu .MuiTabs-indicator {
+  background-color: #4cd964 !important;
+}
+.carousel-container .react-multiple-carousel__arrow {
+  top: 50%;
+  margin-top: -115px;
+}
