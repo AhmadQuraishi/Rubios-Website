@@ -3,49 +3,31 @@ import axios from 'axios';
 import { Box, CircularProgress } from '@mui/material';
 
 const ItemImage = (props: any) => {
-  const { name, id, className, productImageURL, index } = props;
+  const { name, id, className, productImageURL, optionImages } = props;
 
-  const [imageURL, setImageURL] = useState<any>();
+  const [imageURL, setImageURL] = useState<any>(null);
   const [loading, setLoading] = useState<any>(false);
 
-  const getIngredientImage = (id: string) => {
-    try {
-      const url =
-        process.env.REACT_APP_INGREDIENT_URL?.replace('*yourplu*', id) || '';
-      const promise = axios.get(url);
-      setLoading(true);
-      setTimeout(() => {
-        promise.then((response) => {
-          setTimeout(() => {
-            setLoading(false);
-          }, 150);
-          if (response.data.length > 0) {
-            setImageURL(response.data[0].yoast_head_json.schema['@graph'][1]);
-          } else {
-            setImageURL([]);
-          }
-        });
-      }, 100 * index + 1);
-    } catch (error) {
-      setImageURL([]);
-      setTimeout(() => {
-        setLoading(false);
-      }, 150);
-      throw error;
-    }
-  };
-
   useEffect(() => {
-    getIngredientImage(id);
+    if (name.toLowerCase() == 'as is' || name.toLowerCase() == 'customize') {
+      return;
+    }
+    optionImages.map((item: any) => {
+      if (process.env.NODE_ENV !== 'production') {
+        if (item.sandbox_plu_names.indexOf(id.toString()) != -1) {
+          console.log(item.yoast_head_json.schema['@graph'][1].contentUrl);
+          setImageURL(item.yoast_head_json.schema['@graph'][1].contentUrl);
+        }
+      } else {
+        if (item.sandbox_plu_names.indexOf(id.toString()) != -1) {
+          setImageURL(item.yoast_head_json.schema['@graph'][1].contentUrl);
+        }
+      }
+    });
   }, []);
 
   return (
     <>
-      {loading && (
-        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-          <CircularProgress />
-        </Box>
-      )}
       {(name.toLowerCase() == 'as is' || name.toLowerCase() == 'customize') && (
         <img
           aria-hidden="true"
@@ -53,38 +35,34 @@ const ItemImage = (props: any) => {
           style={{
             height: '130px',
             width: 'auto',
-            display: !loading ? 'block' : 'none',
           }}
           className={`${className}`}
         />
       )}
 
-      {imageURL &&
-        imageURL.contentUrl == null &&
+      {imageURL == null &&
         name.toLowerCase() != 'customize' &&
         name.toLowerCase() != 'as is' && (
           <img
             aria-hidden="true"
             src={require('../../assets/imgs/No ingredient.png')}
             style={{
-              height: 'auto',
+              height: '128px',
               width: '100%',
-              display: !loading ? 'block' : 'none',
             }}
             className={`${className}`}
           />
         )}
+
       {imageURL &&
-        imageURL.contentUrl &&
         name.toLowerCase() != 'customize' &&
         name.toLowerCase() != 'as is' && (
           <img
             aria-hidden="true"
-            src={imageURL.contentUrl}
+            src={imageURL}
             style={{
-              height: '120px',
-              width: 'auto',
-              display: !loading ? 'block' : 'none',
+              height: '128px',
+              width: '100%',
             }}
             className={`${className}`}
           />

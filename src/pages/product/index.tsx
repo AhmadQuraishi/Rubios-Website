@@ -31,6 +31,7 @@ import { updateProductRequest } from '../../redux/actions/basket/product/update'
 import { displayToast } from '../../helpers/toast';
 import ItemImage from '../../components/item-image';
 import { getUpsellsRequest } from '../../redux/actions/basket/upsell/Get';
+import axios from 'axios';
 const inputProps = {
   'aria-label': 'quantity',
 };
@@ -109,7 +110,7 @@ const Product = () => {
       setOptionsSelectionArray([]);
       dispatch(getProductOptionRequest(productDetails.id));
       setCountWithEdit();
-      getTotalCost();
+      //getTotalCost();
     }
   }, [productDetails]);
 
@@ -120,7 +121,7 @@ const Product = () => {
       );
       if (product) {
         setCount(product.quantity);
-        getTotalCost();
+        getTotalCost(productDetails.cost + ptotalCost || 0 * product.quantity);
       } else {
         navigate('/product/' + productDetails?.id);
       }
@@ -139,10 +140,39 @@ const Product = () => {
       setUpdatedOptions(false);
       setProductOptions(options);
       prepareProductOptionsArray(options.optiongroups, null, []);
+      getOptionsImages(options.optiongroups);
       getTotalCost();
-      //setTotalCost(ptotalCost);
     }
   }, [options]);
+
+  const [optionImages, setOptionImages] = useState([]);
+
+  const getOptionsImages = (options: []) => {
+    const ids: any[] = [];
+    JSON.stringify(options, (key, value) => {
+      if (key === 'chainoptionid' && !ids.find((x) => x === value))
+        ids.push(value);
+      return value;
+    });
+    if (ids.length > 0) {
+      try {
+        const url = process.env.REACT_APP_INGREDIENT_URL?.replace(
+          '*yourplu*',
+          ids.toString(),
+        );
+        const promise = axios.get(url || '');
+        promise.then((response) => {
+          if (response.data.length > 0) {
+            setOptionImages(response.data);
+          } else {
+            setOptionImages([]);
+          }
+        });
+      } catch (error) {
+        throw error;
+      }
+    }
+  };
 
   const addProductToBag = () => {
     if (basketObj.basket == null) {
@@ -263,7 +293,7 @@ const Product = () => {
 
   useEffect(() => {}, [optionsSelectionArray]);
 
-  let ptotalCost = totalCost;
+  let ptotalCost = 0;
 
   const prepareProductOptionsArray = (
     options: any,
@@ -304,6 +334,9 @@ const Product = () => {
         }
         if (isExistInEdit(option.id)) {
           ptotalCost = ptotalCost + option.cost;
+          getTotalCost(
+            productDetails?.cost || 0 + ptotalCost || 0 * count || 0,
+          );
           editOptions.push(option.id);
         }
       });
@@ -449,7 +482,6 @@ const Product = () => {
             if (option) {
               setOptionsCost(optionsCost + option.option.cost);
               setTotalCost((totalCost || 0) + option.option.cost * count);
-              //setTotalCost(totalCost + option.option.cost);
             }
             elems = optionsSelectionArray.filter(
               (x: any) => x.parentOptionID == optionId,
@@ -487,7 +519,6 @@ const Product = () => {
               if (option) {
                 setOptionsCost(optionsCost - option.option.cost);
                 setTotalCost((totalCost || 0) - option.option.cost * count);
-                //setTotalCost((totalCost || 0) - option.option.cost);
               }
               item.selected = !(item.selectedOptions.length == 0);
               let elems = optionsSelectionArray.filter(
@@ -524,7 +555,6 @@ const Product = () => {
             if (option) {
               setOptionsCost(optionsCost + option.option.cost);
               setTotalCost((totalCost || 0) + option.option.cost * count);
-              //setTotalCost(totalCost + option.option.cost);
             }
             let elems = optionsSelectionArray.filter(
               (x: any) => x.parentOptionID == optionId,
@@ -645,8 +675,13 @@ const Product = () => {
 
   const [optionsCost, setOptionsCost] = useState(0);
 
-  const getTotalCost = () => {
-    setTotalCost(((productDetails?.cost || 0) + optionsCost) * count);
+  const getTotalCost = (cost: any = null) => {
+    if (cost) {
+      setTotalCost(cost);
+    } else {
+      setOptionsCost(ptotalCost);
+      setTotalCost(((productDetails?.cost || 0) + ptotalCost) * count);
+    }
   };
 
   return (
@@ -875,6 +910,7 @@ const Product = () => {
                                       className="item-image"
                                       name={itemChild.option.name}
                                       id={itemChild.option.chainoptionid}
+                                      optionImages={optionImages}
                                     />
                                   )}
                                 </Grid>
@@ -972,7 +1008,6 @@ const Product = () => {
                           ((productDetails?.cost || 0) + optionsCost) *
                             (count + 1),
                         );
-                        //setTotalCost((totalCost || 0) * (count + 1));
                       }}
                     >
                       {' '}
@@ -982,6 +1017,7 @@ const Product = () => {
                       value={count}
                       // inputProps={inputProps}
                       id="quantityfield"
+                      onChange={() => {}}
                       className="input-quantity"
                       title="quantity"
                     />
@@ -995,7 +1031,6 @@ const Product = () => {
                           ((productDetails?.cost || 0) + optionsCost) *
                             Math.max(count - 1, 1),
                         );
-                        //setTotalCost((totalCost || 0) * Math.max(count - 1, 1));
                       }}
                     >
                       {' '}
