@@ -3,14 +3,14 @@ import { Grid, Typography, Tabs, Tab, Box } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategoriesRequest } from '../../../redux/actions/category';
-import { Category, ResponseMenu } from '../../../types/olo-api';
+import { Category } from '../../../types/olo-api';
 import ProductListingSkeletonUI from '../../../components/product-listing-skeleton-ui';
 import {
   CATERING_CATEGORIES,
   HOME_PAGE_CATEGORIES,
 } from '../../../helpers/category';
 import { useLocation } from 'react-router-dom';
-import "./category.css";
+import './category.css';
 
 interface TabPanelProps {
   children?: React.ReactNode;
