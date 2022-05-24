@@ -414,7 +414,9 @@ const Product = () => {
     if (isExist == null) isExist = options[0].id;
     return isExist;
   };
+
   const [selectionExecute, setSelectionExecute] = useState(false);
+  
   const showChildOptions = (optionId: number, parnetOptionID: number) => {
     setSelectionExecute(false);
     setTimeout(() => {
@@ -872,8 +874,9 @@ const Product = () => {
                           }
                           item
                           xs={6}
-                          sm={3}
-                          md={4}
+                          sm={4}
+                          md={3}
+                          lg={4}
                         >
                           <label htmlFor={itemChild.option.id}>
                             <Card
@@ -910,7 +913,7 @@ const Product = () => {
                                 <Grid
                                   item
                                   xs={12}
-                                  md={5}
+                                  lg={5}
                                   sx={{ padding: '0px' }}
                                 >
                                   {selectedParentOption(
@@ -937,7 +940,7 @@ const Product = () => {
                                 <Grid
                                   item
                                   xs={12}
-                                  md={7}
+                                  lg={7}
                                   className="name-panel"
                                 >
                                   {itemChild.option.name}
@@ -954,7 +957,7 @@ const Product = () => {
                                         fontSize: '14px',
                                         fontFamily: 'Poppins-Bold',
                                         color: '#7CC8C5',
-                                        textAlign: { xs: 'center', md: 'left' },
+                                        textAlign: { xs: 'center', lg: 'left' },
                                       }}
                                     >
                                       +$
@@ -970,11 +973,7 @@ const Product = () => {
                                         itemMain.id,
                                       ) == true && (
                                         <select
-                                          style={{
-                                            display: 'block',
-                                            margin: 'auto',
-                                            marginTop: '8px',
-                                          }}
+                                          className="ss-panl"
                                           parent-select-option-id={itemChild.id}
                                           onClick={(e) => e.stopPropagation()}
                                           value={itemChild.selectedValue || '0'}

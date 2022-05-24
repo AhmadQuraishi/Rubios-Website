@@ -18,7 +18,7 @@ const ItemImage = (props: any) => {
           setImageURL(item.yoast_head_json.schema['@graph'][1].contentUrl);
         }
       } else {
-        if (item.sandbox_plu_names.indexOf(id.toString()) != -1) {
+        if (item.production_plu_names.indexOf(id.toString()) != -1) {
           setImageURL(item.yoast_head_json.schema['@graph'][1].contentUrl);
         }
       }
