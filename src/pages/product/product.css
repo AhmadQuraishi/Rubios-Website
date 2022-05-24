@@ -15,6 +15,7 @@ h4.heading-ui {
   padding-bottom: 15px;
   font-size: 32px;
   color: #214f66;
+  margin-top: 14px;
 }
 .product-detail .label.bold {
   font-family: 'Poppins-Bold', sans-serif !important;
