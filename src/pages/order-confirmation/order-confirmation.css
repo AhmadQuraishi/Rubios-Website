@@ -13,6 +13,9 @@
   color: white;
   padding-right: 60px;
 }
+h6.white {
+  padding-right: 15px;
+}
 .order-confirmation button {
   width: 40%;
   margin-top: 7px;
