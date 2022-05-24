@@ -1,0 +1,11 @@
+.register-card {
+  margin: 50px auto;
+  border-radius: 20px !important;
+  padding: 50px;
+}
+
+@media screen and (max-width: 468px) {
+  .register-card {
+    padding: 40px 25px;
+  }
+}
