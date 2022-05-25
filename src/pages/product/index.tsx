@@ -926,26 +926,22 @@ const Product = () => {
                                     },
                                   }}
                                 >
-                                  {selectedParentOption(
-                                    itemMain.parentOptionID,
-                                  ) && (
-                                    <ItemImage
-                                      productImageURL={
-                                        productDetails &&
-                                        ((categories && categories.imagepath) ||
-                                          '') +
-                                          changeImageSize(
-                                            productDetails.imagefilename || '',
-                                            productDetails.images || '',
-                                          )
-                                      }
-                                      index={index1}
-                                      className="item-image"
-                                      name={itemChild.option.name}
-                                      id={itemChild.option.chainoptionid}
-                                      optionImages={optionImages}
-                                    />
-                                  )}
+                                  <ItemImage
+                                    productImageURL={
+                                      productDetails &&
+                                      ((categories && categories.imagepath) ||
+                                        '') +
+                                        changeImageSize(
+                                          productDetails.imagefilename || '',
+                                          productDetails.images || '',
+                                        )
+                                    }
+                                    index={index1}
+                                    className="item-image"
+                                    name={itemChild.option.name}
+                                    id={itemChild.option.chainoptionid}
+                                    optionImages={optionImages}
+                                  />
                                 </Grid>
                                 <Grid
                                   item
