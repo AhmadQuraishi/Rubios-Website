@@ -29,12 +29,14 @@ const pickupTime = (order: any) => {
           : 'PICKUP TIME'}
       </Typography>
       <Typography
-        variant="h3"
+        variant="body1"
         title="6:10 PM"
         sx={{
           fontFamily: 'Poppins-Bold !important',
           color: '#214F66',
           fontSize: '36px !important',
+          lineHeight: '1.2',
+          letterSpacing: '-0.00833em',
         }}
       >
         {moment(order.readytime, 'YYYYMMDD HH:mm').format('h:mm A')}
@@ -47,10 +49,10 @@ const vehicleInfo = (order: any) => {
   return (
     <>
       <Grid xs={12} sm={6} md={6} lg={12} className="adjust-space">
-        <Typography variant="caption" className="label" title="PICKUP TIME">
+        <Typography variant="h2" className="label" title="VEHICLE INFO">
           VEHICLE INFO
         </Typography>
-        <Typography variant="h6">
+        <Typography variant="body1">
           {order &&
             order.customfields &&
             order.customfields.length &&
@@ -92,20 +94,22 @@ const pickupAddress = (restaurant: any, order: any) => {
         {order && order.deliverymode ? locationTitle(order.deliverymode) : ''}
       </Typography>
       <Typography
-        variant="h3"
+        variant="body1"
         sx={{
           textTransform: 'uppercase',
           fontFamily: 'Poppins-Bold !important',
           color: '#214F66',
           fontSize: '36px !important',
+          lineHeight: '1.2',
+          letterSpacing: '-0.00833em',
         }}
       >
         {restaurant && restaurant.slug ? restaurant.slug : ''}
       </Typography>
-      <Typography variant="h6">
+      <Typography variant="body1">
         {restaurant && restaurant.streetaddress ? restaurant.streetaddress : ''}
       </Typography>
-      <Typography variant="h6">
+      <Typography variant="body1">
         {restaurant && restaurant.city ? `${restaurant.city}, ` : ''}
         {restaurant && restaurant.state ? `${restaurant.state}` : ''}
       </Typography>
@@ -128,8 +132,10 @@ const deliveryAddress = (order: any) => {
           fontFamily: 'Poppins-Bold !important',
           color: '#214F66',
           fontSize: '36px !important',
+          lineHeight: '1.2',
+          letterSpacing: '-0.00833em',
         }}
-        variant="h3"
+        variant="body1"
       >
         {order && order.deliveryaddress && order.deliveryaddress.building
           ? order.deliveryaddress.building
@@ -175,7 +181,7 @@ const OrderConfirmedCard = ({ orderObj, restaurantObj }: any) => {
         <Grid container spacing={0}>
           <Grid xs={12} sm={6} md={6} lg={12}>
             <Typography
-              variant="h1"
+              variant="h2"
               className="heading-one"
               title="ORDER CONFIRMED"
               sx={{
@@ -186,12 +192,14 @@ const OrderConfirmedCard = ({ orderObj, restaurantObj }: any) => {
                 textTransform: 'uppercase',
               }}
             >
-              <span className="heading-one">ORDER CONFIRMED</span>
+              ORDER CONFIRMED
             </Typography>
             <Typography
-              variant="h2"
+              variant="body1"
               title="WE'LL TAKE IT FROM HERE. SEE YOU SOON."
               sx={{
+                lineHeight: '1.2',
+                letterSpacing: '-0.00833em',
                 fontFamily: 'Poppins-Bold !important',
                 color: '#214F66',
                 fontSize: '36px !important',

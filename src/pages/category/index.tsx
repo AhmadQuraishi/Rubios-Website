@@ -450,7 +450,11 @@ const CategoryList = () => {
                 ></div>
                 <Grid container>
                   <Grid item xs={item.products.length > 4 ? 8 : 12}>
-                    <Typography className={classes.heading} title={item.name}>
+                    <Typography
+                      variant="h2"
+                      className={classes.heading}
+                      title={item.name}
+                    >
                       {item.name}
                     </Typography>
                   </Grid>

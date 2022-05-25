@@ -146,7 +146,7 @@ const RegisterConfirmation = () => {
                     value={values.first_name}
                     onChange={handleChange('first_name')}
                     onBlur={handleBlur('first_name')}
-                    autoComplete="first name"
+                    autoComplete="given-name"
                     error={Boolean(touched.first_name && errors.first_name)}
                     helperText={touched.first_name && errors.first_name}
                   />
@@ -158,7 +158,7 @@ const RegisterConfirmation = () => {
                     title="Last Name"
                     type="text"
                     name="last name"
-                    autoComplete="last name"
+                    autoComplete="family-name"
                     sx={{ width: '100%' }}
                     value={values.last_name}
                     onChange={handleChange('last_name')}
@@ -234,7 +234,7 @@ const RegisterConfirmation = () => {
                     value={values.password}
                     onChange={handleChange('password')}
                     onBlur={handleBlur('password')}
-                    autoComplete="password"
+                    autoComplete="new-password"
                     error={Boolean(touched.password && errors.password)}
                     helperText={touched.password && errors.password}
                   />
