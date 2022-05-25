@@ -362,6 +362,7 @@ const LocationCard = (props: any) => {
                 onChange={onServiceSelect}
               >
                 <ToggleButton
+                  role="link"
                   value="Pick up"
                   onClick={() => {
                     setresturantOrderType(
@@ -374,6 +375,7 @@ const LocationCard = (props: any) => {
                   PickUp
                 </ToggleButton>
                 <ToggleButton
+                  role="link"
                   value="Curbside"
                   onClick={() =>
                     setresturantOrderType(
@@ -389,6 +391,7 @@ const LocationCard = (props: any) => {
                 </ToggleButton>
                 <ToggleButton
                   value="Delivery"
+                  role="link"
                   onClick={() => {
                     setresturantOrderType(
                       resturantOrderType === 'delivery'

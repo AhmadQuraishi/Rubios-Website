@@ -318,30 +318,38 @@ const Footer = () => {
                     justifyContent: { xs: 'left', md: 'right' },
                   }}
                 >
-                  <Link
-                    to="/"
-                    className={classes.smallLinks}
-                    title="Website Accessibility"
-                    aria-label="Website Accessibility"
-                  >
-                    Website Accessibility
-                  </Link>
-                  <Link
-                    to="/"
-                    className={classes.smallLinks}
-                    title="Terms of use"
-                    aria-label="Terms of use"
-                  >
-                    Terms of use
-                  </Link>
-                  <Link
-                    to="/"
-                    className={classes.smallLinks}
-                    title="Privacy"
-                    aria-label="Privacy"
-                  >
-                    Privacy
-                  </Link>
+                  <ul style={{ listStyle: 'none', display: 'flex'}}>
+                    <li>
+                      <Link
+                        to="/"
+                        className={classes.smallLinks}
+                        title="Website Accessibility"
+                        aria-label="Website Accessibility"
+                      >
+                        Website Accessibility
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to="/"
+                        className={classes.smallLinks}
+                        title="Terms of use"
+                        aria-label="Terms of use"
+                      >
+                        Terms of use
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to="/"
+                        className={classes.smallLinks}
+                        title="Privacy"
+                        aria-label="Privacy"
+                      >
+                        Privacy
+                      </Link>
+                    </li>
+                  </ul>
                 </Grid>
               </Grid>
             </Grid>

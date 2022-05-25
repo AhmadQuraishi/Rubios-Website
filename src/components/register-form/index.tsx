@@ -198,7 +198,7 @@ const RegisterForm = () => {
                     name="first_name"
                     sx={{ width: '100%' }}
                     value={values.first_name}
-                    autoComplete="on"
+                    autoComplete="given-name"
                     onChange={handleChange('first_name')}
                     onBlur={handleBlur('first_name')}
                     error={Boolean(touched.first_name && errors.first_name)}
@@ -212,7 +212,7 @@ const RegisterForm = () => {
                     title="Last Name"
                     type="text"
                     name="last_name"
-                    autoComplete="on"
+                    autoComplete="family-name"
                     sx={{ width: '100%' }}
                     value={values.last_name}
                     onChange={handleChange('last_name')}
@@ -228,7 +228,7 @@ const RegisterForm = () => {
                     title="Email"
                     type="text"
                     name="email"
-                    autoComplete="on"
+                    autoComplete="email"
                     sx={{ width: '100%' }}
                     value={values.email}
                     onChange={handleChange('email')}
@@ -246,7 +246,7 @@ const RegisterForm = () => {
                     value={values.phone}
                     sx={{ width: '100%' }}
                     onChange={handleChange}
-                    autoComplete="on"
+                    autoComplete="tel"
                     name="phone"
                     id="formatted-numberformat-input"
                     InputLabelProps={{
@@ -269,7 +269,7 @@ const RegisterForm = () => {
                     title="Password"
                     type="password"
                     name="password"
-                    autoComplete="on"
+                    autoComplete="new-password"
                     sx={{ width: '100%' }}
                     value={values.password}
                     onChange={handleChange('password')}
@@ -292,7 +292,7 @@ const RegisterForm = () => {
                     label="Confirm Password *"
                     title="Confirm Password"
                     name="password_confirmation"
-                    autoComplete="on"
+                    autoComplete="new-password"
                     type="password"
                     sx={{ width: '100%' }}
                     value={values.password_confirmation}
@@ -314,7 +314,6 @@ const RegisterForm = () => {
                     label="Invite Code (Optional)"
                     title="Invite Code (Optional)"
                     name="invitecode"
-                    autoComplete="on"
                     type="text"
                     sx={{ width: '100%' }}
                     value={values.invitecode}
@@ -405,20 +404,24 @@ const RegisterForm = () => {
                     and to receiving marketing communications from Rubio's.
                   </Typography>
                 </Grid>
-                <Grid item xs={12} sx={{display: 'flex', justifyContent: 'center'}}>
+                <Grid
+                  item
+                  xs={12}
+                  sx={{ display: 'flex', justifyContent: 'center' }}
+                >
                   <Grid item xs={12} sm={8} md={8} lg={8}>
-                  <Button
-                    type="submit"
-                    disabled={loadingProvider || loadingAuth}
-                    aria-label="submit form to sign upm for rubios rewards"
-                    name="submit"
-                    title="submit"
-                    variant="contained"
-                    sx={{ width: '100%' }}
-                  >
-                    Submit
-                  </Button>
-                </Grid>
+                    <Button
+                      type="submit"
+                      disabled={loadingProvider || loadingAuth}
+                      aria-label="submit form to sign upm for rubios rewards"
+                      name="submit"
+                      title="submit"
+                      variant="contained"
+                      sx={{ width: '100%' }}
+                    >
+                      Submit
+                    </Button>
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>

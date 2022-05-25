@@ -31,6 +31,7 @@ const ItemImage = (props: any) => {
         <img
           aria-hidden="true"
           src={productImageURL}
+          alt=""
           style={{
             height: '120px',
             width: '120px',
@@ -44,6 +45,7 @@ const ItemImage = (props: any) => {
         name.toLowerCase() != 'as is' && (
           <img
             aria-hidden="true"
+            alt=""
             src={require('../../assets/imgs/No ingredient.png')}
             style={{
               height: '120px',
@@ -58,6 +60,7 @@ const ItemImage = (props: any) => {
         name.toLowerCase() != 'as is' && (
           <img
             aria-hidden="true"
+            alt=""
             src={imageURL}
             style={{
               height: '120px',
