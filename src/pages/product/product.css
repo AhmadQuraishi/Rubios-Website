@@ -143,6 +143,8 @@ h2.heading-ui {
     width: 100%;
     display: block;
     margin: auto;
+    height: 100% !important;
+    width: 100% !important;
   }
   .product-detail .menu-items .content-panel .card-panel .name-img-panel {
     align-items: flex-start !important;
@@ -176,7 +178,18 @@ h2.heading-ui {
 }
 
 @media screen and (max-width: 899px) {
-  
+  .product-detail
+    .menu-items
+    .content-panel
+    .card-panel
+    .name-img-panel
+    .name-panel {
+    padding-left: 0px !important;
+    padding-top: 15px;
+    overflow-wrap: break-word;
+    text-align: center;
+    font-size: 15px;
+  }
   .product-detail .action-panel {
     position: fixed;
     margin: auto;
@@ -197,6 +210,18 @@ h2.heading-ui {
 }
 
 @media screen and (max-width: 640px) {
+  .product-detail
+    .menu-items
+    .content-panel
+    .card-panel
+    .name-img-panel
+    .name-panel {
+    padding-left: 0px !important;
+    padding-top: 15px;
+    overflow-wrap: break-word;
+    text-align: center;
+    font-size: 14px;
+  }
   .quantity-label {
     display: none;
   }

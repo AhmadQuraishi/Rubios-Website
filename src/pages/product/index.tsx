@@ -406,8 +406,11 @@ const Product = () => {
         (item: any) => item.id == edit,
       );
       product.choices.map((item: any, index: number) => {
-        if (options.find((x: any) => item.optionid == x.id)) {
+        const op = options.find((x: any) => item.optionid == x.id);
+        if (op) {
           isExist = item.optionid;
+          ptotalCost = (ptotalCost + op.cost) * count;
+          setOptionsCost(ptotalCost);
         }
       });
     }
@@ -417,7 +420,12 @@ const Product = () => {
 
   const [selectionExecute, setSelectionExecute] = useState(false);
 
-  const showChildOptions = (optionId: number, parnetOptionID: number) => {
+  const showChildOptions = (
+    optionId: number,
+    parnetOptionID: number,
+    optionsDDL: any = null,
+    optionsDDLSelectedID: any = null,
+  ) => {
     setSelectionExecute(false);
     setTimeout(() => {
       setSelectionExecute(false);
@@ -532,13 +540,26 @@ const Product = () => {
           if (item.selectedOptions.includes(optionId)) {
             const index = item.selectedOptions.indexOf(optionId);
             if (index > -1) {
+              let optionDDLE = null;
+              if (optionsDDL && optionsDDLSelectedID) {
+                optionDDLE = optionsDDL.find(
+                  (option: any) => option.id == optionsDDLSelectedID,
+                );
+              }
               item.selectedOptions.splice(index, 1);
               const option = item.options.find(
                 (option: any) => option.optionID == optionId,
               );
               if (option) {
-                setOptionsCost(optionsCost - option.option.cost);
-                setTotalCost((totalCost || 0) - option.option.cost * count);
+                setOptionsCost(
+                  optionsCost -
+                    ((optionDDLE ? optionDDLE.cost : 0) + option.option.cost),
+                );
+                setTotalCost(
+                  (totalCost || 0) -
+                    ((optionDDLE ? optionDDLE.cost : 0) + option.option.cost) *
+                      count,
+                );
               }
               item.selected = !(item.selectedOptions.length == 0);
               let elems = optionsSelectionArray.filter(
@@ -572,9 +593,23 @@ const Product = () => {
             const option = item.options.find(
               (option: any) => option.optionID == optionId,
             );
+            let optionDDLE = null;
+            if (optionsDDL && optionsDDLSelectedID) {
+              optionDDLE = optionsDDL.find(
+                (option: any) => option.id == optionsDDLSelectedID,
+              );
+            }
             if (option) {
-              setOptionsCost(optionsCost + option.option.cost);
-              setTotalCost((totalCost || 0) + option.option.cost * count);
+              setOptionsCost(
+                optionsCost +
+                  (optionDDLE ? optionDDLE.cost : 0) +
+                  option.option.cost,
+              );
+              setTotalCost(
+                (totalCost || 0) +
+                  (optionDDLE ? optionDDLE.cost : 0) +
+                  option.option.cost * count,
+              );
             }
             let elems = optionsSelectionArray.filter(
               (x: any) => x.parentOptionID == optionId,
@@ -689,11 +724,11 @@ const Product = () => {
     const id = target.getAttribute('data-select-id');
     const option = options.find((x: any) => x.id == id);
     if (option) {
-      setTotalCost(((productDetails?.cost || 0) - option.cost) * count);
+      setTotalCost(((totalCost || 0) - option.cost) * count);
     }
     const optionAdd = options.find((x: any) => x.id == value);
     if (optionAdd) {
-      setTotalCost(((productDetails?.cost || 0) + optionAdd.cost) * count);
+      setTotalCost(((totalCost || 0) + optionAdd.cost) * count);
     }
     optionsSelectionArray.map((itemP: any) => {
       itemP.options.map((itemC: any) => {
@@ -818,12 +853,14 @@ const Product = () => {
                         productDetails.images,
                       )
                     }
+                    alt=""
                     className="img"
                     title={productDetails.name}
                   />
                 ) : (
                   <img
                     style={{ width: '80%', display: 'block', margin: 'auto' }}
+                    alt=""
                     src={require('../../assets/imgs/default_img.png')}
                     title={productDetails.name}
                   />
@@ -892,7 +929,7 @@ const Product = () => {
                           }
                           item
                           xs={6}
-                          sm={4}
+                          sm={3}
                           md={3}
                           lg={4}
                         >
@@ -907,6 +944,8 @@ const Product = () => {
                                 showChildOptions(
                                   itemChild.option.id,
                                   itemMain.id,
+                                  itemChild.dropDownValues,
+                                  itemChild.selectedValue,
                                 );
                               }}
                               onKeyUp={(e) => {
@@ -914,6 +953,8 @@ const Product = () => {
                                   showChildOptions(
                                     itemChild.option.id,
                                     itemMain.id,
+                                    itemChild.dropDownValues,
+                                    itemChild.selectedValue,
                                   );
                               }}
                             >
