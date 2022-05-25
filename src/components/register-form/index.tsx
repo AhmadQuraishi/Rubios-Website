@@ -189,7 +189,7 @@ const RegisterForm = () => {
                   name="first_name"
                   sx={{ width: '100%' }}
                   value={values.first_name}
-                  autoComplete="on"
+                  autoComplete="given-name"
                   onChange={handleChange('first_name')}
                   onBlur={handleBlur('first_name')}
                   error={Boolean(touched.first_name && errors.first_name)}
@@ -203,7 +203,7 @@ const RegisterForm = () => {
                   title="Last Name"
                   type="text"
                   name="last_name"
-                  autoComplete="on"
+                  autoComplete="family-name"
                   sx={{ width: '100%' }}
                   value={values.last_name}
                   onChange={handleChange('last_name')}
@@ -219,7 +219,7 @@ const RegisterForm = () => {
                   title="Email"
                   type="text"
                   name="email"
-                  autoComplete="on"
+                  autoComplete="email"
                   sx={{ width: '100%' }}
                   value={values.email}
                   onChange={handleChange('email')}
@@ -237,7 +237,7 @@ const RegisterForm = () => {
                   value={values.phone}
                   sx={{ width: '100%' }}
                   onChange={handleChange}
-                  autoComplete="on"
+                  autoComplete="tel"
                   name="phone"
                   id="formatted-numberformat-input"
                   InputLabelProps={{
@@ -260,7 +260,7 @@ const RegisterForm = () => {
                   title="Password"
                   type="password"
                   name="password"
-                  autoComplete="on"
+                  autoComplete="new-password"
                   sx={{ width: '100%' }}
                   value={values.password}
                   onChange={handleChange('password')}
@@ -283,7 +283,7 @@ const RegisterForm = () => {
                   label="Confirm Password *"
                   title="Confirm Password"
                   name="password_confirmation"
-                  autoComplete="on"
+                  autoComplete="new-password"
                   type="password"
                   sx={{ width: '100%' }}
                   value={values.password_confirmation}
@@ -305,7 +305,6 @@ const RegisterForm = () => {
                   label="Invite Code (Optional)"
                   title="Invite Code (Optional)"
                   name="invitecode"
-                  autoComplete="on"
                   type="text"
                   sx={{ width: '100%' }}
                   value={values.invitecode}
