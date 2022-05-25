@@ -109,8 +109,8 @@ const Product = () => {
       setUpdatedOptions(true);
       setOptionsSelectionArray([]);
       dispatch(getProductOptionRequest(productDetails.id));
+      setTotalCost(productDetails.cost * count);
       setCountWithEdit();
-      //getTotalCost();
     }
   }, [productDetails]);
 
@@ -414,7 +414,9 @@ const Product = () => {
     if (isExist == null) isExist = options[0].id;
     return isExist;
   };
+
   const [selectionExecute, setSelectionExecute] = useState(false);
+
   const showChildOptions = (optionId: number, parnetOptionID: number) => {
     setSelectionExecute(false);
     setTimeout(() => {
@@ -660,7 +662,21 @@ const Product = () => {
     return isValidate;
   };
 
-  const dropDownValue = (optionID: number, value: any) => {
+  const dropDownValue = (
+    optionID: number,
+    value: any,
+    options: any,
+    target: HTMLSelectElement,
+  ) => {
+    const id = target.getAttribute('data-select-id');
+    const option = options.find((x: any) => x.id == id);
+    if (option) {
+      setTotalCost(((productDetails?.cost || 0) - option.cost) * count);
+    }
+    const optionAdd = options.find((x: any) => x.id == value);
+    if (optionAdd) {
+      setTotalCost(((productDetails?.cost || 0) + optionAdd.cost) * count);
+    }
     optionsSelectionArray.map((itemP: any) => {
       itemP.options.map((itemC: any) => {
         if (itemC.optionID == optionID) {
@@ -857,9 +873,10 @@ const Product = () => {
                               : 'content-panel'
                           }
                           item
-                          xs={12}
-                          sm={6}
-                          md={4}
+                          xs={6}
+                          sm={4}
+                          md={3}
+                          lg={4}
                         >
                           <label htmlFor={itemChild.option.id}>
                             <Card
@@ -891,36 +908,53 @@ const Product = () => {
                                 container
                                 spacing={1}
                                 className="name-img-panel"
+                                sx={{ padding: '0', marginTop: '0' }}
                               >
-                                <Grid item xs={5} sm={5}>
-                                  {selectedParentOption(
-                                    itemMain.parentOptionID,
-                                  ) && (
-                                    <ItemImage
-                                      productImageURL={
-                                        productDetails &&
-                                        ((categories && categories.imagepath) ||
-                                          '') +
-                                          changeImageSize(
-                                            productDetails.imagefilename || '',
-                                            productDetails.images || '',
-                                          )
-                                      }
-                                      index={index1}
-                                      className="item-image"
-                                      name={itemChild.option.name}
-                                      id={itemChild.option.chainoptionid}
-                                      optionImages={optionImages}
-                                    />
-                                  )}
+                                <Grid
+                                  item
+                                  xs={12}
+                                  lg={5}
+                                  sx={{
+                                    padding: '0px',
+                                    paddingLeft: {
+                                      xs: '0px !important',
+                                      lg: '15px !important',
+                                    },
+                                    paddingTop: {
+                                      xs: '0px !important',
+                                      lg: '0px !important',
+                                    },
+                                  }}
+                                >
+                                  <ItemImage
+                                    productImageURL={
+                                      productDetails &&
+                                      ((categories && categories.imagepath) ||
+                                        '') +
+                                        changeImageSize(
+                                          productDetails.imagefilename || '',
+                                          productDetails.images || '',
+                                        )
+                                    }
+                                    index={index1}
+                                    className="item-image"
+                                    name={itemChild.option.name}
+                                    id={itemChild.option.chainoptionid}
+                                    optionImages={optionImages}
+                                  />
                                 </Grid>
-                                <Grid item xs={7} sm={7} className="name-panel">
+                                <Grid
+                                  item
+                                  xs={12}
+                                  lg={7}
+                                  className="name-panel"
+                                >
                                   {itemChild.option.name}
 
                                   {itemChild.option.cost > 0 && (
                                     <Grid
                                       item
-                                      xs={6}
+                                      xs={12}
                                       title={`$${parseFloat(
                                         itemChild.option.cost,
                                       ).toFixed(2)}`}
@@ -929,6 +963,7 @@ const Product = () => {
                                         fontSize: '14px',
                                         fontFamily: 'Poppins-Bold',
                                         color: '#7CC8C5',
+                                        textAlign: { xs: 'center', lg: 'left' },
                                       }}
                                     >
                                       +$
@@ -944,30 +979,42 @@ const Product = () => {
                                         itemMain.id,
                                       ) == true && (
                                         <select
-                                          style={{
-                                            marginTop: '8px',
-                                            display: 'block',
-                                          }}
+                                          className="ss-panl"
                                           parent-select-option-id={itemChild.id}
                                           onClick={(e) => e.stopPropagation()}
                                           value={itemChild.selectedValue || '0'}
+                                          data-select-id={
+                                            itemChild.selectedValue || '0'
+                                          }
                                           onChange={(e) =>
                                             dropDownValue(
                                               itemChild.option.id,
                                               e.target.value,
+                                              itemChild.dropDownValues,
+                                              e.target,
                                             )
                                           }
                                         >
-                                          <option value="0">
-                                            Please Choose
-                                          </option>
                                           {itemChild.dropDownValues.map(
                                             (option: any, index: number) => (
                                               <option
                                                 key={Math.random() + index}
                                                 value={option.id}
+                                                onClick={() => {
+                                                  setTotalCost(
+                                                    ((productDetails?.cost ||
+                                                      0) +
+                                                      option.cost) *
+                                                      count,
+                                                  );
+                                                }}
                                               >
-                                                {option.name}
+                                                {option.name +
+                                                  (option.cost > 0
+                                                    ? ' (+$' +
+                                                      option.cost.toFixed(2) +
+                                                      ')'
+                                                    : '')}
                                               </option>
                                             ),
                                           )}

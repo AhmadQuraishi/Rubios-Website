@@ -15,11 +15,10 @@ const ItemImage = (props: any) => {
     optionImages.map((item: any) => {
       if (process.env.NODE_ENV !== 'production') {
         if (item.sandbox_plu_names.indexOf(id.toString()) != -1) {
-          console.log(item.yoast_head_json.schema['@graph'][1].contentUrl);
           setImageURL(item.yoast_head_json.schema['@graph'][1].contentUrl);
         }
       } else {
-        if (item.sandbox_plu_names.indexOf(id.toString()) != -1) {
+        if (item.production_plu_names.indexOf(id.toString()) != -1) {
           setImageURL(item.yoast_head_json.schema['@graph'][1].contentUrl);
         }
       }
@@ -33,8 +32,8 @@ const ItemImage = (props: any) => {
           aria-hidden="true"
           src={productImageURL}
           style={{
-            height: '130px',
-            width: 'auto',
+            height: '120px',
+            width: '120px',
           }}
           className={`${className}`}
         />
@@ -47,8 +46,8 @@ const ItemImage = (props: any) => {
             aria-hidden="true"
             src={require('../../assets/imgs/No ingredient.png')}
             style={{
-              height: '128px',
-              width: '100%',
+              height: '120px',
+              width: '120px',
             }}
             className={`${className}`}
           />
@@ -61,8 +60,8 @@ const ItemImage = (props: any) => {
             aria-hidden="true"
             src={imageURL}
             style={{
-              height: '128px',
-              width: '100%',
+              height: '120px',
+              width: '120px',
             }}
             className={`${className}`}
           />
