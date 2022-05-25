@@ -769,7 +769,7 @@ const Product = () => {
                   {productDetails.cost > 0 && (
                     <Grid item xs={6}>
                       <Typography
-                        variant="h6"
+                        variant="body1"
                         className="price"
                         title={`$${productDetails.cost.toFixed(2)}`}
                       >
@@ -835,7 +835,7 @@ const Product = () => {
                     <Grid item xs={12} option-id={itemMain.id}>
                       <Typography
                         variant={
-                          itemMain.parentOptionID == itemMain.id ? 'h4' : 'h5'
+                          itemMain.parentOptionID == itemMain.id ? 'h2' : 'h3'
                         }
                         className="heading-ui"
                         sx={{ marginTop: '20px' }}
@@ -950,7 +950,6 @@ const Product = () => {
                                   className="name-panel"
                                 >
                                   {itemChild.option.name}
-
                                   {itemChild.option.cost > 0 && (
                                     <Grid
                                       item

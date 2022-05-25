@@ -78,11 +78,13 @@ const OrderConfirmation = () => {
                       {authToken?.authtoken ? 'YOUR REWARDS' : 'EARN REWARDS'}
                     </Typography>
                     <Typography
-                      variant="h3"
+                      variant="body1"
                       className="white"
                       sx={{
                         fontFamily: 'Poppins-Bold !important',
                         fontSize: '36px !important',
+                        lineHeight: '1.2',
+                        letterSpacing: '-0.00833em',
                       }}
                     >
                       {authToken?.authtoken

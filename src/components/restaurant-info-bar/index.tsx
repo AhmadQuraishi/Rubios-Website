@@ -89,7 +89,7 @@ const StoreInfoBar = () => {
               >
                 <Typography
                   className={classes.heading}
-                  variant="body1"
+                  variant="h2"
                   textTransform="uppercase"
                   title="Pick Up From"
                 >
@@ -100,7 +100,7 @@ const StoreInfoBar = () => {
                     'Pick Up From'}
                 </Typography>
                 <Typography
-                  variant="body1"
+                  variant="h2"
                   color="#fff"
                   textTransform="uppercase"
                   fontWeight={700}
