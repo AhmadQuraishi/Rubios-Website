@@ -426,6 +426,13 @@ const Product = () => {
       if (item.id === parnetOptionID) {
         if (item.mandatory) {
           if (item.selectedOptions.includes(optionId)) {
+            const option = item.options.find(
+              (option: any) => option.optionID == item.selectedOptions[0],
+            );
+            if (option) {
+              setOptionsCost(optionsCost - option.option.cost);
+              setTotalCost((totalCost || 0) - option.option.cost * count);
+            }
             item.selectedOptions = [];
             let elems = optionsSelectionArray.filter(
               (x: any) => x.parentOptionID == optionId,
@@ -476,14 +483,25 @@ const Product = () => {
                 }
               });
             }
+            const option1 = item.options.find(
+              (option: any) => option.optionID == item.selectedOptions[0],
+            );
             item.selectedOptions = [optionId];
             item.selected = true;
             const option = item.options.find(
               (option: any) => option.optionID == optionId,
             );
             if (option) {
-              setOptionsCost(optionsCost + option.option.cost);
-              setTotalCost((totalCost || 0) + option.option.cost * count);
+              setOptionsCost(
+                optionsCost -
+                  (option1 ? option1.option.cost : 0) +
+                  option.option.cost,
+              );
+              setTotalCost(
+                (totalCost || 0) -
+                  (option1 ? option1.option.cost : 0) +
+                  option.option.cost * count,
+              );
             }
             elems = optionsSelectionArray.filter(
               (x: any) => x.parentOptionID == optionId,
