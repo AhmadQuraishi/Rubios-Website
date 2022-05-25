@@ -109,8 +109,8 @@ const Product = () => {
       setUpdatedOptions(true);
       setOptionsSelectionArray([]);
       dispatch(getProductOptionRequest(productDetails.id));
+      setTotalCost(productDetails.cost * count);
       setCountWithEdit();
-      //getTotalCost();
     }
   }, [productDetails]);
 
@@ -416,7 +416,7 @@ const Product = () => {
   };
 
   const [selectionExecute, setSelectionExecute] = useState(false);
-  
+
   const showChildOptions = (optionId: number, parnetOptionID: number) => {
     setSelectionExecute(false);
     setTimeout(() => {
@@ -908,13 +908,23 @@ const Product = () => {
                                 container
                                 spacing={1}
                                 className="name-img-panel"
-                                sx={{ padding: '0px' }}
+                                sx={{ padding: '0', marginTop: '0' }}
                               >
                                 <Grid
                                   item
                                   xs={12}
                                   lg={5}
-                                  sx={{ padding: '0px' }}
+                                  sx={{
+                                    padding: '0px',
+                                    paddingLeft: {
+                                      xs: '0px !important',
+                                      lg: '15px !important',
+                                    },
+                                    paddingTop: {
+                                      xs: '0px !important',
+                                      lg: '0px !important',
+                                    },
+                                  }}
                                 >
                                   {selectedParentOption(
                                     itemMain.parentOptionID,
