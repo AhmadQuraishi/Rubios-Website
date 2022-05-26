@@ -127,7 +127,7 @@ const ProductListing = (props: any) => {
                   title={item.name}
                 />
               )}
-              <CardContent sx={{ padding: '0' }}>
+              <CardContent style={{paddingBottom: 0}} sx={{ padding: '0' }}>
                 <Typography
                   variant="h2"
                   title={item.name}
