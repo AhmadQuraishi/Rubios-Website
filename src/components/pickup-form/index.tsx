@@ -44,6 +44,25 @@ const PickupForm = ({ basket, pickupFormRef, orderType }: any) => {
     },
   );
 
+  const formatTableNumber = (e: any, tableNumber: any) => {
+    let newValue = e.target.value.trim();
+    newValue =
+      newValue && newValue >= 0 && newValue <= 9999999999999999999
+        ? newValue
+        : newValue > 9999999999999999999
+        ? tableNumber
+        : '';
+
+    const newEvent: any = {
+      target: {
+        value: parseInt(newValue),
+        name: 'tableNumber',
+      },
+    };
+
+    return newEvent;
+  };
+
   return (
     <Formik
       innerRef={pickupFormRef}
@@ -56,6 +75,7 @@ const PickupForm = ({ basket, pickupFormRef, orderType }: any) => {
         emailNotification: providerToken?.marketing_email_subscription
           ? providerToken?.marketing_email_subscription
           : false,
+        tableNumber: null,
         vehicleModal: '',
         vehicleMake: '',
         vehicleColor: '',
@@ -79,23 +99,21 @@ const PickupForm = ({ basket, pickupFormRef, orderType }: any) => {
         phone: Yup.string()
           .min(14, 'Enter valid number')
           .required('Phone is required'),
+        tableNumber:
+          orderType === DeliveryModeEnum.dinein
+            ? Yup.string().trim().required('Table Number is required')
+            : Yup.string(),
         vehicleModal:
           orderType === DeliveryModeEnum.curbside
-            ? Yup.string()
-                .trim()
-                .required('Vehicle Model is required')
+            ? Yup.string().trim().required('Vehicle Model is required')
             : Yup.string(),
         vehicleMake:
           orderType === DeliveryModeEnum.curbside
-            ? Yup.string()
-                .trim()
-                .required('Vehicle Make is required')
+            ? Yup.string().trim().required('Vehicle Make is required')
             : Yup.string(),
         vehicleColor:
           orderType === DeliveryModeEnum.curbside
-            ? Yup.string()
-                .trim()
-                .required('Vehicle Color is required')
+            ? Yup.string().trim().required('Vehicle Color is required')
             : Yup.string(),
         emailNotification: Yup.bool().optional(),
       })}
@@ -187,7 +205,27 @@ const PickupForm = ({ basket, pickupFormRef, orderType }: any) => {
               helperText={errors.email}
             />
           </Grid>
-
+          {orderType === DeliveryModeEnum.dinein ? (
+            <>
+              <Grid item xs={12}>
+                <TextField
+                  aria-label="Table Number"
+                  onBlur={handleBlur}
+                  label="Table Number"
+                  aria-required="true"
+                  title="Table Number"
+                  type="number"
+                  name="tableNumber"
+                  value={values.tableNumber}
+                  onChange={(e) => {
+                    handleChange(formatTableNumber(e, values.tableNumber));
+                  }}
+                  error={Boolean(touched.tableNumber && errors.tableNumber)}
+                  helperText={errors.tableNumber}
+                />
+              </Grid>
+            </>
+          ) : null}
           {orderType === DeliveryModeEnum.curbside ? (
             <>
               <Grid container spacing={1}>

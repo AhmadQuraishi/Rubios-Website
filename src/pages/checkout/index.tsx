@@ -325,6 +325,17 @@ const Checkout = () => {
     }
   };
 
+  const formatOrderType = (orderType: string) => {
+    let updatedString =
+      orderType && orderType !== ''
+        ? orderType[0].toUpperCase() + orderType.slice(1)
+        : '';
+    if (updatedString === 'Dinein') {
+      updatedString = 'Dine In';
+    }
+    return updatedString;
+  };
+
   const placeOrder = async () => {
     setButtonDisabled(true);
     let customFields = [];
@@ -338,11 +349,15 @@ const Checkout = () => {
       orderType &&
       (orderType === '' ||
         orderType === DeliveryModeEnum.pickup ||
-        orderType === DeliveryModeEnum.curbside)
+        orderType === DeliveryModeEnum.curbside ||
+        orderType === DeliveryModeEnum.dinein)
     ) {
       const { isValidForm, formData } = validatePickupForm();
       if (!isValidForm) {
-        displayToast('ERROR', 'Pickup fields are required.');
+        displayToast(
+          'ERROR',
+          `${formatOrderType(orderType)} fields are required.`,
+        );
         scrollToTop();
         setButtonDisabled(false);
         return;
@@ -413,7 +428,11 @@ const Checkout = () => {
       basket,
     );
 
-    if (orderType && orderType === DeliveryModeEnum.curbside) {
+    if (
+      orderType &&
+      (orderType === DeliveryModeEnum.curbside ||
+        orderType === DeliveryModeEnum.dinein)
+    ) {
       customFields = formatCustomFields(restaurant.customfields, formDataValue);
     }
 
@@ -548,11 +567,33 @@ const Checkout = () => {
                             </Typography>
                           </Grid>
                         </>
+                      ) : basket && orderType === DeliveryModeEnum.dinein ? (
+                        <>
+                          <Grid item xs={12}>
+                            <Typography
+                              variant="caption"
+                              className="label"
+                              title="WHO'S IS PICKING UP?"
+                            >
+                              WHO's ORDERING?
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={12}>
+                            <Typography
+                              variant="h1"
+                              style={{ marginBottom: '0px' }}
+                              title="DELIVERY INFO"
+                            >
+                              DINE IN INFO
+                            </Typography>
+                          </Grid>
+                        </>
                       ) : null}
                       {basket &&
                       (orderType === '' ||
                         orderType === DeliveryModeEnum.pickup ||
-                        orderType === DeliveryModeEnum.curbside) ? (
+                        orderType === DeliveryModeEnum.curbside ||
+                        orderType === DeliveryModeEnum.dinein) ? (
                         <PickupForm
                           basket={basket}
                           pickupFormRef={pickupFormRef}
