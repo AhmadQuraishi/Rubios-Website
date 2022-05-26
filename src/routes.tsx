@@ -47,8 +47,8 @@ const AppRoutes = () => {
             <div
               style={{
                 backgroundImage: `url(${image})`,
-                width: '100px',
-                height: '100px',
+                width: '120px',
+                height: '120px',
                 display: 'block',
               }}
             />
