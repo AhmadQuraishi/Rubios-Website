@@ -182,20 +182,23 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                 </Grid>
               </Grid>
             </li>
-            <li>
-              <Grid container>
-                <Grid item xs={9} sm={9} md={9} lg={9}>
-                  <Typography variant="h6" title="DELIVERY FEE">
-                    DELIVERY FEE
-                  </Typography>
+            {basket && basket.totalfees && basket.totalfees > 0 ? (
+              <li>
+                <Grid container>
+                  <Grid item xs={9} sm={9} md={9} lg={9}>
+                    <Typography variant="h6" title="DELIVERY FEE">
+                      DELIVERY FEE
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={3} sm={3} md={3} lg={3}>
+                    <Typography align={'right'} variant="h6">
+                      ${basket.totalfees.toFixed(2)}
+                    </Typography>
+                  </Grid>
                 </Grid>
-                <Grid item xs={3} sm={3} md={3} lg={3}>
-                  <Typography align={'right'} variant="h6">
-                    ${basket && basket.totalfees && basket.totalfees.toFixed(2)}
-                  </Typography>
-                </Grid>
-              </Grid>
-            </li>
+              </li>
+            ) : null}
+
             <br />
             <Divider />
             <br />
