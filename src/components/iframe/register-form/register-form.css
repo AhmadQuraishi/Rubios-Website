@@ -13,7 +13,7 @@
   padding: 0px !important;
 }
 .w-register .form-register {
-  padding: 0px 150px 0px 70px;
+  padding: 0px;
 }
 /*.w-register input,*/
 /*.w-register #fav-location {*/
@@ -41,10 +41,4 @@
 
 .css-1wc848c-MuiFormHelperText-root.Mui-error {
   background-color: transparent !important;
-}
-.w-register {
-  padding: 20px 50px;
-}
-.w-register img {
-  width: 100%;
 }
