@@ -30,7 +30,7 @@ function TabPanel(props: TabPanelProps) {
       {...other}
     >
       {value === index && (
-        <Box p={3}>
+        <Box style={{paddingBottom: 0}} p={3}>
           <Typography>{children}</Typography>
         </Box>
       )}
@@ -87,7 +87,7 @@ const CategoryList = () => {
   };
 
   return (
-    <div style={{ minHeight: '500px', padding: '0px 50px' }}>
+    <div style={{ padding: '0px 50px' }}>
       {loading === true && <ProductListingSkeletonUI />}
       {categoriesWithProducts && categoriesWithProducts.length > 0 && (
         <>
@@ -97,9 +97,9 @@ const CategoryList = () => {
               background: '#FFF',
               zIndex: '1099',
               padding: {
-                xs: '20px 5px 10px 5px',
-                sm: '20px 30px 5px 30px',
-                lg: '20px 30px 5px 30px',
+                xs: '0px 5px 10px 5px',
+                sm: '0px 30px 5px 30px',
+                lg: '0px 30px 5px 30px',
                 boxSizing: 'border-box',
               },
             }}
@@ -150,7 +150,7 @@ const CategoryList = () => {
         categoriesWithProducts.length > 0 &&
         categoriesWithProducts.map((item: Category, index: number) => (
           <TabPanel value={value} index={index}>
-            <Grid item xs={12} sx={{ paddingBottom: '20px' }} role="list">
+            <Grid item xs={12} sx={{ paddingBottom: '0px' }} role="list">
               <ProductListing
                 productList={item.products}
                 categoryID={item.id}
@@ -160,7 +160,6 @@ const CategoryList = () => {
             </Grid>
           </TabPanel>
         ))}
-      <div style={{ paddingBottom: '30px' }}></div>
     </div>
   );
 };
