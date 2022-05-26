@@ -58,7 +58,7 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
         setCouponCode(basket.coupon.couponcode);
       }
       if (basket.tip) {
-        setTipCustomAmount(basket.tip);
+        setTipCustomAmount(basket.tip.toFixed(2));
       }
     }
   }, [basket]);

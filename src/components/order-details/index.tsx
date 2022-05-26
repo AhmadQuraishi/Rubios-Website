@@ -82,9 +82,9 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                   <Typography
                     align={'right'}
                     variant="h6"
-                    title={basket && basket.subtotal}
+                    title={basket && basket.subtotal.toFixed(2)}
                   >
-                    ${basket && basket.subtotal}
+                    ${basket && basket.subtotal.toFixed(2)}
                   </Typography>
                   <br />
                 </Grid>
@@ -134,9 +134,9 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                       <Typography
                         align={'right'}
                         variant="h6"
-                        title={basket && basket.tip}
+                        title={basket && basket.tip.toFixed(2)}
                       >
-                        +${basket && basket.tip}
+                        +${basket && basket.tip.toFixed(2)}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -213,9 +213,9 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                   <Typography
                     align={'right'}
                     variant="h6"
-                    title={basket && basket.total}
+                    title={basket && basket.total.toFixed(2)}
                   >
-                    ${basket && basket.total}
+                    ${basket && basket.total.toFixed(2)}
                   </Typography>
                 </Grid>
               </Grid>
