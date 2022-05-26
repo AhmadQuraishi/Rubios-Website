@@ -23,6 +23,7 @@ import ReactDateInputs from 'react-date-inputs';
 import moment from 'moment';
 import './register-form.css';
 import { useLocation } from 'react-router-dom';
+import { displayToast } from '../../../helpers/toast';
 
 const RegisterForm = () => {
   const dispatch = useDispatch();
@@ -47,15 +48,21 @@ const RegisterForm = () => {
     return result;
   }
   const { locations } = useSelector((state: any) => state.locationReducer);
+  const { error } = useSelector((state: any) => state.providerReducer);
 
   const [favLocation, setFavLocation] = useState('');
   const [birthDay, setBirthDay] = useState<Date | undefined>();
   const [termsAndConditions, setTermsAndconditions] = useState(false);
   const [selectShrink, setSelectShrink] = useState(false);
+  const [signUpErrors, setSignUpErrors] = useState<any>([]);
 
   useEffect(() => {
     dispatch(getlocations());
   }, []);
+
+  useEffect(() => {
+    setSignUpErrors(errorMapping(error));
+  }, [error]);
 
   const handleChangeLocation = (event: SelectChangeEvent) => {
     setFavLocation(event.target.value as string);
@@ -105,6 +112,24 @@ const RegisterForm = () => {
       monthField[0].after(dayField[0]);
     }
   }, []);
+
+  const errorMapping = (error: any) => {
+    const errorsArray: any = [];
+    if (error?.data?.errors?.base && error.data.errors.base.length) {
+      error?.data?.errors.base.forEach((msg: string) => {
+        errorsArray.push(msg);
+      });
+    } else {
+      errorsArray.push('ERROR! Please Try again later');
+    }
+    if (error?.data?.errors?.email) {
+      errorsArray.push(`Email ${error?.data?.errors?.email[0]}`);
+    }
+    if (error?.data?.errors?.phone) {
+      errorsArray.push(`Phone ${error?.data?.errors?.phone[0]}`);
+    }
+    return errorsArray;
+  };
 
   return (
     <Grid container className="w-register">
@@ -425,11 +450,19 @@ const RegisterForm = () => {
                       and to receiving marketing communications from Rubio's.
                     </Typography>
                   </Grid>
+                  <Grid>
+                    {signUpErrors && signUpErrors.length > 0
+                      ? signUpErrors.map((err: string) => {
+                        return <p>{err}</p>;
+                      })
+                      : null}
+                  </Grid>
                   <Grid
                     item
                     xs={12}
                     sx={{ display: 'flex', justifyContent: 'center' }}
                   >
+
                     <Grid item xs={12} sm={8} md={8} lg={8}>
                       <Button
                         type="submit"
