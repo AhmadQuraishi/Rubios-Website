@@ -28,7 +28,7 @@ import BgImageNewUser from '../../assets/imgs/rubios-welcome-background.png';
 
 const useStyle = makeStyles(() => ({
   root: {
-    background: `url(${BgImage}) center center fixed`,
+    // background: `url(${BgImage}) center center fixed`,
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
     justifyContent: 'center',
@@ -73,7 +73,7 @@ const Welcome = () => {
   );
 
   useEffect(() => {
-    setPageBackground(newUser ? BgImageNewUser : BgImage);
+    setPageBackground(new_user === 'true' ? BgImageNewUser : BgImage);
     if (
       new_user === 'true' &&
       userRecentOrders &&

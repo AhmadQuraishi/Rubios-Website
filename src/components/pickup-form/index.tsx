@@ -14,8 +14,6 @@ import { IMaskInput } from 'react-imask';
 import { DeliveryModeEnum } from '../../types/olo-api/olo-api.enums';
 
 const PickupForm = ({ basket, pickupFormRef, orderType }: any) => {
-  const dispatch = useDispatch();
-
   const { providerToken } = useSelector((state: any) => state.providerReducer);
   const { authToken } = useSelector((state: any) => state.authReducer);
 
@@ -75,7 +73,7 @@ const PickupForm = ({ basket, pickupFormRef, orderType }: any) => {
         emailNotification: providerToken?.marketing_email_subscription
           ? providerToken?.marketing_email_subscription
           : false,
-        tableNumber: null,
+        tableNumber: orderType === DeliveryModeEnum.dinein ? null : 0,
         vehicleModal: '',
         vehicleMake: '',
         vehicleColor: '',
@@ -101,8 +99,8 @@ const PickupForm = ({ basket, pickupFormRef, orderType }: any) => {
           .required('Phone is required'),
         tableNumber:
           orderType === DeliveryModeEnum.dinein
-            ? Yup.string().trim().required('Table Number is required')
-            : Yup.string(),
+            ? Yup.number().required('Table Number is required')
+            : Yup.number(),
         vehicleModal:
           orderType === DeliveryModeEnum.curbside
             ? Yup.string().trim().required('Vehicle Model is required')

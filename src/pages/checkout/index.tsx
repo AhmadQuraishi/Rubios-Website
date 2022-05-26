@@ -253,7 +253,7 @@ const Checkout = () => {
       isValidForm: false,
       formData: null,
     };
-
+console.log('pickupFormRef.current', pickupFormRef.current)
     if (!pickupFormRef.current) {
     } else if (!pickupFormRef.current.dirty) {
       pickupFormRef.current.submitForm();
@@ -353,6 +353,7 @@ const Checkout = () => {
         orderType === DeliveryModeEnum.dinein)
     ) {
       const { isValidForm, formData } = validatePickupForm();
+      console.log('formData', formData)
       if (!isValidForm) {
         displayToast(
           'ERROR',

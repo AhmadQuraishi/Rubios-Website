@@ -57,9 +57,9 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                           <Typography
                             align={'right'}
                             variant="h6"
-                            title={item.totalcost}
+                            title={item.totalcost.toFixed(2)}
                           >
-                            ${item.totalcost}
+                            ${item.totalcost.toFixed(2)}
                           </Typography>
                         </Grid>
                       </Grid>
