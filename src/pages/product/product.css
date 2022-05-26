@@ -27,6 +27,7 @@ h2.heading-ui {
   color: #214f66;
   font-family: 'Poppins-Regular', sans-serif !important;
   font-size: 16px !important;
+  white-space: pre-line;
 }
 .product-detail .price {
   font-family: 'Poppins-Bold', SansSerif !important;
