@@ -54,6 +54,7 @@ const RegisterForm = () => {
   const [birthDay, setBirthDay] = useState<Date | undefined>();
   const [termsAndConditions, setTermsAndconditions] = useState(false);
   const [selectShrink, setSelectShrink] = useState(false);
+  const [showError, setShowError] = useState(false);
   const [signUpErrors, setSignUpErrors] = useState<any>([]);
 
   useEffect(() => {
@@ -210,7 +211,7 @@ const RegisterForm = () => {
             if (birthDay) {
               obj.birthday = moment(birthDay).format('YYYY-MM-DD');
             }
-
+            setShowError(true);
             dispatch(userRegister(obj));
           }}
         >
@@ -451,7 +452,7 @@ const RegisterForm = () => {
                     </Typography>
                   </Grid>
                   <Grid style={{paddingTop: 10}}>
-                    {signUpErrors && signUpErrors.length > 0
+                    {showError && signUpErrors && signUpErrors.length > 0
                       ? signUpErrors.map((err: string) => {
                           return <p style={{ color: '#E61F00' }}>- {err}</p>;
                         })
