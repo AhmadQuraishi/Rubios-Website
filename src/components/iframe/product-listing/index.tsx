@@ -89,14 +89,14 @@ const ProductListing = (props: any) => {
         swipeable={true}
         draggable={false}
         responsive={responsive}
-        ssr={true} // means to render carousel on server-side.
-        infinite={true}
+        // ssr={true} // means to render carousel on server-side.
+        // infinite={true}
         // autoPlay={props.deviceType !== 'mobile' ? true : false}
         additionalTransfrom={0}
         autoPlay={false}
         // autoPlaySpeed={3000}
         keyBoardControl={true}
-        customTransition="all .5"
+        // customTransition="all .5"
         transitionDuration={500}
         containerClass="carousel-container"
         removeArrowOnDeviceType={['tablet', 'mobile']}

@@ -8,7 +8,7 @@ import './register.css';
 
 const useStyle = makeStyles(() => ({
   root: {
-    background: `#eddfca`,
+    // background: `#eddfca`,
     // backgroundRepeat: 'no-repeat',
     // backgroundSize: 'cover',
     justifyContent: 'center',
