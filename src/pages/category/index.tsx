@@ -120,7 +120,7 @@ const CategoryList = () => {
         setOpen(true);
       } else if (objRestaurant && getDineInResutarnts == true) {
         if (objRestaurant.supportsdinein) {
-          dispatch(setResturantInfoRequest(objRestaurant, 'dine-in'));
+          dispatch(setResturantInfoRequest(objRestaurant, 'dinein'));
           displayToast('SUCCESS', 'Location changed to ' + objRestaurant.name);
           navigate('/menu/' + objRestaurant.slug);
           dispatch(getCategoriesRequest(objRestaurant.id));

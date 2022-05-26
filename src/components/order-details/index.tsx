@@ -57,9 +57,9 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                           <Typography
                             align={'right'}
                             variant="h6"
-                            title={item.totalcost}
+                            title={item.totalcost.toFixed(2)}
                           >
-                            ${item.totalcost}
+                            ${item.totalcost.toFixed(2)}
                           </Typography>
                         </Grid>
                       </Grid>
@@ -82,9 +82,9 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                   <Typography
                     align={'right'}
                     variant="h6"
-                    title={basket && basket.subtotal}
+                    title={basket && basket.subtotal.toFixed(2)}
                   >
-                    ${basket && basket.subtotal}
+                    ${basket && basket.subtotal.toFixed(2)}
                   </Typography>
                   <br />
                 </Grid>
@@ -134,9 +134,9 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                       <Typography
                         align={'right'}
                         variant="h6"
-                        title={basket && basket.tip}
+                        title={basket && basket.tip.toFixed(2)}
                       >
-                        +${basket && basket.tip}
+                        +${basket && basket.tip.toFixed(2)}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -182,20 +182,23 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                 </Grid>
               </Grid>
             </li>
-            <li>
-              <Grid container>
-                <Grid item xs={9} sm={9} md={9} lg={9}>
-                  <Typography variant="h6" title="DELIVERY FEE">
-                    DELIVERY FEE
-                  </Typography>
+            {basket && basket.totalfees && basket.totalfees > 0 ? (
+              <li>
+                <Grid container>
+                  <Grid item xs={9} sm={9} md={9} lg={9}>
+                    <Typography variant="h6" title="DELIVERY FEE">
+                      DELIVERY FEE
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={3} sm={3} md={3} lg={3}>
+                    <Typography align={'right'} variant="h6">
+                      ${basket.totalfees.toFixed(2)}
+                    </Typography>
+                  </Grid>
                 </Grid>
-                <Grid item xs={3} sm={3} md={3} lg={3}>
-                  <Typography align={'right'} variant="h6">
-                    ${basket && basket.totalfees && basket.totalfees.toFixed(2)}
-                  </Typography>
-                </Grid>
-              </Grid>
-            </li>
+              </li>
+            ) : null}
+
             <br />
             <Divider />
             <br />
@@ -210,9 +213,9 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                   <Typography
                     align={'right'}
                     variant="h6"
-                    title={basket && basket.total}
+                    title={basket && basket.total.toFixed(2)}
                   >
-                    ${basket && basket.total}
+                    ${basket && basket.total.toFixed(2)}
                   </Typography>
                 </Grid>
               </Grid>
