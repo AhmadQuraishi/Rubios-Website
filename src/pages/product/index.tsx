@@ -188,7 +188,6 @@ const Product = () => {
       request.productid = productDetails?.id;
       request.quantity = count;
       let options = '';
-      console.log(optionsSelectionArray)
       optionsSelectionArray.map((option: any) => {
         if (option.selected) {
           option.selectedOptions.map((item: any) => {
