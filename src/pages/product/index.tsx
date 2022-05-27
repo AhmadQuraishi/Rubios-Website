@@ -291,8 +291,7 @@ const Product = () => {
 
   const [optionsSelectionArray, setOptionsSelectionArray] = useState<any>([]);
 
-  useEffect(() => {
-  }, [optionsSelectionArray]);
+  useEffect(() => {}, [optionsSelectionArray]);
 
   let ptotalCost = 0;
 
@@ -410,7 +409,7 @@ const Product = () => {
         const op = options.find((x: any) => item.optionid == x.id);
         if (op) {
           isExist = item.optionid;
-          ptotalCost = (ptotalCost + op.cost) * count;
+          ptotalCost = ptotalCost + op.cost;
           setOptionsCost(ptotalCost);
         }
       });
@@ -506,11 +505,10 @@ const Product = () => {
                   (option1 ? option1.option.cost : 0) +
                   option.option.cost,
               );
-              setTotalCost(
-                (totalCost || 0) -
-                  (option1 ? option1.option.cost : 0) +
-                  option.option.cost * count,
-              );
+              const prc =
+                (option1 ? option1.option.cost : 0) +
+                option.option.cost * count;
+              setTotalCost((totalCost || 0) - prc);
             }
             elems = optionsSelectionArray.filter(
               (x: any) => x.parentOptionID == optionId,
@@ -556,11 +554,10 @@ const Product = () => {
                   optionsCost -
                     ((optionDDLE ? optionDDLE.cost : 0) + option.option.cost),
                 );
-                setTotalCost(
-                  (totalCost || 0) -
-                    ((optionDDLE ? optionDDLE.cost : 0) + option.option.cost) *
-                      count,
-                );
+                const prc =
+                  ((optionDDLE ? optionDDLE.cost : 0) + option.option.cost) *
+                  count;
+                setTotalCost((totalCost || 0) - prc);
               }
               item.selected = !(item.selectedOptions.length == 0);
               let elems = optionsSelectionArray.filter(
@@ -606,11 +603,10 @@ const Product = () => {
                   (optionDDLE ? optionDDLE.cost : 0) +
                   option.option.cost,
               );
-              setTotalCost(
-                (totalCost || 0) +
-                  (optionDDLE ? optionDDLE.cost : 0) +
-                  option.option.cost * count,
-              );
+              const opc =
+                ((optionDDLE ? optionDDLE.cost : 0) + option.option.cost) *
+                count;
+              setTotalCost((totalCost || 0) + opc);
             }
             let elems = optionsSelectionArray.filter(
               (x: any) => x.parentOptionID == optionId,
@@ -725,11 +721,13 @@ const Product = () => {
     const id = target.getAttribute('data-select-id');
     const option = options.find((x: any) => x.id == id);
     if (option) {
-      setTotalCost(((totalCost || 0) - option.cost) * count);
+      const prc = option.cost * count;
+      setTotalCost((totalCost || 0) - prc);
     }
     const optionAdd = options.find((x: any) => x.id == value);
     if (optionAdd) {
-      setTotalCost(((totalCost || 0) + optionAdd.cost) * count);
+      const prc = optionAdd.cost * count
+      setTotalCost((totalCost || 0) + prc);
     }
     optionsSelectionArray.map((itemP: any) => {
       itemP.options.map((itemC: any) => {
