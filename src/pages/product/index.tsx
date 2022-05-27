@@ -598,11 +598,11 @@ const Product = () => {
               );
             }
             if (option) {
-              setOptionsCost(
+              const cc =
                 optionsCost +
-                  (optionDDLE ? optionDDLE.cost : 0) +
-                  option.option.cost,
-              );
+                (optionDDLE ? optionDDLE.cost : 0) +
+                option.option.cost;
+              setOptionsCost(cc);
               const opc =
                 ((optionDDLE ? optionDDLE.cost : 0) + option.option.cost) *
                 count;
@@ -722,11 +722,13 @@ const Product = () => {
     const option = options.find((x: any) => x.id == id);
     if (option) {
       const prc = option.cost * count;
+      setOptionsCost(optionsCost - option.cost);
       setTotalCost((totalCost || 0) - prc);
     }
     const optionAdd = options.find((x: any) => x.id == value);
     if (optionAdd) {
-      const prc = optionAdd.cost * count
+      const prc = optionAdd.cost * count;
+      setOptionsCost(optionsCost + optionAdd.cost);
       setTotalCost((totalCost || 0) + prc);
     }
     optionsSelectionArray.map((itemP: any) => {
