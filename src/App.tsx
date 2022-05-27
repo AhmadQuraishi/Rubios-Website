@@ -1,15 +1,10 @@
-import { useEffect, useState } from 'react';
 import MainApp from './MainApp';
 import IframeApp from './IframeApp';
 
-function App(props: any) {
-  const [isIframe, setIsIframe] = useState(false);
+const isIframe =
+  window.location.href.toLocaleLowerCase().indexOf('/iframe') !== -1;
 
-  useEffect(() => {
-    if (window.location.href.toLocaleLowerCase().indexOf('/iframe') !== -1) {
-      setIsIframe(true);
-    }
-  }, []);
-  return <>{!isIframe ? <MainApp /> : <IframeApp />}</>;
+function App(props: any) {
+  return <>{isIframe ? <IframeApp /> : <MainApp />}</>;
 }
 export default App;

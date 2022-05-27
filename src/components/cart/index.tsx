@@ -873,39 +873,47 @@ const Cart = (props: any) => {
                             basketObj.basket &&
                             basketObj.basket.salestax.toFixed(2)}
                         </Grid>
-                        <Grid
-                          item
-                          xs={9}
-                          sx={{
-                            color: 'secondary.main',
-                            fontSize: '14px',
-                            fontFamily: 'Poppins-Regular',
-                          }}
-                          title="DELIVERY FEE"
-                        >
-                          DELIVERY FEE
-                        </Grid>
-                        <Grid
-                          item
-                          xs={3}
-                          sx={{
-                            color: 'secondary.main',
-                            fontSize: '14px',
-                            textAlign: 'right',
-                            fontFamily: 'Poppins-Regular',
-                          }}
-                          title={
-                            '$' +
-                            (basketObj &&
-                              basketObj.basket &&
-                              basketObj.basket.totalfees.toFixed(2))
-                          }
-                        >
-                          $
-                          {basketObj &&
-                            basketObj.basket &&
-                            basketObj.basket.totalfees.toFixed(2)}
-                        </Grid>
+
+                        {basketObj &&
+                        basketObj.totalfees &&
+                        basketObj.totalfees > 0 ? (
+                          <>
+                            <Grid
+                              item
+                              xs={9}
+                              sx={{
+                                color: 'secondary.main',
+                                fontSize: '14px',
+                                fontFamily: 'Poppins-Regular',
+                              }}
+                              title="DELIVERY FEE"
+                            >
+                              DELIVERY FEE
+                            </Grid>
+                            <Grid
+                              item
+                              xs={3}
+                              sx={{
+                                color: 'secondary.main',
+                                fontSize: '14px',
+                                textAlign: 'right',
+                                fontFamily: 'Poppins-Regular',
+                              }}
+                              title={
+                                '$' +
+                                (basketObj &&
+                                  basketObj.basket &&
+                                  basketObj.basket.totalfees.toFixed(2))
+                              }
+                            >
+                              $
+                              {basketObj &&
+                                basketObj.basket &&
+                                basketObj.basket.totalfees.toFixed(2)}
+                            </Grid>
+                          </>
+                        ) : null}
+
                         <Grid item xs={12} sx={{ padding: '20px 0px' }}>
                           <Divider sx={{ borderColor: '#224c65' }} />
                         </Grid>
