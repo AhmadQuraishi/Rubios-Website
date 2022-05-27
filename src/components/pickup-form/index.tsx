@@ -80,7 +80,7 @@ const PickupForm = ({ basket, pickupFormRef, orderType }: any) => {
         emailNotification: providerToken?.marketing_email_subscription
           ? providerToken?.marketing_email_subscription
           : false,
-        tableNumber: orderType === DeliveryModeEnum.dinein ? undefined : '',
+        tableNumber: '',
         vehicleModal: '',
         vehicleMake: '',
         vehicleColor: '',
