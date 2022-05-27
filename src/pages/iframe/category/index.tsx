@@ -87,7 +87,7 @@ const CategoryList = () => {
   };
 
   return (
-    <div style={{ padding: '0px 50px' }}>
+    <Grid sx={{ minHeight: 'auto', padding: {xs:'0px 15px', sm:'0px 15px', md: '0px 20px', lg: '0px 20px'} }}>
       {loading === true && <ProductListingSkeletonUI />}
       {categoriesWithProducts && categoriesWithProducts.length > 0 && (
         <>
@@ -160,7 +160,7 @@ const CategoryList = () => {
             </Grid>
           </TabPanel>
         ))}
-    </div>
+    </Grid>
   );
 };
 
