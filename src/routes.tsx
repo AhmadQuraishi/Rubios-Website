@@ -49,7 +49,12 @@ const AppRoutes = () => {
                 backgroundImage: `url(${image})`,
                 width: '120px',
                 height: '120px',
-                display: 'block',
+                display:
+                  window.location.href
+                    .toLocaleLowerCase()
+                    .indexOf('/iframe') !== -1
+                    ? 'none'
+                    : 'block',
               }}
             />
           </div>

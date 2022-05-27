@@ -101,7 +101,8 @@ export function generateSubmitBasketPayload(
 
   if (
     deliverymode === DeliveryModeEnum.curbside ||
-    deliverymode === DeliveryModeEnum.pickup
+    deliverymode === DeliveryModeEnum.pickup ||
+    deliverymode === DeliveryModeEnum.dinein
   ) {
     payload = {
       ...payload,
@@ -139,17 +140,22 @@ export function formatCustomFields(customFields: any, formData: any) {
   customFields.forEach((field: any) => {
     let obj = {};
 
-    if (field.label === 'Model') {
+    if (field.label === 'Table Number' && formData.tableNumber !== '') {
+      obj = {
+        id: field.id,
+        value: formData.tableNumber,
+      };
+    } else if (field.label === 'Model' && formData.vehicleModal !== '') {
       obj = {
         id: field.id,
         value: formData.vehicleModal,
       };
-    } else if (field.label === 'Make') {
+    } else if (field.label === 'Make' && formData.vehicleMake !== '') {
       obj = {
         id: field.id,
         value: formData.vehicleMake,
       };
-    } else if (field.label === 'Color') {
+    } else if (field.label === 'Color' && formData.vehicleColor !== '') {
       obj = {
         id: field.id,
         value: formData.vehicleColor,

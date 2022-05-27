@@ -94,7 +94,7 @@ const StoreInfoBar = () => {
                   title="Pick Up From"
                 >
                   {orderType && orderType == 'delivery' && 'Delivered From'}
-                  {orderType && orderType == 'dine-in' && 'Dine In At'}
+                  {orderType && orderType == 'dinein' && 'Dine In At'}
                   {orderType &&
                     (orderType == 'pickup' || orderType == 'curbside') &&
                     'Pick Up From'}

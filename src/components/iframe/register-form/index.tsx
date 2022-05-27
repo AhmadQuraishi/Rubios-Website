@@ -54,6 +54,7 @@ const RegisterForm = () => {
   const [birthDay, setBirthDay] = useState<Date | undefined>();
   const [termsAndConditions, setTermsAndconditions] = useState(false);
   const [selectShrink, setSelectShrink] = useState(false);
+  const [showError, setShowError] = useState(false);
   const [signUpErrors, setSignUpErrors] = useState<any>([]);
 
   useEffect(() => {
@@ -210,7 +211,7 @@ const RegisterForm = () => {
             if (birthDay) {
               obj.birthday = moment(birthDay).format('YYYY-MM-DD');
             }
-
+            setShowError(true);
             dispatch(userRegister(obj));
           }}
         >
@@ -450,11 +451,11 @@ const RegisterForm = () => {
                       and to receiving marketing communications from Rubio's.
                     </Typography>
                   </Grid>
-                  <Grid>
-                    {signUpErrors && signUpErrors.length > 0
+                  <Grid style={{paddingTop: 10}}>
+                    {showError && signUpErrors && signUpErrors.length > 0
                       ? signUpErrors.map((err: string) => {
-                        return <p>{err}</p>;
-                      })
+                          return <p style={{ color: '#E61F00' }}>- {err}</p>;
+                        })
                       : null}
                   </Grid>
                   <Grid
@@ -462,7 +463,6 @@ const RegisterForm = () => {
                     xs={12}
                     sx={{ display: 'flex', justifyContent: 'center' }}
                   >
-
                     <Grid item xs={12} sm={8} md={8} lg={8}>
                       <Button
                         type="submit"
