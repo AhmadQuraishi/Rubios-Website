@@ -56,7 +56,7 @@ const ProductListing = (props: any) => {
         (obj: any) => obj.groupname == 'desktop-menu',
       );
       if (dektopImage) {
-        return dektopImage.filename;
+        return dektopImage.filename.replace('h=138', 'h=500');
       } else {
         return path;
       }

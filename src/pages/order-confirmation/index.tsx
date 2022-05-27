@@ -107,7 +107,7 @@ const OrderConfirmation = () => {
                     ) : (
                       <img
                         className="phone-icon"
-                        alt="Join Today For Getting Rewards"
+                        alt=""
                         src={require('../../assets/imgs/phone-icon.png')}
                       />
                     )}
