@@ -44,8 +44,15 @@ const PickupForm = ({ basket, pickupFormRef, orderType }: any) => {
 
   const formatTableNumber = (e: any, tableNumber: any) => {
     let newValue = e.target.value.trim();
+    if (newValue && newValue !== '') {
+      if (newValue.includes('.')) {
+        const splitArray = newValue.split('.');
+        newValue = +splitArray[0];
+      }
+      newValue = newValue.replace(/^0+/, '');
+    }
     newValue =
-      newValue && newValue >= 0 && newValue <= 9999999999999999999
+      newValue && newValue > 0 && newValue <= 9999999999999999999
         ? newValue
         : newValue > 9999999999999999999
         ? tableNumber
@@ -53,7 +60,7 @@ const PickupForm = ({ basket, pickupFormRef, orderType }: any) => {
 
     const newEvent: any = {
       target: {
-        value: parseInt(newValue),
+        value: newValue,
         name: 'tableNumber',
       },
     };
@@ -73,7 +80,7 @@ const PickupForm = ({ basket, pickupFormRef, orderType }: any) => {
         emailNotification: providerToken?.marketing_email_subscription
           ? providerToken?.marketing_email_subscription
           : false,
-        tableNumber: orderType === DeliveryModeEnum.dinein ? null : 0,
+        tableNumber: '',
         vehicleModal: '',
         vehicleMake: '',
         vehicleColor: '',
@@ -99,8 +106,8 @@ const PickupForm = ({ basket, pickupFormRef, orderType }: any) => {
           .required('Phone is required'),
         tableNumber:
           orderType === DeliveryModeEnum.dinein
-            ? Yup.number().required('Table Number is required')
-            : Yup.number(),
+            ? Yup.string().required('Table Number is required')
+            : Yup.string(),
         vehicleModal:
           orderType === DeliveryModeEnum.curbside
             ? Yup.string().trim().required('Vehicle Model is required')
@@ -212,7 +219,7 @@ const PickupForm = ({ basket, pickupFormRef, orderType }: any) => {
                   label="Table Number"
                   aria-required="true"
                   title="Table Number"
-                  type="number"
+                  type="text"
                   name="tableNumber"
                   value={values.tableNumber}
                   onChange={(e) => {
