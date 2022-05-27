@@ -188,6 +188,7 @@ const Product = () => {
       request.productid = productDetails?.id;
       request.quantity = count;
       let options = '';
+      console.log(optionsSelectionArray)
       optionsSelectionArray.map((option: any) => {
         if (option.selected) {
           option.selectedOptions.map((item: any) => {
@@ -222,15 +223,15 @@ const Product = () => {
       request.productid = productDetails?.id;
       request.quantity = count;
       let options = '';
-      Array.from(
-        document.getElementsByClassName('reward-item-selected'),
-      ).forEach((el) => {
-        if (el.getAttribute('option-id')) {
-          options = options + el.getAttribute('option-id') + ',';
-          const sel = el.querySelector('select')?.value;
-          if (sel) {
-            options = options + sel + ',';
-          }
+      optionsSelectionArray.map((option: any) => {
+        if (option.selected) {
+          option.selectedOptions.map((item: any) => {
+            options = options + item + ',';
+            const elem = option.options.find((x: any) => x.optionID == item);
+            if (elem && elem.selectedValue) {
+              options = options + elem.selectedValue + ',';
+            }
+          });
         }
       });
       request.options = options;
@@ -291,7 +292,8 @@ const Product = () => {
 
   const [optionsSelectionArray, setOptionsSelectionArray] = useState<any>([]);
 
-  useEffect(() => {}, [optionsSelectionArray]);
+  useEffect(() => {
+  }, [optionsSelectionArray]);
 
   let ptotalCost = 0;
 
