@@ -9,7 +9,7 @@ import {
   CATERING_CATEGORIES,
   HOME_PAGE_CATEGORIES,
 } from '../../../helpers/category';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import './category.css';
 
 interface TabPanelProps {
@@ -105,13 +105,30 @@ const CategoryList = () => {
             }}
             id="categoryMenu"
           >
-            <Typography
-              variant="h1"
-              title="WHAT ARE YOU CRAVING?"
-              sx={{ marginBottom: '20px' }}
-            >
-              WHAT ARE YOU CRAVING?
-            </Typography>
+            <Grid container>
+              <Grid item xs={8}>
+                <Typography
+                  variant="h1"
+                  title="WHAT ARE YOU CRAVING?"
+                  sx={{ marginBottom: '20px' }}
+                >
+                  WHAT ARE YOU CRAVING?
+                </Typography>
+              </Grid>
+              <Grid item xs={4}>
+                <Typography sx={{
+                  fontSize: '13px',
+                  textDecoration: 'none',
+                  paddingTop: '10px',
+                  display: 'block',
+                  textAlign: 'right'
+                }}>
+                  <Link to="" title="View All" style={{textDecoration: 'none', color: '#0075BF', textTransform: 'uppercase', fontWeight:'Bold'}}>
+                    view all →
+                  </Link>
+                </Typography>
+              </Grid>
+            </Grid>
             <Tabs
               value={value}
               onChange={handleChange}
