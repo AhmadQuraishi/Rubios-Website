@@ -49,7 +49,7 @@ const PickupForm = ({ basket, pickupFormRef, orderType }: any) => {
         const splitArray = newValue.split('.');
         newValue = +splitArray[0];
       }
-      newValue = newValue.replace(/^0+/, '');
+      // newValue = newValue.replace(/^0+/, '');
     }
     newValue =
       newValue && newValue > 0 && newValue <= 9999999999999999999

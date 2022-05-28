@@ -12,6 +12,8 @@ const locationTitle = (type: string) => {
     case DeliveryModeEnum.pickup:
     case DeliveryModeEnum.curbside:
       return 'PICKUP LOCATION';
+    case DeliveryModeEnum.dinein:
+      return 'RESTAURANT LOCATION';
     case DeliveryModeEnum.delivery:
     case DeliveryModeEnum.dispatch:
       return 'DELIVERY ADDRESS';
@@ -25,7 +27,7 @@ const pickupTime = (order: any) => {
     <>
       <Typography variant="h2" className="label" title="PICKUP TIME">
         {order && order.deliverymode === DeliveryModeEnum.delivery
-          ? 'DELIVERY TIME'
+          ? 'DELIVERY TIME' : order.deliverymode === DeliveryModeEnum.dinein ? 'DINE IN TIME'
           : 'PICKUP TIME'}
       </Typography>
       <Typography
@@ -50,7 +52,9 @@ const vehicleInfo = (order: any) => {
     <>
       <Grid xs={12} sm={6} md={6} lg={12} className="adjust-space">
         <Typography variant="h2" className="label" title="VEHICLE INFO">
-          VEHICLE INFO
+          {order.deliverymode === DeliveryModeEnum.curbside
+            ? 'VEHICLE INFO'
+            : 'DINE IN INFO'}
         </Typography>
         <Typography variant="body1">
           {order &&
@@ -59,24 +63,36 @@ const vehicleInfo = (order: any) => {
             order.customfields.map((field: any) => {
               return (
                 <>
-                  {field.label === 'Make' ? (
+                  {order.deliverymode === DeliveryModeEnum.curbside ? (
                     <>
-                      <b>Make:</b> {field.value}
-                      <br />
-                    </>
-                  ) : field.label === 'Model' ? (
-                    <>
-                      <b>Modal:</b> {field.value}
-                      <br />
-                    </>
-                  ) : field.label === 'Color' ? (
-                    <>
-                      <b>Color:</b> {field.value}
-                      <br />
-                      <br />
+                      {field.label === 'Make' ? (
+                        <>
+                          <b>Make:</b> {field.value}
+                          <br />
+                        </>
+                      ) : field.label === 'Model' ? (
+                        <>
+                          <b>Modal:</b> {field.value}
+                          <br />
+                        </>
+                      ) : field.label === 'Color' ? (
+                        <>
+                          <b>Color:</b> {field.value}
+                          <br />
+                          <br />
+                        </>
+                      ) : null}
                     </>
                   ) : (
-                    ''
+                    <>
+                      {field.label === 'Table Number' ? (
+                        <>
+                          <b>Table Number:</b> {field.value}
+                          <br />
+                          <br />
+                        </>
+                      ) : null}
+                    </>
                   )}
                 </>
               );
@@ -220,7 +236,9 @@ const OrderConfirmedCard = ({ orderObj, restaurantObj }: any) => {
             <br />
             {/*<br />*/}
           </Grid>
-          {order && order.deliverymode === DeliveryModeEnum.curbside
+          {order &&
+          (order.deliverymode === DeliveryModeEnum.curbside ||
+            order.deliverymode === DeliveryModeEnum.dinein)
             ? vehicleInfo(order)
             : ''}
 

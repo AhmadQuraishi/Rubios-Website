@@ -610,7 +610,7 @@ console.log('pickupFormRef.current', pickupFormRef.current)
                       ) : null}
                     </Grid>
                   </Grid>
-                  <OrderTime />
+                  <OrderTime orderType={orderType} />
                 </Grid>
               </Grid>
               <br />
