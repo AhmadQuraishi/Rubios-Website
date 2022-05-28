@@ -1122,6 +1122,7 @@ const Product = () => {
                     <input
                       value={count}
                       // inputProps={inputProps}
+                      readOnly
                       id="quantityfield"
                       onChange={() => {}}
                       className="input-quantity"
