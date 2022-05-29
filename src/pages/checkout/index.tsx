@@ -1,7 +1,7 @@
 import React from 'react';
-import { Box, Button, Card, Grid, Typography } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import {Box, Button, Card, Grid, Typography} from '@mui/material';
+import {useDispatch, useSelector} from 'react-redux';
+import {useNavigate} from 'react-router-dom';
 import Divider from '@mui/material/Divider';
 import OrderDetails from '../../components/order-details';
 import Tip from '../../components/tip';
@@ -10,28 +10,28 @@ import OrderTime from '../../components/order-time';
 import PaymentInfo from '../../components/payment-info';
 import StoreInfoBar from '../../components/restaurant-info-bar';
 import './checkout.css';
-import { ResponseBasket, ResponseBasketValidation } from '../../types/olo-api';
-import { DeliveryModeEnum } from '../../types/olo-api/olo-api.enums';
+import {ResponseBasket, ResponseBasketValidation} from '../../types/olo-api';
+import {DeliveryModeEnum} from '../../types/olo-api/olo-api.enums';
 import moment from 'moment';
 import {
-  removeBasketOrderSubmit,
   getBasketAllowedCardsRequest,
   getSingleRestaurantCalendar,
+  removeBasketOrderSubmit,
   updateBasketBillingSchemes,
   validateBasket,
 } from '../../redux/actions/basket/checkout';
-import { displayToast } from '../../helpers/toast';
+import {displayToast} from '../../helpers/toast';
 import {
-  generateSubmitBasketPayload,
   formatCustomFields,
   formatDeliveryAddress,
+  generateSubmitBasketPayload,
   getUniqueId,
   updatePaymentCardsAmount,
 } from '../../helpers/checkout';
-import { getUserDeliveryAddresses } from '../../redux/actions/user';
+import {getUserDeliveryAddresses} from '../../redux/actions/user';
 import PickupForm from '../../components/pickup-form/index';
 import DeliveryForm from '../../components/delivery-form/index';
-import { getRewardsForCheckoutRequest } from '../../redux/actions/reward/checkout';
+import {getRewardsForCheckoutRequest} from '../../redux/actions/reward/checkout';
 
 const Checkout = () => {
   const dispatch = useDispatch();
@@ -146,37 +146,33 @@ const Checkout = () => {
           }
         }
       }
-      if (giftCardIndex !== -1 && billingArray.length) {
+      if (giftCardIndex !== -1) {
         if (
           basketObj.payment.allowedCards.data.billingschemes[giftCardIndex]
             .accounts &&
           basketObj.payment.allowedCards.data.billingschemes[giftCardIndex]
             .accounts.length
         ) {
-          const defaultGiftCard =
+          let defaultGiftCards =
             basketObj.payment.allowedCards.data.billingschemes[giftCardIndex]
-              .accounts[0];
+              .accounts;
 
-          let gitfCardObj: any = {
-            localId: getUniqueId(),
-            selected: true,
-            billingmethod: 'storedvalue',
-            amount: 0,
-            balance:
-              (defaultGiftCard.balance && defaultGiftCard.balance.balance) || 0,
-            tipportion: 0.0,
-            cardlastfour: defaultGiftCard.cardsuffix,
-            billingaccountid: defaultGiftCard.accountidstring,
-            billingschemeid:
-              basketObj.payment.allowedCards.data.billingschemes[giftCardIndex]
-                .id,
-          };
+          defaultGiftCards = defaultGiftCards
+            .map((card: any, index: any) => {
+              return {
+                ...card,
+                balance: (card.balance && card.balance.balance) || 0,
+              };
+            })
+            .filter((card: any) => card.balance > 0)
+            .sort((a: any, b: any) =>
+              a.balance > b.balance ? 1 : b.balance > a.balance ? -1 : 0,
+            );
+          console.log('defaultGiftCards', defaultGiftCards);
+          let giftCardArray: any = createDefaultGiftCards(defaultGiftCards);
+          console.log('giftCardArray', giftCardArray);
 
-          console.log('gitfCardObj', gitfCardObj);
-
-          billingArray.push(gitfCardObj);
-
-          // }
+          Array.prototype.push.apply(billingArray, giftCardArray);
         }
       }
       if (billingArray.length) {
@@ -241,6 +237,30 @@ const Checkout = () => {
     }
   }, [basketObj.validate]);
 
+  const createDefaultGiftCards = (defaultGiftCards: any) => {
+    let array = [];
+    for (let i = 0; i < defaultGiftCards.length; i++) {
+      if (i === 4) {
+        break;
+      }
+      let gitfCardObj: any = {
+        localId: getUniqueId(),
+        selected: true,
+        billingmethod: 'storedvalue',
+        amount: 0,
+        balance: defaultGiftCards[i].balance,
+        tipportion: 0.0,
+        cardlastfour: defaultGiftCards[i].cardsuffix,
+        billingaccountid: defaultGiftCards[i].accountidstring,
+        billingschemeid: defaultGiftCards[i].id,
+      };
+      array.push(gitfCardObj);
+    }
+
+    console.log('mubashir', array)
+    return array;
+  };
+
   const scrollToTop = () => {
     window.scrollTo({
       top: 300,
@@ -253,7 +273,7 @@ const Checkout = () => {
       isValidForm: false,
       formData: null,
     };
-console.log('pickupFormRef.current', pickupFormRef.current)
+    console.log('pickupFormRef.current', pickupFormRef.current);
     if (!pickupFormRef.current) {
     } else if (!pickupFormRef.current.dirty) {
       pickupFormRef.current.submitForm();
@@ -313,17 +333,17 @@ console.log('pickupFormRef.current', pickupFormRef.current)
     return data;
   };
 
-  const getGiftCardAmount = () => {
-    const giftCardIndex = billingSchemes.findIndex(
-      (account: any) =>
-        account.billingmethod === 'storedvalue' && account.selected,
-    );
-    if (giftCardIndex !== -1) {
-      return billingSchemes[giftCardIndex].amount || 0;
-    } else {
-      return 0;
-    }
-  };
+  // const getGiftCardAmount = () => {
+  //   const giftCardIndex = billingSchemes.findIndex(
+  //     (account: any) =>
+  //       account.billingmethod === 'storedvalue' && account.selected,
+  //   );
+  //   if (giftCardIndex !== -1) {
+  //     return billingSchemes[giftCardIndex].amount || 0;
+  //   } else {
+  //     return 0;
+  //   }
+  // };
 
   const formatOrderType = (orderType: string) => {
     let updatedString =
@@ -353,7 +373,7 @@ console.log('pickupFormRef.current', pickupFormRef.current)
         orderType === DeliveryModeEnum.dinein)
     ) {
       const { isValidForm, formData } = validatePickupForm();
-      console.log('formData', formData)
+      console.log('formData', formData);
       if (!isValidForm) {
         displayToast(
           'ERROR',
@@ -383,39 +403,39 @@ console.log('pickupFormRef.current', pickupFormRef.current)
       return;
     }
 
-    if (basket && billingSchemes && billingSchemes.length) {
-      const giftCardAmount = getGiftCardAmount();
-      if (giftCardAmount > basket.subtotal) {
-        displayToast(
-          'ERROR',
-          'Gift Card amount must be less than order subtotal.',
-        );
-        setButtonDisabled(false);
-        return;
-      }
-    }
+    // if (basket && billingSchemes && billingSchemes.length) {
+    //   const giftCardAmount = getGiftCardAmount();
+    //   if (giftCardAmount > basket.subtotal) {
+    //     displayToast(
+    //       'ERROR',
+    //       'Gift Card amount must be less than order subtotal.',
+    //     );
+    //     setButtonDisabled(false);
+    //     return;
+    //   }
+    // }
 
-    if (billingSchemes.length) {
-      const tip = (basket && basket.tip) || 0;
-      const creditCardTotal = billingSchemes.reduce(
-        (sum: any, account: any) => {
-          if (account.billingmethod === 'creditcardtoken' && account.selected) {
-            sum = sum + account.amount;
-          }
-          return sum;
-        },
-        0,
-      );
-
-      if (creditCardTotal < tip) {
-        displayToast(
-          'ERROR',
-          'Credit Card amount must be greater than Tip amount.',
-        );
-        setButtonDisabled(false);
-        return;
-      }
-    }
+    // if (billingSchemes.length) {
+    //   const tip = (basket && basket.tip) || 0;
+    //   const creditCardTotal = billingSchemes.reduce(
+    //     (sum: any, account: any) => {
+    //       if (account.billingmethod === 'creditcardtoken' && account.selected) {
+    //         sum = sum + account.amount;
+    //       }
+    //       return sum;
+    //     },
+    //     0,
+    //   );
+    //
+    //   if (creditCardTotal < tip) {
+    //     displayToast(
+    //       'ERROR',
+    //       'Credit Card amount must be greater than Tip amount.',
+    //     );
+    //     setButtonDisabled(false);
+    //     return;
+    //   }
+    // }
 
     if (formDataValue.phone) {
       formDataValue.phone = formDataValue.phone.replace(/\D/g, '');
