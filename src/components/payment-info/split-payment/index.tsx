@@ -49,33 +49,36 @@ const SplitPayment = forwardRef((props, _ref) => {
     const totalCardsSelected =
       billingSchemeStats.selectedGiftCard +
       billingSchemeStats.selectedCreditCard;
-    if (totalCardsSelected === 3 && e.target.checked) {
+    if (totalCardsSelected === 5 && e.target.checked) {
       displayToast(
         'ERROR',
-        'Maximum 3 payment methods can be used to make a payment',
+        'Maximum 5 payment methods can be used to make a payment',
       );
       return;
     }
     if (
-      billingSchemeStats.selectedGiftCard === 2 &&
+      billingSchemeStats.selectedGiftCard === 4 &&
       e.target.checked &&
       billingmethod === 'storedvalue'
     ) {
-      displayToast('ERROR', 'Only 2 Gift Card can be used to make a payment');
+      displayToast('ERROR', 'Only 4 Gift Card can be used to make a payment');
       return;
     }
     if (
-      billingSchemeStats.selectedCreditCard === 3 &&
+      billingSchemeStats.selectedCreditCard === 1 &&
       e.target.checked &&
       billingmethod === 'creditcardtoken'
     ) {
-      displayToast('ERROR', 'Only 2 Credit Card can be used to make a payment');
+      displayToast('ERROR', 'Only 1 Credit Card can be used to make a payment');
       return;
     }
     if (
-      (billingSchemeStats.selectedCreditCard === 1 ||
-        billingSchemeStats.selectedGiftCard === 1) &&
-      !e.target.checked
+      (billingSchemeStats.selectedCreditCard === 1 &&
+        billingSchemeStats.selectedGiftCard === 0 &&
+        !e.target.checked) ||
+      (billingSchemeStats.selectedGiftCard === 1 &&
+        billingSchemeStats.selectedCreditCard === 0 &&
+        !e.target.checked)
     ) {
       displayToast(
         'ERROR',
@@ -319,13 +322,10 @@ const SplitPayment = forwardRef((props, _ref) => {
                     md={3}
                     lg={3}
                   >
-                    {console.log('new Value 4', account.amount)}
                     <TextField
                       type="number"
                       onChange={(e) => handleAmountChanges(e, account.localId)}
-                      disabled={
-                        !account.selected || billingSchemes.length === 1
-                      }
+                      disabled={true}
                       value={account.amount.toString() || 0}
                       inputProps={{ shrink: false }}
                       InputProps={{

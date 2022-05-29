@@ -3,6 +3,19 @@ import { basketActionsTypes } from '../../../../types/basket';
 const INITIAL_STATE = {
   loading: false,
   basket: null,
+  payment: {
+    allowedCards: {
+      loading: false,
+      data: null,
+      error: null,
+    },
+    defaultCards: {
+      loading: false,
+      data: null,
+      error: null,
+    },
+    billingSchemes: [],
+  },
   error: {},
 };
 
