@@ -20,6 +20,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { displayToast } from '../../../helpers/toast';
 import { updateBasketBillingSchemes } from '../../../redux/actions/basket/checkout';
 import {
+  getBillingSchemesStats,
   getGiftCardObj,
   updatePaymentCardsAmount,
 } from '../../../helpers/checkout';
@@ -94,15 +95,12 @@ const AddGiftCard = forwardRef((props, _ref) => {
         return element.type === 'giftcard';
       });
 
-      console.log('works', giftCardIndex);
       if (giftCardIndex !== -1) {
         const billingSchemeId = allowedCards[giftCardIndex].id;
-        console.log('works 1', billingSchemeId);
         const pinResponse = await verifyGiftCardPinRequirement(
           billingSchemeId,
           body,
         );
-        console.log('pinResponse', pinResponse);
         if (pinResponse && pinResponse.ispinrequired && !pinCheck) {
           displayToast('SUCCESS', 'Please add gift card pin.');
           setButtonDisabled(false);
@@ -181,6 +179,19 @@ const AddGiftCard = forwardRef((props, _ref) => {
     };
 
     return newEvent;
+  };
+
+  const displayAddGiftCard = () => {
+    const billingSchemeStats = getBillingSchemesStats(billingSchemes);
+    return (
+      basket &&
+      billingSchemeStats.giftCard < 4 &&
+      allowedCards &&
+      allowedCards.length &&
+      allowedCards.filter((element: any) => {
+        return element.type === 'giftcard';
+      }).length > 0
+    );
   };
 
   return (
@@ -285,30 +296,19 @@ const AddGiftCard = forwardRef((props, _ref) => {
         </DialogContent>
       </Dialog>
 
-      {basket &&
-        billingSchemes &&
-        // billingSchemes.length > 0 &&
-        billingSchemes.length < 5 &&
-        // billingSchemes.filter((element: any) => {
-        //   return element.type === 'creditcardtoken';
-        // }) &&
-        allowedCards &&
-        allowedCards.length &&
-        allowedCards.filter((element: any) => {
-          return element.type === 'giftcard';
-        }).length > 0 && (
-          <Grid container>
-            <Grid item xs={12} sm={12} md={12} lg={12}>
-              <Button
-                onClick={handleCloseAddGiftCard}
-                title="ADD GIFT CARD"
-                className="label"
-              >
-                ADD Gift CARD
-              </Button>
-            </Grid>
+      {displayAddGiftCard() && (
+        <Grid container>
+          <Grid item xs={12} sm={12} md={12} lg={12}>
+            <Button
+              onClick={handleCloseAddGiftCard}
+              title="ADD GIFT CARD"
+              className="label"
+            >
+              ADD Gift CARD
+            </Button>
           </Grid>
-        )}
+        </Grid>
+      )}
     </>
   );
 });
