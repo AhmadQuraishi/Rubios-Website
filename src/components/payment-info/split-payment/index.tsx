@@ -184,6 +184,14 @@ const SplitPayment = forwardRef((props, _ref) => {
     setRemoveData(null);
   };
 
+  const showAddAnotherPaymentMessage = () => {
+    const billingSchemeStats = getBillingSchemesStats(billingSchemes);
+    return (
+      billingSchemeStats.selectedGiftCard === 4 &&
+      remainingAmount(basket, billingSchemes) > 0
+    );
+  };
+
   return (
     <>
       <DialogBox
@@ -377,6 +385,15 @@ const SplitPayment = forwardRef((props, _ref) => {
           </Typography>
         </Grid>
       </Grid>
+      {showAddAnotherPaymentMessage() && (
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={12} md={12} lg={12}>
+            <Typography style={{paddingTop: 10, color: 'red'}} align={'center'} variant="h6">
+              *Please add another payment method to complete your purchase.
+            </Typography>
+          </Grid>
+        </Grid>
+      )}
     </>
   );
 });
