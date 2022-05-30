@@ -149,7 +149,15 @@ const Rewards = (props: any) => {
                         >
                           <Grid container spacing={2}>
                             <Grid item xs={12} sm={5} md={5} lg={5}>
-                              <img src={reward.imageurl} alt="" />
+                              {reward.imageurl == null && (
+                                <img
+                                  src={require('../../assets/imgs/punchh-icon-thumb.png')}
+                                  alt=""
+                                />
+                              )}
+                              {reward.imageurl && (
+                                <img src={reward.imageurl} alt="" />
+                              )}
                             </Grid>
                             <Grid
                               item
