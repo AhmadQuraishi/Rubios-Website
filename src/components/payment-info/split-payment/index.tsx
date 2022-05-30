@@ -333,7 +333,7 @@ const SplitPayment = forwardRef((props, _ref) => {
                       type="number"
                       onChange={(e) => handleAmountChanges(e, account.localId)}
                       disabled={true}
-                      value={account.amount.toString() || 0}
+                      value={account.amount.toFixed(2) || 0}
                       inputProps={{ shrink: false }}
                       InputProps={{
                         startAdornment: (
