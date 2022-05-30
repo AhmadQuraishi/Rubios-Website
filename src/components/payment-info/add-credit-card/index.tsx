@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { displayToast } from '../../../helpers/toast';
 import { updateBasketBillingSchemes } from '../../../redux/actions/basket/checkout';
 import {
+  getBillingSchemesStats,
   getCreditCardObj,
   updatePaymentCardsAmount,
 } from '../../../helpers/checkout';
@@ -40,6 +41,7 @@ const AddCreditCard = () => {
   const [billingSchemes, setBillingSchemes] = React.useState<any>([]);
   const [billingDetails, setBillingDetails] = React.useState<any>();
   const [zipCode, setZipCode] = React.useState<any>();
+  const [allowedCards, setAllowedCards] = React.useState<any>();
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
 
   const [paymentMethod, setPaymentMethod] =
@@ -67,6 +69,16 @@ const AddCreditCard = () => {
       return response;
     },
   }));
+
+  React.useEffect(() => {
+    if (
+      basketObj.payment.allowedCards &&
+      basketObj.payment.allowedCards.data &&
+      basketObj.payment.allowedCards.data.billingschemes
+    ) {
+      setAllowedCards(basketObj.payment.allowedCards.data.billingschemes);
+    }
+  }, [basketObj.payment.allowedCards]);
 
   React.useEffect(() => {
     if (openAddCreditCard) {
@@ -172,6 +184,19 @@ const AddCreditCard = () => {
     handleCloseAddCreditCard();
   };
 
+  const displayAddCreditCard = () => {
+    const billingSchemeStats = getBillingSchemesStats(billingSchemes);
+    return (
+      basket &&
+      billingSchemeStats.creditCard < 1 &&
+      allowedCards &&
+      allowedCards.length &&
+      allowedCards.filter((element: any) => {
+        return element.type === 'creditcard';
+      }).length > 0
+    );
+  };
+
   return (
     <>
       <Dialog
@@ -267,7 +292,7 @@ const AddCreditCard = () => {
           </DialogContent>
         )}
       </Dialog>
-      {basket && billingSchemes.length !== 5 && (
+      {displayAddCreditCard() && (
         <Grid container>
           <Grid item xs={12} sm={12} md={12} lg={12}>
             <Button
