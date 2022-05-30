@@ -145,16 +145,22 @@ const CategoryList = () => {
   useEffect(() => {
     if (categories && categories.categories) {
       let arrCat: any[] = [];
+      let products: any[] = [];
       categories.categories.map((cat: any) => {
+        products = [];
         let fCount = 0;
         const pCount = cat.products.length;
         cat.products.map((pItem: any) => {
           if (pItem.unavailablehandoffmodes.includes(orderType)) {
             fCount++;
+          } else {
+            products.push(pItem);
           }
         });
         if (pCount != fCount) {
-          arrCat.push(cat);
+          let catF = cat;
+          catF.products = products;
+          arrCat.push(catF);
         }
       });
       setFilterCategories(arrCat);

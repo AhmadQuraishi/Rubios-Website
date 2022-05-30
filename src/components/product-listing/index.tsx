@@ -1,7 +1,7 @@
 import { Grid, Typography, Card, CardContent, Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Link } from 'react-router-dom';
-import { Fragment, useEffect } from 'react';
+import { Fragment } from 'react';
 import './index.css';
 import { Product } from '../../types/olo-api';
 
@@ -70,8 +70,8 @@ const ProductListing = (props: any) => {
       <Grid container spacing={3}>
         {products.map(
           (item: any, index: number) =>
-            item.unavailablehandoffmodes.includes(orderType.toLowerCase()) === false && (
-              
+            item.unavailablehandoffmodes.includes(orderType.toLowerCase()) ===
+              false && (
               <Grid
                 scroll-id={'#panel-' + index}
                 key={index}
