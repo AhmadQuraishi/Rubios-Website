@@ -40,11 +40,14 @@ const OrderConfirmation = () => {
   const { data: restaurant } = useSelector(
     (state: any) => state.orderReducer.restaurant,
   );
+
   const { authToken } = useSelector((state: any) => state.authReducer);
 
   useEffect(() => {
     dispatch(getOrderRequest(id));
   }, []);
+
+
 
   useEffect(() => {
     if (runOnce && order && order.vendorid) {
@@ -124,7 +127,7 @@ const OrderConfirmation = () => {
                       </Button>
                     </Grid>
                   ) : (
-                    <RegisterConfirmation />
+                    <RegisterConfirmation id={id} />
                   )}
                 </Grid>
               </Card>

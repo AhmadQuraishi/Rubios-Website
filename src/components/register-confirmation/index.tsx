@@ -6,32 +6,29 @@ import {
   Select,
   MenuItem,
   FormControl,
-  SelectChangeEvent, Typography, Checkbox, Link,
+  SelectChangeEvent,
 } from '@mui/material';
 
 import { useDispatch, useSelector } from 'react-redux';
-// import { useEffect } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-// import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { getlocations } from '../../redux/actions/location';
-// import ReactDateInputs from "react-date-inputs";
-// import {userRegister} from "../../redux/actions/user";
 import { userRegister } from '../../redux/actions/user';
-import "./register-confirmation.css";
+import './register-confirmation.css';
+import ReactDateInputs from 'react-date-inputs';
+import moment from 'moment';
 
-
-const RegisterConfirmation = () => {
+const RegisterConfirmation = ({ id }: any) => {
   const dispatch = useDispatch();
   const [favLocation, setFavLocation] = useState('');
   const [selectShrink, setSelectShrink] = useState(false);
   const [birthDay, setBirthDay] = useState<Date | undefined>();
   const [termsAndConditions, setTermsAndconditions] = useState(false);
 
-
-
   const { locations } = useSelector((state: any) => state.locationReducer);
+
+  const { guestUser } = useSelector((state: any) => state.orderReducer);
 
   const { loading: loadingProvider } = useSelector(
     (state: any) => state.providerReducer,
@@ -44,6 +41,13 @@ const RegisterConfirmation = () => {
     dispatch(getlocations());
   }, []);
 
+  const formDefaultData = (key: string) => {
+    if (guestUser && id && guestUser.id === id) {
+      return guestUser[`${key}`] ? guestUser[`${key}`] : '';
+    }
+    return '';
+  };
+
   const handleChangeLocation = (event: SelectChangeEvent) => {
     setFavLocation(event.target.value as string);
   };
@@ -53,44 +57,44 @@ const RegisterConfirmation = () => {
     return;
   };
 
-  const handleChangeCheckbox = () => {
-    setTermsAndconditions(!termsAndConditions);
-  };
+  // const handleChangeCheckbox = () => {
+  //   setTermsAndconditions(!termsAndConditions);
+  // };
 
   // @ts-ignore
   return (
     <>
       <Formik
         initialValues={{
-          first_name: '',
-          last_name: '',
-          email: '',
+          first_name: formDefaultData('firstname'),
+          last_name: formDefaultData('lastname'),
+          email: formDefaultData('emailaddress'),
           password: '',
           password_confirmation: '',
           favLocation: '',
           birthday: '',
         }}
         validationSchema={Yup.object({
-          // first_name: Yup.string()
-          //   .trim()
-          //   .max(30, 'Must be 30 characters or less')
-          //   // .min(3, 'Must be at least 3 characters')
-          //   // .matches(/^[aA-zZ\s]+$/, 'Only letters are allowed for this field ')
-          //   .required('First Name is required'),
-          // last_name: Yup.string()
-          //   .trim()
-          //   .max(30, 'Must be 30 characters or less')
-          //   // .min(3, 'Must be at least 3 characters')
-          //   // .matches(/^[aA-zZ\s]+$/, 'Only letters are allowed for this field ')
-          //   .required('Last Name is required'),
-          // email: Yup.string()
-          //   .trim()
-          //   .matches(
-          //     /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-          //     'Invalid Email ',
-          //   )
-          //   .email('Invalid email address')
-          //   .required('Email is required'),
+          first_name: Yup.string()
+            .trim()
+            .max(30, 'Must be 30 characters or less')
+            // .min(3, 'Must be at least 3 characters')
+            // .matches(/^[aA-zZ\s]+$/, 'Only letters are allowed for this field ')
+            .required('First Name is required'),
+          last_name: Yup.string()
+            .trim()
+            .max(30, 'Must be 30 characters or less')
+            // .min(3, 'Must be at least 3 characters')
+            // .matches(/^[aA-zZ\s]+$/, 'Only letters are allowed for this field ')
+            .required('Last Name is required'),
+          email: Yup.string()
+            .trim()
+            .matches(
+              /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+              'Invalid Email ',
+            )
+            .email('Invalid email address')
+            .required('Email is required'),
           // phone: Yup.string().min(14, 'Enter valid number'),
           password: Yup.string()
             .trim()
@@ -117,9 +121,9 @@ const RegisterConfirmation = () => {
 
           console.log('obj', obj);
 
-          // if (birthDay) {
-          //   obj.birthday = moment(birthDay).format('YYYY-MM-DD');
-          // }
+          if (birthDay) {
+            obj.birthday = moment(birthDay).format('YYYY-MM-DD');
+          }
           //
           dispatch(userRegister(obj));
         }}
@@ -183,6 +187,23 @@ const RegisterConfirmation = () => {
                     helperText={touched.email && errors.email}
                   />
                 </Grid>
+                <Grid item xs={12} className="date-field">
+                  {/* <Typography
+                    variant="body2"
+                    className="body-text"
+                    title="Birthday (Optional)"
+                    sx={{ width: '100%' }}
+                  >
+                    Birthday (Optional)
+                  </Typography> */}
+                  <ReactDateInputs
+                    className="body-text"
+                    // label="Birthday (Optional)"
+                    onChange={(value) => handleBirthDayChange(value)}
+                    value={birthDay}
+                    show={['month', 'day', 'year']}
+                  />
+                </Grid>
                 <Grid item xs={12} sm={12} md={12} lg={12}>
                   <FormControl fullWidth>
                     <InputLabel
@@ -204,7 +225,7 @@ const RegisterConfirmation = () => {
                       name="favorite location"
                       value={favLocation && favLocation}
                       label="Favorite Location"
-                      autoComplete='favorite location'
+                      autoComplete="favorite location"
                       onChange={handleChangeLocation}
                       onClose={() => {
                         setSelectShrink(false);
