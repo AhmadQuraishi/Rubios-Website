@@ -505,10 +505,10 @@ const Product = () => {
                   (option1 ? option1.option.cost : 0) +
                   option.option.cost,
               );
-              const prc =
-                (option1 ? option1.option.cost : 0) +
-                option.option.cost * count;
-              setTotalCost((totalCost || 0) - prc);
+              const prc = option.option.cost * count;
+              setTotalCost(
+                (totalCost || 0) - (option1 ? option1.option.cost : 0) + prc,
+              );
             }
             elems = optionsSelectionArray.filter(
               (x: any) => x.parentOptionID == optionId,
