@@ -103,22 +103,21 @@ const SplitPayment = forwardRef((props, _ref) => {
 
   const removeSingleBasketBillingSchemes = () => {
     if (removeData) {
-      if (removeData.billingmethod === 'creditcardtoken') {
-        const checkLastCreditCard = billingSchemes.filter(
-          (element: any) =>
-            element.selected && element.billingmethod === 'creditcardtoken',
-        );
+      const selected = billingSchemes.filter(
+        (element: any) => element.selected,
+      );
 
-        // if (checkLastCreditCard && checkLastCreditCard.length === 1) {
-        //   if (checkLastCreditCard[0].localId === removeData.localId) {
-        //     displayToast(
-        //       'ERROR',
-        //       'Minimum 1 Credit Card is required to make a payment',
-        //     );
-        //     handleClosePopup();
-        //     return;
-        //   }
-        // }
+      console.log('selected', selected);
+
+      if (selected && selected.length === 1) {
+        if (selected[0].localId === removeData.localId) {
+          displayToast(
+            'ERROR',
+            'Minimum 1 payment method is required to make a payment',
+          );
+          handleClosePopup();
+          return;
+        }
       }
       let updatedBillingSchemes = billingSchemes.filter(
         (element: any) => element.localId !== removeData.localId,
@@ -388,7 +387,11 @@ const SplitPayment = forwardRef((props, _ref) => {
       {showAddAnotherPaymentMessage() && (
         <Grid container spacing={2}>
           <Grid item xs={12} sm={12} md={12} lg={12}>
-            <Typography style={{paddingTop: 10, color: 'red'}} align={'center'} variant="h6">
+            <Typography
+              style={{ paddingTop: 10, color: 'red' }}
+              align={'center'}
+              variant="h6"
+            >
               *Please add another payment method to complete your purchase.
             </Typography>
           </Grid>
