@@ -96,49 +96,54 @@ const AddGiftCard = forwardRef((props, _ref) => {
       });
 
       if (giftCardIndex !== -1) {
-        const billingSchemeId = allowedCards[giftCardIndex].id;
-        const pinResponse = await verifyGiftCardPinRequirement(
-          billingSchemeId,
-          body,
-        );
-        if (pinResponse && pinResponse.ispinrequired && !pinCheck) {
-          displayToast('SUCCESS', 'Please add gift card pin.');
-          setButtonDisabled(false);
-          setPinCheck(true);
-        } else {
-          const balanceResponse = await getGiftCardBalance(
-            basket.id,
+        try {
+          const billingSchemeId = allowedCards[giftCardIndex].id;
+          const pinResponse = await verifyGiftCardPinRequirement(
             billingSchemeId,
             body,
           );
-          if (balanceResponse) {
-            if (balanceResponse.success) {
-              let billingSchemesNewArray = billingSchemes;
-              let cardObj: any = getGiftCardObj(
-                balanceResponse,
-                billingSchemeId,
-                body,
-                billingSchemesNewArray,
-              );
+          if (pinResponse && pinResponse.ispinrequired && !pinCheck) {
+            displayToast('SUCCESS', 'Please add gift card pin.');
+            setButtonDisabled(false);
+            setPinCheck(true);
+          } else {
+            const balanceResponse = await getGiftCardBalance(
+              basket.id,
+              billingSchemeId,
+              body,
+            );
+            if (balanceResponse) {
+              if (balanceResponse.success) {
+                let billingSchemesNewArray = billingSchemes;
+                let cardObj: any = getGiftCardObj(
+                  balanceResponse,
+                  billingSchemeId,
+                  body,
+                  billingSchemesNewArray,
+                );
 
-              Array.prototype.push.apply(billingSchemesNewArray, cardObj);
+                Array.prototype.push.apply(billingSchemesNewArray, cardObj);
 
-              billingSchemesNewArray = updatePaymentCardsAmount(
-                billingSchemesNewArray,
-                basket,
-              );
+                billingSchemesNewArray = updatePaymentCardsAmount(
+                  billingSchemesNewArray,
+                  basket,
+                );
 
-              dispatch(updateBasketBillingSchemes(billingSchemesNewArray));
-              displayToast('SUCCESS', 'Gift Card Added');
-              handleCloseAddGiftCard();
-              setButtonDisabled(false);
-            } else {
-              displayToast('ERROR', `${balanceResponse.message}`);
-              setButtonDisabled(false);
+                dispatch(updateBasketBillingSchemes(billingSchemesNewArray));
+                displayToast('SUCCESS', 'Gift Card Added');
+                handleCloseAddGiftCard();
+                setButtonDisabled(false);
+              } else {
+                displayToast('ERROR', `${balanceResponse.message}`);
+                setButtonDisabled(false);
+              }
             }
+            setButtonDisabled(false);
           }
+        } catch (e) {
           setButtonDisabled(false);
         }
+
       }
     }
   };
