@@ -8,6 +8,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { getCategoriesRequest } from '../../redux/actions/category';
 import { Category } from '../../types/olo-api';
 import ProductListingSkeletonUI from '../../components/product-listing-skeleton-ui';
+import { displayToast } from '../../helpers/toast';
 
 const useStyles = makeStyles((theme: Theme) => ({
   heading: {
@@ -39,7 +40,7 @@ const CategoryDetail = () => {
   const { categories, loading } = useSelector(
     (state: any) => state.categoryReducer,
   );
-  const { restaurant } = useSelector(
+  const { restaurant, orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
   useEffect(() => {
@@ -57,20 +58,43 @@ const CategoryDetail = () => {
     }
   }, []);
 
+  const [filterCategories, setFilterCategories] = useState<any[]>([]);
+
   useEffect(() => {
     if (categories && categories.categories) {
       if (id) {
-        const category = categories.categories.find((obj: Category) => {
+        let arrCat: any[] = [];
+        let products: any[] = [];
+        categories.categories.map((cat: any) => {
+          products = [];
+          let fCount = 0;
+          const pCount = cat.products.length;
+          cat.products.map((pItem: any) => {
+            if (pItem.unavailablehandoffmodes.includes(orderType)) {
+              fCount++;
+            } else {
+              products.push(pItem);
+            }
+          });
+          if (pCount != fCount) {
+            let catF = cat;
+            catF.products = products;
+            arrCat.push(catF);
+          }
+        });
+        setFilterCategories(arrCat);
+        const category = arrCat.find((obj: Category) => {
           return obj.id.toString() == id;
         });
-        setSelectedCategory(category);
+        if (category) {
+          setSelectedCategory(category);
+        } else {
+          displayToast('ERROR', "Selected category doesn't exist");
+          navigate('/location');
+        }
       }
     }
   }, [categories]);
-
-  const changeImageSize = (path: string) => {
-    return path.replaceAll('w=210', 'w=520').replaceAll('h=140', 'w=520');
-  };
 
   return (
     <div style={{ minHeight: '500px' }}>
@@ -97,6 +121,7 @@ const CategoryDetail = () => {
               productList={selectedCategory.products}
               categoryID={id}
               imgPath={(categories && categories.imagepath) || ''}
+              orderType={orderType}
             />
           </Grid>
         </Grid>
