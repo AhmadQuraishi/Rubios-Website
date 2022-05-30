@@ -9,7 +9,9 @@ import {
   setTipAmountBasket,
   applyCouponBasket,
   validateBasket,
-  submitSinglePaymentBasket, getBasketAllowedCards, removeCouponBasket,
+  submitSinglePaymentBasket,
+  getBasketAllowedCards,
+  removeCouponBasket,
 } from '../../../../services/checkout';
 import {
   getSingleRestaurantCalendarSuccess,
@@ -48,6 +50,7 @@ import {
 } from '../../../../services/basket';
 import { getBasketRequestSuccess } from '../../../actions/basket';
 import { navigateAppAction } from '../../../actions/navigate-app';
+import { updateGuestUserInfo } from '../../../actions/order';
 
 function* asyncgetSingleRestaurantCalendarRequest(action: any): any {
   try {
@@ -211,9 +214,17 @@ function* asyncSubmitBasketSinglePayment(action: any): any {
       action.action.basketId,
       action.action.basketPayload,
     );
+    let userInfo = {};
+    if (action.action.basketPayload.receivinguser){
+      userInfo = {
+        ...action.action.basketPayload.receivinguser,
+        id: response.id,
+      };
+    }
     yield put(
       submitBasketSinglePaymentSuccess(response, action.action.basketId),
     );
+    yield put(updateGuestUserInfo(userInfo));
     yield put(navigateAppAction(`/order-confirmation/${response.id}`));
   } catch (error) {
     yield put(submitBasketSinglePaymentFailure(error));
