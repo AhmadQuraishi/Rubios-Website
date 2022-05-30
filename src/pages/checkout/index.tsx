@@ -364,7 +364,7 @@ const Checkout = () => {
       deliverymode: orderType || '',
     };
     let formDataValue;
-
+    console.log('orderType', orderType);
     if (
       orderType &&
       (orderType === '' ||
@@ -436,6 +436,8 @@ const Checkout = () => {
     //     return;
     //   }
     // }
+
+    console.log('formDataValue', formDataValue)
 
     if (formDataValue.phone) {
       formDataValue.phone = formDataValue.phone.replace(/\D/g, '');
