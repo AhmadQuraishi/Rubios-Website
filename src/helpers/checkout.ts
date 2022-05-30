@@ -100,7 +100,8 @@ export function generateSubmitBasketPayload(
   if (
     deliverymode === DeliveryModeEnum.curbside ||
     deliverymode === DeliveryModeEnum.pickup ||
-    deliverymode === DeliveryModeEnum.dinein
+    deliverymode === DeliveryModeEnum.dinein ||
+    deliverymode === DeliveryModeEnum.delivery
   ) {
     payload = {
       ...payload,

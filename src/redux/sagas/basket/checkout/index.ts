@@ -127,8 +127,8 @@ function* asyncSetBasketDeliveryModeRequest(action: any): any {
   try {
     const response = yield call(
       setBasketDeliveryMode,
-      action.action.basketId,
-      action.action.deliverymode,
+      action.action.payload.basketId,
+      action.action.payload.deliverymode,
     );
     yield put(setBasketDeliveryModeSuccess(response));
   } catch (error) {
@@ -140,8 +140,8 @@ function* asyncSetBasketDeliveryAddressRequest(action: any): any {
   try {
     const response = yield call(
       setBasketDeliveryAddress,
-      action.action.basketId,
-      action.action.deliveryAddress,
+      action.action.payload.basketId,
+      action.action.payload.deliveryAddress,
     );
     yield put(setBasketDeliveryAddressSuccess(response));
   } catch (error) {
@@ -168,23 +168,23 @@ function* asyncValidateBasket(action: any): any {
         action.customFields,
       );
     }
-    if (action.deliveryAddress) {
-      const deliveryAddressResponse = yield call(
-        setBasketDeliveryAddress,
-        action.basketId,
-        action.deliveryAddress,
-      );
-      // const deliveryAddressResponse = yield put({
-      //   type: basketActionsTypes.SET_BASKET_DELIVERY_ADDRESS_REQUEST,
-      //   action,
-      // });
-    }
-    if (action.deliverymode && !action.deliveryAddress) {
-      const deliveryModeResponse = yield put({
-        type: basketActionsTypes.SET_BASKET_DELIVERY_MODE_REQUEST,
-        action,
-      });
-    }
+    // if (action.deliveryAddress) {
+    //   const deliveryAddressResponse = yield call(
+    //     setBasketDeliveryAddress,
+    //     action.basketId,
+    //     action.deliveryAddress,
+    //   );
+    // const deliveryAddressResponse = yield put({
+    //   type: basketActionsTypes.SET_BASKET_DELIVERY_ADDRESS_REQUEST,
+    //   action,
+    // });
+    // }
+    // if (action.deliverymode && !action.deliveryAddress) {
+    //   const deliveryModeResponse = yield put({
+    //     type: basketActionsTypes.SET_BASKET_DELIVERY_MODE_REQUEST,
+    //     action,
+    //   });
+    // }
     const validateResponse = yield call(validateBasket, action.basketId);
     yield put(validateBasketSuccess(validateResponse));
     const basketResponse = yield call(getBasket, action.basketId);
@@ -215,7 +215,7 @@ function* asyncSubmitBasketSinglePayment(action: any): any {
       action.action.basketPayload,
     );
     let userInfo = {};
-    if (action.action.basketPayload.receivinguser){
+    if (action.action.basketPayload.receivinguser) {
       userInfo = {
         ...action.action.basketPayload.receivinguser,
         id: response.id,
