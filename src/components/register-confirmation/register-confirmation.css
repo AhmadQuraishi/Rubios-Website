@@ -1,3 +1,12 @@
+.confirmation-form .react-date-inputs {
+  background: white;
+  height: 45px;
+  margin-bottom: 5px;
+  width: calc(100% - 5px);
+  position: relative;
+  z-index: 10;
+}
+
 .confirmation-form .react-date-inputs input {
   width: 10%;
   background: white;
@@ -5,14 +14,18 @@
   height: 35px;
   -webkit-appearance: none;
   background-clip: padding-box;
-  -webkit-box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.2) !important;
-  -moz-box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.2) !important;
-  box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.2) !important;
+  box-shadow: none !important;
   padding: 16px 14px;
   margin: 0px 5px 5px 0px;
   outline: none;
 }
-
+.confirmation-form .react-date-inputs input:before {
+  width: 20px;
+  height: 20px;
+  color: black;
+  content: '/';
+  display: block;
+}
 @media screen and (max-width: 900px) {
   .confirmation-form {
     position: absolute;
