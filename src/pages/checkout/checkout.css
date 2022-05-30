@@ -126,3 +126,7 @@
     margin-bottom: 64px;
   }
 }
+
+.disable-pointer {
+  pointer-events:none;
+}

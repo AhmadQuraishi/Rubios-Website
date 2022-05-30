@@ -187,6 +187,7 @@ const SplitPayment = forwardRef((props, _ref) => {
     const billingSchemeStats = getBillingSchemesStats(billingSchemes);
     return (
       billingSchemeStats.selectedGiftCard === 4 &&
+      billingSchemeStats.creditCard === 0 &&
       remainingAmount(basket, billingSchemes) > 0
     );
   };
@@ -392,7 +393,7 @@ const SplitPayment = forwardRef((props, _ref) => {
               align={'center'}
               variant="h6"
             >
-              *Please add another payment method to complete your purchase.
+              Please add another payment method to complete your purchase.
             </Typography>
           </Grid>
         </Grid>
