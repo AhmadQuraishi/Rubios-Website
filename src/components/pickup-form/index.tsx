@@ -52,7 +52,7 @@ const PickupForm = ({ basket, pickupFormRef, orderType }: any) => {
       // newValue = newValue.replace(/^0+/, '');
     }
     newValue =
-      newValue && newValue > 0 && newValue <= 9999999999999999999
+      newValue && newValue >= 0 && newValue <= 9999999999999999999
         ? newValue
         : newValue > 9999999999999999999
         ? tableNumber
