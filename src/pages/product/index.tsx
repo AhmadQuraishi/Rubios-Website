@@ -22,6 +22,7 @@ import {
   ResponseBasket,
   ResponseModifiers,
 } from '../../types/olo-api';
+import { DeliveryModeEnum } from '../../types/olo-api/olo-api.enums';
 import { getProductOptionRequest } from '../../redux/actions/product/option';
 import ProductSkeletonUI from '../../components/product-skeleton-ui';
 import { setBasketRequest } from '../../redux/actions/basket/create';
@@ -57,6 +58,10 @@ const Product = () => {
   const { options } = useSelector((state: any) => state.productOptionsReducer);
   const { restaurant, orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
+  );
+
+  const objDeliveryAddress = useSelector(
+    (state: any) => state.deliveryAddressReducer,
   );
 
   const [basketType, setBasketType] = useState();
@@ -174,15 +179,52 @@ const Product = () => {
     }
   };
 
+  const formatDeliveryAddress = () => {
+    const obj = {
+      building:
+        objDeliveryAddress && objDeliveryAddress.address
+          ? objDeliveryAddress.address.address2
+          : '',
+      streetaddress:
+        objDeliveryAddress && objDeliveryAddress.address
+          ? objDeliveryAddress.address.address1
+          : '',
+      city:
+        objDeliveryAddress && objDeliveryAddress.address
+          ? objDeliveryAddress.address.city
+          : '',
+      zipcode:
+        objDeliveryAddress && objDeliveryAddress.address
+          ? objDeliveryAddress.address.zip
+          : '',
+    };
+    return obj;
+  };
+
   const addProductToBag = () => {
     if (basketObj.basket == null) {
+      let payload: any = {};
       const request: any = {};
-      // let deliverymode = orderType || '';
+      let deliverymode: any = {
+        deliverymode: orderType || '',
+      };
+      let deliveryAddress = null;
+      payload.deliverymode = deliverymode;
+      if (
+        objDeliveryAddress &&
+        objDeliveryAddress.address &&
+        orderType === DeliveryModeEnum.delivery
+      ) {
+        deliveryAddress = formatDeliveryAddress();
+        payload.deliveryAddress = deliveryAddress;
+      }
+
       request.vendorid = restaurant.id;
       if (authToken?.authtoken && authToken.authtoken !== '') {
         request.authtoken = authToken.authtoken;
       }
-      dispatch(setBasketRequest(request));
+      payload.request = request;
+      dispatch(setBasketRequest(payload));
     } else {
       const request: any = {};
       request.productid = productDetails?.id;

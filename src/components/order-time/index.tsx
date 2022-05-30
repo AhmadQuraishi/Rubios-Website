@@ -142,9 +142,17 @@ const OrderTime = ({ orderType }: any) => {
     <Grid item xs={12} sm={6} md={6} lg={6} className="right-col">
       <Grid container>
         <Grid item xs={12}>
-          <Typography variant="h3" title="PICKUP TIME" className="label">
+          <Typography
+            variant="h3"
+            title={
+              orderType === DeliveryModeEnum.dinein
+                ? 'ORDER TIME'
+                : 'PICKUP TIME'
+            }
+            className="label"
+          >
             {orderType === DeliveryModeEnum.dinein
-              ? 'DINE IN Time'
+              ? 'ORDER TIME'
               : 'PICKUP TIME'}
           </Typography>
         </Grid>
