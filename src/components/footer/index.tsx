@@ -116,6 +116,7 @@ const Footer = () => {
                     menu.items.map((item: any, index: number) => (
                       <li>
                         <a
+                          key={Math.random() + index}
                           className={classes.links}
                           href={item.url}
                           title={item.title}
@@ -163,25 +164,40 @@ const Footer = () => {
                 sx={{ padding: { xs: '10px 0 0 0', md: '20px 0 0 0' } }}
               >
                 <Grid item xs={4}>
-                  <img
-                    src={fbIcon}
-                    style={{ width: '50%' }}
-                    alt="Facebook Icon"
-                  />
+                  <a
+                    href={'https://www.facebook.com/rubios/'}
+                    target={'_blank'}
+                  >
+                    <img
+                      src={fbIcon}
+                      style={{ width: '50%' }}
+                      alt="Facebook Icon"
+                    />
+                  </a>
                 </Grid>
                 <Grid item xs={4}>
-                  <img
-                    src={instaIcon}
-                    style={{ width: '50%' }}
-                    alt="Instagram Icon"
-                  />
+                  <a
+                    href={'https://www.instagram.com/rubioscoastalgrill/'}
+                    target={'_blank'}
+                  >
+                    <img
+                      src={instaIcon}
+                      style={{ width: '50%' }}
+                      alt="Instagram Icon"
+                    />
+                  </a>
                 </Grid>
                 <Grid item xs={4}>
-                  <img
-                    src={twitterIcon}
-                    style={{ width: '50%' }}
-                    alt="Twitter Icon"
-                  />
+                  <a
+                    href={'https://twitter.com/RubiosTweets'}
+                    target={'_blank'}
+                  >
+                    <img
+                      src={twitterIcon}
+                      style={{ width: '50%' }}
+                      alt="Twitter Icon"
+                    />
+                  </a>
                 </Grid>
               </Grid>
             </Grid>
@@ -302,30 +318,38 @@ const Footer = () => {
                     justifyContent: { xs: 'left', md: 'right' },
                   }}
                 >
-                  <Link
-                    to="/"
-                    className={classes.smallLinks}
-                    title="Website Accessibility"
-                    aria-label="Website Accessibility"
-                  >
-                    Website Accessibility
-                  </Link>
-                  <Link
-                    to="/"
-                    className={classes.smallLinks}
-                    title="Terms of use"
-                    aria-label="Terms of use"
-                  >
-                    Terms of use
-                  </Link>
-                  <Link
-                    to="/"
-                    className={classes.smallLinks}
-                    title="Privacy"
-                    aria-label="Privacy"
-                  >
-                    Privacy
-                  </Link>
+                  <ul style={{ listStyle: 'none', display: 'flex'}}>
+                    <li>
+                      <Link
+                        to="/"
+                        className={classes.smallLinks}
+                        title="Website Accessibility"
+                        aria-label="Website Accessibility"
+                      >
+                        Website Accessibility
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to="/"
+                        className={classes.smallLinks}
+                        title="Terms of use"
+                        aria-label="Terms of use"
+                      >
+                        Terms of use
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to="/"
+                        className={classes.smallLinks}
+                        title="Privacy"
+                        aria-label="Privacy"
+                      >
+                        Privacy
+                      </Link>
+                    </li>
+                  </ul>
                 </Grid>
               </Grid>
             </Grid>

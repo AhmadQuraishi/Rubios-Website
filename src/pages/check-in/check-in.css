@@ -1,6 +1,10 @@
 .check-in-section .MuiGrid-grid-xs-12{
   padding-top: 20px
 }
+.check-in-section img {
+  width: 100%;
+  height: auto;
+}
 .receipt-image-box
 {
   justify-content: center;
@@ -11,4 +15,12 @@
   font-family: 'Poppins-Medium', sans-serif !important;
   color: #414141;
   padding-top: 8px;
+}
+
+
+@media screen and (max-width: 960px) {
+  .check-in-section img {
+    width: 50%;
+    height: auto;
+  }
 }

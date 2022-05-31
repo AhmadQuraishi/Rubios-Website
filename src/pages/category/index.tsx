@@ -58,6 +58,7 @@ const CategoryList = () => {
   };
   const classes = useStyles();
   const [getResutarnts, setGetResutrants] = useState(false);
+  const [getDineInResutarnts, setGetDineInResutarnts] = useState(false);
   const [restaurantSelected, setRestaurantSelected] = useState<any>();
   const [value, setValue] = useState('0');
   const { store } = useParams();
@@ -66,7 +67,7 @@ const CategoryList = () => {
   const { categories, loading, error } = useSelector(
     (state: any) => state.categoryReducer,
   );
-  const { restaurant } = useSelector(
+  const { restaurant, orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
   const objResturantsList = useSelector(
@@ -78,16 +79,21 @@ const CategoryList = () => {
   const body = document;
 
   useEffect(() => {
-    if (window.location.href.toLocaleLowerCase().indexOf('selection=1') != -1) {
-      //if (providerToken && providerToken.first_name) {
-      //navigate('/location');
-      //} else {
+    if (window.location.href.toLowerCase().indexOf('selection=1') != -1) {
       setGetResutrants(true);
       dispatch(getResturantListRequest());
       if (restaurant && restaurant.id) {
         dispatch(getCategoriesRequest(restaurant.id));
       }
-      // }
+    } else if (
+      window.location.href.toLowerCase().indexOf('handoff=dinein') != -1
+    ) {
+      setGetDineInResutarnts(true);
+      setGetResutrants(true);
+      dispatch(getResturantListRequest());
+      if (restaurant && restaurant.id) {
+        dispatch(getCategoriesRequest(restaurant.id));
+      }
     } else {
       if (restaurant === null) {
         navigate('/location');
@@ -109,9 +115,20 @@ const CategoryList = () => {
       const objRestaurant = restaurants.find(
         (x: any) => x.slug.toLowerCase() == store.toLowerCase(),
       );
-      if (objRestaurant) {
+      if (objRestaurant && getDineInResutarnts == false) {
         setRestaurantSelected(objRestaurant);
         setOpen(true);
+      } else if (objRestaurant && getDineInResutarnts == true) {
+        if (objRestaurant.supportsdinein) {
+          dispatch(setResturantInfoRequest(objRestaurant, 'dinein'));
+          displayToast('SUCCESS', 'Location changed to ' + objRestaurant.name);
+          navigate('/menu/' + objRestaurant.slug);
+          dispatch(getCategoriesRequest(objRestaurant.id));
+        } else {
+          displayToast('ERROR', 'Dine-in is not available at this time.');
+          navigate('/location');
+        }
+        setGetDineInResutarnts(false);
       } else {
         displayToast(
           'ERROR',
@@ -123,12 +140,34 @@ const CategoryList = () => {
     }
   }, [objResturantsList]);
 
+  const [filterCategories, setFilterCategories] = useState<any[]>([]);
+
   useEffect(() => {
     if (categories && categories.categories) {
+      let arrCat: any[] = [];
+      let products: any[] = [];
+      categories.categories.map((cat: any) => {
+        products = [];
+        let fCount = 0;
+        const pCount = cat.products.length;
+        cat.products.map((pItem: any) => {
+          if (pItem.unavailablehandoffmodes.includes(orderType)) {
+            fCount++;
+          } else {
+            products.push(pItem);
+          }
+        });
+        if (pCount != fCount) {
+          let catF = cat;
+          catF.products = products;
+          arrCat.push(catF);
+        }
+      });
+      setFilterCategories(arrCat);
       setCategoriesWithProducts(categories);
       let scrollValues: any[] = [];
       setTimeout(() => {
-        categories.categories.map((item: any, index: number) => {
+        filterCategories.map((item: any, index: number) => {
           const elem: HTMLElement = document.getElementById(
             'cat-panel-' + index,
           ) as HTMLElement;
@@ -147,7 +186,7 @@ const CategoryList = () => {
         'orientationchange',
         function () {
           scrollValues = [];
-          categories.categories.map((item: any, index: number) => {
+          filterCategories.map((item: any, index: number) => {
             const elem: HTMLElement = document.getElementById(
               'cat-panel-' + index,
             ) as HTMLElement;
@@ -169,7 +208,7 @@ const CategoryList = () => {
         'resize',
         function () {
           scrollValues = [];
-          categories.categories.map((item: any, index: number) => {
+          filterCategories.map((item: any, index: number) => {
             const elem: HTMLElement = document.getElementById(
               'cat-panel-' + index,
             ) as HTMLElement;
@@ -356,109 +395,111 @@ const CategoryList = () => {
       )}
       <StoreInfoBar />
       {loading === true && <ProductListingSkeletonUI />}
-      {categoriesWithProducts?.categories &&
-        categoriesWithProducts?.categories.length > 0 && (
-          <>
-            <div
-              style={{ display: 'none', height: '80px' }}
-              id="dummyCategoryPanel"
-            ></div>
-            <Box
-              sx={{
-                width: '100%',
-                background: '#FFF',
-                zIndex: '1099',
-                padding: {
-                  xs: '20px 5px 10px 5px',
-                  sm: '20px 30px 5px 30px',
-                  lg: '20px 60px 5px 60px',
-                  boxSizing: 'border-box',
-                },
-              }}
-              id="categoryMenu"
+      {filterCategories && filterCategories.length > 0 && (
+        <>
+          <div
+            style={{ display: 'none', height: '80px' }}
+            id="dummyCategoryPanel"
+          ></div>
+          <Box
+            sx={{
+              width: '100%',
+              background: '#FFF',
+              zIndex: '1099',
+              padding: {
+                xs: '20px 5px 10px 5px',
+                sm: '20px 30px 5px 30px',
+                lg: '20px 60px 5px 60px',
+                boxSizing: 'border-box',
+              },
+            }}
+            id="categoryMenu"
+          >
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              textColor="secondary"
+              indicatorColor="primary"
+              variant="scrollable"
+              scrollButtons
+              allowScrollButtonsMobile
+              sx={{ fontFamily: 'Poppins-Medium !important' }}
+              role="region"
+              aria-label="Food Menu"
             >
-              <Tabs
-                value={value}
-                onChange={handleChange}
-                textColor="secondary"
-                indicatorColor="primary"
-                variant="scrollable"
-                scrollButtons
-                allowScrollButtonsMobile
-                sx={{ fontFamily: 'Poppins-Medium !important' }}
-                role="region"
-                aria-label="Food Menu"
-              >
-                {categoriesWithProducts?.categories.map(
-                  (item: Category, index: number) => (
-                    <Tab
-                      key={item.id}
-                      value={`${index}`}
-                      label={item.name}
-                      title={item.name}
-                      color="secondary.main"
-                      sx={{ fontFamily: 'Poppins-Medium !important' }}
-                      tabIndex={0}
-                      role="link"
-                      href={`#cat-panel-${index}`}
-                    />
-                  ),
-                )}
-              </Tabs>
-            </Box>
-          </>
-        )}
-      {categoriesWithProducts?.categories &&
-        categoriesWithProducts?.categories.length > 0 &&
-        categoriesWithProducts?.categories.map(
-          (item: Category, index: number) => (
-            <Grid
-              key={index}
-              container
-              spacing={0}
-              id={`cat-panel-${index}`}
-              sx={{
-                padding: {
-                  xs: '20px 20px 0px 20px',
-                  sm: '30px 70px 0px 70px',
-                  lg: '30px 100px 0px 100px',
-                },
-                position: 'relative',
-              }}
-            >
-              <Grid item xs={12}>
-                <div
-                  id={'#panel-' + index}
-                  style={{ position: 'absolute', top: '-120px' }}
-                ></div>
-                <Grid container>
-                  <Grid item xs={item.products.length > 4 ? 8 : 12}>
-                    <Typography className={classes.heading} title={item.name}>
-                      {item.name}
+              {filterCategories.map((item: Category, index: number) => (
+                <Tab
+                  key={item.id}
+                  value={`${index}`}
+                  label={item.name}
+                  title={item.name}
+                  color="secondary.main"
+                  sx={{ fontFamily: 'Poppins-Medium !important' }}
+                  tabIndex={0}
+                  role="link"
+                  href={`#cat-panel-${index}`}
+                />
+              ))}
+            </Tabs>
+          </Box>
+        </>
+      )}
+      {filterCategories &&
+        filterCategories.length > 0 &&
+        filterCategories.map((item: Category, index: number) => (
+          <Grid
+            key={index}
+            container
+            spacing={0}
+            id={`cat-panel-${index}`}
+            sx={{
+              padding: {
+                xs: '20px 20px 0px 20px',
+                sm: '30px 70px 0px 70px',
+                lg: '30px 100px 0px 100px',
+              },
+              position: 'relative',
+            }}
+          >
+            <Grid item xs={12}>
+              <div
+                id={'#panel-' + index}
+                style={{ position: 'absolute', top: '-120px' }}
+              ></div>
+              <Grid container>
+                <Grid item xs={item.products.length > 4 ? 8 : 12}>
+                  <Typography
+                    variant="h2"
+                    className={classes.heading}
+                    title={item.name}
+                  >
+                    {item.name}
+                  </Typography>
+                </Grid>
+                {item.products.length > 4 && (
+                  <Grid item xs={4}>
+                    <Typography className={classes.link}>
+                      <Link to={`/category/${item.id}`} title="view all">
+                        view all →
+                      </Link>
                     </Typography>
                   </Grid>
-                  {item.products.length > 4 && (
-                    <Grid item xs={4}>
-                      <Typography className={classes.link}>
-                        <Link to={`/category/${item.id}`} title="view all">
-                          view all →
-                        </Link>
-                      </Typography>
-                    </Grid>
-                  )}
-                </Grid>
-              </Grid>
-              <Grid item xs={12} sx={{ paddingBottom: '20px' }} role="list">
-                <ProductListing
-                  productList={item.products}
-                  categoryID={item.id}
-                  imgPath={categoriesWithProducts.imagepath}
-                  shownItemsCount={4}
-                />
+                )}
               </Grid>
             </Grid>
-          ),
-        )}
+            <Grid item xs={12} sx={{ paddingBottom: '20px' }} role="list">
+              <ProductListing
+                orderType={orderType}
+                productList={item.products}
+                categoryID={item.id}
+                imgPath={
+                  categoriesWithProducts && categoriesWithProducts?.imagepath
+                }
+                shownItemsCount={4}
+              />
+            </Grid>
+          </Grid>
+        ))}
       <div style={{ paddingBottom: '30px' }}></div>
     </div>
   );

@@ -32,8 +32,9 @@ import { HoursListing } from '../../helpers/hoursListing';
 import { CalendarTypeEnum } from '../../helpers/hoursListing';
 import { useNavigate } from 'react-router-dom';
 import { ResponseBasket } from '../../types/olo-api';
+import { DeliveryModeEnum } from '../../types/olo-api/olo-api.enums';
 
-const OrderTime = () => {
+const OrderTime = ({ orderType }: any) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [selectedDate, setSelectedDate] = React.useState<any>(new Date());
@@ -141,8 +142,18 @@ const OrderTime = () => {
     <Grid item xs={12} sm={6} md={6} lg={6} className="right-col">
       <Grid container>
         <Grid item xs={12}>
-          <Typography variant="h3" title="PICKUP TIME" className="label">
-            PICKUP TIME
+          <Typography
+            variant="h3"
+            title={
+              orderType === DeliveryModeEnum.dinein
+                ? 'ORDER TIME'
+                : 'PICKUP TIME'
+            }
+            className="label"
+          >
+            {orderType === DeliveryModeEnum.dinein
+              ? 'ORDER TIME'
+              : 'PICKUP TIME'}
           </Typography>
         </Grid>
       </Grid>

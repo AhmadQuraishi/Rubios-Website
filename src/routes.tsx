@@ -27,6 +27,9 @@ const AddDeliveryAddress = lazy(() => import('./pages/add-delivery-address'));
 const CategoryDetail = lazy(() => import('./pages/category-detail'));
 const PageNotFound = lazy(() => import('./pages/page-not-found'));
 const ScanToRedeem = lazy(() => import('./pages/scan-to-redeem'));
+const CategoryIframe = lazy(() => import('./pages/iframe/category'));
+const RegisterIframe = lazy(() => import('./pages/iframe/register'));
+const StoreHoursIframe = lazy(() => import('./pages/iframe/store-hours'));
 
 const AppRoutes = () => {
   return (
@@ -41,12 +44,19 @@ const AppRoutes = () => {
               justifyContent: 'center',
             }}
           >
-            <div style={{
-              backgroundImage:`url(${image})`,
-              width: '100px',
-              height: '100px',
-              display: 'block'
-            }} />
+            <div
+              style={{
+                backgroundImage: `url(${image})`,
+                width: '120px',
+                height: '120px',
+                display:
+                  window.location.href
+                    .toLocaleLowerCase()
+                    .indexOf('/iframe') !== -1
+                    ? 'none'
+                    : 'block',
+              }}
+            />
           </div>
         }
       >
@@ -101,6 +111,12 @@ const AppRoutes = () => {
           />
           <Route path="/account/reward" element={<ScanToRedeem />} />
           <Route path="/account/orders" element={<OrdersHistory />} />
+          <Route path="/iframe/category" element={<CategoryIframe />} />
+          <Route path="/iframe/register" element={<RegisterIframe />} />
+          <Route
+            path="/iframe/store-hours/:id"
+            element={<StoreHoursIframe />}
+          />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Suspense>

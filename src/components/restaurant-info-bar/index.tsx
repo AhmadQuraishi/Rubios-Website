@@ -94,10 +94,13 @@ const StoreInfoBar = () => {
                   title="Pick Up From"
                 >
                   {orderType && orderType == 'delivery' && 'Delivered From'}
-                  {orderType && orderType != 'delivery' && 'Pick Up From'}
+                  {orderType && orderType == 'dinein' && 'Dine In At'}
+                  {orderType &&
+                    (orderType == 'pickup' || orderType == 'curbside') &&
+                    'Pick Up From'}
                 </Typography>
                 <Typography
-                  variant="h1"
+                  variant="h2"
                   color="#fff"
                   textTransform="uppercase"
                   fontWeight={700}

@@ -44,6 +44,9 @@ export const setBasketDeliveryMode = (
   body: RequestSetDeliveryMode,
 ) => {
   try {
+
+    console.log('basketid', basketid)
+    console.log('body', body)
     const url = process.env.REACT_APP_OLO_API || '';
     return axios
       .put(url + `/baskets/${basketid}/deliverymode`, body)
@@ -57,13 +60,13 @@ export const setBasketDeliveryMode = (
   }
 };
 
-export const setBasketDeliveryAddress = (
+export const setBasketDeliveryAddress = async (
   basketid: string,
   body: RequestDeliveryAddress,
 ) => {
   try {
     const url = process.env.REACT_APP_OLO_API || '';
-    return axios
+    return await axios
       .put(url + `/baskets/${basketid}/deliveryaddress`, body)
       .then((response) => response.data)
       .catch((error) => {

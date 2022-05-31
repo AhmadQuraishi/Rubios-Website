@@ -14,12 +14,34 @@ import {
   getDummyBasket,
   requestCreateBasket,
   requestCreateBasketForFav,
-  setBasketDeliveryMode
+  setBasketDeliveryAddress,
+  setBasketDeliveryMode,
 } from '../../../../services/basket';
+import {
+  setBasketDeliveryAddressSuccess,
+  setBasketDeliveryModeSuccess,
+} from '../../../actions/basket/checkout';
 
 function* asyncCreateBasketRequest(action: any): any {
   try {
-    const response = yield call(getDummyBasket, action.request);
+    let response = yield call(getDummyBasket, action.payload.request);
+    action.payload.basketId = response.id;
+    if (action.payload.deliveryAddress) {
+      const deliveryAddressResponse = yield call(
+        setBasketDeliveryAddress,
+        action.payload.basketId,
+        action.payload.deliveryAddress,
+      );
+      response = deliveryAddressResponse;
+    }
+    if (action.payload.deliverymode && !action.payload.deliveryAddress) {
+      const deliveryModeResponse = yield call(
+        setBasketDeliveryMode,
+        action.payload.basketId,
+        action.payload.deliverymode,
+      );
+      response = deliveryModeResponse;
+    }
     yield put(setBasketRequestSuccess(response));
   } catch (error) {
     yield put(setBasketRequestFailure(error));

@@ -40,11 +40,14 @@ const OrderConfirmation = () => {
   const { data: restaurant } = useSelector(
     (state: any) => state.orderReducer.restaurant,
   );
+
   const { authToken } = useSelector((state: any) => state.authReducer);
 
   useEffect(() => {
     dispatch(getOrderRequest(id));
   }, []);
+
+
 
   useEffect(() => {
     if (runOnce && order && order.vendorid) {
@@ -78,26 +81,28 @@ const OrderConfirmation = () => {
                       {authToken?.authtoken ? 'YOUR REWARDS' : 'EARN REWARDS'}
                     </Typography>
                     <Typography
-                      variant="h3"
+                      variant="body1"
                       className="white"
                       sx={{
                         fontFamily: 'Poppins-Bold !important',
                         fontSize: '36px !important',
+                        lineHeight: '1.2',
+                        letterSpacing: '-0.00833em',
                       }}
                     >
                       {authToken?.authtoken
-                        ? 'YOUR EARNED 18 POINTS!'
+                        ? 'You’re all set!'
                         : 'GET $5 OFF YOUR NEXT ORDER'}
                     </Typography>
                     <br />
                     <Typography
                       variant="h6"
                       className="white"
-                      title="Join today for completing the form below"
+                      title="Join Rubio’s Rewards today to start earning rewards."
                     >
                       {authToken?.authtoken
-                        ? 'Lorem Ipsum Lorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem Ipsum'
-                        : 'Join today for completing the form below'}
+                        ? 'You’ve received credit for today’s order and are one step closer to earning your next reward.'
+                        : 'Join Rubio’s Rewards today to start earning rewards.'}
                     </Typography>
                     <br />
                     {authToken?.authtoken ? (
@@ -105,7 +110,7 @@ const OrderConfirmation = () => {
                     ) : (
                       <img
                         className="phone-icon"
-                        alt="Join Today For Getting Rewards"
+                        alt=""
                         src={require('../../assets/imgs/phone-icon.png')}
                       />
                     )}
@@ -122,7 +127,7 @@ const OrderConfirmation = () => {
                       </Button>
                     </Grid>
                   ) : (
-                    <RegisterConfirmation />
+                    <RegisterConfirmation id={id} />
                   )}
                 </Grid>
               </Card>

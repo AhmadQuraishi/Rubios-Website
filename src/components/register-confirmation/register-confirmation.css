@@ -1,3 +1,31 @@
+.confirmation-form .react-date-inputs {
+  background: white;
+  height: 45px;
+  margin-bottom: 5px;
+  width: calc(100% - 5px);
+  position: relative;
+  z-index: 10;
+}
+
+.confirmation-form .react-date-inputs input {
+  width: 10%;
+  background: white;
+  border: none;
+  height: 35px;
+  -webkit-appearance: none;
+  background-clip: padding-box;
+  box-shadow: none !important;
+  padding: 16px 14px;
+  margin: 0px 5px 5px 0px;
+  outline: none;
+}
+.confirmation-form .react-date-inputs input:before {
+  width: 20px;
+  height: 20px;
+  color: black;
+  content: '/';
+  display: block;
+}
 @media screen and (max-width: 900px) {
   .confirmation-form {
     position: absolute;
@@ -5,10 +33,19 @@
     width: calc(100% - 55%);
   }
   .confirmation-form input {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    height: 40px;
+  }
+  .confirmation-form .react-date-inputs {
+    margin-bottom: 10px;
+  }
+  .confirmation-form .react-date-inputs input {
+    width: 12%;
   }
   .confirmation-form .register-confirmation-select {
-    margin-bottom: 20px !important;
+    margin-bottom: 10px !important;
+    font-size: 13px;
   }
   .confirmation-form fieldset {
     box-shadow: none !important;
@@ -22,3 +59,6 @@
     width: 100%;
   }
 }
+
+
+

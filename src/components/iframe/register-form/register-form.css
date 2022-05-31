@@ -1,0 +1,44 @@
+.w-register .MuiGrid-grid-xs-12 {
+  padding-top: 10px;
+}
+.sign-up-section .label {
+  display: block;
+  width: 100%;
+}
+.w-register h1 {
+  margin: 0px 0px 10px 0px;
+  font-size: 45px;
+}
+.w-register .react-date-inputs {
+  padding: 0px !important;
+}
+.w-register .form-register {
+  padding: 0px;
+}
+/*.w-register input,*/
+/*.w-register #fav-location {*/
+  /**/
+/*}*/
+.w-register .MuiInputBase-formControl {
+  height: 45px;
+  background: white !important;
+}
+.w-register .react-date-inputs input {
+  width: 10%;
+  height: 45px !important;
+  background: white;
+  border: none;
+  height: auto;
+  -webkit-appearance: none;
+  background-clip: padding-box;
+  -webkit-box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.2) !important;
+  -moz-box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.2) !important;
+  box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.2) !important;
+  padding: 0px 14px;
+  margin: 5px 10px 0px 0px;
+  outline: none;
+}
+
+.css-1wc848c-MuiFormHelperText-root.Mui-error {
+  background-color: transparent !important;
+}

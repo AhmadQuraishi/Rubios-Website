@@ -46,7 +46,7 @@ const Rewards = (props: any) => {
       basketObj.basket.appliedrewards.length > 0
     ) {
       setSelectedRewardID(basketObj.basket.appliedrewards[0].reference);
-      setAlignment(basketObj.basket.appliedrewards[0].reference);
+      setAlignment(basketObj.basket.appliedrewards[0].reference.toString());
     }
   }, []);
 
@@ -137,41 +137,43 @@ const Rewards = (props: any) => {
                   onChange={onRewardSelect}
                   aria-labelledby="rewards"
                 >
-                  <ul style={{ listStyle: 'none' }}>
-                    {rewardsArray.map((reward, index) => (
-                      <li>
-                        <ToggleButton
-                          onClick={() => {
-                            applyReward(reward.membershipid, reward.reference);
-                          }}
-                          value={reward.reference}
-                          className="choose-btn"
+                  {rewardsArray.map((reward, index) => (
+                    <ToggleButton
+                      onClick={() => {
+                        applyReward(reward.membershipid, reward.reference);
+                      }}
+                      value={reward.reference}
+                      className="choose-btn"
+                    >
+                      <Grid container spacing={2}>
+                        <Grid item xs={12} sm={5} md={5} lg={5}>
+                          {reward.imageurl == null && (
+                            <img
+                              src={require('../../assets/imgs/punchh-icon-thumb.png')}
+                              alt=""
+                            />
+                          )}
+                          {reward.imageurl && (
+                            <img src={reward.imageurl} alt="" />
+                          )}
+                        </Grid>
+                        <Grid
+                          item
+                          xs={12}
+                          sm={7}
+                          md={7}
+                          lg={7}
+                          className="icon-content"
                         >
-                          <Grid container spacing={2}>
-                            <Grid item xs={12} sm={5} md={5} lg={5}>
-                              <img src={reward.imageurl} alt="" />
-                            </Grid>
-                            <Grid
-                              item
-                              xs={12}
-                              sm={7}
-                              md={7}
-                              lg={7}
-                              className="icon-content"
-                            >
-                              <Typography>
-                                {reward.quantityavailable > 1
-                                  ? reward.quantityavailable +
-                                    ' x ' +
-                                    reward.label
-                                  : reward.label}
-                              </Typography>
-                            </Grid>
-                          </Grid>
-                        </ToggleButton>
-                      </li>
-                    ))}
-                  </ul>
+                          <Typography>
+                            {reward.quantityavailable > 1
+                              ? reward.quantityavailable + ' x ' + reward.label
+                              : reward.label}
+                          </Typography>
+                        </Grid>
+                      </Grid>
+                    </ToggleButton>
+                  ))}
                 </ToggleButtonGroup>
               </FormControl>
             </Grid>

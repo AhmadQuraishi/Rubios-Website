@@ -68,9 +68,14 @@ const ScanToRedeem = () => {
               <Typography
                 variant="body2"
                 className="body-text"
-                title=" Congratulations! Scan your reward at the register."
+                title="Scan the QR code below at the register to redeem your reward.
+
+Please note, you will need to add the appropriate free or discounted item to your order before redeeming the reward."
               >
-                Congratulations! Scan your reward at the register.
+                Scan the QR code below at the register to redeem your reward.
+                <br/>
+                <br/>
+                Please note, you will need to add the appropriate free or discounted item to your order before redeeming the reward.
               </Typography>
               <Grid item sm={2}></Grid>
               <Grid item xs={12} sm={8} className="scan-reward">
@@ -102,15 +107,15 @@ const ScanToRedeem = () => {
                 </Card>
               </Grid>
               <Grid item sm={2}></Grid>
-              <Typography
-                variant="body2"
-                className="body-text"
-                title="Please be sure to add the appropriate free or discounted item to
-              your order in order to redeem the reward."
-              >
-                Please be sure to add the appropriate free or discounted item to
-                your order in order to redeem the reward.
-              </Typography>
+              {/*<Typography*/}
+                {/*variant="body2"*/}
+                {/*className="body-text"*/}
+                {/*title="Please be sure to add the appropriate free or discounted item to*/}
+              {/*your order in order to redeem the reward."*/}
+              {/*>*/}
+                {/*Please be sure to add the appropriate free or discounted item to*/}
+                {/*your order in order to redeem the reward.*/}
+              {/*</Typography>*/}
 
               {/* <Grid item xs={12}>
                 <Button
@@ -135,6 +140,7 @@ const ScanToRedeem = () => {
                     width: '100%',
                     background: '#0075bf',
                     fontSize: '15px',
+                    marginTop: '20px',
                   }}
                   onClick={() => {
                     navigate('/account');

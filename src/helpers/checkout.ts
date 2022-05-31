@@ -54,11 +54,9 @@ export function generateSubmitBasketPayload(
       paymentPayload.billingmethod = 'billingaccount';
       paymentPayload.billingaccountid = cardDetails.billingaccountid;
     }
-  }
-
-  if (
-    billingSchemeStats.selectedCreditCard > 1 ||
-    billingSchemeStats.selectedGiftCard === 1
+  } else if (
+    billingSchemeStats.selectedCreditCard === 1 ||
+    billingSchemeStats.selectedGiftCard > 0
   ) {
     let billingaccounts: any = [];
     let tip = (basket && basket.tip) || 0;
@@ -72,7 +70,7 @@ export function generateSubmitBasketPayload(
           obj.billingmethod = 'billingaccount';
         }
 
-        if (account.billingmethod === 'creditcardtoken' && tip > 0) {
+        if (tip > 0) {
           if (obj.amount >= tip) {
             obj.tipportion = tip;
             tip = 0;
@@ -101,7 +99,9 @@ export function generateSubmitBasketPayload(
 
   if (
     deliverymode === DeliveryModeEnum.curbside ||
-    deliverymode === DeliveryModeEnum.pickup
+    deliverymode === DeliveryModeEnum.pickup ||
+    deliverymode === DeliveryModeEnum.dinein ||
+    deliverymode === DeliveryModeEnum.delivery
   ) {
     payload = {
       ...payload,
@@ -139,17 +139,22 @@ export function formatCustomFields(customFields: any, formData: any) {
   customFields.forEach((field: any) => {
     let obj = {};
 
-    if (field.label === 'Model') {
+    if (field.label === 'Table Number' && formData.tableNumber !== '') {
+      obj = {
+        id: field.id,
+        value: formData.tableNumber,
+      };
+    } else if (field.label === 'Model' && formData.vehicleModal !== '') {
       obj = {
         id: field.id,
         value: formData.vehicleModal,
       };
-    } else if (field.label === 'Make') {
+    } else if (field.label === 'Make' && formData.vehicleMake !== '') {
       obj = {
         id: field.id,
         value: formData.vehicleMake,
       };
-    } else if (field.label === 'Color') {
+    } else if (field.label === 'Color' && formData.vehicleColor !== '') {
       obj = {
         id: field.id,
         value: formData.vehicleColor,
@@ -332,7 +337,11 @@ export function getBillingSchemesStats(billingSchemes: any) {
 export function getCreditCardObj(cardDetails: any, billingSchemes: any) {
   const billingSchemeStats = getBillingSchemesStats(billingSchemes);
 
-  let selected = billingSchemeStats.selectedCreditCard < 2;
+  // const totalCardsSelected =
+  //   billingSchemeStats.selectedGiftCard + billingSchemeStats.selectedCreditCard;
+
+  let selected = billingSchemeStats.selectedCreditCard < 1;
+
   let cardObj: any = [
     {
       localId: getUniqueId(),
@@ -361,7 +370,10 @@ export function getGiftCardObj(
 ) {
   const billingSchemeStats = getBillingSchemesStats(billingSchemes);
 
-  let selected = billingSchemeStats.selectedGiftCard === 0;
+  // const totalCardsSelected =
+  //   billingSchemeStats.selectedGiftCard + billingSchemeStats.selectedCreditCard;
+
+  let selected = billingSchemeStats.selectedGiftCard < 4;
 
   let cardObj: any = [
     {
@@ -394,107 +406,245 @@ export function getGiftCardObj(
 export function updatePaymentCardsAmount(billingSchemes: any, basket: any) {
   const billingSchemeStats = getBillingSchemesStats(billingSchemes);
 
-  if (
-    billingSchemeStats.selectedCreditCard === 0 &&
-    billingSchemeStats.selectedGiftCard === 0
-  ) {
-    return billingSchemes;
-  } else if (
-    billingSchemeStats.selectedCreditCard === 1 &&
-    billingSchemeStats.selectedGiftCard === 0
-  ) {
-    let creditCardAmount: any = basket.total;
+  // if (
+  //   billingSchemeStats.selectedCreditCard === 0 &&
+  //   billingSchemeStats.selectedGiftCard === 0
+  // ) {
+  //   billingSchemes = billingSchemes.map((account: any) => {
+  //     account.amount = 0;
+  //     return account;
+  //   });
+  //   return billingSchemes;
+  // }
+  // else if (
+  //   (billingSchemeStats.selectedCreditCard === 1 ||
+  //     billingSchemeStats.selectedCreditCard === 2 ||
+  //     billingSchemeStats.selectedCreditCard === 3) &&
+  //   billingSchemeStats.selectedGiftCard === 0
+  // ) {
+  //   let creditCardAmount: any = (
+  //     basket.total / billingSchemeStats.selectedCreditCard
+  //   ).toFixed(2);
+  //
+  //   billingSchemes = billingSchemes.map((account: any) => {
+  //     if (account.selected) {
+  //       if (account.billingmethod === 'creditcardtoken') {
+  //         account.amount = parseFloat(creditCardAmount);
+  //       }
+  //     } else {
+  //       account.amount = 0;
+  //     }
+  //     return account;
+  //   });
+  //   return billingSchemes;
+  // }
+  // if (
+  //   (billingSchemeStats.selectedCreditCard === 0 ||
+  //     billingSchemeStats.selectedCreditCard === 1 ||
+  //     billingSchemeStats.selectedCreditCard === 2 ||
+  //     billingSchemeStats.selectedCreditCard === 2) &&
+  //   (billingSchemeStats.selectedGiftCard === 0 ||
+  //     billingSchemeStats.selectedGiftCard === 1 ||
+  //     billingSchemeStats.selectedGiftCard === 2)
+  // ) {
+  let total = basket && basket.total ? basket.total : 0;
 
-    billingSchemes = billingSchemes.map((account: any) => {
-      if (account.selected) {
-        if (account.billingmethod === 'creditcardtoken') {
-          account.amount = parseFloat(creditCardAmount);
-        }
-      } else {
-        account.amount = 0;
+  billingSchemes.sort((a: any, b: any) =>
+    b.billingmethod > a.billingmethod
+      ? 1
+      : a.billingmethod > b.billingmethod
+      ? -1
+      : 0,
+  );
+
+  billingSchemes.sort((a: any, b: any) =>
+    a.balance > b.balance ? 1 : b.balance > a.balance ? -1 : 0,
+  );
+
+  billingSchemes = billingSchemes.map((account: any) => {
+    if (account.selected) {
+      if (account.billingmethod === 'storedvalue') {
+        let giftCardAmount: any =
+          account.balance >= total ? total : account.balance;
+        total = (total - giftCardAmount).toFixed(2);
+        account.amount = parseFloat(giftCardAmount);
+      } else if (account.billingmethod === 'creditcardtoken') {
+        account.amount = parseFloat(total);
       }
-      return account;
-    });
-    return billingSchemes;
-  } else if (
-    billingSchemeStats.selectedCreditCard === 2 &&
-    billingSchemeStats.selectedGiftCard === 0
-  ) {
-    let halfAmount: any = basket.total;
-    halfAmount = (halfAmount / 2).toFixed(2);
+    } else {
+      account.amount = 0;
+    }
+    return account;
+  });
+  // if (billingSchemeStats.selectedCreditCard > 0) {
+  //   console.log('working 1');
+  //   const remaining: any = remainingAmount(basket, billingSchemes);
+  //   console.log('working 2', remaining);
+  //   if (remaining === -0.01) {
+  //     let runOnce = true;
+  //     billingSchemes = billingSchemes.map((account: any) => {
+  //       if (!runOnce) {
+  //         console.log('working 3');
+  //         return account;
+  //       }
+  //       if (account.selected) {
+  //         if (account.billingmethod === 'creditcardtoken') {
+  //           account.amount = account.amount + remaining;
+  //           console.log('working 4');
+  //           runOnce = false;
+  //         }
+  //       }
+  //       return account;
+  //     });
+  //   }
+  // }
+  return billingSchemes;
+  // }
 
-    billingSchemes = billingSchemes.map((account: any) => {
+  // else if (
+  //   billingSchemeStats.selectedCreditCard === 0 &&
+  //   billingSchemeStats.selectedGiftCard === 2
+  // ) {
+  //   let total = basket.total;
+  //
+  //   billingSchemes = billingSchemes.map((account: any) => {
+  //     if (account.selected) {
+  //       if (account.billingmethod === 'storedvalue') {
+  //         let giftCardAmount =
+  //           basket && account.balance >= total ? total : account.balance;
+  //         total = (total - giftCardAmount).toFixed(2);
+  //         console.log('total', total);
+  //         account.amount = parseFloat(giftCardAmount);
+  //       }
+  //     } else {
+  //       account.amount = 0;
+  //     }
+  //     return account;
+  //   });
+  //
+  //   return billingSchemes;
+  // } else if (
+  //   billingSchemeStats.selectedCreditCard === 1 &&
+  //   billingSchemeStats.selectedGiftCard === 0
+  // ) {
+  //   let creditCardAmount: any = basket.total;
+  //
+  //   billingSchemes = billingSchemes.map((account: any) => {
+  //     if (account.selected) {
+  //       if (account.billingmethod === 'creditcardtoken') {
+  //         account.amount = parseFloat(creditCardAmount);
+  //       }
+  //     } else {
+  //       account.amount = 0;
+  //     }
+  //     return account;
+  //   });
+  //   return billingSchemes;
+  // } else if (
+  //   billingSchemeStats.selectedCreditCard === 2 &&
+  //   billingSchemeStats.selectedGiftCard === 0
+  // ) {
+  //   let halfAmount: any = basket.total;
+  //   halfAmount = (halfAmount / 2).toFixed(2);
+  //
+  //   billingSchemes = billingSchemes.map((account: any) => {
+  //     if (account.selected) {
+  //       if (account.billingmethod === 'creditcardtoken') {
+  //         account.amount = parseFloat(halfAmount);
+  //       }
+  //     } else {
+  //       account.amount = 0;
+  //     }
+  //
+  //     return account;
+  //   });
+  //   return billingSchemes;
+  // } else if (
+  //   billingSchemeStats.selectedCreditCard === 2 &&
+  //   billingSchemeStats.selectedGiftCard === 1
+  // ) {
+  //   const giftCardIndex = billingSchemes.findIndex(
+  //     (account: any) => account.billingmethod === 'storedvalue',
+  //   );
+  //
+  //   let giftCardAmount: any =
+  //     basket && billingSchemes[giftCardIndex].balance > basket.subtotal
+  //       ? basket.subtotal
+  //       : billingSchemes[giftCardIndex].balance;
+  //   let halfAmount: any = 0;
+  //   halfAmount = basket ? basket.total - giftCardAmount : 0;
+  //   console.log('halfAmount', halfAmount);
+  //   halfAmount = halfAmount > 0 ? (halfAmount / 2).toFixed(2) : 0;
+  //
+  //   billingSchemes = billingSchemes.map((account: any) => {
+  //     if (account.selected) {
+  //       if (account.billingmethod === 'creditcardtoken') {
+  //         account.amount = parseFloat(halfAmount);
+  //       } else if (account.billingmethod === 'storedvalue') {
+  //         account.amount = parseFloat(giftCardAmount);
+  //       }
+  //     } else {
+  //       account.amount = 0;
+  //     }
+  //     return account;
+  //   });
+  //   return billingSchemes;
+  // } else if (
+  //   billingSchemeStats.selectedCreditCard === 1 &&
+  //   billingSchemeStats.selectedGiftCard === 1
+  // ) {
+  //   const giftCardIndex = billingSchemes.findIndex(
+  //     (account: any) => account.billingmethod === 'storedvalue',
+  //   );
+  //
+  //   console.log('giftCardIndex', giftCardIndex);
+  //   let giftCardAmount =
+  //     basket && billingSchemes[giftCardIndex].balance >= basket.total
+  //       ? basket.total
+  //       : billingSchemes[giftCardIndex].balance;
+  //
+  //   let creditCardAmount: any = basket
+  //     ? (basket.total - giftCardAmount).toFixed(2)
+  //     : 0;
+  //
+  //   billingSchemes = billingSchemes.map((account: any) => {
+  //     if (account.selected) {
+  //       if (account.billingmethod === 'creditcardtoken') {
+  //         account.amount =
+  //           creditCardAmount > 0 ? parseFloat(creditCardAmount) : 0;
+  //       } else if (account.billingmethod === 'storedvalue') {
+  //         account.amount = parseFloat(giftCardAmount);
+  //       }
+  //     } else {
+  //       account.amount = 0;
+  //     }
+  //     return account;
+  //   });
+  //   return billingSchemes;
+  // }
+  // return [];
+}
+
+export function remainingAmount(basket: any, billingSchemes: any) {
+  if (basket && billingSchemes) {
+    let amountSelected = billingSchemes.reduce((sum: any, account: any) => {
       if (account.selected) {
-        if (account.billingmethod === 'creditcardtoken') {
-          account.amount = parseFloat(halfAmount);
-        }
-      } else {
-        account.amount = 0;
+        sum = sum + account.amount;
       }
+      return sum;
+    }, 0);
 
-      return account;
-    });
-    return billingSchemes;
-  } else if (
-    billingSchemeStats.selectedCreditCard === 2 &&
-    billingSchemeStats.selectedGiftCard === 1
-  ) {
-    const giftCardIndex = billingSchemes.findIndex(
-      (account: any) => account.billingmethod === 'storedvalue',
-    );
+    amountSelected = amountSelected.toFixed(2);
+    amountSelected = parseFloat(amountSelected);
 
-    let giftCardAmount: any =
-      basket && billingSchemes[giftCardIndex].balance > basket.subtotal
-        ? basket.subtotal
-        : billingSchemes[giftCardIndex].balance;
-    let halfAmount: any = 0;
-    halfAmount = basket ? basket.total - giftCardAmount : 0;
-    console.log('halfAmount', halfAmount);
-    halfAmount = halfAmount > 0 ? (halfAmount / 2).toFixed(2) : 0;
+    let remainingAmount = (basket?.total - amountSelected).toFixed(2);
 
-    billingSchemes = billingSchemes.map((account: any) => {
-      if (account.selected) {
-        if (account.billingmethod === 'creditcardtoken') {
-          account.amount = parseFloat(halfAmount);
-        } else if (account.billingmethod === 'storedvalue') {
-          account.amount = parseFloat(giftCardAmount);
-        }
-      } else {
-        account.amount = 0;
-      }
-      return account;
-    });
-    return billingSchemes;
-  } else if (
-    billingSchemeStats.selectedCreditCard === 1 &&
-    billingSchemeStats.selectedGiftCard === 1
-  ) {
-    const giftCardIndex = billingSchemes.findIndex(
-      (account: any) => account.billingmethod === 'storedvalue',
-    );
-
-    console.log('giftCardIndex', giftCardIndex)
-    let giftCardAmount: any =
-      basket && billingSchemes[giftCardIndex].balance > basket.subtotal
-        ? basket.subtotal
-        : billingSchemes[giftCardIndex].balance;
-    let creditCardAmount: any = basket
-      ? (basket.total - giftCardAmount).toFixed(2)
-      : 0;
-
-    billingSchemes = billingSchemes.map((account: any) => {
-      if (account.selected) {
-        if (account.billingmethod === 'creditcardtoken') {
-          account.amount = creditCardAmount > 0 ? parseFloat(creditCardAmount) : 0;
-        } else if (account.billingmethod === 'storedvalue') {
-          account.amount = parseFloat(giftCardAmount);
-        }
-      } else {
-        account.amount = 0;
-      }
-      return account;
-    });
-    return billingSchemes;
+    if (remainingAmount !== 'NAN') {
+      return remainingAmount;
+    } else {
+      return 0;
+    }
+  } else {
+    return 0;
   }
-  return [];
 }

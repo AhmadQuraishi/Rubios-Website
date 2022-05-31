@@ -3,8 +3,8 @@
 }
 .order-confirmation .MuiPaper-root {
   padding: 95px;
-  min-height: 435px;
-  max-height: 435px;
+  min-height: 480px;
+  max-height: 480px;
 }
 .order-confirmation .MuiTextField-root {
   width: 100%;
@@ -12,6 +12,9 @@
 .white {
   color: white;
   padding-right: 60px;
+}
+h6.white {
+  padding-right: 15px;
 }
 .order-confirmation button {
   width: 40%;

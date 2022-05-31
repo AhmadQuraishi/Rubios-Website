@@ -42,12 +42,15 @@
 }
 .login-content .right-col .acc-btn {
   width: 100%;
-  margin: 14px 0px 37px 0px;
+  margin: 14px 0px 15px 0px;
+}
+.login-content .right-col .button-list li {
+  display: block;
 }
 .login-content .label.bold {
   font-family: 'Poppins-Bold', sans-serif !important;
   font-size: 15px !important;
-  margin-top: 30px;
+  margin-top: 0px;
   text-align: center;
   display: block;
 }

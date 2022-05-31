@@ -16,6 +16,7 @@ import { updateBasketBillingSchemes } from '../../../redux/actions/basket/checko
 import {
   getBillingSchemesStats,
   updatePaymentCardsAmount,
+  remainingAmount,
 } from '../../../helpers/checkout';
 import DialogBox from '../../dialog-box';
 
@@ -45,30 +46,43 @@ const SplitPayment = forwardRef((props, _ref) => {
     billingmethod: string,
   ) => {
     const billingSchemeStats = getBillingSchemesStats(billingSchemes);
-    if (
-      billingSchemeStats.selectedGiftCard === 1 &&
-      e.target.checked &&
-      billingmethod === 'storedvalue'
-    ) {
-      displayToast('ERROR', 'Only 1 Gift Card can be used to make a payment');
+    const totalCardsSelected =
+      billingSchemeStats.selectedGiftCard +
+      billingSchemeStats.selectedCreditCard;
+    if (totalCardsSelected === 5 && e.target.checked) {
+      displayToast(
+        'ERROR',
+        'Maximum 5 payment methods can be used to make a payment',
+      );
       return;
     }
     if (
-      billingSchemeStats.selectedCreditCard === 2 &&
+      billingSchemeStats.selectedGiftCard === 4 &&
       e.target.checked &&
-      billingmethod === 'creditcardtoken'
+      billingmethod === 'storedvalue'
     ) {
-      displayToast('ERROR', 'Only 2 Credit Card can be used to make a payment');
+      displayToast('ERROR', 'Only 4 Gift Card can be used to make a payment');
       return;
     }
     if (
       billingSchemeStats.selectedCreditCard === 1 &&
-      !e.target.checked &&
+      e.target.checked &&
       billingmethod === 'creditcardtoken'
+    ) {
+      displayToast('ERROR', 'Only 1 Credit Card can be used to make a payment');
+      return;
+    }
+    if (
+      (billingSchemeStats.selectedCreditCard === 1 &&
+        billingSchemeStats.selectedGiftCard === 0 &&
+        !e.target.checked) ||
+      (billingSchemeStats.selectedGiftCard === 1 &&
+        billingSchemeStats.selectedCreditCard === 0 &&
+        !e.target.checked)
     ) {
       displayToast(
         'ERROR',
-        'Minimum 1 Credit Card is required to make a payment',
+        'Minimum 1 payment method is required to make a payment',
       );
       return;
     }
@@ -89,21 +103,20 @@ const SplitPayment = forwardRef((props, _ref) => {
 
   const removeSingleBasketBillingSchemes = () => {
     if (removeData) {
-      if (removeData.billingmethod === 'creditcardtoken') {
-        const checkLastCreditCard = billingSchemes.filter(
-          (element: any) =>
-            element.selected && element.billingmethod === 'creditcardtoken',
-        );
+      const selected = billingSchemes.filter(
+        (element: any) => element.selected,
+      );
 
-        if (checkLastCreditCard && checkLastCreditCard.length === 1) {
-          if (checkLastCreditCard[0].localId === removeData.localId) {
-            displayToast(
-              'ERROR',
-              'Minimum 1 Credit Card is required to make a payment',
-            );
-            handleClosePopup();
-            return;
-          }
+      console.log('selected', selected);
+
+      if (selected && selected.length === 1) {
+        if (selected[0].localId === removeData.localId) {
+          displayToast(
+            'ERROR',
+            'Minimum 1 payment method is required to make a payment',
+          );
+          handleClosePopup();
+          return;
         }
       }
       let updatedBillingSchemes = billingSchemes.filter(
@@ -165,35 +178,18 @@ const SplitPayment = forwardRef((props, _ref) => {
     );
   };
 
-  const remainingAmount = () => {
-    if (basket && billingSchemes) {
-      let amountSelected = billingSchemes.reduce((sum: any, account: any) => {
-        if (account.selected) {
-          sum = sum + account.amount;
-        }
-        return sum;
-      }, 0);
-
-      amountSelected = amountSelected.toFixed(2);
-      amountSelected = parseFloat(amountSelected);
-
-      console.log('amountSelected', amountSelected);
-
-      let remainingAmount = (basket?.total - amountSelected).toFixed(2);
-
-      if (remainingAmount !== 'NAN') {
-        return remainingAmount;
-      } else {
-        return 0;
-      }
-    } else {
-      return 0;
-    }
-  };
-
   const handleClosePopup = () => {
     setOpenPopup(!openPopup);
     setRemoveData(null);
+  };
+
+  const showAddAnotherPaymentMessage = () => {
+    const billingSchemeStats = getBillingSchemesStats(billingSchemes);
+    return (
+      billingSchemeStats.selectedGiftCard === 4 &&
+      billingSchemeStats.creditCard === 0 &&
+      remainingAmount(basket, billingSchemes) > 0
+    );
   };
 
   return (
@@ -217,7 +213,7 @@ const SplitPayment = forwardRef((props, _ref) => {
                 lg={12}
                 className="card-details"
               >
-                <Grid item xs={1} sm={1} md={1} lg={1}>
+                <Grid item xs={1} sm={1} md={1} lg={1} sx={{marginRight: '5px'}}>
                   <FormGroup>
                     <FormControlLabel
                       control={
@@ -243,7 +239,7 @@ const SplitPayment = forwardRef((props, _ref) => {
                     item
                     style={{ display: 'flex' }}
                     alignItems="center"
-                    xs={1}
+                    xs={12}
                     sm={1}
                     md={1}
                     lg={1}
@@ -262,11 +258,11 @@ const SplitPayment = forwardRef((props, _ref) => {
                         account.billingmethod === 'storedvalue'
                           ? 'flex-start'
                           : 'center',
-                      paddingLeft: 20,
+                      paddingLeft: 0,
                     }}
                     alignItems="center"
                     justifyContent="flex-start"
-                    xs={6}
+                    xs={5}
                     sm={6}
                     md={6}
                     lg={6}
@@ -305,15 +301,15 @@ const SplitPayment = forwardRef((props, _ref) => {
                       display: 'flex',
                       justifyContent: 'flex-end',
                       padding: {
-                        xs: '0px 20px 0px 0px',
-                        sm: '0px 20px 0px 0px',
+                        xs: '0px 15px 0px 0px',
+                        sm: '0px 15px 0px 0px',
                         md: '0px',
                         lg: '0px',
                       },
                     }}
                     alignItems="center"
                     item
-                    xs={2}
+                    xs={3}
                     sm={2}
                     md={2}
                     lg={2}
@@ -329,19 +325,16 @@ const SplitPayment = forwardRef((props, _ref) => {
                     style={{ display: 'flex' }}
                     alignItems="center"
                     item
-                    xs={3}
+                    xs={4}
                     sm={3}
                     md={3}
                     lg={3}
                   >
-                    {console.log('new Value 4', account.amount )}
                     <TextField
                       type="number"
                       onChange={(e) => handleAmountChanges(e, account.localId)}
-                      disabled={
-                        !account.selected || billingSchemes.length === 1
-                      }
-                      value={account.amount.toString() || 0}
+                      disabled={true}
+                      value={account.amount.toFixed(2) || 0}
                       inputProps={{ shrink: false }}
                       InputProps={{
                         startAdornment: (
@@ -388,10 +381,23 @@ const SplitPayment = forwardRef((props, _ref) => {
       <Grid container spacing={2}>
         <Grid item xs={12} sm={12} md={12} lg={12}>
           <Typography align={'center'} variant="h6">
-            Remaining Amount: $ {remainingAmount()}
+            Remaining Amount: $ {remainingAmount(basket, billingSchemes)}
           </Typography>
         </Grid>
       </Grid>
+      {showAddAnotherPaymentMessage() && (
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={12} md={12} lg={12}>
+            <Typography
+              style={{ paddingTop: 10, color: 'red' }}
+              align={'center'}
+              variant="h6"
+            >
+              Please add another payment method to complete your purchase.
+            </Typography>
+          </Grid>
+        </Grid>
+      )}
     </>
   );
 });

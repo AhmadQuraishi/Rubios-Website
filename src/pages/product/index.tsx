@@ -22,6 +22,7 @@ import {
   ResponseBasket,
   ResponseModifiers,
 } from '../../types/olo-api';
+import { DeliveryModeEnum } from '../../types/olo-api/olo-api.enums';
 import { getProductOptionRequest } from '../../redux/actions/product/option';
 import ProductSkeletonUI from '../../components/product-skeleton-ui';
 import { setBasketRequest } from '../../redux/actions/basket/create';
@@ -31,6 +32,7 @@ import { updateProductRequest } from '../../redux/actions/basket/product/update'
 import { displayToast } from '../../helpers/toast';
 import ItemImage from '../../components/item-image';
 import { getUpsellsRequest } from '../../redux/actions/basket/upsell/Get';
+import axios from 'axios';
 const inputProps = {
   'aria-label': 'quantity',
 };
@@ -40,6 +42,7 @@ const Product = () => {
   const [productOptions, setProductOptions] = useState<ResponseModifiers>();
   const [basket, setBasket] = useState<ResponseBasket>();
   const [actionStatus, setActionStatus] = useState<boolean>(false);
+  const [totalCost, setTotalCost] = useState<number>();
   const { id, edit } = useParams();
   const { categories, loading } = useSelector(
     (state: any) => state.categoryReducer,
@@ -55,6 +58,10 @@ const Product = () => {
   const { options } = useSelector((state: any) => state.productOptionsReducer);
   const { restaurant, orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
+  );
+
+  const objDeliveryAddress = useSelector(
+    (state: any) => state.deliveryAddressReducer,
   );
 
   const [basketType, setBasketType] = useState();
@@ -107,6 +114,7 @@ const Product = () => {
       setUpdatedOptions(true);
       setOptionsSelectionArray([]);
       dispatch(getProductOptionRequest(productDetails.id));
+      setTotalCost(productDetails.cost * count);
       setCountWithEdit();
     }
   }, [productDetails]);
@@ -118,6 +126,7 @@ const Product = () => {
       );
       if (product) {
         setCount(product.quantity);
+        getTotalCost(productDetails.cost + ptotalCost || 0 * product.quantity);
       } else {
         navigate('/product/' + productDetails?.id);
       }
@@ -136,18 +145,86 @@ const Product = () => {
       setUpdatedOptions(false);
       setProductOptions(options);
       prepareProductOptionsArray(options.optiongroups, null, []);
+      getOptionsImages(options.optiongroups);
+      getTotalCost();
     }
   }, [options]);
 
+  const [optionImages, setOptionImages] = useState([]);
+
+  const getOptionsImages = (options: []) => {
+    const ids: any[] = [];
+    JSON.stringify(options, (key, value) => {
+      if (key === 'chainoptionid' && !ids.find((x) => x === value))
+        ids.push(value);
+      return value;
+    });
+    if (ids.length > 0) {
+      try {
+        const url = process.env.REACT_APP_INGREDIENT_URL?.replace(
+          '*yourplu*',
+          ids.toString(),
+        );
+        const promise = axios.get(url || '');
+        promise.then((response) => {
+          if (response.data.length > 0) {
+            setOptionImages(response.data);
+          } else {
+            setOptionImages([]);
+          }
+        });
+      } catch (error) {
+        throw error;
+      }
+    }
+  };
+
+  const formatDeliveryAddress = () => {
+    const obj = {
+      building:
+        objDeliveryAddress && objDeliveryAddress.address
+          ? objDeliveryAddress.address.address2
+          : '',
+      streetaddress:
+        objDeliveryAddress && objDeliveryAddress.address
+          ? objDeliveryAddress.address.address1
+          : '',
+      city:
+        objDeliveryAddress && objDeliveryAddress.address
+          ? objDeliveryAddress.address.city
+          : '',
+      zipcode:
+        objDeliveryAddress && objDeliveryAddress.address
+          ? objDeliveryAddress.address.zip
+          : '',
+    };
+    return obj;
+  };
+
   const addProductToBag = () => {
     if (basketObj.basket == null) {
+      let payload: any = {};
       const request: any = {};
-      // let deliverymode = orderType || '';
+      let deliverymode: any = {
+        deliverymode: orderType || '',
+      };
+      let deliveryAddress = null;
+      payload.deliverymode = deliverymode;
+      if (
+        objDeliveryAddress &&
+        objDeliveryAddress.address &&
+        orderType === DeliveryModeEnum.delivery
+      ) {
+        deliveryAddress = formatDeliveryAddress();
+        payload.deliveryAddress = deliveryAddress;
+      }
+
       request.vendorid = restaurant.id;
       if (authToken?.authtoken && authToken.authtoken !== '') {
         request.authtoken = authToken.authtoken;
       }
-      dispatch(setBasketRequest(request));
+      payload.request = request;
+      dispatch(setBasketRequest(payload));
     } else {
       const request: any = {};
       request.productid = productDetails?.id;
@@ -187,15 +264,15 @@ const Product = () => {
       request.productid = productDetails?.id;
       request.quantity = count;
       let options = '';
-      Array.from(
-        document.getElementsByClassName('reward-item-selected'),
-      ).forEach((el) => {
-        if (el.getAttribute('option-id')) {
-          options = options + el.getAttribute('option-id') + ',';
-          const sel = el.querySelector('select')?.value;
-          if (sel) {
-            options = options + sel + ',';
-          }
+      optionsSelectionArray.map((option: any) => {
+        if (option.selected) {
+          option.selectedOptions.map((item: any) => {
+            options = options + item + ',';
+            const elem = option.options.find((x: any) => x.optionID == item);
+            if (elem && elem.selectedValue) {
+              options = options + elem.selectedValue + ',';
+            }
+          });
         }
       });
       request.options = options;
@@ -239,15 +316,26 @@ const Product = () => {
     }
   }, [productUpdateObj]);
 
-  const changeImageSize = (path: string) => {
-    return path.replaceAll('w=210', 'w=520').replaceAll('h=140', 'w=520');
+  const changeImageSize = (path: string, images: any) => {
+    if (images && images.length > 0) {
+      const dektopImage: any = images.find(
+        (obj: any) => obj.groupname == 'desktop-menu',
+      );
+      if (dektopImage) {
+        return dektopImage.filename.replace('h=138', 'h=500');
+      } else {
+        return path;
+      }
+    } else {
+      return path;
+    }
   };
 
   const [optionsSelectionArray, setOptionsSelectionArray] = useState<any>([]);
 
-  useEffect(() => {
-    console.log(optionsSelectionArray);
-  }, [optionsSelectionArray]);
+  useEffect(() => {}, [optionsSelectionArray]);
+
+  let ptotalCost = 0;
 
   const prepareProductOptionsArray = (
     options: any,
@@ -287,6 +375,10 @@ const Product = () => {
           });
         }
         if (isExistInEdit(option.id)) {
+          ptotalCost = ptotalCost + option.cost;
+          getTotalCost(
+            productDetails?.cost || 0 + ptotalCost || 0 * count || 0,
+          );
           editOptions.push(option.id);
         }
       });
@@ -309,6 +401,7 @@ const Product = () => {
           defaultOption: defaultOptionID,
           options: optionsArray,
           parentOptionID: parentID || itemMain.id,
+          cost: itemMain.cost || 0,
           selected:
             (isParentSelected && parentDefaultOptionID.includes(parentID)) ||
             parentID == null
@@ -355,15 +448,26 @@ const Product = () => {
         (item: any) => item.id == edit,
       );
       product.choices.map((item: any, index: number) => {
-        if (options.find((x: any) => item.optionid == x.id)) {
+        const op = options.find((x: any) => item.optionid == x.id);
+        if (op) {
           isExist = item.optionid;
+          ptotalCost = ptotalCost + op.cost;
+          setOptionsCost(ptotalCost);
         }
       });
     }
+    if (isExist == null) isExist = options[0].id;
     return isExist;
   };
+
   const [selectionExecute, setSelectionExecute] = useState(false);
-  const showChildOptions = (optionId: number, parnetOptionID: number) => {
+
+  const showChildOptions = (
+    optionId: number,
+    parnetOptionID: number,
+    optionsDDL: any = null,
+    optionsDDLSelectedID: any = null,
+  ) => {
     setSelectionExecute(false);
     setTimeout(() => {
       setSelectionExecute(false);
@@ -372,6 +476,13 @@ const Product = () => {
       if (item.id === parnetOptionID) {
         if (item.mandatory) {
           if (item.selectedOptions.includes(optionId)) {
+            const option = item.options.find(
+              (option: any) => option.optionID == item.selectedOptions[0],
+            );
+            if (option) {
+              setOptionsCost(optionsCost - option.option.cost);
+              setTotalCost((totalCost || 0) - option.option.cost * count);
+            }
             item.selectedOptions = [];
             let elems = optionsSelectionArray.filter(
               (x: any) => x.parentOptionID == optionId,
@@ -422,8 +533,25 @@ const Product = () => {
                 }
               });
             }
+            const option1 = item.options.find(
+              (option: any) => option.optionID == item.selectedOptions[0],
+            );
             item.selectedOptions = [optionId];
             item.selected = true;
+            const option = item.options.find(
+              (option: any) => option.optionID == optionId,
+            );
+            if (option) {
+              setOptionsCost(
+                optionsCost -
+                  (option1 ? option1.option.cost : 0) +
+                  option.option.cost,
+              );
+              const prc = option.option.cost * count;
+              setTotalCost(
+                (totalCost || 0) - (option1 ? option1.option.cost : 0) + prc,
+              );
+            }
             elems = optionsSelectionArray.filter(
               (x: any) => x.parentOptionID == optionId,
             );
@@ -453,7 +581,26 @@ const Product = () => {
           if (item.selectedOptions.includes(optionId)) {
             const index = item.selectedOptions.indexOf(optionId);
             if (index > -1) {
+              let optionDDLE = null;
+              if (optionsDDL && optionsDDLSelectedID) {
+                optionDDLE = optionsDDL.find(
+                  (option: any) => option.id == optionsDDLSelectedID,
+                );
+              }
               item.selectedOptions.splice(index, 1);
+              const option = item.options.find(
+                (option: any) => option.optionID == optionId,
+              );
+              if (option) {
+                setOptionsCost(
+                  optionsCost -
+                    ((optionDDLE ? optionDDLE.cost : 0) + option.option.cost),
+                );
+                const prc =
+                  ((optionDDLE ? optionDDLE.cost : 0) + option.option.cost) *
+                  count;
+                setTotalCost((totalCost || 0) - prc);
+              }
               item.selected = !(item.selectedOptions.length == 0);
               let elems = optionsSelectionArray.filter(
                 (x: any) => x.parentOptionID == optionId,
@@ -483,6 +630,26 @@ const Product = () => {
           } else {
             item.selectedOptions.push(optionId);
             item.selected = true;
+            const option = item.options.find(
+              (option: any) => option.optionID == optionId,
+            );
+            let optionDDLE = null;
+            if (optionsDDL && optionsDDLSelectedID) {
+              optionDDLE = optionsDDL.find(
+                (option: any) => option.id == optionsDDLSelectedID,
+              );
+            }
+            if (option) {
+              const cc =
+                optionsCost +
+                (optionDDLE ? optionDDLE.cost : 0) +
+                option.option.cost;
+              setOptionsCost(cc);
+              const opc =
+                ((optionDDLE ? optionDDLE.cost : 0) + option.option.cost) *
+                count;
+              setTotalCost((totalCost || 0) + opc);
+            }
             let elems = optionsSelectionArray.filter(
               (x: any) => x.parentOptionID == optionId,
             );
@@ -587,7 +754,25 @@ const Product = () => {
     return isValidate;
   };
 
-  const dropDownValue = (optionID: number, value: any) => {
+  const dropDownValue = (
+    optionID: number,
+    value: any,
+    options: any,
+    target: HTMLSelectElement,
+  ) => {
+    const id = target.getAttribute('data-select-id');
+    const option = options.find((x: any) => x.id == id);
+    if (option) {
+      const prc = option.cost * count;
+      setOptionsCost(optionsCost - option.cost);
+      setTotalCost((totalCost || 0) - prc);
+    }
+    const optionAdd = options.find((x: any) => x.id == value);
+    if (optionAdd) {
+      const prc = optionAdd.cost * count;
+      setOptionsCost(optionsCost + optionAdd.cost);
+      setTotalCost((totalCost || 0) + prc);
+    }
     optionsSelectionArray.map((itemP: any) => {
       itemP.options.map((itemC: any) => {
         if (itemC.optionID == optionID) {
@@ -598,6 +783,17 @@ const Product = () => {
     setOptionsSelectionArray((optionsSelectionArray: any) => [
       ...optionsSelectionArray,
     ]);
+  };
+
+  const [optionsCost, setOptionsCost] = useState(0);
+
+  const getTotalCost = (cost: any = null) => {
+    if (cost) {
+      setTotalCost(cost);
+    } else {
+      setOptionsCost(ptotalCost);
+      setTotalCost(((productDetails?.cost || 0) + ptotalCost) * count);
+    }
   };
 
   return (
@@ -614,13 +810,13 @@ const Product = () => {
           <Grid item xs={12}>
             <Grid container>
               <Grid item xs={12} sm={6} className="ph-fix">
-                <Typography
-                  variant="caption"
-                  title="PICK UP YOUR"
-                  className="label"
-                >
-                  PICK UP YOUR
-                </Typography>
+                {/*<Typography*/}
+                {/*variant="caption"*/}
+                {/*title="PICK UP YOUR"*/}
+                {/*className="label"*/}
+                {/*>*/}
+                {/*PICK UP YOUR*/}
+                {/*</Typography>*/}
                 <Typography
                   variant="h2"
                   className="heading"
@@ -669,7 +865,7 @@ const Product = () => {
                   {productDetails.cost > 0 && (
                     <Grid item xs={6}>
                       <Typography
-                        variant="h6"
+                        variant="body1"
                         className="price"
                         title={`$${productDetails.cost.toFixed(2)}`}
                       >
@@ -695,14 +891,19 @@ const Product = () => {
                     }}
                     src={
                       ((categories && categories.imagepath) || '') +
-                      changeImageSize(productDetails.imagefilename)
+                      changeImageSize(
+                        productDetails.imagefilename,
+                        productDetails.images,
+                      )
                     }
+                    alt=""
                     className="img"
                     title={productDetails.name}
                   />
                 ) : (
                   <img
                     style={{ width: '80%', display: 'block', margin: 'auto' }}
+                    alt=""
                     src={require('../../assets/imgs/default_img.png')}
                     title={productDetails.name}
                   />
@@ -732,13 +933,17 @@ const Product = () => {
                     <Grid item xs={12} option-id={itemMain.id}>
                       <Typography
                         variant={
-                          itemMain.parentOptionID == itemMain.id ? 'h4' : 'h5'
+                          itemMain.parentOptionID == itemMain.id ? 'h2' : 'h3'
                         }
+                        className="heading-ui"
                         sx={{ marginTop: '20px' }}
                         title={itemMain.name}
                         aria-required={itemMain.mandatory ? 'true' : 'false'}
                       >
-                        {itemMain.name + (itemMain.mandatory ? '*' : '')}
+                        {itemMain.name}
+                        <span style={{ color: '#ff0000' }}>
+                          {itemMain.mandatory ? '*' : ''}
+                        </span>
                         {IsItemSelected(itemMain.id) && (
                           <span
                             style={{
@@ -766,57 +971,11 @@ const Product = () => {
                               : 'content-panel'
                           }
                           item
-                          xs={12}
-                          sm={6}
-                          md={4}
+                          xs={6}
+                          sm={3}
+                          md={3}
+                          lg={4}
                         >
-                          {itemMain.mandatory ? (
-                            checkOptionSelected(
-                              itemChild.option.id,
-                              itemMain.id,
-                            ) ? (
-                              <input
-                                type="radio"
-                                checked
-                                name={itemChild.option.id}
-                                style={{ display: 'none' }}
-                                aria-invalid={
-                                  IsItemSelected(itemMain.id) ? 'false' : 'true'
-                                }
-                              />
-                            ) : (
-                              <input
-                                type="radio"
-                                style={{ display: 'none' }}
-                                name={itemChild.option.id}
-                                aria-invalid={
-                                  IsItemSelected(itemMain.id) ? 'false' : 'true'
-                                }
-                              />
-                            )
-                          ) : checkOptionSelected(
-                              itemChild.option.id,
-                              itemMain.id,
-                            ) ? (
-                            <input
-                              type="checkbox"
-                              checked
-                              name={itemChild.option.id}
-                              style={{ display: 'none' }}
-                              aria-invalid={
-                                IsItemSelected(itemMain.id) ? 'false' : 'true'
-                              }
-                            />
-                          ) : (
-                            <input
-                              type="checkbox"
-                              name={itemChild.option.id}
-                              style={{ display: 'none' }}
-                              aria-invalid={
-                                IsItemSelected(itemMain.id) ? 'false' : 'true'
-                              }
-                            />
-                          )}
                           <label htmlFor={itemChild.option.id}>
                             <Card
                               className="card-panel"
@@ -828,6 +987,8 @@ const Product = () => {
                                 showChildOptions(
                                   itemChild.option.id,
                                   itemMain.id,
+                                  itemChild.dropDownValues,
+                                  itemChild.selectedValue,
                                 );
                               }}
                               onKeyUp={(e) => {
@@ -835,6 +996,8 @@ const Product = () => {
                                   showChildOptions(
                                     itemChild.option.id,
                                     itemMain.id,
+                                    itemChild.dropDownValues,
+                                    itemChild.selectedValue,
                                   );
                               }}
                             >
@@ -847,21 +1010,52 @@ const Product = () => {
                                 container
                                 spacing={1}
                                 className="name-img-panel"
+                                sx={{ padding: '0', marginTop: '0' }}
                               >
-                                <Grid item xs={5} sm={5}>
+                                <Grid
+                                  item
+                                  xs={12}
+                                  lg={5}
+                                  sx={{
+                                    padding: '0px',
+                                    paddingLeft: {
+                                      xs: '0px !important',
+                                      lg: '15px !important',
+                                    },
+                                    paddingTop: {
+                                      xs: '0px !important',
+                                      lg: '0px !important',
+                                    },
+                                  }}
+                                >
                                   <ItemImage
+                                    productImageURL={
+                                      productDetails &&
+                                      ((categories && categories.imagepath) ||
+                                        '') +
+                                        changeImageSize(
+                                          productDetails.imagefilename || '',
+                                          productDetails.images || '',
+                                        )
+                                    }
+                                    index={index1}
                                     className="item-image"
                                     name={itemChild.option.name}
                                     id={itemChild.option.chainoptionid}
+                                    optionImages={optionImages}
                                   />
                                 </Grid>
-                                <Grid item xs={7} sm={7} className="name-panel">
+                                <Grid
+                                  item
+                                  xs={12}
+                                  lg={7}
+                                  className="name-panel"
+                                >
                                   {itemChild.option.name}
-
                                   {itemChild.option.cost > 0 && (
                                     <Grid
                                       item
-                                      xs={6}
+                                      xs={12}
                                       title={`$${parseFloat(
                                         itemChild.option.cost,
                                       ).toFixed(2)}`}
@@ -870,9 +1064,10 @@ const Product = () => {
                                         fontSize: '14px',
                                         fontFamily: 'Poppins-Bold',
                                         color: '#7CC8C5',
+                                        textAlign: { xs: 'center', lg: 'left' },
                                       }}
                                     >
-                                      $
+                                      +$
                                       {parseFloat(
                                         itemChild.option.cost,
                                       ).toFixed(2)}
@@ -880,33 +1075,52 @@ const Product = () => {
                                   )}
                                   {itemChild.dropDownValues && (
                                     <>
-                                      <select
-                                        style={{
-                                          marginTop: '8px',
-                                          display: 'block',
-                                        }}
-                                        parent-select-option-id={itemChild.id}
-                                        onClick={(e) => e.stopPropagation()}
-                                        value={itemChild.selectedValue || '0'}
-                                        onChange={(e) =>
-                                          dropDownValue(
-                                            itemChild.option.id,
-                                            e.target.value,
-                                          )
-                                        }
-                                      >
-                                        <option value="0">Please Choose</option>
-                                        {itemChild.dropDownValues.map(
-                                          (option: any, index: number) => (
-                                            <option
-                                              key={Math.random() + index}
-                                              value={option.id}
-                                            >
-                                              {option.name}
-                                            </option>
-                                          ),
-                                        )}
-                                      </select>
+                                      {checkOptionSelected(
+                                        itemChild.option.id,
+                                        itemMain.id,
+                                      ) == true && (
+                                        <select
+                                          className="ss-panl"
+                                          parent-select-option-id={itemChild.id}
+                                          onClick={(e) => e.stopPropagation()}
+                                          value={itemChild.selectedValue || '0'}
+                                          data-select-id={
+                                            itemChild.selectedValue || '0'
+                                          }
+                                          onChange={(e) =>
+                                            dropDownValue(
+                                              itemChild.option.id,
+                                              e.target.value,
+                                              itemChild.dropDownValues,
+                                              e.target,
+                                            )
+                                          }
+                                        >
+                                          {itemChild.dropDownValues.map(
+                                            (option: any, index: number) => (
+                                              <option
+                                                key={Math.random() + index}
+                                                value={option.id}
+                                                onClick={() => {
+                                                  setTotalCost(
+                                                    ((productDetails?.cost ||
+                                                      0) +
+                                                      option.cost) *
+                                                      count,
+                                                  );
+                                                }}
+                                              >
+                                                {option.name +
+                                                  (option.cost > 0
+                                                    ? ' (+$' +
+                                                      option.cost.toFixed(2) +
+                                                      ')'
+                                                    : '')}
+                                              </option>
+                                            ),
+                                          )}
+                                        </select>
+                                      )}
                                     </>
                                   )}
                                 </Grid>
@@ -920,43 +1134,58 @@ const Product = () => {
             </div>
             <Grid container className="action-panel">
               <Grid item xs={12} className="content-panel">
-                <label
-                  title="Quantity"
-                  className="label bold quantity-label"
-                  htmlFor="quantityfield"
+                <div
+                  style={{ display: 'flex', alignItems: 'center' }}
+                  className="button-panel-sx"
                 >
-                  QUANTITY
-                </label>
-                <div className="quantity">
-                  <Button
-                    title=""
-                    className="add"
-                    aria-label="increase"
-                    onClick={() => {
-                      setCount(count + 1);
-                    }}
+                  <label
+                    title="Quantity"
+                    className="label bold quantity-label"
+                    htmlFor="quantityfield"
                   >
-                    {' '}
-                    +{' '}
-                  </Button>
-                  <input
-                    value={count}
-                    // inputProps={inputProps}
-                    id="quantityfield"
-                    className="input-quantity"
-                    title="quantity"
-                  />
-                  <Button
-                    title=""
-                    className="subtract"
-                    aria-label="reduce"
-                    onClick={() => {
-                      setCount(Math.max(count - 1, 1));
-                    }}
-                  >
-                    {' '}
-                    -{' '}
-                  </Button>
+                    QUANTITY
+                  </label>
+                  <div className="quantity">
+                    <Button
+                      title=""
+                      className="add"
+                      aria-label="increase"
+                      onClick={() => {
+                        setCount(count + 1);
+                        setTotalCost(
+                          ((productDetails?.cost || 0) + optionsCost) *
+                            (count + 1),
+                        );
+                      }}
+                    >
+                      {' '}
+                      +{' '}
+                    </Button>
+                    <input
+                      value={count}
+                      // inputProps={inputProps}
+                      readOnly
+                      id="quantityfield"
+                      onChange={() => {}}
+                      className="input-quantity"
+                      title="quantity"
+                    />
+                    <Button
+                      title=""
+                      className="subtract"
+                      aria-label="reduce"
+                      onClick={() => {
+                        setCount(Math.max(count - 1, 1));
+                        setTotalCost(
+                          ((productDetails?.cost || 0) + optionsCost) *
+                            Math.max(count - 1, 1),
+                        );
+                      }}
+                    >
+                      {' '}
+                      -{' '}
+                    </Button>
+                  </div>
                 </div>
                 {productAddObj.loading ||
                 basketObj.loading ||
@@ -964,16 +1193,19 @@ const Product = () => {
                 productUpdateObj.loading ||
                 !validateOptionsSelection() ? (
                   <Button
-                    title="ADD TO Bag"
+                    title="ADD TO BAG"
                     className="add-to-bag"
                     variant="contained"
                     disabled
                   >
                     {edit ? 'UPDATE BAG' : 'ADD TO BAG'}
+                    <span style={{ position: 'absolute', right: '15px' }}>
+                      ${totalCost?.toFixed(2)}
+                    </span>
                   </Button>
                 ) : (
                   <Button
-                    title="ADD TO Bag"
+                    title="ADD TO BAG"
                     className="add-to-bag"
                     variant="contained"
                     onClick={() => {
@@ -981,6 +1213,9 @@ const Product = () => {
                     }}
                   >
                     {edit ? 'UPDATE BAG' : 'ADD TO BAG'}
+                    <span style={{ position: 'absolute', right: '15px' }}>
+                      ${totalCost?.toFixed(2)}
+                    </span>
                   </Button>
                 )}
               </Grid>

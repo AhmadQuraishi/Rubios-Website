@@ -1,17 +1,16 @@
 import { makeStyles } from '@mui/styles';
-import { Grid, Card } from '@mui/material';
+import { Grid, Card, Typography } from '@mui/material';
 import RegisterForm from '../../components/register-form';
 import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import bgImage from '../../assets/imgs/login-bg.png';
 import './register.css';
 
 const useStyle = makeStyles(() => ({
   root: {
-    background: `url(${bgImage}) center center fixed`,
+    background: `url(${bgImage}) fixed`,
     backgroundRepeat: 'no-repeat',
-    backgroundSize: 'cover',
     justifyContent: 'center',
   },
   signinBtn: {
@@ -43,7 +42,19 @@ const Register = () => {
       <Grid container component="main" className={classes.root}>
         <Grid item xs={10} sm={8} md={7} lg={5}>
           <Card className="register-card" elevation={6}>
-            <RegisterForm />
+            <Grid container className="sign-up-section">
+              <Typography
+                variant="caption"
+                className="label"
+                title="Create Account"
+              >
+                Create Account
+              </Typography>
+              <Typography variant="h1">
+                SIGN UP FOR <br /> RUBIO'S REWARDS
+              </Typography>
+              <RegisterForm />
+            </Grid>
           </Card>
         </Grid>
       </Grid>

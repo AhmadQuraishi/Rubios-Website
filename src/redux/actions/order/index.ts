@@ -57,3 +57,10 @@ export function getOrderRestaurantRequestFailure(error: any) {
     error: error,
   };
 }
+
+export function updateGuestUserInfo(data: any) {
+  return {
+    type: orderActionTypes.UPDATE_GUEST_USER_INFO,
+    payload: data,
+  };
+}
