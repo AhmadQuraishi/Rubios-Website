@@ -40,6 +40,9 @@
   .confirmation-form .react-date-inputs {
     margin-bottom: 10px;
   }
+  .confirmation-form .react-date-inputs input {
+    width: 12%;
+  }
   .confirmation-form .register-confirmation-select {
     margin-bottom: 10px !important;
     font-size: 13px;

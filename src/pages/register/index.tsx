@@ -9,9 +9,8 @@ import './register.css';
 
 const useStyle = makeStyles(() => ({
   root: {
-    background: `url(${bgImage}) center center fixed`,
+    background: `url(${bgImage}) fixed`,
     backgroundRepeat: 'no-repeat',
-    backgroundSize: 'cover',
     justifyContent: 'center',
   },
   signinBtn: {
