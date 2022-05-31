@@ -258,7 +258,7 @@ const SplitPayment = forwardRef((props, _ref) => {
                         account.billingmethod === 'storedvalue'
                           ? 'flex-start'
                           : 'center',
-                      paddingLeft: 20,
+                      paddingLeft: 0,
                     }}
                     alignItems="center"
                     justifyContent="flex-start"
@@ -301,8 +301,8 @@ const SplitPayment = forwardRef((props, _ref) => {
                       display: 'flex',
                       justifyContent: 'flex-end',
                       padding: {
-                        xs: '0px 20px 0px 0px',
-                        sm: '0px 20px 0px 0px',
+                        xs: '0px 15px 0px 0px',
+                        sm: '0px 15px 0px 0px',
                         md: '0px',
                         lg: '0px',
                       },
