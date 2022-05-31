@@ -213,7 +213,7 @@ const SplitPayment = forwardRef((props, _ref) => {
                 lg={12}
                 className="card-details"
               >
-                <Grid item xs={1} sm={1} md={1} lg={1}>
+                <Grid item xs={1} sm={1} md={1} lg={1} sx={{marginRight: '5px'}}>
                   <FormGroup>
                     <FormControlLabel
                       control={
@@ -239,7 +239,7 @@ const SplitPayment = forwardRef((props, _ref) => {
                     item
                     style={{ display: 'flex' }}
                     alignItems="center"
-                    xs={1}
+                    xs={12}
                     sm={1}
                     md={1}
                     lg={1}
@@ -262,7 +262,7 @@ const SplitPayment = forwardRef((props, _ref) => {
                     }}
                     alignItems="center"
                     justifyContent="flex-start"
-                    xs={6}
+                    xs={5}
                     sm={6}
                     md={6}
                     lg={6}
@@ -309,7 +309,7 @@ const SplitPayment = forwardRef((props, _ref) => {
                     }}
                     alignItems="center"
                     item
-                    xs={2}
+                    xs={3}
                     sm={2}
                     md={2}
                     lg={2}
@@ -325,7 +325,7 @@ const SplitPayment = forwardRef((props, _ref) => {
                     style={{ display: 'flex' }}
                     alignItems="center"
                     item
-                    xs={3}
+                    xs={4}
                     sm={3}
                     md={3}
                     lg={3}
