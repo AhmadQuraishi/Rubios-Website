@@ -5,10 +5,18 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import { persistor, store } from './redux/store';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
 import theme from './theme/theme';
 import { PersistGate } from 'redux-persist/integration/react';
+
+import TagManager from 'react-gtm-module';
+
+const tagManagerArgs = {
+  gtmId: 'GTM-000000',
+};
+
+TagManager.initialize(tagManagerArgs);
 
 ReactDOM.render(
   <Provider store={store}>

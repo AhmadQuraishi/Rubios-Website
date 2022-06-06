@@ -39,6 +39,7 @@
     "react-date-inputs": "1.5.1",
     "react-dom": "^17.0.2",
     "react-facebook-login": "4.1.1",
+    "react-gtm-module": "2.0.11",
     "react-imask": "6.4.2",
     "react-multi-carousel": "2.8.0",
     "react-number-format": "4.9.1",
@@ -60,13 +61,10 @@
     "yup": "0.32.11"
   },
   "scripts": {
-    "start": "react-scripts start --env=local",
+    "start": "react-scripts start",
     "build": "react-scripts build",
-    "build.prod": "env-cmd -f .env.prod react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "guest": "env-cmd -f .env.guest react-scripts start",
-    "client": "env-cmd -f .env.local react-scripts start"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
@@ -89,6 +87,7 @@
   "devDependencies": {
     "@types/googlemaps": "3.43.3",
     "@types/react-facebook-login": "4.1.4",
+    "@types/react-gtm-module": "2.0.1",
     "@types/redux-logger": "^3.0.9",
     "eslint-config-prettier": "8.3.0",
     "eslint-plugin-prettier": "4.0.0",
