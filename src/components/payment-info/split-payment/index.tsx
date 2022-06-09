@@ -187,6 +187,7 @@ const SplitPayment = forwardRef((props, _ref) => {
     const billingSchemeStats = getBillingSchemesStats(billingSchemes);
     return (
       billingSchemeStats.selectedGiftCard === 4 &&
+      billingSchemeStats.creditCard === 0 &&
       remainingAmount(basket, billingSchemes) > 0
     );
   };
@@ -212,7 +213,7 @@ const SplitPayment = forwardRef((props, _ref) => {
                 lg={12}
                 className="card-details"
               >
-                <Grid item xs={1} sm={1} md={1} lg={1}>
+                <Grid item xs={1} sm={1} md={1} lg={1} sx={{marginRight: '5px'}}>
                   <FormGroup>
                     <FormControlLabel
                       control={
@@ -238,7 +239,7 @@ const SplitPayment = forwardRef((props, _ref) => {
                     item
                     style={{ display: 'flex' }}
                     alignItems="center"
-                    xs={1}
+                    xs={12}
                     sm={1}
                     md={1}
                     lg={1}
@@ -257,11 +258,11 @@ const SplitPayment = forwardRef((props, _ref) => {
                         account.billingmethod === 'storedvalue'
                           ? 'flex-start'
                           : 'center',
-                      paddingLeft: 20,
+                      paddingLeft: 0,
                     }}
                     alignItems="center"
                     justifyContent="flex-start"
-                    xs={6}
+                    xs={5}
                     sm={6}
                     md={6}
                     lg={6}
@@ -300,15 +301,15 @@ const SplitPayment = forwardRef((props, _ref) => {
                       display: 'flex',
                       justifyContent: 'flex-end',
                       padding: {
-                        xs: '0px 20px 0px 0px',
-                        sm: '0px 20px 0px 0px',
+                        xs: '0px 15px 0px 0px',
+                        sm: '0px 15px 0px 0px',
                         md: '0px',
                         lg: '0px',
                       },
                     }}
                     alignItems="center"
                     item
-                    xs={2}
+                    xs={3}
                     sm={2}
                     md={2}
                     lg={2}
@@ -324,7 +325,7 @@ const SplitPayment = forwardRef((props, _ref) => {
                     style={{ display: 'flex' }}
                     alignItems="center"
                     item
-                    xs={3}
+                    xs={4}
                     sm={3}
                     md={3}
                     lg={3}
@@ -392,7 +393,7 @@ const SplitPayment = forwardRef((props, _ref) => {
               align={'center'}
               variant="h6"
             >
-              *Please add another payment method to complete your purchase.
+              Please add another payment method to complete your purchase.
             </Typography>
           </Grid>
         </Grid>

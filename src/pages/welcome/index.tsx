@@ -24,7 +24,7 @@ import { displayToast } from '../../helpers/toast';
 import { handleCart } from '../../components/header';
 import WelcomeNewUser from '../../components/welcome/new-user';
 import BgImage from '../../assets/imgs/Family_Burrito_Box_mainA573LR.jpg';
-import BgImageNewUser from '../../assets/imgs/rubios-welcome-background.png';
+import BgImageNewUser from '../../assets/imgs/rubios-welcome-background.jpg';
 
 const useStyle = makeStyles(() => ({
   root: {
@@ -187,6 +187,7 @@ const Welcome = () => {
       <Grid
         style={{
           backgroundImage: `url(${pageBackground})`,
+          backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
           backgroundSize: 'cover',
           justifyContent: 'center',
