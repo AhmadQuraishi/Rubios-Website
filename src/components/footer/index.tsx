@@ -114,7 +114,7 @@ const Footer = () => {
                 <ul className="list">
                   {menu &&
                     menu.items.map((item: any, index: number) => (
-                      <li>
+                      <li key={Math.random()}>
                         <a
                           key={Math.random() + index}
                           className={classes.links}

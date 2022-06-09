@@ -9,7 +9,11 @@ const ItemImage = (props: any) => {
   const [loading, setLoading] = useState<any>(false);
 
   useEffect(() => {
-    if (name.toLowerCase() == 'as is' || name.toLowerCase() == 'customize') {
+    if (
+      name.toLowerCase() == 'as is' ||
+      name.toLowerCase() == 'customize' ||
+      name.toLowerCase().indexOf('taco') != -1
+    ) {
       return;
     }
     optionImages.map((item: any) => {
@@ -27,7 +31,9 @@ const ItemImage = (props: any) => {
 
   return (
     <>
-      {(name.toLowerCase() == 'as is' || name.toLowerCase() == 'customize') && (
+      {(name.toLowerCase() == 'as is' ||
+        name.toLowerCase() == 'customize' ||
+        name.toLowerCase().indexOf('taco') != -1) && (
         <img
           aria-hidden="true"
           src={productImageURL}
@@ -42,7 +48,8 @@ const ItemImage = (props: any) => {
 
       {imageURL == null &&
         name.toLowerCase() != 'customize' &&
-        name.toLowerCase() != 'as is' && (
+        name.toLowerCase() != 'as is' &&
+        name.toLowerCase().indexOf('taco') == -1 && (
           <img
             aria-hidden="true"
             alt=""
