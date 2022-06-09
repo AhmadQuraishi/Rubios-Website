@@ -13,7 +13,8 @@ import { PersistGate } from 'redux-persist/integration/react';
 import TagManager from 'react-gtm-module';
 
 const tagManagerArgs = {
-  gtmId: 'GTM-000000',
+  // gtmId: process.env.REACT_APP_GTM_ID || '',
+  gtmId: 'GTM-W57GX6M',
 };
 
 TagManager.initialize(tagManagerArgs);

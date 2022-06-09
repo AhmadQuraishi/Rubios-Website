@@ -17,6 +17,8 @@ import { removeProductRequest } from '../../redux/actions/basket/product/remove'
 import { addProductRequest } from '../../redux/actions/basket/product/add';
 import { displayToast } from '../../helpers/toast';
 import { addUpsellsRequest } from '../../redux/actions/basket/upsell/Add';
+import { UPSELLS, UPSELLS_TYPES } from '../../helpers/upsells';
+import { capitalizeFirstLetter } from '../../helpers/common';
 
 const useStyles = makeStyles((theme: Theme) => ({
   dimPanel: {
@@ -115,8 +117,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const Cart = (props: any) => {
-  const { showCart } = props;
+const Cart = ({ showCart, handleUpsells }: any) => {
   const classes = useStyles();
   const [actionStatus, setActionStatus] = useState(false);
   const [clickAction, setClickAction] = useState('');
@@ -616,86 +617,138 @@ const Cart = (props: any) => {
                       </Grid>
                     </Grid>
                   ))}
+                <Grid item xs={12}>
+                  <Typography
+                    variant="h6"
+                    component="p"
+                    fontSize="15px !important"
+                    textAlign="center"
+                    padding="10px 0 10px 0"
+                    textTransform="uppercase"
+                    className={classes.cartTitle}
+                    title="Complete Your Meal"
+                  >
+                    Complete Your Meal
+                  </Typography>
+                </Grid>
                 {basketObj &&
                   basketObj.basket &&
                   basketObj.basket.products.length > 0 &&
-                  upsells &&
-                  upsells.length > 0 && (
-                    <Grid item xs={12}>
-                      <Typography
-                        variant="h6"
-                        component="p"
-                        fontSize="15px !important"
-                        textAlign="center"
-                        padding="10px 0 10px 0"
-                        textTransform="uppercase"
-                        className={classes.cartTitle}
-                        title="Complete Your Meal"
-                      >
-                        Complete Your Meal
-                      </Typography>
-                      <Grid
-                        container
-                        spacing={0}
-                        justifyContent="space-around"
-                        sx={{ paddingTop: '10px' }}
-                      >
-                        {upsells.map((option: any, index: number) => (
+                  Object.keys(UPSELLS_TYPES).map((type: string) => {
+                    return (
+                      <Grid item onClick={() => handleUpsells(type)} xs={12}>
+                        <Grid
+                          container
+                          spacing={0}
+                          justifyContent="space-around"
+                          direction={'column'}
+                          sx={{ paddingTop: '10px' }}
+                        >
                           <Grid
-                            key={Math.random() + '-' + index}
+                            key={Math.random() + '-'}
                             item
-                            xs={4}
+                            xs={12}
+                            style={{
+                              display: 'flex',
+                              border: '1px solid black',
+                              padding: 10,
+                            }}
                             sx={{ cursor: 'pointer' }}
-                            onClick={() => {
-                              addUpsells(option.id);
-                            }}
-                            tabIndex={0}
-                            onKeyUp={(e) => {
-                              if (e.keyCode === 13) {
-                                addUpsells(option.id);
-                              }
-                            }}
+                            // onClick={() => {
+                            //   addUpsells(option.id);
+                            // }}
+                            // tabIndex={0}
+                            // onKeyUp={(e) => {
+                            //   if (e.keyCode === 13) {
+                            //     addUpsells(option.id);
+                            //   }
+                            // }}
                           >
                             <img
                               style={{
-                                display: 'block',
-                                margin: 'auto',
-                                width: '75%',
+                                // display: 'block',
+                                // margin: 'auto',
+                                width: 30,
                               }}
                               src={require('../../assets/imgs/default_img.png')}
-                              alt={option.name}
-                              title={option.name}
+                              // alt={option.name}
+                              // title={option.name}
                             />
                             <Typography
                               variant="h6"
                               component="p"
                               fontSize="14px !important"
                               textAlign="center"
-                              padding="5px 0 0 0"
+                              padding="5px 0 0 10px"
                               lineHeight="1.2 !important"
                               textTransform="capitalize"
                               className={classes.cartTitle}
-                              title={option.name}
+                              style={{ display: 'inline' }}
+                              // title={option.name}
                             >
-                              {option.name}
-                            </Typography>
-                            <Typography
-                              variant="caption"
-                              component="p"
-                              fontSize="14px !important"
-                              textAlign="center"
-                              paddingTop="0px"
-                              fontFamily="Poppins-Regular !important"
-                              className={classes.cartTitle}
-                              title={`${option.cost}`}
-                            >
-                              {option.cost}
+                              {type === UPSELLS_TYPES.SALSA
+                                ? `Select Your `
+                                : `Add A `}
+                              {capitalizeFirstLetter(type)}
                             </Typography>
                           </Grid>
-                        ))}
+                          {/*{upsells.map((option: any, index: number) => (*/}
+                          {/*  <Grid*/}
+                          {/*    key={Math.random() + '-' + index}*/}
+                          {/*    item*/}
+                          {/*    xs={4}*/}
+                          {/*    sx={{ cursor: 'pointer' }}*/}
+                          {/*    onClick={() => {*/}
+                          {/*      addUpsells(option.id);*/}
+                          {/*    }}*/}
+                          {/*    tabIndex={0}*/}
+                          {/*    onKeyUp={(e) => {*/}
+                          {/*      if (e.keyCode === 13) {*/}
+                          {/*        addUpsells(option.id);*/}
+                          {/*      }*/}
+                          {/*    }}*/}
+                          {/*  >*/}
+                          {/*    <img*/}
+                          {/*      style={{*/}
+                          {/*        display: 'block',*/}
+                          {/*        margin: 'auto',*/}
+                          {/*        width: '75%',*/}
+                          {/*      }}*/}
+                          {/*      src={require('../../assets/imgs/default_img.png')}*/}
+                          {/*      alt={option.name}*/}
+                          {/*      title={option.name}*/}
+                          {/*    />*/}
+                          {/*    <Typography*/}
+                          {/*      variant="h6"*/}
+                          {/*      component="p"*/}
+                          {/*      fontSize="14px !important"*/}
+                          {/*      textAlign="center"*/}
+                          {/*      padding="5px 0 0 0"*/}
+                          {/*      lineHeight="1.2 !important"*/}
+                          {/*      textTransform="capitalize"*/}
+                          {/*      className={classes.cartTitle}*/}
+                          {/*      title={option.name}*/}
+                          {/*    >*/}
+                          {/*      {option.name}*/}
+                          {/*    </Typography>*/}
+                          {/*    <Typography*/}
+                          {/*      variant="caption"*/}
+                          {/*      component="p"*/}
+                          {/*      fontSize="14px !important"*/}
+                          {/*      textAlign="center"*/}
+                          {/*      paddingTop="0px"*/}
+                          {/*      fontFamily="Poppins-Regular !important"*/}
+                          {/*      className={classes.cartTitle}*/}
+                          {/*      title={`${option.cost}`}*/}
+                          {/*    >*/}
+                          {/*      {option.cost}*/}
+                          {/*    </Typography>*/}
+                          {/*  </Grid>*/}
+                          {/*))}*/}
+                        </Grid>
                       </Grid>
-                    </Grid>
-                  )}
+                    );
+                  })}
                 {basketObj &&
                   basketObj.basket &&
                   basketObj.basket.products.length > 0 && (

@@ -1,0 +1,32 @@
+.upsells-details .quantity {
+  display: flex;
+  justify-content: space-between;
+  border-radius: 20px;
+  background: white;
+  box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.2);
+  margin: 0px 5px 0px 5px;
+  width: 90px;
+}
+.upsells-details .quantity input,
+.upsells-details .quantity button {
+  height: 30px !important;
+  padding: 0px 5px !important;
+  background: transparent;
+  box-shadow: none;
+  min-width: 26px;
+}
+.upsells-details .quantity input {
+  text-align: center;
+  color: #0069aa;
+  font-weight: Bold;
+  border-left: 1px solid #e4e4e4;
+  border-right: 1px solid #e4e4e4;
+}
+.upsells-details .quantity button {
+  font-family: 'Poppins-Regular' !important;
+  font-size: 15px;
+  color: #414141;
+}
+.upsells-details .quantity fieldset {
+  box-shadow: none !important;
+}
