@@ -902,7 +902,7 @@ const Cart = ({ showCart, handleUpsells }: any) => {
                           }}
                           title="ESTIMATED Tax"
                         >
-                          EXTIMATED TAX
+                          ESTIMATED TAX
                         </Grid>
                         <Grid
                           item
