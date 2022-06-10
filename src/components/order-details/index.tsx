@@ -166,7 +166,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                     className="n-bold"
                     title="ESTIMATED Tax"
                   >
-                    EXTIMATED TAX
+                    ESTIMATED TAX
                   </Typography>
                 </Grid>
                 <Grid item xs={3} sm={3} md={3} lg={3}>

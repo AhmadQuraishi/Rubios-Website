@@ -25,9 +25,21 @@ const locationTitle = (type: string) => {
 const pickupTime = (order: any) => {
   return (
     <>
-      <Typography variant="h2" className="label" title="PICKUP TIME">
+      <Typography
+        variant="h2"
+        className="label"
+        title={
+          order && order.deliverymode === DeliveryModeEnum.delivery
+            ? 'DELIVERY TIME'
+            : order.deliverymode === DeliveryModeEnum.dinein
+            ? 'DINE IN TIME'
+            : 'PICKUP TIME'
+        }
+      >
         {order && order.deliverymode === DeliveryModeEnum.delivery
-          ? 'DELIVERY TIME' : order.deliverymode === DeliveryModeEnum.dinein ? 'DINE IN TIME'
+          ? 'DELIVERY TIME'
+          : order.deliverymode === DeliveryModeEnum.dinein
+          ? 'DINE IN TIME'
           : 'PICKUP TIME'}
       </Typography>
       <Typography
