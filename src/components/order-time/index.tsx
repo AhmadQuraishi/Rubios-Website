@@ -147,12 +147,16 @@ const OrderTime = ({ orderType }: any) => {
             title={
               orderType === DeliveryModeEnum.dinein
                 ? 'ORDER TIME'
+                : orderType === DeliveryModeEnum.delivery
+                ? 'DELIVERY TIME'
                 : 'PICKUP TIME'
             }
             className="label"
           >
             {orderType === DeliveryModeEnum.dinein
               ? 'ORDER TIME'
+              : orderType === DeliveryModeEnum.delivery
+              ? 'DELIVERY TIME'
               : 'PICKUP TIME'}
           </Typography>
         </Grid>
