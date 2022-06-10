@@ -83,6 +83,7 @@ const CategoryList = () => {
       setGetResutrants(true);
       dispatch(getResturantListRequest());
       if (restaurant && restaurant.id) {
+        setFilterCategories([]);
         dispatch(getCategoriesRequest(restaurant.id));
       }
     } else if (
@@ -143,6 +144,7 @@ const CategoryList = () => {
   const [filterCategories, setFilterCategories] = useState<any[]>([]);
 
   useEffect(() => {
+    setFilterCategories([]);
     if (categories && categories.categories) {
       let arrCat: any[] = [];
       let products: any[] = [];
@@ -395,7 +397,7 @@ const CategoryList = () => {
       )}
       <StoreInfoBar />
       {loading === true && <ProductListingSkeletonUI />}
-      {filterCategories && filterCategories.length > 0 && (
+      {loading == false && filterCategories && filterCategories.length > 0 && (
         <>
           <div
             style={{ display: 'none', height: '80px' }}
@@ -490,6 +492,7 @@ const CategoryList = () => {
             <Grid item xs={12} sx={{ paddingBottom: '20px' }} role="list">
               <ProductListing
                 orderType={orderType}
+                index={Math.random()}
                 productList={item.products}
                 categoryID={item.id}
                 imgPath={
