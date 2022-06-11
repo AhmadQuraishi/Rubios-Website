@@ -1,3 +1,46 @@
 label.time-picker:focus-within {
   border: 1px solid #ccc;
 }
+.native-select .MuiNativeSelect-icon {
+  fill: #fff;
+}
+.native-select .MuiNativeSelect-select {
+  height: 44px !important;
+  text-align: center;
+  font-family: 'Poppins-Bold', sans-serif !important;
+  font-size: 15px;
+  height: 50px;
+  box-shadow: 0px 0px 0px rgb(0 0 0 / 20%) !important;
+  text-transform: uppercase;
+  border-radius: 0 !important;
+  letter-spacing: 2.25px !important;
+  font-size: 13px;
+}
+.native-select .MuiNativeSelect-select {
+  color: #fff;
+}
+.native-select .MuiNativeSelect-select option {
+  color: #000;
+  padding: 5px 0;
+}
+.native-select.MuiInputBase-root.MuiInput-root {
+  margin-top: 0px !important;
+}
+.native-select.MuiInputBase-root.MuiInput-root::after {
+  border-bottom: 3px solid #79c043;
+}
+.order-date .MuiInputAdornment-root {
+  margin-right: 14px;
+}
+.order-date .MuiInputBase-root.MuiOutlinedInput-root {
+  width: 100%;
+  max-width: 320px;
+  margin-bottom: 20px;
+}
+.MuiButtonBase-root.MuiPickersDay-root:focus,
+.MuiButtonBase-root.MuiPickersDay-root:hover {
+  background-color: rgba(0, 0, 0, 0.15);
+}
+.MuiButtonBase-root.MuiPickersDay-root:focus.Mui-selected {
+  background-color: rgb(0, 73, 118);
+}

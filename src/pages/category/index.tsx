@@ -169,6 +169,18 @@ const CategoryList = () => {
       setCategoriesWithProducts(categories);
       let scrollValues: any[] = [];
       setTimeout(() => {
+        try {
+          const arrowButtons: any = document.getElementsByClassName(
+            'MuiTabScrollButton-horizontal',
+          );
+          arrowButtons[0].setAttribute('role', 'button');
+          arrowButtons[0].setAttribute('tabindex', '0');
+          arrowButtons[0].setAttribute('aria-label', 'previous');
+          arrowButtons[1].setAttribute('role', 'button');
+          arrowButtons[1].setAttribute('tabindex', '0');
+          arrowButtons[1].setAttribute('aria-label', 'next');
+        } catch(e) {}
+
         filterCategories.map((item: any, index: number) => {
           const elem: HTMLElement = document.getElementById(
             'cat-panel-' + index,
