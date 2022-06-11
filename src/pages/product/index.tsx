@@ -937,6 +937,7 @@ const Product = () => {
                         }
                         className="heading-ui"
                         sx={{ marginTop: '20px' }}
+                        tabIndex={0}
                         title={itemMain.name}
                         aria-required={itemMain.mandatory ? 'true' : 'false'}
                       >
@@ -975,14 +976,22 @@ const Product = () => {
                           sm={3}
                           md={3}
                           lg={4}
+                          sx={{ position: 'relative' }}
                         >
-                          <label htmlFor={itemChild.option.id}>
-                            <Card
-                              className="card-panel"
-                              tabIndex={0}
-                              title={itemChild.option.name}
-                              is-mandatory={itemMain.mandatory.toString()}
-                              parent-option-id={itemMain.parentOptionID}
+                          {itemMain.mandatory ? (
+                            <input
+                              checked={checkOptionSelected(
+                                itemChild.option.id,
+                                itemMain.id,
+                              )}
+                              style={{
+                                opacity: 0,
+                                position: 'absolute',
+                                zIndex: 1000
+                              }}
+                              type="radio"
+                              id={itemChild.option.id}
+                              value={itemChild.option.name}
                               onClick={() => {
                                 showChildOptions(
                                   itemChild.option.id,
@@ -991,15 +1000,57 @@ const Product = () => {
                                   itemChild.selectedValue,
                                 );
                               }}
-                              onKeyUp={(e) => {
-                                if (e.keyCode === 13)
-                                  showChildOptions(
-                                    itemChild.option.id,
-                                    itemMain.id,
-                                    itemChild.dropDownValues,
-                                    itemChild.selectedValue,
-                                  );
+                            />
+                          ) : (
+                            <input
+                              checked={checkOptionSelected(
+                                itemChild.option.id,
+                                itemMain.id,
+                              )}
+                              style={{
+                                opacity: 0,
+                                position: 'absolute',
+                                zIndex: 1000
                               }}
+                              type="checkbox"
+                              id={itemChild.option.id}
+                              value={itemChild.option.name}
+                              onClick={() => {
+                                showChildOptions(
+                                  itemChild.option.id,
+                                  itemMain.id,
+                                  itemChild.dropDownValues,
+                                  itemChild.selectedValue,
+                                );
+                              }}
+                            />
+                          )}
+                          <label
+                            tabIndex={0}
+                            htmlFor={itemChild.option.id}
+                            onClick={() => {
+                              showChildOptions(
+                                itemChild.option.id,
+                                itemMain.id,
+                                itemChild.dropDownValues,
+                                itemChild.selectedValue,
+                              );
+                            }}
+                            onKeyUp={(e) => {
+                              if (e.keyCode === 13)
+                                showChildOptions(
+                                  itemChild.option.id,
+                                  itemMain.id,
+                                  itemChild.dropDownValues,
+                                  itemChild.selectedValue,
+                                );
+                            }}
+                          >
+                            <Card
+                              className="card-panel"
+                              title={itemChild.option.name}
+                              is-mandatory={itemMain.mandatory.toString()}
+                              parent-option-id={itemMain.parentOptionID}
                             >
                               <div className="check-mark">
                                 <div aria-hidden="true" className="checkmark">

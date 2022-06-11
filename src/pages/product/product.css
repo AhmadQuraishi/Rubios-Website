@@ -54,7 +54,10 @@ h2.heading-ui {
   font-size: 30px;
   padding-bottom: 10px;
 }
-
+input[type="check"]:checked + label {
+  opacity: 1;
+  border: 5px solid #ccc
+}
 .product-detail .action-panel {
   margin-top: 30px;
   position: fixed;
