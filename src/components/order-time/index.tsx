@@ -11,6 +11,8 @@ import {
   InputLabel,
   MenuItem,
   Box,
+  NativeSelect,
+  TextField,
 } from '@mui/material';
 import moment from 'moment';
 import './index.css';
@@ -122,11 +124,39 @@ const OrderTime = ({ orderType }: any) => {
     console.log('eeeeeeeeeeee', e);
     console.log('date 1', moment(e).format('YYYYMMDD'));
     console.log('date 2', moment(selectedDate).format('YYYYMMDD'));
+
+    try {
+      if (timer) clearInterval(timer);
+      timer = setInterval(() => {
+        if (!isDateFormatSet) {
+          let dateNodes: any = document.querySelectorAll('.MuiPickersDay-root');
+          dateNodes.forEach((item: any) => {
+            const attributeValue = item.getAttribute('aria-label');
+            if (attributeValue) {
+              const date = new Date(attributeValue);
+              item.setAttribute(
+                'aria-label',
+                moment(date).format('dddd MMM. D, YYYY'),
+              );
+            }
+          });
+          isDateFormatSet = true;
+        }
+      }, 1000);
+    } catch (e) {}
+
+    const startDate = moment().toDate();
+    const endDate = moment().add('days', 7).toDate();
+
+    const range = moment(e).isBetween(startDate, endDate, 'days', '[]');
+    setSelectedDate(e);
+    const callAllow = range;
+
     if (
+      callAllow &&
       basket &&
       moment(e).format('YYYYMMDD') !== moment(selectedDate).format('YYYYMMDD')
     ) {
-      setSelectedDate(e);
       dispatch(
         getSingleRestaurantCalendar(
           basket.vendorid,
@@ -135,7 +165,30 @@ const OrderTime = ({ orderType }: any) => {
         ),
       );
     }
+    //setOpen(!open);
+  };
+  let timer: any = null;
+  let isDateFormatSet = false;
+  const setAttributesForDate = () => {
     setOpen(!open);
+
+    document
+      .getElementsByClassName('MuiInputAdornment-root')[0]
+      .addEventListener('click', () => {
+        setTimeout(() => {
+          let dateNodes: any = document.querySelectorAll('.MuiPickersDay-root');
+          dateNodes.forEach((item: any) => {
+            const attributeValue = item.getAttribute('aria-label');
+            if (attributeValue) {
+              const date = new Date(attributeValue);
+              item.setAttribute(
+                'aria-label',
+                moment(date).format('dddd, MMMM D, YYYY'),
+              );
+            }
+          });
+        }, 500);
+      });
   };
 
   return (
@@ -171,21 +224,29 @@ const OrderTime = ({ orderType }: any) => {
           aria-label="change"
           title="change"
           className="caption-grey"
-          onClick={() => setOpen(!open)}
+          onClick={() => {
+            setAttributesForDate();
+          }}
         >
           (change)
         </Button>
         <LocalizationProvider dateAdapter={AdapterMoment}>
           <DatePicker
-            open={open}
-            label="Date desktop"
+            //open={open}
+            label="Order Date"
             minDate={moment()}
             maxDate={moment().add('days', 7)}
-            inputFormat="MM/dd/yyyy"
+            inputFormat="MM/DD/yyyy"
             value={selectedDate}
+            views={['day']}
+            className="order-date"
             onChange={(e) => handleDateChange(e)}
-            renderInput={({ inputRef, inputProps, InputProps }) => (
-              <Box ref={inputRef}></Box>
+            renderInput={(params) => (
+              <TextField
+                className="order-date"
+                style={{ display: open ? 'block' : 'none' }}
+                {...params}
+              />
             )}
           />
         </LocalizationProvider>
@@ -268,33 +329,36 @@ const OrderTime = ({ orderType }: any) => {
             >
               MORE TIMES
             </InputLabel>
-            <Select
+            {}
+            <NativeSelect
               id="select-label"
-              labelId="select-more-times"
+              className={`native-select`}
               role="dialog"
               aria-modal="true"
               aria-label="select more time"
               value={
                 timeSlots.slice(4).includes(selectedTime) ? selectedTime : ''
               }
-              onChange={(event) => onTimeSlotSelect(event)}
-              label="Select More times"
+              onClick={() => {
+                console.log('open');
+              }}
+              onChange={(event) => {
+                if (event.target.value == '') {
+                  return;
+                }
+                onTimeSlotSelect(event);
+              }}
               title="Select More times"
-              onClose={() => {
-                setSelectShrink(false);
-              }}
-              onOpen={() => {
-                setSelectShrink(true);
-              }}
             >
-              {timeSlots.slice(4).map((time) => {
+              {timeSlots.slice(4).map((time, index) => {
                 return (
-                  <MenuItem key={`menu-${time}`} value={time}>
+                  <option key={`menu-${time}`} value={time}>
                     {moment(time, 'YYYYMMDD HH:mm').format('hh:mm A')}
-                  </MenuItem>
+                  </option>
                 );
               })}
-            </Select>
+              <option value="" style={{ display: 'none' }}></option>
+            </NativeSelect>
           </FormControl>
         </Grid>
       ) : null}
