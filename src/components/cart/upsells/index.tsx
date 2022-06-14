@@ -488,7 +488,7 @@ const Upsells = ({ showCart, upsellsType }: any) => {
             {basketObj &&
               basketObj.basket &&
               basketObj.basket.products.length > 0 && (
-                <Grid item xs={12} lg={5} md={5} style={{paddingRight: '30px', }}>
+                <Grid item xs={12} lg={8} md={8} style={{paddingRight: '30px', display: 'flex', justifyContent:'flex-end' }}>
                   <div
                     style={{ display: 'flex', alignItems: 'center' }}
                     className="upsells-details"

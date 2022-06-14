@@ -544,9 +544,9 @@ const UpsellsOthers = ({ addToBag, showCart, upsellsType }: any) => {
               className={1 === 1 ? 'content-panel selected' : 'content-panel'}
               item
               xs={6}
-              sm={3}
-              md={3}
-              lg={4}
+              sm={6}
+              md={6}
+              lg={6}
               sx={{ position: 'relative' }}
             >
               <input

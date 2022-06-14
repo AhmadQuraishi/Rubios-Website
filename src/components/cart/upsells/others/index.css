@@ -1,7 +1,7 @@
 
   .upsells .content-panel.selected .card-panel .check-mark {
-    margin: auto;
-    left: 0 !important;
+    /*margin: auto;*/
+    left: 30px !important;
     right: 0 !important;
     top: 35px !important;
     bottom: auto !important;
@@ -30,10 +30,10 @@
   .card-panel
   .name-img-panel
   .name-panel {
-    padding-left: 0px !important;
+    padding-left: 15px !important;
     padding-top: 15px;
     overflow-wrap: break-word;
-    text-align: center;
+    text-align: left;
     font-size: 16px;
   }
 
@@ -86,14 +86,16 @@
   font-family: 'Poppins-Medium', sans-serif !important;
   color: #2b4b62;
   /* max-width: 354px; */
-  min-height: 170px;
+  /*min-height: 170px;*/
   font-size: 18px;
+  width: 50%;
+  float: left;
 }
 .upsells .content-panel .card-panel {
-  padding: 10px;
+  padding: 10px !important;
   border: 1px solid #d3d3d3;
   box-sizing: border-box;
-  height: 100%;
+  min-height: 150px;
   border-radius: 0;
   cursor: pointer;
   box-shadow: 0px 2px 3px 0px rgb(0 0 0 / 20%) !important;
@@ -144,6 +146,7 @@
 .name-img-panel
 .name-panel {
   color: #e58734;
+  font-size: 14px;
 }
 
 .upsells
@@ -153,6 +156,7 @@
 .name-panel {
   padding-left: 20px;
   color: #2b4b62;
+  font-size: 14px;
 }
 
 .upsells
