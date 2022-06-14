@@ -484,31 +484,33 @@ const Upsells = ({ showCart, upsellsType }: any) => {
           }
         </Grid>
         <Grid container spacing={0}>
-          <Grid item xs={12}>
+          <Grid item xs={12} style={{display: 'flex', justifyContent: 'flex-end'}}>
             {basketObj &&
               basketObj.basket &&
               basketObj.basket.products.length > 0 && (
-                <Button
-                  variant="contained"
-                  disabled={addToBag}
-                  onClick={() => {
-                    setAddToBag(true)
-                  }}
-                  sx={{
-                    textTransform: 'uppercase',
-                    backgroundColor: '#0A6FB8',
-                    margin: 'auto',
-                    width: '100%',
-                    borderRadius: 0,
-                    padding: '30px 10px',
-                    fontSize: '16px',
-                    fontFamily: "'Poppins-Medium', sans-serif !important;",
-                  }}
-                  title="Checkout"
-                  aria-label="Checkout"
-                >
-                  ADD TO BAG
-                </Button>
+                <Grid item xs={12} lg={5} md={5} style={{paddingRight: '30px', }}>
+                  <Button
+                    variant="contained"
+                    disabled={addToBag}
+                    onClick={() => {
+                      setAddToBag(true)
+                    }}
+                    sx={{
+                      textTransform: 'uppercase',
+                      backgroundColor: '#0A6FB8',
+                      margin: 'auto',
+                      width: '100%',
+                      borderRadius: 0,
+                      padding: '30px 10px',
+                      fontSize: '16px',
+                      fontFamily: "'Poppins-Medium', sans-serif !important;",
+                    }}
+                    title="Checkout"
+                    aria-label="Checkout"
+                  >
+                    ADD TO BAG
+                  </Button>
+                </Grid>
               )
             }
           </Grid>

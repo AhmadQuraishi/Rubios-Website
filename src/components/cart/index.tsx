@@ -3,6 +3,7 @@ import {
   Typography,
   Theme,
   Box,
+  Checkbox,
   Divider,
   Button,
   Link as MUILink,
@@ -617,6 +618,29 @@ const Cart = ({ showCart, handleUpsells }: any) => {
                       </Grid>
                     </Grid>
                   ))}
+                <Grid item xs={12} sx={{ padding: '20px 0px' }}>
+                  <Divider sx={{ borderColor: '#224c65' }} />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography
+                    variant="body2"
+                    className="body-text"
+                    title="I agree to the  Rubios terms and conditions and to receiving marketing communications from Rubios."
+                    sx={{ width: '100%', color: '#224c65' }}
+                  >
+                    <Checkbox
+                      inputProps={{
+                        'aria-label':
+                          ' Add utensils to my order.',
+                      }}
+                      sx={{paddingLeft: 0, fontFamily: 'Poppins-Medium !important'}}
+                    />
+                    Add utensils to my order.
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sx={{ padding: '20px 0px' }}>
+                  <Divider sx={{ borderColor: '#224c65' }} />
+                </Grid>
                 <Grid item xs={12}>
                   <Typography
                     variant="h6"
@@ -650,8 +674,11 @@ const Cart = ({ showCart, handleUpsells }: any) => {
                             xs={12}
                             style={{
                               display: 'flex',
-                              border: '1px solid black',
+                              border: '1px solid rgba(0, 0, 0, 0.2)',
                               padding: 10,
+                              minHeight: '85px',
+                              alignItems: 'center',
+                              boxShadow: '0px 2px 3px 0px rgba(0, 0, 0, 0.2)'
                             }}
                             sx={{ cursor: 'pointer' }}
                             // onClick={() => {
@@ -668,7 +695,7 @@ const Cart = ({ showCart, handleUpsells }: any) => {
                               style={{
                                 // display: 'block',
                                 // margin: 'auto',
-                                width: 30,
+                                width: '25%',
                               }}
                               src={require('../../assets/imgs/default_img.png')}
                               // alt={option.name}
@@ -677,13 +704,13 @@ const Cart = ({ showCart, handleUpsells }: any) => {
                             <Typography
                               variant="h6"
                               component="p"
-                              fontSize="14px !important"
+                              fontSize="16px !important"
                               textAlign="center"
-                              padding="5px 0 0 10px"
+                              padding="0px 0 0 30px"
                               lineHeight="1.2 !important"
                               textTransform="capitalize"
                               className={classes.cartTitle}
-                              style={{ display: 'inline' }}
+                              sx={{ display: 'inline', fontFamily:'Poppins-Medium !important' }}
                               // title={option.name}
                             >
                               {type === UPSELLS_TYPES.SALSA

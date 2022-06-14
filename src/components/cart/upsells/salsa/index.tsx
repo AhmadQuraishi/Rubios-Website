@@ -529,8 +529,11 @@ const Salsa = ({ addToBag, showCart, upsellsType }: any) => {
                       xs={12}
                       style={{
                         display: 'flex',
-                        border: '1px solid black',
+                        border: '1px solid rgba(0, 0, 0, 0.2)',
                         padding: 10,
+                        minHeight: '140px',
+                        alignItems: 'center',
+                        boxShadow: '0px 2px 3px 0px rgba(0, 0, 0, 0.2)'
                       }}
                       sx={{ cursor: 'pointer' }}
                       onClick={() => {}}
@@ -545,71 +548,73 @@ const Salsa = ({ addToBag, showCart, upsellsType }: any) => {
                         style={{
                           // display: 'block',
                           // margin: 'auto',
-                          width: 30,
+                          width: '35%',
                         }}
                         src={require('../../../../assets/imgs/default_img.png')}
                         // alt={option.name}
                         // title={option.name}
                       />
-                      <Typography
-                        variant="h6"
-                        component="p"
-                        fontSize="14px !important"
-                        textAlign="center"
-                        padding="5px 0 0 10px"
-                        lineHeight="1.2 !important"
-                        textTransform="capitalize"
-                        className={classes.cartTitle}
-                        style={{ display: 'inline' }}
-                        // title={option.name}
-                      >
-                        {obj.name}
-                      </Typography>
-                      <div
-                        style={{ display: 'flex', alignItems: 'center' }}
-                        className="upsells-details"
-                      >
-                        <label
-                          title="Quantity"
-                          className="label bold quantity-label"
-                          htmlFor="quantityfield"
+                      <Grid item xs={12} sx={{display: 'flex', flexDirection: 'column', gap:'40px', paddingLeft: '20px'}}>
+                        <Typography
+                          variant="h6"
+                          component="p"
+                          fontSize="14px !important"
+                          padding = {0}
+                          textAlign="left"
+                          lineHeight="1.2 !important"
+                          textTransform="capitalize"
+                          className={classes.cartTitle}
+                          sx={{ display: 'inline', fontFamily:'Poppins-Medium !important' }}
+                          // title={option.name}
                         >
-                          QTY
-                        </label>
-                        <div className="quantity">
-                          <Button
-                            title=""
-                            className="add"
-                            aria-label="increase"
-                            onClick={() => {
-                              updateSalsaCount(obj.chainproductid, 'PLUS');
-                            }}
+                          {obj.name}
+                        </Typography>
+                        <div
+                          style={{ display: 'flex', alignItems: 'center' }}
+                          className="upsells-details"
+                        >
+                          <label
+                            title="Quantity"
+                            className="label bold quantity-label"
+                            htmlFor="quantityfield"
                           >
-                            {' '}
-                            +{' '}
-                          </Button>
-                          <input
-                            value={obj.quantity}
-                            // inputProps={inputProps}
-                            readOnly
-                            id="quantityfield"
-                            onChange={() => {}}
-                            className="input-quantity"
-                            title="quantity"
-                          />
-                          <Button
-                            title=""
-                            className="subtract"
-                            aria-label="reduce"
-                            onClick={() => {
-                              updateSalsaCount(obj.chainproductid, 'MINUS');
-                            }}
-                          >
-                            {' '}
-                            -{' '}
-                          </Button>
+                            QTY
+                          </label>
+                          <div className="quantity">
+                            <Button
+                              title=""
+                              className="add"
+                              aria-label="increase"
+                              onClick={() => {
+                                updateSalsaCount(obj.chainproductid, 'PLUS');
+                              }}
+                            >
+                              {' '}
+                              +{' '}
+                            </Button>
+                            <input
+                              value={obj.quantity}
+                              // inputProps={inputProps}
+                              readOnly
+                              id="quantityfield"
+                              onChange={() => {}}
+                              className="input-quantity"
+                              title="quantity"
+                            />
+                            <Button
+                              title=""
+                              className="subtract"
+                              aria-label="reduce"
+                              onClick={() => {
+                                updateSalsaCount(obj.chainproductid, 'MINUS');
+                              }}
+                            >
+                              {' '}
+                              -{' '}
+                            </Button>
+                          </div>
                         </div>
-                      </div>
+                      </Grid>
                     </Grid>
                   </Grid>
                 </>
