@@ -22,6 +22,7 @@ import { capitalizeFirstLetter } from '../../../../helpers/common';
 import { Category, Product as ProductInfo } from '../../../../types/olo-api';
 import { addMultipleProductsRequest } from '../../../../redux/actions/basket/addMultipleProducts';
 import ItemImage from '../../../item-image';
+import './index.css';
 
 const useStyles = makeStyles((theme: Theme) => ({
   dimPanel: {
@@ -530,147 +531,138 @@ const UpsellsOthers = ({ addToBag, showCart, upsellsType }: any) => {
   }, []);
   return (
     <>
-      {basketObj &&
-        basketObj.basket &&
-        basketObj.basket.products.length > 0 &&
-        upsells &&
-        upsells.length > 0 &&
-        upsells.map((itemChild: any, index1: number) => (
-          <Grid
-            key={Math.random() + index1}
-            option-id={itemChild.id}
-            // className={
-            //   checkOptionSelected(
-            //     itemChild.option.id,
-            //     itemMain.id,
-            //   ) == true
-            //     ? 'content-panel selected'
-            //     : 'content-panel'
-            // }
-            item
-            xs={6}
-            sm={3}
-            md={3}
-            lg={4}
-            sx={{ position: 'relative' }}
-          >
-            <input
-              checked={itemChild.selected}
-              style={{
-                opacity: 0,
-                position: 'absolute',
-                zIndex: 1000,
-              }}
-              type="checkbox"
-              id={itemChild.id}
-              value={itemChild.name}
-              // onClick={() => {
-              //   showChildOptions(
-              //     itemChild.option.id,
-              //     itemMain.id,
-              //     itemChild.dropDownValues,
-              //     itemChild.selectedValue,
-              //   );
-              // }}
-            />
-            <label
-              tabIndex={0}
-              htmlFor={itemChild.id}
-              // onClick={() => {
-              //   showChildOptions(
-              //     itemChild.option.id,
-              //     itemMain.id,
-              //     itemChild.dropDownValues,
-              //     itemChild.selectedValue,
-              //   );
-              // }}
-              // onKeyUp={(e) => {
-              //   if (e.keyCode === 13)
-              //     showChildOptions(
-              //       itemChild.option.id,
-              //       itemMain.id,
-              //       itemChild.dropDownValues,
-              //       itemChild.selectedValue,
-              //     );
-              // }}
+      <div className={'upsells'}>
+        {basketObj &&
+          basketObj.basket &&
+          basketObj.basket.products.length > 0 &&
+          upsells &&
+          upsells.length > 0 &&
+          upsells.map((itemChild: any, index1: number) => (
+            <Grid
+              key={Math.random() + index1}
+              option-id={itemChild.id}
+              className={1 === 1 ? 'content-panel selected' : 'content-panel'}
+              item
+              xs={6}
+              sm={3}
+              md={3}
+              lg={4}
+              sx={{ position: 'relative' }}
             >
-              <Card
-                className="card-panel"
-                title={itemChild.name}
-                // is-mandatory={itemMain.mandatory.toString()}
-                // parent-option-id={itemMain.parentOptionID}
+              <input
+                checked={itemChild.selected}
+                style={{
+                  opacity: 0,
+                  position: 'absolute',
+                  zIndex: 1000,
+                }}
+                type="checkbox"
+                id={itemChild.id}
+                value={itemChild.name}
+                // onClick={() => {
+                //   showChildOptions(
+                //     itemChild.option.id,
+                //     itemMain.id,
+                //     itemChild.dropDownValues,
+                //     itemChild.selectedValue,
+                //   );
+                // }}
+              />
+              <label
+                tabIndex={0}
+                htmlFor={itemChild.id}
+                // onClick={() => {
+                //   showChildOptions(
+                //     itemChild.option.id,
+                //     itemMain.id,
+                //     itemChild.dropDownValues,
+                //     itemChild.selectedValue,
+                //   );
+                // }}
+                // onKeyUp={(e) => {
+                //   if (e.keyCode === 13)
+                //     showChildOptions(
+                //       itemChild.option.id,
+                //       itemMain.id,
+                //       itemChild.dropDownValues,
+                //       itemChild.selectedValue,
+                //     );
+                // }}
               >
-                <div className="check-mark">
-                  <div aria-hidden="true" className="checkmark">
-                    L
-                  </div>
-                </div>
-                <Grid
-                  container
-                  spacing={1}
-                  className="name-img-panel"
-                  sx={{ padding: '0', marginTop: '0' }}
+                <Card
+                  className="card-panel"
+                  title={itemChild.name}
+                  // is-mandatory={itemMain.mandatory.toString()}
+                  // parent-option-id={itemMain.parentOptionID}
                 >
+                  <div className="check-mark">
+                    <div aria-hidden="true" className="checkmark">
+                      L
+                    </div>
+                  </div>
                   <Grid
-                    item
-                    xs={12}
-                    lg={5}
-                    sx={{
-                      padding: '0px',
-                      paddingLeft: {
-                        xs: '0px !important',
-                        lg: '15px !important',
-                      },
-                      paddingTop: {
-                        xs: '0px !important',
-                        lg: '0px !important',
-                      },
-                    }}
+                    container
+                    spacing={1}
+                    className="name-img-panel"
+                    sx={{ padding: '0', marginTop: '0' }}
                   >
-                    <ItemImage
-                      productImageURL={
-
-                        ((categories && categories.imagepath) ||
-                          '') +
-                        changeImageSize(
-                          itemChild.imagefilename || '',
-                          itemChild.images || '',
-                        )
-                      }
-                      index={index1}
-                      className="item-image"
-                      name={itemChild.name}
-                      id={itemChild.id}
-                      // optionImages={optionImages}
-                    />
+                    <Grid
+                      item
+                      xs={12}
+                      lg={5}
+                      sx={{
+                        padding: '0px',
+                        paddingLeft: {
+                          xs: '0px !important',
+                          lg: '15px !important',
+                        },
+                        paddingTop: {
+                          xs: '0px !important',
+                          lg: '0px !important',
+                        },
+                      }}
+                    >
+                      <ItemImage
+                        productImageURL={
+                          ((categories && categories.imagepath) || '') +
+                          changeImageSize(
+                            itemChild.imagefilename || '',
+                            itemChild.images || '',
+                          )
+                        }
+                        index={index1}
+                        className="item-image"
+                        name={itemChild.name}
+                        id={itemChild.id}
+                        // optionImages={optionImages}
+                      />
+                    </Grid>
+                    <Grid item xs={12} lg={7} className="name-panel">
+                      {itemChild.name}
+                      {itemChild.cost > 0 && (
+                        <Grid
+                          item
+                          xs={12}
+                          title={`$${parseFloat(itemChild.cost).toFixed(2)}`}
+                          sx={{
+                            paddingTop: '5px',
+                            fontSize: '14px',
+                            fontFamily: 'Poppins-Bold',
+                            color: '#7CC8C5',
+                            textAlign: { xs: 'center', lg: 'left' },
+                          }}
+                        >
+                          +$
+                          {parseFloat(itemChild.cost).toFixed(2)}
+                        </Grid>
+                      )}
+                    </Grid>
                   </Grid>
-                  <Grid item xs={12} lg={7} className="name-panel">
-                    {itemChild.name}
-                    {itemChild.cost > 0 && (
-                      <Grid
-                        item
-                        xs={12}
-                        title={`$${parseFloat(itemChild.cost).toFixed(
-                          2,
-                        )}`}
-                        sx={{
-                          paddingTop: '5px',
-                          fontSize: '14px',
-                          fontFamily: 'Poppins-Bold',
-                          color: '#7CC8C5',
-                          textAlign: { xs: 'center', lg: 'left' },
-                        }}
-                      >
-                        +$
-                        {parseFloat(itemChild.cost).toFixed(2)}
-                      </Grid>
-                    )}
-                  </Grid>
-                </Grid>
-              </Card>
-            </label>
-          </Grid>
-        ))}
+                </Card>
+              </label>
+            </Grid>
+          ))}
+      </div>
     </>
   );
 };

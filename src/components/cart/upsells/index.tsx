@@ -489,6 +489,51 @@ const Upsells = ({ showCart, upsellsType }: any) => {
               basketObj.basket &&
               basketObj.basket.products.length > 0 && (
                 <Grid item xs={12} lg={5} md={5} style={{paddingRight: '30px', }}>
+                  <div
+                    style={{ display: 'flex', alignItems: 'center' }}
+                    className="upsells-details"
+                  >
+                    <label
+                      title="Quantity"
+                      className="label bold quantity-label"
+                      htmlFor="quantityfield"
+                    >
+                      QTY
+                    </label>
+                    <div className="quantity">
+                      <Button
+                        title=""
+                        className="add"
+                        aria-label="increase"
+                        // onClick={() => {
+                        //   updateSalsaCount(obj.chainproductid, 'PLUS');
+                        // }}
+                      >
+                        {' '}
+                        +{' '}
+                      </Button>
+                      <input
+                        // value={obj.quantity}
+                        // inputProps={inputProps}
+                        readOnly
+                        id="quantityfield"
+                        onChange={() => {}}
+                        className="input-quantity"
+                        title="quantity"
+                      />
+                      <Button
+                        title=""
+                        className="subtract"
+                        aria-label="reduce"
+                        // onClick={() => {
+                        //   updateSalsaCount(obj.chainproductid, 'MINUS');
+                        // }}
+                      >
+                        {' '}
+                        -{' '}
+                      </Button>
+                    </div>
+                  </div>
                   <Button
                     variant="contained"
                     disabled={addToBag}
