@@ -9,9 +9,11 @@ import { removeProductRequest } from '../../../redux/actions/basket/product/remo
 import { addProductRequest } from '../../../redux/actions/basket/product/add';
 import { displayToast } from '../../../helpers/toast';
 import { addUpsellsRequest } from '../../../redux/actions/basket/upsell/Add';
+import Salsa from './salsa';
 import { UPSELLS, UPSELLS_TYPES } from '../../../helpers/upsells';
 import './upsells.css';
 import { capitalizeFirstLetter } from '../../../helpers/common';
+import { addMultipleProductsRequest } from '../../../redux/actions/basket/addMultipleProducts';
 
 const useStyles = makeStyles((theme: Theme) => ({
   dimPanel: {
@@ -113,6 +115,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const Upsells = ({ showCart, upsellsType }: any) => {
   const classes = useStyles();
   const [actionStatus, setActionStatus] = useState(false);
+  const [addToBag, setAddToBag] = useState(false);
   const [clickAction, setClickAction] = useState('');
   const [upsells, setUpsells] = useState<any[]>();
 
@@ -168,6 +171,36 @@ const Upsells = ({ showCart, upsellsType }: any) => {
     fitContainer();
     setBasketType((basketObj && basketObj.basketType) || '');
   }, []);
+
+  // useEffect(() => {
+  //   if (!runOnce) {
+  //     return;
+  //   }
+  //   const payload = {
+  //     products: [
+  //       {
+  //         productid: 13582537,
+  //         quantity: 1,
+  //         choices: [],
+  //       },
+  //       // {
+  //       //   chainproductid: 364431,
+  //       //   quantity: 1,
+  //       //   choices: [],
+  //       // },
+  //       // {
+  //       //   chainproductid: 364175,
+  //       //   quantity: 1,
+  //       //   choices: [],
+  //       // },
+  //     ],
+  //   };
+
+  //   if (basketObj && basketObj.basket) {
+  //     dispatch(addMultipleProductsRequest(basketObj.basket.id, payload));
+  //   }
+  //   setRunOnce(false);
+  // }, []);
 
   const updateUpsells = (upsells: any) => {
     let finalOptionsInArray: any = [];
@@ -440,179 +473,36 @@ const Upsells = ({ showCart, upsellsType }: any) => {
               </Grid>
             )}
 
-          {basketObj &&
-            basketObj.basket &&
-            basketObj.basket.products.length > 0 && (
-              <Grid
-                container
-                spacing={1}
-                id="cart-main-conatiner"
-                sx={{ paddingRight: '25px' }}
-              >
-                {basketObj &&
-                  basketObj.basket &&
-                  basketObj.basket.products.length > 0 &&
-                  upsells &&
-                  upsells.length > 0 &&
-                  UPSELLS.map((obj: any) => {
-                    if (obj.type !== upsellsType) {
-                      return <></>;
-                    }
-                    return (
-                      <>
-                        <Grid item xs={6}>
-                          <Grid
-                            key={Math.random() + '-'}
-                            item
-                            xs={12}
-                            style={{
-                              display: 'flex',
-                              border: '1px solid black',
-                              padding: 10,
-                            }}
-                            sx={{ cursor: 'pointer' }}
-                            // onClick={() => {
-                            //   addUpsells(option.id);
-                            // }}
-                            // tabIndex={0}
-                            // onKeyUp={(e) => {
-                            //   if (e.keyCode === 13) {
-                            //     addUpsells(option.id);
-                            //   }
-                            // }}
-                          >
-                            <img
-                              style={{
-                                // display: 'block',
-                                // margin: 'auto',
-                                width: 30,
-                              }}
-                              src={require('../../../assets/imgs/default_img.png')}
-                              // alt={option.name}
-                              // title={option.name}
-                            />
-                            <Typography
-                              variant="h6"
-                              component="p"
-                              fontSize="14px !important"
-                              textAlign="center"
-                              padding="5px 0 0 10px"
-                              lineHeight="1.2 !important"
-                              textTransform="capitalize"
-                              className={classes.cartTitle}
-                              style={{ display: 'inline' }}
-                              // title={option.name}
-                            >
-                              {obj.name}
-                            </Typography>
-                            <div
-                              style={{ display: 'flex', alignItems: 'center' }}
-                              className="upsells-details"
-                            >
-                              <label
-                                title="Quantity"
-                                className="label bold quantity-label"
-                                htmlFor="quantityfield"
-                              >
-                                QTY
-                              </label>
-                              <div className="quantity">
-                                <Button
-                                  title=""
-                                  className="add"
-                                  aria-label="increase"
-                                  // onClick={() => {
-                                  //   setCount(count + 1);
-                                  //   setTotalCost(
-                                  //     ((productDetails?.cost || 0) + optionsCost) *
-                                  //     (count + 1),
-                                  //   );
-                                  // }}
-                                >
-                                  {' '}
-                                  +{' '}
-                                </Button>
-                                <input
-                                  // value={count}
-                                  // inputProps={inputProps}
-                                  readOnly
-                                  id="quantityfield"
-                                  onChange={() => {}}
-                                  className="input-quantity"
-                                  title="quantity"
-                                />
-                                <Button
-                                  title=""
-                                  className="subtract"
-                                  aria-label="reduce"
-                                  // onClick={() => {
-                                  //   setCount(Math.max(count - 1, 1));
-                                  //   setTotalCost(
-                                  //     ((productDetails?.cost || 0) + optionsCost) *
-                                  //     Math.max(count - 1, 1),
-                                  //   );
-                                  // }}
-                                >
-                                  {' '}
-                                  -{' '}
-                                </Button>
-                              </div>
-                            </div>
-                          </Grid>
-                        </Grid>
-                      </>
-                    );
-                  })}
-              </Grid>
-            )}
+          <Salsa addToBag={addToBag} upsellsType={upsellsType} />
         </Grid>
         <Grid container spacing={0}>
           <Grid item xs={12}>
             {basketObj &&
-            basketObj.basket &&
-            basketObj.basket.products.length > 0 ? (
-              <Button
-                variant="contained"
-                onClick={() => {
-                  showCart();
-                  navigate('/checkout');
-                  return false;
-                }}
-                sx={{
-                  textTransform: 'uppercase',
-                  backgroundColor: '#0A6FB8',
-                  margin: 'auto',
-                  width: '100%',
-                  borderRadius: 0,
-                  padding: '30px 10px',
-                  fontSize: '16px',
-                  fontFamily: "'Poppins-Medium', sans-serif !important;",
-                }}
-                title="Checkout"
-                aria-label="Checkout"
-              >
-                ADD TO BAG
-              </Button>
-            ) : (
-              <Button
-                variant="contained"
-                disabled
-                sx={{
-                  textTransform: 'uppercase',
-                  backgroundColor: '#5FA625',
-                  margin: 'auto',
-                  width: '100%',
-                  borderRadius: 0,
-                  padding: '30px 10px',
-                  fontSize: '16px',
-                  fontFamily: "'Poppins-Medium', sans-serif !important;",
-                }}
-                title="Checkout"
-                aria-label="Checkout Button  disabled"
-              >
-                ADD TO BAG
-              </Button>
-            )}
+              basketObj.basket &&
+              basketObj.basket.products.length > 0 && (
+                <Button
+                  variant="contained"
+                  disabled={addToBag}
+                  onClick={() => {
+                    setAddToBag(true)
+                  }}
+                  sx={{
+                    textTransform: 'uppercase',
+                    backgroundColor: '#0A6FB8',
+                    margin: 'auto',
+                    width: '100%',
+                    borderRadius: 0,
+                    padding: '30px 10px',
+                    fontSize: '16px',
+                    fontFamily: "'Poppins-Medium', sans-serif !important;",
+                  }}
+                  title="Checkout"
+                  aria-label="Checkout"
+                >
+                  ADD TO BAG
+                </Button>
+              )
+            }
           </Grid>
         </Grid>
       </Box>
