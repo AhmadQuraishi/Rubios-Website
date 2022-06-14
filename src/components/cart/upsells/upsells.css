@@ -15,17 +15,23 @@
   box-shadow: none;
   min-width: 26px;
 }
+.upsells-details .quantity-label {
+  padding-right: 10px;
+}
 .upsells-details .quantity input {
   text-align: center;
   color: #0069aa;
   font-weight: Bold;
   border-left: 1px solid #e4e4e4;
   border-right: 1px solid #e4e4e4;
+  border-top: none;
+  border-bottom: none;
 }
 .upsells-details .quantity button {
   font-family: 'Poppins-Regular' !important;
   font-size: 15px;
   color: #414141;
+  font-weight: bold;
 }
 .upsells-details .quantity fieldset {
   box-shadow: none !important;
