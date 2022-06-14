@@ -62,6 +62,17 @@ const RegisterConfirmation = ({ id }: any) => {
   // };
 
   // @ts-ignore
+  React.useEffect(() => {
+    const monthField = document.getElementsByClassName(
+      'react-date-inputs__month',
+    );
+    const dayField = document.getElementsByClassName('react-date-inputs__day');
+
+    if (monthField && monthField.length && dayField && dayField.length) {
+      monthField[0].after(dayField[0]);
+    }
+  }, []);
+
   return (
     <>
       <Formik
