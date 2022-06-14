@@ -13,6 +13,7 @@ import './footer.css';
 import fbIcon from '../../assets/imgs/facebook-icon.png';
 import instaIcon from '../../assets/imgs/insta-icon.png';
 import twitterIcon from '../../assets/imgs/twitter-icon.png';
+import tiktokIcon from '../../assets/imgs/tik-tok.png';
 
 const useStyles = makeStyles((theme: Theme) => ({
   links: {
@@ -114,7 +115,7 @@ const Footer = () => {
                 <ul className="list">
                   {menu &&
                     menu.items.map((item: any, index: number) => (
-                      <li>
+                      <li key={Math.random()}>
                         <a
                           key={Math.random() + index}
                           className={classes.links}
@@ -161,41 +162,53 @@ const Footer = () => {
                 container
                 spacing={1}
                 width={200}
-                sx={{ padding: { xs: '10px 0 0 0', md: '20px 0 0 0' } }}
+                sx={{ padding: { xs: '10px 0 0 0', md: '10px 0 0 0', lg: '5px 0 0 0' } }}
               >
-                <Grid item xs={4}>
+                <Grid item xs={2} style={{marginRight: '10px'}}>
                   <a
                     href={'https://www.facebook.com/rubios/'}
                     target={'_blank'}
                   >
                     <img
                       src={fbIcon}
-                      style={{ width: '50%' }}
+                      style={{ width: '100%' }}
                       alt="Facebook Icon"
                     />
                   </a>
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={2} style={{marginRight: '10px'}}>
                   <a
                     href={'https://www.instagram.com/rubioscoastalgrill/'}
                     target={'_blank'}
                   >
                     <img
                       src={instaIcon}
-                      style={{ width: '50%' }}
+                      style={{ width: '100%' }}
                       alt="Instagram Icon"
                     />
                   </a>
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={2} style={{marginRight: '10px'}}>
                   <a
                     href={'https://twitter.com/RubiosTweets'}
                     target={'_blank'}
                   >
                     <img
                       src={twitterIcon}
-                      style={{ width: '50%' }}
+                      style={{ width: '100%' }}
                       alt="Twitter Icon"
+                    />
+                  </a>
+                </Grid>
+                <Grid item xs={2} style={{marginRight: '10px'}}>
+                  <a
+                    href={'https://www.tiktok.com/@officialrubios'}
+                    target={'_blank'}
+                  >
+                    <img
+                      src={tiktokIcon}
+                      style={{ width: '100%' }}
+                      alt="Tiktok Icon"
                     />
                   </a>
                 </Grid>
@@ -217,9 +230,9 @@ const Footer = () => {
               </Typography>
               <Grid
                 container
-                spacing={2}
+                spacing={4}
                 maxWidth={300}
-                sx={{ padding: '10px 0 0 0' }}
+                sx={{ padding: '0px 0 0 0' }}
               >
                 <Grid item xs={6}>
                   <Button sx={{ padding: 0 }}>
@@ -247,7 +260,7 @@ const Footer = () => {
           <Typography
             sx={{
               display: { sm: 'flex', md: 'none' },
-              paddingTop: { xs: '30px', md: '40px' },
+              paddingTop: { xs: '30px', md: '40px', lg: '30px' },
               paddingLeft: { xs: '20px', sm: '30px', lg: '70px' },
             }}
             variant="caption"
@@ -309,7 +322,7 @@ const Footer = () => {
                   md={12}
                   sx={{
                     display: 'flex',
-                    paddingTop: '15px !important',
+                    paddingTop: '30px !important',
                     paddingLeft: {
                       xs: '20px !important',
                       sm: '30px !important',
