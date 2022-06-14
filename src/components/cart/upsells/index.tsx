@@ -10,6 +10,7 @@ import { addProductRequest } from '../../../redux/actions/basket/product/add';
 import { displayToast } from '../../../helpers/toast';
 import { addUpsellsRequest } from '../../../redux/actions/basket/upsell/Add';
 import Salsa from './salsa';
+import UpsellsOthers from './others';
 import { UPSELLS, UPSELLS_TYPES } from '../../../helpers/upsells';
 import './upsells.css';
 import { capitalizeFirstLetter } from '../../../helpers/common';
@@ -473,7 +474,14 @@ const Upsells = ({ showCart, upsellsType }: any) => {
               </Grid>
             )}
 
-          <Salsa addToBag={addToBag} upsellsType={upsellsType} />
+
+          {
+            upsellsType === UPSELLS_TYPES.SALSA ? (
+              <Salsa addToBag={addToBag} upsellsType={upsellsType} />
+            ) : (
+              <UpsellsOthers addToBag={addToBag} upsellsType={upsellsType} />
+            )
+          }
         </Grid>
         <Grid container spacing={0}>
           <Grid item xs={12}>

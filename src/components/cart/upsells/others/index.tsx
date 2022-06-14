@@ -1,4 +1,12 @@
-import { Grid, Typography, Theme, Box, Divider, Button } from '@mui/material';
+import {
+  Grid,
+  Typography,
+  Theme,
+  Box,
+  Divider,
+  Button,
+  Card,
+} from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,6 +21,7 @@ import { UPSELLS, UPSELLS_TYPES } from '../../../../helpers/upsells';
 import { capitalizeFirstLetter } from '../../../../helpers/common';
 import { Category, Product as ProductInfo } from '../../../../types/olo-api';
 import { addMultipleProductsRequest } from '../../../../redux/actions/basket/addMultipleProducts';
+import ItemImage from '../../../item-image';
 
 const useStyles = makeStyles((theme: Theme) => ({
   dimPanel: {
@@ -111,7 +120,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const Salsa = ({ addToBag, showCart, upsellsType }: any) => {
+const UpsellsOthers = ({ addToBag, showCart, upsellsType }: any) => {
   const classes = useStyles();
   const [actionStatus, setActionStatus] = useState(false);
   const [clickAction, setClickAction] = useState('');
@@ -226,8 +235,21 @@ const Salsa = ({ addToBag, showCart, upsellsType }: any) => {
     // } else {
     //   setUpsells({});
     // }
-  }, [categories]);
-
+  }, [categories, upsellsType]);
+  const changeImageSize = (path: string, images: any) => {
+    if (images && images.length > 0) {
+      const dektopImage: any = images.find(
+        (obj: any) => obj.groupname == 'desktop-menu',
+      );
+      if (dektopImage) {
+        return dektopImage.filename.replace('h=138', 'h=500');
+      } else {
+        return path;
+      }
+    } else {
+      return path;
+    }
+  };
   // useEffect(() => {
   //   if (
   //     basketObj &&
@@ -512,113 +534,145 @@ const Salsa = ({ addToBag, showCart, upsellsType }: any) => {
         basketObj.basket &&
         basketObj.basket.products.length > 0 &&
         upsells &&
-        upsells.length > 0 && (
+        upsells.length > 0 &&
+        upsells.map((itemChild: any, index1: number) => (
           <Grid
-            container
-            spacing={1}
-            id="cart-main-conatiner"
-            sx={{ paddingRight: '25px' }}
+            key={Math.random() + index1}
+            option-id={itemChild.id}
+            // className={
+            //   checkOptionSelected(
+            //     itemChild.option.id,
+            //     itemMain.id,
+            //   ) == true
+            //     ? 'content-panel selected'
+            //     : 'content-panel'
+            // }
+            item
+            xs={6}
+            sm={3}
+            md={3}
+            lg={4}
+            sx={{ position: 'relative' }}
           >
-            {upsells.map((obj: any) => {
-              return (
-                <>
-                  <Grid item xs={6}>
-                    <Grid
-                      key={Math.random() + '-'}
-                      item
-                      xs={12}
-                      style={{
-                        display: 'flex',
-                        border: '1px solid black',
-                        padding: 10,
-                      }}
-                      sx={{ cursor: 'pointer' }}
-                      onClick={() => {}}
-                      // tabIndex={0}
-                      // onKeyUp={(e) => {
-                      //   if (e.keyCode === 13) {
-                      //     addUpsells(option.id);
-                      //   }
-                      // }}
-                    >
-                      <img
-                        style={{
-                          // display: 'block',
-                          // margin: 'auto',
-                          width: 30,
-                        }}
-                        src={require('../../../../assets/imgs/default_img.png')}
-                        // alt={option.name}
-                        // title={option.name}
-                      />
-                      <Typography
-                        variant="h6"
-                        component="p"
-                        fontSize="14px !important"
-                        textAlign="center"
-                        padding="5px 0 0 10px"
-                        lineHeight="1.2 !important"
-                        textTransform="capitalize"
-                        className={classes.cartTitle}
-                        style={{ display: 'inline' }}
-                        // title={option.name}
-                      >
-                        {obj.name}
-                      </Typography>
-                      <div
-                        style={{ display: 'flex', alignItems: 'center' }}
-                        className="upsells-details"
-                      >
-                        <label
-                          title="Quantity"
-                          className="label bold quantity-label"
-                          htmlFor="quantityfield"
-                        >
-                          QTY
-                        </label>
-                        <div className="quantity">
-                          <Button
-                            title=""
-                            className="add"
-                            aria-label="increase"
-                            onClick={() => {
-                              updateSalsaCount(obj.chainproductid, 'PLUS');
-                            }}
-                          >
-                            {' '}
-                            +{' '}
-                          </Button>
-                          <input
-                            value={obj.quantity}
-                            // inputProps={inputProps}
-                            readOnly
-                            id="quantityfield"
-                            onChange={() => {}}
-                            className="input-quantity"
-                            title="quantity"
-                          />
-                          <Button
-                            title=""
-                            className="subtract"
-                            aria-label="reduce"
-                            onClick={() => {
-                              updateSalsaCount(obj.chainproductid, 'MINUS');
-                            }}
-                          >
-                            {' '}
-                            -{' '}
-                          </Button>
-                        </div>
-                      </div>
-                    </Grid>
+            <input
+              checked={itemChild.selected}
+              style={{
+                opacity: 0,
+                position: 'absolute',
+                zIndex: 1000,
+              }}
+              type="checkbox"
+              id={itemChild.id}
+              value={itemChild.name}
+              // onClick={() => {
+              //   showChildOptions(
+              //     itemChild.option.id,
+              //     itemMain.id,
+              //     itemChild.dropDownValues,
+              //     itemChild.selectedValue,
+              //   );
+              // }}
+            />
+            <label
+              tabIndex={0}
+              htmlFor={itemChild.id}
+              // onClick={() => {
+              //   showChildOptions(
+              //     itemChild.option.id,
+              //     itemMain.id,
+              //     itemChild.dropDownValues,
+              //     itemChild.selectedValue,
+              //   );
+              // }}
+              // onKeyUp={(e) => {
+              //   if (e.keyCode === 13)
+              //     showChildOptions(
+              //       itemChild.option.id,
+              //       itemMain.id,
+              //       itemChild.dropDownValues,
+              //       itemChild.selectedValue,
+              //     );
+              // }}
+            >
+              <Card
+                className="card-panel"
+                title={itemChild.name}
+                // is-mandatory={itemMain.mandatory.toString()}
+                // parent-option-id={itemMain.parentOptionID}
+              >
+                <div className="check-mark">
+                  <div aria-hidden="true" className="checkmark">
+                    L
+                  </div>
+                </div>
+                <Grid
+                  container
+                  spacing={1}
+                  className="name-img-panel"
+                  sx={{ padding: '0', marginTop: '0' }}
+                >
+                  <Grid
+                    item
+                    xs={12}
+                    lg={5}
+                    sx={{
+                      padding: '0px',
+                      paddingLeft: {
+                        xs: '0px !important',
+                        lg: '15px !important',
+                      },
+                      paddingTop: {
+                        xs: '0px !important',
+                        lg: '0px !important',
+                      },
+                    }}
+                  >
+                    <ItemImage
+                      productImageURL={
+
+                        ((categories && categories.imagepath) ||
+                          '') +
+                        changeImageSize(
+                          itemChild.imagefilename || '',
+                          itemChild.images || '',
+                        )
+                      }
+                      index={index1}
+                      className="item-image"
+                      name={itemChild.name}
+                      id={itemChild.id}
+                      // optionImages={optionImages}
+                    />
                   </Grid>
-                </>
-              );
-            })}
+                  <Grid item xs={12} lg={7} className="name-panel">
+                    {itemChild.name}
+                    {itemChild.cost > 0 && (
+                      <Grid
+                        item
+                        xs={12}
+                        title={`$${parseFloat(itemChild.cost).toFixed(
+                          2,
+                        )}`}
+                        sx={{
+                          paddingTop: '5px',
+                          fontSize: '14px',
+                          fontFamily: 'Poppins-Bold',
+                          color: '#7CC8C5',
+                          textAlign: { xs: 'center', lg: 'left' },
+                        }}
+                      >
+                        +$
+                        {parseFloat(itemChild.cost).toFixed(2)}
+                      </Grid>
+                    )}
+                  </Grid>
+                </Grid>
+              </Card>
+            </label>
           </Grid>
-        )}
+        ))}
     </>
   );
 };
 
-export default Salsa;
+export default UpsellsOthers;

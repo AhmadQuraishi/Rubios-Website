@@ -10,9 +10,10 @@ const ItemImage = (props: any) => {
 
   useEffect(() => {
     if (
-      name.toLowerCase() == 'as is' ||
-      name.toLowerCase() == 'customize' ||
-      name.toLowerCase().indexOf('taco') != -1
+      !optionImages ||
+      name.toLowerCase() === 'as is' ||
+      name.toLowerCase() === 'customize' ||
+      name.toLowerCase().indexOf('taco') !== -1
     ) {
       return;
     }
