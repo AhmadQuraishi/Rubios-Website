@@ -230,6 +230,24 @@ const Salsa = ({ addToBag, showCart, upsellsType }: any) => {
 
   useEffect(() => {
     if (addToBag) {
+      console.log('upsells', upsells);
+      if (upsells && upsells.length) {
+        const products: any = [];
+        upsells.forEach((product: any) => {
+          const obj = {
+            productid: product.id,
+            quantity: product.quantity,
+            choices: [],
+          };
+          products.push(obj);
+        });
+        if (products.length) {
+          const payload: any = {
+            products: products,
+          };
+          dispatch(addMultipleProductsRequest(basketObj.basket.id, payload));
+        }
+      }
     }
   }, [addToBag]);
 
