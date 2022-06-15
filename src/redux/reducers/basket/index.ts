@@ -57,9 +57,17 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
     case basketActionsTypes.UPDATE_BASKET_TIP_AMOUNT:
     case basketActionsTypes.UPDATE_BASKET_COUPON_CODE:
     case basketActionsTypes.REMOVE_BASKET_COUPON_CODE:
+    case basketActionsTypes.ADD_MULTIPLE_PRODUCT_REQUEST:
       return {
         ...state,
         loading: true,
+      };
+    case basketActionsTypes.ADD_MULTIPLE_PRODUCT_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        basket: action.payload.basket,
+        error: action.payload.errors,
       };
     case basketActionsTypes.GET_BASKET_SUCCESS:
     case basketActionsTypes.UPDATE_BASKET_TIME_WANTED_SUCCESS:
@@ -89,6 +97,7 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
     case basketActionsTypes.VALIDETE_BASKET_PHONE_FAILURE:
     case basketActionsTypes.SET_BASKET_DELIVERY_MODE_FAILURE:
     case basketActionsTypes.SET_BASKET_DELIVERY_ADDRESS_FAILURE:
+    case basketActionsTypes.ADD_MULTIPLE_PRODUCT_FAILURE:
       return {
         ...state,
         loading: false,

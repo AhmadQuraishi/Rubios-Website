@@ -22,6 +22,7 @@ import logo from '../../assets/imgs/rubios-logo-color.png';
 import cartIconMobile from '../../assets/imgs/cart-icon-mobile.svg';
 
 import Cart from '../cart';
+import Upsells from '../cart/upsells';
 import { useSelector } from 'react-redux';
 import RightMenuBar from '../right-menu-bar';
 
@@ -97,10 +98,12 @@ const Header = (props: any) => {
   const classes = useStyles();
   const theme = useTheme();
   const [openDrawer, setOpenDrawer] = useState(false);
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [showCart, setShowCart] = useState(false);
-  const [state, setState] = useState(false);
+  const [showUpsells, setShowUpsells] = useState(false);
+  const [upsellsType, setUpsellsType] = useState('');
+  // const [state, setState] = useState(false);
   const basketObj = useSelector((state: any) => state.basketReducer);
   const { providerToken } = useSelector((state: any) => state.providerReducer);
   const { restaurant } = useSelector(
@@ -111,22 +114,32 @@ const Header = (props: any) => {
 
   const handleShowCart = () => {
     setShowAccountMenu(false);
-    if (fromEditOrder == true) {
-      setShowCart(true);
+    if (fromEditOrder) {
+      // setShowCart(true);
       //document.body.style.overflow = 'hidden';
-      setState(!state);
+      // setState(!state);
       fromEditOrder = false;
       setShowCart(false);
       //document.body.style.overflow = 'auto';
     } else {
-      if (!showCart) {
-       // document.body.style.overflow = 'hidden';
-      } else {
-       // document.body.style.overflow = 'auto';
-      }
-      setOpen(!showCart);
+      // if (!showCart) {
+      // document.body.style.overflow = 'hidden';
+      // } else {
+      // document.body.style.overflow = 'auto';
+      // }
+      // setOpen(!showCart);
       setShowCart(!showCart);
     }
+  };
+
+  const handleUpsells = (type: string) => {
+    console.log('type', type)
+    if (type === '') {
+      setShowUpsells(false);
+    } else {
+      setShowUpsells(true);
+    }
+    setUpsellsType(type);
   };
   return (
     <>
@@ -449,15 +462,21 @@ const Header = (props: any) => {
           )}
         </Toolbar>
       </AppBar>
-      {(fromEditOrder === true && <Cart showCart={handleShowCart} />) ||
+      {(fromEditOrder && <Cart showCart={handleShowCart} />) ||
         (showCart && (
           <Dialog
-            open={open}
+            open={showCart}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
             sx={{ border: '0' }}
           >
-            <Cart showCart={handleShowCart} />
+            {showUpsells && upsellsType !== '' && (
+              <Upsells
+                upsellsType={upsellsType}
+                showCart={handleShowCart}
+              />
+            )}
+            <Cart showCart={handleShowCart} handleUpsells={handleUpsells} />
           </Dialog>
         ))}
       {showAccountMenu && (
