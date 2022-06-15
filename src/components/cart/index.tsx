@@ -85,7 +85,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: '#0075BF !important',
     fontSize: '11px !important',
     fontFamily: "'Poppins-Bold' !important",
-    textDecoration: 'underline',
+    textDecoration: "underline !important",
     display: 'inline',
     cursor: 'pointer',
     textTransform: 'uppercase',
