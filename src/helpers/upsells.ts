@@ -104,124 +104,123 @@ export const UPSELLS = [
     products: [
       {
         name: 'Regular Drink',
-        chainproductid: 4223890,
-        falvors: [
+        chainproductid: 364258,
+        flavors: [
           {
             name: 'Coke',
-            chainoptionid: 4224445,
+            optionid: 1195344553,
           },
           {
             name: 'Diet Coke',
-            chainoptionid: 4226107,
+            optionid: 1195344557,
           },
           {
             name: 'Sprite',
-            chainoptionid: 4225158,
+            optionid: 1195344556,
           },
           {
             name: 'Fuze Raspberry Iced Tea',
-            chainoptionid: 4222922,
+            optionid: 1195344549,
           },
           {
             name: 'Pibb Extra',
-            chainoptionid: 4224994,
+            optionid: 1195344554,
           },
           {
             name: 'Hi-C Fruit Punch',
-            chainoptionid: 4225120,
+            optionid: 1195344555,
           },
           {
             name: "Barq's Root Beer",
-            chainoptionid: 4223484,
+            optionid: 1195344550,
           },
           {
             name: 'Fresh Brewed Ice Tea',
-            chainoptionid: 4224432,
+            optionid: 1195344552,
           },
           {
             name: 'Fresh Brewed Mango Iced Tea',
-            chainoptionid: 4224327,
+            optionid: 1195344551,
           },
         ],
       },
       {
         name: 'Large Drink',
-        chainproductid: '4225558',
-        // productid: ,
-        falvors: [
+        chainproductid: 364235,
+        flavors: [
           {
             name: 'Coke',
-            chainoptionid: 4224445,
+            optionid: 1195344626,
           },
           {
             name: 'Diet Coke',
-            chainoptionid: 4226107,
+            optionid: 1195344630,
           },
           {
             name: 'Sprite',
-            chainoptionid: 4225158,
+            optionid: 1195344629,
           },
           {
             name: 'Fuze Raspberry Iced Tea',
-            chainoptionid: 4222922,
+            optionid: 1195344622,
           },
           {
             name: 'Pibb Extra',
-            chainoptionid: 4224994,
+            optionid: 1195344627,
           },
           {
             name: 'Hi-C Fruit Punch',
-            chainoptionid: 4225120,
+            optionid: 1195344628,
           },
           {
             name: "Barq's Root Beer",
-            chainoptionid: 4223484,
+            optionid: 1195344623,
           },
           {
             name: 'Fresh Brewed Ice Tea',
-            chainoptionid: 4224432,
+            optionid: 1195344625,
           },
           {
             name: 'Fresh Brewed Mango Iced Tea',
-            chainoptionid: 4224327,
+            optionid: 1195344624,
           },
         ],
       },
       {
         name: 'Bottled Drinks',
-        chainproductid: 4223873,
+        chainproductid: 364154,
         flavors: [
           {
             name: 'Perrier Sparkling Water',
-            chainoptionid: 4225688,
+            optionid: 1195344702,
           },
           {
             name: 'San Pelligrino, Limonata',
-            chainoptionid: 4224614,
+            optionid: 1195344703,
           },
           {
             name: 'San Pelligrino, Blood Orange',
-            chainoptionid: 4223574,
+            optionid: 1195344707,
           },
           {
             name: 'Bai Zambia Bing Cherry',
-            chainoptionid: 4225081,
+            optionid: 1195344706,
           },
           {
             name: 'Bai Molokai Coconut',
-            chainoptionid: 4225817,
+            optionid: 1195344698,
           },
           {
             name: 'Dasani Bottled Water',
-            chainoptionid: 4223653,
+            optionid: 1195344705,
           },
           {
             name: 'Fanta',
-            chainoptionid: 4226340,
+            optionid: 1195344704,
           },
           {
             name: 'Mexican Coke',
-            chainoptionid: 4225971,
+            optionid: 1195344699,
           },
         ],
       },
@@ -234,3 +233,10 @@ export const UPSELLS_TYPES = {
   SIDE: 'SIDE',
   DRINK: 'DRINK',
 };
+
+export function utensilsProductId() {
+  let utensilsProductId: any =
+    process.env.REACT_APP_UTENSILS_PRODUCT_ID || 13869812;
+  utensilsProductId = parseInt(utensilsProductId);
+  return utensilsProductId;
+}

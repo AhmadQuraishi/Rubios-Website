@@ -80,6 +80,8 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
     case basketActionsTypes.CREATE_BASKET_FROM_PREV_SUCCESS:
     case basketActionsTypes.SET_BASKET_DELIVERY_MODE_SUCCESS:
     case basketActionsTypes.SET_BASKET_DELIVERY_ADDRESS_SUCCESS:
+    case basketActionsTypes.REMOVE_PRODUCT_SUCCESS:
+    case basketActionsTypes.ADD_PRODUCT_SUCCESS:
       return {
         ...state,
         loading: false,

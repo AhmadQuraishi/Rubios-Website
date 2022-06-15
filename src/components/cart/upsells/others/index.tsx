@@ -121,12 +121,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const UpsellsOthers = ({ addToBag, showCart, upsellsType }: any) => {
+const UpsellsOthers = ({ addToBag, showCart, upsellsType, quantity }: any) => {
   const classes = useStyles();
   const [actionStatus, setActionStatus] = useState(false);
   const [clickAction, setClickAction] = useState('');
   const [runOnce, setRunOnce] = useState(true);
   const [upsells, setUpsells] = useState<any>();
+  const [optionSelected, setOptionSelected] = useState('');
 
   const productRemoveObj = useSelector(
     (state: any) => state.removeProductReducer,
@@ -164,79 +165,42 @@ const UpsellsOthers = ({ addToBag, showCart, upsellsType }: any) => {
         filteredUpsellsIds.length
       ) {
         categories.categories.forEach((item: Category) => {
-          const findResults = item.products
+          let findResults = item.products
             .filter((obj: ProductInfo) => {
               return filteredUpsellsIds.includes(obj.chainproductid);
             })
             .map((obj: any) => {
               return {
                 ...obj,
-                quantity: 0,
+                selected: false,
               };
             });
+
           if (findResults && findResults.length) {
             Array.prototype.push.apply(products, findResults);
           }
         });
-
-        // const singleCategory = categories.categories.find((obj: any) => {
-        //   return obj.id === upsellsCategory.catergoryid;
-        // });
-        // console.log('singleCategory', singleCategory);
-        // if (
-        //   singleCategory &&
-        //   singleCategory.products &&
-        //   singleCategory.products.length
-        // ) {
-        //   products = singleCategory.products.filter((obj: any) =>
-        //     filteredUpsellsIds.includes(obj.chainproductid),
-        //   );
-        // }
       }
     }
+    if (upsellsType === UPSELLS_TYPES.DRINK) {
+      upsellsCategory.products.forEach((obj: any) => {
+        products = products.map((prod: any) => {
+          if (obj.chainproductid === prod.chainproductid) {
+            return {
+              ...prod,
+              options: obj.flavors,
+            };
+          } else {
+            return prod;
+          }
+        });
+      });
+    }
+
     console.log('products', products);
     setUpsells(products);
-
-    // let filteredUpsells = UPSELLS.filter(
-    //   (obj: any) => obj.type === upsellsType,
-    //   return obj.id;
-    // );
-
-    // if (filteredUpsells.length > 0) {
-    //   console.log('filteredUpsells', filteredUpsells);
-    //   // setUpsells(filteredUpsells[0]);
-    //
-    //   if (
-    //     categories &&
-    //     categories.categories &&
-    //     categories.categories.length > 0
-    //   ) {
-    //     const singleCategory = categories.categories.find((obj: any) => {
-    //       return obj.id === filteredUpsells[0].catergoryid;
-    //     });
-    //
-    //     if (
-    //       singleCategory &&
-    //       singleCategory.products &&
-    //       singleCategory.products.length > 0
-    //     ) {
-    //       singleCategory.products.filter();
-    //       filteredUpsells.forEach((obj: any) => {});
-    //     }
-    //
-    //     categories.categories.map((item: Category) => {
-    //       const product = item.products.find((obj: ProductInfo) => {
-    //         return obj.id.toString() == id;
-    //       });
-    //       if (product) {
-    //         setProductDetails(product);
-    //       }
-    //     });
-    //   }
-    // } else {
-    //   setUpsells({});
-    // }
   }, [categories, upsellsType]);
+
   const changeImageSize = (path: string, images: any) => {
     if (images && images.length > 0) {
       const dektopImage: any = images.find(
@@ -266,20 +230,18 @@ const UpsellsOthers = ({ addToBag, showCart, upsellsType }: any) => {
     if (addToBag) {
       console.log('upsells', upsells);
       if (upsells && upsells.length) {
-        const products: any = [];
-        upsells.forEach((product: any) => {
-          const obj = {
-            productid: product.id,
-            quantity: product.quantity,
-            choices: [],
+        const product: any = upsells.filter((obj: any) => obj.selected);
+        if (product && product.length) {
+          const request: any = {
+            productid: product[0].id,
+            quantity: quantity,
+            options: '',
           };
-          products.push(obj);
-        });
-        if (products.length) {
-          const payload: any = {
-            products: products,
-          };
-          dispatch(addMultipleProductsRequest(basketObj.basket.id, payload));
+
+          if(upsellsType === UPSELLS_TYPES.DRINK){
+            request.options = `${optionSelected},`
+          }
+          dispatch(addProductRequest(basketObj.basket.id, request));
         }
       }
     }
@@ -297,6 +259,24 @@ const UpsellsOthers = ({ addToBag, showCart, upsellsType }: any) => {
       } else {
         return {
           ...obj,
+        };
+      }
+    });
+    console.log('upsells', updatedProducts);
+    setUpsells(updatedProducts);
+  };
+
+  const updateSelection = (id: any, selected: any) => {
+    const updatedProducts = upsells.map((obj: any) => {
+      if (id === obj.id) {
+        return {
+          ...obj,
+          selected: !selected,
+        };
+      } else {
+        return {
+          ...obj,
+          selected: false,
         };
       }
     });
@@ -529,6 +509,11 @@ const UpsellsOthers = ({ addToBag, showCart, upsellsType }: any) => {
       firstFocusableElement && (firstFocusableElement as HTMLElement)?.focus();
     }
   }, []);
+
+  const optionChange = (e: any) => {
+    console.log(e.target.value);
+    setOptionSelected(e.target.value)
+  };
   return (
     <>
       <div className={'upsells'}>
@@ -541,7 +526,10 @@ const UpsellsOthers = ({ addToBag, showCart, upsellsType }: any) => {
             <Grid
               key={Math.random() + index1}
               option-id={itemChild.id}
-              className={1 === 1 ? 'content-panel selected' : 'content-panel'}
+              onClick={() => updateSelection(itemChild.id, itemChild.selected)}
+              className={
+                itemChild.selected ? 'content-panel selected' : 'content-panel'
+              }
               item
               xs={6}
               sm={6}
@@ -656,6 +644,39 @@ const UpsellsOthers = ({ addToBag, showCart, upsellsType }: any) => {
                           {parseFloat(itemChild.cost).toFixed(2)}
                         </Grid>
                       )}
+                      <>
+                        {itemChild.selected &&
+                          itemChild.options &&
+                          itemChild.options.length > 0 && (
+                            <select
+                              className="ss-panl"
+                              parent-select-option-id={itemChild.chainproductid}
+                              onClick={(e) => e.stopPropagation()}
+                              value={optionSelected}
+                              data-select-id={itemChild.chainproductid || '0'}
+                              onChange={(e) => optionChange(e)}
+                            >
+                              {itemChild.options.map(
+                                (option: any, index: number) => (
+                                  <option
+                                    key={Math.random() + index}
+                                    value={option.optionid}
+                                    // onClick={() => {
+                                    //   setTotalCost(
+                                    //     ((productDetails?.cost ||
+                                    //         0) +
+                                    //       option.cost) *
+                                    //     count,
+                                    //   );
+                                    // }}
+                                  >
+                                    {option.name}
+                                  </option>
+                                ),
+                              )}
+                            </select>
+                          )}
+                      </>
                     </Grid>
                   </Grid>
                 </Card>
