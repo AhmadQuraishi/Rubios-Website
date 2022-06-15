@@ -370,7 +370,7 @@ const PersonalInfo = () => {
                         variant="body2"
                         className="body-text"
                         title="Password must be at least 8 characters."
-                        sx={{ width: '100%' }}
+                        sx={{ width: '100%', paddingTop: '0px !important', marginTop: '-8px' }}
                       >
                         Password must be at least 8 characters.
                       </Typography>

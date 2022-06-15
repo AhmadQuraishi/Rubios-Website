@@ -6,7 +6,8 @@ label.time-picker:focus-within {
 }
 .native-select .MuiNativeSelect-select {
   height: 44px !important;
-  text-align: center;
+  text-align: center !important;
+  text-align-last: center !important;
   font-family: 'Poppins-Bold', sans-serif !important;
   font-size: 15px;
   height: 50px;

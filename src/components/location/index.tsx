@@ -308,6 +308,8 @@ const LocationCard = (props: any) => {
                 marginLeft: '350px',
                 paddingTop: '40px',
                 paddingRight: '40px',
+                maxHeight: '94%',
+                overflowY: 'auto'
               }}
             >
               <Typography
