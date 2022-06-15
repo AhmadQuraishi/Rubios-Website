@@ -58,11 +58,13 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
     case basketActionsTypes.UPDATE_BASKET_COUPON_CODE:
     case basketActionsTypes.REMOVE_BASKET_COUPON_CODE:
     case basketActionsTypes.ADD_MULTIPLE_PRODUCT_REQUEST:
+    case basketActionsTypes.UPDATE_MULTIPLE_PRODUCT_REQUEST:
       return {
         ...state,
         loading: true,
       };
     case basketActionsTypes.ADD_MULTIPLE_PRODUCT_SUCCESS:
+    case basketActionsTypes.UPDATE_MULTIPLE_PRODUCT_SUCCESS:
       return {
         ...state,
         loading: false,
@@ -98,6 +100,7 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
     case basketActionsTypes.SET_BASKET_DELIVERY_MODE_FAILURE:
     case basketActionsTypes.SET_BASKET_DELIVERY_ADDRESS_FAILURE:
     case basketActionsTypes.ADD_MULTIPLE_PRODUCT_FAILURE:
+    case basketActionsTypes.UPDATE_MULTIPLE_PRODUCT_FAILURE:
       return {
         ...state,
         loading: false,

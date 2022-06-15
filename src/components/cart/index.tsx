@@ -18,6 +18,8 @@ import { removeProductRequest } from '../../redux/actions/basket/product/remove'
 import { addProductRequest } from '../../redux/actions/basket/product/add';
 import { displayToast } from '../../helpers/toast';
 import { addUpsellsRequest } from '../../redux/actions/basket/upsell/Add';
+import { updateMultipleProductsRequest } from '../../redux/actions/basket/addMultipleProducts/index';
+
 import { UPSELLS, UPSELLS_TYPES } from '../../helpers/upsells';
 import { capitalizeFirstLetter } from '../../helpers/common';
 
@@ -121,6 +123,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const Cart = ({ showCart, handleUpsells }: any) => {
   const classes = useStyles();
   const [actionStatus, setActionStatus] = useState(false);
+  const [utensils, setUtensils] = useState(false);
   const [clickAction, setClickAction] = useState('');
   const [upsells, setUpsells] = useState<any[]>();
 
@@ -211,6 +214,31 @@ const Cart = ({ showCart, handleUpsells }: any) => {
       updateUpsells(upsellsObj.upsells);
     }
     fitContainer();
+  }, [basketObj]);
+
+  useEffect(() => {
+    if (
+      basketObj &&
+      basketObj.basket &&
+      basketObj.basket.products &&
+      basketObj.basket.products.length
+    ) {
+      let utensilsProductId: any = process.env.REACT_APP_UTENSILS_PRODUCT_ID;
+      utensilsProductId = parseInt(utensilsProductId)
+      const utensils = basketObj.basket.products.filter(
+        (obj: any) =>
+          obj.productId ===
+          utensilsProductId,
+      );
+
+      if (utensils.length) {
+        setUtensils(true);
+      } else {
+        setUtensils(false);
+      }
+    } else {
+      setUtensils(false);
+    }
   }, [basketObj]);
 
   useEffect(() => {
@@ -332,6 +360,39 @@ const Cart = ({ showCart, handleUpsells }: any) => {
       firstFocusableElement && (firstFocusableElement as HTMLElement)?.focus();
     }
   }, []);
+
+  const addRemoveUtensils = (e: any) => {
+    console.log('e.target.checked', e.target.checked);
+    let productId: any =
+      process.env.REACT_APP_UTENSILS_PRODUCT_ID || '13869814';
+    productId = parseInt(productId);
+    if (e.target.checked) {
+      const request: any = {};
+      request.productid = productId;
+      request.quantity = 1;
+      request.options = '';
+      dispatch(addProductRequest(basketObj.basket.id, request));
+    } else {
+      console.log('e.target.checked 2', e.target.checked);
+      if (
+        basketObj &&
+        basketObj.basket &&
+        basketObj.basket.products &&
+        basketObj.basket.products.length
+      ) {
+        const utensilsAllProducts = basketObj.basket.products.filter(
+          (obj: any) => obj.productId === productId,
+        );
+        if (utensilsAllProducts && utensilsAllProducts.length) {
+          utensilsAllProducts.forEach((obj: any) => {
+            dispatch(removeProductRequest(basketObj.basket.id, obj.id));
+          });
+        }
+      }
+
+    }
+  };
+
   return (
     <>
       <div className={classes.dimPanel} onClick={showCart}></div>
@@ -629,11 +690,17 @@ const Cart = ({ showCart, handleUpsells }: any) => {
                     sx={{ width: '100%', color: '#224c65' }}
                   >
                     <Checkbox
-                      inputProps={{
-                        'aria-label':
-                          ' Add utensils to my order.',
+                      checked={utensils}
+                      onChange={(e) => {
+                        addRemoveUtensils(e);
                       }}
-                      sx={{paddingLeft: 0, fontFamily: 'Poppins-Medium !important'}}
+                      inputProps={{
+                        'aria-label': ' Add utensils to my order.',
+                      }}
+                      sx={{
+                        paddingLeft: 0,
+                        fontFamily: 'Poppins-Medium !important',
+                      }}
                     />
                     Add utensils to my order.
                   </Typography>
@@ -678,7 +745,7 @@ const Cart = ({ showCart, handleUpsells }: any) => {
                               padding: 10,
                               minHeight: '85px',
                               alignItems: 'center',
-                              boxShadow: '0px 2px 3px 0px rgba(0, 0, 0, 0.2)'
+                              boxShadow: '0px 2px 3px 0px rgba(0, 0, 0, 0.2)',
                             }}
                             sx={{ cursor: 'pointer' }}
                             // onClick={() => {
@@ -710,7 +777,10 @@ const Cart = ({ showCart, handleUpsells }: any) => {
                               lineHeight="1.2 !important"
                               textTransform="capitalize"
                               className={classes.cartTitle}
-                              sx={{ display: 'inline', fontFamily:'Poppins-Medium !important' }}
+                              sx={{
+                                display: 'inline',
+                                fontFamily: 'Poppins-Medium !important',
+                              }}
                               // title={option.name}
                             >
                               {type === UPSELLS_TYPES.SALSA
