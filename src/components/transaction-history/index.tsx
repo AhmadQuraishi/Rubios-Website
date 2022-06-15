@@ -143,7 +143,7 @@ const TransactionHistory = () => {
                     color: 'secondary.main',
                   }}
                 >
-                  ${item.total}
+                  ${item.total.toFixed(2)}
                 </Grid>
               </Fragment>
             ))}
