@@ -87,10 +87,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: '#0075BF !important',
     fontSize: '11px !important',
     fontFamily: "'Poppins-Bold' !important",
-    textDecoration: 'underline',
+    textDecoration: "underline !important",
     display: 'inline',
     cursor: 'pointer',
     textTransform: 'uppercase',
+    padding: '0px 30px 0px 0px !important'
   },
   disabledLink: {
     color: '#ccc !important',
@@ -562,7 +563,7 @@ const Cart = ({ showCart, handleUpsells }: any) => {
                             title={getOptions(item.choices)}
                             variant="caption"
                             fontSize={11}
-                            sx={{ paddingBottom: '5px', display: 'block' }}
+                            sx={{ paddingBottom: '0px', display: 'block' }}
                           >
                             {getOptions(item.choices)}
                           </Typography>
