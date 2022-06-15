@@ -942,9 +942,9 @@ const Product = () => {
                         aria-required={itemMain.mandatory ? 'true' : 'false'}
                       >
                         {itemMain.name}
-                        <span style={{ color: '#ff0000' }}>
-                          {itemMain.mandatory ? '*' : ''}
-                        </span>
+                        {/*<span style={{ color: '#ff0000' }}>*/}
+                          {/*{itemMain.mandatory ? '*' : ''}*/}
+                        {/*</span>*/}
                         {IsItemSelected(itemMain.id) && (
                           <span
                             style={{
