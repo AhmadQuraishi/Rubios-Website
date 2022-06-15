@@ -633,6 +633,8 @@ const Checkout = () => {
                   <OrderTime orderType={basket && basket.deliverymode || ''} />
                 </Grid>
               </Grid>
+              {providerToken && providerToken.first_name && rewards && (
+                <>
               <br />
               <br />
               <br />
@@ -640,8 +642,6 @@ const Checkout = () => {
               <br />
               <br />
               <br />
-              {providerToken && providerToken.first_name && rewards && (
-                <>
                   <Rewards rewardsList={rewards} />
                   <br />
                   <br />
