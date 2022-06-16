@@ -1,27 +1,11 @@
-import {
-  Grid,
-  Typography,
-  Theme,
-  Box,
-  Divider,
-  Button,
-  Card,
-} from '@mui/material';
+import { Grid, Theme, Button, Card } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-// import crossIcon from '../../../assets/imgs/close.png';
-import { getBasketRequest } from '../../../../redux/actions/basket';
-import { removeProductRequest } from '../../../../redux/actions/basket/product/remove';
 import { addProductRequest } from '../../../../redux/actions/basket/product/add';
-import { displayToast } from '../../../../helpers/toast';
-import { addUpsellsRequest } from '../../../../redux/actions/basket/upsell/Add';
 import { UPSELLS, UPSELLS_TYPES } from '../../../../helpers/upsells';
-import { capitalizeFirstLetter } from '../../../../helpers/common';
 import { Category, Product as ProductInfo } from '../../../../types/olo-api';
-import { addMultipleProductsRequest } from '../../../../redux/actions/basket/addMultipleProducts';
-import ItemImage from '../../../item-image';
 import './index.css';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -112,6 +96,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   btn: {
     paddingLeft: '0px  !important',
     letterSpacing: 'normal !important',
+    marginTop: '-15px !important'
   },
   emptyCart: {
     fontFamily: 'Poppins-Regular, sans-serif !Important',
@@ -121,29 +106,15 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const UpsellsOthers = ({ addToBag, showCart, upsellsType, quantity }: any) => {
-  const classes = useStyles();
-  const [actionStatus, setActionStatus] = useState(false);
-  const [clickAction, setClickAction] = useState('');
-  const [runOnce, setRunOnce] = useState(true);
+const UpsellsOthers = ({ upsellsType }: any) => {
   const [upsells, setUpsells] = useState<any>();
   const [optionSelected, setOptionSelected] = useState('');
+  const [quantity, setQuantity] = useState(0);
 
-  const productRemoveObj = useSelector(
-    (state: any) => state.removeProductReducer,
-  );
-  const productAddObj = useSelector((state: any) => state.addProductReducer);
-  const { restaurant } = useSelector(
-    (state: any) => state.restaurantInfoReducer,
-  );
   const basketObj = useSelector((state: any) => state.basketReducer);
-  const upsellsObj = useSelector((state: any) => state.getUpsellsReducer);
-  const addUpsellsObj = useSelector((state: any) => state.addUpsellReducer);
   const { categories } = useSelector((state: any) => state.categoryReducer);
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [basketType, setBasketType] = useState();
 
   useEffect(() => {
     let products: any = [];
@@ -201,92 +172,47 @@ const UpsellsOthers = ({ addToBag, showCart, upsellsType, quantity }: any) => {
     setUpsells(products);
   }, [categories, upsellsType]);
 
-  const changeImageSize = (path: string, images: any) => {
-    if (images && images.length > 0) {
-      const dektopImage: any = images.find(
-        (obj: any) => obj.groupname == 'desktop-menu',
-      );
-      if (dektopImage) {
-        return dektopImage.filename.replace('h=138', 'h=500');
-      } else {
-        return path;
-      }
-    } else {
-      return path;
-    }
-  };
-  // useEffect(() => {
-  //   if (
-  //     basketObj &&
-  //     basketObj.basket &&
-  //     basketObj.basket.products &&
-  //     basketObj.basket.products.length
-  //   ) {
-  //
-  //   }
-  // }, [basketObj]);
+  const submit = () => {
+    console.log('upsells', upsells);
+    if (upsells && upsells.length) {
+      const product: any = upsells.filter((obj: any) => obj.selected);
+      if (product && product.length) {
+        const request: any = {
+          productid: product[0].id,
+          quantity: quantity,
+          options: '',
+        };
 
-  useEffect(() => {
-    if (addToBag) {
-      console.log('upsells', upsells);
-      if (upsells && upsells.length) {
-        const product: any = upsells.filter((obj: any) => obj.selected);
-        if (product && product.length) {
-          const request: any = {
-            productid: product[0].id,
-            quantity: quantity,
-            options: '',
-          };
-
-          if(upsellsType === UPSELLS_TYPES.DRINK){
-            request.options = `${optionSelected},`
-          }
-          dispatch(addProductRequest(basketObj.basket.id, request));
+        if (upsellsType === UPSELLS_TYPES.DRINK) {
+          request.options = `${optionSelected},`;
         }
+        dispatch(addProductRequest(basketObj.basket.id, request));
       }
     }
-  }, [addToBag]);
-
-  const updateSalsaCount = (id: number, type: string) => {
-    const updatedProducts = upsells.map((obj: any) => {
-      if (obj.chainproductid === id) {
-        let count = type === 'PLUS' ? obj.quantity + 1 : obj.quantity - 1;
-        count = count >= 6 ? 6 : count <= 0 ? 0 : count;
-        return {
-          ...obj,
-          quantity: count,
-        };
-      } else {
-        return {
-          ...obj,
-        };
-      }
-    });
-    console.log('upsells', updatedProducts);
-    setUpsells(updatedProducts);
   };
 
   const updateSelection = (id: any, selected: any) => {
     const updatedProducts = upsells.map((obj: any) => {
+      let newObj: any = {
+        ...obj,
+      };
       if (id === obj.id) {
-        return {
-          ...obj,
-          selected: !selected,
-        };
+        newObj.selected = !selected;
       } else {
-        return {
-          ...obj,
-          selected: false,
-        };
+        newObj.selected = false;
       }
+      if (newObj.selected && upsellsType === UPSELLS_TYPES.DRINK) {
+        setOptionSelected(obj.options[0].optionid);
+      }
+      return newObj;
     });
     console.log('upsells', updatedProducts);
     setUpsells(updatedProducts);
   };
 
   const fitContainer = () => {
-    const elem = document.getElementById('cart-main-conatiner');
-    const cartBox = document.getElementById('cart-box');
+    const elem = document.getElementById('cart-main-container-upsells');
+    const cartBox = document.getElementById('cart-box-upsells');
     if (elem && cartBox) {
       if (
         basketObj &&
@@ -319,160 +245,12 @@ const UpsellsOthers = ({ addToBag, showCart, upsellsType, quantity }: any) => {
   useEffect(() => {
     window.scrollTo(0, 0);
     fitContainer();
-    setBasketType((basketObj && basketObj.basketType) || '');
   }, []);
-
-  // useEffect(() => {
-  //   if (!runOnce) {
-  //     return;
-  //   }
-  //   const payload = {
-  //     products: [
-  //       {
-  //         productid: 13582533,
-  //         quantity: 1,
-  //         choices: [{
-  //           choiceid: 1195344702
-  //         }],
-  //       },
-  //       // {
-  //       //   chainproductid: 364431,
-  //       //   quantity: 1,
-  //       //   choices: [],
-  //       // },
-  //       // {
-  //       //   chainproductid: 364175,
-  //       //   quantity: 1,
-  //       //   choices: [],
-  //       // },
-  //     ],
-  //   };
-  //
-  //   if (basketObj && basketObj.basket) {
-  //     dispatch(addMultipleProductsRequest(basketObj.basket.id, payload));
-  //   }
-  //   setRunOnce(false);
-  // }, []);
-
-  // const updateUpsells = (upsells: any) => {
-  //   let finalOptionsInArray: any = [];
-  //   upsells.groups.map((g: any) => {
-  //     g.items.map((item: any) => {
-  //       if (!checkUpsellIsAdded(item.id)) {
-  //         finalOptionsInArray.push(item);
-  //       }
-  //     });
-  //   });
-  //   setUpsells(finalOptionsInArray);
-  // };
-
-  // useEffect(() => {
-  //   if (addUpsellsObj && addUpsellsObj.basket && clickAction != '') {
-  //     setClickAction('');
-  //     displayToast('SUCCESS', '1 item added to cart.');
-  //     dispatch(getBasketRequest('', addUpsellsObj.basket, basketType));
-  //   }
-  // }, [addUpsellsObj]);
-
-  // useEffect(() => {
-  //   if (productRemoveObj && productRemoveObj.basket && actionStatus) {
-  //     dispatch(getBasketRequest('', productRemoveObj.basket, basketType));
-  //     displayToast('SUCCESS', '1 item removed from cart.');
-  //     setActionStatus(false);
-  //     navigate(restaurant ? '/menu/' + restaurant.slug : '/');
-  //   }
-  // }, [productRemoveObj]);
-
-  // useEffect(() => {
-  //   if (upsellsObj && upsellsObj.upsells && basketObj && basketObj.basket) {
-  //     updateUpsells(upsellsObj.upsells);
-  //   }
-  //   fitContainer();
-  // }, [basketObj]);
-
-  // useEffect(() => {
-  //   if (productAddObj && productAddObj.basket && actionStatus) {
-  //     dispatch(getBasketRequest('', productAddObj.basket, basketType));
-  //     displayToast('SUCCESS', 'Duplicate item added to cart.');
-  //     setActionStatus(false);
-  //     navigate(restaurant ? '/menu/' + restaurant.slug : '/');
-  //   }
-  // }, [productAddObj]);
-
-  // const removeProductHandle = (productID: number) => {
-  //   setActionStatus(true);
-  //   dispatch(removeProductRequest(basketObj.basket.id, productID));
-  // };
-
-  // const duplicateProductHandle = (productID: number) => {
-  //   const product = basketObj.basket.products.find(
-  //     (x: any) => x.id == productID,
-  //   );
-  //   if (product) {
-  //     setActionStatus(true);
-  //     const request: any = {};
-  //     request.productid = product.productId;
-  //     request.quantity = product.quantity;
-  //     let options = '';
-  //     product.choices.map((item: any) => {
-  //       options = options + item.optionid + ',';
-  //     });
-  //     request.options = options;
-  //     dispatch(addProductRequest(basketObj.basket.id, request));
-  //   }
-  // };
-
-  // const addUpsells = (upsellID: number) => {
-  //   const request = {
-  //     items: [
-  //       {
-  //         id: upsellID,
-  //         quantity: 1,
-  //       },
-  //     ],
-  //   };
-  //   setClickAction('clicked');
-  //   dispatch(addUpsellsRequest(basketObj.basket.id, request));
-  // };
-
-  // const getOptions = (options: any) => {
-  //   let val = '';
-  //   options.map((item: any) => {
-  //     val = val + ' ' + item.name.trim() + ',';
-  //   });
-  //   return val.trim().replace(/,*$/, '');
-  // };
-
-  // const checkItemIsUpsells = (id: number) => {
-  //   let aval = false;
-  //   if (upsellsObj && upsellsObj.upsells) {
-  //     upsellsObj.upsells.groups.map((obj: any, index: number) => {
-  //       obj.items.map((item: any, index: number) => {
-  //         if (item.id == id) {
-  //           aval = true;
-  //         }
-  //       });
-  //     });
-  //   }
-  //   return aval;
-  // };
-
-  // const checkUpsellIsAdded = (id: number) => {
-  //   let aval = false;
-  //   if (basketObj && basketObj.basket && basketObj.basket.products.length) {
-  //     basketObj.basket.products.map((obj: any, index: number) => {
-  //       if (obj.productId == id) {
-  //         aval = true;
-  //       }
-  //     });
-  //   }
-  //   return aval;
-  // };
 
   useEffect(() => {
     // const focusableElements =
     //   'button, [href], input, ul , li ,  select, textarea, [tabindex]:not([tabindex="-1"])';
-    const modal = document.querySelector('#cart-box'); // select the modal by it's id
+    const modal = document.querySelector('#cart-box-upsells'); // select the modal by it's id
     if (modal) {
       const focusableContent = modal.querySelectorAll('[tabindex="0"]');
       const firstFocusableElement = focusableContent[0]; // get first element to be focused inside modal
@@ -512,11 +290,32 @@ const UpsellsOthers = ({ addToBag, showCart, upsellsType, quantity }: any) => {
 
   const optionChange = (e: any) => {
     console.log(e.target.value);
-    setOptionSelected(e.target.value)
+    setOptionSelected(e.target.value);
+  };
+
+  const updateQuantity = (type: string) => {
+    let count = type === 'PLUS' ? quantity + 1 : quantity - 1;
+    count = count >= 6 ? 6 : count <= 0 ? 0 : count;
+    setQuantity(count);
+  };
+
+  const changeImageSize = (path: string, images: any) => {
+    if (images && images.length > 0) {
+      const dektopImage: any = images.find(
+        (obj: any) => obj.groupname === 'desktop-menu',
+      );
+      if (dektopImage) {
+        return dektopImage.filename.replace('h=138', 'h=500');
+      } else {
+        return path;
+      }
+    } else {
+      return path;
+    }
   };
   return (
     <>
-      <div className={'upsells'}>
+      <div id="cart-main-container-upsells" className={'upsells'}>
         {basketObj &&
           basketObj.basket &&
           basketObj.basket.products.length > 0 &&
@@ -547,26 +346,10 @@ const UpsellsOthers = ({ addToBag, showCart, upsellsType, quantity }: any) => {
                 type="checkbox"
                 id={itemChild.id}
                 value={itemChild.name}
-                // onClick={() => {
-                //   showChildOptions(
-                //     itemChild.option.id,
-                //     itemMain.id,
-                //     itemChild.dropDownValues,
-                //     itemChild.selectedValue,
-                //   );
-                // }}
               />
               <label
                 tabIndex={0}
                 htmlFor={itemChild.id}
-                // onClick={() => {
-                //   showChildOptions(
-                //     itemChild.option.id,
-                //     itemMain.id,
-                //     itemChild.dropDownValues,
-                //     itemChild.selectedValue,
-                //   );
-                // }}
                 // onKeyUp={(e) => {
                 //   if (e.keyCode === 13)
                 //     showChildOptions(
@@ -610,19 +393,22 @@ const UpsellsOthers = ({ addToBag, showCart, upsellsType, quantity }: any) => {
                         },
                       }}
                     >
-                      <ItemImage
-                        productImageURL={
+                      <img
+                        style={{
+                          // display: 'block',
+                          // margin: 'auto',
+                          width: '100%',
+                        }}
+                        src={
                           ((categories && categories.imagepath) || '') +
                           changeImageSize(
                             itemChild.imagefilename || '',
                             itemChild.images || '',
                           )
                         }
-                        index={index1}
-                        className="item-image"
-                        name={itemChild.name}
-                        id={itemChild.id}
-                        // optionImages={optionImages}
+                        // src={require('../../../../assets/imgs/default_img.png')}
+                        // alt={option.name}
+                        // title={option.name}
                       />
                     </Grid>
                     <Grid item xs={12} lg={7} className="name-panel">
@@ -684,6 +470,99 @@ const UpsellsOthers = ({ addToBag, showCart, upsellsType, quantity }: any) => {
             </Grid>
           ))}
       </div>
+      <Grid container spacing={0}>
+        <Grid
+          item
+          xs={12}
+          style={{ display: 'flex', justifyContent: 'flex-end' }}
+        >
+          {basketObj &&
+            basketObj.basket &&
+            basketObj.basket.products.length > 0 && (
+              <Grid
+                item
+                xs={12}
+                lg={8}
+                md={8}
+                style={{
+                  paddingRight: '30px',
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                }}
+              >
+                {upsellsType !== UPSELLS_TYPES.SALSA ? (
+                  <div
+                    style={{ display: 'flex', alignItems: 'center' }}
+                    className="upsells-details"
+                  >
+                    <label
+                      title="Quantity"
+                      className="label bold quantity-label"
+                      htmlFor="quantityfield"
+                    >
+                      QTY
+                    </label>
+                    <div className="quantity">
+                      <Button
+                        title=""
+                        className="add"
+                        aria-label="increase"
+                        onClick={() => {
+                          updateQuantity('PLUS');
+                        }}
+                      >
+                        {' '}
+                        +{' '}
+                      </Button>
+                      <input
+                        value={quantity}
+                        // inputProps={inputProps}
+                        readOnly
+                        id="quantityfield"
+                        onChange={() => {}}
+                        className="input-quantity"
+                        title="quantity"
+                      />
+                      <Button
+                        title=""
+                        className="subtract"
+                        aria-label="reduce"
+                        onClick={() => {
+                          updateQuantity('MINUS');
+                        }}
+                      >
+                        {' '}
+                        -{' '}
+                      </Button>
+                    </div>
+                  </div>
+                ) : null}
+
+                <Button
+                  variant="contained"
+                  disabled={quantity === 0 || basketObj.loading}
+                  onClick={() => {
+                    submit();
+                  }}
+                  sx={{
+                    textTransform: 'uppercase',
+                    backgroundColor: '#0A6FB8',
+                    margin: 'auto',
+                    width: '100%',
+                    borderRadius: 0,
+                    padding: '30px 10px',
+                    fontSize: '16px',
+                    fontFamily: "'Poppins-Medium', sans-serif !important;",
+                  }}
+                  title="Checkout"
+                  aria-label="Checkout"
+                >
+                  ADD TO BAG
+                </Button>
+              </Grid>
+            )}
+        </Grid>
+      </Grid>
     </>
   );
 };

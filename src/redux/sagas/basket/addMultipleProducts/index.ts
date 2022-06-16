@@ -4,18 +4,30 @@ import {
   addMultipleProductsFailure,
   addMultipleProductsSuccess,
   updateMultipleProductsSuccess,
-  updateMultipleProductsFailure
+  updateMultipleProductsFailure,
 } from '../../../actions/basket/addMultipleProducts';
-import { addMultipleProducts, updateMultipleProducts } from '../../../../services/basket';
+import {
+  addMultipleProducts,
+  updateMultipleProducts,
+} from '../../../../services/basket';
+import {
+  addUpsellsRequestFailure,
+  addUpsellsRequestSuccess,
+} from '../../../actions/basket/upsell/Add';
 
 function* asyncAddMultipleProductsRequest(action: any): any {
   try {
     const response = yield call(
-        addMultipleProducts,
+      addMultipleProducts,
       action.basketid,
       action.request,
     );
     yield put(addMultipleProductsSuccess(response));
+    if (response && response.errors && response.errors.length) {
+      yield put(addUpsellsRequestFailure(response));
+    } else {
+      yield put(addUpsellsRequestSuccess());
+    }
   } catch (error) {
     yield put(addMultipleProductsFailure(error));
   }
@@ -23,7 +35,7 @@ function* asyncAddMultipleProductsRequest(action: any): any {
 
 function* asyncUpdateMultipleProductsRequest(action: any): any {
   try {
-    console.log('abc')
+    console.log('abc');
     const response = yield call(
       updateMultipleProducts,
       action.basketid,

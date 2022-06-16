@@ -59,9 +59,15 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
     case basketActionsTypes.REMOVE_BASKET_COUPON_CODE:
     case basketActionsTypes.ADD_MULTIPLE_PRODUCT_REQUEST:
     case basketActionsTypes.UPDATE_MULTIPLE_PRODUCT_REQUEST:
+    case basketActionsTypes.ADD_PRODUCT_REQUEST:
       return {
         ...state,
         loading: true,
+      };
+    case basketActionsTypes.ADD_PRODUCT_FAILURE:
+      return {
+        ...state,
+        loading: false,
       };
     case basketActionsTypes.ADD_MULTIPLE_PRODUCT_SUCCESS:
     case basketActionsTypes.UPDATE_MULTIPLE_PRODUCT_SUCCESS:

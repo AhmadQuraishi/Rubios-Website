@@ -57,8 +57,9 @@ const Footer = () => {
 
   useEffect(() => {}, [menu]);
 
+
   return (
-    <footer>
+    <footer className={`${window.location.href.toLocaleLowerCase().indexOf('/product') !== -1 ? 'footer-control' : ''}`}>
       <Grid
         container
         spacing={0}

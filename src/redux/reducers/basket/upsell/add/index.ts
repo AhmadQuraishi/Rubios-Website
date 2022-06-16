@@ -1,24 +1,21 @@
 import { basketActionsTypes } from '../../../../types/basket';
+import {addUpsellsRequestReset} from "../../../../actions/basket/upsell/Add";
 
 const INITIAL_STATE = {
-  loading: false,
-  basket: null,
-  error: {},
+  action: null,
 };
 
 const addUpsellReducer = (state = INITIAL_STATE, action: any) => {
   switch (action.type) {
-    case basketActionsTypes.ADD_UPSELLS_REQUEST:
-      return { ...state, loading: true, basket: null, error: {} };
+    case basketActionsTypes.ADD_UPSELLS_REQUEST_RESET:
+      return { ...state, action: null };
     case basketActionsTypes.ADD_UPSELLS_REQUEST_SUCCESS:
       return {
         ...state,
-        loading: false,
-        basket: action.payload,
-        error: {},
+        action: 'COMPLETED',
       };
     case basketActionsTypes.ADD_UPSELLS_REQUEST_FAILURE:
-      return { ...state, loading: false, error: action.error };
+      return { ...state, action: 'FAILURE' };
     default:
       return state;
   }

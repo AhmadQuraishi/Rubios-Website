@@ -130,6 +130,10 @@ const Header = (props: any) => {
       // setOpen(!showCart);
       setShowCart(!showCart);
     }
+    if(showCart){
+      setShowUpsells(false);
+      setUpsellsType('')
+    }
   };
 
   const handleUpsells = (type: string) => {
@@ -473,7 +477,7 @@ const Header = (props: any) => {
             {showUpsells && upsellsType !== '' && (
               <Upsells
                 upsellsType={upsellsType}
-                showCart={handleShowCart}
+                showCart={() => handleUpsells('')}
               />
             )}
             <Cart showCart={handleShowCart} handleUpsells={handleUpsells} />
