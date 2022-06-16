@@ -200,7 +200,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
       } else {
         newObj.selected = false;
       }
-      if (newObj.selected) {
+      if (newObj.selected && upsellsType === UPSELLS_TYPES.DRINK) {
         setOptionSelected(obj.options[0].optionid);
       }
       return newObj;
