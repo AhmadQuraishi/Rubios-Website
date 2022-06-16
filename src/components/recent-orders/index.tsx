@@ -247,7 +247,7 @@ const RecentOrders = () => {
                         addProductToBag(
                           order.orderref,
                           order.id,
-                          order.vendorid,
+                          order.deliverymode
                         )
                       }
                     >

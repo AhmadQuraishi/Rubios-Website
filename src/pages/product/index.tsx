@@ -33,6 +33,7 @@ import { displayToast } from '../../helpers/toast';
 import ItemImage from '../../components/item-image';
 import { getUpsellsRequest } from '../../redux/actions/basket/upsell/Get';
 import axios from 'axios';
+import { utensilsProductId } from '../../helpers/upsells';
 const inputProps = {
   'aria-label': 'quantity',
 };
@@ -796,6 +797,20 @@ const Product = () => {
     }
   };
 
+  const checkDisable = () => {
+    return (
+      productDetails &&
+      productDetails.id === utensilsProductId() &&
+      basketObj &&
+      basketObj.basket &&
+      basketObj.basket.products &&
+      basketObj.basket.products.length > 0 &&
+      basketObj.basket.products.filter(
+        (obj: any) => obj.productId === utensilsProductId(),
+      ).length > 0
+    );
+  };
+
   return (
     <div style={{ minHeight: '500px' }}>
       <Typography variant="h1" className="sr-only">
@@ -942,9 +957,9 @@ const Product = () => {
                         aria-required={itemMain.mandatory ? 'true' : 'false'}
                       >
                         {itemMain.name}
-                        <span style={{ color: '#ff0000' }}>
-                          {itemMain.mandatory ? '*' : ''}
-                        </span>
+                        {/*<span style={{ color: '#ff0000' }}>*/}
+                        {/*{itemMain.mandatory ? '*' : ''}*/}
+                        {/*</span>*/}
                         {IsItemSelected(itemMain.id) && (
                           <span
                             style={{
@@ -987,7 +1002,7 @@ const Product = () => {
                               style={{
                                 opacity: 0,
                                 position: 'absolute',
-                                zIndex: 1000
+                                zIndex: 1000,
                               }}
                               type="radio"
                               id={itemChild.option.id}
@@ -1010,7 +1025,7 @@ const Product = () => {
                               style={{
                                 opacity: 0,
                                 position: 'absolute',
-                                zIndex: 1000
+                                zIndex: 1000,
                               }}
                               type="checkbox"
                               id={itemChild.option.id}
@@ -1185,59 +1200,61 @@ const Product = () => {
             </div>
             <Grid container className="action-panel">
               <Grid item xs={12} className="content-panel">
-                <div
-                  style={{ display: 'flex', alignItems: 'center' }}
-                  className="button-panel-sx"
-                >
-                  <label
-                    title="Quantity"
-                    className="label bold quantity-label"
-                    htmlFor="quantityfield"
+                {productDetails && productDetails.id !== utensilsProductId() ? (
+                  <div
+                    style={{ display: 'flex', alignItems: 'center' }}
+                    className="button-panel-sx"
                   >
-                    QUANTITY
-                  </label>
-                  <div className="quantity">
-                    <Button
-                      title=""
-                      className="add"
-                      aria-label="increase"
-                      onClick={() => {
-                        setCount(count + 1);
-                        setTotalCost(
-                          ((productDetails?.cost || 0) + optionsCost) *
-                            (count + 1),
-                        );
-                      }}
+                    <label
+                      title="Quantity"
+                      className="label bold quantity-label"
+                      htmlFor="quantityfield"
                     >
-                      {' '}
-                      +{' '}
-                    </Button>
-                    <input
-                      value={count}
-                      // inputProps={inputProps}
-                      readOnly
-                      id="quantityfield"
-                      onChange={() => {}}
-                      className="input-quantity"
-                      title="quantity"
-                    />
-                    <Button
-                      title=""
-                      className="subtract"
-                      aria-label="reduce"
-                      onClick={() => {
-                        setCount(Math.max(count - 1, 1));
-                        setTotalCost(
-                          ((productDetails?.cost || 0) + optionsCost) *
-                            Math.max(count - 1, 1),
-                        );
-                      }}
-                    >
-                      {' '}
-                      -{' '}
-                    </Button>
+                      QUANTITY
+                    </label>
+                    <div className="quantity">
+                      <Button
+                        title=""
+                        className="add"
+                        aria-label="increase"
+                        onClick={() => {
+                          setCount(count + 1);
+                          setTotalCost(
+                            ((productDetails?.cost || 0) + optionsCost) *
+                              (count + 1),
+                          );
+                        }}
+                      >
+                        {' '}
+                        +{' '}
+                      </Button>
+                      <input
+                        value={count}
+                        // inputProps={inputProps}
+                        readOnly
+                        id="quantityfield"
+                        onChange={() => {}}
+                        className="input-quantity"
+                        title="quantity"
+                      />
+                      <Button
+                        title=""
+                        className="subtract"
+                        aria-label="reduce"
+                        onClick={() => {
+                          setCount(Math.max(count - 1, 1));
+                          setTotalCost(
+                            ((productDetails?.cost || 0) + optionsCost) *
+                              Math.max(count - 1, 1),
+                          );
+                        }}
+                      >
+                        {' '}
+                        -{' '}
+                      </Button>
+                    </div>
                   </div>
-                </div>
+                ) : null}
                 {productAddObj.loading ||
                 basketObj.loading ||
                 dummyBasketObj.loading ||
@@ -1259,6 +1276,7 @@ const Product = () => {
                     title="ADD TO BAG"
                     className="add-to-bag"
                     variant="contained"
+                    disabled={checkDisable()}
                     onClick={() => {
                       addProductToBag();
                     }}

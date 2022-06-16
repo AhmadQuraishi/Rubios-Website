@@ -103,6 +103,9 @@ input[type="check"]:checked + label {
   font-weight: Bold;
   border-left: 1px solid #e4e4e4;
   border-right: 1px solid #e4e4e4;
+  -webkit-border-radius: 0px !important;
+  -moz-border-radius: 0px !important;
+  border-radius: 0px !important;
 }
 .product-detail .quantity button {
   font-family: 'Poppins-Regular' !important;

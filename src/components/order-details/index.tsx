@@ -1,6 +1,7 @@
 import { Grid, Typography, Card, Divider } from '@mui/material';
 import './order-details.css';
 import React from 'react';
+import { utensilsProductId } from '../../helpers/upsells';
 
 const getOptions = (options: any) => {
   let val = '';
@@ -37,7 +38,9 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                       <Grid key={item.id} container>
                         <Grid item xs={1} sm={1} md={1} lg={1}>
                           <Typography variant="h6" title={item.name}>
-                            {item.quantity}
+                            {item.productId !== utensilsProductId()
+                              ? item.quantity
+                              : ''}
                           </Typography>
                         </Grid>
                         <Grid item xs={8} sm={8} md={8} lg={8}>
@@ -166,7 +169,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                     className="n-bold"
                     title="ESTIMATED Tax"
                   >
-                    EXTIMATED TAX
+                    ESTIMATED TAX
                   </Typography>
                 </Grid>
                 <Grid item xs={3} sm={3} md={3} lg={3}>

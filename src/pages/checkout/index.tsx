@@ -361,23 +361,21 @@ const Checkout = () => {
     let customFields = [];
     let deliveryAddress = null;
     let deliverymode = {
-      deliverymode: orderType || '',
+      deliverymode: basket && basket.deliverymode || '',
     };
     let formDataValue;
-    console.log('orderType', orderType);
     if (
-      orderType &&
-      (orderType === '' ||
-        orderType === DeliveryModeEnum.pickup ||
-        orderType === DeliveryModeEnum.curbside ||
-        orderType === DeliveryModeEnum.dinein)
+      basket &&
+      (basket.deliverymode === '' ||
+        basket.deliverymode === DeliveryModeEnum.pickup ||
+        basket.deliverymode === DeliveryModeEnum.curbside ||
+        basket.deliverymode === DeliveryModeEnum.dinein)
     ) {
       const { isValidForm, formData } = validatePickupForm();
-      console.log('formData', formData);
       if (!isValidForm) {
         displayToast(
           'ERROR',
-          `${formatOrderType(orderType)} fields are required.`,
+          `${formatOrderType(basket.deliverymode)} fields are required.`,
         );
         scrollToTop();
         setButtonDisabled(false);
@@ -386,7 +384,7 @@ const Checkout = () => {
       formDataValue = formData;
     }
 
-    if (orderType && orderType === DeliveryModeEnum.delivery) {
+    if (basket && basket.deliverymode === DeliveryModeEnum.delivery) {
       const { isValidForm, formData } = validateDeliveryForm();
       if (!isValidForm) {
         displayToast('ERROR', 'Delivery fields are required.');
@@ -452,14 +450,14 @@ const Checkout = () => {
     );
 
     if (
-      orderType &&
-      (orderType === DeliveryModeEnum.curbside ||
-        orderType === DeliveryModeEnum.dinein)
+      basket &&
+      (basket.deliverymode === DeliveryModeEnum.curbside ||
+        basket.deliverymode === DeliveryModeEnum.dinein)
     ) {
       customFields = formatCustomFields(restaurant.customfields, formDataValue);
     }
 
-    if (orderType && orderType === DeliveryModeEnum.delivery) {
+    if (basket && basket.deliverymode === DeliveryModeEnum.delivery) {
       deliveryAddress = formatDeliveryAddress(
         formDataValue,
         defaultDeliveryAddress,
@@ -526,8 +524,8 @@ const Checkout = () => {
                   <Grid item xs={12} sm={6} md={6} lg={6} className="left-col">
                     <Grid container>
                       {basket &&
-                      (orderType === '' ||
-                        orderType === DeliveryModeEnum.pickup) ? (
+                      (basket.deliverymode === '' ||
+                        basket.deliverymode === DeliveryModeEnum.pickup) ? (
                         <>
                           <Grid item xs={12}>
                             <Typography
@@ -548,7 +546,7 @@ const Checkout = () => {
                             </Typography>
                           </Grid>
                         </>
-                      ) : basket && orderType === DeliveryModeEnum.curbside ? (
+                      ) : basket && basket.deliverymode === DeliveryModeEnum.curbside ? (
                         <>
                           <Grid item xs={12}>
                             <Typography
@@ -569,7 +567,7 @@ const Checkout = () => {
                             </Typography>
                           </Grid>
                         </>
-                      ) : basket && orderType === DeliveryModeEnum.delivery ? (
+                      ) : basket && basket.deliverymode === DeliveryModeEnum.delivery ? (
                         <>
                           <Grid item xs={12}>
                             <Typography
@@ -590,7 +588,7 @@ const Checkout = () => {
                             </Typography>
                           </Grid>
                         </>
-                      ) : basket && orderType === DeliveryModeEnum.dinein ? (
+                      ) : basket && basket.deliverymode === DeliveryModeEnum.dinein ? (
                         <>
                           <Grid item xs={12}>
                             <Typography
@@ -613,17 +611,17 @@ const Checkout = () => {
                         </>
                       ) : null}
                       {basket &&
-                      (orderType === '' ||
-                        orderType === DeliveryModeEnum.pickup ||
-                        orderType === DeliveryModeEnum.curbside ||
-                        orderType === DeliveryModeEnum.dinein) ? (
+                      (basket.deliverymode === '' ||
+                        basket.deliverymode === DeliveryModeEnum.pickup ||
+                        basket.deliverymode === DeliveryModeEnum.curbside ||
+                        basket.deliverymode === DeliveryModeEnum.dinein) ? (
                         <PickupForm
                           basket={basket}
                           pickupFormRef={pickupFormRef}
-                          orderType={orderType}
+                          orderType={basket.deliverymode}
                         />
                       ) : null}
-                      {orderType && orderType === DeliveryModeEnum.delivery ? (
+                      {basket && basket.deliverymode === DeliveryModeEnum.delivery ? (
                         <DeliveryForm
                           basket={basket}
                           defaultAddress={defaultDeliveryAddress}
@@ -632,9 +630,11 @@ const Checkout = () => {
                       ) : null}
                     </Grid>
                   </Grid>
-                  <OrderTime orderType={orderType} />
+                  <OrderTime orderType={basket && basket.deliverymode || ''} />
                 </Grid>
               </Grid>
+              {providerToken && providerToken.first_name && rewards && (
+                <>
               <br />
               <br />
               <br />
@@ -642,8 +642,6 @@ const Checkout = () => {
               <br />
               <br />
               <br />
-              {providerToken && providerToken.first_name && rewards && (
-                <>
                   <Rewards rewardsList={rewards} />
                   <br />
                   <br />

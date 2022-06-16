@@ -3,6 +3,7 @@ import {
   Typography,
   Theme,
   Box,
+  Checkbox,
   Divider,
   Button,
   Link as MUILink,
@@ -17,6 +18,14 @@ import { removeProductRequest } from '../../redux/actions/basket/product/remove'
 import { addProductRequest } from '../../redux/actions/basket/product/add';
 import { displayToast } from '../../helpers/toast';
 import { addUpsellsRequest } from '../../redux/actions/basket/upsell/Add';
+import { updateMultipleProductsRequest } from '../../redux/actions/basket/addMultipleProducts/index';
+
+import {
+  UPSELLS,
+  UPSELLS_TYPES,
+  utensilsProductId,
+} from '../../helpers/upsells';
+import { capitalizeFirstLetter } from '../../helpers/common';
 
 const useStyles = makeStyles((theme: Theme) => ({
   dimPanel: {
@@ -82,10 +91,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: '#0075BF !important',
     fontSize: '11px !important',
     fontFamily: "'Poppins-Bold' !important",
-    textDecoration: 'underline',
+    textDecoration: 'underline !important',
     display: 'inline',
     cursor: 'pointer',
     textTransform: 'uppercase',
+    padding: '0px 30px 0px 0px !important',
   },
   disabledLink: {
     color: '#ccc !important',
@@ -115,10 +125,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const Cart = (props: any) => {
-  const { showCart } = props;
+const Cart = ({ showCart, handleUpsells }: any) => {
   const classes = useStyles();
   const [actionStatus, setActionStatus] = useState(false);
+  const [utensils, setUtensils] = useState(false);
   const [clickAction, setClickAction] = useState('');
   const [upsells, setUpsells] = useState<any[]>();
 
@@ -209,6 +219,27 @@ const Cart = (props: any) => {
       updateUpsells(upsellsObj.upsells);
     }
     fitContainer();
+  }, [basketObj]);
+
+  useEffect(() => {
+    if (
+      basketObj &&
+      basketObj.basket &&
+      basketObj.basket.products &&
+      basketObj.basket.products.length
+    ) {
+      const utensils = basketObj.basket.products.filter(
+        (obj: any) => obj.productId === utensilsProductId(),
+      );
+
+      if (utensils.length) {
+        setUtensils(true);
+      } else {
+        setUtensils(false);
+      }
+    } else {
+      setUtensils(false);
+    }
   }, [basketObj]);
 
   useEffect(() => {
@@ -330,6 +361,38 @@ const Cart = (props: any) => {
       firstFocusableElement && (firstFocusableElement as HTMLElement)?.focus();
     }
   }, []);
+
+  const addRemoveUtensils = (e: any) => {
+    console.log('e.target.checked', e.target.checked);
+    if (e.target.checked) {
+      const request: any = {};
+      request.productid = utensilsProductId();
+      request.quantity = 1;
+      request.options = '';
+      dispatch(addProductRequest(basketObj.basket.id, request));
+    } else {
+      console.log('e.target.checked 2', e.target.checked);
+      if (
+        basketObj &&
+        basketObj.basket &&
+        basketObj.basket.products &&
+        basketObj.basket.products.length
+      ) {
+        const utensilsAllProducts = basketObj.basket.products.filter(
+          (obj: any) => obj.productId === utensilsProductId(),
+        );
+        if (utensilsAllProducts && utensilsAllProducts.length) {
+          dispatch(
+            removeProductRequest(
+              basketObj.basket.id,
+              utensilsAllProducts[0].id,
+            ),
+          );
+        }
+      }
+    }
+  };
+
   return (
     <>
       <div className={classes.dimPanel} onClick={showCart}></div>
@@ -471,9 +534,11 @@ const Cart = (props: any) => {
                               fontFamily: "'Poppins-Medium' !important",
                             }}
                           >
-                            {item.quantity.toString() +
-                              ' x ' +
-                              item.name.toString()}
+                            {item.productId !== utensilsProductId()
+                              ? item.quantity.toString() +
+                                ' x ' +
+                                item.name.toString()
+                              : item.name.toString()}
                           </Typography>
                         </Grid>
                         <Grid item xs={3} sx={{ textAlign: 'right' }}>
@@ -491,211 +556,309 @@ const Cart = (props: any) => {
                             ${item.totalcost.toFixed(2)}
                           </Typography>
                         </Grid>
-                        <Grid item xs={12} sx={{ padding: '10px 0 10px 0' }}>
-                          <Divider sx={{ borderColor: 'rgba(0, 0, 0, 1);' }} />
-                        </Grid>
+                        {item.productId !== utensilsProductId() ? (
+                          <Grid item xs={12} sx={{ padding: '10px 0 10px 0' }}>
+                            <Divider
+                              sx={{ borderColor: 'rgba(0, 0, 0, 1);' }}
+                            />
+                          </Grid>
+                        ) : null}
                         <Grid item xs={12}>
                           <Typography
                             title={getOptions(item.choices)}
                             variant="caption"
                             fontSize={11}
-                            sx={{ paddingBottom: '5px', display: 'block' }}
+                            sx={{ paddingBottom: '0px', display: 'block' }}
                           >
                             {getOptions(item.choices)}
                           </Typography>
                         </Grid>
-                        <Grid item xs={12} sx={{ padding: '0' }}>
-                          <Grid container spacing={0}>
-                            <ul className={`btnslist ${classes.btnsList}`}>
-                              <li>
-                                {productRemoveObj &&
-                                productRemoveObj.loading &&
-                                clickAction == item.id + '-remove' ? (
-                                  <Button
-                                    key={Math.random() + 'disable-remove'}
-                                    title="Remove"
-                                    className={`${classes.disabledLink}  ${classes.btn}`}
-                                    aria-label="Remove the item from basket"
-                                    onClick={() => false}
-                                  >
-                                    Remove
-                                  </Button>
-                                ) : (
-                                  <Button
-                                    title="Remove"
-                                    key={Math.random() + 'active-remove'}
-                                    className={`${classes.smallLink}  ${classes.btn}`}
-                                    aria-label="Remove the item from basket"
-                                    onClick={() => {
-                                      removeProductHandle(item.id);
-                                      setClickAction(item.id + '-remove');
-                                    }}
-                                    tabIndex={0}
-                                  >
-                                    Remove
-                                  </Button>
-                                )}{' '}
-                              </li>
-                              <li>
-                                {!checkItemIsUpsells(item.productId) && (
-                                  <Grid item xs={3}>
-                                    {(productRemoveObj &&
-                                      productRemoveObj.loading) ||
-                                    (productAddObj && productAddObj.loading) ? (
-                                      <Button
-                                        key={Math.random() + 'disable-edit'}
-                                        onClick={() => false}
-                                        title="Edit"
-                                        className={`${classes.smallLink}  ${classes.btn}`}
-                                        aria-label="Make changes to the current menu item"
-                                      >
-                                        Edit
-                                      </Button>
-                                    ) : (
-                                      <Button
-                                        onClick={() => {
-                                          showCart();
-                                          navigate(
-                                            `product/${item.productId}/${
-                                              item.id
-                                            }${
-                                              window.location.href
-                                                .toLowerCase()
-                                                .indexOf('product') == -1
-                                                ? '?edit=true'
-                                                : ''
-                                            }`,
-                                          );
-                                        }}
-                                        key={Math.random() + 'active-edit'}
-                                        title="Edit"
-                                        className={`${classes.smallLink}  ${classes.btn}`}
-                                        aria-label="Make changes to the current menu item"
-                                      >
-                                        Edit
-                                      </Button>
-                                    )}
-                                  </Grid>
-                                )}
-                              </li>
-                              <li>
-                                {productAddObj &&
-                                productAddObj.loading &&
-                                clickAction == item.id + '-add' ? (
-                                  <Button
-                                    key={Math.random() + 'disable-duplicate'}
-                                    onClick={() => false}
-                                    className={`${classes.disabledLink}  ${classes.btn}`}
-                                    title="Duplicate"
-                                    aria-label="Duplicate the basket item"
-                                  >
-                                    Duplicate
-                                  </Button>
-                                ) : (
-                                  <Button
-                                    key={Math.random() + 'active-duplicate'}
-                                    onClick={() => {
-                                      duplicateProductHandle(item.id);
-                                      setClickAction(item.id + '-add');
-                                    }}
-                                    className={`${classes.smallLink}  ${classes.btn}`}
-                                    title="Duplicate"
-                                    aria-label="Duplicate the basket item"
-                                    tabIndex={0}
-                                  >
-                                    Duplicate
-                                  </Button>
-                                )}
-                              </li>
-                            </ul>{' '}
+                        {item.productId !== utensilsProductId() ? (
+                          <Grid item xs={12} sx={{ padding: '0' }}>
+                            <Grid container spacing={0}>
+                              <ul className={`btnslist ${classes.btnsList}`}>
+                                <li>
+                                  {productRemoveObj &&
+                                  productRemoveObj.loading &&
+                                  clickAction == item.id + '-remove' ? (
+                                    <Button
+                                      key={Math.random() + 'disable-remove'}
+                                      title="Remove"
+                                      className={`${classes.disabledLink}  ${classes.btn}`}
+                                      aria-label="Remove the item from basket"
+                                      onClick={() => false}
+                                    >
+                                      Remove
+                                    </Button>
+                                  ) : (
+                                    <Button
+                                      title="Remove"
+                                      key={Math.random() + 'active-remove'}
+                                      className={`${classes.smallLink}  ${classes.btn}`}
+                                      aria-label="Remove the item from basket"
+                                      onClick={() => {
+                                        removeProductHandle(item.id);
+                                        setClickAction(item.id + '-remove');
+                                      }}
+                                      tabIndex={0}
+                                    >
+                                      Remove
+                                    </Button>
+                                  )}{' '}
+                                </li>
+                                <li>
+                                  {!checkItemIsUpsells(item.productId) && (
+                                    <Grid item xs={3}>
+                                      {(productRemoveObj &&
+                                        productRemoveObj.loading) ||
+                                      (productAddObj &&
+                                        productAddObj.loading) ? (
+                                        <Button
+                                          key={Math.random() + 'disable-edit'}
+                                          onClick={() => false}
+                                          title="Edit"
+                                          className={`${classes.smallLink}  ${classes.btn}`}
+                                          aria-label="Make changes to the current menu item"
+                                        >
+                                          Edit
+                                        </Button>
+                                      ) : (
+                                        <Button
+                                          onClick={() => {
+                                            showCart();
+                                            navigate(
+                                              `product/${item.productId}/${
+                                                item.id
+                                              }${
+                                                window.location.href
+                                                  .toLowerCase()
+                                                  .indexOf('product') == -1
+                                                  ? '?edit=true'
+                                                  : ''
+                                              }`,
+                                            );
+                                          }}
+                                          key={Math.random() + 'active-edit'}
+                                          title="Edit"
+                                          className={`${classes.smallLink}  ${classes.btn}`}
+                                          aria-label="Make changes to the current menu item"
+                                        >
+                                          Edit
+                                        </Button>
+                                      )}
+                                    </Grid>
+                                  )}
+                                </li>
+                                <li>
+                                  {productAddObj &&
+                                  productAddObj.loading &&
+                                  clickAction == item.id + '-add' ? (
+                                    <Button
+                                      key={Math.random() + 'disable-duplicate'}
+                                      onClick={() => false}
+                                      className={`${classes.disabledLink}  ${classes.btn}`}
+                                      title="Duplicate"
+                                      aria-label="Duplicate the basket item"
+                                    >
+                                      Duplicate
+                                    </Button>
+                                  ) : (
+                                    <Button
+                                      key={Math.random() + 'active-duplicate'}
+                                      onClick={() => {
+                                        duplicateProductHandle(item.id);
+                                        setClickAction(item.id + '-add');
+                                      }}
+                                      className={`${classes.smallLink}  ${classes.btn}`}
+                                      title="Duplicate"
+                                      aria-label="Duplicate the basket item"
+                                      tabIndex={0}
+                                    >
+                                      Duplicate
+                                    </Button>
+                                  )}
+                                </li>
+                              </ul>{' '}
+                            </Grid>
                           </Grid>
-                        </Grid>
+                        ) : null}
                       </Grid>
                       <Grid item xs={12}>
                         <div style={{ height: '15px' }}></div>
                       </Grid>
                     </Grid>
                   ))}
+                <Grid item xs={12} sx={{ padding: '20px 0px' }}>
+                  <Divider sx={{ borderColor: '#224c65' }} />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography
+                    variant="body2"
+                    className="body-text"
+                    // title="I agree to the  Rubios terms and conditions and to receiving marketing communications from Rubios."
+                    sx={{ width: '100%', color: '#224c65' }}
+                  >
+                    <Checkbox
+                      checked={utensils}
+                      disabled={
+                        (productAddObj && productAddObj.loading) ||
+                        (productRemoveObj && productRemoveObj.loading)
+                      }
+                      onChange={(e) => {
+                        addRemoveUtensils(e);
+                      }}
+                      inputProps={{
+                        'aria-label': ' Add utensils to my order.',
+                      }}
+                      sx={{
+                        paddingLeft: 0,
+                        fontFamily: 'Poppins-Medium !important',
+                      }}
+                    />
+                    Add utensils to my order.
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sx={{ padding: '20px 0px' }}>
+                  <Divider sx={{ borderColor: '#224c65' }} />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography
+                    variant="h6"
+                    component="p"
+                    fontSize="15px !important"
+                    textAlign="center"
+                    padding="10px 0 10px 0"
+                    textTransform="uppercase"
+                    className={classes.cartTitle}
+                    title="Complete Your Meal"
+                  >
+                    Complete Your Meal
+                  </Typography>
+                </Grid>
                 {basketObj &&
                   basketObj.basket &&
                   basketObj.basket.products.length > 0 &&
-                  upsells &&
-                  upsells.length > 0 && (
-                    <Grid item xs={12}>
-                      <Typography
-                        variant="h6"
-                        component="p"
-                        fontSize="15px !important"
-                        textAlign="center"
-                        padding="10px 0 10px 0"
-                        textTransform="uppercase"
-                        className={classes.cartTitle}
-                        title="Complete Your Meal"
-                      >
-                        Complete Your Meal
-                      </Typography>
-                      <Grid
-                        container
-                        spacing={0}
-                        justifyContent="space-around"
-                        sx={{ paddingTop: '10px' }}
-                      >
-                        {upsells.map((option: any, index: number) => (
+                  Object.keys(UPSELLS_TYPES).map((type: string) => {
+                    return (
+                      <Grid item onClick={() => handleUpsells(type)} xs={12}>
+                        <Grid
+                          container
+                          spacing={0}
+                          justifyContent="space-around"
+                          direction={'column'}
+                          sx={{ paddingTop: '10px' }}
+                        >
                           <Grid
-                            key={Math.random() + '-' + index}
+                            key={Math.random() + '-'}
                             item
-                            xs={4}
+                            xs={12}
+                            style={{
+                              display: 'flex',
+                              border: '1px solid rgba(0, 0, 0, 0.2)',
+                              padding: 10,
+                              minHeight: '85px',
+                              alignItems: 'center',
+                              boxShadow: '0px 2px 3px 0px rgba(0, 0, 0, 0.2)',
+                            }}
                             sx={{ cursor: 'pointer' }}
-                            onClick={() => {
-                              addUpsells(option.id);
-                            }}
-                            tabIndex={0}
-                            onKeyUp={(e) => {
-                              if (e.keyCode === 13) {
-                                addUpsells(option.id);
-                              }
-                            }}
+                            // onClick={() => {
+                            //   addUpsells(option.id);
+                            // }}
+                            // tabIndex={0}
+                            // onKeyUp={(e) => {
+                            //   if (e.keyCode === 13) {
+                            //     addUpsells(option.id);
+                            //   }
+                            // }}
                           >
                             <img
                               style={{
-                                display: 'block',
-                                margin: 'auto',
-                                width: '75%',
+                                // display: 'block',
+                                // margin: 'auto',
+                                width: '25%',
                               }}
                               src={require('../../assets/imgs/default_img.png')}
-                              alt={option.name}
-                              title={option.name}
+                              // alt={option.name}
+                              // title={option.name}
                             />
                             <Typography
                               variant="h6"
                               component="p"
-                              fontSize="14px !important"
+                              fontSize="16px !important"
                               textAlign="center"
-                              padding="5px 0 0 0"
+                              padding="0px 0 0 30px"
                               lineHeight="1.2 !important"
                               textTransform="capitalize"
                               className={classes.cartTitle}
-                              title={option.name}
+                              sx={{
+                                display: 'inline',
+                                fontFamily: 'Poppins-Medium !important',
+                              }}
+                              // title={option.name}
                             >
-                              {option.name}
-                            </Typography>
-                            <Typography
-                              variant="caption"
-                              component="p"
-                              fontSize="14px !important"
-                              textAlign="center"
-                              paddingTop="0px"
-                              fontFamily="Poppins-Regular !important"
-                              className={classes.cartTitle}
-                              title={`${option.cost}`}
-                            >
-                              {option.cost}
+                              {type === UPSELLS_TYPES.SALSA
+                                ? `Select Your `
+                                : `Add A `}
+                              {capitalizeFirstLetter(type)}
                             </Typography>
                           </Grid>
-                        ))}
+                          {/*{upsells.map((option: any, index: number) => (*/}
+                          {/*  <Grid*/}
+                          {/*    key={Math.random() + '-' + index}*/}
+                          {/*    item*/}
+                          {/*    xs={4}*/}
+                          {/*    sx={{ cursor: 'pointer' }}*/}
+                          {/*    onClick={() => {*/}
+                          {/*      addUpsells(option.id);*/}
+                          {/*    }}*/}
+                          {/*    tabIndex={0}*/}
+                          {/*    onKeyUp={(e) => {*/}
+                          {/*      if (e.keyCode === 13) {*/}
+                          {/*        addUpsells(option.id);*/}
+                          {/*      }*/}
+                          {/*    }}*/}
+                          {/*  >*/}
+                          {/*    <img*/}
+                          {/*      style={{*/}
+                          {/*        display: 'block',*/}
+                          {/*        margin: 'auto',*/}
+                          {/*        width: '75%',*/}
+                          {/*      }}*/}
+                          {/*      src={require('../../assets/imgs/default_img.png')}*/}
+                          {/*      alt={option.name}*/}
+                          {/*      title={option.name}*/}
+                          {/*    />*/}
+                          {/*    <Typography*/}
+                          {/*      variant="h6"*/}
+                          {/*      component="p"*/}
+                          {/*      fontSize="14px !important"*/}
+                          {/*      textAlign="center"*/}
+                          {/*      padding="5px 0 0 0"*/}
+                          {/*      lineHeight="1.2 !important"*/}
+                          {/*      textTransform="capitalize"*/}
+                          {/*      className={classes.cartTitle}*/}
+                          {/*      title={option.name}*/}
+                          {/*    >*/}
+                          {/*      {option.name}*/}
+                          {/*    </Typography>*/}
+                          {/*    <Typography*/}
+                          {/*      variant="caption"*/}
+                          {/*      component="p"*/}
+                          {/*      fontSize="14px !important"*/}
+                          {/*      textAlign="center"*/}
+                          {/*      paddingTop="0px"*/}
+                          {/*      fontFamily="Poppins-Regular !important"*/}
+                          {/*      className={classes.cartTitle}*/}
+                          {/*      title={`${option.cost}`}*/}
+                          {/*    >*/}
+                          {/*      {option.cost}*/}
+                          {/*    </Typography>*/}
+                          {/*  </Grid>*/}
+                          {/*))}*/}
+                        </Grid>
                       </Grid>
-                    </Grid>
-                  )}
+                    );
+                  })}
                 {basketObj &&
                   basketObj.basket &&
                   basketObj.basket.products.length > 0 && (
