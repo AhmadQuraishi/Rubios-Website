@@ -39,10 +39,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: '100%',
     zIndex: 9999,
     [theme.breakpoints.up('md')]: {
-      maxWidth: '600px',
+      maxWidth: '700px',
     },
     [theme.breakpoints.up('sm')]: {
-      maxWidth: '600px',
+      maxWidth: '700px',
     },
     [theme.breakpoints.up('xs')]: {
       maxWidth: 'auto !important',

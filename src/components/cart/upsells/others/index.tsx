@@ -96,6 +96,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   btn: {
     paddingLeft: '0px  !important',
     letterSpacing: 'normal !important',
+    marginTop: '-15px !important'
   },
   emptyCart: {
     fontFamily: 'Poppins-Regular, sans-serif !Important',

@@ -57,8 +57,9 @@ const Footer = () => {
 
   useEffect(() => {}, [menu]);
 
+
   return (
-    <footer>
+    <footer className="footer-control">
       <Grid
         container
         spacing={0}

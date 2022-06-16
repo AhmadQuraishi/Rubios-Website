@@ -302,10 +302,10 @@ const Salsa = ({ upsellsType }: any) => {
                       //   }
                       // }}
                     >
-
+                      <Grid item xs={6}>
                       <img
                         style={{
-                          width: '35%',
+                          width: '85%',
                         }}
                         src={
                           ((categories && categories.imagepath) ||
@@ -316,14 +316,15 @@ const Salsa = ({ upsellsType }: any) => {
                           )
                         }
                       />
+                      </Grid>
                       <Grid
                         item
-                        xs={12}
+                        xs={6}
                         sx={{
                           display: 'flex',
                           flexDirection: 'column',
                           gap: '40px',
-                          paddingLeft: '20px',
+                          paddingLeft: '10px',
                         }}
                       >
                         <Typography
@@ -414,6 +415,7 @@ const Salsa = ({ upsellsType }: any) => {
                   paddingRight: '30px',
                   display: 'flex',
                   justifyContent: 'flex-end',
+                  marginTop: '15px',
                 }}
               >
                 <Button
