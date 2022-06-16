@@ -10,22 +10,27 @@ export function addUpsellsRequest(basketid: string, request: any) {
   };
 }
 
-export function addUpsellsRequestSuccess(data: ResponseBasket) {
+export function addUpsellsRequestSuccess() {
   return {
-    type: basketActionsTypes.ADD_UPSELLS_REQUEST_SUCCESS,
-    payload: data,
+    type: basketActionsTypes.ADD_UPSELLS_REQUEST_SUCCESS
   };
 }
 
-export function addUpsellsRequestFailure(error: any) {
-  displayToast(
-    'ERROR',
-    error?.response?.data?.message
-      ? error.response.data.message
-      : 'ERROR! Please Try again later',
-  );
+export function addUpsellsRequestReset() {
   return {
-    type: basketActionsTypes.ADD_UPSELLS_REQUEST_FAILURE,
-    error: error,
+    type: basketActionsTypes.ADD_UPSELLS_REQUEST_RESET
+  };
+}
+
+export function addUpsellsRequestFailure(response: any) {
+  console.log('response', response)
+  if(response && response.errors && response.errors.length){
+    response.errors.forEach((err: any) => {
+      displayToast('ERROR', `${err.message}`);
+    })
+  }
+
+  return {
+    type: basketActionsTypes.ADD_UPSELLS_REQUEST_FAILURE
   };
 }

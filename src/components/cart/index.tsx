@@ -26,6 +26,7 @@ import {
   utensilsProductId,
 } from '../../helpers/upsells';
 import { capitalizeFirstLetter } from '../../helpers/common';
+import { Category, Product as ProductInfo } from '../../types/olo-api';
 
 const useStyles = makeStyles((theme: Theme) => ({
   dimPanel: {
@@ -131,6 +132,7 @@ const Cart = ({ showCart, handleUpsells }: any) => {
   const [utensils, setUtensils] = useState(false);
   const [clickAction, setClickAction] = useState('');
   const [upsells, setUpsells] = useState<any[]>();
+  const [upsellsProductKeys, setUpsellsProductKeys] = useState<any[]>();
 
   const productRemoveObj = useSelector(
     (state: any) => state.removeProductReducer,
@@ -142,10 +144,43 @@ const Cart = ({ showCart, handleUpsells }: any) => {
   const basketObj = useSelector((state: any) => state.basketReducer);
   const upsellsObj = useSelector((state: any) => state.getUpsellsReducer);
   const addUpsellsObj = useSelector((state: any) => state.addUpsellReducer);
+  const { categories } = useSelector((state: any) => state.categoryReducer);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [basketType, setBasketType] = useState();
+
+  useEffect(() => {
+    // if (hideRemoveKeys && hideRemoveKeys.length === 0 ) {
+    const upsellsProductKeys: any = [];
+    let upsellsChainProductId: any = [];
+    UPSELLS.forEach((obj: any) => {
+      obj.products.forEach((prod: any) => {
+        upsellsChainProductId.push(prod.chainproductid);
+      });
+    });
+    console.log('upsellsChainProductId', upsellsChainProductId);
+    if (
+      categories &&
+      categories.categories &&
+      categories.categories.length &&
+      upsellsChainProductId.length
+    ) {
+      categories.categories.forEach((item: Category) => {
+        const findResults = item.products
+          .filter((obj: ProductInfo) => {
+            return upsellsChainProductId.includes(obj.chainproductid);
+          })
+          .map((obj: any) => obj.id);
+        if (findResults && findResults.length) {
+          Array.prototype.push.apply(upsellsProductKeys, findResults);
+        }
+      });
+    }
+    console.log('upsellsProductKeys', upsellsProductKeys);
+    setUpsellsProductKeys(upsellsProductKeys);
+    // }
+  }, []);
 
   const fitContainer = () => {
     const elem = document.getElementById('cart-main-conatiner');
@@ -297,14 +332,9 @@ const Cart = ({ showCart, handleUpsells }: any) => {
 
   const checkItemIsUpsells = (id: number) => {
     let aval = false;
-    if (upsellsObj && upsellsObj.upsells) {
-      upsellsObj.upsells.groups.map((obj: any, index: number) => {
-        obj.items.map((item: any, index: number) => {
-          if (item.id == id) {
-            aval = true;
-          }
-        });
-      });
+
+    if (upsellsProductKeys && upsellsProductKeys.length) {
+      aval = upsellsProductKeys.includes(id);
     }
     return aval;
   };
@@ -777,7 +807,7 @@ const Cart = ({ showCart, handleUpsells }: any) => {
                                 // margin: 'auto',
                                 width: '25%',
                               }}
-                              src={require('../../assets/imgs/default_img.png')}
+                              src={require(`../../assets/imgs/${type}.jpg`)}
                               // alt={option.name}
                               // title={option.name}
                             />

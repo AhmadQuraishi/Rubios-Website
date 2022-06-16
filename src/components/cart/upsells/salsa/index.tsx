@@ -1,16 +1,9 @@
-import { Grid, Typography, Theme, Box, Divider, Button } from '@mui/material';
+import { Grid, Typography, Theme, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-// import crossIcon from '../../../assets/imgs/close.png';
-import { getBasketRequest } from '../../../../redux/actions/basket';
-import { removeProductRequest } from '../../../../redux/actions/basket/product/remove';
-import { addProductRequest } from '../../../../redux/actions/basket/product/add';
-import { displayToast } from '../../../../helpers/toast';
-import { addUpsellsRequest } from '../../../../redux/actions/basket/upsell/Add';
-import { UPSELLS, UPSELLS_TYPES } from '../../../../helpers/upsells';
-import { capitalizeFirstLetter } from '../../../../helpers/common';
+import { UPSELLS } from '../../../../helpers/upsells';
 import { Category, Product as ProductInfo } from '../../../../types/olo-api';
 import { addMultipleProductsRequest } from '../../../../redux/actions/basket/addMultipleProducts';
 
@@ -111,28 +104,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const Salsa = ({ addToBag, showCart, upsellsType }: any) => {
+const Salsa = ({ upsellsType }: any) => {
   const classes = useStyles();
-  const [actionStatus, setActionStatus] = useState(false);
-  const [clickAction, setClickAction] = useState('');
-  const [runOnce, setRunOnce] = useState(true);
   const [upsells, setUpsells] = useState<any>();
 
-  const productRemoveObj = useSelector(
-    (state: any) => state.removeProductReducer,
-  );
-  const productAddObj = useSelector((state: any) => state.addProductReducer);
-  const { restaurant } = useSelector(
-    (state: any) => state.restaurantInfoReducer,
-  );
   const basketObj = useSelector((state: any) => state.basketReducer);
-  const upsellsObj = useSelector((state: any) => state.getUpsellsReducer);
-  const addUpsellsObj = useSelector((state: any) => state.addUpsellReducer);
   const { categories } = useSelector((state: any) => state.categoryReducer);
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [basketType, setBasketType] = useState();
 
   useEffect(() => {
     let products: any = [];
@@ -168,99 +147,38 @@ const Salsa = ({ addToBag, showCart, upsellsType }: any) => {
             Array.prototype.push.apply(products, findResults);
           }
         });
-
-        // const singleCategory = categories.categories.find((obj: any) => {
-        //   return obj.id === upsellsCategory.catergoryid;
-        // });
-        // console.log('singleCategory', singleCategory);
-        // if (
-        //   singleCategory &&
-        //   singleCategory.products &&
-        //   singleCategory.products.length
-        // ) {
-        //   products = singleCategory.products.filter((obj: any) =>
-        //     filteredUpsellsIds.includes(obj.chainproductid),
-        //   );
-        // }
       }
     }
     console.log('products', products);
     setUpsells(products);
 
-    // let filteredUpsells = UPSELLS.filter(
-    //   (obj: any) => obj.type === upsellsType,
-    //   return obj.id;
-    // );
-
-    // if (filteredUpsells.length > 0) {
-    //   console.log('filteredUpsells', filteredUpsells);
-    //   // setUpsells(filteredUpsells[0]);
-    //
-    //   if (
-    //     categories &&
-    //     categories.categories &&
-    //     categories.categories.length > 0
-    //   ) {
-    //     const singleCategory = categories.categories.find((obj: any) => {
-    //       return obj.id === filteredUpsells[0].catergoryid;
-    //     });
-    //
-    //     if (
-    //       singleCategory &&
-    //       singleCategory.products &&
-    //       singleCategory.products.length > 0
-    //     ) {
-    //       singleCategory.products.filter();
-    //       filteredUpsells.forEach((obj: any) => {});
-    //     }
-    //
-    //     categories.categories.map((item: Category) => {
-    //       const product = item.products.find((obj: ProductInfo) => {
-    //         return obj.id.toString() == id;
-    //       });
-    //       if (product) {
-    //         setProductDetails(product);
-    //       }
-    //     });
-    //   }
-    // } else {
-    //   setUpsells({});
-    // }
+    setTimeout(() => {
+      fitContainer();
+    }, 500);
   }, [categories]);
 
-  // useEffect(() => {
-  //   if (
-  //     basketObj &&
-  //     basketObj.basket &&
-  //     basketObj.basket.products &&
-  //     basketObj.basket.products.length
-  //   ) {
-  //
-  //   }
-  // }, [basketObj]);
-
-  useEffect(() => {
-    if (addToBag) {
-      console.log('upsells', upsells);
-      if (upsells && upsells.length) {
-        const products: any = [];
-        upsells.forEach((product: any) => {
+  const submit = () => {
+    console.log('upsells', upsells);
+    if (upsells && upsells.length) {
+      const products: any = [];
+      upsells.forEach((product: any) => {
+        if (product.quantity > 0) {
           const obj = {
             productid: product.id,
             quantity: product.quantity,
             choices: [],
           };
           products.push(obj);
-        });
-        if (products.length) {
-          const payload: any = {
-            products: products,
-          };
-          dispatch(addMultipleProductsRequest(basketObj.basket.id, payload));
         }
+      });
+      if (products.length) {
+        const payload: any = {
+          products: products,
+        };
+        dispatch(addMultipleProductsRequest(basketObj.basket.id, payload));
       }
     }
-  }, [addToBag]);
+  };
 
   const updateSalsaCount = (id: number, type: string) => {
     const updatedProducts = upsells.map((obj: any) => {
@@ -279,11 +197,14 @@ const Salsa = ({ addToBag, showCart, upsellsType }: any) => {
     });
     console.log('upsells', updatedProducts);
     setUpsells(updatedProducts);
+    fitContainer();
   };
 
   const fitContainer = () => {
-    const elem = document.getElementById('cart-main-conatiner');
-    const cartBox = document.getElementById('cart-box');
+    const elem = document.getElementById('cart-main-container-upsells');
+    const cartBox = document.getElementById('cart-box-upsells');
+    console.log('elem', elem);
+    console.log('cartBox', cartBox);
     if (elem && cartBox) {
       if (
         basketObj &&
@@ -316,196 +237,33 @@ const Salsa = ({ addToBag, showCart, upsellsType }: any) => {
   useEffect(() => {
     window.scrollTo(0, 0);
     fitContainer();
-    setBasketType((basketObj && basketObj.basketType) || '');
   }, []);
 
-  // useEffect(() => {
-  //   if (!runOnce) {
-  //     return;
-  //   }
-  //   const payload = {
-  //     products: [
-  //       {
-  //         productid: 13582533,
-  //         quantity: 1,
-  //         choices: [{
-  //           choiceid: 1195344702
-  //         }],
-  //       },
-  //       // {
-  //       //   chainproductid: 364431,
-  //       //   quantity: 1,
-  //       //   choices: [],
-  //       // },
-  //       // {
-  //       //   chainproductid: 364175,
-  //       //   quantity: 1,
-  //       //   choices: [],
-  //       // },
-  //     ],
-  //   };
-  //
-  //   if (basketObj && basketObj.basket) {
-  //     dispatch(addMultipleProductsRequest(basketObj.basket.id, payload));
-  //   }
-  //   setRunOnce(false);
-  // }, []);
-
-  // const updateUpsells = (upsells: any) => {
-  //   let finalOptionsInArray: any = [];
-  //   upsells.groups.map((g: any) => {
-  //     g.items.map((item: any) => {
-  //       if (!checkUpsellIsAdded(item.id)) {
-  //         finalOptionsInArray.push(item);
-  //       }
-  //     });
-  //   });
-  //   setUpsells(finalOptionsInArray);
-  // };
-
-  // useEffect(() => {
-  //   if (addUpsellsObj && addUpsellsObj.basket && clickAction != '') {
-  //     setClickAction('');
-  //     displayToast('SUCCESS', '1 item added to cart.');
-  //     dispatch(getBasketRequest('', addUpsellsObj.basket, basketType));
-  //   }
-  // }, [addUpsellsObj]);
-
-  // useEffect(() => {
-  //   if (productRemoveObj && productRemoveObj.basket && actionStatus) {
-  //     dispatch(getBasketRequest('', productRemoveObj.basket, basketType));
-  //     displayToast('SUCCESS', '1 item removed from cart.');
-  //     setActionStatus(false);
-  //     navigate(restaurant ? '/menu/' + restaurant.slug : '/');
-  //   }
-  // }, [productRemoveObj]);
-
-  // useEffect(() => {
-  //   if (upsellsObj && upsellsObj.upsells && basketObj && basketObj.basket) {
-  //     updateUpsells(upsellsObj.upsells);
-  //   }
-  //   fitContainer();
-  // }, [basketObj]);
-
-  // useEffect(() => {
-  //   if (productAddObj && productAddObj.basket && actionStatus) {
-  //     dispatch(getBasketRequest('', productAddObj.basket, basketType));
-  //     displayToast('SUCCESS', 'Duplicate item added to cart.');
-  //     setActionStatus(false);
-  //     navigate(restaurant ? '/menu/' + restaurant.slug : '/');
-  //   }
-  // }, [productAddObj]);
-
-  // const removeProductHandle = (productID: number) => {
-  //   setActionStatus(true);
-  //   dispatch(removeProductRequest(basketObj.basket.id, productID));
-  // };
-
-  // const duplicateProductHandle = (productID: number) => {
-  //   const product = basketObj.basket.products.find(
-  //     (x: any) => x.id == productID,
-  //   );
-  //   if (product) {
-  //     setActionStatus(true);
-  //     const request: any = {};
-  //     request.productid = product.productId;
-  //     request.quantity = product.quantity;
-  //     let options = '';
-  //     product.choices.map((item: any) => {
-  //       options = options + item.optionid + ',';
-  //     });
-  //     request.options = options;
-  //     dispatch(addProductRequest(basketObj.basket.id, request));
-  //   }
-  // };
-
-  // const addUpsells = (upsellID: number) => {
-  //   const request = {
-  //     items: [
-  //       {
-  //         id: upsellID,
-  //         quantity: 1,
-  //       },
-  //     ],
-  //   };
-  //   setClickAction('clicked');
-  //   dispatch(addUpsellsRequest(basketObj.basket.id, request));
-  // };
-
-  // const getOptions = (options: any) => {
-  //   let val = '';
-  //   options.map((item: any) => {
-  //     val = val + ' ' + item.name.trim() + ',';
-  //   });
-  //   return val.trim().replace(/,*$/, '');
-  // };
-
-  // const checkItemIsUpsells = (id: number) => {
-  //   let aval = false;
-  //   if (upsellsObj && upsellsObj.upsells) {
-  //     upsellsObj.upsells.groups.map((obj: any, index: number) => {
-  //       obj.items.map((item: any, index: number) => {
-  //         if (item.id == id) {
-  //           aval = true;
-  //         }
-  //       });
-  //     });
-  //   }
-  //   return aval;
-  // };
-
-  // const checkUpsellIsAdded = (id: number) => {
-  //   let aval = false;
-  //   if (basketObj && basketObj.basket && basketObj.basket.products.length) {
-  //     basketObj.basket.products.map((obj: any, index: number) => {
-  //       if (obj.productId == id) {
-  //         aval = true;
-  //       }
-  //     });
-  //   }
-  //   return aval;
-  // };
-
-  useEffect(() => {
-    // const focusableElements =
-    //   'button, [href], input, ul , li ,  select, textarea, [tabindex]:not([tabindex="-1"])';
-    const modal = document.querySelector('#cart-box'); // select the modal by it's id
-    if (modal) {
-      const focusableContent = modal.querySelectorAll('[tabindex="0"]');
-      const firstFocusableElement = focusableContent[0]; // get first element to be focused inside modal
-
-      const lastFocusableElement =
-        focusableContent[focusableContent.length - 1]; // get last element to be focused inside modal
-
-      document.addEventListener('keydown', function (e) {
-        let isTabPressed = e.key === 'Tab' || e.keyCode === 9;
-
-        if (!isTabPressed) {
-          return;
-        }
-
-        if (e.shiftKey) {
-          // if shift key pressed for shift + tab combination
-          if (document.activeElement === firstFocusableElement) {
-            // add focus for the last focusable element
-            lastFocusableElement &&
-              (lastFocusableElement as HTMLElement)?.focus();
-            e.preventDefault();
-          }
-        } else {
-          // if tab key is pressed
-          if (document.activeElement === lastFocusableElement) {
-            // if focused has reached to last focusable element then focus first focusable element after pressing tab
-            firstFocusableElement &&
-              (firstFocusableElement as HTMLElement)?.focus(); // add focus for the first focusable element
-            e.preventDefault();
-          }
-        }
-      });
-
-      firstFocusableElement && (firstFocusableElement as HTMLElement)?.focus();
+  const checkQuantity = () => {
+    let total = 0;
+    if (upsells && upsells.length) {
+      total = upsells.reduce(function (previousValue: any, currentValue: any) {
+        return previousValue + currentValue.quantity;
+      }, 0);
     }
-  }, []);
+
+    return total === 0;
+  };
+
+  const changeImageSize = (path: string, images: any) => {
+    if (images && images.length > 0) {
+      const dektopImage: any = images.find(
+        (obj: any) => obj.groupname === 'desktop-menu',
+      );
+      if (dektopImage) {
+        return dektopImage.filename.replace('h=138', 'h=500');
+      } else {
+        return path;
+      }
+    } else {
+      return path;
+    }
+  };
   return (
     <>
       {basketObj &&
@@ -516,7 +274,7 @@ const Salsa = ({ addToBag, showCart, upsellsType }: any) => {
           <Grid
             container
             spacing={1}
-            id="cart-main-conatiner"
+            id="cart-main-container-upsells"
             sx={{ paddingRight: '25px' }}
           >
             {upsells.map((obj: any) => {
@@ -533,7 +291,7 @@ const Salsa = ({ addToBag, showCart, upsellsType }: any) => {
                         padding: 10,
                         minHeight: '140px',
                         alignItems: 'center',
-                        boxShadow: '0px 2px 3px 0px rgba(0, 0, 0, 0.2)'
+                        boxShadow: '0px 2px 3px 0px rgba(0, 0, 0, 0.2)',
                       }}
                       sx={{ cursor: 'pointer' }}
                       onClick={() => {}}
@@ -544,27 +302,43 @@ const Salsa = ({ addToBag, showCart, upsellsType }: any) => {
                       //   }
                       // }}
                     >
+
                       <img
                         style={{
-                          // display: 'block',
-                          // margin: 'auto',
                           width: '35%',
                         }}
-                        src={require('../../../../assets/imgs/default_img.png')}
-                        // alt={option.name}
-                        // title={option.name}
+                        src={
+                          ((categories && categories.imagepath) ||
+                            '') +
+                          changeImageSize(
+                            obj.imagefilename || '',
+                            obj.images || '',
+                          )
+                        }
                       />
-                      <Grid item xs={12} sx={{display: 'flex', flexDirection: 'column', gap:'40px', paddingLeft: '20px'}}>
+                      <Grid
+                        item
+                        xs={12}
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          gap: '40px',
+                          paddingLeft: '20px',
+                        }}
+                      >
                         <Typography
                           variant="h6"
                           component="p"
                           fontSize="14px !important"
-                          padding = {0}
+                          padding={0}
                           textAlign="left"
                           lineHeight="1.2 !important"
                           textTransform="capitalize"
                           className={classes.cartTitle}
-                          sx={{ display: 'inline', fontFamily:'Poppins-Medium !important' }}
+                          sx={{
+                            display: 'inline',
+                            fontFamily: 'Poppins-Medium !important',
+                          }}
                           // title={option.name}
                         >
                           {obj.name}
@@ -622,6 +396,51 @@ const Salsa = ({ addToBag, showCart, upsellsType }: any) => {
             })}
           </Grid>
         )}
+      <Grid container spacing={0}>
+        <Grid
+          item
+          xs={12}
+          style={{ display: 'flex', justifyContent: 'flex-end' }}
+        >
+          {basketObj &&
+            basketObj.basket &&
+            basketObj.basket.products.length > 0 && (
+              <Grid
+                item
+                xs={12}
+                lg={8}
+                md={8}
+                style={{
+                  paddingRight: '30px',
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                }}
+              >
+                <Button
+                  variant="contained"
+                  disabled={checkQuantity() || basketObj.loading }
+                  onClick={() => {
+                    submit();
+                  }}
+                  sx={{
+                    textTransform: 'uppercase',
+                    backgroundColor: '#0A6FB8',
+                    margin: 'auto',
+                    width: '100%',
+                    borderRadius: 0,
+                    padding: '30px 10px',
+                    fontSize: '16px',
+                    fontFamily: "'Poppins-Medium', sans-serif !important;",
+                  }}
+                  title="Checkout"
+                  aria-label="Checkout"
+                >
+                  ADD TO BAG
+                </Button>
+              </Grid>
+            )}
+        </Grid>
+      </Grid>
     </>
   );
 };

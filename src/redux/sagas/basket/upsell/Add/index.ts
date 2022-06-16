@@ -9,9 +9,9 @@ import { addUpSells } from '../../../../../services/basket';
 function* asyncAddUpsellsRequest(action: any): any {
   try {
     const response = yield call(addUpSells, action.basketid, action.request);
-    yield put(addUpsellsRequestSuccess(response));
+    // yield put(addUpsellsRequestSuccess(response));
   } catch (error) {
-    yield put(addUpsellsRequestFailure(error));
+    // yield put(addUpsellsRequestFailure(error));
   }
 }
 
