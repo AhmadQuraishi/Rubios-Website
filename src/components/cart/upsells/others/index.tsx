@@ -478,7 +478,9 @@ const UpsellsOthers = ({ upsellsType }: any) => {
         >
           {basketObj &&
             basketObj.basket &&
-            basketObj.basket.products.length > 0 && (
+            basketObj.basket.products.length > 0 &&
+            upsells &&
+            upsells.length > 0 && (
               <Grid
                 item
                 xs={12}

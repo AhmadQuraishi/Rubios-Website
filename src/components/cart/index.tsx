@@ -7,6 +7,7 @@ import {
   Divider,
   Button,
   Link as MUILink,
+  Card,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import React, { useEffect, useState } from 'react';
@@ -17,8 +18,8 @@ import { getBasketRequest } from '../../redux/actions/basket';
 import { removeProductRequest } from '../../redux/actions/basket/product/remove';
 import { addProductRequest } from '../../redux/actions/basket/product/add';
 import { displayToast } from '../../helpers/toast';
-import { addUpsellsRequest } from '../../redux/actions/basket/upsell/Add';
-import { updateMultipleProductsRequest } from '../../redux/actions/basket/addMultipleProducts/index';
+// import { addUpsellsRequest } from '../../redux/actions/basket/upsell/Add';
+// import { updateMultipleProductsRequest } from '../../redux/actions/basket/addMultipleProducts/index';
 
 import {
   UPSELLS,
@@ -127,12 +128,12 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const Cart = ({ showCart, handleUpsells }: any) => {
+const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   const classes = useStyles();
   const [actionStatus, setActionStatus] = useState(false);
   const [utensils, setUtensils] = useState(false);
   const [clickAction, setClickAction] = useState('');
-  const [upsells, setUpsells] = useState<any[]>();
+  // const [upsells, setUpsells] = useState<any[]>();
   const [upsellsProductKeys, setUpsellsProductKeys] = useState<any[]>();
 
   const productRemoveObj = useSelector(
@@ -143,7 +144,7 @@ const Cart = ({ showCart, handleUpsells }: any) => {
     (state: any) => state.restaurantInfoReducer,
   );
   const basketObj = useSelector((state: any) => state.basketReducer);
-  const upsellsObj = useSelector((state: any) => state.getUpsellsReducer);
+  // const upsellsObj = useSelector((state: any) => state.getUpsellsReducer);
   const addUpsellsObj = useSelector((state: any) => state.addUpsellReducer);
   const { categories } = useSelector((state: any) => state.categoryReducer);
 
@@ -221,17 +222,17 @@ const Cart = ({ showCart, handleUpsells }: any) => {
     setBasketType((basketObj && basketObj.basketType) || '');
   }, []);
 
-  const updateUpsells = (upsells: any) => {
-    let finalOptionsInArray: any = [];
-    upsells.groups.map((g: any) => {
-      g.items.map((item: any) => {
-        if (!checkUpsellIsAdded(item.id)) {
-          finalOptionsInArray.push(item);
-        }
-      });
-    });
-    setUpsells(finalOptionsInArray);
-  };
+  // const updateUpsells = (upsells: any) => {
+  //   let finalOptionsInArray: any = [];
+  //   upsells.groups.map((g: any) => {
+  //     g.items.map((item: any) => {
+  //       if (!checkUpsellIsAdded(item.id)) {
+  //         finalOptionsInArray.push(item);
+  //       }
+  //     });
+  //   });
+  //   setUpsells(finalOptionsInArray);
+  // };
 
   useEffect(() => {
     if (addUpsellsObj && addUpsellsObj.basket && clickAction != '') {
@@ -250,12 +251,12 @@ const Cart = ({ showCart, handleUpsells }: any) => {
     }
   }, [productRemoveObj]);
 
-  useEffect(() => {
-    if (upsellsObj && upsellsObj.upsells && basketObj && basketObj.basket) {
-      updateUpsells(upsellsObj.upsells);
-    }
-    fitContainer();
-  }, [basketObj]);
+  // useEffect(() => {
+  //   if (upsellsObj && upsellsObj.upsells && basketObj && basketObj.basket) {
+  //     updateUpsells(upsellsObj.upsells);
+  //   }
+  //   fitContainer();
+  // }, [basketObj]);
 
   useEffect(() => {
     if (
@@ -310,18 +311,18 @@ const Cart = ({ showCart, handleUpsells }: any) => {
     }
   };
 
-  const addUpsells = (upsellID: number) => {
-    const request = {
-      items: [
-        {
-          id: upsellID,
-          quantity: 1,
-        },
-      ],
-    };
-    setClickAction('clicked');
-    dispatch(addUpsellsRequest(basketObj.basket.id, request));
-  };
+  // const addUpsells = (upsellID: number) => {
+  //   const request = {
+  //     items: [
+  //       {
+  //         id: upsellID,
+  //         quantity: 1,
+  //       },
+  //     ],
+  //   };
+  //   setClickAction('clicked');
+  //   dispatch(addUpsellsRequest(basketObj.basket.id, request));
+  // };
 
   const getOptions = (options: any) => {
     let val = '';
@@ -340,17 +341,17 @@ const Cart = ({ showCart, handleUpsells }: any) => {
     return aval;
   };
 
-  const checkUpsellIsAdded = (id: number) => {
-    let aval = false;
-    if (basketObj && basketObj.basket && basketObj.basket.products.length) {
-      basketObj.basket.products.map((obj: any, index: number) => {
-        if (obj.productId == id) {
-          aval = true;
-        }
-      });
-    }
-    return aval;
-  };
+  // const checkUpsellIsAdded = (id: number) => {
+  //   let aval = false;
+  //   if (basketObj && basketObj.basket && basketObj.basket.products.length) {
+  //     basketObj.basket.products.map((obj: any, index: number) => {
+  //       if (obj.productId == id) {
+  //         aval = true;
+  //       }
+  //     });
+  //   }
+  //   return aval;
+  // };
 
   useEffect(() => {
     // const focusableElements =
@@ -375,7 +376,7 @@ const Cart = ({ showCart, handleUpsells }: any) => {
           if (document.activeElement === firstFocusableElement) {
             // add focus for the last focusable element
             lastFocusableElement &&
-            (lastFocusableElement as HTMLElement)?.focus();
+              (lastFocusableElement as HTMLElement)?.focus();
             e.preventDefault();
           }
         } else {
@@ -383,7 +384,7 @@ const Cart = ({ showCart, handleUpsells }: any) => {
           if (document.activeElement === lastFocusableElement) {
             // if focused has reached to last focusable element then focus first focusable element after pressing tab
             firstFocusableElement &&
-            (firstFocusableElement as HTMLElement)?.focus(); // add focus for the first focusable element
+              (firstFocusableElement as HTMLElement)?.focus(); // add focus for the first focusable element
             e.preventDefault();
           }
         }
@@ -475,8 +476,8 @@ const Cart = ({ showCart, handleUpsells }: any) => {
             </Button>
           </Grid>
           {((basketObj &&
-              basketObj.basket &&
-              basketObj.basket.products.length == 0) ||
+            basketObj.basket &&
+            basketObj.basket.products.length == 0) ||
             (basketObj && basketObj.basket == null)) && (
             <Grid
               id="cart-main-conatiner"
@@ -567,8 +568,8 @@ const Cart = ({ showCart, handleUpsells }: any) => {
                           >
                             {item.productId !== utensilsProductId()
                               ? item.quantity.toString() +
-                              ' x ' +
-                              item.name.toString()
+                                ' x ' +
+                                item.name.toString()
                               : item.name.toString()}
                           </Typography>
                         </Grid>
@@ -766,130 +767,261 @@ const Cart = ({ showCart, handleUpsells }: any) => {
                     Complete Your Meal
                   </Typography>
                 </Grid>
+
+                {/*<div className={'upsells'}>*/}
+                {/*  {basketObj &&*/}
+                {/*    basketObj.basket &&*/}
+                {/*    basketObj.basket.products.length > 0 &&*/}
+                {/*    Object.keys(UPSELLS_TYPES).map(*/}
+                {/*      (type: string, index: number) => {*/}
+                {/*        return (*/}
+                {/*          <Grid*/}
+                {/*            key={Math.random() + index}*/}
+                {/*            option-id={index}*/}
+                {/*            onClick={() => handleUpsells(type)}*/}
+                {/*            className={*/}
+                {/*              upsellsType === type*/}
+                {/*                ? 'content-panel selected'*/}
+                {/*                : 'content-panel'*/}
+                {/*            }*/}
+                {/*            item*/}
+                {/*            xs={12}*/}
+                {/*            sm={12}*/}
+                {/*            md={12}*/}
+                {/*            lg={12}*/}
+                {/*            sx={{ position: 'relative' }}*/}
+                {/*          >*/}
+                {/*            <input*/}
+                {/*              checked={upsellsType === type}*/}
+                {/*              style={{*/}
+                {/*                opacity: 0,*/}
+                {/*                position: 'absolute',*/}
+                {/*                zIndex: 1000,*/}
+                {/*              }}*/}
+                {/*              type="checkbox"*/}
+                {/*              id={`${index}-tab`}*/}
+                {/*              value={index}*/}
+                {/*            />*/}
+                {/*            <label*/}
+                {/*              tabIndex={0}*/}
+                {/*              htmlFor={`${index}`}*/}
+                {/*              // onKeyUp={(e) => {*/}
+                {/*              //   if (e.keyCode === 13)*/}
+                {/*              //     showChildOptions(*/}
+                {/*              //       itemChild.option.id,*/}
+                {/*              //       itemMain.id,*/}
+                {/*              //       itemChild.dropDownValues,*/}
+                {/*              //       itemChild.selectedValue,*/}
+                {/*              //     );*/}
+                {/*              // }}*/}
+                {/*            >*/}
+                {/*              <Card*/}
+                {/*                className="card-panel"*/}
+                {/*                title={type}*/}
+                {/*                // is-mandatory={itemMain.mandatory.toString()}*/}
+                {/*                // parent-option-id={itemMain.parentOptionID}*/}
+                {/*              >*/}
+                {/*                <div className="check-mark">*/}
+                {/*                  <div aria-hidden="true" className="checkmark">*/}
+                {/*                    L*/}
+                {/*                  </div>*/}
+                {/*                </div>*/}
+                {/*                <Grid*/}
+                {/*                  container*/}
+                {/*                  spacing={1}*/}
+                {/*                  className="name-img-panel"*/}
+                {/*                  sx={{ padding: '0', marginTop: '0' }}*/}
+                {/*                >*/}
+                {/*                  <Grid*/}
+                {/*                    item*/}
+                {/*                    xs={12}*/}
+                {/*                    lg={5}*/}
+                {/*                    sx={{*/}
+                {/*                      padding: '0px',*/}
+                {/*                      paddingLeft: {*/}
+                {/*                        xs: '0px !important',*/}
+                {/*                        lg: '15px !important',*/}
+                {/*                      },*/}
+                {/*                      paddingTop: {*/}
+                {/*                        xs: '0px !important',*/}
+                {/*                        lg: '0px !important',*/}
+                {/*                      },*/}
+                {/*                    }}*/}
+                {/*                  >*/}
+                {/*                    <img*/}
+                {/*                      style={{*/}
+                {/*                        // display: 'block',*/}
+                {/*                        // margin: 'auto',*/}
+                {/*                        width: '25%',*/}
+                {/*                      }}*/}
+                {/*                      src={require(`../../assets/imgs/${type}.jpg`)}*/}
+                {/*                      // alt={option.name}*/}
+                {/*                      // title={option.name}*/}
+                {/*                    />*/}
+
+                {/*                    <Grid*/}
+                {/*                      item*/}
+                {/*                      xs={12}*/}
+                {/*                      lg={7}*/}
+                {/*                      className="name-panel"*/}
+                {/*                    >*/}
+                {/*                      {type === UPSELLS_TYPES.SALSA*/}
+                {/*                        ? `Select Your `*/}
+                {/*                        : `Add A `}*/}
+                {/*                      {capitalizeFirstLetter(type)}*/}
+                {/*                    </Grid>*/}
+                {/*                  </Grid>*/}
+                {/*                </Grid>*/}
+                {/*              </Card>*/}
+                {/*            </label>*/}
+                {/*          </Grid>*/}
+                {/*        );*/}
+                {/*      },*/}
+                {/*    )}*/}
+                {/*</div>*/}
+
                 {basketObj &&
                   basketObj.basket &&
                   basketObj.basket.products.length > 0 &&
-                  Object.keys(UPSELLS_TYPES).map((type: string) => {
-                    return (
-                      <Grid item onClick={() => handleUpsells(type)} xs={12}>
-                        <Grid
-                          container
-                          spacing={0}
-                          justifyContent="space-around"
-                          direction={'column'}
-                          sx={{ paddingTop: '10px' }}
-                        >
+                  Object.keys(UPSELLS_TYPES).map(
+                    (type: string, index: number) => {
+                      return (
+                        <Grid item onClick={() => handleUpsells(type)} xs={12}>
                           <Grid
-                            key={Math.random() + '-'}
-                            item
-                            xs={12}
-                            style={{
-                              display: 'flex',
-                              border: '1px solid rgba(0, 0, 0, 0.2)',
-                              padding: 10,
-                              minHeight: '85px',
-                              alignItems: 'center',
-                              boxShadow: '0px 2px 3px 0px rgba(0, 0, 0, 0.2)',
-                            }}
-                            sx={{ cursor: 'pointer' }}
-                            // onClick={() => {
-                            //   addUpsells(option.id);
-                            // }}
-                            // tabIndex={0}
-                            // onKeyUp={(e) => {
-                            //   if (e.keyCode === 13) {
-                            //     addUpsells(option.id);
-                            //   }
-                            // }}
+                            container
+                            spacing={0}
+                            justifyContent="space-around"
+                            direction={'column'}
+                            sx={{ paddingTop: '10px' }}
                           >
-                            <img
+                            {/*<div className="check-mark">*/}
+                            {/*  <div aria-hidden="true" className="checkmark">*/}
+                            {/*    L*/}
+                            {/*  </div>*/}
+                            {/*</div>*/}
+                            <Grid
+                              key={Math.random() + '-'}
+                              item
+                              xs={12}
                               style={{
-                                // display: 'block',
-                                // margin: 'auto',
-                                width: '25%',
+                                display: 'flex',
+                                border: '1px solid rgba(0, 0, 0, 0.2)',
+                                padding: 10,
+                                minHeight: '85px',
+                                alignItems: 'center',
+                                boxShadow: '0px 2px 3px 0px rgba(0, 0, 0, 0.2)',
                               }}
-                              src={require(`../../assets/imgs/${type}.jpg`)}
-                              // alt={option.name}
-                              // title={option.name}
-                            />
-                            <Typography
-                              variant="h6"
-                              component="p"
-                              fontSize="16px !important"
-                              textAlign="center"
-                              padding="0px 0 0 30px"
-                              lineHeight="1.2 !important"
-                              textTransform="capitalize"
-                              className={classes.cartTitle}
-                              sx={{
-                                display: 'inline',
-                                fontFamily: 'Poppins-Medium !important',
-                              }}
-                              // title={option.name}
+                              sx={{ cursor: 'pointer' }}
+                              // onClick={() => {
+                              //   addUpsells(option.id);
+                              // }}
+                              // tabIndex={0}
+                              // onKeyUp={(e) => {
+                              //   if (e.keyCode === 13) {
+                              //     addUpsells(option.id);
+                              //   }
+                              // }}
                             >
-                              {type === UPSELLS_TYPES.SALSA
-                                ? `Select Your `
-                                : `Add A `}
-                              {capitalizeFirstLetter(type)}
-                            </Typography>
+                              <input
+                                checked={upsellsType === type}
+                                style={{
+                                  opacity: 0,
+                                  position: 'absolute',
+                                  zIndex: 1000,
+                                }}
+                                type="checkbox"
+                                // id={index}
+                                // value={itemChild.name}
+                              />
+                              <img
+                                style={{
+                                  // display: 'block',
+                                  // margin: 'auto',
+                                  width: '25%',
+                                }}
+                                src={require(`../../assets/imgs/${type}.jpg`)}
+                                // alt={option.name}
+                                // title={option.name}
+                              />
+                              <Typography
+                                variant="h6"
+                                component="p"
+                                fontSize="16px !important"
+                                textAlign="center"
+                                padding="0px 0 0 30px"
+                                lineHeight="1.2 !important"
+                                textTransform="capitalize"
+                                className={classes.cartTitle}
+                                sx={{
+                                  display: 'inline',
+                                  fontFamily: 'Poppins-Medium !important',
+                                }}
+                                // title={option.name}
+                              >
+                                {type === UPSELLS_TYPES.SALSA
+                                  ? `Select Your `
+                                  : `Add A `}
+                                {capitalizeFirstLetter(type)}
+                              </Typography>
+                            </Grid>
+                            {/*{upsells.map((option: any, index: number) => (*/}
+                            {/*  <Grid*/}
+                            {/*    key={Math.random() + '-' + index}*/}
+                            {/*    item*/}
+                            {/*    xs={4}*/}
+                            {/*    sx={{ cursor: 'pointer' }}*/}
+                            {/*    onClick={() => {*/}
+                            {/*      addUpsells(option.id);*/}
+                            {/*    }}*/}
+                            {/*    tabIndex={0}*/}
+                            {/*    onKeyUp={(e) => {*/}
+                            {/*      if (e.keyCode === 13) {*/}
+                            {/*        addUpsells(option.id);*/}
+                            {/*      }*/}
+                            {/*    }}*/}
+                            {/*  >*/}
+                            {/*    <img*/}
+                            {/*      style={{*/}
+                            {/*        display: 'block',*/}
+                            {/*        margin: 'auto',*/}
+                            {/*        width: '75%',*/}
+                            {/*      }}*/}
+                            {/*      src={require('../../assets/imgs/default_img.png')}*/}
+                            {/*      alt={option.name}*/}
+                            {/*      title={option.name}*/}
+                            {/*    />*/}
+                            {/*    <Typography*/}
+                            {/*      variant="h6"*/}
+                            {/*      component="p"*/}
+                            {/*      fontSize="14px !important"*/}
+                            {/*      textAlign="center"*/}
+                            {/*      padding="5px 0 0 0"*/}
+                            {/*      lineHeight="1.2 !important"*/}
+                            {/*      textTransform="capitalize"*/}
+                            {/*      className={classes.cartTitle}*/}
+                            {/*      title={option.name}*/}
+                            {/*    >*/}
+                            {/*      {option.name}*/}
+                            {/*    </Typography>*/}
+                            {/*    <Typography*/}
+                            {/*      variant="caption"*/}
+                            {/*      component="p"*/}
+                            {/*      fontSize="14px !important"*/}
+                            {/*      textAlign="center"*/}
+                            {/*      paddingTop="0px"*/}
+                            {/*      fontFamily="Poppins-Regular !important"*/}
+                            {/*      className={classes.cartTitle}*/}
+                            {/*      title={`${option.cost}`}*/}
+                            {/*    >*/}
+                            {/*      {option.cost}*/}
+                            {/*    </Typography>*/}
+                            {/*  </Grid>*/}
+                            {/*))}*/}
                           </Grid>
-                          {/*{upsells.map((option: any, index: number) => (*/}
-                          {/*  <Grid*/}
-                          {/*    key={Math.random() + '-' + index}*/}
-                          {/*    item*/}
-                          {/*    xs={4}*/}
-                          {/*    sx={{ cursor: 'pointer' }}*/}
-                          {/*    onClick={() => {*/}
-                          {/*      addUpsells(option.id);*/}
-                          {/*    }}*/}
-                          {/*    tabIndex={0}*/}
-                          {/*    onKeyUp={(e) => {*/}
-                          {/*      if (e.keyCode === 13) {*/}
-                          {/*        addUpsells(option.id);*/}
-                          {/*      }*/}
-                          {/*    }}*/}
-                          {/*  >*/}
-                          {/*    <img*/}
-                          {/*      style={{*/}
-                          {/*        display: 'block',*/}
-                          {/*        margin: 'auto',*/}
-                          {/*        width: '75%',*/}
-                          {/*      }}*/}
-                          {/*      src={require('../../assets/imgs/default_img.png')}*/}
-                          {/*      alt={option.name}*/}
-                          {/*      title={option.name}*/}
-                          {/*    />*/}
-                          {/*    <Typography*/}
-                          {/*      variant="h6"*/}
-                          {/*      component="p"*/}
-                          {/*      fontSize="14px !important"*/}
-                          {/*      textAlign="center"*/}
-                          {/*      padding="5px 0 0 0"*/}
-                          {/*      lineHeight="1.2 !important"*/}
-                          {/*      textTransform="capitalize"*/}
-                          {/*      className={classes.cartTitle}*/}
-                          {/*      title={option.name}*/}
-                          {/*    >*/}
-                          {/*      {option.name}*/}
-                          {/*    </Typography>*/}
-                          {/*    <Typography*/}
-                          {/*      variant="caption"*/}
-                          {/*      component="p"*/}
-                          {/*      fontSize="14px !important"*/}
-                          {/*      textAlign="center"*/}
-                          {/*      paddingTop="0px"*/}
-                          {/*      fontFamily="Poppins-Regular !important"*/}
-                          {/*      className={classes.cartTitle}*/}
-                          {/*      title={`${option.cost}`}*/}
-                          {/*    >*/}
-                          {/*      {option.cost}*/}
-                          {/*    </Typography>*/}
-                          {/*  </Grid>*/}
-                          {/*))}*/}
                         </Grid>
-                      </Grid>
-                    );
-                  })}
+                      );
+                    },
+                  )}
                 {basketObj &&
                   basketObj.basket &&
                   basketObj.basket.products.length > 0 && (
@@ -964,39 +1096,39 @@ const Cart = ({ showCart, handleUpsells }: any) => {
                         basketObj.basket.discounts &&
                         basketObj.basket.discounts.length > 0
                           ? basketObj.basket.discounts.map((discount: any) => {
-                            return (
-                              <>
-                                <Grid
-                                  item
-                                  xs={9}
-                                  sx={{
-                                    color: 'secondary.main',
-                                    fontSize: '14px',
-                                    paddingBottom: '2px',
-                                    fontFamily: 'Poppins-Regular',
-                                  }}
-                                >
-                                  {discount.type === 'Coupon'
-                                    ? 'Coupon Code: '
-                                    : 'DISCOUNT: '}
-                                  {discount.description}
-                                </Grid>
-                                <Grid
-                                  item
-                                  xs={3}
-                                  sx={{
-                                    color: 'secondary.main',
-                                    fontSize: '14px',
-                                    textAlign: 'right',
-                                    paddingBottom: '2px',
-                                    fontFamily: 'Poppins-Regular',
-                                  }}
-                                >
-                                  -${discount.amount}
-                                </Grid>
-                              </>
-                            );
-                          })
+                              return (
+                                <>
+                                  <Grid
+                                    item
+                                    xs={9}
+                                    sx={{
+                                      color: 'secondary.main',
+                                      fontSize: '14px',
+                                      paddingBottom: '2px',
+                                      fontFamily: 'Poppins-Regular',
+                                    }}
+                                  >
+                                    {discount.type === 'Coupon'
+                                      ? 'Coupon Code: '
+                                      : 'DISCOUNT: '}
+                                    {discount.description}
+                                  </Grid>
+                                  <Grid
+                                    item
+                                    xs={3}
+                                    sx={{
+                                      color: 'secondary.main',
+                                      fontSize: '14px',
+                                      textAlign: 'right',
+                                      paddingBottom: '2px',
+                                      fontFamily: 'Poppins-Regular',
+                                    }}
+                                  >
+                                    -${discount.amount}
+                                  </Grid>
+                                </>
+                              );
+                            })
                           : null}
 
                         {basketObj.basket &&

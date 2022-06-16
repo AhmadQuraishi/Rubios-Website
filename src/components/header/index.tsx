@@ -480,7 +480,7 @@ const Header = (props: any) => {
                 showCart={() => handleUpsells('')}
               />
             )}
-            <Cart showCart={handleShowCart} handleUpsells={handleUpsells} />
+            <Cart upsellsType={upsellsType} showCart={handleShowCart} handleUpsells={handleUpsells} />
           </Dialog>
         ))}
       {showAccountMenu && (

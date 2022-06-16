@@ -303,19 +303,18 @@ const Salsa = ({ upsellsType }: any) => {
                       // }}
                     >
                       <Grid item xs={6}>
-                      <img
-                        style={{
-                          width: '85%',
-                        }}
-                        src={
-                          ((categories && categories.imagepath) ||
-                            '') +
-                          changeImageSize(
-                            obj.imagefilename || '',
-                            obj.images || '',
-                          )
-                        }
-                      />
+                        <img
+                          style={{
+                            width: '85%',
+                          }}
+                          src={
+                            ((categories && categories.imagepath) || '') +
+                            changeImageSize(
+                              obj.imagefilename || '',
+                              obj.images || '',
+                            )
+                          }
+                        />
                       </Grid>
                       <Grid
                         item
@@ -405,7 +404,9 @@ const Salsa = ({ upsellsType }: any) => {
         >
           {basketObj &&
             basketObj.basket &&
-            basketObj.basket.products.length > 0 && (
+            basketObj.basket.products.length > 0 &&
+            upsells &&
+            upsells.length > 0 && (
               <Grid
                 item
                 xs={12}
@@ -420,7 +421,7 @@ const Salsa = ({ upsellsType }: any) => {
               >
                 <Button
                   variant="contained"
-                  disabled={checkQuantity() || basketObj.loading }
+                  disabled={checkQuantity() || basketObj.loading}
                   onClick={() => {
                     submit();
                   }}
