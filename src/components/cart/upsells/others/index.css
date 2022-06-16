@@ -167,3 +167,12 @@
   width: 100%;
   display: block;
 }
+
+.upsells .content-panel .card-panel .name-img-panel .name-panel select {
+  width: 100% !important;
+  height: 30px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  color: #2B4B62;
+  padding: 5px;
+}
