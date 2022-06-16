@@ -119,6 +119,7 @@ const Upsells = ({ showCart, upsellsType }: any) => {
   const [addToBag, setAddToBag] = useState(false);
   const [clickAction, setClickAction] = useState('');
   const [upsells, setUpsells] = useState<any[]>();
+  const [quantity, setQuantity] = useState(0);
 
   const productRemoveObj = useSelector(
     (state: any) => state.removeProductReducer,
@@ -358,6 +359,17 @@ const Upsells = ({ showCart, upsellsType }: any) => {
       firstFocusableElement && (firstFocusableElement as HTMLElement)?.focus();
     }
   }, []);
+
+  const updateQuantity = (type: string) => {
+    let count = type === 'PLUS' ? quantity + 1 : quantity - 1;
+    count = count >= 6 ? 6 : count <= 0 ? 0 : count;
+    setQuantity(count);
+  };
+
+  useEffect(() => {
+    setQuantity(0);
+    setAddToBag(false)
+  }, [upsellsType]);
   return (
     <>
       <div className={classes.dimPanel} onClick={showCart}></div>
@@ -474,21 +486,36 @@ const Upsells = ({ showCart, upsellsType }: any) => {
               </Grid>
             )}
 
-
-          {
-            upsellsType === UPSELLS_TYPES.SALSA ? (
-              <Salsa addToBag={addToBag} upsellsType={upsellsType} />
-            ) : (
-              <UpsellsOthers addToBag={addToBag} upsellsType={upsellsType} />
-            )
-          }
+          {upsellsType === UPSELLS_TYPES.SALSA ? (
+            <Salsa addToBag={addToBag} upsellsType={upsellsType} />
+          ) : (
+            <UpsellsOthers
+              addToBag={addToBag}
+              upsellsType={upsellsType}
+              quantity={quantity}
+            />
+          )}
         </Grid>
         <Grid container spacing={0}>
-          <Grid item xs={12} style={{display: 'flex', justifyContent: 'flex-end'}}>
+          <Grid
+            item
+            xs={12}
+            style={{ display: 'flex', justifyContent: 'flex-end' }}
+          >
             {basketObj &&
               basketObj.basket &&
               basketObj.basket.products.length > 0 && (
-                <Grid item xs={12} lg={8} md={8} style={{paddingRight: '30px', display: 'flex', justifyContent:'flex-end' }}>
+                <Grid
+                  item
+                  xs={12}
+                  lg={8}
+                  md={8}
+                  style={{
+                    paddingRight: '30px',
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                  }}
+                >
                   <div
                     style={{ display: 'flex', alignItems: 'center' }}
                     className="upsells-details"
@@ -505,15 +532,15 @@ const Upsells = ({ showCart, upsellsType }: any) => {
                         title=""
                         className="add"
                         aria-label="increase"
-                        // onClick={() => {
-                        //   updateSalsaCount(obj.chainproductid, 'PLUS');
-                        // }}
+                        onClick={() => {
+                          updateQuantity('PLUS');
+                        }}
                       >
                         {' '}
                         +{' '}
                       </Button>
                       <input
-                        // value={obj.quantity}
+                        value={quantity}
                         // inputProps={inputProps}
                         readOnly
                         id="quantityfield"
@@ -525,9 +552,9 @@ const Upsells = ({ showCart, upsellsType }: any) => {
                         title=""
                         className="subtract"
                         aria-label="reduce"
-                        // onClick={() => {
-                        //   updateSalsaCount(obj.chainproductid, 'MINUS');
-                        // }}
+                        onClick={() => {
+                          updateQuantity('MINUS');
+                        }}
                       >
                         {' '}
                         -{' '}
@@ -536,9 +563,9 @@ const Upsells = ({ showCart, upsellsType }: any) => {
                   </div>
                   <Button
                     variant="contained"
-                    disabled={addToBag}
+                    disabled={addToBag || quantity === 0}
                     onClick={() => {
-                      setAddToBag(true)
+                      setAddToBag(true);
                     }}
                     sx={{
                       textTransform: 'uppercase',
@@ -556,8 +583,7 @@ const Upsells = ({ showCart, upsellsType }: any) => {
                     ADD TO BAG
                   </Button>
                 </Grid>
-              )
-            }
+              )}
           </Grid>
         </Grid>
       </Box>
