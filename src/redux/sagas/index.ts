@@ -13,6 +13,7 @@ import { resturantListSaga } from './restaurant/list';
 import { locationSaga } from './location';
 import { BasketSaga } from './basket';
 import { addMultipleProductsSaga } from './basket/addMultipleProducts';
+import { updateMultipleProductsSaga} from './basket/addMultipleProducts';
 import { checkoutSaga } from './basket/checkout';
 import { createBasketSaga } from './basket/create';
 import { addProductSaga } from './basket/product/add';
@@ -50,6 +51,7 @@ export default function* rootSaga() {
     createBasketSaga(),
     BasketSaga(),
     addMultipleProductsSaga(),
+    updateMultipleProductsSaga(),
     checkoutSaga(),
     addProductSaga(),
     removeProductSaga(),

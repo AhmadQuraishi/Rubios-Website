@@ -18,7 +18,13 @@ import { removeProductRequest } from '../../redux/actions/basket/product/remove'
 import { addProductRequest } from '../../redux/actions/basket/product/add';
 import { displayToast } from '../../helpers/toast';
 import { addUpsellsRequest } from '../../redux/actions/basket/upsell/Add';
-import { UPSELLS, UPSELLS_TYPES } from '../../helpers/upsells';
+import { updateMultipleProductsRequest } from '../../redux/actions/basket/addMultipleProducts/index';
+
+import {
+  UPSELLS,
+  UPSELLS_TYPES,
+  utensilsProductId,
+} from '../../helpers/upsells';
 import { capitalizeFirstLetter } from '../../helpers/common';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -85,11 +91,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: '#0075BF !important',
     fontSize: '11px !important',
     fontFamily: "'Poppins-Bold' !important",
-    textDecoration: "underline !important",
+    textDecoration: 'underline !important',
     display: 'inline',
     cursor: 'pointer',
     textTransform: 'uppercase',
-    padding: '0px 30px 0px 0px !important'
+    padding: '0px 30px 0px 0px !important',
   },
   disabledLink: {
     color: '#ccc !important',
@@ -122,6 +128,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const Cart = ({ showCart, handleUpsells }: any) => {
   const classes = useStyles();
   const [actionStatus, setActionStatus] = useState(false);
+  const [utensils, setUtensils] = useState(false);
   const [clickAction, setClickAction] = useState('');
   const [upsells, setUpsells] = useState<any[]>();
 
@@ -212,6 +219,27 @@ const Cart = ({ showCart, handleUpsells }: any) => {
       updateUpsells(upsellsObj.upsells);
     }
     fitContainer();
+  }, [basketObj]);
+
+  useEffect(() => {
+    if (
+      basketObj &&
+      basketObj.basket &&
+      basketObj.basket.products &&
+      basketObj.basket.products.length
+    ) {
+      const utensils = basketObj.basket.products.filter(
+        (obj: any) => obj.productId === utensilsProductId(),
+      );
+
+      if (utensils.length) {
+        setUtensils(true);
+      } else {
+        setUtensils(false);
+      }
+    } else {
+      setUtensils(false);
+    }
   }, [basketObj]);
 
   useEffect(() => {
@@ -333,6 +361,38 @@ const Cart = ({ showCart, handleUpsells }: any) => {
       firstFocusableElement && (firstFocusableElement as HTMLElement)?.focus();
     }
   }, []);
+
+  const addRemoveUtensils = (e: any) => {
+    console.log('e.target.checked', e.target.checked);
+    if (e.target.checked) {
+      const request: any = {};
+      request.productid = utensilsProductId();
+      request.quantity = 1;
+      request.options = '';
+      dispatch(addProductRequest(basketObj.basket.id, request));
+    } else {
+      console.log('e.target.checked 2', e.target.checked);
+      if (
+        basketObj &&
+        basketObj.basket &&
+        basketObj.basket.products &&
+        basketObj.basket.products.length
+      ) {
+        const utensilsAllProducts = basketObj.basket.products.filter(
+          (obj: any) => obj.productId === utensilsProductId(),
+        );
+        if (utensilsAllProducts && utensilsAllProducts.length) {
+          dispatch(
+            removeProductRequest(
+              basketObj.basket.id,
+              utensilsAllProducts[0].id,
+            ),
+          );
+        }
+      }
+    }
+  };
+
   return (
     <>
       <div className={classes.dimPanel} onClick={showCart}></div>
@@ -474,9 +534,11 @@ const Cart = ({ showCart, handleUpsells }: any) => {
                               fontFamily: "'Poppins-Medium' !important",
                             }}
                           >
-                            {item.quantity.toString() +
-                              ' x ' +
-                              item.name.toString()}
+                            {item.productId !== utensilsProductId()
+                              ? item.quantity.toString() +
+                                ' x ' +
+                                item.name.toString()
+                              : item.name.toString()}
                           </Typography>
                         </Grid>
                         <Grid item xs={3} sx={{ textAlign: 'right' }}>
@@ -494,9 +556,13 @@ const Cart = ({ showCart, handleUpsells }: any) => {
                             ${item.totalcost.toFixed(2)}
                           </Typography>
                         </Grid>
-                        <Grid item xs={12} sx={{ padding: '10px 0 10px 0' }}>
-                          <Divider sx={{ borderColor: 'rgba(0, 0, 0, 1);' }} />
-                        </Grid>
+                        {item.productId !== utensilsProductId() ? (
+                          <Grid item xs={12} sx={{ padding: '10px 0 10px 0' }}>
+                            <Divider
+                              sx={{ borderColor: 'rgba(0, 0, 0, 1);' }}
+                            />
+                          </Grid>
+                        ) : null}
                         <Grid item xs={12}>
                           <Typography
                             title={getOptions(item.choices)}
@@ -507,112 +573,115 @@ const Cart = ({ showCart, handleUpsells }: any) => {
                             {getOptions(item.choices)}
                           </Typography>
                         </Grid>
-                        <Grid item xs={12} sx={{ padding: '0' }}>
-                          <Grid container spacing={0}>
-                            <ul className={`btnslist ${classes.btnsList}`}>
-                              <li>
-                                {productRemoveObj &&
-                                productRemoveObj.loading &&
-                                clickAction == item.id + '-remove' ? (
-                                  <Button
-                                    key={Math.random() + 'disable-remove'}
-                                    title="Remove"
-                                    className={`${classes.disabledLink}  ${classes.btn}`}
-                                    aria-label="Remove the item from basket"
-                                    onClick={() => false}
-                                  >
-                                    Remove
-                                  </Button>
-                                ) : (
-                                  <Button
-                                    title="Remove"
-                                    key={Math.random() + 'active-remove'}
-                                    className={`${classes.smallLink}  ${classes.btn}`}
-                                    aria-label="Remove the item from basket"
-                                    onClick={() => {
-                                      removeProductHandle(item.id);
-                                      setClickAction(item.id + '-remove');
-                                    }}
-                                    tabIndex={0}
-                                  >
-                                    Remove
-                                  </Button>
-                                )}{' '}
-                              </li>
-                              <li>
-                                {!checkItemIsUpsells(item.productId) && (
-                                  <Grid item xs={3}>
-                                    {(productRemoveObj &&
-                                      productRemoveObj.loading) ||
-                                    (productAddObj && productAddObj.loading) ? (
-                                      <Button
-                                        key={Math.random() + 'disable-edit'}
-                                        onClick={() => false}
-                                        title="Edit"
-                                        className={`${classes.smallLink}  ${classes.btn}`}
-                                        aria-label="Make changes to the current menu item"
-                                      >
-                                        Edit
-                                      </Button>
-                                    ) : (
-                                      <Button
-                                        onClick={() => {
-                                          showCart();
-                                          navigate(
-                                            `product/${item.productId}/${
-                                              item.id
-                                            }${
-                                              window.location.href
-                                                .toLowerCase()
-                                                .indexOf('product') == -1
-                                                ? '?edit=true'
-                                                : ''
-                                            }`,
-                                          );
-                                        }}
-                                        key={Math.random() + 'active-edit'}
-                                        title="Edit"
-                                        className={`${classes.smallLink}  ${classes.btn}`}
-                                        aria-label="Make changes to the current menu item"
-                                      >
-                                        Edit
-                                      </Button>
-                                    )}
-                                  </Grid>
-                                )}
-                              </li>
-                              <li>
-                                {productAddObj &&
-                                productAddObj.loading &&
-                                clickAction == item.id + '-add' ? (
-                                  <Button
-                                    key={Math.random() + 'disable-duplicate'}
-                                    onClick={() => false}
-                                    className={`${classes.disabledLink}  ${classes.btn}`}
-                                    title="Duplicate"
-                                    aria-label="Duplicate the basket item"
-                                  >
-                                    Duplicate
-                                  </Button>
-                                ) : (
-                                  <Button
-                                    key={Math.random() + 'active-duplicate'}
-                                    onClick={() => {
-                                      duplicateProductHandle(item.id);
-                                      setClickAction(item.id + '-add');
-                                    }}
-                                    className={`${classes.smallLink}  ${classes.btn}`}
-                                    title="Duplicate"
-                                    aria-label="Duplicate the basket item"
-                                    tabIndex={0}
-                                  >
-                                    Duplicate
-                                  </Button>
-                                )}
-                              </li>
-                            </ul>{' '}
+                        {item.productId !== utensilsProductId() ? (
+                          <Grid item xs={12} sx={{ padding: '0' }}>
+                            <Grid container spacing={0}>
+                              <ul className={`btnslist ${classes.btnsList}`}>
+                                <li>
+                                  {productRemoveObj &&
+                                  productRemoveObj.loading &&
+                                  clickAction == item.id + '-remove' ? (
+                                    <Button
+                                      key={Math.random() + 'disable-remove'}
+                                      title="Remove"
+                                      className={`${classes.disabledLink}  ${classes.btn}`}
+                                      aria-label="Remove the item from basket"
+                                      onClick={() => false}
+                                    >
+                                      Remove
+                                    </Button>
+                                  ) : (
+                                    <Button
+                                      title="Remove"
+                                      key={Math.random() + 'active-remove'}
+                                      className={`${classes.smallLink}  ${classes.btn}`}
+                                      aria-label="Remove the item from basket"
+                                      onClick={() => {
+                                        removeProductHandle(item.id);
+                                        setClickAction(item.id + '-remove');
+                                      }}
+                                      tabIndex={0}
+                                    >
+                                      Remove
+                                    </Button>
+                                  )}{' '}
+                                </li>
+                                <li>
+                                  {!checkItemIsUpsells(item.productId) && (
+                                    <Grid item xs={3}>
+                                      {(productRemoveObj &&
+                                        productRemoveObj.loading) ||
+                                      (productAddObj &&
+                                        productAddObj.loading) ? (
+                                        <Button
+                                          key={Math.random() + 'disable-edit'}
+                                          onClick={() => false}
+                                          title="Edit"
+                                          className={`${classes.smallLink}  ${classes.btn}`}
+                                          aria-label="Make changes to the current menu item"
+                                        >
+                                          Edit
+                                        </Button>
+                                      ) : (
+                                        <Button
+                                          onClick={() => {
+                                            showCart();
+                                            navigate(
+                                              `product/${item.productId}/${
+                                                item.id
+                                              }${
+                                                window.location.href
+                                                  .toLowerCase()
+                                                  .indexOf('product') == -1
+                                                  ? '?edit=true'
+                                                  : ''
+                                              }`,
+                                            );
+                                          }}
+                                          key={Math.random() + 'active-edit'}
+                                          title="Edit"
+                                          className={`${classes.smallLink}  ${classes.btn}`}
+                                          aria-label="Make changes to the current menu item"
+                                        >
+                                          Edit
+                                        </Button>
+                                      )}
+                                    </Grid>
+                                  )}
+                                </li>
+                                <li>
+                                  {productAddObj &&
+                                  productAddObj.loading &&
+                                  clickAction == item.id + '-add' ? (
+                                    <Button
+                                      key={Math.random() + 'disable-duplicate'}
+                                      onClick={() => false}
+                                      className={`${classes.disabledLink}  ${classes.btn}`}
+                                      title="Duplicate"
+                                      aria-label="Duplicate the basket item"
+                                    >
+                                      Duplicate
+                                    </Button>
+                                  ) : (
+                                    <Button
+                                      key={Math.random() + 'active-duplicate'}
+                                      onClick={() => {
+                                        duplicateProductHandle(item.id);
+                                        setClickAction(item.id + '-add');
+                                      }}
+                                      className={`${classes.smallLink}  ${classes.btn}`}
+                                      title="Duplicate"
+                                      aria-label="Duplicate the basket item"
+                                      tabIndex={0}
+                                    >
+                                      Duplicate
+                                    </Button>
+                                  )}
+                                </li>
+                              </ul>{' '}
+                            </Grid>
                           </Grid>
-                        </Grid>
+                        ) : null}
                       </Grid>
                       <Grid item xs={12}>
                         <div style={{ height: '15px' }}></div>
@@ -626,15 +695,25 @@ const Cart = ({ showCart, handleUpsells }: any) => {
                   <Typography
                     variant="body2"
                     className="body-text"
-                    title="I agree to the  Rubios terms and conditions and to receiving marketing communications from Rubios."
+                    // title="I agree to the  Rubios terms and conditions and to receiving marketing communications from Rubios."
                     sx={{ width: '100%', color: '#224c65' }}
                   >
                     <Checkbox
-                      inputProps={{
-                        'aria-label':
-                          ' Add utensils to my order.',
+                      checked={utensils}
+                      disabled={
+                        (productAddObj && productAddObj.loading) ||
+                        (productRemoveObj && productRemoveObj.loading)
+                      }
+                      onChange={(e) => {
+                        addRemoveUtensils(e);
                       }}
-                      sx={{paddingLeft: 0, fontFamily: 'Poppins-Medium !important'}}
+                      inputProps={{
+                        'aria-label': ' Add utensils to my order.',
+                      }}
+                      sx={{
+                        paddingLeft: 0,
+                        fontFamily: 'Poppins-Medium !important',
+                      }}
                     />
                     Add utensils to my order.
                   </Typography>
@@ -679,7 +758,7 @@ const Cart = ({ showCart, handleUpsells }: any) => {
                               padding: 10,
                               minHeight: '85px',
                               alignItems: 'center',
-                              boxShadow: '0px 2px 3px 0px rgba(0, 0, 0, 0.2)'
+                              boxShadow: '0px 2px 3px 0px rgba(0, 0, 0, 0.2)',
                             }}
                             sx={{ cursor: 'pointer' }}
                             // onClick={() => {
@@ -711,7 +790,10 @@ const Cart = ({ showCart, handleUpsells }: any) => {
                               lineHeight="1.2 !important"
                               textTransform="capitalize"
                               className={classes.cartTitle}
-                              sx={{ display: 'inline', fontFamily:'Poppins-Medium !important' }}
+                              sx={{
+                                display: 'inline',
+                                fontFamily: 'Poppins-Medium !important',
+                              }}
                               // title={option.name}
                             >
                               {type === UPSELLS_TYPES.SALSA
