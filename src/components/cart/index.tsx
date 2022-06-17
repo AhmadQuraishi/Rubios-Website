@@ -111,6 +111,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     cursor: 'default',
     textDecoration: 'underline',
     textTransform: 'uppercase',
+    padding: '0px 30px 0px 0px !important',
   },
   btnsList: {
     width: '100%',
@@ -642,6 +643,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                       className={`${classes.disabledLink}  ${classes.btn}`}
                                       aria-label="Remove the item from basket"
                                       onClick={() => false}
+                                      style={{width: '75px !important'}}
                                     >
                                       Remove
                                     </Button>
@@ -656,6 +658,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                         setClickAction(item.id + '-remove');
                                       }}
                                       tabIndex={0}
+                                      style={{width: '75px !important'}}
                                     >
                                       Remove
                                     </Button>
@@ -673,6 +676,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                           onClick={() => false}
                                           title="Edit"
                                           className={`${classes.smallLink}  ${classes.btn}`}
+                                          style={{width: '75px !important'}}
                                           aria-label="Make changes to the current menu item"
                                         >
                                           Edit
@@ -696,6 +700,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                           key={Math.random() + 'active-edit'}
                                           title="Edit"
                                           className={`${classes.smallLink}  ${classes.btn}`}
+                                          style={{width: '75px !important'}}
                                           aria-label="Make changes to the current menu item"
                                         >
                                           Edit
@@ -712,6 +717,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                       key={Math.random() + 'disable-duplicate'}
                                       onClick={() => false}
                                       className={`${classes.disabledLink}  ${classes.btn}`}
+                                      style={{width: '75px !important'}}
                                       title="Duplicate"
                                       aria-label="Duplicate the basket item"
                                     >
@@ -725,6 +731,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                         setClickAction(item.id + '-add');
                                       }}
                                       className={`${classes.smallLink}  ${classes.btn}`}
+                                      style={{width: '75px !important'}}
                                       title="Duplicate"
                                       aria-label="Duplicate the basket item"
                                       tabIndex={0}
@@ -869,13 +876,8 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                       lg={12}
                                       sx={{display: 'flex', justifyContent:'flex-start', padding: '0 !important'}}
                                     >
-                                      <Grid item xs={12} lg={4}>
-                                      <img
-                                        style={{
-                                          // display: 'block',
-                                          // margin: 'auto',
-                                          width: '80%', margin: '-3px 0px 12px 12px',
-                                        }}
+                                      <Grid item xs={4} lg={4}>
+                                      <img className='item-image'
                                         src={require(`../../assets/imgs/${type}.jpg`)}
                                         // alt={option.name}
                                         // title={option.name}
@@ -884,7 +886,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
 
                                       <Grid
                                         item
-                                        xs={12}
+                                        xs={8}
                                         lg={8}
                                         className="name-panel"
                                       >

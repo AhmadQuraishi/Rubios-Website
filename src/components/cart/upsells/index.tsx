@@ -201,7 +201,7 @@ const Upsells = ({ showCart, upsellsType }: any) => {
           <Grid item xs={12}>
             <Button
               className={classes.crossIcon}
-              sx={{ position: 'absolute', minWidth: 'fit-content' }}
+              sx={{ position: 'absolute', minWidth: 'fit-content', marginRight:'15px'}}
               aria-label="Close Cart"
               onClick={showCart}
             >
