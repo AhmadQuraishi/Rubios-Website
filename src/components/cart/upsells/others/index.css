@@ -59,6 +59,16 @@
   .upsells .content-panel {
     justify-content: center;
   }
+  #cart-box-upsells {
+    max-width: 370px !important;
+  }
+  .upsells .content-panel.selected .card-panel .check-mark {
+    /* margin: auto; */
+    left: 120px !important;
+    right: 0 !important;
+    top: 130px !important;
+    bottom: auto !important;
+  }
 }
 
 @media screen and (max-width: 640px) {
@@ -194,9 +204,9 @@
 .card-panel
 .name-img-panel
 .item-image {
-  width: 85%;
+  width: 85% !important;
   display: block;
-  margin: -3px 0px 12px 12px;
+  margin: -9px 0px 12px 12px;
 }
 
 .upsells .content-panel .card-panel .name-img-panel .name-panel select {
