@@ -187,6 +187,9 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   const fitContainer = () => {
     const elem = document.getElementById('cart-main-conatiner');
     const cartBox = document.getElementById('cart-box');
+
+    console.log('elem', elem)
+    console.log('cartBox', cartBox)
     if (elem && cartBox) {
       if (
         basketObj &&
@@ -197,6 +200,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
       } else {
         elem.style.height = cartBox?.clientHeight - 100 + 'px';
       }
+      console.log('working', cartBox)
       elem.style.overflow = 'auto';
     }
   };
@@ -283,6 +287,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
     if (productAddObj && productAddObj.basket && actionStatus) {
       dispatch(getBasketRequest('', productAddObj.basket, basketType));
       displayToast('SUCCESS', 'Duplicate item added to cart.');
+      fitContainer()
       setActionStatus(false);
       navigate(restaurant ? '/menu/' + restaurant.slug : '/');
     }
@@ -333,6 +338,15 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   };
 
   const checkItemIsUpsells = (id: number) => {
+    let aval = false;
+
+    if (upsellsProductKeys && upsellsProductKeys.length) {
+      aval = upsellsProductKeys.includes(id);
+    }
+    return aval;
+  };
+
+  const checkItemIsSalsaUpsells = (id: number) => {
     let aval = false;
 
     if (upsellsProductKeys && upsellsProductKeys.length) {

@@ -350,7 +350,7 @@ const Salsa = ({ upsellsType }: any) => {
                           <label
                             title="Quantity"
                             className="label bold quantity-label"
-                            htmlFor="quantityfield"
+                            // htmlFor="quantityfield"
                           >
                             QTY
                           </label>
