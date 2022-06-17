@@ -88,6 +88,8 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
     case basketActionsTypes.SET_BASKET_DELIVERY_ADDRESS_SUCCESS:
     case basketActionsTypes.REMOVE_PRODUCT_SUCCESS:
     case basketActionsTypes.ADD_PRODUCT_SUCCESS:
+    case basketActionsTypes.ADD_UTENSILS_SUCCESS:
+    case basketActionsTypes.REMOVE_UTENSILS_SUCCESS:
       return {
         ...state,
         loading: false,

@@ -130,14 +130,14 @@ const Header = (props: any) => {
       // setOpen(!showCart);
       setShowCart(!showCart);
     }
-    if(showCart){
+    if (showCart) {
       setShowUpsells(false);
-      setUpsellsType('')
+      setUpsellsType('');
     }
   };
 
   const handleUpsells = (type: string) => {
-    console.log('type', type)
+    console.log('type', type);
     if (type === '') {
       setShowUpsells(false);
     } else {
@@ -474,13 +474,22 @@ const Header = (props: any) => {
             aria-describedby="modal-modal-description"
             sx={{ border: '0' }}
           >
-            {showUpsells && upsellsType !== '' && (
-              <Upsells
-                upsellsType={upsellsType}
-                showCart={() => handleUpsells('')}
-              />
-            )}
-            <Cart showCart={handleShowCart} handleUpsells={handleUpsells} />
+            {showUpsells &&
+              upsellsType !== '' &&
+              basketObj &&
+              basketObj.basket &&
+              basketObj.basket.products &&
+              basketObj.basket.products.length && (
+                <Upsells
+                  upsellsType={upsellsType}
+                  showCart={() => handleUpsells('')}
+                />
+              )}
+            <Cart
+              upsellsType={upsellsType}
+              showCart={handleShowCart}
+              handleUpsells={handleUpsells}
+            />
           </Dialog>
         ))}
       {showAccountMenu && (
