@@ -114,6 +114,7 @@ const Upsells = ({ showCart, upsellsType }: any) => {
 
   const basketObj = useSelector((state: any) => state.basketReducer);
   const addUpsellsObj = useSelector((state: any) => state.addUpsellReducer);
+  const addProductObj = useSelector((state: any) => state.addProductReducer);
 
   useEffect(() => {
     if (
@@ -125,7 +126,17 @@ const Upsells = ({ showCart, upsellsType }: any) => {
       dispatch(addUpsellsRequestReset());
       showCart();
     }
-  }, [addUpsellsObj]);
+
+    if (
+      addProductObj &&
+      addProductObj.action &&
+      addProductObj.action === 'COMPLETED'
+    ) {
+      displayToast('SUCCESS', 'Cart updated');
+      dispatch(addUpsellsRequestReset());
+      showCart();
+    }
+  }, [addUpsellsObj, addProductObj]);
 
   useEffect(() => {
     // const focusableElements =

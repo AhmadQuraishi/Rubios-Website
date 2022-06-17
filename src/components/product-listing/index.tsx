@@ -85,6 +85,76 @@ const ProductListing = (props: any) => {
     },
   };
 
+  // @ts-ignore
+  // const CustomRightArrow = ({ onClick, ...rest }) => {
+  //   const {
+  //     onMove,
+  //     carouselState: { currentSlide, deviceType }
+  //   } = rest;
+  //   // onMove means if dragging or swiping in progress.
+  //   return <p onClick={() => onClick()} >working 111</p>;
+  // };
+  //
+  // // @ts-ignore
+  // const CustomLeftArrow = ({ onClick, ...rest }) => {
+  //   const {
+  //     onMove,
+  //     carouselState: { currentSlide, deviceType }
+  //   } = rest;
+  //   // onMove means if dragging or swiping in progress.
+  //   return <p onClick={() => onClick()} >working 222</p>;
+  // };
+
+  function CustomRightArrow({ onClick }: any) {
+    function handleClick() {
+      // do whatever you want on the right button click
+      console.log('Right button clicked, go to next slide');
+      // ... and don't forget to call onClick to slide
+      onClick();
+    }
+
+    return (
+      // <button
+      //   onClick={handleClick}
+      //   aria-label="Go to next slide"
+      //   className="react-multiple-carousel__arrow react-multiple-carousel__arrow--right"
+      // />
+      <p
+        onClick={handleClick}
+        aria-label="Go to next slide"
+        className="react-multiple-carousel__arrow react-multiple-carousel__arrow--right"
+      >
+        {' '}
+        Next
+      </p>
+    );
+  }
+
+  function CustomLeftArrow({ onClick }: any) {
+    function handleClick() {
+      // do whatever you want on the right button click
+      console.log('Right button clicked, go to next slide');
+      // ... and don't forget to call onClick to slide
+      onClick();
+    }
+
+    return (
+      // <button
+      //   onClick={handleClick}
+      //   aria-label="Go to next slide"
+      //   className="react-multiple-carousel__arrow react-multiple-carousel__arrow--right"
+      // />
+      <p
+        onClick={handleClick}
+        aria-label="Go to next slide"
+        className="react-multiple-carousel__arrow react-multiple-carousel__arrow--left"
+      >
+        {' '}
+        Back
+      </p>
+    );
+  }
+
   return (
     <Fragment>
       {/*<Grid container spacing={3}>*/}
@@ -106,6 +176,8 @@ const ProductListing = (props: any) => {
         deviceType={props.deviceType}
         dotListClass="custom-dot-list-style"
         itemClass="carousel-item-padding-40-px"
+        // customRightArrow={<CustomRightArrow onClick={undefined} />}
+        // customLeftArrow={<CustomLeftArrow onClick={undefined} />}
       >
         {products.map(
           (item: any, index: number) =>
@@ -119,7 +191,11 @@ const ProductListing = (props: any) => {
               //   sm={6}
               //   md={3}
               // >
-              <div scroll-id={'#panel-' + index} key={index} style={{ padding: 10 }}>
+              <div
+                scroll-id={'#panel-' + index}
+                key={index}
+                style={{ padding: 10 }}
+              >
                 <Link
                   to={`/product/${item.id}`}
                   style={{ textDecoration: 'none' }}

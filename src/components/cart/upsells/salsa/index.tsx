@@ -107,6 +107,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const Salsa = ({ upsellsType }: any) => {
   const classes = useStyles();
   const [upsells, setUpsells] = useState<any>();
+  const [buttonDisabled, setButtonDisabled] = useState(false);
 
   const basketObj = useSelector((state: any) => state.basketReducer);
   const { categories } = useSelector((state: any) => state.categoryReducer);
@@ -175,6 +176,7 @@ const Salsa = ({ upsellsType }: any) => {
         const payload: any = {
           products: products,
         };
+        setButtonDisabled(true)
         dispatch(addMultipleProductsRequest(basketObj.basket.id, payload));
       }
     }
@@ -303,19 +305,18 @@ const Salsa = ({ upsellsType }: any) => {
                       // }}
                     >
                       <Grid item xs={6}>
-                      <img
-                        style={{
-                          width: '85%',
-                        }}
-                        src={
-                          ((categories && categories.imagepath) ||
-                            '') +
-                          changeImageSize(
-                            obj.imagefilename || '',
-                            obj.images || '',
-                          )
-                        }
-                      />
+                        <img
+                          style={{
+                            width: '85%',
+                          }}
+                          src={
+                            ((categories && categories.imagepath) || '') +
+                            changeImageSize(
+                              obj.imagefilename || '',
+                              obj.images || '',
+                            )
+                          }
+                        />
                       </Grid>
                       <Grid
                         item
@@ -351,7 +352,7 @@ const Salsa = ({ upsellsType }: any) => {
                           <label
                             title="Quantity"
                             className="label bold quantity-label"
-                            htmlFor="quantityfield"
+                            // htmlFor="quantityfield"
                           >
                             QTY
                           </label>
@@ -405,12 +406,14 @@ const Salsa = ({ upsellsType }: any) => {
         >
           {basketObj &&
             basketObj.basket &&
-            basketObj.basket.products.length > 0 && (
+            basketObj.basket.products.length > 0 &&
+            upsells &&
+            upsells.length > 0 && (
               <Grid
                 item
                 xs={12}
-                lg={8}
-                md={8}
+                lg={6}
+                md={6}
                 style={{
                   paddingRight: '30px',
                   display: 'flex',
@@ -420,7 +423,7 @@ const Salsa = ({ upsellsType }: any) => {
               >
                 <Button
                   variant="contained"
-                  disabled={checkQuantity() || basketObj.loading }
+                  disabled={checkQuantity() || (basketObj.loading && buttonDisabled)}
                   onClick={() => {
                     submit();
                   }}

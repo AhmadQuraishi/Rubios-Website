@@ -11,17 +11,17 @@ import 'react-toastify/dist/ReactToastify.css';
 import { setPageStateRequest } from './redux/actions/page-state';
 import { useDispatch, useSelector } from 'react-redux';
 import NavigateApp from './components/navigate-app';
-// import TagManager from 'react-gtm-module';
-//
-// const tagManagerArgs = {
-//   dataLayer: {
-//     userId: '001',
-//     userProject: 'project',
-//     page: 'home',
-//   },
-//   dataLayerName: 'testing',
-// };
-// TagManager.dataLayer(tagManagerArgs);
+import TagManager from 'react-gtm-module';
+
+const tagManagerArgs = {
+  dataLayer: {
+    userId: '001',
+    userProject: 'project',
+    page: 'home',
+  },
+  dataLayerName: 'Category',
+};
+TagManager.dataLayer(tagManagerArgs);
 
 function App(props: any) {
   const location = useLocation();

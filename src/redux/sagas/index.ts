@@ -33,6 +33,7 @@ import { removeRewardFromBasketSaga } from './reward/checkout/remove';
 import { storeOrder } from './order';
 import { deliveryAddressSaga } from './location/delivery-address';
 import { verifyDeliveryAddressSaga } from './location/verify-delivery-address';
+import { utensilsSaga } from './basket/utensils';
 
 export default function* rootSaga() {
   yield all([
@@ -40,6 +41,7 @@ export default function* rootSaga() {
     categoryItemsSaga(),
     footerMenuItemSaga(),
     userSaga(),
+    utensilsSaga(),
     restaurantInfoSaga(),
     restaurantCalendarSaga(),
     locationSaga(),

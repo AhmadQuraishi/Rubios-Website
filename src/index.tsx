@@ -14,7 +14,7 @@ import TagManager from 'react-gtm-module';
 
 const tagManagerArgs = {
   // gtmId: process.env.REACT_APP_GTM_ID || '',
-  gtmId: 'GTM-W57GX6M',
+  gtmId: 'GTM-WDDWZHL',
 };
 
 TagManager.initialize(tagManagerArgs);

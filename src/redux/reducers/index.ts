@@ -34,6 +34,7 @@ import orderReducer from './order';
 import navigateAppReducer from './navigate-app';
 import deliveryAddressReducer from './location/delivery-address';
 import verifyDeliveryAddressReducer from './location/verify-delivery-address';
+import utensilsReducer from './basket/utensils';
 
 const persistConfig = {
   key: 'root',
@@ -51,6 +52,7 @@ const persistConfig = {
     'orderReducer',
     'navigateAppReducer',
     'deliveryAddressReducer',
+    'utensilsReducer',
   ],
 };
 
@@ -61,6 +63,7 @@ const rootReducers = combineReducers({
   footerReducer,
   userReducer,
   rewardReducer,
+  utensilsReducer,
   restaurantInfoReducer,
   locationReducer,
   restaurantCalendarReducer,
