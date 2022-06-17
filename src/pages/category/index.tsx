@@ -421,9 +421,9 @@ const CategoryList = () => {
               background: '#FFF',
               zIndex: '1099',
               padding: {
-                xs: '20px 5px 10px 5px',
-                sm: '20px 30px 5px 30px',
-                lg: '20px 60px 5px 60px',
+                xs: '20px 5px 10px 20px',
+                sm: '20px 30px 5px 70px',
+                lg: '20px 60px 5px 110px',
                 boxSizing: 'border-box',
               },
             }}
