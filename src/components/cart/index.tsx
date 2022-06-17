@@ -779,7 +779,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                   <Divider sx={{ borderColor: '#224c65' }} />
                 </Grid>
 
-                <div className={'upsells'}>
+                <div className={'upsells'} style={{display: 'flex', flexDirection: 'column'}}>
                   {basketObj &&
                     basketObj.basket &&
                     basketObj.basket.products.length > 0 &&
@@ -833,6 +833,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                               <label
                                 tabIndex={0}
                                 htmlFor={`${index}`}
+                                style={{width: '100%',}}
                                 // onKeyUp={(e) => {
                                 //   if (e.keyCode === 13)
                                 //     showChildOptions(
@@ -844,7 +845,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                 // }}
                               >
                                 <Card
-                                  className="card-panel"
+                                  className="card-panel card-item"
                                   title={type}
                                   // is-mandatory={itemMain.mandatory.toString()}
                                   // parent-option-id={itemMain.parentOptionID}
@@ -866,34 +867,26 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                     <Grid
                                       item
                                       xs={12}
-                                      lg={5}
-                                      sx={{
-                                        padding: '0px',
-                                        paddingLeft: {
-                                          xs: '0px !important',
-                                          lg: '15px !important',
-                                        },
-                                        paddingTop: {
-                                          xs: '0px !important',
-                                          lg: '0px !important',
-                                        },
-                                      }}
+                                      lg={12}
+                                      sx={{display: 'flex', justifyContent:'flex-start', padding: '0 !important'}}
                                     >
+                                      <Grid item xs={12} lg={4}>
                                       <img
                                         style={{
                                           // display: 'block',
                                           // margin: 'auto',
-                                          width: '25%',
+                                          width: '80%', margin: '-3px 0px 12px 12px',
                                         }}
                                         src={require(`../../assets/imgs/${type}.jpg`)}
                                         // alt={option.name}
                                         // title={option.name}
                                       />
+                                      </Grid>
 
                                       <Grid
                                         item
                                         xs={12}
-                                        lg={7}
+                                        lg={8}
                                         className="name-panel"
                                       >
                                         {type === UPSELLS_TYPES.SALSA
