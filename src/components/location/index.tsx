@@ -579,7 +579,7 @@ const LocationCard = (props: any) => {
                       filteredRestaurants.length == 0)) && (
                     <Link
                       style={{
-                        textAlign: 'center',
+                        textAlign: 'left',
                         display: 'block',
                         cursor: 'pointer',
                         fontWeight: 500,

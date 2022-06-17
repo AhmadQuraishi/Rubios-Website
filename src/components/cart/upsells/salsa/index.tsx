@@ -410,8 +410,8 @@ const Salsa = ({ upsellsType }: any) => {
               <Grid
                 item
                 xs={12}
-                lg={8}
-                md={8}
+                lg={6}
+                md={6}
                 style={{
                   paddingRight: '30px',
                   display: 'flex',

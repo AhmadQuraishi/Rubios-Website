@@ -1,6 +1,4 @@
- .footer-control {
-   margin-bottom: 175px;
- }
+
   .list {
         width: 100%;
         display: grid;
@@ -13,6 +11,14 @@
     .list
     {
         grid-template-columns: auto auto;
+    }
+  .footer-control {
+    margin-bottom: 125px !important;
+  }
+}
 
-    }
-    }
+@media screen and (max-width: 600px) {
+  .footer-control {
+    margin-bottom: 175px !important;
+  }
+}
