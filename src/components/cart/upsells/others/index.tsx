@@ -425,6 +425,9 @@ const UpsellsOthers = ({ upsellsType }: any) => {
                             fontSize: '14px',
                             fontFamily: 'Poppins-Bold',
                             color: '#7CC8C5',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
                             textAlign: { xs: 'center', lg: 'left' },
                           }}
                         >
