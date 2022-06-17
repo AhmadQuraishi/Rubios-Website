@@ -107,6 +107,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const Salsa = ({ upsellsType }: any) => {
   const classes = useStyles();
   const [upsells, setUpsells] = useState<any>();
+  const [buttonDisabled, setButtonDisabled] = useState(false);
 
   const basketObj = useSelector((state: any) => state.basketReducer);
   const { categories } = useSelector((state: any) => state.categoryReducer);
@@ -175,6 +176,7 @@ const Salsa = ({ upsellsType }: any) => {
         const payload: any = {
           products: products,
         };
+        setButtonDisabled(true)
         dispatch(addMultipleProductsRequest(basketObj.basket.id, payload));
       }
     }
@@ -421,7 +423,7 @@ const Salsa = ({ upsellsType }: any) => {
               >
                 <Button
                   variant="contained"
-                  disabled={checkQuantity() || basketObj.loading}
+                  disabled={checkQuantity() || (basketObj.loading && buttonDisabled)}
                   onClick={() => {
                     submit();
                   }}

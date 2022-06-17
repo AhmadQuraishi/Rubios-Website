@@ -28,6 +28,10 @@ import {
 } from '../../helpers/upsells';
 import { capitalizeFirstLetter } from '../../helpers/common';
 import { Category, Product as ProductInfo } from '../../types/olo-api';
+import {
+  addUtensilsRequest,
+  removeUtensilsRequest,
+} from '../../redux/actions/basket/utensils';
 
 const useStyles = makeStyles((theme: Theme) => ({
   dimPanel: {
@@ -132,6 +136,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   const classes = useStyles();
   const [actionStatus, setActionStatus] = useState(false);
   const [utensils, setUtensils] = useState(false);
+  const [utensilsDisabled, setUtensilsDisabled] = useState(false);
   const [clickAction, setClickAction] = useState('');
   // const [upsells, setUpsells] = useState<any[]>();
   const [upsellsProductKeys, setUpsellsProductKeys] = useState<any[]>();
@@ -415,7 +420,8 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
       request.productid = utensilsProductId();
       request.quantity = 1;
       request.options = '';
-      dispatch(addProductRequest(basketObj.basket.id, request));
+      setUtensilsDisabled(true);
+      dispatch(addUtensilsRequest(basketObj.basket.id, request));
     } else {
       console.log('e.target.checked 2', e.target.checked);
       if (
@@ -428,8 +434,9 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
           (obj: any) => obj.productId === utensilsProductId(),
         );
         if (utensilsAllProducts && utensilsAllProducts.length) {
+          setUtensilsDisabled(true);
           dispatch(
-            removeProductRequest(
+            removeUtensilsRequest(
               basketObj.basket.id,
               utensilsAllProducts[0].id,
             ),
@@ -747,8 +754,12 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                     <Checkbox
                       checked={utensils}
                       disabled={
-                        (productAddObj && productAddObj.loading) ||
-                        (productRemoveObj && productRemoveObj.loading)
+                        (productAddObj &&
+                          productAddObj.loading &&
+                          utensilsDisabled) ||
+                        (productRemoveObj &&
+                          productRemoveObj.loading &&
+                          utensilsDisabled)
                       }
                       onChange={(e) => {
                         addRemoveUtensils(e);
@@ -839,7 +850,10 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                   // parent-option-id={itemMain.parentOptionID}
                                 >
                                   <div className="check-mark">
-                                    <div aria-hidden="true" className="checkmark">
+                                    <div
+                                      aria-hidden="true"
+                                      className="checkmark"
+                                    >
                                       L
                                     </div>
                                   </div>
@@ -893,7 +907,6 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                               </label>
                             </Grid>
                           </>
-
                         );
                       },
                     )}

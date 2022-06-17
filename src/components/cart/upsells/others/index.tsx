@@ -110,6 +110,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
   const [upsells, setUpsells] = useState<any>();
   const [optionSelected, setOptionSelected] = useState('');
   const [quantity, setQuantity] = useState(0);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
 
   const basketObj = useSelector((state: any) => state.basketReducer);
   const { categories } = useSelector((state: any) => state.categoryReducer);
@@ -186,6 +187,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
         if (upsellsType === UPSELLS_TYPES.DRINK) {
           request.options = `${optionSelected},`;
         }
+        setButtonDisabled(true)
         dispatch(addProductRequest(basketObj.basket.id, request));
       }
     }
@@ -542,7 +544,11 @@ const UpsellsOthers = ({ upsellsType }: any) => {
 
                 <Button
                   variant="contained"
-                  disabled={quantity === 0 || basketObj.loading}
+                  disabled={
+                    quantity === 0 ||
+                    !upsells.filter((obj: any) => obj.selected).length ||
+                    (basketObj.loading && buttonDisabled)
+                  }
                   onClick={() => {
                     submit();
                   }}
