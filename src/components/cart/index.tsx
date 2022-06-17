@@ -145,6 +145,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
     (state: any) => state.removeProductReducer,
   );
   const productAddObj = useSelector((state: any) => state.addProductReducer);
+  const utensilsReducer = useSelector((state: any) => state.utensilsReducer);
   const { restaurant } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
@@ -255,6 +256,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
     if (productRemoveObj && productRemoveObj.basket && actionStatus) {
       dispatch(getBasketRequest('', productRemoveObj.basket, basketType));
       displayToast('SUCCESS', '1 item removed from cart.');
+      fitContainer();
       setActionStatus(false);
       navigate(restaurant ? '/menu/' + restaurant.slug : '/');
     }
@@ -754,11 +756,8 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                     <Checkbox
                       checked={utensils}
                       disabled={
-                        (productAddObj &&
-                          productAddObj.loading &&
-                          utensilsDisabled) ||
-                        (productRemoveObj &&
-                          productRemoveObj.loading &&
+                        (utensilsReducer &&
+                          utensilsReducer.loading &&
                           utensilsDisabled)
                       }
                       onChange={(e) => {
