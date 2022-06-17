@@ -188,8 +188,8 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
     const elem = document.getElementById('cart-main-conatiner');
     const cartBox = document.getElementById('cart-box');
 
-    console.log('elem', elem)
-    console.log('cartBox', cartBox)
+    console.log('elem', elem);
+    console.log('cartBox', cartBox);
     if (elem && cartBox) {
       if (
         basketObj &&
@@ -200,7 +200,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
       } else {
         elem.style.height = cartBox?.clientHeight - 100 + 'px';
       }
-      console.log('working', cartBox)
+      console.log('working', cartBox);
       elem.style.overflow = 'auto';
     }
   };
@@ -287,7 +287,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
     if (productAddObj && productAddObj.basket && actionStatus) {
       dispatch(getBasketRequest('', productAddObj.basket, basketType));
       displayToast('SUCCESS', 'Duplicate item added to cart.');
-      fitContainer()
+      fitContainer();
       setActionStatus(false);
       navigate(restaurant ? '/menu/' + restaurant.slug : '/');
     }
@@ -767,174 +767,46 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                 <Grid item xs={12} sx={{ padding: '20px 0px' }}>
                   <Divider sx={{ borderColor: '#224c65' }} />
                 </Grid>
-                <Grid item xs={12}>
-                  <Typography
-                    variant="h6"
-                    component="p"
-                    fontSize="15px !important"
-                    textAlign="center"
-                    padding="10px 0 10px 0"
-                    textTransform="uppercase"
-                    className={classes.cartTitle}
-                    title="Complete Your Meal"
-                  >
-                    Complete Your Meal
-                  </Typography>
-                </Grid>
 
-                {/*<div className={'upsells'}>*/}
-                {/*  {basketObj &&*/}
-                {/*    basketObj.basket &&*/}
-                {/*    basketObj.basket.products.length > 0 &&*/}
-                {/*    Object.keys(UPSELLS_TYPES).map(*/}
-                {/*      (type: string, index: number) => {*/}
-                {/*        return (*/}
-                {/*          <Grid*/}
-                {/*            key={Math.random() + index}*/}
-                {/*            option-id={index}*/}
-                {/*            onClick={() => handleUpsells(type)}*/}
-                {/*            className={*/}
-                {/*              upsellsType === type*/}
-                {/*                ? 'content-panel selected'*/}
-                {/*                : 'content-panel'*/}
-                {/*            }*/}
-                {/*            item*/}
-                {/*            xs={12}*/}
-                {/*            sm={12}*/}
-                {/*            md={12}*/}
-                {/*            lg={12}*/}
-                {/*            sx={{ position: 'relative' }}*/}
-                {/*          >*/}
-                {/*            <input*/}
-                {/*              checked={upsellsType === type}*/}
-                {/*              style={{*/}
-                {/*                opacity: 0,*/}
-                {/*                position: 'absolute',*/}
-                {/*                zIndex: 1000,*/}
-                {/*              }}*/}
-                {/*              type="checkbox"*/}
-                {/*              id={`${index}-tab`}*/}
-                {/*              value={index}*/}
-                {/*            />*/}
-                {/*            <label*/}
-                {/*              tabIndex={0}*/}
-                {/*              htmlFor={`${index}`}*/}
-                {/*              // onKeyUp={(e) => {*/}
-                {/*              //   if (e.keyCode === 13)*/}
-                {/*              //     showChildOptions(*/}
-                {/*              //       itemChild.option.id,*/}
-                {/*              //       itemMain.id,*/}
-                {/*              //       itemChild.dropDownValues,*/}
-                {/*              //       itemChild.selectedValue,*/}
-                {/*              //     );*/}
-                {/*              // }}*/}
-                {/*            >*/}
-                {/*              <Card*/}
-                {/*                className="card-panel"*/}
-                {/*                title={type}*/}
-                {/*                // is-mandatory={itemMain.mandatory.toString()}*/}
-                {/*                // parent-option-id={itemMain.parentOptionID}*/}
-                {/*              >*/}
-                {/*                <div className="check-mark">*/}
-                {/*                  <div aria-hidden="true" className="checkmark">*/}
-                {/*                    L*/}
-                {/*                  </div>*/}
-                {/*                </div>*/}
-                {/*                <Grid*/}
-                {/*                  container*/}
-                {/*                  spacing={1}*/}
-                {/*                  className="name-img-panel"*/}
-                {/*                  sx={{ padding: '0', marginTop: '0' }}*/}
-                {/*                >*/}
-                {/*                  <Grid*/}
-                {/*                    item*/}
-                {/*                    xs={12}*/}
-                {/*                    lg={5}*/}
-                {/*                    sx={{*/}
-                {/*                      padding: '0px',*/}
-                {/*                      paddingLeft: {*/}
-                {/*                        xs: '0px !important',*/}
-                {/*                        lg: '15px !important',*/}
-                {/*                      },*/}
-                {/*                      paddingTop: {*/}
-                {/*                        xs: '0px !important',*/}
-                {/*                        lg: '0px !important',*/}
-                {/*                      },*/}
-                {/*                    }}*/}
-                {/*                  >*/}
-                {/*                    <img*/}
-                {/*                      style={{*/}
-                {/*                        // display: 'block',*/}
-                {/*                        // margin: 'auto',*/}
-                {/*                        width: '25%',*/}
-                {/*                      }}*/}
-                {/*                      src={require(`../../assets/imgs/${type}.jpg`)}*/}
-                {/*                      // alt={option.name}*/}
-                {/*                      // title={option.name}*/}
-                {/*                    />*/}
-
-                {/*                    <Grid*/}
-                {/*                      item*/}
-                {/*                      xs={12}*/}
-                {/*                      lg={7}*/}
-                {/*                      className="name-panel"*/}
-                {/*                    >*/}
-                {/*                      {type === UPSELLS_TYPES.SALSA*/}
-                {/*                        ? `Select Your `*/}
-                {/*                        : `Add A `}*/}
-                {/*                      {capitalizeFirstLetter(type)}*/}
-                {/*                    </Grid>*/}
-                {/*                  </Grid>*/}
-                {/*                </Grid>*/}
-                {/*              </Card>*/}
-                {/*            </label>*/}
-                {/*          </Grid>*/}
-                {/*        );*/}
-                {/*      },*/}
-                {/*    )}*/}
-                {/*</div>*/}
-
-                {basketObj &&
-                  basketObj.basket &&
-                  basketObj.basket.products.length > 0 &&
-                  Object.keys(UPSELLS_TYPES).map(
-                    (type: string, index: number) => {
-                      return (
-                        <Grid item onClick={() => handleUpsells(type)} xs={12}>
-                          <Grid
-                            container
-                            spacing={0}
-                            justifyContent="space-around"
-                            direction={'column'}
-                            sx={{ paddingTop: '10px' }}
-                          >
-                            {/*<div className="check-mark">*/}
-                            {/*  <div aria-hidden="true" className="checkmark">*/}
-                            {/*    L*/}
-                            {/*  </div>*/}
-                            {/*</div>*/}
+                <div className={'upsells'}>
+                  {basketObj &&
+                    basketObj.basket &&
+                    basketObj.basket.products.length > 0 &&
+                    Object.keys(UPSELLS_TYPES).map(
+                      (type: string, index: number) => {
+                        return (
+                          <>
+                            {index === 1 && (
+                              <Grid item xs={12}>
+                                <Typography
+                                  variant="h6"
+                                  component="p"
+                                  fontSize="15px !important"
+                                  textAlign="center"
+                                  padding="10px 0 10px 0"
+                                  textTransform="uppercase"
+                                  className={classes.cartTitle}
+                                  title="Complete Your Meal"
+                                >
+                                  Complete Your Meal
+                                </Typography>
+                              </Grid>
+                            )}
                             <Grid
-                              key={Math.random() + '-'}
+                              key={Math.random() + index}
+                              option-id={index}
+                              onClick={() => handleUpsells(type)}
+                              className={
+                                upsellsType === type
+                                  ? 'content-panel selected'
+                                  : 'content-panel'
+                              }
                               item
                               xs={12}
-                              style={{
-                                display: 'flex',
-                                border: '1px solid rgba(0, 0, 0, 0.2)',
-                                padding: 10,
-                                minHeight: '85px',
-                                alignItems: 'center',
-                                boxShadow: '0px 2px 3px 0px rgba(0, 0, 0, 0.2)',
-                              }}
-                              sx={{ cursor: 'pointer' }}
-                              // onClick={() => {
-                              //   addUpsells(option.id);
-                              // }}
-                              // tabIndex={0}
-                              // onKeyUp={(e) => {
-                              //   if (e.keyCode === 13) {
-                              //     addUpsells(option.id);
-                              //   }
-                              // }}
+                              sm={12}
+                              md={12}
+                              lg={12}
+                              sx={{ position: 'relative' }}
                             >
                               <input
                                 checked={upsellsType === type}
@@ -944,98 +816,255 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                   zIndex: 1000,
                                 }}
                                 type="checkbox"
-                                // id={index}
-                                // value={itemChild.name}
+                                id={`${index}-tab`}
+                                value={index}
                               />
-                              <img
-                                style={{
-                                  // display: 'block',
-                                  // margin: 'auto',
-                                  width: '25%',
-                                }}
-                                src={require(`../../assets/imgs/${type}.jpg`)}
-                                // alt={option.name}
-                                // title={option.name}
-                              />
-                              <Typography
-                                variant="h6"
-                                component="p"
-                                fontSize="16px !important"
-                                textAlign="center"
-                                padding="0px 0 0 30px"
-                                lineHeight="1.2 !important"
-                                textTransform="capitalize"
-                                className={classes.cartTitle}
-                                sx={{
-                                  display: 'inline',
-                                  fontFamily: 'Poppins-Medium !important',
-                                }}
-                                // title={option.name}
+                              <label
+                                tabIndex={0}
+                                htmlFor={`${index}`}
+                                // onKeyUp={(e) => {
+                                //   if (e.keyCode === 13)
+                                //     showChildOptions(
+                                //       itemChild.option.id,
+                                //       itemMain.id,
+                                //       itemChild.dropDownValues,
+                                //       itemChild.selectedValue,
+                                //     );
+                                // }}
                               >
-                                {type === UPSELLS_TYPES.SALSA
-                                  ? `Select Your `
-                                  : `Add A `}
-                                {capitalizeFirstLetter(type)}
-                              </Typography>
+                                <Card
+                                  className="card-panel"
+                                  title={type}
+                                  // is-mandatory={itemMain.mandatory.toString()}
+                                  // parent-option-id={itemMain.parentOptionID}
+                                >
+                                  <div className="check-mark">
+                                    <div aria-hidden="true" className="checkmark">
+                                      L
+                                    </div>
+                                  </div>
+                                  <Grid
+                                    container
+                                    spacing={1}
+                                    className="name-img-panel"
+                                    sx={{ padding: '0', marginTop: '0' }}
+                                  >
+                                    <Grid
+                                      item
+                                      xs={12}
+                                      lg={5}
+                                      sx={{
+                                        padding: '0px',
+                                        paddingLeft: {
+                                          xs: '0px !important',
+                                          lg: '15px !important',
+                                        },
+                                        paddingTop: {
+                                          xs: '0px !important',
+                                          lg: '0px !important',
+                                        },
+                                      }}
+                                    >
+                                      <img
+                                        style={{
+                                          // display: 'block',
+                                          // margin: 'auto',
+                                          width: '25%',
+                                        }}
+                                        src={require(`../../assets/imgs/${type}.jpg`)}
+                                        // alt={option.name}
+                                        // title={option.name}
+                                      />
+
+                                      <Grid
+                                        item
+                                        xs={12}
+                                        lg={7}
+                                        className="name-panel"
+                                      >
+                                        {type === UPSELLS_TYPES.SALSA
+                                          ? `Select Your `
+                                          : `Add A `}
+                                        {capitalizeFirstLetter(type)}
+                                      </Grid>
+                                    </Grid>
+                                  </Grid>
+                                </Card>
+                              </label>
                             </Grid>
-                            {/*{upsells.map((option: any, index: number) => (*/}
-                            {/*  <Grid*/}
-                            {/*    key={Math.random() + '-' + index}*/}
-                            {/*    item*/}
-                            {/*    xs={4}*/}
-                            {/*    sx={{ cursor: 'pointer' }}*/}
-                            {/*    onClick={() => {*/}
-                            {/*      addUpsells(option.id);*/}
-                            {/*    }}*/}
-                            {/*    tabIndex={0}*/}
-                            {/*    onKeyUp={(e) => {*/}
-                            {/*      if (e.keyCode === 13) {*/}
-                            {/*        addUpsells(option.id);*/}
-                            {/*      }*/}
-                            {/*    }}*/}
-                            {/*  >*/}
-                            {/*    <img*/}
-                            {/*      style={{*/}
-                            {/*        display: 'block',*/}
-                            {/*        margin: 'auto',*/}
-                            {/*        width: '75%',*/}
-                            {/*      }}*/}
-                            {/*      src={require('../../assets/imgs/default_img.png')}*/}
-                            {/*      alt={option.name}*/}
-                            {/*      title={option.name}*/}
-                            {/*    />*/}
-                            {/*    <Typography*/}
-                            {/*      variant="h6"*/}
-                            {/*      component="p"*/}
-                            {/*      fontSize="14px !important"*/}
-                            {/*      textAlign="center"*/}
-                            {/*      padding="5px 0 0 0"*/}
-                            {/*      lineHeight="1.2 !important"*/}
-                            {/*      textTransform="capitalize"*/}
-                            {/*      className={classes.cartTitle}*/}
-                            {/*      title={option.name}*/}
-                            {/*    >*/}
-                            {/*      {option.name}*/}
-                            {/*    </Typography>*/}
-                            {/*    <Typography*/}
-                            {/*      variant="caption"*/}
-                            {/*      component="p"*/}
-                            {/*      fontSize="14px !important"*/}
-                            {/*      textAlign="center"*/}
-                            {/*      paddingTop="0px"*/}
-                            {/*      fontFamily="Poppins-Regular !important"*/}
-                            {/*      className={classes.cartTitle}*/}
-                            {/*      title={`${option.cost}`}*/}
-                            {/*    >*/}
-                            {/*      {option.cost}*/}
-                            {/*    </Typography>*/}
-                            {/*  </Grid>*/}
-                            {/*))}*/}
-                          </Grid>
-                        </Grid>
-                      );
-                    },
-                  )}
+                          </>
+
+                        );
+                      },
+                    )}
+                </div>
+
+                {/*{basketObj &&*/}
+                {/*  basketObj.basket &&*/}
+                {/*  basketObj.basket.products.length > 0 &&*/}
+                {/*  Object.keys(UPSELLS_TYPES).map(*/}
+                {/*    (type: string, index: number) => {*/}
+                {/*      return (*/}
+                {/*        <>*/}
+                {/*          {index === 1 && (*/}
+                {/*            <Grid item xs={12}>*/}
+                {/*              <Typography*/}
+                {/*                variant="h6"*/}
+                {/*                component="p"*/}
+                {/*                fontSize="15px !important"*/}
+                {/*                textAlign="center"*/}
+                {/*                padding="10px 0 10px 0"*/}
+                {/*                textTransform="uppercase"*/}
+                {/*                className={classes.cartTitle}*/}
+                {/*                title="Complete Your Meal"*/}
+                {/*              >*/}
+                {/*                Complete Your Meal*/}
+                {/*              </Typography>*/}
+                {/*            </Grid>*/}
+                {/*          )}*/}
+
+                {/*          <Grid*/}
+                {/*            item*/}
+                {/*            onClick={() => handleUpsells(type)}*/}
+                {/*            xs={12}*/}
+                {/*          >*/}
+                {/*            <Grid*/}
+                {/*              container*/}
+                {/*              spacing={0}*/}
+                {/*              justifyContent="space-around"*/}
+                {/*              direction={'column'}*/}
+                {/*              sx={{ paddingTop: '10px' }}*/}
+                {/*            >*/}
+                {/*              /!*<div className="check-mark">*!/*/}
+                {/*              /!*  <div aria-hidden="true" className="checkmark">*!/*/}
+                {/*              /!*    L*!/*/}
+                {/*              /!*  </div>*!/*/}
+                {/*              /!*</div>*!/*/}
+                {/*              <Grid*/}
+                {/*                key={Math.random() + '-'}*/}
+                {/*                item*/}
+                {/*                xs={12}*/}
+                {/*                style={{*/}
+                {/*                  display: 'flex',*/}
+                {/*                  border: '1px solid rgba(0, 0, 0, 0.2)',*/}
+                {/*                  padding: 10,*/}
+                {/*                  minHeight: '85px',*/}
+                {/*                  alignItems: 'center',*/}
+                {/*                  boxShadow:*/}
+                {/*                    '0px 2px 3px 0px rgba(0, 0, 0, 0.2)',*/}
+                {/*                }}*/}
+                {/*                sx={{ cursor: 'pointer' }}*/}
+                {/*                // onClick={() => {*/}
+                {/*                //   addUpsells(option.id);*/}
+                {/*                // }}*/}
+                {/*                // tabIndex={0}*/}
+                {/*                // onKeyUp={(e) => {*/}
+                {/*                //   if (e.keyCode === 13) {*/}
+                {/*                //     addUpsells(option.id);*/}
+                {/*                //   }*/}
+                {/*                // }}*/}
+                {/*              >*/}
+                {/*                <input*/}
+                {/*                  checked={upsellsType === type}*/}
+                {/*                  style={{*/}
+                {/*                    opacity: 0,*/}
+                {/*                    position: 'absolute',*/}
+                {/*                    zIndex: 1000,*/}
+                {/*                  }}*/}
+                {/*                  type="checkbox"*/}
+                {/*                  // id={index}*/}
+                {/*                  // value={itemChild.name}*/}
+                {/*                />*/}
+                {/*                <img*/}
+                {/*                  style={{*/}
+                {/*                    // display: 'block',*/}
+                {/*                    // margin: 'auto',*/}
+                {/*                    width: '25%',*/}
+                {/*                  }}*/}
+                {/*                  src={require(`../../assets/imgs/${type}.jpg`)}*/}
+                {/*                  // alt={option.name}*/}
+                {/*                  // title={option.name}*/}
+                {/*                />*/}
+                {/*                <Typography*/}
+                {/*                  variant="h6"*/}
+                {/*                  component="p"*/}
+                {/*                  fontSize="16px !important"*/}
+                {/*                  textAlign="center"*/}
+                {/*                  padding="0px 0 0 30px"*/}
+                {/*                  lineHeight="1.2 !important"*/}
+                {/*                  textTransform="capitalize"*/}
+                {/*                  className={classes.cartTitle}*/}
+                {/*                  sx={{*/}
+                {/*                    display: 'inline',*/}
+                {/*                    fontFamily: 'Poppins-Medium !important',*/}
+                {/*                  }}*/}
+                {/*                  // title={option.name}*/}
+                {/*                >*/}
+                {/*                  {type === UPSELLS_TYPES.SALSA*/}
+                {/*                    ? `Select Your `*/}
+                {/*                    : `Add A `}*/}
+                {/*                  {capitalizeFirstLetter(type)}*/}
+                {/*                </Typography>*/}
+                {/*              </Grid>*/}
+                {/*              /!*{upsells.map((option: any, index: number) => (*!/*/}
+                {/*              /!*  <Grid*!/*/}
+                {/*              /!*    key={Math.random() + '-' + index}*!/*/}
+                {/*              /!*    item*!/*/}
+                {/*              /!*    xs={4}*!/*/}
+                {/*              /!*    sx={{ cursor: 'pointer' }}*!/*/}
+                {/*              /!*    onClick={() => {*!/*/}
+                {/*              /!*      addUpsells(option.id);*!/*/}
+                {/*              /!*    }}*!/*/}
+                {/*              /!*    tabIndex={0}*!/*/}
+                {/*              /!*    onKeyUp={(e) => {*!/*/}
+                {/*              /!*      if (e.keyCode === 13) {*!/*/}
+                {/*              /!*        addUpsells(option.id);*!/*/}
+                {/*              /!*      }*!/*/}
+                {/*              /!*    }}*!/*/}
+                {/*              /!*  >*!/*/}
+                {/*              /!*    <img*!/*/}
+                {/*              /!*      style={{*!/*/}
+                {/*              /!*        display: 'block',*!/*/}
+                {/*              /!*        margin: 'auto',*!/*/}
+                {/*              /!*        width: '75%',*!/*/}
+                {/*              /!*      }}*!/*/}
+                {/*              /!*      src={require('../../assets/imgs/default_img.png')}*!/*/}
+                {/*              /!*      alt={option.name}*!/*/}
+                {/*              /!*      title={option.name}*!/*/}
+                {/*              /!*    />*!/*/}
+                {/*              /!*    <Typography*!/*/}
+                {/*              /!*      variant="h6"*!/*/}
+                {/*              /!*      component="p"*!/*/}
+                {/*              /!*      fontSize="14px !important"*!/*/}
+                {/*              /!*      textAlign="center"*!/*/}
+                {/*              /!*      padding="5px 0 0 0"*!/*/}
+                {/*              /!*      lineHeight="1.2 !important"*!/*/}
+                {/*              /!*      textTransform="capitalize"*!/*/}
+                {/*              /!*      className={classes.cartTitle}*!/*/}
+                {/*              /!*      title={option.name}*!/*/}
+                {/*              /!*    >*!/*/}
+                {/*              /!*      {option.name}*!/*/}
+                {/*              /!*    </Typography>*!/*/}
+                {/*              /!*    <Typography*!/*/}
+                {/*              /!*      variant="caption"*!/*/}
+                {/*              /!*      component="p"*!/*/}
+                {/*              /!*      fontSize="14px !important"*!/*/}
+                {/*              /!*      textAlign="center"*!/*/}
+                {/*              /!*      paddingTop="0px"*!/*/}
+                {/*              /!*      fontFamily="Poppins-Regular !important"*!/*/}
+                {/*              /!*      className={classes.cartTitle}*!/*/}
+                {/*              /!*      title={`${option.cost}`}*!/*/}
+                {/*              /!*    >*!/*/}
+                {/*              /!*      {option.cost}*!/*/}
+                {/*              /!*    </Typography>*!/*/}
+                {/*              /!*  </Grid>*!/*/}
+                {/*              /!*))}*!/*/}
+                {/*            </Grid>*/}
+                {/*          </Grid>*/}
+                {/*        </>*/}
+                {/*      );*/}
+                {/*    },*/}
+                {/*  )}*/}
                 {basketObj &&
                   basketObj.basket &&
                   basketObj.basket.products.length > 0 && (
