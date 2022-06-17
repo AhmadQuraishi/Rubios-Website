@@ -68,10 +68,32 @@
   .name-img-panel
   .name-panel {
     padding-left: 0px !important;
-    padding-top: 15px;
+    padding-top: 25px;
     overflow-wrap: break-word;
     text-align: center;
     font-size: 14px;
+  }
+  .upsells
+  .content-panel
+  .card-panel
+  .name-img-panel
+  .item-image {
+    width: 65% !important;
+    display: block;
+    margin: -3px 0px 12px 0px;
+  }
+  #cart-box-upsells {
+    top: 0;
+    right: 0;
+    width: 100%;
+    border: 1px solid #666;
+    height: 100%;
+    z-index: 9999;
+    position: fixed;
+    background: #fff;
+    border-top: 0;
+    border-right: 0;
+    margin: 0px;
   }
 }
 
@@ -172,8 +194,9 @@
 .card-panel
 .name-img-panel
 .item-image {
-  width: 100%;
+  width: 85%;
   display: block;
+  margin: -3px 0px 12px 12px;
 }
 
 .upsells .content-panel .card-panel .name-img-panel .name-panel select {

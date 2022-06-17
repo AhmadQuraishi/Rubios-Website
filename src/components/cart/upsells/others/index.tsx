@@ -332,7 +332,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
                 itemChild.selected ? 'content-panel selected' : 'content-panel'
               }
               item
-              xs={6}
+              xs={12}
               sm={6}
               md={6}
               lg={6}
