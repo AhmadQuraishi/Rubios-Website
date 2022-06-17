@@ -175,4 +175,5 @@
   border: 1px solid #ccc;
   color: #2B4B62;
   padding: 5px;
+  text-overflow: ellipsis;
 }
