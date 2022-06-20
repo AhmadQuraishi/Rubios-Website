@@ -108,7 +108,7 @@ const Salsa = ({ upsellsType }: any) => {
   const classes = useStyles();
   const [upsells, setUpsells] = useState<any>();
   const [buttonDisabled, setButtonDisabled] = useState(false);
-  const [showError, setShowError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   const basketObj = useSelector((state: any) => state.basketReducer);
   const { categories } = useSelector((state: any) => state.categoryReducer);
@@ -121,12 +121,10 @@ const Salsa = ({ upsellsType }: any) => {
     let upsellsCategory: any = UPSELLS.find(
       (obj: any) => obj.type === upsellsType,
     );
-    console.log('upsellsCategory', upsellsCategory);
     if (upsellsCategory && upsellsCategory.products.length > 0) {
       const filteredUpsellsIds = upsellsCategory.products.map(
         (obj: any) => obj.chainproductid,
       );
-      console.log('filteredUpsellsIds', filteredUpsellsIds);
       if (
         upsellsCategory &&
         categories &&
@@ -151,40 +149,6 @@ const Salsa = ({ upsellsType }: any) => {
         });
       }
     }
-    console.log('products', products);
-    console.log('basketObj', basketObj);
-    // if (
-    //   basketObj &&
-    //   basketObj.basket &&
-    //   basketObj.basket.products &&
-    //   basketObj.basket.products.length
-    // ) {
-    //   basketObj.basket.products.forEach((prod: any) => {
-    //     products = products.map((obj: any) => {
-    //       if (obj.id === prod.productId) {
-    //         let updateQuantity =
-    //           prod.quantity - parseInt(obj.maximumbasketquantity);
-    //         // 12 -3 = 9
-    //         //
-    //         //
-    //         console.log('prod.maximumbasketquantity', obj.maximumbasketquantity)
-    //         console.log('updateQuantity 1', updateQuantity)
-    //         updateQuantity = updateQuantity - parseInt(obj.maximumquantity);
-    //         console.log('updateQuantity 2', updateQuantity)
-    //         return {
-    //           ...obj,
-    //           quantity: updateQuantity,
-    //         };
-    //       } else {
-    //         let updateQuantity = obj.maximumquantity ?  parseInt(obj.maximumquantity) : 0;
-    //         return {
-    //           ...obj,
-    //           quantity: updateQuantity
-    //         };
-    //       }
-    //     });
-    //   });
-    // }
     setUpsells(products);
 
     setTimeout(() => {
@@ -193,7 +157,6 @@ const Salsa = ({ upsellsType }: any) => {
   }, [categories]);
 
   const submit = () => {
-    console.log('upsells', upsells);
     if (upsells && upsells.length) {
       const products: any = [];
       upsells.forEach((product: any) => {
@@ -216,6 +179,35 @@ const Salsa = ({ upsellsType }: any) => {
     }
   };
 
+  const showErrorMsg = (
+    obj: any,
+    basketCount: any,
+    count: any,
+    type: string,
+  ) => {
+    if (
+      parseInt(obj.maximumbasketquantity || 0) === basketCount &&
+      type === 'PLUS'
+    ) {
+      setErrorMsg(
+        `You may only order upto ${obj.maximumbasketquantity || 0} ${
+          obj.name ? obj.name : ''
+        }`,
+      );
+    } else if (
+      obj.quantity + 1 > parseInt(obj.maximumquantity || 0) &&
+      type === 'PLUS'
+    ) {
+      setErrorMsg(
+        `You may only add upto ${obj.maximumquantity || 0} ${
+          obj.name ? obj.name : ''
+        } at a time.`,
+      );
+    } else if (count !== obj.quantity) {
+      setErrorMsg('');
+    }
+  };
+
   const updateSalsaCount = (id: number, type: string) => {
     let basketCount = 0;
     if (
@@ -227,25 +219,12 @@ const Salsa = ({ upsellsType }: any) => {
       const filterProduct = basketObj.basket.products.filter(
         (obj: any) => obj.productId === id,
       );
-      console.log('filterProduct', filterProduct);
       if (filterProduct && filterProduct.length) {
         filterProduct.forEach((prod: any) => {
           basketCount += prod.quantity;
         });
       }
     }
-
-    console.log('basketCount', basketCount);
-
-    // basketCount = 11
-    // maximumbasketquantity = 12
-
-    // limit = 1
-
-    // count = 1
-
-    // count <= limit
-
     const updatedProducts = upsells.map((obj: any) => {
       if (obj.id === id) {
         let limit = parseInt(obj.maximumbasketquantity || 0) - basketCount;
@@ -256,16 +235,15 @@ const Salsa = ({ upsellsType }: any) => {
             : count <= 0
             ? 0
             : count;
-        console.log('limit', limit);
-        console.log('count', count);
+
+        showErrorMsg(obj, basketCount, count, type);
+
         if (count <= limit) {
-          setShowError(false)
           return {
             ...obj,
             quantity: count,
           };
         } else {
-          setShowError(true)
           return {
             ...obj,
           };
@@ -276,8 +254,6 @@ const Salsa = ({ upsellsType }: any) => {
         };
       }
     });
-
-    console.log('upsells', updatedProducts);
     setUpsells(updatedProducts);
     fitContainer();
   };
@@ -285,8 +261,6 @@ const Salsa = ({ upsellsType }: any) => {
   const fitContainer = () => {
     const elem = document.getElementById('cart-main-container-upsells');
     const cartBox = document.getElementById('cart-box-upsells');
-    console.log('elem', elem);
-    console.log('cartBox', cartBox);
     if (elem && cartBox) {
       if (
         basketObj &&
@@ -479,12 +453,16 @@ const Salsa = ({ upsellsType }: any) => {
           </Grid>
         )}
       <Grid container spacing={0}>
-          <Grid
-            item
-            xs={12}
-            style={{ display: 'flex', justifyContent: 'flex-end', minHeight: '45px' }}
-          >
-            {showError && (
+        <Grid
+          item
+          xs={12}
+          style={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            minHeight: '45px',
+          }}
+        >
+          {errorMsg && errorMsg !== '' && (
             <Typography
               variant="h6"
               component="p"
@@ -501,10 +479,10 @@ const Salsa = ({ upsellsType }: any) => {
               }}
               title="Maximum number of Salsa have been selected"
             >
-              Maximum number of Salsa have been selected
+              {errorMsg}
             </Typography>
-            )}
-          </Grid>
+          )}
+        </Grid>
         <Grid
           item
           xs={12}
