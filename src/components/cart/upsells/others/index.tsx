@@ -7,6 +7,7 @@ import { addProductRequest } from '../../../../redux/actions/basket/product/add'
 import { UPSELLS, UPSELLS_TYPES } from '../../../../helpers/upsells';
 import { Category, Product as ProductInfo } from '../../../../types/olo-api';
 import './index.css';
+import {addUpsellsRequest} from "../../../../redux/actions/basket/upsell/Add";
 
 const useStyles = makeStyles((theme: Theme) => ({
   dimPanel: {
@@ -188,7 +189,8 @@ const UpsellsOthers = ({ upsellsType }: any) => {
           request.options = `${optionSelected},`;
         }
         setButtonDisabled(true)
-        dispatch(addProductRequest(basketObj.basket.id, request));
+        // dispatch(addProductRequest(basketObj.basket.id, request));
+        dispatch(addUpsellsRequest(basketObj.basket.id, request));
       }
     }
   };

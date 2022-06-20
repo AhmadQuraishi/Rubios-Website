@@ -32,7 +32,6 @@ const addProductReducer = (state = INITIAL_STATE, action: any) => {
         loading: false,
         basket: action.payload,
         error: {},
-        action: 'COMPLETED',
       };
     case basketActionsTypes.ADD_PRODUCT_FAILURE:
       return { ...state, loading: false, error: action.error, action: 'FAILURE' };

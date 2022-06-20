@@ -22,14 +22,14 @@ function* asyncAddMultipleProductsRequest(action: any): any {
       action.basketid,
       action.request,
     );
-    yield put(addMultipleProductsSuccess(response));
+    // yield put(addMultipleProductsSuccess(response));
     if (response && response.errors && response.errors.length) {
       yield put(addUpsellsRequestFailure(response));
     } else {
-      yield put(addUpsellsRequestSuccess());
+      yield put(addUpsellsRequestSuccess(response));
     }
   } catch (error) {
-    yield put(addMultipleProductsFailure(error));
+    yield put(addUpsellsRequestFailure(error));
   }
 }
 

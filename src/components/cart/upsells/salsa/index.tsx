@@ -108,6 +108,7 @@ const Salsa = ({ upsellsType }: any) => {
   const classes = useStyles();
   const [upsells, setUpsells] = useState<any>();
   const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [showError, setShowError] = useState(false);
 
   const basketObj = useSelector((state: any) => state.basketReducer);
   const { categories } = useSelector((state: any) => state.categoryReducer);
@@ -151,6 +152,39 @@ const Salsa = ({ upsellsType }: any) => {
       }
     }
     console.log('products', products);
+    console.log('basketObj', basketObj);
+    // if (
+    //   basketObj &&
+    //   basketObj.basket &&
+    //   basketObj.basket.products &&
+    //   basketObj.basket.products.length
+    // ) {
+    //   basketObj.basket.products.forEach((prod: any) => {
+    //     products = products.map((obj: any) => {
+    //       if (obj.id === prod.productId) {
+    //         let updateQuantity =
+    //           prod.quantity - parseInt(obj.maximumbasketquantity);
+    //         // 12 -3 = 9
+    //         //
+    //         //
+    //         console.log('prod.maximumbasketquantity', obj.maximumbasketquantity)
+    //         console.log('updateQuantity 1', updateQuantity)
+    //         updateQuantity = updateQuantity - parseInt(obj.maximumquantity);
+    //         console.log('updateQuantity 2', updateQuantity)
+    //         return {
+    //           ...obj,
+    //           quantity: updateQuantity,
+    //         };
+    //       } else {
+    //         let updateQuantity = obj.maximumquantity ?  parseInt(obj.maximumquantity) : 0;
+    //         return {
+    //           ...obj,
+    //           quantity: updateQuantity
+    //         };
+    //       }
+    //     });
+    //   });
+    // }
     setUpsells(products);
 
     setTimeout(() => {
@@ -176,27 +210,73 @@ const Salsa = ({ upsellsType }: any) => {
         const payload: any = {
           products: products,
         };
-        setButtonDisabled(true)
+        setButtonDisabled(true);
         dispatch(addMultipleProductsRequest(basketObj.basket.id, payload));
       }
     }
   };
 
   const updateSalsaCount = (id: number, type: string) => {
+    let basketCount = 0;
+    if (
+      basketObj &&
+      basketObj.basket &&
+      basketObj.basket.products &&
+      basketObj.basket.products.length
+    ) {
+      const filterProduct = basketObj.basket.products.filter(
+        (obj: any) => obj.productId === id,
+      );
+      console.log('filterProduct', filterProduct);
+      if (filterProduct && filterProduct.length) {
+        filterProduct.forEach((prod: any) => {
+          basketCount += prod.quantity;
+        });
+      }
+    }
+
+    console.log('basketCount', basketCount);
+
+    // basketCount = 11
+    // maximumbasketquantity = 12
+
+    // limit = 1
+
+    // count = 1
+
+    // count <= limit
+
     const updatedProducts = upsells.map((obj: any) => {
-      if (obj.chainproductid === id) {
+      if (obj.id === id) {
+        let limit = parseInt(obj.maximumbasketquantity || 0) - basketCount;
         let count = type === 'PLUS' ? obj.quantity + 1 : obj.quantity - 1;
-        count = count >= 6 ? 6 : count <= 0 ? 0 : count;
-        return {
-          ...obj,
-          quantity: count,
-        };
+        count =
+          count >= parseInt(obj.maximumquantity || 0)
+            ? parseInt(obj.maximumquantity || 0)
+            : count <= 0
+            ? 0
+            : count;
+        console.log('limit', limit);
+        console.log('count', count);
+        if (count <= limit) {
+          setShowError(false)
+          return {
+            ...obj,
+            quantity: count,
+          };
+        } else {
+          setShowError(true)
+          return {
+            ...obj,
+          };
+        }
       } else {
         return {
           ...obj,
         };
       }
     });
+
     console.log('upsells', updatedProducts);
     setUpsells(updatedProducts);
     fitContainer();
@@ -362,7 +442,7 @@ const Salsa = ({ upsellsType }: any) => {
                               className="add"
                               aria-label="increase"
                               onClick={() => {
-                                updateSalsaCount(obj.chainproductid, 'PLUS');
+                                updateSalsaCount(obj.id, 'PLUS');
                               }}
                             >
                               {' '}
@@ -382,7 +462,7 @@ const Salsa = ({ upsellsType }: any) => {
                               className="subtract"
                               aria-label="reduce"
                               onClick={() => {
-                                updateSalsaCount(obj.chainproductid, 'MINUS');
+                                updateSalsaCount(obj.id, 'MINUS');
                               }}
                             >
                               {' '}
@@ -399,6 +479,33 @@ const Salsa = ({ upsellsType }: any) => {
           </Grid>
         )}
       <Grid container spacing={0}>
+        {showError && (
+          <Grid
+            item
+            xs={12}
+            style={{ display: 'flex', justifyContent: 'flex-end' }}
+          >
+            <Typography
+              variant="h6"
+              component="p"
+              fontSize="14px !important"
+              padding="0px 30px 0px 15px"
+              color="red"
+              textAlign="right"
+              lineHeight="1.2 !important"
+              textTransform="capitalize"
+              className={classes.cartTitle}
+              sx={{
+                display: 'inline',
+                fontFamily: 'Poppins-Medium !important',
+              }}
+              title="Maximum number of Salsa have been selected"
+            >
+              Maximum number of Salsa have been selected
+            </Typography>
+          </Grid>
+        )}
+
         <Grid
           item
           xs={12}
@@ -423,7 +530,9 @@ const Salsa = ({ upsellsType }: any) => {
               >
                 <Button
                   variant="contained"
-                  disabled={checkQuantity() || (basketObj.loading && buttonDisabled)}
+                  disabled={
+                    checkQuantity() || (basketObj.loading && buttonDisabled)
+                  }
                   onClick={() => {
                     submit();
                   }}
