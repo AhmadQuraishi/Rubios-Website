@@ -482,14 +482,14 @@ const Salsa = ({ upsellsType }: any) => {
           <Grid
             item
             xs={12}
-            style={{ display: 'flex', justifyContent: 'flex-end', minHeight: '100px' }}
+            style={{ display: 'flex', justifyContent: 'flex-end', minHeight: '45px' }}
           >
             {showError && (
             <Typography
               variant="h6"
               component="p"
               fontSize="14px !important"
-              padding="6px 30px 6px 15px"
+              padding="12px 30px 6px 15px"
               color="red"
               textAlign="right"
               lineHeight="1.2 !important"
