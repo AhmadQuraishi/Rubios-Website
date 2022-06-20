@@ -338,9 +338,9 @@ const Salsa = ({ upsellsType }: any) => {
         basketObj.basket &&
         basketObj.basket.products.length > 0
       ) {
-        elem.style.height = cartBox?.clientHeight - 172 + 'px';
+        elem.style.height = cartBox?.clientHeight - 220 + 'px';
       } else {
-        elem.style.height = cartBox?.clientHeight - 100 + 'px';
+        elem.style.height = cartBox?.clientHeight - 150 + 'px';
       }
       elem.style.overflow = 'auto';
     }
@@ -524,17 +524,18 @@ const Salsa = ({ upsellsType }: any) => {
           </Grid>
         )}
       <Grid container spacing={0}>
-        {errorMsg && errorMsg !== '' && (
+       
           <Grid
             item
             xs={12}
-            style={{ display: 'flex', justifyContent: 'flex-end' }}
+            style={{ display: 'flex', justifyContent: 'flex-end', minHeight: '45px' }}
           >
+             {errorMsg && errorMsg !== '' && (
             <Typography
               variant="h6"
               component="p"
               fontSize="14px !important"
-              padding="0px 30px 0px 15px"
+              padding="12px 30px 6px 15px"
               color="red"
               textAlign="right"
               lineHeight="1.2 !important"
@@ -548,9 +549,8 @@ const Salsa = ({ upsellsType }: any) => {
             >
               {errorMsg}
             </Typography>
+            )}
           </Grid>
-        )}
-
         <Grid
           item
           xs={12}
