@@ -1,6 +1,6 @@
 import { Grid, Typography, Card, Divider } from '@mui/material';
 import './order-details.css';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { utensilsProductId } from '../../helpers/upsells';
 
 const getOptions = (options: any) => {
@@ -12,6 +12,26 @@ const getOptions = (options: any) => {
 };
 
 const OrderDetails = ({ basket, tipPercentage, page }: any) => {
+  const [products, setProducts] = useState<any[]>();
+
+  useEffect(() => {
+    if (
+      basket &&
+      basket.products &&
+      basket.products.length
+    ) {
+      let array = basket.products;
+      const utensilsIndex = array.findIndex(
+        (obj: any) => obj.productId === utensilsProductId(),
+      );
+      if (utensilsIndex !== -1) {
+        array.push(array.splice(utensilsIndex, 1)[0]);
+      }
+      setProducts(array);
+    } else {
+      setProducts([]);
+    }
+  }, [basket]);
   return (
     <>
       <Grid container>
@@ -30,9 +50,8 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
           <br />
           <ul style={{ listStyle: 'none' }}>
             <li>
-              {basket &&
-                basket.products &&
-                basket.products.map((item: any) => {
+              {products &&
+                products.map((item: any) => {
                   return (
                     <>
                       <Grid key={item.id} container>
