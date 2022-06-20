@@ -13,6 +13,7 @@ import { resturantListSaga } from './restaurant/list';
 import { locationSaga } from './location';
 import { BasketSaga } from './basket';
 import { addMultipleProductsSaga } from './basket/addMultipleProducts';
+import { updateMultipleProductsSaga} from './basket/addMultipleProducts';
 import { checkoutSaga } from './basket/checkout';
 import { createBasketSaga } from './basket/create';
 import { addProductSaga } from './basket/product/add';
@@ -32,6 +33,7 @@ import { removeRewardFromBasketSaga } from './reward/checkout/remove';
 import { storeOrder } from './order';
 import { deliveryAddressSaga } from './location/delivery-address';
 import { verifyDeliveryAddressSaga } from './location/verify-delivery-address';
+import { utensilsSaga } from './basket/utensils';
 
 export default function* rootSaga() {
   yield all([
@@ -39,6 +41,7 @@ export default function* rootSaga() {
     categoryItemsSaga(),
     footerMenuItemSaga(),
     userSaga(),
+    utensilsSaga(),
     restaurantInfoSaga(),
     restaurantCalendarSaga(),
     locationSaga(),
@@ -50,6 +53,7 @@ export default function* rootSaga() {
     createBasketSaga(),
     BasketSaga(),
     addMultipleProductsSaga(),
+    updateMultipleProductsSaga(),
     checkoutSaga(),
     addProductSaga(),
     removeProductSaga(),

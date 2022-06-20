@@ -2,6 +2,8 @@ import { Grid, Typography, Card, CardContent, Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Link } from 'react-router-dom';
 import { Fragment } from 'react';
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
 import './index.css';
 import { Product } from '../../types/olo-api';
 
@@ -46,9 +48,9 @@ const ProductListing = (props: any) => {
   const classes = useStyles();
   const { productList, shownItemsCount, imgPath, orderType } = props;
   let products: [Product] = productList;
-  if (shownItemsCount) {
-    products = productList.slice(0, shownItemsCount);
-  }
+  // if (shownItemsCount) {
+  //   products = productList.slice(0, shownItemsCount);
+  // }
 
   const changeImageSize = (path: string, images: any) => {
     if (images && images.length > 0) {
@@ -65,20 +67,134 @@ const ProductListing = (props: any) => {
     }
   };
 
+  const responsive = {
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 4,
+      slidesToSlide: 4, // optional, default to 1.
+    },
+    tablet: {
+      breakpoint: { max: 1024, min: 464 },
+      items: 2,
+      slidesToSlide: 2, // optional, default to 1.
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 1,
+      slidesToSlide: 1, // optional, default to 1.
+    },
+  };
+
+  // @ts-ignore
+  // const CustomRightArrow = ({ onClick, ...rest }) => {
+  //   const {
+  //     onMove,
+  //     carouselState: { currentSlide, deviceType }
+  //   } = rest;
+  //   // onMove means if dragging or swiping in progress.
+  //   return <p onClick={() => onClick()} >working 111</p>;
+  // };
+  //
+  // // @ts-ignore
+  // const CustomLeftArrow = ({ onClick, ...rest }) => {
+  //   const {
+  //     onMove,
+  //     carouselState: { currentSlide, deviceType }
+  //   } = rest;
+  //   // onMove means if dragging or swiping in progress.
+  //   return <p onClick={() => onClick()} >working 222</p>;
+  // };
+
+  function CustomRightArrow({ onClick }: any) {
+    function handleClick() {
+      // do whatever you want on the right button click
+      console.log('Right button clicked, go to next slide');
+      // ... and don't forget to call onClick to slide
+      onClick();
+    }
+
+    return (
+      // <button
+      //   onClick={handleClick}
+      //   aria-label="Go to next slide"
+      //   className="react-multiple-carousel__arrow react-multiple-carousel__arrow--right"
+      // />
+      <p
+        onClick={handleClick}
+        aria-label="Go to next slide"
+        className="react-multiple-carousel__arrow react-multiple-carousel__arrow--right"
+      >
+        {' '}
+        Next
+      </p>
+    );
+  }
+
+  function CustomLeftArrow({ onClick }: any) {
+    function handleClick() {
+      // do whatever you want on the right button click
+      console.log('Right button clicked, go to next slide');
+      // ... and don't forget to call onClick to slide
+      onClick();
+    }
+
+    return (
+      // <button
+      //   onClick={handleClick}
+      //   aria-label="Go to next slide"
+      //   className="react-multiple-carousel__arrow react-multiple-carousel__arrow--right"
+      // />
+      <p
+        onClick={handleClick}
+        aria-label="Go to next slide"
+        className="react-multiple-carousel__arrow react-multiple-carousel__arrow--left"
+      >
+        {' '}
+        Back
+      </p>
+    );
+  }
+
   return (
     <Fragment>
-      <Grid container spacing={3}>
+      {/*<Grid container spacing={3}>*/}
+      <Carousel
+        swipeable={true}
+        draggable={false}
+        responsive={responsive}
+        // ssr={true} // means to render carousel on server-side.
+        // infinite={true}
+        // autoPlay={props.deviceType !== 'mobile' ? true : false}
+        additionalTransfrom={0}
+        autoPlay={false}
+        // autoPlaySpeed={3000}
+        keyBoardControl={true}
+        // customTransition="all .5"
+        transitionDuration={500}
+        containerClass="carousel-container"
+        removeArrowOnDeviceType={['tablet', 'mobile']}
+        deviceType={props.deviceType}
+        dotListClass="custom-dot-list-style"
+        itemClass="carousel-item-padding-40-px"
+        // customRightArrow={<CustomRightArrow onClick={undefined} />}
+        // customLeftArrow={<CustomLeftArrow onClick={undefined} />}
+      >
         {products.map(
           (item: any, index: number) =>
             item.unavailablehandoffmodes.includes(orderType.toLowerCase()) ===
               false && (
-              <Grid
+              // <Grid
+              //   scroll-id={'#panel-' + index}
+              //   key={index}
+              //   item
+              //   xs={12}
+              //   sm={6}
+              //   md={3}
+              // >
+              <div
                 scroll-id={'#panel-' + index}
                 key={index}
-                item
-                xs={12}
-                sm={6}
-                md={3}
+                style={{ padding: 10 }}
               >
                 <Link
                   to={`/product/${item.id}`}
@@ -159,10 +275,11 @@ const ProductListing = (props: any) => {
                     </CardContent>
                   </Card>
                 </Link>
-              </Grid>
+              </div>
             ),
         )}
-      </Grid>
+        {/*</Grid>*/}
+      </Carousel>
     </Fragment>
   );
 };

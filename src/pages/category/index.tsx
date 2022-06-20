@@ -169,6 +169,18 @@ const CategoryList = () => {
       setCategoriesWithProducts(categories);
       let scrollValues: any[] = [];
       setTimeout(() => {
+        try {
+          const arrowButtons: any = document.getElementsByClassName(
+            'MuiTabScrollButton-horizontal',
+          );
+          arrowButtons[0].setAttribute('role', 'button');
+          arrowButtons[0].setAttribute('tabindex', '0');
+          arrowButtons[0].setAttribute('aria-label', 'previous');
+          arrowButtons[1].setAttribute('role', 'button');
+          arrowButtons[1].setAttribute('tabindex', '0');
+          arrowButtons[1].setAttribute('aria-label', 'next');
+        } catch(e) {}
+
         filterCategories.map((item: any, index: number) => {
           const elem: HTMLElement = document.getElementById(
             'cat-panel-' + index,
@@ -409,9 +421,9 @@ const CategoryList = () => {
               background: '#FFF',
               zIndex: '1099',
               padding: {
-                xs: '20px 5px 10px 5px',
-                sm: '20px 30px 5px 30px',
-                lg: '20px 60px 5px 60px',
+                xs: '20px 5px 10px 20px',
+                sm: '20px 30px 5px 70px',
+                lg: '20px 60px 5px 110px',
                 boxSizing: 'border-box',
               },
             }}
