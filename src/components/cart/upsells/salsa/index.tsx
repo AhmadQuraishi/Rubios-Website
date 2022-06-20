@@ -108,7 +108,7 @@ const Salsa = ({ upsellsType }: any) => {
   const classes = useStyles();
   const [upsells, setUpsells] = useState<any>();
   const [buttonDisabled, setButtonDisabled] = useState(false);
-  const [showError, setShowError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   const basketObj = useSelector((state: any) => state.basketReducer);
   const { categories } = useSelector((state: any) => state.categoryReducer);
@@ -216,6 +216,28 @@ const Salsa = ({ upsellsType }: any) => {
     }
   };
 
+  const showErrorMsg = (
+    maximumbasketquantity: any,
+    maximumquantity: any,
+    quantity: any,
+    type: string,
+  ) => {
+    // if (
+    //   parseInt(maximumbasketquantity || 0) === quantity &&
+    //   type === 'PLUS'
+    // ) {
+    //   setErrorMsg('Maximum Salsa Basket Limit Reached.');
+    // }
+    //
+    // if (
+    //   parseInt(obj.maximumbasketquantity || 0) === obj.quantity &&
+    //   type === 'PLUS'
+    // ) {
+    //   setErrorMsg('Maximum Salsa Basket Limit Reached.');
+    // }
+
+  };
+
   const updateSalsaCount = (id: number, type: string) => {
     let basketCount = 0;
     if (
@@ -258,14 +280,37 @@ const Salsa = ({ upsellsType }: any) => {
             : count;
         console.log('limit', limit);
         console.log('count', count);
+
+        if (
+          parseInt(obj.maximumbasketquantity || 0) === basketCount &&
+          type === 'PLUS'
+        ) {
+          console.log('workingggggggggggg')
+          setErrorMsg('Maximum Salsa Basket Limit Reached.');
+        }
+
+        if (
+          parseInt(obj.maximumquantity || 0) === count &&
+          type === 'PLUS'
+        ) {
+          setErrorMsg('Maximum Salsa asdhi Basket Limit Reached.');
+        }
+
         if (count <= limit) {
-          setShowError(false)
+          showErrorMsg(
+            obj.maximumbasketquantity,
+            obj.maximumquantity,
+            obj.quantity,
+            type,
+          );
+
+          setErrorMsg('');
           return {
             ...obj,
             quantity: count,
           };
         } else {
-          setShowError(true)
+          setErrorMsg('');
           return {
             ...obj,
           };
@@ -479,7 +524,7 @@ const Salsa = ({ upsellsType }: any) => {
           </Grid>
         )}
       <Grid container spacing={0}>
-        {showError && (
+        {errorMsg && errorMsg !== '' && (
           <Grid
             item
             xs={12}
@@ -501,7 +546,7 @@ const Salsa = ({ upsellsType }: any) => {
               }}
               title="Maximum number of Salsa have been selected"
             >
-              Maximum number of Salsa have been selected
+              {errorMsg}
             </Typography>
           </Grid>
         )}
