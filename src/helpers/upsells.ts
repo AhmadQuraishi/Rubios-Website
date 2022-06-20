@@ -75,7 +75,6 @@ export const UPSELLS = [
       },
     ],
   },
-
   {
     type: 'SIDE',
     catergoryid: 49025,
