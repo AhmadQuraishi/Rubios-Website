@@ -332,8 +332,8 @@ const UpsellsOthers = ({ upsellsType }: any) => {
                 itemChild.selected ? 'content-panel selected' : 'content-panel'
               }
               item
-              xs={6}
-              sm={6}
+              xs={12}
+              sm={12}
               md={6}
               lg={6}
               sx={{ position: 'relative' }}
@@ -352,6 +352,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
               <label
                 tabIndex={0}
                 htmlFor={itemChild.id}
+                style={{marginBottom: '10px'}}
                 // onKeyUp={(e) => {
                 //   if (e.keyCode === 13)
                 //     showChildOptions(
@@ -425,6 +426,9 @@ const UpsellsOthers = ({ upsellsType }: any) => {
                             fontSize: '14px',
                             fontFamily: 'Poppins-Bold',
                             color: '#7CC8C5',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
                             textAlign: { xs: 'center', lg: 'left' },
                           }}
                         >

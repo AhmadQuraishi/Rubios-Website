@@ -362,7 +362,7 @@ const Salsa = ({ upsellsType }: any) => {
             {upsells.map((obj: any) => {
               return (
                 <>
-                  <Grid item xs={6}>
+                  <Grid item xs={12} lg={6}>
                     <Grid
                       key={Math.random() + '-'}
                       item
