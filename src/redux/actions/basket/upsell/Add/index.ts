@@ -10,9 +10,16 @@ export function addUpsellsRequest(basketid: string, request: any) {
   };
 }
 
-export function addUpsellsRequestSuccess() {
+export function addUpsellsRequestSuccess(response: any) {
+  console.log('response', response)
+  if(response && response.errors && response.errors.length){
+    response.errors.forEach((err: any) => {
+      displayToast('ERROR', `${err.message}`);
+    })
+  }
   return {
-    type: basketActionsTypes.ADD_UPSELLS_REQUEST_SUCCESS
+    type: basketActionsTypes.ADD_UPSELLS_REQUEST_SUCCESS,
+    payload: response.basket,
   };
 }
 

@@ -249,6 +249,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
     if (addUpsellsObj && addUpsellsObj.basket && clickAction != '') {
       setClickAction('');
       displayToast('SUCCESS', '1 item added to cart.');
+      fitContainer();
       dispatch(getBasketRequest('', addUpsellsObj.basket, basketType));
     }
   }, [addUpsellsObj]);
@@ -289,6 +290,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
     } else {
       setUtensils(false);
     }
+    fitContainer()
   }, [basketObj]);
 
   useEffect(() => {

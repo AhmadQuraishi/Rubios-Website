@@ -127,17 +127,17 @@ const Upsells = ({ showCart, upsellsType }: any) => {
       showCart();
     }
 
-    if (
-      addProductObj &&
-      addProductObj.action &&
-      addProductObj.action === 'COMPLETED'
-    ) {
-      // if(upsellsType !== ''){
-      displayToast('SUCCESS', 'Cart updated');
-      dispatch(addUpsellsRequestReset());
-      showCart();
-      // }
-    }
+    // if (
+    //   addProductObj &&
+    //   addProductObj.action &&
+    //   addProductObj.action === 'COMPLETED'
+    // ) {
+    //   // if(upsellsType !== ''){
+    //   displayToast('SUCCESS', 'Cart updated');
+    //   dispatch(addUpsellsRequestReset());
+    //   showCart();
+    //   // }
+    // }
   }, [addUpsellsObj, addProductObj]);
 
   useEffect(() => {
