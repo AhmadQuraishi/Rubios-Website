@@ -2,7 +2,7 @@ import './App.css';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Header from './components/header';
 import Footer from './components/footer';
-import { Fragment, useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import { Fragment, useEffect, useLayoutEffect, useState } from 'react';
 import AppRoutes from './routes';
 import { Grid } from '@mui/material';
 import LeftMenuBar from './components/left-menu-bar';
@@ -11,6 +11,17 @@ import 'react-toastify/dist/ReactToastify.css';
 import { setPageStateRequest } from './redux/actions/page-state';
 import { useDispatch, useSelector } from 'react-redux';
 import NavigateApp from './components/navigate-app';
+import TagManager from 'react-gtm-module';
+
+const tagManagerArgs = {
+  dataLayer: {
+    userId: '001',
+    userProject: 'project',
+    page: 'home',
+  },
+  dataLayerName: 'Category',
+};
+TagManager.dataLayer(tagManagerArgs);
 
 function App(props: any) {
   const location = useLocation();

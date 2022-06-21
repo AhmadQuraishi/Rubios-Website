@@ -1,14 +1,24 @@
- .list {
+
+  .list {
         width: 100%;
         display: grid;
         list-style: none;
-        grid-template-columns: auto auto auto auto auto auto auto;
+        grid-template-columns: auto auto auto auto auto auto auto auto;
+        padding-left: 10px;
       }
 
 @media screen and (max-width: 900px) {
-    .list 
+    .list
     {
         grid-template-columns: auto auto;
+    }
+  .footer-control {
+    margin-bottom: 125px !important;
+  }
+}
 
-    }
-    }
+@media screen and (max-width: 600px) {
+  .footer-control {
+    margin-bottom: 175px !important;
+  }
+}
