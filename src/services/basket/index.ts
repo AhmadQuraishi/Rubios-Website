@@ -132,6 +132,24 @@ export const addMultipleProducts = (
   }
 };
 
+export const updateMultipleProducts = (
+  basketid: string,
+  body: RequestBasketProductBatch,
+) => {
+  try {
+    const url = process.env.REACT_APP_OLO_API || '';
+    return axios
+      .put(url + `/baskets/${basketid}/products/batch`, body)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.log(error.response);
+        throw error;
+      });
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const removeProduct = (basketid: string, basketProductId: number) => {
   try {
     const url = process.env.REACT_APP_OLO_API || '';

@@ -4,12 +4,19 @@ import {
   addUpsellsRequestSuccess,
   addUpsellsRequestFailure,
 } from '../../../../actions/basket/upsell/Add';
-import { addUpSells } from '../../../../../services/basket';
+import { addSingleProduct } from '../../../../../services/basket';
 
 function* asyncAddUpsellsRequest(action: any): any {
   try {
-    const response = yield call(addUpSells, action.basketid, action.request);
-    yield put(addUpsellsRequestSuccess(response));
+    const response = yield call(
+      addSingleProduct,
+      action.basketid,
+      action.request,
+    );
+    const updatedResponse = {
+      basket: response,
+    };
+    yield put(addUpsellsRequestSuccess(updatedResponse));
   } catch (error) {
     yield put(addUpsellsRequestFailure(error));
   }

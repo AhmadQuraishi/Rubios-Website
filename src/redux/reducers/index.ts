@@ -16,7 +16,7 @@ import authReducer from './auth';
 import restaurantListReducer from './restaurant/list';
 import createBasketReducer from './basket/create';
 import basketReducer from './basket';
-import addMultipleProductsReducer from './basket/addMultipleProducts';
+// import addMultipleProductsReducer from './basket/addMultipleProducts';
 import addProductReducer from './basket/product/add';
 import removeProductReducer from './basket/product/remove';
 import checkInReducer from './check-in';
@@ -34,6 +34,7 @@ import orderReducer from './order';
 import navigateAppReducer from './navigate-app';
 import deliveryAddressReducer from './location/delivery-address';
 import verifyDeliveryAddressReducer from './location/verify-delivery-address';
+import utensilsReducer from './basket/utensils';
 
 const persistConfig = {
   key: 'root',
@@ -51,6 +52,7 @@ const persistConfig = {
     'orderReducer',
     'navigateAppReducer',
     'deliveryAddressReducer',
+    'utensilsReducer',
   ],
 };
 
@@ -61,6 +63,7 @@ const rootReducers = combineReducers({
   footerReducer,
   userReducer,
   rewardReducer,
+  utensilsReducer,
   restaurantInfoReducer,
   locationReducer,
   restaurantCalendarReducer,
@@ -71,7 +74,7 @@ const rootReducers = combineReducers({
   createBasketReducer,
   basketReducer,
   orderReducer,
-  addMultipleProductsReducer,
+  // addMultipleProductsReducer,
   addProductReducer,
   removeProductReducer,
   checkInReducer,

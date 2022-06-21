@@ -308,6 +308,8 @@ const LocationCard = (props: any) => {
                 marginLeft: '350px',
                 paddingTop: '40px',
                 paddingRight: '40px',
+                maxHeight: '94%',
+                overflowY: 'auto'
               }}
             >
               <Typography
@@ -577,7 +579,7 @@ const LocationCard = (props: any) => {
                       filteredRestaurants.length == 0)) && (
                     <Link
                       style={{
-                        textAlign: 'center',
+                        textAlign: 'left',
                         display: 'block',
                         cursor: 'pointer',
                         fontWeight: 500,
