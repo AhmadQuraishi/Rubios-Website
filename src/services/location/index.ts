@@ -6,7 +6,6 @@ export const requestLocations = () => {
     return axios
       .get(url, {
         headers: {
-          Authorization: `Bearer ieyeYKm1mJ_zad_zXTtE`,
         },
       })
       .then((response) => response.data);
