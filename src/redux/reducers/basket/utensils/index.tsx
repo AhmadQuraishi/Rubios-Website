@@ -2,7 +2,8 @@ import { basketActionsTypes } from '../../../types/basket';
 
 const INITIAL_STATE = {
   loading: false,
-  error: {}
+  utensilsProductId: null,
+  error: {},
 };
 
 const utensilsReducer = (state = INITIAL_STATE, action: any) => {
@@ -15,7 +16,7 @@ const utensilsReducer = (state = INITIAL_STATE, action: any) => {
       return {
         ...state,
         loading: false,
-        error: {}
+        error: {},
       };
     case basketActionsTypes.ADD_UTENSILS_FAILURE:
     case basketActionsTypes.REMOVE_UTENSILS_FAILURE:
@@ -23,6 +24,11 @@ const utensilsReducer = (state = INITIAL_STATE, action: any) => {
         ...state,
         loading: false,
         error: action.error,
+      };
+    case basketActionsTypes.GET_UTENSILS_PRODUCT_ID:
+      return {
+        ...state,
+        utensilsProductId: action.payload,
       };
     default:
       return state;
