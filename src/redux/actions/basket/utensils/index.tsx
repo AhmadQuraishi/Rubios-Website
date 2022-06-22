@@ -65,7 +65,6 @@ export function removeUtensilsRequestFailure(error: any) {
 }
 
 export function updateUtensilsProductId(data: any) {
-  console.log('utensilsProductId', getUtensilsProductId(data))
   return {
     type: basketActionsTypes.GET_UTENSILS_PRODUCT_ID,
     payload: getUtensilsProductId(data),

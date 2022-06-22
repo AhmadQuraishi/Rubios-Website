@@ -1,6 +1,8 @@
 export function getUtensilsProductId(menu: any) {
   let utensilsChainProductId: any =
-    process.env.REACT_APP_UTENSILS_CHAIN_PRODUCT_ID;
+    process.env.REACT_APP_UTENSILS_CHAIN_PRODUCT_ID || 0;
+
+  utensilsChainProductId = parseInt(utensilsChainProductId);
 
   let utensilsProductId = null;
 
@@ -16,9 +18,8 @@ export function getUtensilsProductId(menu: any) {
         const filterProduct = cat.products.filter(
           (prod: any) => prod.chainproductid === utensilsChainProductId,
         );
-        console.log('filterProduct', filterProduct)
         if (filterProduct && filterProduct.length) {
-          utensilsProductId = filterProduct[0].productId;
+          utensilsProductId = filterProduct[0].id;
         }
       }
     });

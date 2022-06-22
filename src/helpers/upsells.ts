@@ -233,9 +233,3 @@ export const UPSELLS_TYPES = {
   DRINK: 'DRINK',
 };
 
-export function utensilsProductId() {
-  let utensilsProductId: any =
-    process.env.REACT_APP_UTENSILS_PRODUCT_ID || 13869812;
-  utensilsProductId = parseInt(utensilsProductId);
-  return utensilsProductId;
-}
