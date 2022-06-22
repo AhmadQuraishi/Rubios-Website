@@ -83,7 +83,12 @@ const AddCreditCard = () => {
   React.useEffect(() => {
     if (openAddCreditCard) {
       const initializeCreditCardElements = async () => {
-        const elements = new CreditCardElements();
+        let elements;
+        if (process.env.REACT_APP_NODE_ENV === 'production') {
+          elements = new CreditCardElements('production');
+        } else {
+          elements = new CreditCardElements('development');
+        }
         // for production use
         // const elements = new CreditCardElements('production');
 
@@ -204,7 +209,6 @@ const AddCreditCard = () => {
         onClose={handleCloseAddCreditCard}
         className="fav-dialog"
         fullWidth
-
       >
         <DialogTitle>Add Credit Card</DialogTitle>
 
@@ -229,7 +233,11 @@ const AddCreditCard = () => {
                       lg={6}
                       className="payment-form image-field align"
                     >
-                      <div tabIndex={0} className="card-fields" data-olo-pay-card-number />
+                      <div
+                        tabIndex={0}
+                        className="card-fields"
+                        data-olo-pay-card-number
+                      />
                       <img
                         src={require('../../../assets/imgs/card-icon.png')}
                       />

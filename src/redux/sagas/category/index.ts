@@ -5,11 +5,13 @@ import {
   getCategoriesRequestSuccess,
   getCategoriesRequestFailure,
 } from '../../actions/category';
+import {updateUtensilsProductId} from "../../actions/basket/utensils";
 
 function* asyncCategoriesRequest(action: any): any {
   try {
     const response = yield call(getMenuItem, action.restaurantID);
     yield put(getCategoriesRequestSuccess(response));
+    yield put(updateUtensilsProductId(response));
   } catch (error) {
     yield put(getCategoriesRequestFailure(error));
   }

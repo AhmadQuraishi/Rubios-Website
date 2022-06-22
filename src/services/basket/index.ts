@@ -217,11 +217,11 @@ export const requestCreateBasketForFav = (
   }
 };
 
-export const getUpSells = (basketid: string) => {
+export const getUpSells = (vendorid: string) => {
   try {
     const url = process.env.REACT_APP_OLO_API || '';
     return axios
-      .get(url + `/baskets/${basketid}/upsell`)
+      .get(url + `/upsells/${vendorid}`)
       .then((response) => response.data)
       .catch((error) => {
         console.log(error.response);

@@ -2,53 +2,10 @@ import { Grid, Typography, Theme, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { UPSELLS } from '../../../../helpers/upsells';
-import { Category, Product as ProductInfo } from '../../../../types/olo-api';
 import { addMultipleProductsRequest } from '../../../../redux/actions/basket/addMultipleProducts';
 import {changeImageSize} from "../../../../helpers/common";
 
 const useStyles = makeStyles((theme: Theme) => ({
-  dimPanel: {
-    position: 'fixed',
-    background: 'rgba(0, 0, 0, 0.5)',
-    top: 0,
-    right: 400,
-    width: '100%',
-    height: '100vh',
-    zIndex: 1101,
-    [theme.breakpoints.down('xl')]: {
-      display: 'block !important',
-    },
-    [theme.breakpoints.down('sm')]: {
-      display: 'none',
-    },
-  },
-  cartBox: {
-    border: '1px solid #666',
-    borderTop: '0',
-    borderRight: '0',
-    position: 'fixed',
-    background: '#fff',
-    top: 0,
-    right: 400,
-    width: '100%',
-    height: '100%',
-    zIndex: 9999,
-    [theme.breakpoints.up('md')]: {
-      maxWidth: '600px',
-    },
-    [theme.breakpoints.up('sm')]: {
-      maxWidth: '600px',
-    },
-    [theme.breakpoints.up('xs')]: {
-      maxWidth: 'auto !important',
-    },
-  },
-  cartRoot: {
-    position: 'relative',
-    padding: '35px 5px 10px 30px',
-  },
   cartTitle: {
     color: theme.palette.secondary.main,
     textTransform: 'uppercase',
@@ -56,123 +13,65 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontWeight: '700',
     fontFamily: 'Poppins-Bold !important',
     padding: '10px 0px 18px 0px',
-  },
-  crossIcon: {
-    position: 'absolute',
-    top: '15px !important',
-    right: '10px !important',
-    display: 'flex !important',
-
-    justifyContent: 'right !important',
-    '& img': {
-      cursor: 'pointer',
-    },
-  },
-  smallLink: {
-    color: '#0075BF !important',
-    fontSize: '11px !important',
-    fontFamily: "'Poppins-Bold' !important",
-    textDecoration: 'underline',
-    display: 'inline',
-    cursor: 'pointer',
-    textTransform: 'uppercase',
-  },
-  disabledLink: {
-    color: '#ccc !important',
-    fontSize: '11px !important',
-    fontFamily: 'Poppins-Bold !important',
-    display: 'inline',
-    cursor: 'default',
-    textDecoration: 'underline',
-    textTransform: 'uppercase',
-  },
-  btnsList: {
-    width: '100%',
-    display: 'flex',
-    listStyle: 'none',
-    textDecoration: 'underline',
-    height: '40px',
-  },
-  btn: {
-    paddingLeft: '0px  !important',
-    letterSpacing: 'normal !important',
-  },
-  emptyCart: {
-    fontFamily: 'Poppins-Regular, sans-serif !Important',
-    fontSize: '16px !important',
-    color: '#525252',
-    fontWeight: 'bold',
-  },
+  }
 }));
 
 const Salsa = ({ upsellsType }: any) => {
   const classes = useStyles();
-  const [upsells, setUpsells] = useState<any>();
+  const [products, setProducts] = useState<any>();
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
   const basketObj = useSelector((state: any) => state.basketReducer);
   const { categories } = useSelector((state: any) => state.categoryReducer);
+  const { upsells } = useSelector((state: any) => state.getUpsellsReducer);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    let products: any = [];
+    if (upsells && upsells.length) {
+      let prod: any = [];
 
-    let upsellsCategory: any = UPSELLS.find(
-      (obj: any) => obj.type === upsellsType,
-    );
-    if (upsellsCategory && upsellsCategory.products.length > 0) {
-      const filteredUpsellsIds = upsellsCategory.products.map(
-        (obj: any) => obj.chainproductid,
+      let upsellsCategory: any = upsells.find(
+        (obj: any) => obj.type === upsellsType,
       );
-      if (
-        upsellsCategory &&
-        categories &&
-        categories.categories &&
-        categories.categories.length &&
-        filteredUpsellsIds.length
-      ) {
-        categories.categories.forEach((item: Category) => {
-          const findResults = item.products
-            .filter((obj: ProductInfo) => {
-              return filteredUpsellsIds.includes(obj.chainproductid);
-            })
-            .map((obj: any) => {
-              return {
-                ...obj,
-                quantity: 0,
-              };
-            });
-          if (findResults && findResults.length) {
-            Array.prototype.push.apply(products, findResults);
-          }
+      if (upsellsCategory && upsellsCategory.products) {
+        prod = upsellsCategory.products;
+      }
+
+      if (prod && prod.length) {
+        prod = prod.map((obj: any) => {
+          return {
+            ...obj,
+            quantity: 0,
+          };
         });
       }
-    }
-    setUpsells(products);
 
-    setTimeout(() => {
-      fitContainer();
-    }, 500);
-  }, [categories]);
+      setProducts(prod);
+
+      setTimeout(() => {
+        fitContainer();
+      }, 500);
+    }
+  }, [upsells]);
 
   const submit = () => {
-    if (upsells && upsells.length) {
-      const products: any = [];
-      upsells.forEach((product: any) => {
+    if (products && products.length) {
+      const finalProducts: any = [];
+      products.forEach((product: any) => {
         if (product.quantity > 0) {
           const obj = {
             productid: product.id,
             quantity: product.quantity,
             choices: [],
           };
-          products.push(obj);
+          finalProducts.push(obj);
         }
       });
-      if (products.length) {
+      if (finalProducts.length) {
         const payload: any = {
-          products: products,
+          products: finalProducts,
         };
         setButtonDisabled(true);
         dispatch(addMultipleProductsRequest(basketObj.basket.id, payload));
@@ -226,7 +125,7 @@ const Salsa = ({ upsellsType }: any) => {
         });
       }
     }
-    const updatedProducts = upsells.map((obj: any) => {
+    const updatedProducts = products.map((obj: any) => {
       if (obj.id === id) {
         let limit = parseInt(obj.maximumbasketquantity || 0) - basketCount;
         let count = type === 'PLUS' ? obj.quantity + 1 : obj.quantity - 1;
@@ -255,7 +154,7 @@ const Salsa = ({ upsellsType }: any) => {
         };
       }
     });
-    setUpsells(updatedProducts);
+    setProducts(updatedProducts);
     fitContainer();
   };
 
@@ -298,8 +197,8 @@ const Salsa = ({ upsellsType }: any) => {
 
   const checkQuantity = () => {
     let total = 0;
-    if (upsells && upsells.length) {
-      total = upsells.reduce(function (previousValue: any, currentValue: any) {
+    if (products && products.length) {
+      total = products.reduce(function (previousValue: any, currentValue: any) {
         return previousValue + currentValue.quantity;
       }, 0);
     }
@@ -312,15 +211,15 @@ const Salsa = ({ upsellsType }: any) => {
       {basketObj &&
         basketObj.basket &&
         basketObj.basket.products.length > 0 &&
-        upsells &&
-        upsells.length > 0 && (
+        products &&
+        products.length > 0 && (
           <Grid
             container
             spacing={1}
             id="cart-main-container-upsells"
             sx={{ paddingRight: '25px' }}
           >
-            {upsells.map((obj: any) => {
+            {products.map((obj: any) => {
               return (
                 <>
                   <Grid item xs={12} lg={6}>
@@ -479,8 +378,8 @@ const Salsa = ({ upsellsType }: any) => {
           {basketObj &&
             basketObj.basket &&
             basketObj.basket.products.length > 0 &&
-            upsells &&
-            upsells.length > 0 && (
+            products &&
+            products.length > 0 && (
               <Grid
                 item
                 xs={12}

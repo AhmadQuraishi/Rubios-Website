@@ -6,7 +6,6 @@ import {
   deleteFavOrder,
   getUserFavoritetOrders,
 } from '../../redux/actions/user';
-import LoadingBar from '../loading-bar';
 import { TablePagination } from '@mui/material';
 import DialogBox from '../dialog-box';
 import { createBasketFromFavOrderRequest } from '../../redux/actions/basket/create';
@@ -74,7 +73,12 @@ const FavoriteOrders = () => {
     if (createBasketObj && clickAction) {
       if (createBasketObj.basket && clickAction) {
         dispatch(getResturantInfoRequest(createBasketObj.basket.vendorid));
-        dispatch(getUpsellsRequest(createBasketObj.basket.id));
+        dispatch(
+          getUpsellsRequest(
+            createBasketObj.basket.id,
+            createBasketObj.basket.vendorid,
+          ),
+        );
       } else if (createBasketObj.error && createBasketObj.error.message) {
         setClickAction(false);
       }
