@@ -1072,6 +1072,8 @@ const Product = () => {
                                   sx={{
                                     width: '120px',
                                     height: '120px',
+                                    display: 'flex',
+                                    alignItems: 'center',
                                     padding: '0px',
                                     paddingLeft: {
                                       xs: '0px !important',
