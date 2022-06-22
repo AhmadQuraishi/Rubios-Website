@@ -33,7 +33,7 @@ import { displayToast } from '../../helpers/toast';
 import ItemImage from '../../components/item-image';
 import { getUpsellsRequest } from '../../redux/actions/basket/upsell/Get';
 import axios from 'axios';
-import {changeImageSize} from "../../helpers/common";
+import { changeImageSize } from '../../helpers/common';
 const inputProps = {
   'aria-label': 'quantity',
 };
@@ -900,7 +900,9 @@ const Product = () => {
                       changeImageSize(
                         productDetails.imagefilename,
                         productDetails.images,
-                        'marketplace-product'
+                        process.env.REACT_APP_NODE_ENV === 'production'
+                          ? 'marketplace-product'
+                          : 'desktop-menu',
                       )
                     }
                     alt=""
@@ -1098,7 +1100,7 @@ const Product = () => {
                                         changeImageSize(
                                           productDetails.imagefilename || '',
                                           productDetails.images || '',
-                                          'desktop-menu'
+                                          'desktop-menu',
                                         )
                                     }
                                     index={index1}
@@ -1197,7 +1199,8 @@ const Product = () => {
             </div>
             <Grid container className="action-panel">
               <Grid item xs={12} className="content-panel">
-                {productDetails && productDetails.id !== utensilsReducer.utensilsProductId ? (
+                {productDetails &&
+                productDetails.id !== utensilsReducer.utensilsProductId ? (
                   <div
                     style={{ display: 'flex', alignItems: 'center' }}
                     className="button-panel-sx"
