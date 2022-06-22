@@ -6,6 +6,7 @@ import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import './index.css';
 import { Product } from '../../types/olo-api';
+import {changeImageSize} from "../../helpers/common";
 
 const useStyles = makeStyles((theme: Theme) => ({
   img: {
@@ -51,21 +52,6 @@ const ProductListing = (props: any) => {
   // if (shownItemsCount) {
   //   products = productList.slice(0, shownItemsCount);
   // }
-
-  const changeImageSize = (path: string, images: any) => {
-    if (images && images.length > 0) {
-      const dektopImage: any = images.find(
-        (obj: any) => obj.groupname == 'desktop-menu',
-      );
-      if (dektopImage) {
-        return dektopImage.filename.replace('h=138', 'h=500');
-      } else {
-        return path;
-      }
-    } else {
-      return path;
-    }
-  };
 
   const responsive = {
     desktop: {
@@ -212,7 +198,7 @@ const ProductListing = (props: any) => {
                         alt=""
                         src={
                           imgPath +
-                          changeImageSize(item.imagefilename, item.images)
+                          changeImageSize(item.imagefilename, item.images, 'desktop-menu')
                         }
                         title={item.name}
                       />

@@ -33,7 +33,7 @@ import { displayToast } from '../../helpers/toast';
 import ItemImage from '../../components/item-image';
 import { getUpsellsRequest } from '../../redux/actions/basket/upsell/Get';
 import axios from 'axios';
-import { utensilsProductId } from '../../helpers/upsells';
+import { changeImageSize } from '../../helpers/common';
 const inputProps = {
   'aria-label': 'quantity',
 };
@@ -53,6 +53,7 @@ const Product = () => {
   const productAddObj = useSelector((state: any) => state.addProductReducer);
   const { authToken } = useSelector((state: any) => state.authReducer);
   const upsellsObj = useSelector((state: any) => state.getUpsellsReducer);
+  const utensilsReducer = useSelector((state: any) => state.utensilsReducer);
   const productUpdateObj = useSelector(
     (state: any) => state.updateProductReducer,
   );
@@ -250,7 +251,7 @@ const Product = () => {
         );
       } else {
         if (upsellsObj.upsells == null && basket) {
-          dispatch(getUpsellsRequest(basket.id));
+          dispatch(getUpsellsRequest(basket.id, basket.vendorid));
         }
         dispatch(addProductRequest(basket?.id || '', request));
       }
@@ -287,7 +288,12 @@ const Product = () => {
       dummyBasketObj.basket.id &&
       upsellsObj.upsells == null
     ) {
-      dispatch(getUpsellsRequest(dummyBasketObj.basket.id));
+      dispatch(
+        getUpsellsRequest(
+          dummyBasketObj.basket.id,
+          dummyBasketObj.basket.vendorid,
+        ),
+      );
     }
   }, [dummyBasketObj.basket]);
 
@@ -316,21 +322,6 @@ const Product = () => {
       navigate('/menu/' + restaurant.slug);
     }
   }, [productUpdateObj]);
-
-  const changeImageSize = (path: string, images: any) => {
-    if (images && images.length > 0) {
-      const dektopImage: any = images.find(
-        (obj: any) => obj.groupname == 'desktop-menu',
-      );
-      if (dektopImage) {
-        return dektopImage.filename.replace('h=138', 'h=500');
-      } else {
-        return path;
-      }
-    } else {
-      return path;
-    }
-  };
 
   const [optionsSelectionArray, setOptionsSelectionArray] = useState<any>([]);
 
@@ -800,13 +791,13 @@ const Product = () => {
   const checkDisable = () => {
     return (
       productDetails &&
-      productDetails.id === utensilsProductId() &&
+      productDetails.id === utensilsReducer.utensilsProductId &&
       basketObj &&
       basketObj.basket &&
       basketObj.basket.products &&
       basketObj.basket.products.length > 0 &&
       basketObj.basket.products.filter(
-        (obj: any) => obj.productId === utensilsProductId(),
+        (obj: any) => obj.productId === utensilsReducer.utensilsProductId,
       ).length > 0
     );
   };
@@ -909,6 +900,9 @@ const Product = () => {
                       changeImageSize(
                         productDetails.imagefilename,
                         productDetails.images,
+                        process.env.REACT_APP_NODE_ENV === 'production'
+                          ? 'marketplace-product'
+                          : 'desktop-menu',
                       )
                     }
                     alt=""
@@ -1083,6 +1077,10 @@ const Product = () => {
                                   xs={12}
                                   lg={5}
                                   sx={{
+                                    width: '120px',
+                                    height: '120px',
+                                    display: 'flex',
+                                    alignItems: 'center',
                                     padding: '0px',
                                     paddingLeft: {
                                       xs: '0px !important',
@@ -1102,6 +1100,7 @@ const Product = () => {
                                         changeImageSize(
                                           productDetails.imagefilename || '',
                                           productDetails.images || '',
+                                          'desktop-menu',
                                         )
                                     }
                                     index={index1}
@@ -1200,7 +1199,8 @@ const Product = () => {
             </div>
             <Grid container className="action-panel">
               <Grid item xs={12} className="content-panel">
-                {productDetails && productDetails.id !== utensilsProductId() ? (
+                {productDetails &&
+                productDetails.id !== utensilsReducer.utensilsProductId ? (
                   <div
                     style={{ display: 'flex', alignItems: 'center' }}
                     className="button-panel-sx"
