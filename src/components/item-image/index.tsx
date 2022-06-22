@@ -40,8 +40,8 @@ const ItemImage = (props: any) => {
           src={productImageURL}
           alt=""
           style={{
-            height: '120px',
-            width: '120px',
+            height: 'auto',
+            width: '100%',
           }}
           className={`${className}`}
         />
@@ -56,8 +56,8 @@ const ItemImage = (props: any) => {
             alt=""
             src={require('../../assets/imgs/No ingredient.png')}
             style={{
-              height: '120px',
-              width: '120px',
+              height: 'auto',
+              width: '100%',
             }}
             className={`${className}`}
           />
@@ -71,8 +71,8 @@ const ItemImage = (props: any) => {
             alt=""
             src={imageURL}
             style={{
-              height: '120px',
-              width: '120px',
+              height: 'auto',
+              width: '100%',
             }}
             className={`${className}`}
           />

@@ -1070,6 +1070,8 @@ const Product = () => {
                                   xs={12}
                                   lg={5}
                                   sx={{
+                                    width: '120px',
+                                    height: '120px',
                                     padding: '0px',
                                     paddingLeft: {
                                       xs: '0px !important',
