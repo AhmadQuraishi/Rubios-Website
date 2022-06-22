@@ -3,6 +3,7 @@ import { makeStyles } from '@mui/styles';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addMultipleProductsRequest } from '../../../../redux/actions/basket/addMultipleProducts';
+import {changeImageSize} from "../../../../helpers/common";
 
 const useStyles = makeStyles((theme: Theme) => ({
   cartTitle: {
@@ -205,20 +206,6 @@ const Salsa = ({ upsellsType }: any) => {
     return total === 0;
   };
 
-  const changeImageSize = (path: string, images: any) => {
-    if (images && images.length > 0) {
-      const dektopImage: any = images.find(
-        (obj: any) => obj.groupname === 'desktop-menu',
-      );
-      if (dektopImage) {
-        return dektopImage.filename.replace('h=138', 'h=500');
-      } else {
-        return path;
-      }
-    } else {
-      return path;
-    }
-  };
   return (
     <>
       {basketObj &&
@@ -267,6 +254,7 @@ const Salsa = ({ upsellsType }: any) => {
                             changeImageSize(
                               obj.imagefilename || '',
                               obj.images || '',
+                              'desktop-menu'
                             )
                           }
                         />

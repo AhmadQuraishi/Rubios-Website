@@ -3,7 +3,106 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { UPSELLS_TYPES } from '../../../../helpers/upsells';
 import './index.css';
-import { addUpsellsRequest } from '../../../../redux/actions/basket/upsell/Add';
+import {addUpsellsRequest} from "../../../../redux/actions/basket/upsell/Add";
+import { changeImageSize } from '../../../../helpers/common';
+
+const useStyles = makeStyles((theme: Theme) => ({
+  dimPanel: {
+    position: 'fixed',
+    background: 'rgba(0, 0, 0, 0.5)',
+    top: 0,
+    right: 400,
+    width: '100%',
+    height: '100vh',
+    zIndex: 1101,
+    [theme.breakpoints.down('xl')]: {
+      display: 'block !important',
+    },
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
+  },
+  cartBox: {
+    border: '1px solid #666',
+    borderTop: '0',
+    borderRight: '0',
+    position: 'fixed',
+    background: '#fff',
+    top: 0,
+    right: 400,
+    width: '100%',
+    height: '100%',
+    zIndex: 9999,
+    [theme.breakpoints.up('md')]: {
+      maxWidth: '600px',
+    },
+    [theme.breakpoints.up('sm')]: {
+      maxWidth: '600px',
+    },
+    [theme.breakpoints.up('xs')]: {
+      maxWidth: 'auto !important',
+    },
+  },
+  cartRoot: {
+    position: 'relative',
+    padding: '35px 5px 10px 30px',
+  },
+  cartTitle: {
+    color: theme.palette.secondary.main,
+    textTransform: 'uppercase',
+    fontSize: '25px !important',
+    fontWeight: '700',
+    fontFamily: 'Poppins-Bold !important',
+    padding: '10px 0px 18px 0px',
+  },
+  crossIcon: {
+    position: 'absolute',
+    top: '15px !important',
+    right: '10px !important',
+    display: 'flex !important',
+
+    justifyContent: 'right !important',
+    '& img': {
+      cursor: 'pointer',
+    },
+  },
+  smallLink: {
+    color: '#0075BF !important',
+    fontSize: '11px !important',
+    fontFamily: "'Poppins-Bold' !important",
+    textDecoration: 'underline',
+    display: 'inline',
+    cursor: 'pointer',
+    textTransform: 'uppercase',
+  },
+  disabledLink: {
+    color: '#ccc !important',
+    fontSize: '11px !important',
+    fontFamily: 'Poppins-Bold !important',
+    display: 'inline',
+    cursor: 'default',
+    textDecoration: 'underline',
+    textTransform: 'uppercase',
+  },
+  btnsList: {
+    width: '100%',
+    display: 'flex',
+    listStyle: 'none',
+    textDecoration: 'underline',
+    height: '40px',
+  },
+  btn: {
+    paddingLeft: '0px  !important',
+    letterSpacing: 'normal !important',
+    marginTop: '-15px !important'
+  },
+  emptyCart: {
+    fontFamily: 'Poppins-Regular, sans-serif !Important',
+    fontSize: '16px !important',
+    color: '#525252',
+    fontWeight: 'bold',
+  },
+}));
 
 const UpsellsOthers = ({ upsellsType }: any) => {
   const [products, setProducts] = useState<any>();
@@ -219,20 +318,6 @@ const UpsellsOthers = ({ upsellsType }: any) => {
     setQuantity(count);
   };
 
-  const changeImageSize = (path: string, images: any) => {
-    if (images && images.length > 0) {
-      const dektopImage: any = images.find(
-        (obj: any) => obj.groupname === 'desktop-menu',
-      );
-      if (dektopImage) {
-        return dektopImage.filename.replace('h=138', 'h=500');
-      } else {
-        return path;
-      }
-    } else {
-      return path;
-    }
-  };
   return (
     <>
       <div id="cart-main-container-upsells" className={'upsells'}>
@@ -325,6 +410,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
                           changeImageSize(
                             itemChild.imagefilename || '',
                             itemChild.images || '',
+                            'desktop-menu'
                           )
                         }
                         // src={require('../../../../assets/imgs/default_img.png')}

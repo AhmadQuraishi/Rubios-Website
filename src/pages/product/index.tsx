@@ -33,9 +33,10 @@ import { displayToast } from '../../helpers/toast';
 import ItemImage from '../../components/item-image';
 import { getUpsellsRequest } from '../../redux/actions/basket/upsell/Get';
 import axios from 'axios';
-// const inputProps = {
-//   'aria-label': 'quantity',
-// };
+import {changeImageSize} from "../../helpers/common";
+const inputProps = {
+  'aria-label': 'quantity',
+};
 
 const Product = () => {
   const [productDetails, setProductDetails] = useState<ProductInfo>();
@@ -321,21 +322,6 @@ const Product = () => {
       navigate('/menu/' + restaurant.slug);
     }
   }, [productUpdateObj]);
-
-  const changeImageSize = (path: string, images: any) => {
-    if (images && images.length > 0) {
-      const dektopImage: any = images.find(
-        (obj: any) => obj.groupname == 'desktop-menu',
-      );
-      if (dektopImage) {
-        return dektopImage.filename.replace('h=138', 'h=500');
-      } else {
-        return path;
-      }
-    } else {
-      return path;
-    }
-  };
 
   const [optionsSelectionArray, setOptionsSelectionArray] = useState<any>([]);
 
@@ -914,6 +900,7 @@ const Product = () => {
                       changeImageSize(
                         productDetails.imagefilename,
                         productDetails.images,
+                        'marketplace-product'
                       )
                     }
                     alt=""
@@ -1088,6 +1075,10 @@ const Product = () => {
                                   xs={12}
                                   lg={5}
                                   sx={{
+                                    width: '120px',
+                                    height: '120px',
+                                    display: 'flex',
+                                    alignItems: 'center',
                                     padding: '0px',
                                     paddingLeft: {
                                       xs: '0px !important',
@@ -1107,6 +1098,7 @@ const Product = () => {
                                         changeImageSize(
                                           productDetails.imagefilename || '',
                                           productDetails.images || '',
+                                          'desktop-menu'
                                         )
                                     }
                                     index={index1}
