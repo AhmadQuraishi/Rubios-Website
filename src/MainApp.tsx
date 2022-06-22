@@ -12,6 +12,7 @@ import { setPageStateRequest } from './redux/actions/page-state';
 import { useDispatch, useSelector } from 'react-redux';
 import NavigateApp from './components/navigate-app';
 import TagManager from 'react-gtm-module';
+import {addSingleProduct} from "./services/basket";
 
 const tagManagerArgs = {
   dataLayer: {
@@ -32,7 +33,15 @@ function App(props: any) {
   const { providerToken } = useSelector((state: any) => state.providerReducer);
   const navigate = useNavigate();
 
+
+
   useEffect(() => {
+    const test = {
+      "productid": 13582533,
+      "quantity": 1,
+      "options": "4225688,"
+    }
+    addSingleProduct('6433ed01-49fb-4136-a7d8-dfbd3bd7d98f', test)
     if (window.location.href.toLocaleLowerCase().indexOf('/account') != -1) {
       if (providerToken == null || providerToken == undefined) {
         navigate('/login');

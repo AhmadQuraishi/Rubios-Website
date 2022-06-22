@@ -58,7 +58,7 @@ const RecentOrders = () => {
     if (createBasketObj && clickAction) {
       if (createBasketObj.basket && clickAction) {
         dispatch(getResturantInfoRequest(createBasketObj.basket.vendorid));
-        dispatch(getUpsellsRequest(createBasketObj.basket.id));
+        dispatch(getUpsellsRequest(createBasketObj.basket.id, createBasketObj.basket.vendorid));
       } else if (createBasketObj.error && createBasketObj.error.message) {
         setClickAction(false);
       }

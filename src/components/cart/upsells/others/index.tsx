@@ -1,186 +1,103 @@
-import { Grid, Theme, Button, Card } from '@mui/material';
-import { makeStyles } from '@mui/styles';
+import { Grid, Button, Card } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { addProductRequest } from '../../../../redux/actions/basket/product/add';
-import { UPSELLS, UPSELLS_TYPES } from '../../../../helpers/upsells';
-import { Category, Product as ProductInfo } from '../../../../types/olo-api';
+import { UPSELLS_TYPES } from '../../../../helpers/upsells';
 import './index.css';
-import {addUpsellsRequest} from "../../../../redux/actions/basket/upsell/Add";
-
-const useStyles = makeStyles((theme: Theme) => ({
-  dimPanel: {
-    position: 'fixed',
-    background: 'rgba(0, 0, 0, 0.5)',
-    top: 0,
-    right: 400,
-    width: '100%',
-    height: '100vh',
-    zIndex: 1101,
-    [theme.breakpoints.down('xl')]: {
-      display: 'block !important',
-    },
-    [theme.breakpoints.down('sm')]: {
-      display: 'none',
-    },
-  },
-  cartBox: {
-    border: '1px solid #666',
-    borderTop: '0',
-    borderRight: '0',
-    position: 'fixed',
-    background: '#fff',
-    top: 0,
-    right: 400,
-    width: '100%',
-    height: '100%',
-    zIndex: 9999,
-    [theme.breakpoints.up('md')]: {
-      maxWidth: '600px',
-    },
-    [theme.breakpoints.up('sm')]: {
-      maxWidth: '600px',
-    },
-    [theme.breakpoints.up('xs')]: {
-      maxWidth: 'auto !important',
-    },
-  },
-  cartRoot: {
-    position: 'relative',
-    padding: '35px 5px 10px 30px',
-  },
-  cartTitle: {
-    color: theme.palette.secondary.main,
-    textTransform: 'uppercase',
-    fontSize: '25px !important',
-    fontWeight: '700',
-    fontFamily: 'Poppins-Bold !important',
-    padding: '10px 0px 18px 0px',
-  },
-  crossIcon: {
-    position: 'absolute',
-    top: '15px !important',
-    right: '10px !important',
-    display: 'flex !important',
-
-    justifyContent: 'right !important',
-    '& img': {
-      cursor: 'pointer',
-    },
-  },
-  smallLink: {
-    color: '#0075BF !important',
-    fontSize: '11px !important',
-    fontFamily: "'Poppins-Bold' !important",
-    textDecoration: 'underline',
-    display: 'inline',
-    cursor: 'pointer',
-    textTransform: 'uppercase',
-  },
-  disabledLink: {
-    color: '#ccc !important',
-    fontSize: '11px !important',
-    fontFamily: 'Poppins-Bold !important',
-    display: 'inline',
-    cursor: 'default',
-    textDecoration: 'underline',
-    textTransform: 'uppercase',
-  },
-  btnsList: {
-    width: '100%',
-    display: 'flex',
-    listStyle: 'none',
-    textDecoration: 'underline',
-    height: '40px',
-  },
-  btn: {
-    paddingLeft: '0px  !important',
-    letterSpacing: 'normal !important',
-    marginTop: '-15px !important'
-  },
-  emptyCart: {
-    fontFamily: 'Poppins-Regular, sans-serif !Important',
-    fontSize: '16px !important',
-    color: '#525252',
-    fontWeight: 'bold',
-  },
-}));
+import { addUpsellsRequest } from '../../../../redux/actions/basket/upsell/Add';
 
 const UpsellsOthers = ({ upsellsType }: any) => {
-  const [upsells, setUpsells] = useState<any>();
+  const [products, setProducts] = useState<any>();
   const [optionSelected, setOptionSelected] = useState('');
   const [quantity, setQuantity] = useState(0);
   const [buttonDisabled, setButtonDisabled] = useState(false);
 
   const basketObj = useSelector((state: any) => state.basketReducer);
   const { categories } = useSelector((state: any) => state.categoryReducer);
+  const { upsells } = useSelector((state: any) => state.getUpsellsReducer);
+  const addUpsellsObj = useSelector((state: any) => state.addUpsellReducer);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    let products: any = [];
+    if (upsells && upsells.length) {
+      let prod: any = [];
 
-    let upsellsCategory: any = UPSELLS.find(
-      (obj: any) => obj.type === upsellsType,
-    );
-    console.log('upsellsCategory', upsellsCategory);
-    if (upsellsCategory && upsellsCategory.products.length > 0) {
-      const filteredUpsellsIds = upsellsCategory.products.map(
-        (obj: any) => obj.chainproductid,
+      let upsellsCategory: any = upsells.find(
+        (obj: any) => obj.type === upsellsType,
       );
-      console.log('filteredUpsellsIds', filteredUpsellsIds);
-      if (
-        upsellsCategory &&
-        categories &&
-        categories.categories &&
-        categories.categories.length &&
-        filteredUpsellsIds.length
-      ) {
-        categories.categories.forEach((item: Category) => {
-          let findResults = item.products
-            .filter((obj: ProductInfo) => {
-              return filteredUpsellsIds.includes(obj.chainproductid);
-            })
-            .map((obj: any) => {
-              return {
-                ...obj,
-                selected: false,
-              };
-            });
+      if (upsellsCategory && upsellsCategory.products) {
+        prod = upsellsCategory.products;
+      }
 
-          if (findResults && findResults.length) {
-            Array.prototype.push.apply(products, findResults);
-          }
+      if (prod && prod.length) {
+        prod = prod.map((obj: any) => {
+          return {
+            ...obj,
+            selected: false,
+          };
         });
       }
-    }
-    if (upsellsType === UPSELLS_TYPES.DRINK) {
-      upsellsCategory.products.forEach((obj: any) => {
-        products = products.map((prod: any) => {
-          if (obj.chainproductid === prod.chainproductid) {
-            return {
-              ...prod,
-              options: obj.flavors,
-            };
-          } else {
-            return prod;
-          }
-        });
-      });
-    }
 
-    console.log('products', products);
-    setUpsells(products);
-  }, [categories, upsellsType]);
+      setProducts(prod);
+    }
+    // let products: any = [];
+    //
+    // let upsellsCategory: any = UPSELLS.find(
+    //   (obj: any) => obj.type === upsellsType,
+    // );
+    // console.log('upsellsCategory', upsellsCategory);
+    // if (upsellsCategory && upsellsCategory.products.length > 0) {
+    //   const filteredUpsellsIds = upsellsCategory.products.map(
+    //     (obj: any) => obj.chainproductid,
+    //   );
+    //   console.log('filteredUpsellsIds', filteredUpsellsIds);
+    //   if (
+    //     upsellsCategory &&
+    //     categories &&
+    //     categories.categories &&
+    //     categories.categories.length &&
+    //     filteredUpsellsIds.length
+    //   ) {
+    //     categories.categories.forEach((item: Category) => {
+    //       let findResults = item.products
+    //         .filter((obj: ProductInfo) => {
+    //           return filteredUpsellsIds.includes(obj.chainproductid);
+    //         })
+    //         .map((obj: any) => {
+    //           return {
+    //             ...obj,
+    //             selected: false,
+    //           };
+    //         });
+    //
+    //       if (findResults && findResults.length) {
+    //         Array.prototype.push.apply(products, findResults);
+    //       }
+    //     });
+    //   }
+    // }
+    // if (upsellsType === UPSELLS_TYPES.DRINK) {
+    //   upsellsCategory.products.forEach((obj: any) => {
+    //     products = products.map((prod: any) => {
+    //       if (obj.chainproductid === prod.chainproductid) {
+    //         return {
+    //           ...prod,
+    //           options: obj.flavors,
+    //         };
+    //       } else {
+    //         return prod;
+    //       }
+    //     });
+    //   });
+    // }
+  }, [upsells, upsellsType]);
 
   const submit = () => {
-    console.log('upsells', upsells);
-    if (upsells && upsells.length) {
-      const product: any = upsells.filter((obj: any) => obj.selected);
-      if (product && product.length) {
+    if (products && products.length) {
+      const selectedProducts: any = products.filter((obj: any) => obj.selected);
+      if (selectedProducts && selectedProducts.length) {
         const request: any = {
-          productid: product[0].id,
+          productid: selectedProducts[0].id,
           quantity: quantity,
           options: '',
         };
@@ -188,7 +105,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
         if (upsellsType === UPSELLS_TYPES.DRINK) {
           request.options = `${optionSelected},`;
         }
-        setButtonDisabled(true)
+        setButtonDisabled(true);
         // dispatch(addProductRequest(basketObj.basket.id, request));
         dispatch(addUpsellsRequest(basketObj.basket.id, request));
       }
@@ -196,7 +113,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
   };
 
   const updateSelection = (id: any, selected: any) => {
-    const updatedProducts = upsells.map((obj: any) => {
+    const updatedProducts = products.map((obj: any) => {
       let newObj: any = {
         ...obj,
       };
@@ -210,8 +127,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
       }
       return newObj;
     });
-    console.log('upsells', updatedProducts);
-    setUpsells(updatedProducts);
+    setProducts(updatedProducts);
   };
 
   const fitContainer = () => {
@@ -323,9 +239,9 @@ const UpsellsOthers = ({ upsellsType }: any) => {
         {basketObj &&
           basketObj.basket &&
           basketObj.basket.products.length > 0 &&
-          upsells &&
-          upsells.length > 0 &&
-          upsells.map((itemChild: any, index1: number) => (
+          products &&
+          products.length > 0 &&
+          products.map((itemChild: any, index1: number) => (
             <Grid
               key={Math.random() + index1}
               option-id={itemChild.id}
@@ -354,7 +270,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
               <label
                 tabIndex={0}
                 htmlFor={itemChild.id}
-                style={{marginBottom: '10px'}}
+                style={{ marginBottom: '10px' }}
                 // onKeyUp={(e) => {
                 //   if (e.keyCode === 13)
                 //     showChildOptions(
@@ -487,8 +403,8 @@ const UpsellsOthers = ({ upsellsType }: any) => {
           {basketObj &&
             basketObj.basket &&
             basketObj.basket.products.length > 0 &&
-            upsells &&
-            upsells.length > 0 && (
+            products &&
+            products.length > 0 && (
               <Grid
                 item
                 xs={12}
@@ -552,8 +468,9 @@ const UpsellsOthers = ({ upsellsType }: any) => {
                   variant="contained"
                   disabled={
                     quantity === 0 ||
-                    !upsells.filter((obj: any) => obj.selected).length ||
-                    (basketObj.loading && buttonDisabled)
+                    (products &&
+                      !products.filter((obj: any) => obj.selected).length) ||
+                    (addUpsellsObj.loading && buttonDisabled)
                   }
                   onClick={() => {
                     submit();

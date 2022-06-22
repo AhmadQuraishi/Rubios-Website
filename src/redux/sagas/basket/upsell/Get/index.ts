@@ -11,7 +11,7 @@ function* asyncGetUpsellsRequest(action: any): any {
     if (action.basketid == '') {
       yield put(getUpsellsRequestSuccess(null));
     } else {
-      const response = yield call(getUpSells, action.basketid);
+      const response = yield call(getUpSells, action.vendorid);
       yield put(getUpsellsRequestSuccess(response));
     }
   } catch (error) {

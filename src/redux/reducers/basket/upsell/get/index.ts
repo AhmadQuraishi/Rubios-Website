@@ -1,4 +1,5 @@
 import { basketActionsTypes } from '../../../../types/basket';
+import {userTypes} from "../../../../types/user";
 
 const INITIAL_STATE = {
   loading: false,
@@ -23,6 +24,10 @@ const getUpsellsReducer = (state = INITIAL_STATE, action: any) => {
       };
     case basketActionsTypes.GET_UPSELLS_REQUEST_FAILURE:
       return { ...state, loading: false, error: action.error };
+    case userTypes.USER_LOGOUT:
+      return {
+        ...INITIAL_STATE,
+      };
     default:
       return state;
   }

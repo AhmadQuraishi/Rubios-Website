@@ -250,7 +250,7 @@ const Product = () => {
         );
       } else {
         if (upsellsObj.upsells == null && basket) {
-          dispatch(getUpsellsRequest(basket.id));
+          dispatch(getUpsellsRequest(basket.id, basket.vendorid));
         }
         dispatch(addProductRequest(basket?.id || '', request));
       }
@@ -287,7 +287,12 @@ const Product = () => {
       dummyBasketObj.basket.id &&
       upsellsObj.upsells == null
     ) {
-      dispatch(getUpsellsRequest(dummyBasketObj.basket.id));
+      dispatch(
+        getUpsellsRequest(
+          dummyBasketObj.basket.id,
+          dummyBasketObj.basket.vendorid,
+        ),
+      );
     }
   }, [dummyBasketObj.basket]);
 
