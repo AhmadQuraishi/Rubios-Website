@@ -8,6 +8,7 @@ import { UPSELLS, UPSELLS_TYPES } from '../../../../helpers/upsells';
 import { Category, Product as ProductInfo } from '../../../../types/olo-api';
 import './index.css';
 import {addUpsellsRequest} from "../../../../redux/actions/basket/upsell/Add";
+import { changeImageSize } from '../../../../helpers/common';
 
 const useStyles = makeStyles((theme: Theme) => ({
   dimPanel: {
@@ -303,20 +304,6 @@ const UpsellsOthers = ({ upsellsType }: any) => {
     setQuantity(count);
   };
 
-  const changeImageSize = (path: string, images: any) => {
-    if (images && images.length > 0) {
-      const dektopImage: any = images.find(
-        (obj: any) => obj.groupname === 'desktop-menu',
-      );
-      if (dektopImage) {
-        return dektopImage.filename.replace('h=138', 'h=500');
-      } else {
-        return path;
-      }
-    } else {
-      return path;
-    }
-  };
   return (
     <>
       <div id="cart-main-container-upsells" className={'upsells'}>
@@ -409,6 +396,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
                           changeImageSize(
                             itemChild.imagefilename || '',
                             itemChild.images || '',
+                            'desktop-menu'
                           )
                         }
                         // src={require('../../../../assets/imgs/default_img.png')}

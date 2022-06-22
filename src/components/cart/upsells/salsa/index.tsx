@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { UPSELLS } from '../../../../helpers/upsells';
 import { Category, Product as ProductInfo } from '../../../../types/olo-api';
 import { addMultipleProductsRequest } from '../../../../redux/actions/basket/addMultipleProducts';
+import {changeImageSize} from "../../../../helpers/common";
 
 const useStyles = makeStyles((theme: Theme) => ({
   dimPanel: {
@@ -306,20 +307,6 @@ const Salsa = ({ upsellsType }: any) => {
     return total === 0;
   };
 
-  const changeImageSize = (path: string, images: any) => {
-    if (images && images.length > 0) {
-      const dektopImage: any = images.find(
-        (obj: any) => obj.groupname === 'desktop-menu',
-      );
-      if (dektopImage) {
-        return dektopImage.filename.replace('h=138', 'h=500');
-      } else {
-        return path;
-      }
-    } else {
-      return path;
-    }
-  };
   return (
     <>
       {basketObj &&
@@ -368,6 +355,7 @@ const Salsa = ({ upsellsType }: any) => {
                             changeImageSize(
                               obj.imagefilename || '',
                               obj.images || '',
+                              'desktop-menu'
                             )
                           }
                         />
