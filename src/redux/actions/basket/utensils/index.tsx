@@ -1,6 +1,7 @@
 import { basketActionsTypes } from '../../../types/basket';
 import { ResponseBasket } from '../../../../types/olo-api';
 import { displayToast } from '../../../../helpers/toast';
+import {getUtensilsProductId} from "../../../../helpers/utensils";
 
 export function addUtensilsRequest(basketid: string, request: any) {
   return {
@@ -31,7 +32,10 @@ export function addUtensilsRequestFailure(error: any) {
   };
 }
 
-export function removeUtensilsRequest(basketid: string, basketProductId: number,) {
+export function removeUtensilsRequest(
+  basketid: string,
+  basketProductId: number,
+) {
   return {
     type: basketActionsTypes.REMOVE_UTENSILS_REQUEST,
     basketid,
@@ -57,5 +61,13 @@ export function removeUtensilsRequestFailure(error: any) {
   return {
     type: basketActionsTypes.REMOVE_UTENSILS_FAILURE,
     error: error,
+  };
+}
+
+export function updateUtensilsProductId(data: any) {
+  console.log('utensilsProductId', getUtensilsProductId(data))
+  return {
+    type: basketActionsTypes.GET_UTENSILS_PRODUCT_ID,
+    payload: getUtensilsProductId(data),
   };
 }
