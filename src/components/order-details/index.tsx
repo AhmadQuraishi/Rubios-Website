@@ -1,7 +1,7 @@
-import { Grid, Typography, Card, Divider } from '@mui/material';
+import { Grid, Typography, Divider } from '@mui/material';
 import './order-details.css';
 import React, { useEffect, useState } from 'react';
-import { utensilsProductId } from '../../helpers/upsells';
+import { useSelector } from 'react-redux';
 
 const getOptions = (options: any) => {
   let val = '';
@@ -14,15 +14,13 @@ const getOptions = (options: any) => {
 const OrderDetails = ({ basket, tipPercentage, page }: any) => {
   const [products, setProducts] = useState<any[]>();
 
+  const utensilsReducer = useSelector((state: any) => state.utensilsReducer);
+
   useEffect(() => {
-    if (
-      basket &&
-      basket.products &&
-      basket.products.length
-    ) {
+    if (basket && basket.products && basket.products.length) {
       let array = basket.products;
       const utensilsIndex = array.findIndex(
-        (obj: any) => obj.productId === utensilsProductId(),
+        (obj: any) => obj.productId === utensilsReducer.utensilsProductId,
       );
       if (utensilsIndex !== -1) {
         array.push(array.splice(utensilsIndex, 1)[0]);
@@ -57,7 +55,8 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                       <Grid key={item.id} container>
                         <Grid item xs={1} sm={1} md={1} lg={1}>
                           <Typography variant="h6" title={item.name}>
-                            {item.productId !== utensilsProductId()
+                            {item.productId !==
+                            utensilsReducer.utensilsProductId
                               ? item.quantity
                               : ''}
                           </Typography>

@@ -154,8 +154,8 @@ input[type="check"]:checked + label {
     width: 100%;
     display: block;
     margin: auto;
-    height: 100% !important;
-    width: 100% !important;
+    /*height: 100% !important;*/
+    /*width: 100% !important;*/
   }
   .product-detail .menu-items .content-panel .card-panel .name-img-panel {
     align-items: flex-start !important;

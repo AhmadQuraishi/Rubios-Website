@@ -6,6 +6,7 @@ import { Product } from '../../../types/olo-api';
 import Carousel from 'react-multi-carousel';
 import { useNavigate } from 'react-router-dom';
 import 'react-multi-carousel/lib/styles.css';
+import {changeImageSize} from "../../../helpers/common";
 
 const useStyles = makeStyles((theme: Theme) => ({
   img: {
@@ -67,21 +68,6 @@ const ProductListing = (props: any) => {
   const { productList, imgPath } = props;
   let products: [Product] = productList;
 
-  const changeImageSize = (path: string, images: any) => {
-    if (images && images.length > 0) {
-      const dektopImage: any = images.find(
-        (obj: any) => obj.groupname == 'desktop-menu',
-      );
-      if (dektopImage) {
-        return dektopImage.filename;
-      } else {
-        return path;
-      }
-    } else {
-      return path;
-    }
-  };
-
   return (
     <Fragment>
       {/*<Grid container spacing={3}>*/}
@@ -116,7 +102,7 @@ const ProductListing = (props: any) => {
                 <img
                   className={classes.img}
                   src={
-                    imgPath + changeImageSize(item.imagefilename, item.images)
+                    imgPath + changeImageSize(item.imagefilename, item.images, 'desktop-menu')
                   }
                   title={item.name}
                 />

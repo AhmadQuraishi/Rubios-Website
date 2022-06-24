@@ -11,11 +11,10 @@ export function addUpsellsRequest(basketid: string, request: any) {
 }
 
 export function addUpsellsRequestSuccess(response: any) {
-  console.log('response', response)
-  if(response && response.errors && response.errors.length){
+  if (response && response.errors && response.errors.length) {
     response.errors.forEach((err: any) => {
       displayToast('ERROR', `${err.message}`);
-    })
+    });
   }
   return {
     type: basketActionsTypes.ADD_UPSELLS_REQUEST_SUCCESS,
@@ -25,19 +24,25 @@ export function addUpsellsRequestSuccess(response: any) {
 
 export function addUpsellsRequestReset() {
   return {
-    type: basketActionsTypes.ADD_UPSELLS_REQUEST_RESET
+    type: basketActionsTypes.ADD_UPSELLS_REQUEST_RESET,
   };
 }
 
 export function addUpsellsRequestFailure(response: any) {
-  console.log('response', response)
-  if(response && response.errors && response.errors.length){
+  if (response && response.errors && response.errors.length) {
     response.errors.forEach((err: any) => {
       displayToast('ERROR', `${err.message}`);
-    })
+    });
+  } else if (response?.response?.data?.message) {
+    displayToast(
+      'ERROR',
+      response?.response?.data?.message
+    );
+  } else {
+    displayToast('ERROR', 'ERROR! Please Try again later');
   }
 
   return {
-    type: basketActionsTypes.ADD_UPSELLS_REQUEST_FAILURE
+    type: basketActionsTypes.ADD_UPSELLS_REQUEST_FAILURE,
   };
 }
