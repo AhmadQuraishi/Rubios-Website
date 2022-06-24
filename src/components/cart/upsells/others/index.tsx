@@ -124,7 +124,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
         newObj.selected = false;
       }
       if (newObj.selected && upsellsType === UPSELLS_TYPES.DRINK) {
-        setOptionSelected(obj.options[0].optionid);
+        setOptionSelected(obj.options[0].id);
       }
       return newObj;
     });
@@ -358,7 +358,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
                                 (option: any, index: number) => (
                                   <option
                                     key={Math.random() + index}
-                                    value={option.optionid}
+                                    value={option.id}
                                     // onClick={() => {
                                     //   setTotalCost(
                                     //     ((productDetails?.cost ||
