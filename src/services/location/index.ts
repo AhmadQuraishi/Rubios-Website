@@ -43,7 +43,7 @@ export const getAllResturants = () => {
   try {
     const url = process.env.REACT_APP_OLO_API || "";
     return axios
-      .get(url + `/restaurants?includePrivate=false`)
+      .get(url + `/restaurants?includePrivate=true`)
       .then((response) => response.data)
       .catch((error) => {
         throw error;

@@ -419,14 +419,14 @@ const UpsellsOthers = ({ upsellsType }: any) => {
                     <div className="quantity">
                       <Button
                         title=""
-                        className="add"
-                        aria-label="increase"
+                        className="subtract"
+                        aria-label="reduce"
                         onClick={() => {
-                          updateQuantity('PLUS');
+                          updateQuantity('MINUS');
                         }}
                       >
                         {' '}
-                        +{' '}
+                        -{' '}
                       </Button>
                       <input
                         value={quantity}
@@ -439,14 +439,14 @@ const UpsellsOthers = ({ upsellsType }: any) => {
                       />
                       <Button
                         title=""
-                        className="subtract"
-                        aria-label="reduce"
+                        className="add"
+                        aria-label="increase"
                         onClick={() => {
-                          updateQuantity('MINUS');
+                          updateQuantity('PLUS');
                         }}
                       >
                         {' '}
-                        -{' '}
+                        +{' '}
                       </Button>
                     </div>
                   </div>

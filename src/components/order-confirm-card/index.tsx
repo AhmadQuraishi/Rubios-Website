@@ -32,14 +32,14 @@ const pickupTime = (order: any) => {
           order && order.deliverymode === DeliveryModeEnum.delivery
             ? 'DELIVERY TIME'
             : order.deliverymode === DeliveryModeEnum.dinein
-            ? 'DINE IN TIME'
+            ? 'We’ll bring your food right to you shortly.'
             : 'PICKUP TIME'
         }
       >
         {order && order.deliverymode === DeliveryModeEnum.delivery
           ? 'DELIVERY TIME'
           : order.deliverymode === DeliveryModeEnum.dinein
-          ? 'DINE IN TIME'
+          ? 'We’ll bring your food right to you shortly.'
           : 'PICKUP TIME'}
       </Typography>
       <Typography

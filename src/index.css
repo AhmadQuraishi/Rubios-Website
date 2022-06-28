@@ -117,6 +117,24 @@ h6 {
   color: white !important;
 }
 
+/****** Toast Styling  ******/
+
+.Toastify__toast--error .Toastify__progress-bar--error {
+  background-color: #cd2026 !important;
+}
+.Toastify__toast--error svg {
+  fill: #cd2026 !important;
+}
+.Toastify__toast--success .Toastify__progress-bar--success {
+  background-color: #2e8540 !important;
+}
+.Toastify__toast--success svg {
+  fill: #2e8540 !important;
+}
+
+
+
+
 /****** Form Elements ******/
 
 

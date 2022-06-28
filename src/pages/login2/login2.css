@@ -56,6 +56,9 @@
   text-decoration: none;
   letter-spacing: 1px;
 }
+.login-content .label.bold:hover {
+  color: #2B4B62;
+}
 .login-content .right-col .res-info {
   margin-bottom: 15px;
 }
