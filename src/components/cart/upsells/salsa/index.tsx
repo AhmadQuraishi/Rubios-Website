@@ -300,14 +300,14 @@ const Salsa = ({ upsellsType }: any) => {
                           <div className="quantity">
                             <Button
                               title=""
-                              className="add"
-                              aria-label="increase"
+                              className="subtract"
+                              aria-label="reduce"
                               onClick={() => {
-                                updateSalsaCount(obj.id, 'PLUS');
+                                updateSalsaCount(obj.id, 'MINUS');
                               }}
                             >
                               {' '}
-                              +{' '}
+                              -{' '}
                             </Button>
                             <input
                               value={obj.quantity}
@@ -320,14 +320,14 @@ const Salsa = ({ upsellsType }: any) => {
                             />
                             <Button
                               title=""
-                              className="subtract"
-                              aria-label="reduce"
+                              className="add"
+                              aria-label="increase"
                               onClick={() => {
-                                updateSalsaCount(obj.id, 'MINUS');
+                                updateSalsaCount(obj.id, 'PLUS');
                               }}
                             >
                               {' '}
-                              -{' '}
+                              +{' '}
                             </Button>
                           </div>
                         </div>

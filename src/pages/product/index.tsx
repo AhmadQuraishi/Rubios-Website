@@ -840,7 +840,7 @@ const Product = () => {
                 <Grid container>
                   {(parseInt(productDetails.basecalories || '0') > 0 ||
                     parseInt(productDetails.maxcalories || '0') > 0) && (
-                    <Grid item xs={6}>
+                    <Grid item xs={4.5}>
                       <Typography
                         variant="caption"
                         className="label bold"
@@ -869,7 +869,7 @@ const Product = () => {
                     </Grid>
                   )}
                   {productDetails.cost > 0 && (
-                    <Grid item xs={6}>
+                    <Grid item xs={7.5}>
                       <Typography
                         variant="body1"
                         className="price"
@@ -1215,18 +1215,18 @@ const Product = () => {
                     <div className="quantity">
                       <Button
                         title=""
-                        className="add"
-                        aria-label="increase"
+                        className="subtract"
+                        aria-label="reduce"
                         onClick={() => {
-                          setCount(count + 1);
+                          setCount(Math.max(count - 1, 1));
                           setTotalCost(
                             ((productDetails?.cost || 0) + optionsCost) *
-                              (count + 1),
+                            Math.max(count - 1, 1),
                           );
                         }}
                       >
                         {' '}
-                        +{' '}
+                        -{' '}
                       </Button>
                       <input
                         value={count}
@@ -1239,18 +1239,18 @@ const Product = () => {
                       />
                       <Button
                         title=""
-                        className="subtract"
-                        aria-label="reduce"
+                        className="add"
+                        aria-label="increase"
                         onClick={() => {
-                          setCount(Math.max(count - 1, 1));
+                          setCount(count + 1);
                           setTotalCost(
                             ((productDetails?.cost || 0) + optionsCost) *
-                              Math.max(count - 1, 1),
+                            (count + 1),
                           );
                         }}
                       >
                         {' '}
-                        -{' '}
+                        +{' '}
                       </Button>
                     </div>
                   </div>

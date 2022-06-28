@@ -21,6 +21,7 @@ h2.heading-ui {
   font-family: 'Poppins-Bold', sans-serif !important;
   font-size: 18px !important;
   text-transform: capitalize !important;
+  line-height: 1.2;
 }
 .product-detail .desc {
   margin-bottom: 25px;
@@ -51,7 +52,7 @@ h2.heading-ui {
 .product-detail .menu-items h2 {
   text-transform: uppercase;
   width: 100%;
-  font-size: 30px;
+  font-size: 25px;
   padding-bottom: 10px;
 }
 input[type="check"]:checked + label {

@@ -83,9 +83,9 @@ const ForgotPassword = () => {
               </Typography>
               <Typography
                 variant="h1"
-                title="Enter the email address you use to sign in with us"
+                title="Enter the email address associated with your account."
               >
-                Enter the email address you use to sign in with us
+                Enter the email address associated with your account.
               </Typography>
               <ForgotForm />
             </Grid>
