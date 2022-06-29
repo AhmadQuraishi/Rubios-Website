@@ -754,14 +754,18 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                       </Grid>
                     ) : null}
                   </Grid>
-                  <Grid item xs={12}>
-                    <div style={{ height: '15px' }}></div>
-                  </Grid>
+                  {/*<Grid item xs={12}>*/}
+                  {/*  <div style={{ height: '15px' }}></div>*/}
+                  {/*</Grid>*/}
                 </Grid>
               ))}
-              <Grid item xs={12} sx={{ padding: '20px 0px' }}>
-                <Divider sx={{ borderColor: '#224c65' }} />
-              </Grid>
+              {
+                utensils && (
+                  <Grid item xs={12} sx={{ padding: '20px 0px' }}>
+                    <Divider sx={{ borderColor: '#224c65' }} />
+                  </Grid>
+                )
+              }
               {utensilsReducer.utensilsProductId && (
                 <Grid item xs={12}>
                   <Typography
