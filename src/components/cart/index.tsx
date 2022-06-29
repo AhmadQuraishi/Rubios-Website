@@ -621,17 +621,17 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         ${item.totalcost.toFixed(2)}
                       </Typography>
                     </Grid>
-                    {item.productId !== utensilsReducer.utensilsProductId ? (
-                      <Grid item xs={12} sx={{ padding: '10px 0 10px 0' }}>
-                        <Divider sx={{ borderColor: 'rgba(0, 0, 0, 1);' }} />
-                      </Grid>
-                    ) : null}
+                    {/*{item.productId !== utensilsReducer.utensilsProductId ? (*/}
+                      {/*<Grid item xs={12} sx={{ padding: '10px 0 10px 0' }}>*/}
+                        {/*<Divider sx={{ borderColor: 'rgba(0, 0, 0, 1);' }} />*/}
+                      {/*</Grid>*/}
+                    {/*) : null}*/}
                     <Grid item xs={12}>
                       <Typography
                         title={getOptions(item.choices)}
                         variant="caption"
                         fontSize={11}
-                        sx={{ paddingBottom: '0px', display: 'block' }}
+                        sx={{ paddingBottom: '0px', paddingTop: '10px', display: 'block' }}
                       >
                         {getOptions(item.choices)}
                       </Typography>
@@ -747,6 +747,9 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                               )}
                             </li>
                           </ul>{' '}
+                        </Grid>
+                        <Grid item xs={12} sx={{ padding: '15px 0px' }}>
+                          <Divider sx={{ borderColor: '#224c65' }} />
                         </Grid>
                       </Grid>
                     ) : null}

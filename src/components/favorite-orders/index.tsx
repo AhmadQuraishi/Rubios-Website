@@ -117,7 +117,7 @@ const FavoriteOrders = () => {
       {(loading || clickAction) && <OrderListSkeletonUI />}
       {!loading && !clickAction && favOrders && favOrders.length == 0 && (
         <Typography variant="h6" className="no-orders">
-          You don't have any favorites
+          You don’t have any favorite orders.
         </Typography>
       )}
       {!loading && !clickAction && favOrders.length > 0 && (

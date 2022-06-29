@@ -257,7 +257,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
               <label
                 tabIndex={0}
                 htmlFor={itemChild.id}
-                style={{ marginBottom: '10px' }}
+                style={{ marginBottom: '10px', width: '100%' }}
                 // onKeyUp={(e) => {
                 //   if (e.keyCode === 13)
                 //     showChildOptions(
