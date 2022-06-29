@@ -32,14 +32,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   cal: {
     paddingTop: '10px',
     fontFamily: 'Poppins-Regular !important',
-    fontSize: '18px',
+    fontSize: '14px',
     fontWeight: 600,
     color: theme.palette.primary.main,
   },
   price: {
     paddingTop: '10px',
     fontFamily: 'Poppins-Regular !important',
-    fontSize: '18px',
+    fontSize: '14px',
     fontWeight: 600,
     color: theme.palette.secondary.main,
   },
