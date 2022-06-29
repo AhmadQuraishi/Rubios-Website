@@ -74,10 +74,10 @@ const ForgotPassword = () => {
 
   return (
     <Fragment>
-      <Grid container component="main" columns={16} className={classes.root}>
-        <Grid item xs={13} className="login-wrapper">
-          <Grid container columns={16} className="login-content">
-            <Grid item xs={16} sm={16} md={14} lg={9} className="left-col">
+      <Grid container component="main" className={classes.root}>
+        <Grid item xs={12} md={5} lg={5} className="forgot-wrapper">
+          <Grid container columns={12} className="login-content">
+            <Grid item xs={12} className="left-col">
               <Typography variant="caption" className="label" title="Login">
                 Forgot Password
               </Typography>
@@ -89,80 +89,79 @@ const ForgotPassword = () => {
               </Typography>
               <ForgotForm />
             </Grid>
-            <Grid item xs={16} sm={16} md={14} lg={5.5} className="right-col">
-              <Typography
-                variant="caption"
-                className="label"
-                title="More Options"
-                aria-label="More options for sign in"
-              >
-                More Options
-              </Typography>
-              <ul className="button-list">
-                <li>
-                <ReactFacebookLogin
-                    appId={process.env.REACT_APP_FACEBOOK_APP_ID || ''}
-                    fields="name,email,picture"
-                    callback={handleCallBackfacebook}
-                    textButton="SIGN IN WITH FACEBOOK"
-                    cssClass="fb-button"
-                  />
-                </li>
+            {/*<Grid item xs={16} sm={16} md={14} lg={5.5} className="right-col">*/}
+              {/*<Typography*/}
+                {/*variant="caption"*/}
+                {/*className="label"*/}
+                {/*title="More Options"*/}
+                {/*aria-label="More options for sign in"*/}
+              {/*>*/}
+                {/*More Options*/}
+              {/*</Typography>*/}
+              {/*<ul className="button-list">*/}
                 {/*<li>*/}
-                  {/*<Button*/}
-                    {/*type="submit"*/}
-                    {/*aria-label="Sign in with apple"*/}
-                    {/*name="Sign in with apple"*/}
-                    {/*title="Sign in with apple"*/}
-                    {/*variant="contained"*/}
-                    {/*className="sign-in-btn"*/}
-                  {/*>*/}
-                    {/*<img*/}
-                      {/*className="apple-icon"*/}
-                      {/*src={require('../../assets/imgs/apple-icon.png')}*/}
-                      {/*alt=" Sign in with apple"*/}
-                    {/*/>*/}
-                    {/*Sign in with apple*/}
-                  {/*</Button>*/}
+                {/*<ReactFacebookLogin*/}
+                    {/*appId={process.env.REACT_APP_FACEBOOK_APP_ID || ''}*/}
+                    {/*fields="name,email,picture"*/}
+                    {/*callback={handleCallBackfacebook}*/}
+                    {/*textButton="SIGN IN WITH FACEBOOK"*/}
+                    {/*cssClass="fb-button"*/}
+                  {/*/>*/}
                 {/*</li>*/}
-                {/*<li>*/}
-                  {/*<Button*/}
-                    {/*type="submit"*/}
-                    {/*aria-label="Sign in with google"*/}
-                    {/*name="Sign in with google"*/}
-                    {/*title="Sign in with google"*/}
-                    {/*variant="contained"*/}
-                    {/*className="sign-in-btn"*/}
-                  {/*>*/}
-                    {/*<img*/}
-                      {/*src={require('../../assets/imgs/g-icon.png')}*/}
-                      {/*alt="Sign in with google"*/}
+                {/*/!*<li>*!/*/}
+                  {/*/!*<Button*!/*/}
+                    {/*/!*type="submit"*!/*/}
+                    {/*/!*aria-label="Sign in with apple"*!/*/}
+                    {/*/!*name="Sign in with apple"*!/*/}
+                    {/*/!*title="Sign in with apple"*!/*/}
+                    {/*/!*variant="contained"*!/*/}
+                    {/*/!*className="sign-in-btn"*!/*/}
+                  {/*/!*>*!/*/}
+                    {/*/!*<img*!/*/}
+                      {/*/!*className="apple-icon"*!/*/}
+                      {/*/!*src={require('../../assets/imgs/apple-icon.png')}*!/*/}
+                      {/*/!*alt=" Sign in with apple"*!/*/}
                     {/*/>*/}
-                    {/*Sign in with google*/}
-                  {/*</Button>*/}
-                {/*</li>*/}
-              </ul>
+                    {/*/!*Sign in with apple*!/*/}
+                  {/*/!*</Button>*!/*/}
+                {/*/!*</li>*!/*/}
+                {/*/!*<li>*!/*/}
+                  {/*/!*<Button*!/*/}
+                    {/*/!*type="submit"*!/*/}
+                    {/*/!*aria-label="Sign in with google"*!/*/}
+                    {/*/!*name="Sign in with google"*!/*/}
+                    {/*/!*title="Sign in with google"*!/*/}
+                    {/*/!*variant="contained"*!/*/}
+                    {/*/!*className="sign-in-btn"*!/*/}
+                  {/*/!*>*!/*/}
+                    {/*/!*<img*!/*/}
+                      {/*/!*src={require('../../assets/imgs/g-icon.png')}*!/*/}
+                      {/*/!*alt="Sign in with google"*!/*/}
+                    {/*/!*Sign in with google*!/*/}
+                  {/*/!*</Button>*!/*/}
+                {/*/!*</li>*!/*/}
+              {/*</ul>*/}
 
-              <Button
-                type="submit"
-                aria-label="Create Account"
-                name="Create Account"
-                title="Create Account"
-                variant="contained"
-                className="acc-btn"
-                onClick={() => navigate('/register')}
-              >
-                Create Account
-              </Button>
-              <Link
-                to={restaurant ? '/menu/' + restaurant.slug : '/'}
-                style={{ cursor: 'pointer' }}
-                className="label bold"
-                title="continue as guest"
-              >
-                Continue as guest
-              </Link>
-            </Grid>
+              {/*<Button*/}
+                {/*type="submit"*/}
+                {/*aria-label="Create Account"*/}
+                {/*name="Create Account"*/}
+                {/*title="Create Account"*/}
+                {/*variant="contained"*/}
+                {/*className="acc-btn"*/}
+                {/*onClick={() => navigate('/register')}*/}
+              {/*>*/}
+                {/*Create Account*/}
+              {/*</Button>*/}
+              {/*<Link*/}
+                {/*to={restaurant ? '/menu/' + restaurant.slug : '/'}*/}
+                {/*style={{ cursor: 'pointer' }}*/}
+                {/*className="label bold"*/}
+                {/*title="continue as guest"*/}
+              {/*>*/}
+                {/*Continue as guest*/}
+              {/*</Link>*/}
+            {/*</Grid>*/}
           </Grid>
         </Grid>
       </Grid>

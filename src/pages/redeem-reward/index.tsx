@@ -101,7 +101,6 @@ const RedeemRewards = () => {
                 >
                   Click a reward below to redeem in restaurant. For online orders, you may select a reward during checkout.
                   <br/>
-                  <br/>
                   Please note, you will need to add the appropriate free or discounted item to your order before redeeming the reward.
                 </Typography>
               </Grid>

@@ -74,7 +74,6 @@ Please note, you will need to add the appropriate free or discounted item to you
               >
                 Scan the QR code below at the register to redeem your reward.
                 <br/>
-                <br/>
                 Please note, you will need to add the appropriate free or discounted item to your order before redeeming the reward.
               </Typography>
               <Grid item sm={2}></Grid>

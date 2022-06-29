@@ -28,9 +28,11 @@
 .bday-text {
   font-family: 'Poppins-Bold';
   position: absolute;
-  top: 0;
-  font-size: 9px;
+  top: 5px;
+  font-size: 7.5px !important;
   color: #214F66;
+  line-height: 1.4375em !important;
+  letter-spacing: 0.00938em !important;
 }
 .birthday-button span {
   text-transform: initial;
