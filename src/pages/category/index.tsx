@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     textAlign: 'right',
     '& a': {
       fontFamily: 'Poppins-Medium !important',
-      color: '#6AC0BD',
+      color: '#0069aa',
       fontSize: '13px',
       textTransform: 'uppercase',
       textDecoration: 'none',
@@ -424,7 +424,7 @@ const CategoryList = () => {
               padding: {
                 xs: '20px 5px 10px 20px',
                 sm: '20px 30px 5px 70px',
-                lg: '20px 60px 5px 110px',
+                lg: '20px 60px 5px 100px',
                 boxSizing: 'border-box',
               },
             }}

@@ -77,7 +77,7 @@ const StoreInfoBar = () => {
           }}
         >
           <Grid item xs={12}>
-            <Grid container spacing={0} maxWidth={1090} margin="auto">
+            <Grid container spacing={0} maxWidth={1155} margin="auto">
               <Grid
                 item
                 xs={12}
