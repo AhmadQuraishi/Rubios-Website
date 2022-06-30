@@ -199,7 +199,7 @@ const OrderTime = ({ orderType }: any) => {
             variant="h3"
             title={
               orderType === DeliveryModeEnum.dinein
-                ? 'ORDER TIME'
+                ? 'DATE'
                 : orderType === DeliveryModeEnum.delivery
                 ? 'DELIVERY TIME'
                 : 'PICKUP TIME'
@@ -207,7 +207,7 @@ const OrderTime = ({ orderType }: any) => {
             className="label"
           >
             {orderType === DeliveryModeEnum.dinein
-              ? 'ORDER TIME'
+              ? 'DATE'
               : orderType === DeliveryModeEnum.delivery
               ? 'DELIVERY TIME'
               : 'PICKUP TIME'}
@@ -223,149 +223,158 @@ const OrderTime = ({ orderType }: any) => {
           {moment(selectedDate).format('dddd MMM. Do')}
         </Typography>
       </Grid>
-      <Grid item xs={12}>
-        <Button
-          aria-label="change"
-          title="change"
-          className="caption-grey"
-          onClick={() => {
-            setAttributesForDate();
-          }}
-        >
-          (change)
-        </Button>
-        <LocalizationProvider dateAdapter={AdapterMoment}>
-          <DatePicker
-            //open={open}
-            label="Order Date"
-            minDate={moment()}
-            maxDate={moment().add('days', 7)}
-            inputFormat="MM/DD/yyyy"
-            value={selectedDate}
-            views={['day']}
-            className="order-date"
-            onChange={(e) => handleDateChange(e)}
-            renderInput={(params) => (
-              <TextField
-                className="order-date"
-                style={{ display: open ? 'block' : 'none' }}
-                {...params}
-              />
-            )}
-          />
-        </LocalizationProvider>
-      </Grid>
-      <Grid item xs={12} className="time-slot-wrapper">
-        <Grid container>
-          <FormControl>
-            <Grid container>
-              {notAvailableSlots ? (
-                <Grid item xs={12}>
-                  <Typography
-                    variant="caption"
-                    className="label"
-                    style={{ color: 'red' }}
-                  >
-                    No availabe slots. Please try a different Date.
-                  </Typography>
-                </Grid>
-              ) : (
-                <Grid item xs={6} sm={6} md={3} lg={3}>
-                  <FormLabel
-                    className="slot-label"
-                    title="QUICKEST"
-                    id="demo-row-radio-buttons-group-label"
-                  >
-                    QUICKEST
-                  </FormLabel>
-                </Grid>
-              )}
-            </Grid>
-            <ToggleButtonGroup
-              value={selectedTime}
-              exclusive
-              onChange={(event) => onTimeSlotSelect(event)}
-              className="selected-btn-group"
-            >
-              {/* <Grid container spacing={2}> */}
-              {timeSlots.slice(0, 4).map((time) => {
-                return (
-                  // <Grid item xs={6} sm={6} md={3} lg={3}>
-                  <ToggleButton
-                    key={`button-${time}`}
-                    value={time}
-                    className="selected-btn"
-                    selected={selectedTime === time ? true : false}
-                  >
-                    {moment(time, 'YYYYMMDD HH:mm').format('hh:mm A')}
-                  </ToggleButton>
-                  // </Grid>
-                );
-              })}
-              {/* </Grid> */}
-            </ToggleButtonGroup>
-          </FormControl>
-        </Grid>
-      </Grid>
-      {timeSlots.length > 4 ? (
-        <Grid item xs={12}>
-          <FormControl
-            fullWidth
-            className={`${
-              timeSlots.slice(4).includes(selectedTime)
-                ? 'time-slot-selected'
-                : 'time-slot'
-            }`}
-          >
-            <InputLabel
-              id="select-more-times"
-              aria-label="More Times"
-              title="More Times"
-              className="time-picker"
-              classes={{
-                root:
-                  !selectShrink && !timeSlots.slice(4).includes(selectedTime)
-                    ? 'select-custom-css'
-                    : '',
-              }}
-              style={{ textAlign: 'center' }}
-              shrink={selectShrink || timeSlots.slice(4).includes(selectedTime)}
-            >
-              MORE TIMES
-            </InputLabel>
-            {}
-            <NativeSelect
-              id="select-label"
-              className={`native-select`}
-              role="dialog"
-              aria-modal="true"
-              aria-label="select more time"
-              value={
-                timeSlots.slice(4).includes(selectedTime) ? selectedTime : ''
-              }
+      {orderType !== DeliveryModeEnum.dinein && (
+        <>
+          <Grid item xs={12}>
+            <Button
+              aria-label="change"
+              title="change"
+              className="caption-grey"
               onClick={() => {
-                console.log('open');
+                setAttributesForDate();
               }}
-              onChange={(event) => {
-                if (event.target.value == '') {
-                  return;
-                }
-                onTimeSlotSelect(event);
-              }}
-              title="Select More times"
             >
-              {timeSlots.slice(4).map((time, index) => {
-                return (
-                  <option key={`menu-${time}`} value={time}>
-                    {moment(time, 'YYYYMMDD HH:mm').format('hh:mm A')}
-                  </option>
-                );
-              })}
-              <option value="" style={{ display: 'none' }}></option>
-            </NativeSelect>
-          </FormControl>
-        </Grid>
-      ) : null}
+              (change)
+            </Button>
+            <LocalizationProvider dateAdapter={AdapterMoment}>
+              <DatePicker
+                //open={open}
+                label="Order Date"
+                minDate={moment()}
+                maxDate={moment().add('days', 7)}
+                inputFormat="MM/DD/yyyy"
+                value={selectedDate}
+                views={['day']}
+                className="order-date"
+                onChange={(e) => handleDateChange(e)}
+                renderInput={(params) => (
+                  <TextField
+                    className="order-date"
+                    style={{ display: open ? 'block' : 'none' }}
+                    {...params}
+                  />
+                )}
+              />
+            </LocalizationProvider>
+          </Grid>
+          <Grid item xs={12} className="time-slot-wrapper">
+            <Grid container>
+              <FormControl>
+                <Grid container>
+                  {notAvailableSlots ? (
+                    <Grid item xs={12}>
+                      <Typography
+                        variant="caption"
+                        className="label"
+                        style={{ color: 'red' }}
+                      >
+                        No availabe slots. Please try a different Date.
+                      </Typography>
+                    </Grid>
+                  ) : (
+                    <Grid item xs={6} sm={6} md={3} lg={3}>
+                      <FormLabel
+                        className="slot-label"
+                        title="QUICKEST"
+                        id="demo-row-radio-buttons-group-label"
+                      >
+                        QUICKEST
+                      </FormLabel>
+                    </Grid>
+                  )}
+                </Grid>
+                <ToggleButtonGroup
+                  value={selectedTime}
+                  exclusive
+                  onChange={(event) => onTimeSlotSelect(event)}
+                  className="selected-btn-group"
+                >
+                  {/* <Grid container spacing={2}> */}
+                  {timeSlots.slice(0, 4).map((time) => {
+                    return (
+                      // <Grid item xs={6} sm={6} md={3} lg={3}>
+                      <ToggleButton
+                        key={`button-${time}`}
+                        value={time}
+                        className="selected-btn"
+                        selected={selectedTime === time ? true : false}
+                      >
+                        {moment(time, 'YYYYMMDD HH:mm').format('hh:mm A')}
+                      </ToggleButton>
+                      // </Grid>
+                    );
+                  })}
+                  {/* </Grid> */}
+                </ToggleButtonGroup>
+              </FormControl>
+            </Grid>
+          </Grid>
+          {timeSlots.length > 4 ? (
+            <Grid item xs={12}>
+              <FormControl
+                fullWidth
+                className={`${
+                  timeSlots.slice(4).includes(selectedTime)
+                    ? 'time-slot-selected'
+                    : 'time-slot'
+                }`}
+              >
+                <InputLabel
+                  id="select-more-times"
+                  aria-label="More Times"
+                  title="More Times"
+                  className="time-picker"
+                  classes={{
+                    root:
+                      !selectShrink &&
+                      !timeSlots.slice(4).includes(selectedTime)
+                        ? 'select-custom-css'
+                        : '',
+                  }}
+                  style={{ textAlign: 'center' }}
+                  shrink={
+                    selectShrink || timeSlots.slice(4).includes(selectedTime)
+                  }
+                >
+                  MORE TIMES
+                </InputLabel>
+                {}
+                <NativeSelect
+                  id="select-label"
+                  className={`native-select`}
+                  role="dialog"
+                  aria-modal="true"
+                  aria-label="select more time"
+                  value={
+                    timeSlots.slice(4).includes(selectedTime)
+                      ? selectedTime
+                      : ''
+                  }
+                  onClick={() => {
+                    console.log('open');
+                  }}
+                  onChange={(event) => {
+                    if (event.target.value == '') {
+                      return;
+                    }
+                    onTimeSlotSelect(event);
+                  }}
+                  title="Select More times"
+                >
+                  {timeSlots.slice(4).map((time, index) => {
+                    return (
+                      <option key={`menu-${time}`} value={time}>
+                        {moment(time, 'YYYYMMDD HH:mm').format('hh:mm A')}
+                      </option>
+                    );
+                  })}
+                  <option value="" style={{ display: 'none' }}></option>
+                </NativeSelect>
+              </FormControl>
+            </Grid>
+          ) : null}
+        </>
+      )}
     </Grid>
   );
 };

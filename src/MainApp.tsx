@@ -49,7 +49,7 @@ function App(props: any) {
       setHideLoginPanel(true);
     }
     if (
-      window.location.href.toLocaleLowerCase().indexOf('/welcome') != -1 ||
+      // window.location.href.toLocaleLowerCase().indexOf('/welcome') != -1 ||
       window.location.href.toLocaleLowerCase().indexOf('/account') != -1
     ) {
       setHideLoginedPanel(true);
@@ -116,7 +116,7 @@ function App(props: any) {
         }
       />
       <main>
-        <ToastContainer />
+        <ToastContainer hideProgressBar />
         {isAccountSection ? (
           <Fragment>
             <Grid container spacing={0}>
