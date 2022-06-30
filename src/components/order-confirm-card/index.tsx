@@ -31,15 +31,11 @@ const pickupTime = (order: any) => {
         title={
           order && order.deliverymode === DeliveryModeEnum.delivery
             ? 'DELIVERY TIME'
-            : order.deliverymode === DeliveryModeEnum.dinein
-            ? 'We’ll bring your food right to you shortly.'
             : 'PICKUP TIME'
         }
       >
         {order && order.deliverymode === DeliveryModeEnum.delivery
           ? 'DELIVERY TIME'
-          : order.deliverymode === DeliveryModeEnum.dinein
-          ? 'We’ll bring your food right to you shortly.'
           : 'PICKUP TIME'}
       </Typography>
       <Typography
@@ -224,7 +220,11 @@ const OrderConfirmedCard = ({ orderObj, restaurantObj }: any) => {
             </Typography>
             <Typography
               variant="body1"
-              title="WE'LL TAKE IT FROM HERE. SEE YOU SOON."
+              title={
+                order && order.deliverymode === DeliveryModeEnum.dinein
+                  ? 'We’ll bring your food right to you shortly.'
+                  : "WE'LL TAKE IT FROM HERE. SEE YOU SOON."
+              }
               sx={{
                 lineHeight: '1.2',
                 letterSpacing: '-0.00833em',
@@ -233,7 +233,9 @@ const OrderConfirmedCard = ({ orderObj, restaurantObj }: any) => {
                 fontSize: '36px !important',
               }}
             >
-              WE'LL TAKE IT FROM HERE. SEE YOU SOON.
+              {order && order.deliverymode === DeliveryModeEnum.dinein
+                ? 'We’ll bring your food right to you shortly.'
+                : "WE'LL TAKE IT FROM HERE. SEE YOU SOON."}
             </Typography>
 
             {/*<Typography variant="h1" title="SEE YOU SOON.">*/}
@@ -255,7 +257,12 @@ const OrderConfirmedCard = ({ orderObj, restaurantObj }: any) => {
             : ''}
 
           <Grid xs={12} sm={6} md={6} lg={12} className="adjust-space">
-            {order && order.readytime ? pickupTime(order) : ''}
+            {order &&
+            order.readytime &&
+            order &&
+            order.deliverymode !== DeliveryModeEnum.dinein
+              ? pickupTime(order)
+              : ''}
           </Grid>
         </Grid>
       </Card>
