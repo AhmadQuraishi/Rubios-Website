@@ -41,8 +41,8 @@ function App(props: any) {
       }
     }
     if (
-      window.location.href.toLocaleLowerCase().indexOf('/menu') != -1 ||
-      window.location.href.toLocaleLowerCase().indexOf('/checkout') != -1
+      window.location.href.toLocaleLowerCase().indexOf('/menu') !== -1 ||
+      window.location.href.toLocaleLowerCase().indexOf('/checkout') !== -1
     ) {
       setHideLoginPanel(false);
     } else {
@@ -50,7 +50,7 @@ function App(props: any) {
     }
     if (
       // window.location.href.toLocaleLowerCase().indexOf('/welcome') != -1 ||
-      window.location.href.toLocaleLowerCase().indexOf('/account') != -1
+      window.location.href.toLocaleLowerCase().indexOf('/account') !== -1
     ) {
       setHideLoginedPanel(true);
     } else {
@@ -76,7 +76,7 @@ function App(props: any) {
       setHideLoginPanel(true);
     }
     if (
-      window.location.href.toLocaleLowerCase().indexOf('/welcome') != -1 ||
+      // window.location.href.toLocaleLowerCase().indexOf('/welcome') != -1 ||
       window.location.href.toLocaleLowerCase().indexOf('/account') != -1
     ) {
       setHideLoginedPanel(true);

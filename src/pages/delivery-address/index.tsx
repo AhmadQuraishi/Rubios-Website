@@ -230,7 +230,7 @@ const DeliveryAddress = () => {
         <Grid xs={12}>
           {!loading && deliveryaddresses.length === 0 && (
             <Typography variant="h6" className="no-address">
-              You don't have any delivery addresses
+              You don't have any delivery addresses.
             </Typography>
           )}
         </Grid>
