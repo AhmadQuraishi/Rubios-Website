@@ -19,6 +19,8 @@ label.time-picker:focus-within {
 }
 .native-select .MuiNativeSelect-select {
   color: #fff;
+  padding-right: 0px !important;
+  text-align: center !important;
 }
 .native-select .MuiNativeSelect-select option {
   color: #000;

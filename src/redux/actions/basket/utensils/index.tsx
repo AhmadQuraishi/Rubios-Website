@@ -12,7 +12,7 @@ export function addUtensilsRequest(basketid: string, request: any) {
 }
 
 export function addUtensilsRequestSuccess(data: ResponseBasket) {
-  displayToast('SUCCESS', 'Utensils added.');
+  // displayToast('SUCCESS', 'Utensils added.');
   return {
     type: basketActionsTypes.ADD_UTENSILS_SUCCESS,
     payload: data,
