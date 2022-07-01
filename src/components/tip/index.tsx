@@ -128,6 +128,10 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
     </Button>
   );
 
+  const DollarTip = () => {
+    return <p style={{ position: 'absolute', left: '8px' }}>$</p>;
+  };
+
   const IconCoupon = () => (
     <Button
       onClick={() => updateCouponCodeCall(couponCode)}
@@ -200,16 +204,24 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
                 </FormControl>
                 <Grid item xs={12} md={10} lg={10}>
                   <TextField
-                    className="action-btn"
+                    className="action-btn mobile-field"
                     value={tipCustomAmount || ''}
                     type="text"
                     onChange={handleTipCustomAmountChange}
-                    label="Custom Amount"
-                    aria-label="custom amount"
-                    title="Custom Amount"
+                    InputLabelProps={{
+                      // shrink: tipCustomAmount === '' ? false : true,
+                      classes: {
+                        root:
+                          tipCustomAmount !== '' ? 'mobile-field-label' : '',
+                      },
+                    }}
+                    label="Edit Amount"
+                    aria-label="edit amount"
+                    title="Edit Amount"
                     // inputProps={{ inputmode: 'numeric', pattern: '[0-9]*' }}
                     InputProps={{
                       endAdornment: <IconTip />,
+                      startAdornment: <DollarTip />,
                     }}
                   />
                 </Grid>
