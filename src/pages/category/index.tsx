@@ -179,7 +179,7 @@ const CategoryList = () => {
           arrowButtons[1].setAttribute('role', 'button');
           arrowButtons[1].setAttribute('tabindex', '0');
           arrowButtons[1].setAttribute('aria-label', 'next');
-        } catch(e) {}
+        } catch (e) {}
 
         filterCategories.map((item: any, index: number) => {
           const elem: HTMLElement = document.getElementById(
