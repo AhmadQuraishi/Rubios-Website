@@ -779,7 +779,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                 </Grid>
               ))}
               {utensils && (
-                <Grid item xs={12} sx={{ padding: '20px 0px' }}>
+                <Grid item xs={12} sx={{ padding: '0px 0px 15px' }}>
                   <Divider sx={{ borderColor: '#224c65' }} />
                 </Grid>
               )}

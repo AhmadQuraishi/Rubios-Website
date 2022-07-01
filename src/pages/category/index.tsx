@@ -520,11 +520,11 @@ const CategoryList = () => {
         padding: {
           xs: '20px 20px 0px 20px',
           sm: '30px 70px 0px 70px',
-          lg: '30px 110px 0px 110px',
+          lg: '0px 110px 0px 110px',
         },
         position: 'relative',
       }}>
-        <Grid item xs={12} sx={{ padding: '15px 0px' }}>
+        <Grid item xs={12} sx={{ padding: '0px 0px 35px' }}>
           <Divider sx={{ borderColor: '#224c65' }} />
         </Grid>
         <Typography sx={{fontSize: '13px', color: '#214F66', fontStyle: 'italic'}}
@@ -534,7 +534,7 @@ const CategoryList = () => {
           Due to potential cross-contact when preparing menu items, it is not possible to guarantee your meal is completely free of any particular allergen or ingredient. Impossible™ meat, fish, tortillas, veggies, toasted cheese and shellfish are cooked on the same grill.
         </Typography>
       </Grid>
-      <div style={{ paddingBottom: '30px' }}></div>
+      <div style={{ paddingBottom: '40px' }}></div>
     </div>
   );
 };
