@@ -17,6 +17,10 @@
   padding-left: 25px;
 }
 
+.credit-cards-panel-default-box {
+  border: 1px solid #0075BF !important;
+}
+
 .credit-cards-panel .card-panel .panel h6 {
   font-size: 16px !important;
   font-family: 'Poppins-Medium', sans-serif !important;
@@ -33,7 +37,7 @@
   padding-top: 20px;
 }
 .credit-cards-panel .card-panel .order-Link a,
-.credit-cards-panel .card-panel .order-Link button {    
+.credit-cards-panel .card-panel .order-Link button {
   font-size: 15px;
   display: block;
   color: #b9b9b9;
@@ -43,8 +47,8 @@
   padding-left: 15px;
   font-weight: 600;
  }
-  
-.credit-cards-panel .card-panel .order-Link button.default {   
+
+.credit-cards-panel .card-panel .order-Link button.default {
   color: #0075BF;
 }
 
