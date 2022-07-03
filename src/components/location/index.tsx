@@ -493,7 +493,7 @@ const LocationCard = (props: any) => {
                   deliveryRasturants.length > 0)) && (
                 <Typography
                   className="label"
-                  sx={{ display: { xs: 'none', sm: 'block' } }}
+                  sx={{ display: { xs: 'none', lg: 'block' } }}
                 >
                   <Link
                     style={{
