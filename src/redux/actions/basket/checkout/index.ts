@@ -266,7 +266,7 @@ export function submitBasketSinglePaymentSuccess(
   data: ResponseBasket,
   basketid: string = '',
 ) {
-  displayToast('SUCCESS', 'Order has been placed.');
+  // displayToast('SUCCESS', 'Order has been placed.');
   navigateAppAction(`/order-confirmation/${data.id}`);
   setRecentOrders(data, basketid);
   return {

@@ -58,8 +58,9 @@ const CategoryList = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getCategoriesRequest(60854));
-  }, []);
+    const id: string = process.env.REACT_APP_IFRAME_MENU_ID || '0';
+    dispatch(getCategoriesRequest(id));
+  }, [])
 
   useEffect(() => {
     if (categories && categories.categories && categories.categories.length) {

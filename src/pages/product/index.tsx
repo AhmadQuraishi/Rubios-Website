@@ -305,7 +305,7 @@ const Product = () => {
     if (productAddObj && productAddObj.basket && actionStatus) {
       setBasket(productAddObj.basket);
       setActionStatus(false);
-      displayToast('SUCCESS', '1 item added to cart.');
+      // displayToast('SUCCESS', '1 item added to cart.');
       dispatch(getBasketRequest('', productAddObj.basket, basketType));
       navigate('/menu/' + restaurant.slug);
     }

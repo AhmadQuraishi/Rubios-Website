@@ -1,7 +1,7 @@
 import React from 'react';
-import {Box, Button, Card, Grid, Typography} from '@mui/material';
-import {useDispatch, useSelector} from 'react-redux';
-import {useNavigate} from 'react-router-dom';
+import { Box, Button, Card, Grid, Typography } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import Divider from '@mui/material/Divider';
 import OrderDetails from '../../components/order-details';
 import Tip from '../../components/tip';
@@ -10,8 +10,8 @@ import OrderTime from '../../components/order-time';
 import PaymentInfo from '../../components/payment-info';
 import StoreInfoBar from '../../components/restaurant-info-bar';
 import './checkout.css';
-import {ResponseBasket, ResponseBasketValidation} from '../../types/olo-api';
-import {DeliveryModeEnum} from '../../types/olo-api/olo-api.enums';
+import { ResponseBasket, ResponseBasketValidation } from '../../types/olo-api';
+import { DeliveryModeEnum } from '../../types/olo-api/olo-api.enums';
 import moment from 'moment';
 import {
   getBasketAllowedCardsRequest,
@@ -20,7 +20,7 @@ import {
   updateBasketBillingSchemes,
   validateBasket,
 } from '../../redux/actions/basket/checkout';
-import {displayToast} from '../../helpers/toast';
+import { displayToast } from '../../helpers/toast';
 import {
   formatCustomFields,
   formatDeliveryAddress,
@@ -28,10 +28,10 @@ import {
   getUniqueId,
   updatePaymentCardsAmount,
 } from '../../helpers/checkout';
-import {getUserDeliveryAddresses} from '../../redux/actions/user';
+import { getUserDeliveryAddresses } from '../../redux/actions/user';
 import PickupForm from '../../components/pickup-form/index';
 import DeliveryForm from '../../components/delivery-form/index';
-import {getRewardsForCheckoutRequest} from '../../redux/actions/reward/checkout';
+import { getRewardsForCheckoutRequest } from '../../redux/actions/reward/checkout';
 
 const Checkout = () => {
   const dispatch = useDispatch();
@@ -257,7 +257,7 @@ const Checkout = () => {
       array.push(gitfCardObj);
     }
 
-    console.log('mubashir', array)
+    console.log('mubashir', array);
     return array;
   };
 
@@ -435,7 +435,7 @@ const Checkout = () => {
     //   }
     // }
 
-    console.log('formDataValue', formDataValue)
+    console.log('formDataValue', formDataValue);
 
     if (formDataValue.phone) {
       formDataValue.phone = formDataValue.phone.replace(/\D/g, '');
@@ -635,14 +635,6 @@ const Checkout = () => {
               </Grid>
               {providerToken && providerToken.first_name && rewards && (
                 <>
-              <br />
-              <br />
-              <br />
-              <Divider />
-              <br />
-              <br />
-              <br />
-                  <Rewards rewardsList={rewards} />
                   <br />
                   <br />
                   <br />
@@ -650,8 +642,17 @@ const Checkout = () => {
                   <br />
                   <br />
                   <br />
+                  <Rewards rewardsList={rewards} />
                 </>
               )}
+              <br />
+              <br />
+              <br />
+              <Divider />
+              <br />
+              <br />
+              <br />
+
               <Tip
                 basket={basket}
                 loading={basketObj?.loading}
