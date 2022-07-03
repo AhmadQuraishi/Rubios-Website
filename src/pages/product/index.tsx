@@ -1260,7 +1260,7 @@ const Product = () => {
                                         <div
                                           style={{
                                             display: 'flex',
-                                            justifyContent: 'center',
+                                            justifyContent: 'left',
                                             alignItems: 'center',
                                           }}
                                         >
@@ -1289,7 +1289,7 @@ const Product = () => {
                                         <div
                                           style={{
                                             display: 'flex',
-                                            justifyContent: 'center',
+                                            justifyContent: 'left',
                                             alignItems: 'center',
                                           }}
                                         >
