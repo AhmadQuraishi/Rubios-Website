@@ -103,6 +103,7 @@ const CategoryList = () => {
         dispatch(getCategoriesRequest(restaurant.id));
       }
     }
+    window.scrollTo(0, 0);
   }, []);
 
   useEffect(() => {
@@ -196,7 +197,7 @@ const CategoryList = () => {
           }
         });
       }, 500);
-
+      window.scrollTo(0, 0);
       window.addEventListener(
         'orientationchange',
         function () {
