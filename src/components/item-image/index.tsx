@@ -46,7 +46,9 @@ const ItemImage = (props: any) => {
       {imageURL == null &&
         name.toLowerCase() != 'customize' &&
         name.toLowerCase() != 'as is' &&
-        name.toLowerCase().indexOf('taco') == -1 && (
+        name.toLowerCase().indexOf('taco') == -1 &&
+        (name.toLowerCase().indexOf('no rice') !== -1 ||
+          name.toLowerCase().indexOf('no beans') !== -1) && (
           <img
             aria-hidden="true"
             alt=""
