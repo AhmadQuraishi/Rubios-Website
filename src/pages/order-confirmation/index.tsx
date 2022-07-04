@@ -121,7 +121,7 @@ const OrderConfirmation = () => {
                         aria-label="view account"
                         variant="contained"
                         title="VIEW ACCOUNT"
-                        onClick={() => navigate('/account')}
+                        onClick={() => navigate('/account/reward')}
                       >
                         VIEW ACCOUNT
                       </Button>

@@ -129,7 +129,7 @@ const ProductListing = (props: any) => {
                   onClick={() => {
                     window.open(
                       `${process.env.REACT_APP_ORDERING_URL}`,
-                      '_blank',
+                      '_self',
                     );
                   }}
                 >
