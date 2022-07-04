@@ -55,9 +55,9 @@ h2.heading-ui {
   font-size: 25px;
   padding-bottom: 10px;
 }
-input[type="check"]:checked + label {
+input[type='check']:checked + label {
   opacity: 1;
-  border: 5px solid #ccc
+  border: 5px solid #ccc;
 }
 .product-detail .action-panel {
   margin-top: 30px;
@@ -152,11 +152,10 @@ input[type="check"]:checked + label {
     .card-panel
     .name-img-panel
     .item-image {
-    width: 100%;
     display: block;
     margin: auto;
-    /*height: 100% !important;*/
-    /*width: 100% !important;*/
+    height: 100% !important;
+    width: auto;
   }
   .product-detail .menu-items .content-panel .card-panel .name-img-panel {
     align-items: flex-start !important;
@@ -185,8 +184,17 @@ input[type="check"]:checked + label {
   justify-content: end;
 }
 .ss-panl {
+  z-index: 10;
   display: block;
   margin-top: 8px;
+  border: 2px solid #ddd;
+  padding: 6px 8px;
+  width: 94%;
+  box-sizing: border-box;
+  border-radius: 10px;
+  font-family: 'Poppins-Medium';
+  font-size: 12px;
+  color: #2b4b62;
 }
 
 @media screen and (max-width: 899px) {
@@ -361,6 +369,7 @@ input[type="check"]:checked + label {
   align-items: center;
   display: flex;
   height: 100%;
+  overflow: hidden;
 }
 .product-detail
   .menu-items
@@ -387,7 +396,8 @@ input[type="check"]:checked + label {
   .card-panel
   .name-img-panel
   .item-image {
-  width: 100%;
+  width: auto;
+  height: 100%;
   display: block;
 }
 

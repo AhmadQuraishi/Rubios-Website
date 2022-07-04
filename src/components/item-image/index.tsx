@@ -39,10 +39,6 @@ const ItemImage = (props: any) => {
           aria-hidden="true"
           src={productImageURL}
           alt=""
-          style={{
-            height: 'auto',
-            width: '100%',
-          }}
           className={`${className}`}
         />
       )}
@@ -55,10 +51,6 @@ const ItemImage = (props: any) => {
             aria-hidden="true"
             alt=""
             src={require('../../assets/imgs/No ingredient.png')}
-            style={{
-              height: 'auto',
-              width: '100%',
-            }}
             className={`${className}`}
           />
         )}
@@ -70,10 +62,6 @@ const ItemImage = (props: any) => {
             aria-hidden="true"
             alt=""
             src={imageURL}
-            style={{
-              height: 'auto',
-              width: '100%',
-            }}
             className={`${className}`}
           />
         )}

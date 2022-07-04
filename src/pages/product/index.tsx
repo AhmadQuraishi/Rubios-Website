@@ -8,6 +8,7 @@ import {
   Alert,
   Slide,
 } from '@mui/material';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import './product.css';
 import * as React from 'react';
 import ProductOptionsSkeletonUI from '../../components/product-options-skeleton-ui';
@@ -34,9 +35,6 @@ import ItemImage from '../../components/item-image';
 import { getUpsellsRequest } from '../../redux/actions/basket/upsell/Get';
 import axios from 'axios';
 import { changeImageSize } from '../../helpers/common';
-const inputProps = {
-  'aria-label': 'quantity',
-};
 
 const Product = () => {
   const [productDetails, setProductDetails] = useState<ProductInfo>();
@@ -325,7 +323,9 @@ const Product = () => {
 
   const [optionsSelectionArray, setOptionsSelectionArray] = useState<any>([]);
 
-  useEffect(() => {}, [optionsSelectionArray]);
+  useEffect(() => {
+    console.log(optionsSelectionArray);
+  }, [optionsSelectionArray]);
 
   let ptotalCost = 0;
 
@@ -471,9 +471,9 @@ const Product = () => {
             const option = item.options.find(
               (option: any) => option.optionID == item.selectedOptions[0],
             );
+            let mainOptionCost = 0;
             if (option) {
-              setOptionsCost(optionsCost - option.option.cost);
-              setTotalCost((totalCost || 0) - option.option.cost * count);
+              mainOptionCost = option.option.cost;
             }
             item.selectedOptions = [];
             let elems = optionsSelectionArray.filter(
@@ -482,67 +482,195 @@ const Product = () => {
             if (elems) {
               elems.map((x: any) => {
                 x.selected = false;
-                if (x.defaultOption) {
-                  let elem = optionsSelectionArray.find(
-                    (i: any) => i.parentOptionID == x.defaultOption,
+                x.selectedOptions.map((mainChild: any) => {
+                  let elemSelected = optionsSelectionArray.filter(
+                    (i: any) => i.parentOptionID == mainChild,
                   );
-                  if (elem) {
-                    elem.selected = false;
-                    if (elem.defaultOption) {
-                      let elem1 = optionsSelectionArray.find(
-                        (i: any) => i.parentOptionID == elem.defaultOption,
-                      );
-                      if (elem1) {
-                        elem1.selected = false;
-                      }
-                    }
+                  let elemChildSelected = x.options.find(
+                    (i: any) => i.optionID == mainChild,
+                  );
+                  if (elemChildSelected) {
+                    mainOptionCost =
+                      mainOptionCost + elemChildSelected.option.cost;
                   }
-                }
+                  if (elemSelected && elemSelected.length > 0) {
+                    elemSelected.map((ss: any) => {
+                      ss.selected = false;
+                      if (ss.selectedOptions.length > 0) {
+                        let xelemChildSelected = optionsSelectionArray.filter(
+                          (i: any) => i.parentOptionID == ss.selectedOptions[0],
+                        );
+                        if (xelemChildSelected.length > 0) {
+                          xelemChildSelected.map((xc: any) => {
+                            xc.selected = false;
+                            xc.selectedOptions.map((child: any) => {
+                              let elemChildSelected = xc.options.find(
+                                (i: any) => i.optionID == child,
+                              );
+                              if (
+                                elemChildSelected &&
+                                xelemChildSelected.selected
+                              ) {
+                                mainOptionCost =
+                                  mainOptionCost +
+                                  elemChildSelected.option.cost;
+                                if (elemChildSelected.selectedValue) {
+                                  const ddlSelected =
+                                    elemChildSelected.dropDownValues.find(
+                                      (i: any) =>
+                                        i.id == elemChildSelected.selectedValue,
+                                    );
+                                  if (ddlSelected) {
+                                    mainOptionCost =
+                                      mainOptionCost + ddlSelected.cost;
+                                  }
+                                  elemChildSelected.selectedValue =
+                                    elemChildSelected.dropDownValues[0].id;
+                                }
+                              }
+                            });
+                          });
+                        } else {
+                          ss.selectedOptions.map((child: any) => {
+                            xelemChildSelected = ss.options.find(
+                              (i: any) => i.optionID == child,
+                            );
+                            if (xelemChildSelected) {
+                              mainOptionCost =
+                                mainOptionCost + xelemChildSelected.option.cost;
+                              if (xelemChildSelected.selectedValue) {
+                                const ddlSelected =
+                                  xelemChildSelected.dropDownValues.find(
+                                    (i: any) =>
+                                      i.id == xelemChildSelected.selectedValue,
+                                  );
+                                if (ddlSelected) {
+                                  mainOptionCost =
+                                    mainOptionCost + ddlSelected.cost;
+                                }
+                                xelemChildSelected.selectedValue =
+                                  xelemChildSelected.dropDownValues[0].id;
+                              }
+                            }
+                          });
+                        }
+                      }
+                      ss.selectedOptions = ss.defaultOption
+                        ? [ss.defaultOption]
+                        : [];
+                    });
+                  }
+                });
+                x.selectedOptions = x.defaultOption ? [x.defaultOption] : [];
               });
             }
+            setOptionsCost(optionsCost - mainOptionCost);
+            setTotalCost((totalCost || 0) - mainOptionCost * count);
           } else {
+            const optionX = item.options.find(
+              (option: any) => option.optionID == item.selectedOptions[0],
+            );
+            let mainOptionCost = 0;
+            if (optionX) {
+              mainOptionCost = optionX.option.cost;
+            }
             let elems = optionsSelectionArray.filter(
               (x: any) => x.parentOptionID == item.selectedOptions[0],
             );
             if (elems) {
               elems.map((x: any) => {
                 x.selected = false;
-                if (x.defaultOption) {
-                  let elem = optionsSelectionArray.find(
-                    (i: any) => i.parentOptionID == x.defaultOption,
+                x.selectedOptions.map((mainChild: any) => {
+                  let elemSelected = optionsSelectionArray.filter(
+                    (i: any) => i.parentOptionID == mainChild,
                   );
-                  if (elem) {
-                    elem.selected = false;
-                    if (elem.defaultOption) {
-                      let elem1 = optionsSelectionArray.find(
-                        (i: any) => i.parentOptionID == elem.defaultOption,
-                      );
-                      if (elem1) {
-                        elem1.selected = false;
-                      }
-                    }
+                  let elemChildSelected = x.options.find(
+                    (i: any) => i.optionID == mainChild,
+                  );
+                  if (elemChildSelected) {
+                    mainOptionCost =
+                      mainOptionCost + elemChildSelected.option.cost;
                   }
-                }
+                  if (elemSelected && elemSelected.length > 0) {
+                    elemSelected.map((ss: any) => {
+                      ss.selected = false;
+                      if (ss.selectedOptions.length > 0) {
+                        let xelemChildSelected = optionsSelectionArray.filter(
+                          (i: any) => i.parentOptionID == ss.selectedOptions[0],
+                        );
+                        if (xelemChildSelected.length > 0) {
+                          xelemChildSelected.map((xc: any) => {
+                            xc.selected = false;
+                            xc.selectedOptions.map((child: any) => {
+                              let elemChildSelected = xc.options.find(
+                                (i: any) => i.optionID == child,
+                              );
+                              if (
+                                elemChildSelected &&
+                                xelemChildSelected.selected
+                              ) {
+                                mainOptionCost =
+                                  mainOptionCost +
+                                  elemChildSelected.option.cost;
+                                if (elemChildSelected.selectedValue) {
+                                  const ddlSelected =
+                                    elemChildSelected.dropDownValues.find(
+                                      (i: any) =>
+                                        i.id == elemChildSelected.selectedValue,
+                                    );
+                                  if (ddlSelected) {
+                                    mainOptionCost =
+                                      mainOptionCost + ddlSelected.cost;
+                                  }
+                                  elemChildSelected.selectedValue =
+                                    elemChildSelected.dropDownValues[0].id;
+                                }
+                              }
+                            });
+                          });
+                        } else {
+                          ss.selectedOptions.map((child: any) => {
+                            xelemChildSelected = ss.options.find(
+                              (i: any) => i.optionID == child,
+                            );
+                            if (xelemChildSelected) {
+                              mainOptionCost =
+                                mainOptionCost + xelemChildSelected.option.cost;
+                              if (xelemChildSelected.selectedValue) {
+                                const ddlSelected =
+                                  xelemChildSelected.dropDownValues.find(
+                                    (i: any) =>
+                                      i.id == xelemChildSelected.selectedValue,
+                                  );
+                                if (ddlSelected) {
+                                  mainOptionCost =
+                                    mainOptionCost + ddlSelected.cost;
+                                }
+                                xelemChildSelected.selectedValue =
+                                  xelemChildSelected.dropDownValues[0].id;
+                              }
+                            }
+                          });
+                        }
+                      }
+                      ss.selectedOptions = ss.defaultOption
+                        ? [ss.defaultOption]
+                        : [];
+                    });
+                  }
+                });
+                x.selectedOptions = x.defaultOption ? [x.defaultOption] : [];
               });
             }
-            const option1 = item.options.find(
-              (option: any) => option.optionID == item.selectedOptions[0],
-            );
             item.selectedOptions = [optionId];
             item.selected = true;
             const option = item.options.find(
               (option: any) => option.optionID == optionId,
             );
             if (option) {
-              setOptionsCost(
-                optionsCost -
-                  (option1 ? option1.option.cost : 0) +
-                  option.option.cost,
-              );
+              setOptionsCost(optionsCost - mainOptionCost + option.option.cost);
               const prc = option.option.cost * count;
-              setTotalCost(
-                (totalCost || 0) - (option1 ? option1.option.cost : 0) + prc,
-              );
+              setTotalCost((totalCost || 0) - mainOptionCost + prc);
             }
             elems = optionsSelectionArray.filter(
               (x: any) => x.parentOptionID == optionId,
@@ -550,21 +678,21 @@ const Product = () => {
             if (elems) {
               elems.map((x: any) => {
                 x.selected = true;
-                if (x.defaultOption) {
-                  let elem = optionsSelectionArray.find(
-                    (i: any) => i.parentOptionID == x.defaultOption,
-                  );
-                  if (elem) {
-                    elem.selected = true;
-                    if (elem.defaultOption) {
-                      let elem1 = optionsSelectionArray.find(
-                        (i: any) => i.parentOptionID == elem.defaultOption,
+                let elemSelected = optionsSelectionArray.filter(
+                  (i: any) => i.parentOptionID == x.selectedOptions[0],
+                );
+                if (elemSelected && elemSelected.length > 0) {
+                  elemSelected.map((ss: any) => {
+                    ss.selected = true;
+                    if (ss.selectedOptions.length > 0) {
+                      let elemSelectedx = optionsSelectionArray.find(
+                        (i: any) => i.parentOptionID == ss.selectedOptions[0],
                       );
-                      if (elem1) {
-                        elem1.selected = true;
+                      if (elemSelectedx) {
+                        elemSelectedx.selected = true;
                       }
                     }
-                  }
+                  });
                 }
               });
             }
@@ -593,7 +721,7 @@ const Product = () => {
                   count;
                 setTotalCost((totalCost || 0) - prc);
               }
-              item.selected = !(item.selectedOptions.length == 0);
+              //item.selected = !(item.selectedOptions.length == 0);
               let elems = optionsSelectionArray.filter(
                 (x: any) => x.parentOptionID == optionId,
               );
@@ -670,6 +798,7 @@ const Product = () => {
         }
       }
     });
+    console.log(optionsSelectionArray);
     setOptionsSelectionArray((optionsSelectionArray: any) => [
       ...optionsSelectionArray,
     ]);
@@ -1001,7 +1130,7 @@ const Product = () => {
                               type="radio"
                               id={itemChild.option.id}
                               value={itemChild.option.name}
-                              onClick={() => {
+                              onChange={() => {
                                 showChildOptions(
                                   itemChild.option.id,
                                   itemMain.id,
@@ -1024,7 +1153,7 @@ const Product = () => {
                               type="checkbox"
                               id={itemChild.option.id}
                               value={itemChild.option.name}
-                              onClick={() => {
+                              onChange={() => {
                                 showChildOptions(
                                   itemChild.option.id,
                                   itemMain.id,
@@ -1117,6 +1246,62 @@ const Product = () => {
                                   className="name-panel"
                                 >
                                   {itemChild.option.name}
+                                  {itemChild.option.basecalories && (
+                                    <Grid
+                                      item
+                                      xs={12}
+                                      sx={{
+                                        fontSize: '11px',
+                                        color: '#1a73e8',
+                                        fontFamily: 'Poppins-Bold !important',
+                                      }}
+                                    >
+                                      {itemChild.option.maxcalories && (
+                                        <div
+                                          style={{
+                                            display: 'flex',
+                                            justifyContent: 'left',
+                                            alignItems: 'center',
+                                          }}
+                                        >
+                                          +
+                                          <span>
+                                            {itemChild.option.basecalories +
+                                              ' Cals'}
+                                          </span>
+                                          <span
+                                            style={{
+                                              fontSize: '16px',
+                                              fontFamily: 'Poppins-Regular',
+                                              color: '#AAA',
+                                            }}
+                                          >
+                                            &nbsp;|&nbsp;
+                                          </span>
+                                          +
+                                          <span>
+                                            {itemChild.option.maxcalories +
+                                              ' Cals'}
+                                          </span>
+                                        </div>
+                                      )}
+                                      {itemChild.option.maxcalories == null && (
+                                        <div
+                                          style={{
+                                            display: 'flex',
+                                            justifyContent: 'left',
+                                            alignItems: 'center',
+                                          }}
+                                        >
+                                          +
+                                          <span>
+                                            {itemChild.option.basecalories +
+                                              ' Cals'}
+                                          </span>
+                                        </div>
+                                      )}
+                                    </Grid>
+                                  )}
                                   {itemChild.option.cost > 0 && (
                                     <Grid
                                       item
@@ -1144,47 +1329,53 @@ const Product = () => {
                                         itemChild.option.id,
                                         itemMain.id,
                                       ) == true && (
-                                        <select
-                                          className="ss-panl"
-                                          parent-select-option-id={itemChild.id}
-                                          onClick={(e) => e.stopPropagation()}
-                                          value={itemChild.selectedValue || '0'}
-                                          data-select-id={
-                                            itemChild.selectedValue || '0'
-                                          }
-                                          onChange={(e) =>
-                                            dropDownValue(
-                                              itemChild.option.id,
-                                              e.target.value,
-                                              itemChild.dropDownValues,
-                                              e.target,
-                                            )
-                                          }
-                                        >
-                                          {itemChild.dropDownValues.map(
-                                            (option: any, index: number) => (
-                                              <option
-                                                key={Math.random() + index}
-                                                value={option.id}
-                                                onClick={() => {
-                                                  setTotalCost(
-                                                    ((productDetails?.cost ||
-                                                      0) +
-                                                      option.cost) *
-                                                      count,
-                                                  );
-                                                }}
-                                              >
-                                                {option.name +
-                                                  (option.cost > 0
-                                                    ? ' (+$' +
-                                                      option.cost.toFixed(2) +
-                                                      ')'
-                                                    : '')}
-                                              </option>
-                                            ),
-                                          )}
-                                        </select>
+                                        <div style={{ position: 'relative' }}>
+                                          <select
+                                            className="ss-panl"
+                                            parent-select-option-id={
+                                              itemChild.id
+                                            }
+                                            onClick={(e) => e.stopPropagation()}
+                                            value={
+                                              itemChild.selectedValue || '0'
+                                            }
+                                            data-select-id={
+                                              itemChild.selectedValue || '0'
+                                            }
+                                            onChange={(e) =>
+                                              dropDownValue(
+                                                itemChild.option.id,
+                                                e.target.value,
+                                                itemChild.dropDownValues,
+                                                e.target,
+                                              )
+                                            }
+                                          >
+                                            {itemChild.dropDownValues.map(
+                                              (option: any, index: number) => (
+                                                <option
+                                                  key={Math.random() + index}
+                                                  value={option.id}
+                                                  onClick={() => {
+                                                    setTotalCost(
+                                                      ((productDetails?.cost ||
+                                                        0) +
+                                                        option.cost) *
+                                                        count,
+                                                    );
+                                                  }}
+                                                >
+                                                  {option.name +
+                                                    (option.cost > 0
+                                                      ? ' (+$' +
+                                                        option.cost.toFixed(2) +
+                                                        ')'
+                                                      : '')}
+                                                </option>
+                                              ),
+                                            )}
+                                          </select>
+                                        </div>
                                       )}
                                     </>
                                   )}
@@ -1230,7 +1421,6 @@ const Product = () => {
                       </Button>
                       <input
                         value={count}
-                        // inputProps={inputProps}
                         readOnly
                         id="quantityfield"
                         onChange={() => {}}
