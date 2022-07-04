@@ -282,6 +282,11 @@ const LocationCard = (props: any) => {
     setActionPerform(true);
   };
 
+  const removeConfRoomPilot = (item: any) => {
+    const confRoomPilotId = process.env.REACT_APP_CONF_ROOM_PILOT_ID || '';
+    return item.id.toString() !== confRoomPilotId;
+  };
+
   return (
     <Grid container className="list-wrapper">
       <Grid
@@ -309,7 +314,7 @@ const LocationCard = (props: any) => {
                 paddingTop: '40px',
                 paddingRight: '40px',
                 maxHeight: '94%',
-                overflowY: 'auto'
+                overflowY: 'auto',
               }}
             >
               <Typography
@@ -332,22 +337,25 @@ const LocationCard = (props: any) => {
                 }}
               >
                 {AllResturants.length > 0 &&
-                  AllResturants.map((item: any, index: number) => (
-                    <StoreInfo
-                      setSelectedStoreID={setSelectedStoreID}
-                      resturantOrderType={resturantOrderType}
-                      deliveryRasturants={deliveryRasturants}
-                      deliveryAddressString={deliveryAddressString}
-                      restaurants={restaurants}
-                      orderType={orderType}
-                      setDeliveryAddressString={setDeliveryAddressString}
-                      item={item}
-                      index={index + Math.random()}
-                      key={index + Math.random()}
-                      restaurant={restaurant}
-                      allStores={true}
-                    />
-                  ))}
+                  AllResturants.map(
+                    (item: any, index: number) =>
+                      removeConfRoomPilot(item) && (
+                        <StoreInfo
+                          setSelectedStoreID={setSelectedStoreID}
+                          resturantOrderType={resturantOrderType}
+                          deliveryRasturants={deliveryRasturants}
+                          deliveryAddressString={deliveryAddressString}
+                          restaurants={restaurants}
+                          orderType={orderType}
+                          setDeliveryAddressString={setDeliveryAddressString}
+                          item={item}
+                          index={index + Math.random()}
+                          key={index + Math.random()}
+                          restaurant={restaurant}
+                          allStores={true}
+                        />
+                      ),
+                  )}
               </ul>
             </div>
           </div>
@@ -625,22 +633,23 @@ const LocationCard = (props: any) => {
               )}
               <Grid container spacing={1}>
                 {filteredRestaurants?.map(
-                  (item: ResponseRestaurant, index: number) => (
-                    <StoreInfo
-                      setSelectedStoreID={setSelectedStoreID}
-                      resturantOrderType={resturantOrderType}
-                      deliveryRasturants={deliveryRasturants}
-                      deliveryAddressString={deliveryAddressString}
-                      restaurants={restaurants}
-                      orderType={orderType}
-                      setDeliveryAddressString={setDeliveryAddressString}
-                      item={item}
-                      index={index + Math.random()}
-                      key={index + Math.random()}
-                      restaurant={restaurant}
-                      allStores={false}
-                    />
-                  ),
+                  (item: ResponseRestaurant, index: number) =>
+                    removeConfRoomPilot(item) && (
+                      <StoreInfo
+                        setSelectedStoreID={setSelectedStoreID}
+                        resturantOrderType={resturantOrderType}
+                        deliveryRasturants={deliveryRasturants}
+                        deliveryAddressString={deliveryAddressString}
+                        restaurants={restaurants}
+                        orderType={orderType}
+                        setDeliveryAddressString={setDeliveryAddressString}
+                        item={item}
+                        index={index + Math.random()}
+                        key={index + Math.random()}
+                        restaurant={restaurant}
+                        allStores={false}
+                      />
+                    ),
                 )}
               </Grid>
             </Grid>

@@ -16,3 +16,11 @@ export function changeImageSize(path: string, images: any, groupname: string) {
     return path;
   }
 }
+
+export function checkProductAvailability (item: any, orderType: any) {
+  return (
+    !item.unavailablehandoffmodes.includes(orderType.toLowerCase()) &&
+    !item.availability.isdisabled &&
+    item.availability.now
+  );
+};
