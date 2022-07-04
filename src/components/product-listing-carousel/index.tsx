@@ -6,7 +6,10 @@ import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import './index.css';
 import { Product } from '../../types/olo-api';
-import {changeImageSize} from "../../helpers/common";
+import {
+  changeImageSize,
+  checkProductAvailability,
+} from '../../helpers/common';
 
 const useStyles = makeStyles((theme: Theme) => ({
   img: {
@@ -91,55 +94,55 @@ const ProductListingCarousel = (props: any) => {
   //   return <p onClick={() => onClick()} >working 222</p>;
   // };
 
-  function CustomRightArrow({ onClick }: any) {
-    function handleClick() {
-      // do whatever you want on the right button click
-      console.log('Right button clicked, go to next slide');
-      // ... and don't forget to call onClick to slide
-      onClick();
-    }
-
-    return (
-      // <button
-      //   onClick={handleClick}
-      //   aria-label="Go to next slide"
-      //   className="react-multiple-carousel__arrow react-multiple-carousel__arrow--right"
-      // />
-      <p
-        onClick={handleClick}
-        aria-label="Go to next slide"
-        className="react-multiple-carousel__arrow react-multiple-carousel__arrow--right"
-      >
-        {' '}
-        Next
-      </p>
-    );
-  }
-
-  function CustomLeftArrow({ onClick }: any) {
-    function handleClick() {
-      // do whatever you want on the right button click
-      console.log('Right button clicked, go to next slide');
-      // ... and don't forget to call onClick to slide
-      onClick();
-    }
-
-    return (
-      // <button
-      //   onClick={handleClick}
-      //   aria-label="Go to next slide"
-      //   className="react-multiple-carousel__arrow react-multiple-carousel__arrow--right"
-      // />
-      <p
-        onClick={handleClick}
-        aria-label="Go to next slide"
-        className="react-multiple-carousel__arrow react-multiple-carousel__arrow--left"
-      >
-        {' '}
-        Back
-      </p>
-    );
-  }
+  // function CustomRightArrow({ onClick }: any) {
+  //   function handleClick() {
+  //     // do whatever you want on the right button click
+  //     console.log('Right button clicked, go to next slide');
+  //     // ... and don't forget to call onClick to slide
+  //     onClick();
+  //   }
+  //
+  //   return (
+  //     // <button
+  //     //   onClick={handleClick}
+  //     //   aria-label="Go to next slide"
+  //     //   className="react-multiple-carousel__arrow react-multiple-carousel__arrow--right"
+  //     // />
+  //     <p
+  //       onClick={handleClick}
+  //       aria-label="Go to next slide"
+  //       className="react-multiple-carousel__arrow react-multiple-carousel__arrow--right"
+  //     >
+  //       {' '}
+  //       Next
+  //     </p>
+  //   );
+  // }
+  //
+  // function CustomLeftArrow({ onClick }: any) {
+  //   function handleClick() {
+  //     // do whatever you want on the right button click
+  //     console.log('Right button clicked, go to next slide');
+  //     // ... and don't forget to call onClick to slide
+  //     onClick();
+  //   }
+  //
+  //   return (
+  //     // <button
+  //     //   onClick={handleClick}
+  //     //   aria-label="Go to next slide"
+  //     //   className="react-multiple-carousel__arrow react-multiple-carousel__arrow--right"
+  //     // />
+  //     <p
+  //       onClick={handleClick}
+  //       aria-label="Go to next slide"
+  //       className="react-multiple-carousel__arrow react-multiple-carousel__arrow--left"
+  //     >
+  //       {' '}
+  //       Back
+  //     </p>
+  //   );
+  // }
 
   return (
     <Fragment>
@@ -167,8 +170,7 @@ const ProductListingCarousel = (props: any) => {
       >
         {products.map(
           (item: any, index: number) =>
-            item.unavailablehandoffmodes.includes(orderType.toLowerCase()) ===
-              false && (
+            checkProductAvailability(item, orderType) && (
               // <Grid
               //   scroll-id={'#panel-' + index}
               //   key={index}
@@ -198,7 +200,11 @@ const ProductListingCarousel = (props: any) => {
                         alt=""
                         src={
                           imgPath +
-                          changeImageSize(item.imagefilename, item.images, 'desktop-menu')
+                          changeImageSize(
+                            item.imagefilename,
+                            item.images,
+                            'desktop-menu',
+                          )
                         }
                         title={item.name}
                       />

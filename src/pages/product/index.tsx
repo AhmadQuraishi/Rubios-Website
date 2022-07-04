@@ -373,6 +373,12 @@ const Product = () => {
           );
           editOptions.push(option.id);
         }
+        if (!isExistInEdit(option.id) && defaultOptionID) {
+          ptotalCost = ptotalCost + option.cost;
+          getTotalCost(
+            productDetails?.cost || 0 + ptotalCost || 0 * count || 0,
+          );
+        }
       });
 
       let selectedOptions: any[] =

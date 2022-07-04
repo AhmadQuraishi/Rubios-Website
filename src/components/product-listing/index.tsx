@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Fragment } from 'react';
 import './index.css';
 import { Product } from '../../types/olo-api';
-import { changeImageSize } from '../../helpers/common';
+import { changeImageSize, checkProductAvailability } from '../../helpers/common';
 
 const useStyles = makeStyles((theme: Theme) => ({
   img: {
@@ -45,16 +45,16 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const ProductListing = (props: any) => {
   const classes = useStyles();
-  const { productList, shownItemsCount, imgPath, orderType } = props;
+  const { productList, imgPath, orderType } = props;
   let products: [Product] = productList;
+
 
   return (
     <Fragment>
       <Grid container spacing={1}>
         {products.map(
           (item: any, index: number) =>
-            item.unavailablehandoffmodes.includes(orderType.toLowerCase()) ===
-              false && (
+            checkProductAvailability(item, orderType) && (
               <Grid
                 scroll-id={'#panel-' + index}
                 key={index}
