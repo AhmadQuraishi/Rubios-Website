@@ -937,6 +937,31 @@ const Product = () => {
     );
   };
 
+  const noWordpressImageFound = (optionImages: any, id: any, name: any) => {
+    let check = true;
+    if (optionImages && optionImages.length) {
+      optionImages.forEach((item: any) => {
+        if (process.env.REACT_APP_NODE_ENV !== 'production') {
+          if (item.sandbox_plu_names.indexOf(id.toString()) !== -1) {
+            check = false;
+          }
+        } else {
+          if (item.production_plu_names.indexOf(id.toString()) !== -1) {
+            check = false;
+          }
+        }
+
+        if (
+          name.toLowerCase().indexOf('no rice') !== -1 ||
+          name.toLowerCase().indexOf('no beans') !== -1
+        ) {
+          check = false;
+        }
+      });
+    }
+    return check;
+  };
+
   return (
     <div style={{ minHeight: '500px' }}>
       <Typography variant="h1" className="sr-only">
@@ -1249,7 +1274,15 @@ const Product = () => {
                                   item
                                   xs={12}
                                   lg={7}
-                                  className="name-panel"
+                                  className={`name-panel ${
+                                    noWordpressImageFound(
+                                      optionImages,
+                                      itemChild.option.chainoptionid,
+                                      itemChild.option.name,
+                                    )
+                                      ? 'custom-class'
+                                      : ''
+                                  }`}
                                 >
                                   {itemChild.option.name}
                                   {itemChild.option.basecalories && (
