@@ -392,6 +392,37 @@ input[type='check']:checked + label {
   color: #2b4b62;
 }
 
+
+.product-detail
+.menu-items
+.content-panel.selected
+.card-panel
+.name-img-panel
+.name-panel.custom-class {
+  color: #e58734;
+  position: absolute;
+  width: 100%;
+  /* margin: 0 auto; */
+  left: 50%;
+  margin-left: -45px;
+  text-align: left;
+}
+
+.product-detail
+.menu-items
+.content-panel
+.card-panel
+.name-img-panel
+.name-panel.custom-class {
+  position: absolute;
+  width: 100%;
+  /* margin: 0 auto; */
+  left: 50%;
+  margin-left: -120px;
+  text-align: center;
+}
+
+
 .product-detail
   .menu-items
   .content-panel
