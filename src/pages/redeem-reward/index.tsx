@@ -51,6 +51,7 @@ const RedeemRewards = () => {
     setRewardName(name);
     dispatch(getRedemptionCode(id));
     setIsredeem(true);
+    navigate('/account/reward/details');
   };
   useEffect(() => {
     if (redemption !== null && !loading1 && isRedeem) {
