@@ -4,43 +4,57 @@ import { useDispatch, useSelector } from 'react-redux';
 import { GetUserFriendlyHours } from '../../../helpers/getUserFriendlyHours';
 import { CalendarTypeEnum, HoursListing } from '../../../helpers/hoursListing';
 import { getResturantCalendarRequest } from '../../../redux/actions/restaurant/calendar';
+import axios from 'axios';
+import { getRestaurantCalendar } from '../../../services/restaurant/calendar';
 
 const ListHours = (props: any) => {
   const { id } = props;
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const [restaurantHours, setRestaurantHours] = useState<HoursListing[]>();
-  const { calendar } = useSelector(
-    (state: any) => state.restaurantCalendarReducer,
-  );
+  // const { calendar } = useSelector(
+  //   (state: any) => state.restaurantCalendarReducer,
+  // );
 
   useEffect(() => {
-    var today = new Date();
-    const dateFrom =
-      today.getFullYear() * 1e4 +
-      (today.getMonth() + 1) * 100 +
-      today.getDate() +
-      '';
-    const lastWeekDate = new Date(
-      today.getFullYear(),
-      today.getMonth(),
-      today.getDate() + 6,
-    );
-    const dateTo =
-      lastWeekDate.getFullYear() * 1e4 +
-      (lastWeekDate.getMonth() + 1) * 100 +
-      lastWeekDate.getDate() +
-      '';
-    dispatch(getResturantCalendarRequest(id, dateFrom, dateTo));
+    const getCalendarData = async () => {
+      let today = new Date();
+      const dateFrom =
+        today.getFullYear() * 1e4 +
+        (today.getMonth() + 1) * 100 +
+        today.getDate() +
+        '';
+      const lastWeekDate = new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate() + 6,
+      );
+      const dateTo =
+        lastWeekDate.getFullYear() * 1e4 +
+        (lastWeekDate.getMonth() + 1) * 100 +
+        lastWeekDate.getDate() +
+        '';
+
+      const calendar = await getRestaurantCalendar(id, dateFrom, dateTo);
+      // console.log('response', response);
+      if (calendar) {
+        setRestaurantHours(
+          GetUserFriendlyHours(calendar, CalendarTypeEnum.business),
+        );
+      }
+    };
+    getCalendarData();
+
+    // dispatch(getResturantCalendarRequest(id, dateFrom, dateTo));
   }, []);
 
-  useEffect(() => {
-    if (calendar) {
-      setRestaurantHours(
-        GetUserFriendlyHours(calendar, CalendarTypeEnum.business),
-      );
-    }
-  }, [calendar]);
+  // useEffect(() => {
+  //   if (calendar) {
+  //     setRestaurantHours(
+  //       GetUserFriendlyHours(calendar, CalendarTypeEnum.business),
+  //     );
+  //   }
+  // }, [calendar]);
 
   return (
     <>
