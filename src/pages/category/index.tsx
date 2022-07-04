@@ -424,7 +424,7 @@ const CategoryList = () => {
               zIndex: '1099',
               padding: {
                 xs: '20px 5px 10px 20px',
-                sm: '20px 30px 5px 70px',
+                sm: '20px 30px 5px 40px',
                 lg: '20px 60px 5px 100px',
                 boxSizing: 'border-box',
               },
@@ -450,7 +450,7 @@ const CategoryList = () => {
                   label={item.name}
                   title={item.name}
                   color="secondary.main"
-                  sx={{ fontFamily: 'Poppins-Medium !important' }}
+                  sx={{ fontFamily: 'Poppins-Medium !important', padding:'10px 0px', marginRight: '20px' }}
                   tabIndex={0}
                   role="link"
                   href={`#cat-panel-${index}`}
@@ -471,7 +471,7 @@ const CategoryList = () => {
             sx={{
               padding: {
                 xs: '20px 20px 0px 20px',
-                sm: '30px 70px 0px 70px',
+                sm: '30px 40px 0px 40px',
                 lg: '30px 100px 0px 100px',
               },
               position: 'relative',
