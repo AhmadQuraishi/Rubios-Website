@@ -218,9 +218,9 @@ const OrderTime = ({ orderType }: any) => {
         <Typography
           style={{ textTransform: 'uppercase' }}
           variant="h2"
-          title={moment(selectedDate).format('dddd MMM. Do')}
+          title={moment(selectedDate).format('MMM dddd Do')}
         >
-          {moment(selectedDate).format('dddd MMM. Do')}
+          {moment(selectedDate).format('MMM dddd Do')}
         </Typography>
       </Grid>
       {orderType !== DeliveryModeEnum.dinein && (
