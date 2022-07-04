@@ -1,5 +1,5 @@
 import StoreInfoBar from '../../components/restaurant-info-bar';
-import ProductListing from '../../components/product-listing';
+import ProductListingCarousel from '../../components/product-listing-carousel';
 import {
   Grid,
   Theme,
@@ -504,7 +504,7 @@ const CategoryList = () => {
               </Grid>
             </Grid>
             <Grid item xs={12} sx={{ paddingBottom: '20px' }} role="list">
-              <ProductListing
+              <ProductListingCarousel
                 orderType={orderType}
                 index={Math.random()}
                 productList={item.products}
