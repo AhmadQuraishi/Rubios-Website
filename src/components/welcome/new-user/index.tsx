@@ -6,10 +6,13 @@ const WelcomeNewUser = () => {
     <Grid container columns={16}>
       <Grid item xs={16} sm={8} md={8.5} lg={8.5} className="qr-container">
         <img
-          src={require('../../../assets/imgs/scan-to-downlad-qrcode.png')}
+          style={{width: '100%'}}
+          src={require('../../../assets/imgs/scan-to-downlad-qrcode-2.jpg')}
           alt={'Scan to download QR Code'}
         />
-        <Typography variant="h6">Scan to download to your phone</Typography>
+        <Typography variant="h6">
+          Scan the QR code for download links.
+        </Typography>
       </Grid>
     </Grid>
   );

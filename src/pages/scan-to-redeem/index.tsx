@@ -142,7 +142,7 @@ Please note, you will need to add the appropriate free or discounted item to you
                     marginTop: '20px',
                   }}
                   onClick={() => {
-                    navigate('/account');
+                    navigate('/account/reward');
                   }}
                 >
                   VIEW REWARDS
@@ -150,7 +150,7 @@ Please note, you will need to add the appropriate free or discounted item to you
                 <Button
                   className="label back-btn"
                   onClick={() => {
-                    navigate('/account');
+                    navigate('/account/reward');
                   }}
                 >
                   Back
