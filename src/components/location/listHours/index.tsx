@@ -60,10 +60,19 @@ const ListHours = (props: any) => {
 
   return (
     <>
-      {loading && restaurantHours && restaurantHours.length === 0 && (
-        <Skeleton variant="rectangular" width="300px" height="20px" />
+      {loading && (
+        <>
+          <Skeleton variant="rectangular" width="300px" height="20px" />
+          <Skeleton
+            style={{ marginTop: 5 }}
+            variant="rectangular"
+            width="300px"
+            height="20px"
+          />
+        </>
       )}
-      {restaurantHours &&
+      {!loading &&
+        restaurantHours &&
         restaurantHours.length > 0 &&
         restaurantHours.map((item: HoursListing, index: number) => (
           <Grid container spacing={0} key={index}>
