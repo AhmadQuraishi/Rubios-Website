@@ -24,6 +24,7 @@ import ProductListingSkeletonUI from '../../components/product-listing-skeleton-
 import { getResturantListRequest } from '../../redux/actions/restaurant/list';
 import { setResturantInfoRequest } from '../../redux/actions/restaurant';
 import { displayToast } from '../../helpers/toast';
+import {capitalizeFirstLetter} from "../../helpers/common";
 
 const useStyles = makeStyles((theme: Theme) => ({
   heading: {
@@ -132,7 +133,7 @@ const CategoryList = () => {
           navigate('/menu/' + objRestaurant.slug);
           dispatch(getCategoriesRequest(objRestaurant.id));
         } else {
-          displayToast('ERROR', 'Dine-in is not available at this time.');
+          displayToast('ERROR', `${capitalizeFirstLetter(handoff)} is not available at this time.`);
           navigate('/location');
         }
         setGetDineInResutarnts('');
