@@ -1,4 +1,4 @@
-import { Grid, List, ListItem } from '@mui/material';
+import { Grid, List, ListItem, Skeleton } from '@mui/material';
 import { useEffect, useState } from 'react';
 // import { useDispatch, useSelector } from 'react-redux';
 import { GetUserFriendlyHours } from '../../../helpers/getUserFriendlyHours';
@@ -11,12 +11,14 @@ const ListHours = (props: any) => {
 
   // const dispatch = useDispatch();
   const [restaurantHours, setRestaurantHours] = useState<HoursListing[]>();
+  const [loading, setLoading] = useState(false);
   // const { calendar } = useSelector(
   //   (state: any) => state.restaurantCalendarReducer,
   // );
 
   useEffect(() => {
     const getCalendarData = async () => {
+      setLoading(true);
       let today = new Date();
       const dateFrom =
         today.getFullYear() * 1e4 +
@@ -41,6 +43,7 @@ const ListHours = (props: any) => {
           GetUserFriendlyHours(calendar, CalendarTypeEnum.business),
         );
       }
+      setLoading(false);
     };
     getCalendarData();
 
@@ -57,6 +60,9 @@ const ListHours = (props: any) => {
 
   return (
     <>
+      {loading && restaurantHours && restaurantHours.length === 0 && (
+        <Skeleton variant="rectangular" width="300px" height="20px" />
+      )}
       {restaurantHours &&
         restaurantHours.length > 0 &&
         restaurantHours.map((item: HoursListing, index: number) => (
