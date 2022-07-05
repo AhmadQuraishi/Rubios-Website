@@ -1296,15 +1296,9 @@ const Product = () => {
                                       }}
                                     >
                                       {itemChild.option.maxcalories && (
-                                        <div
-                                          style={{
-                                            display: 'flex',
-                                            justifyContent: 'left',
-                                            alignItems: 'center',
-                                          }}
-                                        >
-                                          +
+                                        <div className="options-cals">
                                           <span>
+                                            +
                                             {itemChild.option.basecalories +
                                               ' Cals'}
                                           </span>
@@ -1317,23 +1311,17 @@ const Product = () => {
                                           >
                                             &nbsp;|&nbsp;
                                           </span>
-                                          +
                                           <span>
+                                            +
                                             {itemChild.option.maxcalories +
                                               ' Cals'}
                                           </span>
                                         </div>
                                       )}
                                       {itemChild.option.maxcalories == null && (
-                                        <div
-                                          style={{
-                                            display: 'flex',
-                                            justifyContent: 'left',
-                                            alignItems: 'center',
-                                          }}
-                                        >
-                                          +
+                                        <div className="options-cals">
                                           <span>
+                                            +
                                             {itemChild.option.basecalories +
                                               ' Cals'}
                                           </span>
