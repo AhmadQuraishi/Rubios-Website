@@ -373,7 +373,7 @@ const Product = () => {
           );
           editOptions.push(option.id);
         }
-        if (!isExistInEdit(option.id) && defaultOptionID) {
+        if (!isExistInEdit(option.id) && defaultOptionID == option.id) {
           ptotalCost = ptotalCost + option.cost;
           getTotalCost(
             productDetails?.cost || 0 + ptotalCost || 0 * count || 0,
@@ -1296,15 +1296,9 @@ const Product = () => {
                                       }}
                                     >
                                       {itemChild.option.maxcalories && (
-                                        <div
-                                          style={{
-                                            display: 'flex',
-                                            justifyContent: 'left',
-                                            alignItems: 'center',
-                                          }}
-                                        >
-                                          +
+                                        <div className="options-cals">
                                           <span>
+                                            +
                                             {itemChild.option.basecalories +
                                               ' Cals'}
                                           </span>
@@ -1317,23 +1311,17 @@ const Product = () => {
                                           >
                                             &nbsp;|&nbsp;
                                           </span>
-                                          +
                                           <span>
+                                            +
                                             {itemChild.option.maxcalories +
                                               ' Cals'}
                                           </span>
                                         </div>
                                       )}
                                       {itemChild.option.maxcalories == null && (
-                                        <div
-                                          style={{
-                                            display: 'flex',
-                                            justifyContent: 'left',
-                                            alignItems: 'center',
-                                          }}
-                                        >
-                                          +
+                                        <div className="options-cals">
                                           <span>
+                                            +
                                             {itemChild.option.basecalories +
                                               ' Cals'}
                                           </span>
