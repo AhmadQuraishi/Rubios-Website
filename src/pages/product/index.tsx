@@ -306,7 +306,7 @@ const Product = () => {
       setBasket(productAddObj.basket);
       setActionStatus(false);
       // displayToast('SUCCESS', '1 item added to cart.');
-      dispatch(getBasketRequest('', productAddObj.basket, basketType));
+      // dispatch(getBasketRequest('', productAddObj.basket, basketType));
       navigate('/menu/' + restaurant.slug);
     }
   }, [productAddObj]);
@@ -316,7 +316,7 @@ const Product = () => {
       setBasket(productUpdateObj.basket);
       setActionStatus(false);
       displayToast('SUCCESS', '1 item updated in cart.');
-      dispatch(getBasketRequest('', productUpdateObj.basket, basketType));
+      // dispatch(getBasketRequest('', productUpdateObj.basket, basketType));
       navigate('/menu/' + restaurant.slug);
     }
   }, [productUpdateObj]);
