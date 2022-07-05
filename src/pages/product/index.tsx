@@ -373,7 +373,7 @@ const Product = () => {
           );
           editOptions.push(option.id);
         }
-        if (!isExistInEdit(option.id) && defaultOptionID) {
+        if (!isExistInEdit(option.id) && defaultOptionID == option.id) {
           ptotalCost = ptotalCost + option.cost;
           getTotalCost(
             productDetails?.cost || 0 + ptotalCost || 0 * count || 0,
