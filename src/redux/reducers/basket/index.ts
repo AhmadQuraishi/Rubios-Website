@@ -1,5 +1,6 @@
 import { basketActionsTypes } from '../../types/basket';
 import { userTypes } from '../../types/user';
+import { authActionsTypes } from '../../types/auth';
 
 const INITIAL_STATE = {
   loading: false,
@@ -223,6 +224,23 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
         payment: {
           ...state.payment,
           billingSchemes: action.payload,
+        },
+      };
+    case authActionsTypes.GET_AUTHTOKEN_SUCCESS:
+      return {
+        ...state,
+        payment: {
+          allowedCards: {
+            loading: false,
+            data: null,
+            error: null,
+          },
+          defaultCards: {
+            loading: false,
+            data: null,
+            error: null,
+          },
+          billingSchemes: [],
         },
       };
     case userTypes.USER_LOGOUT:
