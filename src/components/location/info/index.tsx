@@ -130,7 +130,7 @@ const StoreInfo = (props: any) => {
         >
           Hours
         </Typography>
-        <ListHours id={item.id} />
+        <ListHours id={item.id} resturantOrderType={resturantOrderType} />
         {candeliver == false && (
           <Typography
             variant="body2"
