@@ -1,50 +1,79 @@
-import { Grid, List, ListItem } from '@mui/material';
+import { Grid, List, ListItem, Skeleton } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+// import { useDispatch, useSelector } from 'react-redux';
 import { GetUserFriendlyHours } from '../../../helpers/getUserFriendlyHours';
 import { CalendarTypeEnum, HoursListing } from '../../../helpers/hoursListing';
-import { getResturantCalendarRequest } from '../../../redux/actions/restaurant/calendar';
+// import { getResturantCalendarRequest } from '../../../redux/actions/restaurant/calendar';
+import { getRestaurantCalendar } from '../../../services/restaurant/calendar';
 
 const ListHours = (props: any) => {
-  const { id } = props;
+  const { id, resturantOrderType } = props;
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const [restaurantHours, setRestaurantHours] = useState<HoursListing[]>();
-  const { calendar } = useSelector(
-    (state: any) => state.restaurantCalendarReducer,
-  );
+  const [loading, setLoading] = useState(false);
+  // const { calendar } = useSelector(
+  //   (state: any) => state.restaurantCalendarReducer,
+  // );
 
   useEffect(() => {
-    var today = new Date();
-    const dateFrom =
-      today.getFullYear() * 1e4 +
-      (today.getMonth() + 1) * 100 +
-      today.getDate() +
-      '';
-    const lastWeekDate = new Date(
-      today.getFullYear(),
-      today.getMonth(),
-      today.getDate() + 6,
-    );
-    const dateTo =
-      lastWeekDate.getFullYear() * 1e4 +
-      (lastWeekDate.getMonth() + 1) * 100 +
-      lastWeekDate.getDate() +
-      '';
-    dispatch(getResturantCalendarRequest(id, dateFrom, dateTo));
-  }, []);
-
-  useEffect(() => {
-    if (calendar) {
-      setRestaurantHours(
-        GetUserFriendlyHours(calendar, CalendarTypeEnum.business),
+    const getCalendarData = async () => {
+      setLoading(true);
+      let today = new Date();
+      const dateFrom =
+        today.getFullYear() * 1e4 +
+        (today.getMonth() + 1) * 100 +
+        today.getDate() +
+        '';
+      const lastWeekDate = new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate() + 6,
       );
-    }
-  }, [calendar]);
+      const dateTo =
+        lastWeekDate.getFullYear() * 1e4 +
+        (lastWeekDate.getMonth() + 1) * 100 +
+        lastWeekDate.getDate() +
+        '';
+
+      const calendar = await getRestaurantCalendar(id, dateFrom, dateTo);
+      // console.log('response', response);
+      if (calendar) {
+        setRestaurantHours(
+          GetUserFriendlyHours(calendar, CalendarTypeEnum.business),
+        );
+      }
+      setLoading(false);
+    };
+    getCalendarData();
+
+    // dispatch(getResturantCalendarRequest(id, dateFrom, dateTo));
+  }, [resturantOrderType]);
+
+  // useEffect(() => {
+  //   if (calendar) {
+  //     setRestaurantHours(
+  //       GetUserFriendlyHours(calendar, CalendarTypeEnum.business),
+  //     );
+  //   }
+  // }, [calendar]);
 
   return (
     <>
-      {restaurantHours &&
+      {loading && (
+        <>
+          <Grid container spacing={1}>
+            <Grid item xs={12}>
+              <Skeleton variant="rectangular" height="20px" />
+            </Grid>
+            <Grid item xs={12}>
+              <Skeleton variant="rectangular" height="20px" />
+            </Grid>
+          </Grid>
+        </>
+      )}
+      {!loading &&
+        restaurantHours &&
         restaurantHours.length > 0 &&
         restaurantHours.map((item: HoursListing, index: number) => (
           <Grid container spacing={0} key={index}>
