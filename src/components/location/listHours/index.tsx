@@ -1,13 +1,13 @@
 import { Grid, List, ListItem } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+// import { useDispatch, useSelector } from 'react-redux';
 import { GetUserFriendlyHours } from '../../../helpers/getUserFriendlyHours';
 import { CalendarTypeEnum, HoursListing } from '../../../helpers/hoursListing';
-import { getResturantCalendarRequest } from '../../../redux/actions/restaurant/calendar';
-import {getRestaurantCalendar} from "../../../services/restaurant/calendar";
+// import { getResturantCalendarRequest } from '../../../redux/actions/restaurant/calendar';
+import { getRestaurantCalendar } from '../../../services/restaurant/calendar';
 
 const ListHours = (props: any) => {
-  const { id } = props;
+  const { id, resturantOrderType } = props;
 
   // const dispatch = useDispatch();
   const [restaurantHours, setRestaurantHours] = useState<HoursListing[]>();
@@ -45,7 +45,7 @@ const ListHours = (props: any) => {
     getCalendarData();
 
     // dispatch(getResturantCalendarRequest(id, dateFrom, dateTo));
-  }, []);
+  }, [resturantOrderType]);
 
   // useEffect(() => {
   //   if (calendar) {
