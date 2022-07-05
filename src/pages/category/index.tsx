@@ -24,7 +24,7 @@ import ProductListingSkeletonUI from '../../components/product-listing-skeleton-
 import { getResturantListRequest } from '../../redux/actions/restaurant/list';
 import { setResturantInfoRequest } from '../../redux/actions/restaurant';
 import { displayToast } from '../../helpers/toast';
-import {capitalizeFirstLetter} from "../../helpers/common";
+import { capitalizeFirstLetter } from '../../helpers/common';
 
 const useStyles = makeStyles((theme: Theme) => ({
   heading: {
@@ -111,6 +111,24 @@ const CategoryList = () => {
     window.scrollTo(0, 0);
   }, []);
 
+  const checkRestaurantHandOffAvailability = (
+    restaurant: any,
+    handoff: string,
+  ) => {
+    switch (handoff) {
+      case DeliveryModeEnum.dinein:
+        return restaurant.supportsdinein;
+      case DeliveryModeEnum.pickup:
+        return restaurant.canpickup;
+      case DeliveryModeEnum.curbside:
+        return restaurant.supportscurbside;
+      case DeliveryModeEnum.delivery:
+        return restaurant.candeliver;
+      default:
+        return false;
+    }
+  };
+
   useEffect(() => {
     if (
       getResutarnts &&
@@ -127,13 +145,19 @@ const CategoryList = () => {
         setRestaurantSelected(objRestaurant);
         setOpen(true);
       } else if (objRestaurant && getDineInResutarnts !== '') {
-        if (objRestaurant.supportsdinein && handoff) {
+        if (
+          handoff &&
+          checkRestaurantHandOffAvailability(objRestaurant, handoff)
+        ) {
           dispatch(setResturantInfoRequest(objRestaurant, handoff));
           displayToast('SUCCESS', 'Location changed to ' + objRestaurant.name);
           navigate('/menu/' + objRestaurant.slug);
           dispatch(getCategoriesRequest(objRestaurant.id));
         } else {
-          displayToast('ERROR', `${capitalizeFirstLetter(handoff)} is not available at this time.`);
+          displayToast(
+            'ERROR',
+            `${capitalizeFirstLetter(handoff)} is not available at this time.`,
+          );
           navigate('/location');
         }
         setGetDineInResutarnts('');
