@@ -62,13 +62,14 @@ const ListHours = (props: any) => {
     <>
       {loading && (
         <>
-          <Skeleton variant="rectangular" width="300px" height="20px" />
-          <Skeleton
-            style={{ marginTop: 5 }}
-            variant="rectangular"
-            width="300px"
-            height="20px"
-          />
+          <Grid container spacing={1}>
+            <Grid item xs={12}>
+              <Skeleton variant="rectangular" height="20px" />
+            </Grid>
+            <Grid item xs={12}>
+              <Skeleton variant="rectangular" height="20px" />
+            </Grid>
+          </Grid>
         </>
       )}
       {!loading &&
