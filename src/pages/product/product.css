@@ -140,6 +140,11 @@ input[type='check']:checked + label {
     top: 35px !important;
     bottom: auto !important;
   }
+  .options-cals {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+  }
   .ss-panl {
     display: block;
     margin: auto;
@@ -195,7 +200,13 @@ input[type='check']:checked + label {
   font-size: 12px;
   color: #2b4b62;
 }
-
+@media screen and (max-width: 1180px) {
+  .options-cals {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
 @media screen and (max-width: 899px) {
   .product-detail
     .menu-items
@@ -227,11 +238,11 @@ input[type='check']:checked + label {
     padding-bottom: 0px;
   }
   .product-detail
-  .menu-items
-  .content-panel.selected
-  .card-panel
-  .name-img-panel
-  .name-panel.custom-class {
+    .menu-items
+    .content-panel.selected
+    .card-panel
+    .name-img-panel
+    .name-panel.custom-class {
     color: #e58734;
     position: relative !important;
     width: 100%;
@@ -243,11 +254,11 @@ input[type='check']:checked + label {
   }
 
   .product-detail
-  .menu-items
-  .content-panel
-  .card-panel
-  .name-img-panel
-  .name-panel.custom-class {
+    .menu-items
+    .content-panel
+    .card-panel
+    .name-img-panel
+    .name-panel.custom-class {
     position: relative !important;
     width: 100%;
     /* margin: 0 auto; */
@@ -277,8 +288,6 @@ input[type='check']:checked + label {
   .quantity-label {
     display: none;
   }
-
-
 }
 .sp-mobile {
   display: none;
@@ -424,13 +433,12 @@ input[type='check']:checked + label {
   color: #2b4b62;
 }
 
-
 .product-detail
-.menu-items
-.content-panel.selected
-.card-panel
-.name-img-panel
-.name-panel.custom-class {
+  .menu-items
+  .content-panel.selected
+  .card-panel
+  .name-img-panel
+  .name-panel.custom-class {
   color: #e58734;
   position: absolute;
   width: 100%;
@@ -441,11 +449,11 @@ input[type='check']:checked + label {
 }
 
 .product-detail
-.menu-items
-.content-panel
-.card-panel
-.name-img-panel
-.name-panel.custom-class {
+  .menu-items
+  .content-panel
+  .card-panel
+  .name-img-panel
+  .name-panel.custom-class {
   position: absolute;
   width: 100%;
   /* margin: 0 auto; */
@@ -453,7 +461,6 @@ input[type='check']:checked + label {
   margin-left: -120px;
   text-align: center;
 }
-
 
 .product-detail
   .menu-items
