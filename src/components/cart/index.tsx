@@ -228,13 +228,13 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
       setClickAction('');
       // displayToast('SUCCESS', '1 item added to cart.');
       fitContainer();
-      dispatch(getBasketRequest('', addUpsellsObj.basket, basketType));
+      // dispatch(getBasketRequest('', addUpsellsObj.basket, basketType));
     }
   }, [addUpsellsObj]);
 
   useEffect(() => {
     if (productRemoveObj && productRemoveObj.basket && actionStatus) {
-      dispatch(getBasketRequest('', productRemoveObj.basket, basketType));
+      // dispatch(getBasketRequest('', productRemoveObj.basket, basketType));
       displayToast('SUCCESS', '1 item removed from cart.');
       fitContainer();
       setActionStatus(false);
@@ -295,7 +295,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
 
   useEffect(() => {
     if (productAddObj && productAddObj.basket && actionStatus) {
-      dispatch(getBasketRequest('', productAddObj.basket, basketType));
+      // dispatch(getBasketRequest('', productAddObj.basket, basketType));
       displayToast('SUCCESS', 'Duplicate item added to cart.');
       fitContainer();
       setActionStatus(false);
