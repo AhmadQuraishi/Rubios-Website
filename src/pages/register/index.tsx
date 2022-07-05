@@ -12,6 +12,7 @@ const useStyle = makeStyles(() => ({
     background: `url(${bgImage}) fixed`,
     backgroundRepeat: 'no-repeat',
     justifyContent: 'center',
+    backgroundSize: 'cover',
   },
   signinBtn: {
     width: '200px',

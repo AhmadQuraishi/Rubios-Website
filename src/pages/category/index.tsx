@@ -1,5 +1,5 @@
 import StoreInfoBar from '../../components/restaurant-info-bar';
-import ProductListing from '../../components/product-listing';
+import ProductListingCarousel from '../../components/product-listing-carousel';
 import {
   Grid,
   Theme,
@@ -8,16 +8,18 @@ import {
   Tab,
   Box,
   Modal,
+  Divider,
   Button,
   Dialog,
   CircularProgress,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import { Fragment, useEffect, useLayoutEffect, useState } from 'react';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategoriesRequest } from '../../redux/actions/category';
 import { Category, ResponseMenu } from '../../types/olo-api';
+import { DeliveryModeEnum } from '../../types/olo-api/olo-api.enums';
 import ProductListingSkeletonUI from '../../components/product-listing-skeleton-ui';
 import { getResturantListRequest } from '../../redux/actions/restaurant/list';
 import { setResturantInfoRequest } from '../../redux/actions/restaurant';
@@ -35,7 +37,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     textAlign: 'right',
     '& a': {
       fontFamily: 'Poppins-Medium !important',
-      color: '#6AC0BD',
+      color: '#0069aa',
       fontSize: '13px',
       textTransform: 'uppercase',
       textDecoration: 'none',
@@ -57,8 +59,10 @@ const CategoryList = () => {
     border: '1px solid #FFF',
   };
   const classes = useStyles();
+  const query = new URLSearchParams(useLocation().search);
+  const handoff = query.get('handoff') || '';
   const [getResutarnts, setGetResutrants] = useState(false);
-  const [getDineInResutarnts, setGetDineInResutarnts] = useState(false);
+  const [getDineInResutarnts, setGetDineInResutarnts] = useState('');
   const [restaurantSelected, setRestaurantSelected] = useState<any>();
   const [value, setValue] = useState('0');
   const { store } = useParams();
@@ -86,22 +90,24 @@ const CategoryList = () => {
         setFilterCategories([]);
         dispatch(getCategoriesRequest(restaurant.id));
       }
-    } else if (
-      window.location.href.toLowerCase().indexOf('handoff=dinein') != -1
-    ) {
-      setGetDineInResutarnts(true);
-      setGetResutrants(true);
-      dispatch(getResturantListRequest());
-      if (restaurant && restaurant.id) {
-        dispatch(getCategoriesRequest(restaurant.id));
-      }
     } else {
-      if (restaurant === null) {
-        navigate('/location');
+      // @ts-ignore
+      if (handoff && Object.values(DeliveryModeEnum).includes(handoff)) {
+        setGetDineInResutarnts(handoff);
+        setGetResutrants(true);
+        dispatch(getResturantListRequest());
+        if (restaurant && restaurant.id) {
+          dispatch(getCategoriesRequest(restaurant.id));
+        }
       } else {
-        dispatch(getCategoriesRequest(restaurant.id));
+        if (restaurant === null) {
+          navigate('/location');
+        } else {
+          dispatch(getCategoriesRequest(restaurant.id));
+        }
       }
     }
+    window.scrollTo(0, 0);
   }, []);
 
   useEffect(() => {
@@ -116,12 +122,12 @@ const CategoryList = () => {
       const objRestaurant = restaurants.find(
         (x: any) => x.slug.toLowerCase() == store.toLowerCase(),
       );
-      if (objRestaurant && getDineInResutarnts == false) {
+      if (objRestaurant && getDineInResutarnts === '') {
         setRestaurantSelected(objRestaurant);
         setOpen(true);
-      } else if (objRestaurant && getDineInResutarnts == true) {
-        if (objRestaurant.supportsdinein) {
-          dispatch(setResturantInfoRequest(objRestaurant, 'dinein'));
+      } else if (objRestaurant && getDineInResutarnts !== '') {
+        if (objRestaurant.supportsdinein && handoff) {
+          dispatch(setResturantInfoRequest(objRestaurant, handoff));
           displayToast('SUCCESS', 'Location changed to ' + objRestaurant.name);
           navigate('/menu/' + objRestaurant.slug);
           dispatch(getCategoriesRequest(objRestaurant.id));
@@ -129,7 +135,7 @@ const CategoryList = () => {
           displayToast('ERROR', 'Dine-in is not available at this time.');
           navigate('/location');
         }
-        setGetDineInResutarnts(false);
+        setGetDineInResutarnts('');
       } else {
         displayToast(
           'ERROR',
@@ -195,7 +201,7 @@ const CategoryList = () => {
           }
         });
       }, 500);
-
+      window.scrollTo(0, 0);
       window.addEventListener(
         'orientationchange',
         function () {
@@ -422,8 +428,8 @@ const CategoryList = () => {
               zIndex: '1099',
               padding: {
                 xs: '20px 5px 10px 20px',
-                sm: '20px 30px 5px 70px',
-                lg: '20px 60px 5px 110px',
+                sm: '20px 30px 5px 40px',
+                lg: '20px 60px 5px 100px',
                 boxSizing: 'border-box',
               },
             }}
@@ -448,7 +454,11 @@ const CategoryList = () => {
                   label={item.name}
                   title={item.name}
                   color="secondary.main"
-                  sx={{ fontFamily: 'Poppins-Medium !important' }}
+                  sx={{
+                    fontFamily: 'Poppins-Medium !important',
+                    padding: '10px 0px',
+                    marginRight: '20px',
+                  }}
                   tabIndex={0}
                   role="link"
                   href={`#cat-panel-${index}`}
@@ -469,7 +479,7 @@ const CategoryList = () => {
             sx={{
               padding: {
                 xs: '20px 20px 0px 20px',
-                sm: '30px 70px 0px 70px',
+                sm: '30px 40px 0px 40px',
                 lg: '30px 100px 0px 100px',
               },
               position: 'relative',
@@ -502,7 +512,7 @@ const CategoryList = () => {
               </Grid>
             </Grid>
             <Grid item xs={12} sx={{ paddingBottom: '20px' }} role="list">
-              <ProductListing
+              <ProductListingCarousel
                 orderType={orderType}
                 index={Math.random()}
                 productList={item.products}
@@ -515,7 +525,31 @@ const CategoryList = () => {
             </Grid>
           </Grid>
         ))}
-      <div style={{ paddingBottom: '30px' }}></div>
+      <Grid
+        sx={{
+          padding: {
+            xs: '20px 20px 0px 20px',
+            sm: '30px 70px 0px 70px',
+            lg: '0px 110px 0px 110px',
+          },
+          position: 'relative',
+        }}
+      >
+        <Grid item xs={12} sx={{ padding: '0px 0px 35px' }}>
+          <Divider sx={{ borderColor: '#224c65' }} />
+        </Grid>
+        <Typography
+          sx={{ fontSize: '13px', color: '#214F66', fontStyle: 'italic' }}
+          variant="caption"
+          title="Due to potential cross-contact when preparing menu items, it is not possible to guarantee your meal is completely free of any particular allergen or ingredient. Impossible™ meat, fish, tortillas, veggies, toasted cheese and shellfish are cooked on the same grill."
+        >
+          Due to potential cross-contact when preparing menu items, it is not
+          possible to guarantee your meal is completely free of any particular
+          allergen or ingredient. Impossible™ meat, fish, tortillas, veggies,
+          toasted cheese and shellfish are cooked on the same grill.
+        </Typography>
+      </Grid>
+      <div style={{ paddingBottom: '40px' }}></div>
     </div>
   );
 };

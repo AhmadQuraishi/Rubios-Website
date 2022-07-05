@@ -73,11 +73,11 @@ const StoreInfoBar = () => {
           spacing={0}
           sx={{
             backgroundColor: theme.palette.secondary.main,
-            padding: { xs: '30px 20px', sm: '35px' },
+            padding: { xs: '30px 20px', sm: '35px 40px', lg: '35px 100px' },
           }}
         >
           <Grid item xs={12}>
-            <Grid container spacing={0} maxWidth={1090} margin="auto">
+            <Grid container spacing={0} margin="auto">
               <Grid
                 item
                 xs={12}

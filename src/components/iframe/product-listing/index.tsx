@@ -80,6 +80,7 @@ const ProductListing = (props: any) => {
         // autoPlay={props.deviceType !== 'mobile' ? true : false}
         additionalTransfrom={0}
         autoPlay={false}
+        autoPlaySpeed={99999}
         // autoPlaySpeed={3000}
         keyBoardControl={true}
         // customTransition="all .5"
@@ -129,7 +130,7 @@ const ProductListing = (props: any) => {
                   onClick={() => {
                     window.open(
                       `${process.env.REACT_APP_ORDERING_URL}`,
-                      '_blank',
+                      '_self',
                     );
                   }}
                 >

@@ -30,7 +30,7 @@ function TabPanel(props: TabPanelProps) {
       {...other}
     >
       {value === index && (
-        <Box style={{paddingBottom: 0}} p={3}>
+        <Box style={{ paddingBottom: 0 }} p={3}>
           <Typography>{children}</Typography>
         </Box>
       )}
@@ -88,7 +88,17 @@ const CategoryList = () => {
   };
 
   return (
-    <Grid sx={{ minHeight: 'auto', padding: {xs:'0px 15px', sm:'0px 15px', md: '0px 20px', lg: '0px 20px'} }}>
+    <Grid
+      sx={{
+        minHeight: 'auto',
+        padding: {
+          xs: '0px 15px',
+          sm: '0px 15px',
+          md: '0px 20px',
+          lg: '0px 20px',
+        },
+      }}
+    >
       {loading === true && <ProductListingSkeletonUI />}
       {categoriesWithProducts && categoriesWithProducts.length > 0 && (
         <>
@@ -117,14 +127,31 @@ const CategoryList = () => {
                 </Typography>
               </Grid>
               <Grid item xs={4}>
-                <Typography sx={{
-                  fontSize: '13px',
-                  textDecoration: 'none',
-                  paddingTop: '10px',
-                  display: 'block',
-                  textAlign: 'right'
-                }}>
-                  <Link to="" title="View All" style={{textDecoration: 'none', color: '#0075BF', textTransform: 'uppercase', fontWeight:'Bold'}}>
+                <Typography
+                  sx={{
+                    fontSize: '13px',
+                    textDecoration: 'none',
+                    paddingTop: '10px',
+                    display: 'block',
+                    textAlign: 'right',
+                  }}
+                >
+                  <Link
+                    onClick={() => {
+                      window.open(
+                        `${process.env.REACT_APP_ORDERING_URL}`,
+                        '_self',
+                      );
+                    }}
+                    to=""
+                    title="View All"
+                    style={{
+                      textDecoration: 'none',
+                      color: '#0075BF',
+                      textTransform: 'uppercase',
+                      fontWeight: 'Bold',
+                    }}
+                  >
                     view all →
                   </Link>
                 </Typography>

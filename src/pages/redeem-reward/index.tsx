@@ -51,6 +51,7 @@ const RedeemRewards = () => {
     setRewardName(name);
     dispatch(getRedemptionCode(id));
     setIsredeem(true);
+    navigate('/account/reward/details');
   };
   useEffect(() => {
     if (redemption !== null && !loading1 && isRedeem) {
@@ -100,7 +101,6 @@ const RedeemRewards = () => {
                   className="body-text"
                 >
                   Click a reward below to redeem in restaurant. For online orders, you may select a reward during checkout.
-                  <br/>
                   <br/>
                   Please note, you will need to add the appropriate free or discounted item to your order before redeeming the reward.
                 </Typography>

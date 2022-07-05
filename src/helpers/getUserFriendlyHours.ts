@@ -11,7 +11,6 @@ export function GetUserFriendlyHours(
   if (selectedStoreHours) {
     selectedStoreHours.ranges.forEach((item, index) => {
       if (newHoursArray.length == 0) {
-        console.log('getTimeFormat', getTimeFormat(item.start));
         newHoursArray.push({
           label: item.weekday.substring(0, 1),
           start: getTimeFormat(item.start),

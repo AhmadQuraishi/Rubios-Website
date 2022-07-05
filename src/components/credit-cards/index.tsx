@@ -67,7 +67,7 @@ const CreditCards = ({ billingAccounts, loading }: any) => {
               .map((cardData: any, index: any) => (
                 <Fragment key={index}>
                   <Grid item xs={12} md={6}>
-                    <Card className="card-panel">
+                    <Card className={`card-panel ${cardData.isdefault ? 'credit-cards-panel-default-box' : ''}`}>
                       <Grid container>
                         <Grid item xs={2}>
                           <img

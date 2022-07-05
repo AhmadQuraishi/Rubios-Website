@@ -31,7 +31,7 @@ const ResetPassword = () => {
 
   useEffect(() => {
     if (providerToken) {
-      navigate('/account/');
+      navigate('/account/reward');
     }
   }, [providerToken]);
 

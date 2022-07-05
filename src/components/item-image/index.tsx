@@ -39,10 +39,6 @@ const ItemImage = (props: any) => {
           aria-hidden="true"
           src={productImageURL}
           alt=""
-          style={{
-            height: 'auto',
-            width: '100%',
-          }}
           className={`${className}`}
         />
       )}
@@ -50,15 +46,13 @@ const ItemImage = (props: any) => {
       {imageURL == null &&
         name.toLowerCase() != 'customize' &&
         name.toLowerCase() != 'as is' &&
-        name.toLowerCase().indexOf('taco') == -1 && (
+        name.toLowerCase().indexOf('taco') == -1 &&
+        (name.toLowerCase().indexOf('no rice') !== -1 ||
+          name.toLowerCase().indexOf('no beans') !== -1) && (
           <img
             aria-hidden="true"
             alt=""
             src={require('../../assets/imgs/No ingredient.png')}
-            style={{
-              height: 'auto',
-              width: '100%',
-            }}
             className={`${className}`}
           />
         )}
@@ -70,10 +64,6 @@ const ItemImage = (props: any) => {
             aria-hidden="true"
             alt=""
             src={imageURL}
-            style={{
-              height: 'auto',
-              width: '100%',
-            }}
             className={`${className}`}
           />
         )}
