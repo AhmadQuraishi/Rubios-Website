@@ -215,6 +215,7 @@ const RegisterForm = () => {
             setShowError(true);
             dispatch(userRegister(obj));
             dispatch(addAuthTokenIframeRedirect());
+
           }}
         >
           {({
