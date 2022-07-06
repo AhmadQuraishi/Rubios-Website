@@ -1001,7 +1001,7 @@ const Product = () => {
                 <Grid container>
                   {(parseInt(productDetails.basecalories || '0') > 0 ||
                     parseInt(productDetails.maxcalories || '0') > 0) && (
-                    <Grid item xs={4.5}>
+                    <Grid item xs={4.5} sx={{marginRight:'15px'}}>
                       <Typography
                         variant="caption"
                         className="label bold"
@@ -1030,7 +1030,7 @@ const Product = () => {
                     </Grid>
                   )}
                   {productDetails.cost > 0 && (
-                    <Grid item xs={7.5}>
+                    <Grid item xs={6}>
                       <Typography
                         variant="body1"
                         className="price"
@@ -1341,8 +1341,7 @@ const Product = () => {
                                         paddingTop: '5px',
                                         fontSize: '14px',
                                         fontFamily: 'Poppins-Bold',
-                                        color: '#7CC8C5',
-                                        textAlign: { xs: 'center', lg: 'left' },
+                                        color: '#7CC8C5'
                                       }}
                                     >
                                       +$
