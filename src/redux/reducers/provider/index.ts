@@ -13,7 +13,7 @@ const providerReducer = (state = INITIAL_STATE, action: any) => {
     case userTypes.USER_LOGIN_REQUEST:
     case userTypes.USER_REGISTER_REQUEST:
     case userTypes.USER_FACEBOOK_REQUEST:
-      return { ...state, loading: true };
+      return { ...state, loading: true, error: {} };
     case Type.GET_PROVIDER_SUCCESS:
     case userTypes.USER_LOGIN_SUCCESS:
     case userTypes.USER_REGISTER_SUCCESS:
