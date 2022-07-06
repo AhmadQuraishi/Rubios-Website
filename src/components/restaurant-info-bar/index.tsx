@@ -121,7 +121,7 @@ const StoreInfoBar = () => {
               <Grid
                 item
                 xs={12}
-                sm={2}
+                sm={3}
                 sx={{
                   paddingRight: { xs: '0px', sm: '15px', md: '20px', lg: '20px' },
                   paddingBottom: { xs: '15px', sm: '0px' },
