@@ -24,7 +24,7 @@ import moment from 'moment';
 import './register-form.css';
 import { useLocation } from 'react-router-dom';
 import { displayToast } from '../../../helpers/toast';
-import {addAuthTokenIframeRedirect} from "../../../redux/actions/auth";
+import { addAuthTokenIframeRedirect } from '../../../redux/actions/auth';
 
 const RegisterForm = () => {
   const dispatch = useDispatch();
@@ -63,7 +63,10 @@ const RegisterForm = () => {
   }, []);
 
   useEffect(() => {
-    setSignUpErrors(errorMapping(error));
+    if (error && Object.keys(error).length) {
+      console.log(error)
+      setSignUpErrors(errorMapping(error));
+    }
   }, [error]);
 
   const handleChangeLocation = (event: SelectChangeEvent) => {
@@ -215,7 +218,6 @@ const RegisterForm = () => {
             setShowError(true);
             dispatch(userRegister(obj));
             dispatch(addAuthTokenIframeRedirect());
-
           }}
         >
           {({
@@ -454,7 +456,7 @@ const RegisterForm = () => {
                       and to receiving marketing communications from Rubio's.
                     </Typography>
                   </Grid>
-                  <Grid style={{paddingTop: 10}}>
+                  <Grid style={{ paddingTop: 10 }}>
                     {showError && signUpErrors && signUpErrors.length > 0
                       ? signUpErrors.map((err: string) => {
                           return <p style={{ color: '#E61F00' }}>- {err}</p>;
