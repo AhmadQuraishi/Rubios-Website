@@ -250,7 +250,7 @@ input[type='check']:checked + label {
     left: auto !important;
     top: 0px !important;
     margin-left: 0px !important;
-    text-align: inherit;
+    text-align: center !important;
   }
 
   .product-detail
@@ -265,7 +265,7 @@ input[type='check']:checked + label {
     left: auto !important;
     top: -50px !important;
     margin-left: 0px !important;
-    text-align: inherit;
+    text-align: center;
   }
 }
 

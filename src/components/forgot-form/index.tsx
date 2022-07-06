@@ -20,7 +20,7 @@ const ForgotForm = () => {
 
   return (
     <div className={classes.root}>
-      <Grid container columns={16}>
+      <Grid container columns={12}>
         <Formik
           initialValues={{
             email: '',
@@ -50,9 +50,9 @@ const ForgotForm = () => {
             values,
           }) => (
             <form onSubmit={handleSubmit}>
-              <Grid item xs={16} md={16} lg={16}>
+              <Grid item xs={12} md={12} lg={12}>
                 <Grid container spacing={1} className="sign-in-section">
-                  <Grid item xs={16} sm={8} md={8} lg={16}>
+                  <Grid item xs={12}>
                     <TextField
                       aria-label="email"
                       label="Email Address"
@@ -69,7 +69,7 @@ const ForgotForm = () => {
                   </Grid>
                   <Grid
                     item
-                    xs={16}
+                    xs={12}
                     sx={{
                       textAlign: {
                         lg: 'right',
