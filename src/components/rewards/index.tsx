@@ -145,7 +145,7 @@ const Rewards = (props: any) => {
                       value={reward.reference}
                       className="choose-btn"
                     >
-                      <Grid container spacing={2}>
+                      <Grid container spacing={2} className="align-item">
                         <Grid item xs={12} sm={5} md={5} lg={5}>
                           {reward.imageurl == null && (
                             <img

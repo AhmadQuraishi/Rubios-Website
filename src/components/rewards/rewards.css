@@ -21,9 +21,20 @@
 .choose-reward .choose-btn img {
   width: 85%;
 }
-.choose-reward .choose-btn .icon-content {
+.choose-reward .choose-btn .align-item {
   display: flex;
   align-items: center;
+}
+.choose-reward .choose-btn .icon-content {
+  align-items: center;
+  max-height: 100px;
+  display: -webkit-box;
+  min-height: 25px;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
 }
 .choose-reward .choose-btn p {
   font-size: 18px !important;
