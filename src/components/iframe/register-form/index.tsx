@@ -24,6 +24,7 @@ import moment from 'moment';
 import './register-form.css';
 import { useLocation } from 'react-router-dom';
 import { displayToast } from '../../../helpers/toast';
+import {addAuthTokenIframeRedirect} from "../../../redux/actions/auth";
 
 const RegisterForm = () => {
   const dispatch = useDispatch();
@@ -213,6 +214,7 @@ const RegisterForm = () => {
             }
             setShowError(true);
             dispatch(userRegister(obj));
+            dispatch(addAuthTokenIframeRedirect());
           }}
         >
           {({

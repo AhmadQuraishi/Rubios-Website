@@ -28,3 +28,15 @@ export function getAuthRequestFailure(error: any) {
     error: error,
   };
 }
+
+export function addAuthTokenIframeRedirect() {
+  return {
+    type: Type.ADD_AUTH_TOKEN_IFRAME_REDIRECT,
+  };
+}
+
+export function removeAuthTokenIframeRedirect() {
+  return {
+    type: Type.REMOVE_AUTH_TOKEN_IFRAME_REDIRECT,
+  };
+}
