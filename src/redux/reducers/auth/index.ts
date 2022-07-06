@@ -11,7 +11,7 @@ const INITIAL_STATE = {
 const authReducer = (state = INITIAL_STATE, action: any) => {
   switch (action.type) {
     case Type.GET_AUTHTOKEN_REQUEST:
-      return { ...state, loading: true, iframeRedirect: false };
+      return { ...state, loading: true };
     case Type.GET_AUTHTOKEN_SUCCESS:
       return { ...state, loading: false, authToken: action.payload };
     case Type.GET_AUTHTOKEN_FAILURE:
