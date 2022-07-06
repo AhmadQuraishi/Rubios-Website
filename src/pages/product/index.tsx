@@ -953,6 +953,7 @@ const Product = () => {
 
         if (
           name.toLowerCase().indexOf('no rice') !== -1 ||
+          name.toLowerCase().indexOf('taco') !== -1 ||
           name.toLowerCase().indexOf('no beans') !== -1
         ) {
           check = false;
