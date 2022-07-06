@@ -19,6 +19,9 @@
   padding-right: 0px;
   margin-right: 0px;
 }
+.forgot-wrapper form {
+  width: 100%;
+}
 .login-content .right-col .sign-in-btn {
   margin-top: 14px;
   width: 100%;
@@ -71,11 +74,11 @@
   .login-content {
     padding: 35px 35px 60px 35px;
   }
-  .login-content .left-col {
+  .forgot-wrapper .login-content .left-col {
     border-right: none !important;
-    border-bottom: 1px solid #0069aa;
-    padding: 0px 0px 40px 0px !important;
-    margin: 0px 0px 40px 0px !important;
+    border-bottom: none;
+    padding: 0px !important;
+    margin: 0 !important;
   }
   .login-content .right-col {
     padding: 0px 110px;
@@ -83,6 +86,9 @@
   .login-content .right-col .acc-btn {
     width: calc(100% - 40px);
     margin: 45px 20px 0px 20px;
+  }
+  .forgot-wrapper button {
+    float: right;
   }
 }
 
