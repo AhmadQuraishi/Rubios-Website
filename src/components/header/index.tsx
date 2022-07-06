@@ -155,10 +155,13 @@ const Header = (props: any) => {
           }}
         >
           <Typography variant="body1" className={classes.logo}>
-            <Link
-              to="/location"
+            <p
+              // to="/location"
               className={classes.logoImg}
-              onClick={() => setShowAccountMenu(false)}
+              onClick={() => {
+                setShowAccountMenu(false);
+                window.location.href = '/location';
+              }}
             >
               <img
                 aria-label="Rubio's Cosatal Grill"
@@ -167,7 +170,7 @@ const Header = (props: any) => {
                 alt="Rubio's Cosatal Grill"
                 title="Rubio's Cosatal Grill Logo"
               />
-            </Link>
+            </p>
           </Typography>
 
           {isMobile ? (
