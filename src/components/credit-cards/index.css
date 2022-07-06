@@ -1,6 +1,7 @@
 .credit-cards-panel {
   padding-top: 25px;
   max-width: 820px;
+  padding-left: 25px;
 }
 
 .credit-cards-panel .card-panel {
@@ -10,6 +11,8 @@
   box-sizing: border-box;
   position: relative;
   box-shadow: none;
+  margin-left: -25px;
+  margin-right: 25px;
 }
 
 .credit-cards-panel .card-panel .panel {

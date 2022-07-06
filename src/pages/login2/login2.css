@@ -73,8 +73,8 @@
   .login-wrapper {
     margin: 80px 75px !important;
   }
-  .login-content {
-    padding: 35px 35px 60px 35px;
+  .login-wrapper .login-content {
+    padding: 35px 35px 45px 35px;
   }
   .login-content .left-col {
     border-right: none !important;
@@ -89,13 +89,16 @@
     width: calc(100% - 40px);
     margin: 45px 20px 0px 20px;
   }
+  .login-wrapper .login-content .label.bold {
+    margin-top: 15px;
+  }
 }
 
 @media screen and (max-width: 468px) {
   .login-wrapper {
     margin: 15px !important;
   }
-  .login-content {
+  .login-wrapper .login-content {
     padding: 30px;
   }
   .login-content h1 {
@@ -110,9 +113,9 @@
   .sign-in-section button {
     width: 100% !important;
   }
-  .login-content .label.bold {
+  .login-wrapper .login-content .label.bold {
     margin-top: 0px;
-    margin-bottom: 35px !important;
+    margin-bottom: 5px !important;
   }
   .login-content .right-col .acc-btn {
     width: 100%;
