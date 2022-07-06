@@ -109,16 +109,16 @@ const SplitPayment = forwardRef((props, _ref) => {
 
       console.log('selected', selected);
 
-      if (selected && selected.length === 1) {
-        if (selected[0].localId === removeData.localId) {
-          displayToast(
-            'ERROR',
-            'Minimum 1 payment method is required to make a payment',
-          );
-          handleClosePopup();
-          return;
-        }
-      }
+      // if (selected && selected.length === 1) {
+      //   if (selected[0].localId === removeData.localId) {
+      //     displayToast(
+      //       'ERROR',
+      //       'Minimum 1 payment method is required to make a payment',
+      //     );
+      //     handleClosePopup();
+      //     return;
+      //   }
+      // }
       let updatedBillingSchemes = billingSchemes.filter(
         (element: any) => element.localId !== removeData.localId,
       );
@@ -213,7 +213,14 @@ const SplitPayment = forwardRef((props, _ref) => {
                 lg={12}
                 className="card-details"
               >
-                <Grid item xs={1} sm={1} md={1} lg={1} sx={{marginRight: '5px'}}>
+                <Grid
+                  item
+                  xs={1}
+                  sm={1}
+                  md={1}
+                  lg={1}
+                  sx={{ marginRight: '5px' }}
+                >
                   <FormGroup>
                     <FormControlLabel
                       control={
@@ -358,22 +365,22 @@ const SplitPayment = forwardRef((props, _ref) => {
                 md={12}
                 lg={12}
               >
-                {billingSchemes && billingSchemes.length !== 1 && (
-                  <Typography
-                    onClick={() => {
-                      setOpenPopup(true);
-                      setRemoveData({
-                        localId: account.localId,
-                        billingmethod: account.billingmethod,
-                      });
-                    }}
-                    style={{ cursor: 'pointer', display: 'inline-block' }}
-                    align={'right'}
-                    variant="h6"
-                  >
-                    REMOVE
-                  </Typography>
-                )}
+                {/*{billingSchemes && billingSchemes.length !== 1 && (*/}
+                <Typography
+                  onClick={() => {
+                    setOpenPopup(true);
+                    setRemoveData({
+                      localId: account.localId,
+                      billingmethod: account.billingmethod,
+                    });
+                  }}
+                  style={{ cursor: 'pointer', display: 'inline-block' }}
+                  align={'right'}
+                  variant="h6"
+                >
+                  REMOVE
+                </Typography>
+                {/*)}*/}
               </Grid>
             </Grid>
           );
