@@ -475,6 +475,7 @@ const CategoryList = () => {
               {filterCategories.map((item: Category, index: number) => (
                 <Tab
                   key={item.id}
+                  className="food-menu--link"
                   value={`${index}`}
                   label={item.name}
                   title={item.name}
