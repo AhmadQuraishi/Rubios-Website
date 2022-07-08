@@ -1374,6 +1374,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
             basketObj.basket.products.length > 0 ? (
               <Button
                 variant="contained"
+                id="proceedCheckout"
                 onClick={() => {
                   showCart();
                   navigate('/checkout');

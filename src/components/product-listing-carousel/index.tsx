@@ -180,6 +180,7 @@ const ProductListingCarousel = (props: any) => {
               //   md={3}
               // >
               <div
+                id="foodmenuproduct"
                 scroll-id={'#panel-' + index}
                 key={index}
                 style={{ padding: 10 }}
