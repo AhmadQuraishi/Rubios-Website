@@ -138,10 +138,7 @@ const CategoryList = () => {
                 >
                   <Link
                     onClick={() => {
-                      window.open(
-                        `${process.env.REACT_APP_ORDERING_URL}`,
-                        '_self',
-                      );
+                      window.parent.location.href = `${process.env.REACT_APP_ORDERING_URL}`;
                     }}
                     to=""
                     title="View All"
