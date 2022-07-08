@@ -128,10 +128,7 @@ const ProductListing = (props: any) => {
                   title="ORDER NOW"
                   style={{ width: '80%', margin: '5px'}}
                   onClick={() => {
-                    window.open(
-                      `${process.env.REACT_APP_ORDERING_URL}`,
-                      '_self',
-                    );
+                    window.parent.location.href = `${process.env.REACT_APP_ORDERING_URL}`;
                   }}
                 >
                   ORDER NOW
