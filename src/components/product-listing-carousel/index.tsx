@@ -204,7 +204,9 @@ const ProductListingCarousel = (props: any) => {
                           changeImageSize(
                             item.imagefilename,
                             item.images,
-                            'desktop-menu',
+                            process.env.REACT_APP_NODE_ENV === 'production'
+                              ? 'marketplace-product'
+                              : 'desktop-menu',
                           )
                         }
                         title={item.name}
