@@ -6,7 +6,7 @@ import { Product } from '../../../types/olo-api';
 import Carousel from 'react-multi-carousel';
 import { useNavigate } from 'react-router-dom';
 import 'react-multi-carousel/lib/styles.css';
-import {changeImageSize} from "../../../helpers/common";
+import { changeImageSize } from '../../../helpers/common';
 
 const useStyles = makeStyles((theme: Theme) => ({
   img: {
@@ -103,7 +103,14 @@ const ProductListing = (props: any) => {
                 <img
                   className={classes.img}
                   src={
-                    imgPath + changeImageSize(item.imagefilename, item.images, 'desktop-menu')
+                    imgPath +
+                    changeImageSize(
+                      item.imagefilename,
+                      item.images,
+                      process.env.REACT_APP_NODE_ENV === 'production'
+                        ? 'marketplace-product'
+                        : 'desktop-menu',
+                    )
                   }
                   title={item.name}
                 />
@@ -114,7 +121,7 @@ const ProductListing = (props: any) => {
                   title={item.name}
                 />
               )}
-              <CardContent style={{paddingBottom: 0}} sx={{ padding: '0' }}>
+              <CardContent style={{ paddingBottom: 0 }} sx={{ padding: '0' }}>
                 <Typography
                   variant="h2"
                   title={item.name}
@@ -126,7 +133,7 @@ const ProductListing = (props: any) => {
                   className="custom-btn cta2-btn"
                   variant="contained"
                   title="ORDER NOW"
-                  style={{ width: '80%', margin: '5px'}}
+                  style={{ width: '80%', margin: '5px' }}
                   onClick={() => {
                     window.parent.location.href = `${process.env.REACT_APP_ORDERING_URL}`;
                   }}
