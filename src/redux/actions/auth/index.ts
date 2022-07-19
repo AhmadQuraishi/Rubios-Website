@@ -40,3 +40,10 @@ export function removeAuthTokenIframeRedirect() {
     type: Type.REMOVE_AUTH_TOKEN_IFRAME_REDIRECT,
   };
 }
+
+export function updateDeviceUniqueId(id: any) {
+  return {
+    type: Type.UPDATE_DEVICE_UNIQUE_ID,
+    payload: id,
+  };
+}

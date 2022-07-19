@@ -3,6 +3,7 @@ import axiosInstance from '../axiosInceptor';
 import { ResponseContactOptions } from '../../types/olo-api';
 import axios from 'axios';
 import { TableBody } from '@mui/material';
+import { generateDeviceId } from '../../helpers/common';
 
 //profile
 export const RequestUserProfile = () => {
@@ -323,12 +324,20 @@ export const requestUserLogin = (body: object) => {
     user: body,
     client: process.env.REACT_APP_PUNCHH_CLIENT_ID,
   };
+  const deviceId = store.getState().authReducer.deviceId
+    ? store.getState().authReducer.deviceId
+    : generateDeviceId();
+  const config = {
+    headers: {
+      'punchh-app-device-id': deviceId,
+    },
+  };
 
   try {
     const url = `${process.env.REACT_APP_PUNCHH_API}/api/auth/customers/sign_in`;
 
     return axiosInstance
-      .post(url, data)
+      .post(url, data, config)
       .then((response) => response.data)
       .catch((error) => {
         throw error.response;
