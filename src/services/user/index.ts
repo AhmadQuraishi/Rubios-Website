@@ -3,6 +3,7 @@ import axiosInstance from '../axiosInceptor';
 import { ResponseContactOptions } from '../../types/olo-api';
 import axios from 'axios';
 import { TableBody } from '@mui/material';
+import { generateDeviceId } from '../../helpers/common';
 
 //profile
 export const RequestUserProfile = () => {

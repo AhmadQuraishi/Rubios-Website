@@ -11,6 +11,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { setPageStateRequest } from './redux/actions/page-state';
 import { useDispatch, useSelector } from 'react-redux';
 import NavigateApp from './components/navigate-app';
+import { generateDeviceId } from './helpers/common';
+import { updateDeviceUniqueId } from './redux/actions/auth';
 // import TagManager from 'react-gtm-module';
 //
 // const tagManagerArgs = {
@@ -30,9 +32,17 @@ function App(props: any) {
   const [hideLoginedPanel, setHideLoginedPanel] = useState(false);
   const dispatch = useDispatch();
   const { providerToken } = useSelector((state: any) => state.providerReducer);
+  const { deviceId } = useSelector((state: any) => state.authReducer);
   const navigate = useNavigate();
 
-
+  useEffect(() => {
+    if (!deviceId) {
+      const newDeviceId = generateDeviceId();
+      if (newDeviceId) {
+        dispatch(updateDeviceUniqueId(newDeviceId));
+      }
+    }
+  }, [deviceId]);
 
   useEffect(() => {
     if (window.location.href.toLocaleLowerCase().indexOf('/account') != -1) {

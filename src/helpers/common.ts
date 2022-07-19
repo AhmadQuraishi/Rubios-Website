@@ -17,10 +17,14 @@ export function changeImageSize(path: string, images: any, groupname: string) {
   }
 }
 
-export function checkProductAvailability (item: any, orderType: any) {
+export function checkProductAvailability(item: any, orderType: any) {
   return (
     !item.unavailablehandoffmodes.includes(orderType.toLowerCase()) &&
     !item.availability.isdisabled &&
     item.availability.now
   );
-};
+}
+
+export function generateDeviceId() {
+  return 'id' + Math.random().toString(16).slice(2);
+}
