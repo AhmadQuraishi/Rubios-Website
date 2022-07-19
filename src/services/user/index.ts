@@ -324,20 +324,12 @@ export const requestUserLogin = (body: object) => {
     user: body,
     client: process.env.REACT_APP_PUNCHH_CLIENT_ID,
   };
-  const deviceId = store.getState().authReducer.deviceId
-    ? store.getState().authReducer.deviceId
-    : generateDeviceId();
-  const config = {
-    headers: {
-      'punchh-app-device-id': deviceId,
-    },
-  };
 
   try {
     const url = `${process.env.REACT_APP_PUNCHH_API}/api/auth/customers/sign_in`;
 
     return axiosInstance
-      .post(url, data, config)
+      .post(url, data)
       .then((response) => response.data)
       .catch((error) => {
         throw error.response;
