@@ -7,10 +7,10 @@ axiosInstance.interceptors.request.use(
     try {
       const url = config.url || '';
       let isPunchhApi = url?.toString().includes('punchh_api');
-      // let mobile = url?.toString().includes('mobile');
-
-      if (isPunchhApi) {
+      // let mobile = url?.toString().includes('mobile')
+      if (isPunchhApi && !url.includes('api/auth/customers/sign_in')) {
         // if (mobile) {
+
         const deviceId = store.getState().authReducer.deviceId
           ? store.getState().authReducer.deviceId
           : generateDeviceId();
@@ -21,6 +21,7 @@ axiosInstance.interceptors.request.use(
           }`,
           'punchh-app-device-id': deviceId,
         };
+
         // }
       }
       return config;
