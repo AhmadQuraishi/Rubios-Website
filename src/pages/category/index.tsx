@@ -79,6 +79,7 @@ const CategoryList = () => {
     (state: any) => state.restaurantListReducer,
   );
   const { providerToken } = useSelector((state: any) => state.providerReducer);
+  const basketObj = useSelector((state: any) => state.basketReducer);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const body = document;
@@ -150,7 +151,11 @@ const CategoryList = () => {
           checkRestaurantHandOffAvailability(objRestaurant, handoff)
         ) {
           dispatch(setResturantInfoRequest(objRestaurant, handoff));
-          displayToast('SUCCESS', 'Location changed to ' + objRestaurant.name + ' and basket is empty');
+          if( basketObj && basketObj.basket){
+            displayToast('SUCCESS', 'Location changed to ' + objRestaurant.name + ' and basket is empty');
+          }else{
+            displayToast('SUCCESS', 'Location changed to ' + objRestaurant.name);
+          }
           navigate('/menu/' + objRestaurant.slug);
           dispatch(getCategoriesRequest(objRestaurant.id));
         } else {
@@ -314,7 +319,11 @@ const CategoryList = () => {
 
   const changeRestaurant = (orderType: string) => {
     dispatch(setResturantInfoRequest(restaurantSelected, orderType));
-    displayToast('SUCCESS', 'Location changed to ' + restaurantSelected.name + ' and basket is empty');
+    if( basketObj && basketObj.basket){
+      displayToast('SUCCESS', 'Location changed to ' + restaurantSelected.name + ' and basket is empty');
+    }else{
+      displayToast('SUCCESS', 'Location changed to ' + restaurantSelected.name);
+    }
     setOpen(false);
     navigate('/menu/' + restaurantSelected.slug);
     dispatch(getCategoriesRequest(restaurantSelected.id));
