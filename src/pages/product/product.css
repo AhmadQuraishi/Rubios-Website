@@ -181,6 +181,17 @@ input[type='check']:checked + label {
     font-size: 16px;
   }
 }
+.product-detail .action-panel {
+  position: fixed;
+  margin: auto;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  padding: 30px;
+  background: #fff;
+  z-index: 1000;
+}
 
 .product-detail .action-panel .content-panel {
   display: flex;
@@ -219,17 +230,6 @@ input[type='check']:checked + label {
     overflow-wrap: break-word;
     text-align: center;
     font-size: 15px;
-  }
-  .product-detail .action-panel {
-    position: fixed;
-    margin: auto;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    padding: 30px;
-    background: #fff;
-    z-index: 1000;
   }
   .product-detail .action-panel .content-panel {
     justify-content: center;
@@ -440,12 +440,12 @@ input[type='check']:checked + label {
   .name-img-panel
   .name-panel.custom-class {
   color: #e58734;
-  position: absolute;
+  margin-left: -108px;
+  /* position: absolute;
   width: 100%;
-  /* margin: 0 auto; */
-  left: 50%;
-  margin-left: -45px;
-  text-align: left;
+  left: 60%;
+  margin-left: -60px;
+  text-align: center; */
 }
 
 .product-detail
@@ -458,7 +458,7 @@ input[type='check']:checked + label {
   width: 100%;
   /* margin: 0 auto; */
   left: 60%;
-  margin-left: -135px;
+  margin-left: -125px;
   text-align: center;
 }
 

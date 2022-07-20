@@ -28,6 +28,8 @@ const StoreInfo = (props: any) => {
 
   const [candeliver, setCanDeliver] = useState(true);
   const [loading, setLoading] = useState(false);
+  const basketObj = useSelector((state: any) => state.basketReducer);
+
   useEffect(() => {
     try {
       if (resturantOrderType == 'delivery' && deliveryAddressString) {
@@ -81,7 +83,11 @@ const StoreInfo = (props: any) => {
         dispatch(
           setResturantInfoRequest(restaurantObj, resturantOrderType || ''),
         );
-        displayToast('SUCCESS', 'Location changed to ' + restaurantObj.name + ' and basket is empty');
+        if( basketObj && basketObj.basket){
+          displayToast('SUCCESS', 'Location changed to ' + restaurantObj.name + ' and basket is empty');
+        }else{
+          displayToast('SUCCESS', 'Location changed to ' + restaurantObj.name);
+        }
       }
       navigate('/menu/' + restaurantObj.slug);
     }
