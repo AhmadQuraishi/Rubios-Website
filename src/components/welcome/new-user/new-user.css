@@ -4,6 +4,11 @@
   text-align: center;
   margin-top: 20px;
 }
+.icons-container{
+    margin-top: 20px;
+    width: min-content;
+}
+
 .qr-container h6 {
   font-family: 'Poppins-Medium', sans-serif !Important;
   font-size: 14px !important;

@@ -1341,7 +1341,7 @@ const Product = () => {
                                         paddingTop: '5px',
                                         fontSize: '14px',
                                         fontFamily: 'Poppins-Bold',
-                                        color: '#7CC8C5'
+                                        color: '#0075BF'
                                       }}
                                     >
                                       +$

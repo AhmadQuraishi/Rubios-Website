@@ -331,7 +331,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
                             paddingTop: '5px',
                             fontSize: '14px',
                             fontFamily: 'Poppins-Bold',
-                            color: '#7CC8C5',
+                            color: '#0075BF',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
