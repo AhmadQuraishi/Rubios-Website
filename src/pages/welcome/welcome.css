@@ -84,9 +84,15 @@
   }
   .left-col {
     border-right: none !important;
+    border-bottom: 1px solid #0069aa;
     padding: 0px !important;
     margin: 0px 0px 35px 0px !important;
   }
+
+  .setborder{
+    margin-bottom: 27px;
+  }
+
   .p-card {
     display: block !important;
   }

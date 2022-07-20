@@ -324,7 +324,7 @@ const Welcome = () => {
                   </Typography>
                   <Grid item xs={12} sm={12} md={10} lg={10}>
                     <Button
-                      className="button"
+                      className="button setborder"
                       variant="contained"
                       title="ORDER NOW"
                       style={{ width: '100%' }}

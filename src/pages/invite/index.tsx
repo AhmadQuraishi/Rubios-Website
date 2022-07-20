@@ -40,7 +40,7 @@ const Invite = () => {
         .share({
           title: 'Use My Rubio’s Rewards Invite Code and Save $5!',
           text: `Join Rubio's Rewards at ${linkElement} and use my code ${inviteCode} to get $5 off your next order!`,
-          // url: `/register?invite_code=${inviteCode}`,
+          url:  linkElement,
         })
         .then(() => {
           console.log('Successfully shared');
