@@ -63,7 +63,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingTop: '30px',
     paddingRight: '5px',
     [theme.breakpoints.down('md')]: {
-      paddingTop: '25px',
+      paddingTop: '12px',
+      fontSize: '18px'
     },
     color: theme.palette.primary.main,
     fontFamily: 'Poppins-Medium !important',
@@ -158,24 +159,30 @@ const Header = (props: any) => {
             <p
               // to="/location"
               className={classes.logoImg}
-              onClick={() => {
-                setShowAccountMenu(false);
-                window.location.href = '/location';
-              }}
             >
+              <a href= {process.env.REACT_APP_RUBIOS_HOME_PAGE}>
               <img
                 aria-label="Rubio's Cosatal Grill"
                 src={logo}
                 style={{ display: 'flex' }}
                 alt="Rubio's Cosatal Grill"
                 title="Rubio's Cosatal Grill Logo"
-              />
+              />   
+              </a>
             </p>
           </Typography>
 
           {isMobile ? (
             <>
-              <Drawer open={openDrawer} onClose={() => setOpenDrawer(false)}>
+              <Link
+                to={restaurant ? '/menu/' + restaurant.slug : '/'}
+                className={classes.menuLink}
+                title="Menu"
+                onClick={() => setShowAccountMenu(false)}
+              >
+                Menu
+              </Link>
+              {/* <Drawer open={openDrawer} onClose={() => setOpenDrawer(false)}>
                 <div style={{ padding: '20px' }}>
                   <Link
                     to={restaurant ? '/menu/' + restaurant.slug : '/'}
@@ -192,67 +199,67 @@ const Header = (props: any) => {
                 className={classes.icon}
               >
                 <MenuIcon fontSize="large" titleAccess="Menu Icon" />
-              </IconButton>
+              </IconButton> */}
               {providerToken && providerToken.first_name
                 ? !hideLoginedPanel && (
+                  <Grid
+                    container
+                    sx={{
+                      background: '#0073BD',
+                      alignItems: 'center',
+                      fontFamily: 'Poppins-Medium',
+                      textAlign: 'center',
+                      textTransform: 'uppercase',
+                      fontSize: '14px',
+                      height: '70px',
+                      width: '65px',
+                    }}
+                    onClick={() => {
+                      setShowAccountMenu(!showAccountMenu);
+                    }}
+                  >
                     <Grid
-                      container
-                      sx={{
-                        background: '#0073BD',
-                        alignItems: 'center',
-                        fontFamily: 'Poppins-Medium',
-                        textAlign: 'center',
-                        textTransform: 'uppercase',
-                        fontSize: '14px',
-                        height: '70px',
-                        width: '65px',
-                      }}
-                      onClick={() => {
-                        setShowAccountMenu(!showAccountMenu);
-                      }}
+                      item
+                      xs={12}
+                      sx={{ display: 'flex', justifyContent: 'center' }}
                     >
-                      <Grid
-                        item
-                        xs={12}
-                        sx={{ display: 'flex', justifyContent: 'center' }}
-                      >
-                        <img
-                          src={require('../../assets/imgs/user-icon.png')}
-                          alt="Profile Icon"
-                        />
-                      </Grid>
+                      <img
+                        src={require('../../assets/imgs/user-icon.png')}
+                        alt="Profile Icon"
+                      />
                     </Grid>
-                  )
+                  </Grid>
+                )
                 : !hideLoginPanel && (
+                  <Grid
+                    container
+                    sx={{
+                      background: '#0073BD',
+                      alignItems: 'center',
+                      fontFamily: 'Poppins-Medium',
+                      textAlign: 'center',
+                      textTransform: 'uppercase',
+                      fontSize: '14px',
+                      height: '70px',
+                      width: '65px',
+                    }}
+                    onClick={() => {
+                      navigate('/login');
+                    }}
+                  >
                     <Grid
-                      container
-                      sx={{
-                        background: '#0073BD',
-                        alignItems: 'center',
-                        fontFamily: 'Poppins-Medium',
-                        textAlign: 'center',
-                        textTransform: 'uppercase',
-                        fontSize: '14px',
-                        height: '70px',
-                        width: '65px',
-                      }}
-                      onClick={() => {
-                        navigate('/login');
-                      }}
+                      item
+                      xs={12}
+                      sx={{ display: 'flex', justifyContent: 'center' }}
                     >
-                      <Grid
-                        item
-                        xs={12}
-                        sx={{ display: 'flex', justifyContent: 'center' }}
-                      >
-                        <img
-                          style={{ width: '75%', display: 'block' }}
-                          src={require('../../assets/imgs/logout-icon.png')}
-                          alt="Login Icon"
-                        />
-                      </Grid>
+                      <img
+                        style={{ width: '75%', display: 'block' }}
+                        src={require('../../assets/imgs/logout-icon.png')}
+                        alt="Login Icon"
+                      />
                     </Grid>
-                  )}
+                  </Grid>
+                )}
               {!removeCart && !removeCartForLocation && (
                 <div
                   style={{
@@ -314,120 +321,120 @@ const Header = (props: any) => {
               </Link>
               {providerToken && providerToken.first_name
                 ? !hideLoginedPanel && (
+                  <Grid
+                    container
+                    sx={{
+                      width: { sm: '170px', md: '200px' },
+                      marginLeft: '15px',
+                      background: '#0073BD',
+                      alignItems: 'center',
+                      cursor: 'pointer',
+                    }}
+                    onClick={() => {
+                      setShowAccountMenu(!showAccountMenu);
+                    }}
+                  >
                     <Grid
-                      container
-                      sx={{
-                        width: { sm: '170px', md: '200px' },
-                        marginLeft: '15px',
-                        background: '#0073BD',
+                      item
+                      xs={12}
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'center',
                         alignItems: 'center',
-                        cursor: 'pointer',
-                      }}
-                      onClick={() => {
-                        setShowAccountMenu(!showAccountMenu);
                       }}
                     >
-                      <Grid
-                        item
-                        xs={12}
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'center',
-                          alignItems: 'center',
+                      <img
+                        src={require('../../assets/imgs/user-icon.png')}
+                        alt="Profile Icon"
+                      />{' '}
+                      <Typography
+                        sx={{
+                          paddingLeft: '5px',
+                          display: 'block',
+                          maxWidth: { sm: '100px', lg: '130px' },
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          fontFamily: 'Poppins-Medium',
+                          textAlign: 'center',
+                          textTransform: 'uppercase',
+                          fontSize: '14px',
                         }}
                       >
-                        <img
-                          src={require('../../assets/imgs/user-icon.png')}
-                          alt="Profile Icon"
-                        />{' '}
-                        <Typography
-                          sx={{
+                        Hi{' '}
+                        {(providerToken && providerToken.first_name) ||
+                          'Stacey'}
+                        !
+                      </Typography>
+                      {!showAccountMenu && (
+                        <span
+                          style={{
                             paddingLeft: '5px',
-                            display: 'block',
-                            maxWidth: { sm: '100px', lg: '130px' },
-                            whiteSpace: 'nowrap',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            fontFamily: 'Poppins-Medium',
-                            textAlign: 'center',
-                            textTransform: 'uppercase',
-                            fontSize: '14px',
+                            fontSize: '12px',
                           }}
                         >
-                          Hi{' '}
-                          {(providerToken && providerToken.first_name) ||
-                            'Stacey'}
-                          !
-                        </Typography>
-                        {!showAccountMenu && (
-                          <span
-                            style={{
-                              paddingLeft: '5px',
-                              fontSize: '12px',
-                            }}
-                          >
-                            &#9660;
-                          </span>
-                        )}
-                        {showAccountMenu && (
-                          <span
-                            style={{
-                              paddingLeft: '5px',
-                              fontSize: '12px',
-                            }}
-                          >
-                            &#9650;
-                          </span>
-                        )}
-                      </Grid>
+                          &#9660;
+                        </span>
+                      )}
+                      {showAccountMenu && (
+                        <span
+                          style={{
+                            paddingLeft: '5px',
+                            fontSize: '12px',
+                          }}
+                        >
+                          &#9650;
+                        </span>
+                      )}
                     </Grid>
-                  )
+                  </Grid>
+                )
                 : !hideLoginPanel && (
+                  <Grid
+                    container
+                    sx={{
+                      width: { sm: '170px', md: '200px' },
+                      marginLeft: '15px',
+                      background: '#0073BD',
+                      alignItems: 'center',
+                      cursor: 'pointer',
+                    }}
+                    onClick={() => {
+                      navigate('/login');
+                    }}
+                  >
                     <Grid
-                      container
-                      sx={{
-                        width: { sm: '170px', md: '200px' },
-                        marginLeft: '15px',
-                        background: '#0073BD',
+                      item
+                      xs={12}
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'center',
                         alignItems: 'center',
-                        cursor: 'pointer',
-                      }}
-                      onClick={() => {
-                        navigate('/login');
                       }}
                     >
-                      <Grid
-                        item
-                        xs={12}
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'center',
-                          alignItems: 'center',
+                      <img
+                        src={require('../../assets/imgs/user-icon.png')}
+                        alt="Profile Icon"
+                      />{' '}
+                      <Typography
+                        sx={{
+                          paddingLeft: '5px',
+                          display: 'block',
+                          maxWidth: { sm: '100px', lg: '130px' },
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          fontFamily: 'Poppins-Medium',
+                          textAlign: 'center',
+                          textTransform: 'uppercase',
+                          fontSize: '14px',
                         }}
                       >
-                        <img
-                          src={require('../../assets/imgs/user-icon.png')}
-                          alt="Profile Icon"
-                        />{' '}
-                        <Typography
-                          sx={{
-                            paddingLeft: '5px',
-                            display: 'block',
-                            maxWidth: { sm: '100px', lg: '130px' },
-                            whiteSpace: 'nowrap',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            fontFamily: 'Poppins-Medium',
-                            textAlign: 'center',
-                            textTransform: 'uppercase',
-                            fontSize: '14px',
-                          }}
-                        >
-                          Hi Guest!
-                        </Typography>
-                      </Grid>
+                        Sign In!
+                      </Typography>
                     </Grid>
-                  )}
+                  </Grid>
+                )}
               {!removeCart && (
                 <Button
                   component="div"

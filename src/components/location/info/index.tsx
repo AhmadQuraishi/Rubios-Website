@@ -81,7 +81,7 @@ const StoreInfo = (props: any) => {
         dispatch(
           setResturantInfoRequest(restaurantObj, resturantOrderType || ''),
         );
-        displayToast('SUCCESS', 'Location changed to ' + restaurantObj.name);
+        displayToast('SUCCESS', 'Location changed to ' + restaurantObj.name + ' and basket is empty');
       }
       navigate('/menu/' + restaurantObj.slug);
     }

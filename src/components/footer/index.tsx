@@ -96,12 +96,15 @@ const Footer = () => {
                   },
                 }}
               >
+                <a href= {process.env.REACT_APP_RUBIOS_HOME_PAGE}>
+
                 <img
                   src={footerLogo}
                   style={{ width: '100%' }}
                   alt="Rubios Coastal Grill"
                   title="Rubios Coastal Grill"
                 />
+                </a>
               </Button>
             </Grid>
             <Grid item xs={12}>

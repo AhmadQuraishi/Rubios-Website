@@ -263,7 +263,7 @@ input[type='check']:checked + label {
     width: 100%;
     /* margin: 0 auto; */
     left: auto !important;
-    top: -50px !important;
+    top: 0px !important;
     margin-left: 0px !important;
     text-align: center;
   }
@@ -457,7 +457,7 @@ input[type='check']:checked + label {
   position: absolute;
   width: 100%;
   /* margin: 0 auto; */
-  left: 50%;
+  left: 60%;
   margin-left: -135px;
   text-align: center;
 }
