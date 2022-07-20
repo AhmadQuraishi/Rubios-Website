@@ -440,7 +440,7 @@ input[type='check']:checked + label {
   .name-img-panel
   .name-panel.custom-class {
   color: #e58734;
-  margin-left: -108px;
+  margin-left: -49px;
   /* position: absolute;
   width: 100%;
   left: 60%;
@@ -458,8 +458,7 @@ input[type='check']:checked + label {
   width: 100%;
   /* margin: 0 auto; */
   left: 60%;
-  margin-left: -125px;
-  text-align: center;
+  margin-left: -61px;
 }
 
 .product-detail
