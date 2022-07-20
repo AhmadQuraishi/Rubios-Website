@@ -156,6 +156,13 @@ const StoreInfoBar = () => {
                     <p>{restaurantInfo.distance.toFixed(2)} Miles Away</p>
                   )}
                 </Typography>
+                <Typography
+                  variant='body2'
+                  color="#fff"
+                  fontSize={11}
+                >
+                  <p style={{cursor: 'pointer', textDecorationLine: 'underline'}} onClick={() => { window.location.href = '/location'}}>Change location</p>
+                </Typography>
               </Grid>
               <Grid
                 item
