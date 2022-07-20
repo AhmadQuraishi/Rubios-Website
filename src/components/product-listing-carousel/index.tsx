@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontFamily: 'Poppins-Regular !important',
     fontSize: '14px',
     fontWeight: 600,
-    color: theme.palette.primary.main,
+    color: theme.palette.secondary.main,
   },
   price: {
     paddingTop: '10px',
@@ -153,9 +153,9 @@ const ProductListingCarousel = (props: any) => {
         responsive={responsive}
         // ssr={true} // means to render carousel on server-side.
         infinite={false}
-        // autoPlay={props.deviceType !== 'mobile' ? true : false}
+        // autoPlay={props.deviceType !== 'mobile' ? false : true}
         additionalTransfrom={0}
-        autoPlay={false}
+        // autoPlay={true}
         autoPlaySpeed={99999}
         keyBoardControl={true}
         // customTransition="all .5"
@@ -165,8 +165,8 @@ const ProductListingCarousel = (props: any) => {
         deviceType={props.deviceType}
         dotListClass="custom-dot-list-style"
         itemClass="carousel-item-padding-40-px"
-        // customRightArrow={<CustomRightArrow onClick={undefined} />}
-        // customLeftArrow={<CustomLeftArrow onClick={undefined} />}
+      // customRightArrow={<CustomRightArrow onClick={undefined} />}
+      // customLeftArrow={<CustomLeftArrow onClick={undefined} />}
       >
         {products.map(
           (item: any, index: number) =>
@@ -239,19 +239,18 @@ const ProductListingCarousel = (props: any) => {
                           <Grid
                             item
                             xs={6}
-                            title={`${
-                              item.caloriesseparator
+                            title={`${item.caloriesseparator
                                 ? item.basecalories +
-                                  item.caloriesseparator +
-                                  item.maxcalories
+                                item.caloriesseparator +
+                                item.maxcalories
                                 : item.basecalories
-                            } cal`}
+                              } cal`}
                             className={classes.cal}
                           >
                             {item.caloriesseparator
                               ? item.basecalories +
-                                item.caloriesseparator +
-                                item.maxcalories
+                              item.caloriesseparator +
+                              item.maxcalories
                               : item.basecalories}{' '}
                             cal
                           </Grid>
