@@ -150,7 +150,7 @@ const CategoryList = () => {
           checkRestaurantHandOffAvailability(objRestaurant, handoff)
         ) {
           dispatch(setResturantInfoRequest(objRestaurant, handoff));
-          displayToast('SUCCESS', 'Location changed to ' + objRestaurant.name);
+          displayToast('SUCCESS', 'Location changed to ' + objRestaurant.name + ' and basket is empty');
           navigate('/menu/' + objRestaurant.slug);
           dispatch(getCategoriesRequest(objRestaurant.id));
         } else {
@@ -314,7 +314,7 @@ const CategoryList = () => {
 
   const changeRestaurant = (orderType: string) => {
     dispatch(setResturantInfoRequest(restaurantSelected, orderType));
-    displayToast('SUCCESS', 'Location changed to ' + restaurantSelected.name);
+    displayToast('SUCCESS', 'Location changed to ' + restaurantSelected.name + ' and basket is empty');
     setOpen(false);
     navigate('/menu/' + restaurantSelected.slug);
     dispatch(getCategoriesRequest(restaurantSelected.id));
