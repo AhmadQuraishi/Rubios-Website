@@ -183,7 +183,7 @@ input[type='check']:checked + label {
 }
 .product-detail .action-panel {
   position: fixed;
-  margin: auto;
+  margin: 0;
   bottom: 0;
   left: 0;
   right: 0;
