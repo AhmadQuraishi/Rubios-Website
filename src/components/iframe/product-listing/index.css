@@ -7,7 +7,7 @@
   -webkit-box-orient: vertical;
 }
 .react-multi-carousel-list {
-  overflow: scroll !important;
+  /* overflow: scroll !important; */
 }
 .react-multi-carousel-list.carousel-container  button.react-multiple-carousel__arrow--left,
 .react-multi-carousel-list.carousel-container  button.react-multiple-carousel__arrow--right {

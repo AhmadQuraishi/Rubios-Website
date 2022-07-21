@@ -5,8 +5,7 @@
   margin-top: 20px;
 }
 .icons-container{
-    margin-top: 20px;
-    width: min-content;
+  padding-left: 15%;
 }
 
 .qr-container h6 {
@@ -16,3 +15,9 @@
   padding: 0px 18px;
   line-height: 18px !important;
 }
+
+@media screen and (max-width: 600px){
+  .icons-container{
+    padding-left: 15%;
+  }  
+} 
