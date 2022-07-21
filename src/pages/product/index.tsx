@@ -1289,7 +1289,7 @@ const Product = () => {
                                   {itemChild.option.basecalories && (
                                     <Grid
                                       item
-                                      xs={12}
+                                      xs={6}
                                       sx={{
                                         fontSize: '11px',
                                         color: '#1a73e8',
@@ -1333,15 +1333,14 @@ const Product = () => {
                                   {itemChild.option.cost > 0 && (
                                     <Grid
                                       item
-                                      xs={12}
+                                      xs={6}
                                       title={`$${parseFloat(
                                         itemChild.option.cost,
                                       ).toFixed(2)}`}
                                       sx={{
-                                        paddingTop: '5px',
-                                        fontSize: '14px',
+                                        fontSize: '11px',
                                         fontFamily: 'Poppins-Bold',
-                                        color: '#7CC8C5'
+                                        color: '#1a73e8'
                                       }}
                                     >
                                       +$

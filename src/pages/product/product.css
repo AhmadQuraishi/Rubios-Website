@@ -183,7 +183,7 @@ input[type='check']:checked + label {
 }
 .product-detail .action-panel {
   position: fixed;
-  margin: auto;
+  margin: 0;
   bottom: 0;
   left: 0;
   right: 0;
@@ -429,7 +429,7 @@ input[type='check']:checked + label {
   .card-panel
   .name-img-panel
   .name-panel {
-  padding-left: 20px;
+  /* padding-left: 16px; */
   color: #2b4b62;
 }
 
@@ -440,7 +440,7 @@ input[type='check']:checked + label {
   .name-img-panel
   .name-panel.custom-class {
   color: #e58734;
-  margin-left: -108px;
+  margin-left: -103px;
   /* position: absolute;
   width: 100%;
   left: 60%;
@@ -458,7 +458,7 @@ input[type='check']:checked + label {
   width: 100%;
   /* margin: 0 auto; */
   left: 60%;
-  margin-left: -125px;
+  margin-left: -122px;
   text-align: center;
 }
 
