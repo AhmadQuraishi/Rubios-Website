@@ -1,6 +1,7 @@
 .welcome-wrapper {
   margin: 62px 139px !important;
 }
+
 .welcome-wrapper .welcome-content {
   background: white;
   display: flex;
@@ -10,19 +11,23 @@
   -moz-border-radius: 30px;
   border-radius: 30px;
 }
+
 .welcome-content h1 {
   margin: 0px 0px 17px 0px;
   font-size: 49px;
   line-height: 38px;
 }
+
 .welcome-content h5 {
   margin: 8px 0px 23px 0px;
 }
+
 .welcome-content .left-col {
   border-right: 1px solid #0069aa;
   padding-right: 58px;
   margin-right: 66px;
 }
+
 .welcome-content .left-col .p-card {
   display: flex;
   justify-content: flex-start;
@@ -31,21 +36,25 @@
   margin-top: 23px;
   position: relative;
 }
+
 .welcome-content .left-col .p-card img {
   width: 30%;
   height: 100%;
   margin-right: 10px;
 }
+
 .welcome-content .order-action {
   text-align: right;
   position: absolute;
   bottom: 0px;
   right: 20px;
 }
+
 .welcome-content .order-action .caption-grey {
   font-family: 'Poppins-Bold' !important;
   color: #a4a4a4;
 }
+
 .welcome-content .order-action .button {
   font-family: 'Poppins-Bold' !important;
   font-size: 13px !important;
@@ -58,19 +67,24 @@
   font-size: 15px !important;
   letter-spacing: 2px;
 }
+
 .welcome-content .left-col .p-card .product-content {
   padding-bottom: 30px;
 }
+
 .welcome-content .p-card .MuiCardContent-root {
   padding: 0px 10px;
 }
+
 .welcome-content .right-col button {
   margin-top: 14px;
   width: 100%;
 }
+
 .welcome-content .right-col .res-info {
   margin-bottom: 15px;
 }
+
 .welcome-content .caption-grey {
   font-size: 12px;
   text-decoration: none;
@@ -82,6 +96,7 @@
   .welcome-content {
     padding: 35px !important;
   }
+
   .left-col {
     border-right: none !important;
     border-bottom: 1px solid #0069aa;
@@ -89,44 +104,74 @@
     margin: 0px 0px 35px 0px !important;
   }
 
-  .setborder{
+  .setborder {
     margin-bottom: 27px;
   }
 
   .p-card {
     display: block !important;
   }
+
   .p-card img {
     float: left;
   }
+
   .welcome-wrapper {
     margin: 70px 50px !important;
   }
+
   .welcome-content h1 {
     margin: 0px 0px 10px 0px;
   }
+
   .welcome-wrapper .action-btn {
     margin-top: -30px;
   }
 }
 
 
+@media screen and (max-width: 600px) {
+
+  .welcome-wrapper .welcome-content .left-col .label{
+    padding-left: 25%;
+  }
+  .welcome-wrapper .welcome-content .left-col h1{
+    padding-left: 18%;
+  }
+  .welcome-wrapper .welcome-content .left-col h6{
+       padding-left: 18%;
+  }
+
+  .welcome-wrapper .welcome-content .left-col .buttonset{
+    padding-left: 22%;
+  }
+
+  .welcome-wrapper .welcome-content .right-col .label{
+    padding-left: 30%;
+  }
+}
+
 @media screen and (max-width: 468px) {
   .welcome-wrapper {
     margin: 25px !important;
   }
+
   .welcome-content {
     padding: 30px 20px !important;
   }
+
   .welcome-content h1 {
     font-size: 25px;
   }
+
   .welcome-wrapper .action-btn {
     margin-top: 0px;
   }
+
   .p-card img {
     width: 100% !important;
   }
+
   .p-card .order-action {
     text-align: center;
     display: flex;
@@ -135,12 +180,14 @@
     bottom: auto;
     right: auto;
   }
+
   .p-card button {
     margin: 20px 0px 0px 0px !important;
     padding: 0px;
     font-size: 13px;
   }
 }
+
 .user-name {
   text-transform: uppercase;
 }
