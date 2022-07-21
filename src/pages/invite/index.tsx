@@ -35,12 +35,12 @@ const Invite = () => {
   };
   const handleClick = () => {
     if (navigator.share) {
-      const linkElement = process.env.REACT_APP_RUBIOS_REWARD_ADDRESS
+      const linkElement =  <a href={process.env.REACT_APP_RUBIOS_REWARD_ADDRESS} target='_blank'>Rewards</a>
       navigator
         .share({
           title: 'Use My Rubio’s Rewards Invite Code and Save $5!',
           text: `Join Rubio's Rewards at ${linkElement} and use my code ${inviteCode} to get $5 off your next order!`,
-          url:  linkElement,
+          // url:  linkElement,
         })
         .then(() => {
           console.log('Successfully shared');
