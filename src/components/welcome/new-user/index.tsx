@@ -9,24 +9,28 @@ const WelcomeNewUser = () => {
   return (
     <Grid container columns={16}>
     {isMobile ?
-    <Grid item xs={16} sm={8} md={8.5} lg={8.5} >
+    <Grid item xs={16} sm={8} md={8.5} lg={8.5} className='icons-container'>
           <Grid container>
             <Grid item xs={12}>
               <Button sx={{ padding: 0 }}>
+              <a href={process.env.REACT_APP_IOS_DOWNLOAD_LINK} target= '_blank'>
                 <img
                   style={{ display: 'inline-block', width: '60%' }}
                   src={iosLogo}
                   alt="Click Here To Download Our From Apple Store"
                 />
+                </a>
               </Button>
             </Grid>
             <Grid item xs={12}>
               <Button sx={{ padding: 0 }}>
+                <a href={process.env.REACT_APP_GOOGLE_DOWNLOAD_LINK} target= '_blank'>
                 <img
                   style={{ display: 'inline-block', width: '60%' }}
                   src={andriodLogo}
                   alt="Click Here To Download Our From Google App Store"
                 />
+                </a>
               </Button>
             </Grid>
           </Grid>
