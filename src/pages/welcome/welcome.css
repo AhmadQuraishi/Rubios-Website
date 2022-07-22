@@ -132,22 +132,27 @@
 
 @media screen and (max-width: 600px) {
 
+  .welcome-wrapper .welcome-content .left-col{
+           align-items: center;
+  }
   .welcome-wrapper .welcome-content .left-col .label{
-    padding-left: 25%;
+       text-align: center;
   }
   .welcome-wrapper .welcome-content .left-col h1{
-    padding-left: 18%;
+    text-align: center;
   }
   .welcome-wrapper .welcome-content .left-col h6{
-       padding-left: 18%;
+     text-align: center;
   }
 
   .welcome-wrapper .welcome-content .left-col .buttonset{
     padding-left: 22%;
   }
-
+  .welcome-wrapper .welcome-content .right-col{
+    align-items: center;
+  }
   .welcome-wrapper .welcome-content .right-col .label{
-    padding-left: 30%;
+       text-align: center;
   }
 }
 

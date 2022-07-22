@@ -15,7 +15,7 @@ const WelcomeNewUser = () => {
               <Button sx={{ padding: 0 }}>
               <a href={process.env.REACT_APP_IOS_DOWNLOAD_LINK} target= '_blank'>
                 <img
-                  style={{ display: 'inline-block', width: '60%' }}
+                  style={{ display: 'inline-block', width: '100%' }}
                   src={iosLogo}
                   alt="Click Here To Download Our From Apple Store"
                 />
@@ -26,7 +26,7 @@ const WelcomeNewUser = () => {
               <Button sx={{ padding: 0 }}>
                 <a href={process.env.REACT_APP_GOOGLE_DOWNLOAD_LINK} target= '_blank'>
                 <img
-                  style={{ display: 'inline-block', width: '60%' }}
+                  style={{ display: 'inline-block', width: '100%' }}
                   src={andriodLogo}
                   alt="Click Here To Download Our From Google App Store"
                 />
