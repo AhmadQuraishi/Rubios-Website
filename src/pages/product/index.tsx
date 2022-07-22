@@ -1275,7 +1275,8 @@ const Product = () => {
                                   item
                                   xs={12}
                                   lg={7}
-                                  className={`name-panel ${
+                                  // style={{textAlign: 'center'}}
+                                 className={`name-panel ${
                                     noWordpressImageFound(
                                       optionImages,
                                       itemChild.option.chainoptionid,
@@ -1286,6 +1287,7 @@ const Product = () => {
                                   }`}
                                 >
                                   {itemChild.option.name}
+                                  <div style={{display: 'flex', }}>
                                   {itemChild.option.basecalories && (
                                     <Grid
                                       item
@@ -1293,6 +1295,7 @@ const Product = () => {
                                       sx={{
                                         fontSize: '11px',
                                         color: '#1a73e8',
+                                        marginRight: '10px',
                                         fontFamily: 'Poppins-Bold !important',
                                       }}
                                     >
@@ -1349,6 +1352,7 @@ const Product = () => {
                                       ).toFixed(2)}
                                     </Grid>
                                   )}
+                                  </div>
                                   {itemChild.dropDownValues && (
                                     <>
                                       {checkOptionSelected(
