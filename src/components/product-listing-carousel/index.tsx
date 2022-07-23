@@ -164,7 +164,7 @@ const ProductListingCarousel = (props: any) => {
         removeArrowOnDeviceType={['tablet', 'mobile']}
         deviceType={props.deviceType}
         dotListClass="custom-dot-list-style"
-        itemClass="carousel-item-padding-40-px"
+        itemClass="carousel-item-padding-40-px carousel-mobile-show-next-slide"
       // customRightArrow={<CustomRightArrow onClick={undefined} />}
       // customLeftArrow={<CustomLeftArrow onClick={undefined} />}
       >

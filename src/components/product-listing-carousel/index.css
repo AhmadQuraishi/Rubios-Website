@@ -46,4 +46,9 @@ overflow:unset;
 .MuiTabs-root .Mui-disabled {
   display: none;
 }
+@media screen and (max-width: 464px) {
+.carousel-mobile-show-next-slide {
+  width: 80vw !important;
+}
+}
 

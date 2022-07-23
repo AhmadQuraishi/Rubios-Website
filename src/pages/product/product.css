@@ -383,12 +383,12 @@ input[type='check']:checked+label {
   font-family: 'Poppins-Medium', sans-serif !important;
   color: #2b4b62;
   /* max-width: 354px; */
-  min-height: 170px;
+  min-height: 140px;
   font-size: 18px;
 }
 
 .product-detail .menu-items .content-panel .card-panel {
-  padding: 10px;
+  /*padding: 10px;*/
   border: 1px solid #d3d3d3;
   box-sizing: border-box;
   height: 100%;
@@ -408,9 +408,9 @@ input[type='check']:checked+label {
   width: 55px;
   background-color: #e58734;
   position: absolute;
-  top: 32%;
+  top: 28%;
   bottom: 0;
-  left: 50px;
+  left: 25px;
   right: 0;
 }
 

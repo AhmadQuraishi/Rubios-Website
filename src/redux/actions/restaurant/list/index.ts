@@ -1,6 +1,7 @@
 import { restaurantListDataActionsTypes } from '../../../types/restaurant/list';
 import { ResponseRestaurantList } from '../../../../types/olo-api';
 import { displayToast } from '../../../../helpers/toast';
+import { removeTestingStores } from '../../../../helpers/common';
 
 export function getNearByResturantListRequest(
   lat: number,
@@ -24,9 +25,10 @@ export function getNearByResturantListRequest(
 export function getNearByResturantListRequestSuccess(
   data: ResponseRestaurantList,
 ) {
+  const filterRestaurants = removeTestingStores(data);
   return {
     type: restaurantListDataActionsTypes.GET_RESTAURANT_LIST_SUCCESS,
-    payload: data,
+    payload: filterRestaurants,
   };
 }
 
@@ -50,9 +52,10 @@ export function getResturantListRequest() {
 }
 
 export function getResturantListRequestSuccess(data: ResponseRestaurantList) {
+  const filterRestaurants = removeTestingStores(data);
   return {
     type: restaurantListDataActionsTypes.GET_RESTAURANT_LIST_SUCCESS,
-    payload: data,
+    payload: filterRestaurants,
   };
 }
 
