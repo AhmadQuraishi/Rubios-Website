@@ -1235,7 +1235,7 @@ const Product = () => {
                                     padding: '0px',
                                     paddingLeft: {
                                       xs: '0px !important',
-                                      lg: '15px !important',
+                                      // lg: '15px !important',
                                     },
                                     paddingTop: {
                                       xs: '0px !important',
