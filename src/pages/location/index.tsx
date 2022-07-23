@@ -1,4 +1,3 @@
-
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   GoogleMap,
@@ -107,7 +106,7 @@ const Location = () => {
     } else if (showNearBy) {
       navigator.geolocation.getCurrentPosition(
         function (position) {
-          //getNearByRestaurants(40.7054008, -74.0132198);
+          // getNearByRestaurants(34.5072833, -117.3999287);
           getNearByRestaurants(
             position.coords.latitude,
             position.coords.longitude,
@@ -149,7 +148,14 @@ const Location = () => {
       } else {
         if (showNearBy || LatLng) {
           if (LatLng) {
-            setDeliveryRasturants(restaurants.restaurants);
+            const filterRest = getFilteredRestaurants(restaurants.restaurants);
+            if (!filterRest.length) {
+              displayToast(
+                'ERROR',
+                "We could not find any Rubio's within 10 miles of your address.",
+              );
+            }
+            setDeliveryRasturants(filterRest);
             setActionPerform(false);
           }
           setLatLng(null);
@@ -191,10 +197,34 @@ const Location = () => {
     );
   };
   const [markers, setMarkers] = useState<any[]>([]);
+
+  const getFilteredRestaurants = (restaurants: any) => {
+    let filteredRestaurants = [];
+    if (orderType && orderType !== '') {
+      if (orderType === 'pickup') {
+        filteredRestaurants = restaurants.filter(
+          (x: any) => x.canpickup === true,
+        );
+      } else if (orderType === 'curbside') {
+        filteredRestaurants = restaurants.filter(
+          (x: any) => x.supportscurbside === true,
+        );
+      } else if (orderType === 'delivery') {
+        filteredRestaurants = restaurants.filter(
+          (x: any) => x.candeliver === false,
+        );
+      }
+    }
+    return filteredRestaurants;
+  };
   useEffect(() => {
     setMarkers([]);
     if (restaurants && restaurants.restaurants.length > 0) {
-      restaurants.restaurants.map((item: ResponseRestaurant, index: number) => {
+      let filteredRestaurants = getFilteredRestaurants(restaurants.restaurants);
+
+      console.log('orderType', orderType);
+      console.log('filteredRestaurants', filteredRestaurants);
+      filteredRestaurants.map((item: ResponseRestaurant, index: number) => {
         if (mapCenter == undefined) {
           setMapCenter({
             lat: item.latitude,
@@ -218,7 +248,7 @@ const Location = () => {
         ]);
       });
     }
-  }, [restaurants]);
+  }, [restaurants, orderType]);
 
   return (
     <div style={{ minHeight: '300px', position: 'relative' }}>
@@ -267,4 +297,3 @@ const Location = () => {
 };
 
 export default Location;
-

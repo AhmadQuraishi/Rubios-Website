@@ -120,6 +120,7 @@ const LocationCard = (props: any) => {
     setActionPerform,
     deliveryRasturants,
     setDeliveryRasturants,
+    setOrderTypeMain,
   } = props;
   const [searchText, setSearchText] = useState<string>();
   const [resturantOrderType, setresturantOrderType] = useState<string>();
@@ -148,6 +149,10 @@ const LocationCard = (props: any) => {
     }
   }, [isNearByRestaurantList]);
 
+  useEffect(() => {
+    setOrderTypeMain(resturantOrderType);
+  }, [resturantOrderType]);
+
   const [selectedStoreID, setSelectedStoreID] = useState('');
 
   useEffect(() => {
@@ -157,7 +162,7 @@ const LocationCard = (props: any) => {
     } else if (resturantOrderType == 'delivery') {
       setfilteredRestaurants(
         (deliveryRasturants &&
-          deliveryRasturants.filter((x: any) => x.candeliver === true)) ||
+          deliveryRasturants.filter((x: any) => x.candeliver === false)) ||
           [],
       );
     } else {
@@ -170,7 +175,7 @@ const LocationCard = (props: any) => {
     if (resturantOrderType === 'delivery') {
       setfilteredRestaurants(
         (deliveryRasturants &&
-          deliveryRasturants.filter((x: any) => x.candeliver === true)) ||
+          deliveryRasturants.filter((x: any) => x.candeliver === false)) ||
           [],
       );
       return false;
@@ -190,7 +195,7 @@ const LocationCard = (props: any) => {
           );
         } else if (resturantOrderType === 'delivery') {
           updatedRestaurants = restaurants.filter(
-            (x: any) => x.candeliver === true,
+            (x: any) => x.candeliver === false,
           );
         }
         setfilteredRestaurants(updatedRestaurants);
@@ -527,7 +532,7 @@ const LocationCard = (props: any) => {
                         );
                       } else if (resturantOrderType === 'delivery') {
                         updatedRestaurants = deliveryRasturants.filter(
-                          (x: any) => x.candeliver === true,
+                          (x: any) => x.candeliver === false,
                         );
                       }
                       setAllResturants(updatedRestaurants);
