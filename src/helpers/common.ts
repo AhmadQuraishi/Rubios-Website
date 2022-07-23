@@ -28,3 +28,26 @@ export function checkProductAvailability(item: any, orderType: any) {
 export function generateDeviceId() {
   return 'id' + Math.random().toString(16).slice(2);
 }
+
+export const tacoMatchArray = [
+  'original fish taco®',
+  'original fish taco',
+  'salsa verde shrimp taco',
+  'blackened mahi taco',
+  'gg shrimp taco',
+  'taco 1',
+  'taco 2',
+  'taco® 1',
+  'taco® 2',
+];
+
+export function checkTacoMatch(name: string, isdefault: boolean) {
+  if (!isdefault) {
+    return false;
+  }
+  const filterTaco = tacoMatchArray.filter((text: string) => {
+    return name.toLowerCase().includes(text);
+  });
+
+  return filterTaco.length > 0;
+}
