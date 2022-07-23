@@ -1,8 +1,8 @@
 #categoryMenu .MuiTabs-indicator {
-  background-color: #4cd964 !important;
+  /*background-color: #4cd964 !important;*/
 }
 #categoryMenu .MuiTabs-flexContainer .tabs-btn:nth-child(1) {
-  margin-left: 5px !important;
+  /*margin-left: 5px !important;*/
 }
 /*.carousel-container .react-multiple-carousel__arrow {*/
 /*  top: 50%;*/
