@@ -35,7 +35,7 @@ const Invite = () => {
   };
   const handleClick = () => {
     if (navigator.share) {
-      const linkElement =  <a href={process.env.REACT_APP_RUBIOS_REWARD_ADDRESS} target='_blank'>Rewards</a>
+      const linkElement = process.env.REACT_APP_RUBIOS_REWARD_ADDRESS
       navigator
         .share({
           title: 'Use My Rubio’s Rewards Invite Code and Save $5!',
@@ -83,13 +83,13 @@ const Invite = () => {
                 <span className="copy-text">Tap to copy.</span> {inviteCode}
               </Button>
             </Grid>
-            <Grid sx={{ display: { lg: 'none', md: 'flex' } }} item xs={12}>
+            <Grid sx={{ display: { md: 'flex' } }} item xs={12}>
               <Button
                 aria-label="invite"
                 title="invite"
                 variant="contained"
                 onClick={handleClick}
-                sx={{ width: { xs: '100%', sm: '400px' } }}
+                sx={{ width: { xs: '100%', sm: '400px' }, marginLeft: {lg: '20px'} }}
               >
                 INVITE
               </Button>

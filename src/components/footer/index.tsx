@@ -302,7 +302,7 @@ const Footer = () => {
             >
               <Typography
                 sx={{
-                  paddingTop: '20px',
+                  paddingTop: '30px',
                   paddingLeft: { xs: '10px', sm: '30px', lg: '70px' },
                 }}
                 variant="caption"
@@ -315,10 +315,10 @@ const Footer = () => {
             </Grid>
             <Grid
               item
-              xs={2}
+              xs={1}
               sx={{ display: { xs: 'none', md: 'flex' } }}
             ></Grid>
-            <Grid item xs={12} md={5}>
+            <Grid item xs={12} md={6}>
               <Grid
                 container
                 spacing={1}
@@ -331,15 +331,21 @@ const Footer = () => {
                   sx={{
                     display: 'flex',
                     paddingTop: '30px !important',
-                    paddingLeft: {
-                      xs: '20px !important',
-                      sm: '30px !important',
-                    },
-                    paddingRight: { md: '60px' },
+                    paddingRight: { md: '60px', sm: '30px', xs: '30px' },
                     justifyContent: { xs: 'left', md: 'right' },
                   }}
                 >
                   <ul style={{ listStyle: 'none', display: 'flex' }}>
+                    <li>
+                      <a
+                        href='#'
+                        className={classes.smallLinks}
+                        title="Do Not Sell My Personal Infomation"
+                        aria-label="Do Not Sell My Personal Infomation"
+                      >
+                      Do Not Sell My Personal Infomation
+                      </a>
+                    </li>
                     <li>
                       <a
                         href={process.env.REACT_APP_WEBSITE_ACCESSIBILITY_LINK}
@@ -368,6 +374,16 @@ const Footer = () => {
                         aria-label="Privacy"
                       >
                         Privacy
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        href='#'
+                        className={classes.smallLinks}
+                        title="Cookies"
+                        aria-label="Cookies"
+                      >
+                     Cookies
                       </a>
                     </li>
                   </ul>

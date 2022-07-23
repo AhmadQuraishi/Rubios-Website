@@ -7,6 +7,12 @@
         padding-left: 10px;
       }
 
+@media screen and (min-width: 900px){
+    .footer-control{
+    margin-bottom: 130px !important;
+    }
+}
+
 @media screen and (max-width: 900px) {
     .list
     {
@@ -21,4 +27,11 @@
   .footer-control {
     margin-bottom: 175px !important;
   }
+   
+}
+
+@media screen and (min-Width: 550px) {
+    .footer-control .listsetting{
+        margin-right: 20px !important;
+    }
 }
