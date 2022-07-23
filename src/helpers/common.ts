@@ -51,3 +51,18 @@ export function checkTacoMatch(name: string, isdefault: boolean) {
 
   return filterTaco.length > 0;
 }
+
+export function removeTestingStores(restaurants: any) {
+  let filterRestaurants = [];
+  const confRoomPilotId = process.env.REACT_APP_CONF_ROOM_PILOT_ID || '';
+  const devDemoId = process.env.REACT_APP_DEV_DEMO_ID || '';
+
+  filterRestaurants = restaurants.restaurants.filter((rest: any) => {
+    return (
+      rest.id.toString() !== confRoomPilotId && rest.id.toString() !== devDemoId
+    );
+  });
+  return {
+    restaurants: filterRestaurants,
+  };
+}
