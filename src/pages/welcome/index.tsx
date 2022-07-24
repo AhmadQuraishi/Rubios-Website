@@ -322,9 +322,9 @@ const Welcome = () => {
                   <Typography variant={'h6'} style={{ marginBottom: 23 }}>
                     Begin your order to start earning rewards today!
                   </Typography>
-                  <Grid item xs={12} sm={12} md={10} lg={10}>
+                  <Grid item xs={12} sm={12} md={10} lg={10} className="buttonset">
                     <Button
-                      className="button"
+                      className="button setborder"
                       variant="contained"
                       title="ORDER NOW"
                       style={{ width: '100%' }}

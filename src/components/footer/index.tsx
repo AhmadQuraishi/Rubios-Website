@@ -55,7 +55,7 @@ const Footer = () => {
     dispatch(getMenuRequest());
   }, []);
 
-  useEffect(() => {}, [menu]);
+  useEffect(() => { }, [menu]);
 
 
   return (
@@ -96,14 +96,14 @@ const Footer = () => {
                   },
                 }}
               >
-                <a href= {process.env.REACT_APP_RUBIOS_HOME_PAGE}>
+                <a href={process.env.REACT_APP_RUBIOS_HOME_PAGE}>
 
-                <img
-                  src={footerLogo}
-                  style={{ width: '100%' }}
-                  alt="Rubios Coastal Grill"
-                  title="Rubios Coastal Grill"
-                />
+                  <img
+                    src={footerLogo}
+                    style={{ width: '100%' }}
+                    alt="Rubios Coastal Grill"
+                    title="Rubios Coastal Grill"
+                  />
                 </a>
               </Button>
             </Grid>
@@ -168,7 +168,7 @@ const Footer = () => {
                 width={200}
                 sx={{ padding: { xs: '10px 0 0 0', md: '10px 0 0 0', lg: '5px 0 0 0' } }}
               >
-                <Grid item xs={2} style={{marginRight: '10px'}}>
+                <Grid item xs={2} style={{ marginRight: '10px' }}>
                   <a
                     href={'https://www.facebook.com/rubios/'}
                     target={'_blank'}
@@ -180,7 +180,7 @@ const Footer = () => {
                     />
                   </a>
                 </Grid>
-                <Grid item xs={2} style={{marginRight: '10px'}}>
+                <Grid item xs={2} style={{ marginRight: '10px' }}>
                   <a
                     href={'https://www.instagram.com/rubioscoastalgrill/'}
                     target={'_blank'}
@@ -192,7 +192,7 @@ const Footer = () => {
                     />
                   </a>
                 </Grid>
-                <Grid item xs={2} style={{marginRight: '10px'}}>
+                <Grid item xs={2} style={{ marginRight: '10px' }}>
                   <a
                     href={'https://twitter.com/RubiosTweets'}
                     target={'_blank'}
@@ -204,7 +204,7 @@ const Footer = () => {
                     />
                   </a>
                 </Grid>
-                <Grid item xs={2} style={{marginRight: '10px'}}>
+                <Grid item xs={2} style={{ marginRight: '10px' }}>
                   <a
                     href={'https://www.tiktok.com/@officialrubios'}
                     target={'_blank'}
@@ -240,20 +240,24 @@ const Footer = () => {
               >
                 <Grid item xs={6}>
                   <Button sx={{ padding: 0 }}>
-                    <img
-                      style={{ display: 'inline-block', width: '100%' }}
-                      src={iosLogo}
-                      alt="Click Here To Download Our From Apple Store"
-                    />
+                    <a href={process.env.REACT_APP_IOS_DOWNLOAD_LINK} target='_blank'>
+                      <img
+                        style={{ display: 'inline-block', width: '100%' }}
+                        src={iosLogo}
+                        alt="Click Here To Download Our From Apple Store"
+                      />
+                    </a>
                   </Button>
                 </Grid>
                 <Grid item xs={6}>
                   <Button sx={{ padding: 0 }}>
-                    <img
-                      style={{ display: 'inline-block', width: '100%' }}
-                      src={andriodLogo}
-                      alt="Click Here To Download Our From Google App Store"
-                    />
+                    <a href={process.env.REACT_APP_GOOGLE_DOWNLOAD_LINK} target='_blank'>
+                      <img
+                        style={{ display: 'inline-block', width: '100%' }}
+                        src={andriodLogo}
+                        alt="Click Here To Download Our From Google App Store"
+                      />
+                    </a>
                   </Button>
                 </Grid>
               </Grid>
@@ -298,7 +302,7 @@ const Footer = () => {
             >
               <Typography
                 sx={{
-                  paddingTop: '20px',
+                  paddingTop: '30px',
                   paddingLeft: { xs: '10px', sm: '30px', lg: '70px' },
                 }}
                 variant="caption"
@@ -311,10 +315,10 @@ const Footer = () => {
             </Grid>
             <Grid
               item
-              xs={2}
+              xs={1}
               sx={{ display: { xs: 'none', md: 'flex' } }}
             ></Grid>
-            <Grid item xs={12} md={5}>
+            <Grid item xs={12} md={6}>
               <Grid
                 container
                 spacing={1}
@@ -327,44 +331,60 @@ const Footer = () => {
                   sx={{
                     display: 'flex',
                     paddingTop: '30px !important',
-                    paddingLeft: {
-                      xs: '20px !important',
-                      sm: '30px !important',
-                    },
-                    paddingRight: { md: '60px' },
+                    paddingRight: { md: '60px', sm: '30px', xs: '30px' },
                     justifyContent: { xs: 'left', md: 'right' },
                   }}
                 >
-                  <ul style={{ listStyle: 'none', display: 'flex'}}>
+                  <ul style={{ listStyle: 'none', display: 'flex' }}>
                     <li>
-                      <Link
-                        to="/"
+                      <a
+                        href='#'
+                        className={classes.smallLinks}
+                        title="Do Not Sell My Personal Infomation"
+                        aria-label="Do Not Sell My Personal Infomation"
+                      >
+                      Do Not Sell My Personal Infomation
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        href={process.env.REACT_APP_WEBSITE_ACCESSIBILITY_LINK}
                         className={classes.smallLinks}
                         title="Website Accessibility"
                         aria-label="Website Accessibility"
                       >
                         Website Accessibility
-                      </Link>
+                      </a>
                     </li>
                     <li>
-                      <Link
-                        to="/"
+                      <a
+                        href={process.env.REACT_APP_TERMS_LINK}
                         className={classes.smallLinks}
                         title="Terms of use"
                         aria-label="Terms of use"
                       >
                         Terms of use
-                      </Link>
+                      </a>
                     </li>
                     <li>
-                      <Link
-                        to="/"
+                      <a
+                        href={process.env.REACT_APP_PRIVACY_LINK}
                         className={classes.smallLinks}
                         title="Privacy"
                         aria-label="Privacy"
                       >
                         Privacy
-                      </Link>
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        href='#'
+                        className={classes.smallLinks}
+                        title="Cookies"
+                        aria-label="Cookies"
+                      >
+                     Cookies
+                      </a>
                     </li>
                   </ul>
                 </Grid>

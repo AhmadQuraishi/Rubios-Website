@@ -69,7 +69,7 @@ const ProductListingCarousel = (props: any) => {
     },
     mobile: {
       breakpoint: { max: 464, min: 0 },
-      items: 1,
+      items: 2,
       slidesToSlide: 1, // optional, default to 1.
     },
   };
@@ -164,7 +164,7 @@ const ProductListingCarousel = (props: any) => {
         removeArrowOnDeviceType={['tablet', 'mobile']}
         deviceType={props.deviceType}
         dotListClass="custom-dot-list-style"
-        itemClass="carousel-item-padding-40-px"
+        itemClass="carousel-item-padding-40-px carousel-mobile-show-next-slide"
       // customRightArrow={<CustomRightArrow onClick={undefined} />}
       // customLeftArrow={<CustomLeftArrow onClick={undefined} />}
       >
