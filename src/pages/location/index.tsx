@@ -48,7 +48,7 @@ const Location = () => {
     libraries: ['places'],
   });
   const classes = useStyles();
-  const { restaurants, loading } = useSelector(
+  const { restaurants, nearbyRestaurants, loading } = useSelector(
     (state: any) => state.restaurantListReducer,
   );
 
@@ -67,6 +67,7 @@ const Location = () => {
   const dispatch = useDispatch();
   const [deliveryRasturants, setDeliveryRasturants] = useState<any[]>();
   const [allResturants, setAllResturants] = useState<any[]>();
+  const [superRestaurants, setSuperRestaurants] = useState<any[]>([]);
   const [filteredRestaurants, setfilteredRestaurants] = useState<any[]>([]);
 
   useEffect(() => {
@@ -174,9 +175,81 @@ const Location = () => {
   }, [showNearBy, LatLng]);
 
   useEffect(() => {
+    console.log('rest working 1', restaurants);
     if (restaurants && restaurants.restaurants) {
       if (restaurants.restaurants.length === 0) {
-        console.log('rest working 1');
+        // if (showNearBy || LatLng) {
+        //   setShowNearBy(false);
+        //   setNearByRestaurantsFound(false);
+        //   if (LatLng) {
+        //     setDeliveryRasturants([]);
+        //     displayToast(
+        //       'ERROR',
+        //       "We could not find any Rubio's within 10 miles of your address.",
+        //     );
+        //   } else {
+        //     displayToast(
+        //       'ERROR',
+        //       "We could not find any Rubio's within 10 miles of your current location.",
+        //     );
+        //   }
+        //   setLatLng(null);
+        //   dispatch(getResturantListRequest());
+        //   setZoom(7);
+        //   setActionPerform(false);
+        // }
+        console.log('nearby');
+        setfilteredRestaurants([]);
+        setDeliveryRasturants([]);
+        setAllResturants([]);
+      } else {
+        console.log('rest working 2');
+        // if (showNearBy || LatLng) {
+        //   if (LatLng) {
+        //     // const filterRest = getFilteredRestaurants(restaurants.restaurants);
+        //     // if (!filterRest.length) {
+        //     //   displayToast(
+        //     //     'ERROR',
+        //     //     "We could not find any Rubio's within 10 miles of your address.",
+        //     //   );
+        //     // }
+        //     // setDeliveryRasturants(restaurants.restaurants);
+        //     setDeliveryRasturants(restaurants.restaurants);
+        //     setActionPerform(false);
+        //   }
+        //   setLatLng(null);
+        //   if (showNearBy) {
+        //     console.log('ppppppp');
+        //     // if (orderType === 'delivery') {
+        //     //   setDeliveryRasturants(restaurants.restaurants);
+        //     // } else {
+        //     //   console.log('ppppppp 2', restaurants.restaurants);
+        //     setDeliveryRasturants(restaurants.restaurants);
+        //     // }
+        //
+        //     setShowNearBy(false);
+        //     setNearByRestaurantsFound(true);
+        //   }
+        // } else {
+        console.log('restaurants.restaurants', restaurants.restaurants);
+        if (orderType && orderType !== '') {
+          setfilteredRestaurants(restaurants.restaurants);
+        }
+        setAllResturants(restaurants.restaurants);
+        // }
+        setMapCenter({
+          lat: restaurants.restaurants[0].latitude,
+          lng: restaurants.restaurants[0].longitude,
+        });
+        setZoom(7);
+      }
+    }
+  }, [restaurants]);
+
+  useEffect(() => {
+    console.log('nearbyRestaurants', nearbyRestaurants);
+    if (nearbyRestaurants && nearbyRestaurants.restaurants) {
+      if (nearbyRestaurants.restaurants.length === 0) {
         if (showNearBy || LatLng) {
           setShowNearBy(false);
           setNearByRestaurantsFound(false);
@@ -187,16 +260,23 @@ const Location = () => {
               "We could not find any Rubio's within 10 miles of your address.",
             );
           } else {
+            setDeliveryRasturants([]);
             displayToast(
               'ERROR',
               "We could not find any Rubio's within 10 miles of your current location.",
             );
           }
           setLatLng(null);
-          dispatch(getResturantListRequest());
+          // dispatch(getResturantListRequest());
           setZoom(7);
           setActionPerform(false);
         }
+        console.log('nearby');
+        console.log('showNearBy', showNearBy);
+        console.log('LatLng', LatLng);
+        setfilteredRestaurants([]);
+        setDeliveryRasturants([])
+        // setAllResturants([])
       } else {
         console.log('rest working 2');
         if (showNearBy || LatLng) {
@@ -209,7 +289,7 @@ const Location = () => {
             //   );
             // }
             // setDeliveryRasturants(restaurants.restaurants);
-            setDeliveryRasturants(restaurants.restaurants);
+            setDeliveryRasturants(nearbyRestaurants.restaurants);
             setActionPerform(false);
           }
           setLatLng(null);
@@ -219,27 +299,27 @@ const Location = () => {
             //   setDeliveryRasturants(restaurants.restaurants);
             // } else {
             //   console.log('ppppppp 2', restaurants.restaurants);
-            setDeliveryRasturants(restaurants.restaurants);
+            setDeliveryRasturants(nearbyRestaurants.restaurants);
             // }
 
             setShowNearBy(false);
             setNearByRestaurantsFound(true);
           }
         } else {
-          console.log('restaurants.restaurants', restaurants.restaurants);
+          console.log('restaurants.restaurants', nearbyRestaurants.restaurants);
           if (orderType && orderType !== '') {
-            setfilteredRestaurants(restaurants.restaurants);
+            setfilteredRestaurants(nearbyRestaurants.restaurants);
           }
-          setAllResturants(restaurants.restaurants);
+          // setAllResturants(restaurants.restaurants);
         }
-        setMapCenter({
-          lat: restaurants.restaurants[0].latitude,
-          lng: restaurants.restaurants[0].longitude,
-        });
-        setZoom(7);
+        // setMapCenter({
+        //   lat: restaurants.restaurants[0].latitude,
+        //   lng: restaurants.restaurants[0].longitude,
+        // });
+        // setZoom(7);
       }
     }
-  }, [restaurants]);
+  }, [nearbyRestaurants]);
 
   const getNearByRestaurants = (lat: number, long: number) => {
     var today = new Date();
@@ -263,7 +343,7 @@ const Location = () => {
   const [markers, setMarkers] = useState<any[]>([]);
 
   const getFilteredRestaurants = (restaurants: any) => {
-    let filteredRestaurants = [];
+    let filteredRestaurants = restaurants;
     if (orderType && orderType !== '') {
       if (orderType === 'pickup') {
         filteredRestaurants = restaurants.filter(
@@ -310,6 +390,8 @@ const Location = () => {
         : orderType && orderType === 'delivery'
         ? deliveryRasturants
         : [];
+
+      filteredRest = getFilteredRestaurants(filteredRest);
 
       console.log('filteredRest', filteredRest);
       filteredRest.map((item: ResponseRestaurant, index: number) => {
@@ -378,6 +460,7 @@ const Location = () => {
               setDeliveryRasturants={setDeliveryRasturants}
               setfilteredRestaurants={setfilteredRestaurants}
               filteredRestaurants={filteredRestaurants}
+              loading={loading}
             />
           </GoogleMap>
         </div>
