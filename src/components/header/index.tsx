@@ -60,16 +60,18 @@ const useStyles = makeStyles((theme: Theme) => ({
   menuLink: {
     textTransform: 'uppercase',
     display: 'block',
-    paddingTop: '30px',
+    paddingTop: '25px',
     paddingRight: '5px',
     [theme.breakpoints.down('md')]: {
-      paddingTop: '12px',
-      fontSize: '18px'
+      paddingTop: '27px',
+      paddingBottom: '22px',
+      paddingRight: '15px',
+      fontSize: '14px'
     },
     color: theme.palette.primary.main,
     fontFamily: 'Poppins-Medium !important',
     textDecoration: 'none',
-    fontSize: '14px',
+    fontSize: '17px',
     textAlign: 'center',
     '&:hover': {
       color: theme.palette.success.main,

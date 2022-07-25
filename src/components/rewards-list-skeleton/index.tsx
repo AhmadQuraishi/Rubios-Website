@@ -14,7 +14,7 @@ const RewardListSkeletonUI = () => {
         xs={12}
         sm={6}
         md={4}
-        sx={{ paddingLeft: '0px !important', marginBottom: '20px' }}
+        sx={{ paddingLeft: '10px !important', marginBottom: '20px' }}
       >
         <Skeleton
           variant="rectangular"
@@ -27,7 +27,7 @@ const RewardListSkeletonUI = () => {
         xs={12}
         sm={6}
         md={4}
-        sx={{ paddingLeft: '0px !important', marginBottom: '20px' }}
+        sx={{ paddingLeft: '10px !important', marginBottom: '20px' }}
       >
         <Skeleton
           variant="rectangular"
@@ -40,7 +40,7 @@ const RewardListSkeletonUI = () => {
         xs={12}
         sm={6}
         md={4}
-        sx={{ paddingLeft: '0px !important', marginBottom: '20px' }}
+        sx={{ paddingLeft: '10px !important', marginBottom: '20px' }}
       >
         <Skeleton
           variant="rectangular"
@@ -53,7 +53,7 @@ const RewardListSkeletonUI = () => {
         xs={12}
         sm={6}
         md={4}
-        sx={{ paddingLeft: '0px !important', marginBottom: '20px' }}
+        sx={{ paddingLeft: '10px !important', marginBottom: '20px' }}
       >
         <Skeleton
           variant="rectangular"
@@ -66,7 +66,7 @@ const RewardListSkeletonUI = () => {
         xs={12}
         sm={6}
         md={4}
-        sx={{ paddingLeft: '0px !important', marginBottom: '20px' }}
+        sx={{ paddingLeft: '10px !important', marginBottom: '20px' }}
       >
         <Skeleton
           variant="rectangular"
@@ -79,7 +79,7 @@ const RewardListSkeletonUI = () => {
         xs={12}
         sm={6}
         md={4}
-        sx={{ paddingLeft: '0px !important', marginBottom: '20px' }}
+        sx={{ paddingLeft: '10px !important', marginBottom: '20px' }}
       >
         <Skeleton
           variant="rectangular"
