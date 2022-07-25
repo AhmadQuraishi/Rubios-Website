@@ -1,6 +1,6 @@
 import { ResponseRestaurantCalendars } from '../types/olo-api';
 import { HoursListing, CalendarTypeEnum } from './hoursListing';
-import moment from "moment";
+import moment from 'moment';
 
 export function GetUserFriendlyHours(
   hours: ResponseRestaurantCalendars,
