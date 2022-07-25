@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import './invite.css';
 import { useSelector } from 'react-redux';
 import { displayToast } from '../../helpers/toast';
-import message from '@olo/pay/dist/utils/message';
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     padding: '0px 20px 40px 20px',

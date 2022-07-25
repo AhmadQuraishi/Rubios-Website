@@ -376,8 +376,8 @@ const Product = () => {
         editOptions.length > 0
           ? editOptions
           : defaultOptionID
-            ? [defaultOptionID]
-            : [];
+          ? [defaultOptionID]
+          : [];
 
       setOptionsSelectionArray((optionsSelectionArray: any) => [
         ...optionsSelectionArray,
@@ -393,7 +393,7 @@ const Product = () => {
           cost: itemMain.cost || 0,
           selected:
             (isParentSelected && parentDefaultOptionID.includes(parentID)) ||
-              parentID == null
+            parentID == null
               ? true
               : false,
         },
@@ -410,7 +410,7 @@ const Product = () => {
               item.id,
               selectedOptions,
               (isParentSelected && parentDefaultOptionID.includes(parentID)) ||
-              parentID == null,
+                parentID == null,
             ),
         );
       }
@@ -711,7 +711,7 @@ const Product = () => {
               if (option) {
                 setOptionsCost(
                   optionsCost -
-                  ((optionDDLE ? optionDDLE.cost : 0) + option.option.cost),
+                    ((optionDDLE ? optionDDLE.cost : 0) + option.option.cost),
                 );
                 const prc =
                   ((optionDDLE ? optionDDLE.cost : 0) + option.option.cost) *
@@ -999,32 +999,34 @@ const Product = () => {
                 <Grid container>
                   {(parseInt(productDetails.basecalories || '0') > 0 ||
                     parseInt(productDetails.maxcalories || '0') > 0) && (
-                      <Grid item xs={4.5} sx={{ marginRight: '15px' }}>
-                        <Typography
-                          variant="caption"
-                          className="label bold"
-                          aria-label={`${productDetails.caloriesseparator
+                    <Grid item xs={4.5} sx={{ marginRight: '15px' }}>
+                      <Typography
+                        variant="caption"
+                        className="label bold"
+                        aria-label={`${
+                          productDetails.caloriesseparator
                             ? productDetails.basecalories +
-                            productDetails.caloriesseparator +
-                            productDetails.maxcalories
+                              productDetails.caloriesseparator +
+                              productDetails.maxcalories
                             : productDetails.basecalories
-                            } Cal`}
-                          title={`${productDetails.caloriesseparator
+                        } Cal`}
+                        title={`${
+                          productDetails.caloriesseparator
                             ? productDetails.basecalories +
-                            productDetails.caloriesseparator +
-                            productDetails.maxcalories
+                              productDetails.caloriesseparator +
+                              productDetails.maxcalories
                             : productDetails.basecalories
-                            } Cal`}
-                        >
-                          {productDetails.caloriesseparator
-                            ? productDetails.basecalories +
+                        } Cal`}
+                      >
+                        {productDetails.caloriesseparator
+                          ? productDetails.basecalories +
                             productDetails.caloriesseparator +
                             productDetails.maxcalories
-                            : productDetails.basecalories}{' '}
-                          Cal
-                        </Typography>
-                      </Grid>
-                    )}
+                          : productDetails.basecalories}{' '}
+                        Cal
+                      </Typography>
+                    </Grid>
+                  )}
                   {productDetails.cost > 0 && (
                     <Grid item xs={6}>
                       <Typography
@@ -1088,7 +1090,7 @@ const Product = () => {
                     sx={{
                       display:
                         itemMain.id == itemMain.parentOptionID ||
-                          selectedParentOption(itemMain.parentOptionID)
+                        selectedParentOption(itemMain.parentOptionID)
                           ? 'flex'
                           : 'none',
                     }}
@@ -1213,15 +1215,16 @@ const Product = () => {
                             }}
                           >
                             <Card
-                              className={`card-panel ${noWordpressImageFound(
-                                optionImages,
-                                itemChild.option.chainoptionid,
-                                itemChild.option.name,
-                                itemChild.option.isdefault,
-                              )
-                                ? 'no-image-class'
-                                : ''
-                                }`}
+                              className={`card-panel ${
+                                noWordpressImageFound(
+                                  optionImages,
+                                  itemChild.option.chainoptionid,
+                                  itemChild.option.name,
+                                  itemChild.option.isdefault,
+                                )
+                                  ? 'no-image-class'
+                                  : ''
+                              }`}
                               title={itemChild.option.name}
                               is-mandatory={itemMain.mandatory.toString()}
                               parent-option-id={itemMain.parentOptionID}
@@ -1262,11 +1265,11 @@ const Product = () => {
                                       productDetails &&
                                       ((categories && categories.imagepath) ||
                                         '') +
-                                      changeImageSize(
-                                        productDetails.imagefilename || '',
-                                        productDetails.images || '',
-                                        'desktop-menu',
-                                      )
+                                        changeImageSize(
+                                          productDetails.imagefilename || '',
+                                          productDetails.images || '',
+                                          'desktop-menu',
+                                        )
                                     }
                                     index={index1}
                                     className="item-image"
@@ -1284,73 +1287,92 @@ const Product = () => {
                                   className="name-panel"
                                 >
                                   {itemChild.option.name}
-                                  <div className={"options-cals-price"} style={{ display: 'flex' }}>
-                                    <Grid container>
-                                      {/* {itemChild.option.cost > 0 && ( */}
-                                        <Grid
-                                          item
-                                          xs={12} lg={3}
-                                          title={`$${parseFloat(
-                                            itemChild.option.cost,
-                                          ).toFixed(2)}`}
-                                          sx={{
-                                            fontSize: '11px',
-                                            fontFamily: 'Poppins-Bold',
-                                            color: '#0075EF',
-                                          }}
-                                        >
-                                          +$ 19.00
-                                          {/* {parseFloat(
-                                            itemChild.option.cost,
-                                          ).toFixed(2)} */}
-                                        </Grid>
-                                      {/* )} */}
-                                      {/* {itemChild.option.cost > 0 && itemChild.option.basecalories && (
+                                  <div
+                                    className={'options-cals-price'}
+                                    style={{ display: 'flex' }}
+                                  >
+                                    {itemChild.option.cost > 0 && (
+                                      <span
+                                        className={'value'}
+                                        title={`$${parseFloat(
+                                          itemChild.option.cost,
+                                        ).toFixed(2)}`}
+                                        style={{
+                                          fontSize: '11px',
+                                          fontFamily: 'Poppins-Bold',
+                                          color: '#0075EF',
+                                        }}
+                                      >
+                                        +$
+                                        {parseFloat(
+                                          itemChild.option.cost,
+                                        ).toFixed(2)}
+                                      </span>
+                                    )}
+                                    {itemChild.option.cost > 0 &&
+                                      itemChild.option.basecalories && (
                                         <span
                                           style={{
                                             fontSize: '16px',
                                             fontFamily: 'Poppins-Regular',
                                             color: '#AAA',
-                                            marginTop: '-2%'
+                                            marginTop: '-2%',
                                           }}
                                         >
                                           &nbsp;|&nbsp;
                                         </span>
-                                      )} */}
-                                      <Grid item xs={12} lg={9}
-                                        sx={{
+                                      )}
+                                    {/*<Grid*/}
+                                    {/*  item*/}
+                                    {/*  xs={12}*/}
+                                    {/*  lg={9}*/}
+                                    {/*  sx={{*/}
+                                    {/*    fontSize: '11px',*/}
+                                    {/*    color: '#0075EF',*/}
+                                    {/*    fontFamily: 'Poppins-Bold !important',*/}
+                                    {/*  }}*/}
+                                    {/*>*/}
+                                    {/*<Grid container>*/}
+                                    {itemChild.option.basecalories && (
+                                      <span
+                                        style={{
                                           fontSize: '11px',
+                                          fontFamily: 'Poppins-Bold',
                                           color: '#0075EF',
-                                          fontFamily: 'Poppins-Bold !important',
-                                        }}>
-                                        <Grid container>
-                                          {/* {itemChild.option.basecalories && ( */}
-                                            <Grid item xs={12} lg={5}>
-                                              + 1000 cals
-                                              {/* + {itemChild.option.basecalories + ' Cals'} */}
-                                            </Grid>
-                                          {/* )} */}
-                                          {/* {itemChild.option.maxcalories && itemChild.option.basecalories && (
-                                            <span
-                                              style={{
-                                                fontSize: '16px',
-                                                fontFamily: 'Poppins-Regular',
-                                                color: '#AAA',
-                                                marginTop: '-2%'
-                                              }}
-                                            >
-                                              &nbsp;|&nbsp;
-                                            </span>
-                                          )} */}
-                                          {/* {itemChild.option.maxcalories && ( */}
-                                            <Grid item xs={12} lg={6}>
-                                              + 39 cals
-                                              {/* +{itemChild.option.maxcalories + ' Cals'} */}
-                                            </Grid>
-                                          {/* )} */}
-                                        </Grid>
-                                      </Grid>
-                                    </Grid>
+                                        }}
+                                      >
+                                        +{' '}
+                                        {itemChild.option.basecalories +
+                                          ' Cals'}
+                                      </span>
+                                    )}
+                                    {itemChild.option.maxcalories &&
+                                      itemChild.option.basecalories && (
+                                        <span
+                                          style={{
+                                            fontSize: '16px',
+                                            fontFamily: 'Poppins-Regular',
+                                            color: '#AAA',
+                                            marginTop: '-2%',
+                                          }}
+                                        >
+                                          &nbsp;|&nbsp;
+                                        </span>
+                                      )}
+                                    {itemChild.option.maxcalories && (
+                                      <span
+                                        style={{
+                                          fontSize: '11px',
+                                          fontFamily: 'Poppins-Bold',
+                                          color: '#0075EF',
+                                        }}
+                                      >
+                                        +
+                                        {itemChild.option.maxcalories + ' Cals'}
+                                      </span>
+                                    )}
+                                    {/*</Grid>*/}
+                                    {/*</Grid>*/}
                                   </div>
                                   {itemChild.dropDownValues && (
                                     <>
@@ -1358,54 +1380,54 @@ const Product = () => {
                                         itemChild.option.id,
                                         itemMain.id,
                                       ) == true && (
-                                          <div style={{ position: 'relative' }}>
-                                            <select
-                                              className="ss-panl"
-                                              parent-select-option-id={
-                                                itemChild.id
-                                              }
-                                              onClick={(e) => e.stopPropagation()}
-                                              value={
-                                                itemChild.selectedValue || '0'
-                                              }
-                                              data-select-id={
-                                                itemChild.selectedValue || '0'
-                                              }
-                                              onChange={(e) =>
-                                                dropDownValue(
-                                                  itemChild.option.id,
-                                                  e.target.value,
-                                                  itemChild.dropDownValues,
-                                                  e.target,
-                                                )
-                                              }
-                                            >
-                                              {itemChild.dropDownValues.map(
-                                                (option: any, index: number) => (
-                                                  <option
-                                                    key={Math.random() + index}
-                                                    value={option.id}
-                                                    onClick={() => {
-                                                      setTotalCost(
-                                                        ((productDetails?.cost ||
-                                                          0) +
-                                                          option.cost) *
+                                        <div style={{ position: 'relative' }}>
+                                          <select
+                                            className="ss-panl"
+                                            parent-select-option-id={
+                                              itemChild.id
+                                            }
+                                            onClick={(e) => e.stopPropagation()}
+                                            value={
+                                              itemChild.selectedValue || '0'
+                                            }
+                                            data-select-id={
+                                              itemChild.selectedValue || '0'
+                                            }
+                                            onChange={(e) =>
+                                              dropDownValue(
+                                                itemChild.option.id,
+                                                e.target.value,
+                                                itemChild.dropDownValues,
+                                                e.target,
+                                              )
+                                            }
+                                          >
+                                            {itemChild.dropDownValues.map(
+                                              (option: any, index: number) => (
+                                                <option
+                                                  key={Math.random() + index}
+                                                  value={option.id}
+                                                  onClick={() => {
+                                                    setTotalCost(
+                                                      ((productDetails?.cost ||
+                                                        0) +
+                                                        option.cost) *
                                                         count,
-                                                      );
-                                                    }}
-                                                  >
-                                                    {option.name +
-                                                      (option.cost > 0
-                                                        ? ' (+$' +
+                                                    );
+                                                  }}
+                                                >
+                                                  {option.name +
+                                                    (option.cost > 0
+                                                      ? ' (+$' +
                                                         option.cost.toFixed(2) +
                                                         ')'
-                                                        : '')}
-                                                  </option>
-                                                ),
-                                              )}
-                                            </select>
-                                          </div>
-                                        )}
+                                                      : '')}
+                                                </option>
+                                              ),
+                                            )}
+                                          </select>
+                                        </div>
+                                      )}
                                     </>
                                   )}
                                 </Grid>
@@ -1420,7 +1442,7 @@ const Product = () => {
             <Grid container className="action-panel">
               <Grid item xs={12} className="content-panel">
                 {productDetails &&
-                  productDetails.id !== utensilsReducer.utensilsProductId ? (
+                productDetails.id !== utensilsReducer.utensilsProductId ? (
                   <div
                     style={{ display: 'flex', alignItems: 'center' }}
                     className="button-panel-sx"
@@ -1441,7 +1463,7 @@ const Product = () => {
                           setCount(Math.max(count - 1, 1));
                           setTotalCost(
                             ((productDetails?.cost || 0) + optionsCost) *
-                            Math.max(count - 1, 1),
+                              Math.max(count - 1, 1),
                           );
                         }}
                       >
@@ -1452,7 +1474,7 @@ const Product = () => {
                         value={count}
                         readOnly
                         id="quantityfield"
-                        onChange={() => { }}
+                        onChange={() => {}}
                         className="input-quantity"
                         title="quantity"
                       />
@@ -1464,7 +1486,7 @@ const Product = () => {
                           setCount(count + 1);
                           setTotalCost(
                             ((productDetails?.cost || 0) + optionsCost) *
-                            (count + 1),
+                              (count + 1),
                           );
                         }}
                       >
@@ -1475,10 +1497,10 @@ const Product = () => {
                   </div>
                 ) : null}
                 {productAddObj.loading ||
-                  basketObj.loading ||
-                  dummyBasketObj.loading ||
-                  productUpdateObj.loading ||
-                  !validateOptionsSelection() ? (
+                basketObj.loading ||
+                dummyBasketObj.loading ||
+                productUpdateObj.loading ||
+                !validateOptionsSelection() ? (
                   <Button
                     title="ADD TO BAG"
                     className="add-to-bag"
