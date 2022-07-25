@@ -89,7 +89,7 @@ const Invite = () => {
                 title="invite"
                 variant="contained"
                 onClick={handleClick}
-                sx={{ width: { xs: '100%', sm: '400px' }, marginLeft: {lg: '20px'} }}
+                sx={{ width: { xs: '100%', sm: '400px' }}}
               >
                 INVITE
               </Button>

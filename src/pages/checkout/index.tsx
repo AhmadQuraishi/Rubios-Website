@@ -525,7 +525,15 @@ const Checkout = () => {
             <Card className="order">
               <Grid container>
                 <Grid container>
-                  <Grid item xs={12} sm={6} md={6} lg={6} className="left-col">
+                  <Grid
+                    style={{ border: 'none' }}
+                    item
+                    xs={12}
+                    sm={6}
+                    md={6}
+                    lg={6}
+                    className="left-col"
+                  >
                     <Grid container>
                       {basket &&
                       (basket.deliverymode === '' ||
@@ -643,18 +651,21 @@ const Checkout = () => {
                   />
                 </Grid>
               </Grid>
-              {providerToken && providerToken.first_name && rewards && (
-                <>
-                  <br />
-                  <br />
-                  <br />
-                  <Divider />
-                  <br />
-                  <br />
-                  <br />
-                  <Rewards rewardsList={rewards} />
-                </>
-              )}
+              {providerToken &&
+                providerToken.first_name &&
+                rewards &&
+                rewards.length > 0 && (
+                  <>
+                    <br />
+                    <br />
+                    <br />
+                    <Divider />
+                    <br />
+                    <br />
+                    <br />
+                    <Rewards rewardsList={rewards} />
+                  </>
+                )}
               <br />
               <br />
               <br />
