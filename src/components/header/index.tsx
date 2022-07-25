@@ -78,6 +78,25 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     transition: 'color 0.5s ease',
   },
+  meniItemLink: {
+    textTransform: 'uppercase',
+    display: 'block',
+    paddingTop: '25px',
+    [theme.breakpoints.down('md')]: {
+      paddingTop: '27px',
+      paddingBottom: '22px',
+      fontSize: '14px'
+    },
+    color: theme.palette.primary.main,
+    fontFamily: 'Poppins-Medium !important',
+    textDecoration: 'none',
+    fontSize: '17px',
+    textAlign: 'center',
+    '&:hover': {
+      color: theme.palette.success.main,
+    },
+    transition: 'color 0.5s ease',
+  },
 }));
 let fromEditOrder: Boolean = false;
 const getBasketCount = (basket: any) => {
@@ -178,7 +197,7 @@ const Header = (props: any) => {
             <>
               <Link
                 to={restaurant ? '/menu/' + restaurant.slug : '/'}
-                className={classes.menuLink}
+                className={providerToken && providerToken.first_name ? classes.menuLink : classes.meniItemLink}
                 title="Menu"
                 onClick={() => setShowAccountMenu(false)}
               >

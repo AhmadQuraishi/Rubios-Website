@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import './invite.css';
 import { useSelector } from 'react-redux';
 import { displayToast } from '../../helpers/toast';
+import message from '@olo/pay/dist/utils/message';
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     padding: '0px 20px 40px 20px',
@@ -33,21 +34,25 @@ const Invite = () => {
     await navigator.clipboard.writeText(inviteCode);
     displayToast('SUCCESS', 'Invite Code copied to clipboard.');
   };
+  // const linkElement = process.env.REACT_APP_RUBIOS_REWARD_ADDRESS
   const handleClick = () => {
-    if (navigator.share) {
-      const linkElement = process.env.REACT_APP_RUBIOS_REWARD_ADDRESS
+    const linkElement = process.env.REACT_APP_RUBIOS_REWARD_ADDRESS
+       let shareData = {
+        title: 'Use My Rubio’s Rewards Invite Code and Save $5!',
+        text: `Join Rubio's Rewards at ${linkElement} and use my code ${inviteCode} to get $5 off your next order!`,
+        // url:  linkElement,
+       }
+    if (navigator.canShare && navigator.canShare(shareData)) {
       navigator
-        .share({
-          title: 'Use My Rubio’s Rewards Invite Code and Save $5!',
-          text: `Join Rubio's Rewards at ${linkElement} and use my code ${inviteCode} to get $5 off your next order!`,
-          // url:  linkElement,
-        })
+        .share(shareData)
         .then(() => {
           console.log('Successfully shared');
         })
         .catch((error) => {
           console.error('Something went wrong', error);
         });
+    }else{
+          displayToast("ERROR", 'This feature not supported for this browser')
     }
   };
   return (
@@ -84,6 +89,7 @@ const Invite = () => {
               </Button>
             </Grid>
             <Grid sx={{ display: { md: 'flex' } }} item xs={12}>
+            {/* <a style={{textDecoration: 'none'}} href = {`mailto: ?Subject= Use My Rubio’s Rewards Invite Code and Save $5!&body=Join Rubio's Rewards at ${linkElement} and use my code ${inviteCode} to get $5 off your next order!`}> */}
               <Button
                 aria-label="invite"
                 title="invite"
@@ -93,6 +99,7 @@ const Invite = () => {
               >
                 INVITE
               </Button>
+              {/* </a> */}
             </Grid>
           </Grid>
         </Grid>
