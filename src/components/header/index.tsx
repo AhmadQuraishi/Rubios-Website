@@ -65,6 +65,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('md')]: {
       paddingTop: '27px',
       paddingBottom: '22px',
+      paddingRight: '15px',
       fontSize: '14px'
     },
     color: theme.palette.primary.main,
