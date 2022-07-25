@@ -198,7 +198,7 @@ const Welcome = () => {
       >
         <Grid item xs={16} className="welcome-wrapper">
           <Grid container columns={16} className="welcome-content">
-            <Grid item xs={16} sm={16} md={14} lg={9} className="left-col">
+            <Grid item xs={16} sm={16} md={14} lg={9} className={newUser ? 'new-user-left-col' : "left-col"}>
               <Typography variant="h2" className="label" title="Welcome">
                 {newUser ? 'CONGRATULATIONS!' : 'WELCOME'}
               </Typography>
@@ -338,7 +338,7 @@ const Welcome = () => {
                 </>
               )}
             </Grid>
-            <Grid item xs={16} sm={16} md={14} lg={5.5} className="right-col">
+            <Grid item xs={16} sm={16} md={14} lg={5.5} className={newUser ? 'new-user-right-col' : 'right-col'}>
               <Typography
                 variant="h2"
                 className="label"

@@ -28,6 +28,12 @@
   margin-right: 66px;
 }
 
+.welcome-content .new-user-left-col {
+  border-right: 1px solid #0069aa;
+  padding-right: 58px;
+  margin-right: 66px;
+}
+
 .welcome-content .left-col .p-card {
   display: flex;
   justify-content: flex-start;
@@ -37,7 +43,22 @@
   position: relative;
 }
 
+.welcome-content .new-user-left-col .p-card {
+  display: flex;
+  justify-content: flex-start;
+  border: 1px solid #d6d6d6;
+  padding: 17px;
+  margin-top: 23px;
+  position: relative;
+}
+
 .welcome-content .left-col .p-card img {
+  width: 30%;
+  height: 100%;
+  margin-right: 10px;
+}
+
+.welcome-content .new-user-left-col .p-card img {
   width: 30%;
   height: 100%;
   margin-right: 10px;
@@ -68,7 +89,19 @@
   letter-spacing: 2px;
 }
 
+.welcome-content .new-user-left-col .p-card button {
+  margin: 15px 0px 0px 0px;
+  display: inline-block;
+  text-decoration: none;
+  font-size: 15px !important;
+  letter-spacing: 2px;
+}
+
 .welcome-content .left-col .p-card .product-content {
+  padding-bottom: 30px;
+}
+
+.welcome-content .new-user-left-col .p-card .product-content {
   padding-bottom: 30px;
 }
 
@@ -85,6 +118,15 @@
   margin-bottom: 15px;
 }
 
+.welcome-content .new-user-right-col button {
+  margin-top: 14px;
+  width: 100%;
+}
+
+.welcome-content .new-user-right-col .res-info {
+  margin-bottom: 15px;
+}
+
 .welcome-content .caption-grey {
   font-size: 12px;
   text-decoration: none;
@@ -98,6 +140,12 @@
   }
 
   .left-col {
+    border-right: none !important;
+    padding: 0px !important;
+    margin: 0px 0px 35px 0px !important;
+  }
+
+  .new-user-left-col{
     border-right: none !important;
     border-bottom: 1px solid #0069aa;
     padding: 0px !important;
@@ -132,26 +180,27 @@
 
 @media screen and (max-width: 600px) {
 
-  .welcome-wrapper .welcome-content .left-col{
+  .welcome-wrapper .welcome-content .new-user-left-col{
            align-items: center;
   }
-  .welcome-wrapper .welcome-content .left-col .label{
+  .welcome-wrapper .welcome-content .new-user-left-col .label{
        text-align: center;
   }
-  .welcome-wrapper .welcome-content .left-col h1{
+  .welcome-wrapper .welcome-content .new-user-left-col h1{
     text-align: center;
   }
-  .welcome-wrapper .welcome-content .left-col h6{
+  .welcome-wrapper .welcome-content .new-user-left-col h6{
      text-align: center;
   }
 
-  .welcome-wrapper .welcome-content .left-col .buttonset{
+  .welcome-wrapper .welcome-content .new-user-left-col .buttonset{
     padding-left: 22%;
   }
-  .welcome-wrapper .welcome-content .right-col{
+
+  .welcome-wrapper .welcome-content .new-user-right-col{
     align-items: center;
   }
-  .welcome-wrapper .welcome-content .right-col .label{
+  .welcome-wrapper .welcome-content .new-user-right-col .label{
        text-align: center;
   }
 }
