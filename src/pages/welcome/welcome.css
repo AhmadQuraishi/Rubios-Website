@@ -178,7 +178,7 @@
 }
 
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 900px) {
 
   .welcome-wrapper .welcome-content .new-user-left-col{
            align-items: center;
