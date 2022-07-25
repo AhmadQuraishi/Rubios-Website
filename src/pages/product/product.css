@@ -469,6 +469,10 @@ input[type='check']:checked+label {
   justify-content: center;
 }
 
+.product-detail .menu-items .content-panel .card-panel.no-image-class .name-img-panel .name-panel .options-cals-price .value  {
+  margin-left: 0;
+}
+
 .product-detail .menu-items .content-panel .card-panel.no-image-class .name-img-panel {
   justify-content: center;
 }
