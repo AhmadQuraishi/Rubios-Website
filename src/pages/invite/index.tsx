@@ -80,7 +80,7 @@ const Invite = () => {
                 sx={{ width: { xs: '100%' } }}
                 className="tab-to-copy"
               >
-                <span className="copy-text">Tap to copy.</span> {inviteCode}
+                <span className="copy-text">Tap to copy:</span> {inviteCode}
               </Button>
             </Grid>
             <Grid sx={{ display: { md: 'flex' } }} item xs={12}>

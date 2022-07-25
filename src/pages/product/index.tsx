@@ -927,7 +927,12 @@ const Product = () => {
     );
   };
 
-  const noWordpressImageFound = (optionImages: any, id: any, name: any, isdefault: boolean) => {
+  const noWordpressImageFound = (
+    optionImages: any,
+    id: any,
+    name: any,
+    isdefault: boolean,
+  ) => {
     let check = true;
     if (optionImages && optionImages.length) {
       optionImages.forEach((item: any) => {
@@ -944,7 +949,9 @@ const Product = () => {
         if (
           name.toLowerCase().indexOf('no rice') !== -1 ||
           checkTacoMatch(name, isdefault) ||
-          name.toLowerCase().indexOf('no beans') !== -1
+          name.toLowerCase().indexOf('no beans') !== -1 ||
+          name.toLowerCase() === 'customize' ||
+          name.toLowerCase() === 'as is'
         ) {
           check = false;
         }
@@ -1207,7 +1214,16 @@ const Product = () => {
                             }}
                           >
                             <Card
-                              className="card-panel"
+                              className={`card-panel ${
+                                noWordpressImageFound(
+                                  optionImages,
+                                  itemChild.option.chainoptionid,
+                                  itemChild.option.name,
+                                  itemChild.option.isdefault,
+                                )
+                                  ? 'no-image-class'
+                                  : ''
+                              }`}
                               title={itemChild.option.name}
                               is-mandatory={itemMain.mandatory.toString()}
                               parent-option-id={itemMain.parentOptionID}
@@ -1267,19 +1283,10 @@ const Product = () => {
                                   xs={12}
                                   lg={7}
                                   // style={{textAlign: 'center'}}
-                                  className={`name-panel ${
-                                    noWordpressImageFound(
-                                      optionImages,
-                                      itemChild.option.chainoptionid,
-                                      itemChild.option.name,
-                                      itemChild.option.isdefault
-                                    )
-                                      ? 'custom-class'
-                                      : ''
-                                  }`}
+                                  className="name-panel"
                                 >
                                   {itemChild.option.name}
-                                  <div style={{ display: 'flex' }}>
+                                  <div  className={"options-cals-price"} style={{ display: 'flex' }}>
                                     {itemChild.option.basecalories && (
                                       <Grid
                                         item

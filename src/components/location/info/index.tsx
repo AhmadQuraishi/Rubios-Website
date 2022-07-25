@@ -32,7 +32,11 @@ const StoreInfo = (props: any) => {
 
   useEffect(() => {
     try {
-      if (resturantOrderType == 'delivery' && deliveryAddressString) {
+
+      if (
+        resturantOrderType === 'delivery' && deliveryAddressString &&
+        Object.keys(deliveryAddressString).length
+      ) {
         const url =
           (process.env.REACT_APP_OLO_API || '') +
           `/restaurants/${item.id}/checkdeliverycoverage`;
@@ -83,9 +87,14 @@ const StoreInfo = (props: any) => {
         dispatch(
           setResturantInfoRequest(restaurantObj, resturantOrderType || ''),
         );
-        if( basketObj && basketObj.basket){
-          displayToast('SUCCESS', 'Location changed to ' + restaurantObj.name + ' and basket is empty');
-        }else{
+        if (basketObj && basketObj.basket) {
+          displayToast(
+            'SUCCESS',
+            'Location changed to ' +
+              restaurantObj.name +
+              ' and basket is empty',
+          );
+        } else {
           displayToast('SUCCESS', 'Location changed to ' + restaurantObj.name);
         }
       }
