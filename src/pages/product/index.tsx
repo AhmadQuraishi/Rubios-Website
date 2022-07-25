@@ -1344,6 +1344,7 @@ const Product = () => {
                                           fontSize: '11px',
                                           fontFamily: 'Poppins-Bold',
                                           color: '#1a73e8',
+                                          marginLeft: {sm: '25%', xs: '25%', md:'0%', lg: '0%'}
                                         }}
                                       >
                                         +$

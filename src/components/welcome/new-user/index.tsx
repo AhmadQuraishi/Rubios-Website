@@ -5,12 +5,13 @@ import iosLogo from '../../../assets/imgs/button-apple.png';
 
 const WelcomeNewUser = () => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   return (
-    <Grid container columns={16}>
+    <>
     {isMobile ?
-    <Grid item xs={16} sm={8} md={8.5} lg={8.5} className='icons-container'>
-          <Grid container>
+    <Grid container columns={12} sx={{justifyContent: 'center'}}>
+    <Grid item xs={12} sm={8} md={8.5} lg={8.5}>
+          <Grid container sx={{ marginLeft: {sm: '12%', xs: '12%', md:'30%'}}}>
             <Grid item xs={12}>
               <Button sx={{ padding: 0 }}>
               <a href={process.env.REACT_APP_IOS_DOWNLOAD_LINK} target= '_blank'>
@@ -35,7 +36,9 @@ const WelcomeNewUser = () => {
             </Grid>
           </Grid>
           </Grid>
+      </Grid>
           :
+      <Grid  container columns={16}>
       <Grid item xs={16} sm={8} md={8.5} lg={8.5} className="qr-container"> 
             <img
               style={{ width: '100%' }}
@@ -46,8 +49,9 @@ const WelcomeNewUser = () => {
               Scan the QR code for download links.
             </Typography>
             </Grid>
+        </Grid>
         }
-      </Grid>
+      </>
   );
 };
 
