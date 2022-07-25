@@ -88,7 +88,10 @@ const Location = () => {
     setLatLng(null);
     setShowNearBy(false);
     setNearByRestaurantsFound(false);
-    dispatch(getResturantListRequest());
+    if (type !== 'delivery') {
+      dispatch(getResturantListRequest());
+    }
+
     setOrderType(type);
   };
 
@@ -173,6 +176,7 @@ const Location = () => {
   useEffect(() => {
     if (restaurants && restaurants.restaurants) {
       if (restaurants.restaurants.length === 0) {
+        console.log('rest working 1');
         if (showNearBy || LatLng) {
           setShowNearBy(false);
           setNearByRestaurantsFound(false);
@@ -194,6 +198,7 @@ const Location = () => {
           setActionPerform(false);
         }
       } else {
+        console.log('rest working 2');
         if (showNearBy || LatLng) {
           if (LatLng) {
             // const filterRest = getFilteredRestaurants(restaurants.restaurants);
@@ -203,24 +208,28 @@ const Location = () => {
             //     "We could not find any Rubio's within 10 miles of your address.",
             //   );
             // }
+            // setDeliveryRasturants(restaurants.restaurants);
             setDeliveryRasturants(restaurants.restaurants);
-            // setfilteredRestaurants(restaurants.restaurants);
             setActionPerform(false);
           }
           setLatLng(null);
           if (showNearBy) {
             console.log('ppppppp');
-            if (orderType === 'delivery') {
-              setDeliveryRasturants(restaurants.restaurants);
-            } else {
-              console.log('ppppppp 2', restaurants.restaurants);
-              setfilteredRestaurants(restaurants.restaurants);
-            }
+            // if (orderType === 'delivery') {
+            //   setDeliveryRasturants(restaurants.restaurants);
+            // } else {
+            //   console.log('ppppppp 2', restaurants.restaurants);
+            setDeliveryRasturants(restaurants.restaurants);
+            // }
 
             setShowNearBy(false);
             setNearByRestaurantsFound(true);
           }
         } else {
+          console.log('restaurants.restaurants', restaurants.restaurants);
+          if (orderType && orderType !== '') {
+            setfilteredRestaurants(restaurants.restaurants);
+          }
           setAllResturants(restaurants.restaurants);
         }
         setMapCenter({
@@ -249,9 +258,7 @@ const Location = () => {
       (lastWeekDate.getMonth() + 1) * 100 +
       lastWeekDate.getDate() +
       '';
-    dispatch(
-      getNearByResturantListRequest(lat, long, 10, 10, dateFrom, dateTo),
-    );
+    dispatch(getNearByResturantListRequest(lat, long, 10, 6, dateFrom, dateTo));
   };
   const [markers, setMarkers] = useState<any[]>([]);
 
