@@ -361,7 +361,7 @@ const Checkout = () => {
     let customFields = [];
     let deliveryAddress = null;
     let deliverymode = {
-      deliverymode: basket && basket.deliverymode || '',
+      deliverymode: (basket && basket.deliverymode) || '',
     };
     let formDataValue;
     if (
@@ -515,13 +515,25 @@ const Checkout = () => {
         Checkout
       </Typography>
       <StoreInfoBar />
-      <Box className={`checkout-wrapper ${buttonDisabled || basketObj?.orderSubmit ? 'disable-pointer' : '' }`}>
+      <Box
+        className={`checkout-wrapper ${
+          buttonDisabled || basketObj?.orderSubmit ? 'disable-pointer' : ''
+        }`}
+      >
         <Grid container>
           <Grid item xs={12} sm={12} md={12} lg={12}>
             <Card className="order">
               <Grid container>
                 <Grid container>
-                  <Grid item xs={12} sm={6} md={6} lg={6} className="left-col">
+                  <Grid
+                    style={{ border: 'none' }}
+                    item
+                    xs={12}
+                    sm={6}
+                    md={6}
+                    lg={6}
+                    className="left-col"
+                  >
                     <Grid container>
                       {basket &&
                       (basket.deliverymode === '' ||
@@ -546,7 +558,8 @@ const Checkout = () => {
                             </Typography>
                           </Grid>
                         </>
-                      ) : basket && basket.deliverymode === DeliveryModeEnum.curbside ? (
+                      ) : basket &&
+                        basket.deliverymode === DeliveryModeEnum.curbside ? (
                         <>
                           <Grid item xs={12}>
                             <Typography
@@ -567,7 +580,8 @@ const Checkout = () => {
                             </Typography>
                           </Grid>
                         </>
-                      ) : basket && basket.deliverymode === DeliveryModeEnum.delivery ? (
+                      ) : basket &&
+                        basket.deliverymode === DeliveryModeEnum.delivery ? (
                         <>
                           <Grid item xs={12}>
                             <Typography
@@ -588,7 +602,8 @@ const Checkout = () => {
                             </Typography>
                           </Grid>
                         </>
-                      ) : basket && basket.deliverymode === DeliveryModeEnum.dinein ? (
+                      ) : basket &&
+                        basket.deliverymode === DeliveryModeEnum.dinein ? (
                         <>
                           <Grid item xs={12}>
                             <Typography
@@ -621,7 +636,8 @@ const Checkout = () => {
                           orderType={basket.deliverymode}
                         />
                       ) : null}
-                      {basket && basket.deliverymode === DeliveryModeEnum.delivery ? (
+                      {basket &&
+                      basket.deliverymode === DeliveryModeEnum.delivery ? (
                         <DeliveryForm
                           basket={basket}
                           defaultAddress={defaultDeliveryAddress}
@@ -630,21 +646,26 @@ const Checkout = () => {
                       ) : null}
                     </Grid>
                   </Grid>
-                  <OrderTime orderType={basket && basket.deliverymode || ''} />
+                  <OrderTime
+                    orderType={(basket && basket.deliverymode) || ''}
+                  />
                 </Grid>
               </Grid>
-              {providerToken && providerToken.first_name && rewards && (
-                <>
-                  <br />
-                  <br />
-                  <br />
-                  <Divider />
-                  <br />
-                  <br />
-                  <br />
-                  <Rewards rewardsList={rewards} />
-                </>
-              )}
+              {providerToken &&
+                providerToken.first_name &&
+                rewards &&
+                rewards.length > 0 && (
+                  <>
+                    <br />
+                    <br />
+                    <br />
+                    <Divider />
+                    <br />
+                    <br />
+                    <br />
+                    <Rewards rewardsList={rewards} />
+                  </>
+                )}
               <br />
               <br />
               <br />
