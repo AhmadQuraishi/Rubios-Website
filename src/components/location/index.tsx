@@ -222,6 +222,7 @@ const LocationCard = (props: any) => {
 
   const getSearchResults = () => {
     console.log('resturantOrderType', resturantOrderType);
+    console.log('searchText', searchText);
     setShowNotFoundMessage(false);
     if (resturantOrderType === 'delivery') {
       // setfilteredRestaurants(
@@ -281,7 +282,7 @@ const LocationCard = (props: any) => {
             zipCodeMatchedRestaurants[0].latitude,
             zipCodeMatchedRestaurants[0].longitude,
           );
-          setShowNearBy(true)
+          // setShowNearBy(true)
           return false;
         }
         if (!resultsFound) {
@@ -667,7 +668,7 @@ const LocationCard = (props: any) => {
                     }
                   }}
                 />
-              ) : (
+              ) : resturantOrderType && resturantOrderType !== '' ? (
                 <TextField
                   aria-label="City, Zip Code, State"
                   label="City, Zip Code, State"
@@ -689,7 +690,7 @@ const LocationCard = (props: any) => {
                   }}
                   variant="outlined"
                 />
-              )}
+              ) : null}
               {status === 'OK' && (
                 <div className="autocomplete-combo">
                   {value !== '' &&
