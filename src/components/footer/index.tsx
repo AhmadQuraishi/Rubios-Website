@@ -368,7 +368,7 @@ const Footer = () => {
                     </li>
                     <li>
                       <a
-                        href='https://www.google.com/'
+                        href={process.env.REACT_APP_PRIVACY_LINK}
                         className={classes.smallLinks}
                         title="Privacy"
                         aria-label="Privacy"
