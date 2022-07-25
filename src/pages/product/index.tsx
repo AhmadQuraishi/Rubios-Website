@@ -1287,7 +1287,7 @@ const Product = () => {
                                   }`}
                                 >
                                   {itemChild.option.name}
-                                  <div style={{display: 'flex', }}>
+                                  <div style={{display: 'flex', paddingLeft: '12%'}}>
                                   {itemChild.option.basecalories && (
                                     <Grid
                                       item

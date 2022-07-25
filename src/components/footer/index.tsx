@@ -340,7 +340,7 @@ const Footer = () => {
                   }}
                 >
                   <ul style={{ listStyle: 'none', display: 'flex' }}>
-                    <li>
+                    {/* <li>
                       <a
                         href='#'
                         className={classes.smallLinks}
@@ -349,7 +349,7 @@ const Footer = () => {
                       >
                       Do Not Sell My Personal Infomation
                       </a>
-                    </li>
+                    </li> */}
                     <li>
                       <a
                         href={process.env.REACT_APP_WEBSITE_ACCESSIBILITY_LINK}
@@ -380,7 +380,7 @@ const Footer = () => {
                         Privacy
                       </a>
                     </li>
-                    <li>
+                    {/* <li>
                       <a
                         href='#'
                         className={classes.smallLinks}
@@ -389,7 +389,7 @@ const Footer = () => {
                       >
                      Cookies
                       </a>
-                    </li>
+                    </li> */}
                   </ul>
                 </Grid>
               </Grid>
