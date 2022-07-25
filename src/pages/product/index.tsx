@@ -1286,7 +1286,7 @@ const Product = () => {
                                   {itemChild.option.name}
                                   <div className={"options-cals-price"} style={{ display: 'flex' }}>
                                     <Grid container>
-                                      {itemChild.option.cost > 0 && (
+                                      {/* {itemChild.option.cost > 0 && ( */}
                                         <Grid
                                           item
                                           xs={12} lg={3}
@@ -1299,13 +1299,13 @@ const Product = () => {
                                             color: '#0075EF',
                                           }}
                                         >
-                                          +$
-                                          {parseFloat(
+                                          +$ 19.00
+                                          {/* {parseFloat(
                                             itemChild.option.cost,
-                                          ).toFixed(2)}
+                                          ).toFixed(2)} */}
                                         </Grid>
-                                      )}
-                                      {itemChild.option.cost > 0 && itemChild.option.basecalories && (
+                                      {/* )} */}
+                                      {/* {itemChild.option.cost > 0 && itemChild.option.basecalories && (
                                         <span
                                           style={{
                                             fontSize: '16px',
@@ -1316,7 +1316,7 @@ const Product = () => {
                                         >
                                           &nbsp;|&nbsp;
                                         </span>
-                                      )}
+                                      )} */}
                                       <Grid item xs={12} lg={9}
                                         sx={{
                                           fontSize: '11px',
@@ -1324,12 +1324,13 @@ const Product = () => {
                                           fontFamily: 'Poppins-Bold !important',
                                         }}>
                                         <Grid container>
-                                          {itemChild.option.basecalories && (
+                                          {/* {itemChild.option.basecalories && ( */}
                                             <Grid item xs={12} lg={5}>
-                                              + {itemChild.option.basecalories + ' Cals'}
+                                              + 1000 cals
+                                              {/* + {itemChild.option.basecalories + ' Cals'} */}
                                             </Grid>
-                                          )}
-                                          {itemChild.option.maxcalories && itemChild.option.basecalories && (
+                                          {/* )} */}
+                                          {/* {itemChild.option.maxcalories && itemChild.option.basecalories && (
                                             <span
                                               style={{
                                                 fontSize: '16px',
@@ -1340,12 +1341,13 @@ const Product = () => {
                                             >
                                               &nbsp;|&nbsp;
                                             </span>
-                                          )}
-                                          {itemChild.option.maxcalories && (
+                                          )} */}
+                                          {/* {itemChild.option.maxcalories && ( */}
                                             <Grid item xs={12} lg={6}>
-                                              +{itemChild.option.maxcalories + ' Cals'}
+                                              + 39 cals
+                                              {/* +{itemChild.option.maxcalories + ' Cals'} */}
                                             </Grid>
-                                          )}
+                                          {/* )} */}
                                         </Grid>
                                       </Grid>
                                     </Grid>
