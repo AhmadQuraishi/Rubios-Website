@@ -197,6 +197,10 @@ input[type='check']:checked+label {
     text-align: center;
     font-size: 16px;
   }
+
+  .product-detail .menu-items .content-panel .card-panel .name-img-panel .name-panel .options-cals-price {
+    justify-content: center;
+  }
 }
 
 .product-detail .action-panel {
