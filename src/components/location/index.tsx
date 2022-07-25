@@ -20,7 +20,10 @@ import usePlacesAutocomplete, {
   getGeocode,
   getLatLng,
 } from 'use-places-autocomplete';
-import { getNearByResturantListRequest } from '../../redux/actions/restaurant/list';
+import {
+  getNearByResturantListRequest,
+  getResturantListRequest,
+} from '../../redux/actions/restaurant/list';
 
 const LocationCard = (props: any) => {
   const {
@@ -124,6 +127,7 @@ const LocationCard = (props: any) => {
     setOrderTypeMain,
     setfilteredRestaurants,
     filteredRestaurants,
+    loading,
   } = props;
   const dispatch = useDispatch();
   const [searchText, setSearchText] = useState<string>();
@@ -213,12 +217,11 @@ const LocationCard = (props: any) => {
       (lastWeekDate.getMonth() + 1) * 100 +
       lastWeekDate.getDate() +
       '';
-    dispatch(
-      getNearByResturantListRequest(lat, long, 40, 6, dateFrom, dateTo),
-    );
+    dispatch(getNearByResturantListRequest(lat, long, 40, 6, dateFrom, dateTo));
   };
 
   const getSearchResults = () => {
+    console.log('resturantOrderType', resturantOrderType);
     setShowNotFoundMessage(false);
     if (resturantOrderType === 'delivery') {
       // setfilteredRestaurants(
@@ -234,26 +237,15 @@ const LocationCard = (props: any) => {
       return false;
     }
     setfilteredRestaurants(isNearByRestaurantList ? restaurants : []);
-    if (resturantOrderType || searchText) {
-      if (
-        resturantOrderType === 'pickup' ||
-        resturantOrderType === 'curbside'
-      ) {
-        if (searchText && searchText.trim() && searchText.length > 1) {
-          let searchTxt = searchText.trim().toLowerCase();
-          let zipCodeMatchedRestaurants = restaurants.filter(
-            (x: any) => x.zip.toLowerCase() === searchTxt,
-          );
-          if (zipCodeMatchedRestaurants.length) {
-            getNearByRestaurants(
-              zipCodeMatchedRestaurants[0].latitude,
-              zipCodeMatchedRestaurants[0].longitude,
-            );
-            // setShowNearBy(true)
-            return false;
-          }
-        }
-      }
+    // if (
+    //   resturantOrderType && resturantOrderType !== '' &&
+    //   !searchText
+    // ) {
+    //   console.log('empty')
+    //   // dispatch(getResturantListRequest());
+    //   return false;
+    // }
+    if (resturantOrderType) {
       let updatedRestaurants = [];
       let resultsFound = false;
       if (resturantOrderType && resturantOrderType !== '') {
@@ -268,10 +260,10 @@ const LocationCard = (props: any) => {
         }
         // else if (resturantOrderType === 'delivery') {
         //   updatedRestaurants = restaurants.filter(
-        //     (x: any) => x.candeliver === false,
+        //     (x: any) => x.candeliver === true,
         //   );
         // }
-        setfilteredRestaurants(updatedRestaurants);
+        // setfilteredRestaurants(updatedRestaurants);
         if (updatedRestaurants.length > 0) {
           resultsFound = true;
         } else {
@@ -281,32 +273,45 @@ const LocationCard = (props: any) => {
       let searchedRestaurant: ResponseRestaurant[] = [];
       if (searchText && searchText.trim() && searchText.length > 1) {
         let searchTxt = searchText.trim().toLowerCase();
-        if (!resultsFound) {
-          updatedRestaurants = restaurants.filter(
-            (x: any) => x.city.toLowerCase() == searchTxt,
+        let zipCodeMatchedRestaurants = updatedRestaurants.filter(
+          (x: any) => x.zip.toLowerCase() === searchTxt,
+        );
+        if (zipCodeMatchedRestaurants.length) {
+          getNearByRestaurants(
+            zipCodeMatchedRestaurants[0].latitude,
+            zipCodeMatchedRestaurants[0].longitude,
           );
-          if (updatedRestaurants.length === 0) {
-            updatedRestaurants = restaurants.filter(
-              (x: any) => x.zip.toLowerCase() == searchTxt,
-            );
-          }
-          if (updatedRestaurants.length === 0) {
-            updatedRestaurants = restaurants.filter(
-              (x: any) => x.state.toLowerCase() == searchTxt,
-            );
-          }
-          if (updatedRestaurants.length > 0) {
-            setfilteredRestaurants(updatedRestaurants);
-          } else setShowNotFoundMessage(true);
+          setShowNearBy(true)
+          return false;
+        }
+        if (!resultsFound) {
+          setShowNotFoundMessage(true);
+          setfilteredRestaurants([]);
+          // updatedRestaurants = restaurants.filter(
+          //   (x: any) => x.city.toLowerCase() == searchTxt,
+          // );
+          // if (updatedRestaurants.length === 0) {
+          //   updatedRestaurants = restaurants.filter(
+          //     (x: any) => x.zip.toLowerCase() == searchTxt,
+          //   );
+          // }
+          // if (updatedRestaurants.length === 0) {
+          //   updatedRestaurants = restaurants.filter(
+          //     (x: any) => x.state.toLowerCase() == searchTxt,
+          //   );
+          // }
+          // if (updatedRestaurants.length > 0) {
+          //   setfilteredRestaurants(updatedRestaurants);
+          // } else setShowNotFoundMessage(true);
         } else {
           searchedRestaurant = updatedRestaurants.filter(
             (x: any) => x.city.toLowerCase() == searchTxt,
           );
-          if (searchedRestaurant.length === 0) {
-            searchedRestaurant = updatedRestaurants.filter(
-              (x: any) => x.zip.toLowerCase() == searchTxt,
-            );
-          }
+          // if (searchedRestaurant.length === 0) {
+          //   searchedRestaurant = updatedRestaurants.filter(
+          //     (x: any) => x.zip.toLowerCase() == searchTxt,
+          //   );
+          // }
           if (searchedRestaurant.length === 0) {
             searchedRestaurant = updatedRestaurants.filter(
               (x: any) => x.state.toLowerCase() == searchTxt,
@@ -319,14 +324,143 @@ const LocationCard = (props: any) => {
             searchedRestaurant.length > 0 ? searchedRestaurant : [],
           );
         }
+      } else {
+        setfilteredRestaurants(updatedRestaurants);
       }
     } else {
       if (!isNearByRestaurantList) {
         setShowNotFoundMessage(false);
         setfilteredRestaurants([]);
       }
+      // if(updatedRestaurants && updatedRestaurants.length){
+      //   setfilteredRestaurants(updatedRestaurants)
+      // }
     }
   };
+
+  // const getSearchResults = () => {
+  //   setShowNotFoundMessage(false);
+  //   if (resturantOrderType === 'delivery') {
+  //     // setfilteredRestaurants(
+  //     //   (deliveryRasturants &&
+  //     //     deliveryRasturants.filter((x: any) => x.candeliver === false)) ||
+  //     //     [],
+  //     // );
+  //     setfilteredRestaurants(
+  //       deliveryRasturants && deliveryRasturants.length
+  //         ? deliveryRasturants
+  //         : [],
+  //     );
+  //     return false;
+  //   }
+  //   setfilteredRestaurants(isNearByRestaurantList ? restaurants : []);
+  //   if (resturantOrderType || searchText) {
+  //     console.log('searchtetx', searchText)
+  //
+  //     if (
+  //       resturantOrderType === 'pickup' ||
+  //       resturantOrderType === 'curbside'
+  //     ) {
+  //       if (searchText && searchText.trim() && searchText.length > 1) {
+  //         let filterRestaurantOrderType = [];
+  //         if (resturantOrderType === 'pickup') {
+  //           filterRestaurantOrderType = restaurants.filter(
+  //             (x: any) => x.canpickup === true,
+  //           );
+  //         } else if (resturantOrderType === 'curbside') {
+  //           filterRestaurantOrderType = restaurants.filter(
+  //             (x: any) => x.supportscurbside === true,
+  //           );
+  //         }
+  //         let searchTxt = searchText.trim().toLowerCase();
+  //         let zipCodeMatchedRestaurants = filterRestaurantOrderType.filter(
+  //           (x: any) => x.zip.toLowerCase() === searchTxt,
+  //         );
+  //         console.log('zipCodeMatchedRestaurants', zipCodeMatchedRestaurants);
+  //         if (zipCodeMatchedRestaurants.length) {
+  //           getNearByRestaurants(
+  //             zipCodeMatchedRestaurants[0].latitude,
+  //             zipCodeMatchedRestaurants[0].longitude,
+  //           );
+  //           // setShowNearBy(true)
+  //           return false;
+  //         }
+  //       }
+  //     }
+  //
+  //     if (resturantOrderType && resturantOrderType !== '') {
+  //       let updatedRestaurants = [];
+  //       let resultsFound = false;
+  //       if (resturantOrderType === 'pickup') {
+  //         updatedRestaurants = restaurants.filter(
+  //           (x: any) => x.canpickup === true,
+  //         );
+  //       } else if (resturantOrderType === 'curbside') {
+  //         updatedRestaurants = restaurants.filter(
+  //           (x: any) => x.supportscurbside === true,
+  //         );
+  //       }
+  //       // else if (resturantOrderType === 'delivery') {
+  //       //   updatedRestaurants = restaurants.filter(
+  //       //     (x: any) => x.candeliver === false,
+  //       //   );
+  //       // }
+  //       setfilteredRestaurants(updatedRestaurants);
+  //       if (updatedRestaurants.length > 0) {
+  //         resultsFound = true;
+  //       } else {
+  //         setShowNotFoundMessage(true);
+  //       }
+  //     }
+  //     let searchedRestaurant: ResponseRestaurant[] = [];
+  //     if (searchText && searchText.trim() && searchText.length > 1) {
+  //       let searchTxt = searchText.trim().toLowerCase();
+  //       if (!resultsFound) {
+  //         updatedRestaurants = restaurants.filter(
+  //           (x: any) => x.city.toLowerCase() == searchTxt,
+  //         );
+  //         if (updatedRestaurants.length === 0) {
+  //           updatedRestaurants = restaurants.filter(
+  //             (x: any) => x.zip.toLowerCase() == searchTxt,
+  //           );
+  //         }
+  //         if (updatedRestaurants.length === 0) {
+  //           updatedRestaurants = restaurants.filter(
+  //             (x: any) => x.state.toLowerCase() == searchTxt,
+  //           );
+  //         }
+  //         if (updatedRestaurants.length > 0) {
+  //           setfilteredRestaurants(updatedRestaurants);
+  //         } else setShowNotFoundMessage(true);
+  //       } else {
+  //         searchedRestaurant = updatedRestaurants.filter(
+  //           (x: any) => x.city.toLowerCase() == searchTxt,
+  //         );
+  //         if (searchedRestaurant.length === 0) {
+  //           searchedRestaurant = updatedRestaurants.filter(
+  //             (x: any) => x.zip.toLowerCase() == searchTxt,
+  //           );
+  //         }
+  //         if (searchedRestaurant.length === 0) {
+  //           searchedRestaurant = updatedRestaurants.filter(
+  //             (x: any) => x.state.toLowerCase() == searchTxt,
+  //           );
+  //         }
+  //         if (searchedRestaurant.length == 0) {
+  //           setShowNotFoundMessage(true);
+  //         }
+  //         setfilteredRestaurants(
+  //           searchedRestaurant.length > 0 ? searchedRestaurant : [],
+  //         );
+  //       }
+  //     }
+  //   } else {
+  //     if (!isNearByRestaurantList) {
+  //       setShowNotFoundMessage(false);
+  //       setfilteredRestaurants([]);
+  //     }
+  //   }
+  // };
 
   useEffect(() => {
     if (restaurants) {
@@ -409,6 +543,20 @@ const LocationCard = (props: any) => {
                   marginTop: '10px',
                 }}
               >
+                {!loading &&
+                  filteredRestaurants &&
+                  filteredRestaurants.length === 0 && (
+                    <Typography
+                      variant="h2"
+                      sx={{
+                        fontFamily: 'Poppins-Medium !important',
+                        color: '#000000',
+                        fontSize: '12px !important',
+                      }}
+                    >
+                      No Restaurant Found!
+                    </Typography>
+                  )}
                 {filteredRestaurants.length > 0 &&
                   filteredRestaurants.map((item: any, index: number) => (
                     <StoreInfo
@@ -564,7 +712,9 @@ const LocationCard = (props: any) => {
               {showAllResturants}
               {((!showAllResturants &&
                 resturantOrderType &&
-                resturantOrderType != 'delivery') ||
+                resturantOrderType != 'delivery' &&
+                filteredRestaurants &&
+                filteredRestaurants.length > 0) ||
                 (!showAllResturants &&
                   resturantOrderType == 'delivery' &&
                   deliveryRasturants &&

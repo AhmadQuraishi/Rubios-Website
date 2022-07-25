@@ -12,7 +12,7 @@ export function getNearByResturantListRequest(
   endDate: string,
 ) {
   return {
-    type: restaurantListDataActionsTypes.GET_RESTAURANT_LIST_REQUEST,
+    type: restaurantListDataActionsTypes.GET_NEARBY_RESTAURANT_LIST_REQUEST,
     lat,
     long,
     radius,
@@ -27,7 +27,7 @@ export function getNearByResturantListRequestSuccess(
 ) {
   const filterRestaurants = removeTestingStores(data);
   return {
-    type: restaurantListDataActionsTypes.GET_RESTAURANT_LIST_SUCCESS,
+    type: restaurantListDataActionsTypes.GET_NEARBY_RESTAURANT_LIST_SUCCESS,
     payload: filterRestaurants,
   };
 }
@@ -40,7 +40,7 @@ export function getNearByResturantListRequestFailure(error: any) {
       : 'ERROR! Please Try again later',
   );
   return {
-    type: restaurantListDataActionsTypes.GET_RESTAURANT_LIST_FAILURE,
+    type: restaurantListDataActionsTypes.GET_NEARBY_RESTAURANT_LIST_FAILURE,
     error: error,
   };
 }
