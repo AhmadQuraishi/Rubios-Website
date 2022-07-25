@@ -32,7 +32,10 @@ function App(props: any) {
   const [hideLoginedPanel, setHideLoginedPanel] = useState(false);
   const dispatch = useDispatch();
   const { providerToken } = useSelector((state: any) => state.providerReducer);
+  const { authToken } = useSelector((state: any) => state.authReducer);
   const { deviceId } = useSelector((state: any) => state.authReducer);
+  const { basket } = useSelector((state: any) => state.basketReducer);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -104,6 +107,20 @@ function App(props: any) {
       );
     }
   }, [location.pathname]);
+
+  useEffect(() => {
+    if (window.location.pathname === '/') {
+      if (basket) {
+      } else if (
+        providerToken &&
+        authToken &&
+        authToken.authtoken &&
+        authToken.authtoken !== ''
+      ) {
+        navigate('/welcome');
+      }
+    }
+  }, []);
 
   return (
     <div id="wapper">

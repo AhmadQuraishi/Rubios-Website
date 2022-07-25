@@ -1,19 +1,18 @@
 import { memo, useEffect, useState } from 'react';
-import axios from 'axios';
-import { Box, CircularProgress } from '@mui/material';
+import { checkTacoMatch } from '../../helpers/common';
 
 const ItemImage = (props: any) => {
-  const { name, id, className, productImageURL, optionImages } = props;
+  const { name, id, className, productImageURL, optionImages, isdefault } =
+    props;
 
   const [imageURL, setImageURL] = useState<any>(null);
-  const [loading, setLoading] = useState<any>(false);
 
   useEffect(() => {
     if (
       !optionImages ||
       name.toLowerCase() === 'as is' ||
       name.toLowerCase() === 'customize' ||
-      name.toLowerCase().indexOf('taco') !== -1
+      checkTacoMatch(name, isdefault)
     ) {
       return;
     }
@@ -32,9 +31,9 @@ const ItemImage = (props: any) => {
 
   return (
     <>
-      {(name.toLowerCase() == 'as is' ||
-        name.toLowerCase() == 'customize' ||
-        name.toLowerCase().indexOf('taco') != -1) && (
+      {(name.toLowerCase() === 'as is' ||
+        name.toLowerCase() === 'customize' ||
+        checkTacoMatch(name, isdefault)) && (
         <img
           aria-hidden="true"
           src={productImageURL}
@@ -43,10 +42,9 @@ const ItemImage = (props: any) => {
         />
       )}
 
-      {imageURL == null &&
-        name.toLowerCase() != 'customize' &&
-        name.toLowerCase() != 'as is' &&
-        name.toLowerCase().indexOf('taco') == -1 &&
+      {name.toLowerCase() !== 'customize' &&
+        name.toLowerCase() !== 'as is' &&
+        !checkTacoMatch(name, isdefault) &&
         (name.toLowerCase().indexOf('no rice') !== -1 ||
           name.toLowerCase().indexOf('no beans') !== -1) && (
           <img
@@ -58,8 +56,11 @@ const ItemImage = (props: any) => {
         )}
 
       {imageURL &&
-        name.toLowerCase() != 'customize' &&
-        name.toLowerCase() != 'as is' && (
+        name.toLowerCase() !== 'customize' &&
+        name.toLowerCase() !== 'as is' &&
+        !checkTacoMatch(name, isdefault) &&
+        name.toLowerCase().indexOf('no rice') === -1 &&
+        name.toLowerCase().indexOf('no beans') === -1 && (
           <img
             aria-hidden="true"
             alt=""

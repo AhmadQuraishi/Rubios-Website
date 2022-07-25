@@ -260,7 +260,7 @@ input[type='check']:checked+label {
     padding-bottom: 0px;
   }
 
-  .product-detail .menu-items .content-panel.selected .card-panel .name-img-panel .name-panel.custom-class {
+  .product-detail .menu-items .content-panel.selected .card-panel.no-image-class .name-img-panel .name-panel {
     color: #e58734;
     position: relative !important;
     width: 100%;
@@ -271,7 +271,7 @@ input[type='check']:checked+label {
     text-align: center !important;
   }
 
-  .product-detail .menu-items .content-panel .card-panel .name-img-panel .name-panel.custom-class {
+  .product-detail .menu-items .content-panel .card-panel.no-image-class .name-img-panel .name-panel {
     position: relative !important;
     width: 100%;
     /* margin: 0 auto; */
@@ -383,12 +383,12 @@ input[type='check']:checked+label {
   font-family: 'Poppins-Medium', sans-serif !important;
   color: #2b4b62;
   /* max-width: 354px; */
-  min-height: 170px;
+  min-height: 140px;
   font-size: 18px;
 }
 
 .product-detail .menu-items .content-panel .card-panel {
-  padding: 10px;
+  /*padding: 10px;*/
   border: 1px solid #d3d3d3;
   box-sizing: border-box;
   height: 100%;
@@ -418,9 +418,9 @@ input[type='check']:checked+label {
   width: 55px;
   background-color: #e58734;
   position: absolute;
-  top: 32%;
+  top: 28%;
   bottom: 0;
-  left: 50px;
+  left: 25px;
   right: 0;
 }
 
@@ -459,26 +459,28 @@ input[type='check']:checked+label {
   color: #2b4b62;
 }
 
-.product-detail .menu-items .content-panel.selected .card-panel .name-img-panel .name-panel.custom-class {
+.product-detail .menu-items .content-panel.selected .card-panel.no-image-class .name-img-panel .name-panel {
   color: #e58734;
-  position: relative !important;
-  width: 100%;
-  /* margin: 0 auto; */
-  left: auto !important;
-  top: 0px !important;
-  margin-left: 0px !important;
-  text-align: center !important;
+  margin-left: -103px;
+  position: inherit;
+}
+
+.product-detail .menu-items .content-panel .card-panel.no-image-class .name-img-panel .name-panel .options-cals-price {
+  justify-content: center;
+}
+
+.product-detail .menu-items .content-panel .card-panel.no-image-class .name-img-panel {
+  justify-content: center;
 }
 
 
-.product-detail .menu-items .content-panel .card-panel .name-img-panel .name-panel.custom-class {
-    position: relative !important;
-    width: 100%;
-    /* margin: 0 auto; */
-    left: auto !important;
-    top: 0px !important;
-    margin-left: 0px !important;
-    text-align: center !important;
+.product-detail .menu-items .content-panel .card-panel.no-image-class .name-img-panel .name-panel {
+  position: absolute;
+  width: 100%;
+  /* margin: 0 auto; */
+  /*left: 60%;*/
+  /*margin-left: -122px;*/
+  text-align: center;
 }
 
 .product-detail .menu-items .content-panel .card-panel .name-img-panel .item-image {

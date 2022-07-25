@@ -331,11 +331,7 @@ const Footer = () => {
                   sx={{
                     display: 'flex',
                     paddingTop: '30px !important',
-                    paddingLeft: {
-                      xs: '20px !important',
-                      sm: '30px !important',
-                    },
-                    paddingRight: { md: '60px' },
+                    paddingRight: { md: '60px', sm: '30px', xs: '30px' },
                     justifyContent: { xs: 'left', md: 'right' },
                   }}
                 >
