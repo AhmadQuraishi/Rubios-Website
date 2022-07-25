@@ -1288,6 +1288,7 @@ const Product = () => {
                                     {itemChild.option.cost > 0 && (
                                       <Grid
                                         item
+                                        className={"value"}
                                         xs={6}
                                         title={`$${parseFloat(
                                           itemChild.option.cost,
