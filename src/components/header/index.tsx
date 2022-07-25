@@ -201,7 +201,7 @@ const Header = (props: any) => {
                 <MenuIcon fontSize="large" titleAccess="Menu Icon" />
               </IconButton> */}
               {providerToken && providerToken.first_name
-                ? !hideLoginedPanel && (
+                ? (
                   <Grid
                     container
                     sx={{
@@ -230,7 +230,7 @@ const Header = (props: any) => {
                     </Grid>
                   </Grid>
                 )
-                : !hideLoginPanel && (
+                : !hideLoginPanel  && (
                   <Grid
                     container
                     sx={{
