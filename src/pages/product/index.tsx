@@ -1326,7 +1326,7 @@ const Product = () => {
                                             fontSize: '11px',
                                             color: '#1a73e8',
                                             fontFamily: 'Poppins-Bold !important',
-                                            marginRight: { sm: '33%', xs: '33%', md: '40%', lg: '60%' }
+                                            marginRight: { sm: '23%', xs: '23%', md: '40%', lg: '44%' }
 
                                           }}
                                         >
