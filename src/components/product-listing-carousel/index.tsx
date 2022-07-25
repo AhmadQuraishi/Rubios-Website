@@ -69,7 +69,7 @@ const ProductListingCarousel = (props: any) => {
     },
     mobile: {
       breakpoint: { max: 464, min: 0 },
-      items: 2,
+      items: 1,
       slidesToSlide: 1, // optional, default to 1.
     },
   };
