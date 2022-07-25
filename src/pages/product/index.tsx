@@ -1004,16 +1004,16 @@ const Product = () => {
                           variant="caption"
                           className="label bold"
                           aria-label={`${productDetails.caloriesseparator
-                              ? productDetails.basecalories +
-                              productDetails.caloriesseparator +
-                              productDetails.maxcalories
-                              : productDetails.basecalories
+                            ? productDetails.basecalories +
+                            productDetails.caloriesseparator +
+                            productDetails.maxcalories
+                            : productDetails.basecalories
                             } Cal`}
                           title={`${productDetails.caloriesseparator
-                              ? productDetails.basecalories +
-                              productDetails.caloriesseparator +
-                              productDetails.maxcalories
-                              : productDetails.basecalories
+                            ? productDetails.basecalories +
+                            productDetails.caloriesseparator +
+                            productDetails.maxcalories
+                            : productDetails.basecalories
                             } Cal`}
                         >
                           {productDetails.caloriesseparator
@@ -1219,8 +1219,8 @@ const Product = () => {
                                 itemChild.option.name,
                                 itemChild.option.isdefault,
                               )
-                                  ? 'no-image-class'
-                                  : ''
+                                ? 'no-image-class'
+                                : ''
                                 }`}
                               title={itemChild.option.name}
                               is-mandatory={itemMain.mandatory.toString()}
@@ -1296,7 +1296,7 @@ const Product = () => {
                                           fontSize: '11px',
                                           fontFamily: 'Poppins-Bold',
                                           color: '#1a73e8',
-                                          marginLeft: {sm: '25%', xs: '25%', md:'0%', lg: '0%'}
+                                          marginLeft: { sm: '25%', xs: '25%', md: '0%', lg: '0%' }
                                         }}
                                       >
                                         +$
@@ -1305,51 +1305,115 @@ const Product = () => {
                                         ).toFixed(2)}
                                       </Grid>
                                     )}
-                                    {itemChild.option.basecalories && (
-                                      <Grid
-                                        item
-                                        xs={6}
-                                        sx={{
-                                          fontSize: '11px',
-                                          color: '#1a73e8',
-                                          fontFamily: 'Poppins-Bold !important',
+                                    {itemChild.option.cost > 0 && itemChild.option.basecalories && (
+                                      <span
+                                        style={{
+                                          fontSize: '16px',
+                                          fontFamily: 'Poppins-Regular',
+                                          color: '#AAA',
+                                          marginTop: '-2%'
                                         }}
                                       >
-                                        {itemChild.option.maxcalories && (
-                                          <div className="options-cals">
-                                            <span>
-                                              +
-                                              {itemChild.option.basecalories +
-                                                ' Cals'}
-                                            </span>
-                                            <span
-                                              style={{
-                                                fontSize: '16px',
-                                                fontFamily: 'Poppins-Regular',
-                                                color: '#AAA',
-                                              }}
-                                            >
-                                              &nbsp;|&nbsp;
-                                            </span>
-                                            <span>
-                                              +
-                                              {itemChild.option.maxcalories +
-                                                ' Cals'}
-                                            </span>
-                                          </div>
-                                        )}
-                                        {itemChild.option.maxcalories ==
-                                          null && (
-                                          <div className="options-cals">
-                                            <span>
-                                              +
-                                              {itemChild.option.basecalories +
-                                                ' Cals'}
-                                            </span>
-                                          </div>
-                                        )}
-                                      </Grid>
+                                        &nbsp;|&nbsp;
+                                      </span>
                                     )}
+                                    {itemChild.option.cost > 0 ?
+                                      itemChild.option.basecalories && (
+                                        <Grid
+                                          item
+                                          xs={6}
+                                          sx={{
+                                            fontSize: '11px',
+                                            color: '#1a73e8',
+                                            fontFamily: 'Poppins-Bold !important',
+                                            marginRight: { sm: '33%', xs: '33%', md: '40%', lg: '60%' }
+
+                                          }}
+                                        >
+                                          {itemChild.option.maxcalories && (
+                                            <div className="options-cals">
+                                              <span>
+                                                +
+                                                {itemChild.option.basecalories +
+                                                  ' Cals'}
+                                              </span>
+                                              <span
+                                                style={{
+                                                  fontSize: '16px',
+                                                  fontFamily: 'Poppins-Regular',
+                                                  color: '#AAA',
+
+                                                }}
+                                              >
+                                                &nbsp;|&nbsp;
+                                              </span>
+                                              <span>
+                                                +
+                                                {itemChild.option.maxcalories +
+                                                  ' Cals'}
+                                              </span>
+                                            </div>
+                                          )}
+                                          {itemChild.option.maxcalories ==
+                                            null && (
+                                              <div className="options-cals">
+                                                <span>
+                                                  +
+                                                  {itemChild.option.basecalories +
+                                                    ' Cals'}
+                                                </span>
+                                              </div>
+                                            )}
+                                        </Grid>
+                                      )
+                                      :
+                                      itemChild.option.basecalories && (
+                                        <Grid
+                                          item
+                                          xs={6}
+                                          sx={{
+                                            fontSize: '11px',
+                                            color: '#1a73e8',
+                                            fontFamily: 'Poppins-Bold !important',
+                                            marginLeft: { sm: '25%', xs: '25%', md: '0%', lg: '0%' }
+                                          }}
+                                        >
+                                          {itemChild.option.maxcalories && (
+                                            <div className="options-cals">
+                                              <span>
+                                                +
+                                                {itemChild.option.basecalories +
+                                                  ' Cals'}
+                                              </span>
+                                              <span
+                                                style={{
+                                                  fontSize: '16px',
+                                                  fontFamily: 'Poppins-Regular',
+                                                  color: '#AAA',
+                                                }}
+                                              >
+                                                &nbsp;|&nbsp;
+                                              </span>
+                                              <span>
+                                                +
+                                                {itemChild.option.maxcalories +
+                                                  ' Cals'}
+                                              </span>
+                                            </div>
+                                          )}
+                                          {itemChild.option.maxcalories ==
+                                            null && (
+                                              <div className="options-cals">
+                                                <span>
+                                                  +
+                                                  {itemChild.option.basecalories +
+                                                    ' Cals'}
+                                                </span>
+                                              </div>
+                                            )}
+                                        </Grid>
+                                      )
+                                    }
                                   </div>
                                   {itemChild.dropDownValues && (
                                     <>
