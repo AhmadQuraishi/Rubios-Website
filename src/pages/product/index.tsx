@@ -963,6 +963,7 @@ const Product = () => {
 
   return (
     <div style={{ minHeight: '500px' }}>
+      {console.log("productOptions", productOptions)}
       <Typography variant="h1" className="sr-only">
         Product details
       </Typography>
