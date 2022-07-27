@@ -1,8 +1,10 @@
 import { Box } from '@mui/material';
 import AccountLinks from '../account-links';
+import './index.css'
 const LeftMenuBar = () => {
   return (
     <Box
+    className ='widthSetting'
       sx={{
         boxShadow: 2,
         width: '100%',

@@ -320,3 +320,16 @@ fieldset{
   height:1px;
 
 }
+
+
+@media screen and (min-width: 600px){
+.css-zv4r1b {
+    width: 170px !important; 
+}
+}
+
+@media screen and (min-width: 900px){
+  .css-zv4r1b {
+      width: 200px !important; 
+  }
+  }
