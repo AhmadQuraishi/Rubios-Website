@@ -9,10 +9,15 @@ import {
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { QRCodeSVG } from 'qrcode.react';
 import './scan-to-redeem.css';
+import { getRewards } from '../../redux/actions/reward';
+import { getRedemptionCode } from '../../redux/actions/reward/redemption';
+import { displayToast } from '../../helpers/toast';
+import RewardListSkeletonUI from "../../components/rewards-list-skeleton";
+
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     padding: '0px 20px 40px 20px',
@@ -33,10 +38,20 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const ScanToRedeem = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { id } = useParams();
+  const query = new URLSearchParams(useLocation().search);
+  const reward_name = query.get('reward_name');
   // const [qrCode, setQrCode] = useState('');
-  const { redemption, reward_name } = useSelector(
+  const { redemption, loading1, error } = useSelector(
     (state: any) => state.redemptionReducer,
   );
+
+  useEffect(() => {
+    if (id) {
+      dispatch(getRedemptionCode(id));
+    }
+  }, []);
 
   // useEffect(() => {
   //   if (redemption && redemption.internal_tracking_code)
@@ -46,6 +61,23 @@ const ScanToRedeem = () => {
   //       }!&size=${2}`,
   //     );
   // }, []);
+
+  // const handler = (id: string, name: string) => {
+  //   setIsProgress(true);
+  //   setRewardName(name);
+  //   dispatch(getRedemptionCode(id));
+  //   setIsredeem(true);
+  //   navigate('/account/reward/details');
+  // };
+  useEffect(() => {
+    if (error && error.data && !loading1) {
+      console.log('workinggggg', error)
+      // displayToast('ERROR', 'Failed to redeem this reward');
+      navigate(`/account/reward`);
+      // setIsredeem(false);
+      // setIsProgress(true);
+    }
+  }, [error]);
 
   const classes = useStyles();
 
@@ -61,7 +93,8 @@ const ScanToRedeem = () => {
       >
         REDEEM YOUR REWARDS
       </Typography>
-      {redemption && redemption !== null && reward_name !== '' && (
+      {(loading1) && <RewardListSkeletonUI />}
+      {redemption && redemption.internal_tracking_code && reward_name !== '' && (
         <Grid container className="invite-section">
           <Grid item xs={12} md={8} lg={7}>
             <Grid container>
@@ -73,8 +106,9 @@ const ScanToRedeem = () => {
 Please note, you will need to add the appropriate free or discounted item to your order before redeeming the reward."
               >
                 Scan the QR code below at the register to redeem your reward.
-                <br/>
-                Please note, you will need to add the appropriate free or discounted item to your order before redeeming the reward.
+                <br />
+                Please note, you will need to add the appropriate free or
+                discounted item to your order before redeeming the reward.
               </Typography>
               <Grid item sm={2}></Grid>
               <Grid item xs={12} sm={8} className="scan-reward">
@@ -107,13 +141,13 @@ Please note, you will need to add the appropriate free or discounted item to you
               </Grid>
               <Grid item sm={2}></Grid>
               {/*<Typography*/}
-                {/*variant="body2"*/}
-                {/*className="body-text"*/}
-                {/*title="Please be sure to add the appropriate free or discounted item to*/}
+              {/*variant="body2"*/}
+              {/*className="body-text"*/}
+              {/*title="Please be sure to add the appropriate free or discounted item to*/}
               {/*your order in order to redeem the reward."*/}
               {/*>*/}
-                {/*Please be sure to add the appropriate free or discounted item to*/}
-                {/*your order in order to redeem the reward.*/}
+              {/*Please be sure to add the appropriate free or discounted item to*/}
+              {/*your order in order to redeem the reward.*/}
               {/*</Typography>*/}
 
               {/* <Grid item xs={12}>

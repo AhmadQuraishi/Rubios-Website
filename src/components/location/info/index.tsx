@@ -41,7 +41,7 @@ const StoreInfo = (props: any) => {
           (process.env.REACT_APP_OLO_API || '') +
           `/restaurants/${item.id}/checkdeliverycoverage`;
         const promise = axios.post(url, {
-          handoffmode: 'delivery',
+          handoffmode: 'dispatch',
           timewantedmode: 'asap',
           street: deliveryAddressString.address1,
           city: deliveryAddressString.city,

@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import NavigateApp from './components/navigate-app';
 import { generateDeviceId } from './helpers/common';
 import { updateDeviceUniqueId } from './redux/actions/auth';
+import {testingRedemption, testingRewards} from "./services/reward";
 // import TagManager from 'react-gtm-module';
 //
 // const tagManagerArgs = {
@@ -46,6 +47,11 @@ function App(props: any) {
       }
     }
   }, [deviceId]);
+
+  useEffect(() => {
+    // testingRewards()
+    // testingRedemption('777097', 400);
+  }, [])
 
   useEffect(() => {
     if (window.location.href.toLocaleLowerCase().indexOf('/account') != -1) {

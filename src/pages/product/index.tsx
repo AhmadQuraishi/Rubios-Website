@@ -1083,6 +1083,7 @@ const Product = () => {
             <br />
             {selectionExecute && <ProductOptionsSkeletonUI />}
             <div style={{ display: !selectionExecute ? 'block' : 'none' }}>
+               {!optionsSelectionArray || optionsSelectionArray.length < 0 && <ProductOptionsSkeletonUI />}
               {optionsSelectionArray.length > 0 &&
                 optionsSelectionArray.map((itemMain: any, index0: number) => (
                   <Grid
@@ -1127,6 +1128,7 @@ const Product = () => {
                         )}
                       </Typography>
                     </Grid>
+               {!itemMain.options || itemMain.options.length < 0 && <ProductOptionsSkeletonUI />}
                     {itemMain.options &&
                       itemMain.options.map((itemChild: any, index1: number) => (
                         <Grid
