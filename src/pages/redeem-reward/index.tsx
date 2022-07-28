@@ -35,39 +35,39 @@ const RedeemRewards = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [isRedeem, setIsredeem] = useState(false);
-  const [isProgress, setIsProgress] = useState(false);
-  const [reward_name, setRewardName] = useState('');
+  // // const [isRedeem, setIsredeem] = useState(false);
+  // const [isProgress, setIsProgress] = useState(false);
+  // const [reward_name, setRewardName] = useState('');
   const { rewards, loading } = useSelector((state: any) => state.rewardReducer);
-  const { redemption, error, loading1 } = useSelector(
-    (state: any) => state.redemptionReducer,
-  );
+  // const { redemption, error, loading1 } = useSelector(
+  //   (state: any) => state.redemptionReducer,
+  // );
   useEffect(() => {
     dispatch(getRewards());
   }, []);
 
   const handler = (id: string, name: string) => {
-    setIsProgress(true);
-    setRewardName(name);
-    dispatch(getRedemptionCode(id));
-    setIsredeem(true);
-    navigate('/account/reward/details');
+    // setIsProgress(true);
+    // setRewardName(name);
+    // dispatch(getRedemptionCode(id));
+    // setIsredeem(true);
+    navigate(`/account/reward/details/${id}?reward_name=${name}`);
   };
-  useEffect(() => {
-    if (redemption !== null && !loading1 && isRedeem) {
-      setIsredeem(false);
-      dispatch(setReward(reward_name));
-      setIsProgress(true);
-      navigate(`reward`);
-      setTimeout(() => {
-        dispatch(setReward(''));
-      }, 86400000);
-    } else if (error && error.message && !loading1 && isRedeem) {
-      displayToast('ERROR', 'failed to redeem this reward');
-      setIsredeem(false);
-      setIsProgress(true);
-    }
-  }, [redemption]);
+  // useEffect(() => {
+  //   if (redemption !== null && !loading1 && isRedeem) {
+  //     setIsredeem(false);
+  //     dispatch(setReward(reward_name));
+  //     setIsProgress(true);
+  //     navigate(`reward`);
+  //     setTimeout(() => {
+  //       dispatch(setReward(''));
+  //     }, 86400000);
+  //   } else if (error && error.message && !loading1 && isRedeem) {
+  //     displayToast('ERROR', 'failed to redeem this reward');
+  //     setIsredeem(false);
+  //     setIsProgress(true);
+  //   }
+  // }, [redemption]);
 
   return (
     <Fragment>
@@ -84,7 +84,7 @@ const RedeemRewards = () => {
 
         <Grid item xs={12} className="redeem-sec">
           <Grid container spacing={2}>
-            {(loading || isProgress) && <RewardListSkeletonUI />}
+            {(loading ) && <RewardListSkeletonUI />}
             {!loading && rewards && rewards.length == 0 && (
               <Grid item xs={12}>
                 <Typography>
@@ -93,7 +93,7 @@ const RedeemRewards = () => {
                 </Typography>
               </Grid>
             )}
-            {!loading && !isProgress && rewards && rewards.length > 0 && (
+            {!loading && rewards && rewards.length > 0 && (
               <Grid item xs={12}>
                 <Typography
                   variant="body2"
@@ -108,7 +108,6 @@ const RedeemRewards = () => {
             )}
 
             {!loading &&
-              !isProgress &&
               rewards &&
               rewards.length > 0 &&
               rewards.map((reward: any, index: number) => (

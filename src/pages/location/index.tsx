@@ -150,7 +150,7 @@ const Location = () => {
         console.log('geolocation', navigator.geolocation);
         navigator.geolocation.getCurrentPosition(
           function (position) {
-            // getNearByRestaurants(34.5072833, -117.3999287);
+            // getNearByRestaurants(32.7711693, -117.1419628);
             getNearByRestaurants(
               position.coords.latitude,
               position.coords.longitude,
@@ -275,7 +275,7 @@ const Location = () => {
         console.log('showNearBy', showNearBy);
         console.log('LatLng', LatLng);
         setfilteredRestaurants([]);
-        setDeliveryRasturants([])
+        setDeliveryRasturants([]);
         // setAllResturants([])
       } else {
         console.log('rest working 2');
@@ -305,6 +305,14 @@ const Location = () => {
             setShowNearBy(false);
             setNearByRestaurantsFound(true);
           }
+          setLatLng(null);
+          setShowNearBy(false);
+          setActionPerform(false);
+          setMapCenter({
+            lat: nearbyRestaurants.restaurants[0].latitude,
+            lng: nearbyRestaurants.restaurants[0].longitude,
+          });
+          setZoom(7);
         } else {
           console.log('restaurants.restaurants', nearbyRestaurants.restaurants);
           if (orderType && orderType !== '') {
