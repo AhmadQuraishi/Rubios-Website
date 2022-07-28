@@ -389,6 +389,10 @@ input[type='check']:checked+label {
   /* max-width: 354px; */
   min-height: 140px;
   font-size: 18px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: none;
 }
 
 .product-detail .menu-items .content-panel .card-panel {
@@ -404,6 +408,7 @@ input[type='check']:checked+label {
   appearance: none;
   -webkit-border: 1px solid #d3d3d3;
   -moz-border: 1px solid #d3d3d3;
+  outline: 0;
 }
 
 .product-detail .menu-items .content-panel.selected .card-panel {
@@ -414,6 +419,7 @@ input[type='check']:checked+label {
   appearance: none;
   -webkit-border: 1px solid #e58734;
   -moz-border: 1px solid #e58734;
+  outline: 0;
 }
 
 .product-detail .menu-items .content-panel.selected .card-panel .check-mark {
