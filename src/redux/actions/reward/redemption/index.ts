@@ -14,11 +14,11 @@ export function getRedemptionCodeSuccess(data: any) {
     type: Type.GET_CODE_SUCCESS,
     payload: data,
   };
- 
+
 }
 
 export function getRedemptionCodeFailure(error: any) {
-  displayToast('ERROR', error?.data?.error ? error.data.error : 'Not redeemable');
+  displayToast('ERROR', error?.data?.error ? error.data.error : 'Failed to redeem this reward');
   return {
     type: Type.GET_CODE_FAILURE,
     error: error,
