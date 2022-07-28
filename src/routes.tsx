@@ -82,6 +82,7 @@ const AppRoutes = () => {
           <Route path="/rewardconfirmation" element={<RewardConfirmation />} />
           <Route path="/account/" element={<RedeemRewards />} />
           <Route path="/account/reward" element={<RedeemRewards />} />
+          <Route path="/account/reward/details/:id" element={<ScanToRedeem />} />
           <Route
             path="/account/deliveryaddress"
             element={<DeliveryAddress />}
@@ -110,7 +111,6 @@ const AppRoutes = () => {
             path="/account/updatepaymentcard/:id"
             element={<UpdatePaymentCard />}
           />
-          <Route path="/account/reward/details" element={<ScanToRedeem />} />
           <Route path="/account/orders" element={<OrdersHistory />} />
           <Route path="/iframe/category" element={<CategoryIframe />} />
           <Route path="/iframe/register" element={<RegisterIframe />} />
