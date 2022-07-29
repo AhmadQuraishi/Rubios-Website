@@ -7,6 +7,8 @@ import {
   Divider,
   Button,
   Card,
+  useTheme,
+  useMediaQuery,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import React, { useEffect, useState } from 'react';
@@ -128,12 +130,16 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   const classes = useStyles();
+  const theme = useTheme();
   const [actionStatus, setActionStatus] = useState(false);
   const [utensils, setUtensils] = useState(false);
   const [utensilsDisabled, setUtensilsDisabled] = useState(false);
   const [clickAction, setClickAction] = useState('');
   const [upsellsProductKeys, setUpsellsProductKeys] = useState<any[]>();
   const [products, setProducts] = useState<any[]>();
+
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
 
   const productRemoveObj = useSelector(
     (state: any) => state.removeProductReducer,
@@ -235,7 +241,9 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   useEffect(() => {
     if (productRemoveObj && productRemoveObj.basket && actionStatus) {
       // dispatch(getBasketRequest('', productRemoveObj.basket, basketType));
-      displayToast('SUCCESS', '1 item removed from cart.');
+       if(!isMobile){
+        displayToast('SUCCESS', '1 item removed from cart.');
+       }
       fitContainer();
       setActionStatus(false);
       navigate(restaurant ? '/menu/' + restaurant.slug : '/');
@@ -296,7 +304,9 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   useEffect(() => {
     if (productAddObj && productAddObj.basket && actionStatus) {
       // dispatch(getBasketRequest('', productAddObj.basket, basketType));
-      displayToast('SUCCESS', 'Duplicate item added to cart.');
+      if(!isMobile){
+        displayToast('SUCCESS', 'Duplicate item added to cart.');
+      }
       fitContainer();
       setActionStatus(false);
       navigate(restaurant ? '/menu/' + restaurant.slug : '/');
