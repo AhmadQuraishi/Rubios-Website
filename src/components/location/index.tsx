@@ -599,6 +599,7 @@ const LocationCard = (props: any) => {
                     );
                   }}
                   className="selected-btn"
+                  aria-current={alignment === 'Pick up' ? true : false}
                   aria-label="PickUp ,  Activating this element will cause results to load below "
                 >
                   PickUp
@@ -614,6 +615,7 @@ const LocationCard = (props: any) => {
                     )
                   }
                   className="selected-btn"
+                  aria-current={alignment === 'Curbside' ? true : false}
                   aria-label=" Curbside ,  Activating this element will cause results to load below "
                 >
                   Curbside
@@ -629,6 +631,7 @@ const LocationCard = (props: any) => {
                     );
                   }}
                   className="selected-btn"
+                  aria-current={alignment === 'Delivery' ? true : false}
                   aria-label=" Delivery , Enter your address below to get nearby restaurants"
                 >
                   Delivery
