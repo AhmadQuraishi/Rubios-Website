@@ -3,6 +3,11 @@ import { ResponseBasket } from '../../../../types/olo-api';
 import { displayToast } from '../../../../helpers/toast';
 import {getUtensilsProductId} from "../../../../helpers/utensils";
 
+
+const breakpoints = {
+  XS: 540
+};
+
 export function addUtensilsRequest(basketid: string, request: any) {
   return {
     type: basketActionsTypes.ADD_UTENSILS_REQUEST,
@@ -44,7 +49,9 @@ export function removeUtensilsRequest(
 }
 
 export function removeUtensilsRequestSuccess(data: ResponseBasket) {
+  if(!breakpoints.XS){
   displayToast('SUCCESS', 'Utensils removed.');
+  }
   return {
     type: basketActionsTypes.REMOVE_UTENSILS_SUCCESS,
     payload: data,
