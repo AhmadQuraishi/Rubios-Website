@@ -178,6 +178,7 @@ const OrderTime = ({ orderType }: any) => {
         setTimeout(() => {
           let dateNodes: any = document.querySelectorAll('.MuiPickersDay-root');
           dateNodes.forEach((item: any) => {
+            item.removeAttribute('tabIndex');
             const attributeValue = item.getAttribute('aria-label');
             if (attributeValue) {
               const date = new Date(attributeValue);
@@ -238,7 +239,6 @@ const OrderTime = ({ orderType }: any) => {
             </Button>
             <LocalizationProvider dateAdapter={AdapterMoment}>
               <DatePicker
-                //open={open}
                 label="Order Date"
                 minDate={moment()}
                 maxDate={moment().add('days', 7)}
@@ -342,8 +342,6 @@ const OrderTime = ({ orderType }: any) => {
                 <NativeSelect
                   id="select-label"
                   className={`native-select`}
-                  role="dialog"
-                  aria-modal="true"
                   aria-label="select more time"
                   value={
                     timeSlots.slice(4).includes(selectedTime)

@@ -32,7 +32,7 @@ label.time-picker:focus-within {
   margin-top: 0px !important;
 }
 .native-select.MuiInputBase-root.MuiInput-root::after {
-  border-bottom: 3px solid #79c043;
+  border-bottom: 3px solid #000;
 }
 .order-date .MuiInputAdornment-root {
   margin-right: 14px;
@@ -44,7 +44,7 @@ label.time-picker:focus-within {
 }
 .MuiButtonBase-root.MuiPickersDay-root:focus,
 .MuiButtonBase-root.MuiPickersDay-root:hover {
-  background-color: rgba(0, 0, 0, 0.15);
+  background-color: rgba(0, 0, 0, 0.3);
 }
 .MuiButtonBase-root.MuiPickersDay-root:focus.Mui-selected {
   background-color: rgb(0, 73, 118);
