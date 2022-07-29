@@ -35,9 +35,9 @@ const StoreInfo = (props: any) => {
 
   useEffect(() => {
     try {
-
       if (
-        resturantOrderType === 'delivery' && deliveryAddressString &&
+        resturantOrderType === 'delivery' &&
+        deliveryAddressString &&
         Object.keys(deliveryAddressString).length
       ) {
         const url =
@@ -190,7 +190,6 @@ const StoreInfo = (props: any) => {
       onClick={() => {
         candeliver && !loading && gotoCategoryPage(item.id);
       }}
-      tabIndex={0}
       onKeyUp={(e) => {
         if (e.keyCode === 13) {
           candeliver && !loading && gotoCategoryPage(item.id);
@@ -198,37 +197,39 @@ const StoreInfo = (props: any) => {
       }}
       key={index}
     >
-      <Typography
-        variant="h5"
-        sx={{
-          fontWeight: 'bold',
-          fontSize: '18px',
-          paddingBottom: '5px',
-        }}
-      >
-        {item.name}
-      </Typography>
-      <Typography variant="body2">
-        {item.streetaddress}, <br /> {item.city}, {item.state}, {item.zip}
-      </Typography>
-      {item.distance > 0 && (
-        <Typography variant="body2" sx={{ color: '#5FA625' }}>
-          {item.distance} Miles Away
-        </Typography>
-      )}
-      {candeliver == false && (
+      <a href="#" style={{ color: '#000', textDecoration: 'none' }}>
         <Typography
-          variant="body2"
+          variant="h5"
           sx={{
-            color: '#b91a2e',
-            fontSize: '13px',
-            background: '#fee',
-            padding: '2px 5px',
+            fontWeight: 'bold',
+            fontSize: '18px',
+            paddingBottom: '5px',
           }}
         >
-          {candeliver} Delivery is not available at this time
+          {item.name}
         </Typography>
-      )}
+        <Typography variant="body2">
+          {item.streetaddress}, <br /> {item.city}, {item.state}, {item.zip}
+        </Typography>
+        {item.distance > 0 && (
+          <Typography variant="body2" sx={{ color: '#5FA625' }}>
+            {item.distance} Miles Away
+          </Typography>
+        )}
+        {candeliver == false && (
+          <Typography
+            variant="body2"
+            sx={{
+              color: '#b91a2e',
+              fontSize: '13px',
+              background: '#fee',
+              padding: '2px 5px',
+            }}
+          >
+            {candeliver} Delivery is not available at this time
+          </Typography>
+        )}
+      </a>
     </Grid>
   );
 };
