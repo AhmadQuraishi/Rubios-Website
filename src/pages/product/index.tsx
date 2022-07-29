@@ -963,6 +963,7 @@ const Product = () => {
 
   return (
     <div style={{ minHeight: '500px' }}>
+      {console.log('productOptions', productOptions)}
       <Typography variant="h1" className="sr-only">
         Product details
       </Typography>
@@ -1082,6 +1083,10 @@ const Product = () => {
             <br />
             {selectionExecute && <ProductOptionsSkeletonUI />}
             <div style={{ display: !selectionExecute ? 'block' : 'none' }}>
+              {!optionsSelectionArray ||
+                (optionsSelectionArray.length < 0 && (
+                  <ProductOptionsSkeletonUI />
+                ))}
               {optionsSelectionArray.length > 0 &&
                 optionsSelectionArray.map((itemMain: any, index0: number) => (
                   <fieldset
@@ -1114,6 +1119,7 @@ const Product = () => {
                         </span>
                       )}
                     </legend>
+
                     <Grid
                       key={Math.random() + index0}
                       container
@@ -1128,23 +1134,10 @@ const Product = () => {
                       parent-mandatory-option={itemMain.mandatory.toString()}
                       parent-option-id={itemMain.parentOptionID}
                     >
-                      <Grid item xs={12} option-id={itemMain.id}>
-                        <Typography
-                          variant={
-                            itemMain.parentOptionID == itemMain.id ? 'h2' : 'h3'
-                          }
-                          className="heading-ui"
-                          sx={{ marginTop: '20px', display: 'none' }}
-                          tabIndex={0}
-                          title={itemMain.name}
-                          aria-required={itemMain.mandatory ? 'true' : 'false'}
-                        >
-                          {itemMain.name}
-                          {/*<span style={{ color: '#ff0000' }}>*/}
-                          {/*{itemMain.mandatory ? '*' : ''}*/}
-                          {/*</span>*/}
-                        </Typography>
-                      </Grid>
+                      {!itemMain.options ||
+                        (itemMain.options.length < 0 && (
+                          <ProductOptionsSkeletonUI />
+                        ))}
                       {itemMain.options &&
                         itemMain.options.map(
                           (itemChild: any, index1: number) => (

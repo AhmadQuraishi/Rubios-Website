@@ -106,14 +106,14 @@ h6 {
   font-size: 13px;
 }
 .selected-btn.MuiToggleButton-standard:focus {
-  outline: 1px dotted #79C043 !important;
+  outline: 1px dotted #0073BD !important;
   outline-offset: 2px !important;
 }
 .selected-btn.MuiToggleButton-standard:hover {
   background: #214F66;
 }
 .selected-btn.Mui-selected {
-  background: #79C043 !important;
+  background: #0073BD !important;
   color: white !important;
 }
 
@@ -320,3 +320,16 @@ fieldset{
   height:1px;
 
 }
+
+
+@media screen and (min-width: 600px){
+.css-zv4r1b {
+    width: 170px !important; 
+}
+}
+
+@media screen and (min-width: 900px){
+  .css-zv4r1b {
+      width: 200px !important; 
+  }
+  }

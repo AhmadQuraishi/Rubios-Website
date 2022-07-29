@@ -65,7 +65,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('md')]: {
       paddingTop: '27px',
       paddingBottom: '22px',
-      paddingRight: '15px',
+      paddingRight: '0px',
+      fontSize: '14px'
+    },
+    [theme.breakpoints.down('sm')]: {
+      paddingTop: '27px',
+      paddingBottom: '22px',
+      paddingRight: '12px',
       fontSize: '14px'
     },
     color: theme.palette.primary.main,
@@ -197,7 +203,7 @@ const Header = (props: any) => {
             <>
               <Link
                 to={restaurant ? '/menu/' + restaurant.slug : '/'}
-                className={providerToken && providerToken.first_name ? classes.menuLink : classes.meniItemLink}
+                className={classes.menuLink}
                 title="Menu"
                 onClick={() => setShowAccountMenu(false)}
               >
