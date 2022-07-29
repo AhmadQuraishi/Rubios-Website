@@ -7,6 +7,8 @@ import {
   TextField,
   Typography,
   InputAdornment,
+  useTheme, 
+  useMediaQuery
 } from '@mui/material';
 
 import { ResponseBasket } from '../../../types/olo-api';
@@ -22,11 +24,14 @@ import DialogBox from '../../dialog-box';
 
 const SplitPayment = forwardRef((props, _ref) => {
   const dispatch = useDispatch();
+  const theme = useTheme();
   const basketObj = useSelector((state: any) => state.basketReducer);
   const [basket, setBasket] = React.useState<ResponseBasket>();
   const [billingSchemes, setBillingSchemes] = React.useState<any>([]);
   const [openPopup, setOpenPopup] = React.useState<boolean>(false);
   const [removeData, setRemoveData] = React.useState<any>(null);
+
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   React.useEffect(() => {
     if (basketObj.basket) {
@@ -128,7 +133,9 @@ const SplitPayment = forwardRef((props, _ref) => {
         basket,
       );
       dispatch(updateBasketBillingSchemes(updatedBillingSchemes));
-      displayToast('SUCCESS', 'Card Removed.');
+      if(!isMobile){
+        displayToast('SUCCESS', 'Card Removed.');
+      }
     }
     handleClosePopup();
   };

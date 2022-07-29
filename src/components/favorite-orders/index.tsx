@@ -1,4 +1,4 @@
-import { Card, CardMedia, Grid, Typography } from '@mui/material';
+import { Card, CardMedia, Grid, Typography, useTheme, useMediaQuery } from '@mui/material';
 import './index.css';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,9 +21,13 @@ import { getUpsellsRequest } from '../../redux/actions/basket/upsell/Get';
 
 const FavoriteOrders = () => {
   const dispatch = useDispatch();
+  const theme = useTheme();
   const [open, setOpen] = useState(false);
   const [idtoDelete, setId] = useState(0);
   const [favOrders, setfavOrders] = React.useState([]);
+
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   const createBasketObj = useSelector(
     (state: any) => state.createBasketReducer,
   );
@@ -95,7 +99,9 @@ const FavoriteOrders = () => {
         ),
       );
       dispatch(getBasketRequest('', createBasketObj.basket, 'Favourite'));
-      displayToast('SUCCESS', 'Favorite order is added in cart');
+      if(!isMobile){
+        displayToast('SUCCESS', 'Favorite order is added in cart');
+      }
       navigate('/checkout');
     }
     if (error && error.message) {
