@@ -1,4 +1,4 @@
-import { Grid, Typography, Card, CardContent, Theme } from '@mui/material';
+import { Grid, Typography, Card, CardContent, Theme, useMediaQuery, useTheme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Link } from 'react-router-dom';
 import { Fragment } from 'react';
@@ -52,6 +52,8 @@ const ProductListingCarousel = (props: any) => {
   const classes = useStyles();
   const { productList, shownItemsCount, imgPath, orderType } = props;
   let products: [Product] = productList;
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   // if (shownItemsCount) {
   //   products = productList.slice(0, shownItemsCount);
   // }
@@ -155,8 +157,8 @@ const ProductListingCarousel = (props: any) => {
         infinite={false}
         // autoPlay={props.deviceType !== 'mobile' ? false : true}
         additionalTransfrom={0}
-        // autoPlay={true}
-        autoPlaySpeed={99999}
+        // autoPlay={isMobile ? true : false}
+        // autoPlaySpeed={1000}
         keyBoardControl={true}
         // customTransition="all .5"
         transitionDuration={500}
