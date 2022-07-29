@@ -1,4 +1,4 @@
-import { Grid, Typography, Card, Button } from '@mui/material';
+import { Grid, Typography, Card, Button ,useTheme,useMediaQuery} from '@mui/material';
 import './product.css';
 import * as React from 'react';
 import ProductOptionsSkeletonUI from '../../components/product-options-skeleton-ui';
@@ -28,12 +28,17 @@ import { changeImageSize, checkTacoMatch } from '../../helpers/common';
 import { BorderRight } from '@mui/icons-material';
 
 const Product = () => {
+  const theme = useTheme();
+  const { id, edit } = useParams();
+
   const [productDetails, setProductDetails] = useState<ProductInfo>();
   const [productOptions, setProductOptions] = useState<ResponseModifiers>();
   const [basket, setBasket] = useState<ResponseBasket>();
   const [actionStatus, setActionStatus] = useState<boolean>(false);
   const [totalCost, setTotalCost] = useState<number>();
-  const { id, edit } = useParams();
+
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   const { categories, loading } = useSelector(
     (state: any) => state.categoryReducer,
   );
@@ -306,7 +311,9 @@ const Product = () => {
     if (productUpdateObj && productUpdateObj.basket && actionStatus) {
       setBasket(productUpdateObj.basket);
       setActionStatus(false);
-      displayToast('SUCCESS', '1 item updated in cart.');
+      if(!isMobile){
+        displayToast('SUCCESS', '1 item updated in cart.');
+      }
       // dispatch(getBasketRequest('', productUpdateObj.basket, basketType));
       navigate('/menu/' + restaurant.slug);
     }

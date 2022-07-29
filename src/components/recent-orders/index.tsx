@@ -7,6 +7,8 @@ import {
   Dialog,
   DialogActions,
   TextField,
+  useTheme, 
+  useMediaQuery
 } from '@mui/material';
 import './index.css';
 import React, { Fragment, useEffect, useState } from 'react';
@@ -28,6 +30,7 @@ import moment from 'moment';
 import { getUpsellsRequest } from '../../redux/actions/basket/upsell/Get';
 
 const RecentOrders = () => {
+  const theme = useTheme();
   const [recentorders, setOrders] = React.useState<any>([]);
   const [clickAction, setClickAction] = useState(false);
   const [open, setOpen] = useState(false);
@@ -35,6 +38,9 @@ const RecentOrders = () => {
   const [items, setItems] = useState([]);
   const [price, setPrice] = useState('');
 
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  
   const [prevOrderType, setPrevOrderType] = useState<string>();
   const { restaurant, error } = useSelector(
     (state: any) => state.restaurantInfoReducer,
@@ -75,7 +81,9 @@ const RecentOrders = () => {
         ),
       );
       dispatch(getBasketRequest('', createBasketObj.basket, 'Previous'));
-      displayToast('SUCCESS', 'Recent order is added in cart');
+      if(!isMobile){
+        displayToast('SUCCESS', 'Recent order is added in cart');
+      }
       navigate('/checkout');
     }
     if (error && error.message) {

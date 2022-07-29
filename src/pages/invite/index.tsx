@@ -1,4 +1,4 @@
-import { Button, Grid, Theme, Typography } from '@mui/material';
+import { Button, Grid, Theme, Typography, useTheme, useMediaQuery } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useEffect, useState } from 'react';
 import './invite.css';
@@ -21,9 +21,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const Invite = () => {
   const classes = useStyles();
+  const theme = useTheme();
   const [inviteCode, setInviteCode] = useState('');
   const { providerToken } = useSelector((state: any) => state.providerReducer);
-
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   useEffect(() => {
     if (providerToken && providerToken.referral_code) {
       setInviteCode(providerToken.referral_code);
@@ -31,7 +32,9 @@ const Invite = () => {
   }, [providerToken]);
   const copy = async () => {
     await navigator.clipboard.writeText(inviteCode);
-    displayToast('SUCCESS', 'Invite Code copied to clipboard.');
+    if(!isMobile){
+      displayToast('SUCCESS', 'Invite Code copied to clipboard.');
+    }
   };
   // const linkElement = process.env.REACT_APP_RUBIOS_REWARD_ADDRESS
   const handleClick = () => {
