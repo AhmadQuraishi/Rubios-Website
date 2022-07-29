@@ -203,7 +203,7 @@ const Header = (props: any) => {
             <>
               <Link
                 to={restaurant ? '/menu/' + restaurant.slug : '/'}
-                className={providerToken && providerToken.first_name ? classes.menuLink : classes.meniItemLink}
+                className={classes.menuLink}
                 title="Menu"
                 onClick={() => setShowAccountMenu(false)}
               >
