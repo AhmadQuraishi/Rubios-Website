@@ -6,6 +6,8 @@ import {
   ToggleButtonGroup,
   ToggleButton,
   CircularProgress,
+  useTheme, 
+  useMediaQuery
 } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import './rewards.css';
@@ -23,8 +25,12 @@ const Rewards = (props: any) => {
   );
   const basketObj = useSelector((state: any) => state.basketReducer);
   const dispatch = useDispatch();
+  const theme = useTheme();
   const { rewardsList } = props;
   const rewardsArray: any[] = rewardsList;
+
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
 
   const [actionClicked, setActionClicked] = useState(false);
   const [removedActionClicked, setRemovedActionClicked] = useState(false);
@@ -54,7 +60,9 @@ const Rewards = (props: any) => {
     if (objRemoveReward && objRemoveReward.basket && removedActionClicked) {
       setRemovedActionClicked(false);
       setSelectedRewardID('');
-      displayToast('SUCCESS', 'Reward removed successfully.');
+      if(!isMobile){
+        displayToast('SUCCESS', 'Reward removed successfully.');
+      }
     }
   }, [objRemoveReward]);
 
@@ -92,7 +100,9 @@ const Rewards = (props: any) => {
     ) {
       setActionClicked(false);
       if (objApplyReward.basket) {
-        displayToast('SUCCESS', 'Reward applied successfully.');
+        if(!isMobile){
+          displayToast('SUCCESS', 'Reward applied successfully.');
+        }
       }
       if (objApplyReward.error) {
         setAlignment('web');

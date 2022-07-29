@@ -7,6 +7,8 @@ import {
   DialogContent,
   Dialog,
   DialogActions,
+  useTheme, 
+  useMediaQuery
 } from '@mui/material';
 import { CreditCardElements, PaymentMethodResult } from '@olo/pay';
 import { ResponseBasket } from '../../../types/olo-api';
@@ -33,6 +35,7 @@ const styleObject = {
 
 const AddCreditCard = () => {
   const dispatch = useDispatch();
+  const theme = useTheme();
   const [creditCardElements, setCreditCardElements] =
     React.useState<CreditCardElements | null>(null);
   const creditCardInfo = React.useRef<any>();
@@ -43,6 +46,8 @@ const AddCreditCard = () => {
   const [zipCode, setZipCode] = React.useState<any>();
   const [allowedCards, setAllowedCards] = React.useState<any>();
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
+
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [paymentMethod, setPaymentMethod] =
     React.useState<PaymentMethodResult | null>(null);
@@ -193,7 +198,9 @@ const AddCreditCard = () => {
     );
 
     dispatch(updateBasketBillingSchemes(billingSchemesNewArray));
-    displayToast('SUCCESS', 'Credit Card Added');
+    if(!isMobile){
+      displayToast('SUCCESS', 'Credit Card Added');
+    }
     setButtonDisabled(false);
     handleCloseAddCreditCard();
   };
