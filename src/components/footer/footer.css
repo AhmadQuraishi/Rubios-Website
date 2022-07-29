@@ -7,6 +7,11 @@
         padding-left: 10px;
       }
 
+.footer-setting{
+   bottom:0;
+   margin-bottom: 0%;
+      }
+
 @media screen and (min-width: 900px){
     .footer-control{
     margin-bottom: 130px !important;
