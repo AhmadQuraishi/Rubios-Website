@@ -1,6 +1,11 @@
 import { displayToast } from '../../../helpers/toast';
 import { authActionsTypes as Type } from '../../types/auth';
 
+
+const breakpoints = {
+  XS: 540
+};
+
 export function getAuthRequest(basketID: string = '') {
   return {
     type: Type.GET_AUTHTOKEN_REQUEST,
@@ -9,7 +14,9 @@ export function getAuthRequest(basketID: string = '') {
 }
 
 export function getAuthRequestSuccess(successMsg: string, data: any) {
-  displayToast('SUCCESS', successMsg);
+    if(!breakpoints.XS){
+      displayToast('SUCCESS', successMsg);
+    }
   return {
     type: Type.GET_AUTHTOKEN_SUCCESS,
     payload: data,

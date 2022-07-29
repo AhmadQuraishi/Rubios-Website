@@ -1,6 +1,6 @@
 import { setDeliveryAddress } from '../../../redux/actions/location/delivery-address';
 import { verifyDeliveryAddressRequest } from '../../../redux/actions/location/verify-delivery-address';
-import { Button, Grid, Typography } from '@mui/material';
+import { Button, Grid, Typography, useTheme, useMediaQuery } from '@mui/material';
 import { displayToast } from '../../../helpers/toast';
 import { setResturantInfoRequest } from '../../../redux/actions/restaurant';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,6 +12,7 @@ import ListHours from '../listHours';
 const StoreInfo = (props: any) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const theme = useTheme();
 
   const {
     setSelectedStoreID,
@@ -29,6 +30,8 @@ const StoreInfo = (props: any) => {
   const [candeliver, setCanDeliver] = useState(true);
   const [loading, setLoading] = useState(false);
   const basketObj = useSelector((state: any) => state.basketReducer);
+
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
     try {
@@ -95,7 +98,9 @@ const StoreInfo = (props: any) => {
               ' and basket is empty',
           );
         } else {
-          displayToast('SUCCESS', 'Location changed to ' + restaurantObj.name);
+          if(!isMobile){
+            displayToast('SUCCESS', 'Location changed to ' + restaurantObj.name);
+          }
         }
       }
       navigate('/menu/' + restaurantObj.slug);

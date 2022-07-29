@@ -7,6 +7,8 @@ import {
   DialogContent,
   Dialog,
   DialogActions,
+  useTheme, 
+  useMediaQuery
 } from '@mui/material';
 
 import { Formik } from 'formik';
@@ -27,6 +29,7 @@ import {
 
 const AddGiftCard = forwardRef((props, _ref) => {
   const dispatch = useDispatch();
+  const theme = useTheme();
   const basketObj = useSelector((state: any) => state.basketReducer);
   const [basket, setBasket] = React.useState<ResponseBasket>();
   const [allowedCards, setAllowedCards] = React.useState<any>();
@@ -35,6 +38,9 @@ const AddGiftCard = forwardRef((props, _ref) => {
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
 
   const [openAddGiftCard, setOpenAddGiftCard] = React.useState<boolean>(false);
+
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
 
   React.useEffect(() => {
     if (basketObj.basket) {
@@ -103,7 +109,9 @@ const AddGiftCard = forwardRef((props, _ref) => {
             body,
           );
           if (pinResponse && pinResponse.ispinrequired && !pinCheck) {
-            displayToast('SUCCESS', 'Please add gift card pin.');
+            if(!isMobile){
+              displayToast('SUCCESS', 'Please add gift card pin.');
+            }
             setButtonDisabled(false);
             setPinCheck(true);
           } else {
@@ -130,7 +138,9 @@ const AddGiftCard = forwardRef((props, _ref) => {
                 );
 
                 dispatch(updateBasketBillingSchemes(billingSchemesNewArray));
-                displayToast('SUCCESS', 'Gift Card Added');
+                if(!isMobile){
+                  displayToast('SUCCESS', 'Gift Card Added');
+                }
                 handleCloseAddGiftCard();
                 setButtonDisabled(false);
               } else {
