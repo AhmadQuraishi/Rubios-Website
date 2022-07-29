@@ -80,11 +80,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: '17px',
     textAlign: 'center',
     '&:hover': {
-      color: theme.palette.success.main,
+      color: '#0073BD',
     },
     transition: 'color 0.5s ease',
   },
-  meniItemLink: {
+  menuItemLink: {
     textTransform: 'uppercase',
     display: 'block',
     paddingTop: '25px',
@@ -99,7 +99,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: '17px',
     textAlign: 'center',
     '&:hover': {
-      color: theme.palette.success.main,
+      color: '#0073BD',
+
+      // color: theme.palette.success.main,
     },
     transition: 'color 0.5s ease',
   },
@@ -198,12 +200,11 @@ const Header = (props: any) => {
               </a>
             </p>
           </Typography>
-
           {isMobile ? (
             <>
               <Link
                 to={restaurant ? '/menu/' + restaurant.slug : '/'}
-                className={classes.menuLink}
+                className={hideLoginPanel && (window.location.pathname !== '/location') ? classes.menuItemLink : classes.menuLink}
                 title="Menu"
                 onClick={() => setShowAccountMenu(false)}
               >
