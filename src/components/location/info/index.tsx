@@ -91,12 +91,14 @@ const StoreInfo = (props: any) => {
           setResturantInfoRequest(restaurantObj, resturantOrderType || ''),
         );
         if (basketObj && basketObj.basket) {
+          if(!isMobile){
           displayToast(
             'SUCCESS',
             'Location changed to ' +
               restaurantObj.name +
               ' and basket is empty',
           );
+          }
         } else {
           if(!isMobile){
             displayToast('SUCCESS', 'Location changed to ' + restaurantObj.name);
