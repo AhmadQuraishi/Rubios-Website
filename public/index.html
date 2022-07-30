@@ -43,6 +43,10 @@
         <img id="main-site-loading-logo" src="%PUBLIC_URL%/logo.png" />
       </div>
     </div>
+
+
+    <div class="credit-card-info-div" />
+    <div class="cvv-info-div" />
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
@@ -56,8 +60,14 @@
   </body>
 </html>
 
+
+
 <script>
   if(window.location.href.toLocaleLowerCase().indexOf('/iframe') !== -1){
     document.getElementById('main-site-loading-logo').style.display = 'none';
   }
 </script>
+//Sandbox
+<script src="https://olocdnsandbox.s3.amazonaws.com/web-client/checkout-web-client/2.5.0/checkout.js"></script>
+
+
