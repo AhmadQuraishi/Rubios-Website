@@ -5,6 +5,7 @@ import Tab from '@mui/material/Tab';
 import { makeStyles } from '@mui/styles';
 import FavoriteOrders from '../../components/favorite-orders';
 import RecentOrders from '../../components/recent-orders';
+import Page from '../../components/page-title';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -43,60 +44,62 @@ const OrdersHistory = () => {
   };
 
   return (
-    <Grid container className={classes.root}>
-      <Grid item xs={12}>
-        <Typography
-          className={classes.heading}
-          aria-label="your orders"
-          variant="h1"
-          title="your orders"
-        >
-          YOUR ORDERS
-        </Typography>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          aria-label="Order History tabs"
-          title="Order History tabs"
-          TabIndicatorProps={{
-            style: {
-              backgroundColor: '#79C043',
-              bottom: '5px',
-            },
-          }}
-        >
-          <Tab
-            aria-label="favorite orders"
-            value="1"
-            label="FAVORITES"
-            title="favourite orders"
-            className={classes.tabspanel}
-          />
-          <Tab
-            aria-label="recent orders"
-            value="2"
-            label="RECENT"
-            title="recent orders"
-            className={classes.tabspanel}
-          />
-        </Tabs>
-        <br />
-        {value === '1' && <FavoriteOrders />}
-        {value === '2' && <RecentOrders />}
-        {/*{value === '2' && (*/}
-        {/*  <Fragment>*/}
-        {/*    <h1>Recent Orders</h1>*/}
-        {/*  </Fragment>*/}
-        {/*)}*/}
-        {/*{orders.length > 0 && (*/}
-        {/*  <Fragment>*/}
-        {/*    {orders.map((order: any, index) => (*/}
-        {/*      <h1 key={index}>{order.timeplaced}</h1>*/}
-        {/*    ))}*/}
-        {/*  </Fragment>*/}
-        {/*)}*/}
+    <Page title={'Order History'} className="">
+      <Grid container className={classes.root}>
+        <Grid item xs={12}>
+          <Typography
+            className={classes.heading}
+            aria-label="your orders"
+            variant="h1"
+            title="your orders"
+          >
+            YOUR ORDERS
+          </Typography>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            aria-label="Order History tabs"
+            title="Order History tabs"
+            TabIndicatorProps={{
+              style: {
+                backgroundColor: '#79C043',
+                bottom: '5px',
+              },
+            }}
+          >
+            <Tab
+              aria-label="favorite orders"
+              value="1"
+              label="FAVORITES"
+              title="favourite orders"
+              className={classes.tabspanel}
+            />
+            <Tab
+              aria-label="recent orders"
+              value="2"
+              label="RECENT"
+              title="recent orders"
+              className={classes.tabspanel}
+            />
+          </Tabs>
+          <br />
+          {value === '1' && <FavoriteOrders />}
+          {value === '2' && <RecentOrders />}
+          {/*{value === '2' && (*/}
+          {/*  <Fragment>*/}
+          {/*    <h1>Recent Orders</h1>*/}
+          {/*  </Fragment>*/}
+          {/*)}*/}
+          {/*{orders.length > 0 && (*/}
+          {/*  <Fragment>*/}
+          {/*    {orders.map((order: any, index) => (*/}
+          {/*      <h1 key={index}>{order.timeplaced}</h1>*/}
+          {/*    ))}*/}
+          {/*  </Fragment>*/}
+          {/*)}*/}
+        </Grid>
       </Grid>
-    </Grid>
+    </Page>
   );
 };
 

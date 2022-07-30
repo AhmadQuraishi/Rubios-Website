@@ -11,7 +11,7 @@ import {
   MenuItem,
   Select,
   Link,
-  Skeleton
+  Skeleton,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik } from 'formik';
@@ -58,6 +58,13 @@ const RegisterForm = () => {
   useEffect(() => {
     dispatch(getlocations());
   }, []);
+
+  useEffect(() => {
+    if (locations) {
+      const elem = document.getElementById('fav-location');
+      if (elem) elem.removeAttribute('aria-haspopup');
+    }
+  }, [locations]);
 
   const handleChangeLocation = (event: SelectChangeEvent) => {
     setFavLocation(event.target.value as string);
@@ -110,19 +117,48 @@ const RegisterForm = () => {
 
   return (
     <>
-      {!locations ?
+      {!locations ? (
         <>
-          <Skeleton variant="rectangular" width="100%" height="40px" style={{ marginTop: '10px' }} />
-          <Skeleton variant="rectangular" width="100%" height="40px" style={{ marginTop: '10px' }} />
-          <Skeleton variant="rectangular" width="100%" height="40px" style={{ marginTop: '10px' }} />
-          <Skeleton variant="rectangular" width="100%" height="40px" style={{ marginTop: '10px' }} />
-          <Skeleton variant="rectangular" width="70%" height="40px" style={{ marginTop: '10px', marginLeft: '15%'}} />
+          <Skeleton
+            variant="rectangular"
+            width="100%"
+            height="40px"
+            style={{ marginTop: '10px' }}
+          />
+          <Skeleton
+            variant="rectangular"
+            width="100%"
+            height="40px"
+            style={{ marginTop: '10px' }}
+          />
+          <Skeleton
+            variant="rectangular"
+            width="100%"
+            height="40px"
+            style={{ marginTop: '10px' }}
+          />
+          <Skeleton
+            variant="rectangular"
+            width="100%"
+            height="40px"
+            style={{ marginTop: '10px' }}
+          />
+          <Skeleton
+            variant="rectangular"
+            width="70%"
+            height="40px"
+            style={{ marginTop: '10px', marginLeft: '15%' }}
+          />
         </>
-        :
+      ) : (
         <Formik
           initialValues={{
-            first_name: findGetParameter('fname') ? findGetParameter('fname') : '',
-            last_name: findGetParameter('lname') ? findGetParameter('lname') : '',
+            first_name: findGetParameter('fname')
+              ? findGetParameter('fname')
+              : '',
+            last_name: findGetParameter('lname')
+              ? findGetParameter('lname')
+              : '',
             email: findGetParameter('email') ? findGetParameter('email') : '',
             phone: '',
             password: '',
@@ -303,7 +339,7 @@ const RegisterForm = () => {
                       onBlur={handleBlur('password_confirmation')}
                       error={Boolean(
                         touched.password_confirmation &&
-                        errors.password_confirmation,
+                          errors.password_confirmation,
                       )}
                       helperText={
                         touched.password_confirmation &&
@@ -376,7 +412,10 @@ const RegisterForm = () => {
                       >
                         {locations &&
                           locations.map((location: any, index: number) => (
-                            <MenuItem key={index++} value={location.location_id}>
+                            <MenuItem
+                              key={index++}
+                              value={location.location_id}
+                            >
                               {location.name}
                             </MenuItem>
                           ))}
@@ -431,7 +470,7 @@ const RegisterForm = () => {
             </form>
           )}
         </Formik>
-      }
+      )}
     </>
   );
 };

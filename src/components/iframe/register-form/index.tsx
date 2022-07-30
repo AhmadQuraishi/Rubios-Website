@@ -60,6 +60,8 @@ const RegisterForm = () => {
 
   useEffect(() => {
     dispatch(getlocations());
+    const elem = document.getElementById('fav-location');
+    if (elem) elem.removeAttribute('aria-haspopup');
   }, []);
 
   useEffect(() => {
