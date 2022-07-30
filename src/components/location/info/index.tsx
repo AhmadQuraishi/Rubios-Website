@@ -1,6 +1,6 @@
 import { setDeliveryAddress } from '../../../redux/actions/location/delivery-address';
 import { verifyDeliveryAddressRequest } from '../../../redux/actions/location/verify-delivery-address';
-import { Button, Grid, Typography } from '@mui/material';
+import { Button, Grid, Typography, useTheme, useMediaQuery } from '@mui/material';
 import { displayToast } from '../../../helpers/toast';
 import { setResturantInfoRequest } from '../../../redux/actions/restaurant';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,6 +12,7 @@ import ListHours from '../listHours';
 const StoreInfo = (props: any) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const theme = useTheme();
 
   const {
     setSelectedStoreID,
@@ -30,11 +31,13 @@ const StoreInfo = (props: any) => {
   const [loading, setLoading] = useState(false);
   const basketObj = useSelector((state: any) => state.basketReducer);
 
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   useEffect(() => {
     try {
-
       if (
-        resturantOrderType === 'delivery' && deliveryAddressString &&
+        resturantOrderType === 'delivery' &&
+        deliveryAddressString &&
         Object.keys(deliveryAddressString).length
       ) {
         const url =
@@ -88,14 +91,18 @@ const StoreInfo = (props: any) => {
           setResturantInfoRequest(restaurantObj, resturantOrderType || ''),
         );
         if (basketObj && basketObj.basket) {
+          if(!isMobile){
           displayToast(
             'SUCCESS',
             'Location changed to ' +
               restaurantObj.name +
               ' and basket is empty',
           );
+          }
         } else {
-          displayToast('SUCCESS', 'Location changed to ' + restaurantObj.name);
+          if(!isMobile){
+            displayToast('SUCCESS', 'Location changed to ' + restaurantObj.name);
+          }
         }
       }
       navigate('/menu/' + restaurantObj.slug);
@@ -183,7 +190,6 @@ const StoreInfo = (props: any) => {
       onClick={() => {
         candeliver && !loading && gotoCategoryPage(item.id);
       }}
-      tabIndex={0}
       onKeyUp={(e) => {
         if (e.keyCode === 13) {
           candeliver && !loading && gotoCategoryPage(item.id);
@@ -191,37 +197,39 @@ const StoreInfo = (props: any) => {
       }}
       key={index}
     >
-      <Typography
-        variant="h5"
-        sx={{
-          fontWeight: 'bold',
-          fontSize: '18px',
-          paddingBottom: '5px',
-        }}
-      >
-        {item.name}
-      </Typography>
-      <Typography variant="body2">
-        {item.streetaddress}, <br /> {item.city}, {item.state}, {item.zip}
-      </Typography>
-      {item.distance > 0 && (
-        <Typography variant="body2" sx={{ color: '#5FA625' }}>
-          {item.distance} Miles Away
-        </Typography>
-      )}
-      {candeliver == false && (
+      <a href="#" style={{ color: '#000', textDecoration: 'none' }}>
         <Typography
-          variant="body2"
+          variant="h5"
           sx={{
-            color: '#b91a2e',
-            fontSize: '13px',
-            background: '#fee',
-            padding: '2px 5px',
+            fontWeight: 'bold',
+            fontSize: '18px',
+            paddingBottom: '5px',
           }}
         >
-          {candeliver} Delivery is not available at this time
+          {item.name}
         </Typography>
-      )}
+        <Typography variant="body2">
+          {item.streetaddress}, <br /> {item.city}, {item.state}, {item.zip}
+        </Typography>
+        {item.distance > 0 && (
+          <Typography variant="body2" sx={{ color: '#5FA625' }}>
+            {item.distance} Miles Away
+          </Typography>
+        )}
+        {candeliver == false && (
+          <Typography
+            variant="body2"
+            sx={{
+              color: '#b91a2e',
+              fontSize: '13px',
+              background: '#fee',
+              padding: '2px 5px',
+            }}
+          >
+            {candeliver} Delivery is not available at this time
+          </Typography>
+        )}
+      </a>
     </Grid>
   );
 };

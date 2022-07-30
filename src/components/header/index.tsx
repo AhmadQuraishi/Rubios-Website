@@ -65,7 +65,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('md')]: {
       paddingTop: '27px',
       paddingBottom: '22px',
-      paddingRight: '15px',
+      paddingRight: '0px',
+      fontSize: '14px'
+    },
+    [theme.breakpoints.down('sm')]: {
+      paddingTop: '27px',
+      paddingBottom: '22px',
+      paddingRight: '12px',
       fontSize: '14px'
     },
     color: theme.palette.primary.main,
@@ -74,11 +80,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: '17px',
     textAlign: 'center',
     '&:hover': {
-      color: theme.palette.success.main,
+      color: '#0073BD',
     },
     transition: 'color 0.5s ease',
   },
-  meniItemLink: {
+  menuItemLink: {
     textTransform: 'uppercase',
     display: 'block',
     paddingTop: '25px',
@@ -93,7 +99,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: '17px',
     textAlign: 'center',
     '&:hover': {
-      color: theme.palette.success.main,
+      color: '#0073BD',
+
+      // color: theme.palette.success.main,
     },
     transition: 'color 0.5s ease',
   },
@@ -192,12 +200,11 @@ const Header = (props: any) => {
               </a>
             </p>
           </Typography>
-
           {isMobile ? (
             <>
               <Link
                 to={restaurant ? '/menu/' + restaurant.slug : '/'}
-                className={providerToken && providerToken.first_name ? classes.menuLink : classes.meniItemLink}
+                className={hideLoginPanel && (window.location.pathname !== '/location') ? classes.menuItemLink : classes.menuLink}
                 title="Menu"
                 onClick={() => setShowAccountMenu(false)}
               >

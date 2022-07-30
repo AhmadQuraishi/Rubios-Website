@@ -12,6 +12,8 @@ import {
   Button,
   Dialog,
   CircularProgress,
+  useTheme, 
+  useMediaQuery
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -60,6 +62,7 @@ const CategoryList = () => {
     border: '1px solid #FFF',
   };
   const classes = useStyles();
+  const theme = useTheme();
   const query = new URLSearchParams(useLocation().search);
   const handoff = query.get('handoff') || '';
   const [getResutarnts, setGetResutrants] = useState(false);
@@ -67,6 +70,8 @@ const CategoryList = () => {
   const [restaurantSelected, setRestaurantSelected] = useState<any>();
   const [value, setValue] = useState('0');
   const { store } = useParams();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   const [categoriesWithProducts, setCategoriesWithProducts] =
     useState<ResponseMenu>();
   const { categories, loading, error } = useSelector(
@@ -151,11 +156,13 @@ const CategoryList = () => {
           checkRestaurantHandOffAvailability(objRestaurant, handoff)
         ) {
           dispatch(setResturantInfoRequest(objRestaurant, handoff));
+          if(!isMobile){
           if( basketObj && basketObj.basket){
             displayToast('SUCCESS', 'Location changed to ' + objRestaurant.name + ' and basket is empty');
           }else{
             displayToast('SUCCESS', 'Location changed to ' + objRestaurant.name);
           }
+        }
           navigate('/menu/' + objRestaurant.slug);
           dispatch(getCategoriesRequest(objRestaurant.id));
         } else {
@@ -319,11 +326,13 @@ const CategoryList = () => {
 
   const changeRestaurant = (orderType: string) => {
     dispatch(setResturantInfoRequest(restaurantSelected, orderType));
+    if(!isMobile){
     if( basketObj && basketObj.basket){
       displayToast('SUCCESS', 'Location changed to ' + restaurantSelected.name + ' and basket is empty');
     }else{
       displayToast('SUCCESS', 'Location changed to ' + restaurantSelected.name);
     }
+  }
     setOpen(false);
     navigate('/menu/' + restaurantSelected.slug);
     dispatch(getCategoriesRequest(restaurantSelected.id));

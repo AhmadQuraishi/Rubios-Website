@@ -4,11 +4,17 @@
   margin: auto;
 }
 
-h2.heading-ui {
+legend.heading-ui, h2.heading-ui {
   font-size: 24px;
   font-family: 'Poppins-Bold', sans-serif !important;
   color: #214f66;
   text-transform: uppercase;
+}
+
+fieldset.field-set {
+border: 0 !important;
+box-shadow: none !important;
+margin-bottom: 20px;
 }
 
 .product-detail h2.heading {
@@ -76,7 +82,7 @@ input[type='check']:checked+label {
   z-index: 1000;
 }
 
-.product-detail h3 {
+.product-detail h3, legend.heading-ui.h3 {
   text-transform: uppercase;
   color: #0069aa;
   font-weight: 500;
@@ -389,6 +395,10 @@ input[type='check']:checked+label {
   /* max-width: 354px; */
   min-height: 140px;
   font-size: 18px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: none;
 }
 
 .product-detail .menu-items .content-panel .card-panel {
@@ -404,6 +414,7 @@ input[type='check']:checked+label {
   appearance: none;
   -webkit-border: 1px solid #d3d3d3;
   -moz-border: 1px solid #d3d3d3;
+  outline: 0;
 }
 
 .product-detail .menu-items .content-panel.selected .card-panel {
@@ -414,6 +425,7 @@ input[type='check']:checked+label {
   appearance: none;
   -webkit-border: 1px solid #e58734;
   -moz-border: 1px solid #e58734;
+  outline: 0;
 }
 
 .product-detail .menu-items .content-panel.selected .card-panel .check-mark {

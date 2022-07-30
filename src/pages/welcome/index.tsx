@@ -6,6 +6,8 @@ import {
   Card,
   CardContent,
   Button,
+  useTheme,
+  useMediaQuery,
 } from '@mui/material';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './welcome.css';
@@ -38,6 +40,7 @@ const useStyle = makeStyles(() => ({
 
 const Welcome = () => {
   const dispatch = useDispatch();
+  const theme = useTheme();
   const navigate = useNavigate();
   const classes = useStyle();
 
@@ -58,6 +61,8 @@ const Welcome = () => {
     id: '',
     ignoreunavailableproducts: true,
   });
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   const { providerToken } = useSelector((state: any) => state.providerReducer);
   const { authToken } = useSelector((state: any) => state.authReducer);
   const { userRecentOrders, loading } = useSelector(
@@ -153,7 +158,9 @@ const Welcome = () => {
         navigate(restaurant ? '/menu/' + restaurant.slug : '/');
         handleCart();
       }
-      displayToast('SUCCESS', 'Recent order is added in cart');
+      if(!isMobile){
+        displayToast('SUCCESS', 'Recent order is added in cart');
+    }
       setIsEdit(false);
       setIsReoder(false);
       setIsbasket(false);

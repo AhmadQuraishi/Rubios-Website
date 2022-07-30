@@ -5,6 +5,13 @@
         list-style: none;
         grid-template-columns: auto auto auto auto auto auto auto auto;
         padding-left: 10px;
+        /* padding-left: -webi; */
+        text-align: -webkit-left;
+      }
+
+.footer-setting{
+   bottom:0;
+   margin-bottom: 0%;
       }
 
 @media screen and (min-width: 900px){

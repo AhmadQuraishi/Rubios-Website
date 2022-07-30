@@ -48,6 +48,7 @@ const OrderTime = ({ orderType }: any) => {
   const [basket, setBasket] = React.useState<ResponseBasket>();
   const [notAvailableSlots, setNotAvailableSlots] = useState(false);
   const [selectShrink, setSelectShrink] = useState(false);
+  const [asapTime, setAsapTime] = useState(false)
 
   const basketObj = useSelector((state: any) => state.basketReducer);
 
@@ -178,6 +179,7 @@ const OrderTime = ({ orderType }: any) => {
         setTimeout(() => {
           let dateNodes: any = document.querySelectorAll('.MuiPickersDay-root');
           dateNodes.forEach((item: any) => {
+            item.removeAttribute('tabIndex');
             const attributeValue = item.getAttribute('aria-label');
             if (attributeValue) {
               const date = new Date(attributeValue);
@@ -191,7 +193,17 @@ const OrderTime = ({ orderType }: any) => {
       });
   };
 
+  const handleTime = (time: any) =>{
+        let localTime = moment(new Date(), 'YYYYMMDD HH:mm')
+        let  testDateUtc = moment.utc(time, 'YYYYMMDD HH:mm');
+        let localDate = testDateUtc.local();
+        let asapTime = moment(localDate, 'YYYYMMDD HH:mm').format('hh:mm A')
+        console.log("asapTime", asapTime)
+      // return localTime.diff(asapTime, 'minutes')
+  }
+
   return (
+    <>
     <Grid item xs={12} sm={6} md={6} lg={6} className="right-col">
       <Grid container>
         <Grid item xs={12}>
@@ -238,7 +250,6 @@ const OrderTime = ({ orderType }: any) => {
             </Button>
             <LocalizationProvider dateAdapter={AdapterMoment}>
               <DatePicker
-                //open={open}
                 label="Order Date"
                 minDate={moment()}
                 maxDate={moment().add('days', 7)}
@@ -273,13 +284,13 @@ const OrderTime = ({ orderType }: any) => {
                     </Grid>
                   ) : (
                     <Grid item xs={6} sm={6} md={3} lg={3}>
-                      <FormLabel
+                      {/* <FormLabel
                         className="slot-label"
                         title="QUICKEST"
                         id="demo-row-radio-buttons-group-label"
                       >
                         QUICKEST
-                      </FormLabel>
+                      </FormLabel> */}
                     </Grid>
                   )}
                 </Grid>
@@ -290,16 +301,27 @@ const OrderTime = ({ orderType }: any) => {
                   className="selected-btn-group"
                 >
                   {/* <Grid container spacing={2}> */}
-                  {timeSlots.slice(0, 4).map((time) => {
+                    <ToggleButton
+                      key={`button-${basketObj.basket?.earliestreadytime}`}
+                      value={basketObj.basket?.earliestreadytime}
+                      className="selected-btn"
+                      selected={basketObj.basket?.timemode === 'asap' || asapTime ? true : false}
+                    >
+                      <h3>ASAP <span style={{fontSize: '10px', display: 'block', textTransform: 'none'}}>Est {handleTime(basketObj.basket?.earliestreadytime)} mins</span></h3>
+                    </ToggleButton>
+                  {timeSlots.slice(0, 3).map((time) => {
                     return (
                       // <Grid item xs={6} sm={6} md={3} lg={3}>
                       <ToggleButton
+                       onChange={() => setAsapTime(true)}
                         key={`button-${time}`}
                         value={time}
                         className="selected-btn"
                         selected={selectedTime === time ? true : false}
                       >
-                        {moment(time, 'YYYYMMDD HH:mm').format('hh:mm A')}
+                          {/* {index === 0 ? */}
+                           {/* <h3>ASAP <span style={{fontSize: '10px', display: 'block', textTransform: 'none'}}>Est {handleTime(basketObj.basket?.earliestreadytime)} mins</span></h3> :  */}
+                          {moment(time, 'YYYYMMDD HH:mm').format('hh:mm A')}
                       </ToggleButton>
                       // </Grid>
                     );
@@ -342,8 +364,6 @@ const OrderTime = ({ orderType }: any) => {
                 <NativeSelect
                   id="select-label"
                   className={`native-select`}
-                  role="dialog"
-                  aria-modal="true"
                   aria-label="select more time"
                   value={
                     timeSlots.slice(4).includes(selectedTime)
@@ -376,6 +396,7 @@ const OrderTime = ({ orderType }: any) => {
         </>
       )}
     </Grid>
+    </>
   );
 };
 

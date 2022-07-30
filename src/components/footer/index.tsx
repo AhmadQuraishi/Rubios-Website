@@ -59,7 +59,7 @@ const Footer = () => {
 
 
   return (
-    <footer className={`${window.location.href.toLocaleLowerCase().indexOf('/product') !== -1 ? 'footer-control' : ''}`}>
+    <footer className={`${window.location.href.toLocaleLowerCase().indexOf('/product') !== -1 ? 'footer-control' : 'footer-setting'}`}>
       <Grid
         container
         spacing={0}
