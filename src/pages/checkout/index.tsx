@@ -32,6 +32,7 @@ import { getUserDeliveryAddresses } from '../../redux/actions/user';
 import PickupForm from '../../components/pickup-form/index';
 import DeliveryForm from '../../components/delivery-form/index';
 import { getRewardsForCheckoutRequest } from '../../redux/actions/reward/checkout';
+import Page from '../../components/page-title';
 
 const Checkout = () => {
   const dispatch = useDispatch();
@@ -510,7 +511,7 @@ const Checkout = () => {
   };
 
   return (
-    <>
+    <Page title={'Checkout'} className="">
       <Typography variant="h1" className="sr-only">
         Checkout
       </Typography>
@@ -722,7 +723,7 @@ const Checkout = () => {
           </Grid>
         </Grid>
       </Box>
-    </>
+    </Page>
   );
 };
 

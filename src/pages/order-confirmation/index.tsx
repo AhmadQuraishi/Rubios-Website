@@ -13,6 +13,7 @@ import {
 } from '../../redux/actions/order';
 import { useNavigate, useParams } from 'react-router-dom';
 import RegisterConfirmation from '../../components/register-confirmation';
+import Page from '../../components/page-title';
 
 const useStyle = makeStyles(() => ({
   root: {
@@ -47,8 +48,6 @@ const OrderConfirmation = () => {
     dispatch(getOrderRequest(id));
   }, []);
 
-
-
   useEffect(() => {
     if (runOnce && order && order.vendorid) {
       dispatch(getOrderRestaurantRequest(order.vendorid));
@@ -57,88 +56,93 @@ const OrderConfirmation = () => {
   }, [order]);
 
   return (
-    <Fragment>
-      <Grid container component="main" className={classes.root}>
-        <Grid item xs={12} sm={12} md={12} lg={12}>
-          <Grid container className="order-confirmation">
-            <Grid item xs={12} sm={12} md={12} lg={6}>
-              <OrderConfirmedCard orderObj={order} restaurantObj={restaurant} />
-            </Grid>
-            <Grid item xs={12} sm={12} md={12} lg={6}>
-              <Card
-                className={authToken?.authtoken ? 'card ' : 'card next-order'}
-              >
-                <Grid container>
-                  <Grid
-                    item
-                    xs={12}
-                    sm={6}
-                    md={6}
-                    lg={12}
-                    className="earn-reward"
-                  >
-                    <Typography variant="h2" className="label white">
-                      {authToken?.authtoken ? 'YOUR REWARDS' : 'EARN REWARDS'}
-                    </Typography>
-                    <Typography
-                      variant="body1"
-                      className="white"
-                      sx={{
-                        fontFamily: 'Poppins-Bold !important',
-                        fontSize: '36px !important',
-                        lineHeight: '1.2',
-                        letterSpacing: '-0.00833em',
-                      }}
+    <Page title={'Order Confirmation'} className="">
+      <Fragment>
+        <Grid container component="main" className={classes.root}>
+          <Grid item xs={12} sm={12} md={12} lg={12}>
+            <Grid container className="order-confirmation">
+              <Grid item xs={12} sm={12} md={12} lg={6}>
+                <OrderConfirmedCard
+                  orderObj={order}
+                  restaurantObj={restaurant}
+                />
+              </Grid>
+              <Grid item xs={12} sm={12} md={12} lg={6}>
+                <Card
+                  className={authToken?.authtoken ? 'card ' : 'card next-order'}
+                >
+                  <Grid container>
+                    <Grid
+                      item
+                      xs={12}
+                      sm={6}
+                      md={6}
+                      lg={12}
+                      className="earn-reward"
                     >
-                      {authToken?.authtoken
-                        ? 'You’re all set!'
-                        : 'GET $5 OFF YOUR NEXT ORDER'}
-                    </Typography>
-                    <br />
-                    <Typography
-                      variant="h6"
-                      className="white"
-                      title="Join Rubio’s Rewards today to start earning rewards."
-                    >
-                      {authToken?.authtoken
-                        ? 'You’ve received credit for today’s order and are one step closer to earning your next reward.'
-                        : 'Join Rubio’s Rewards today to start earning rewards.'}
-                    </Typography>
-                    <br />
+                      <Typography variant="h2" className="label white">
+                        {authToken?.authtoken ? 'YOUR REWARDS' : 'EARN REWARDS'}
+                      </Typography>
+                      <Typography
+                        variant="body1"
+                        className="white"
+                        sx={{
+                          fontFamily: 'Poppins-Bold !important',
+                          fontSize: '36px !important',
+                          lineHeight: '1.2',
+                          letterSpacing: '-0.00833em',
+                        }}
+                      >
+                        {authToken?.authtoken
+                          ? 'You’re all set!'
+                          : 'GET $5 OFF YOUR NEXT ORDER'}
+                      </Typography>
+                      <br />
+                      <Typography
+                        variant="h6"
+                        className="white"
+                        title="Join Rubio’s Rewards today to start earning rewards."
+                      >
+                        {authToken?.authtoken
+                          ? 'You’ve received credit for today’s order and are one step closer to earning your next reward.'
+                          : 'Join Rubio’s Rewards today to start earning rewards.'}
+                      </Typography>
+                      <br />
+                      {authToken?.authtoken ? (
+                        ''
+                      ) : (
+                        <img
+                          className="phone-icon"
+                          alt=""
+                          src={require('../../assets/imgs/phone-icon.png')}
+                        />
+                      )}
+                    </Grid>
                     {authToken?.authtoken ? (
-                      ''
+                      <Grid item xs={12} sm={12} md={12} lg={12}>
+                        <Button
+                          aria-label="view account"
+                          variant="contained"
+                          title="VIEW ACCOUNT"
+                          onClick={() => navigate('/account/reward')}
+                        >
+                          VIEW ACCOUNT
+                        </Button>
+                      </Grid>
                     ) : (
-                      <img
-                        className="phone-icon"
-                        alt=""
-                        src={require('../../assets/imgs/phone-icon.png')}
-                      />
+                      <RegisterConfirmation id={id} />
                     )}
                   </Grid>
-                  {authToken?.authtoken ? (
-                    <Grid item xs={12} sm={12} md={12} lg={12}>
-                      <Button
-                        aria-label="view account"
-                        variant="contained"
-                        title="VIEW ACCOUNT"
-                        onClick={() => navigate('/account/reward')}
-                      >
-                        VIEW ACCOUNT
-                      </Button>
-                    </Grid>
-                  ) : (
-                    <RegisterConfirmation id={id} />
-                  )}
-                </Grid>
-              </Card>
+                </Card>
+              </Grid>
             </Grid>
           </Grid>
+          <Grid item xs={12} sm={12} md={12} lg={10} className="order-details">
+            <OrderDetails basket={order} page="confirmation" />
+          </Grid>
         </Grid>
-        <Grid item xs={12} sm={12} md={12} lg={10} className="order-details">
-          <OrderDetails basket={order} page="confirmation" />
-        </Grid>
-      </Grid>
-    </Fragment>
+      </Fragment>
+    </Page>
   );
 };
 

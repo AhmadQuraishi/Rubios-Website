@@ -1,6 +1,7 @@
 import { Grid, Typography, TextField, Button, Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useParams } from 'react-router-dom';
+import Page from '../../components/page-title';
 import './add-delivery-address.css';
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -26,72 +27,74 @@ const AddDeliveryAddress = () => {
   const { id } = useParams();
   const classes = useStyles();
   return (
-    <div className={classes.root}>
-      <Typography
-        className={classes.heading}
-        variant="h1"
-        title="Delivery Address"
-      >
-        Delivery Address
-      </Typography>
-      <Grid container>
-        <Grid item xs={12} md={6}>
-          <Grid container className="daddress-section">
-            <Grid item xs={12}>
-              <TextField
-                aria-label="Name"
-                label="Name"
-                title="Name"
-                sx={{ width: '100%' }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                aria-label="street address 1"
-                title="Street Address 1"
-                label="Street Address 1"
-                sx={{ width: '100%' }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                aria-label="street address 2"
-                title="Street Address 2"
-                label="Street Address 2"
-                sx={{ width: '100%' }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                aria-label="City, state"
-                title="City, state"
-                label="City, state"
-                sx={{ width: '100%' }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                aria-label="zip code"
-                title="Zip Code"
-                label="Zip Code"
-                sx={{ width: '100%' }}
-              />
-            </Grid>
+    <Page title={'Add Delivery Address'} className="">
+      <div className={classes.root}>
+        <Typography
+          className={classes.heading}
+          variant="h1"
+          title="Delivery Address"
+        >
+          Delivery Address
+        </Typography>
+        <Grid container>
+          <Grid item xs={12} md={6}>
+            <Grid container className="daddress-section">
+              <Grid item xs={12}>
+                <TextField
+                  aria-label="Name"
+                  label="Name"
+                  title="Name"
+                  sx={{ width: '100%' }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  aria-label="street address 1"
+                  title="Street Address 1"
+                  label="Street Address 1"
+                  sx={{ width: '100%' }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  aria-label="street address 2"
+                  title="Street Address 2"
+                  label="Street Address 2"
+                  sx={{ width: '100%' }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  aria-label="City, state"
+                  title="City, state"
+                  label="City, state"
+                  sx={{ width: '100%' }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  aria-label="zip code"
+                  title="Zip Code"
+                  label="Zip Code"
+                  sx={{ width: '100%' }}
+                />
+              </Grid>
 
-            <Grid item xs={12}>
-              <Button
-                aria-label="add address"
-                title="add address"
-                variant="contained"
-                sx={{ width: { xs: '100%', lg: '400px' } }}
-              >
-                {id ? 'Update Address' : 'Add Address'}
-              </Button>
+              <Grid item xs={12}>
+                <Button
+                  aria-label="add address"
+                  title="add address"
+                  variant="contained"
+                  sx={{ width: { xs: '100%', lg: '400px' } }}
+                >
+                  {id ? 'Update Address' : 'Add Address'}
+                </Button>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
-      </Grid>
-    </div>
+      </div>
+    </Page>
   );
 };
 

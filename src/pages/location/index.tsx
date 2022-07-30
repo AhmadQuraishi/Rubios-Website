@@ -17,6 +17,7 @@ import { Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { displayToast } from '../../helpers/toast';
 import './index.css';
+import Page from '../../components/page-title';
 
 const useStyles = makeStyles((theme: Theme) => ({
   dummyBg: {
@@ -429,51 +430,53 @@ const Location = () => {
   }, [restaurants, filteredRestaurants, deliveryRasturants, orderType]);
 
   return (
-    <div style={{ minHeight: '300px', position: 'relative' }}>
-      {(loading || window.google === undefined || actionPerform) && (
-        <div className={classes.dummyBg}>
-          <LoadingBar />
-        </div>
-      )}
-      {window.google && (
-        <div role="region" aria-label="map">
-          <GoogleMap
-            mapContainerStyle={mapContainerStyle}
-            zoom={zoom}
-            center={mapCenter}
-            options={{
-              streetViewControl: false,
-              mapTypeControl: false,
-              fullscreenControl: false,
-            }}
-            onLoad={loadMap}
-          >
-            {markers}
-            <div
-              onClick={() => {
-                setMayLocation();
+    <Page title={'Location'} className=''>
+      <div style={{ minHeight: '300px', position: 'relative' }}>
+        {(loading || window.google === undefined || actionPerform) && (
+          <div className={classes.dummyBg}>
+            <LoadingBar />
+          </div>
+        )}
+        {window.google && (
+          <div role="region" aria-label="map">
+            <GoogleMap
+              mapContainerStyle={mapContainerStyle}
+              zoom={zoom}
+              center={mapCenter}
+              options={{
+                streetViewControl: false,
+                mapTypeControl: false,
+                fullscreenControl: false,
               }}
-              className="location-icon-panel"
+              onLoad={loadMap}
             >
-              <span className="icon"></span>
-            </div>
-            <LocationCard
-              isNearByRestaurantList={nearByRestaurantsFound}
-              restaurants={allResturants}
-              deliveryRasturants={deliveryRasturants}
-              setOrderTypeMain={setOrderTypeMain}
-              setShowNearBy={setShowNearBy}
-              setLatLng={setLatLng}
-              setActionPerform={setActionPerform}
-              setDeliveryRasturants={setDeliveryRasturants}
-              setfilteredRestaurants={setfilteredRestaurants}
-              filteredRestaurants={filteredRestaurants}
-              loading={loading}
-            />
-          </GoogleMap>
-        </div>
-      )}
-    </div>
+              {markers}
+              <div
+                onClick={() => {
+                  setMayLocation();
+                }}
+                className="location-icon-panel"
+              >
+                <span className="icon"></span>
+              </div>
+              <LocationCard
+                isNearByRestaurantList={nearByRestaurantsFound}
+                restaurants={allResturants}
+                deliveryRasturants={deliveryRasturants}
+                setOrderTypeMain={setOrderTypeMain}
+                setShowNearBy={setShowNearBy}
+                setLatLng={setLatLng}
+                setActionPerform={setActionPerform}
+                setDeliveryRasturants={setDeliveryRasturants}
+                setfilteredRestaurants={setfilteredRestaurants}
+                filteredRestaurants={filteredRestaurants}
+                loading={loading}
+              />
+            </GoogleMap>
+          </div>
+        )}
+      </div>
+    </Page>
   );
 };
 
