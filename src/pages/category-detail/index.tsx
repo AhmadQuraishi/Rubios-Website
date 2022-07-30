@@ -9,6 +9,7 @@ import { getCategoriesRequest } from '../../redux/actions/category';
 import { Category } from '../../types/olo-api';
 import ProductListingSkeletonUI from '../../components/product-listing-skeleton-ui';
 import { displayToast } from '../../helpers/toast';
+import Page from '../../components/page-title';
 
 const useStyles = makeStyles((theme: Theme) => ({
   heading: {
@@ -97,37 +98,39 @@ const CategoryDetail = () => {
   }, [categories]);
 
   return (
-    <div style={{ minHeight: '500px' }}>
-      <StoreInfoBar />
-      {loading === true && selectedCategory === undefined && (
-        <ProductListingSkeletonUI />
-      )}
-      {selectedCategory && (
-        <Grid
-          container
-          spacing={0}
-          sx={{ padding: { xs: '20px', md: '30px 80px 0px 80px' } }}
-        >
-          <Grid item xs={12} md={6}>
-            <Typography
-              className={classes.heading}
-              title={selectedCategory.name}
-            >
-              {selectedCategory.name}
-            </Typography>
+    <Page title={'Menu Detail'} className="">
+      <div style={{ minHeight: '500px' }}>
+        <StoreInfoBar />
+        {loading === true && selectedCategory === undefined && (
+          <ProductListingSkeletonUI />
+        )}
+        {selectedCategory && (
+          <Grid
+            container
+            spacing={0}
+            sx={{ padding: { xs: '20px', md: '30px 80px 0px 80px' } }}
+          >
+            <Grid item xs={12} md={6}>
+              <Typography
+                className={classes.heading}
+                title={selectedCategory.name}
+              >
+                {selectedCategory.name}
+              </Typography>
+            </Grid>
+            <Grid item xs={12} sx={{ paddingBottom: '20px' }}>
+              <ProductListing
+                productList={selectedCategory.products}
+                categoryID={id}
+                imgPath={(categories && categories.imagepath) || ''}
+                orderType={orderType}
+              />
+            </Grid>
           </Grid>
-          <Grid item xs={12} sx={{ paddingBottom: '20px' }}>
-            <ProductListing
-              productList={selectedCategory.products}
-              categoryID={id}
-              imgPath={(categories && categories.imagepath) || ''}
-              orderType={orderType}
-            />
-          </Grid>
-        </Grid>
-      )}
-      <div style={{ paddingBottom: '30px' }}></div>
-    </div>
+        )}
+        <div style={{ paddingBottom: '30px' }}></div>
+      </div>
+    </Page>
   );
 };
 
