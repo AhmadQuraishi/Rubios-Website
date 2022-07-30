@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Fragment } from 'react';
 
 import HistoryGrid from '../../components/history-grid';
+import Page from '../../components/page-title';
 import TransactionHistory from '../../components/transaction-history';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -39,19 +40,21 @@ function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
 
   return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ padding: '20px 0' }}>
-          <Typography component="div">{children}</Typography>
-        </Box>
-      )}
-    </div>
+    <Page title={'Account History'} className="">
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`simple-tabpanel-${index}`}
+        aria-labelledby={`simple-tab-${index}`}
+        {...other}
+      >
+        {value === index && (
+          <Box sx={{ padding: '20px 0' }}>
+            <Typography component="div">{children}</Typography>
+          </Box>
+        )}
+      </div>
+    </Page>
   );
 }
 
