@@ -63,6 +63,21 @@ const RegisterForm = () => {
     if (locations) {
       const elem = document.getElementById('fav-location');
       if (elem) elem.removeAttribute('aria-haspopup');
+      const dName = 'react-date-inputs__day';
+      const mName = 'react-date-inputs__month';
+      const yName = 'react-date-inputs__year';
+      const dateElem = document.getElementsByClassName(dName);
+      if (dateElem) {
+        dateElem[0].setAttribute('aria-label', 'Day');
+      }
+      const monthElem = document.getElementsByClassName(mName);
+      if (monthElem) {
+        monthElem[0].setAttribute('aria-label', 'Month');
+      }
+      const yearElem = document.getElementsByClassName(yName);
+      if (yearElem) {
+        yearElem[0].setAttribute('aria-label', 'Year');
+      }
     }
   }, [locations]);
 
@@ -225,7 +240,7 @@ const RegisterForm = () => {
             touched,
             values,
           }) => (
-            <form onSubmit={handleSubmit} autoComplete="on">
+            <form onSubmit={handleSubmit} autoComplete="off">
               <Grid item xs={12} md={12} lg={12}>
                 <Grid container>
                   <Grid item xs={12}>
@@ -237,7 +252,7 @@ const RegisterForm = () => {
                       name="first_name"
                       sx={{ width: '100%' }}
                       value={values.first_name}
-                      autoComplete="given-name"
+                      autoComplete="off"
                       onChange={handleChange('first_name')}
                       onBlur={handleBlur('first_name')}
                       error={Boolean(touched.first_name && errors.first_name)}
@@ -251,7 +266,7 @@ const RegisterForm = () => {
                       title="Last Name"
                       type="text"
                       name="last_name"
-                      autoComplete="family-name"
+                      autoComplete="off"
                       sx={{ width: '100%' }}
                       value={values.last_name}
                       onChange={handleChange('last_name')}
@@ -267,7 +282,7 @@ const RegisterForm = () => {
                       title="Email"
                       type="text"
                       name="email"
-                      autoComplete="email"
+                      autoComplete="off"
                       sx={{ width: '100%' }}
                       value={values.email}
                       onChange={handleChange('email')}
@@ -285,7 +300,7 @@ const RegisterForm = () => {
                       value={values.phone}
                       sx={{ width: '100%' }}
                       onChange={handleChange}
-                      autoComplete="tel"
+                      autoComplete="off"
                       name="phone"
                       id="formatted-numberformat-input"
                       InputLabelProps={{
@@ -308,7 +323,7 @@ const RegisterForm = () => {
                       title="Password"
                       type="password"
                       name="password"
-                      autoComplete="new-password"
+                      autoComplete="off"
                       sx={{ width: '100%' }}
                       value={values.password}
                       onChange={handleChange('password')}
@@ -331,7 +346,7 @@ const RegisterForm = () => {
                       label="Confirm Password *"
                       title="Confirm Password"
                       name="password_confirmation"
-                      autoComplete="new-password"
+                      autoComplete="off"
                       type="password"
                       sx={{ width: '100%' }}
                       value={values.password_confirmation}
@@ -426,14 +441,14 @@ const RegisterForm = () => {
                     <Typography
                       variant="body2"
                       className="body-text"
+                      id="chkTermandCondition"
                       title="I agree to the  Rubios terms and conditions and to receiving marketing communications from Rubios."
                       sx={{ width: '100%' }}
                     >
                       <Checkbox
                         onChange={handleChangeCheckbox}
                         inputProps={{
-                          'aria-label':
-                            ' I agree to the  Rubios terms and conditions and to receiving marketing communications from Rubios ',
+                          'aria-labelledby': 'chkTermandCondition',
                         }}
                       />{' '}
                       I agree to the{' '}

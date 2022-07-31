@@ -1106,6 +1106,7 @@ const Product = () => {
                 {optionsSelectionArray.length > 0 &&
                   optionsSelectionArray.map((itemMain: any, index0: number) => (
                     <fieldset
+                      key={Math.random() + index0}
                       className="field-set"
                       style={{
                         border: '0',
@@ -1130,6 +1131,7 @@ const Product = () => {
                               color: 'red',
                               paddingLeft: '10px',
                             }}
+                            id={`required-label-${index0}`}
                           >
                             (Required)
                           </span>
@@ -1137,7 +1139,6 @@ const Product = () => {
                       </legend>
 
                       <Grid
-                        key={Math.random() + index0}
                         container
                         sx={{
                           display:
@@ -1177,6 +1178,12 @@ const Product = () => {
                               >
                                 {itemMain.mandatory ? (
                                   <input
+                                    aria-invalid={
+                                      IsItemSelected(itemMain.id) && index1 == 0
+                                        ? 'true'
+                                        : 'false'
+                                    }
+                                    aria-describedby={`required-label-${index0}`}
                                     checked={checkOptionSelected(
                                       itemChild.option.id,
                                       itemMain.id,
@@ -1200,6 +1207,12 @@ const Product = () => {
                                   />
                                 ) : (
                                   <input
+                                    aria-invalid={
+                                      IsItemSelected(itemMain.id) && index1 == 0
+                                        ? 'true'
+                                        : 'false'
+                                    }
+                                    aria-describedby={`required-label-${index0}`}
                                     checked={checkOptionSelected(
                                       itemChild.option.id,
                                       itemMain.id,
