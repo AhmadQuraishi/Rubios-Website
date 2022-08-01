@@ -1126,9 +1126,10 @@ const Product = () => {
                         {itemMain.name}
                         {IsItemSelected(itemMain.id) && (
                           <span
+                            role="alert"
                             style={{
                               fontSize: '16px',
-                              color: 'red',
+                              color: '#b91a2e',
                               paddingLeft: '10px',
                             }}
                             id={`required-label-${index0}`}
@@ -1183,7 +1184,11 @@ const Product = () => {
                                         ? 'true'
                                         : 'false'
                                     }
-                                    aria-describedby={`required-label-${index0}`}
+                                    aria-describedby={
+                                      index1 == 0
+                                        ? `required-label-${index0}`
+                                        : ''
+                                    }
                                     checked={checkOptionSelected(
                                       itemChild.option.id,
                                       itemMain.id,
@@ -1212,7 +1217,11 @@ const Product = () => {
                                         ? 'true'
                                         : 'false'
                                     }
-                                    aria-describedby={`required-label-${index0}`}
+                                    aria-describedby={
+                                      index1 == 0
+                                        ? `required-label-${index0}`
+                                        : ''
+                                    }
                                     checked={checkOptionSelected(
                                       itemChild.option.id,
                                       itemMain.id,
