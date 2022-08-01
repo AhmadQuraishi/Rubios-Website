@@ -90,7 +90,7 @@ const Checkout = () => {
       // externalScript.async = true;
       // externalScript.type = 'text/javascript';
       // externalScript.setAttribute('crossorigin', 'anonymous');
-      document.body.appendChild(externalScript);
+      document.head.appendChild(externalScript);
       externalScript.src =
         process.env.REACT_APP_NODE_ENV === 'production'
           ? `https://static.olocdn.net/web-client/checkout-web-client/2.5.0/checkout.js`
