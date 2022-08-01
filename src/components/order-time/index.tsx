@@ -35,6 +35,7 @@ import { CalendarTypeEnum } from '../../helpers/hoursListing';
 import { useNavigate } from 'react-router-dom';
 import { ResponseBasket } from '../../types/olo-api';
 import { DeliveryModeEnum } from '../../types/olo-api/olo-api.enums';
+import { MobileDatePicker } from '@mui/lab';
 
 const OrderTime = ({ orderType }: any) => {
   const dispatch = useDispatch();
@@ -48,7 +49,7 @@ const OrderTime = ({ orderType }: any) => {
   const [basket, setBasket] = React.useState<ResponseBasket>();
   const [notAvailableSlots, setNotAvailableSlots] = useState(false);
   const [selectShrink, setSelectShrink] = useState(false);
-  const [asapTime, setAsapTime] = useState(false)
+  const [asapTime, setAsapTime] = useState(false);
 
   const basketObj = useSelector((state: any) => state.basketReducer);
 
@@ -173,229 +174,244 @@ const OrderTime = ({ orderType }: any) => {
   const setAttributesForDate = () => {
     setOpen(!open);
 
-    document
-      .getElementsByClassName('MuiInputAdornment-root')[0]
-      .addEventListener('click', () => {
-        setTimeout(() => {
-          let dateNodes: any = document.querySelectorAll('.MuiPickersDay-root');
-          dateNodes.forEach((item: any) => {
-            item.removeAttribute('tabIndex');
-            const attributeValue = item.getAttribute('aria-label');
-            if (attributeValue) {
-              const date = new Date(attributeValue);
-              item.setAttribute(
-                'aria-label',
-                moment(date).format('dddd, MMMM D, YYYY'),
-              );
-            }
-          });
-        }, 500);
-      });
+    document.getElementById('dateTime_check')?.addEventListener('click', () => {
+      setTimeout(() => {
+        let dateNodes: any = document.querySelectorAll('.MuiPickersDay-root');
+        dateNodes.forEach((item: any) => {
+          item.removeAttribute('tabIndex');
+          const attributeValue = item.getAttribute('aria-label');
+          if (attributeValue) {
+            const date = new Date(attributeValue);
+            item.setAttribute(
+              'aria-label',
+              moment(date).format('dddd, MMMM D, YYYY'),
+            );
+          }
+        });
+      }, 500);
+    });
   };
 
-  const handleTime = (time: any) =>{
-        let localTime = moment(new Date(), 'YYYYMMDD HH:mm')
-        let  testDateUtc = moment.utc(time, 'YYYYMMDD HH:mm');
-        let localDate = testDateUtc.local();
-        let asapTime = moment(localDate, 'YYYYMMDD HH:mm').format('hh:mm A')
-        console.log("asapTime", asapTime)
-      // return localTime.diff(asapTime, 'minutes')
-  }
+  const handleTime = (time: any) => {
+    let localTime = moment(new Date(), 'YYYYMMDD HH:mm');
+    let testDateUtc = moment.utc(time, 'YYYYMMDD HH:mm');
+    let localDate = testDateUtc.local();
+    let asapTime = moment(localDate, 'YYYYMMDD HH:mm').format('hh:mm A');
+    console.log('asapTime', asapTime);
+    // return localTime.diff(asapTime, 'minutes')
+  };
 
   return (
     <>
-    <Grid item xs={12} sm={6} md={6} lg={6} className="right-col">
-      <Grid container>
-        <Grid item xs={12}>
-          <Typography
-            variant="h3"
-            title={
-              orderType === DeliveryModeEnum.dinein
+      <Grid item xs={12} sm={6} md={6} lg={6} className="right-col">
+        <Grid container>
+          <Grid item xs={12}>
+            <Typography
+              variant="h3"
+              title={
+                orderType === DeliveryModeEnum.dinein
+                  ? 'DATE'
+                  : orderType === DeliveryModeEnum.delivery
+                  ? 'DELIVERY TIME'
+                  : 'PICKUP TIME'
+              }
+              className="label"
+            >
+              {orderType === DeliveryModeEnum.dinein
                 ? 'DATE'
                 : orderType === DeliveryModeEnum.delivery
                 ? 'DELIVERY TIME'
-                : 'PICKUP TIME'
-            }
-            className="label"
+                : 'PICKUP TIME'}
+            </Typography>
+          </Grid>
+        </Grid>
+        <Grid item xs={12}>
+          <Typography
+            style={{ textTransform: 'uppercase' }}
+            variant="h2"
+            title={moment(selectedDate).format('dddd MMM Do')}
           >
-            {orderType === DeliveryModeEnum.dinein
-              ? 'DATE'
-              : orderType === DeliveryModeEnum.delivery
-              ? 'DELIVERY TIME'
-              : 'PICKUP TIME'}
+            {moment(selectedDate).format('dddd MMM Do')}
           </Typography>
         </Grid>
-      </Grid>
-      <Grid item xs={12}>
-        <Typography
-          style={{ textTransform: 'uppercase' }}
-          variant="h2"
-          title={moment(selectedDate).format('dddd MMM Do')}
-        >
-          {moment(selectedDate).format('dddd MMM Do')}
-        </Typography>
-      </Grid>
-      {orderType !== DeliveryModeEnum.dinein && (
-        <>
-          <Grid item xs={12}>
-            <Button
-              aria-label="Change Order Time"
-              title="Change Order Time"
-              className="caption-grey"
-              onClick={() => {
-                setAttributesForDate();
-              }}
-            >
-              (change)
-            </Button>
-            <LocalizationProvider dateAdapter={AdapterMoment}>
-              <DatePicker
-                label="Order Date"
-                minDate={moment()}
-                maxDate={moment().add('days', 7)}
-                inputFormat="MM/DD/yyyy"
-                value={selectedDate}
-                views={['day']}
-                className="order-date"
-                onChange={(e) => handleDateChange(e)}
-                renderInput={(params) => (
-                  <TextField
-                    className="order-date"
-                    style={{ display: open ? 'block' : 'none' }}
-                    {...params}
-                  />
-                )}
-              />
-            </LocalizationProvider>
-          </Grid>
-          <Grid item xs={12} className="time-slot-wrapper">
-            <Grid container>
-              <FormControl>
-                <Grid container>
-                  {notAvailableSlots ? (
-                    <Grid item xs={12}>
-                      <Typography
-                        variant="caption"
-                        className="label"
-                        style={{ color: 'red' }}
-                      >
-                        No availabe slots. Please try a different Date.
-                      </Typography>
-                    </Grid>
-                  ) : (
-                    <Grid item xs={6} sm={6} md={3} lg={3}>
-                      {/* <FormLabel
+        {orderType !== DeliveryModeEnum.dinein && (
+          <>
+            <Grid item xs={12}>
+              <Button
+                aria-label="Change Order Time"
+                title="Change Order Time"
+                className="caption-grey"
+                onClick={() => {
+                  setAttributesForDate();
+                }}
+              >
+                (change)
+              </Button>
+              <LocalizationProvider dateAdapter={AdapterMoment}>
+                <MobileDatePicker
+                  label="Order Date"
+                  minDate={moment()}
+                  maxDate={moment().add('days', 7)}
+                  inputFormat="MM/DD/yyyy"
+                  value={selectedDate}
+                  views={['day']}
+                  className="order-date"
+                  onChange={(e) => handleDateChange(e)}
+                  renderInput={(params) => (
+                    <TextField
+                      id="dateTime_check"
+                      className="order-date"
+                      style={{ display: open ? 'block' : 'none' }}
+                      {...params}
+                    />
+                  )}
+                />
+              </LocalizationProvider>
+            </Grid>
+            <Grid item xs={12} className="time-slot-wrapper">
+              <Grid container>
+                <FormControl>
+                  <Grid container>
+                    {notAvailableSlots ? (
+                      <Grid item xs={12}>
+                        <Typography
+                          variant="caption"
+                          className="label"
+                          style={{ color: 'red' }}
+                        >
+                          No availabe slots. Please try a different Date.
+                        </Typography>
+                      </Grid>
+                    ) : (
+                      <Grid item xs={6} sm={6} md={3} lg={3}>
+                        {/* <FormLabel
                         className="slot-label"
                         title="QUICKEST"
                         id="demo-row-radio-buttons-group-label"
                       >
                         QUICKEST
                       </FormLabel> */}
-                    </Grid>
-                  )}
-                </Grid>
-                <ToggleButtonGroup
-                  value={selectedTime}
-                  exclusive
-                  onChange={(event) => onTimeSlotSelect(event)}
-                  className="selected-btn-group"
-                >
-                  {/* <Grid container spacing={2}> */}
+                      </Grid>
+                    )}
+                  </Grid>
+                  <ToggleButtonGroup
+                    value={selectedTime}
+                    exclusive
+                    onChange={(event) => onTimeSlotSelect(event)}
+                    className="selected-btn-group"
+                  >
+                    {/* <Grid container spacing={2}> */}
                     <ToggleButton
                       key={`button-${basketObj.basket?.earliestreadytime}`}
                       value={basketObj.basket?.earliestreadytime}
                       className="selected-btn"
-                      selected={basketObj.basket?.timemode === 'asap' || asapTime ? true : false}
+                      selected={
+                        basketObj.basket?.timemode === 'asap' || asapTime
+                          ? true
+                          : false
+                      }
                     >
-                      <h3>ASAP <span style={{fontSize: '10px', display: 'block', textTransform: 'none'}}>Est {handleTime(basketObj.basket?.earliestreadytime)} mins</span></h3>
+                      <h3>
+                        ASAP{' '}
+                        <span
+                          style={{
+                            fontSize: '10px',
+                            display: 'block',
+                            textTransform: 'none',
+                          }}
+                        >
+                          Est {handleTime(basketObj.basket?.earliestreadytime)}{' '}
+                          mins
+                        </span>
+                      </h3>
                     </ToggleButton>
-                  {timeSlots.slice(0, 3).map((time) => {
-                    return (
-                      // <Grid item xs={6} sm={6} md={3} lg={3}>
-                      <ToggleButton
-                       onChange={() => setAsapTime(true)}
-                        key={`button-${time}`}
-                        value={time}
-                        className="selected-btn"
-                        selected={selectedTime === time ? true : false}
-                      >
+                    {timeSlots.slice(0, 3).map((time) => {
+                      return (
+                        // <Grid item xs={6} sm={6} md={3} lg={3}>
+                        <ToggleButton
+                          onChange={() => setAsapTime(true)}
+                          key={`button-${time}`}
+                          value={time}
+                          className="selected-btn"
+                          selected={selectedTime === time ? true : false}
+                        >
                           {/* {index === 0 ? */}
-                           {/* <h3>ASAP <span style={{fontSize: '10px', display: 'block', textTransform: 'none'}}>Est {handleTime(basketObj.basket?.earliestreadytime)} mins</span></h3> :  */}
+                          {/* <h3>ASAP <span style={{fontSize: '10px', display: 'block', textTransform: 'none'}}>Est {handleTime(basketObj.basket?.earliestreadytime)} mins</span></h3> :  */}
                           {moment(time, 'YYYYMMDD HH:mm').format('hh:mm A')}
-                      </ToggleButton>
-                      // </Grid>
-                    );
-                  })}
-                  {/* </Grid> */}
-                </ToggleButtonGroup>
-              </FormControl>
+                        </ToggleButton>
+                        // </Grid>
+                      );
+                    })}
+                    {/* </Grid> */}
+                  </ToggleButtonGroup>
+                </FormControl>
+              </Grid>
             </Grid>
-          </Grid>
-          {timeSlots.length > 4 ? (
-            <Grid item xs={12}>
-              <FormControl
-                fullWidth
-                className={`${
-                  timeSlots.slice(4).includes(selectedTime)
-                    ? 'time-slot-selected'
-                    : 'time-slot'
-                }`}
-              >
-                <InputLabel
-                  id="select-more-times"
-                  aria-label="More Times"
-                  title="More Times"
-                  className="time-picker"
-                  classes={{
-                    root:
-                      !selectShrink &&
-                      !timeSlots.slice(4).includes(selectedTime)
-                        ? 'select-custom-css'
-                        : '',
-                  }}
-                  style={{ textAlign: 'center' }}
-                  shrink={
-                    selectShrink || timeSlots.slice(4).includes(selectedTime)
-                  }
-                >
-                  MORE TIMES
-                </InputLabel>
-                {}
-                <NativeSelect
-                  id="select-label"
-                  className={`native-select`}
-                  aria-label="select more time"
-                  value={
+            {timeSlots.length > 4 ? (
+              <Grid item xs={12}>
+                <FormControl
+                  fullWidth
+                  className={`${
                     timeSlots.slice(4).includes(selectedTime)
-                      ? selectedTime
-                      : ''
-                  }
-                  onClick={() => {
-                    console.log('open');
-                  }}
-                  onChange={(event) => {
-                    if (event.target.value == '') {
-                      return;
-                    }
-                    onTimeSlotSelect(event);
-                  }}
-                  title="Select More times"
+                      ? 'time-slot-selected'
+                      : 'time-slot'
+                  }`}
                 >
-                  {timeSlots.slice(4).map((time, index) => {
-                    return (
-                      <option key={`menu-${time}`} value={time}>
-                        {moment(time, 'YYYYMMDD HH:mm').format('hh:mm A')}
-                      </option>
-                    );
-                  })}
-                  <option value="" style={{ display: 'none' }}></option>
-                </NativeSelect>
-              </FormControl>
-            </Grid>
-          ) : null}
-        </>
-      )}
-    </Grid>
+                  <InputLabel
+                    id="select-more-times"
+                    aria-label="More Times"
+                    title="More Times"
+                    className="time-picker"
+                    classes={{
+                      root:
+                        !selectShrink &&
+                        !timeSlots.slice(4).includes(selectedTime)
+                          ? 'select-custom-css'
+                          : '',
+                    }}
+                    style={{ textAlign: 'center' }}
+                    shrink={
+                      selectShrink || timeSlots.slice(4).includes(selectedTime)
+                    }
+                  >
+                    MORE TIMES
+                  </InputLabel>
+                  {}
+                  <NativeSelect
+                    id="select-label"
+                    className={`native-select`}
+                    aria-label="select more time"
+                    value={
+                      timeSlots.slice(4).includes(selectedTime)
+                        ? selectedTime
+                        : ''
+                    }
+                    onClick={() => {
+                      console.log('open');
+                    }}
+                    onChange={(event) => {
+                      if (event.target.value == '') {
+                        return;
+                      }
+                      onTimeSlotSelect(event);
+                    }}
+                    title="Select More times"
+                  >
+                    {timeSlots.slice(4).map((time, index) => {
+                      return (
+                        <option key={`menu-${time}`} value={time}>
+                          {moment(time, 'YYYYMMDD HH:mm').format('hh:mm A')}
+                        </option>
+                      );
+                    })}
+                    <option value="" style={{ display: 'none' }}></option>
+                  </NativeSelect>
+                </FormControl>
+              </Grid>
+            ) : null}
+          </>
+        )}
+      </Grid>
     </>
   );
 };
