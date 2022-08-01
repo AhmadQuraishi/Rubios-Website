@@ -1,16 +1,26 @@
 import React, { forwardRef } from 'react';
-import {Button, Grid, TextField, Typography, useMediaQuery, useTheme} from '@mui/material';
+import {
+  Button,
+  Grid,
+  TextField,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 
 import './payment-info.css';
 import SplitPayment from './split-payment';
 import AddGiftCard from './add-gift-card';
-import AddCreditCard from './add-credit-card';
-import AddCreditCardCopy from './add-credit-card-copy';
-import {displayToast} from "../../helpers/toast";
-import {getCreditCardObj, updatePaymentCardsAmount} from "../../helpers/checkout";
-import {updateBasketBillingSchemes} from "../../redux/actions/basket/checkout";
-import {useDispatch, useSelector} from "react-redux";
-import {ResponseBasket} from "../../types/olo-api";
+// import AddCreditCard from './add-credit-card';
+// import AddCreditCardCopy from './add-credit-card-copy';
+import { displayToast } from '../../helpers/toast';
+import {
+  getCreditCardObj,
+  updatePaymentCardsAmount,
+} from '../../helpers/checkout';
+import { updateBasketBillingSchemes } from '../../redux/actions/basket/checkout';
+import { useDispatch, useSelector } from 'react-redux';
+import { ResponseBasket } from '../../types/olo-api';
 
 const PaymentInfo = forwardRef((props: any, _ref) => {
   const { ccsfObj, basketAccessToken } = props;
@@ -24,9 +34,6 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
   const [basket, setBasket] = React.useState<ResponseBasket>();
   const basketObj = useSelector((state: any) => state.basketReducer);
-
-
-
 
   React.useEffect(() => {
     setBillingSchemes(basketObj.payment.billingSchemes);
@@ -64,7 +71,6 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
     //   return;
     // }
 
-
     if (ccsfObj) {
       ccsfObj.registerError((errors: any) => {
         console.log('ccsf error 2', errors);
@@ -72,13 +78,17 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
         errors.forEach((error: any) => {
           console.log(error.code);
           console.log(error.description);
-          if(error.description && error.description === 'The sum of your selected payment methods must equal the order total.'){
+          if (
+            error.description &&
+            error.description ===
+              'The sum of your selected payment methods must equal the order total.'
+          ) {
             let billingSchemesNewArray = billingSchemes;
             const obj = {
               exp_year: 2024,
               exp_month: 10,
-              postal_code: 12345
-            }
+              postal_code: 12345,
+            };
             let cardObj: any = getCreditCardObj(obj, billingSchemes);
 
             Array.prototype.push.apply(billingSchemesNewArray, cardObj);
@@ -89,7 +99,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
             );
 
             dispatch(updateBasketBillingSchemes(billingSchemesNewArray));
-            if(!isMobile){
+            if (!isMobile) {
               displayToast('SUCCESS', 'Credit Card Added');
             }
             setButtonDisabled(false);
@@ -98,7 +108,6 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
             displayToast('ERROR', error.description);
           }
         });
-
       });
       ccsfObj.submit({
         id: basket && basket.id,
