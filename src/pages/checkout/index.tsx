@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Box, Button, Card, Grid, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -17,6 +17,8 @@ import {
   getBasketAllowedCardsRequest,
   getSingleRestaurantCalendar,
   removeBasketOrderSubmit,
+  submitBasketSinglePaymentFailure,
+  submitBasketSinglePaymentSuccess,
   updateBasketBillingSchemes,
   validateBasket,
 } from '../../redux/actions/basket/checkout';
@@ -33,11 +35,20 @@ import PickupForm from '../../components/pickup-form/index';
 import DeliveryForm from '../../components/delivery-form/index';
 import { getRewardsForCheckoutRequest } from '../../redux/actions/reward/checkout';
 import Page from '../../components/page-title';
+import { CreditCardCCSF } from '../../helpers/creditCard';
+import { generateCCSFToken } from '../../services/basket';
+import axios from 'axios';
+import { getRestaurantCalendar } from '../../services/restaurant/calendar';
+import { GetUserFriendlyHours } from '../../helpers/getUserFriendlyHours';
+import { CalendarTypeEnum } from '../../helpers/hoursListing';
+import { put } from 'redux-saga/effects';
+import { updateGuestUserInfo } from '../../redux/actions/order';
+import { navigateAppAction } from '../../redux/actions/navigate-app';
 
 const Checkout = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  let userInfo: any = {};
   const pickupFormRef = React.useRef<any>(null);
   const deliveryFormRef = React.useRef<any>(null);
   const paymentInfoRef = React.useRef<any>();
@@ -46,12 +57,14 @@ const Checkout = () => {
   const [defaultCard, setDefaultCard] = React.useState<boolean>(true);
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
   const [tipPercentage, setTipPercentage] = React.useState<any>(null);
+  const [basketAccessToken, setBasketAccessToken] = React.useState<any>('');
   const [basket, setBasket] = React.useState<ResponseBasket>();
   const [billingSchemes, setBillingSchemes] = React.useState<any>([]);
   const [validate, setValidate] =
     React.useState<ResponseBasketValidation | null>(null);
   const [defaultDeliveryAddress, setDefaultDeliveryAddress] =
     React.useState<any>(null);
+  const [ccsfObj, setccsfObj] = React.useState<any>();
 
   const basketObj = useSelector((state: any) => state.basketReducer);
   const { authToken } = useSelector((state: any) => state.authReducer);
@@ -65,6 +78,26 @@ const Checkout = () => {
   const { userDeliveryAddresses } = useSelector(
     (state: any) => state.userReducer,
   );
+
+  useEffect(() => {
+    const getBasketAccessToken = async () => {
+      const body = {
+        authtoken:
+          authToken && authToken.authtoken && authToken.authtoken !== ''
+            ? authToken.authtoken
+            : '',
+      };
+      const baskId =
+        basketObj && basketObj.basket && basketObj.basket.id
+          ? basketObj.basket.id
+          : '';
+      const response = await generateCCSFToken(baskId, body);
+      if (response && response.accesstoken) {
+        setBasketAccessToken(response.accesstoken);
+      }
+    };
+    getBasketAccessToken();
+  }, []);
 
   React.useEffect(() => {
     if (basket && runOnce) {
@@ -81,7 +114,7 @@ const Checkout = () => {
           selectedTime,
         ),
       );
-      dispatch(validateBasket(basket.id, null, null, [], null, null));
+      dispatch(validateBasket(basket.id, null, null, [], null, null, null));
       dispatch(getBasketAllowedCardsRequest(basket.id));
       dispatch(removeBasketOrderSubmit());
       setRunOnce(false);
@@ -132,7 +165,7 @@ const Checkout = () => {
             let cardObj: any = {
               localId: getUniqueId(),
               selected: true,
-              billingmethod: 'creditcardtoken',
+              billingmethod: 'creditcard',
               amount: 0,
               tipportion: 0.0,
               cardtype: defaultCard.cardtype,
@@ -448,6 +481,7 @@ const Checkout = () => {
       basket?.deliverymode,
       authToken?.authtoken,
       basket,
+      basketAccessToken,
     );
 
     if (
@@ -481,6 +515,12 @@ const Checkout = () => {
       }
       console.log('basketPayload', basketPayload);
 
+      if (basketPayload.receivinguser) {
+        userInfo = {
+          ...basketPayload.receivinguser,
+        };
+      }
+
       dispatch(
         validateBasket(
           basket?.id,
@@ -489,6 +529,7 @@ const Checkout = () => {
           customFields,
           deliverymode,
           deliveryAddress,
+          ccsfObj,
         ),
       );
     }
@@ -509,6 +550,65 @@ const Checkout = () => {
       return true;
     }
   };
+
+  React.useEffect(() => {
+    // @ts-ignore
+    // console.log('openAddCreditCard', openAddCreditCard);
+    // if (openAddCreditCard) {
+    // console.log('openAddCreditCard working');
+    // document.addEventListener('readystatechange', (event: any) => {
+    //   // When HTML/DOM elements are ready:
+    //   if (event.target.readyState === 'interactive') {
+    //     //does same as:  ..addEventListener("DOMContentLoaded"..
+    //     alert('hi 1');
+    //   }
+    //   // When window loaded ( external resources are loaded too- `css`,`src`, etc...)
+    //   if (event.target.readyState === 'complete') {
+    //     alert('hi 2');
+    setTimeout(() => {
+      // @ts-ignore
+      if (Olo && Olo.CheckoutFrame) {
+        console.log('ccsf working');
+        const ccsfObj = new CreditCardCCSF();
+        setccsfObj(ccsfObj);
+        ccsfObj.initialize(
+          basketObj && basketObj.basket && basketObj.basket.id
+            ? basketObj.basket.id
+            : '',
+          process.env.REACT_APP_BRAND_ACCESS_ID,
+        );
+        ccsfObj.registerError((error: any) => {
+          console.log('ccsf error 1', error);
+          dispatch(submitBasketSinglePaymentFailure(error));
+        });
+        ccsfObj.registerSuccess((order: any) => {
+          console.log('ccsf Success', order);
+
+          userInfo['id'] = order.id;
+          dispatch(updateGuestUserInfo(userInfo));
+          dispatch(
+            submitBasketSinglePaymentSuccess(order, basket && basket.id),
+          );
+          dispatch(navigateAppAction(`/order-confirmation/${order.id}`));
+        });
+        ccsfObj.registerFocus((evt: any) => {
+          console.log('ccsf focus', evt);
+        });
+
+        ccsfObj.registerComplete((evt: any) => {
+          console.log('ccsf complete', evt);
+        });
+
+        ccsfObj.registerReady((evt: any) => {
+          console.log('ccsf ready', evt);
+        });
+      }
+    }, 2000);
+    // @ts-ignore
+    //   }
+    // });
+    // }
+  }, []);
 
   return (
     <Page title={'Checkout'} className="">
@@ -700,7 +800,12 @@ const Checkout = () => {
               <br />
               <br />
               <br />
-              <PaymentInfo ref={paymentInfoRef} />
+              <PaymentInfo
+                ref={paymentInfoRef}
+                ccsfObj={ccsfObj}
+                basketAccessToken={basketAccessToken}
+              />
+
               {/*second section ends here*/}
               <Grid container className="add-order">
                 <Grid item xs={12} sm={12} md={4} lg={4}>
