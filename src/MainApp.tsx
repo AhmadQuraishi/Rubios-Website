@@ -137,6 +137,7 @@ function App(props: any) {
     <div id="wapper">
       <NavigateApp />
       <Header
+        style={{margin: '0 !important', padding: '0 !important'}}
         removeCartForLocation={
           window.location.href.toLocaleLowerCase().indexOf('/location') != -1
         }
