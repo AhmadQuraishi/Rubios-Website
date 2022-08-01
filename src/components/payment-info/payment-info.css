@@ -208,3 +208,10 @@ input[type=number] {
   padding: 0px 0px 16px 0px;
   flex: 0 0 auto;
 }
+
+.mobile-field-label {
+  font-family: 'Poppins-Bold', sans-serif !important;
+  padding: 20px 0px 0px 9px !important;
+  color: #214F66 !important;
+  font-size: 10px !important;
+}
