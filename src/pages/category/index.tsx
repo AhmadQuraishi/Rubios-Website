@@ -71,7 +71,6 @@ const CategoryList = () => {
   const [restaurantSelected, setRestaurantSelected] = useState<any>();
   const [value, setValue] = useState('0');
   const { store } = useParams();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [categoriesWithProducts, setCategoriesWithProducts] =
     useState<ResponseMenu>();
@@ -157,20 +156,10 @@ const CategoryList = () => {
           checkRestaurantHandOffAvailability(objRestaurant, handoff)
         ) {
           dispatch(setResturantInfoRequest(objRestaurant, handoff));
-          if (!isMobile) {
-            if (basketObj && basketObj.basket) {
-              displayToast(
-                'SUCCESS',
-                'Location changed to ' +
-                  objRestaurant.name +
-                  ' and basket is empty',
-              );
-            } else {
-              displayToast(
-                'SUCCESS',
-                'Location changed to ' + objRestaurant.name,
-              );
-            }
+          if( basketObj && basketObj.basket){
+            displayToast('SUCCESS', 'Location changed to ' + objRestaurant.name + ' and basket is empty');
+          }else{
+            displayToast('SUCCESS', 'Location changed to ' + objRestaurant.name);
           }
           navigate('/menu/' + objRestaurant.slug);
           dispatch(getCategoriesRequest(objRestaurant.id));
@@ -335,20 +324,10 @@ const CategoryList = () => {
 
   const changeRestaurant = (orderType: string) => {
     dispatch(setResturantInfoRequest(restaurantSelected, orderType));
-    if (!isMobile) {
-      if (basketObj && basketObj.basket) {
-        displayToast(
-          'SUCCESS',
-          'Location changed to ' +
-            restaurantSelected.name +
-            ' and basket is empty',
-        );
-      } else {
-        displayToast(
-          'SUCCESS',
-          'Location changed to ' + restaurantSelected.name,
-        );
-      }
+    if( basketObj && basketObj.basket){
+      displayToast('SUCCESS', 'Location changed to ' + restaurantSelected.name + ' and basket is empty');
+    }else{
+      displayToast('SUCCESS', 'Location changed to ' + restaurantSelected.name);
     }
     setOpen(false);
     navigate('/menu/' + restaurantSelected.slug);

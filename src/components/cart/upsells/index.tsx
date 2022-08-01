@@ -117,17 +117,13 @@ const Upsells = ({ showCart, upsellsType }: any) => {
   const addUpsellsObj = useSelector((state: any) => state.addUpsellReducer);
   const addProductObj = useSelector((state: any) => state.addProductReducer);
 
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
   useEffect(() => {
     if (
       addUpsellsObj &&
       addUpsellsObj.action &&
       addUpsellsObj.action === 'COMPLETED'
     ) {
-     if(!isMobile){
       displayToast('SUCCESS', 'Cart updated');
-     }
       dispatch(addUpsellsRequestReset());
       showCart();
     }

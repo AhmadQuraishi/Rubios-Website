@@ -138,8 +138,6 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   const [upsellsProductKeys, setUpsellsProductKeys] = useState<any[]>();
   const [products, setProducts] = useState<any[]>();
 
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
 
   const productRemoveObj = useSelector(
     (state: any) => state.removeProductReducer,
@@ -241,9 +239,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   useEffect(() => {
     if (productRemoveObj && productRemoveObj.basket && actionStatus) {
       // dispatch(getBasketRequest('', productRemoveObj.basket, basketType));
-       if(!isMobile){
         displayToast('SUCCESS', '1 item removed from cart.');
-       }
       fitContainer();
       setActionStatus(false);
       navigate(restaurant ? '/menu/' + restaurant.slug : '/');
@@ -304,9 +300,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   useEffect(() => {
     if (productAddObj && productAddObj.basket && actionStatus) {
       // dispatch(getBasketRequest('', productAddObj.basket, basketType));
-      if(!isMobile){
         displayToast('SUCCESS', 'Duplicate item added to cart.');
-      }
       fitContainer();
       setActionStatus(false);
       navigate(restaurant ? '/menu/' + restaurant.slug : '/');
