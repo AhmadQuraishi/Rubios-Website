@@ -467,7 +467,7 @@ input[type='check']:checked+label {
 }
 
 .product-detail .menu-items .content-panel.selected .card-panel .name-img-panel .name-panel {
-  color: #e58734;
+  color: #0073BD;
 }
 
 .product-detail .menu-items .content-panel .card-panel .name-img-panel .name-panel {
@@ -476,7 +476,7 @@ input[type='check']:checked+label {
 }
 
 .product-detail .menu-items .content-panel.selected .card-panel.no-image-class .name-img-panel .name-panel {
-  color: #e58734;
+  color: #0073BD;
   margin-left: -103px;
   position: inherit;
 }
