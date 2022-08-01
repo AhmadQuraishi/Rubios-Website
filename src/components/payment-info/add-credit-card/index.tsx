@@ -293,13 +293,12 @@ const AddCreditCard = () => {
                 Cancel{' '}
               </Button>
               <Button
-                aria-label="Add Gift Card"
-                title="Add Gift Card"
+                aria-label="Add Credit Card"
+                title="Add Credit Card"
                 type="submit"
                 className="link default"
                 onClick={handleCreditCardSubmit}
                 disabled={buttonDisabled}
-                autoFocus
               >
                 Add Credit Card
               </Button>
