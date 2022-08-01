@@ -11,10 +11,11 @@ import {
 import './payment-info.css';
 import SplitPayment from './split-payment';
 import AddGiftCard from './add-gift-card';
-// import AddCreditCard from './add-credit-card';
+import AddCreditCard from './add-credit-card';
 // import AddCreditCardCopy from './add-credit-card-copy';
 import { displayToast } from '../../helpers/toast';
 import {
+  getBillingSchemesStats,
   getCreditCardObj,
   updatePaymentCardsAmount,
 } from '../../helpers/checkout';
@@ -28,11 +29,13 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [hideShow, setHideShow] = React.useState<boolean>(false);
+  const [editCreditCard, setEditCreditCard] = React.useState<boolean>(false);
   const [zipCode, setZipCode] = React.useState<any>();
   const [cardExpiry, setCardExpiry] = React.useState<any>();
   const [billingSchemes, setBillingSchemes] = React.useState<any>([]);
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
   const [basket, setBasket] = React.useState<ResponseBasket>();
+  const [allowedCards, setAllowedCards] = React.useState<any>();
   const basketObj = useSelector((state: any) => state.basketReducer);
 
   React.useEffect(() => {
@@ -44,6 +47,22 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
       setBasket(basketObj.basket);
     }
   }, [basketObj.basket]);
+
+  React.useEffect(() => {
+    if (!hideShow) {
+      setEditCreditCard(false);
+    }
+  }, [hideShow]);
+
+  React.useEffect(() => {
+    if (
+      basketObj.payment.allowedCards &&
+      basketObj.payment.allowedCards.data &&
+      basketObj.payment.allowedCards.data.billingschemes
+    ) {
+      setAllowedCards(basketObj.payment.allowedCards.data.billingschemes);
+    }
+  }, [basketObj.payment.allowedCards]);
 
   const handleHideShow = () => {
     setHideShow(!hideShow);
@@ -61,15 +80,30 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
     setZipCode(newValue);
   };
 
+  const handleCardExpiryChange = (event: any) => {
+    let newValue = event.target.value.trim();
+
+    setCardExpiry(newValue);
+  };
+
   const handleCreditCardSubmit = async () => {
     setButtonDisabled(true);
     // const { isValidCard, cardDetails, errors } = await validatePaymentForm();
+    let monthYear: any;
+    if (!zipCode || zipCode === '') {
+      displayToast('ERROR', 'Zip Code is required');
+      // setButtonDisabled(false);
+      return;
+    }
 
-    // if (!isValidCard) {
-    //   displayToast('ERROR', errors?.message);
-    //   setButtonDisabled(false);
-    //   return;
-    // }
+    if (!cardExpiry || cardExpiry === '') {
+      displayToast('ERROR', 'Card Expiry is required');
+      // setButtonDisabled(false);
+      return;
+    } else {
+      monthYear = cardExpiry.split('/');
+      console.log('monthYear', monthYear);
+    }
 
     if (ccsfObj) {
       ccsfObj.registerError((errors: any) => {
@@ -84,10 +118,22 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
               'The sum of your selected payment methods must equal the order total.'
           ) {
             let billingSchemesNewArray = billingSchemes;
+            if (editCreditCard) {
+              billingSchemesNewArray = billingSchemes.filter((account: any) => {
+                if (
+                  account.billingmethod === 'creditcard' &&
+                  !account.billingaccountid
+                ) {
+                  return false;
+                } else {
+                  return true;
+                }
+              });
+            }
             const obj = {
-              exp_year: 2024,
-              exp_month: 10,
-              postal_code: 12345,
+              exp_year: monthYear[1],
+              exp_month: monthYear[0],
+              postal_code: zipCode,
             };
             let cardObj: any = getCreditCardObj(obj, billingSchemes);
 
@@ -117,15 +163,36 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
             billingmethod: 'creditcard',
             // amount: 31.25,
             // tipportion: 0,
-            expiryyear: 2033,
-            expirymonth: 12,
-            zip: '12312',
+            expiryyear: monthYear[1],
+            expirymonth: monthYear[0],
+            zip: zipCode,
             saveonfile: true,
           },
         ],
       });
     }
   };
+
+  const displayAddCreditCard = () => {
+    const billingSchemeStats = getBillingSchemesStats(billingSchemes);
+    return (
+      basket &&
+      billingSchemeStats.creditCard < 1 &&
+      allowedCards &&
+      allowedCards.length &&
+      allowedCards.filter((element: any) => {
+        return element.type === 'creditcard';
+      }).length > 0
+    );
+  };
+
+  const HandleEditCreditCard = (value: boolean) => {
+    setHideShow(value);
+    if (value) {
+      setEditCreditCard(true);
+    }
+  };
+
   return (
     <Grid container>
       {/*column for space*/}
@@ -137,14 +204,19 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
         </Typography>
         <br />
         <Grid container spacing={2} className="payment-form">
-          <SplitPayment />
+          <SplitPayment
+            setHideShow={(value: boolean) => HandleEditCreditCard(value)}
+          />
           <Grid container>
             <Grid item xs={12} sm={12} md={12} lg={12} className="add-gift">
-              <h2>Modal Example</h2>
-
-              <button onClick={() => handleHideShow()} id="myBtn">
-                Open Modal
-              </button>
+              {displayAddCreditCard() && (
+                <button
+                  className={'add-credit-card-button'}
+                  onClick={() => handleHideShow()}
+                >
+                 Add Credit card
+                </button>
+              )}
 
               <div
                 id="myModal"
@@ -156,10 +228,11 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                 {/*</div>*/}
                 <div className="modal-content">
                   <div className="modal-header">
-                    <span onClick={() => handleHideShow()} className="close">
-                      &times;
-                    </span>
-                    <h2>Modal Header</h2>
+                    {/*<span onClick={() => handleHideShow()} className="close">*/}
+                    {/*  &times;*/}
+                    {/*</span>*/}
+                    <h2 className={'heading'}>
+                      {editCreditCard ? 'Edit Credit card' : 'Add Credit card'}</h2>
                   </div>
                   <div className="modal-body">
                     <Grid container className="payment-form" spacing={2}>
@@ -186,7 +259,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                             {/*  data-olo-pay-card-number*/}
                             {/*/>*/}
                             <div className="card-fields">
-                              <div className="credit-card-info-div"></div>
+                              <div style={{display: 'contents'}} className="credit-card-info-div"></div>
                             </div>
                             <img
                               alt="card icon"
@@ -196,7 +269,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                           <Grid item xs={12} sm={6} md={6} lg={6}>
                             {/*<div className="card-fields" data-olo-pay-card-cvc />*/}
                             <div className="card-fields">
-                              <div className="cvv-info-div"></div>
+                              <div style={{display: 'contents'}} className="cvv-info-div"></div>
                             </div>
                             <img
                               alt="cvc icon"
@@ -224,7 +297,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                               name="expiry"
                               inputProps={{ shrink: false }}
                               value={cardExpiry}
-                              onChange={handleZipCodeChange}
+                              onChange={handleCardExpiryChange}
                             />
                           </Grid>
                           <Grid item xs={12} sm={6} md={6} lg={6}>
@@ -242,11 +315,13 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                         </Grid>
                       </Grid>
                     </Grid>
+                  </div>
+                  <div className="modal-footer">
                     <Button
                       aria-label="Cancel"
                       title="Cancel"
                       className="link"
-                      // onClick={handleCloseAddCreditCard}
+                      onClick={() => handleHideShow()}
                     >
                       Cancel{' '}
                     </Button>
@@ -259,11 +334,8 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                       // disabled={buttonDisabled}
                       autoFocus
                     >
-                      Add Credit Card
+                      {editCreditCard ? 'Edit Credit card' : 'Add Credit card'}
                     </Button>
-                  </div>
-                  <div className="modal-footer">
-                    <h3>Modal Footer</h3>
                   </div>
                 </div>
               </div>

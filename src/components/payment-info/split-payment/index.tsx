@@ -27,7 +27,8 @@ import {
 } from '../../../helpers/checkout';
 import DialogBox from '../../dialog-box';
 
-const SplitPayment = forwardRef((props, _ref) => {
+const SplitPayment = forwardRef((props: any, _ref) => {
+  const { setHideShow } = props;
   const dispatch = useDispatch();
   const theme = useTheme();
   const basketObj = useSelector((state: any) => state.basketReducer);
@@ -177,8 +178,11 @@ const SplitPayment = forwardRef((props, _ref) => {
   const getCardImage = (account: any) => {
     let cardImage = '';
     if (account.billingmethod === 'creditcard') {
-      // cardImage = `${account.cardtype}.png`;
-      cardImage = 'gc-card-icon.png';
+      if (account.billingaccountid) {
+        cardImage = `${account.cardtype}.png`;
+      } else {
+        cardImage = 'Visa.png';
+      }
     } else {
       cardImage = 'gc-card-icon.png';
     }
@@ -278,7 +282,7 @@ const SplitPayment = forwardRef((props, _ref) => {
                         account.billingmethod === 'storedvalue'
                           ? 'flex-start'
                           : 'center',
-                      paddingLeft: 0,
+                      paddingLeft: 5,
                     }}
                     alignItems="center"
                     justifyContent="flex-start"
@@ -371,7 +375,7 @@ const SplitPayment = forwardRef((props, _ref) => {
                   paddingTop: 5,
                   display: 'flex',
                   justifyContent: 'flex-end',
-                  zIndex: 999,
+                  zIndex: 1,
                 }}
                 xs={12}
                 sm={12}
@@ -379,6 +383,24 @@ const SplitPayment = forwardRef((props, _ref) => {
                 lg={12}
               >
                 {/*{billingSchemes && billingSchemes.length !== 1 && (*/}
+                {account.billingmethod === 'creditcard' &&
+                  !account.billingaccountid && (
+                    <Typography
+                      onClick={() => {
+                        setHideShow(true);
+                      }}
+                      style={{
+                        cursor: 'pointer',
+                        display: 'inline-block',
+                        paddingRight: 10,
+                      }}
+                      align={'right'}
+                      variant="h6"
+                    >
+                      EDIT
+                    </Typography>
+                  )}
+
                 <Typography
                   onClick={() => {
                     setOpenPopup(true);

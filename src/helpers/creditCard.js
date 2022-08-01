@@ -13,8 +13,9 @@ export class CreditCardCCSF {
       // brandAccessId: 'WX9GUJ9L6T2wwj2mPw_OGB9HM9ThJNPL',
       // basketGuid: 'a41c1c54-ec0f-4b5b-bcd7-ea484feffa50',
       styles: {
-        cardNumber: 'border-color: green; border-bottom: 5px solid red;',
-        cvv: 'border-color: green;',
+        cardNumber:
+          'border-top-width: 0px;border-right-width: 0px;border-bottom-width: 0px;border-left-width: 0px; width: 80%',
+        cvv: 'border-top-width: 0px;border-right-width: 0px;border-bottom-width: 0px;border-left-width: 0px; width: 80%',
       },
       cardNumber: {
         placeholder: 'Credit Card',

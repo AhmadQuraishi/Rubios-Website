@@ -351,7 +351,7 @@ export function getCreditCardObj(cardDetails: any, billingSchemes: any) {
   let cardObj: any = [
     {
       localId: getUniqueId(),
-      selected: selected,
+      selected: true,
       billingmethod: 'creditcard',
       amount: 0,
       tipportion: 0.0,

@@ -54,6 +54,8 @@ const Checkout = () => {
   const paymentInfoRef = React.useRef<any>();
 
   const [runOnce, setRunOnce] = React.useState<boolean>(true);
+  const [showIframeOnce, setShowIframeOnce] = React.useState<boolean>(true);
+  const [removeCreditCardOnce, setRemoveCreditCardOnce] = React.useState<boolean>(true);
   const [defaultCard, setDefaultCard] = React.useState<boolean>(true);
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
   const [tipPercentage, setTipPercentage] = React.useState<any>(null);
@@ -98,6 +100,25 @@ const Checkout = () => {
     };
     getBasketAccessToken();
   }, []);
+
+
+  React.useEffect(() => {
+    if (billingSchemes && removeCreditCardOnce) {
+      let billingArray = billingSchemes.filter((account: any) => {
+        if (
+          account.billingmethod === 'creditcard' &&
+          !account.billingaccountid
+        ) {
+          return false;
+        } else {
+          return true;
+        }
+      });
+      billingArray = updatePaymentCardsAmount(billingArray, basket);
+      dispatch(updateBasketBillingSchemes(billingArray));
+      setRemoveCreditCardOnce(false);
+    }
+  }, [billingSchemes]);
 
   React.useEffect(() => {
     if (basket && runOnce) {
@@ -215,6 +236,8 @@ const Checkout = () => {
         dispatch(updateBasketBillingSchemes(billingArray));
       }
       setDefaultCard(false);
+    } else {
+
     }
   }, [basketObj.payment.allowedCards, validate]);
 
@@ -521,6 +544,15 @@ const Checkout = () => {
         };
       }
 
+      ccsfObj.registerError((errors: any) => {
+        console.log('ccsf error 3', errors);
+        errors.forEach((error: any) => {
+          displayToast('ERROR', error.description);
+        });
+        setButtonDisabled(false);
+        dispatch(submitBasketSinglePaymentFailure(errors));
+      });
+
       dispatch(
         validateBasket(
           basket?.id,
@@ -567,7 +599,7 @@ const Checkout = () => {
     //     alert('hi 2');
     setTimeout(() => {
       // @ts-ignore
-      if (Olo && Olo.CheckoutFrame) {
+      if (Olo && Olo.CheckoutFrame && showIframeOnce) {
         console.log('ccsf working');
         const ccsfObj = new CreditCardCCSF();
         setccsfObj(ccsfObj);
@@ -579,6 +611,7 @@ const Checkout = () => {
         );
         ccsfObj.registerError((error: any) => {
           console.log('ccsf error 1', error);
+          setButtonDisabled(false);
           dispatch(submitBasketSinglePaymentFailure(error));
         });
         ccsfObj.registerSuccess((order: any) => {
@@ -602,6 +635,7 @@ const Checkout = () => {
         ccsfObj.registerReady((evt: any) => {
           console.log('ccsf ready', evt);
         });
+        setShowIframeOnce(false);
       }
     }, 2000);
     // @ts-ignore
