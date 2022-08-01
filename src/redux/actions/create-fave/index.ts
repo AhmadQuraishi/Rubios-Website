@@ -15,9 +15,7 @@ export function createFave(body: RequestNewFave) {
 }
 
 export function createFaveSuccess(data: ResponseUserFaves) {
-   if(!breakpoints.XS){
   displayToast('SUCCESS', 'Order saved as favorite');
-   }
   return {
     type: Type.CREATE_FAVE_SUCCESS,
     payload: data,

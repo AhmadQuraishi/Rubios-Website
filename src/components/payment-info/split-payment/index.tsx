@@ -37,8 +37,6 @@ const SplitPayment = forwardRef((props: any, _ref) => {
   const [openPopup, setOpenPopup] = React.useState<boolean>(false);
   const [removeData, setRemoveData] = React.useState<any>(null);
 
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
   React.useEffect(() => {
     if (basketObj.basket) {
       setBasket(basketObj.basket);
@@ -139,9 +137,7 @@ const SplitPayment = forwardRef((props: any, _ref) => {
         basket,
       );
       dispatch(updateBasketBillingSchemes(updatedBillingSchemes));
-      if (!isMobile) {
         displayToast('SUCCESS', 'Card Removed.');
-      }
     }
     handleClosePopup();
   };

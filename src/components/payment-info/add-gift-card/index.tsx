@@ -39,9 +39,6 @@ const AddGiftCard = forwardRef((props, _ref) => {
 
   const [openAddGiftCard, setOpenAddGiftCard] = React.useState<boolean>(false);
 
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
-
   React.useEffect(() => {
     if (basketObj.basket) {
       setBasket(basketObj.basket);
@@ -109,9 +106,7 @@ const AddGiftCard = forwardRef((props, _ref) => {
             body,
           );
           if (pinResponse && pinResponse.ispinrequired && !pinCheck) {
-            if(!isMobile){
               displayToast('SUCCESS', 'Please add gift card pin.');
-            }
             setButtonDisabled(false);
             setPinCheck(true);
           } else {
@@ -138,9 +133,7 @@ const AddGiftCard = forwardRef((props, _ref) => {
                 );
 
                 dispatch(updateBasketBillingSchemes(billingSchemesNewArray));
-                if(!isMobile){
                   displayToast('SUCCESS', 'Gift Card Added');
-                }
                 handleCloseAddGiftCard();
                 setButtonDisabled(false);
               } else {

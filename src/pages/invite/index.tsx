@@ -24,7 +24,6 @@ const Invite = () => {
   const theme = useTheme();
   const [inviteCode, setInviteCode] = useState('');
   const { providerToken } = useSelector((state: any) => state.providerReducer);
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   useEffect(() => {
     if (providerToken && providerToken.referral_code) {
       setInviteCode(providerToken.referral_code);
@@ -32,9 +31,8 @@ const Invite = () => {
   }, [providerToken]);
   const copy = async () => {
     await navigator.clipboard.writeText(inviteCode);
-    if(!isMobile){
       displayToast('SUCCESS', 'Invite Code copied to clipboard.');
-    }
+
   };
   // const linkElement = process.env.REACT_APP_RUBIOS_REWARD_ADDRESS
   const handleClick = () => {

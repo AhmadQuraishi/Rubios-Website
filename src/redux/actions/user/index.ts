@@ -438,9 +438,7 @@ export function userForgotPasswordRequest(data: any) {
 }
 
 export function userForgotPasswordSuccess(response: any) {
-  if(!breakpoints.XS){
   displayToast('SUCCESS', 'We have e-mailed your password reset link!');
-  }
   // window.location.replace('/login');
   return {
     type: Type.USER_FORGOT_PASSWORD_SUCCESS,
@@ -470,9 +468,7 @@ export function userResetPasswordRequest(
 }
 
 export function userResetPasswordSuccess(response: any) {
-  if(!breakpoints.XS){
   displayToast('SUCCESS', 'password updated successfully');
-  }
   // window.location.replace('/login');
   return {
     type: Type.USER_RESET_PASSWORD_SUCCESS,

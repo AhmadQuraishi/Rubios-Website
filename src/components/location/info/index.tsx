@@ -31,8 +31,6 @@ const StoreInfo = (props: any) => {
   const [loading, setLoading] = useState(false);
   const basketObj = useSelector((state: any) => state.basketReducer);
 
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
   useEffect(() => {
     try {
       if (
@@ -91,18 +89,14 @@ const StoreInfo = (props: any) => {
           setResturantInfoRequest(restaurantObj, resturantOrderType || ''),
         );
         if (basketObj && basketObj.basket) {
-          if(!isMobile){
           displayToast(
             'SUCCESS',
             'Location changed to ' +
               restaurantObj.name +
               ' and basket is empty',
           );
-          }
         } else {
-          if(!isMobile){
             displayToast('SUCCESS', 'Location changed to ' + restaurantObj.name);
-          }
         }
       }
       navigate('/menu/' + restaurantObj.slug);
