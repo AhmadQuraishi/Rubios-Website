@@ -60,7 +60,7 @@ const CategoryList = () => {
   useEffect(() => {
     const id: string = process.env.REACT_APP_IFRAME_MENU_ID || '0';
     dispatch(getCategoriesRequest(id));
-  }, []);
+  }, [])
 
   useEffect(() => {
     if (categories && categories.categories && categories.categories.length) {
