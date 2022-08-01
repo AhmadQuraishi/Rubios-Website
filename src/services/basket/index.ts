@@ -268,3 +268,18 @@ export const createGuestUser = () => {
     throw error;
   }
 };
+
+export const generateCCSFToken = (basketid: string, body: any) => {
+  try {
+    const url = process.env.REACT_APP_OLO_API || '';
+    return axios
+      .post(url + `/baskets/${basketid}/checkout`, body)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.log(error.response);
+        throw error;
+      });
+  } catch (error) {
+    throw error;
+  }
+};
