@@ -239,8 +239,8 @@ const OrderTime = ({ orderType }: any) => {
         <>
           <Grid item xs={12}>
             <Button
-              aria-label="change"
-              title="change"
+              aria-label="Change Order Time"
+              title="Change Order Time"
               className="caption-grey"
               onClick={() => {
                 setAttributesForDate();
