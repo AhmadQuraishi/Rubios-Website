@@ -7,7 +7,7 @@ import {
   DialogContent,
   Dialog,
   DialogActions,
-  useTheme, 
+  useTheme,
   useMediaQuery
 } from '@mui/material';
 
@@ -154,9 +154,9 @@ const AddGiftCard = forwardRef((props, _ref) => {
   const limitGiftCardNumber = (e: any, giftCardnumber: any) => {
     let newValue = e.target.value.trim();
     newValue =
-      newValue && newValue >= 0 && newValue <= 9999999999999999999
+      newValue && newValue >= 0 && newValue <= 999999999999999999999999999
         ? newValue
-        : newValue > 9999999999999999999
+        : newValue > 999999999999999999999999999
         ? giftCardnumber
         : '';
 
@@ -220,7 +220,7 @@ const AddGiftCard = forwardRef((props, _ref) => {
             validationSchema={Yup.object({
               giftCardNumber: Yup.string()
                 .min(10, 'Must be at least 10 digits')
-                .max(19, 'Must be at most 19 digits')
+                .max(27, 'Must be at most 27 digits')
                 .matches(/^[0-9]+$/, 'Must be only digits')
                 .required('Gift Card Number is required'),
               pin: pinCheck

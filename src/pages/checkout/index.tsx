@@ -120,22 +120,26 @@ const Checkout = () => {
   }, []);
 
   React.useEffect(() => {
-    if (billingSchemes && removeCreditCardOnce) {
-      let billingArray = billingSchemes.filter((account: any) => {
-        if (
-          account.billingmethod === 'creditcard' &&
-          !account.billingaccountid
-        ) {
-          return false;
-        } else {
-          return true;
-        }
-      });
+    if (basketObj.payment.billingSchemes && removeCreditCardOnce) {
+      let billingArray = basketObj.payment.billingSchemes.filter(
+        (account: any) => {
+          if (
+            account.billingmethod === 'creditcard' &&
+            !account.billingaccountid
+          ) {
+            return false;
+          } else {
+            return true;
+          }
+        },
+      );
+
+      console.log('billingArray billingArray', billingArray);
       billingArray = updatePaymentCardsAmount(billingArray, basket);
       dispatch(updateBasketBillingSchemes(billingArray));
       setRemoveCreditCardOnce(false);
     }
-  }, [billingSchemes]);
+  }, [basketObj.payment.billingSchemes]);
 
   React.useEffect(() => {
     if (basket && runOnce) {
@@ -172,7 +176,9 @@ const Checkout = () => {
       basketObj.payment.allowedCards.data &&
       basketObj.payment.allowedCards.data.billingschemes &&
       basketObj.payment.allowedCards.data.billingschemes.length &&
-      !billingSchemes.length
+      basketObj.payment &&
+      basketObj.payment.billingSchemes &&
+      basketObj.payment.billingSchemes.length === 0
     ) {
       const creditCardIndex =
         basketObj.payment.allowedCards.data.billingschemes.findIndex(
@@ -653,7 +659,7 @@ const Checkout = () => {
         });
         setShowIframeOnce(false);
       }
-    }, 2000);
+    }, 3000);
     // @ts-ignore
     //   }
     // });
