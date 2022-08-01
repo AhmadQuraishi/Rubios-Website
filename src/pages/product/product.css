@@ -437,6 +437,7 @@ input[type='check']:checked+label {
   top: 28%;
   bottom: 0;
   left: 25px;
+  border: 1px solid #ccc;
   right: 0;
 }
 
@@ -445,7 +446,7 @@ input[type='check']:checked+label {
 }
 
 .product-detail .menu-items .content-panel.selected .card-panel .check-mark .checkmark {
-  color: #fff;
+  color: #0f0f0f;
   display: block;
   font-size: 40px;
   font-weight: bold;
