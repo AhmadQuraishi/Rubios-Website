@@ -92,85 +92,87 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
     let monthYear: any;
     if (!zipCode || zipCode === '') {
       displayToast('ERROR', 'Zip Code is required');
-      // setButtonDisabled(false);
+      setButtonDisabled(false);
       return;
     }
 
     if (!cardExpiry || cardExpiry === '') {
       displayToast('ERROR', 'Card Expiry is required');
-      // setButtonDisabled(false);
+      setButtonDisabled(false);
       return;
     } else {
       monthYear = cardExpiry.split('/');
       console.log('monthYear', monthYear);
     }
 
-    if (ccsfObj) {
-      ccsfObj.registerError((errors: any) => {
-        console.log('ccsf error 2', errors);
-
-        errors.forEach((error: any) => {
-          console.log(error.code);
-          console.log(error.description);
-          if (
-            error.description &&
-            error.description ===
-              'The sum of your selected payment methods must equal the order total.'
-          ) {
-            let billingSchemesNewArray = billingSchemes;
-            if (editCreditCard) {
-              billingSchemesNewArray = billingSchemes.filter((account: any) => {
-                if (
-                  account.billingmethod === 'creditcard' &&
-                  !account.billingaccountid
-                ) {
-                  return false;
-                } else {
-                  return true;
-                }
-              });
-            }
-            const obj = {
-              exp_year: monthYear[1],
-              exp_month: monthYear[0],
-              postal_code: zipCode,
-            };
-            let cardObj: any = getCreditCardObj(obj, billingSchemes);
-
-            Array.prototype.push.apply(billingSchemesNewArray, cardObj);
-
-            billingSchemesNewArray = updatePaymentCardsAmount(
-              billingSchemesNewArray,
-              basket,
-            );
-
-            dispatch(updateBasketBillingSchemes(billingSchemesNewArray));
-            if (!isMobile) {
-              displayToast('SUCCESS', 'Credit Card Added');
-            }
-            setButtonDisabled(false);
-            handleHideShow();
-          } else {
-            displayToast('ERROR', error.description);
-          }
-        });
-      });
-      ccsfObj.submit({
-        id: basket && basket.id,
-        accessToken: basketAccessToken,
-        billingaccounts: [
-          {
-            billingmethod: 'creditcard',
-            // amount: 31.25,
-            // tipportion: 0,
-            expiryyear: monthYear[1],
-            expirymonth: monthYear[0],
-            zip: zipCode,
-            saveonfile: true,
-          },
-        ],
+    let billingSchemesNewArray = billingSchemes;
+    if (editCreditCard) {
+      billingSchemesNewArray = billingSchemes.filter((account: any) => {
+        if (
+          account.billingmethod === 'creditcard' &&
+          !account.billingaccountid
+        ) {
+          return false;
+        } else {
+          return true;
+        }
       });
     }
+    const obj = {
+      exp_year: monthYear[1],
+      exp_month: monthYear[0],
+      postal_code: zipCode,
+    };
+    let cardObj: any = getCreditCardObj(obj, billingSchemes);
+
+    Array.prototype.push.apply(billingSchemesNewArray, cardObj);
+
+    billingSchemesNewArray = updatePaymentCardsAmount(
+      billingSchemesNewArray,
+      basket,
+    );
+
+    dispatch(updateBasketBillingSchemes(billingSchemesNewArray));
+    if (!isMobile) {
+      displayToast('SUCCESS', 'Credit Card Added');
+    }
+    setButtonDisabled(false);
+    handleHideShow();
+
+    // if (ccsfObj) {
+    //   ccsfObj.registerError((errors: any) => {
+    //     console.log('ccsf error 2', errors);
+    //
+    //     errors.forEach((error: any) => {
+    //       console.log(error.code);
+    //       console.log(error.description);
+    //       if (
+    //         error.description &&
+    //         error.description ===
+    //           'The sum of your selected payment methods must equal the order total.'
+    //       ) {
+    //
+    //       } else {
+    //         displayToast('ERROR', error.description);
+    //       }
+    //     });
+    //   });
+      // ccsfObj.submit({
+      //   id: basket && basket.id,
+      //   accessToken: basketAccessToken,
+      //   billingaccounts: [
+      //     {
+      //       billingmethod: 'creditcard',
+      //       // amount: 31.25,
+      //       // tipportion: 0,
+      //       expiryyear: monthYear[1],
+      //       expirymonth: monthYear[0],
+      //       zip: zipCode,
+      //       saveonfile: true,
+      //     },
+      //   ],
+      // });
+    // }
   };
 
   const displayAddCreditCard = () => {
