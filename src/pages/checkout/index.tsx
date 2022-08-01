@@ -82,22 +82,22 @@ const Checkout = () => {
     (state: any) => state.userReducer,
   );
 
-  // useEffect(() => {
-  //   const LoadExternalScript = () => {
-  //     const externalScript = document.createElement('script');
-  //     // externalScript.onerror = loadError;
-  //     externalScript.id = 'external';
-  //     externalScript.async = true;
-  //     externalScript.type = 'text/javascript';
-  //     externalScript.setAttribute('crossorigin', 'anonymous');
-  //     document.body.appendChild(externalScript);
-  //     externalScript.src =
-  //       process.env.REACT_APP_NODE_ENV === 'production'
-  //         ? `https://static.olocdn.net/web-client/checkout-web-client/2.5.0/checkout.js`
-  //         : 'https://olocdnsandbox.s3.amazonaws.com/web-client/checkout-web-client/2.5.0/checkout.js';
-  //   };
-  //   LoadExternalScript();
-  // }, []);
+  useEffect(() => {
+    const LoadExternalScript = () => {
+      const externalScript = document.createElement('script');
+      // externalScript.onerror = loadError;
+      // externalScript.id = 'external';
+      // externalScript.async = true;
+      // externalScript.type = 'text/javascript';
+      // externalScript.setAttribute('crossorigin', 'anonymous');
+      document.body.appendChild(externalScript);
+      externalScript.src =
+        process.env.REACT_APP_NODE_ENV === 'production'
+          ? `https://static.olocdn.net/web-client/checkout-web-client/2.5.0/checkout.js`
+          : 'https://olocdnsandbox.s3.amazonaws.com/web-client/checkout-web-client/2.5.0/checkout.js';
+    };
+    LoadExternalScript();
+  }, []);
 
   useEffect(() => {
     const getBasketAccessToken = async () => {
