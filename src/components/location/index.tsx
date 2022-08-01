@@ -259,11 +259,11 @@ const LocationCard = (props: any) => {
             (x: any) => x.supportscurbside === true,
           );
         }
-        // else if (resturantOrderType === 'delivery') {
-        //   updatedRestaurants = restaurants.filter(
-        //     (x: any) => x.candeliver === true,
-        //   );
-        // }
+        else if (resturantOrderType === 'delivery') {
+          updatedRestaurants = restaurants.filter(
+            (x: any) => x.supportsdispatch === true,
+          );
+        }
         // setfilteredRestaurants(updatedRestaurants);
         if (updatedRestaurants.length > 0) {
           resultsFound = true;
@@ -750,11 +750,11 @@ const LocationCard = (props: any) => {
                           (x: any) => x.supportscurbside === true,
                         );
                       }
-                      // else if (resturantOrderType === 'delivery') {
-                      //   updatedRestaurants = filteredRestaurants.filter(
-                      //     (x: any) => x.candeliver === false,
-                      //   );
-                      // }
+                      else if (resturantOrderType === 'delivery') {
+                        updatedRestaurants = filteredRestaurants.filter(
+                          (x: any) => x.supportsdispatch === true,
+                        );
+                      }
                       setAllResturants(updatedRestaurants);
                       setShowAllResturants(true);
                     }}
