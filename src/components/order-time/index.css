@@ -44,7 +44,7 @@ label.time-picker:focus-within {
 }
 .MuiButtonBase-root.MuiPickersDay-root:focus,
 .MuiButtonBase-root.MuiPickersDay-root:hover {
-  background-color: #214F66 !important;
+  background-color: #214F66;
   color: #fff;
 }
 .MuiButtonBase-root.MuiPickersDay-root:focus.Mui-selected {
