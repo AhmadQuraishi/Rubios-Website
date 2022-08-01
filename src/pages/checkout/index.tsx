@@ -55,7 +55,8 @@ const Checkout = () => {
 
   const [runOnce, setRunOnce] = React.useState<boolean>(true);
   const [showIframeOnce, setShowIframeOnce] = React.useState<boolean>(true);
-  const [removeCreditCardOnce, setRemoveCreditCardOnce] = React.useState<boolean>(true);
+  const [removeCreditCardOnce, setRemoveCreditCardOnce] =
+    React.useState<boolean>(true);
   const [defaultCard, setDefaultCard] = React.useState<boolean>(true);
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
   const [tipPercentage, setTipPercentage] = React.useState<any>(null);
@@ -82,6 +83,23 @@ const Checkout = () => {
   );
 
   useEffect(() => {
+    const LoadExternalScript = () => {
+      const externalScript = document.createElement('script');
+      // externalScript.onerror = loadError;
+      externalScript.id = 'external';
+      externalScript.async = true;
+      externalScript.type = 'text/javascript';
+      externalScript.setAttribute('crossorigin', 'anonymous');
+      document.body.appendChild(externalScript);
+      externalScript.src =
+        process.env.REACT_APP_NODE_ENV === 'production'
+          ? `https://static.olocdn.net/web-client/checkout-web-client/2.5.0/checkout.js`
+          : 'https://olocdnsandbox.s3.amazonaws.com/web-client/checkout-web-client/2.5.0/checkout.js';
+    };
+    LoadExternalScript();
+  }, []);
+
+  useEffect(() => {
     const getBasketAccessToken = async () => {
       const body = {
         authtoken:
@@ -100,7 +118,6 @@ const Checkout = () => {
     };
     getBasketAccessToken();
   }, []);
-
 
   React.useEffect(() => {
     if (billingSchemes && removeCreditCardOnce) {
@@ -237,7 +254,6 @@ const Checkout = () => {
       }
       setDefaultCard(false);
     } else {
-
     }
   }, [basketObj.payment.allowedCards, validate]);
 
