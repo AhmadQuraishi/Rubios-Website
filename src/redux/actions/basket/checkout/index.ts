@@ -220,6 +220,7 @@ export function validateBasket(
   customFields: any,
   deliverymode: RequestSetDeliveryMode | null,
   deliveryAddress: RequestDeliveryAddress | null,
+  ccsfObj: any,
 ) {
   return {
     type: basketActionsTypes.VALIDETE_BASKET,
@@ -229,6 +230,7 @@ export function validateBasket(
     customFields,
     deliverymode,
     deliveryAddress,
+    ccsfObj,
   };
 }
 
@@ -291,12 +293,12 @@ export function submitBasketSinglePaymentSuccess(
 }
 
 export function submitBasketSinglePaymentFailure(error: any) {
-  displayToast(
-    'ERROR',
-    error?.response?.data?.message
-      ? error.response.data.message
-      : 'ERROR! Please Try again later',
-  );
+  // displayToast(
+  //   'ERROR',
+  //   error?.response?.data?.message
+  //     ? error.response.data.message
+  //     : 'ERROR! Please Try again later',
+  // );
   return {
     type: basketActionsTypes.SUBMIT_BASKET_SINGLE_PAYMENT_FAILURE,
     error: error,
