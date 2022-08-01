@@ -7,6 +7,7 @@ import GiftCards from '../../components/gift-cards';
 import { makeStyles } from '@mui/styles';
 import { getAllBillingAccounts } from '../../redux/actions/user';
 import { useDispatch, useSelector } from 'react-redux';
+import Page from '../../components/page-title';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -60,46 +61,48 @@ const PaymentInformation = () => {
   };
 
   return (
-    <Grid container className={classes.root}>
-      <Grid item xs={12}>
-        <Typography variant="h1" className={classes.heading}>
-          PAYMENT INFORMATION
-        </Typography>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          textColor="primary"
-          TabIndicatorProps={{
-            style: {
-              backgroundColor: '#79C043',
-              bottom: '5px',
-            },
-          }}
-          aria-label="Payment Information Tabs"
-        >
-          <Tab
-            aria-label="credit cards"
-            value="1"
-            label="CREDIT CARDS"
-            title="CREDIT CARDS"
-            className={classes.tabspanel}
-          />
-          <Tab
-            aria-label="gift cards"
-            value="2"
-            label="GIFT CARDS"
-            title="GIFT CARDS"
-            className={classes.tabspanel}
-          />
-        </Tabs>
-        {value === '1' && (
-          <CreditCards billingAccounts={billingAccounts} loading={loading} />
-        )}
-        {value === '2' && (
-          <GiftCards billingAccounts={billingAccounts} loading={loading} />
-        )}
+    <Page title={'Payment Information'} className="">
+      <Grid container className={classes.root}>
+        <Grid item xs={12}>
+          <Typography variant="h1" className={classes.heading}>
+            PAYMENT INFORMATION
+          </Typography>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            textColor="primary"
+            TabIndicatorProps={{
+              style: {
+                backgroundColor: '#79C043',
+                bottom: '5px',
+              },
+            }}
+            aria-label="Payment Information Tabs"
+          >
+            <Tab
+              aria-label="credit cards"
+              value="1"
+              label="CREDIT CARDS"
+              title="CREDIT CARDS"
+              className={classes.tabspanel}
+            />
+            <Tab
+              aria-label="gift cards"
+              value="2"
+              label="GIFT CARDS"
+              title="GIFT CARDS"
+              className={classes.tabspanel}
+            />
+          </Tabs>
+          {value === '1' && (
+            <CreditCards billingAccounts={billingAccounts} loading={loading} />
+          )}
+          {value === '2' && (
+            <GiftCards billingAccounts={billingAccounts} loading={loading} />
+          )}
+        </Grid>
       </Grid>
-    </Grid>
+    </Page>
   );
 };
 

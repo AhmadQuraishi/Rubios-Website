@@ -259,11 +259,11 @@ const LocationCard = (props: any) => {
             (x: any) => x.supportscurbside === true,
           );
         }
-        // else if (resturantOrderType === 'delivery') {
-        //   updatedRestaurants = restaurants.filter(
-        //     (x: any) => x.candeliver === true,
-        //   );
-        // }
+        else if (resturantOrderType === 'delivery') {
+          updatedRestaurants = restaurants.filter(
+            (x: any) => x.supportsdispatch === true,
+          );
+        }
         // setfilteredRestaurants(updatedRestaurants);
         if (updatedRestaurants.length > 0) {
           resultsFound = true;
@@ -591,7 +591,7 @@ const LocationCard = (props: any) => {
                 onChange={onServiceSelect}
               >
                 <ToggleButton
-                  role="link"
+                  role="radio"
                   value="Pick up"
                   onClick={() => {
                     setresturantOrderType(
@@ -605,7 +605,7 @@ const LocationCard = (props: any) => {
                   PickUp
                 </ToggleButton>
                 <ToggleButton
-                  role="link"
+                  role="radio"
                   value="Curbside"
                   onClick={() =>
                     setresturantOrderType(
@@ -622,7 +622,7 @@ const LocationCard = (props: any) => {
                 </ToggleButton>
                 <ToggleButton
                   value="Delivery"
-                  role="link"
+                  role="radio"
                   onClick={() => {
                     setresturantOrderType(
                       resturantOrderType === 'delivery'
@@ -750,11 +750,11 @@ const LocationCard = (props: any) => {
                           (x: any) => x.supportscurbside === true,
                         );
                       }
-                      // else if (resturantOrderType === 'delivery') {
-                      //   updatedRestaurants = filteredRestaurants.filter(
-                      //     (x: any) => x.candeliver === false,
-                      //   );
-                      // }
+                      else if (resturantOrderType === 'delivery') {
+                        updatedRestaurants = filteredRestaurants.filter(
+                          (x: any) => x.supportsdispatch === true,
+                        );
+                      }
                       setAllResturants(updatedRestaurants);
                       setShowAllResturants(true);
                     }}

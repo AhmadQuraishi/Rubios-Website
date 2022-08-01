@@ -14,6 +14,7 @@ import NavigateApp from './components/navigate-app';
 import { generateDeviceId } from './helpers/common';
 import { updateDeviceUniqueId } from './redux/actions/auth';
 import {testingRedemption, testingRewards} from "./services/reward";
+import {generateCCSFToken} from "./services/basket";
 // import TagManager from 'react-gtm-module';
 //
 // const tagManagerArgs = {
@@ -49,6 +50,10 @@ function App(props: any) {
   }, [deviceId]);
 
   useEffect(() => {
+    // const body = {
+    //   authtoken: 'ynUJ4SAOgaB6SxFMKHuqbCvlOdhQ3HLK'
+    // }
+    // generateCCSFToken('b3a3c5aa-85a8-464c-b787-96fc42a7c4bf', body)
     // testingRewards()
     // testingRedemption('777097', 400);
   }, [])

@@ -12,8 +12,8 @@ import {
   Button,
   Dialog,
   CircularProgress,
-  useTheme, 
-  useMediaQuery
+  useTheme,
+  useMediaQuery,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -27,6 +27,7 @@ import { getResturantListRequest } from '../../redux/actions/restaurant/list';
 import { setResturantInfoRequest } from '../../redux/actions/restaurant';
 import { displayToast } from '../../helpers/toast';
 import { capitalizeFirstLetter } from '../../helpers/common';
+import Page from '../../components/page-title';
 
 const useStyles = makeStyles((theme: Theme) => ({
   heading: {
@@ -333,62 +334,84 @@ const CategoryList = () => {
     dispatch(getCategoriesRequest(restaurantSelected.id));
   };
   return (
-    <div style={{ minHeight: '500px' }}>
-      <Typography variant="h1" className="sr-only">
-        Main Menu
-      </Typography>
-      {getResutarnts && (
-        <div
-          style={{
-            display: 'flex',
-            width: '100%',
-            top: 0,
-            justifyContent: 'center',
-            alignItems: 'center',
-            background: 'rgba(0,0,0,0.2)',
-            position: 'fixed',
-            height: '100%',
-            zIndex: 1000000,
-          }}
-        >
-          <CircularProgress />
-        </div>
-      )}
-      {restaurantSelected && (
-        <Dialog
-          open={open}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-          sx={{ border: '0' }}
-        >
+    <Page title={'Menu'} className="">
+      <div style={{ minHeight: '500px' }}>
+        <Typography variant="h1" className="sr-only">
+          Main Menu
+        </Typography>
+        {getResutarnts && (
           <div
             style={{
+              display: 'flex',
+              width: '100%',
+              top: 0,
+              justifyContent: 'center',
+              alignItems: 'center',
+              background: 'rgba(0,0,0,0.2)',
               position: 'fixed',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              background: '#FFF',
-              padding: '30px',
-              textAlign: 'center',
-              width: '75%',
-              maxWidth: '400px',
-              border: '0px solid #FFF',
+              height: '100%',
+              zIndex: 1000000,
             }}
           >
-            <Typography
-              variant="h6"
-              sx={{
-                fontSize: '16px',
-                fontWeight: '700',
-                fontFamily: 'Poppins-Bold',
-                textTransform: 'uppercase',
+            <CircularProgress />
+          </div>
+        )}
+        {restaurantSelected && (
+          <Dialog
+            open={open}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+            sx={{ border: '0' }}
+          >
+            <div
+              style={{
+                position: 'fixed',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                background: '#FFF',
+                padding: '30px',
+                textAlign: 'center',
+                width: '75%',
+                maxWidth: '400px',
+                border: '0px solid #FFF',
               }}
             >
-              Please Choose Order Type
-            </Typography>
-            <br />
-            <>
-              {restaurantSelected.canpickup && (
+              <Typography
+                variant="h6"
+                sx={{
+                  fontSize: '16px',
+                  fontWeight: '700',
+                  fontFamily: 'Poppins-Bold',
+                  textTransform: 'uppercase',
+                }}
+              >
+                Please Choose Order Type
+              </Typography>
+              <br />
+              <>
+                {restaurantSelected.canpickup && (
+                  <Button
+                    variant="contained"
+                    sx={{
+                      textTransform: 'uppercase',
+                      backgroundColor: '#5FA625',
+                      margin: 'auto',
+                      width: '100%',
+                      borderRadius: 0,
+                      padding: '30px 10px',
+                      fontSize: '16px',
+                      fontFamily: "'Poppins-Medium', sans-serif !important;",
+                      marginBottom: '10px',
+                    }}
+                    title="Checkout"
+                    onClick={() => changeRestaurant('pickup')}
+                  >
+                    Pickup
+                  </Button>
+                )}
+              </>
+              {restaurantSelected.supportscurbside && (
                 <Button
                   variant="contained"
                   sx={{
@@ -403,193 +426,173 @@ const CategoryList = () => {
                     marginBottom: '10px',
                   }}
                   title="Checkout"
-                  onClick={() => changeRestaurant('pickup')}
+                  onClick={() => changeRestaurant('curbside')}
                 >
-                  Pickup
+                  Curbside
                 </Button>
               )}
-            </>
-            {restaurantSelected.supportscurbside && (
-              <Button
-                variant="contained"
-                sx={{
-                  textTransform: 'uppercase',
-                  backgroundColor: '#5FA625',
-                  margin: 'auto',
-                  width: '100%',
-                  borderRadius: 0,
-                  padding: '30px 10px',
-                  fontSize: '16px',
-                  fontFamily: "'Poppins-Medium', sans-serif !important;",
-                  marginBottom: '10px',
-                }}
-                title="Checkout"
-                onClick={() => changeRestaurant('curbside')}
-              >
-                Curbside
-              </Button>
-            )}
-            {restaurantSelected.candeliver && (
-              <Button
-                variant="contained"
-                sx={{
-                  textTransform: 'uppercase',
-                  backgroundColor: '#5FA625',
-                  margin: 'auto',
-                  width: '100%',
-                  borderRadius: 0,
-                  padding: '30px 10px',
-                  fontSize: '16px',
-                  fontFamily: "'Poppins-Medium', sans-serif !important;",
-                }}
-                title="Checkout"
-                onClick={() => changeRestaurant('delivery')}
-              >
-                Delivery
-              </Button>
-            )}
-          </div>
-        </Dialog>
-      )}
-      <StoreInfoBar />
-      {loading === true && <ProductListingSkeletonUI />}
-      {loading == false && filterCategories && filterCategories.length > 0 && (
-        <>
-          <div
-            style={{ display: 'none', height: '80px' }}
-            id="dummyCategoryPanel"
-          ></div>
-          <Box
-            sx={{
-              width: '100%',
-              background: '#FFF',
-              zIndex: '1099',
-              padding: {
-                xs: '20px 5px 10px 20px',
-                sm: '20px 30px 5px 40px',
-                lg: '20px 60px 5px 100px',
-                boxSizing: 'border-box',
-              },
-            }}
-            id="categoryMenu"
-          >
-            <Tabs
-              value={value}
-              onChange={handleChange}
-              textColor="secondary"
-              indicatorColor="primary"
-              variant="scrollable"
-              scrollButtons
-              allowScrollButtonsMobile
-              sx={{ fontFamily: 'Poppins-Medium !important' }}
-              role="region"
-              aria-label="Food Menu"
-            >
-              {filterCategories.map((item: Category, index: number) => (
-                <Tab
-                  key={item.id}
-                  className="food-menu--link"
-                  value={`${index}`}
-                  label={item.name}
-                  title={item.name}
-                  color="secondary.main"
+              {restaurantSelected.candeliver && (
+                <Button
+                  variant="contained"
                   sx={{
-                    fontFamily: 'Poppins-Medium !important',
-                    padding: '10px 0px',
-                    marginRight: '20px',
+                    textTransform: 'uppercase',
+                    backgroundColor: '#5FA625',
+                    margin: 'auto',
+                    width: '100%',
+                    borderRadius: 0,
+                    padding: '30px 10px',
+                    fontSize: '16px',
+                    fontFamily: "'Poppins-Medium', sans-serif !important;",
                   }}
-                  tabIndex={0}
-                  role="link"
-                  href={`#cat-panel-${index}`}
-                />
-              ))}
-            </Tabs>
-          </Box>
-        </>
-      )}
-      {filterCategories &&
-        filterCategories.length > 0 &&
-        filterCategories.map((item: Category, index: number) => (
-          <Grid
-            key={index}
-            container
-            spacing={0}
-            id={`cat-panel-${index}`}
-            sx={{
-              padding: {
-                xs: '20px 20px 0px 20px',
-                sm: '30px 40px 0px 40px',
-                lg: '30px 100px 0px 100px',
-              },
-              position: 'relative',
-            }}
-          >
-            <Grid item xs={12}>
-              <div
-                id={'#panel-' + index}
-                style={{ position: 'absolute', top: '-120px' }}
-              ></div>
-              <Grid container>
-                <Grid item xs={item.products.length > 4 ? 8 : 12}>
-                  <Typography
-                    variant="h2"
-                    className={classes.heading}
+                  title="Checkout"
+                  onClick={() => changeRestaurant('delivery')}
+                >
+                  Delivery
+                </Button>
+              )}
+            </div>
+          </Dialog>
+        )}
+        <StoreInfoBar />
+        {loading === true && <ProductListingSkeletonUI />}
+        {loading == false && filterCategories && filterCategories.length > 0 && (
+          <>
+            <div
+              style={{ display: 'none', height: '80px' }}
+              id="dummyCategoryPanel"
+            ></div>
+            <Box
+              sx={{
+                width: '100%',
+                background: '#FFF',
+                zIndex: '1099',
+                padding: {
+                  xs: '20px 5px 10px 20px',
+                  sm: '20px 30px 5px 40px',
+                  lg: '20px 60px 5px 100px',
+                  boxSizing: 'border-box',
+                },
+              }}
+              id="categoryMenu"
+            >
+              <Tabs
+                value={value}
+                onChange={handleChange}
+                textColor="secondary"
+                indicatorColor="primary"
+                variant="scrollable"
+                scrollButtons
+                allowScrollButtonsMobile
+                sx={{ fontFamily: 'Poppins-Medium !important' }}
+                role="region"
+                aria-label="Food Menu"
+              >
+                {filterCategories.map((item: Category, index: number) => (
+                  <Tab
+                    key={item.id}
+                    className="food-menu--link"
+                    value={`${index}`}
+                    label={item.name}
                     title={item.name}
-                  >
-                    {item.name}
-                  </Typography>
-                </Grid>
-                {item.products.length > 4 && (
-                  <Grid item xs={4}>
-                    <Typography className={classes.link}>
-                      <Link to={`/category/${item.id}`} title="view all">
-                        view all →
-                      </Link>
+                    color="secondary.main"
+                    sx={{
+                      fontFamily: 'Poppins-Medium !important',
+                      padding: '10px 0px',
+                      marginRight: '20px',
+                    }}
+                    tabIndex={0}
+                    role="link"
+                    href={`#cat-panel-${index}`}
+                  />
+                ))}
+              </Tabs>
+            </Box>
+          </>
+        )}
+        {filterCategories &&
+          filterCategories.length > 0 &&
+          filterCategories.map((item: Category, index: number) => (
+            <Grid
+              key={index}
+              container
+              spacing={0}
+              id={`cat-panel-${index}`}
+              sx={{
+                padding: {
+                  xs: '20px 20px 0px 20px',
+                  sm: '30px 40px 0px 40px',
+                  lg: '30px 100px 0px 100px',
+                },
+                position: 'relative',
+              }}
+            >
+              <Grid item xs={12}>
+                <div
+                  id={'#panel-' + index}
+                  style={{ position: 'absolute', top: '-120px' }}
+                ></div>
+                <Grid container>
+                  <Grid item xs={item.products.length > 4 ? 8 : 12}>
+                    <Typography
+                      variant="h2"
+                      className={classes.heading}
+                      title={item.name}
+                    >
+                      {item.name}
                     </Typography>
                   </Grid>
-                )}
+                  {item.products.length > 4 && (
+                    <Grid item xs={4}>
+                      <Typography className={classes.link}>
+                        <Link to={`/category/${item.id}`} title="view all">
+                          view all →
+                        </Link>
+                      </Typography>
+                    </Grid>
+                  )}
+                </Grid>
+              </Grid>
+              <Grid item xs={12} sx={{ paddingBottom: '20px' }} role="list">
+                <ProductListingCarousel
+                  orderType={orderType}
+                  index={Math.random()}
+                  productList={item.products}
+                  categoryID={item.id}
+                  imgPath={
+                    categoriesWithProducts && categoriesWithProducts?.imagepath
+                  }
+                  shownItemsCount={4}
+                />
               </Grid>
             </Grid>
-            <Grid item xs={12} sx={{ paddingBottom: '20px' }} role="list">
-              <ProductListingCarousel
-                orderType={orderType}
-                index={Math.random()}
-                productList={item.products}
-                categoryID={item.id}
-                imgPath={
-                  categoriesWithProducts && categoriesWithProducts?.imagepath
-                }
-                shownItemsCount={4}
-              />
-            </Grid>
-          </Grid>
-        ))}
-      <Grid
-        sx={{
-          padding: {
-            xs: '20px 20px 0px 20px',
-            sm: '30px 70px 0px 70px',
-            lg: '0px 110px 0px 110px',
-          },
-          position: 'relative',
-        }}
-      >
-        <Grid item xs={12} sx={{ padding: '0px 0px 35px' }}>
-          <Divider sx={{ borderColor: '#224c65' }} />
-        </Grid>
-        <Typography
-          sx={{ fontSize: '13px', color: '#214F66', fontStyle: 'italic' }}
-          variant="caption"
-          title="Due to potential cross-contact when preparing menu items, it is not possible to guarantee your meal is completely free of any particular allergen or ingredient. Impossible™ meat, fish, tortillas, veggies, toasted cheese and shellfish are cooked on the same grill."
+          ))}
+        <Grid
+          sx={{
+            padding: {
+              xs: '20px 20px 0px 20px',
+              sm: '30px 70px 0px 70px',
+              lg: '0px 110px 0px 110px',
+            },
+            position: 'relative',
+          }}
         >
-          Due to potential cross-contact when preparing menu items, it is not
-          possible to guarantee your meal is completely free of any particular
-          allergen or ingredient. Impossible™ meat, fish, tortillas, veggies,
-          toasted cheese and shellfish are cooked on the same grill.
-        </Typography>
-      </Grid>
-      <div style={{ paddingBottom: '40px' }}></div>
-    </div>
+          <Grid item xs={12} sx={{ padding: '0px 0px 35px' }}>
+            <Divider sx={{ borderColor: '#224c65' }} />
+          </Grid>
+          <Typography
+            sx={{ fontSize: '13px', color: '#214F66', fontStyle: 'italic' }}
+            variant="caption"
+            title="Due to potential cross-contact when preparing menu items, it is not possible to guarantee your meal is completely free of any particular allergen or ingredient. Impossible™ meat, fish, tortillas, veggies, toasted cheese and shellfish are cooked on the same grill."
+          >
+            Due to potential cross-contact when preparing menu items, it is not
+            possible to guarantee your meal is completely free of any particular
+            allergen or ingredient. Impossible™ meat, fish, tortillas, veggies,
+            toasted cheese and shellfish are cooked on the same grill.
+          </Typography>
+        </Grid>
+        <div style={{ paddingBottom: '40px' }}></div>
+      </div>
+    </Page>
   );
 };
 

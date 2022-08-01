@@ -17,6 +17,8 @@ import { Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { displayToast } from '../../helpers/toast';
 import './index.css';
+import Page from '../../components/page-title';
+import { removeTestingStores } from '../../helpers/common';
 
 const useStyles = makeStyles((theme: Theme) => ({
   dummyBg: {
@@ -65,10 +67,9 @@ const Location = () => {
   const [nearByRestaurantsFound, setNearByRestaurantsFound] = useState(false);
   const [actionPerform, setActionPerform] = useState(false);
   const dispatch = useDispatch();
-  const [deliveryRasturants, setDeliveryRasturants] = useState<any[]>();
-  const [allResturants, setAllResturants] = useState<any[]>();
-  const [superRestaurants, setSuperRestaurants] = useState<any[]>([]);
-  const [filteredRestaurants, setfilteredRestaurants] = useState<any[]>([]);
+  const [deliveryRasturants, setDeliveryRasturants] = useState<any>();
+  const [allResturants, setAllResturants] = useState<any>();
+  const [filteredRestaurants, setfilteredRestaurants] = useState<any>([]);
 
   useEffect(() => {
     if (!orderType) {
@@ -81,7 +82,6 @@ const Location = () => {
   }, []);
 
   const setOrderTypeMain = (type: any) => {
-    console.log('workinggggggggggggggggggggggg');
     setfilteredRestaurants([]);
     setAllResturants([]);
     setDeliveryRasturants([]);
@@ -233,9 +233,9 @@ const Location = () => {
         // } else {
         console.log('restaurants.restaurants', restaurants.restaurants);
         if (orderType && orderType !== '') {
-          setfilteredRestaurants(restaurants.restaurants);
+          setfilteredRestaurants(removeTestingStores(restaurants.restaurants));
         }
-        setAllResturants(restaurants.restaurants);
+        setAllResturants(removeTestingStores(restaurants.restaurants));
         // }
         setMapCenter({
           lat: restaurants.restaurants[0].latitude,
@@ -289,7 +289,9 @@ const Location = () => {
             //   );
             // }
             // setDeliveryRasturants(restaurants.restaurants);
-            setDeliveryRasturants(nearbyRestaurants.restaurants);
+            setDeliveryRasturants(
+              removeTestingStores(nearbyRestaurants.restaurants),
+            );
             setActionPerform(false);
           }
           setLatLng(null);
@@ -299,7 +301,9 @@ const Location = () => {
             //   setDeliveryRasturants(restaurants.restaurants);
             // } else {
             //   console.log('ppppppp 2', restaurants.restaurants);
-            setDeliveryRasturants(nearbyRestaurants.restaurants);
+            setDeliveryRasturants(
+              removeTestingStores(nearbyRestaurants.restaurants),
+            );
             // }
 
             setShowNearBy(false);
@@ -314,9 +318,8 @@ const Location = () => {
           });
           setZoom(7);
         } else {
-          console.log('restaurants.restaurants', nearbyRestaurants.restaurants);
           if (orderType && orderType !== '') {
-            setfilteredRestaurants(nearbyRestaurants.restaurants);
+            setfilteredRestaurants(removeTestingStores(nearbyRestaurants.restaurants));
           }
           // setAllResturants(restaurants.restaurants);
         }
@@ -361,36 +364,18 @@ const Location = () => {
         filteredRestaurants = restaurants.filter(
           (x: any) => x.supportscurbside === true,
         );
+      } else if (orderType === 'delivery') {
+        filteredRestaurants = restaurants.filter(
+          (x: any) => x.supportsdispatch === true,
+        );
       }
-
-      // else if (orderType === 'delivery') {
-      //   filteredRestaurants = restaurants.filter(
-      //     (x: any) => x.candeliver === false,
-      //   );
-      // }
     }
+    filteredRestaurants = removeTestingStores(filteredRestaurants);
     return filteredRestaurants;
   };
   useEffect(() => {
     setMarkers([]);
     if (restaurants && restaurants.restaurants.length > 0) {
-      console.log('orderType', orderType);
-      console.log('actionPerform', actionPerform);
-      console.log('showNearBy', showNearBy);
-      console.log('LatLng', LatLng);
-      console.log('deliveryRasturants', deliveryRasturants);
-      console.log('filteredRestaurants', filteredRestaurants);
-      // let filteredRestaurants = !orderType
-      //   ? restaurants.restaurants
-      //   : orderType && orderType !== 'delivery'
-      //   ? getFilteredRestaurants(restaurants.restaurants)
-      //   : orderType &&
-      //     orderType === 'delivery' &&
-      //     actionPerform &&
-      //     (showNearBy || LatLng)
-      //   ? restaurants.restaurants
-      //   : [];
-
       let filteredRest = !orderType
         ? restaurants.restaurants
         : orderType && orderType !== 'delivery'
@@ -401,7 +386,6 @@ const Location = () => {
 
       filteredRest = getFilteredRestaurants(filteredRest);
 
-      console.log('filteredRest', filteredRest);
       filteredRest.map((item: ResponseRestaurant, index: number) => {
         if (mapCenter == undefined) {
           setMapCenter({
@@ -429,51 +413,53 @@ const Location = () => {
   }, [restaurants, filteredRestaurants, deliveryRasturants, orderType]);
 
   return (
-    <div style={{ minHeight: '300px', position: 'relative' }}>
-      {(loading || window.google === undefined || actionPerform) && (
-        <div className={classes.dummyBg}>
-          <LoadingBar />
-        </div>
-      )}
-      {window.google && (
-        <div role="region" aria-label="map">
-          <GoogleMap
-            mapContainerStyle={mapContainerStyle}
-            zoom={zoom}
-            center={mapCenter}
-            options={{
-              streetViewControl: false,
-              mapTypeControl: false,
-              fullscreenControl: false,
-            }}
-            onLoad={loadMap}
-          >
-            {markers}
-            <div
-              onClick={() => {
-                setMayLocation();
+    <Page title={'Location'} className="">
+      <div style={{ minHeight: '300px', position: 'relative' }}>
+        {(loading || window.google === undefined || actionPerform) && (
+          <div className={classes.dummyBg}>
+            <LoadingBar />
+          </div>
+        )}
+        {window.google && (
+          <div role="region" aria-label="map">
+            <GoogleMap
+              mapContainerStyle={mapContainerStyle}
+              zoom={zoom}
+              center={mapCenter}
+              options={{
+                streetViewControl: false,
+                mapTypeControl: false,
+                fullscreenControl: false,
               }}
-              className="location-icon-panel"
+              onLoad={loadMap}
             >
-              <span className="icon"></span>
-            </div>
-            <LocationCard
-              isNearByRestaurantList={nearByRestaurantsFound}
-              restaurants={allResturants}
-              deliveryRasturants={deliveryRasturants}
-              setOrderTypeMain={setOrderTypeMain}
-              setShowNearBy={setShowNearBy}
-              setLatLng={setLatLng}
-              setActionPerform={setActionPerform}
-              setDeliveryRasturants={setDeliveryRasturants}
-              setfilteredRestaurants={setfilteredRestaurants}
-              filteredRestaurants={filteredRestaurants}
-              loading={loading}
-            />
-          </GoogleMap>
-        </div>
-      )}
-    </div>
+              {markers}
+              <div
+                onClick={() => {
+                  setMayLocation();
+                }}
+                className="location-icon-panel"
+              >
+                <span className="icon"></span>
+              </div>
+              <LocationCard
+                isNearByRestaurantList={nearByRestaurantsFound}
+                restaurants={allResturants}
+                deliveryRasturants={deliveryRasturants}
+                setOrderTypeMain={setOrderTypeMain}
+                setShowNearBy={setShowNearBy}
+                setLatLng={setLatLng}
+                setActionPerform={setActionPerform}
+                setDeliveryRasturants={setDeliveryRasturants}
+                setfilteredRestaurants={setfilteredRestaurants}
+                filteredRestaurants={filteredRestaurants}
+                loading={loading}
+              />
+            </GoogleMap>
+          </div>
+        )}
+      </div>
+    </Page>
   );
 };
 

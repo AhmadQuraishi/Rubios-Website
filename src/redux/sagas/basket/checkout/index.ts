@@ -209,25 +209,31 @@ function* asyncValidateBasket(action: any): any {
 
 function* asyncSubmitBasketSinglePayment(action: any): any {
   try {
-    const response = yield call(
-      submitSinglePaymentBasket,
-      action.action.basketId,
-      action.action.basketPayload,
-    );
-    let userInfo = {};
-    if (action.action.basketPayload.receivinguser) {
-      userInfo = {
-        ...action.action.basketPayload.receivinguser,
-        id: response.id,
-      };
-    }
-    yield put(
-      submitBasketSinglePaymentSuccess(response, action.action.basketId),
-    );
-    yield put(updateGuestUserInfo(userInfo));
-    yield put(navigateAppAction(`/order-confirmation/${response.id}`));
+    // let response = null;
+    // const response = yield call(
+    //   submitSinglePaymentBasket,
+    //   action.action.basketId,
+    //   action.action.basketPayload,
+    // );
+    action.action.ccsfObj.submit(action.action.basketPayload);
+
+    // action.action.ccsfObj.registerSuccess();
+
+    // let userInfo = {};
+    // console.log('orderddddddddddd', response);
+    // if (action.action.basketPayload.receivinguser) {
+    //   userInfo = {
+    //     ...action.action.basketPayload.receivinguser,
+    //     id: response.id,
+    //   };
+    // }
+    // yield put(
+    //   submitBasketSinglePaymentSuccess(response, action.action.basketId),
+    // );
+    // yield put(updateGuestUserInfo(userInfo));
+    // yield put(navigateAppAction(`/order-confirmation/${response.id}`));
   } catch (error) {
-    yield put(submitBasketSinglePaymentFailure(error));
+    // yield put(submitBasketSinglePaymentFailure(error));
   }
 }
 
