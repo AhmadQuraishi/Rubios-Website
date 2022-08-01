@@ -38,8 +38,6 @@ const RecentOrders = () => {
   const [items, setItems] = useState([]);
   const [price, setPrice] = useState('');
 
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
   
   const [prevOrderType, setPrevOrderType] = useState<string>();
   const { restaurant, error } = useSelector(
@@ -81,9 +79,7 @@ const RecentOrders = () => {
         ),
       );
       dispatch(getBasketRequest('', createBasketObj.basket, 'Previous'));
-      if(!isMobile){
         displayToast('SUCCESS', 'Recent order is added in cart');
-      }
       navigate('/checkout');
     }
     if (error && error.message) {

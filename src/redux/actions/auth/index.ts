@@ -14,9 +14,7 @@ export function getAuthRequest(basketID: string = '') {
 }
 
 export function getAuthRequestSuccess(successMsg: string, data: any) {
-    if(!breakpoints.XS){
       displayToast('SUCCESS', successMsg);
-    }
   return {
     type: Type.GET_AUTHTOKEN_SUCCESS,
     payload: data,

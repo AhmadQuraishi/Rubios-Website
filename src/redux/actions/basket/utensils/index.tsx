@@ -49,9 +49,7 @@ export function removeUtensilsRequest(
 }
 
 export function removeUtensilsRequestSuccess(data: ResponseBasket) {
-  if(!breakpoints.XS){
   displayToast('SUCCESS', 'Utensils removed.');
-  }
   return {
     type: basketActionsTypes.REMOVE_UTENSILS_SUCCESS,
     payload: data,

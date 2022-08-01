@@ -26,7 +26,6 @@ const FavoriteOrders = () => {
   const [idtoDelete, setId] = useState(0);
   const [favOrders, setfavOrders] = React.useState([]);
 
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const createBasketObj = useSelector(
     (state: any) => state.createBasketReducer,
@@ -99,9 +98,7 @@ const FavoriteOrders = () => {
         ),
       );
       dispatch(getBasketRequest('', createBasketObj.basket, 'Favourite'));
-      if(!isMobile){
         displayToast('SUCCESS', 'Favorite order is added in cart');
-      }
       navigate('/checkout');
     }
     if (error && error.message) {

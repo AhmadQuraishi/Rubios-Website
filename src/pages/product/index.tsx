@@ -45,8 +45,6 @@ const Product = () => {
   const [actionStatus, setActionStatus] = useState<boolean>(false);
   const [totalCost, setTotalCost] = useState<number>();
 
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
   const { categories, loading } = useSelector(
     (state: any) => state.categoryReducer,
   );
@@ -319,9 +317,7 @@ const Product = () => {
     if (productUpdateObj && productUpdateObj.basket && actionStatus) {
       setBasket(productUpdateObj.basket);
       setActionStatus(false);
-      if (!isMobile) {
         displayToast('SUCCESS', '1 item updated in cart.');
-      }
       // dispatch(getBasketRequest('', productUpdateObj.basket, basketType));
       navigate('/menu/' + restaurant.slug);
     }
