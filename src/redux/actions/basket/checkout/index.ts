@@ -61,9 +61,8 @@ export function updateBasketTimeWanted(
 }
 
 export function updateBasketTimeWantedSuccess(data: ResponseBasket) {
-  if(!breakpoints.XS){
   displayToast('SUCCESS', 'Order Time updated.');
-  }
+  
   return {
     type: basketActionsTypes.UPDATE_BASKET_TIME_WANTED_SUCCESS,
     payload: data,
@@ -91,9 +90,7 @@ export function deleteBasketTimeWanted(basketId: string) {
 }
 
 export function deleteBasketTimeWantedSuccess(data: ResponseBasket) {
-  if(!breakpoints.XS){
   displayToast('SUCCESS', 'Order Time updated to ASAP.');
-  }
   return {
     type: basketActionsTypes.DELETE_BASKET_TIME_WANTED_SUCCESS,
     payload: data,
@@ -126,9 +123,7 @@ export function updateBasketTipAmount(
 }
 
 export function updateBasketTipAmountSuccess(data: ResponseBasket) {
-    if(!breakpoints.XS){
   displayToast('SUCCESS', 'Order Tip updated.');
-    }
   return {
     type: basketActionsTypes.UPDATE_BASKET_TIP_AMOUNT_SUCCESS,
     payload: data,
@@ -160,9 +155,7 @@ export function updateBasketCouponCode(
 }
 
 export function updateBasketCouponCodeSuccess(data: ResponseBasket) {
-  if(!breakpoints.XS){
   displayToast('SUCCESS', 'Coupon applied to order.');
-  }
   return {
     type: basketActionsTypes.UPDATE_BASKET_COUPON_CODE_SUCCESS,
     payload: data,
@@ -191,9 +184,7 @@ export function removeBasketCouponCode(basketId: string, couponType: string) {
 }
 
 export function removeBasketCouponCodeSuccess(data: ResponseBasket) {
-  if(!breakpoints.XS){
   displayToast('SUCCESS', 'Coupon removed.');
-  }
   return {
     type: basketActionsTypes.REMOVE_BASKET_COUPON_CODE_SUCCESS,
     payload: data,

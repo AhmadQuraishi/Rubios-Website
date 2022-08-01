@@ -47,8 +47,6 @@ const AddCreditCard = () => {
   const [allowedCards, setAllowedCards] = React.useState<any>();
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
 
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
   const [paymentMethod, setPaymentMethod] =
     React.useState<PaymentMethodResult | null>(null);
 
@@ -189,9 +187,7 @@ const AddCreditCard = () => {
     );
 
     dispatch(updateBasketBillingSchemes(billingSchemesNewArray));
-    if(!isMobile){
       displayToast('SUCCESS', 'Credit Card Added');
-    }
     setButtonDisabled(false);
     handleCloseAddCreditCard();
   };

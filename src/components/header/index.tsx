@@ -177,6 +177,7 @@ const Header = (props: any) => {
   };
   return (
     <>
+    {console.log("window location", window.location.pathname)}
       <AppBar position="sticky" className={classes.navBar}>
         <Toolbar
           sx={{
@@ -204,7 +205,7 @@ const Header = (props: any) => {
             <>
               <Link
                 to={restaurant ? '/menu/' + restaurant.slug : '/'}
-                className={hideLoginPanel && (window.location.pathname !== '/location') ? classes.menuItemLink : classes.menuLink}
+                className={window.location.pathname === '/login' || window.location.pathname === '/register' ? classes.menuItemLink : classes.menuLink}
                 title="Menu"
                 onClick={() => setShowAccountMenu(false)}
               >

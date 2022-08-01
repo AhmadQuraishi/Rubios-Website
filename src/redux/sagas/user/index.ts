@@ -153,9 +153,7 @@ function* updateUserHandler(action: any): any {
     if (action.profileCheck) {
       const response = yield call(requestUpdateProfile, action.payload);
       yield put(updateProfileSuccess(response));
-      if(!breakpoints.XS){
         displayToast('SUCCESS', 'profile updated successfully');
-      }
     } else {
       const response = yield call(requestUpdateUser, action.payload);
       yield put(updateUserSuccess(response));
@@ -171,9 +169,7 @@ function* changePasswordHandler(action: any): any {
   try {
     const response = yield call(requestChangePassword, action.payload);
     yield put(changePasswordSuccess(response));
-    if(!breakpoints.XS){
       displayToast('SUCCESS', 'password updated successfully');
-    }
   } catch (error) {
     yield put(changePasswordFailure(error));
     displayToast('ERROR', 'Password need to be new and unused');
