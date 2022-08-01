@@ -161,7 +161,7 @@ const StoreInfo = (props: any) => {
             {candeliver} Delivery is not available at this time
           </Typography>
         )}
-        {candeliver && !loading && (
+        {!loading && (
           <Button
             sx={{ float: 'right', marginTop: '5px' }}
             onClick={() => {
@@ -179,14 +179,17 @@ const StoreInfo = (props: any) => {
       xs={12}
       sx={{
         marginBottom: '10px',
-        cursor: candeliver == false ? 'not-allowed' : 'pointer',
+        cursor: 'pointer',
+        // cursor: candeliver == false ? 'not-allowed' : 'pointer',
       }}
       onClick={() => {
-        candeliver && !loading && gotoCategoryPage(item.id);
+         !loading && gotoCategoryPage(item.id);
+        // candeliver && !loading && gotoCategoryPage(item.id);
       }}
       onKeyUp={(e) => {
         if (e.keyCode === 13) {
-          candeliver && !loading && gotoCategoryPage(item.id);
+          !loading && gotoCategoryPage(item.id);
+          // candeliver && !loading && gotoCategoryPage(item.id);
         }
       }}
       key={index}
