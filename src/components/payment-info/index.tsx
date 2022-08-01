@@ -22,6 +22,33 @@ import {
 import { updateBasketBillingSchemes } from '../../redux/actions/basket/checkout';
 import { useDispatch, useSelector } from 'react-redux';
 import { ResponseBasket } from '../../types/olo-api';
+import { IMaskInput } from 'react-imask';
+import moment from 'moment';
+
+interface CustomProps {
+  onChange: (event: { target: { name: string; value: string } }) => void;
+  name: string;
+}
+
+const NumberFormatCustom = forwardRef<HTMLElement, CustomProps>(
+  function NumberFormatCustom(props, ref) {
+    const { onChange, ...other } = props;
+
+    return (
+      <IMaskInput
+        {...other}
+        mask="00/0000"
+        definitions={{
+          '#': /[1-9]/,
+        }}
+        onAccept={(value: any) =>
+          onChange({ target: { name: props.name, value } })
+        }
+        overwrite
+      />
+    );
+  },
+);
 
 const PaymentInfo = forwardRef((props: any, _ref) => {
   const { ccsfObj, basketAccessToken } = props;
@@ -88,8 +115,6 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
 
   const handleCreditCardSubmit = async () => {
     setButtonDisabled(true);
-    // const { isValidCard, cardDetails, errors } = await validatePaymentForm();
-    let monthYear: any;
     if (!zipCode || zipCode === '') {
       displayToast('ERROR', 'Zip Code is required');
       setButtonDisabled(false);
@@ -100,9 +125,25 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
       displayToast('ERROR', 'Card Expiry is required');
       setButtonDisabled(false);
       return;
+    } else if (cardExpiry.length !== 7) {
+      displayToast('ERROR', 'Please enter valid date.');
+      setButtonDisabled(false);
+      return;
     } else {
-      monthYear = cardExpiry.split('/');
-      console.log('monthYear', monthYear);
+      const currentDate: any = moment(new Date());
+      const expiryDate: any = moment(cardExpiry, 'MM/YYYY');
+
+      if (!expiryDate.isValid()) {
+        displayToast('ERROR', 'Please enter valid date.');
+        setButtonDisabled(false);
+        return;
+      }
+
+      if (!expiryDate.isAfter(currentDate)) {
+        displayToast('ERROR', 'Please enter future date.');
+        setButtonDisabled(false);
+        return;
+      }
     }
 
     let billingSchemesNewArray = billingSchemes;
@@ -119,8 +160,8 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
       });
     }
     const obj = {
-      exp_year: monthYear[1],
-      exp_month: monthYear[0],
+      exp_year: moment(cardExpiry, 'MM/YYYY').year(),
+      exp_month: moment(cardExpiry, 'MM/YYYY').month() + 1,
       postal_code: zipCode,
     };
     let cardObj: any = getCreditCardObj(obj, billingSchemes);
@@ -134,7 +175,10 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
 
     dispatch(updateBasketBillingSchemes(billingSchemesNewArray));
     if (!isMobile) {
-      displayToast('SUCCESS', 'Credit Card Added');
+      displayToast(
+        'SUCCESS',
+        `Credit Card ${editCreditCard ? 'Edited' : 'Added'}`,
+      );
     }
     setButtonDisabled(false);
     handleHideShow();
@@ -157,21 +201,21 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
     //       }
     //     });
     //   });
-      // ccsfObj.submit({
-      //   id: basket && basket.id,
-      //   accessToken: basketAccessToken,
-      //   billingaccounts: [
-      //     {
-      //       billingmethod: 'creditcard',
-      //       // amount: 31.25,
-      //       // tipportion: 0,
-      //       expiryyear: monthYear[1],
-      //       expirymonth: monthYear[0],
-      //       zip: zipCode,
-      //       saveonfile: true,
-      //     },
-      //   ],
-      // });
+    // ccsfObj.submit({
+    //   id: basket && basket.id,
+    //   accessToken: basketAccessToken,
+    //   billingaccounts: [
+    //     {
+    //       billingmethod: 'creditcard',
+    //       // amount: 31.25,
+    //       // tipportion: 0,
+    //       expiryyear: monthYear[1],
+    //       expirymonth: monthYear[0],
+    //       zip: zipCode,
+    //       saveonfile: true,
+    //     },
+    //   ],
+    // });
     // }
   };
 
@@ -216,7 +260,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                   className={'add-credit-card-button'}
                   onClick={() => handleHideShow()}
                 >
-                 Add Credit card
+                  Add Credit card
                 </button>
               )}
 
@@ -234,7 +278,8 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                     {/*  &times;*/}
                     {/*</span>*/}
                     <h2 className={'heading'}>
-                      {editCreditCard ? 'Edit Credit card' : 'Add Credit card'}</h2>
+                      {editCreditCard ? 'Edit Credit card' : 'Add Credit card'}
+                    </h2>
                   </div>
                   <div className="modal-body">
                     <Grid container className="payment-form" spacing={2}>
@@ -261,7 +306,10 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                             {/*  data-olo-pay-card-number*/}
                             {/*/>*/}
                             <div className="card-fields">
-                              <div style={{display: 'contents'}} className="credit-card-info-div"></div>
+                              <div
+                                style={{ display: 'contents' }}
+                                className="credit-card-info-div"
+                              ></div>
                             </div>
                             <img
                               alt="card icon"
@@ -271,7 +319,10 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                           <Grid item xs={12} sm={6} md={6} lg={6}>
                             {/*<div className="card-fields" data-olo-pay-card-cvc />*/}
                             <div className="card-fields">
-                              <div style={{display: 'contents'}} className="cvv-info-div"></div>
+                              <div
+                                style={{ display: 'contents' }}
+                                className="cvv-info-div"
+                              ></div>
                             </div>
                             <img
                               alt="cvc icon"
@@ -291,15 +342,38 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                             className="payment-form image-field align"
                           >
                             {/*<div className="card-fields" data-olo-pay-card-expiry />*/}
+                            {/*<TextField*/}
+                            {/*  className="zipcode"*/}
+                            {/*  aria-label="Card Expiry"*/}
+                            {/*  placeholder="Card Expiry"*/}
+                            {/*  type="text"*/}
+                            {/*  name="expiry"*/}
+                            {/*  inputProps={{ shrink: false }}*/}
+                            {/*  value={cardExpiry}*/}
+                            {/*  onChange={handleCardExpiryChange}*/}
+                            {/*/>*/}
                             <TextField
                               className="zipcode"
                               aria-label="Card Expiry"
+                              // onBlur={handleBlur}
+                              // label="Card Expiry"
                               placeholder="Card Expiry"
-                              type="text"
-                              name="expiry"
-                              inputProps={{ shrink: false }}
+                              // aria-required="true"
+                              // title="Card Expiry"
                               value={cardExpiry}
                               onChange={handleCardExpiryChange}
+                              name="phone"
+                              // InputLabelProps={{
+                              //   shrink: false,
+                              //   classes: {
+                              //     root: cardExpiry !== '' ? 'mobile-field-label' : '',
+                              //   },
+                              // }}
+                              InputProps={{
+                                inputComponent: NumberFormatCustom as any,
+                              }}
+                              // error={Boolean(cardExpiry.phone && errors.phone)}
+                              // helperText={errors.phone}
                             />
                           </Grid>
                           <Grid item xs={12} sm={6} md={6} lg={6}>
