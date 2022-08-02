@@ -193,12 +193,13 @@ const OrderTime = ({ orderType }: any) => {
   };
 
   const handleTime = (time: any) => {
-    let localTime = moment(new Date(), 'YYYYMMDD HH:mm');
-    let testDateUtc = moment.utc(time, 'YYYYMMDD HH:mm');
-    let localDate = testDateUtc.local();
-    let asapTime = moment(localDate, 'YYYYMMDD HH:mm').format('hh:mm A');
-    console.log('asapTime', asapTime);
-    // return localTime.diff(asapTime, 'minutes')
+
+    let localTime = moment(new Date());
+    let earlyReadyTime = moment(time, 'YYYYMMDD HH:mm');
+
+    const minutes = earlyReadyTime.diff(localTime, 'minutes')
+    console.log('minutes', minutes);
+    return minutes && minutes > 0 ? minutes : 0;
   };
 
   return (
@@ -307,8 +308,6 @@ const OrderTime = ({ orderType }: any) => {
                       className="selected-btn"
                       selected={
                         basketObj.basket?.timemode === 'asap' || asapTime
-                          ? true
-                          : false
                       }
                     >
                       <h3>
