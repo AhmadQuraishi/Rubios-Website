@@ -1,37 +1,31 @@
 import React, { useState } from 'react';
 import {
-  Grid,
-  Typography,
   Button,
   FormControl,
-  FormLabel,
-  ToggleButtonGroup,
-  ToggleButton,
-  Select,
+  Grid,
   InputLabel,
-  MenuItem,
-  Box,
   NativeSelect,
   TextField,
+  ToggleButton,
+  ToggleButtonGroup,
+  Typography,
 } from '@mui/material';
 import moment from 'moment';
 import './index.css';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import DatePicker from '@mui/lab/DatePicker';
 import AdapterMoment from '@mui/lab/AdapterMoment';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  deleteBasketTimeWanted,
   getSingleRestaurantCalendar,
   updateBasketTimeWanted,
-  deleteBasketTimeWanted,
 } from '../../redux/actions/basket/checkout';
 import {
+  createTimeWantedPayload,
   generateNextAvailableTimeSlots,
   GetRestaurantHoursRange,
-  createTimeWantedPayload,
 } from '../../helpers/checkout';
-import { HoursListing } from '../../helpers/hoursListing';
-import { CalendarTypeEnum } from '../../helpers/hoursListing';
+import { CalendarTypeEnum, HoursListing } from '../../helpers/hoursListing';
 import { useNavigate } from 'react-router-dom';
 import { ResponseBasket } from '../../types/olo-api';
 import { DeliveryModeEnum } from '../../types/olo-api/olo-api.enums';
@@ -49,6 +43,7 @@ const OrderTime = ({ orderType }: any) => {
   const [basket, setBasket] = React.useState<ResponseBasket>();
   const [notAvailableSlots, setNotAvailableSlots] = useState(false);
   const [selectShrink, setSelectShrink] = useState(false);
+  const [hideAsapForFutureDate, setHideAsapForFutureDate] = useState(false);
   const [asapTime, setAsapTime] = useState(false);
 
   const basketObj = useSelector((state: any) => state.basketReducer);
@@ -193,14 +188,21 @@ const OrderTime = ({ orderType }: any) => {
   };
 
   const handleTime = (time: any) => {
-
     let localTime = moment(new Date());
     let earlyReadyTime = moment(time, 'YYYYMMDD HH:mm');
 
-    const minutes = earlyReadyTime.diff(localTime, 'minutes')
+    const minutes = earlyReadyTime.diff(localTime, 'minutes');
     console.log('minutes', minutes);
     return minutes && minutes > 0 ? minutes : 0;
   };
+
+  React.useEffect(() => {
+    if (!moment.isMoment(selectedDate)) {
+      setHideAsapForFutureDate(true);
+    } else {
+      setHideAsapForFutureDate(selectedDate.isSame(new Date(), 'day'));
+    }
+  }, [selectedDate]);
 
   return (
     <>
@@ -302,28 +304,32 @@ const OrderTime = ({ orderType }: any) => {
                     className="selected-btn-group"
                   >
                     {/* <Grid container spacing={2}> */}
-                    <ToggleButton
-                      key={`button-${basketObj.basket?.earliestreadytime}`}
-                      value={basketObj.basket?.earliestreadytime}
-                      className="selected-btn"
-                      selected={
-                        basketObj.basket?.timemode === 'asap' || asapTime
-                      }
-                    >
-                      <h3>
-                        ASAP{' '}
-                        <span
-                          style={{
-                            fontSize: '10px',
-                            display: 'block',
-                            textTransform: 'none',
-                          }}
-                        >
-                          Est {handleTime(basketObj.basket?.earliestreadytime)}{' '}
-                          mins
-                        </span>
-                      </h3>
-                    </ToggleButton>
+                    {timeSlots.length !== 0 && hideAsapForFutureDate && (
+                      <ToggleButton
+                        key={`button-${basketObj.basket?.earliestreadytime}`}
+                        value={basketObj.basket?.earliestreadytime}
+                        className="selected-btn"
+                        selected={
+                          basketObj.basket?.timemode === 'asap' || asapTime
+                        }
+                      >
+                        <h3>
+                          ASAP{' '}
+                          <span
+                            style={{
+                              fontSize: '10px',
+                              display: 'block',
+                              textTransform: 'none',
+                            }}
+                          >
+                            Est{' '}
+                            {handleTime(basketObj.basket?.earliestreadytime)}{' '}
+                            mins
+                          </span>
+                        </h3>
+                      </ToggleButton>
+                    )}
+
                     {timeSlots.slice(0, 3).map((time) => {
                       return (
                         // <Grid item xs={6} sm={6} md={3} lg={3}>
