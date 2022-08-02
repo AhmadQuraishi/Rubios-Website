@@ -14,14 +14,14 @@ export class CreditCardCCSF {
       // basketGuid: 'a41c1c54-ec0f-4b5b-bcd7-ea484feffa50',
       styles: {
         cardNumber:
-          'border-top-width: 0px;border-right-width: 0px;border-bottom-width: 0px;border-left-width: 0px; width: 80%',
-        cvv: 'border-top-width: 0px;border-right-width: 0px;border-bottom-width: 0px;border-left-width: 0px; width: 80%',
+          'font-size: 14px;padding-top: 5px;border-top-width: 0px;border-right-width: 0px;border-bottom-width: 0px;border-left-width: 0px; width: 80%',
+        cvv: 'font-size: 14px;padding-top: 5px;border-top-width: 0px;border-right-width: 0px;border-bottom-width: 0px;border-left-width: 0px; width: 80%',
       },
       cardNumber: {
         placeholder: 'Credit Card',
       },
       cvv: {
-        placeholder: 'Cvv',
+        placeholder: 'CVV',
       },
     });
   }

@@ -177,7 +177,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
     if (!isMobile) {
       displayToast(
         'SUCCESS',
-        `Credit Card ${editCreditCard ? 'Edited' : 'Added'}`,
+        `Credit Card ${editCreditCard ? 'Updated' : 'Added'}`,
       );
     }
     setButtonDisabled(false);
@@ -357,7 +357,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                               aria-label="Card Expiry"
                               // onBlur={handleBlur}
                               // label="Card Expiry"
-                              placeholder="Card Expiry"
+                              placeholder="Card Expiry MM/YYYY"
                               // aria-required="true"
                               // title="Card Expiry"
                               value={cardExpiry}
@@ -410,7 +410,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                       // disabled={buttonDisabled}
                       autoFocus
                     >
-                      {editCreditCard ? 'Edit Credit card' : 'Add Credit card'}
+                      {editCreditCard ? 'Update Credit card' : 'Add Credit card'}
                     </Button>
                   </div>
                 </div>
