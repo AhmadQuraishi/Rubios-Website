@@ -7,7 +7,6 @@ import {
   CardContent,
   Button,
   useTheme,
-  useMediaQuery,
 } from '@mui/material';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './welcome.css';
@@ -21,13 +20,13 @@ import {
 
 import CardSkeletonUI from '../../components/card-skeleton-ui';
 import { createBasketFromPrev } from '../../redux/actions/basket/create';
-import { getFavRestaurant } from '../../redux/actions/restaurant/fav-restaurant';
 import { displayToast } from '../../helpers/toast';
 import { handleCart } from '../../components/header';
 import WelcomeNewUser from '../../components/welcome/new-user';
 import BgImage from '../../assets/imgs/Family_Burrito_Box_mainA573LR.jpg';
 import BgImageNewUser from '../../assets/imgs/rubios-welcome-background.jpg';
 import Page from '../../components/page-title';
+import { getResturantListRequest } from '../../redux/actions/restaurant/list';
 
 const useStyle = makeStyles(() => ({
   root: {
@@ -41,17 +40,15 @@ const useStyle = makeStyles(() => ({
 
 const Welcome = () => {
   const dispatch = useDispatch();
-  const theme = useTheme();
   const navigate = useNavigate();
-  const classes = useStyle();
 
   const query = new URLSearchParams(useLocation().search);
   const new_user = query.get('new_user');
 
   const [recentorders, setOrders] = useState([]);
+  const [favRestaurant, setFavRestaurant] = useState<any>(null);
   const [pageBackground, setPageBackground] = useState(BgImage);
   const [isEdit, setIsEdit] = useState(false);
-  const [isError, setIserror] = useState(false);
   const [isReoder, setIsReoder] = useState(false);
   const [isRestaurant, setIsRestaurant] = useState(false);
   const [deliverymode, setDeliveryMode] = useState('');
@@ -70,12 +67,34 @@ const Welcome = () => {
   );
   const basketObj = useSelector((state: any) => state.basketReducer);
   const error = useSelector((state: any) => state.basketReducer.error);
+  const { restaurants, loading: favloading } = useSelector(
+    (state: any) => state.restaurantListReducer,
+  );
+
   const { restaurant, orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
-  const { favRestaurant, favloading } = useSelector(
-    (state: any) => state.favRestaurantReducer,
-  );
+  // const { favRestaurant, favloading } = useSelector(
+  //   (state: any) => state.favRestaurantReducer,
+  // );
+
+  useEffect(() => {
+    if (
+      restaurants &&
+      restaurants.restaurants &&
+      restaurants.restaurants.length &&
+      providerToken &&
+      providerToken.favourite_store_numbers &&
+      providerToken.favourite_store_numbers
+    ) {
+      const filter = restaurants.restaurants.filter(
+        (rest: any) => rest.extref === providerToken.favourite_store_numbers,
+      );
+      if (filter.length) {
+        setFavRestaurant(filter[0]);
+      }
+    }
+  }, [restaurants]);
 
   useEffect(() => {
     setPageBackground(new_user === 'true' ? BgImageNewUser : BgImage);
@@ -114,7 +133,8 @@ const Welcome = () => {
       providerToken.favourite_store_numbers &&
       providerToken.favourite_store_numbers
     )
-      dispatch(getFavRestaurant(providerToken.favourite_store_numbers));
+      dispatch(getResturantListRequest());
+    // dispatch(getFavRestaurant(providerToken.favourite_store_numbers));
   }, []);
   useEffect(() => {
     if (
@@ -158,7 +178,7 @@ const Welcome = () => {
         navigate(restaurant ? '/menu/' + restaurant.slug : '/');
         handleCart();
       }
-        displayToast('SUCCESS', 'Recent order is added in cart');
+      displayToast('SUCCESS', 'Recent order is added in cart');
       setIsEdit(false);
       setIsReoder(false);
       setIsbasket(false);
@@ -453,7 +473,7 @@ const Welcome = () => {
                                 </Button>
                               </li>
                             )}
-                            {favRestaurant.candeliver === true && (
+                            {favRestaurant.supportsdispatch === true && (
                               <li>
                                 <Button
                                   aria-label="delivery button"
