@@ -641,9 +641,13 @@ const Checkout = () => {
 
           userInfo['id'] = order.id;
           dispatch(updateGuestUserInfo(userInfo));
-          dispatch(
-            submitBasketSinglePaymentSuccess(order, basket && basket.id),
-          );
+          const basketId =
+            basketObj && basketObj.basket && basketObj.basket.id
+              ? basketObj.basket.id
+              : '';
+          if (basketId !== '') {
+            dispatch(submitBasketSinglePaymentSuccess(order, basketId));
+          }
           dispatch(navigateAppAction(`/order-confirmation/${order.id}`));
         });
         ccsfObj.registerFocus((evt: any) => {
