@@ -867,10 +867,11 @@ const Checkout = () => {
                 <Grid item xs={12} sm={12} md={4} lg={4}>
                   <Button
                     disabled={
-                      buttonDisabled ||
-                      basketObj?.loading ||
-                      basketObj?.orderSubmit ||
-                      totalPaymentCardAmount()
+                      (buttonDisabled ||
+                        basketObj?.loading ||
+                        basketObj?.orderSubmit ||
+                        totalPaymentCardAmount()) &&
+                      ccsfObj
                     }
                     onClick={placeOrder}
                     variant="contained"
