@@ -1,0 +1,102 @@
+.stay-connect-bg {
+  background-color: rgba(255, 255, 255, 0);
+  background-image: url(../../../assets/imgs/Background-stay-current-1920.png);
+  background-position: center top;
+  background-repeat: no-repeat;
+  border-width: 0px 0px 0px 0px;
+  border-style: solid;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 30px 50px 30px 50px;
+}
+.stay-connect-bg h2 {
+  font-family: 'Poppins-Bold' !important;
+  font-weight: 700;
+  margin: 0;
+  font-size: 35px;
+  text-transform: uppercase;
+  color: #2b4b62;
+  display: block;
+  line-height: 38px;
+  padding-bottom: 15px;
+}
+.stay-connect-bg p {
+  font-family: 'Poppins-Regular' !important;
+  margin: 0;
+  font-size: 35px;
+  color: #414141;
+  display: block;
+  line-height: 22px;
+  font-size: 16px;
+}
+.stay-connect-actions {
+  display: flex;
+  padding-bottom: 20px;
+}
+.stay-connect-actions .panel-cc {
+  width: 50%;
+}
+.stay-connect-bg input {
+  width: 100%;
+  line-height: 18px !important;
+  font-size: 15px;
+  padding: 0 1em;
+  outline: 0;
+  transition: all 0.2s ease;
+  border: 0;
+  font-family: 'Poppins-Regular' !important;
+  color: #395775;
+}
+.stay-connect-bg .button-right {
+  border-radius: 0px 0px 0px 0px;
+  background: #0a6fb8;
+  padding-top: 16px;
+  padding-bottom: 15px;
+  font-family: 'Poppins-Bold' !important;
+  font-weight: 700;
+  width: 80px;
+}
+.stay-connect-bg .email-action-panel {
+  display: flex;
+  padding-top: 0px;
+  padding-right: 20px;
+}
+.stay-connect-bg .msg-status {
+  display: flex;
+  font-family: 'Poppins-Medium' !important;
+  font-size: 12px;
+  padding: 5px 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  min-height: 20px;
+}
+.stay-connect-bg .msg-status.error {
+  color: rgb(151, 3, 3);
+  visibility: visible;
+}
+.stay-connect-bg .msg-status.success {
+  color: rgb(3, 129, 3);
+  visibility: visible;
+}
+@media screen and (max-width: 640px) {
+  .stay-connect-bg {
+    padding: 40px 25px 20px 25px;
+  }
+  .stay-connect-actions {
+    flex-direction: column;
+  }
+  .stay-connect-actions .panel-cc {
+    width: 100%;
+  }
+  .stay-connect-bg .email-action-panel {
+    padding-top: 40px;
+  }
+  .stay-connect-bg h2 {
+    padding-bottom: 5px;
+  }
+}
