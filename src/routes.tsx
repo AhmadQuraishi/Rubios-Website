@@ -31,8 +31,6 @@ const CategoryIframe = lazy(() => import('./pages/iframe/category'));
 const RegisterIframe = lazy(() => import('./pages/iframe/register'));
 const StoreHoursIframe = lazy(() => import('./pages/iframe/store-hours'));
 const StayCurrentIframe = lazy(() => import('./pages/iframe/stay-current'));
-const RewardPoints = lazy(() => import('./pages/reward-points'));
-const RewardPointsDetail = lazy(() => import('./pages/reward-points/detail'));
 
 const AppRoutes = () => {
   return (
@@ -124,11 +122,6 @@ const AppRoutes = () => {
           <Route
             path="/iframe/store-hours/:id"
             element={<StoreHoursIframe />}
-          />
-          <Route path="account/rewardpoints" element={<RewardPoints />} />
-          <Route
-            path="account/rewardpoints/detail"
-            element={<RewardPointsDetail />}
           />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
