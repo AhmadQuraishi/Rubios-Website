@@ -177,7 +177,7 @@ const SplitPayment = forwardRef((props: any, _ref) => {
       if (account.billingaccountid) {
         cardImage = `${account.cardtype}.png`;
       } else {
-        cardImage = 'Visa.png';
+        return <></>
       }
     } else {
       cardImage = 'gc-card-icon.png';
