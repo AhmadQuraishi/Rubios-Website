@@ -57,17 +57,17 @@ const RewardPoints = () => {
         </Grid>
         <Grid item xs={12}>
           <Grid container>
-            <Grid item xs={6}  lg={4}>
-              <Link to="/account/rewardpoints/detail">
-                <Card className="reward-point-merge-panel">
+            <Grid item xs={6} md={4} lg={4}>
+              <Card className="reward-point-merge-panel">
+                <Link to="/account/rewardpoints/detail">
                   <Grid container className="content-panel">
-                    <Grid item xs={12} sm={5} className="img-panel">
+                    <Grid item xs={12} lg={5} className="img-panel">
                       <img
                         src={require('../../assets/imgs/temp-pic.png')}
                         alt=""
                       />
                     </Grid>
-                    <Grid item xs={12} sm={7} className="content-panel-desc">
+                    <Grid item xs={12} lg={7} className="content-panel-desc">
                       <p
                         aria-label="Free Drink"
                         title="Free Drink Free Drink Free Drink Free Drink"
@@ -79,20 +79,20 @@ const RewardPoints = () => {
                       <p className="button">REDEEM IN RESTURANT</p>
                     </Grid>
                   </Grid>
-                </Card>
-              </Link>
+                </Link>
+              </Card>
             </Grid>
-            <Grid item xs={6}  lg={4}>
-              <Link to="/account/rewardpoints/detail">
-                <Card className="reward-point-merge-panel">
+            <Grid item xs={6} md={4} lg={4}>
+              <Card className="reward-point-merge-panel">
+                <Link to="/account/rewardpoints/detail">
                   <Grid container className="content-panel">
-                    <Grid item xs={12} sm={5} className="img-panel">
+                    <Grid item xs={12} lg={5} className="img-panel">
                       <img
                         src={require('../../assets/imgs/temp-pic.png')}
                         alt=""
                       />
                     </Grid>
-                    <Grid item xs={12} sm={7} className="content-panel-desc">
+                    <Grid item xs={12} lg={7} className="content-panel-desc">
                       <p
                         aria-label="Free Drink"
                         title="Free Drink Free Drink Free Drink Free Drink"
@@ -104,20 +104,20 @@ const RewardPoints = () => {
                       <p className="button">REDEEM IN RESTURANT</p>
                     </Grid>
                   </Grid>
-                </Card>
-              </Link>
+                </Link>
+              </Card>
             </Grid>
-            <Grid item xs={6} lg={4}>
-              <Link to="/account/rewardpoints/detail">
-                <Card className="reward-point-merge-panel">
+            <Grid item xs={6} md={4} lg={4}>
+              <Card className="reward-point-merge-panel">
+                <Link to="/account/rewardpoints/detail">
                   <Grid container className="content-panel">
-                    <Grid item xs={12} sm={5} className="img-panel">
+                    <Grid item xs={12} lg={5} className="img-panel">
                       <img
                         src={require('../../assets/imgs/temp-pic.png')}
                         alt=""
                       />
                     </Grid>
-                    <Grid item xs={12} sm={7} className="content-panel-desc">
+                    <Grid item xs={12} lg={7} className="content-panel-desc">
                       <p
                         aria-label="Free Drink"
                         title="Free Drink Free Drink Free Drink Free Drink"
@@ -129,16 +129,16 @@ const RewardPoints = () => {
                       <p className="button">REDEEM IN RESTURANT</p>
                     </Grid>
                   </Grid>
-                </Card>
-              </Link>
+                </Link>
+              </Card>
             </Grid>
           </Grid>
         </Grid>
         <Grid item xs={12}>
           <hr />
         </Grid>
-        <div style={{ height: '40px' }}></div>
-        <Grid item xs={12}>
+
+        <Grid item xs={12} sx={{ marginTop: { xs: '30px', sm: '0px' } }}>
           <Typography
             variant="h2"
             className="small-heading"
@@ -155,19 +155,19 @@ const RewardPoints = () => {
             400 Points
           </Typography>
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} sx={{ marginBottom: { xs: '25px', md: '20px' } }}>
           <Grid container>
-            <Grid item xs={6} lg={4}>
-              <Link to="/account/rewardpoints/detail">
-                <Card className="reward-point-merge-panel">
+            <Grid item xs={6} md={4}>
+              <Card className="reward-point-merge-panel">
+                <Link to="/account/rewardpoints/detail">
                   <Grid container className="content-panel">
-                    <Grid item xs={12} sm={5} className="img-panel">
+                    <Grid item xs={12} lg={5} className="img-panel">
                       <img
                         src={require('../../assets/imgs/temp-pic.png')}
                         alt=""
                       />
                     </Grid>
-                    <Grid item xs={12} sm={7} className="content-panel-desc">
+                    <Grid item xs={12} lg={7} className="content-panel-desc">
                       <p className="points">400 Points</p>
                       <p
                         aria-label="Free Drink"
@@ -179,20 +179,20 @@ const RewardPoints = () => {
                       <p className="button">REDEEM IN RESTURANT</p>
                     </Grid>
                   </Grid>
-                </Card>
-              </Link>
+                </Link>
+              </Card>
             </Grid>
-            <Grid item xs={6} lg={4}>
-              <Link to="/account/rewardpoints/detail">
-                <Card className="reward-point-merge-panel">
+            <Grid item xs={6} md={4}>
+              <Card className="reward-point-merge-panel">
+                <Link to="/account/rewardpoints/detail">
                   <Grid container className="content-panel">
-                    <Grid item xs={12} sm={5} className="img-panel">
+                    <Grid item xs={12} lg={5} className="img-panel">
                       <img
                         src={require('../../assets/imgs/temp-pic.png')}
                         alt=""
                       />
                     </Grid>
-                    <Grid item xs={12} sm={7} className="content-panel-desc">
+                    <Grid item xs={12} lg={7} className="content-panel-desc">
                       <p className="points">400 Points</p>
                       <p
                         aria-label="Free Drink"
@@ -204,20 +204,20 @@ const RewardPoints = () => {
                       <p className="button">REDEEM IN RESTURANT</p>
                     </Grid>
                   </Grid>
-                </Card>
-              </Link>
+                </Link>
+              </Card>
             </Grid>
-            <Grid item xs={6} lg={4}>
-              <Link to="/account/rewardpoints/detail">
-                <Card className="reward-point-merge-panel">
+            <Grid item xs={6} md={4}>
+              <Card className="reward-point-merge-panel">
+                <Link to="/account/rewardpoints/detail">
                   <Grid container className="content-panel">
-                    <Grid item xs={12} sm={5} className="img-panel">
+                    <Grid item xs={12} lg={5} className="img-panel">
                       <img
                         src={require('../../assets/imgs/temp-pic.png')}
                         alt=""
                       />
                     </Grid>
-                    <Grid item xs={12} sm={7} className="content-panel-desc">
+                    <Grid item xs={12} lg={7} className="content-panel-desc">
                       <p className="points">400 Points</p>
                       <p
                         aria-label="Free Drink"
@@ -229,20 +229,20 @@ const RewardPoints = () => {
                       <p className="button">REDEEM IN RESTURANT</p>
                     </Grid>
                   </Grid>
-                </Card>
-              </Link>
+                </Link>
+              </Card>
             </Grid>
-            <Grid item xs={6} lg={4}>
-              <Link to="/account/rewardpoints/detail">
-                <Card className="reward-point-merge-panel">
+            <Grid item xs={6} md={4}>
+              <Card className="reward-point-merge-panel">
+                <Link to="/account/rewardpoints/detail">
                   <Grid container className="content-panel">
-                    <Grid item xs={12} sm={5} className="img-panel">
+                    <Grid item xs={12} lg={5} className="img-panel">
                       <img
                         src={require('../../assets/imgs/temp-pic.png')}
                         alt=""
                       />
                     </Grid>
-                    <Grid item xs={12} sm={7} className="content-panel-desc">
+                    <Grid item xs={12} lg={7} className="content-panel-desc">
                       <p className="points">400 Points</p>
                       <p
                         aria-label="Free Drink"
@@ -254,8 +254,8 @@ const RewardPoints = () => {
                       <p className="button">REDEEM IN RESTURANT</p>
                     </Grid>
                   </Grid>
-                </Card>
-              </Link>
+                </Link>
+              </Card>
             </Grid>
           </Grid>
         </Grid>
@@ -271,57 +271,53 @@ const RewardPoints = () => {
             700 Points
           </Typography>
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} sx={{ marginBottom: { xs: '25px', md: '20px' } }}>
           <Grid container>
-            <Grid item xs={6} lg={4}>
-              <Link to="/account/rewardpoints/detail">
-                <Card className="reward-point-merge-panel">
-                  <Grid container className="content-panel">
-                    <Grid item xs={12} sm={5} className="img-panel">
-                      <img
-                        src={require('../../assets/imgs/temp-pic.png')}
-                        alt=""
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={7} className="content-panel-desc">
-                      <p className="points">700 Points</p>
-                      <p
-                        aria-label="Free Drink"
-                        title="Free Drink Free Drink Free Drink Free Drink"
-                        className="title-heading"
-                      >
-                        Free Drink
-                      </p>
-                      <p className="button">REDEEM IN RESTURANT</p>
-                    </Grid>
+            <Grid item xs={6} md={4}>
+              <Card className="reward-point-merge-panel">
+                <Grid container className="content-panel">
+                  <Grid item xs={12} lg={5} className="img-panel">
+                    <img
+                      src={require('../../assets/imgs/temp-pic.png')}
+                      alt=""
+                    />
                   </Grid>
-                </Card>
-              </Link>
+                  <Grid item xs={12} lg={7} className="content-panel-desc">
+                    <p className="points">700 Points</p>
+                    <p
+                      aria-label="Free Drink"
+                      title="Free Drink Free Drink Free Drink Free Drink"
+                      className="title-heading"
+                    >
+                      Free Drink
+                    </p>
+                    <p className="button disable">REDEEM IN RESTURANT</p>
+                  </Grid>
+                </Grid>
+              </Card>
             </Grid>
-            <Grid item xs={6} lg={4}>
-              <Link to="/account/rewardpoints/detail">
-                <Card className="reward-point-merge-panel">
-                  <Grid container className="content-panel">
-                    <Grid item xs={12} sm={5} className="img-panel">
-                      <img
-                        src={require('../../assets/imgs/temp-pic.png')}
-                        alt=""
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={7} className="content-panel-desc">
-                      <p className="points">700 Points</p>
-                      <p
-                        aria-label="Free Drink"
-                        title="Free Drink Free Drink Free Drink Free Drink"
-                        className="title-heading"
-                      >
-                        Free Drink
-                      </p>
-                      <p className="button">REDEEM IN RESTURANT</p>
-                    </Grid>
+            <Grid item xs={6} md={4}>
+              <Card className="reward-point-merge-panel">
+                <Grid container className="content-panel">
+                  <Grid item xs={12} lg={5} className="img-panel">
+                    <img
+                      src={require('../../assets/imgs/temp-pic.png')}
+                      alt=""
+                    />
                   </Grid>
-                </Card>
-              </Link>
+                  <Grid item xs={12} lg={7} className="content-panel-desc">
+                    <p className="points">700 Points</p>
+                    <p
+                      aria-label="Free Drink"
+                      title="Free Drink Free Drink Free Drink Free Drink"
+                      className="title-heading"
+                    >
+                      Free Drink
+                    </p>
+                    <p className="button disable">REDEEM IN RESTURANT</p>
+                  </Grid>
+                </Grid>
+              </Card>
             </Grid>
           </Grid>
         </Grid>

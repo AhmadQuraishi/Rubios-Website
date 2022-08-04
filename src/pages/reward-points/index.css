@@ -55,17 +55,16 @@
   box-shadow: 0px 4px 5px 0px rgb(0 0 0 / 20%);
   font-family: 'Poppins-Medium';
   text-align: center;
-  width: 100%;
-  max-width: 300px;
   margin-top: 15px;
   color: #2b4b62;
-  margin-bottom: 0px;
   padding: 10px;
   box-sizing: border-box;
+  margin-right: 15px;
+  height: 92%;
 }
 #reward-points-container a {
   text-decoration: none;
-  padding-right: 15px;
+  color: #2b4b62;
   display: block;
 }
 #reward-points-container .reward-point-merge-panel .content-panel {
@@ -138,6 +137,13 @@
   position: absolute;
   bottom: 5px;
 }
+#reward-points-container
+  .reward-point-merge-panel
+  .content-panel
+  .content-panel-desc
+  .button.disable {
+  color: #b1b1b1;
+}
 #reward-points-container .bold-title.dd {
   font-size: 22px;
   color: #2b4b62;
@@ -158,6 +164,7 @@
   font-size: 25px;
   color: #2b4b62;
   font-family: 'Poppins-Bold', sans-serif !important;
+  line-height: 32px;
 }
 #reward-points-container .message-panel .low-head {
   font-size: 18px;
@@ -174,7 +181,38 @@
   font-size: 13px;
   cursor: pointer;
 }
+@media screen and (max-width: 1199px) {
+  #reward-points-container .reward-point-panel {
+    max-width: none;
+    width: 98%;
+  }
+  #reward-points-container
+    .reward-point-merge-panel
+    .content-panel
+    .content-panel-desc
+    .button {
+    position: relative;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  #reward-points-container
+    .reward-point-merge-panel
+    .content-panel
+    .content-panel-desc {
+    padding-left: 0px;
+    padding-top: 10px;
+  }
+}
 @media screen and (max-width: 640px) {
+  #reward-points-container .message-panel {
+    padding-top: 30px;
+  }
+  #reward-points-container .bold-title {
+    font-size: 35px;
+  }
+  #reward-points-container hr {
+    display: none;
+  }
   #reward-points-container .small-heading {
     font-size: 22px;
   }
