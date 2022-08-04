@@ -37,7 +37,7 @@ const NumberFormatCustom = forwardRef<HTMLElement, CustomProps>(
     return (
       <IMaskInput
         {...other}
-        mask="00/0000"
+        mask="00/00"
         definitions={{
           '#': /[1-9]/,
         }}
@@ -125,13 +125,13 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
       displayToast('ERROR', 'Card Expiry is required');
       setButtonDisabled(false);
       return;
-    } else if (cardExpiry.length !== 7) {
+    } else if (cardExpiry.length !== 5) {
       displayToast('ERROR', 'Please enter valid date.');
       setButtonDisabled(false);
       return;
     } else {
       const currentDate: any = moment(new Date());
-      const expiryDate: any = moment(cardExpiry, 'MM/YYYY');
+      const expiryDate: any = moment(cardExpiry, 'MM/YY');
 
       if (!expiryDate.isValid()) {
         displayToast('ERROR', 'Please enter valid date.');
@@ -357,7 +357,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                               aria-label="Card Expiry"
                               // onBlur={handleBlur}
                               // label="Card Expiry"
-                              placeholder="Card Expiry MM/YYYY"
+                              placeholder="Card Expiry MM/YY"
                               // aria-required="true"
                               // title="Card Expiry"
                               value={cardExpiry}
