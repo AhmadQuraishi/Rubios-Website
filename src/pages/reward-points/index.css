@@ -55,12 +55,10 @@
   box-shadow: 0px 4px 5px 0px rgb(0 0 0 / 20%);
   font-family: 'Poppins-Medium';
   text-align: center;
-  margin-top: 15px;
   color: #2b4b62;
   padding: 10px;
   box-sizing: border-box;
-  margin-right: 15px;
-  height: 92%;
+  height: 100%;
 }
 #reward-points-container a {
   text-decoration: none;
@@ -119,9 +117,7 @@
   font-family: 'Poppins-bold' !important;
   text-transform: uppercase;
 }
-#reward-points-container
-  .reward-point-merge-panel
-  .button {
+#reward-points-container .reward-point-merge-panel .button {
   margin: 0;
   line-height: 20px;
   letter-spacing: 2px;
@@ -132,9 +128,7 @@
   font-weight: 600;
   cursor: pointer;
 }
-#reward-points-container
-  .reward-point-merge-panel
-  .button.disable {
+#reward-points-container .reward-point-merge-panel .button.disable {
   color: #b1b1b1;
   cursor: default;
 }
@@ -175,20 +169,21 @@
   font-size: 13px;
   cursor: pointer;
 }
+#reward-points-container .pp-oo {
+  padding-right: 15px;
+  padding-bottom: 15px;
+}
 @media screen and (max-width: 1199px) {
   #reward-points-container .reward-point-merge-panel {
-    height: 94%;
+    height: 100%;
   }
   #reward-points-container .reward-point-panel {
     max-width: none;
     width: 98%;
   }
-  #reward-points-container
-    .reward-point-merge-panel
-    .button {
+  #reward-points-container .reward-point-merge-panel .button {
     position: relative;
     margin-top: 10px;
-    margin-bottom: 10px;
   }
   #reward-points-container
     .reward-point-merge-panel

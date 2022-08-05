@@ -57,7 +57,7 @@ const RewardPoints = () => {
         </Grid>
         <Grid item xs={12}>
           <Grid container>
-            <Grid item xs={6} md={4} lg={4}>
+            <Grid item xs={6} md={4} className="pp-oo">
               <Card className="reward-point-merge-panel">
                 <Link to="/account/rewardpoints/detail">
                   <Grid container className="content-panel">
@@ -106,7 +106,7 @@ const RewardPoints = () => {
                 </Link>
               </Card>
             </Grid>
-            <Grid item xs={6} md={4} lg={4}>
+            <Grid item xs={6} md={4} className="pp-oo">
               <Card className="reward-point-merge-panel">
                 <Link to="/account/rewardpoints/detail">
                   <Grid container className="content-panel">
@@ -155,7 +155,7 @@ const RewardPoints = () => {
                 </Link>
               </Card>
             </Grid>
-            <Grid item xs={6} md={4} lg={4}>
+            <Grid item xs={6} md={4} className="pp-oo">
               <Card className="reward-point-merge-panel">
                 <Link to="/account/rewardpoints/detail">
                   <Grid container className="content-panel">
@@ -202,7 +202,6 @@ const RewardPoints = () => {
         <Grid item xs={12}>
           <hr />
         </Grid>
-
         <Grid item xs={12} sx={{ marginTop: { xs: '30px', sm: '0px' } }}>
           <Typography
             variant="h2"
@@ -222,7 +221,7 @@ const RewardPoints = () => {
         </Grid>
         <Grid item xs={12} sx={{ marginBottom: { xs: '25px', md: '20px' } }}>
           <Grid container>
-            <Grid item xs={6} md={4}>
+            <Grid item xs={6} md={4} className="pp-oo">
               <Card className="reward-point-merge-panel">
                 <Link to="/account/rewardpoints/detail">
                   <Grid container className="content-panel">
@@ -264,7 +263,7 @@ const RewardPoints = () => {
                 </Link>
               </Card>
             </Grid>
-            <Grid item xs={6} md={4}>
+            <Grid item xs={6} md={4} className="pp-oo">
               <Card className="reward-point-merge-panel">
                 <Link to="/account/rewardpoints/detail">
                   <Grid container className="content-panel">
@@ -306,7 +305,7 @@ const RewardPoints = () => {
                 </Link>
               </Card>
             </Grid>
-            <Grid item xs={6} md={4}>
+            <Grid item xs={6} md={4} className="pp-oo">
               <Card className="reward-point-merge-panel">
                 <Link to="/account/rewardpoints/detail">
                   <Grid container className="content-panel">
@@ -348,7 +347,7 @@ const RewardPoints = () => {
                 </Link>
               </Card>
             </Grid>
-            <Grid item xs={6} md={4}>
+            <Grid item xs={6} md={4} className="pp-oo">
               <Card className="reward-point-merge-panel">
                 <Link to="/account/rewardpoints/detail">
                   <Grid container className="content-panel">
@@ -406,7 +405,7 @@ const RewardPoints = () => {
         </Grid>
         <Grid item xs={12} sx={{ marginBottom: { xs: '25px', md: '20px' } }}>
           <Grid container>
-            <Grid item xs={6} md={4}>
+            <Grid item xs={6} md={4} className="pp-oo">
               <Card className="reward-point-merge-panel">
                 <Grid container className="content-panel">
                   <Grid item xs={12} lg={5} className="img-panel">
@@ -443,7 +442,7 @@ const RewardPoints = () => {
                 </Grid>
               </Card>
             </Grid>
-            <Grid item xs={6} md={4}>
+            <Grid item xs={6} md={4} className="pp-oo">
               <Card className="reward-point-merge-panel">
                 <Grid container className="content-panel">
                   <Grid item xs={12} lg={5} className="img-panel">
