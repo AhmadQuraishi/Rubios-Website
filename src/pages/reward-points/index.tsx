@@ -134,7 +134,7 @@ const RewardPoints = () => {
                             title="Free Drink Free Drink Free Drink Free Drink"
                             className="title-heading"
                           >
-                            Free Drink
+                            Free Drink 10% Off
                           </p>
                           <p className="expire">Expires 8/8</p>
                         </Grid>

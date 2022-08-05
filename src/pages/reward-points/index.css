@@ -131,12 +131,12 @@
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  bottom: 5px;
 }
 #reward-points-container
   .reward-point-merge-panel
   .button.disable {
   color: #b1b1b1;
+  cursor: default;
 }
 #reward-points-container .bold-title.dd {
   font-size: 22px;
