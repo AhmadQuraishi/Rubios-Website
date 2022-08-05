@@ -125,9 +125,9 @@ const AppRoutes = () => {
             path="/iframe/store-hours/:id"
             element={<StoreHoursIframe />}
           />
-          <Route path="account/rewardpoints" element={<RewardPoints />} />
+          <Route path="/account/reward-new" element={<RewardPoints />} />
           <Route
-            path="account/rewardpoints/detail"
+            path="/account/reward-new/detail"
             element={<RewardPointsDetail />}
           />
           <Route path="*" element={<PageNotFound />} />
