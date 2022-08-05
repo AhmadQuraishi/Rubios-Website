@@ -176,6 +176,9 @@
   cursor: pointer;
 }
 @media screen and (max-width: 1199px) {
+  #reward-points-container .reward-point-merge-panel {
+    height: 94%;
+  }
   #reward-points-container .reward-point-panel {
     max-width: none;
     width: 98%;
