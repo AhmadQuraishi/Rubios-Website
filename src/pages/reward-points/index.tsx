@@ -55,7 +55,7 @@ const RewardPoints = () => {
             </span>
           </Typography>
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} sx={{ paddingTop: '10px' }}>
           <Grid container>
             <Grid item xs={6} md={4} className="pp-oo">
               <Card className="reward-point-merge-panel">
@@ -219,7 +219,11 @@ const RewardPoints = () => {
             400 Points
           </Typography>
         </Grid>
-        <Grid item xs={12} sx={{ marginBottom: { xs: '25px', md: '20px' } }}>
+        <Grid
+          item
+          xs={12}
+          sx={{ paddingTop: '10px', marginBottom: { xs: '25px', md: '20px' } }}
+        >
           <Grid container>
             <Grid item xs={6} md={4} className="pp-oo">
               <Card className="reward-point-merge-panel">
@@ -403,7 +407,11 @@ const RewardPoints = () => {
             700 Points
           </Typography>
         </Grid>
-        <Grid item xs={12} sx={{ marginBottom: { xs: '25px', md: '20px' } }}>
+        <Grid
+          item
+          xs={12}
+          sx={{ paddingTop: '10px', marginBottom: { xs: '25px', md: '20px' } }}
+        >
           <Grid container>
             <Grid item xs={6} md={4} className="pp-oo">
               <Card className="reward-point-merge-panel">
