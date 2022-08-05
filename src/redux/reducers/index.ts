@@ -4,6 +4,7 @@ import footerReducer from './footer';
 import categoryReducer from './category';
 import userReducer from './user';
 import rewardReducer from './reward';
+import rewardReducerNew from './reward-new';
 import tokenReducer from './token';
 import TokensReducer from './Tokens';
 import storage from 'redux-persist/lib/storage';
@@ -63,6 +64,7 @@ const rootReducers = combineReducers({
   footerReducer,
   userReducer,
   rewardReducer,
+  rewardReducerNew,
   utensilsReducer,
   restaurantInfoReducer,
   locationReducer,

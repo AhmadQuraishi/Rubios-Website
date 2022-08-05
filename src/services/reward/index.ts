@@ -11,10 +11,13 @@ export const requestRewards = () => {
   }
 };
 
-export const testingRewards = () => {
+export const requestRewardsNew = () => {
   try {
-    const url = `${process.env.REACT_APP_PUNCHH_API}/api/auth/checkins/balance?client=${process.env.REACT_APP_PUNCHH_CLIENT_ID}`;
-    return axiosInstance.get(url).then((response) => response.data);
+    const authentication_token =
+      store.getState().providerReducer.providerToken.authentication_token;
+
+    const url = `${process.env.REACT_APP_PUNCHH_API}/api/auth/checkins/balance?client=${process.env.REACT_APP_PUNCHH_CLIENT_ID}&authentication_token=${authentication_token}`;
+    return axios.get(url).then((response) => response.data);
   } catch (error) {
     throw error;
   }

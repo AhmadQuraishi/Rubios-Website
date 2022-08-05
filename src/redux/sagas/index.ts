@@ -3,7 +3,7 @@ import { footerMenuItemSaga } from './footer';
 import { categoryItemsSaga } from './category';
 import { storeToken } from './token';
 import { userSaga } from './user';
-import { redeemRewardSada } from './reward';
+import {redeemRewardSada} from './reward';
 import { restaurantInfoSaga } from './restaurant';
 import { restaurantCalendarSaga } from './restaurant/calendar';
 import { productOptionsSaga } from './product/option';
