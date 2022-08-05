@@ -34,6 +34,7 @@ const StayCurrentIframe = lazy(() => import('./pages/iframe/stay-current'));
 const RewardPoints = lazy(() => import('./pages/reward-points'));
 const RewardPointsDetail = lazy(() => import('./pages/reward-points/detail'));
 
+
 const AppRoutes = () => {
   return (
     <>
