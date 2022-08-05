@@ -68,15 +68,39 @@ const RewardPoints = () => {
                       />
                     </Grid>
                     <Grid item xs={12} lg={7} className="content-panel-desc">
-                      <p
-                        aria-label="Free Drink"
-                        title="Free Drink Free Drink Free Drink Free Drink"
-                        className="title-heading"
+                      <Grid
+                        container
+                        sx={{ height: { xs: 'auto', lg: '100%' } }}
                       >
-                        Free Drink
-                      </p>
-                      <p className="expire">Expires 8/8</p>
-                      <p className="button">REDEEM IN RESTURANT</p>
+                        <Grid
+                          item
+                          xs={12}
+                          sx={{
+                            height: '60%',
+                            paddingBottom: { xs: '0px', md: '5px' },
+                          }}
+                        >
+                          <p
+                            aria-label="Free Drink"
+                            title="Free Drink Free Drink Free Drink Free Drink"
+                            className="title-heading"
+                          >
+                            Free Drink
+                          </p>
+                          <p className="expire">Expires 8/8</p>
+                        </Grid>
+                        <Grid
+                          item
+                          xs={12}
+                          style={{
+                            height: '40%',
+                            display: 'flex',
+                            alignItems: 'end',
+                          }}
+                        >
+                          <p className="button">REDEEM IN RESTURANT</p>
+                        </Grid>
+                      </Grid>
                     </Grid>
                   </Grid>
                 </Link>
@@ -93,15 +117,39 @@ const RewardPoints = () => {
                       />
                     </Grid>
                     <Grid item xs={12} lg={7} className="content-panel-desc">
-                      <p
-                        aria-label="Free Drink"
-                        title="Free Drink Free Drink Free Drink Free Drink"
-                        className="title-heading"
+                      <Grid
+                        container
+                        sx={{ height: { xs: 'auto', lg: '100%' } }}
                       >
-                        Free Drink
-                      </p>
-                      <p className="expire">Expires 8/8</p>
-                      <p className="button">REDEEM IN RESTURANT</p>
+                        <Grid
+                          item
+                          xs={12}
+                          sx={{
+                            height: '60%',
+                            paddingBottom: { xs: '0px', md: '5px' },
+                          }}
+                        >
+                          <p
+                            aria-label="Free Drink"
+                            title="Free Drink Free Drink Free Drink Free Drink"
+                            className="title-heading"
+                          >
+                            Free Drink
+                          </p>
+                          <p className="expire">Expires 8/8</p>
+                        </Grid>
+                        <Grid
+                          item
+                          xs={12}
+                          style={{
+                            height: '40%',
+                            display: 'flex',
+                            alignItems: 'end',
+                          }}
+                        >
+                          <p className="button">REDEEM IN RESTURANT</p>
+                        </Grid>
+                      </Grid>
                     </Grid>
                   </Grid>
                 </Link>
@@ -118,15 +166,32 @@ const RewardPoints = () => {
                       />
                     </Grid>
                     <Grid item xs={12} lg={7} className="content-panel-desc">
-                      <p
-                        aria-label="Free Drink"
-                        title="Free Drink Free Drink Free Drink Free Drink"
-                        className="title-heading"
+                      <Grid
+                        container
+                        sx={{ height: { xs: 'auto', lg: '100%' } }}
                       >
-                        Free Drink
-                      </p>
-                      <p className="expire">Expires 8/8</p>
-                      <p className="button">REDEEM IN RESTURANT</p>
+                        <Grid item xs={12} style={{ height: '60%' }}>
+                          <p
+                            aria-label="Free Drink"
+                            title="Free Drink Free Drink Free Drink Free Drink"
+                            className="title-heading"
+                          >
+                            Free Drink
+                          </p>
+                          <p className="expire">Expires 8/8</p>
+                        </Grid>
+                        <Grid
+                          item
+                          xs={12}
+                          style={{
+                            height: '40%',
+                            display: 'flex',
+                            alignItems: 'end',
+                          }}
+                        >
+                          <p className="button">REDEEM IN RESTURANT</p>
+                        </Grid>
+                      </Grid>
                     </Grid>
                   </Grid>
                 </Link>
@@ -168,15 +233,32 @@ const RewardPoints = () => {
                       />
                     </Grid>
                     <Grid item xs={12} lg={7} className="content-panel-desc">
-                      <p className="points">400 Points</p>
-                      <p
-                        aria-label="Free Drink"
-                        title="Free Drink Free Drink Free Drink Free Drink"
-                        className="title-heading"
+                      <Grid
+                        container
+                        sx={{ height: { xs: 'auto', lg: '100%' } }}
                       >
-                        Free Drink
-                      </p>
-                      <p className="button">REDEEM IN RESTURANT</p>
+                        <Grid item xs={12} style={{ height: '60%' }}>
+                          <p className="points">400 Points</p>
+                          <p
+                            aria-label="Free Drink"
+                            title="Free Drink Free Drink Free Drink Free Drink"
+                            className="title-heading"
+                          >
+                            Free Drink
+                          </p>
+                        </Grid>
+                        <Grid
+                          item
+                          xs={12}
+                          style={{
+                            height: '40%',
+                            display: 'flex',
+                            alignItems: 'end',
+                          }}
+                        >
+                          <p className="button">REDEEM IN RESTURANT</p>
+                        </Grid>
+                      </Grid>
                     </Grid>
                   </Grid>
                 </Link>
@@ -193,15 +275,32 @@ const RewardPoints = () => {
                       />
                     </Grid>
                     <Grid item xs={12} lg={7} className="content-panel-desc">
-                      <p className="points">400 Points</p>
-                      <p
-                        aria-label="Free Drink"
-                        title="Free Drink Free Drink Free Drink Free Drink"
-                        className="title-heading"
+                      <Grid
+                        container
+                        sx={{ height: { xs: 'auto', lg: '100%' } }}
                       >
-                        Free Drink
-                      </p>
-                      <p className="button">REDEEM IN RESTURANT</p>
+                        <Grid item xs={12} style={{ height: '60%' }}>
+                          <p className="points">400 Points</p>
+                          <p
+                            aria-label="Free Drink"
+                            title="Free Drink Free Drink Free Drink Free Drink"
+                            className="title-heading"
+                          >
+                            Free Drink
+                          </p>
+                        </Grid>
+                        <Grid
+                          item
+                          xs={12}
+                          style={{
+                            height: '40%',
+                            display: 'flex',
+                            alignItems: 'end',
+                          }}
+                        >
+                          <p className="button">REDEEM IN RESTURANT</p>
+                        </Grid>
+                      </Grid>
                     </Grid>
                   </Grid>
                 </Link>
@@ -218,15 +317,32 @@ const RewardPoints = () => {
                       />
                     </Grid>
                     <Grid item xs={12} lg={7} className="content-panel-desc">
-                      <p className="points">400 Points</p>
-                      <p
-                        aria-label="Free Drink"
-                        title="Free Drink Free Drink Free Drink Free Drink"
-                        className="title-heading"
+                      <Grid
+                        container
+                        sx={{ height: { xs: 'auto', lg: '100%' } }}
                       >
-                        Free Drink
-                      </p>
-                      <p className="button">REDEEM IN RESTURANT</p>
+                        <Grid item xs={12} style={{ height: '60%' }}>
+                          <p className="points">400 Points</p>
+                          <p
+                            aria-label="Free Drink"
+                            title="Free Drink Free Drink Free Drink Free Drink"
+                            className="title-heading"
+                          >
+                            Free Drink
+                          </p>
+                        </Grid>
+                        <Grid
+                          item
+                          xs={12}
+                          style={{
+                            height: '40%',
+                            display: 'flex',
+                            alignItems: 'end',
+                          }}
+                        >
+                          <p className="button">REDEEM IN RESTURANT</p>
+                        </Grid>
+                      </Grid>
                     </Grid>
                   </Grid>
                 </Link>
@@ -243,15 +359,32 @@ const RewardPoints = () => {
                       />
                     </Grid>
                     <Grid item xs={12} lg={7} className="content-panel-desc">
-                      <p className="points">400 Points</p>
-                      <p
-                        aria-label="Free Drink"
-                        title="Free Drink Free Drink Free Drink Free Drink"
-                        className="title-heading"
+                      <Grid
+                        container
+                        sx={{ height: { xs: 'auto', lg: '100%' } }}
                       >
-                        Free Drink
-                      </p>
-                      <p className="button">REDEEM IN RESTURANT</p>
+                        <Grid item xs={12} style={{ height: '60%' }}>
+                          <p className="points">400 Points</p>
+                          <p
+                            aria-label="Free Drink"
+                            title="Free Drink Free Drink Free Drink Free Drink"
+                            className="title-heading"
+                          >
+                            Free Drink
+                          </p>
+                        </Grid>
+                        <Grid
+                          item
+                          xs={12}
+                          style={{
+                            height: '40%',
+                            display: 'flex',
+                            alignItems: 'end',
+                          }}
+                        >
+                          <p className="button">REDEEM IN RESTURANT</p>
+                        </Grid>
+                      </Grid>
                     </Grid>
                   </Grid>
                 </Link>
@@ -283,15 +416,29 @@ const RewardPoints = () => {
                     />
                   </Grid>
                   <Grid item xs={12} lg={7} className="content-panel-desc">
-                    <p className="points">700 Points</p>
-                    <p
-                      aria-label="Free Drink"
-                      title="Free Drink Free Drink Free Drink Free Drink"
-                      className="title-heading"
-                    >
-                      Free Drink
-                    </p>
-                    <p className="button disable">REDEEM IN RESTURANT</p>
+                    <Grid container sx={{ height: { xs: 'auto', lg: '100%' } }}>
+                      <Grid item xs={12} style={{ height: '60%' }}>
+                        <p className="points">700 Points</p>
+                        <p
+                          aria-label="Free Drink"
+                          title="Free Drink Free Drink Free Drink Free Drink"
+                          className="title-heading"
+                        >
+                          Free Drink
+                        </p>
+                      </Grid>
+                      <Grid
+                        item
+                        xs={12}
+                        style={{
+                          height: '40%',
+                          display: 'flex',
+                          alignItems: 'end',
+                        }}
+                      >
+                        <p className="button disable">REDEEM IN RESTURANT</p>
+                      </Grid>
+                    </Grid>
                   </Grid>
                 </Grid>
               </Card>
@@ -306,15 +453,29 @@ const RewardPoints = () => {
                     />
                   </Grid>
                   <Grid item xs={12} lg={7} className="content-panel-desc">
-                    <p className="points">700 Points</p>
-                    <p
-                      aria-label="Free Drink"
-                      title="Free Drink Free Drink Free Drink Free Drink"
-                      className="title-heading"
-                    >
-                      Free Drink
-                    </p>
-                    <p className="button disable">REDEEM IN RESTURANT</p>
+                    <Grid container sx={{ height: { xs: 'auto', lg: '100%' } }}>
+                      <Grid item xs={12} style={{ height: '60%' }}>
+                        <p className="points">700 Points</p>
+                        <p
+                          aria-label="Free Drink"
+                          title="Free Drink Free Drink Free Drink Free Drink"
+                          className="title-heading"
+                        >
+                          Free Drink
+                        </p>
+                      </Grid>
+                      <Grid
+                        item
+                        xs={12}
+                        style={{
+                          height: '40%',
+                          display: 'flex',
+                          alignItems: 'end',
+                        }}
+                      >
+                        <p className="button disable">REDEEM IN RESTURANT</p>
+                      </Grid>
+                    </Grid>
                   </Grid>
                 </Grid>
               </Card>

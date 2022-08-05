@@ -92,7 +92,6 @@
   .content-panel
   .content-panel-desc
   .title-heading {
-  max-height: 55px;
   font-size: 17px;
   overflow: hidden;
   line-height: 25px;
@@ -122,8 +121,6 @@
 }
 #reward-points-container
   .reward-point-merge-panel
-  .content-panel
-  .content-panel-desc
   .button {
   margin: 0;
   line-height: 20px;
@@ -134,13 +131,10 @@
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  position: absolute;
   bottom: 5px;
 }
 #reward-points-container
   .reward-point-merge-panel
-  .content-panel
-  .content-panel-desc
   .button.disable {
   color: #b1b1b1;
 }
@@ -188,8 +182,6 @@
   }
   #reward-points-container
     .reward-point-merge-panel
-    .content-panel
-    .content-panel-desc
     .button {
     position: relative;
     margin-top: 10px;
