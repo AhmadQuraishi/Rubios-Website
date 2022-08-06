@@ -128,6 +128,14 @@ const RewardNew = () => {
             </Grid>
             <Grid item xs={12}>
               <Grid spacing={2} container>
+                {rewards && rewards.length === 0 && (
+                  <Grid item xs={12}>
+                    <Typography>
+                      No rewards available. Keep checking in and we'll let you
+                      know when it's time to be rewarded.
+                    </Typography>
+                  </Grid>
+                )}
                 {rewards && rewards.length > 0 && (
                   <>
                     {rewards.map((reward: any) => {
@@ -204,115 +212,131 @@ const RewardNew = () => {
               <hr />
             </Grid>
 
-            <Grid item xs={12} sx={{ marginTop: { xs: '30px', sm: '0px' } }}>
-              <Typography
-                variant="h2"
-                className="small-heading"
-                title="ARedeem Points"
-              >
-                Redeem Points{' '}
-                <span aira-label="help Icon" className="help-icon">
-                  ?
-                </span>
-              </Typography>
-            </Grid>
-            {redeemables &&
-              Object.keys(redeemables).length > 0 &&
-              Object.keys(redeemables).map((key: any) => {
-                return (
-                  <>
-                    <Grid style={{ paddingBottom: 10 }} item xs={12}>
-                      <Typography
-                        variant="h3"
-                        className={`bold-title dd${
-                          points >= key ? '' : ' disable'
-                        }`}
-                        title={`${key} Points`}
-                      >
-                        {key} Points
-                      </Typography>
-                    </Grid>
-                    {redeemables[key].length > 0 &&
-                      redeemables[key].map((redeem: any) => {
-                        return (
-                          <>
-                            <Grid
-                              item
-                              xs={12}
-                              sx={{
-                                marginBottom: { xs: '25px', md: '20px' },
-                              }}
-                            >
-                              <Grid container>
-                                <Grid item xs={6} md={4}>
-                                  <Card className="reward-point-merge-panel">
-                                    {/*<Link to="/account/reward-new/detail">*/}
-                                    <Grid container className="content-panel">
-                                      <Grid
-                                        item
-                                        xs={12}
-                                        lg={5}
-                                        style={{
-                                          display: 'flex',
-                                          alignItems: 'center',
-                                        }}
-                                        className="img-panel"
-                                      >
-                                        <img
-                                          src={`${
-                                            redeem.image ? redeem.image : ''
-                                          }`}
-                                          alt=""
-                                        />
-                                      </Grid>
-                                      <Grid
-                                        item
-                                        xs={12}
-                                        lg={7}
-                                        className="content-panel-desc"
-                                      >
-                                        <p className="points">{key} Points</p>
-                                        <p
-                                          aria-label={
-                                            redeem.name ? redeem.name : ''
-                                          }
-                                          title={redeem.name ? redeem.name : ''}
-                                          className="title-heading"
+            {data.redeemables && data.redeemables.length > 0 && (
+              <>
+                <Grid
+                  item
+                  xs={12}
+                  sx={{ marginTop: { xs: '30px', sm: '0px' } }}
+                >
+                  <Typography
+                    variant="h2"
+                    className="small-heading"
+                    title="ARedeem Points"
+                  >
+                    Redeem Points{' '}
+                    <span aira-label="help Icon" className="help-icon">
+                      ?
+                    </span>
+                  </Typography>
+                </Grid>
+                {redeemables &&
+                  Object.keys(redeemables).length > 0 &&
+                  Object.keys(redeemables).map((key: any) => {
+                    return (
+                      <>
+                        <Grid style={{ paddingBottom: 10 }} item xs={12}>
+                          <Typography
+                            variant="h3"
+                            className={`bold-title dd${
+                              points >= key ? '' : ' disable'
+                            }`}
+                            title={`${key} Points`}
+                          >
+                            {key} Points
+                          </Typography>
+                        </Grid>
+                        {redeemables[key].length > 0 &&
+                          redeemables[key].map((redeem: any) => {
+                            return (
+                              <>
+                                <Grid
+                                  item
+                                  xs={12}
+                                  sx={{
+                                    marginBottom: { xs: '25px', md: '20px' },
+                                  }}
+                                >
+                                  <Grid container>
+                                    <Grid item xs={6} md={4}>
+                                      <Card className="reward-point-merge-panel">
+                                        {/*<Link to="/account/reward-new/detail">*/}
+                                        <Grid
+                                          container
+                                          className="content-panel"
                                         >
-                                          {redeem.name ? redeem.name : ''}
-                                        </p>
-                                        <p className="expire"></p>
-                                        <p
-                                          onClick={() =>
-                                            onRedeemableClicked(
-                                              redeem.id,
-                                              redeem.name,
-                                              points >= key,
-                                              'redeemable',
-                                            )
-                                          }
-                                          className={`button${
-                                            points >= key ? '' : ' disable'
-                                          }`}
-                                        >
-                                          REDEEM IN RESTURANT
-                                        </p>
-                                      </Grid>
+                                          <Grid
+                                            item
+                                            xs={12}
+                                            lg={5}
+                                            style={{
+                                              display: 'flex',
+                                              alignItems: 'center',
+                                            }}
+                                            className="img-panel"
+                                          >
+                                            <img
+                                              src={`${
+                                                redeem.image ? redeem.image : ''
+                                              }`}
+                                              alt=""
+                                            />
+                                          </Grid>
+                                          <Grid
+                                            item
+                                            xs={12}
+                                            lg={7}
+                                            className="content-panel-desc"
+                                          >
+                                            <p className="points">
+                                              {key} Points
+                                            </p>
+                                            <p
+                                              aria-label={
+                                                redeem.name ? redeem.name : ''
+                                              }
+                                              title={
+                                                redeem.name ? redeem.name : ''
+                                              }
+                                              className="title-heading"
+                                            >
+                                              {redeem.name ? redeem.name : ''}
+                                            </p>
+                                            <p className="expire"></p>
+                                            <p
+                                              onClick={() =>
+                                                onRedeemableClicked(
+                                                  redeem.id,
+                                                  redeem.name,
+                                                  points >= key,
+                                                  'redeemable',
+                                                )
+                                              }
+                                              className={`button${
+                                                points >= key ? '' : ' disable'
+                                              }`}
+                                            >
+                                              REDEEM IN RESTURANT
+                                            </p>
+                                          </Grid>
+                                        </Grid>
+                                        {/*</Link>*/}
+                                      </Card>
                                     </Grid>
-                                    {/*</Link>*/}
-                                  </Card>
+                                  </Grid>
                                 </Grid>
-                              </Grid>
-                            </Grid>
-                            <Grid item xs={12}>
-                              <hr className="low" />
-                            </Grid>
-                          </>
-                        );
-                      })}
-                  </>
-                );
-              })}
+                                <Grid item xs={12}>
+                                  <hr className="low" />
+                                </Grid>
+                              </>
+                            );
+                          })}
+                      </>
+                    );
+                  })}
+              </>
+            )}
+
             <Grid item xs={12} lg={7} className="message-panel">
               <h3>HOW TO REDEEM YOUR REWARDS</h3>
               <p className="low-head">In-RESTAURANT ORDERS</p>
