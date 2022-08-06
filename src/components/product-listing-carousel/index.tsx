@@ -73,6 +73,7 @@ const ProductListingCarousel = (props: any) => {
       breakpoint: { max: 464, min: 0 },
       items: 1,
       slidesToSlide: 1, // optional, default to 1.
+      partialVisibilityGutter: 30,
     },
   };
 
@@ -160,6 +161,7 @@ const ProductListingCarousel = (props: any) => {
         autoPlay={false}
         autoPlaySpeed={99999}
         keyBoardControl={true}
+        partialVisible={true}
         // customTransition="all .5"
         transitionDuration={500}
         containerClass="carousel-container"
