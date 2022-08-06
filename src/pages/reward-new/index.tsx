@@ -121,9 +121,11 @@ const RewardNew = () => {
                 style={{ paddingBottom: 20 }}
               >
                 Available Rewards{' '}
-                <span aira-label="help Icon" className="help-icon">
-                  ?
-                </span>
+                <a href="#instructions">
+                  <span aira-label="help Icon" className="help-icon">
+                    ?
+                  </span>
+                </a>
               </Typography>
             </Grid>
             <Grid item xs={12}>
@@ -223,14 +225,16 @@ const RewardNew = () => {
                     title="ARedeem Points"
                   >
                     Redeem Points{' '}
-                    <span aira-label="help Icon" className="help-icon">
-                      ?
-                    </span>
+                    <a href="#instructions">
+                      <span aira-label="help Icon" className="help-icon">
+                        ?
+                      </span>
+                    </a>
                   </Typography>
                 </Grid>
                 {redeemables &&
                   Object.keys(redeemables).length > 0 &&
-                  Object.keys(redeemables).map((key: any) => {
+                  Object.keys(redeemables).map((key: any, index: any) => {
                     return (
                       <>
                         <Grid style={{ paddingBottom: 10 }} item xs={12}>
@@ -323,17 +327,23 @@ const RewardNew = () => {
                                     </Grid>
                                   </Grid>
                                 </Grid>
-                                <Grid item xs={12}>
-                                  <hr className="low" />
-                                </Grid>
                               </>
                             );
                           })}
+                        {index !== Object.keys(redeemables).length - 1 && (
+                          <Grid item xs={12}>
+                            <hr className="low" />
+                          </Grid>
+                        )}
                       </>
                     );
                   })}
               </>
             )}
+            <Grid item xs={12}>
+              {/*<hr className="low" />*/}
+              <div id="instructions" style={{ paddingTop: 80 }}></div>
+            </Grid>
 
             <Grid item xs={12} lg={7} className="message-panel">
               <h3>HOW TO REDEEM YOUR REWARDS</h3>

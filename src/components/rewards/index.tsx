@@ -150,7 +150,7 @@ const Rewards = (props: any) => {
                       value={reward.redeemable_id}
                       className="choose-btn"
                     >
-                      <Grid container spacing={2} className="align-item">
+                      <Grid container className="align-item">
                         <Grid
                           item
                           xs={12}
@@ -168,28 +168,37 @@ const Rewards = (props: any) => {
                           )}
                         </Grid>
                         <Grid item xs={12} sm={7} className="icon-content">
-                          <Typography>
-                            {reward.quantityavailable > 1
-                              ? reward.quantityavailable + ' x ' + reward.label
-                              : reward.label}
-                          </Typography>
                           {reward.localType === 'redemption' && (
                             <Typography className="points">
                               {reward.points ? reward.points : 0} Points
                             </Typography>
                           )}
-                          {reward.expiring_at_tz && (
-                            <Typography className="expire">
-                              Expires{' '}
-                              {moment(reward.expiring_at_tz).format('MM/YY')}
-                            </Typography>
-                          )}
-                          {reward.localType === 'redemption' && (
-                            <Typography className="apply-button">
-                              Apply
-                            </Typography>
-                          )}
+                          <Typography
+                            title={
+                              reward.quantityavailable > 1
+                                ? reward.quantityavailable +
+                                  ' x ' +
+                                  reward.label
+                                : reward.label
+                            }
+                          >
+                            {reward.quantityavailable > 1
+                              ? reward.quantityavailable + ' x ' + reward.label
+                              : reward.label}
+                          </Typography>
+                          <Typography className="expire">
+                            {reward.expiring_at_tz && (
+                              <>
+                                Expires
+                                {moment(reward.expiring_at_tz).format('MM/YY')}
+                              </>
+                            )}
+                          </Typography>
+                          <Typography className="apply-button">
+                            Apply
+                          </Typography>
                         </Grid>
+
                       </Grid>
                     </ToggleButton>
                   ))}
