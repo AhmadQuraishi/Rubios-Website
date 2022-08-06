@@ -50,7 +50,7 @@ const Rewards = (props: any) => {
       basketObj.basket.appliedrewards &&
       basketObj.basket.appliedrewards.length > 0
     ) {
-      setSelectedRewardID(basketObj.basket.appliedrewards[0].reference);
+      setSelectedRewardID(basketObj.basket.appliedrewards[0].reference.toString());
       setAlignment(basketObj.basket.appliedrewards[0].reference.toString());
     }
   }, []);
@@ -69,7 +69,7 @@ const Rewards = (props: any) => {
       references: [refID],
     };
     if (
-      selectedRewardID == refID &&
+      selectedRewardID === refID.toString() &&
       basketObj &&
       basketObj.basket &&
       basketObj.basket.appliedrewards &&
@@ -147,7 +147,7 @@ const Rewards = (props: any) => {
                       onClick={() => {
                         applyReward(reward.membershipid, reward.redeemable_id);
                       }}
-                      value={reward.redeemable_id}
+                      value={reward.redeemable_id.toString()}
                       className="choose-btn"
                     >
                       <Grid container className="align-item">
