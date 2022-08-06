@@ -133,7 +133,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                               {/*  : parseFloat(*/}
                               {/*      basket.discounts[0].amount.toString(),*/}
                               {/*    ).toFixed(2)}*/}
-                              -${discount.amount}
+                              -${discount.amount && discount.amount.toFixed(2)}
                             </Typography>
                           </Grid>
                         </Grid>

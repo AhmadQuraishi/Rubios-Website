@@ -1,16 +1,11 @@
-import { Card, CardContent, Grid, Theme, Typography } from '@mui/material';
+import { Card, Grid, Theme, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import './redeem-reward.css';
-import { useEffect, Fragment, useState } from 'react';
+import { useEffect, Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRewards } from '../../redux/actions/reward';
 import RewardListSkeletonUI from '../../components/rewards-list-skeleton';
 import { useNavigate } from 'react-router-dom';
-import {
-  getRedemptionCode,
-  setReward,
-} from '../../redux/actions/reward/redemption';
-import { displayToast } from '../../helpers/toast';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -34,40 +29,14 @@ const RedeemRewards = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  // // const [isRedeem, setIsredeem] = useState(false);
-  // const [isProgress, setIsProgress] = useState(false);
-  // const [reward_name, setRewardName] = useState('');
   const { rewards, loading } = useSelector((state: any) => state.rewardReducer);
-  // const { redemption, error, loading1 } = useSelector(
-  //   (state: any) => state.redemptionReducer,
-  // );
   useEffect(() => {
     dispatch(getRewards());
   }, []);
 
   const handler = (id: string, name: string) => {
-    // setIsProgress(true);
-    // setRewardName(name);
-    // dispatch(getRedemptionCode(id));
-    // setIsredeem(true);
-    navigate(`/account/reward/details/${id}?reward_name=${name}`);
+    navigate(`/account/reward/details/${id}?name=${name}`);
   };
-  // useEffect(() => {
-  //   if (redemption !== null && !loading1 && isRedeem) {
-  //     setIsredeem(false);
-  //     dispatch(setReward(reward_name));
-  //     setIsProgress(true);
-  //     navigate(`reward`);
-  //     setTimeout(() => {
-  //       dispatch(setReward(''));
-  //     }, 86400000);
-  //   } else if (error && error.message && !loading1 && isRedeem) {
-  //     displayToast('ERROR', 'failed to redeem this reward');
-  //     setIsredeem(false);
-  //     setIsProgress(true);
-  //   }
-  // }, [redemption]);
 
   return (
     <Fragment>

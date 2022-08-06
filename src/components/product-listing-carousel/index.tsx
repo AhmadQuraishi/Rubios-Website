@@ -154,11 +154,11 @@ const ProductListingCarousel = (props: any) => {
         draggable={false}
         responsive={responsive}
         // ssr={true} // means to render carousel on server-side.
-        infinite={false}
+        // infinite={false}
         // autoPlay={props.deviceType !== 'mobile' ? false : true}
         additionalTransfrom={0}
-        // autoPlay={isMobile ? true : false}
-        // autoPlaySpeed={1000}
+        autoPlay={false}
+        autoPlaySpeed={99999}
         keyBoardControl={true}
         // customTransition="all .5"
         transitionDuration={500}
