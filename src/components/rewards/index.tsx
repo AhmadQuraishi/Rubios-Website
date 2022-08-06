@@ -64,30 +64,34 @@ const Rewards = (props: any) => {
   }, [objRemoveReward]);
 
   const applyReward = (membershipid: number, refID: string) => {
-    const request = {
-      membershipid: membershipid,
-      references: [refID],
-    };
-    if (
-      selectedRewardID === refID.toString() &&
-      basketObj &&
-      basketObj.basket &&
-      basketObj.basket.appliedrewards &&
-      basketObj.basket.appliedrewards.length > 0
-    ) {
-      setRemovedActionClicked(true);
-      setSelectedRewardID(refID);
-      dispatch(
-        removeRewardFromBasketRequest(
-          basketObj.basket.id,
-          parseInt(basketObj.basket.appliedrewards[0].rewardid),
-        ),
-      );
-    } else {
-      setActionClicked(true);
-      setSelectedRewardID(refID);
-      dispatch(applyRewardOnBasketRequest(basketObj.basket.id, request));
-    }
+
+    setTimeout(() => {
+      const request = {
+        membershipid: membershipid,
+        references: [refID],
+      };
+      if (
+        selectedRewardID === refID.toString() &&
+        basketObj &&
+        basketObj.basket &&
+        basketObj.basket.appliedrewards &&
+        basketObj.basket.appliedrewards.length > 0
+      ) {
+        setRemovedActionClicked(true);
+        setSelectedRewardID(refID);
+        dispatch(
+          removeRewardFromBasketRequest(
+            basketObj.basket.id,
+            parseInt(basketObj.basket.appliedrewards[0].rewardid),
+          ),
+        );
+      } else {
+        setActionClicked(true);
+        setSelectedRewardID(refID);
+        dispatch(applyRewardOnBasketRequest(basketObj.basket.id, request));
+      }
+    }, 1000)
+
   };
   useEffect(() => {
     if (
