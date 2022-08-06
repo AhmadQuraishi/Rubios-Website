@@ -50,7 +50,9 @@ const Rewards = (props: any) => {
       basketObj.basket.appliedrewards &&
       basketObj.basket.appliedrewards.length > 0
     ) {
-      setSelectedRewardID(basketObj.basket.appliedrewards[0].reference.toString());
+      setSelectedRewardID(
+        basketObj.basket.appliedrewards[0].reference.toString(),
+      );
       setAlignment(basketObj.basket.appliedrewards[0].reference.toString());
     }
   }, []);
@@ -64,7 +66,6 @@ const Rewards = (props: any) => {
   }, [objRemoveReward]);
 
   const applyReward = (membershipid: number, refID: string) => {
-
     setTimeout(() => {
       const request = {
         membershipid: membershipid,
@@ -90,8 +91,7 @@ const Rewards = (props: any) => {
         setSelectedRewardID(refID);
         dispatch(applyRewardOnBasketRequest(basketObj.basket.id, request));
       }
-    }, 1000)
-
+    }, 1000);
   };
   useEffect(() => {
     if (
@@ -149,7 +149,7 @@ const Rewards = (props: any) => {
                   {rewardsArray.map((reward, index) => (
                     <ToggleButton
                       onClick={() => {
-                        applyReward(reward.membershipid, reward.redeemable_id);
+                        applyReward(reward.membershipid, reward.redeemable_id.toString());
                       }}
                       value={reward.redeemable_id.toString()}
                       className="choose-btn"
@@ -199,10 +199,12 @@ const Rewards = (props: any) => {
                             )}
                           </Typography>
                           <Typography className="apply-button">
-                            Apply
+                            {selectedRewardID ===
+                            reward.redeemable_id.toString()
+                              ? 'Remove'
+                              : 'Apply'}
                           </Typography>
                         </Grid>
-
                       </Grid>
                     </ToggleButton>
                   ))}
