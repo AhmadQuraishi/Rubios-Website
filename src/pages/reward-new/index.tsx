@@ -148,7 +148,6 @@ const RewardNew = () => {
                           sx={{ paddingTop: '10px' }}
                         >
                           <Card className="reward-point-merge-panel">
-                            {/*<Link to="/account/reward-new/detail">*/}
                             <Grid container className="content-panel">
                               <Grid item xs={12} lg={5} className="img-panel">
                                 <img
@@ -199,7 +198,6 @@ const RewardNew = () => {
                                 </p>
                               </Grid>
                             </Grid>
-                            {/*</Link>*/}
                           </Card>
                         </Grid>
                       );

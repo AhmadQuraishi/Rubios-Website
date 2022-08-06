@@ -151,7 +151,12 @@ const Rewards = (props: any) => {
                       className="choose-btn"
                     >
                       <Grid container spacing={2} className="align-item">
-                        <Grid item xs={12} sm={4} md={4} lg={4}>
+                        <Grid
+                          item
+                          xs={12}
+                          sm={5}
+                          sx={{ display: { xs: 'none', sm: 'flex' } }}
+                        >
                           {reward.imageurl == null && (
                             <img
                               src={require('../../assets/imgs/punchh-icon-thumb.png')}
@@ -162,28 +167,26 @@ const Rewards = (props: any) => {
                             <img src={reward.imageurl} alt="" />
                           )}
                         </Grid>
-                        <Grid
-                          item
-                          xs={12}
-                          sm={7}
-                          md={7}
-                          lg={7}
-                          className="icon-content"
-                        >
-                          {reward.localType === 'redemption' && (
-                            <Typography>
-                              {reward.points ? reward.points : 0}
-                            </Typography>
-                          )}
+                        <Grid item xs={12} sm={7} className="icon-content">
                           <Typography>
                             {reward.quantityavailable > 1
                               ? reward.quantityavailable + ' x ' + reward.label
                               : reward.label}
                           </Typography>
+                          {reward.localType === 'redemption' && (
+                            <Typography className="points">
+                              {reward.points ? reward.points : 0} Points
+                            </Typography>
+                          )}
                           {reward.expiring_at_tz && (
-                            <Typography>
+                            <Typography className="expire">
                               Expires{' '}
                               {moment(reward.expiring_at_tz).format('MM/YY')}
+                            </Typography>
+                          )}
+                          {reward.localType === 'redemption' && (
+                            <Typography className="apply-button">
+                              Apply
                             </Typography>
                           )}
                         </Grid>
