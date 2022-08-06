@@ -17,6 +17,10 @@
   font-family: 'Poppins-Bold';
   src: url('assets/fonts/Poppins-Bold.ttf') format('truetype');
 }
+@font-face {
+  font-family: 'DoubleTake';
+  src: url('assets/fonts/000DoubleTake-Regular.ttf') format('truetype');
+}
 
 /***** Heading Styles *****/
 
