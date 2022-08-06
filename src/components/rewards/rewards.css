@@ -118,3 +118,227 @@
     height: 32px;
   }
 }
+
+#reward-points-container .reward-point-panel {
+  padding: 15px 10px;
+  border-radius: 0px;
+  border: 1px solid #c6c6c6;
+  box-shadow: 0px 4px 5px 0px rgb(0 0 0 / 20%);
+  font-family: 'Poppins-Medium';
+  text-align: center;
+  width: 100%;
+  max-width: 460px;
+  margin-top: 15px;
+  color: #2b4b62;
+  margin-bottom: 45px;
+  box-sizing: border-box;
+}
+#reward-points-container hr {
+  border: none;
+  border-top: 1px solid #ccc;
+  margin: 40px 0;
+}
+#reward-points-container hr.low {
+  margin: 20px 0 25px 0;
+}
+#reward-points-container .bold-title {
+  font-family: 'DoubleTake', sans-serif !important;
+  font-size: 30px;
+  text-transform: uppercase;
+}
+
+#reward-points-container .small-heading {
+  font-family: 'Poppins-Bold', sans-serif !important;
+  font-size: 25px;
+  text-transform: uppercase;
+  color: #2b4b62;
+  display: flex;
+  align-items: center;
+  padding-bottom: 5px;
+}
+#reward-points-container .help-icon {
+  border-radius: 20px;
+  width: 18px;
+  height: 18px;
+  border: 1px solid #2b4b62;
+  text-align: center;
+  display: inline-block;
+  font-family: 'Poppins-Medium', sans-serif !important;
+  font-size: 14px;
+  margin-left: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#reward-points-container .reward-point-merge-panel {
+  border-radius: 0px;
+  border: 1px solid #c6c6c6;
+  box-shadow: 0px 4px 5px 0px rgb(0 0 0 / 20%);
+  font-family: 'Poppins-Medium';
+  text-align: center;
+  margin-top: 15px;
+  color: #2b4b62;
+  padding: 10px;
+  box-sizing: border-box;
+  margin-right: 15px;
+  height: 92%;
+}
+#reward-points-container a {
+  text-decoration: none;
+  color: #2b4b62;
+  display: block;
+}
+#reward-points-container .reward-point-merge-panel .content-panel {
+  align-content: stretch;
+  text-align: left;
+}
+#reward-points-container
+.reward-point-merge-panel
+.content-panel
+.img-panel
+img {
+  display: block;
+  width: 100%;
+}
+#reward-points-container
+.reward-point-merge-panel
+.content-panel
+.content-panel-desc {
+  padding-left: 15px;
+  position: relative;
+  height: inherit;
+}
+#reward-points-container
+.reward-point-merge-panel
+.content-panel
+.content-panel-desc
+.title-heading {
+  max-height: 55px;
+  font-size: 17px;
+  overflow: hidden;
+  line-height: 25px;
+  word-wrap: break-word;
+}
+#reward-points-container
+.reward-point-merge-panel
+.content-panel
+.content-panel-desc
+.expire {
+  font-size: 11px;
+  color: #333;
+  font-family: 'Poppins-bold' !important;
+  display: block;
+}
+#reward-points-container
+.reward-point-merge-panel
+.content-panel
+.content-panel-desc
+.points {
+  font-size: 11px;
+  padding-top: 2px;
+  margin-bottom: -2px;
+  color: #333;
+  font-family: 'Poppins-bold' !important;
+  text-transform: uppercase;
+}
+#reward-points-container
+.reward-point-merge-panel
+.content-panel
+.content-panel-desc
+.button {
+  margin: 0;
+  line-height: 20px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-family: 'Poppins-Bold', sans-serif !important;
+  color: #0075bf;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  position: absolute;
+  bottom: 5px;
+}
+#reward-points-container
+.reward-point-merge-panel
+.content-panel
+.content-panel-desc
+.button.disable {
+  color: #b1b1b1;
+}
+#reward-points-container .bold-title.dd {
+  font-size: 22px;
+  color: #2b4b62;
+  padding: 5px 0;
+}
+#reward-points-container .bold-title.dd.disable {
+  font-size: 22px;
+  color: #91a6b2;
+  padding: 5px 0;
+}
+#reward-points-container .message-panel {
+  padding: 60px 0 5px 0;
+  font-family: 'Poppins-Medium', sans-serif !important;
+  font-size: 15px;
+  color: #333;
+}
+#reward-points-container .message-panel h3 {
+  font-size: 25px;
+  color: #2b4b62;
+  font-family: 'Poppins-Bold', sans-serif !important;
+  line-height: 32px;
+}
+#reward-points-container .message-panel .low-head {
+  font-size: 18px;
+  font-family: 'DoubleTake', sans-serif !important;
+  text-transform: uppercase;
+  color: #2b4b62;
+  margin: 15px 0px 5px 0;
+}
+#reward-points-container .message-panel .back-link {
+  font-family: 'Poppins-Medium', sans-serif !important;
+  letter-spacing: 2px;
+  margin-top: 30px;
+  color: #2b4b62;
+  font-size: 13px;
+  cursor: pointer;
+}
+@media screen and (max-width: 1199px) {
+  #reward-points-container .reward-point-panel {
+    max-width: none;
+    width: 98%;
+  }
+  #reward-points-container
+  .reward-point-merge-panel
+  .content-panel
+  .content-panel-desc
+  .button {
+    position: relative;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  #reward-points-container
+  .reward-point-merge-panel
+  .content-panel
+  .content-panel-desc {
+    padding-left: 0px;
+    padding-top: 10px;
+  }
+}
+@media screen and (max-width: 640px) {
+  #reward-points-container .message-panel {
+    padding-top: 30px;
+  }
+  #reward-points-container .bold-title {
+    font-size: 35px;
+  }
+  #reward-points-container hr {
+    display: none;
+  }
+  #reward-points-container .small-heading {
+    font-size: 22px;
+  }
+  #reward-points-container .reward-point-panel {
+    margin-bottom: 30px;
+  }
+}
+

@@ -152,8 +152,8 @@ const RewardNew = () => {
                                 className="content-panel-desc"
                               >
                                 <p
-                                  aria-label="Free Drink"
-                                  title="Free Drink Free Drink Free Drink Free Drink"
+                                  aria-label={`${reward.name ? reward.name : ''}`}
+                                  title={`${reward.name ? reward.name : ''}`}
                                   className="title-heading"
                                 >
                                   {reward.name ? reward.name : ''}

@@ -44,6 +44,7 @@ import { CalendarTypeEnum } from '../../helpers/hoursListing';
 import { put } from 'redux-saga/effects';
 import { updateGuestUserInfo } from '../../redux/actions/order';
 import { navigateAppAction } from '../../redux/actions/navigate-app';
+import { getRewardsNew } from '../../redux/actions/reward';
 
 const Checkout = () => {
   const dispatch = useDispatch();
@@ -63,6 +64,7 @@ const Checkout = () => {
   const [basketAccessToken, setBasketAccessToken] = React.useState<any>('');
   const [basket, setBasket] = React.useState<ResponseBasket>();
   const [billingSchemes, setBillingSchemes] = React.useState<any>([]);
+  const [rewards, setRewards] = React.useState<any>([]);
   const [validate, setValidate] =
     React.useState<ResponseBasketValidation | null>(null);
   const [defaultDeliveryAddress, setDefaultDeliveryAddress] =
@@ -72,9 +74,11 @@ const Checkout = () => {
   const basketObj = useSelector((state: any) => state.basketReducer);
   const { authToken } = useSelector((state: any) => state.authReducer);
   const { providerToken } = useSelector((state: any) => state.providerReducer);
-  const { rewards } = useSelector(
+  const { rewards: qualifyingRewards } = useSelector(
     (state: any) => state.getRewardForCheckoutReducer,
   );
+  const { data: rewardsRedemptionsData, loading: loadingRedemptions } =
+    useSelector((state: any) => state.rewardReducerNew);
   const { restaurant, orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
@@ -98,6 +102,64 @@ const Checkout = () => {
     };
     LoadExternalScript();
   }, []);
+
+  useEffect(() => {
+    if (qualifyingRewards && qualifyingRewards.length) {
+      if (
+        rewardsRedemptionsData &&
+        Object.keys(rewardsRedemptionsData).length
+      ) {
+        let finalRewards: any = [];
+        let qualifyingIds: any = {};
+        qualifyingRewards.forEach((reward: any) => {
+          qualifyingIds[reward.reference] = reward;
+        });
+
+        console.log('qualifyingIds', qualifyingIds)
+
+        if (
+          rewardsRedemptionsData &&
+          rewardsRedemptionsData.rewards &&
+          rewardsRedemptionsData.rewards.length
+        ) {
+          rewardsRedemptionsData.rewards.forEach((rew: any) => {
+            if (rew.type === 'reward') {
+              if (rew.redeemable_id && qualifyingIds[rew.redeemable_id]) {
+                finalRewards.push({
+                  ...rew,
+                  localType: rew.type === 'reward',
+                  label: qualifyingIds[rew.redeemable_id].label,
+                  membershipid: qualifyingIds[rew.redeemable_id].membershipid,
+                });
+                delete qualifyingIds[rew.redeemable_id];
+              }
+            }
+          });
+        }
+        console.log('finalRewards 1', finalRewards)
+        if (
+          rewardsRedemptionsData &&
+          rewardsRedemptionsData.redeemables &&
+          rewardsRedemptionsData.redeemables.length
+        ) {
+          console.log('im working')
+          rewardsRedemptionsData.redeemables.forEach((rew: any) => {
+            if (rew.redeemable_id && qualifyingIds[rew.redeemable_id]) {
+              finalRewards.push({
+                ...rew,
+                localType: 'redemption',
+                membershipid: qualifyingIds[rew.redeemable_id].membershipid,
+                label: qualifyingIds[rew.redeemable_id].label,
+              });
+              delete qualifyingIds[rew.redeemable_id];
+            }
+          });
+        }
+        console.log('finalRewards 2', finalRewards)
+        setRewards(finalRewards);
+      }
+    }
+  }, [qualifyingRewards, rewardsRedemptionsData]);
 
   useEffect(() => {
     const getBasketAccessToken = async () => {
@@ -270,6 +332,7 @@ const Checkout = () => {
         dispatch(
           getRewardsForCheckoutRequest(restaurant.id, authToken.authtoken),
         );
+        dispatch(getRewardsNew());
       }
     }
   }, []);

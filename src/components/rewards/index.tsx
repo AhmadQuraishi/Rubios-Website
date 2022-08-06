@@ -6,8 +6,9 @@ import {
   ToggleButtonGroup,
   ToggleButton,
   CircularProgress,
-  useTheme, 
-  useMediaQuery
+  useTheme,
+  useMediaQuery,
+  Card,
 } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import './rewards.css';
@@ -15,6 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { applyRewardOnBasketRequest } from '../../redux/actions/reward/checkout/apply';
 import { displayToast } from '../../helpers/toast';
 import { removeRewardFromBasketRequest } from '../../redux/actions/reward/checkout/remove';
+import moment from 'moment';
 
 const Rewards = (props: any) => {
   const objApplyReward = useSelector(
@@ -57,7 +59,7 @@ const Rewards = (props: any) => {
     if (objRemoveReward && objRemoveReward.basket && removedActionClicked) {
       setRemovedActionClicked(false);
       setSelectedRewardID('');
-        displayToast('SUCCESS', 'Reward removed successfully.');
+      displayToast('SUCCESS', 'Reward removed successfully.');
     }
   }, [objRemoveReward]);
 
@@ -95,7 +97,7 @@ const Rewards = (props: any) => {
     ) {
       setActionClicked(false);
       if (objApplyReward.basket) {
-          displayToast('SUCCESS', 'Reward applied successfully.');
+        displayToast('SUCCESS', 'Reward applied successfully.');
       }
       if (objApplyReward.error) {
         setAlignment('web');
@@ -125,13 +127,13 @@ const Rewards = (props: any) => {
       )}
       {rewardsArray && rewardsArray.length > 0 && (
         <Grid container>
-          <Grid item xs={0} sm={0} md={2} lg={2} />
-          <Grid item xs={12} sm={12} md={8} lg={8} className="choose-reward">
+          <Grid item xs={0} sm={0} md={1} lg={1} />
+          <Grid item xs={12} sm={12} md={10} lg={10} className="choose-reward">
             <Typography variant="h2" title="APPLY REWARDS">
               APPLY REWARDS
             </Typography>
             <br />
-            <Grid container>
+            <Grid id="reward-points-container" container>
               <FormControl>
                 <ToggleButtonGroup
                   className="apply-reward"
@@ -143,13 +145,13 @@ const Rewards = (props: any) => {
                   {rewardsArray.map((reward, index) => (
                     <ToggleButton
                       onClick={() => {
-                        applyReward(reward.membershipid, reward.reference);
+                        applyReward(reward.membershipid, reward.redeemable_id);
                       }}
-                      value={reward.reference}
+                      value={reward.redeemable_id}
                       className="choose-btn"
                     >
                       <Grid container spacing={2} className="align-item">
-                        <Grid item xs={12} sm={5} md={5} lg={5}>
+                        <Grid item xs={12} sm={4} md={4} lg={4}>
                           {reward.imageurl == null && (
                             <img
                               src={require('../../assets/imgs/punchh-icon-thumb.png')}
@@ -168,11 +170,22 @@ const Rewards = (props: any) => {
                           lg={7}
                           className="icon-content"
                         >
+                          {reward.localType === 'redemption' && (
+                            <Typography>
+                              {reward.points ? reward.points : 0}
+                            </Typography>
+                          )}
                           <Typography>
                             {reward.quantityavailable > 1
                               ? reward.quantityavailable + ' x ' + reward.label
                               : reward.label}
                           </Typography>
+                          {reward.expiring_at_tz && (
+                            <Typography>
+                              Expires{' '}
+                              {moment(reward.expiring_at_tz).format('MM/YY')}
+                            </Typography>
+                          )}
                         </Grid>
                       </Grid>
                     </ToggleButton>
@@ -181,7 +194,7 @@ const Rewards = (props: any) => {
               </FormControl>
             </Grid>
           </Grid>
-          <Grid item xs={0} sm={0} md={2} lg={2} />
+          <Grid item xs={0} sm={0} md={1} lg={1} />
         </Grid>
       )}
     </div>
