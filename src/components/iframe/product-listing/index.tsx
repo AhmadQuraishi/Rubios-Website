@@ -63,6 +63,7 @@ const responsive = {
     breakpoint: { max: 464, min: 0 },
     items: 1,
     slidesToSlide: 1, // optional, default to 1.
+    partialVisibilityGutter: 50,
   },
 };
 
@@ -90,6 +91,7 @@ const ProductListing = (props: any) => {
         autoPlaySpeed={99999}
         // autoPlaySpeed={3000}
         keyBoardControl={true}
+        partialVisible={true}
         // customTransition="all .5"
         transitionDuration={500}
         containerClass="carousel-container"
