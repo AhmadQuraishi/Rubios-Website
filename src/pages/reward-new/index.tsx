@@ -118,6 +118,7 @@ const RewardNew = () => {
                 variant="h2"
                 className="small-heading"
                 title="Avialable Rewards"
+                style={{ paddingBottom: 20 }}
               >
                 Available Rewards{' '}
                 <span aira-label="help Icon" className="help-icon">
@@ -126,12 +127,18 @@ const RewardNew = () => {
               </Typography>
             </Grid>
             <Grid item xs={12}>
-              <Grid container>
+              <Grid spacing={2} container>
                 {rewards && rewards.length > 0 && (
                   <>
                     {rewards.map((reward: any) => {
                       return (
-                        <Grid item xs={6} md={4} lg={4}>
+                        <Grid
+                          item
+                          xs={6}
+                          md={4}
+                          lg={4}
+                          sx={{ paddingTop: '10px' }}
+                        >
                           <Card className="reward-point-merge-panel">
                             {/*<Link to="/account/reward-new/detail">*/}
                             <Grid container className="content-panel">
@@ -152,7 +159,9 @@ const RewardNew = () => {
                                 className="content-panel-desc"
                               >
                                 <p
-                                  aria-label={`${reward.name ? reward.name : ''}`}
+                                  aria-label={`${
+                                    reward.name ? reward.name : ''
+                                  }`}
                                   title={`${reward.name ? reward.name : ''}`}
                                   className="title-heading"
                                 >
@@ -212,13 +221,13 @@ const RewardNew = () => {
               Object.keys(redeemables).map((key: any) => {
                 return (
                   <>
-                    <Grid item xs={12}>
+                    <Grid style={{ paddingBottom: 10 }} item xs={12}>
                       <Typography
                         variant="h3"
                         className={`bold-title dd${
                           points >= key ? '' : ' disable'
                         }`}
-                        title="400 Points"
+                        title={`${key} Points`}
                       >
                         {key} Points
                       </Typography>
@@ -243,6 +252,10 @@ const RewardNew = () => {
                                         item
                                         xs={12}
                                         lg={5}
+                                        style={{
+                                          display: 'flex',
+                                          alignItems: 'center',
+                                        }}
                                         className="img-panel"
                                       >
                                         <img
@@ -260,12 +273,15 @@ const RewardNew = () => {
                                       >
                                         <p className="points">{key} Points</p>
                                         <p
-                                          aria-label="Free Drink"
-                                          title="Free Drink Free Drink Free Drink Free Drink"
+                                          aria-label={
+                                            redeem.name ? redeem.name : ''
+                                          }
+                                          title={redeem.name ? redeem.name : ''}
                                           className="title-heading"
                                         >
                                           {redeem.name ? redeem.name : ''}
                                         </p>
+                                        <p className="expire"></p>
                                         <p
                                           onClick={() =>
                                             onRedeemableClicked(
