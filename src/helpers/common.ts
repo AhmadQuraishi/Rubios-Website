@@ -55,6 +55,9 @@ export function checkTacoMatch(name: string, isdefault: boolean) {
 export function removeTestingStores(restaurants: any) {
   const restaurantIds: any =
     `${process.env.REACT_APP_TESTING_RESTAURANTS_IDS}` || '';
+  if (restaurantIds == 'undefined') {
+    return restaurants;
+  }
   let filterRestaurants: any = [];
   const testingStores: any = JSON.parse(restaurantIds) || [];
 

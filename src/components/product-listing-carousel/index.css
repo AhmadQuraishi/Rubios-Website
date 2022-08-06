@@ -52,3 +52,10 @@ overflow:unset;
 /*}*/
 /*}*/
 
+@media (max-width: 464px) {
+  .react-multi-carousel-track > li:only-child {
+    transform: translate3d(-50px, 0px, 0px) !important;
+  }
+}
+
+

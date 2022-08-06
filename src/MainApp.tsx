@@ -13,8 +13,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import NavigateApp from './components/navigate-app';
 import { generateDeviceId } from './helpers/common';
 import { updateDeviceUniqueId } from './redux/actions/auth';
-import {testingRedemption, testingRewards} from "./services/reward";
-import {generateCCSFToken} from "./services/basket";
+// import {testingRedemption, testingRewards} from "./services/reward";
+// import {generateCCSFToken} from "./services/basket";
 // import TagManager from 'react-gtm-module';
 //
 // const tagManagerArgs = {

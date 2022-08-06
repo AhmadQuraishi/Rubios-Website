@@ -10,9 +10,11 @@ const initialState = {
 
 const redemptionReducer = (state = initialState, action: any) => {
   switch (action.type) {
-    case Type.GET_CODE:
+    case Type.GET_REWARD_REDEMPTION_CODE:
+    case Type.GET_REDEEMABLE_REDEMPTION_CODE:
       return { ...state, error: null, redemption: null, loading1: true };
-    case Type.GET_CODE_SUCCESS:
+    case Type.GET_REWARD_REDEMPTION_CODE_SUCCESS:
+    case Type.GET_REDEEMABLE_REDEMPTION_CODE_SUCCESS:
       return {
         ...state,
         redemption: action.payload,
@@ -24,7 +26,8 @@ const redemptionReducer = (state = initialState, action: any) => {
         ...state,
         reward_name: action.payload,
       };
-    case Type.GET_CODE_FAILURE:
+    case Type.GET_REWARD_REDEMPTION_CODE_FAILURE:
+    case Type.GET_REDEEMABLE_REDEMPTION_CODE_FAILURE:
       return {
         ...state,
         error: action.error,

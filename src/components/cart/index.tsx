@@ -1213,7 +1213,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                     fontFamily: 'Poppins-Regular',
                                   }}
                                 >
-                                  -${discount.amount}
+                                  -${discount.amount && discount.amount.toFixed(2)}
                                 </Grid>
                               </>
                             );

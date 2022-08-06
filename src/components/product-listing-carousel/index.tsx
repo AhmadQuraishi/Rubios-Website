@@ -73,6 +73,7 @@ const ProductListingCarousel = (props: any) => {
       breakpoint: { max: 464, min: 0 },
       items: 1,
       slidesToSlide: 1, // optional, default to 1.
+      partialVisibilityGutter: 50,
     },
   };
 
@@ -154,12 +155,13 @@ const ProductListingCarousel = (props: any) => {
         draggable={false}
         responsive={responsive}
         // ssr={true} // means to render carousel on server-side.
-        infinite={false}
+        // infinite={false}
         // autoPlay={props.deviceType !== 'mobile' ? false : true}
         additionalTransfrom={0}
-        // autoPlay={isMobile ? true : false}
-        // autoPlaySpeed={1000}
+        autoPlay={false}
+        autoPlaySpeed={99999}
         keyBoardControl={true}
+        partialVisible={true}
         // customTransition="all .5"
         transitionDuration={500}
         containerClass="carousel-container"
