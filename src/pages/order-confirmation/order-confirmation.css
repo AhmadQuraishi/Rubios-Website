@@ -129,3 +129,16 @@ h6.white {
   color: #214F66;
   font-size: 36px !important;
 }
+
+.hours-text {
+     position: absolute;
+     bottom: 25px;
+}
+
+@media (max-width: 768px) {
+.hours-text {
+  bottom: 6px;
+}
+}
+
+
