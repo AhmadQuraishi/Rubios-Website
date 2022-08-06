@@ -92,19 +92,28 @@ const OrderConfirmation = () => {
                           lineHeight: '1.2',
                           letterSpacing: '-0.00833em',
                         }}
+                        title={
+                          authToken?.authtoken
+                            ? "You've earned points for Free Rubio's!"
+                            : 'GET $5 OFF YOUR NEXT ORDER'
+                        }
                       >
                         {authToken?.authtoken
-                          ? 'You’re all set!'
+                          ? "You've earned points for Free Rubio's!"
                           : 'GET $5 OFF YOUR NEXT ORDER'}
                       </Typography>
                       <br />
                       <Typography
                         variant="h6"
                         className="white"
-                        title="Join Rubio’s Rewards today to start earning rewards."
+                        title={
+                          authToken?.authtoken
+                            ? "You can cash in your points for free food when you get to 400, 700 or 1300 points. So keep enjoying your Rubio's favourites - tasty rewards are coming your way!"
+                            : 'Join Rubio’s Rewards today to start earning rewards.'
+                        }
                       >
                         {authToken?.authtoken
-                          ? 'You’ve received credit for today’s order and are one step closer to earning your next reward.'
+                          ? "You can cash in your points for free food when you get to 400, 700 or 1300 points. So keep enjoying your Rubio's favourites - tasty rewards are coming your way!"
                           : 'Join Rubio’s Rewards today to start earning rewards.'}
                       </Typography>
                       <br />
@@ -128,6 +137,13 @@ const OrderConfirmation = () => {
                         >
                           VIEW ACCOUNT
                         </Button>
+                        <Typography
+                          variant="h6"
+                          className="white hours-text"
+                          title="Please allow up to 24 hours to show up in your account."
+                        >
+                          Please allow up to 24 hours to show up in your account.
+                        </Typography>
                       </Grid>
                     ) : (
                       <RegisterConfirmation id={id} />
