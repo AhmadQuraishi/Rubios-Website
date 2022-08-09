@@ -34,7 +34,7 @@ const StoreInfo = (props: any) => {
   useEffect(() => {
     try {
       if (
-        resturantOrderType === 'delivery' &&
+        resturantOrderType === 'dispatch' &&
         deliveryAddressString &&
         Object.keys(deliveryAddressString).length
       ) {
@@ -72,7 +72,7 @@ const StoreInfo = (props: any) => {
       return false;
     }
     let restaurantObj = null;
-    if (resturantOrderType == 'delivery') {
+    if (resturantOrderType == 'dispatch') {
       setSelectedStoreID(storeID.toString());
       restaurantObj = deliveryRasturants.find((x: any) => x.id === storeID);
       dispatch(setDeliveryAddress(deliveryAddressString));

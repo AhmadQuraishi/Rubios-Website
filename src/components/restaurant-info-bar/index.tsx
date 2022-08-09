@@ -93,7 +93,7 @@ const StoreInfoBar = () => {
                   textTransform="uppercase"
                   title="Pick Up From"
                 >
-                  {orderType && orderType == 'delivery' && 'Delivered From'}
+                  {orderType && orderType == 'dispatch' && 'Delivered From'}
                   {orderType && orderType == 'dinein' && 'Dine In At'}
                   {orderType &&
                     (orderType == 'pickup' || orderType == 'curbside') &&

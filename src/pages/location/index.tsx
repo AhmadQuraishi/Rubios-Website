@@ -89,7 +89,7 @@ const Location = () => {
     setLatLng(null);
     setShowNearBy(false);
     setNearByRestaurantsFound(false);
-    if (type !== 'delivery') {
+    if (type !== 'dispatch') {
       dispatch(getResturantListRequest());
     }
 
@@ -145,7 +145,7 @@ const Location = () => {
       if (LatLng) {
         getNearByRestaurants(LatLng.lat, LatLng.lng);
       }
-    } else if (showNearBy && orderType && orderType === 'delivery') {
+    } else if (showNearBy && orderType && orderType === 'dispatch') {
       if (navigator.geolocation) {
         console.log('geolocation', navigator.geolocation);
         navigator.geolocation.getCurrentPosition(
@@ -220,7 +220,7 @@ const Location = () => {
         //   setLatLng(null);
         //   if (showNearBy) {
         //     console.log('ppppppp');
-        //     // if (orderType === 'delivery') {
+        //     // if (orderType === 'dispatch') {
         //     //   setDeliveryRasturants(restaurants.restaurants);
         //     // } else {
         //     //   console.log('ppppppp 2', restaurants.restaurants);
@@ -233,9 +233,9 @@ const Location = () => {
         // } else {
         console.log('restaurants.restaurants', restaurants.restaurants);
         if (orderType && orderType !== '') {
-          setfilteredRestaurants(removeTestingStores(restaurants.restaurants));
+          setfilteredRestaurants(getFilteredRestaurants(restaurants.restaurants));
         }
-        setAllResturants(removeTestingStores(restaurants.restaurants));
+        setAllResturants(getFilteredRestaurants(restaurants.restaurants));
         // }
         setMapCenter({
           lat: restaurants.restaurants[0].latitude,
@@ -290,19 +290,19 @@ const Location = () => {
             // }
             // setDeliveryRasturants(restaurants.restaurants);
             setDeliveryRasturants(
-              removeTestingStores(nearbyRestaurants.restaurants),
+              getFilteredRestaurants(nearbyRestaurants.restaurants),
             );
             setActionPerform(false);
           }
           setLatLng(null);
           if (showNearBy) {
             console.log('ppppppp');
-            // if (orderType === 'delivery') {
+            // if (orderType === 'dispatch') {
             //   setDeliveryRasturants(restaurants.restaurants);
             // } else {
             //   console.log('ppppppp 2', restaurants.restaurants);
             setDeliveryRasturants(
-              removeTestingStores(nearbyRestaurants.restaurants),
+              getFilteredRestaurants(nearbyRestaurants.restaurants),
             );
             // }
 
@@ -319,7 +319,7 @@ const Location = () => {
           setZoom(7);
         } else {
           if (orderType && orderType !== '') {
-            setfilteredRestaurants(removeTestingStores(nearbyRestaurants.restaurants));
+            setfilteredRestaurants(getFilteredRestaurants(nearbyRestaurants.restaurants));
           }
           // setAllResturants(restaurants.restaurants);
         }
@@ -364,7 +364,7 @@ const Location = () => {
         filteredRestaurants = restaurants.filter(
           (x: any) => x.supportscurbside === true,
         );
-      } else if (orderType === 'delivery') {
+      } else if (orderType === 'dispatch') {
         filteredRestaurants = restaurants.filter(
           (x: any) => x.supportsdispatch === true,
         );
@@ -378,9 +378,9 @@ const Location = () => {
     if (restaurants && restaurants.restaurants.length > 0) {
       let filteredRest = !orderType
         ? restaurants.restaurants
-        : orderType && orderType !== 'delivery'
+        : orderType && orderType !== 'dispatch'
         ? filteredRestaurants
-        : orderType && orderType === 'delivery'
+        : orderType && orderType === 'dispatch'
         ? deliveryRasturants
         : [];
 
