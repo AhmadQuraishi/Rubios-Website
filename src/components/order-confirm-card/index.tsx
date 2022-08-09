@@ -29,12 +29,12 @@ const pickupTime = (order: any) => {
         variant="h2"
         className="label"
         title={
-          order && order.deliverymode === DeliveryModeEnum.delivery
+          order && order.deliverymode === DeliveryModeEnum.dispatch
             ? 'DELIVERY TIME'
             : 'PICKUP TIME'
         }
       >
-        {order && order.deliverymode === DeliveryModeEnum.delivery
+        {order && order.deliverymode === DeliveryModeEnum.dispatch
           ? 'DELIVERY TIME'
           : 'PICKUP TIME'}
       </Typography>
@@ -243,7 +243,7 @@ const OrderConfirmedCard = ({ orderObj, restaurantObj }: any) => {
             {/*</Typography>*/}
             <br />
             <br />
-            {order && order.deliverymode === DeliveryModeEnum.delivery
+            {order && order.deliverymode === DeliveryModeEnum.dispatch
               ? deliveryAddress(order)
               : pickupAddress(restaurant, order)}
             <br />

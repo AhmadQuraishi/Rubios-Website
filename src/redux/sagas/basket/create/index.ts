@@ -34,7 +34,7 @@ function* asyncCreateBasketRequest(action: any): any {
       );
       response = deliveryAddressResponse;
     }
-    if (action.payload.deliverymode && !action.payload.deliveryAddress) {
+    if (action.payload.deliverymode) {
       const deliveryModeResponse = yield call(
         setBasketDeliveryMode,
         action.payload.basketId,
