@@ -128,8 +128,8 @@ const CategoryList = () => {
         return restaurant.canpickup;
       case DeliveryModeEnum.curbside:
         return restaurant.supportscurbside;
-      case DeliveryModeEnum.delivery:
-        return restaurant.candeliver;
+      case DeliveryModeEnum.dispatch:
+        return restaurant.supportsdispatch;
       default:
         return false;
     }
@@ -431,7 +431,7 @@ const CategoryList = () => {
                   Curbside
                 </Button>
               )}
-              {restaurantSelected.candeliver && (
+              {restaurantSelected.supportsdispatch && (
                 <Button
                   variant="contained"
                   sx={{

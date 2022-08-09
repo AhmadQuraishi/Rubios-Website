@@ -67,7 +67,7 @@ export const setBasketDeliveryAddress = async (
   try {
     const url = process.env.REACT_APP_OLO_API || '';
     return await axios
-      .put(url + `/baskets/${basketid}/deliveryaddress`, body)
+      .put(url + `/baskets/${basketid}/dispatchaddress`, body)
       .then((response) => response.data)
       .catch((error) => {
         console.log(error.response);

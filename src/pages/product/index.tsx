@@ -215,7 +215,7 @@ const Product = () => {
       if (
         objDeliveryAddress &&
         objDeliveryAddress.address &&
-        orderType === DeliveryModeEnum.delivery
+        orderType === DeliveryModeEnum.dispatch
       ) {
         deliveryAddress = formatDeliveryAddress();
         payload.deliveryAddress = deliveryAddress;
