@@ -181,9 +181,9 @@ const LocationCard = (props: any) => {
 
   useEffect(() => {
     setShowNotFoundMessage(false);
-    if (isNearByRestaurantList && resturantOrderType != 'delivery') {
+    if (isNearByRestaurantList && resturantOrderType != 'dispatch') {
       setfilteredRestaurants(restaurants);
-    } else if (resturantOrderType == 'delivery') {
+    } else if (resturantOrderType == 'dispatch') {
       console.log('aosjdojasodj', deliveryRasturants);
       // setfilteredRestaurants(
       //   (deliveryRasturants &&
@@ -224,7 +224,7 @@ const LocationCard = (props: any) => {
     console.log('resturantOrderType', resturantOrderType);
     console.log('searchText', searchText);
     setShowNotFoundMessage(false);
-    if (resturantOrderType === 'delivery') {
+    if (resturantOrderType === 'dispatch') {
       // setfilteredRestaurants(
       //   (deliveryRasturants &&
       //     deliveryRasturants.filter((x: any) => x.candeliver === false)) ||
@@ -259,7 +259,7 @@ const LocationCard = (props: any) => {
             (x: any) => x.supportscurbside === true,
           );
         }
-        else if (resturantOrderType === 'delivery') {
+        else if (resturantOrderType === 'dispatch') {
           updatedRestaurants = restaurants.filter(
             (x: any) => x.supportsdispatch === true,
           );
@@ -401,7 +401,7 @@ const LocationCard = (props: any) => {
   //           (x: any) => x.supportscurbside === true,
   //         );
   //       }
-  //       // else if (resturantOrderType === 'delivery') {
+  //       // else if (resturantOrderType === 'dispatch') {
   //       //   updatedRestaurants = restaurants.filter(
   //       //     (x: any) => x.candeliver === false,
   //       //   );
@@ -625,9 +625,9 @@ const LocationCard = (props: any) => {
                   role="radio"
                   onClick={() => {
                     setresturantOrderType(
-                      resturantOrderType === 'delivery'
+                      resturantOrderType === 'dispatch'
                         ? undefined
-                        : 'delivery',
+                        : 'dispatch',
                     );
                   }}
                   className="selected-btn"
@@ -639,7 +639,7 @@ const LocationCard = (props: any) => {
               </ToggleButtonGroup>
             </Grid>
             <Grid item xs={12} style={{ position: 'relative', zIndex: 1 }}>
-              {resturantOrderType == 'delivery' ? (
+              {resturantOrderType == 'dispatch' ? (
                 <TextField
                   aria-label="Enter your address..."
                   label="Enter your address..."
@@ -716,11 +716,11 @@ const LocationCard = (props: any) => {
               {showAllResturants}
               {((!showAllResturants &&
                 resturantOrderType &&
-                resturantOrderType != 'delivery' &&
+                resturantOrderType != 'dispatch' &&
                 filteredRestaurants &&
                 filteredRestaurants.length > 0) ||
                 (!showAllResturants &&
-                  resturantOrderType == 'delivery' &&
+                  resturantOrderType == 'dispatch' &&
                   deliveryRasturants &&
                   deliveryRasturants.length > 0)) && (
                 <Typography
@@ -750,7 +750,7 @@ const LocationCard = (props: any) => {
                           (x: any) => x.supportscurbside === true,
                         );
                       }
-                      else if (resturantOrderType === 'delivery') {
+                      else if (resturantOrderType === 'dispatch') {
                         updatedRestaurants = filteredRestaurants.filter(
                           (x: any) => x.supportsdispatch === true,
                         );
@@ -800,14 +800,14 @@ const LocationCard = (props: any) => {
                     value != '' &&
                     deliveryRasturants.length > 0 &&
                     resturantOrderType &&
-                    resturantOrderType == 'delivery')) && (
+                    resturantOrderType == 'dispatch')) && (
                   <>
                     <p style={{ paddingTop: '5px' }}>NEARBY LOCATIONS</p>
                   </>
                 )}
                 {!isNearByRestaurantList &&
                   !showAllResturants &&
-                  resturantOrderType === 'delivery' &&
+                  resturantOrderType === 'dispatch' &&
                   (filteredRestaurants == undefined ||
                     (filteredRestaurants &&
                       filteredRestaurants.length == 0)) && (

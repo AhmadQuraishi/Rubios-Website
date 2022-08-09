@@ -526,7 +526,7 @@ const Checkout = () => {
       formDataValue = formData;
     }
 
-    if (basket && basket.deliverymode === DeliveryModeEnum.delivery) {
+    if (basket && basket.deliverymode === DeliveryModeEnum.dispatch) {
       const { isValidForm, formData } = validateDeliveryForm();
       if (!isValidForm) {
         displayToast('ERROR', 'Delivery fields are required.');
@@ -600,7 +600,7 @@ const Checkout = () => {
       customFields = formatCustomFields(restaurant.customfields, formDataValue);
     }
 
-    if (basket && basket.deliverymode === DeliveryModeEnum.delivery) {
+    if (basket && basket.deliverymode === DeliveryModeEnum.dispatch) {
       deliveryAddress = formatDeliveryAddress(
         formDataValue,
         defaultDeliveryAddress,
@@ -805,7 +805,7 @@ const Checkout = () => {
                           </Grid>
                         </>
                       ) : basket &&
-                        basket.deliverymode === DeliveryModeEnum.delivery ? (
+                        basket.deliverymode === DeliveryModeEnum.dispatch ? (
                         <>
                           <Grid item xs={12}>
                             <Typography
@@ -861,7 +861,7 @@ const Checkout = () => {
                         />
                       ) : null}
                       {basket &&
-                      basket.deliverymode === DeliveryModeEnum.delivery ? (
+                      basket.deliverymode === DeliveryModeEnum.dispatch ? (
                         <DeliveryForm
                           basket={basket}
                           defaultAddress={defaultDeliveryAddress}

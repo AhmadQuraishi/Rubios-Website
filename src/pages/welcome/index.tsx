@@ -479,7 +479,7 @@ const Welcome = () => {
                                   aria-label="delivery button"
                                   variant="contained"
                                   title="DELIVERY"
-                                  name="delivery"
+                                  name="dispatch"
                                   onClick={gotoCategoryPage}
                                 >
                                   DELIVERY

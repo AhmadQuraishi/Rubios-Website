@@ -231,7 +231,7 @@ const OrderTime = ({ orderType }: any) => {
               title={
                 orderType === DeliveryModeEnum.dinein
                   ? 'DATE'
-                  : orderType === DeliveryModeEnum.delivery
+                  : orderType === DeliveryModeEnum.dispatch
                   ? 'DELIVERY TIME'
                   : 'PICKUP TIME'
               }
@@ -239,7 +239,7 @@ const OrderTime = ({ orderType }: any) => {
             >
               {orderType === DeliveryModeEnum.dinein
                 ? 'DATE'
-                : orderType === DeliveryModeEnum.delivery
+                : orderType === DeliveryModeEnum.dispatch
                 ? 'DELIVERY TIME'
                 : 'PICKUP TIME'}
             </Typography>
