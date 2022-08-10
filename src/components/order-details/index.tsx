@@ -121,7 +121,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                             <Typography variant="h6">
                               {discount.type === 'Coupon'
                                 ? 'Coupon Code: '
-                                : 'DISCOUNT: '}
+                                : 'REWARD: '}
                               {discount.description}
                             </Typography>
                           </Grid>
