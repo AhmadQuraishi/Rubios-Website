@@ -101,27 +101,44 @@ const OrderTime = ({ orderType }: any) => {
 
   const onTimeSlotSelect = (event: any) => {
     const selectedValue = event.target.value;
-    setSelectedTime(selectedValue);
+    console.log('selectedValue', selectedValue);
+    // setSelectedTime(selectedValue);
     if (selectedValue && selectedValue !== '') {
-      if (selectedValue === basket?.timewanted) {
-        if (basket) {
-          dispatch(deleteBasketTimeWanted(basket.id));
-          setSelectedTime('');
-        }
-      } else {
-        const payload = createTimeWantedPayload(selectedValue);
-        if (basket) {
-          dispatch(updateBasketTimeWanted(basket.id, payload));
-        }
+      //   if (selectedValue === basket?.timewanted) {
+      //     if (basket) {
+      //       dispatch(deleteBasketTimeWanted(basket.id));
+      //       setSelectedTime('');
+      //     }
+      //   } else {
+      const payload = createTimeWantedPayload(selectedValue);
+      if (basket) {
+        dispatch(updateBasketTimeWanted(basket.id, payload));
+        // setSelectedTime(selectedValue);
       }
     }
+    // }
+  };
+
+  const onAsapSelected = () => {
+    // const selectedValue = event.target.value;
+    // console.log('selectedValue', selectedValue);
+    // setSelectedTime(selectedValue);
+    // if (selectedValue && selectedValue !== '') {
+    //   if (selectedValue === basket?.timewanted) {
+    if (basket && basket.timemode !== 'asap') {
+      dispatch(deleteBasketTimeWanted(basket.id));
+      setSelectedTime('');
+    }
+    //   } else {
+    // const payload = createTimeWantedPayload(selectedValue);
+    // if (basket) {
+    //   dispatch(updateBasketTimeWanted(basket.id, payload));
+    // }
+    //   }
+    // }
   };
 
   const handleDateChange = (e: any) => {
-    console.log('eeeeeeeeeeee', e);
-    console.log('date 1', moment(e).format('YYYYMMDD'));
-    console.log('date 2', moment(selectedDate).format('YYYYMMDD'));
-
     try {
       if (timer) clearInterval(timer);
       timer = setInterval(() => {
@@ -309,6 +326,9 @@ const OrderTime = ({ orderType }: any) => {
                         key={`button-${basketObj.basket?.earliestreadytime}`}
                         value={basketObj.basket?.earliestreadytime}
                         className="selected-btn"
+                        onClick={() => {
+                          onAsapSelected();
+                        }}
                         selected={
                           basketObj.basket?.timemode === 'asap' || asapTime
                         }

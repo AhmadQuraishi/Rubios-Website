@@ -2,21 +2,18 @@ import {
   Button,
   Card,
   CardContent,
-  CardMedia,
   Grid,
   Theme,
   Typography,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { QRCodeSVG } from 'qrcode.react';
 import './scan-to-redeem.css';
-import { getRewards } from '../../redux/actions/reward';
-import { getRedemptionCode } from '../../redux/actions/reward/redemption';
-import { displayToast } from '../../helpers/toast';
-import RewardListSkeletonUI from "../../components/rewards-list-skeleton";
+import { getRewardRedemptionCode } from '../../redux/actions/reward/redemption';
+import RewardListSkeletonUI from '../../components/rewards-list-skeleton';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -37,53 +34,28 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const ScanToRedeem = () => {
+  const classes = useStyles();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id } = useParams();
   const query = new URLSearchParams(useLocation().search);
-  const reward_name = query.get('reward_name');
-  // const [qrCode, setQrCode] = useState('');
+  const reward_name = query.get('name');
   const { redemption, loading1, error } = useSelector(
     (state: any) => state.redemptionReducer,
   );
 
   useEffect(() => {
     if (id) {
-      dispatch(getRedemptionCode(id));
+      dispatch(getRewardRedemptionCode(id));
     }
   }, []);
 
-  // useEffect(() => {
-  //   if (redemption && redemption.internal_tracking_code)
-  //     setQrCode(
-  //       `http://api.qrserver.com/v1/create-qr-code/?data=${
-  //         redemption.internal_tracking_code
-  //       }!&size=${2}`,
-  //     );
-  // }, []);
-
-  // const handler = (id: string, name: string) => {
-  //   setIsProgress(true);
-  //   setRewardName(name);
-  //   dispatch(getRedemptionCode(id));
-  //   setIsredeem(true);
-  //   navigate('/account/reward/details');
-  // };
   useEffect(() => {
     if (error && error.data && !loading1) {
-      console.log('workinggggg', error)
-      // displayToast('ERROR', 'Failed to redeem this reward');
       navigate(`/account/reward`);
-      // setIsredeem(false);
-      // setIsProgress(true);
     }
   }, [error]);
 
-  const classes = useStyles();
-
-  const copy = async (code: string) => {
-    await navigator.clipboard.writeText(code);
-  };
   return (
     <div className={classes.root}>
       <Typography
@@ -93,7 +65,7 @@ const ScanToRedeem = () => {
       >
         REDEEM YOUR REWARDS
       </Typography>
-      {(loading1) && <RewardListSkeletonUI />}
+      {loading1 && <RewardListSkeletonUI />}
       {redemption && redemption.internal_tracking_code && reward_name !== '' && (
         <Grid container className="invite-section">
           <Grid item xs={12} md={8} lg={7}>
@@ -123,13 +95,6 @@ Please note, you will need to add the appropriate free or discounted item to you
                       }}
                     >
                       <Grid item xs={6}>
-                        {/* <CardMedia
-                          component="img"
-                          title="QRcode"
-                          image={qrCode}
-                          alt="QRcode"
-                          className="qrcode-img"
-                        /> */}
                         <QRCodeSVG value={redemption.internal_tracking_code} />
                       </Grid>
                       <Grid item xs={6}>
@@ -140,30 +105,6 @@ Please note, you will need to add the appropriate free or discounted item to you
                 </Card>
               </Grid>
               <Grid item sm={2}></Grid>
-              {/*<Typography*/}
-              {/*variant="body2"*/}
-              {/*className="body-text"*/}
-              {/*title="Please be sure to add the appropriate free or discounted item to*/}
-              {/*your order in order to redeem the reward."*/}
-              {/*>*/}
-              {/*Please be sure to add the appropriate free or discounted item to*/}
-              {/*your order in order to redeem the reward.*/}
-              {/*</Typography>*/}
-
-              {/* <Grid item xs={12}>
-                <Button
-                  onClick={() => {
-                    copy(redemption.internal_tracking_code);
-                  }}
-                  aria-label={`Tab to copy: ${redemption.internal_tracking_code}`}
-                  title={`Tab to copy: ${redemption.internal_tracking_code}`}
-                  sx={{ width: { xs: '100%' } }}
-                  className="tab-to-copy"
-                >
-                  <span className="copy-text">Tab to copy.</span>{' '}
-                  {redemption.internal_tracking_code}
-                </Button>
-              </Grid> */}
               <Grid item xs={12} sm={8.5} md={8.5} lg={8.5}>
                 <Button
                   aria-label="invite"

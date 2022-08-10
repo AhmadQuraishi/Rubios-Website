@@ -88,7 +88,16 @@ const AddCreditCard = () => {
       const initializeCreditCardElements = async () => {
         let elements;
         if (process.env.REACT_APP_NODE_ENV === 'production') {
-          elements = new CreditCardElements('production');
+          let env = 'production';
+          if (
+            basket &&
+            basket.vendorid.toString() ===
+              process.env.REACT_APP_CONF_ROOM_PILOT_ID
+          ) {
+            env = 'development';
+          }
+          // @ts-ignore
+          elements = new CreditCardElements(env);
         } else {
           elements = new CreditCardElements('development');
         }

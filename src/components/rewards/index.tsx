@@ -6,8 +6,9 @@ import {
   ToggleButtonGroup,
   ToggleButton,
   CircularProgress,
-  useTheme, 
-  useMediaQuery
+  useTheme,
+  useMediaQuery,
+  Card,
 } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import './rewards.css';
@@ -15,6 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { applyRewardOnBasketRequest } from '../../redux/actions/reward/checkout/apply';
 import { displayToast } from '../../helpers/toast';
 import { removeRewardFromBasketRequest } from '../../redux/actions/reward/checkout/remove';
+import moment from 'moment';
 
 const Rewards = (props: any) => {
   const objApplyReward = useSelector(
@@ -48,7 +50,9 @@ const Rewards = (props: any) => {
       basketObj.basket.appliedrewards &&
       basketObj.basket.appliedrewards.length > 0
     ) {
-      setSelectedRewardID(basketObj.basket.appliedrewards[0].reference);
+      setSelectedRewardID(
+        basketObj.basket.appliedrewards[0].reference.toString(),
+      );
       setAlignment(basketObj.basket.appliedrewards[0].reference.toString());
     }
   }, []);
@@ -57,35 +61,37 @@ const Rewards = (props: any) => {
     if (objRemoveReward && objRemoveReward.basket && removedActionClicked) {
       setRemovedActionClicked(false);
       setSelectedRewardID('');
-        displayToast('SUCCESS', 'Reward removed successfully.');
+      displayToast('SUCCESS', 'Reward removed successfully.');
     }
   }, [objRemoveReward]);
 
   const applyReward = (membershipid: number, refID: string) => {
-    const request = {
-      membershipid: membershipid,
-      references: [refID],
-    };
-    if (
-      selectedRewardID == refID &&
-      basketObj &&
-      basketObj.basket &&
-      basketObj.basket.appliedrewards &&
-      basketObj.basket.appliedrewards.length > 0
-    ) {
-      setRemovedActionClicked(true);
-      setSelectedRewardID(refID);
-      dispatch(
-        removeRewardFromBasketRequest(
-          basketObj.basket.id,
-          parseInt(basketObj.basket.appliedrewards[0].rewardid),
-        ),
-      );
-    } else {
-      setActionClicked(true);
-      setSelectedRewardID(refID);
-      dispatch(applyRewardOnBasketRequest(basketObj.basket.id, request));
-    }
+    setTimeout(() => {
+      const request = {
+        membershipid: membershipid,
+        references: [refID],
+      };
+      if (
+        selectedRewardID === refID.toString() &&
+        basketObj &&
+        basketObj.basket &&
+        basketObj.basket.appliedrewards &&
+        basketObj.basket.appliedrewards.length > 0
+      ) {
+        setRemovedActionClicked(true);
+        setSelectedRewardID(refID);
+        dispatch(
+          removeRewardFromBasketRequest(
+            basketObj.basket.id,
+            parseInt(basketObj.basket.appliedrewards[0].rewardid),
+          ),
+        );
+      } else {
+        setActionClicked(true);
+        setSelectedRewardID(refID);
+        dispatch(applyRewardOnBasketRequest(basketObj.basket.id, request));
+      }
+    }, 1000);
   };
   useEffect(() => {
     if (
@@ -95,7 +101,7 @@ const Rewards = (props: any) => {
     ) {
       setActionClicked(false);
       if (objApplyReward.basket) {
-          displayToast('SUCCESS', 'Reward applied successfully.');
+        displayToast('SUCCESS', 'Reward applied successfully.');
       }
       if (objApplyReward.error) {
         setAlignment('web');
@@ -125,13 +131,13 @@ const Rewards = (props: any) => {
       )}
       {rewardsArray && rewardsArray.length > 0 && (
         <Grid container>
-          <Grid item xs={0} sm={0} md={2} lg={2} />
-          <Grid item xs={12} sm={12} md={8} lg={8} className="choose-reward">
+          <Grid item xs={0} sm={0} md={1} lg={1} />
+          <Grid item xs={12} sm={12} md={10} lg={10} className="choose-reward">
             <Typography variant="h2" title="APPLY REWARDS">
               APPLY REWARDS
             </Typography>
             <br />
-            <Grid container>
+            <Grid id="reward-points-container" container>
               <FormControl>
                 <ToggleButtonGroup
                   className="apply-reward"
@@ -143,13 +149,18 @@ const Rewards = (props: any) => {
                   {rewardsArray.map((reward, index) => (
                     <ToggleButton
                       onClick={() => {
-                        applyReward(reward.membershipid, reward.reference);
+                        applyReward(reward.membershipid, reward.redeemable_id.toString());
                       }}
-                      value={reward.reference}
+                      value={reward.redeemable_id.toString()}
                       className="choose-btn"
                     >
-                      <Grid container spacing={2} className="align-item">
-                        <Grid item xs={12} sm={5} md={5} lg={5}>
+                      <Grid container className="align-item">
+                        <Grid
+                          item
+                          xs={12}
+                          sm={5}
+                          sx={{ display: { xs: 'none', sm: 'flex' } }}
+                        >
                           {reward.imageurl == null && (
                             <img
                               src={require('../../assets/imgs/punchh-icon-thumb.png')}
@@ -160,18 +171,38 @@ const Rewards = (props: any) => {
                             <img src={reward.imageurl} alt="" />
                           )}
                         </Grid>
-                        <Grid
-                          item
-                          xs={12}
-                          sm={7}
-                          md={7}
-                          lg={7}
-                          className="icon-content"
-                        >
-                          <Typography>
+                        <Grid item xs={12} sm={7} className="icon-content">
+                          {reward.localType === 'redemption' && (
+                            <Typography className="points">
+                              {reward.points ? reward.points : 0} Points
+                            </Typography>
+                          )}
+                          <Typography
+                            title={
+                              reward.quantityavailable > 1
+                                ? reward.quantityavailable +
+                                  ' x ' +
+                                  reward.label
+                                : reward.label
+                            }
+                          >
                             {reward.quantityavailable > 1
                               ? reward.quantityavailable + ' x ' + reward.label
                               : reward.label}
+                          </Typography>
+                          <Typography className="expire">
+                            {reward.expiring_at_tz && (
+                              <>
+                                Expires
+                                {moment(reward.expiring_at_tz).format('MM/YY')}
+                              </>
+                            )}
+                          </Typography>
+                          <Typography className="apply-button">
+                            {selectedRewardID ===
+                            reward.redeemable_id.toString()
+                              ? 'Remove'
+                              : 'Apply'}
                           </Typography>
                         </Grid>
                       </Grid>
@@ -181,7 +212,7 @@ const Rewards = (props: any) => {
               </FormControl>
             </Grid>
           </Grid>
-          <Grid item xs={0} sm={0} md={2} lg={2} />
+          <Grid item xs={0} sm={0} md={1} lg={1} />
         </Grid>
       )}
     </div>
