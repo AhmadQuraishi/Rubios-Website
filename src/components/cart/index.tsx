@@ -1199,7 +1199,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                 >
                                   {discount.type === 'Coupon'
                                     ? 'Coupon Code: '
-                                    : 'DISCOUNT: '}
+                                    : 'REWARD: '}
                                   {discount.description}
                                 </Grid>
                                 <Grid
