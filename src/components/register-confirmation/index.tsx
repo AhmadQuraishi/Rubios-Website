@@ -42,7 +42,7 @@ const RegisterConfirmation = ({ id }: any) => {
   }, []);
 
   const formDefaultData = (key: string) => {
-    if (guestUser && id && guestUser.id === id) {
+    if (guestUser) {
       return guestUser[`${key}`] ? guestUser[`${key}`] : '';
     }
     return '';
