@@ -37,11 +37,6 @@ import { getRewardsForCheckoutRequest } from '../../redux/actions/reward/checkou
 import Page from '../../components/page-title';
 import { CreditCardCCSF } from '../../helpers/creditCard';
 import { generateCCSFToken } from '../../services/basket';
-import axios from 'axios';
-import { getRestaurantCalendar } from '../../services/restaurant/calendar';
-import { GetUserFriendlyHours } from '../../helpers/getUserFriendlyHours';
-import { CalendarTypeEnum } from '../../helpers/hoursListing';
-import { put } from 'redux-saga/effects';
 import { updateGuestUserInfo } from '../../redux/actions/order';
 import { navigateAppAction } from '../../redux/actions/navigate-app';
 import { getRewardsNew } from '../../redux/actions/reward';
@@ -49,7 +44,6 @@ import { getRewardsNew } from '../../redux/actions/reward';
 const Checkout = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  let userInfo: any = {};
   const pickupFormRef = React.useRef<any>(null);
   const deliveryFormRef = React.useRef<any>(null);
   const paymentInfoRef = React.useRef<any>();
@@ -74,6 +68,7 @@ const Checkout = () => {
   const basketObj = useSelector((state: any) => state.basketReducer);
   const { authToken } = useSelector((state: any) => state.authReducer);
   const { providerToken } = useSelector((state: any) => state.providerReducer);
+  const { guestUser } = useSelector((state: any) => state.orderReducer);
   const { rewards: qualifyingRewards } = useSelector(
     (state: any) => state.getRewardForCheckoutReducer,
   );
@@ -115,7 +110,7 @@ const Checkout = () => {
           qualifyingIds[reward.reference] = reward;
         });
 
-        console.log('qualifyingIds', qualifyingIds)
+        console.log('qualifyingIds', qualifyingIds);
 
         if (
           rewardsRedemptionsData &&
@@ -136,13 +131,13 @@ const Checkout = () => {
             }
           });
         }
-        console.log('finalRewards 1', finalRewards)
+        console.log('finalRewards 1', finalRewards);
         if (
           rewardsRedemptionsData &&
           rewardsRedemptionsData.redeemables &&
           rewardsRedemptionsData.redeemables.length
         ) {
-          console.log('im working')
+          console.log('im working');
           rewardsRedemptionsData.redeemables.forEach((rew: any) => {
             if (rew.redeemable_id && qualifyingIds[rew.redeemable_id]) {
               finalRewards.push({
@@ -155,7 +150,7 @@ const Checkout = () => {
             }
           });
         }
-        console.log('finalRewards 2', finalRewards)
+        console.log('finalRewards 2', finalRewards);
         setRewards(finalRewards);
       }
     }
@@ -182,7 +177,12 @@ const Checkout = () => {
   }, []);
 
   React.useEffect(() => {
-    if (basketObj.payment.billingSchemes && removeCreditCardOnce) {
+    if (
+      basketObj &&
+      basketObj.payment.billingSchemes &&
+      basketObj.payment.billingSchemes.length &&
+      removeCreditCardOnce
+    ) {
       let billingArray = basketObj.payment.billingSchemes.filter(
         (account: any) => {
           if (
@@ -195,13 +195,11 @@ const Checkout = () => {
           }
         },
       );
-
-      console.log('billingArray billingArray', billingArray);
       billingArray = updatePaymentCardsAmount(billingArray, basket);
       dispatch(updateBasketBillingSchemes(billingArray));
       setRemoveCreditCardOnce(false);
     }
-  }, [basketObj.payment.billingSchemes]);
+  }, []);
 
   React.useEffect(() => {
     if (basket && runOnce) {
@@ -233,7 +231,7 @@ const Checkout = () => {
     if (
       defaultCard &&
       !basketObj?.loading &&
-      validate &&
+      // validate &&
       basket &&
       basketObj.payment.allowedCards.data &&
       basketObj.payment.allowedCards.data.billingschemes &&
@@ -321,7 +319,6 @@ const Checkout = () => {
         dispatch(updateBasketBillingSchemes(billingArray));
       }
       setDefaultCard(false);
-    } else {
     }
   }, [basketObj.payment.allowedCards, validate]);
 
@@ -624,9 +621,11 @@ const Checkout = () => {
       console.log('basketPayload', basketPayload);
 
       if (basketPayload.receivinguser) {
-        userInfo = {
+        const userInfo = {
           ...basketPayload.receivinguser,
         };
+        console.log('userInfo', userInfo)
+        dispatch(updateGuestUserInfo(userInfo));
       }
 
       ccsfObj.registerError((errors: any) => {
@@ -702,8 +701,17 @@ const Checkout = () => {
         ccsfObj.registerSuccess((order: any) => {
           console.log('ccsf Success', order);
 
-          userInfo['id'] = order.id;
-          dispatch(updateGuestUserInfo(userInfo));
+          // let userInfo: any = {};
+          //
+          // if (guestUser) {
+          //   userInfo = {
+          //     ...guestUser,
+          //   };
+          // }
+          //
+          // userInfo['id'] = order.id;
+          // console.log('userInfo', userInfo)
+          // dispatch(updateGuestUserInfo(userInfo));
           const basketId =
             basketObj && basketObj.basket && basketObj.basket.id
               ? basketObj.basket.id
