@@ -120,7 +120,12 @@ const Checkout = () => {
   }, []);
 
   React.useEffect(() => {
-    if (basketObj.payment.billingSchemes && removeCreditCardOnce) {
+    if (
+      basketObj &&
+      basketObj.payment.billingSchemes &&
+      basketObj.payment.billingSchemes.length &&
+      removeCreditCardOnce
+    ) {
       let billingArray = basketObj.payment.billingSchemes.filter(
         (account: any) => {
           if (
@@ -133,8 +138,6 @@ const Checkout = () => {
           }
         },
       );
-
-      console.log('billingArray billingArray', billingArray);
       billingArray = updatePaymentCardsAmount(billingArray, basket);
       dispatch(updateBasketBillingSchemes(billingArray));
       setRemoveCreditCardOnce(false);
@@ -171,7 +174,7 @@ const Checkout = () => {
     if (
       defaultCard &&
       !basketObj?.loading &&
-      validate &&
+      // validate &&
       basket &&
       basketObj.payment.allowedCards.data &&
       basketObj.payment.allowedCards.data.billingschemes &&
@@ -180,6 +183,7 @@ const Checkout = () => {
       basketObj.payment.billingSchemes &&
       basketObj.payment.billingSchemes.length === 0
     ) {
+
       const creditCardIndex =
         basketObj.payment.allowedCards.data.billingschemes.findIndex(
           (schemes: any) => schemes.type === 'creditcard',
@@ -259,7 +263,6 @@ const Checkout = () => {
         dispatch(updateBasketBillingSchemes(billingArray));
       }
       setDefaultCard(false);
-    } else {
     }
   }, [basketObj.payment.allowedCards, validate]);
 
