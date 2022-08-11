@@ -67,6 +67,7 @@ const Rewards = (props: any) => {
 
   const applyReward = (membershipid: number, refID: string) => {
     setTimeout(() => {
+      setAlignment(refID);
       const request = {
         membershipid: membershipid,
         references: [refID],
@@ -91,7 +92,7 @@ const Rewards = (props: any) => {
         setSelectedRewardID(refID);
         dispatch(applyRewardOnBasketRequest(basketObj.basket.id, request));
       }
-    }, 1000);
+    }, 500);
   };
   useEffect(() => {
     if (
@@ -138,7 +139,152 @@ const Rewards = (props: any) => {
             </Typography>
             <br />
             <Grid id="reward-points-container" container>
-              <FormControl>
+              <Grid
+                item
+                xs={12}
+                sx={{
+                  marginBottom: { xs: '25px', md: '20px' },
+                }}
+              >
+                <Grid container>
+                  {rewardsArray.map((reward, index) => (
+                    <Grid
+                      role="button"
+                      aria-lable={
+                        reward.quantityavailable > 1
+                          ? reward.quantityavailable + ' x ' + reward.label
+                          : reward.label
+                      }
+                      item
+                      xs={12}
+                      sm={4}
+                      sx={{ paddingTop: '16px', paddingRight: '16px' }}
+                    >
+                      <Card
+                        className={`reward-point-merge-panel ${
+                          alignment == reward.redeemable_id.toString()
+                            ? 'selected'
+                            : ''
+                        }`}
+                        onClick={() => {
+                          applyReward(
+                            reward.membershipid,
+                            reward.redeemable_id.toString(),
+                          );
+                        }}
+                      >
+                        <div className="check-mark">
+                          <div aria-hidden="true" className="checkmark">
+                            L
+                          </div>
+                        </div>
+                        {/*<Link to="/account/reward-new/detail">*/}
+                        <Grid container className="content-panel">
+                          <Grid
+                            item
+                            xs={12}
+                            lg={5}
+                            sx={{
+                              display: { xs: 'none', sm: 'flex' },
+                              alignItems: 'center',
+                            }}
+                            className="img-panel"
+                          >
+                            {reward.imageurl == null && (
+                              <img
+                                src={require('../../assets/imgs/punchh-icon-thumb.png')}
+                                alt=""
+                              />
+                            )}
+                            {reward.imageurl && (
+                              <img src={reward.imageurl} alt="" />
+                            )}
+                          </Grid>
+                          <Grid
+                            item
+                            xs={12}
+                            lg={7}
+                            className="content-panel-desc"
+                          >
+                            <p
+                              aria-label={
+                                reward.quantityavailable > 1
+                                  ? reward.quantityavailable +
+                                    ' x ' +
+                                    reward.label
+                                  : reward.label
+                              }
+                              title={
+                                reward.quantityavailable > 1
+                                  ? reward.quantityavailable +
+                                    ' x ' +
+                                    reward.label
+                                  : reward.label
+                              }
+                              className="title-heading"
+                            >
+                              {reward.localType === 'redemption' && (
+                                <p className="points">
+                                  {' '}
+                                  {reward.points ? reward.points : 0} Points
+                                </p>
+                              )}
+                              {reward.quantityavailable > 1
+                                ? reward.quantityavailable +
+                                  ' x ' +
+                                  reward.label
+                                : reward.label}
+                              {reward.localType === 'redemption' && (
+                                <p className="points mobile-p">
+                                  {' '}
+                                  {reward.points ? reward.points : 0} Points
+                                </p>
+                              )}
+                              <p className="expire">
+                                {' '}
+                                {reward.expiring_at_tz && (
+                                  <>
+                                    Expires
+                                    {moment(reward.expiring_at_tz).format(
+                                      'MM/YY',
+                                    )}
+                                  </>
+                                )}
+                              </p>
+                            </p>
+                            <Typography
+                              sx={{
+                                display: {
+                                  xs: 'none',
+                                  lg: 'block',
+                                },
+                              }}
+                              className="button hide-button-apply"
+                            >
+                              APPLY
+                            </Typography>
+                          </Grid>
+                          <Grid
+                            item
+                            className="hide-button-apply"
+                            xs={12}
+                            sx={{
+                              display: {
+                                xs: 'flex',
+                                lg: 'none',
+                              },
+                            }}
+                          >
+                            <Typography className="button">APPLY</Typography>
+                          </Grid>
+                        </Grid>
+                        {/*</Link>*/}
+                      </Card>
+                    </Grid>
+                  ))}
+                </Grid>
+              </Grid>
+              {/* <FormControl>
                 <ToggleButtonGroup
                   className="apply-reward"
                   value={alignment}
@@ -149,7 +295,10 @@ const Rewards = (props: any) => {
                   {rewardsArray.map((reward, index) => (
                     <ToggleButton
                       onClick={() => {
-                        applyReward(reward.membershipid, reward.redeemable_id.toString());
+                        applyReward(
+                          reward.membershipid,
+                          reward.redeemable_id.toString(),
+                        );
                       }}
                       value={reward.redeemable_id.toString()}
                       className="choose-btn"
@@ -209,7 +358,7 @@ const Rewards = (props: any) => {
                     </ToggleButton>
                   ))}
                 </ToggleButtonGroup>
-              </FormControl>
+              </FormControl> */}
             </Grid>
           </Grid>
           <Grid item xs={0} sm={0} md={1} lg={1} />

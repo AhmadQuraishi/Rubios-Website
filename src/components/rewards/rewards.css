@@ -157,7 +157,6 @@
     height: 26px;
   }
 }
-
 #reward-points-container .reward-point-panel {
   padding: 15px 10px;
   border-radius: 0px;
@@ -215,12 +214,46 @@
   box-shadow: 0px 4px 5px 0px rgb(0 0 0 / 20%);
   font-family: 'Poppins-Medium';
   text-align: center;
-  margin-top: 15px;
   color: #2b4b62;
   padding: 10px;
   box-sizing: border-box;
-  margin-right: 15px;
-  height: 92%;
+  height: 100%;
+  min-height: 120px;
+  cursor: pointer;
+  position: relative;
+}
+
+#reward-points-container .reward-point-merge-panel .check-mark {
+  display: none;
+  border-radius: 30px;
+  height: 55px;
+  width: 55px;
+  background-color: #0073bd;
+  position: absolute;
+  top: 50%;
+  left: 12%;
+  z-index: 1000;
+  margin-top: -27px;
+}
+#reward-points-container .reward-point-merge-panel .check-mark .checkmark {
+  color: #fff;
+  display: block;
+  font-size: 40px;
+  font-weight: bold;
+  font-family: 'Poppins-Medium';
+  text-align: center;
+  margin-top: -5px;
+  -ms-transform: scaleX(-1) rotate(-35deg);
+  /* IE 9 */
+  -webkit-transform: scaleX(-1) rotate(-35deg);
+  /* Chrome, Safari, Opera */
+  transform: scaleX(-1) rotate(-35deg);
+}
+#reward-points-container .reward-point-merge-panel.selected {
+  border: 1px solid #0073bd;
+}
+#reward-points-container .reward-point-merge-panel.selected .check-mark {
+  display: block;
 }
 #reward-points-container a {
   text-decoration: none;
@@ -230,6 +263,8 @@
 #reward-points-container .reward-point-merge-panel .content-panel {
   align-content: stretch;
   text-align: left;
+  height: 100%;
+  align-items: flex-start;
 }
 #reward-points-container
   .reward-point-merge-panel
@@ -245,17 +280,19 @@
   .content-panel-desc {
   padding-left: 15px;
   position: relative;
-  height: inherit;
+  height: 100%;
+  justify-content: space-between;
+  display: flex;
+  flex-direction: column;
 }
 #reward-points-container
   .reward-point-merge-panel
   .content-panel
   .content-panel-desc
   .title-heading {
-  max-height: 55px;
-  font-size: 17px;
+  font-size: 16px;
   overflow: hidden;
-  line-height: 25px;
+  line-height: 1.2;
   word-wrap: break-word;
 }
 #reward-points-container
@@ -267,6 +304,7 @@
   color: #333;
   font-family: 'Poppins-bold' !important;
   display: block;
+  padding: 3px 0px 5px 0px;
 }
 #reward-points-container
   .reward-point-merge-panel
@@ -275,16 +313,12 @@
   .points {
   font-size: 11px;
   padding-top: 2px;
-  margin-bottom: -2px;
+  margin-bottom: 2px;
   color: #333;
   font-family: 'Poppins-bold' !important;
   text-transform: uppercase;
 }
-#reward-points-container
-  .reward-point-merge-panel
-  .content-panel
-  .content-panel-desc
-  .button {
+#reward-points-container .reward-point-merge-panel .button {
   margin: 0;
   line-height: 20px;
   letter-spacing: 2px;
@@ -294,15 +328,10 @@
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  position: absolute;
-  bottom: 5px;
 }
-#reward-points-container
-  .reward-point-merge-panel
-  .content-panel
-  .content-panel-desc
-  .button.disable {
+#reward-points-container .reward-point-merge-panel .button.disable {
   color: #b1b1b1;
+  cursor: default;
 }
 #reward-points-container .bold-title.dd {
   font-size: 22px;
@@ -315,7 +344,7 @@
   padding: 5px 0;
 }
 #reward-points-container .message-panel {
-  padding: 60px 0 5px 0;
+  padding: 0px 0 5px 0;
   font-family: 'Poppins-Medium', sans-serif !important;
   font-size: 15px;
   color: #333;
@@ -341,19 +370,32 @@
   font-size: 13px;
   cursor: pointer;
 }
+#reward-points-container .pp-oo {
+  padding-right: 15px;
+  padding-bottom: 15px;
+}
 @media screen and (max-width: 1199px) {
+  #reward-points-container .reward-point-merge-panel .check-mark {
+    top: 50%;
+    left: 0;
+    right: 0;
+    margin: auto;
+    margin-top: -55px;
+  }
+  #reward-points-container .reward-point-merge-panel .content-panel {
+    height: 100%;
+    align-content: space-between;
+  }
+  #reward-points-container .reward-point-merge-panel {
+    height: 100%;
+  }
   #reward-points-container .reward-point-panel {
     max-width: none;
     width: 98%;
   }
-  #reward-points-container
-    .reward-point-merge-panel
-    .content-panel
-    .content-panel-desc
-    .button {
+  #reward-points-container .reward-point-merge-panel .button {
     position: relative;
     margin-top: 10px;
-    margin-bottom: 10px;
   }
   #reward-points-container
     .reward-point-merge-panel
@@ -361,9 +403,22 @@
     .content-panel-desc {
     padding-left: 0px;
     padding-top: 10px;
+    height: auto;
   }
 }
+.points.mobile-p {
+  display: none;
+}
 @media screen and (max-width: 640px) {
+  
+  #reward-points-container .reward-point-merge-panel {
+    min-height: auto;
+    box-shadow: none !important;
+    border-color: #2b4b62;
+  }
+  .hide-button-apply {
+    display: none;
+  }
   #reward-points-container .message-panel {
     padding-top: 30px;
   }
@@ -378,5 +433,63 @@
   }
   #reward-points-container .reward-point-panel {
     margin-bottom: 30px;
+  }
+  #reward-points-container
+    .reward-point-merge-panel
+    .content-panel
+    .content-panel-desc {
+    padding-top: 0;
+  }
+  #reward-points-container
+    .reward-point-merge-panel
+    .content-panel
+    .content-panel-desc
+    .expire {
+    font-size: 11px;
+    color: #333;
+    font-family: 'Poppins-Medium' !important;
+    display: block;
+    padding: 3px 0px 0px 0px;
+  }
+  #reward-points-container
+    .reward-point-merge-panel
+    .content-panel
+    .content-panel-desc
+    .points {
+    display: none;
+    font-size: 12px;
+    padding-top: 2px;
+    margin-bottom: 0px;
+    color: #333;
+    font-family: 'Poppins-Medium' !important;
+    text-transform: uppercase;
+  }
+  .points.mobile-p {
+    display: flex !important;
+    padding-top: 5px !important;
+  }
+  #reward-points-container .reward-point-merge-panel .check-mark .checkmark {
+    color: #fff;
+    display: block;
+    font-size: 25px;
+    font-weight: bold;
+    font-family: 'Poppins-Medium';
+    text-align: center;
+    margin-top: -2px;
+    transform: scaleX(-1) rotate(-35deg);
+  }
+  #reward-points-container .reward-point-merge-panel .check-mark {
+    display: none;
+    border-radius: 30px;
+    height: 35px;
+    width: 35px;
+    background-color: #0073bd;
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    left: auto;
+    margin: auto;
+    z-index: 1000;
+    margin-top: -17px;
   }
 }

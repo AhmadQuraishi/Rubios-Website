@@ -14,6 +14,7 @@ import {
 import { useNavigate, useParams } from 'react-router-dom';
 import RegisterConfirmation from '../../components/register-confirmation';
 import Page from '../../components/page-title';
+import { requestEclubSignup } from '../../services/user';
 
 const useStyle = makeStyles(() => ({
   root: {
@@ -35,17 +36,36 @@ const OrderConfirmation = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [runOnce, setRunOnce] = useState(true);
-  const { loading, data: order } = useSelector(
+  const { loading: loadingOrder, data: order } = useSelector(
     (state: any) => state.orderReducer.order,
   );
-  const { data: restaurant } = useSelector(
+  const { data: restaurant, loading: loadingRestaurant } = useSelector(
     (state: any) => state.orderReducer.restaurant,
   );
 
   const { authToken } = useSelector((state: any) => state.authReducer);
+  const { guestUser } = useSelector((state: any) => state.orderReducer);
 
   useEffect(() => {
     dispatch(getOrderRequest(id));
+  }, []);
+
+  useEffect(() => {
+    if (guestUser && !authToken?.authtoken) {
+      if (
+        guestUser.emailaddress &&
+        guestUser.emailaddress !== '' &&
+        guestUser.marketing_email_subscription
+      ) {
+        const response = requestEclubSignup({
+          store_number: process.env.REACT_APP_ECLUB_STORE_ID,
+          user: {
+            email: guestUser.emailaddress,
+            marketing_email_subscription: 'True',
+          },
+        });
+      }
+    }
   }, []);
 
   useEffect(() => {
@@ -63,6 +83,8 @@ const OrderConfirmation = () => {
             <Grid container className="order-confirmation">
               <Grid item xs={12} sm={12} md={12} lg={6}>
                 <OrderConfirmedCard
+                  loadingOrder={loadingOrder}
+                  loadingRestaurant={loadingRestaurant}
                   orderObj={order}
                   restaurantObj={restaurant}
                 />
@@ -91,6 +113,7 @@ const OrderConfirmation = () => {
                           fontSize: '36px !important',
                           lineHeight: '1.2',
                           letterSpacing: '-0.00833em',
+                          textTransform: 'uppercase',
                         }}
                         title={
                           authToken?.authtoken
@@ -141,8 +164,10 @@ const OrderConfirmation = () => {
                           variant="h6"
                           className="white hours-text"
                           title="Please allow up to 24 hours to show up in your account."
+                          sx={{ paddingBottom: '10px' }}
                         >
-                          Please allow up to 24 hours to show up in your account.
+                          Please allow up to 24 hours to show up in your
+                          account.
                         </Typography>
                       </Grid>
                     ) : (
