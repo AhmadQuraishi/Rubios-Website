@@ -37,7 +37,7 @@ const StayCurrentIframe = () => {
               setLoading(false);
               if (response) {
                 setMsg({
-                  msg: 'Thank you for getting in touch! We appreciate you contacting us',
+                  msg: "Thanks for signing up! We'll be in touch soon.",
                   type: 'success',
                 });
               }
