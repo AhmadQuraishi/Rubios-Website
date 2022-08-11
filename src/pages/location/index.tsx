@@ -18,7 +18,8 @@ import { makeStyles } from '@mui/styles';
 import { displayToast } from '../../helpers/toast';
 import './index.css';
 import Page from '../../components/page-title';
-import { removeTestingStores } from '../../helpers/common';
+import { getAddress, removeTestingStores } from '../../helpers/common';
+import { getGeocode } from 'use-places-autocomplete';
 
 const useStyles = makeStyles((theme: Theme) => ({
   dummyBg: {
@@ -70,6 +71,7 @@ const Location = () => {
   const [deliveryRasturants, setDeliveryRasturants] = useState<any>();
   const [allResturants, setAllResturants] = useState<any>();
   const [filteredRestaurants, setfilteredRestaurants] = useState<any>([]);
+  const [deliveryAddressString, setDeliveryAddressString] = useState<any>();
 
   useEffect(() => {
     if (!orderType) {
@@ -89,6 +91,7 @@ const Location = () => {
     setLatLng(null);
     setShowNearBy(false);
     setNearByRestaurantsFound(false);
+    setDeliveryAddressString(null);
     if (type !== 'dispatch') {
       dispatch(getResturantListRequest());
     }
@@ -150,11 +153,46 @@ const Location = () => {
         console.log('geolocation', navigator.geolocation);
         navigator.geolocation.getCurrentPosition(
           function (position) {
-            // getNearByRestaurants(32.7711693, -117.1419628);
-            getNearByRestaurants(
-              position.coords.latitude,
-              position.coords.longitude,
-            );
+            console.log('position', position);
+
+            // const lat = 33.1358598;
+            // const lng = -117.2815619;
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+
+            getNearByRestaurants(lat, lng);
+            getGeocode({
+              location: {
+                lat: lat,
+                lng: lng,
+              },
+            })
+              .then((results) => {
+                console.log('results', results);
+                const address = getAddress(results[0]);
+                console.log('address', address);
+                if (address.address1 !== '') {
+                  setLatLng({
+                    lat: lat,
+                    lng: lng,
+                  });
+                  setDeliveryAddressString(address);
+                } else {
+                  setActionPerform(false);
+                  displayToast(
+                    'ERROR',
+                    'No address found against your current location.',
+                  );
+                }
+              })
+              .catch((error) => {
+                console.log('Error: ', error);
+                displayToast(
+                  'ERROR',
+                  'No address found against your current location.',
+                );
+                setActionPerform(false);
+              });
             setShowNearBy(true);
             setZoom(7);
           },
@@ -233,7 +271,9 @@ const Location = () => {
         // } else {
         console.log('restaurants.restaurants', restaurants.restaurants);
         if (orderType && orderType !== '') {
-          setfilteredRestaurants(getFilteredRestaurants(restaurants.restaurants));
+          setfilteredRestaurants(
+            getFilteredRestaurants(restaurants.restaurants),
+          );
         }
         setAllResturants(getFilteredRestaurants(restaurants.restaurants));
         // }
@@ -319,7 +359,9 @@ const Location = () => {
           setZoom(7);
         } else {
           if (orderType && orderType !== '') {
-            setfilteredRestaurants(getFilteredRestaurants(nearbyRestaurants.restaurants));
+            setfilteredRestaurants(
+              getFilteredRestaurants(nearbyRestaurants.restaurants),
+            );
           }
           // setAllResturants(restaurants.restaurants);
         }
@@ -454,6 +496,8 @@ const Location = () => {
                 setfilteredRestaurants={setfilteredRestaurants}
                 filteredRestaurants={filteredRestaurants}
                 loading={loading}
+                deliveryAddressString={deliveryAddressString}
+                setDeliveryAddressString={setDeliveryAddressString}
               />
             </GoogleMap>
           </div>
