@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, Typography, Grid } from '@mui/material';
 import { DeliveryModeEnum } from '../../types/olo-api/olo-api.enums';
 import { ResponseOrderStatus } from '../../types/olo-api';
@@ -6,6 +6,7 @@ import moment from 'moment';
 import { LensTwoTone } from '@mui/icons-material';
 import { useSelector } from 'react-redux';
 import './order-confirm-card.css';
+import CardSkeletonUI from '../card-skeleton-ui';
 
 const locationTitle = (type: string) => {
   switch (type) {
@@ -185,7 +186,12 @@ const deliveryAddress = (order: any) => {
   );
 };
 
-const OrderConfirmedCard = ({ orderObj, restaurantObj }: any) => {
+const OrderConfirmedCard = ({
+  orderObj,
+  restaurantObj,
+  loadingOrder,
+  loadingRestaurant,
+}: any) => {
   const [order, setOrder] = useState<ResponseOrderStatus>(orderObj);
   const { providerToken } = useSelector((state: any) => state.providerReducer);
   const [restaurant, setRestaurant] =
@@ -203,67 +209,72 @@ const OrderConfirmedCard = ({ orderObj, restaurantObj }: any) => {
     <>
       <Card style={{ backgroundColor: 'white' }} className="order-info">
         <Grid container spacing={0}>
-          <Grid xs={12} sm={6} md={6} lg={12}>
-            <Typography
-              variant="h2"
-              className="heading-one"
-              title="ORDER CONFIRMED"
-              sx={{
-                color: '#0075BF',
-                fontFamily: 'Poppins-Medium !important',
-                fontSize: { xs: '14px !important' },
-                fontWeight: 400,
-                textTransform: 'uppercase',
-              }}
-            >
-              ORDER CONFIRMED
-            </Typography>
-            <Typography
-              variant="body1"
-              title={
-                order && order.deliverymode === DeliveryModeEnum.dinein
-                  ? 'We’ll bring your food right to you shortly.'
-                  : "WE'LL TAKE IT FROM HERE. SEE YOU SOON."
-              }
-              sx={{
-                lineHeight: '1.2',
-                letterSpacing: '-0.00833em',
-                fontFamily: 'Poppins-Bold !important',
-                color: '#214F66',
-                fontSize: '36px !important',
-              }}
-            >
-              {order && order.deliverymode === DeliveryModeEnum.dinein
-                ? 'We’ll bring your food right to you shortly.'
-                : "WE'LL TAKE IT FROM HERE. SEE YOU SOON."}
-            </Typography>
+          {(loadingRestaurant || loadingOrder) && <CardSkeletonUI />}
+          {!loadingRestaurant && !loadingOrder && orderObj && restaurantObj && (
+            <>
+              <Grid xs={12} sm={6} md={6} lg={12}>
+                <Typography
+                  variant="h2"
+                  className="heading-one"
+                  title="ORDER CONFIRMED"
+                  sx={{
+                    color: '#0075BF',
+                    fontFamily: 'Poppins-Medium !important',
+                    fontSize: { xs: '14px !important' },
+                    fontWeight: 400,
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  ORDER CONFIRMED
+                </Typography>
+                <Typography
+                  variant="body1"
+                  title={
+                    order && order.deliverymode === DeliveryModeEnum.dinein
+                      ? 'We’ll bring your food right to you shortly.'
+                      : "WE'LL TAKE IT FROM HERE. SEE YOU SOON."
+                  }
+                  sx={{
+                    lineHeight: '1.2',
+                    letterSpacing: '-0.00833em',
+                    fontFamily: 'Poppins-Bold !important',
+                    color: '#214F66',
+                    fontSize: '36px !important',
+                  }}
+                >
+                  {order && order.deliverymode === DeliveryModeEnum.dinein
+                    ? 'We’ll bring your food right to you shortly.'
+                    : "WE'LL TAKE IT FROM HERE. SEE YOU SOON."}
+                </Typography>
 
-            {/*<Typography variant="h1" title="SEE YOU SOON.">*/}
-            {/*  */}
-            {/*</Typography>*/}
-            <br />
-            <br />
-            {order && order.deliverymode === DeliveryModeEnum.dispatch
-              ? deliveryAddress(order)
-              : pickupAddress(restaurant, order)}
-            <br />
-            <br />
-            {/*<br />*/}
-          </Grid>
-          {order &&
-          (order.deliverymode === DeliveryModeEnum.curbside ||
-            order.deliverymode === DeliveryModeEnum.dinein)
-            ? vehicleInfo(order)
-            : ''}
+                {/*<Typography variant="h1" title="SEE YOU SOON.">*/}
+                {/*  */}
+                {/*</Typography>*/}
+                <br />
+                <br />
+                {order && order.deliverymode === DeliveryModeEnum.dispatch
+                  ? deliveryAddress(order)
+                  : pickupAddress(restaurant, order)}
+                <br />
+                <br />
+                {/*<br />*/}
+              </Grid>
+              {order &&
+              (order.deliverymode === DeliveryModeEnum.curbside ||
+                order.deliverymode === DeliveryModeEnum.dinein)
+                ? vehicleInfo(order)
+                : ''}
 
-          <Grid xs={12} sm={6} md={6} lg={12} className="adjust-space">
-            {order &&
-            order.readytime &&
-            order &&
-            order.deliverymode !== DeliveryModeEnum.dinein
-              ? pickupTime(order)
-              : ''}
-          </Grid>
+              <Grid xs={12} sm={6} md={6} lg={12} className="adjust-space">
+                {order &&
+                order.readytime &&
+                order &&
+                order.deliverymode !== DeliveryModeEnum.dinein
+                  ? pickupTime(order)
+                  : ''}
+              </Grid>
+            </>
+          )}
         </Grid>
       </Card>
     </>

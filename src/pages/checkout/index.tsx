@@ -623,8 +623,9 @@ const Checkout = () => {
       if (basketPayload.receivinguser) {
         const userInfo = {
           ...basketPayload.receivinguser,
+          marketing_email_subscription: formDataValue.emailNotification,
         };
-        console.log('userInfo', userInfo)
+        console.log('userInfo', userInfo);
         dispatch(updateGuestUserInfo(userInfo));
       }
 
