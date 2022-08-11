@@ -54,8 +54,8 @@ const RewardNew = () => {
 
   useEffect(() => {
     if (data && !loadingRedemptions) {
-      if (data && data.net_balance) {
-        setPoints(data.net_balance);
+      if (data && data.points_balance) {
+        setPoints(data.points_balance);
       }
       if (data.redeemables && data.redeemables.length) {
         let redeemObject: any = {
@@ -109,7 +109,7 @@ const RewardNew = () => {
               <Card className="reward-point-panel">
                 <p aria-label="you have got">You've Got</p>
                 <p className="bold-title">
-                  {data && data.net_balance ? data.net_balance : 0} Points
+                  {data && data.points_balance ? data.points_balance : 0} Points
                 </p>
               </Card>
             </Grid>
