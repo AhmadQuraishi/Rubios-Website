@@ -64,7 +64,7 @@ const RewardNewDetail = () => {
                       : redemption.redemption_tracking_code
                   }
                 />
-                <p style={{ textAlign: 'center' }} className="p-detail">
+                <p className="p-number">
                   {redemption.internal_tracking_code ||
                     redemption.redemption_tracking_code}
                 </p>
