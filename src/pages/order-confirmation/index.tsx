@@ -91,6 +91,7 @@ const OrderConfirmation = () => {
                           fontSize: '36px !important',
                           lineHeight: '1.2',
                           letterSpacing: '-0.00833em',
+                          textTransform: 'uppercase',
                         }}
                         title={
                           authToken?.authtoken
@@ -141,6 +142,7 @@ const OrderConfirmation = () => {
                           variant="h6"
                           className="white hours-text"
                           title="Please allow up to 24 hours to show up in your account."
+                          sx={{ paddingBottom: '10px'}}
                         >
                           Please allow up to 24 hours to show up in your account.
                         </Typography>
