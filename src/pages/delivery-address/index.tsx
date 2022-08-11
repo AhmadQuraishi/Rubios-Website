@@ -98,21 +98,14 @@ const DeliveryAddress = () => {
                 {address.isdefault == true && (
                   <Card elevation={0} className="card-panel">
                     <CardContent className="card-content">
-                      <Typography variant="body2" title="DEFAULT Stacey's Home">
+                      <Typography variant="body2">
                         {address.isdefault && <b>DEFAULT</b>} {address.building}
                       </Typography>
-                      <Typography variant="body2" title="5326 Highway Ave.">
+                      <Typography variant="body2">
                         {address.streetaddress}
                       </Typography>
-                      <Typography variant="body2" title="Apt 342">
-                        {address.city}
-                      </Typography>
-                      <Typography
-                        variant="body2"
-                        title="Carisbad, CA 34092-342387"
-                      >
-                        {address.zipcode}
-                      </Typography>
+                      <Typography variant="body2">{address.city}</Typography>
+                      <Typography variant="body2">{address.zipcode}</Typography>
                       <Grid container>
                         <Grid item xs={12} className="small-button-panel">
                           {/* <Link
@@ -168,21 +161,14 @@ const DeliveryAddress = () => {
                 {!address.isdefault && (
                   <Card elevation={0} className="card-panel">
                     <CardContent className="card-content">
-                      <Typography variant="body2" title="DEFAULT Stacey's Home">
+                      <Typography variant="body2">
                         {address.isdefault && <b>DEFAULT</b>} {address.building}
                       </Typography>
-                      <Typography variant="body2" title="5326 Highway Ave.">
+                      <Typography variant="body2">
                         {address.streetaddress}
                       </Typography>
-                      <Typography variant="body2" title="Apt 342">
-                        {address.city}
-                      </Typography>
-                      <Typography
-                        variant="body2"
-                        title="Carisbad, CA 34092-342387"
-                      >
-                        {address.zipcode}
-                      </Typography>
+                      <Typography variant="body2">{address.city}</Typography>
+                      <Typography variant="body2">{address.zipcode}</Typography>
                       <Grid container>
                         <Grid item xs={12} className="small-button-panel">
                           {/* <Link

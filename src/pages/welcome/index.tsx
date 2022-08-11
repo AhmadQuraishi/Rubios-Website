@@ -271,10 +271,9 @@ const Welcome = () => {
                             <Typography
                               variant="h2"
                               className="label"
-                              title="LAST ORDER 11/01"
                             >
-                              LAST ORDER {order.timeplaced.substr(6, 2)}/
-                              {order.timeplaced.substr(4, 2)}
+                              LAST ORDER {order.timeplaced.substr(4, 2)}/
+                              {order.timeplaced.substr(6, 2)}
                             </Typography>
                             <Card
                               elevation={0}
