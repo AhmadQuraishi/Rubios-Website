@@ -61,11 +61,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     textTransform: 'uppercase',
     display: 'block',
     paddingTop: '25px',
-    paddingRight: '5px',
+    paddingRight: '12px',
     [theme.breakpoints.down('md')]: {
       paddingTop: '27px',
       paddingBottom: '22px',
-      paddingRight: '0px',
+      paddingRight: '12px',
       fontSize: '14px'
     },
     [theme.breakpoints.down('sm')]: {
