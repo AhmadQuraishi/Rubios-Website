@@ -258,8 +258,7 @@ const LocationCard = (props: any) => {
           updatedRestaurants = restaurants.filter(
             (x: any) => x.supportscurbside === true,
           );
-        }
-        else if (resturantOrderType === 'dispatch') {
+        } else if (resturantOrderType === 'dispatch') {
           updatedRestaurants = restaurants.filter(
             (x: any) => x.supportsdispatch === true,
           );
@@ -274,17 +273,17 @@ const LocationCard = (props: any) => {
       let searchedRestaurant: ResponseRestaurant[] = [];
       if (searchText && searchText.trim() && searchText.length > 1) {
         let searchTxt = searchText.trim().toLowerCase();
-        let zipCodeMatchedRestaurants = updatedRestaurants.filter(
-          (x: any) => x.zip.toLowerCase() === searchTxt,
-        );
-        if (zipCodeMatchedRestaurants.length) {
-          getNearByRestaurants(
-            zipCodeMatchedRestaurants[0].latitude,
-            zipCodeMatchedRestaurants[0].longitude,
-          );
-          // setShowNearBy(true)
-          return false;
-        }
+        // let zipCodeMatchedRestaurants = updatedRestaurants.filter(
+        //   (x: any) => x.zip.toLowerCase() === searchTxt,
+        // );
+        // if (zipCodeMatchedRestaurants.length) {
+        //   getNearByRestaurants(
+        //     zipCodeMatchedRestaurants[0].latitude,
+        //     zipCodeMatchedRestaurants[0].longitude,
+        //   );
+        //   // setShowNearBy(true)
+        //   return false;
+        // }
         if (!resultsFound) {
           setShowNotFoundMessage(true);
           setfilteredRestaurants([]);
@@ -318,8 +317,21 @@ const LocationCard = (props: any) => {
               (x: any) => x.state.toLowerCase() == searchTxt,
             );
           }
-          if (searchedRestaurant.length == 0) {
-            setShowNotFoundMessage(true);
+          if (searchedRestaurant.length === 0) {
+            // if (!hasNumber(searchTxt)) {
+            getGeocode({ address: searchTxt })
+              .then((results) => {
+                getLatLng(results[0]).then(({ lat, lng }) => {
+                  console.log('lat', lat);
+                  console.log('lng', lng);
+                  getNearByRestaurants(lat, lng);
+                });
+              })
+
+              .catch((error) => {
+                console.log('error zipcode', error);
+                setShowNotFoundMessage(true);
+              });
           }
           setfilteredRestaurants(
             searchedRestaurant.length > 0 ? searchedRestaurant : [],
@@ -749,8 +761,7 @@ const LocationCard = (props: any) => {
                         updatedRestaurants = filteredRestaurants.filter(
                           (x: any) => x.supportscurbside === true,
                         );
-                      }
-                      else if (resturantOrderType === 'dispatch') {
+                      } else if (resturantOrderType === 'dispatch') {
                         updatedRestaurants = filteredRestaurants.filter(
                           (x: any) => x.supportsdispatch === true,
                         );
