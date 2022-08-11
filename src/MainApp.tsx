@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import NavigateApp from './components/navigate-app';
 import { generateDeviceId } from './helpers/common';
 import { updateDeviceUniqueId } from './redux/actions/auth';
+import moment from 'moment';
 // import {testingRedemption, testingRewards} from "./services/reward";
 // import {generateCCSFToken} from "./services/basket";
 // import TagManager from 'react-gtm-module';
@@ -40,14 +41,34 @@ function App(props: any) {
 
   const navigate = useNavigate();
 
+  const updateDeviceId = () => {
+    const newDeviceId = generateDeviceId();
+    if (newDeviceId) {
+      dispatch(updateDeviceUniqueId(newDeviceId));
+    }
+  };
+
   useEffect(() => {
     if (!deviceId) {
-      const newDeviceId = generateDeviceId();
-      if (newDeviceId) {
-        dispatch(updateDeviceUniqueId(newDeviceId));
+      updateDeviceId();
+    } else {
+      const splitArray = deviceId.split('_');
+      if (splitArray.length === 2) {
+        const deviceIdTime: any = moment.unix(splitArray[1]);
+        const currentTime = moment();
+        if (deviceIdTime.isValid()) {
+          const days = currentTime.diff(deviceIdTime, 'days');
+          if (days > 7) {
+            updateDeviceId();
+          }
+        } else {
+          updateDeviceId();
+        }
+      } else {
+        updateDeviceId();
       }
     }
-  }, [deviceId]);
+  }, []);
 
   useEffect(() => {
     // const body = {
@@ -56,7 +77,7 @@ function App(props: any) {
     // generateCCSFToken('b3a3c5aa-85a8-464c-b787-96fc42a7c4bf', body)
     // testingRewards()
     // testingRedemption('777097', 400);
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (window.location.href.toLocaleLowerCase().indexOf('/account') != -1) {
@@ -137,7 +158,7 @@ function App(props: any) {
     <div id="wapper">
       <NavigateApp />
       <Header
-        style={{margin: '0 !important', padding: '0 !important'}}
+        style={{ margin: '0 !important', padding: '0 !important' }}
         removeCartForLocation={
           window.location.href.toLocaleLowerCase().indexOf('/location') != -1
         }
