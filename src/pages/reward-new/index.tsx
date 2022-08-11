@@ -175,16 +175,42 @@ const RewardNew = () => {
                                   className="title-heading"
                                 >
                                   {reward.name ? reward.name : ''}
+                                  <p className="expire">
+                                    {' '}
+                                    {reward.expiring_at_tz &&
+                                    reward.expiring_at_tz !== ''
+                                      ? `Expires ${moment(
+                                          reward.expiring_at_tz,
+                                        ).format('MM/YY')}`
+                                      : ''}
+                                  </p>
                                 </p>
-                                <p className="expire">
-                                  {' '}
-                                  {reward.expiring_at_tz &&
-                                  reward.expiring_at_tz !== ''
-                                    ? `Expires ${moment(
-                                        reward.expiring_at_tz,
-                                      ).format('MM/YY')}`
-                                    : ''}
-                                </p>
+                                <Typography
+                                  sx={{ display: { xs: 'none', lg: 'block' } }}
+                                  onClick={() =>
+                                    onRedeemableClicked(
+                                      reward.reward_id,
+                                      reward.name,
+                                      true,
+                                      'reward',
+                                    )
+                                  }
+                                  className="button"
+                                >
+                                  REDEEM IN RESTURANT
+                                </Typography>
+                              </Grid>
+
+                              <Grid
+                                item
+                                xs={12}
+                                sx={{
+                                  display: {
+                                    xs: 'flex',
+                                    lg: 'none',
+                                  },
+                                }}
+                              >
                                 <p
                                   onClick={() =>
                                     onRedeemableClicked(
@@ -290,9 +316,6 @@ const RewardNew = () => {
                                             lg={7}
                                             className="content-panel-desc"
                                           >
-                                            <p className="points">
-                                              {key} Points
-                                            </p>
                                             <p
                                               aria-label={
                                                 redeem.name ? redeem.name : ''
@@ -302,9 +325,44 @@ const RewardNew = () => {
                                               }
                                               className="title-heading"
                                             >
+                                              <p className="points">
+                                                {key} Points
+                                              </p>
                                               {redeem.name ? redeem.name : ''}
+                                              <p className="expire"></p>
                                             </p>
-                                            <p className="expire"></p>
+                                            <Typography
+                                              sx={{
+                                                display: {
+                                                  xs: 'none',
+                                                  lg: 'block',
+                                                },
+                                              }}
+                                              onClick={() =>
+                                                onRedeemableClicked(
+                                                  redeem.id,
+                                                  redeem.name,
+                                                  points >= key,
+                                                  'redeemable',
+                                                )
+                                              }
+                                              className={`button${
+                                                points >= key ? '' : ' disable'
+                                              }`}
+                                            >
+                                              REDEEM IN RESTURANT
+                                            </Typography>
+                                          </Grid>
+                                          <Grid
+                                            item
+                                            xs={12}
+                                            sx={{
+                                              display: {
+                                                xs: 'flex',
+                                                lg: 'none',
+                                              },
+                                            }}
+                                          >
                                             <p
                                               onClick={() =>
                                                 onRedeemableClicked(
