@@ -14,6 +14,7 @@ import {
 import { useNavigate, useParams } from 'react-router-dom';
 import RegisterConfirmation from '../../components/register-confirmation';
 import Page from '../../components/page-title';
+import { requestEclubSignup } from '../../services/user';
 
 const useStyle = makeStyles(() => ({
   root: {
@@ -43,9 +44,24 @@ const OrderConfirmation = () => {
   );
 
   const { authToken } = useSelector((state: any) => state.authReducer);
+  const { guestUser } = useSelector((state: any) => state.orderReducer);
 
   useEffect(() => {
     dispatch(getOrderRequest(id));
+  }, []);
+
+  useEffect(() => {
+    if (guestUser && !authToken?.authtoken ) {
+      if (guestUser.emailaddress && guestUser.emailaddress !== '') {
+        const response = requestEclubSignup({
+          store_number: process.env.REACT_APP_ECLUB_STORE_ID,
+          user: {
+            email: guestUser.emailaddress,
+            marketing_email_subscription: 'True',
+          },
+        });
+      }
+    }
   }, []);
 
   useEffect(() => {
@@ -142,7 +158,8 @@ const OrderConfirmation = () => {
                           className="white hours-text"
                           title="Please allow up to 24 hours to show up in your account."
                         >
-                          Please allow up to 24 hours to show up in your account.
+                          Please allow up to 24 hours to show up in your
+                          account.
                         </Typography>
                       </Grid>
                     ) : (

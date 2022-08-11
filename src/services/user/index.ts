@@ -445,3 +445,19 @@ export const requestFacebookUserLogin = (body: object) => {
     throw error;
   }
 };
+
+export const requestEclubSignup = (body: object) => {
+  try {
+    const url =
+      process.env.REACT_APP_PUNCHH_API + '/api2/dashboard/eclub_guests';
+
+    return axios
+      .post(url, body)
+      .then((response) => response.data)
+      .catch((error) => {
+        throw error.response;
+      });
+  } catch (error) {
+    throw error;
+  }
+};
