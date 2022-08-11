@@ -51,7 +51,7 @@ const RewardNewDetail = () => {
         name !== '' && (
           <>
             <div style={{ paddingBottom: '40px' }}>
-              <h1>${name}</h1>
+              <h1>{name}</h1>
               <p className="p-detail">
                 Please scan the QR code below at the register to redeem your
                 reward.
