@@ -24,6 +24,7 @@ import {
   getNearByResturantListRequest,
   getResturantListRequest,
 } from '../../redux/actions/restaurant/list';
+import './location.css';
 
 const LocationCard = (props: any) => {
   const {
@@ -530,12 +531,12 @@ const LocationCard = (props: any) => {
           >
             <div
               style={{
-                marginLeft: '350px',
                 paddingTop: '40px',
                 paddingRight: '40px',
                 maxHeight: '94%',
                 overflowY: 'auto',
               }}
+              className="view-all-panel-listing-oo"
             >
               <Typography
                 variant="h2"
