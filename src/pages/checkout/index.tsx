@@ -125,6 +125,7 @@ const Checkout = () => {
                   localType: rew.type === 'reward',
                   label: qualifyingIds[rew.redeemable_id].label,
                   membershipid: qualifyingIds[rew.redeemable_id].membershipid,
+                  imageurl: qualifyingIds[rew.redeemable_id].imageurl,
                 });
                 delete qualifyingIds[rew.redeemable_id];
               }
@@ -145,6 +146,7 @@ const Checkout = () => {
                 localType: 'redemption',
                 membershipid: qualifyingIds[rew.redeemable_id].membershipid,
                 label: qualifyingIds[rew.redeemable_id].label,
+                imageurl: qualifyingIds[rew.redeemable_id].imageurl,
               });
               delete qualifyingIds[rew.redeemable_id];
             }
