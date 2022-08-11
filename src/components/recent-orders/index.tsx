@@ -7,7 +7,7 @@ import {
   Dialog,
   DialogActions,
   TextField,
-  useTheme, 
+  useTheme,
   useMediaQuery
 } from '@mui/material';
 import './index.css';
@@ -38,7 +38,7 @@ const RecentOrders = () => {
   const [items, setItems] = useState([]);
   const [price, setPrice] = useState('');
 
-  
+
   const [prevOrderType, setPrevOrderType] = useState<string>();
   const { restaurant, error } = useSelector(
     (state: any) => state.restaurantInfoReducer,
@@ -161,7 +161,6 @@ const RecentOrders = () => {
                     <Typography
                       variant="caption"
                       className="order-date"
-                      title={`LAST ORDERED ${order.timeplaced}`}
                     >
                       LAST ORDERED{' '}
                       {moment(order.timeplaced.split(' ')[0]).format('MM/DD')}
