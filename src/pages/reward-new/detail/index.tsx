@@ -71,7 +71,7 @@ const RewardNewDetail = () => {
               </Card>
             </div>
             <Grid container>
-              <Grid item xs={12} sm={8.5} md={8.5} lg={8.5}>
+              <Grid item xs={10} sm={6} md={6} lg={4}>
                 <Button
                   aria-label="invite"
                   title="invite"
