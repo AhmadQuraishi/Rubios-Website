@@ -17,15 +17,14 @@ const StayCurrentIframe = () => {
             process.env.REACT_APP_PUNCHH_API + '/api2/dashboard/eclub_guests';
           const config = {
             headers: {
-              'Content-Type': 'application/json',
-              Authorization: `7zaX6XnEA3Qeu5Av-A6`,
+              'Content-Type': 'application/json'
             },
           };
 
           const promise = axios.post(
             url || '',
             {
-              store_number: '19791',
+              store_number: process.env.REACT_APP_ECLUB_STORE_ID,
               user: {
                 email: email,
                 marketing_email_subscription: 'True',
@@ -38,7 +37,7 @@ const StayCurrentIframe = () => {
               setLoading(false);
               if (response) {
                 setMsg({
-                  msg: 'Thank you for getting in touch! We appreciate you contacting us',
+                  msg: "Thanks for signing up! We'll be in touch soon.",
                   type: 'success',
                 });
               }
