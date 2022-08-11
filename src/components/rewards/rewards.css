@@ -406,12 +406,15 @@
     height: auto;
   }
 }
-.points.mobile-p{
+.points.mobile-p {
   display: none;
 }
 @media screen and (max-width: 640px) {
+  
   #reward-points-container .reward-point-merge-panel {
     min-height: auto;
+    box-shadow: none !important;
+    border-color: #2b4b62;
   }
   .hide-button-apply {
     display: none;
@@ -490,4 +493,3 @@
     margin-top: -17px;
   }
 }
-
