@@ -140,8 +140,8 @@ function* asyncSetBasketDeliveryAddressRequest(action: any): any {
   try {
     const response = yield call(
       setBasketDeliveryAddress,
-      action.action.payload.basketId,
-      action.action.payload.deliveryAddress,
+      action.basketid,
+      action.payload,
     );
     yield put(setBasketDeliveryAddressSuccess(response));
   } catch (error) {
@@ -215,6 +215,7 @@ function* asyncSubmitBasketSinglePayment(action: any): any {
     //   action.action.basketId,
     //   action.action.basketPayload,
     // );
+    console.log('action.action.basketPayload', action.action.basketPayload)
     action.action.ccsfObj.submit(action.action.basketPayload);
 
     // action.action.ccsfObj.registerSuccess();
