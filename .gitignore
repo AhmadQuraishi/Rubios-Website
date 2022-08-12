@@ -20,3 +20,5 @@ generated-cra-app
 template
 .eslintcache
 .idea
+./proxy_servers
+./deployment-scripts
