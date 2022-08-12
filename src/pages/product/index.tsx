@@ -1351,7 +1351,7 @@ const Product = () => {
                                               style={{
                                                 fontSize: '11px',
                                                 fontFamily: 'Poppins-Bold',
-                                                color: '#0075EF',
+                                                color: '#0075BF',
                                               }}
                                             >
                                               +$
@@ -1389,7 +1389,7 @@ const Product = () => {
                                               style={{
                                                 fontSize: '11px',
                                                 fontFamily: 'Poppins-Bold',
-                                                color: '#0075EF',
+                                                color: '#0075BF',
                                               }}
                                             >
                                               +{' '}
@@ -1415,7 +1415,7 @@ const Product = () => {
                                               style={{
                                                 fontSize: '11px',
                                                 fontFamily: 'Poppins-Bold',
-                                                color: '#0075EF',
+                                                color: '#0075BF',
                                               }}
                                             >
                                               +
