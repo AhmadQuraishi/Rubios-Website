@@ -58,6 +58,7 @@ const RewardNewDetail = () => {
               </p>
               <Card className="reward-point-qr">
                 <QRCodeSVG
+                  size={200}
                   value={
                     type === 'reward'
                       ? redemption.internal_tracking_code

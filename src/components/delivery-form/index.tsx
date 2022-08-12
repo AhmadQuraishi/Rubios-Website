@@ -7,13 +7,20 @@ import {
   FormGroup,
   Typography,
 } from '@mui/material';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { forwardRef } from 'react';
 import { IMaskInput } from 'react-imask';
+import { setBasketDeliveryAddress } from '../../redux/actions/basket/checkout';
+import { RequestDeliveryAddress } from '../../types/olo-api';
+import {
+  deleteUserDeliveryAddress,
+  setUserDefaultDelAddress,
+} from '../../redux/actions/user';
 
 const DeliveryForm = ({ basket, deliveryFormRef, defaultAddress }: any) => {
+  const dispatch = useDispatch();
   const [address, setAddress] = useState<any>(null);
   const { providerToken } = useSelector((state: any) => state.providerReducer);
   const objDeliveryAddress = useSelector(
@@ -56,6 +63,23 @@ const DeliveryForm = ({ basket, deliveryFormRef, defaultAddress }: any) => {
     },
   );
 
+  const updateDefaultAddress = (event: any) => {
+    console.log('checked', event.target.checked);
+    if (address && address.id) {
+      let updatedAddress: any = {
+        building: address.building ? address.building : '',
+        streetaddress: address.streetaddress ? address.streetaddress : '',
+        city: address.city ? address.city : '',
+        zipcode: address.zipcode ? address.zipcode : '',
+        isdefault: false
+      };
+      updatedAddress.isdefault = event.target.checked;
+
+      dispatch(setBasketDeliveryAddress(basket.id, updatedAddress));
+      // dispatch(deleteUserDeliveryAddress(address.id));
+    }
+  };
+
   return (
     <Formik
       innerRef={deliveryFormRef}
@@ -95,8 +119,8 @@ const DeliveryForm = ({ basket, deliveryFormRef, defaultAddress }: any) => {
             : address && address.zipcode
             ? address.zipcode
             : '',
-        saveAddressCheck:
-          address && address.isdefault ? address.isdefault : false,
+        // saveAddressCheck:
+        //   address && address.isdefault ? address.isdefault : false,
       }}
       validationSchema={Yup.object({
         firstName: Yup.string()
@@ -133,7 +157,7 @@ const DeliveryForm = ({ basket, deliveryFormRef, defaultAddress }: any) => {
           .trim()
           .max(30, 'Must be 30 characters or less')
           .required('Zip Code is required'),
-        saveAddressCheck: Yup.bool().optional(),
+        // saveAddressCheck: Yup.bool().optional(),
       })}
       onSubmit={(values, actions) => {}}
     >
@@ -184,9 +208,6 @@ const DeliveryForm = ({ basket, deliveryFormRef, defaultAddress }: any) => {
             <TextField
               className="mobile-field"
               aria-label="Phone Number"
-              disabled={
-                authToken?.authtoken && values.phone !== '' ? true : false
-              }
               onBlur={handleBlur}
               label="Phone Number"
               aria-required="true"
@@ -350,8 +371,13 @@ const DeliveryForm = ({ basket, deliveryFormRef, defaultAddress }: any) => {
                 <FormControlLabel
                   control={
                     <Checkbox
-                      checked={values.saveAddressCheck}
-                      onChange={handleChange}
+                      checked={
+                        address && address.isdefault ? address.isdefault : false
+                      }
+                      onChange={(e) => {
+                        // handleChange(e);
+                        updateDefaultAddress(e);
+                      }}
                     />
                   }
                   label="Make default delivery address."
