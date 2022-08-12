@@ -15,16 +15,13 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import StoreInfo from './info';
 import { displayToast } from '../../helpers/toast';
-import ListHours from '../location/listHours';
 import usePlacesAutocomplete, {
   getGeocode,
   getLatLng,
 } from 'use-places-autocomplete';
-import {
-  getNearByResturantListRequest,
-  getResturantListRequest,
-} from '../../redux/actions/restaurant/list';
+import { getNearByResturantListRequest } from '../../redux/actions/restaurant/list';
 import './location.css';
+import { getAddress } from '../../helpers/common';
 
 const LocationCard = (props: any) => {
   const {
@@ -67,56 +64,6 @@ const LocationCard = (props: any) => {
       });
   };
 
-  const getAddress = (place: any) => {
-    const address = {
-      address1: '',
-      address2: '',
-      city: '',
-      zip: '',
-      state: '',
-    };
-
-    if (!Array.isArray(place?.address_components)) {
-      return address;
-    }
-
-    place.address_components.forEach((component: any) => {
-      const types = component.types;
-      const value = component.long_name;
-      const svalue = component.short_name;
-
-      if (types.includes('locality')) {
-        address.city = value;
-      } else if (types.includes('sublocality') && address.city === '') {
-        address.city = value;
-      } else if (types.includes('street_number')) {
-        address.address1 = address.address1 + value + ' ';
-      } else if (types.includes('route')) {
-        address.address1 = address.address1 + value + '';
-      } else if (types.includes('neighborhood')) {
-        address.address2 = address.address2 + value + ' ';
-      } else if (types.includes('administrative_area_level_2')) {
-        address.address2 = address.address2 + value + '';
-      } else if (types.includes('administrative_area_level_1')) {
-        address.state = svalue;
-      } else if (types.includes('postal_code')) {
-        address.zip = value;
-      }
-    });
-
-    if (address.address1 === '' || address.city === '' || address.zip == '') {
-      return {
-        address1: '',
-        address2: '',
-        city: '',
-        zip: '',
-        state: '',
-      };
-    }
-
-    return address;
-  };
-
   const {
     restaurants,
     isNearByRestaurantList,
@@ -129,6 +76,8 @@ const LocationCard = (props: any) => {
     setfilteredRestaurants,
     filteredRestaurants,
     loading,
+    deliveryAddressString,
+    setDeliveryAddressString,
   } = props;
   const dispatch = useDispatch();
   const [searchText, setSearchText] = useState<string>();
@@ -140,7 +89,7 @@ const LocationCard = (props: any) => {
   const { restaurant, orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
-  const [deliveryAddressString, setDeliveryAddressString] = useState<any>();
+
   const [showAllResturants, setShowAllResturants] = useState(false);
 
   const handleChange = (e: any) => {

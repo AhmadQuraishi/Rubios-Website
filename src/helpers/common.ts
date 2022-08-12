@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 }
@@ -26,7 +28,7 @@ export function checkProductAvailability(item: any, orderType: any) {
 }
 
 export function generateDeviceId() {
-  return 'id' + Math.random().toString(16).slice(2);
+  return 'id_' + moment().unix();
 }
 
 export const tacoMatchArray = [
@@ -65,4 +67,54 @@ export function removeTestingStores(restaurants: any) {
     return !testingStores.includes(rest.id.toString());
   });
   return filterRestaurants;
+}
+
+export function getAddress(place: any) {
+  const address = {
+    address1: '',
+    address2: '',
+    city: '',
+    zip: '',
+    state: '',
+  };
+
+  if (!Array.isArray(place?.address_components)) {
+    return address;
+  }
+
+  place.address_components.forEach((component: any) => {
+    const types = component.types;
+    const value = component.long_name;
+    const svalue = component.short_name;
+
+    if (types.includes('locality')) {
+      address.city = value;
+    } else if (types.includes('sublocality') && address.city === '') {
+      address.city = value;
+    } else if (types.includes('street_number')) {
+      address.address1 = address.address1 + value + ' ';
+    } else if (types.includes('route')) {
+      address.address1 = address.address1 + value + '';
+    } else if (types.includes('neighborhood')) {
+      address.address2 = address.address2 + value + ' ';
+    } else if (types.includes('administrative_area_level_2')) {
+      address.address2 = address.address2 + value + '';
+    } else if (types.includes('administrative_area_level_1')) {
+      address.state = svalue;
+    } else if (types.includes('postal_code')) {
+      address.zip = value;
+    }
+  });
+
+  if (address.address1 === '' || address.city === '' || address.zip == '') {
+    return {
+      address1: '',
+      address2: '',
+      city: '',
+      zip: '',
+      state: '',
+    };
+  }
+
+  return address;
 }
