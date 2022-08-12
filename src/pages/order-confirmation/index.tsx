@@ -60,6 +60,8 @@ const OrderConfirmation = () => {
         const response = requestEclubSignup({
           store_number: process.env.REACT_APP_ECLUB_STORE_ID,
           user: {
+            first_name: guestUser.firstname,
+            last_name: guestUser.lastname,
             email: guestUser.emailaddress,
             marketing_email_subscription: 'True',
           },
