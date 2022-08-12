@@ -2,8 +2,8 @@
   border-radius: 0px;
   border: 1px solid #c6c6c6;
   box-shadow: 0px 4px 5px 0px rgb(0 0 0 / 20%);
-  height: 140px;
-  width: 130px;
+  height: 200px;
+  width: 200px;
   padding: 12px 0px;
   display: flex;
   flex-direction: column;
@@ -23,7 +23,7 @@
 .p-number{
   text-align: center;
   margin-bottom: auto;
-  margin-top: 5px;
+  margin-top: 10px;
   font-family: 'Poppins-Medium', sans-serif !important;
   font-size: 13px;
 }
