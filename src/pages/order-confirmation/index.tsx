@@ -133,12 +133,12 @@ const OrderConfirmation = () => {
                         className="white"
                         title={
                           authToken?.authtoken
-                            ? "You can cash in your points for free food when you get to 400, 700 or 1300 points. So keep enjoying your Rubio's favourites - tasty rewards are coming your way!"
+                            ? "You can cash in your points for free food when you get to 400, 700 or 1300 points. So keep enjoying your Rubio's favorites - tasty rewards are coming your way!"
                             : 'Join Rubio’s Rewards today to start earning rewards.'
                         }
                       >
                         {authToken?.authtoken
-                          ? "You can cash in your points for free food when you get to 400, 700 or 1300 points. So keep enjoying your Rubio's favourites - tasty rewards are coming your way!"
+                          ? "You can cash in your points for free food when you get to 400, 700 or 1300 points. So keep enjoying your Rubio's favorites - tasty rewards are coming your way!"
                           : 'Join Rubio’s Rewards today to start earning rewards.'}
                       </Typography>
                       <br />
@@ -165,11 +165,11 @@ const OrderConfirmation = () => {
                         <Typography
                           variant="h6"
                           className="white hours-text"
-                          title="Please allow up to 24 hours to show up in your account."
+                          title="Please allow up to 24 hours for points to show up in your account."
                           sx={{ paddingBottom: '10px' }}
                         >
-                          Please allow up to 24 hours to show up in your
-                          account.
+                          Please allow up to 24 hours for points to show up in
+                          your account.
                         </Typography>
                       </Grid>
                     ) : (
