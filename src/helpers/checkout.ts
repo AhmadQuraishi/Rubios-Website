@@ -125,12 +125,12 @@ export function generateSubmitBasketPayload(
   }
 
   if (authtoken && authtoken !== '') {
-    payload.authtoken = authtoken;
+    // payload.authtoken = authtoken;
     payload.usertype = UserTypeEnum.user;
-    delete payload.firstname;
-    delete payload.lastname;
-    delete payload.emailaddress;
-    delete payload.contactnumber;
+    // delete payload.firstname;
+    // delete payload.lastname;
+    // delete payload.emailaddress;
+    // delete payload.contactnumber;
     delete payload.guestoptin;
   }
 
