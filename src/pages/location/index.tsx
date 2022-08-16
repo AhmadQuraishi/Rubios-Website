@@ -156,7 +156,7 @@ const Location = () => {
   };
 
   const [selectedAddress, setSelectedAddress] = useState<any>();
-
+  const [selectedLatLng, setSelectedLatLng] = useState<any>();
   useEffect(() => {
     if (LatLng && actionPerform) {
       if (LatLng) {
@@ -171,8 +171,8 @@ const Location = () => {
 
             //const lat = 33.1358598;
             //const lng = -117.2815619;
-             const lat = position.coords.latitude;
-             const lng = position.coords.longitude;
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
 
             // getNearByRestaurants(lat, lng);
             getGeocode({
@@ -190,6 +190,10 @@ const Location = () => {
                   handleClickOpen();
                   setSelectedAddress(address);
                   setActionPerform(false);
+                  setSelectedLatLng({
+                    lat: lat,
+                    lng: lng,
+                  });
                   return;
                   // setLatLng({
                   //   lat: lat,
@@ -486,6 +490,7 @@ const Location = () => {
     setSearchText('');
     setfilteredRestaurants([]);
     setDeliveryRasturants([]);
+    selectedLatLng(null);
   };
 
   const handleLCloseConfirm = () => {
@@ -507,7 +512,7 @@ const Location = () => {
           //setLatLng({ lat: lat, lng: lng });
           getNearByRestaurants(lat, lng);
         } else {
-          getNearByRestaurants(LatLng.lat, LatLng.lng);
+          getNearByRestaurants(selectedLatLng.lat, selectedLatLng.lng);
         }
       });
     });
