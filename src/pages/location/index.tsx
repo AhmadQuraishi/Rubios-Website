@@ -572,9 +572,9 @@ const Location = () => {
               </Grid>
               <Grid item xs={12} sx={{ paddingTop: '10px' }}>
                 <TextField
-                  aria-label="Apt, Floor, Suite, Building, Company Address"
-                  label="Apt, Floor, Suite, Building, Company Address"
-                  title="Apt, Floor, Suite, Building, Company Address"
+                  aria-label="Apt, Floor, Suite, Building, Company Address - Optional"
+                  label="Apt, Floor, Suite, Building, Company Address - Optional"
+                  title="Apt, Floor, Suite, Building, Company Address - Optional"
                   type="text"
                   name="second_address"
                   autoComplete="off"
