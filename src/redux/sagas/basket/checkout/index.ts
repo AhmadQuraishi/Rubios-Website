@@ -156,11 +156,11 @@ function* asyncValidateBasket(action: any): any {
         type: basketActionsTypes.ADD_BASKET_ORDER_SUBMIT,
       });
     }
-    if (action.userData) {
-      const userResponse = yield call(requestUpdateUser, action.userData);
-      yield put(updateUserSuccess(userResponse));
-      yield put(getProviderRequestSuccess(userResponse));
-    }
+    // if (action.userData) {
+    //   const userResponse = yield call(requestUpdateUser, action.userData);
+    //   yield put(updateUserSuccess(userResponse));
+    //   yield put(getProviderRequestSuccess(userResponse));
+    // }
     if (action.customFields.length) {
       const customFieldsResponse = yield call(
         setBasketCustomFields,
