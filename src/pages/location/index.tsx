@@ -13,13 +13,24 @@ import {
   getResturantListRequest,
 } from '../../redux/actions/restaurant/list';
 import LoadingBar from '../../components/loading-bar';
-import { Theme } from '@mui/material';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Grid,
+  Modal,
+  TextField,
+  Theme,
+} from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { displayToast } from '../../helpers/toast';
 import './index.css';
 import Page from '../../components/page-title';
 import { getAddress, removeTestingStores } from '../../helpers/common';
-import { getGeocode } from 'use-places-autocomplete';
+import { getGeocode, getLatLng } from 'use-places-autocomplete';
 
 const useStyles = makeStyles((theme: Theme) => ({
   dummyBg: {
@@ -72,6 +83,7 @@ const Location = () => {
   const [allResturants, setAllResturants] = useState<any>();
   const [filteredRestaurants, setfilteredRestaurants] = useState<any>([]);
   const [deliveryAddressString, setDeliveryAddressString] = useState<any>();
+  const [searchText, setSearchText] = useState<string>('');
 
   useEffect(() => {
     if (!orderType) {
@@ -143,6 +155,8 @@ const Location = () => {
     return errorMsg;
   };
 
+  const [selectedAddress, setSelectedAddress] = useState<any>();
+
   useEffect(() => {
     if (LatLng && actionPerform) {
       if (LatLng) {
@@ -155,12 +169,12 @@ const Location = () => {
           function (position) {
             console.log('position', position);
 
-            // const lat = 33.1358598;
-            // const lng = -117.2815619;
-            const lat = position.coords.latitude;
-            const lng = position.coords.longitude;
+            //const lat = 33.1358598;
+            //const lng = -117.2815619;
+             const lat = position.coords.latitude;
+             const lng = position.coords.longitude;
 
-            getNearByRestaurants(lat, lng);
+            // getNearByRestaurants(lat, lng);
             getGeocode({
               location: {
                 lat: lat,
@@ -171,12 +185,17 @@ const Location = () => {
                 console.log('results', results);
                 const address = getAddress(results[0]);
                 console.log('address', address);
+                debugger;
                 if (address.address1 !== '') {
-                  setLatLng({
-                    lat: lat,
-                    lng: lng,
-                  });
-                  setDeliveryAddressString(address);
+                  handleClickOpen();
+                  setSelectedAddress(address);
+                  setActionPerform(false);
+                  return;
+                  // setLatLng({
+                  //   lat: lat,
+                  //   lng: lng,
+                  // });
+                  //setDeliveryAddressString(address);
                 } else {
                   setActionPerform(false);
                   displayToast(
@@ -453,9 +472,180 @@ const Location = () => {
       });
     }
   }, [restaurants, filteredRestaurants, deliveryRasturants, orderType]);
+  const [open, setOpen] = useState(false);
 
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setLatLng(null);
+    setShowNearBy(false);
+    setActionPerform(false);
+    setSearchText('');
+    setfilteredRestaurants([]);
+    setDeliveryRasturants([]);
+  };
+
+  const handleLCloseConfirm = () => {
+    setOpen(false);
+    getGeocode({
+      address:
+        selectedAddress.address1 +
+        ' ' +
+        selectedAddress.address2 +
+        ', ' +
+        selectedAddress.city +
+        ', ' +
+        selectedAddress.zip,
+    }).then((results) => {
+      getLatLng(results[0]).then(({ lat, lng }) => {
+        const address = getAddress(results[0]);
+        setDeliveryAddressString(selectedAddress);
+        if (address.address1 !== '') {
+          //setLatLng({ lat: lat, lng: lng });
+          getNearByRestaurants(lat, lng);
+        } else {
+          getNearByRestaurants(LatLng.lat, LatLng.lng);
+        }
+      });
+    });
+  };
+  const handleChange = (key: any, value: any) => {
+    if (key == 'address1') {
+      setSelectedAddress({ ...selectedAddress, address1: value });
+    }
+    if (key == 'address2') {
+      setSelectedAddress({ ...selectedAddress, address2: value });
+    }
+    if (key == 'city') {
+      setSelectedAddress({ ...selectedAddress, city: value });
+    }
+    if (key == 'zip') {
+      setSelectedAddress({ ...selectedAddress, zip: value });
+    }
+  };
   return (
     <Page title={'Location'} className="">
+      <Dialog
+        open={open}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        sx={{ width: '100%' }}
+      >
+        <DialogTitle id="alert-dialog-title">
+          {'Confirm Your Delivery Address'}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            <Grid container sx={{ width: '100%', maxWidth: '450px' }}>
+              <Grid item xs={12}>
+                <TextField
+                  aria-label="Address"
+                  label="Street Address"
+                  title="Street Address"
+                  type="text"
+                  name="street_address"
+                  autoComplete="off"
+                  sx={{ width: '100%' }}
+                  value={selectedAddress && selectedAddress.address1}
+                  onChange={(e) => {
+                    handleChange('address1', e.target.value);
+                  }}
+                  // onChange={handleChange('last_name')}
+                  // onBlur={handleBlur('last_name')}
+                  // error={Boolean(touched.last_name && errors.last_name)}
+                  // helperText={touched.last_name && errors.last_name}
+                />
+              </Grid>
+              <Grid item xs={12} sx={{ paddingTop: '10px' }}>
+                <TextField
+                  aria-label="Apt, Floor, Suite, Building, Company Address"
+                  label="Apt, Floor, Suite, Building, Company Address"
+                  title="Apt, Floor, Suite, Building, Company Address"
+                  type="text"
+                  name="second_address"
+                  autoComplete="off"
+                  sx={{ width: '100%' }}
+                  value={selectedAddress && selectedAddress.address2}
+                  onChange={(e) => {
+                    handleChange('address2', e.target.value);
+                  }}
+                  // onChange={handleChange('last_name')}
+                  // onBlur={handleBlur('last_name')}
+                  // error={Boolean(touched.last_name && errors.last_name)}
+                  // helperText={touched.last_name && errors.last_name}
+                />
+              </Grid>
+              <Grid item xs={12} sx={{ paddingTop: '10px' }}>
+                <TextField
+                  aria-label="City"
+                  label="City"
+                  title="City"
+                  type="text"
+                  name="City"
+                  autoComplete="off"
+                  sx={{ width: '100%' }}
+                  value={selectedAddress && selectedAddress.city}
+                  onChange={(e) => {
+                    handleChange('city', e.target.value);
+                  }}
+                  // onBlur={handleBlur('last_name')}
+                  // error={Boolean(touched.last_name && errors.last_name)}
+                  // helperText={touched.last_name && errors.last_name}
+                />
+              </Grid>
+              <Grid item xs={12} sx={{ paddingTop: '10px' }}>
+                <TextField
+                  aria-label="Postal Code"
+                  label="Postal Code"
+                  title="Postal Code"
+                  type="text"
+                  name="postal_code"
+                  autoComplete="off"
+                  sx={{ width: '100%' }}
+                  value={selectedAddress && selectedAddress.zip}
+                  onChange={(e) => {
+                    handleChange(
+                      'zip',
+                      e.target.value.trim().length > 5
+                        ? e.target.value.trim().substring(0, 5)
+                        : e.target.value.trim(),
+                    );
+                  }}
+                  // onBlur={handleBlur('last_name')}
+                  // error={Boolean(touched.last_name && errors.last_name)}
+                  // helperText={touched.last_name && errors.last_name}
+                />
+              </Grid>
+            </Grid>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            variant="contained"
+            onClick={handleClose}
+            sx={{ marginBottom: '15px' }}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="contained"
+            onClick={handleLCloseConfirm}
+            sx={{ marginRight: '15px', marginBottom: '15px' }}
+            autoFocus
+            disabled={
+              selectedAddress &&
+              (selectedAddress.address1 == '' ||
+                selectedAddress.city == '' ||
+                selectedAddress.zip == '')
+            }
+          >
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
       <div style={{ minHeight: '300px', position: 'relative' }}>
         {(loading || window.google === undefined || actionPerform) && (
           <div className={classes.dummyBg}>
@@ -485,6 +675,7 @@ const Location = () => {
                 <span className="icon"></span>
               </div>
               <LocationCard
+                searchTextP={searchText}
                 isNearByRestaurantList={nearByRestaurantsFound}
                 restaurants={allResturants}
                 deliveryRasturants={deliveryRasturants}
