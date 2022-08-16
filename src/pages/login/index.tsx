@@ -114,7 +114,6 @@
 import React, { useState } from 'react';
 import Page from '../../components/page-title';
 // import FacebookLogin from 'react-facebook-login';
-// import './App.css';
 
 const Login = () => {
   const [login, setLogin] = useState(false);

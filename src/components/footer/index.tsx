@@ -55,11 +55,16 @@ const Footer = () => {
     dispatch(getMenuRequest());
   }, []);
 
-  useEffect(() => { }, [menu]);
-
+  useEffect(() => {}, [menu]);
 
   return (
-    <footer className={`${window.location.href.toLocaleLowerCase().indexOf('/product') !== -1 ? 'footer-control' : 'footer-setting'}`}>
+    <footer
+      className={`${
+        window.location.href.toLocaleLowerCase().indexOf('/product') !== -1
+          ? 'footer-control'
+          : 'footer-setting'
+      }`}
+    >
       <Grid
         container
         spacing={0}
@@ -97,7 +102,6 @@ const Footer = () => {
                 }}
               >
                 <a href={process.env.REACT_APP_RUBIOS_HOME_PAGE}>
-
                   <img
                     src={footerLogo}
                     style={{ width: '100%' }}
@@ -166,12 +170,19 @@ const Footer = () => {
                 container
                 spacing={1}
                 width={200}
-                sx={{ padding: { xs: '10px 0 0 0', md: '10px 0 0 0', lg: '5px 0 0 0' } }}
+                sx={{
+                  padding: {
+                    xs: '10px 0 0 0',
+                    md: '10px 0 0 0',
+                    lg: '5px 0 0 0',
+                  },
+                }}
               >
                 <Grid item xs={2} style={{ marginRight: '10px' }}>
                   <a
                     href={'https://www.facebook.com/rubios/'}
                     target={'_blank'}
+                    rel="noreferrer"
                   >
                     <img
                       src={fbIcon}
@@ -184,6 +195,7 @@ const Footer = () => {
                   <a
                     href={'https://www.instagram.com/rubioscoastalgrill/'}
                     target={'_blank'}
+                    rel="noreferrer"
                   >
                     <img
                       src={instaIcon}
@@ -196,6 +208,7 @@ const Footer = () => {
                   <a
                     href={'https://twitter.com/RubiosTweets'}
                     target={'_blank'}
+                    rel="noreferrer"
                   >
                     <img
                       src={twitterIcon}
@@ -208,6 +221,7 @@ const Footer = () => {
                   <a
                     href={'https://www.tiktok.com/@officialrubios'}
                     target={'_blank'}
+                    rel="noreferrer"
                   >
                     <img
                       src={tiktokIcon}
@@ -240,7 +254,11 @@ const Footer = () => {
               >
                 <Grid item xs={6}>
                   <Button sx={{ padding: 0 }}>
-                    <a href={process.env.REACT_APP_IOS_DOWNLOAD_LINK} target='_blank'>
+                    <a
+                      href={process.env.REACT_APP_IOS_DOWNLOAD_LINK}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
                       <img
                         style={{ display: 'inline-block', width: '100%' }}
                         src={iosLogo}
@@ -251,7 +269,11 @@ const Footer = () => {
                 </Grid>
                 <Grid item xs={6}>
                   <Button sx={{ padding: 0 }}>
-                    <a href={process.env.REACT_APP_GOOGLE_DOWNLOAD_LINK} target='_blank'>
+                    <a
+                      href={process.env.REACT_APP_GOOGLE_DOWNLOAD_LINK}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
                       <img
                         style={{ display: 'inline-block', width: '100%' }}
                         src={andriodLogo}
@@ -338,12 +360,12 @@ const Footer = () => {
                   <ul style={{ listStyle: 'none', display: 'flex' }}>
                     <li>
                       <a
-                        href='#'
+                        href="javascript:Optanon.ToggleInfoDisplay()"
                         className={classes.smallLinks}
                         title="Do Not Sell My Personal Infomation"
                         aria-label="Do Not Sell My Personal Infomation"
                       >
-                      Do Not Sell My Personal Infomation
+                        Do Not Sell My Personal Infomation
                       </a>
                     </li>
                     <li>
@@ -378,12 +400,12 @@ const Footer = () => {
                     </li>
                     <li>
                       <a
-                        href='#'
+                        href="javascript:Optanon.ToggleInfoDisplay()"
                         className={classes.smallLinks}
                         title="Cookies"
                         aria-label="Cookies"
                       >
-                     Cookies
+                        Cookies
                       </a>
                     </li>
                   </ul>
