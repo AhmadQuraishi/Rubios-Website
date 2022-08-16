@@ -185,7 +185,6 @@ const Location = () => {
                 console.log('results', results);
                 const address = getAddress(results[0]);
                 console.log('address', address);
-                debugger;
                 if (address.address1 !== '') {
                   handleClickOpen();
                   setSelectedAddress(address);
@@ -528,7 +527,14 @@ const Location = () => {
       setSelectedAddress({ ...selectedAddress, city: value });
     }
     if (key == 'zip') {
-      setSelectedAddress({ ...selectedAddress, zip: value });
+      let newValue = value;
+      newValue =
+        newValue && newValue >= 0 && newValue <= 99999
+          ? parseInt(newValue)
+          : newValue > 99999
+          ? selectedAddress.zip
+          : '';
+      setSelectedAddress({ ...selectedAddress, zip: newValue });
     }
   };
   return (
@@ -614,9 +620,7 @@ const Location = () => {
                   onChange={(e) => {
                     handleChange(
                       'zip',
-                      e.target.value.trim().length > 5
-                        ? e.target.value.trim().substring(0, 5)
-                        : e.target.value.trim(),
+                      e.target.value.trim()
                     );
                   }}
                   // onBlur={handleBlur('last_name')}
