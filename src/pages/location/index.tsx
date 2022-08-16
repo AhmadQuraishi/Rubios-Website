@@ -169,10 +169,10 @@ const Location = () => {
           function (position) {
             console.log('position', position);
 
-            const lat = 33.1358598;
-            const lng = -117.2815619;
-            // const lat = position.coords.latitude;
-            // const lng = position.coords.longitude;
+            // const lat = 33.1358598;
+            // const lng = -117.2815619;
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
 
             // getNearByRestaurants(lat, lng);
             getGeocode({
