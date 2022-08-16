@@ -156,7 +156,7 @@ const Location = () => {
   };
 
   const [selectedAddress, setSelectedAddress] = useState<any>();
-
+  const [selectedLatLng, setSelectedLatLng] = useState<any>();
   useEffect(() => {
     if (LatLng && actionPerform) {
       if (LatLng) {
@@ -169,8 +169,8 @@ const Location = () => {
           function (position) {
             console.log('position', position);
 
-            // const lat = 33.1358598;
-            // const lng = -117.2815619;
+            //const lat = 33.1358598;
+            //const lng = -117.2815619;
             const lat = position.coords.latitude;
             const lng = position.coords.longitude;
 
@@ -185,10 +185,15 @@ const Location = () => {
                 console.log('results', results);
                 const address = getAddress(results[0]);
                 console.log('address', address);
+                debugger;
                 if (address.address1 !== '') {
                   handleClickOpen();
                   setSelectedAddress(address);
                   setActionPerform(false);
+                  setSelectedLatLng({
+                    lat: lat,
+                    lng: lng,
+                  });
                   return;
                   // setLatLng({
                   //   lat: lat,
@@ -485,6 +490,7 @@ const Location = () => {
     setSearchText('');
     setfilteredRestaurants([]);
     setDeliveryRasturants([]);
+    selectedLatLng(null);
   };
 
   const handleLCloseConfirm = () => {
@@ -494,20 +500,19 @@ const Location = () => {
         selectedAddress.address1 +
         ' ' +
         selectedAddress.address2 +
-        ' ' +
+        ', ' +
         selectedAddress.city +
-        ' ' +
+        ', ' +
         selectedAddress.zip,
     }).then((results) => {
       getLatLng(results[0]).then(({ lat, lng }) => {
-        debugger;
         const address = getAddress(results[0]);
         setDeliveryAddressString(selectedAddress);
         if (address.address1 !== '') {
           //setLatLng({ lat: lat, lng: lng });
           getNearByRestaurants(lat, lng);
         } else {
-          getNearByRestaurants(LatLng.lat, LatLng.lng);
+          getNearByRestaurants(selectedLatLng.lat, selectedLatLng.lng);
         }
       });
     });
@@ -607,7 +612,12 @@ const Location = () => {
                   sx={{ width: '100%' }}
                   value={selectedAddress && selectedAddress.zip}
                   onChange={(e) => {
-                    handleChange('zip', e.target.value);
+                    handleChange(
+                      'zip',
+                      e.target.value.trim().length > 5
+                        ? e.target.value.trim().substring(0, 5)
+                        : e.target.value.trim(),
+                    );
                   }}
                   // onBlur={handleBlur('last_name')}
                   // error={Boolean(touched.last_name && errors.last_name)}
