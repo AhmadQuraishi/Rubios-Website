@@ -99,9 +99,11 @@ export function getAddress(place: any) {
       address.address2 = address.address2 + value + ' ';
     } else if (types.includes('neighborhood')) {
       address.address2 = address.address2 + value + ' ';
-    } else if (types.includes('administrative_area_level_2')) {
-      address.address2 = address.address2 + value + '';
-    } else if (types.includes('administrative_area_level_1')) {
+    }
+    // else if (types.includes('administrative_area_level_2')) {
+    //   address.address2 = address.address2 + value + '';
+    // }
+    else if (types.includes('administrative_area_level_1')) {
       address.state = svalue;
     } else if (types.includes('postal_code')) {
       address.zip = value;
