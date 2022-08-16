@@ -81,7 +81,7 @@ const LocationCard = (props: any) => {
     searchTextP,
   } = props;
   const dispatch = useDispatch();
-  const [searchText, setSearchText] = useState<string>(searchTextP);
+  const [searchText, setSearchText] = useState<string>();
   const [resturantOrderType, setresturantOrderType] = useState<string>();
   const [showNotFoundMessage, setShowNotFoundMessage] = useState(false);
   // const [filteredRestaurants, setfilteredRestaurants] =
