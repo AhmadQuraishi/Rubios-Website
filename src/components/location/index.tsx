@@ -78,9 +78,10 @@ const LocationCard = (props: any) => {
     loading,
     deliveryAddressString,
     setDeliveryAddressString,
+    searchTextP,
   } = props;
   const dispatch = useDispatch();
-  const [searchText, setSearchText] = useState<string>();
+  const [searchText, setSearchText] = useState<string>(searchTextP);
   const [resturantOrderType, setresturantOrderType] = useState<string>();
   const [showNotFoundMessage, setShowNotFoundMessage] = useState(false);
   // const [filteredRestaurants, setfilteredRestaurants] =
@@ -95,6 +96,9 @@ const LocationCard = (props: any) => {
   const handleChange = (e: any) => {
     setSearchText(e.target.value);
   };
+  useEffect(() => {
+    if (searchTextP == '') setValue('');
+  }, [searchTextP]);
 
   useEffect(() => {
     if (isNearByRestaurantList) {
