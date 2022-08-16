@@ -36,6 +36,7 @@ const OrderConfirmation = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [runOnce, setRunOnce] = useState(true);
+  const [runOnceEclubSignUp, setRunOnceEclubSignUp] = useState(true);
   const { loading: loadingOrder, data: order } = useSelector(
     (state: any) => state.orderReducer.order,
   );
@@ -51,14 +52,20 @@ const OrderConfirmation = () => {
   }, []);
 
   useEffect(() => {
-    if (guestUser && !authToken?.authtoken) {
+    if (
+      guestUser &&
+      !authToken?.authtoken &&
+      order &&
+      order.vendorid &&
+      runOnceEclubSignUp
+    ) {
       if (
         guestUser.emailaddress &&
         guestUser.emailaddress !== '' &&
         guestUser.marketing_email_subscription
       ) {
         const response = requestEclubSignup({
-          store_number: process.env.REACT_APP_ECLUB_STORE_ID,
+          store_number: order.vendorid,
           user: {
             first_name: guestUser.firstname,
             last_name: guestUser.lastname,
@@ -66,9 +73,10 @@ const OrderConfirmation = () => {
             marketing_email_subscription: 'True',
           },
         });
+        setRunOnceEclubSignUp(false);
       }
     }
-  }, []);
+  }, [order]);
 
   useEffect(() => {
     if (runOnce && order && order.vendorid) {

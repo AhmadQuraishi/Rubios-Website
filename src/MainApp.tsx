@@ -1,4 +1,4 @@
-import './App.css';
+import './one-trust.css';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Header from './components/header';
 import Footer from './components/footer';
@@ -156,6 +156,7 @@ function App(props: any) {
 
   return (
     <div id="wapper">
+      <div id="onetrust-consent-sdk" style={{ fontFamily: 'Poppins-Regular' }}></div>
       <NavigateApp />
       <Header
         style={{ margin: '0 !important', padding: '0 !important' }}
