@@ -167,7 +167,7 @@ const Location = () => {
                 lng: lng,
               },
             })
-              .then((results) => {
+              .then((results: any) => {
                 console.log('results', results);
                 const address = getAddress(results[0]);
                 console.log('address', address);
@@ -185,7 +185,7 @@ const Location = () => {
                   );
                 }
               })
-              .catch((error) => {
+              .catch((error: any) => {
                 console.log('Error: ', error);
                 displayToast(
                   'ERROR',
