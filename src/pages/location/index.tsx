@@ -169,10 +169,10 @@ const Location = () => {
           function (position) {
             console.log('position', position);
 
-            // const lat = 33.1358598;
-            // const lng = -117.2815619;
-            const lat = position.coords.latitude;
-            const lng = position.coords.longitude;
+            //const lat = 33.1358598;
+            //const lng = -117.2815619;
+             const lat = position.coords.latitude;
+             const lng = position.coords.longitude;
 
             // getNearByRestaurants(lat, lng);
             getGeocode({
@@ -185,6 +185,7 @@ const Location = () => {
                 console.log('results', results);
                 const address = getAddress(results[0]);
                 console.log('address', address);
+                debugger;
                 if (address.address1 !== '') {
                   handleClickOpen();
                   setSelectedAddress(address);
@@ -494,13 +495,12 @@ const Location = () => {
         selectedAddress.address1 +
         ' ' +
         selectedAddress.address2 +
-        ' ' +
+        ', ' +
         selectedAddress.city +
-        ' ' +
+        ', ' +
         selectedAddress.zip,
     }).then((results) => {
       getLatLng(results[0]).then(({ lat, lng }) => {
-        debugger;
         const address = getAddress(results[0]);
         setDeliveryAddressString(selectedAddress);
         if (address.address1 !== '') {
@@ -607,7 +607,12 @@ const Location = () => {
                   sx={{ width: '100%' }}
                   value={selectedAddress && selectedAddress.zip}
                   onChange={(e) => {
-                    handleChange('zip', e.target.value);
+                    handleChange(
+                      'zip',
+                      e.target.value.trim().length > 5
+                        ? e.target.value.trim().substring(0, 5)
+                        : e.target.value.trim(),
+                    );
                   }}
                   // onBlur={handleBlur('last_name')}
                   // error={Boolean(touched.last_name && errors.last_name)}

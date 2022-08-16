@@ -95,6 +95,8 @@ export function getAddress(place: any) {
       address.address1 = address.address1 + value + ' ';
     } else if (types.includes('route')) {
       address.address1 = address.address1 + value + '';
+    } else if (types.includes('subpremise')) {
+      address.address2 = address.address2 + value + ' ';
     } else if (types.includes('neighborhood')) {
       address.address2 = address.address2 + value + ' ';
     } else if (types.includes('administrative_area_level_2')) {
