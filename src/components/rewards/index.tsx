@@ -244,7 +244,7 @@ const Rewards = (props: any) => {
                                 {' '}
                                 {reward.expiring_at_tz && (
                                   <>
-                                    Expires
+                                    Expires{' '}
                                     {moment(reward.expiring_at_tz).format(
                                       'MM/YY',
                                     )}
