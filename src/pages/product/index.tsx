@@ -317,7 +317,7 @@ const Product = () => {
     if (productUpdateObj && productUpdateObj.basket && actionStatus) {
       setBasket(productUpdateObj.basket);
       setActionStatus(false);
-        displayToast('SUCCESS', '1 item updated in cart.');
+      displayToast('SUCCESS', '1 item updated in cart.');
       // dispatch(getBasketRequest('', productUpdateObj.basket, basketType));
       navigate('/menu/' + restaurant.slug);
     }
@@ -500,6 +500,17 @@ const Product = () => {
                   if (elemChildSelected) {
                     mainOptionCost =
                       mainOptionCost + elemChildSelected.option.cost;
+                    if (
+                      elemChildSelected.dropDownValues &&
+                      elemChildSelected.selectedValue
+                    ) {
+                      let ddl_op = elemChildSelected.dropDownValues.find(
+                        (i: any) => i.id == elemChildSelected.selectedValue,
+                      );
+                      if (ddl_op) {
+                        mainOptionCost = mainOptionCost + ddl_op.cost;
+                      }
+                    }
                   }
                   if (elemSelected && elemSelected.length > 0) {
                     elemSelected.map((ss: any) => {
@@ -598,6 +609,17 @@ const Product = () => {
                   if (elemChildSelected) {
                     mainOptionCost =
                       mainOptionCost + elemChildSelected.option.cost;
+                    if (
+                      elemChildSelected.dropDownValues &&
+                      elemChildSelected.selectedValue
+                    ) {
+                      let ddl_op = elemChildSelected.dropDownValues.find(
+                        (i: any) => i.id == elemChildSelected.selectedValue,
+                      );
+                      if (ddl_op) {
+                        mainOptionCost = mainOptionCost + ddl_op.cost;
+                      }
+                    }
                   }
                   if (elemSelected && elemSelected.length > 0) {
                     elemSelected.map((ss: any) => {
