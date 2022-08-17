@@ -162,7 +162,7 @@ const StoreInfoBar = () => {
                       display: 'inline',
                     }}
                   >
-                    Show {showMore ? 'Less' : 'More'}
+                    {showMore ? 'Hide' : 'View'} Details
                   </Typography>
                   {showMore ? (
                     <ExpandLessIcon style={{ color: '#fff' }} />
