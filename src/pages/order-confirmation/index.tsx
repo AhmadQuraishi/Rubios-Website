@@ -85,6 +85,36 @@ const OrderConfirmation = () => {
     }
   }, [order]);
 
+  const composeTitleText = () => {
+    let msg = '';
+    if (authToken?.authtoken) {
+      if (process.env.REACT_APP_SHOW_REWARD_POINTS === 'TRUE') {
+        msg = "You've earned points for Free Rubio's!";
+      } else {
+        msg = 'You’re all set!';
+      }
+    } else {
+      msg = 'GET $5 OFF YOUR NEXT ORDER';
+    }
+    return msg;
+  };
+
+  const composeDescriptionText = () => {
+    let msg = '';
+    if (authToken?.authtoken) {
+      if (process.env.REACT_APP_SHOW_REWARD_POINTS === 'TRUE') {
+        msg =
+          "You can cash in your points for free food when you get to 400, 700 or 1300 points. So keep enjoying your Rubio's favorites - tasty rewards are coming your way!";
+      } else {
+        msg =
+          'You’ve received credit for today’s order and are one step closer to earning your next reward.';
+      }
+    } else {
+      msg = 'Join Rubio’s Rewards today to start earning rewards.';
+    }
+    return msg;
+  };
+
   return (
     <Page title={'Order Confirmation'} className="">
       <Fragment>
@@ -125,29 +155,17 @@ const OrderConfirmation = () => {
                           letterSpacing: '-0.00833em',
                           textTransform: 'uppercase',
                         }}
-                        title={
-                          authToken?.authtoken
-                            ? "You've earned points for Free Rubio's!"
-                            : 'GET $5 OFF YOUR NEXT ORDER'
-                        }
+                        title={composeTitleText()}
                       >
-                        {authToken?.authtoken
-                          ? "You've earned points for Free Rubio's!"
-                          : 'GET $5 OFF YOUR NEXT ORDER'}
+                        {composeTitleText()}
                       </Typography>
                       <br />
                       <Typography
                         variant="h6"
                         className="white"
-                        title={
-                          authToken?.authtoken
-                            ? "You can cash in your points for free food when you get to 400, 700 or 1300 points. So keep enjoying your Rubio's favorites - tasty rewards are coming your way!"
-                            : 'Join Rubio’s Rewards today to start earning rewards.'
-                        }
+                        title={composeDescriptionText()}
                       >
-                        {authToken?.authtoken
-                          ? "You can cash in your points for free food when you get to 400, 700 or 1300 points. So keep enjoying your Rubio's favorites - tasty rewards are coming your way!"
-                          : 'Join Rubio’s Rewards today to start earning rewards.'}
+                        {composeDescriptionText()}
                       </Typography>
                       <br />
                       {authToken?.authtoken ? (
@@ -170,15 +188,18 @@ const OrderConfirmation = () => {
                         >
                           VIEW ACCOUNT
                         </Button>
-                        <Typography
-                          variant="h6"
-                          className="white hours-text"
-                          title="Please allow up to 24 hours for points to show up in your account."
-                          sx={{ paddingBottom: '10px' }}
-                        >
-                          Please allow up to 24 hours for points to show up in
-                          your account.
-                        </Typography>
+                        {process.env.REACT_APP_SHOW_REWARD_POINTS ===
+                          'TRUE' && (
+                          <Typography
+                            variant="h6"
+                            className="white hours-text"
+                            title="Please allow up to 24 hours for points to show up in your account."
+                            sx={{ paddingBottom: '10px' }}
+                          >
+                            Please allow up to 24 hours for points to show up in
+                            your account.
+                          </Typography>
+                        )}
                       </Grid>
                     ) : (
                       <RegisterConfirmation id={id} />
