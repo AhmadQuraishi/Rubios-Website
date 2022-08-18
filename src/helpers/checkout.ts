@@ -247,7 +247,7 @@ const calculateMinutesDiff = (minutes: number): number => {
   } else {
     let difference = Math.ceil(minutes / 15);
     difference = difference * 15 - minutes;
-    minutes = difference + 30;
+    minutes = difference + 15;
     return minutes;
   }
 };
@@ -282,7 +282,7 @@ export function generateNextAvailableTimeSlots(
 
   let count = 0;
   const maxAllowed = 100;
-  while (closeAt.diff(startTime, 'seconds') > 900 && count <= maxAllowed) {
+  while (closeAt.diff(startTime, 'seconds') > 0 && count <= maxAllowed) {
     timeSlots.push(moment(startTime).format('YYYYMMDD HH:mm'));
     startTime && startTime.add('m', 15);
     count++;
