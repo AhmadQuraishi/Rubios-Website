@@ -209,7 +209,6 @@ const OrderTime = ({ orderType }: any) => {
     let earlyReadyTime = moment(time, 'YYYYMMDD HH:mm');
 
     const minutes = earlyReadyTime.diff(localTime, 'minutes');
-    console.log('minutes', minutes);
     return minutes && minutes > 0 ? minutes : 0;
   };
 
@@ -232,16 +231,16 @@ const OrderTime = ({ orderType }: any) => {
                 orderType === DeliveryModeEnum.dinein
                   ? 'DATE'
                   : orderType === DeliveryModeEnum.dispatch
-                    ? 'DELIVERY TIME'
-                    : 'PICKUP TIME'
+                  ? 'DELIVERY TIME'
+                  : 'PICKUP TIME'
               }
               className="label"
             >
               {orderType === DeliveryModeEnum.dinein
                 ? 'DATE'
                 : orderType === DeliveryModeEnum.dispatch
-                  ? 'DELIVERY TIME'
-                  : 'PICKUP TIME'}
+                ? 'DELIVERY TIME'
+                : 'PICKUP TIME'}
             </Typography>
           </Grid>
         </Grid>
