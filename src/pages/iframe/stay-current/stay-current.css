@@ -1,6 +1,5 @@
 .stay-connect-bg {
-  background-color: rgba(255, 255, 255, 0);
-  background-image: url(../../../assets/imgs/Background-stay-current-1920.png);
+  background-color: transparent;
   background-position: center top;
   background-repeat: no-repeat;
   border-width: 0px 0px 0px 0px;
