@@ -39,6 +39,14 @@
   max-width: 100px;
 }
 
+.p-number{
+  text-align: center;
+  margin-bottom: auto;
+  margin-top: 10px;
+  font-family: 'Poppins-Medium', sans-serif !important;
+  font-size: 13px;
+}
+
 @media screen and (max-width: 468px) {
   .invite-section .back-btn {
     display: block;
