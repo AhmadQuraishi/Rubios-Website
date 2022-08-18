@@ -94,8 +94,11 @@ Please note, you will need to add the appropriate free or discounted item to you
                         minHeight: '125px',
                       }}
                     >
-                      <Grid item xs={6}>
+                      <Grid style={{textAlign: 'center'}} item xs={6}>
                         <QRCodeSVG value={redemption.internal_tracking_code} />
+                        <p className="p-number">
+                          {redemption.internal_tracking_code}
+                        </p>
                       </Grid>
                       <Grid item xs={6}>
                         <Typography variant="h6">{reward_name}</Typography>
