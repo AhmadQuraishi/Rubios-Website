@@ -232,16 +232,16 @@ const OrderTime = ({ orderType }: any) => {
                 orderType === DeliveryModeEnum.dinein
                   ? 'DATE'
                   : orderType === DeliveryModeEnum.dispatch
-                  ? 'DELIVERY TIME'
-                  : 'PICKUP TIME'
+                    ? 'DELIVERY TIME'
+                    : 'PICKUP TIME'
               }
               className="label"
             >
               {orderType === DeliveryModeEnum.dinein
                 ? 'DATE'
                 : orderType === DeliveryModeEnum.dispatch
-                ? 'DELIVERY TIME'
-                : 'PICKUP TIME'}
+                  ? 'DELIVERY TIME'
+                  : 'PICKUP TIME'}
             </Typography>
           </Grid>
         </Grid>
@@ -251,7 +251,11 @@ const OrderTime = ({ orderType }: any) => {
             variant="h2"
             title={moment(selectedDate).format('dddd MMM Do')}
           >
-            {moment(selectedDate).format('dddd MMM Do')}
+            {moment(selectedDate).format('dddd MMM D')}
+
+            <sup style={{ fontSize: 20 }}>
+              {moment(selectedDate).format('Do').replace(/(\d)/g, '')}
+            </sup>
           </Typography>
         </Grid>
         {orderType !== DeliveryModeEnum.dinein && (
@@ -261,6 +265,7 @@ const OrderTime = ({ orderType }: any) => {
                 aria-label="Change Order Time"
                 title="Change Order Time"
                 className="caption-grey"
+                style={{ marginTop: -10 }}
                 onClick={() => {
                   setAttributesForDate();
                 }}
@@ -340,6 +345,8 @@ const OrderTime = ({ orderType }: any) => {
                               fontSize: '10px',
                               display: 'block',
                               textTransform: 'none',
+                              letterSpacing: 1,
+                              fontFamily: 'Poppins-Regular',
                             }}
                           >
                             Est{' '}
