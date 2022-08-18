@@ -3,10 +3,8 @@ import {
   Typography,
   Card,
   Button,
-  TextField,
-  Snackbar,
-  Alert,
-  Slide,
+  useTheme,
+  useMediaQuery,
 } from '@mui/material';
 import './product.css';
 import * as React from 'react';
@@ -15,7 +13,7 @@ import StoreInfoBar from '../../components/restaurant-info-bar';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategoriesRequest } from '../../redux/actions/category';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   Category,
   Product as ProductInfo,
@@ -33,18 +31,20 @@ import { displayToast } from '../../helpers/toast';
 import ItemImage from '../../components/item-image';
 import { getUpsellsRequest } from '../../redux/actions/basket/upsell/Get';
 import axios from 'axios';
-import { changeImageSize } from '../../helpers/common';
-const inputProps = {
-  'aria-label': 'quantity',
-};
+import { changeImageSize, checkTacoMatch } from '../../helpers/common';
+import { BorderRight } from '@mui/icons-material';
+import Page from '../../components/page-title';
 
 const Product = () => {
+  const theme = useTheme();
+  const { id, edit } = useParams();
+
   const [productDetails, setProductDetails] = useState<ProductInfo>();
   const [productOptions, setProductOptions] = useState<ResponseModifiers>();
   const [basket, setBasket] = useState<ResponseBasket>();
   const [actionStatus, setActionStatus] = useState<boolean>(false);
   const [totalCost, setTotalCost] = useState<number>();
-  const { id, edit } = useParams();
+
   const { categories, loading } = useSelector(
     (state: any) => state.categoryReducer,
   );
@@ -215,7 +215,7 @@ const Product = () => {
       if (
         objDeliveryAddress &&
         objDeliveryAddress.address &&
-        orderType === DeliveryModeEnum.delivery
+        orderType === DeliveryModeEnum.dispatch
       ) {
         deliveryAddress = formatDeliveryAddress();
         payload.deliveryAddress = deliveryAddress;
@@ -307,8 +307,8 @@ const Product = () => {
     if (productAddObj && productAddObj.basket && actionStatus) {
       setBasket(productAddObj.basket);
       setActionStatus(false);
-      displayToast('SUCCESS', '1 item added to cart.');
-      dispatch(getBasketRequest('', productAddObj.basket, basketType));
+      // displayToast('SUCCESS', '1 item added to cart.');
+      // dispatch(getBasketRequest('', productAddObj.basket, basketType));
       navigate('/menu/' + restaurant.slug);
     }
   }, [productAddObj]);
@@ -318,14 +318,16 @@ const Product = () => {
       setBasket(productUpdateObj.basket);
       setActionStatus(false);
       displayToast('SUCCESS', '1 item updated in cart.');
-      dispatch(getBasketRequest('', productUpdateObj.basket, basketType));
+      // dispatch(getBasketRequest('', productUpdateObj.basket, basketType));
       navigate('/menu/' + restaurant.slug);
     }
   }, [productUpdateObj]);
 
   const [optionsSelectionArray, setOptionsSelectionArray] = useState<any>([]);
 
-  useEffect(() => {}, [optionsSelectionArray]);
+  useEffect(() => {
+    console.log(optionsSelectionArray);
+  }, [optionsSelectionArray]);
 
   let ptotalCost = 0;
 
@@ -372,6 +374,12 @@ const Product = () => {
             productDetails?.cost || 0 + ptotalCost || 0 * count || 0,
           );
           editOptions.push(option.id);
+        }
+        if (!isExistInEdit(option.id) && defaultOptionID == option.id) {
+          ptotalCost = ptotalCost + option.cost;
+          getTotalCost(
+            productDetails?.cost || 0 + ptotalCost || 0 * count || 0,
+          );
         }
       });
 
@@ -471,9 +479,9 @@ const Product = () => {
             const option = item.options.find(
               (option: any) => option.optionID == item.selectedOptions[0],
             );
+            let mainOptionCost = 0;
             if (option) {
-              setOptionsCost(optionsCost - option.option.cost);
-              setTotalCost((totalCost || 0) - option.option.cost * count);
+              mainOptionCost = option.option.cost;
             }
             item.selectedOptions = [];
             let elems = optionsSelectionArray.filter(
@@ -482,67 +490,217 @@ const Product = () => {
             if (elems) {
               elems.map((x: any) => {
                 x.selected = false;
-                if (x.defaultOption) {
-                  let elem = optionsSelectionArray.find(
-                    (i: any) => i.parentOptionID == x.defaultOption,
+                x.selectedOptions.map((mainChild: any) => {
+                  let elemSelected = optionsSelectionArray.filter(
+                    (i: any) => i.parentOptionID == mainChild,
                   );
-                  if (elem) {
-                    elem.selected = false;
-                    if (elem.defaultOption) {
-                      let elem1 = optionsSelectionArray.find(
-                        (i: any) => i.parentOptionID == elem.defaultOption,
+                  let elemChildSelected = x.options.find(
+                    (i: any) => i.optionID == mainChild,
+                  );
+                  if (elemChildSelected) {
+                    mainOptionCost =
+                      mainOptionCost + elemChildSelected.option.cost;
+                    if (
+                      elemChildSelected.dropDownValues &&
+                      elemChildSelected.selectedValue
+                    ) {
+                      let ddl_op = elemChildSelected.dropDownValues.find(
+                        (i: any) => i.id == elemChildSelected.selectedValue,
                       );
-                      if (elem1) {
-                        elem1.selected = false;
+                      if (ddl_op) {
+                        mainOptionCost = mainOptionCost + ddl_op.cost;
                       }
                     }
                   }
-                }
+                  if (elemSelected && elemSelected.length > 0) {
+                    elemSelected.map((ss: any) => {
+                      ss.selected = false;
+                      if (ss.selectedOptions.length > 0) {
+                        let xelemChildSelected = optionsSelectionArray.filter(
+                          (i: any) => i.parentOptionID == ss.selectedOptions[0],
+                        );
+                        if (xelemChildSelected.length > 0) {
+                          xelemChildSelected.map((xc: any) => {
+                            xc.selected = false;
+                            xc.selectedOptions.map((child: any) => {
+                              let elemChildSelected = xc.options.find(
+                                (i: any) => i.optionID == child,
+                              );
+                              if (
+                                elemChildSelected &&
+                                xelemChildSelected.selected
+                              ) {
+                                mainOptionCost =
+                                  mainOptionCost +
+                                  elemChildSelected.option.cost;
+                                if (elemChildSelected.selectedValue) {
+                                  const ddlSelected =
+                                    elemChildSelected.dropDownValues.find(
+                                      (i: any) =>
+                                        i.id == elemChildSelected.selectedValue,
+                                    );
+                                  if (ddlSelected) {
+                                    mainOptionCost =
+                                      mainOptionCost + ddlSelected.cost;
+                                  }
+                                  elemChildSelected.selectedValue =
+                                    elemChildSelected.dropDownValues[0].id;
+                                }
+                              }
+                            });
+                          });
+                        } else {
+                          ss.selectedOptions.map((child: any) => {
+                            xelemChildSelected = ss.options.find(
+                              (i: any) => i.optionID == child,
+                            );
+                            if (xelemChildSelected) {
+                              mainOptionCost =
+                                mainOptionCost + xelemChildSelected.option.cost;
+                              if (xelemChildSelected.selectedValue) {
+                                const ddlSelected =
+                                  xelemChildSelected.dropDownValues.find(
+                                    (i: any) =>
+                                      i.id == xelemChildSelected.selectedValue,
+                                  );
+                                if (ddlSelected) {
+                                  mainOptionCost =
+                                    mainOptionCost + ddlSelected.cost;
+                                }
+                                xelemChildSelected.selectedValue =
+                                  xelemChildSelected.dropDownValues[0].id;
+                              }
+                            }
+                          });
+                        }
+                      }
+                      ss.selectedOptions = ss.defaultOption
+                        ? [ss.defaultOption]
+                        : [];
+                    });
+                  }
+                });
+                x.selectedOptions = x.defaultOption ? [x.defaultOption] : [];
               });
             }
+            setOptionsCost(optionsCost - mainOptionCost);
+            setTotalCost((totalCost || 0) - mainOptionCost * count);
           } else {
+            const optionX = item.options.find(
+              (option: any) => option.optionID == item.selectedOptions[0],
+            );
+            let mainOptionCost = 0;
+            if (optionX) {
+              mainOptionCost = optionX.option.cost;
+            }
             let elems = optionsSelectionArray.filter(
               (x: any) => x.parentOptionID == item.selectedOptions[0],
             );
             if (elems) {
               elems.map((x: any) => {
                 x.selected = false;
-                if (x.defaultOption) {
-                  let elem = optionsSelectionArray.find(
-                    (i: any) => i.parentOptionID == x.defaultOption,
+                x.selectedOptions.map((mainChild: any) => {
+                  let elemSelected = optionsSelectionArray.filter(
+                    (i: any) => i.parentOptionID == mainChild,
                   );
-                  if (elem) {
-                    elem.selected = false;
-                    if (elem.defaultOption) {
-                      let elem1 = optionsSelectionArray.find(
-                        (i: any) => i.parentOptionID == elem.defaultOption,
+                  let elemChildSelected = x.options.find(
+                    (i: any) => i.optionID == mainChild,
+                  );
+                  if (elemChildSelected) {
+                    mainOptionCost =
+                      mainOptionCost + elemChildSelected.option.cost;
+                    if (
+                      elemChildSelected.dropDownValues &&
+                      elemChildSelected.selectedValue
+                    ) {
+                      let ddl_op = elemChildSelected.dropDownValues.find(
+                        (i: any) => i.id == elemChildSelected.selectedValue,
                       );
-                      if (elem1) {
-                        elem1.selected = false;
+                      if (ddl_op) {
+                        mainOptionCost = mainOptionCost + ddl_op.cost;
                       }
                     }
                   }
-                }
+                  if (elemSelected && elemSelected.length > 0) {
+                    elemSelected.map((ss: any) => {
+                      ss.selected = false;
+                      if (ss.selectedOptions.length > 0) {
+                        let xelemChildSelected = optionsSelectionArray.filter(
+                          (i: any) => i.parentOptionID == ss.selectedOptions[0],
+                        );
+                        if (xelemChildSelected.length > 0) {
+                          xelemChildSelected.map((xc: any) => {
+                            xc.selected = false;
+                            xc.selectedOptions.map((child: any) => {
+                              let elemChildSelected = xc.options.find(
+                                (i: any) => i.optionID == child,
+                              );
+                              if (
+                                elemChildSelected &&
+                                xelemChildSelected.selected
+                              ) {
+                                mainOptionCost =
+                                  mainOptionCost +
+                                  elemChildSelected.option.cost;
+                                if (elemChildSelected.selectedValue) {
+                                  const ddlSelected =
+                                    elemChildSelected.dropDownValues.find(
+                                      (i: any) =>
+                                        i.id == elemChildSelected.selectedValue,
+                                    );
+                                  if (ddlSelected) {
+                                    mainOptionCost =
+                                      mainOptionCost + ddlSelected.cost;
+                                  }
+                                  elemChildSelected.selectedValue =
+                                    elemChildSelected.dropDownValues[0].id;
+                                }
+                              }
+                            });
+                          });
+                        } else {
+                          ss.selectedOptions.map((child: any) => {
+                            xelemChildSelected = ss.options.find(
+                              (i: any) => i.optionID == child,
+                            );
+                            if (xelemChildSelected) {
+                              mainOptionCost =
+                                mainOptionCost + xelemChildSelected.option.cost;
+                              if (xelemChildSelected.selectedValue) {
+                                const ddlSelected =
+                                  xelemChildSelected.dropDownValues.find(
+                                    (i: any) =>
+                                      i.id == xelemChildSelected.selectedValue,
+                                  );
+                                if (ddlSelected) {
+                                  mainOptionCost =
+                                    mainOptionCost + ddlSelected.cost;
+                                }
+                                xelemChildSelected.selectedValue =
+                                  xelemChildSelected.dropDownValues[0].id;
+                              }
+                            }
+                          });
+                        }
+                      }
+                      ss.selectedOptions = ss.defaultOption
+                        ? [ss.defaultOption]
+                        : [];
+                    });
+                  }
+                });
+                x.selectedOptions = x.defaultOption ? [x.defaultOption] : [];
               });
             }
-            const option1 = item.options.find(
-              (option: any) => option.optionID == item.selectedOptions[0],
-            );
             item.selectedOptions = [optionId];
             item.selected = true;
             const option = item.options.find(
               (option: any) => option.optionID == optionId,
             );
             if (option) {
-              setOptionsCost(
-                optionsCost -
-                  (option1 ? option1.option.cost : 0) +
-                  option.option.cost,
-              );
+              setOptionsCost(optionsCost - mainOptionCost + option.option.cost);
               const prc = option.option.cost * count;
-              setTotalCost(
-                (totalCost || 0) - (option1 ? option1.option.cost : 0) + prc,
-              );
+              setTotalCost((totalCost || 0) - mainOptionCost + prc);
             }
             elems = optionsSelectionArray.filter(
               (x: any) => x.parentOptionID == optionId,
@@ -550,21 +708,21 @@ const Product = () => {
             if (elems) {
               elems.map((x: any) => {
                 x.selected = true;
-                if (x.defaultOption) {
-                  let elem = optionsSelectionArray.find(
-                    (i: any) => i.parentOptionID == x.defaultOption,
-                  );
-                  if (elem) {
-                    elem.selected = true;
-                    if (elem.defaultOption) {
-                      let elem1 = optionsSelectionArray.find(
-                        (i: any) => i.parentOptionID == elem.defaultOption,
+                let elemSelected = optionsSelectionArray.filter(
+                  (i: any) => i.parentOptionID == x.selectedOptions[0],
+                );
+                if (elemSelected && elemSelected.length > 0) {
+                  elemSelected.map((ss: any) => {
+                    ss.selected = true;
+                    if (ss.selectedOptions.length > 0) {
+                      let elemSelectedx = optionsSelectionArray.find(
+                        (i: any) => i.parentOptionID == ss.selectedOptions[0],
                       );
-                      if (elem1) {
-                        elem1.selected = true;
+                      if (elemSelectedx) {
+                        elemSelectedx.selected = true;
                       }
                     }
-                  }
+                  });
                 }
               });
             }
@@ -593,7 +751,7 @@ const Product = () => {
                   count;
                 setTotalCost((totalCost || 0) - prc);
               }
-              item.selected = !(item.selectedOptions.length == 0);
+              //item.selected = !(item.selectedOptions.length == 0);
               let elems = optionsSelectionArray.filter(
                 (x: any) => x.parentOptionID == optionId,
               );
@@ -670,6 +828,7 @@ const Product = () => {
         }
       }
     });
+    console.log(optionsSelectionArray);
     setOptionsSelectionArray((optionsSelectionArray: any) => [
       ...optionsSelectionArray,
     ]);
@@ -716,7 +875,7 @@ const Product = () => {
     let isValidate = true;
     optionsSelectionArray.map((itemP: any) => {
       if (
-        itemP.id == itemP.parentOptionID &&
+        itemP.selected == true &&
         itemP.mandatory &&
         itemP.selectedOptions.length === 0
       ) {
@@ -802,497 +961,669 @@ const Product = () => {
     );
   };
 
+  const noWordpressImageFound = (
+    optionImages: any,
+    id: any,
+    name: any,
+    isdefault: boolean,
+  ) => {
+    let check = true;
+    if (optionImages && optionImages.length) {
+      optionImages.forEach((item: any) => {
+        if (process.env.REACT_APP_NODE_ENV !== 'production') {
+          if (item.sandbox_plu_names.indexOf(id.toString()) !== -1) {
+            check = false;
+          }
+        } else {
+          if (item.production_plu_names.indexOf(id.toString()) !== -1) {
+            check = false;
+          }
+        }
+
+        if (
+          name.toLowerCase().indexOf('no rice') !== -1 ||
+          checkTacoMatch(name, isdefault) ||
+          name.toLowerCase().indexOf('no beans') !== -1 ||
+          name.toLowerCase() === 'customize' ||
+          name.toLowerCase() === 'as is'
+        ) {
+          check = false;
+        }
+      });
+    }
+    return check;
+  };
+
   return (
-    <div style={{ minHeight: '500px' }}>
-      <Typography variant="h1" className="sr-only">
-        Product details
-      </Typography>
-      <StoreInfoBar />
-      {loading == true && productDetails == null && productOptions == null && (
-        <ProductSkeletonUI />
-      )}
-      {productDetails && (
-        <Grid container className="product-detail">
-          <Grid item xs={12}>
-            <Grid container>
-              <Grid item xs={12} sm={6} className="ph-fix">
-                {/*<Typography*/}
-                {/*variant="caption"*/}
-                {/*title="PICK UP YOUR"*/}
-                {/*className="label"*/}
-                {/*>*/}
-                {/*PICK UP YOUR*/}
-                {/*</Typography>*/}
-                <Typography
-                  variant="h2"
-                  className="heading"
-                  title={productDetails.name}
-                >
-                  {productDetails.name}
-                </Typography>
-                <Typography
-                  variant="body1"
-                  title={productDetails.description}
-                  className="desc"
-                >
-                  {productDetails.description}
-                </Typography>
-                <Grid container>
-                  {(parseInt(productDetails.basecalories || '0') > 0 ||
-                    parseInt(productDetails.maxcalories || '0') > 0) && (
-                    <Grid item xs={6}>
-                      <Typography
-                        variant="caption"
-                        className="label bold"
-                        aria-label={`${
-                          productDetails.caloriesseparator
+    <Page title={'Product Detail'} className="">
+      <div style={{ minHeight: '500px' }}>
+        {console.log('productOptions', productOptions)}
+        <Typography variant="h1" className="sr-only">
+          Product details
+        </Typography>
+        <StoreInfoBar />
+        {loading == true &&
+          productDetails == null &&
+          productOptions == null && <ProductSkeletonUI />}
+        {productDetails && (
+          <Grid container className="product-detail">
+            <Grid item xs={12}>
+              <Grid container>
+                <Grid item xs={12} sm={6} className="ph-fix">
+                  {/*<Typography*/}
+                  {/*variant="caption"*/}
+                  {/*title="PICK UP YOUR"*/}
+                  {/*className="label"*/}
+                  {/*>*/}
+                  {/*PICK UP YOUR*/}
+                  {/*</Typography>*/}
+                  <Typography
+                    variant="h2"
+                    className="heading"
+                    title={productDetails.name}
+                  >
+                    {productDetails.name}
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    title={productDetails.description}
+                    className="desc"
+                  >
+                    {productDetails.description}
+                  </Typography>
+                  <Grid container>
+                    {(parseInt(productDetails.basecalories || '0') > 0 ||
+                      parseInt(productDetails.maxcalories || '0') > 0) && (
+                      <Grid item xs={4.5} sx={{ marginRight: '15px' }}>
+                        <Typography
+                          variant="caption"
+                          className="label bold"
+                          aria-label={`${
+                            productDetails.caloriesseparator
+                              ? productDetails.basecalories +
+                                productDetails.caloriesseparator +
+                                productDetails.maxcalories
+                              : productDetails.basecalories
+                          } Cal`}
+                          title={`${
+                            productDetails.caloriesseparator
+                              ? productDetails.basecalories +
+                                productDetails.caloriesseparator +
+                                productDetails.maxcalories
+                              : productDetails.basecalories
+                          } Cal`}
+                        >
+                          {productDetails.caloriesseparator
                             ? productDetails.basecalories +
                               productDetails.caloriesseparator +
                               productDetails.maxcalories
-                            : productDetails.basecalories
-                        } Cal`}
-                        title={`${
-                          productDetails.caloriesseparator
-                            ? productDetails.basecalories +
-                              productDetails.caloriesseparator +
-                              productDetails.maxcalories
-                            : productDetails.basecalories
-                        } Cal`}
-                      >
-                        {productDetails.caloriesseparator
-                          ? productDetails.basecalories +
-                            productDetails.caloriesseparator +
-                            productDetails.maxcalories
-                          : productDetails.basecalories}{' '}
-                        Cal
-                      </Typography>
-                    </Grid>
-                  )}
-                  {productDetails.cost > 0 && (
-                    <Grid item xs={6}>
-                      <Typography
-                        variant="body1"
-                        className="price"
-                        title={`$${productDetails.cost.toFixed(2)}`}
-                      >
-                        ${productDetails.cost.toFixed(2)}
-                      </Typography>
-                    </Grid>
+                            : productDetails.basecalories}{' '}
+                          Cal
+                        </Typography>
+                      </Grid>
+                    )}
+                    {productDetails.cost > 0 && (
+                      <Grid item xs={6}>
+                        <Typography
+                          variant="body1"
+                          className="price"
+                          title={`$${productDetails.cost.toFixed(2)}`}
+                        >
+                          ${productDetails.cost.toFixed(2)}
+                        </Typography>
+                      </Grid>
+                    )}
+                  </Grid>
+                </Grid>
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  sx={{ marginTop: '20px', textAlign: 'center' }}
+                >
+                  {productDetails.imagefilename ? (
+                    <img
+                      style={{
+                        width: '100%',
+                        display: 'block',
+                        margin: 'auto',
+                        borderRadius: '10px',
+                      }}
+                      src={
+                        ((categories && categories.imagepath) || '') +
+                        changeImageSize(
+                          productDetails.imagefilename,
+                          productDetails.images,
+                          process.env.REACT_APP_NODE_ENV === 'production'
+                            ? 'marketplace-product'
+                            : 'desktop-menu',
+                        )
+                      }
+                      alt=""
+                      className="img"
+                      title={productDetails.name}
+                    />
+                  ) : (
+                    <img
+                      style={{ width: '80%', display: 'block', margin: 'auto' }}
+                      alt=""
+                      src={require('../../assets/imgs/default_img.png')}
+                      title={productDetails.name}
+                    />
                   )}
                 </Grid>
               </Grid>
-              <Grid
-                item
-                xs={12}
-                sm={6}
-                sx={{ marginTop: '20px', textAlign: 'center' }}
-              >
-                {productDetails.imagefilename ? (
-                  <img
-                    style={{
-                      width: '100%',
-                      display: 'block',
-                      margin: 'auto',
-                      borderRadius: '10px',
-                    }}
-                    src={
-                      ((categories && categories.imagepath) || '') +
-                      changeImageSize(
-                        productDetails.imagefilename,
-                        productDetails.images,
-                        process.env.REACT_APP_NODE_ENV === 'production'
-                          ? 'marketplace-product'
-                          : 'desktop-menu',
-                      )
-                    }
-                    alt=""
-                    className="img"
-                    title={productDetails.name}
-                  />
-                ) : (
-                  <img
-                    style={{ width: '80%', display: 'block', margin: 'auto' }}
-                    alt=""
-                    src={require('../../assets/imgs/default_img.png')}
-                    title={productDetails.name}
-                  />
-                )}
-              </Grid>
-            </Grid>
-            <br />
-            <br />
-            {selectionExecute && <ProductOptionsSkeletonUI />}
-            <div style={{ display: !selectionExecute ? 'block' : 'none' }}>
-              {optionsSelectionArray.length > 0 &&
-                optionsSelectionArray.map((itemMain: any, index0: number) => (
-                  <Grid
-                    key={Math.random() + index0}
-                    container
-                    sx={{
-                      display:
-                        itemMain.id == itemMain.parentOptionID ||
-                        selectedParentOption(itemMain.parentOptionID)
-                          ? 'flex'
-                          : 'none',
-                    }}
-                    className="menu-items"
-                    parent-mandatory-option={itemMain.mandatory.toString()}
-                    parent-option-id={itemMain.parentOptionID}
-                  >
-                    <Grid item xs={12} option-id={itemMain.id}>
-                      <Typography
-                        variant={
+              <br />
+              <br />
+              {selectionExecute && <ProductOptionsSkeletonUI />}
+              <div style={{ display: !selectionExecute ? 'block' : 'none' }}>
+                {!optionsSelectionArray ||
+                  (optionsSelectionArray.length < 0 && (
+                    <ProductOptionsSkeletonUI />
+                  ))}
+                {optionsSelectionArray.length > 0 &&
+                  optionsSelectionArray.map((itemMain: any, index0: number) => (
+                    <fieldset
+                      key={Math.random() + index0}
+                      className="field-set"
+                      style={{
+                        border: '0',
+                        boxShadow: 'none',
+                        display:
+                          itemMain.id == itemMain.parentOptionID ||
+                          selectedParentOption(itemMain.parentOptionID)
+                            ? 'flex'
+                            : 'none',
+                      }}
+                    >
+                      <legend
+                        className={`heading-ui ${
                           itemMain.parentOptionID == itemMain.id ? 'h2' : 'h3'
-                        }
-                        className="heading-ui"
-                        sx={{ marginTop: '20px' }}
-                        tabIndex={0}
-                        title={itemMain.name}
-                        aria-required={itemMain.mandatory ? 'true' : 'false'}
+                        }`}
                       >
                         {itemMain.name}
-                        {/*<span style={{ color: '#ff0000' }}>*/}
-                        {/*{itemMain.mandatory ? '*' : ''}*/}
-                        {/*</span>*/}
                         {IsItemSelected(itemMain.id) && (
                           <span
+                            role="alert"
                             style={{
                               fontSize: '16px',
-                              color: 'red',
+                              color: '#b91a2e',
                               paddingLeft: '10px',
                             }}
+                            id={`required-label-${index0}`}
                           >
                             (Required)
                           </span>
                         )}
-                      </Typography>
-                    </Grid>
-                    {itemMain.options &&
-                      itemMain.options.map((itemChild: any, index1: number) => (
-                        <Grid
-                          key={Math.random() + index1}
-                          option-id={itemChild.option.id}
-                          className={
-                            checkOptionSelected(
-                              itemChild.option.id,
-                              itemMain.id,
-                            ) == true
-                              ? 'content-panel selected'
-                              : 'content-panel'
-                          }
-                          item
-                          xs={6}
-                          sm={3}
-                          md={3}
-                          lg={4}
-                          sx={{ position: 'relative' }}
-                        >
-                          {itemMain.mandatory ? (
-                            <input
-                              checked={checkOptionSelected(
-                                itemChild.option.id,
-                                itemMain.id,
-                              )}
-                              style={{
-                                opacity: 0,
-                                position: 'absolute',
-                                zIndex: 1000,
-                              }}
-                              type="radio"
-                              id={itemChild.option.id}
-                              value={itemChild.option.name}
-                              onClick={() => {
-                                showChildOptions(
-                                  itemChild.option.id,
-                                  itemMain.id,
-                                  itemChild.dropDownValues,
-                                  itemChild.selectedValue,
-                                );
-                              }}
-                            />
-                          ) : (
-                            <input
-                              checked={checkOptionSelected(
-                                itemChild.option.id,
-                                itemMain.id,
-                              )}
-                              style={{
-                                opacity: 0,
-                                position: 'absolute',
-                                zIndex: 1000,
-                              }}
-                              type="checkbox"
-                              id={itemChild.option.id}
-                              value={itemChild.option.name}
-                              onClick={() => {
-                                showChildOptions(
-                                  itemChild.option.id,
-                                  itemMain.id,
-                                  itemChild.dropDownValues,
-                                  itemChild.selectedValue,
-                                );
-                              }}
-                            />
-                          )}
-                          <label
-                            tabIndex={0}
-                            htmlFor={itemChild.option.id}
-                            onClick={() => {
-                              showChildOptions(
-                                itemChild.option.id,
-                                itemMain.id,
-                                itemChild.dropDownValues,
-                                itemChild.selectedValue,
-                              );
-                            }}
-                            onKeyUp={(e) => {
-                              if (e.keyCode === 13)
-                                showChildOptions(
-                                  itemChild.option.id,
-                                  itemMain.id,
-                                  itemChild.dropDownValues,
-                                  itemChild.selectedValue,
-                                );
-                            }}
-                          >
-                            <Card
-                              className="card-panel"
-                              title={itemChild.option.name}
-                              is-mandatory={itemMain.mandatory.toString()}
-                              parent-option-id={itemMain.parentOptionID}
-                            >
-                              <div className="check-mark">
-                                <div aria-hidden="true" className="checkmark">
-                                  L
-                                </div>
-                              </div>
+                      </legend>
+
+                      <Grid
+                        container
+                        sx={{
+                          display:
+                            itemMain.id == itemMain.parentOptionID ||
+                            selectedParentOption(itemMain.parentOptionID)
+                              ? 'flex'
+                              : 'none',
+                        }}
+                        className="menu-items"
+                        parent-mandatory-option={itemMain.mandatory.toString()}
+                        parent-option-id={itemMain.parentOptionID}
+                      >
+                        {!itemMain.options ||
+                          (itemMain.options.length < 0 && (
+                            <ProductOptionsSkeletonUI />
+                          ))}
+                        {itemMain.options &&
+                          itemMain.options.map(
+                            (itemChild: any, index1: number) => (
                               <Grid
-                                container
-                                spacing={1}
-                                className="name-img-panel"
-                                sx={{ padding: '0', marginTop: '0' }}
+                                key={Math.random() + index1}
+                                option-id={itemChild.option.id}
+                                className={
+                                  checkOptionSelected(
+                                    itemChild.option.id,
+                                    itemMain.id,
+                                  ) == true
+                                    ? 'content-panel selected'
+                                    : 'content-panel'
+                                }
+                                item
+                                xs={6}
+                                sm={3}
+                                md={3}
+                                lg={4}
+                                sx={{ position: 'relative' }}
                               >
-                                <Grid
-                                  item
-                                  xs={12}
-                                  lg={5}
-                                  sx={{
-                                    width: '120px',
-                                    height: '120px',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    padding: '0px',
-                                    paddingLeft: {
-                                      xs: '0px !important',
-                                      lg: '15px !important',
-                                    },
-                                    paddingTop: {
-                                      xs: '0px !important',
-                                      lg: '0px !important',
-                                    },
-                                  }}
-                                >
-                                  <ItemImage
-                                    productImageURL={
-                                      productDetails &&
-                                      ((categories && categories.imagepath) ||
-                                        '') +
-                                        changeImageSize(
-                                          productDetails.imagefilename || '',
-                                          productDetails.images || '',
-                                          'desktop-menu',
-                                        )
+                                {itemMain.mandatory ? (
+                                  <input
+                                    aria-invalid={
+                                      IsItemSelected(itemMain.id) && index1 == 0
+                                        ? 'true'
+                                        : 'false'
                                     }
-                                    index={index1}
-                                    className="item-image"
-                                    name={itemChild.option.name}
-                                    id={itemChild.option.chainoptionid}
-                                    optionImages={optionImages}
-                                  />
-                                </Grid>
-                                <Grid
-                                  item
-                                  xs={12}
-                                  lg={7}
-                                  className="name-panel"
-                                >
-                                  {itemChild.option.name}
-                                  {itemChild.option.cost > 0 && (
-                                    <Grid
-                                      item
-                                      xs={12}
-                                      title={`$${parseFloat(
-                                        itemChild.option.cost,
-                                      ).toFixed(2)}`}
-                                      sx={{
-                                        paddingTop: '5px',
-                                        fontSize: '14px',
-                                        fontFamily: 'Poppins-Bold',
-                                        color: '#7CC8C5',
-                                        textAlign: { xs: 'center', lg: 'left' },
-                                      }}
-                                    >
-                                      +$
-                                      {parseFloat(
-                                        itemChild.option.cost,
-                                      ).toFixed(2)}
-                                    </Grid>
-                                  )}
-                                  {itemChild.dropDownValues && (
-                                    <>
-                                      {checkOptionSelected(
+                                    aria-describedby={
+                                      index1 == 0
+                                        ? `required-label-${index0}`
+                                        : ''
+                                    }
+                                    checked={checkOptionSelected(
+                                      itemChild.option.id,
+                                      itemMain.id,
+                                    )}
+                                    style={{
+                                      opacity: 0,
+                                      position: 'absolute',
+                                      zIndex: 1000,
+                                    }}
+                                    type="radio"
+                                    id={itemChild.option.id}
+                                    value={itemChild.option.name}
+                                    onChange={() => {
+                                      showChildOptions(
                                         itemChild.option.id,
                                         itemMain.id,
-                                      ) == true && (
-                                        <select
-                                          className="ss-panl"
-                                          parent-select-option-id={itemChild.id}
-                                          onClick={(e) => e.stopPropagation()}
-                                          value={itemChild.selectedValue || '0'}
-                                          data-select-id={
-                                            itemChild.selectedValue || '0'
+                                        itemChild.dropDownValues,
+                                        itemChild.selectedValue,
+                                      );
+                                    }}
+                                  />
+                                ) : (
+                                  <input
+                                    aria-invalid={
+                                      IsItemSelected(itemMain.id) && index1 == 0
+                                        ? 'true'
+                                        : 'false'
+                                    }
+                                    aria-describedby={
+                                      index1 == 0
+                                        ? `required-label-${index0}`
+                                        : ''
+                                    }
+                                    checked={checkOptionSelected(
+                                      itemChild.option.id,
+                                      itemMain.id,
+                                    )}
+                                    style={{
+                                      opacity: 0,
+                                      position: 'absolute',
+                                      zIndex: 1000,
+                                    }}
+                                    type="checkbox"
+                                    id={itemChild.option.id}
+                                    value={itemChild.option.name}
+                                    onChange={() => {
+                                      showChildOptions(
+                                        itemChild.option.id,
+                                        itemMain.id,
+                                        itemChild.dropDownValues,
+                                        itemChild.selectedValue,
+                                      );
+                                    }}
+                                  />
+                                )}
+                                <label
+                                  htmlFor={itemChild.option.id}
+                                  onClick={() => {
+                                    showChildOptions(
+                                      itemChild.option.id,
+                                      itemMain.id,
+                                      itemChild.dropDownValues,
+                                      itemChild.selectedValue,
+                                    );
+                                  }}
+                                  onKeyUp={(e) => {
+                                    if (e.keyCode === 13)
+                                      showChildOptions(
+                                        itemChild.option.id,
+                                        itemMain.id,
+                                        itemChild.dropDownValues,
+                                        itemChild.selectedValue,
+                                      );
+                                  }}
+                                >
+                                  <Card
+                                    className={`card-panel ${
+                                      noWordpressImageFound(
+                                        optionImages,
+                                        itemChild.option.chainoptionid,
+                                        itemChild.option.name,
+                                        itemChild.option.isdefault,
+                                      )
+                                        ? 'no-image-class'
+                                        : ''
+                                    }`}
+                                    title={itemChild.option.name}
+                                    is-mandatory={itemMain.mandatory.toString()}
+                                    parent-option-id={itemMain.parentOptionID}
+                                  >
+                                    <div className="check-mark">
+                                      <div
+                                        aria-hidden="true"
+                                        className="checkmark"
+                                      >
+                                        L
+                                      </div>
+                                    </div>
+                                    <Grid
+                                      container
+                                      spacing={1}
+                                      className="name-img-panel"
+                                      sx={{ padding: '0', marginTop: '0' }}
+                                    >
+                                      <Grid
+                                        item
+                                        xs={12}
+                                        lg={5}
+                                        sx={{
+                                          width: '120px',
+                                          height: '120px',
+                                          display: 'flex',
+                                          alignItems: 'center',
+                                          padding: '0px',
+                                          paddingLeft: {
+                                            xs: '0px !important',
+                                            // lg: '15px !important',
+                                          },
+                                          paddingTop: {
+                                            xs: '0px !important',
+                                            lg: '0px !important',
+                                          },
+                                        }}
+                                      >
+                                        <ItemImage
+                                          productImageURL={
+                                            productDetails &&
+                                            ((categories &&
+                                              categories.imagepath) ||
+                                              '') +
+                                              changeImageSize(
+                                                productDetails.imagefilename ||
+                                                  '',
+                                                productDetails.images || '',
+                                                'desktop-menu',
+                                              )
                                           }
-                                          onChange={(e) =>
-                                            dropDownValue(
-                                              itemChild.option.id,
-                                              e.target.value,
-                                              itemChild.dropDownValues,
-                                              e.target,
-                                            )
-                                          }
+                                          index={index1}
+                                          className="item-image"
+                                          name={itemChild.option.name}
+                                          id={itemChild.option.chainoptionid}
+                                          optionImages={optionImages}
+                                          isdefault={itemChild.option.isdefault}
+                                        />
+                                      </Grid>
+                                      <Grid
+                                        item
+                                        xs={12}
+                                        lg={7}
+                                        // style={{textAlign: 'center'}}
+                                        className="name-panel"
+                                      >
+                                        {itemChild.option.name}
+                                        <div
+                                          className={'options-cals-price'}
+                                          style={{ display: 'flex' }}
                                         >
-                                          {itemChild.dropDownValues.map(
-                                            (option: any, index: number) => (
-                                              <option
-                                                key={Math.random() + index}
-                                                value={option.id}
-                                                onClick={() => {
-                                                  setTotalCost(
-                                                    ((productDetails?.cost ||
-                                                      0) +
-                                                      option.cost) *
-                                                      count,
-                                                  );
+                                          {itemChild.option.cost > 0 && (
+                                            <span
+                                              className={'value'}
+                                              title={`$${parseFloat(
+                                                itemChild.option.cost,
+                                              ).toFixed(2)}`}
+                                              style={{
+                                                fontSize: '11px',
+                                                fontFamily: 'Poppins-Bold',
+                                                color: '#0075BF',
+                                              }}
+                                            >
+                                              +$
+                                              {parseFloat(
+                                                itemChild.option.cost,
+                                              ).toFixed(2)}
+                                            </span>
+                                          )}
+                                          {itemChild.option.cost > 0 &&
+                                            itemChild.option.basecalories && (
+                                              <span
+                                                style={{
+                                                  fontSize: '16px',
+                                                  fontFamily: 'Poppins-Regular',
+                                                  color: '#AAA',
+                                                  marginTop: '-2%',
                                                 }}
                                               >
-                                                {option.name +
-                                                  (option.cost > 0
-                                                    ? ' (+$' +
-                                                      option.cost.toFixed(2) +
-                                                      ')'
-                                                    : '')}
-                                              </option>
-                                            ),
+                                                &nbsp;|&nbsp;
+                                              </span>
+                                            )}
+                                          {/*<Grid*/}
+                                          {/*  item*/}
+                                          {/*  xs={12}*/}
+                                          {/*  lg={9}*/}
+                                          {/*  sx={{*/}
+                                          {/*    fontSize: '11px',*/}
+                                          {/*    color: '#0075EF',*/}
+                                          {/*    fontFamily: 'Poppins-Bold !important',*/}
+                                          {/*  }}*/}
+                                          {/*>*/}
+                                          {/*<Grid container>*/}
+                                          {itemChild.option.basecalories && (
+                                            <span
+                                              style={{
+                                                fontSize: '11px',
+                                                fontFamily: 'Poppins-Bold',
+                                                color: '#0075BF',
+                                              }}
+                                            >
+                                              +{' '}
+                                              {itemChild.option.basecalories +
+                                                ' Cals'}
+                                            </span>
                                           )}
-                                        </select>
-                                      )}
-                                    </>
-                                  )}
-                                </Grid>
+                                          {itemChild.option.maxcalories &&
+                                            itemChild.option.basecalories && (
+                                              <span
+                                                style={{
+                                                  fontSize: '16px',
+                                                  fontFamily: 'Poppins-Regular',
+                                                  color: '#AAA',
+                                                  marginTop: '-2%',
+                                                }}
+                                              >
+                                                &nbsp;|&nbsp;
+                                              </span>
+                                            )}
+                                          {itemChild.option.maxcalories && (
+                                            <span
+                                              style={{
+                                                fontSize: '11px',
+                                                fontFamily: 'Poppins-Bold',
+                                                color: '#0075BF',
+                                              }}
+                                            >
+                                              +
+                                              {itemChild.option.maxcalories +
+                                                ' Cals'}
+                                            </span>
+                                          )}
+                                          {/*</Grid>*/}
+                                          {/*</Grid>*/}
+                                        </div>
+                                        {itemChild.dropDownValues && (
+                                          <>
+                                            {checkOptionSelected(
+                                              itemChild.option.id,
+                                              itemMain.id,
+                                            ) == true && (
+                                              <div
+                                                style={{ position: 'relative' }}
+                                              >
+                                                <select
+                                                  className="ss-panl"
+                                                  parent-select-option-id={
+                                                    itemChild.id
+                                                  }
+                                                  onClick={(e) =>
+                                                    e.stopPropagation()
+                                                  }
+                                                  value={
+                                                    itemChild.selectedValue ||
+                                                    '0'
+                                                  }
+                                                  data-select-id={
+                                                    itemChild.selectedValue ||
+                                                    '0'
+                                                  }
+                                                  onChange={(e) =>
+                                                    dropDownValue(
+                                                      itemChild.option.id,
+                                                      e.target.value,
+                                                      itemChild.dropDownValues,
+                                                      e.target,
+                                                    )
+                                                  }
+                                                >
+                                                  {itemChild.dropDownValues.map(
+                                                    (
+                                                      option: any,
+                                                      index: number,
+                                                    ) => (
+                                                      <option
+                                                        key={
+                                                          Math.random() + index
+                                                        }
+                                                        value={option.id}
+                                                        onClick={() => {
+                                                          setTotalCost(
+                                                            ((productDetails?.cost ||
+                                                              0) +
+                                                              option.cost) *
+                                                              count,
+                                                          );
+                                                        }}
+                                                      >
+                                                        {option.name +
+                                                          (option.cost > 0
+                                                            ? ' (+$' +
+                                                              option.cost.toFixed(
+                                                                2,
+                                                              ) +
+                                                              ')'
+                                                            : '')}
+                                                      </option>
+                                                    ),
+                                                  )}
+                                                </select>
+                                              </div>
+                                            )}
+                                          </>
+                                        )}
+                                      </Grid>
+                                    </Grid>
+                                  </Card>
+                                </label>
                               </Grid>
-                            </Card>
-                          </label>
-                        </Grid>
-                      ))}
-                  </Grid>
-                ))}
-            </div>
-            <Grid container className="action-panel">
-              <Grid item xs={12} className="content-panel">
-                {productDetails &&
-                productDetails.id !== utensilsReducer.utensilsProductId ? (
-                  <div
-                    style={{ display: 'flex', alignItems: 'center' }}
-                    className="button-panel-sx"
-                  >
-                    <label
-                      title="Quantity"
-                      className="label bold quantity-label"
-                      htmlFor="quantityfield"
+                            ),
+                          )}
+                      </Grid>
+                    </fieldset>
+                  ))}
+              </div>
+              <Grid container className="action-panel">
+                <Grid item xs={12} className="content-panel">
+                  {productDetails &&
+                  productDetails.id !== utensilsReducer.utensilsProductId ? (
+                    <div
+                      style={{ display: 'flex', alignItems: 'center' }}
+                      className="button-panel-sx"
                     >
-                      QUANTITY
-                    </label>
-                    <div className="quantity">
-                      <Button
-                        title=""
-                        className="add"
-                        aria-label="increase"
-                        onClick={() => {
-                          setCount(count + 1);
-                          setTotalCost(
-                            ((productDetails?.cost || 0) + optionsCost) *
-                              (count + 1),
-                          );
-                        }}
+                      <label
+                        title="Quantity"
+                        className="label bold quantity-label"
+                        htmlFor="quantityfield"
                       >
-                        {' '}
-                        +{' '}
-                      </Button>
-                      <input
-                        value={count}
-                        // inputProps={inputProps}
-                        readOnly
-                        id="quantityfield"
-                        onChange={() => {}}
-                        className="input-quantity"
-                        title="quantity"
-                      />
-                      <Button
-                        title=""
-                        className="subtract"
-                        aria-label="reduce"
-                        onClick={() => {
-                          setCount(Math.max(count - 1, 1));
-                          setTotalCost(
-                            ((productDetails?.cost || 0) + optionsCost) *
-                              Math.max(count - 1, 1),
-                          );
-                        }}
-                      >
-                        {' '}
-                        -{' '}
-                      </Button>
+                        QUANTITY
+                      </label>
+                      <div className="quantity">
+                        <Button
+                          title=""
+                          className="subtract"
+                          aria-label="reduce"
+                          onClick={() => {
+                            setCount(Math.max(count - 1, 1));
+                            setTotalCost(
+                              ((productDetails?.cost || 0) + optionsCost) *
+                                Math.max(count - 1, 1),
+                            );
+                          }}
+                        >
+                          {' '}
+                          -{' '}
+                        </Button>
+                        <input
+                          value={count}
+                          readOnly
+                          id="quantityfield"
+                          onChange={() => {}}
+                          className="input-quantity"
+                          title="quantity"
+                        />
+                        <Button
+                          title=""
+                          className="add"
+                          aria-label="increase"
+                          onClick={() => {
+                            setCount(count + 1);
+                            setTotalCost(
+                              ((productDetails?.cost || 0) + optionsCost) *
+                                (count + 1),
+                            );
+                          }}
+                        >
+                          {' '}
+                          +{' '}
+                        </Button>
+                      </div>
                     </div>
-                  </div>
-                ) : null}
-                {productAddObj.loading ||
-                basketObj.loading ||
-                dummyBasketObj.loading ||
-                productUpdateObj.loading ||
-                !validateOptionsSelection() ? (
-                  <Button
-                    title="ADD TO BAG"
-                    className="add-to-bag"
-                    variant="contained"
-                    disabled
-                  >
-                    {edit ? 'UPDATE BAG' : 'ADD TO BAG'}
-                    <span style={{ position: 'absolute', right: '15px' }}>
-                      ${totalCost?.toFixed(2)}
-                    </span>
-                  </Button>
-                ) : (
-                  <Button
-                    title="ADD TO BAG"
-                    className="add-to-bag"
-                    variant="contained"
-                    disabled={checkDisable()}
-                    onClick={() => {
-                      addProductToBag();
-                    }}
-                  >
-                    {edit ? 'UPDATE BAG' : 'ADD TO BAG'}
-                    <span style={{ position: 'absolute', right: '15px' }}>
-                      ${totalCost?.toFixed(2)}
-                    </span>
-                  </Button>
-                )}
+                  ) : null}
+                  {productAddObj.loading ||
+                  basketObj.loading ||
+                  dummyBasketObj.loading ||
+                  productUpdateObj.loading ||
+                  !validateOptionsSelection() ? (
+                    <Button
+                      title="ADD TO BAG"
+                      className="add-to-bag"
+                      variant="contained"
+                      disabled
+                    >
+                      {edit ? 'UPDATE BAG' : 'ADD TO BAG'}
+                      <span style={{ position: 'absolute', right: '15px' }}>
+                        ${totalCost?.toFixed(2)}
+                      </span>
+                    </Button>
+                  ) : (
+                    <Button
+                      title="ADD TO BAG"
+                      className="add-to-bag"
+                      variant="contained"
+                      disabled={checkDisable()}
+                      onClick={() => {
+                        addProductToBag();
+                      }}
+                    >
+                      {edit ? 'UPDATE BAG' : 'ADD TO BAG'}
+                      <span style={{ position: 'absolute', right: '15px' }}>
+                        ${totalCost?.toFixed(2)}
+                      </span>
+                    </Button>
+                  )}
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
-        </Grid>
-      )}
-    </div>
+        )}
+      </div>
+    </Page>
   );
 };
 

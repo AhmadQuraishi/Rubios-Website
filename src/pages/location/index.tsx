@@ -1,4 +1,3 @@
-
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   GoogleMap,
@@ -14,10 +13,24 @@ import {
   getResturantListRequest,
 } from '../../redux/actions/restaurant/list';
 import LoadingBar from '../../components/loading-bar';
-import { Theme } from '@mui/material';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Grid,
+  Modal,
+  TextField,
+  Theme,
+} from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { displayToast } from '../../helpers/toast';
 import './index.css';
+import Page from '../../components/page-title';
+import { getAddress, removeTestingStores } from '../../helpers/common';
+import { getGeocode, getLatLng } from 'use-places-autocomplete';
 
 const useStyles = makeStyles((theme: Theme) => ({
   dummyBg: {
@@ -49,7 +62,7 @@ const Location = () => {
     libraries: ['places'],
   });
   const classes = useStyles();
-  const { restaurants, loading } = useSelector(
+  const { restaurants, nearbyRestaurants, loading } = useSelector(
     (state: any) => state.restaurantListReducer,
   );
 
@@ -66,16 +79,37 @@ const Location = () => {
   const [nearByRestaurantsFound, setNearByRestaurantsFound] = useState(false);
   const [actionPerform, setActionPerform] = useState(false);
   const dispatch = useDispatch();
-  const [deliveryRasturants, setDeliveryRasturants] = useState<any[]>();
-  const [allResturants, setAllResturants] = useState<any[]>();
+  const [deliveryRasturants, setDeliveryRasturants] = useState<any>();
+  const [allResturants, setAllResturants] = useState<any>();
+  const [filteredRestaurants, setfilteredRestaurants] = useState<any>([]);
+  const [deliveryAddressString, setDeliveryAddressString] = useState<any>();
+  const [searchText, setSearchText] = useState<string>('');
 
   useEffect(() => {
-    setMapCenter({
-      lat: 37.772,
-      lng: -122.214,
-    });
-    dispatch(getResturantListRequest());
+    if (!orderType) {
+      setMapCenter({
+        lat: 37.772,
+        lng: -122.214,
+      });
+      dispatch(getResturantListRequest());
+    }
   }, []);
+
+  const setOrderTypeMain = (type: any) => {
+    setfilteredRestaurants([]);
+    setAllResturants([]);
+    setDeliveryRasturants([]);
+    setActionPerform(false);
+    setLatLng(null);
+    setShowNearBy(false);
+    setNearByRestaurantsFound(false);
+    setDeliveryAddressString(null);
+    if (type !== 'dispatch') {
+      dispatch(getResturantListRequest());
+    }
+
+    setOrderType(type);
+  };
 
   let newMarker: any;
   const setMayLocation = () => {
@@ -99,33 +133,185 @@ const Location = () => {
     });
   };
 
+  const getLocationError = (error: any) => {
+    let errorMsg = '';
+    switch (error.code) {
+      case error.PERMISSION_DENIED:
+        errorMsg = 'User denied the request for Geolocation.';
+        break;
+      case error.POSITION_UNAVAILABLE:
+        errorMsg = 'Location information is unavailable.';
+        break;
+      case error.TIMEOUT:
+        errorMsg = 'The request to get user location timed out.';
+        break;
+      case error.UNKNOWN_ERROR:
+        errorMsg = 'An unknown error occurred.';
+        break;
+      default:
+        errorMsg = 'An unknown error occurred.';
+    }
+
+    return errorMsg;
+  };
+
+  const [selectedAddress, setSelectedAddress] = useState<any>();
+  const [selectedLatLng, setSelectedLatLng] = useState<any>();
   useEffect(() => {
     if (LatLng && actionPerform) {
       if (LatLng) {
         getNearByRestaurants(LatLng.lat, LatLng.lng);
       }
-    } else if (showNearBy) {
-      navigator.geolocation.getCurrentPosition(
-        function (position) {
-          //getNearByRestaurants(40.7054008, -74.0132198);
-          getNearByRestaurants(
-            position.coords.latitude,
-            position.coords.longitude,
-          );
-          setShowNearBy(true);
-          setZoom(7);
-        },
-        function () {
-          setShowNearBy(false);
-          setZoom(7);
-        },
-      );
+    } else if (showNearBy && orderType && orderType === 'dispatch') {
+      if (navigator.geolocation) {
+        console.log('geolocation', navigator.geolocation);
+        navigator.geolocation.getCurrentPosition(
+          function (position) {
+            console.log('position', position);
+
+            //const lat = 33.1358598;
+            //const lng = -117.2815619;
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+
+            // getNearByRestaurants(lat, lng);
+            getGeocode({
+              location: {
+                lat: lat,
+                lng: lng,
+              },
+            })
+              .then((results) => {
+                console.log('results', results);
+                const address = getAddress(results[0]);
+                console.log('address', address);
+                if (address.address1 !== '') {
+                  handleClickOpen();
+                  setSelectedAddress(address);
+                  setActionPerform(false);
+                  setSelectedLatLng({
+                    lat: lat,
+                    lng: lng,
+                  });
+                  return;
+                  // setLatLng({
+                  //   lat: lat,
+                  //   lng: lng,
+                  // });
+                  //setDeliveryAddressString(address);
+                } else {
+                  setActionPerform(false);
+                  displayToast(
+                    'ERROR',
+                    'No address found against your current location.',
+                  );
+                }
+              })
+              .catch((error) => {
+                console.log('Error: ', error);
+                displayToast(
+                  'ERROR',
+                  'No address found against your current location.',
+                );
+                setActionPerform(false);
+              });
+            setShowNearBy(true);
+            setZoom(7);
+          },
+          function (error) {
+            displayToast('ERROR', getLocationError(error));
+            setShowNearBy(false);
+            setActionPerform(false);
+            setZoom(7);
+          },
+        );
+      } else {
+        // setShowNearBy(false);
+        // setActionPerform(false);
+        // setZoom(7);
+        // displayToast('ERROR', 'Please turn on location');
+      }
     }
   }, [showNearBy, LatLng]);
 
   useEffect(() => {
+    console.log('rest working 1', restaurants);
     if (restaurants && restaurants.restaurants) {
       if (restaurants.restaurants.length === 0) {
+        // if (showNearBy || LatLng) {
+        //   setShowNearBy(false);
+        //   setNearByRestaurantsFound(false);
+        //   if (LatLng) {
+        //     setDeliveryRasturants([]);
+        //     displayToast(
+        //       'ERROR',
+        //       "We could not find any Rubio's within 10 miles of your address.",
+        //     );
+        //   } else {
+        //     displayToast(
+        //       'ERROR',
+        //       "We could not find any Rubio's within 10 miles of your current location.",
+        //     );
+        //   }
+        //   setLatLng(null);
+        //   dispatch(getResturantListRequest());
+        //   setZoom(7);
+        //   setActionPerform(false);
+        // }
+        console.log('nearby');
+        setfilteredRestaurants([]);
+        setDeliveryRasturants([]);
+        setAllResturants([]);
+      } else {
+        console.log('rest working 2');
+        // if (showNearBy || LatLng) {
+        //   if (LatLng) {
+        //     // const filterRest = getFilteredRestaurants(restaurants.restaurants);
+        //     // if (!filterRest.length) {
+        //     //   displayToast(
+        //     //     'ERROR',
+        //     //     "We could not find any Rubio's within 10 miles of your address.",
+        //     //   );
+        //     // }
+        //     // setDeliveryRasturants(restaurants.restaurants);
+        //     setDeliveryRasturants(restaurants.restaurants);
+        //     setActionPerform(false);
+        //   }
+        //   setLatLng(null);
+        //   if (showNearBy) {
+        //     console.log('ppppppp');
+        //     // if (orderType === 'dispatch') {
+        //     //   setDeliveryRasturants(restaurants.restaurants);
+        //     // } else {
+        //     //   console.log('ppppppp 2', restaurants.restaurants);
+        //     setDeliveryRasturants(restaurants.restaurants);
+        //     // }
+        //
+        //     setShowNearBy(false);
+        //     setNearByRestaurantsFound(true);
+        //   }
+        // } else {
+        console.log('restaurants.restaurants', restaurants.restaurants);
+        if (orderType && orderType !== '') {
+          setfilteredRestaurants(
+            getFilteredRestaurants(restaurants.restaurants),
+          );
+        }
+        setAllResturants(getFilteredRestaurants(restaurants.restaurants));
+        // }
+        setMapCenter({
+          lat: restaurants.restaurants[0].latitude,
+          lng: restaurants.restaurants[0].longitude,
+        });
+        setZoom(7);
+      }
+    }
+  }, [restaurants]);
+
+  useEffect(() => {
+    console.log('nearbyRestaurants', nearbyRestaurants);
+    if (nearbyRestaurants && nearbyRestaurants.restaurants) {
+      if (nearbyRestaurants.restaurants.length === 0) {
         if (showNearBy || LatLng) {
           setShowNearBy(false);
           setNearByRestaurantsFound(false);
@@ -136,38 +322,79 @@ const Location = () => {
               "We could not find any Rubio's within 10 miles of your address.",
             );
           } else {
+            setDeliveryRasturants([]);
             displayToast(
               'ERROR',
               "We could not find any Rubio's within 10 miles of your current location.",
             );
           }
           setLatLng(null);
-          dispatch(getResturantListRequest());
+          // dispatch(getResturantListRequest());
           setZoom(7);
           setActionPerform(false);
         }
+        console.log('nearby');
+        console.log('showNearBy', showNearBy);
+        console.log('LatLng', LatLng);
+        setfilteredRestaurants([]);
+        setDeliveryRasturants([]);
+        // setAllResturants([])
       } else {
+        console.log('rest working 2');
         if (showNearBy || LatLng) {
           if (LatLng) {
-            setDeliveryRasturants(restaurants.restaurants);
+            // const filterRest = getFilteredRestaurants(restaurants.restaurants);
+            // if (!filterRest.length) {
+            //   displayToast(
+            //     'ERROR',
+            //     "We could not find any Rubio's within 10 miles of your address.",
+            //   );
+            // }
+            // setDeliveryRasturants(restaurants.restaurants);
+            setDeliveryRasturants(
+              getFilteredRestaurants(nearbyRestaurants.restaurants),
+            );
             setActionPerform(false);
           }
           setLatLng(null);
           if (showNearBy) {
+            console.log('ppppppp');
+            // if (orderType === 'dispatch') {
+            //   setDeliveryRasturants(restaurants.restaurants);
+            // } else {
+            //   console.log('ppppppp 2', restaurants.restaurants);
+            setDeliveryRasturants(
+              getFilteredRestaurants(nearbyRestaurants.restaurants),
+            );
+            // }
+
             setShowNearBy(false);
             setNearByRestaurantsFound(true);
           }
+          setLatLng(null);
+          setShowNearBy(false);
+          setActionPerform(false);
+          setMapCenter({
+            lat: nearbyRestaurants.restaurants[0].latitude,
+            lng: nearbyRestaurants.restaurants[0].longitude,
+          });
+          setZoom(7);
         } else {
-          setAllResturants(restaurants.restaurants);
+          if (orderType && orderType !== '') {
+            setfilteredRestaurants(
+              getFilteredRestaurants(nearbyRestaurants.restaurants),
+            );
+          }
+          // setAllResturants(restaurants.restaurants);
         }
-        setMapCenter({
-          lat: restaurants.restaurants[0].latitude,
-          lng: restaurants.restaurants[0].longitude,
-        });
-        setZoom(7);
+        // setMapCenter({
+        //   lat: restaurants.restaurants[0].latitude,
+        //   lng: restaurants.restaurants[0].longitude,
+        // });
+        // setZoom(7);
       }
     }
-  }, [restaurants]);
+  }, [nearbyRestaurants]);
 
   const getNearByRestaurants = (lat: number, long: number) => {
     var today = new Date();
@@ -186,15 +413,44 @@ const Location = () => {
       (lastWeekDate.getMonth() + 1) * 100 +
       lastWeekDate.getDate() +
       '';
-    dispatch(
-      getNearByResturantListRequest(lat, long, 10, 10, dateFrom, dateTo),
-    );
+    dispatch(getNearByResturantListRequest(lat, long, 10, 6, dateFrom, dateTo));
   };
   const [markers, setMarkers] = useState<any[]>([]);
+
+  const getFilteredRestaurants = (restaurants: any) => {
+    let filteredRestaurants = restaurants;
+    if (orderType && orderType !== '') {
+      if (orderType === 'pickup') {
+        filteredRestaurants = restaurants.filter(
+          (x: any) => x.canpickup === true,
+        );
+      } else if (orderType === 'curbside') {
+        filteredRestaurants = restaurants.filter(
+          (x: any) => x.supportscurbside === true,
+        );
+      } else if (orderType === 'dispatch') {
+        filteredRestaurants = restaurants.filter(
+          (x: any) => x.supportsdispatch === true,
+        );
+      }
+    }
+    filteredRestaurants = removeTestingStores(filteredRestaurants);
+    return filteredRestaurants;
+  };
   useEffect(() => {
     setMarkers([]);
     if (restaurants && restaurants.restaurants.length > 0) {
-      restaurants.restaurants.map((item: ResponseRestaurant, index: number) => {
+      let filteredRest = !orderType
+        ? restaurants.restaurants
+        : orderType && orderType !== 'dispatch'
+        ? filteredRestaurants
+        : orderType && orderType === 'dispatch'
+        ? deliveryRasturants
+        : [];
+
+      filteredRest = getFilteredRestaurants(filteredRest);
+
+      filteredRest.map((item: ResponseRestaurant, index: number) => {
         if (mapCenter == undefined) {
           setMapCenter({
             lat: item.latitude,
@@ -218,53 +474,237 @@ const Location = () => {
         ]);
       });
     }
-  }, [restaurants]);
+  }, [restaurants, filteredRestaurants, deliveryRasturants, orderType]);
+  const [open, setOpen] = useState(false);
 
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setLatLng(null);
+    setShowNearBy(false);
+    setActionPerform(false);
+    setSearchText('');
+    setfilteredRestaurants([]);
+    setDeliveryRasturants([]);
+    selectedLatLng(null);
+  };
+
+  const handleLCloseConfirm = () => {
+    setOpen(false);
+    getGeocode({
+      address:
+        selectedAddress.address1 +
+        ' ' +
+        selectedAddress.address2 +
+        ', ' +
+        selectedAddress.city +
+        ', ' +
+        selectedAddress.zip,
+    }).then((results) => {
+      getLatLng(results[0]).then(({ lat, lng }) => {
+        const address = getAddress(results[0]);
+        setDeliveryAddressString(selectedAddress);
+        if (address.address1 !== '') {
+          //setLatLng({ lat: lat, lng: lng });
+          getNearByRestaurants(lat, lng);
+        } else {
+          getNearByRestaurants(selectedLatLng.lat, selectedLatLng.lng);
+        }
+      });
+    });
+  };
+  const handleChange = (key: any, value: any) => {
+    if (key == 'address1') {
+      setSelectedAddress({ ...selectedAddress, address1: value });
+    }
+    if (key == 'address2') {
+      setSelectedAddress({ ...selectedAddress, address2: value });
+    }
+    if (key == 'city') {
+      setSelectedAddress({ ...selectedAddress, city: value });
+    }
+    if (key == 'zip') {
+      let newValue = value;
+      newValue =
+        newValue && newValue >= 0 && newValue <= 99999
+          ? parseInt(newValue)
+          : newValue > 99999
+          ? selectedAddress.zip
+          : '';
+      setSelectedAddress({ ...selectedAddress, zip: newValue });
+    }
+  };
   return (
-    <div style={{ minHeight: '300px', position: 'relative' }}>
-      {(loading || window.google == undefined || actionPerform) && (
-        <div className={classes.dummyBg}>
-          <LoadingBar />
-        </div>
-      )}
-      {window.google && (
-        <div role="region" aria-label="map">
-          <GoogleMap
-            mapContainerStyle={mapContainerStyle}
-            zoom={zoom}
-            center={mapCenter}
-            options={{
-              streetViewControl: false,
-              mapTypeControl: false,
-              fullscreenControl: false,
-            }}
-            onLoad={loadMap}
+    <Page title={'Location'} className="">
+      <Dialog
+        open={open}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        sx={{ width: '100%' }}
+      >
+        <DialogTitle id="alert-dialog-title">
+          {'Confirm Your Delivery Address'}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            <Grid container sx={{ width: '100%', maxWidth: '450px' }}>
+              <Grid item xs={12}>
+                <TextField
+                  aria-label="Address"
+                  label="Street Address"
+                  title="Street Address"
+                  type="text"
+                  name="street_address"
+                  autoComplete="off"
+                  sx={{ width: '100%' }}
+                  value={selectedAddress && selectedAddress.address1}
+                  onChange={(e) => {
+                    handleChange('address1', e.target.value);
+                  }}
+                  // onChange={handleChange('last_name')}
+                  // onBlur={handleBlur('last_name')}
+                  // error={Boolean(touched.last_name && errors.last_name)}
+                  // helperText={touched.last_name && errors.last_name}
+                />
+              </Grid>
+              <Grid item xs={12} sx={{ paddingTop: '10px' }}>
+                <TextField
+                  aria-label="Apt, Floor, Suite, Building, Company Address - Optional"
+                  label="Apt, Floor, Suite, Building, Company Address - Optional"
+                  title="Apt, Floor, Suite, Building, Company Address - Optional"
+                  type="text"
+                  name="second_address"
+                  autoComplete="off"
+                  sx={{ width: '100%' }}
+                  value={selectedAddress && selectedAddress.address2}
+                  onChange={(e) => {
+                    handleChange('address2', e.target.value);
+                  }}
+                  // onChange={handleChange('last_name')}
+                  // onBlur={handleBlur('last_name')}
+                  // error={Boolean(touched.last_name && errors.last_name)}
+                  // helperText={touched.last_name && errors.last_name}
+                />
+              </Grid>
+              <Grid item xs={12} sx={{ paddingTop: '10px' }}>
+                <TextField
+                  aria-label="City"
+                  label="City"
+                  title="City"
+                  type="text"
+                  name="City"
+                  autoComplete="off"
+                  sx={{ width: '100%' }}
+                  value={selectedAddress && selectedAddress.city}
+                  onChange={(e) => {
+                    handleChange('city', e.target.value);
+                  }}
+                  // onBlur={handleBlur('last_name')}
+                  // error={Boolean(touched.last_name && errors.last_name)}
+                  // helperText={touched.last_name && errors.last_name}
+                />
+              </Grid>
+              <Grid item xs={12} sx={{ paddingTop: '10px' }}>
+                <TextField
+                  aria-label="Postal Code"
+                  label="Postal Code"
+                  title="Postal Code"
+                  type="text"
+                  name="postal_code"
+                  autoComplete="off"
+                  sx={{ width: '100%' }}
+                  value={selectedAddress && selectedAddress.zip}
+                  onChange={(e) => {
+                    handleChange(
+                      'zip',
+                      e.target.value.trim()
+                    );
+                  }}
+                  // onBlur={handleBlur('last_name')}
+                  // error={Boolean(touched.last_name && errors.last_name)}
+                  // helperText={touched.last_name && errors.last_name}
+                />
+              </Grid>
+            </Grid>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            variant="contained"
+            onClick={handleClose}
+            sx={{ marginBottom: '15px' }}
           >
-            {markers}
-            <div
-              onClick={() => {
-                setMayLocation();
+            Cancel
+          </Button>
+          <Button
+            variant="contained"
+            onClick={handleLCloseConfirm}
+            sx={{ marginRight: '15px', marginBottom: '15px' }}
+            autoFocus
+            disabled={
+              selectedAddress &&
+              (selectedAddress.address1 == '' ||
+                selectedAddress.city == '' ||
+                selectedAddress.zip == '')
+            }
+          >
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <div style={{ minHeight: '300px', position: 'relative' }}>
+        {(loading || window.google === undefined || actionPerform) && (
+          <div className={classes.dummyBg}>
+            <LoadingBar />
+          </div>
+        )}
+        {window.google && (
+          <div role="region" aria-label="map">
+            <GoogleMap
+              mapContainerStyle={mapContainerStyle}
+              zoom={zoom}
+              center={mapCenter}
+              options={{
+                streetViewControl: false,
+                mapTypeControl: false,
+                fullscreenControl: false,
               }}
-              className="location-icon-panel"
+              onLoad={loadMap}
             >
-              <span className="icon"></span>
-            </div>
-            <LocationCard
-              isNearByRestaurantList={nearByRestaurantsFound}
-              restaurants={allResturants}
-              deliveryRasturants={deliveryRasturants}
-              setOrderTypeMain={setOrderType}
-              setShowNearBy={setShowNearBy}
-              setLatLng={setLatLng}
-              setActionPerform={setActionPerform}
-              setDeliveryRasturants={setDeliveryRasturants}
-            />
-          </GoogleMap>
-        </div>
-      )}
-    </div>
+              {markers}
+              <div
+                onClick={() => {
+                  setMayLocation();
+                }}
+                className="location-icon-panel"
+              >
+                <span className="icon"></span>
+              </div>
+              <LocationCard
+                searchTextP={searchText}
+                isNearByRestaurantList={nearByRestaurantsFound}
+                restaurants={allResturants}
+                deliveryRasturants={deliveryRasturants}
+                setOrderTypeMain={setOrderTypeMain}
+                setShowNearBy={setShowNearBy}
+                setLatLng={setLatLng}
+                setActionPerform={setActionPerform}
+                setDeliveryRasturants={setDeliveryRasturants}
+                setfilteredRestaurants={setfilteredRestaurants}
+                filteredRestaurants={filteredRestaurants}
+                loading={loading}
+                deliveryAddressString={deliveryAddressString}
+                setDeliveryAddressString={setDeliveryAddressString}
+              />
+            </GoogleMap>
+          </div>
+        )}
+      </div>
+    </Page>
   );
 };
 
 export default Location;
-

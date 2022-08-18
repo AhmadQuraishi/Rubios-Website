@@ -8,6 +8,10 @@ import {
 } from '../../../types/olo-api';
 import { displayToast } from '../../../helpers/toast';
 
+const breakpoints = {
+  XS: 540
+};
+
 //profile actions
 export function getUserprofile() {
   return {

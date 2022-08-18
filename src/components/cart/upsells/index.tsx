@@ -1,4 +1,4 @@
-import { Grid, Typography, Theme, Box, Button } from '@mui/material';
+import { Grid, Typography, Theme, Box, Button, useTheme, useMediaQuery } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -111,6 +111,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const Upsells = ({ showCart, upsellsType }: any) => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const theme = useTheme();
 
   const basketObj = useSelector((state: any) => state.basketReducer);
   const addUpsellsObj = useSelector((state: any) => state.addUpsellReducer);

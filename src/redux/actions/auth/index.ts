@@ -1,6 +1,11 @@
 import { displayToast } from '../../../helpers/toast';
 import { authActionsTypes as Type } from '../../types/auth';
 
+
+const breakpoints = {
+  XS: 540
+};
+
 export function getAuthRequest(basketID: string = '') {
   return {
     type: Type.GET_AUTHTOKEN_REQUEST,
@@ -9,7 +14,7 @@ export function getAuthRequest(basketID: string = '') {
 }
 
 export function getAuthRequestSuccess(successMsg: string, data: any) {
-  displayToast('SUCCESS', successMsg);
+      displayToast('SUCCESS', successMsg);
   return {
     type: Type.GET_AUTHTOKEN_SUCCESS,
     payload: data,
@@ -26,5 +31,24 @@ export function getAuthRequestFailure(error: any) {
   return {
     type: Type.GET_AUTHTOKEN_FAILURE,
     error: error,
+  };
+}
+
+export function addAuthTokenIframeRedirect() {
+  return {
+    type: Type.ADD_AUTH_TOKEN_IFRAME_REDIRECT,
+  };
+}
+
+export function removeAuthTokenIframeRedirect() {
+  return {
+    type: Type.REMOVE_AUTH_TOKEN_IFRAME_REDIRECT,
+  };
+}
+
+export function updateDeviceUniqueId(id: any) {
+  return {
+    type: Type.UPDATE_DEVICE_UNIQUE_ID,
+    payload: id,
   };
 }

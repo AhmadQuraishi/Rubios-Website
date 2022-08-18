@@ -1,10 +1,10 @@
 import { makeStyles } from '@mui/styles';
 import { Button, Grid } from '@mui/material';
 import RegisterForm from '../../../components/iframe/register-form';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import './register.css';
+import { removeAuthTokenIframeRedirect } from '../../../redux/actions/auth';
 
 const useStyle = makeStyles(() => ({
   root: {
@@ -21,21 +21,21 @@ const useStyle = makeStyles(() => ({
 
 const RegisterIframe = () => {
   const classes = useStyle();
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const { providerToken } = useSelector((state: any) => state.providerReducer);
-  const { authToken } = useSelector((state: any) => state.authReducer);
-  const { pageURL } = useSelector((state: any) => state.pageStateReducer);
+  const { authToken, iframeRedirect } = useSelector(
+    (state: any) => state.authReducer,
+  );
 
   useEffect(() => {
     if (providerToken && authToken) {
-      // if (pageURL == undefined || pageURL == null) {
-      //   navigate('/welcome');
-      // } else {
-      //   navigate(pageURL);
-      // }
+      if (iframeRedirect) {
+        dispatch(removeAuthTokenIframeRedirect());
+        window.parent.location.href = `${process.env.REACT_APP_ORDERING_URL}/welcome?new_user=true`;
+      }
     }
-  }, [providerToken]);
+  }, [providerToken, authToken]);
 
   return (
     <>
@@ -48,7 +48,7 @@ const RegisterIframe = () => {
                 variant="contained"
                 title="VIEW ACCOUNT"
                 onClick={() =>
-                  window.open(`${process.env.REACT_APP_ACCOUNT_URL}`, '_blank')
+                  (window.parent.location.href = `${process.env.REACT_APP_ACCOUNT_URL}`)
                 }
               >
                 VIEW ACCOUNT

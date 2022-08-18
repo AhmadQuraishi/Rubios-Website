@@ -14,7 +14,7 @@ const Register = lazy(() => import('./pages/register'));
 const OrderConfirmation = lazy(() => import('./pages/order-confirmation'));
 const RewardConfirmation = lazy(() => import('./pages/reward-confirmation'));
 const DeliveryAddress = lazy(() => import('./pages/delivery-address'));
-const RedeemRewards = lazy(() => import('./pages/redeem-reward'));
+const RedeemRewards = lazy(() => import('./pages/reward'));
 const Product = lazy(() => import('./pages/product'));
 const AccountHistory = lazy(() => import('./pages/account-history'));
 const CheckIn = lazy(() => import('./pages/check-in'));
@@ -26,10 +26,14 @@ const Profile = lazy(() => import('./pages/profile'));
 const AddDeliveryAddress = lazy(() => import('./pages/add-delivery-address'));
 const CategoryDetail = lazy(() => import('./pages/category-detail'));
 const PageNotFound = lazy(() => import('./pages/page-not-found'));
-const ScanToRedeem = lazy(() => import('./pages/scan-to-redeem'));
+const ScanToRedeem = lazy(() => import('./pages/reward-details'));
 const CategoryIframe = lazy(() => import('./pages/iframe/category'));
 const RegisterIframe = lazy(() => import('./pages/iframe/register'));
 const StoreHoursIframe = lazy(() => import('./pages/iframe/store-hours'));
+const StayCurrentIframe = lazy(() => import('./pages/iframe/stay-current'));
+const RewardNew = lazy(() => import('./pages/reward-new'));
+const RewardNewDetail = lazy(() => import('./pages/reward-new/detail'));
+
 
 const AppRoutes = () => {
   return (
@@ -80,7 +84,12 @@ const AppRoutes = () => {
             element={<OrderConfirmation />}
           />
           <Route path="/rewardconfirmation" element={<RewardConfirmation />} />
-          <Route path="/account" element={<RedeemRewards />} />
+          <Route path="/account/" element={<RedeemRewards />} />
+          <Route path="/account/reward" element={<RedeemRewards />} />
+          <Route
+            path="/account/reward/details/:id"
+            element={<ScanToRedeem />}
+          />
           <Route
             path="/account/deliveryaddress"
             element={<DeliveryAddress />}
@@ -109,13 +118,18 @@ const AppRoutes = () => {
             path="/account/updatepaymentcard/:id"
             element={<UpdatePaymentCard />}
           />
-          <Route path="/account/reward" element={<ScanToRedeem />} />
           <Route path="/account/orders" element={<OrdersHistory />} />
           <Route path="/iframe/category" element={<CategoryIframe />} />
           <Route path="/iframe/register" element={<RegisterIframe />} />
+          <Route path="/iframe/stayconnect" element={<StayCurrentIframe />} />
           <Route
             path="/iframe/store-hours/:id"
             element={<StoreHoursIframe />}
+          />
+          <Route path="/account/reward-new" element={<RewardNew />} />
+          <Route
+            path="/account/reward-new/details/:id"
+            element={<RewardNewDetail />}
           />
           <Route path="*" element={<PageNotFound />} />
         </Routes>

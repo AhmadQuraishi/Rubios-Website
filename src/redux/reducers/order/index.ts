@@ -21,6 +21,8 @@ const orderReducer = (state = INITIAL_STATE, action: any) => {
         ...state,
         order: {
           loading: true,
+          data: null,
+          error: null,
         },
       };
     case orderActionTypes.GET_SINGLE_ORDER_REQUEST_SUCCESS:
@@ -46,6 +48,8 @@ const orderReducer = (state = INITIAL_STATE, action: any) => {
         ...state,
         restaurant: {
           loading: true,
+          data: null,
+          error: null,
         },
       };
     case orderActionTypes.GET_ORDER_RESTAURANT_REQUEST_SUCCESS:

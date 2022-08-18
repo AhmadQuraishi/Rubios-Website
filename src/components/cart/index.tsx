@@ -7,6 +7,8 @@ import {
   Divider,
   Button,
   Card,
+  useTheme,
+  useMediaQuery,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import React, { useEffect, useState } from 'react';
@@ -128,12 +130,14 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   const classes = useStyles();
+  const theme = useTheme();
   const [actionStatus, setActionStatus] = useState(false);
   const [utensils, setUtensils] = useState(false);
   const [utensilsDisabled, setUtensilsDisabled] = useState(false);
   const [clickAction, setClickAction] = useState('');
   const [upsellsProductKeys, setUpsellsProductKeys] = useState<any[]>();
   const [products, setProducts] = useState<any[]>();
+
 
   const productRemoveObj = useSelector(
     (state: any) => state.removeProductReducer,
@@ -226,16 +230,16 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   useEffect(() => {
     if (addUpsellsObj && addUpsellsObj.basket && clickAction != '') {
       setClickAction('');
-      displayToast('SUCCESS', '1 item added to cart.');
+      // displayToast('SUCCESS', '1 item added to cart.');
       fitContainer();
-      dispatch(getBasketRequest('', addUpsellsObj.basket, basketType));
+      // dispatch(getBasketRequest('', addUpsellsObj.basket, basketType));
     }
   }, [addUpsellsObj]);
 
   useEffect(() => {
     if (productRemoveObj && productRemoveObj.basket && actionStatus) {
-      dispatch(getBasketRequest('', productRemoveObj.basket, basketType));
-      displayToast('SUCCESS', '1 item removed from cart.');
+      // dispatch(getBasketRequest('', productRemoveObj.basket, basketType));
+        displayToast('SUCCESS', '1 item removed from cart.');
       fitContainer();
       setActionStatus(false);
       navigate(restaurant ? '/menu/' + restaurant.slug : '/');
@@ -295,8 +299,8 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
 
   useEffect(() => {
     if (productAddObj && productAddObj.basket && actionStatus) {
-      dispatch(getBasketRequest('', productAddObj.basket, basketType));
-      displayToast('SUCCESS', 'Duplicate item added to cart.');
+      // dispatch(getBasketRequest('', productAddObj.basket, basketType));
+        displayToast('SUCCESS', 'Duplicate item added to cart.');
       fitContainer();
       setActionStatus(false);
       navigate(restaurant ? '/menu/' + restaurant.slug : '/');
@@ -520,15 +524,41 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
+                viewBox="0 0 512 512"
                 aria-label="Cart"
                 role="img"
-                style={{ width: '60px', marginBottom: '10px' }}
+                style={{ width: '70px', marginBottom: '10px' }}
               >
-                <path fill="none" d="M0 0h24v24H0V0z"></path>
-                <path d="M15.55 13c.75 0 1.41-.41 1.75-1.03l3.58-6.49A.996.996 0 0020.01 4H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7l1.1-2h7.45zM6.16 6h12.15l-2.76 5H8.53L6.16 6zM7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"></path>
+                <path
+                  fill="none"
+                  stroke="#000"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="40"
+                  fill-rule="evenodd"
+                  d="M80,176a16,16,0,0,0-16,16V408c0,30.24,25.76,56,56,56H392c30.24,0,56-24.51,56-54.75V192a16,16,0,0,0-16-16Z"
+                />
+                <path
+                  fill="none"
+                  stroke="#000"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="40"
+                  fill-rule="evenodd"
+                  d="M160,176V144a96,96,0,0,1,96-96h0a96,96,0,0,1,96,96v32"
+                />
               </svg>
-              <p className={classes.emptyCart}>Your Cart Is Currently Empty</p>
+              {/*<svg*/}
+              {/*xmlns="http://www.w3.org/2000/svg"*/}
+              {/*viewBox="0 0 24 24"*/}
+              {/*aria-label="Cart"*/}
+              {/*role="img"*/}
+              {/*style={{ width: '60px', marginBottom: '10px' }}*/}
+              {/*>*/}
+              {/*<path fill="none" d="M0 0h24v24H0V0z"></path>*/}
+              {/*<path d="M15.55 13c.75 0 1.41-.41 1.75-1.03l3.58-6.49A.996.996 0 0020.01 4H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7l1.1-2h7.45zM6.16 6h12.15l-2.76 5H8.53L6.16 6zM7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"></path>*/}
+              {/*</svg>*/}
+              <p className={classes.emptyCart}>Your Bag Is Currently Empty</p>
               <br />
               <Button
                 variant="contained"
@@ -610,17 +640,21 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         ${item.totalcost.toFixed(2)}
                       </Typography>
                     </Grid>
-                    {item.productId !== utensilsReducer.utensilsProductId ? (
-                      <Grid item xs={12} sx={{ padding: '10px 0 10px 0' }}>
-                        <Divider sx={{ borderColor: 'rgba(0, 0, 0, 1);' }} />
-                      </Grid>
-                    ) : null}
+                    {/*{item.productId !== utensilsReducer.utensilsProductId ? (*/}
+                    {/*<Grid item xs={12} sx={{ padding: '10px 0 10px 0' }}>*/}
+                    {/*<Divider sx={{ borderColor: 'rgba(0, 0, 0, 1);' }} />*/}
+                    {/*</Grid>*/}
+                    {/*) : null}*/}
                     <Grid item xs={12}>
                       <Typography
                         title={getOptions(item.choices)}
                         variant="caption"
                         fontSize={11}
-                        sx={{ paddingBottom: '0px', display: 'block' }}
+                        sx={{
+                          paddingBottom: '0px',
+                          paddingTop: '10px',
+                          display: 'block',
+                        }}
                       >
                         {getOptions(item.choices)}
                       </Typography>
@@ -737,17 +771,22 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                             </li>
                           </ul>{' '}
                         </Grid>
+                        <Grid item xs={12} sx={{ padding: '15px 0px' }}>
+                          <Divider sx={{ borderColor: '#224c65' }} />
+                        </Grid>
                       </Grid>
                     ) : null}
                   </Grid>
-                  <Grid item xs={12}>
-                    <div style={{ height: '15px' }}></div>
-                  </Grid>
+                  {/*<Grid item xs={12}>*/}
+                  {/*  <div style={{ height: '15px' }}></div>*/}
+                  {/*</Grid>*/}
                 </Grid>
               ))}
-              <Grid item xs={12} sx={{ padding: '20px 0px' }}>
-                <Divider sx={{ borderColor: '#224c65' }} />
-              </Grid>
+              {utensils && (
+                <Grid item xs={12} sx={{ padding: '0px 0px 15px' }}>
+                  <Divider sx={{ borderColor: '#224c65' }} />
+                </Grid>
+              )}
               {utensilsReducer.utensilsProductId && (
                 <Grid item xs={12}>
                   <Typography
@@ -1160,7 +1199,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                 >
                                   {discount.type === 'Coupon'
                                     ? 'Coupon Code: '
-                                    : 'DISCOUNT: '}
+                                    : 'REWARD: '}
                                   {discount.description}
                                 </Grid>
                                 <Grid
@@ -1174,7 +1213,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                     fontFamily: 'Poppins-Regular',
                                   }}
                                 >
-                                  -${discount.amount}
+                                  -${discount.amount && discount.amount.toFixed(2)}
                                 </Grid>
                               </>
                             );
@@ -1339,6 +1378,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
             basketObj.basket.products.length > 0 ? (
               <Button
                 variant="contained"
+                id="proceedCheckout"
                 onClick={() => {
                   showCart();
                   navigate('/checkout');

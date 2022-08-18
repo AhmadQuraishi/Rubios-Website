@@ -7,7 +7,14 @@ import {
   TextField,
   Typography,
   InputAdornment,
+  useTheme,
+  useMediaQuery,
 } from '@mui/material';
+
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import { ResponseBasket } from '../../../types/olo-api';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,8 +27,10 @@ import {
 } from '../../../helpers/checkout';
 import DialogBox from '../../dialog-box';
 
-const SplitPayment = forwardRef((props, _ref) => {
+const SplitPayment = forwardRef((props: any, _ref) => {
+  const { setHideShow } = props;
   const dispatch = useDispatch();
+  const theme = useTheme();
   const basketObj = useSelector((state: any) => state.basketReducer);
   const [basket, setBasket] = React.useState<ResponseBasket>();
   const [billingSchemes, setBillingSchemes] = React.useState<any>([]);
@@ -67,7 +76,7 @@ const SplitPayment = forwardRef((props, _ref) => {
     if (
       billingSchemeStats.selectedCreditCard === 1 &&
       e.target.checked &&
-      billingmethod === 'creditcardtoken'
+      billingmethod === 'creditcard'
     ) {
       displayToast('ERROR', 'Only 1 Credit Card can be used to make a payment');
       return;
@@ -109,16 +118,16 @@ const SplitPayment = forwardRef((props, _ref) => {
 
       console.log('selected', selected);
 
-      if (selected && selected.length === 1) {
-        if (selected[0].localId === removeData.localId) {
-          displayToast(
-            'ERROR',
-            'Minimum 1 payment method is required to make a payment',
-          );
-          handleClosePopup();
-          return;
-        }
-      }
+      // if (selected && selected.length === 1) {
+      //   if (selected[0].localId === removeData.localId) {
+      //     displayToast(
+      //       'ERROR',
+      //       'Minimum 1 payment method is required to make a payment',
+      //     );
+      //     handleClosePopup();
+      //     return;
+      //   }
+      // }
       let updatedBillingSchemes = billingSchemes.filter(
         (element: any) => element.localId !== removeData.localId,
       );
@@ -128,7 +137,7 @@ const SplitPayment = forwardRef((props, _ref) => {
         basket,
       );
       dispatch(updateBasketBillingSchemes(updatedBillingSchemes));
-      displayToast('SUCCESS', 'Card Removed.');
+        displayToast('SUCCESS', 'Card Removed.');
     }
     handleClosePopup();
   };
@@ -164,8 +173,12 @@ const SplitPayment = forwardRef((props, _ref) => {
 
   const getCardImage = (account: any) => {
     let cardImage = '';
-    if (account.billingmethod === 'creditcardtoken') {
-      cardImage = `${account.cardtype}.png`;
+    if (account.billingmethod === 'creditcard') {
+      if (account.billingaccountid) {
+        cardImage = `${account.cardtype}.png`;
+      } else {
+        return <></>
+      }
     } else {
       cardImage = 'gc-card-icon.png';
     }
@@ -213,7 +226,14 @@ const SplitPayment = forwardRef((props, _ref) => {
                 lg={12}
                 className="card-details"
               >
-                <Grid item xs={1} sm={1} md={1} lg={1} sx={{marginRight: '5px'}}>
+                <Grid
+                  item
+                  xs={1}
+                  sm={1}
+                  md={1}
+                  lg={1}
+                  sx={{ marginRight: '5px' }}
+                >
                   <FormGroup>
                     <FormControlLabel
                       control={
@@ -258,7 +278,7 @@ const SplitPayment = forwardRef((props, _ref) => {
                         account.billingmethod === 'storedvalue'
                           ? 'flex-start'
                           : 'center',
-                      paddingLeft: 0,
+                      paddingLeft: 5,
                     }}
                     alignItems="center"
                     justifyContent="flex-start"
@@ -267,7 +287,7 @@ const SplitPayment = forwardRef((props, _ref) => {
                     md={6}
                     lg={6}
                   >
-                    {account.billingmethod === 'creditcardtoken' && (
+                    {account.billingmethod === 'creditcard' && (
                       <Typography variant="h6">
                         {account.cardlastfour
                           ? `x-${account.cardlastfour}`
@@ -351,33 +371,145 @@ const SplitPayment = forwardRef((props, _ref) => {
                   paddingTop: 5,
                   display: 'flex',
                   justifyContent: 'flex-end',
-                  zIndex: 999,
+                  zIndex: 1,
                 }}
                 xs={12}
                 sm={12}
                 md={12}
                 lg={12}
               >
-                {billingSchemes && billingSchemes.length !== 1 && (
-                  <Typography
-                    onClick={() => {
-                      setOpenPopup(true);
-                      setRemoveData({
-                        localId: account.localId,
-                        billingmethod: account.billingmethod,
-                      });
-                    }}
-                    style={{ cursor: 'pointer', display: 'inline-block' }}
-                    align={'right'}
-                    variant="h6"
-                  >
-                    REMOVE
-                  </Typography>
-                )}
+                {/*{billingSchemes && billingSchemes.length !== 1 && (*/}
+                {account.billingmethod === 'creditcard' &&
+                  !account.billingaccountid && (
+                    <Typography
+                      onClick={() => {
+                        setHideShow(true);
+                      }}
+                      style={{
+                        cursor: 'pointer',
+                        display: 'inline-block',
+                        paddingRight: 10,
+                      }}
+                      align={'right'}
+                      variant="h6"
+                    >
+                      EDIT
+                    </Typography>
+                  )}
+
+                <Typography
+                  onClick={() => {
+                    setOpenPopup(true);
+                    setRemoveData({
+                      localId: account.localId,
+                      billingmethod: account.billingmethod,
+                    });
+                  }}
+                  style={{ cursor: 'pointer', display: 'inline-block' }}
+                  align={'right'}
+                  variant="h6"
+                >
+                  REMOVE
+                </Typography>
+                {/*)}*/}
               </Grid>
             </Grid>
           );
         })}
+      {/*<Accordion>*/}
+      {/*  <AccordionSummary*/}
+      {/*    expandIcon={<ExpandMoreIcon />}*/}
+      {/*    aria-controls="panel1a-content"*/}
+      {/*    id="panel1a-header"*/}
+      {/*  >*/}
+      {/*    <Typography>Add Credit Card</Typography>*/}
+      {/*  </AccordionSummary>*/}
+      {/*  <AccordionDetails>*/}
+      {/*    <Grid container className="payment-form" spacing={2}>*/}
+      {/*      <Grid*/}
+      {/*        item*/}
+      {/*        xs={12}*/}
+      {/*        sm={12}*/}
+      {/*        md={12}*/}
+      {/*        lg={12}*/}
+      {/*        className="payment-form image-field align"*/}
+      {/*      >*/}
+      {/*        <Grid container spacing={2}>*/}
+      {/*          <Grid*/}
+      {/*            item*/}
+      {/*            xs={12}*/}
+      {/*            sm={6}*/}
+      {/*            md={6}*/}
+      {/*            lg={6}*/}
+      {/*            className="payment-form image-field align"*/}
+      {/*          >*/}
+      {/*            /!*<div*!/*/}
+      {/*            /!*  tabIndex={0}*!/*/}
+      {/*            /!*  className="card-fields"*!/*/}
+      {/*            /!*  data-olo-pay-card-number*!/*/}
+      {/*            /!*/
+      /*/}
+      {/*            <div className="card-fields">*/}
+      {/*              <div className="credit-card-info-div"></div>*/}
+      {/*            </div>*/}
+      {/*            <img*/}
+      {/*              alt="card icon"*/}
+      {/*              src={require('../../../assets/imgs/card-icon.png')}*/}
+      {/*            />*/}
+      {/*          </Grid>*/}
+      {/*          <Grid item xs={12} sm={6} md={6} lg={6}>*/}
+      {/*            /!*<div className="card-fields" data-olo-pay-card-cvc />*!/*/}
+      {/*            <div className="card-fields">*/}
+      {/*              <div className="cvv-info-div"></div>*/}
+      {/*            </div>*/}
+      {/*            <img*/}
+      {/*              alt="cvc icon"*/}
+      {/*              src={require('../../../assets/imgs/ccv-icon.png')}*/}
+      {/*            />*/}
+      {/*          </Grid>*/}
+      {/*        </Grid>*/}
+      {/*      </Grid>*/}
+      {/*      <Grid item xs={12} sm={12} md={12} lg={12}>*/}
+      {/*        <Grid container spacing={2}>*/}
+      {/*          <Grid*/}
+      {/*            item*/}
+      {/*            xs={12}*/}
+      {/*            sm={6}*/}
+      {/*            md={6}*/}
+      {/*            lg={6}*/}
+      {/*            className="payment-form image-field align"*/}
+      {/*          >*/}
+      {/*            /!*<div className="card-fields" data-olo-pay-card-expiry />*!/*/}
+      {/*            <TextField*/}
+      {/*              className="zipcode"*/}
+      {/*              aria-label="Card Expiry"*/}
+      {/*              placeholder="Card Expiry"*/}
+      {/*              type="text"*/}
+      {/*              name="zipcode"*/}
+      {/*              inputProps={{ shrink: false }}*/}
+      {/*              // value={zipCode}*/}
+      {/*              // onChange={handleZipCodeChange}*/}
+      {/*            />*/}
+      {/*          </Grid>*/}
+      {/*          <Grid item xs={12} sm={6} md={6} lg={6}>*/}
+      {/*            <TextField*/}
+      {/*              className="zipcode"*/}
+      {/*              aria-label="Zip Code"*/}
+      {/*              placeholder="Zip Code"*/}
+      {/*              type="text"*/}
+      {/*              name="zipcode"*/}
+      {/*              inputProps={{ shrink: false }}*/}
+      {/*              // value={zipCode}*/}
+      {/*              // onChange={handleZipCodeChange}*/}
+      {/*            />*/}
+      {/*          </Grid>*/}
+      {/*        </Grid>*/}
+      {/*      </Grid>*/}
+      {/*    </Grid>*/}
+
+      {/*  </AccordionDetails>*/}
+      {/*</Accordion>*/}
+
       <Grid container spacing={2}>
         <Grid item xs={12} sm={12} md={12} lg={12}>
           <Typography align={'center'} variant="h6">

@@ -1,23 +1,26 @@
-.login-wrapper {
+.forgot-wrapper {
   margin: 62px 139px !important;
 }
-.login-content {
+.forgot-wrapper .login-content {
   background: white;
   display: flex;
   justify-content: center;
-  padding: 77px 75px 88px 93px;
+  padding: 50px 55px;
   -webkit-border-radius: 30px;
   -moz-border-radius: 30px;
   border-radius: 30px;
 }
-.login-content h1 {
+.forgot-wrapper .login-content h1 {
   margin: 0px 0px 23px 0px;
-  font-size: 15px;
+  font-size: 30px !important;
 }
-.login-content .left-col {
-  border-right: 1px solid #0069aa;
-  padding-right: 58px;
-  margin-right: 66px;
+.forgot-wrapper .login-content .left-col {
+  border-right: none;
+  padding-right: 0px;
+  margin-right: 0px;
+}
+.forgot-wrapper form {
+  width: 100%;
 }
 .login-content .right-col .sign-in-btn {
   margin-top: 14px;
@@ -65,17 +68,17 @@
 }
 
 @media screen and (max-width: 900px) {
-  .login-wrapper {
+  .forgot-wrapper {
     margin: 80px 75px !important;
   }
   .login-content {
     padding: 35px 35px 60px 35px;
   }
-  .login-content .left-col {
+  .forgot-wrapper .login-content .left-col {
     border-right: none !important;
-    border-bottom: 1px solid #0069aa;
-    padding: 0px 0px 40px 0px !important;
-    margin: 0px 0px 40px 0px !important;
+    border-bottom: none;
+    padding: 0px !important;
+    margin: 0 !important;
   }
   .login-content .right-col {
     padding: 0px 110px;
@@ -84,10 +87,13 @@
     width: calc(100% - 40px);
     margin: 45px 20px 0px 20px;
   }
+  .forgot-wrapper button {
+    float: right;
+  }
 }
 
 @media screen and (max-width: 468px) {
-  .login-wrapper {
+  .forgot-wrapper {
     margin: 15px !important;
   }
   .login-content {

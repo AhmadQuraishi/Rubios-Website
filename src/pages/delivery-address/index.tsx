@@ -10,6 +10,7 @@ import {
 } from '../../redux/actions/user';
 import LoadingBar from '../../components/loading-bar';
 import DialogBox from '../../components/dialog-box';
+import Page from '../../components/page-title';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -74,41 +75,40 @@ const DeliveryAddress = () => {
   };
 
   return (
-    <Fragment>
-      <Grid container className={`${classes.root} delivery-address-container`}>
-        <Typography variant="h1" className={classes.heading}>
-          DELIVERY ADDRESSES
-        </Typography>
-        <Typography variant="h6" title="" sx={{marginBottom: '20px',}}>
-          To add or update your delivery addresses, select “delivery” when placing an order and enter the updated delivery address during checkout.
-        </Typography>
-        {loading && <LoadingBar />}
+    <Page title={'Delivery Address'} className="">
+      <Fragment>
+        <Grid
+          container
+          className={`${classes.root} delivery-address-container`}
+        >
+          <Typography variant="h1" className={classes.heading}>
+            DELIVERY ADDRESSES
+          </Typography>
+          <Typography variant="h6" title="" sx={{ marginBottom: '20px' }}>
+            To add or update your delivery addresses, select “delivery” when
+            placing an order and enter the updated delivery address during
+            checkout.
+          </Typography>
+          {loading && <LoadingBar />}
 
-        {!loading &&
-          deliveryaddresses.length > 0 &&
-          deliveryaddresses.map((address: any, index) => (
-            <Grid item xs={12} key={index + address.id}>
-              {address.isdefault == true && (
-                <Card elevation={0} className="card-panel">
-                  <CardContent className="card-content">
-                    <Typography variant="body2" title="DEFAULT Stacey's Home">
-                      {address.isdefault && <b>DEFAULT</b>} {address.building}
-                    </Typography>
-                    <Typography variant="body2" title="5326 Highway Ave.">
-                      {address.streetaddress}
-                    </Typography>
-                    <Typography variant="body2" title="Apt 342">
-                      {address.city}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      title="Carisbad, CA 34092-342387"
-                    >
-                      {address.zipcode}
-                    </Typography>
-                    <Grid container>
-                      <Grid item xs={12} className="small-button-panel">
-                        {/* <Link
+          {!loading &&
+            deliveryaddresses.length > 0 &&
+            deliveryaddresses.map((address: any, index) => (
+              <Grid item xs={12} key={index + address.id}>
+                {address.isdefault == true && (
+                  <Card elevation={0} className="card-panel">
+                    <CardContent className="card-content">
+                      <Typography variant="body2">
+                        {address.isdefault && <b>DEFAULT</b>} {address.building}
+                      </Typography>
+                      <Typography variant="body2">
+                        {address.streetaddress}
+                      </Typography>
+                      <Typography variant="body2">{address.city}</Typography>
+                      <Typography variant="body2">{address.zipcode}</Typography>
+                      <Grid container>
+                        <Grid item xs={12} className="small-button-panel">
+                          {/* <Link
                         aria-label="Edit"
                         title="Edit"
                         className="link"
@@ -116,126 +116,119 @@ const DeliveryAddress = () => {
                       >
                         EDIT
                       </Link> */}
-                        <Typography
-                          variant="button"
-                          aria-label="Delete"
-                          title="DELETE"
-                          className="link"
-                          onClick={() => {
-                            handleClickOpen(address.id);
-                          }}
-                        >
-                          DELETE
-                        </Typography>
-
-                        {!address.isdefault && (
                           <Typography
                             variant="button"
-                            aria-label="MAke Default"
-                            title="Make Default"
-                            className="link default"
-                            onClick={() => defaultAddressHandler(address.id)}
-                          >
-                            MAKE DEFAULT
-                          </Typography>
-                        )}
-                      </Grid>
-                      <DialogBox
-                        open={open}
-                        handleClose={handleClose}
-                        message={
-                          'Do You Really Want To Delete This Delivery Address?'
-                        }
-                        handleDeleteFunction={() => deleteAddressHandler()}
-                      />
-                    </Grid>
-                  </CardContent>
-                </Card>
-              )}
-            </Grid>
-          ))}
-        {!loading &&
-          deliveryaddresses.length > 0 &&
-          deliveryaddresses.map((address: any, index) => (
-            <Grid item xs={12} key={index + address.id}>
-              {!address.isdefault && (
-                <Card elevation={0} className="card-panel">
-                  <CardContent className="card-content">
-                    <Typography variant="body2" title="DEFAULT Stacey's Home">
-                      {address.isdefault && <b>DEFAULT</b>} {address.building}
-                    </Typography>
-                    <Typography variant="body2" title="5326 Highway Ave.">
-                      {address.streetaddress}
-                    </Typography>
-                    <Typography variant="body2" title="Apt 342">
-                      {address.city}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      title="Carisbad, CA 34092-342387"
-                    >
-                      {address.zipcode}
-                    </Typography>
-                    <Grid container>
-                      <Grid item xs={12} className="small-button-panel">
-                        {/* <Link
-                        aria-label="Edit"
-                        title="Edit"
-                        className="link"
-                        to={`/account/addDeliveryAddress/${address.id}`}
-                      >
-                        EDIT
-                      </Link> */}
-                        <Typography
-                          variant="button"
-                          aria-label="Delete"
-                          title="DELETE"
-                          className="link"
-                          onClick={() => {
-                            handleClickOpen(address.id);
-                          }}
-                        >
-                          DELETE
-                        </Typography>
-
-                        {!address.isdefault && (
-                          <Typography
-                            variant="button"
-                            aria-label="MAke Default"
-                            title="Make Default"
-                            className="link default"
+                            aria-label="Delete"
+                            title="DELETE"
+                            className="link"
                             onClick={() => {
-                              defaultAddressHandler(address.id);
+                              handleClickOpen(address.id);
                             }}
                           >
-                            MAKE DEFAULT
+                            DELETE
                           </Typography>
-                        )}
+
+                          {!address.isdefault && (
+                            <Typography
+                              variant="button"
+                              aria-label="MAke Default"
+                              title="Make Default"
+                              className="link default"
+                              onClick={() => defaultAddressHandler(address.id)}
+                            >
+                              MAKE DEFAULT
+                            </Typography>
+                          )}
+                        </Grid>
+                        <DialogBox
+                          open={open}
+                          handleClose={handleClose}
+                          message={
+                            'Do You Really Want To Delete This Delivery Address?'
+                          }
+                          handleDeleteFunction={() => deleteAddressHandler()}
+                        />
                       </Grid>
-                      <DialogBox
-                        open={open}
-                        handleClose={handleClose}
-                        message={
-                          'Do You Really Want To Delete This Delivery Address?'
-                        }
-                        handleDeleteFunction={() => deleteAddressHandler()}
-                      />
-                    </Grid>
-                  </CardContent>
-                </Card>
-              )}
-            </Grid>
-          ))}
+                    </CardContent>
+                  </Card>
+                )}
+              </Grid>
+            ))}
+          {!loading &&
+            deliveryaddresses.length > 0 &&
+            deliveryaddresses.map((address: any, index) => (
+              <Grid item xs={12} key={index + address.id}>
+                {!address.isdefault && (
+                  <Card elevation={0} className="card-panel">
+                    <CardContent className="card-content">
+                      <Typography variant="body2">
+                        {address.isdefault && <b>DEFAULT</b>} {address.building}
+                      </Typography>
+                      <Typography variant="body2">
+                        {address.streetaddress}
+                      </Typography>
+                      <Typography variant="body2">{address.city}</Typography>
+                      <Typography variant="body2">{address.zipcode}</Typography>
+                      <Grid container>
+                        <Grid item xs={12} className="small-button-panel">
+                          {/* <Link
+                        aria-label="Edit"
+                        title="Edit"
+                        className="link"
+                        to={`/account/addDeliveryAddress/${address.id}`}
+                      >
+                        EDIT
+                      </Link> */}
+                          <Typography
+                            variant="button"
+                            aria-label="Delete"
+                            title="DELETE"
+                            className="link"
+                            onClick={() => {
+                              handleClickOpen(address.id);
+                            }}
+                          >
+                            DELETE
+                          </Typography>
 
-        <Grid xs={12}>
-          {!loading && deliveryaddresses.length === 0 && (
-            <Typography variant="h6" className="no-address">
-              You don't have any delivery addresses
-            </Typography>
-          )}
-        </Grid>
+                          {!address.isdefault && (
+                            <Typography
+                              variant="button"
+                              aria-label="MAke Default"
+                              title="Make Default"
+                              className="link default"
+                              onClick={() => {
+                                defaultAddressHandler(address.id);
+                              }}
+                            >
+                              MAKE DEFAULT
+                            </Typography>
+                          )}
+                        </Grid>
+                        <DialogBox
+                          open={open}
+                          handleClose={handleClose}
+                          message={
+                            'Do You Really Want To Delete This Delivery Address?'
+                          }
+                          handleDeleteFunction={() => deleteAddressHandler()}
+                        />
+                      </Grid>
+                    </CardContent>
+                  </Card>
+                )}
+              </Grid>
+            ))}
 
-        {/* <Grid item xs={12}>
+          <Grid xs={12}>
+            {!loading && deliveryaddresses.length === 0 && (
+              <Typography variant="h6" className="no-address">
+                You don't have any delivery addresses.
+              </Typography>
+            )}
+          </Grid>
+
+          {/* <Grid item xs={12}>
           <Link
             to="/account/addDeliveryAddress"
             aria-label="Add delivery Address"
@@ -250,8 +243,9 @@ const DeliveryAddress = () => {
             </Button>
           </Link>
         </Grid> */}
-      </Grid>
-    </Fragment>
+        </Grid>
+      </Fragment>
+    </Page>
   );
 };
 

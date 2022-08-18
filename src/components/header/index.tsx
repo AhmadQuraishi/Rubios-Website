@@ -60,18 +60,48 @@ const useStyles = makeStyles((theme: Theme) => ({
   menuLink: {
     textTransform: 'uppercase',
     display: 'block',
-    paddingTop: '30px',
-    paddingRight: '5px',
+    paddingTop: '25px',
+    paddingRight: '12px',
     [theme.breakpoints.down('md')]: {
-      paddingTop: '25px',
+      paddingTop: '27px',
+      paddingBottom: '22px',
+      paddingRight: '12px',
+      fontSize: '14px',
+    },
+    [theme.breakpoints.down('sm')]: {
+      paddingTop: '27px',
+      paddingBottom: '22px',
+      paddingRight: '12px',
+      fontSize: '14px',
     },
     color: theme.palette.primary.main,
     fontFamily: 'Poppins-Medium !important',
     textDecoration: 'none',
-    fontSize: '14px',
+    fontSize: '17px',
     textAlign: 'center',
     '&:hover': {
-      color: theme.palette.success.main,
+      color: '#0073BD',
+    },
+    transition: 'color 0.5s ease',
+  },
+  menuItemLink: {
+    textTransform: 'uppercase',
+    display: 'block',
+    paddingTop: '25px',
+    [theme.breakpoints.down('md')]: {
+      paddingTop: '27px',
+      paddingBottom: '22px',
+      fontSize: '14px',
+    },
+    color: theme.palette.primary.main,
+    fontFamily: 'Poppins-Medium !important',
+    textDecoration: 'none',
+    fontSize: '17px',
+    textAlign: 'center',
+    '&:hover': {
+      color: '#0073BD',
+
+      // color: theme.palette.success.main,
     },
     transition: 'color 0.5s ease',
   },
@@ -147,6 +177,7 @@ const Header = (props: any) => {
   };
   return (
     <>
+      {console.log('window location', window.location.pathname)}
       <AppBar position="sticky" className={classes.navBar}>
         <Toolbar
           sx={{
@@ -155,24 +186,37 @@ const Header = (props: any) => {
           }}
         >
           <Typography variant="body1" className={classes.logo}>
-            <Link
-              to="/location"
+            <p
+              // to="/location"
               className={classes.logoImg}
-              onClick={() => setShowAccountMenu(false)}
             >
-              <img
-                aria-label="Rubio's Cosatal Grill"
-                src={logo}
-                style={{ display: 'flex' }}
-                alt="Rubio's Cosatal Grill"
-                title="Rubio's Cosatal Grill Logo"
-              />
-            </Link>
+              <a href={process.env.REACT_APP_RUBIOS_HOME_PAGE}>
+                <img
+                  aria-label="Rubio's Cosatal Grill"
+                  src={logo}
+                  style={{ display: 'flex' }}
+                  alt="Rubio's Cosatal Grill"
+                  title="Rubio's Cosatal Grill Logo"
+                />
+              </a>
+            </p>
           </Typography>
-
           {isMobile ? (
             <>
-              <Drawer open={openDrawer} onClose={() => setOpenDrawer(false)}>
+              <Link
+                to={restaurant ? '/menu/' + restaurant.slug : '/'}
+                className={
+                  window.location.pathname === '/login' ||
+                  window.location.pathname === '/register'
+                    ? classes.menuItemLink
+                    : classes.menuLink
+                }
+                title="Menu"
+                onClick={() => setShowAccountMenu(false)}
+              >
+                Menu
+              </Link>
+              {/* <Drawer open={openDrawer} onClose={() => setOpenDrawer(false)}>
                 <div style={{ padding: '20px' }}>
                   <Link
                     to={restaurant ? '/menu/' + restaurant.slug : '/'}
@@ -189,67 +233,67 @@ const Header = (props: any) => {
                 className={classes.icon}
               >
                 <MenuIcon fontSize="large" titleAccess="Menu Icon" />
-              </IconButton>
-              {providerToken && providerToken.first_name
-                ? !hideLoginedPanel && (
+              </IconButton> */}
+              {providerToken && providerToken.first_name ? (
+                <Grid
+                  container
+                  sx={{
+                    background: '#0073BD',
+                    alignItems: 'center',
+                    fontFamily: 'Poppins-Medium',
+                    textAlign: 'center',
+                    textTransform: 'uppercase',
+                    fontSize: '14px',
+                    height: '70px',
+                    width: '65px',
+                  }}
+                  onClick={() => {
+                    setShowAccountMenu(!showAccountMenu);
+                  }}
+                >
+                  <Grid
+                    item
+                    xs={12}
+                    sx={{ display: 'flex', justifyContent: 'center' }}
+                  >
+                    <img
+                      src={require('../../assets/imgs/user-icon.png')}
+                      alt="Profile Icon"
+                    />
+                  </Grid>
+                </Grid>
+              ) : (
+                !hideLoginPanel && (
+                  <Grid
+                    container
+                    sx={{
+                      background: '#0073BD',
+                      alignItems: 'center',
+                      fontFamily: 'Poppins-Medium',
+                      textAlign: 'center',
+                      textTransform: 'uppercase',
+                      fontSize: '14px',
+                      height: '70px',
+                      width: '65px',
+                    }}
+                    onClick={() => {
+                      navigate('/login');
+                    }}
+                  >
                     <Grid
-                      container
-                      sx={{
-                        background: '#0073BD',
-                        alignItems: 'center',
-                        fontFamily: 'Poppins-Medium',
-                        textAlign: 'center',
-                        textTransform: 'uppercase',
-                        fontSize: '14px',
-                        height: '70px',
-                        width: '65px',
-                      }}
-                      onClick={() => {
-                        setShowAccountMenu(!showAccountMenu);
-                      }}
+                      item
+                      xs={12}
+                      sx={{ display: 'flex', justifyContent: 'center' }}
                     >
-                      <Grid
-                        item
-                        xs={12}
-                        sx={{ display: 'flex', justifyContent: 'center' }}
-                      >
-                        <img
-                          src={require('../../assets/imgs/user-icon.png')}
-                          alt="Profile Icon"
-                        />
-                      </Grid>
+                      <img
+                        style={{ width: '75%', display: 'block' }}
+                        src={require('../../assets/imgs/logout-icon.png')}
+                        alt="Login Icon"
+                      />
                     </Grid>
-                  )
-                : !hideLoginPanel && (
-                    <Grid
-                      container
-                      sx={{
-                        background: '#0073BD',
-                        alignItems: 'center',
-                        fontFamily: 'Poppins-Medium',
-                        textAlign: 'center',
-                        textTransform: 'uppercase',
-                        fontSize: '14px',
-                        height: '70px',
-                        width: '65px',
-                      }}
-                      onClick={() => {
-                        navigate('/login');
-                      }}
-                    >
-                      <Grid
-                        item
-                        xs={12}
-                        sx={{ display: 'flex', justifyContent: 'center' }}
-                      >
-                        <img
-                          style={{ width: '75%', display: 'block' }}
-                          src={require('../../assets/imgs/logout-icon.png')}
-                          alt="Login Icon"
-                        />
-                      </Grid>
-                    </Grid>
-                  )}
+                  </Grid>
+                )
+              )}
               {!removeCart && !removeCartForLocation && (
                 <div
                   style={{
@@ -351,9 +395,7 @@ const Header = (props: any) => {
                             fontSize: '14px',
                           }}
                         >
-                          Hi{' '}
-                          {(providerToken && providerToken.first_name) ||
-                            'Stacey'}
+                          Hi {(providerToken && providerToken.first_name) || ''}
                           !
                         </Typography>
                         {!showAccountMenu && (
@@ -420,7 +462,7 @@ const Header = (props: any) => {
                             fontSize: '14px',
                           }}
                         >
-                          Hi Guest!
+                          Sign In!
                         </Typography>
                       </Grid>
                     </Grid>

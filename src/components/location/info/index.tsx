@@ -1,6 +1,6 @@
 import { setDeliveryAddress } from '../../../redux/actions/location/delivery-address';
 import { verifyDeliveryAddressRequest } from '../../../redux/actions/location/verify-delivery-address';
-import { Button, Grid, Typography } from '@mui/material';
+import { Button, Grid, Typography, useTheme, useMediaQuery } from '@mui/material';
 import { displayToast } from '../../../helpers/toast';
 import { setResturantInfoRequest } from '../../../redux/actions/restaurant';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,6 +12,7 @@ import ListHours from '../listHours';
 const StoreInfo = (props: any) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const theme = useTheme();
 
   const {
     setSelectedStoreID,
@@ -28,14 +29,20 @@ const StoreInfo = (props: any) => {
 
   const [candeliver, setCanDeliver] = useState(true);
   const [loading, setLoading] = useState(false);
+  const basketObj = useSelector((state: any) => state.basketReducer);
+
   useEffect(() => {
     try {
-      if (resturantOrderType == 'delivery' && deliveryAddressString) {
+      if (
+        resturantOrderType === 'dispatch' &&
+        deliveryAddressString &&
+        Object.keys(deliveryAddressString).length
+      ) {
         const url =
           (process.env.REACT_APP_OLO_API || '') +
           `/restaurants/${item.id}/checkdeliverycoverage`;
         const promise = axios.post(url, {
-          handoffmode: 'delivery',
+          handoffmode: 'dispatch',
           timewantedmode: 'asap',
           street: deliveryAddressString.address1,
           city: deliveryAddressString.city,
@@ -65,7 +72,7 @@ const StoreInfo = (props: any) => {
       return false;
     }
     let restaurantObj = null;
-    if (resturantOrderType == 'delivery') {
+    if (resturantOrderType == 'dispatch') {
       setSelectedStoreID(storeID.toString());
       restaurantObj = deliveryRasturants.find((x: any) => x.id === storeID);
       dispatch(setDeliveryAddress(deliveryAddressString));
@@ -81,7 +88,16 @@ const StoreInfo = (props: any) => {
         dispatch(
           setResturantInfoRequest(restaurantObj, resturantOrderType || ''),
         );
-        displayToast('SUCCESS', 'Location changed to ' + restaurantObj.name);
+        if (basketObj && basketObj.basket) {
+          displayToast(
+            'SUCCESS',
+            'Location changed to ' +
+              restaurantObj.name +
+              ' and basket is empty',
+          );
+        } else {
+            displayToast('SUCCESS', 'Location changed to ' + restaurantObj.name);
+        }
       }
       navigate('/menu/' + restaurantObj.slug);
     }
@@ -130,7 +146,7 @@ const StoreInfo = (props: any) => {
         >
           Hours
         </Typography>
-        <ListHours id={item.id} />
+        <ListHours id={item.id} resturantOrderType={resturantOrderType} />
         {candeliver == false && (
           <Typography
             variant="body2"
@@ -145,7 +161,7 @@ const StoreInfo = (props: any) => {
             {candeliver} Delivery is not available at this time
           </Typography>
         )}
-        {candeliver && !loading && (
+        {!loading && (
           <Button
             sx={{ float: 'right', marginTop: '5px' }}
             onClick={() => {
@@ -163,50 +179,54 @@ const StoreInfo = (props: any) => {
       xs={12}
       sx={{
         marginBottom: '10px',
-        cursor: candeliver == false ? 'not-allowed' : 'pointer',
+        cursor: 'pointer',
+        // cursor: candeliver == false ? 'not-allowed' : 'pointer',
       }}
       onClick={() => {
-        candeliver && !loading && gotoCategoryPage(item.id);
+         !loading && gotoCategoryPage(item.id);
+        // candeliver && !loading && gotoCategoryPage(item.id);
       }}
-      tabIndex={0}
       onKeyUp={(e) => {
         if (e.keyCode === 13) {
-          candeliver && !loading && gotoCategoryPage(item.id);
+          !loading && gotoCategoryPage(item.id);
+          // candeliver && !loading && gotoCategoryPage(item.id);
         }
       }}
       key={index}
     >
-      <Typography
-        variant="h5"
-        sx={{
-          fontWeight: 'bold',
-          fontSize: '18px',
-          paddingBottom: '5px',
-        }}
-      >
-        {item.name}
-      </Typography>
-      <Typography variant="body2">
-        {item.streetaddress}, <br /> {item.city}, {item.state}, {item.zip}
-      </Typography>
-      {item.distance > 0 && (
-        <Typography variant="body2" sx={{ color: '#5FA625' }}>
-          {item.distance} Miles Away
-        </Typography>
-      )}
-      {candeliver == false && (
+      <a href="#" style={{ color: '#000', textDecoration: 'none' }}>
         <Typography
-          variant="body2"
+          variant="h5"
           sx={{
-            color: '#b91a2e',
-            fontSize: '13px',
-            background: '#fee',
-            padding: '2px 5px',
+            fontWeight: 'bold',
+            fontSize: '18px',
+            paddingBottom: '5px',
           }}
         >
-          {candeliver} Delivery is not available at this time
+          {item.name}
         </Typography>
-      )}
+        <Typography variant="body2">
+          {item.streetaddress}, <br /> {item.city}, {item.state}, {item.zip}
+        </Typography>
+        {item.distance > 0 && (
+          <Typography variant="body2" sx={{ color: '#5FA625' }}>
+            {item.distance} Miles Away
+          </Typography>
+        )}
+        {candeliver == false && (
+          <Typography
+            variant="body2"
+            sx={{
+              color: '#b91a2e',
+              fontSize: '13px',
+              background: '#fee',
+              padding: '2px 5px',
+            }}
+          >
+            {candeliver} Delivery is not available at this time
+          </Typography>
+        )}
+      </a>
     </Grid>
   );
 };

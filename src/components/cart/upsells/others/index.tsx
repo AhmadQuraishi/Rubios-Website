@@ -257,7 +257,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
               <label
                 tabIndex={0}
                 htmlFor={itemChild.id}
-                style={{ marginBottom: '10px' }}
+                style={{ marginBottom: '10px', width: '100%' }}
                 // onKeyUp={(e) => {
                 //   if (e.keyCode === 13)
                 //     showChildOptions(
@@ -331,7 +331,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
                             paddingTop: '5px',
                             fontSize: '14px',
                             fontFamily: 'Poppins-Bold',
-                            color: '#7CC8C5',
+                            color: '#0075BF',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
@@ -419,14 +419,14 @@ const UpsellsOthers = ({ upsellsType }: any) => {
                     <div className="quantity">
                       <Button
                         title=""
-                        className="add"
-                        aria-label="increase"
+                        className="subtract"
+                        aria-label="reduce"
                         onClick={() => {
-                          updateQuantity('PLUS');
+                          updateQuantity('MINUS');
                         }}
                       >
                         {' '}
-                        +{' '}
+                        -{' '}
                       </Button>
                       <input
                         value={quantity}
@@ -439,14 +439,14 @@ const UpsellsOthers = ({ upsellsType }: any) => {
                       />
                       <Button
                         title=""
-                        className="subtract"
-                        aria-label="reduce"
+                        className="add"
+                        aria-label="increase"
                         onClick={() => {
-                          updateQuantity('MINUS');
+                          updateQuantity('PLUS');
                         }}
                       >
                         {' '}
-                        -{' '}
+                        +{' '}
                       </Button>
                     </div>
                   </div>

@@ -77,9 +77,7 @@ const PickupForm = ({ basket, pickupFormRef, orderType }: any) => {
         lastName: providerToken?.last_name ? providerToken?.last_name : '',
         phone: providerToken?.phone ? providerToken?.phone : '',
         email: providerToken?.email ? providerToken?.email : '',
-        emailNotification: providerToken?.marketing_email_subscription
-          ? providerToken?.marketing_email_subscription
-          : false,
+        emailNotification: true,
         tableNumber: '',
         vehicleModal: '',
         vehicleMake: '',
@@ -284,25 +282,26 @@ const PickupForm = ({ basket, pickupFormRef, orderType }: any) => {
               </Grid>
             </>
           ) : null}
-
-          <Grid item xs={12}>
-            <FormGroup>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={values.emailNotification}
-                    onChange={handleChange}
-                  />
-                }
-                label="Send me emails with special offers and updates."
-                aria-label="Send me emails with special offers and updates"
-                aria-required="true"
-                title="Send me emails with special offers and updates"
-                name="emailNotification"
-                className="size"
-              />
-            </FormGroup>
-          </Grid>
+          {!authToken?.authtoken && (
+            <Grid item xs={12}>
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={values.emailNotification}
+                      onChange={handleChange}
+                    />
+                  }
+                  label="Send me emails with special offers and updates."
+                  aria-label="Send me emails with special offers and updates"
+                  aria-required="true"
+                  title="Send me emails with special offers and updates"
+                  name="emailNotification"
+                  className="size"
+                />
+              </FormGroup>
+            </Grid>
+          )}
         </form>
       )}
     </Formik>

@@ -15,6 +15,11 @@ import { displayToast } from '../../../../helpers/toast';
 import { navigateAppAction } from '../../navigate-app';
 import { setRecentOrders } from '../../../../helpers/setRecentOrders';
 
+const breakpoints = {
+  XS: 540
+};
+
+
 export function getSingleRestaurantCalendar(
   id: number,
   dateFrom: string,
@@ -57,6 +62,7 @@ export function updateBasketTimeWanted(
 
 export function updateBasketTimeWantedSuccess(data: ResponseBasket) {
   displayToast('SUCCESS', 'Order Time updated.');
+
   return {
     type: basketActionsTypes.UPDATE_BASKET_TIME_WANTED_SUCCESS,
     payload: data,
@@ -157,11 +163,22 @@ export function updateBasketCouponCodeSuccess(data: ResponseBasket) {
 }
 
 export function updateBasketCouponCodeFailure(error: any) {
+  let msg = '';
+  if (error?.response?.data?.message) {
+    if (
+      error.response.data.message ===
+      'Coupon code may not be applied since a loyalty reward and/or comp card is already applied to your basket. Remove any loyalty rewards and comp cards to proceed.'
+    ) {
+      msg = 'Only one reward or coupon can be applied to an order.';
+    } else {
+      msg = error.response.data.message;
+    }
+  } else {
+    msg = 'ERROR! Please Try again later';
+  }
   displayToast(
     'ERROR',
-    error?.response?.data?.message
-      ? error.response.data.message
-      : 'ERROR! Please Try again later',
+    msg,
   );
   return {
     type: basketActionsTypes.UPDATE_BASKET_COUPON_CODE_FAILURE,
@@ -205,6 +222,7 @@ export function validateBasket(
   customFields: any,
   deliverymode: RequestSetDeliveryMode | null,
   deliveryAddress: RequestDeliveryAddress | null,
+  ccsfObj: any,
 ) {
   return {
     type: basketActionsTypes.VALIDETE_BASKET,
@@ -214,6 +232,7 @@ export function validateBasket(
     customFields,
     deliverymode,
     deliveryAddress,
+    ccsfObj,
   };
 }
 
@@ -266,7 +285,7 @@ export function submitBasketSinglePaymentSuccess(
   data: ResponseBasket,
   basketid: string = '',
 ) {
-  displayToast('SUCCESS', 'Order has been placed.');
+  // displayToast('SUCCESS', 'Order has been placed.');
   navigateAppAction(`/order-confirmation/${data.id}`);
   setRecentOrders(data, basketid);
   return {
@@ -276,12 +295,12 @@ export function submitBasketSinglePaymentSuccess(
 }
 
 export function submitBasketSinglePaymentFailure(error: any) {
-  displayToast(
-    'ERROR',
-    error?.response?.data?.message
-      ? error.response.data.message
-      : 'ERROR! Please Try again later',
-  );
+  // displayToast(
+  //   'ERROR',
+  //   error?.response?.data?.message
+  //     ? error.response.data.message
+  //     : 'ERROR! Please Try again later',
+  // );
   return {
     type: basketActionsTypes.SUBMIT_BASKET_SINGLE_PAYMENT_FAILURE,
     error: error,

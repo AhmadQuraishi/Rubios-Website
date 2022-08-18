@@ -1,5 +1,6 @@
 import { ResponseRestaurantCalendars } from '../types/olo-api';
 import { HoursListing, CalendarTypeEnum } from './hoursListing';
+import moment from 'moment';
 
 export function GetUserFriendlyHours(
   hours: ResponseRestaurantCalendars,
@@ -48,21 +49,5 @@ const isTimeSame = (fTime: string, sTime: string): boolean => {
 };
 
 const getTimeFormat = (date: string) => {
-  var dateObj = new Date();
-  var newDate = new Date(
-    dateObj.getUTCFullYear() +
-      dateObj.getUTCMonth() +
-      1 +
-      dateObj.getUTCDate() +
-      ' ' +
-      date.split(' ')[1],
-  );
-  return newDate
-    .toLocaleString('en-US', {
-      hour: 'numeric',
-      minute: 'numeric',
-      hour12: true,
-    })
-    .replaceAll(':00', ' ')
-    .replaceAll(' ', '');
+  return moment(date, 'YYYYMMDD HH:mm').format('h:mm A');
 };

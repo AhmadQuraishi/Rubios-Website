@@ -20,12 +20,20 @@ export function applyRewardOnBasketRequestSuccess(data: any) {
 }
 
 export function applyRewardOnBasketRequestFailure(error: any) {
-  displayToast(
-    'ERROR',
-    error?.response?.data?.message
-      ? error.response.data.message
-      : 'ERROR! Please Try again later',
-  );
+  let msg = '';
+  if (error?.response?.data?.message) {
+    if (
+      error.response.data.message ===
+      'Loyalty reward may not be applied since a coupon code is already applied to your basket. Remove the coupon code to proceed.'
+    ) {
+      msg = 'Only one reward or coupon can be applied to an order.';
+    } else {
+      msg = error.response.data.message;
+    }
+  } else {
+    msg = 'ERROR! Please Try again later';
+  }
+  displayToast('ERROR', msg);
   return {
     type: Type.APPLY_REWARD_TO_BASKET_REQUEST_FAILURE,
     error: error,

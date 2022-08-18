@@ -1,0 +1,61 @@
+.fix-span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  line-height: 1.9 !important;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+}
+
+.fix-span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  line-height: 1.9 !important;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+}
+.react-multi-carousel-list {
+  /*display: block !important;*/
+}
+
+.carousel-container .title {
+  min-height: 45px;
+}
+.carousel-container .custom-btn.cta2-btn {
+  background: white !important;
+  color: #0069aa !important;
+  box-shadow: 0px 3px 4px 0px rgba(0,0,0,0.2) !important;
+}
+
+/* .react-multi-carousel-list.carousel-container{
+overflow:unset;
+}  */
+
+.react-multi-carousel-list.carousel-container  button.react-multiple-carousel__arrow--left,
+.react-multi-carousel-list.carousel-container  button.react-multiple-carousel__arrow--right {
+  background: white !important;
+}
+.react-multi-carousel-list.carousel-container  button.react-multiple-carousel__arrow--left:before,
+.react-multi-carousel-list.carousel-container  button.react-multiple-carousel__arrow--right:before {
+  color: #6AC0BD !important;
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.MuiTabs-root .Mui-disabled {
+  display: none;
+}
+/*@media screen and (max-width: 464px) {*/
+/*.carousel-mobile-show-next-slide {*/
+/*  width: 80vw !important;*/
+/*}*/
+/*}*/
+
+@media (max-width: 464px) {
+  .react-multi-carousel-track > li:only-child {
+    transform: translate3d(-50px, 0px, 0px) !important;
+  }
+}
+
+

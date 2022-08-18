@@ -2,6 +2,11 @@ import { displayToast } from '../../../helpers/toast';
 import { ResponseUserFaves } from '../../../types/olo-api';
 import { createFaveTypes as Type } from '../../types/create-fave';
 
+const breakpoints = {
+  XS: 540
+};
+
+
 export function createFave(body: RequestNewFave) {
   return {
     type: Type.CREATE_FAVE,

@@ -6,7 +6,10 @@ import { Product } from '../../../types/olo-api';
 import Carousel from 'react-multi-carousel';
 import { useNavigate } from 'react-router-dom';
 import 'react-multi-carousel/lib/styles.css';
-import {changeImageSize} from "../../../helpers/common";
+import {
+  changeImageSize,
+  checkProductAvailability,
+} from '../../../helpers/common';
 
 const useStyles = makeStyles((theme: Theme) => ({
   img: {
@@ -60,6 +63,7 @@ const responsive = {
     breakpoint: { max: 464, min: 0 },
     items: 1,
     slidesToSlide: 1, // optional, default to 1.
+    partialVisibilityGutter: 50,
   },
 };
 
@@ -67,6 +71,10 @@ const ProductListing = (props: any) => {
   const classes = useStyles();
   const { productList, imgPath } = props;
   let products: [Product] = productList;
+
+  const checkProductAvailability = (item: any) => {
+    return !item.availability.isdisabled && item.availability.now;
+  };
 
   return (
     <Fragment>
@@ -80,8 +88,10 @@ const ProductListing = (props: any) => {
         // autoPlay={props.deviceType !== 'mobile' ? true : false}
         additionalTransfrom={0}
         autoPlay={false}
+        autoPlaySpeed={99999}
         // autoPlaySpeed={3000}
         keyBoardControl={true}
+        partialVisible={true}
         // customTransition="all .5"
         transitionDuration={500}
         containerClass="carousel-container"
@@ -90,55 +100,65 @@ const ProductListing = (props: any) => {
         dotListClass="custom-dot-list-style"
         itemClass="carousel-item-padding-40-px"
       >
-        {products.map((item: any, index: number) => (
-          <div key={index} style={{ padding: 10 }}>
-            <Card
-              elevation={0}
-              style={{ borderRadius: 0 }}
-              role="group"
-              aria-label={item.name}
-            >
-              {item.imagefilename ? (
-                <img
-                  className={classes.img}
-                  src={
-                    imgPath + changeImageSize(item.imagefilename, item.images, 'desktop-menu')
-                  }
-                  title={item.name}
-                />
-              ) : (
-                <img
-                  className={classes.img}
-                  src={require('../../../assets/imgs/default_img.png')}
-                  title={item.name}
-                />
-              )}
-              <CardContent style={{paddingBottom: 0}} sx={{ padding: '0' }}>
-                <Typography
-                  variant="h2"
-                  title={item.name}
-                  className={classes.title}
+        {products.map(
+          (item: any, index: number) =>
+            checkProductAvailability(item) && (
+              <div key={index} style={{ padding: 10 }}>
+                <Card
+                  elevation={0}
+                  style={{ borderRadius: 0 }}
+                  role="group"
+                  aria-label={item.name}
                 >
-                  {item.name}
-                </Typography>
-                <Button
-                  className="custom-btn cta2-btn"
-                  variant="contained"
-                  title="ORDER NOW"
-                  style={{ width: '80%', margin: '5px'}}
-                  onClick={() => {
-                    window.open(
-                      `${process.env.REACT_APP_ORDERING_URL}`,
-                      '_blank',
-                    );
-                  }}
-                >
-                  ORDER NOW
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-        ))}
+                  {item.imagefilename ? (
+                    <img
+                      className={classes.img}
+                      src={
+                        imgPath +
+                        changeImageSize(
+                          item.imagefilename,
+                          item.images,
+                          process.env.REACT_APP_NODE_ENV === 'production'
+                            ? 'marketplace-product'
+                            : 'desktop-menu',
+                        )
+                      }
+                      title={item.name}
+                    />
+                  ) : (
+                    <img
+                      className={classes.img}
+                      src={require('../../../assets/imgs/default_img.png')}
+                      title={item.name}
+                    />
+                  )}
+                  <CardContent
+                    style={{ paddingBottom: 0 }}
+                    sx={{ padding: '0' }}
+                  >
+                    <Typography
+                      variant="h2"
+                      title={item.name}
+                      className={classes.title}
+                    >
+                      {item.name}
+                    </Typography>
+                    <Button
+                      className="custom-btn cta2-btn"
+                      variant="contained"
+                      title="ORDER NOW"
+                      style={{ width: '80%', margin: '5px' }}
+                      onClick={() => {
+                        window.parent.location.href = `${process.env.REACT_APP_ORDERING_URL}/location`;
+                      }}
+                    >
+                      ORDER NOW
+                    </Button>
+                  </CardContent>
+                </Card>
+              </div>
+            ),
+        )}
       </Carousel>
     </Fragment>
   );

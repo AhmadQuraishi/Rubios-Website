@@ -112,8 +112,8 @@
 // export default Login;
 
 import React, { useState } from 'react';
+import Page from '../../components/page-title';
 // import FacebookLogin from 'react-facebook-login';
-// import './App.css';
 
 const Login = () => {
   const [login, setLogin] = useState(false);
@@ -131,31 +131,32 @@ const Login = () => {
     }
   };
 
-  
-return (
-    <div className="container">
-      {/*{!login && (*/}
-      {/*  <FacebookLogin*/}
-      {/*    // appId="3126327474351480"*/}
-      {/*    appId="380212609388497"*/}
-      {/*    // autoLoad={true}*/}
-      {/*    fields="name,email,picture"*/}
-      {/*    scope="public_profile"*/}
-      {/*    callback={responseFacebook}*/}
-      {/*    icon="fa-facebook"*/}
-      {/*  />*/}
-      {/*)}*/}
-      {/*{ login &&*/}
-      {/*  <Image src={picture} roundedCircle />*/}
-      {/*}*/}
-      {login && (
-        <div>
-          <div>{data.name}</div>
-          <div>{data.email}</div>
-        </div>
-      )}
-    </div>
+  return (
+    <Page title={'Login'} className="">
+      <div className="container">
+        {/*{!login && (*/}
+        {/*  <FacebookLogin*/}
+        {/*    // appId="3126327474351480"*/}
+        {/*    appId="380212609388497"*/}
+        {/*    // autoLoad={true}*/}
+        {/*    fields="name,email,picture"*/}
+        {/*    scope="public_profile"*/}
+        {/*    callback={responseFacebook}*/}
+        {/*    icon="fa-facebook"*/}
+        {/*  />*/}
+        {/*)}*/}
+        {/*{ login &&*/}
+        {/*  <Image src={picture} roundedCircle />*/}
+        {/*}*/}
+        {login && (
+          <div>
+            <div>{data.name}</div>
+            <div>{data.email}</div>
+          </div>
+        )}
+      </div>
+    </Page>
   );
-}
+};
 
 export default Login;

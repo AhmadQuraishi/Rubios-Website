@@ -2,7 +2,7 @@ import { categoryActionsTypes } from '../../types/category';
 import { ResponseMenu } from '../../../types/olo-api';
 import { displayToast } from '../../../helpers/toast';
 
-export function getCategoriesRequest(id: number) {
+export function getCategoriesRequest(id: string) {
   return {
     type: categoryActionsTypes.GET_CATEGORY_ITMES_REQUEST,
     restaurantID: id,

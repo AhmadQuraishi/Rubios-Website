@@ -140,8 +140,8 @@ function* asyncSetBasketDeliveryAddressRequest(action: any): any {
   try {
     const response = yield call(
       setBasketDeliveryAddress,
-      action.action.payload.basketId,
-      action.action.payload.deliveryAddress,
+      action.basketid,
+      action.payload,
     );
     yield put(setBasketDeliveryAddressSuccess(response));
   } catch (error) {
@@ -156,11 +156,11 @@ function* asyncValidateBasket(action: any): any {
         type: basketActionsTypes.ADD_BASKET_ORDER_SUBMIT,
       });
     }
-    if (action.userData) {
-      const userResponse = yield call(requestUpdateUser, action.userData);
-      yield put(updateUserSuccess(userResponse));
-      yield put(getProviderRequestSuccess(userResponse));
-    }
+    // if (action.userData) {
+    //   const userResponse = yield call(requestUpdateUser, action.userData);
+    //   yield put(updateUserSuccess(userResponse));
+    //   yield put(getProviderRequestSuccess(userResponse));
+    // }
     if (action.customFields.length) {
       const customFieldsResponse = yield call(
         setBasketCustomFields,
@@ -209,25 +209,32 @@ function* asyncValidateBasket(action: any): any {
 
 function* asyncSubmitBasketSinglePayment(action: any): any {
   try {
-    const response = yield call(
-      submitSinglePaymentBasket,
-      action.action.basketId,
-      action.action.basketPayload,
-    );
-    let userInfo = {};
-    if (action.action.basketPayload.receivinguser) {
-      userInfo = {
-        ...action.action.basketPayload.receivinguser,
-        id: response.id,
-      };
-    }
-    yield put(
-      submitBasketSinglePaymentSuccess(response, action.action.basketId),
-    );
-    yield put(updateGuestUserInfo(userInfo));
-    yield put(navigateAppAction(`/order-confirmation/${response.id}`));
+    // let response = null;
+    // const response = yield call(
+    //   submitSinglePaymentBasket,
+    //   action.action.basketId,
+    //   action.action.basketPayload,
+    // );
+    console.log('action.action.basketPayload', action.action.basketPayload)
+    action.action.ccsfObj.submit(action.action.basketPayload);
+
+    // action.action.ccsfObj.registerSuccess();
+
+    // let userInfo = {};
+    // console.log('orderddddddddddd', response);
+    // if (action.action.basketPayload.receivinguser) {
+    //   userInfo = {
+    //     ...action.action.basketPayload.receivinguser,
+    //     id: response.id,
+    //   };
+    // }
+    // yield put(
+    //   submitBasketSinglePaymentSuccess(response, action.action.basketId),
+    // );
+    // yield put(updateGuestUserInfo(userInfo));
+    // yield put(navigateAppAction(`/order-confirmation/${response.id}`));
   } catch (error) {
-    yield put(submitBasketSinglePaymentFailure(error));
+    // yield put(submitBasketSinglePaymentFailure(error));
   }
 }
 

@@ -7,6 +7,8 @@ import {
   DialogContent,
   Dialog,
   DialogActions,
+  useTheme, 
+  useMediaQuery
 } from '@mui/material';
 import { CreditCardElements, PaymentMethodResult } from '@olo/pay';
 import { ResponseBasket } from '../../../types/olo-api';
@@ -33,6 +35,7 @@ const styleObject = {
 
 const AddCreditCard = () => {
   const dispatch = useDispatch();
+  const theme = useTheme();
   const [creditCardElements, setCreditCardElements] =
     React.useState<CreditCardElements | null>(null);
   const creditCardInfo = React.useRef<any>();
@@ -85,7 +88,16 @@ const AddCreditCard = () => {
       const initializeCreditCardElements = async () => {
         let elements;
         if (process.env.REACT_APP_NODE_ENV === 'production') {
-          elements = new CreditCardElements('production');
+          let env = 'production';
+          if (
+            basket &&
+            basket.vendorid.toString() ===
+              process.env.REACT_APP_CONF_ROOM_PILOT_ID
+          ) {
+            env = 'development';
+          }
+          // @ts-ignore
+          elements = new CreditCardElements(env);
         } else {
           elements = new CreditCardElements('development');
         }
@@ -184,7 +196,7 @@ const AddCreditCard = () => {
     );
 
     dispatch(updateBasketBillingSchemes(billingSchemesNewArray));
-    displayToast('SUCCESS', 'Credit Card Added');
+      displayToast('SUCCESS', 'Credit Card Added');
     setButtonDisabled(false);
     handleCloseAddCreditCard();
   };
@@ -286,13 +298,12 @@ const AddCreditCard = () => {
                 Cancel{' '}
               </Button>
               <Button
-                aria-label="Add Gift Card"
-                title="Add Gift Card"
+                aria-label="Add Credit Card"
+                title="Add Credit Card"
                 type="submit"
                 className="link default"
                 onClick={handleCreditCardSubmit}
                 disabled={buttonDisabled}
-                autoFocus
               >
                 Add Credit Card
               </Button>

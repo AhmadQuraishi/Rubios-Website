@@ -1,4 +1,4 @@
-import { Button, Grid, Theme, Typography } from '@mui/material';
+import { Button, Grid, Theme, Typography, useTheme, useMediaQuery } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useEffect, useState } from 'react';
 import './invite.css';
@@ -21,9 +21,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const Invite = () => {
   const classes = useStyles();
+  const theme = useTheme();
   const [inviteCode, setInviteCode] = useState('');
   const { providerToken } = useSelector((state: any) => state.providerReducer);
-
   useEffect(() => {
     if (providerToken && providerToken.referral_code) {
       setInviteCode(providerToken.referral_code);
@@ -31,22 +31,28 @@ const Invite = () => {
   }, [providerToken]);
   const copy = async () => {
     await navigator.clipboard.writeText(inviteCode);
-    displayToast('SUCCESS', 'Invite Code copied to clipboard.');
+      displayToast('SUCCESS', 'Invite Code copied to clipboard.');
+
   };
+  // const linkElement = process.env.REACT_APP_RUBIOS_REWARD_ADDRESS
   const handleClick = () => {
-    if (navigator.share) {
+    const linkElement = process.env.REACT_APP_RUBIOS_REWARD_ADDRESS
+       let shareData = {
+        title: 'Use My Rubio’s Rewards Invite Code and Save $5!',
+        text: `Join Rubio's Rewards at ${linkElement} and use my code ${inviteCode} to get $5 off your next order!`,
+        // url:  linkElement,
+       }
+    if (navigator.canShare && navigator.canShare(shareData)) {
       navigator
-        .share({
-          title: 'Sign up Rubios and GET $5 OFF YOUR NEXT ORDER',
-          text: "Here's the link to Join Us!",
-          url: `/register?invite_code=${inviteCode}`,
-        })
+        .share(shareData)
         .then(() => {
           console.log('Successfully shared');
         })
         .catch((error) => {
           console.error('Something went wrong', error);
         });
+    }else{
+          displayToast("ERROR", 'This feature not supported for this browser')
     }
   };
   return (
@@ -74,24 +80,26 @@ const Invite = () => {
             <Grid item xs={12}>
               <Button
                 onClick={copy}
-                aria-label={`Tab to copy: ${inviteCode}`}
-                title={`Tab to copy: ${inviteCode}`}
+                aria-label={`Tap to copy: ${inviteCode}`}
+                title={`Tap to copy: ${inviteCode}`}
                 sx={{ width: { xs: '100%' } }}
                 className="tab-to-copy"
               >
-                <span className="copy-text">Tab to copy.</span> {inviteCode}
+                <span className="copy-text">Tap to copy:</span> {inviteCode}
               </Button>
             </Grid>
-            <Grid sx={{ display: { lg: 'none', md: 'flex' } }} item xs={12}>
+            <Grid sx={{ display: { md: 'flex' } }} item xs={12}>
+            {/* <a style={{textDecoration: 'none'}} href = {`mailto: ?Subject= Use My Rubio’s Rewards Invite Code and Save $5!&body=Join Rubio's Rewards at ${linkElement} and use my code ${inviteCode} to get $5 off your next order!`}> */}
               <Button
                 aria-label="invite"
                 title="invite"
                 variant="contained"
                 onClick={handleClick}
-                sx={{ width: { xs: '100%', sm: '400px' } }}
+                sx={{ width: { xs: '100%', sm: '400px' }}}
               >
                 INVITE
               </Button>
+              {/* </a> */}
             </Grid>
           </Grid>
         </Grid>

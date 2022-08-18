@@ -3,6 +3,7 @@ import axiosInstance from '../axiosInceptor';
 import { ResponseContactOptions } from '../../types/olo-api';
 import axios from 'axios';
 import { TableBody } from '@mui/material';
+import { generateDeviceId } from '../../helpers/common';
 
 //profile
 export const RequestUserProfile = () => {
@@ -436,6 +437,22 @@ export const requestFacebookUserLogin = (body: object) => {
 
     return axiosInstance
       .post(url, data)
+      .then((response) => response.data)
+      .catch((error) => {
+        throw error.response;
+      });
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const requestEclubSignup = (body: object) => {
+  try {
+    const url =
+      process.env.REACT_APP_PUNCHH_API + '/api2/dashboard/eclub_guests';
+
+    return axios
+      .post(url, body)
       .then((response) => response.data)
       .catch((error) => {
         throw error.response;

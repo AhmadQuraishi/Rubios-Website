@@ -7,9 +7,21 @@
   -webkit-box-orient: vertical;
 }
 .react-multi-carousel-list {
-  /*display: block !important;*/
+  /* overflow: scroll !important; */
 }
-
+.react-multi-carousel-list.carousel-container  button.react-multiple-carousel__arrow--left,
+.react-multi-carousel-list.carousel-container  button.react-multiple-carousel__arrow--right {
+  background: #2b4b62 !important;
+  border-radius: 30px !important;
+  width: 50px;
+  height: 50px;
+}
+.react-multi-carousel-list.carousel-container  button.react-multiple-carousel__arrow--left:before,
+.react-multi-carousel-list.carousel-container  button.react-multiple-carousel__arrow--right:before {
+  color: white !important;
+  font-size: 38px;
+  font-weight: bold;
+}
 .carousel-container .title {
   min-height: 45px;
 }
@@ -21,4 +33,10 @@
 
 .MuiTabs-root .Mui-disabled {
   display: none;
+}
+
+@media (max-width: 464px) {
+  .react-multi-carousel-track > li:only-child {
+    transform: translate3d(-50px, 0px, 0px) !important;
+  }
 }

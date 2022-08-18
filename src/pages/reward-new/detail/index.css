@@ -1,0 +1,29 @@
+.reward-point-qr {
+  border-radius: 0px;
+  border: 1px solid #c6c6c6;
+  box-shadow: 0px 4px 5px 0px rgb(0 0 0 / 20%);
+  height: 200px;
+  width: 200px;
+  padding: 12px 0px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  align-items: center;
+}
+.p-detail {
+  font-family: 'Poppins-Regular', sans-serif !important;
+  font-size: 17px;
+  color: #2b4b62;
+  width: 100%;
+  max-width: 370px;
+  line-height: 19px;
+  margin-bottom: 30px;
+  margin-top: 5px;
+}
+.p-number{
+  text-align: center;
+  margin-bottom: auto;
+  margin-top: 10px;
+  font-family: 'Poppins-Medium', sans-serif !important;
+  font-size: 13px;
+}

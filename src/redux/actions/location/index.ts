@@ -8,9 +8,16 @@ export function getlocations() {
 }
 
 export function getLocationsSuccess(data: any) {
+  const filterApprovedLocations = data.filter(
+    (loc: any) => loc.status === 'approved',
+  );
+  filterApprovedLocations.sort((a: any, b: any) =>
+    a.name.localeCompare(b.name),
+  );
+
   return {
     type: Type.GET_LOCATIONS_SUCCESS,
-    payload: data,
+    payload: filterApprovedLocations,
   };
 }
 

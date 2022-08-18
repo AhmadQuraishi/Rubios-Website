@@ -74,7 +74,9 @@ const PersonalInfo = () => {
   );
   const [favlocation, setFavLoc] = useState('');
   const [isupdate, setIsUpdate] = useState(false);
-  const { locations } = useSelector((state: any) => state.locationReducer);
+  const { locations, loading: loadingLocations } = useSelector(
+    (state: any) => state.locationReducer,
+  );
   const [state, setState] = useState({
     emailnotification: true,
     pushnotification: true,
@@ -119,8 +121,8 @@ const PersonalInfo = () => {
 
   return (
     <div className={classes.root}>
-      {loading && !userProfile && <LoadingBar />}
-      {userProfile && (
+      {(loading || !userProfile || loadingLocations) && <LoadingBar />}
+      {userProfile && locations && locations.length > 0 && (
         <Grid container>
           <Formik
             initialValues={{
@@ -337,15 +339,15 @@ const PersonalInfo = () => {
                       />
                     </Grid>
                     {/*<Grid item xs={12}>*/}
-                      {/*<Typography*/}
-                        {/*variant="body2"*/}
-                        {/*className="body-text"*/}
-                        {/*title="Password must be at least 8 characters."*/}
-                        {/*sx={{ width: '100%' }}*/}
-                      {/*>*/}
-                        {/*Your current password. Required to update your personal*/}
-                        {/*details.*/}
-                      {/*</Typography>*/}
+                    {/*<Typography*/}
+                    {/*variant="body2"*/}
+                    {/*className="body-text"*/}
+                    {/*title="Password must be at least 8 characters."*/}
+                    {/*sx={{ width: '100%' }}*/}
+                    {/*>*/}
+                    {/*Your current password. Required to update your personal*/}
+                    {/*details.*/}
+                    {/*</Typography>*/}
                     {/*</Grid>*/}
                     <Grid item xs={12}>
                       <TextField
@@ -370,7 +372,11 @@ const PersonalInfo = () => {
                         variant="body2"
                         className="body-text"
                         title="Password must be at least 8 characters."
-                        sx={{ width: '100%', paddingTop: '0px !important', marginTop: '-8px' }}
+                        sx={{
+                          width: '100%',
+                          paddingTop: '0px !important',
+                          marginTop: '-10px',
+                        }}
                       >
                         Password must be at least 8 characters.
                       </Typography>

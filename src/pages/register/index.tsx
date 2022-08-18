@@ -6,12 +6,14 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import bgImage from '../../assets/imgs/login-bg.png';
 import './register.css';
+import Page from '../../components/page-title';
 
 const useStyle = makeStyles(() => ({
   root: {
     background: `url(${bgImage}) fixed`,
     backgroundRepeat: 'no-repeat',
     justifyContent: 'center',
+    backgroundSize: 'cover',
   },
   signinBtn: {
     width: '200px',
@@ -38,7 +40,7 @@ const Register = () => {
   }, [providerToken]);
 
   return (
-    <>
+    <Page title={'Register'} className=''>
       <Grid container component="main" className={classes.root}>
         <Grid item xs={10} sm={8} md={7} lg={5}>
           <Card className="register-card" elevation={6}>
@@ -58,7 +60,7 @@ const Register = () => {
           </Card>
         </Grid>
       </Grid>
-    </>
+    </Page>
   );
 };
 

@@ -3,6 +3,11 @@ import { ResponseBasket } from '../../../../types/olo-api';
 import { displayToast } from '../../../../helpers/toast';
 import {getUtensilsProductId} from "../../../../helpers/utensils";
 
+
+const breakpoints = {
+  XS: 540
+};
+
 export function addUtensilsRequest(basketid: string, request: any) {
   return {
     type: basketActionsTypes.ADD_UTENSILS_REQUEST,
@@ -12,7 +17,7 @@ export function addUtensilsRequest(basketid: string, request: any) {
 }
 
 export function addUtensilsRequestSuccess(data: ResponseBasket) {
-  displayToast('SUCCESS', 'Utensils added.');
+  // displayToast('SUCCESS', 'Utensils added.');
   return {
     type: basketActionsTypes.ADD_UTENSILS_SUCCESS,
     payload: data,

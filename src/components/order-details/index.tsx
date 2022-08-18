@@ -118,11 +118,19 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                       <li>
                         <Grid container>
                           <Grid item xs={9} sm={9} md={9} lg={9}>
-                            <Typography variant="h6">
+                          <Typography variant="h6">
                               {discount.type === 'Coupon'
                                 ? 'Coupon Code: '
-                                : 'DISCOUNT: '}
-                              {discount.description}
+                                : 'REWARD '}
+                              <i
+                                style={{
+                                  fontWeight: 'normal',
+                                  fontFamily: 'Poppins-Regular',
+                                  fontSize: '15px'
+                                }}
+                              >
+                                {discount.description}
+                              </i>
                             </Typography>
                           </Grid>
                           <Grid item xs={3} sm={3} md={3} lg={3}>
@@ -133,7 +141,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                               {/*  : parseFloat(*/}
                               {/*      basket.discounts[0].amount.toString(),*/}
                               {/*    ).toFixed(2)}*/}
-                              -${discount.amount}
+                              -${discount.amount && discount.amount.toFixed(2)}
                             </Typography>
                           </Grid>
                         </Grid>

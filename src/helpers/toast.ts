@@ -1,5 +1,8 @@
 import { toast } from 'react-toastify';
 
+
+
+
 interface settingsConfig {
   position?: string;
   autoClose?: number;
@@ -22,7 +25,7 @@ type toast = keyof typeof toastType;
 const defaultSettings: any = {
   position: 'bottom-left',
   autoClose: 5000,
-  hideProgressBar: false,
+  hideProgressBar: true,
   closeOnClick: true,
   pauseOnHover: true,
   draggable: true,

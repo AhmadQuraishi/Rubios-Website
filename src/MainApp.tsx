@@ -1,4 +1,4 @@
-import './App.css';
+import './one-trust.css';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Header from './components/header';
 import Footer from './components/footer';
@@ -11,6 +11,11 @@ import 'react-toastify/dist/ReactToastify.css';
 import { setPageStateRequest } from './redux/actions/page-state';
 import { useDispatch, useSelector } from 'react-redux';
 import NavigateApp from './components/navigate-app';
+import { generateDeviceId } from './helpers/common';
+import { updateDeviceUniqueId } from './redux/actions/auth';
+import moment from 'moment';
+// import {testingRedemption, testingRewards} from "./services/reward";
+// import {generateCCSFToken} from "./services/basket";
 // import TagManager from 'react-gtm-module';
 //
 // const tagManagerArgs = {
@@ -30,9 +35,49 @@ function App(props: any) {
   const [hideLoginedPanel, setHideLoginedPanel] = useState(false);
   const dispatch = useDispatch();
   const { providerToken } = useSelector((state: any) => state.providerReducer);
+  const { authToken } = useSelector((state: any) => state.authReducer);
+  const { deviceId } = useSelector((state: any) => state.authReducer);
+  const { basket } = useSelector((state: any) => state.basketReducer);
+
   const navigate = useNavigate();
 
+  const updateDeviceId = () => {
+    const newDeviceId = generateDeviceId();
+    if (newDeviceId) {
+      dispatch(updateDeviceUniqueId(newDeviceId));
+    }
+  };
 
+  useEffect(() => {
+    if (!deviceId) {
+      updateDeviceId();
+    } else {
+      const splitArray = deviceId.split('_');
+      if (splitArray.length === 2) {
+        const deviceIdTime: any = moment.unix(splitArray[1]);
+        const currentTime = moment();
+        if (deviceIdTime.isValid()) {
+          const days = currentTime.diff(deviceIdTime, 'days');
+          if (days > 7) {
+            updateDeviceId();
+          }
+        } else {
+          updateDeviceId();
+        }
+      } else {
+        updateDeviceId();
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    // const body = {
+    //   authtoken: 'ynUJ4SAOgaB6SxFMKHuqbCvlOdhQ3HLK'
+    // }
+    // generateCCSFToken('b3a3c5aa-85a8-464c-b787-96fc42a7c4bf', body)
+    // testingRewards()
+    // testingRedemption('777097', 400);
+  }, []);
 
   useEffect(() => {
     if (window.location.href.toLocaleLowerCase().indexOf('/account') != -1) {
@@ -41,16 +86,16 @@ function App(props: any) {
       }
     }
     if (
-      window.location.href.toLocaleLowerCase().indexOf('/menu') != -1 ||
-      window.location.href.toLocaleLowerCase().indexOf('/checkout') != -1
+      window.location.href.toLocaleLowerCase().indexOf('/menu') !== -1 ||
+      window.location.href.toLocaleLowerCase().indexOf('/checkout') !== -1
     ) {
       setHideLoginPanel(false);
     } else {
       setHideLoginPanel(true);
     }
     if (
-      window.location.href.toLocaleLowerCase().indexOf('/welcome') != -1 ||
-      window.location.href.toLocaleLowerCase().indexOf('/account') != -1
+      // window.location.href.toLocaleLowerCase().indexOf('/welcome') != -1 ||
+      window.location.href.toLocaleLowerCase().indexOf('/account') !== -1
     ) {
       setHideLoginedPanel(true);
     } else {
@@ -76,7 +121,7 @@ function App(props: any) {
       setHideLoginPanel(true);
     }
     if (
-      window.location.href.toLocaleLowerCase().indexOf('/welcome') != -1 ||
+      // window.location.href.toLocaleLowerCase().indexOf('/welcome') != -1 ||
       window.location.href.toLocaleLowerCase().indexOf('/account') != -1
     ) {
       setHideLoginedPanel(true);
@@ -95,10 +140,45 @@ function App(props: any) {
     }
   }, [location.pathname]);
 
+  useEffect(() => {
+    if (window.location.pathname === '/') {
+      if (basket) {
+      } else if (
+        providerToken &&
+        authToken &&
+        authToken.authtoken &&
+        authToken.authtoken !== ''
+      ) {
+        navigate('/welcome');
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    const LoadExternalScript = () => {
+      const externalScript = document.createElement('script');
+      externalScript.type = 'text/javascript';
+      document.head.appendChild(externalScript);
+      externalScript.src =
+        'https://cdn.cookielaw.org/scripttemplates/otSDKStub.js';
+      externalScript.setAttribute(
+        'data-domain-script',
+        '97489c06-197d-4529-90c6-812b5a73ca53-test',
+      );
+      externalScript.setAttribute('charset', 'UTF-8');
+    };
+    LoadExternalScript();
+  }, []);
+
   return (
     <div id="wapper">
+      <div
+        id="onetrust-consent-sdk"
+        style={{ fontFamily: 'Poppins-Regular' }}
+      ></div>
       <NavigateApp />
       <Header
+        style={{ margin: '0 !important', padding: '0 !important' }}
         removeCartForLocation={
           window.location.href.toLocaleLowerCase().indexOf('/location') != -1
         }
@@ -116,7 +196,7 @@ function App(props: any) {
         }
       />
       <main>
-        <ToastContainer />
+        <ToastContainer hideProgressBar />
         {isAccountSection ? (
           <Fragment>
             <Grid container spacing={0}>

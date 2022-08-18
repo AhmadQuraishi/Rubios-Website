@@ -13,6 +13,7 @@ import {
 } from '../types/olo-api/olo-api.enums';
 import { CalendarTypeEnum, HoursListing } from './hoursListing';
 import moment from 'moment';
+import {generateCCSFToken} from "../services/basket";
 
 const cardTypes: any = {
   amex: 'Amex',
@@ -27,34 +28,37 @@ export function generateSubmitBasketPayload(
   deliverymode: string,
   authtoken: string,
   basket: any,
+  basketAccessToken: any
 ): RequestBasketSubmit {
   const billingSchemeStats = getBillingSchemesStats(billingSchemes);
+
   console.log('billingSchemeStats', billingSchemeStats);
   let paymentPayload: any = {};
+  // if (
+  //   billingSchemeStats.selectedCreditCard === 1 &&
+  //   billingSchemeStats.selectedGiftCard === 0
+  // ) {
+  //   const cardIndex = billingSchemes.findIndex(
+  //     (account: any) =>
+  //       account.billingmethod === 'creditcardtoken' && account.selected,
+  //   );
+  //   const cardDetails = billingSchemes[cardIndex];
+  //   paymentPayload = {
+  //     token: cardDetails.token,
+  //     billingmethod: BillingMethodEnum.creditcardtoken,
+  //     cardtype: cardDetails.cardtype,
+  //     expiryyear: cardDetails.expiryyear,
+  //     expirymonth: cardDetails.expirymonth,
+  //     cardlastfour: cardDetails.cardlastfour,
+  //     zip: cardDetails.zip,
+  //     saveonfile: SaveOnFileEnum.true,
+  //   };
+  //   if (cardDetails.billingaccountid) {
+  //     paymentPayload.billingmethod = 'billingaccount';
+  //     paymentPayload.billingaccountid = cardDetails.billingaccountid;
+  //   }
+  // } else
   if (
-    billingSchemeStats.selectedCreditCard === 1 &&
-    billingSchemeStats.selectedGiftCard === 0
-  ) {
-    const cardIndex = billingSchemes.findIndex(
-      (account: any) =>
-        account.billingmethod === 'creditcardtoken' && account.selected,
-    );
-    const cardDetails = billingSchemes[cardIndex];
-    paymentPayload = {
-      token: cardDetails.token,
-      billingmethod: BillingMethodEnum.creditcardtoken,
-      cardtype: cardDetails.cardtype,
-      expiryyear: cardDetails.expiryyear,
-      expirymonth: cardDetails.expirymonth,
-      cardlastfour: cardDetails.cardlastfour,
-      zip: cardDetails.zip,
-      saveonfile: SaveOnFileEnum.true,
-    };
-    if (cardDetails.billingaccountid) {
-      paymentPayload.billingmethod = 'billingaccount';
-      paymentPayload.billingaccountid = cardDetails.billingaccountid;
-    }
-  } else if (
     billingSchemeStats.selectedCreditCard === 1 ||
     billingSchemeStats.selectedGiftCard > 0
   ) {
@@ -92,6 +96,8 @@ export function generateSubmitBasketPayload(
   }
 
   let payload: RequestBasketSubmit = {
+    id: basket.id,
+    accessToken: basketAccessToken,
     usertype: UserTypeEnum.guest,
     guestoptin: formData.emailNotification,
     ...paymentPayload,
@@ -101,7 +107,7 @@ export function generateSubmitBasketPayload(
     deliverymode === DeliveryModeEnum.curbside ||
     deliverymode === DeliveryModeEnum.pickup ||
     deliverymode === DeliveryModeEnum.dinein ||
-    deliverymode === DeliveryModeEnum.delivery
+    deliverymode === DeliveryModeEnum.dispatch
   ) {
     payload = {
       ...payload,
@@ -119,12 +125,12 @@ export function generateSubmitBasketPayload(
   }
 
   if (authtoken && authtoken !== '') {
-    payload.authtoken = authtoken;
+    // payload.authtoken = authtoken;
     payload.usertype = UserTypeEnum.user;
-    delete payload.firstname;
-    delete payload.lastname;
-    delete payload.emailaddress;
-    delete payload.contactnumber;
+    // delete payload.firstname;
+    // delete payload.lastname;
+    // delete payload.emailaddress;
+    // delete payload.contactnumber;
     delete payload.guestoptin;
   }
 
@@ -313,7 +319,7 @@ export function getBillingSchemesStats(billingSchemes: any) {
   billingSchemes.forEach((account: any) => {
     billingSchemeStats = {
       creditCard:
-        account.billingmethod === 'creditcardtoken'
+        account.billingmethod === 'creditcard'
           ? billingSchemeStats.creditCard + 1
           : billingSchemeStats.creditCard,
       giftCard:
@@ -321,7 +327,7 @@ export function getBillingSchemesStats(billingSchemes: any) {
           ? billingSchemeStats.giftCard + 1
           : billingSchemeStats.giftCard,
       selectedCreditCard:
-        account.billingmethod === 'creditcardtoken' && account.selected
+        account.billingmethod === 'creditcard' && account.selected
           ? billingSchemeStats.selectedCreditCard + 1
           : billingSchemeStats.selectedCreditCard,
       selectedGiftCard:
@@ -345,16 +351,16 @@ export function getCreditCardObj(cardDetails: any, billingSchemes: any) {
   let cardObj: any = [
     {
       localId: getUniqueId(),
-      selected: selected,
-      billingmethod: 'creditcardtoken',
+      selected: true,
+      billingmethod: 'creditcard',
       amount: 0,
       tipportion: 0.0,
-      token: cardDetails.id,
-      cardtype: cardTypes[cardDetails.card.brand],
-      expiryyear: cardDetails.card.exp_year,
-      expirymonth: cardDetails.card.exp_month,
-      cardlastfour: cardDetails.card.last4,
-      zip: cardDetails.billing_details.address.postal_code,
+      // token: cardDetails.id,
+      // cardtype: cardTypes[cardDetails.card.brand],
+      expiryyear: cardDetails.exp_year,
+      expirymonth: cardDetails.exp_month,
+      // cardlastfour: cardDetails.card.last4,
+      zip: cardDetails.postal_code,
       saveonfile: true,
     },
   ];
@@ -468,7 +474,7 @@ export function updatePaymentCardsAmount(billingSchemes: any, basket: any) {
           account.balance >= total ? total : account.balance;
         total = (total - giftCardAmount).toFixed(2);
         account.amount = parseFloat(giftCardAmount);
-      } else if (account.billingmethod === 'creditcardtoken') {
+      } else if (account.billingmethod === 'creditcard') {
         account.amount = parseFloat(total);
       }
     } else {

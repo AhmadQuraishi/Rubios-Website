@@ -67,7 +67,7 @@ export const setBasketDeliveryAddress = async (
   try {
     const url = process.env.REACT_APP_OLO_API || '';
     return await axios
-      .put(url + `/baskets/${basketid}/deliveryaddress`, body)
+      .put(url + `/baskets/${basketid}/dispatchaddress`, body)
       .then((response) => response.data)
       .catch((error) => {
         console.log(error.response);
@@ -259,6 +259,21 @@ export const createGuestUser = () => {
         url + `/orders/a98726df-1cd1-ec11-a9c9-aad2a287f600/createuser`,
         payload,
       )
+      .then((response) => response.data)
+      .catch((error) => {
+        console.log(error.response);
+        throw error;
+      });
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const generateCCSFToken = (basketid: string, body: any) => {
+  try {
+    const url = process.env.REACT_APP_OLO_API || '';
+    return axios
+      .post(url + `/baskets/${basketid}/checkout`, body)
       .then((response) => response.data)
       .catch((error) => {
         console.log(error.response);

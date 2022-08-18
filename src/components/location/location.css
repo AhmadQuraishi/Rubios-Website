@@ -80,6 +80,19 @@
 .list-sx{
   flex-basis: 33%
 }
+.view-all-panel-listing-oo {
+  margin-left: 25%;
+}
+@media screen and (max-width: 2200) {
+  .view-all-panel-listing-oo {
+    margin-left: 25%;
+  }
+}
+@media screen and (max-width: 1500) {
+  .view-all-panel-listing-oo {
+    margin-left: 27%;
+  }
+}
 @media screen and (max-width: 1024px) {
   .list-wrapper .MuiPaper-root {
     width: 70%;
