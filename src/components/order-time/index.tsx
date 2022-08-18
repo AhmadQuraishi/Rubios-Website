@@ -261,17 +261,23 @@ const OrderTime = ({ orderType }: any) => {
         {orderType !== DeliveryModeEnum.dinein && (
           <>
             <Grid item xs={12}>
-              <Button
+              <button
                 aria-label="Change Order Time"
                 title="Change Order Time"
                 className="caption-grey"
-                style={{ marginTop: -10 }}
+                style={{
+                  marginTop: -10,
+                  color: '#0075BF',
+                  border: 'none',
+                  background: 'transparent',
+                  cursor: 'pointer',
+                }}
                 onClick={() => {
                   setAttributesForDate();
                 }}
               >
                 (change)
-              </Button>
+              </button>
               <LocalizationProvider dateAdapter={AdapterMoment}>
                 <MobileDatePicker
                   label="Order Date"
