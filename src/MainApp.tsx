@@ -16,17 +16,7 @@ import { updateDeviceUniqueId } from './redux/actions/auth';
 import moment from 'moment';
 // import {testingRedemption, testingRewards} from "./services/reward";
 // import {generateCCSFToken} from "./services/basket";
-// import TagManager from 'react-gtm-module';
-//
-// const tagManagerArgs = {
-//   dataLayer: {
-//     userId: '001',
-//     userProject: 'project',
-//     page: 'home',
-//   },
-//   dataLayerName: 'Category',
-// };
-// TagManager.dataLayer(tagManagerArgs);
+import TagManager from 'react-gtm-module';
 
 function App(props: any) {
   const location = useLocation();
@@ -68,6 +58,14 @@ function App(props: any) {
         updateDeviceId();
       }
     }
+  }, []);
+
+  useEffect(() => {
+    const tagManagerArgs: any = {
+      gtmId: process.env.REACT_APP_GTM_ID,
+    };
+
+    TagManager.initialize(tagManagerArgs);
   }, []);
 
   useEffect(() => {
