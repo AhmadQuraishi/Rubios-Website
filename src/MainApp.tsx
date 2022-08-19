@@ -152,21 +152,21 @@ function App(props: any) {
     }
   }, []);
 
-  useEffect(() => {
-    const LoadExternalScript = () => {
-      const externalScript = document.createElement('script');
-      externalScript.type = 'text/javascript';
-      document.head.appendChild(externalScript);
-      externalScript.src =
-        'https://cdn.cookielaw.org/scripttemplates/otSDKStub.js';
-      externalScript.setAttribute(
-        'data-domain-script',
-        '97489c06-197d-4529-90c6-812b5a73ca53-test',
-      );
-      externalScript.setAttribute('charset', 'UTF-8');
-    };
-    LoadExternalScript();
-  }, []);
+  // useEffect(() => {
+  //   const LoadExternalScript = () => {
+  //     const externalScript = document.createElement('script');
+  //     externalScript.type = 'text/javascript';
+  //     document.head.appendChild(externalScript);
+  //     externalScript.src =
+  //       'https://cdn.cookielaw.org/scripttemplates/otSDKStub.js';
+  //     externalScript.setAttribute(
+  //       'data-domain-script',
+  //       '97489c06-197d-4529-90c6-812b5a73ca53-test',
+  //     );
+  //     externalScript.setAttribute('charset', 'UTF-8');
+  //   };
+  //   LoadExternalScript();
+  // }, []);
 
   return (
     <div id="wapper">

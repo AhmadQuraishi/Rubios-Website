@@ -360,7 +360,8 @@ const Footer = () => {
                   <ul style={{ listStyle: 'none', display: 'flex' }}>
                     <li>
                       <a
-                        href="javascript:Optanon.ToggleInfoDisplay()"
+                        // href="javascript:Optanon.ToggleInfoDisplay()"
+                        href="#"
                         className={classes.smallLinks}
                         title="Do Not Sell My Personal Infomation"
                         aria-label="Do Not Sell My Personal Infomation"
@@ -400,7 +401,8 @@ const Footer = () => {
                     </li>
                     <li>
                       <a
-                        href="javascript:Optanon.ToggleInfoDisplay()"
+                        // href="javascript:Optanon.ToggleInfoDisplay()"
+                        href="#"
                         className={classes.smallLinks}
                         title="Cookies"
                         aria-label="Cookies"
