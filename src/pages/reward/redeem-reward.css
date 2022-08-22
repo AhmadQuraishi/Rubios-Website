@@ -6,6 +6,13 @@
   padding-bottom: 25px;
   line-height: 32px;
 }
+.redeem-sec .body-text-bold {
+  font-size: 16px !important;
+  font-family: 'Poppins-Bold', sans-serif !important;
+  color: #414141;
+  padding-top: 8px;
+  line-height: 32px;
+}
 .redeem-sec .reward-item {
   padding: 10px;
   border-radius: 0px;
