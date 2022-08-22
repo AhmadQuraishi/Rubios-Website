@@ -36,6 +36,7 @@ import navigateAppReducer from './navigate-app';
 import deliveryAddressReducer from './location/delivery-address';
 import verifyDeliveryAddressReducer from './location/verify-delivery-address';
 import utensilsReducer from './basket/utensils';
+import rewardLockedReducer from "./reward-locked-new";
 
 const persistConfig = {
   key: 'root',
@@ -65,6 +66,7 @@ const rootReducers = combineReducers({
   userReducer,
   rewardReducer,
   rewardReducerNew,
+  rewardLockedReducer,
   utensilsReducer,
   restaurantInfoReducer,
   locationReducer,
