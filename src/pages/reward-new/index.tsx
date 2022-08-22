@@ -5,7 +5,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import Page from '../../components/page-title';
 import './index.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { getRewards, getRewardsNew } from '../../redux/actions/reward';
+import {
+  getRewards,
+  getRewardsLocked,
+  getRewardsNew,
+} from '../../redux/actions/reward';
 import moment from 'moment';
 import RewardSkeletonUI from '../../components/rewards-list-skeleton/reward';
 
@@ -33,6 +37,8 @@ const RewardNew = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const [allRedeemables, setAllRedeemables] = useState(null);
+
   const [redeemables, setRedeemables] = useState<any>({
     400: [],
     700: [],
@@ -47,23 +53,51 @@ const RewardNew = () => {
     (state: any) => state.rewardReducerNew,
   );
 
+  const { data: lockedRewards, loading: loadingLockedRewards } = useSelector(
+    (state: any) => state.rewardLockedReducer,
+  );
+
   useEffect(() => {
     dispatch(getRewardsNew());
+    dispatch(getRewardsLocked());
     dispatch(getRewards());
   }, []);
 
   useEffect(() => {
-    if (data && !loadingRedemptions) {
+    if (data && lockedRewards && !loadingRedemptions) {
       if (data && data.net_balance) {
         setPoints(data.net_balance);
       }
-      if (data.redeemables && data.redeemables.length) {
+      if (data.redeemables && lockedRewards.redeemables) {
+        const redeemablesAll = data.redeemables;
+        console.log('working 999');
+        if (lockedRewards.redeemables && lockedRewards.redeemables.length) {
+          const lockedRedeemables: any = lockedRewards.redeemables.map(
+            (redeem: any) => {
+              const Index = redeemablesAll.findIndex(
+                (allRedeem: any) => allRedeem.id === redeem.redeemable_id,
+              );
+              if (Index === -1) {
+                return {
+                  id: redeem.redeemable_id,
+                  name: redeem.name,
+                  points: redeem.points_required_to_redeem,
+                  image: redeem.redeemable_image_url,
+                };
+              } else {
+                return {};
+              }
+            },
+          );
+          Array.prototype.push.apply(redeemablesAll, lockedRedeemables);
+        }
+
         let redeemObject: any = {
           400: [],
           700: [],
           1300: [],
         };
-        data.redeemables.forEach((redeem: any) => {
+        redeemablesAll.forEach((redeem: any) => {
           switch (redeem.points) {
             case 400:
               redeemObject['400'].push(redeem);
@@ -77,11 +111,13 @@ const RewardNew = () => {
             default:
               break;
           }
+          console.log('redeemObject', redeemObject);
+          setAllRedeemables(redeemablesAll);
           setRedeemables(redeemObject);
         });
       }
     }
-  }, [data, loadingRedemptions]);
+  }, [data, lockedRewards, loadingRedemptions]);
 
   const onRedeemableClicked = (id: any, name: any, disable: any, type: any) => {
     if (!disable) {
@@ -143,6 +179,7 @@ const RewardNew = () => {
                     {rewards.map((reward: any) => {
                       return (
                         <Grid
+                          key={`${reward.reward_id}`}
                           item
                           xs={6}
                           md={4}
@@ -238,54 +275,54 @@ const RewardNew = () => {
               <hr />
             </Grid>
 
-            {data.redeemables && data.redeemables.length > 0 && (
-              <>
-                <Grid
-                  item
-                  xs={12}
-                  sx={{ marginTop: { xs: '30px', sm: '0px' } }}
+            {/*{data.redeemables && data.redeemables.length > 0 && (*/}
+            <>
+              <Grid item xs={12} sx={{ marginTop: { xs: '30px', sm: '0px' } }}>
+                <Typography
+                  variant="h2"
+                  className="small-heading"
+                  title="ARedeem Points"
                 >
-                  <Typography
-                    variant="h2"
-                    className="small-heading"
-                    title="ARedeem Points"
-                  >
-                    Redeem Points{' '}
-                    <a href="#instructions">
-                      <span aira-label="help Icon" className="help-icon">
-                        ?
-                      </span>
-                    </a>
-                  </Typography>
-                </Grid>
-                {redeemables &&
-                  Object.keys(redeemables).length > 0 &&
-                  Object.keys(redeemables).map((key: any, index: any) => {
-                    return (
-                      <>
-                        <Grid style={{ paddingBottom: 10 }} item xs={12}>
-                          <Typography
-                            variant="h3"
-                            className={`bold-title dd${
-                              points >= key ? '' : ' disable'
-                            }`}
-                            title={`${key} Points`}
+                  Redeem Points{' '}
+                  <a href="#instructions">
+                    <span aira-label="help Icon" className="help-icon">
+                      ?
+                    </span>
+                  </a>
+                </Typography>
+              </Grid>
+              {!allRedeemables && <RewardSkeletonUI />}
+              {allRedeemables &&
+                redeemables &&
+                Object.keys(redeemables).length > 0 &&
+                Object.keys(redeemables).map((key: any, index: any) => {
+                  return (
+                    <>
+                      {redeemables[key].length > 0 && (
+                        <>
+                          <Grid style={{ paddingBottom: 10 }} item xs={12}>
+                            <Typography
+                              variant="h3"
+                              className={`bold-title dd${
+                                points >= key ? '' : ' disable'
+                              }`}
+                              title={`${key} Points`}
+                            >
+                              {key} Points
+                            </Typography>
+                          </Grid>
+                          <Grid
+                            item
+                            xs={12}
+                            sx={{
+                              marginBottom: { xs: '25px', md: '20px' },
+                            }}
                           >
-                            {key} Points
-                          </Typography>
-                        </Grid>
-                        {redeemables[key].length > 0 &&
-                          redeemables[key].map((redeem: any) => {
-                            return (
-                              <>
-                                <Grid
-                                  item
-                                  xs={12}
-                                  sx={{
-                                    marginBottom: { xs: '25px', md: '20px' },
-                                  }}
-                                >
-                                  <Grid container>
+                            <Grid spacing={2} container>
+                              {redeemables[key].map((redeem: any) => {
+                                return (
+                                  <>
+                                    {/*<Grid container>*/}
                                     <Grid item xs={6} md={4}>
                                       <Card className="reward-point-merge-panel">
                                         {/*<Link to="/account/reward-new/detail">*/}
@@ -383,21 +420,25 @@ const RewardNew = () => {
                                         {/*</Link>*/}
                                       </Card>
                                     </Grid>
-                                  </Grid>
-                                </Grid>
-                              </>
-                            );
-                          })}
-                        {index !== Object.keys(redeemables).length - 1 && (
-                          <Grid item xs={12}>
-                            <hr className="low" />
+                                    {/*</Grid>*/}
+                                  </>
+                                );
+                              })}
+                            </Grid>
                           </Grid>
-                        )}
-                      </>
-                    );
-                  })}
-              </>
-            )}
+                        </>
+                      )}
+
+                      {index !== Object.keys(redeemables).length - 1 && (
+                        <Grid item xs={12}>
+                          <hr className="low" />
+                        </Grid>
+                      )}
+                    </>
+                  );
+                })}
+            </>
+            {/*)}*/}
             <Grid item xs={12}>
               {/*<hr className="low" />*/}
               <div id="instructions" style={{ paddingTop: 80 }}></div>

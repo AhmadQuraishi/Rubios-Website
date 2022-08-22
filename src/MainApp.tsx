@@ -170,10 +170,10 @@ function App(props: any) {
 
   return (
     <div id="wapper">
-      <div
-        id="onetrust-consent-sdk"
-        style={{ fontFamily: 'Poppins-Regular' }}
-      ></div>
+      {/*<div*/}
+      {/*  id="onetrust-consent-sdk"*/}
+      {/*  style={{ fontFamily: 'Poppins-Regular' }}*/}
+      {/*></div>*/}
       <NavigateApp />
       <Header
         style={{ margin: '0 !important', padding: '0 !important' }}

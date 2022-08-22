@@ -1591,6 +1591,8 @@ const Product = () => {
                   productUpdateObj.loading ||
                   !validateOptionsSelection() ? (
                     <Button
+                      id="AddProductToBasket"
+                      data-test-button="addToCart"
                       title="ADD TO BAG"
                       className="add-to-bag"
                       variant="contained"
@@ -1603,6 +1605,8 @@ const Product = () => {
                     </Button>
                   ) : (
                     <Button
+                      id="AddProductToBasket"
+                      data-test-button="addToCart"
                       title="ADD TO BAG"
                       className="add-to-bag"
                       variant="contained"

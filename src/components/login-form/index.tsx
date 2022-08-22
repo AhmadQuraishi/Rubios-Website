@@ -21,6 +21,7 @@ const LoginForm = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [buttonDisabled, setButtonDisabled] = React.useState(false);
   const { loading: loadingProvider } = useSelector(
     (state: any) => state.providerReducer,
   );
@@ -61,7 +62,7 @@ const LoginForm = () => {
             };
 
             console.log('obj', obj);
-
+            setButtonDisabled(true)
             dispatch(userLogin(obj, basket ? basket.id : ''));
           }}
         >
@@ -138,7 +139,7 @@ const LoginForm = () => {
                     >
                       <Button
                         type="submit"
-                        disabled={loadingProvider || loadingAuth}
+                        disabled={(loadingProvider || loadingAuth) && buttonDisabled}
                         aria-label="sign in"
                         name="submit"
                         title="sign in"

@@ -177,7 +177,7 @@ const SplitPayment = forwardRef((props: any, _ref) => {
       if (account.billingaccountid) {
         cardImage = `${account.cardtype}.png`;
       } else {
-        return <></>
+        cardImage = `card_placeholder.png`;
       }
     } else {
       cardImage = 'gc-card-icon.png';
@@ -291,7 +291,7 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                       <Typography variant="h6">
                         {account.cardlastfour
                           ? `x-${account.cardlastfour}`
-                          : ''}
+                          : 'Credit Card'}
                       </Typography>
                     )}
                     {account.billingmethod === 'storedvalue' && (
