@@ -1,12 +1,12 @@
 import { takeEvery, put, call } from 'redux-saga/effects';
 import { rewardTypes as Type } from '../../types/reward';
 import {
-  getRewardsFailure,
+  getRewardsFailure, getRewardsLockedFailure, getRewardsLockedSuccess,
   getRewardsNewFailure,
   getRewardsNewSuccess,
   getRewardsSuccess,
 } from '../../actions/reward';
-import { requestRewards, requestRewardsNew } from '../../../services/reward';
+import {requestRewards, requestRewardsLocked, requestRewardsNew} from '../../../services/reward';
 
 function* redeemRewardHandler(): any {
   try {
@@ -26,7 +26,17 @@ function* getRewardNewHandler(): any {
   }
 }
 
+function* getRewardLockedHandler(): any {
+  try {
+    const response = yield call(requestRewardsLocked);
+    yield put(getRewardsLockedSuccess(response));
+  } catch (error) {
+    yield put(getRewardsLockedFailure(error));
+  }
+}
+
 export function* redeemRewardSada() {
   yield takeEvery(Type.GET_REWARDS, redeemRewardHandler);
   yield takeEvery(Type.GET_REWARDS_NEW, getRewardNewHandler);
+  yield takeEvery(Type.GET_REWARDS_LOCKED, getRewardLockedHandler);
 }
