@@ -607,9 +607,9 @@ const LocationCard = (props: any) => {
             <Grid item xs={12} style={{ position: 'relative', zIndex: 1 }}>
               {resturantOrderType == 'dispatch' ? (
                 <TextField
-                  aria-label="Enter your address..."
-                  label="Enter your address..."
-                  title="Enter your address..."
+                  aria-label="Enter your delivery address"
+                  label="Enter your delivery address"
+                  title="Enter your delivery address"
                   aria-required="true"
                   autoComplete="false"
                   value={value}
