@@ -99,13 +99,13 @@ const ResetPassword = () => {
                 >
                   More Options
                 </Typography>
-                <ReactFacebookLogin
-                  appId={process.env.REACT_APP_FACEBOOK_APP_ID || ''}
-                  fields="name,email,picture"
-                  callback={handleCallBackfacebook}
-                  textButton="SIGN IN WITH FACEBOOK"
-                  cssClass="fb-button"
-                />
+                {/*<ReactFacebookLogin*/}
+                {/*  appId={process.env.REACT_APP_FACEBOOK_APP_ID || ''}*/}
+                {/*  fields="name,email,picture"*/}
+                {/*  callback={handleCallBackfacebook}*/}
+                {/*  textButton="SIGN IN WITH FACEBOOK"*/}
+                {/*  cssClass="fb-button"*/}
+                {/*/>*/}
                 {/*<Button*/}
                 {/*type="submit"*/}
                 {/*aria-label="Sign in with apple"*/}
