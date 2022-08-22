@@ -10,6 +10,7 @@ export const HOME_PAGE_CATEGORIES = [
   'DRINKS',
   'SIDES & EXTRAS',
   'DESSERTS',
+  'TACOS A LA CARTE',
 ];
 
 export const CATERING_CATEGORIES = [
