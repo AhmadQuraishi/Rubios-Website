@@ -1,6 +1,6 @@
 import axiosInstance from '../axiosInceptor';
 import { store } from '../../redux/store';
-import axios from "axios";
+import axios from 'axios';
 
 export const requestRewards = () => {
   try {
@@ -17,6 +17,15 @@ export const requestRewardsNew = () => {
       store.getState().providerReducer.providerToken.authentication_token;
 
     const url = `${process.env.REACT_APP_PUNCHH_API}/api/auth/checkins/balance?client=${process.env.REACT_APP_PUNCHH_CLIENT_ID}&authentication_token=${authentication_token}`;
+    return axios.get(url).then((response) => response.data);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const requestRewardsLocked = () => {
+  try {
+    const url = `${process.env.REACT_APP_PUNCHH_API}/api2/mobile/meta.json?client=${process.env.REACT_APP_PUNCHH_CLIENT_ID}`;
     return axios.get(url).then((response) => response.data);
   } catch (error) {
     throw error;

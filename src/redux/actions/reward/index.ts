@@ -39,3 +39,23 @@ export function getRewardsNewFailure(error: any) {
     error: error,
   };
 }
+
+export function getRewardsLocked() {
+  return {
+    type: Type.GET_REWARDS_LOCKED,
+  };
+}
+
+export function getRewardsLockedSuccess(data: any) {
+  return {
+    type: Type.GET_REWARDS_LOCKED_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getRewardsLockedFailure(error: any) {
+  return {
+    type: Type.GET_REWARDS_LOCKED_FAILURE,
+    error: error,
+  };
+}
