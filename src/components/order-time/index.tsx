@@ -43,7 +43,6 @@ const OrderTime = ({ orderType }: any) => {
   const [basket, setBasket] = React.useState<ResponseBasket>();
   const [notAvailableSlots, setNotAvailableSlots] = useState(false);
   const [selectShrink, setSelectShrink] = useState(false);
-  const [hideAsapForFutureDate, setHideAsapForFutureDate] = useState(false);
   const [asapTime, setAsapTime] = useState(false);
 
   const basketObj = useSelector((state: any) => state.basketReducer);
@@ -212,13 +211,18 @@ const OrderTime = ({ orderType }: any) => {
     return minutes && minutes > 0 ? minutes : 0;
   };
 
-  React.useEffect(() => {
-    if (!moment.isMoment(selectedDate)) {
-      setHideAsapForFutureDate(true);
+  const hideRemoveAsap = () => {
+    let currentTime = moment();
+
+    if (restaurantHours && restaurantHours.length) {
+      let openAt = moment(restaurantHours[0].start, 'YYYYMMDD HH:mm');
+      let closeAt = moment(restaurantHours[0].end, 'YYYYMMDD HH:mm');
+
+      return currentTime.isBetween(openAt, closeAt);
     } else {
-      setHideAsapForFutureDate(selectedDate.isSame(new Date(), 'day'));
+      return false;
     }
-  }, [selectedDate]);
+  };
 
   return (
     <>
@@ -331,7 +335,7 @@ const OrderTime = ({ orderType }: any) => {
                     className="selected-btn-group"
                   >
                     {/* <Grid container spacing={2}> */}
-                    {timeSlots.length !== 0 && hideAsapForFutureDate && (
+                    {timeSlots.length !== 0 && hideRemoveAsap() && (
                       <ToggleButton
                         key={`button-${basketObj.basket?.earliestreadytime}`}
                         value={basketObj.basket?.earliestreadytime}
