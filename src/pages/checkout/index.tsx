@@ -40,6 +40,7 @@ import { generateCCSFToken } from '../../services/basket';
 import { updateGuestUserInfo } from '../../redux/actions/order';
 import { navigateAppAction } from '../../redux/actions/navigate-app';
 import { getRewardsNew } from '../../redux/actions/reward';
+import TagManager from 'react-gtm-module';
 
 const Checkout = () => {
   const dispatch = useDispatch();
@@ -670,6 +671,16 @@ const Checkout = () => {
     }
   };
 
+  const fireEventAfterPlacingOrder = () => {
+    const tagManagerArgs: any = {
+      dataLayer: {
+        event: 'trackTrans',
+      },
+    };
+
+    TagManager.dataLayer(tagManagerArgs);
+  };
+
   React.useEffect(() => {
     // @ts-ignore
     // console.log('openAddCreditCard', openAddCreditCard);
@@ -703,6 +714,8 @@ const Checkout = () => {
         });
         ccsfObj.registerSuccess((order: any) => {
           console.log('ccsf Success', order);
+
+          fireEventAfterPlacingOrder();
 
           // let userInfo: any = {};
           //
