@@ -311,17 +311,18 @@ const RewardNew = () => {
                               {key} Points
                             </Typography>
                           </Grid>
-                          {redeemables[key].map((redeem: any) => {
-                            return (
-                              <>
-                                <Grid
-                                  item
-                                  xs={12}
-                                  sx={{
-                                    marginBottom: { xs: '25px', md: '20px' },
-                                  }}
-                                >
-                                  <Grid container>
+                          <Grid
+                            item
+                            xs={12}
+                            sx={{
+                              marginBottom: { xs: '25px', md: '20px' },
+                            }}
+                          >
+                            <Grid spacing={2} container>
+                              {redeemables[key].map((redeem: any) => {
+                                return (
+                                  <>
+                                    {/*<Grid container>*/}
                                     <Grid item xs={6} md={4}>
                                       <Card className="reward-point-merge-panel">
                                         {/*<Link to="/account/reward-new/detail">*/}
@@ -419,11 +420,12 @@ const RewardNew = () => {
                                         {/*</Link>*/}
                                       </Card>
                                     </Grid>
-                                  </Grid>
-                                </Grid>
-                              </>
-                            );
-                          })}
+                                    {/*</Grid>*/}
+                                  </>
+                                );
+                              })}
+                            </Grid>
+                          </Grid>
                         </>
                       )}
 
