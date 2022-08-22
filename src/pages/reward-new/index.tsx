@@ -154,7 +154,6 @@ const RewardNew = () => {
                 variant="h2"
                 className="small-heading"
                 title="Avialable Rewards"
-                style={{ paddingBottom: 20 }}
               >
                 Available Rewards{' '}
                 <a href="#instructions">
@@ -163,6 +162,15 @@ const RewardNew = () => {
                   </span>
                 </a>
               </Typography>
+              {rewards && rewards.length > 0 && (
+                <Typography
+                  variant="body2"
+                  title="REDEEM YOUR REWARDS"
+                  className="body-text-bold"
+                >
+                  Click on a reward below only if you are redeeming in-store.
+                </Typography>
+              )}
             </Grid>
             <Grid item xs={12}>
               <Grid spacing={2} container>

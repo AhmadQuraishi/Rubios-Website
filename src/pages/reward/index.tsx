@@ -53,7 +53,7 @@ const RedeemRewards = () => {
 
         <Grid item xs={12} className="redeem-sec">
           <Grid container spacing={2}>
-            {(loading ) && <RewardListSkeletonUI />}
+            {loading && <RewardListSkeletonUI />}
             {!loading && rewards && rewards.length == 0 && (
               <Grid item xs={12}>
                 <Typography>
@@ -67,11 +67,19 @@ const RedeemRewards = () => {
                 <Typography
                   variant="body2"
                   title="REDEEM YOUR REWARDS"
+                  className="body-text-bold"
+                >
+                  Click on a reward below only if you are redeeming in-store.
+                </Typography>
+                <Typography
+                  variant="body2"
+                  title="REDEEM YOUR REWARDS"
                   className="body-text"
                 >
-                  Click a reward below to redeem in restaurant. For online orders, you may select a reward during checkout.
-                  <br/>
-                  Please note, you will need to add the appropriate free or discounted item to your order before redeeming the reward.
+                  For online orders, you may select a reward during checkout.
+                  <br />
+                  Please note, you will need to add the appropriate free or
+                  discounted item to your order before redeeming the reward.
                 </Typography>
               </Grid>
             )}
