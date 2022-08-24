@@ -671,10 +671,11 @@ const Checkout = () => {
     }
   };
 
-  const fireEventAfterPlacingOrder = () => {
+  const fireEventAfterPlacingOrder = (order: any) => {
     const tagManagerArgs: any = {
       dataLayer: {
         event: 'trackTrans',
+        transactionRevenue: order.total,
       },
     };
 
@@ -715,7 +716,7 @@ const Checkout = () => {
         ccsfObj.registerSuccess((order: any) => {
           console.log('ccsf Success', order);
 
-          fireEventAfterPlacingOrder();
+          fireEventAfterPlacingOrder(order);
 
           // let userInfo: any = {};
           //
