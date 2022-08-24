@@ -302,7 +302,7 @@ const RegisterConfirmation = ({ id }: any) => {
                 {/*  >*/}
                 {/*    <Checkbox onChange={handleChangeCheckbox} /> I agree to the{' '}*/}
                 {/*    <Link*/}
-                {/*      href="https://www.rubios.com/terms-and-conditions?app=1"*/}
+                {/*      href={process.env.REACT_APP_TERMS_LINK}*/}
                 {/*      underline="hover"*/}
                 {/*    >*/}
                 {/*      Rubio's terms and conditions{' '}*/}
