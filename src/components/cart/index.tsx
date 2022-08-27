@@ -1290,8 +1290,50 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                       </Grid>
 
                       {basketObj &&
-                      basketObj.totalfees &&
-                      basketObj.totalfees > 0 ? (
+                      basketObj.basket &&
+                      basketObj.basket.totalfees &&
+                      basketObj.basket.totalfees > 0 ? (
+                        <>
+                          <Grid
+                            item
+                            xs={9}
+                            sx={{
+                              color: 'secondary.main',
+                              fontSize: '14px',
+                              fontFamily: 'Poppins-Regular',
+                            }}
+                            title="SERVICE FEE"
+                          >
+                            SERVICE FEE
+                          </Grid>
+                          <Grid
+                            item
+                            xs={3}
+                            sx={{
+                              color: 'secondary.main',
+                              fontSize: '14px',
+                              textAlign: 'right',
+                              fontFamily: 'Poppins-Regular',
+                            }}
+                            title={
+                              '$' +
+                              (basketObj &&
+                                basketObj.basket &&
+                                basketObj.basket.totalfees.toFixed(2))
+                            }
+                          >
+                            $
+                            {basketObj &&
+                              basketObj.basket &&
+                              basketObj.basket.totalfees.toFixed(2)}
+                          </Grid>
+                        </>
+                      ) : null}
+
+                      {basketObj &&
+                      basketObj.basket &&
+                      basketObj.basket.customerhandoffcharge &&
+                      basketObj.basket.customerhandoffcharge > 0 ? (
                         <>
                           <Grid
                             item
@@ -1318,13 +1360,13 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                               '$' +
                               (basketObj &&
                                 basketObj.basket &&
-                                basketObj.basket.totalfees.toFixed(2))
+                                basketObj.basket.customerhandoffcharge.toFixed(2))
                             }
                           >
                             $
                             {basketObj &&
                               basketObj.basket &&
-                              basketObj.basket.totalfees.toFixed(2)}
+                              basketObj.basket.customerhandoffcharge.toFixed(2)}
                           </Grid>
                         </>
                       ) : null}
