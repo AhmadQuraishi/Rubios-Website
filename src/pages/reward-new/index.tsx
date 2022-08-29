@@ -123,7 +123,7 @@ const RewardNew = () => {
     if (!disable) {
       return;
     }
-    navigate(`/account/reward-new/details/${id}?name=${name}&type=${type}`);
+    navigate(`/account/reward/details/${id}?name=${name}&type=${type}`);
   };
 
   return (
