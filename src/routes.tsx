@@ -85,11 +85,11 @@ const AppRoutes = () => {
           />
           <Route path="/rewardconfirmation" element={<RewardConfirmation />} />
           <Route path="/account/" element={<RedeemRewards />} />
-          <Route path="/account/reward" element={<RedeemRewards />} />
-          <Route
-            path="/account/reward/details/:id"
-            element={<ScanToRedeem />}
-          />
+          {/*<Route path="/account/reward" element={<RedeemRewards />} />*/}
+          {/*<Route*/}
+          {/*  path="/account/reward/details/:id"*/}
+          {/*  element={<ScanToRedeem />}*/}
+          {/*/>*/}
           <Route
             path="/account/deliveryaddress"
             element={<DeliveryAddress />}
@@ -126,9 +126,9 @@ const AppRoutes = () => {
             path="/iframe/store-hours/:id"
             element={<StoreHoursIframe />}
           />
-          <Route path="/account/reward-new" element={<RewardNew />} />
+          <Route path="/account/reward" element={<RewardNew />} />
           <Route
-            path="/account/reward-new/details/:id"
+            path="/account/reward/details/:id"
             element={<RewardNewDetail />}
           />
           <Route path="*" element={<PageNotFound />} />

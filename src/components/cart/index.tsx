@@ -138,7 +138,6 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   const [upsellsProductKeys, setUpsellsProductKeys] = useState<any[]>();
   const [products, setProducts] = useState<any[]>();
 
-
   const productRemoveObj = useSelector(
     (state: any) => state.removeProductReducer,
   );
@@ -239,7 +238,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   useEffect(() => {
     if (productRemoveObj && productRemoveObj.basket && actionStatus) {
       // dispatch(getBasketRequest('', productRemoveObj.basket, basketType));
-        displayToast('SUCCESS', '1 item removed from cart.');
+      displayToast('SUCCESS', '1 item removed from cart.');
       fitContainer();
       setActionStatus(false);
       navigate(restaurant ? '/menu/' + restaurant.slug : '/');
@@ -300,7 +299,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   useEffect(() => {
     if (productAddObj && productAddObj.basket && actionStatus) {
       // dispatch(getBasketRequest('', productAddObj.basket, basketType));
-        displayToast('SUCCESS', 'Duplicate item added to cart.');
+      displayToast('SUCCESS', 'Duplicate item added to cart.');
       fitContainer();
       setActionStatus(false);
       navigate(restaurant ? '/menu/' + restaurant.slug : '/');
@@ -1213,7 +1212,9 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                     fontFamily: 'Poppins-Regular',
                                   }}
                                 >
-                                  -${discount.amount && discount.amount.toFixed(2)}
+                                  -$
+                                  {discount.amount &&
+                                    discount.amount.toFixed(2)}
                                 </Grid>
                               </>
                             );
@@ -1290,8 +1291,50 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                       </Grid>
 
                       {basketObj &&
-                      basketObj.totalfees &&
-                      basketObj.totalfees > 0 ? (
+                      basketObj.basket &&
+                      basketObj.basket.totalfees &&
+                      basketObj.basket.totalfees > 0 ? (
+                        <>
+                          <Grid
+                            item
+                            xs={9}
+                            sx={{
+                              color: 'secondary.main',
+                              fontSize: '14px',
+                              fontFamily: 'Poppins-Regular',
+                            }}
+                            title="SERVICE FEE"
+                          >
+                            SERVICE FEE
+                          </Grid>
+                          <Grid
+                            item
+                            xs={3}
+                            sx={{
+                              color: 'secondary.main',
+                              fontSize: '14px',
+                              textAlign: 'right',
+                              fontFamily: 'Poppins-Regular',
+                            }}
+                            title={
+                              '$' +
+                              (basketObj &&
+                                basketObj.basket &&
+                                basketObj.basket.totalfees.toFixed(2))
+                            }
+                          >
+                            $
+                            {basketObj &&
+                              basketObj.basket &&
+                              basketObj.basket.totalfees.toFixed(2)}
+                          </Grid>
+                        </>
+                      ) : null}
+
+                      {basketObj &&
+                      basketObj.basket &&
+                      basketObj.basket.customerhandoffcharge &&
+                      basketObj.basket.customerhandoffcharge > 0 ? (
                         <>
                           <Grid
                             item
@@ -1318,13 +1361,15 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                               '$' +
                               (basketObj &&
                                 basketObj.basket &&
-                                basketObj.basket.totalfees.toFixed(2))
+                                basketObj.basket.customerhandoffcharge.toFixed(
+                                  2,
+                                ))
                             }
                           >
                             $
                             {basketObj &&
                               basketObj.basket &&
-                              basketObj.basket.totalfees.toFixed(2)}
+                              basketObj.basket.customerhandoffcharge.toFixed(2)}
                           </Grid>
                         </>
                       ) : null}

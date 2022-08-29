@@ -29,16 +29,16 @@ const RewardNewDetail = () => {
       } else if (type === 'redeemable') {
         dispatch(getRedeemableRedemptionCode(id));
       } else {
-        navigate(`/account/reward-new`);
+        navigate(`/account/reward`);
       }
     } else {
-      navigate(`/account/reward-new`);
+      navigate(`/account/reward`);
     }
   }, []);
 
   useEffect(() => {
     if (error && error.data && !loading1) {
-      navigate(`/account/reward-new`);
+      navigate(`/account/reward`);
     }
   }, [error]);
 
@@ -84,7 +84,7 @@ const RewardNewDetail = () => {
                     marginTop: '20px',
                   }}
                   onClick={() => {
-                    navigate('/account/reward-new');
+                    navigate('/account/reward');
                   }}
                 >
                   VIEW REWARDS
