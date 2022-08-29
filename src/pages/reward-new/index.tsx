@@ -153,7 +153,7 @@ const RewardNew = () => {
               <Typography
                 variant="h2"
                 className="small-heading"
-                title="Avialable Rewards"
+                title="Available Rewards"
               >
                 Available Rewards{' '}
                 <a href="#instructions">
@@ -165,8 +165,7 @@ const RewardNew = () => {
               {rewards && rewards.length > 0 && (
                 <Typography
                   variant="body2"
-                  title="REDEEM YOUR REWARDS"
-                  className="body-text-bold"
+                  className="body-text-bold-reward"
                 >
                   Click on a reward below only if you are redeeming in-store.
                 </Typography>
@@ -289,7 +288,7 @@ const RewardNew = () => {
                 <Typography
                   variant="h2"
                   className="small-heading"
-                  title="ARedeem Points"
+                  title="Redeem Points"
                 >
                   Redeem Points{' '}
                   <a href="#instructions">
@@ -317,6 +316,14 @@ const RewardNew = () => {
                               title={`${key} Points`}
                             >
                               {key} Points
+                            </Typography>
+                            <Typography
+                              variant="body2"
+                              className={`body-text-bold-redeem ${
+                                points >= key ? '' : ' disable'
+                              }`}
+                            >
+                              Click on a reward below only if you are redeeming in-store.
                             </Typography>
                           </Grid>
                           <Grid
