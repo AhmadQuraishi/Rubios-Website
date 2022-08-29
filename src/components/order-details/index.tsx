@@ -118,7 +118,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                       <li>
                         <Grid container>
                           <Grid item xs={9} sm={9} md={9} lg={9}>
-                          <Typography variant="h6">
+                            <Typography variant="h6">
                               {discount.type === 'Coupon'
                                 ? 'Coupon Code: '
                                 : 'REWARD '}
@@ -126,7 +126,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                                 style={{
                                   fontWeight: 'normal',
                                   fontFamily: 'Poppins-Regular',
-                                  fontSize: '15px'
+                                  fontSize: '15px',
                                 }}
                               >
                                 {discount.description}
@@ -228,7 +228,9 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
               </li>
             ) : null}
 
-            {basket && basket.customerhandoffcharge && basket.customerhandoffcharge > 0 ? (
+            {basket &&
+            basket.customerhandoffcharge &&
+            basket.customerhandoffcharge > 0 ? (
               <li>
                 <Grid container>
                   <Grid item xs={9} sm={9} md={9} lg={9}>
