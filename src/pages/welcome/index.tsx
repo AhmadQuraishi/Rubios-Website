@@ -178,7 +178,7 @@ const Welcome = () => {
         navigate(restaurant ? '/menu/' + restaurant.slug : '/');
         handleCart();
       }
-      displayToast('SUCCESS', 'Recent order is added in cart');
+      displayToast('SUCCESS', 'The items from your recent order have been added to your cart.');
       setIsEdit(false);
       setIsReoder(false);
       setIsbasket(false);
@@ -233,7 +233,7 @@ const Welcome = () => {
                 className={newUser ? 'new-user-left-col' : 'left-col'}
               >
                 <Typography variant="h2" className="label" title="Welcome">
-                  {newUser ? 'CONGRATULATIONS!' : 'WELCOME'}
+                  {newUser ? 'CONGRATULATIONS!' : ''}
                 </Typography>
                 <Typography
                   variant="h1"
