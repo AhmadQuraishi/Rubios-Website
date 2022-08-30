@@ -32,6 +32,24 @@ const HistoryGrid = () => {
           <Grid container spacing={0}>
             <Grid
               item
+              xs={3}
+              sm={3}
+              sx={{
+                fontFamily: 'Poppins-Bold',
+                textTransform: 'uppercase',
+                borderBottom: '1px solid #CCC',
+                borderTop: '1px solid #CCC',
+                padding: '10px 0',
+                fontSize: '14px',
+                color: 'secondary.main',
+                display: { sm: 'grid' },
+              }}
+            >
+              Date
+            </Grid>
+
+            <Grid
+              item
               xs={0}
               sm={3}
               sx={{
@@ -43,23 +61,6 @@ const HistoryGrid = () => {
                 fontSize: '14px',
                 color: 'secondary.main',
                 display: { xs: 'none', sm: 'grid' },
-              }}
-            >
-              Date
-            </Grid>
-
-            <Grid
-              item
-              xs={4}
-              sm={3}
-              sx={{
-                fontFamily: 'Poppins-Bold',
-                textTransform: 'uppercase',
-                borderBottom: '1px solid #CCC',
-                borderTop: '1px solid #CCC',
-                padding: '10px 0',
-                fontSize: '14px',
-                color: 'secondary.main',
               }}
             >
               Category
@@ -85,6 +86,22 @@ const HistoryGrid = () => {
               <Fragment key={Math.random() + index}>
                 <Grid
                   item
+                  xs={3}
+                  sm={3}
+                  sx={{
+                    fontFamily: 'Poppins-Medium',
+                    fontWeight: '500',
+                    borderBottom: '1px solid #CCC',
+                    padding: '10px 0',
+                    fontSize: '10px',
+                    color: 'secondary.main',
+                  }}
+                >
+                  {moment(item.date).format('MM/DD/YYYY')}
+                </Grid>
+                <Grid
+                  item
+                  key={index + '-col2'}
                   xs={0}
                   sm={3}
                   sx={{
@@ -97,28 +114,6 @@ const HistoryGrid = () => {
                     display: { xs: 'none', sm: 'grid' },
                   }}
                 >
-                  {moment(item.date).format('MM/DD/YYYY')}
-                </Grid>
-                <Grid
-                  item
-                  key={index + '-col2'}
-                  xs={4}
-                  sm={3}
-                  sx={{
-                    fontFamily: 'Poppins-Medium',
-                    fontWeight: '500',
-                    borderBottom: '1px solid #CCC',
-                    padding: '10px 0',
-                    fontSize: '10px',
-                    color: 'secondary.main',
-                  }}
-                >
-                  <Typography
-                    variant="caption"
-                    sx={{ display: { xs: 'block', sm: 'none' } }}
-                  >
-                    {moment(item.date).format('MM/DD/YYYY')}
-                  </Typography>
                   {item.event_title}
                 </Grid>
                 <Grid

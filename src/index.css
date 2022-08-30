@@ -376,3 +376,17 @@ fieldset {
     width: 200px !important;
   }
 }
+
+.tooltip-inner {
+  display: flex;
+  justify-content: space-between;
+}
+
+
+.tooltip-inner .text {
+  font-size: 12px;
+}
+
+.tooltip-inner .space-between {
+  width: 20px
+}

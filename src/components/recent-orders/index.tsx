@@ -79,7 +79,7 @@ const RecentOrders = () => {
         ),
       );
       dispatch(getBasketRequest('', createBasketObj.basket, 'Previous'));
-        displayToast('SUCCESS', 'Recent order is added in cart');
+        displayToast('SUCCESS', 'The items from your recent order have been added to your cart.');
       navigate('/checkout');
     }
     if (error && error.message) {

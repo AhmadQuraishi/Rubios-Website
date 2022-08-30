@@ -98,7 +98,7 @@ const FavoriteOrders = () => {
         ),
       );
       dispatch(getBasketRequest('', createBasketObj.basket, 'Favourite'));
-        displayToast('SUCCESS', 'Favorite order is added in cart');
+        displayToast('SUCCESS', 'The items from your favorite order have been added to your cart.');
       navigate('/checkout');
     }
     if (error && error.message) {
