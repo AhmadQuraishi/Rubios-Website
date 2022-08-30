@@ -21,12 +21,17 @@ import { addProductRequest } from '../../redux/actions/basket/product/add';
 import { displayToast } from '../../helpers/toast';
 
 import { UPSELLS_TYPES } from '../../helpers/upsells';
-import { capitalizeFirstLetter } from '../../helpers/common';
+import {
+  calculateTaxAndFee,
+  capitalizeFirstLetter,
+} from '../../helpers/common';
 // import { Category, Product as ProductInfo } from '../../types/olo-api';
 import {
   addUtensilsRequest,
   removeUtensilsRequest,
 } from '../../redux/actions/basket/utensils';
+import Tooltip from '@mui/material/Tooltip';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
 
 const useStyles = makeStyles((theme: Theme) => ({
   dimPanel: {
@@ -126,7 +131,21 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: '#525252',
     fontWeight: 'bold',
   },
-}));
+  helpicon: {
+    borderRadius: 20,
+    width: 18,
+    height: 18,
+    border: '1px solid #2b4b62',
+    textAlign: 'center',
+    display: 'inline-block',
+    fontFamily: "'Poppins-Medium', sans-serif !important",
+    fontSize: 14,
+    marginLeft: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    cursor: 'pointer',
+  },
+}))
 
 const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   const classes = useStyles();
@@ -134,6 +153,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   const [actionStatus, setActionStatus] = useState(false);
   const [utensils, setUtensils] = useState(false);
   const [utensilsDisabled, setUtensilsDisabled] = useState(false);
+  const [openToolTip, setOpenToolTip] = React.useState(false);
   const [clickAction, setClickAction] = useState('');
   const [upsellsProductKeys, setUpsellsProductKeys] = useState<any[]>();
   const [products, setProducts] = useState<any[]>();
@@ -452,6 +472,14 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
         }
       }
     }
+  };
+
+  const handleTooltipClose = () => {
+    setOpenToolTip(false);
+  };
+
+  const handleTooltipOpen = () => {
+    setOpenToolTip(!openToolTip);
   };
 
   return (
@@ -1262,10 +1290,77 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                           fontSize: '14px',
                           paddingBottom: '2px',
                           fontFamily: 'Poppins-Regular',
+                          display: 'flex',
                         }}
                         title="ESTIMATED Tax"
                       >
-                        ESTIMATED TAX
+                        <ClickAwayListener onClickAway={handleTooltipClose}>
+                          <div style={{ display: 'flex', alignItems: 'center' }}>
+                            ESTIMATED TAX AND FEES
+                            <Tooltip
+                              PopperProps={{
+                                disablePortal: true,
+                              }}
+                              placement="top"
+                              onClose={handleTooltipClose}
+                              open={openToolTip}
+                              disableFocusListener
+                              disableHoverListener
+                              disableTouchListener
+                              title={
+                                <>
+                                  <div className="tooltip-inner">
+                                    <span>
+                                      <Typography className="text">
+                                        SALES TAX:
+                                      </Typography>
+                                    </span>
+                                    <span className="space-between"></span>
+                                    <span>
+                                      <Typography className="text">
+                                        $
+                                        {basketObj &&
+                                          basketObj.basket &&
+                                          basketObj.basket.taxes &&
+                                          basketObj.basket.taxes.reduce(
+                                            (sum: number, tax: any) =>
+                                              sum + tax.tax,
+                                            0,
+                                          )}
+                                      </Typography>
+                                    </span>
+                                  </div>
+                                  <div className="tooltip-inner">
+                                    <span>
+                                      <Typography className="text">
+                                        SERVICE FEE:
+                                      </Typography>
+                                    </span>
+                                    <span className="space-between"></span>
+                                    <span>
+                                      {' '}
+                                      <Typography className="text">
+                                        $
+                                        {(basketObj &&
+                                          basketObj.basket &&
+                                          basketObj.basket.totalfees) ||
+                                          0}{' '}
+                                      </Typography>
+                                    </span>
+                                  </div>
+                                </>
+                              }
+                            >
+                              <span
+                                onClick={handleTooltipOpen}
+                                aira-label="help Icon"
+                                className={classes.helpicon}
+                              >
+                                ?
+                              </span>
+                            </Tooltip>
+                          </div>
+                        </ClickAwayListener>
                       </Grid>
                       <Grid
                         item
@@ -1277,59 +1372,51 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                           paddingBottom: '2px',
                           fontFamily: 'Poppins-Regular',
                         }}
-                        title={
-                          '$' +
-                          (basketObj &&
-                            basketObj.basket &&
-                            basketObj.basket.salestax.toFixed(2))
-                        }
+                        title={'$' + calculateTaxAndFee(basketObj.basket)}
                       >
-                        $
-                        {basketObj &&
-                          basketObj.basket &&
-                          basketObj.basket.salestax.toFixed(2)}
+                        ${calculateTaxAndFee(basketObj.basket)}
                       </Grid>
 
-                      {basketObj &&
-                      basketObj.basket &&
-                      basketObj.basket.totalfees &&
-                      basketObj.basket.totalfees > 0 ? (
-                        <>
-                          <Grid
-                            item
-                            xs={9}
-                            sx={{
-                              color: 'secondary.main',
-                              fontSize: '14px',
-                              fontFamily: 'Poppins-Regular',
-                            }}
-                            title="SERVICE FEE"
-                          >
-                            SERVICE FEE
-                          </Grid>
-                          <Grid
-                            item
-                            xs={3}
-                            sx={{
-                              color: 'secondary.main',
-                              fontSize: '14px',
-                              textAlign: 'right',
-                              fontFamily: 'Poppins-Regular',
-                            }}
-                            title={
-                              '$' +
-                              (basketObj &&
-                                basketObj.basket &&
-                                basketObj.basket.totalfees.toFixed(2))
-                            }
-                          >
-                            $
-                            {basketObj &&
-                              basketObj.basket &&
-                              basketObj.basket.totalfees.toFixed(2)}
-                          </Grid>
-                        </>
-                      ) : null}
+                      {/*{basketObj &&*/}
+                      {/*basketObj.basket &&*/}
+                      {/*basketObj.basket.totalfees &&*/}
+                      {/*basketObj.basket.totalfees > 0 ? (*/}
+                      {/*  <>*/}
+                      {/*    <Grid*/}
+                      {/*      item*/}
+                      {/*      xs={9}*/}
+                      {/*      sx={{*/}
+                      {/*        color: 'secondary.main',*/}
+                      {/*        fontSize: '14px',*/}
+                      {/*        fontFamily: 'Poppins-Regular',*/}
+                      {/*      }}*/}
+                      {/*      title="SERVICE FEE"*/}
+                      {/*    >*/}
+                      {/*      SERVICE FEE*/}
+                      {/*    </Grid>*/}
+                      {/*    <Grid*/}
+                      {/*      item*/}
+                      {/*      xs={3}*/}
+                      {/*      sx={{*/}
+                      {/*        color: 'secondary.main',*/}
+                      {/*        fontSize: '14px',*/}
+                      {/*        textAlign: 'right',*/}
+                      {/*        fontFamily: 'Poppins-Regular',*/}
+                      {/*      }}*/}
+                      {/*      title={*/}
+                      {/*        '$' +*/}
+                      {/*        (basketObj &&*/}
+                      {/*          basketObj.basket &&*/}
+                      {/*          basketObj.basket.totalfees.toFixed(2))*/}
+                      {/*      }*/}
+                      {/*    >*/}
+                      {/*      $*/}
+                      {/*      {basketObj &&*/}
+                      {/*        basketObj.basket &&*/}
+                      {/*        basketObj.basket.totalfees.toFixed(2)}*/}
+                      {/*    </Grid>*/}
+                      {/*  </>*/}
+                      {/*) : null}*/}
 
                       {basketObj &&
                       basketObj.basket &&
