@@ -145,7 +145,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     alignItems: 'center',
     cursor: 'pointer',
   },
-}))
+}));
 
 const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   const classes = useStyles();
@@ -1295,7 +1295,9 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         title="ESTIMATED Tax"
                       >
                         <ClickAwayListener onClickAway={handleTooltipClose}>
-                          <div style={{ display: 'flex', alignItems: 'center' }}>
+                          <div
+                            style={{ display: 'flex', alignItems: 'center' }}
+                          >
                             ESTIMATED TAX AND FEES
                             <Tooltip
                               PopperProps={{
@@ -1322,11 +1324,13 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                         {basketObj &&
                                           basketObj.basket &&
                                           basketObj.basket.taxes &&
-                                          basketObj.basket.taxes.reduce(
-                                            (sum: number, tax: any) =>
-                                              sum + tax.tax,
-                                            0,
-                                          )}
+                                          basketObj.basket.taxes
+                                            .reduce(
+                                              (sum: number, tax: any) =>
+                                                sum + tax.tax,
+                                              0,
+                                            )
+                                            .toFixed(2)}
                                       </Typography>
                                     </span>
                                   </div>
@@ -1343,8 +1347,10 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                         $
                                         {(basketObj &&
                                           basketObj.basket &&
-                                          basketObj.basket.totalfees) ||
-                                          0}{' '}
+                                          basketObj.basket.totalfees.toFixed(
+                                            2,
+                                          )) ||
+                                          0}
                                       </Typography>
                                     </span>
                                   </div>

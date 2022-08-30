@@ -208,7 +208,6 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
               <Grid container>
                 <Grid item xs={9} sm={9} md={9} lg={9}>
                   <div>
-
                     <ClickAwayListener onClickAway={handleTooltipClose}>
                       <div style={{ display: 'flex', alignItems: 'center' }}>
                         <Typography
@@ -242,11 +241,13 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                                     $
                                     {basket &&
                                       basket.taxes &&
-                                      basket.taxes.reduce(
-                                        (sum: number, tax: any) =>
-                                          sum + tax.tax,
-                                        0,
-                                      )}
+                                      basket.taxes
+                                        .reduce(
+                                          (sum: number, tax: any) =>
+                                            sum + tax.tax,
+                                          0,
+                                        )
+                                        .toFixed(2)}
                                   </Typography>
                                 </span>
                               </div>
@@ -260,7 +261,9 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                                 <span>
                                   {' '}
                                   <Typography className="text">
-                                    ${(basket && basket.totalfees) || 0}{' '}
+                                    $
+                                    {(basket && basket.totalfees.toFixed(2)) ||
+                                      0}
                                   </Typography>
                                 </span>
                               </div>
