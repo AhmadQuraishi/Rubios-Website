@@ -122,3 +122,16 @@ export function getAddress(place: any) {
 
   return address;
 }
+
+export function calculateTaxAndFee(basket: any) {
+  let total = 0;
+  if (basket) {
+    if (basket.taxes) {
+      total = basket.taxes.reduce((sum: number, tax: any) => sum + tax.tax, 0);
+    }
+    if (basket.totalfees) {
+      total = total + basket.totalfees;
+    }
+  }
+  return total.toFixed(2);
+}
