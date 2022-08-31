@@ -1,6 +1,7 @@
 import { basketActionsTypes } from '../../types/basket';
 import { userTypes } from '../../types/user';
 import { authActionsTypes } from '../../types/auth';
+import moment from 'moment';
 
 const INITIAL_STATE = {
   loading: false,
@@ -27,6 +28,7 @@ const INITIAL_STATE = {
   basketType: 'New',
   orderSubmit: false,
   error: null,
+  createdTime: null,
 };
 
 const basketReducer = (state = INITIAL_STATE, action: any) => {
@@ -51,7 +53,8 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
             error: null,
           },
           billingSchemes: [],
-        }
+        },
+        createdTime: null,
       };
     case basketActionsTypes.VALIDETE_BASKET:
     case basketActionsTypes.SUBMIT_BASKET_SINGLE_PAYMENT:
@@ -99,6 +102,7 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
         basket: action.payload,
         basketType: action.basketType || 'New',
         error: null,
+        createdTime: moment().unix(),
       };
     case basketActionsTypes.GET_BASKET_FAILURE:
     case basketActionsTypes.UPDATE_BASKET_TIME_WANTED_FAILURE:
@@ -148,6 +152,7 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
         validate: null,
       };
     case basketActionsTypes.SUBMIT_BASKET_SINGLE_PAYMENT_SUCCESS:
+    case basketActionsTypes.RESET_BASKET_REQUEST:
       return {
         ...state,
         loading: false,
@@ -174,6 +179,7 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
         },
         orderSubmit: false,
         error: null,
+        createdTime: null,
       };
     case basketActionsTypes.ADD_BASKET_ORDER_SUBMIT:
       return {
