@@ -17,6 +17,7 @@ import moment from 'moment';
 // import {testingRedemption, testingRewards} from "./services/reward";
 // import {generateCCSFToken} from "./services/basket";
 import TagManager from 'react-gtm-module';
+import { resetBasketRequest } from './redux/actions/basket';
 
 function App(props: any) {
   const location = useLocation();
@@ -27,7 +28,9 @@ function App(props: any) {
   const { providerToken } = useSelector((state: any) => state.providerReducer);
   const { authToken } = useSelector((state: any) => state.authReducer);
   const { deviceId } = useSelector((state: any) => state.authReducer);
-  const { basket } = useSelector((state: any) => state.basketReducer);
+  const { basket, createdTime } = useSelector(
+    (state: any) => state.basketReducer,
+  );
 
   const navigate = useNavigate();
 
@@ -59,6 +62,19 @@ function App(props: any) {
       }
     }
   }, []);
+
+  useEffect(() => {
+    if (createdTime && basket) {
+      const basketCreatedTime: any = moment.unix(createdTime);
+      const currentTime = moment();
+      if (basketCreatedTime.isValid()) {
+        const minutes = currentTime.diff(basketCreatedTime, 'minutes');
+        if (minutes > 30) {
+          dispatch(resetBasketRequest());
+        }
+      }
+    }
+  }, [basket]);
 
   useEffect(() => {
     const tagManagerArgs: any = {

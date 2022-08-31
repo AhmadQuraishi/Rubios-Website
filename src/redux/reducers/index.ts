@@ -32,6 +32,7 @@ import getRewardForCheckoutReducer from './reward/checkout';
 import applyRewardOnBasketReducer from './reward/checkout/apply';
 import removeRewardFromBasketReducer from './reward/checkout/remove';
 import orderReducer from './order';
+import guestReducer from './guest-user';
 import navigateAppReducer from './navigate-app';
 import deliveryAddressReducer from './location/delivery-address';
 import verifyDeliveryAddressReducer from './location/verify-delivery-address';
@@ -51,7 +52,7 @@ const persistConfig = {
     'redemptionReducer',
     'pageStateReducer',
     'getUpsellsReducer',
-    'orderReducer',
+    'guestReducer',
     'navigateAppReducer',
     'deliveryAddressReducer',
     'utensilsReducer',
@@ -78,6 +79,7 @@ const rootReducers = combineReducers({
   createBasketReducer,
   basketReducer,
   orderReducer,
+  guestReducer,
   // addMultipleProductsReducer,
   addProductReducer,
   removeProductReducer,
