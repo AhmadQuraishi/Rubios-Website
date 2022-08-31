@@ -1,6 +1,12 @@
 import { basketActionsTypes } from '../../types/basket';
 import { ResponseBasket } from '../../../types/olo-api';
 
+export function resetBasketRequest() {
+  return {
+    type: basketActionsTypes.RESET_BASKET_REQUEST,
+  };
+}
+
 export function getBasketRequest(
   basketid: string,
   updatedBasket: any = {},
