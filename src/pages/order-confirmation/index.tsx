@@ -45,7 +45,7 @@ const OrderConfirmation = () => {
   );
 
   const { authToken } = useSelector((state: any) => state.authReducer);
-  const { guestUser } = useSelector((state: any) => state.orderReducer);
+  const { guestUser } = useSelector((state: any) => state.guestReducer);
 
   useEffect(() => {
     dispatch(getOrderRequest(id));

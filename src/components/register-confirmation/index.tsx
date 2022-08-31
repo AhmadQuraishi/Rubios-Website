@@ -28,7 +28,7 @@ const RegisterConfirmation = ({ id }: any) => {
 
   const { locations } = useSelector((state: any) => state.locationReducer);
 
-  const { guestUser } = useSelector((state: any) => state.orderReducer);
+  const { guestUser } = useSelector((state: any) => state.guestReducer);
 
   const { loading: loadingProvider } = useSelector(
     (state: any) => state.providerReducer,

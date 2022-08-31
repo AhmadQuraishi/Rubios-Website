@@ -11,7 +11,6 @@ const INITIAL_STATE = {
     data: null,
     error: null,
   },
-  guestUser: null,
 };
 
 const orderReducer = (state = INITIAL_STATE, action: any) => {
@@ -21,6 +20,11 @@ const orderReducer = (state = INITIAL_STATE, action: any) => {
         ...state,
         order: {
           loading: true,
+          data: null,
+          error: null,
+        },
+        restaurant: {
+          loading: false,
           data: null,
           error: null,
         },
@@ -41,6 +45,11 @@ const orderReducer = (state = INITIAL_STATE, action: any) => {
           loading: false,
           error: action.error,
           data: null,
+        },
+        restaurant: {
+          loading: false,
+          data: null,
+          error: null,
         },
       };
     case orderActionTypes.GET_ORDER_RESTAURANT_REQUEST:
@@ -69,11 +78,6 @@ const orderReducer = (state = INITIAL_STATE, action: any) => {
           error: action.error,
           data: null,
         },
-      };
-    case orderActionTypes.UPDATE_GUEST_USER_INFO:
-      return {
-        ...state,
-        guestUser: action.payload,
       };
     default:
       return state;
