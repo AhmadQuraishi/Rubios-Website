@@ -127,16 +127,16 @@ const Login2 = () => {
                   More Options
                 </Typography>
                 <ul className="button-list">
-                  {/*<li>*/}
-                  {/*  <ReactFacebookLogin*/}
-                  {/*    appId={process.env.REACT_APP_FACEBOOK_APP_ID || ''}*/}
-                  {/*    fields="name,email,picture"*/}
-                  {/*    scope="public_profile,email"*/}
-                  {/*    callback={handleCallBackfacebook}*/}
-                  {/*    textButton="SIGN IN WITH FACEBOOK"*/}
-                  {/*    cssClass="fb-button"*/}
-                  {/*  />*/}
-                  {/*</li>*/}
+                  <li>
+                    <ReactFacebookLogin
+                      appId={process.env.REACT_APP_FACEBOOK_APP_ID || ''}
+                      fields="name,email,picture"
+                      scope="public_profile,email"
+                      callback={handleCallBackfacebook}
+                      textButton="SIGN IN WITH FACEBOOK"
+                      cssClass="fb-button"
+                    />
+                  </li>
                   {/*<li>*/}
                   {/*<Button*/}
                   {/*type="submit"*/}
