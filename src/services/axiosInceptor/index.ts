@@ -8,6 +8,7 @@ const withoutTokenEndpoints = [
   'api/auth/customers.json',
   'api/auth/users/forgot_password',
   'api/auth/users/change_password',
+  'api/auth/users/connect_with_facebook',
 ];
 axiosInstance.interceptors.request.use(
   function (config) {

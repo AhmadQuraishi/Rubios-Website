@@ -189,6 +189,7 @@ const Location = () => {
                   handleClickOpen();
                   setSelectedAddress(address);
                   setActionPerform(false);
+                  setShowNearBy(true);
                   setSelectedLatLng({
                     lat: lat,
                     lng: lng,
@@ -201,6 +202,7 @@ const Location = () => {
                   //setDeliveryAddressString(address);
                 } else {
                   setActionPerform(false);
+                  setShowNearBy(false);
                   displayToast(
                     'ERROR',
                     'No address found against your current location.',
@@ -214,8 +216,9 @@ const Location = () => {
                   'No address found against your current location.',
                 );
                 setActionPerform(false);
+                setShowNearBy(false);
               });
-            setShowNearBy(true);
+
             setZoom(7);
           },
           function (error) {
