@@ -51,7 +51,7 @@ const LocationCard = (props: any) => {
             setActionPerform(false);
             displayToast(
               'ERROR',
-              'Invalid Address, Please enter another address',
+              'Please enter your full delivery address.',
             );
           }
         });
@@ -59,7 +59,7 @@ const LocationCard = (props: any) => {
 
       .catch((error) => {
         console.log('Error: ', error);
-        displayToast('ERROR', 'Selected address not found');
+        displayToast('ERROR', 'Please enter your full delivery address.');
         setActionPerform(false);
       });
   };
