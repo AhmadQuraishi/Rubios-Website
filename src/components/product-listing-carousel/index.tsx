@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontFamily: 'Poppins-Regular !important',
     fontSize: '14px',
     fontWeight: 600,
-    color: theme.palette.primary.main,
+    color: '#0075BF',
   },
   price: {
     paddingTop: '10px',
