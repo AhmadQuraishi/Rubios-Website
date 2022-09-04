@@ -32,6 +32,7 @@ import {
 } from '../../redux/actions/basket/utensils';
 import Tooltip from '@mui/material/Tooltip';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
+import { DeliveryModeEnum } from '../../types/olo-api/olo-api.enums';
 
 const useStyles = makeStyles((theme: Theme) => ({
   dimPanel: {
@@ -814,40 +815,47 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                   <Divider sx={{ borderColor: '#224c65' }} />
                 </Grid>
               )}
-              {utensilsReducer.utensilsProductId && (
-                <Grid item xs={12}>
-                  <Typography
-                    variant="body2"
-                    className="body-text"
-                    // title="I agree to the  Rubios terms and conditions and to receiving marketing communications from Rubios."
-                    sx={{ width: '100%', color: '#224c65' }}
-                  >
-                    <Checkbox
-                      checked={utensils}
-                      disabled={
-                        utensilsReducer &&
-                        utensilsReducer.loading &&
-                        utensilsDisabled
-                      }
-                      onChange={(e) => {
-                        addRemoveUtensils(e);
-                      }}
-                      inputProps={{
-                        'aria-label': ' Add utensils to my order.',
-                      }}
-                      sx={{
-                        paddingLeft: 0,
-                        fontFamily: 'Poppins-Medium !important',
-                      }}
-                    />
-                    Add utensils to my order.
-                  </Typography>
-                </Grid>
-              )}
+              {utensilsReducer.utensilsProductId &&
+                basketObj &&
+                basketObj.basket &&
+                basketObj.basket.deliverymode !== DeliveryModeEnum.dinein && (
+                  <Grid item xs={12}>
+                    <Typography
+                      variant="body2"
+                      className="body-text"
+                      // title="I agree to the  Rubios terms and conditions and to receiving marketing communications from Rubios."
+                      sx={{ width: '100%', color: '#224c65' }}
+                    >
+                      <Checkbox
+                        checked={utensils}
+                        disabled={
+                          utensilsReducer &&
+                          utensilsReducer.loading &&
+                          utensilsDisabled
+                        }
+                        onChange={(e) => {
+                          addRemoveUtensils(e);
+                        }}
+                        inputProps={{
+                          'aria-label': ' Add utensils to my order.',
+                        }}
+                        sx={{
+                          paddingLeft: 0,
+                          fontFamily: 'Poppins-Medium !important',
+                        }}
+                      />
+                      Add utensils to my order.
+                    </Typography>
+                  </Grid>
+                )}
 
-              <Grid item xs={12} sx={{ padding: '20px 0px' }}>
-                <Divider sx={{ borderColor: '#224c65' }} />
-              </Grid>
+              {basketObj &&
+                basketObj.basket &&
+                basketObj.basket.deliverymode !== DeliveryModeEnum.dinein && (
+                  <Grid item xs={12} sx={{ padding: '20px 0px' }}>
+                    <Divider sx={{ borderColor: '#224c65' }} />
+                  </Grid>
+                )}
 
               <div
                 className={'upsells'}
