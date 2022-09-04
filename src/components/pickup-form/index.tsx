@@ -99,9 +99,12 @@ const PickupForm = ({ basket, pickupFormRef, orderType }: any) => {
           )
           .email('Invalid email address')
           .required('Email is required'),
-        phone: Yup.string()
-          .min(14, 'Enter valid number')
-          .required('Phone is required'),
+        phone:
+          orderType !== DeliveryModeEnum.dinein
+            ? Yup.string()
+                .min(14, 'Enter valid number')
+                .required('Phone is required')
+            : Yup.string(),
         tableNumber:
           orderType === DeliveryModeEnum.dinein
             ? Yup.string().required('Table Number is required')
@@ -167,30 +170,32 @@ const PickupForm = ({ basket, pickupFormRef, orderType }: any) => {
             />
           </Grid>
 
-          <Grid item xs={12}>
-            <TextField
-              className="mobile-field"
-              aria-label="Phone Number"
-              onBlur={handleBlur}
-              label="Phone Number"
-              aria-required="true"
-              title="Phone Number"
-              value={values.phone}
-              onChange={handleChange}
-              name="phone"
-              InputLabelProps={{
-                shrink: touched && values.phone == '' ? false : true,
-                classes: {
-                  root: values.phone !== '' ? 'mobile-field-label' : '',
-                },
-              }}
-              InputProps={{
-                inputComponent: NumberFormatCustom as any,
-              }}
-              error={Boolean(touched.phone && errors.phone)}
-              helperText={errors.phone}
-            />
-          </Grid>
+          {orderType !== DeliveryModeEnum.dinein && (
+            <Grid item xs={12}>
+              <TextField
+                className="mobile-field"
+                aria-label="Phone Number"
+                onBlur={handleBlur}
+                label="Phone Number"
+                aria-required="true"
+                title="Phone Number"
+                value={values.phone}
+                onChange={handleChange}
+                name="phone"
+                InputLabelProps={{
+                  shrink: touched && values.phone == '' ? false : true,
+                  classes: {
+                    root: values.phone !== '' ? 'mobile-field-label' : '',
+                  },
+                }}
+                InputProps={{
+                  inputComponent: NumberFormatCustom as any,
+                }}
+                error={Boolean(touched.phone && errors.phone)}
+                helperText={errors.phone}
+              />
+            </Grid>
+          )}
 
           <Grid item xs={12}>
             <TextField
