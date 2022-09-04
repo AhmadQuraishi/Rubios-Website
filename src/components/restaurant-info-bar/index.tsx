@@ -16,6 +16,7 @@ import { HoursListing } from '../../helpers/hoursListing';
 import { CalendarTypeEnum } from '../../helpers/hoursListing';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import DialogBox from '../dialog-box';
 const useStyle = makeStyles({
   heading: {
     fontSize: '13px !important',
@@ -31,6 +32,7 @@ const StoreInfoBar = () => {
   const [restaurantInfo, setRestaurantInfo] = useState<ResponseRestaurant>();
   const [restaurantHours, setRestaurantHours] = useState<HoursListing[]>();
   const [showMore, setShowMore] = useState(false);
+  const [open, setOpen] = useState(false);
   const { restaurant, orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
@@ -85,6 +87,19 @@ const StoreInfoBar = () => {
     return false;
   };
 
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDeleteFunction = () => {
+    setOpen(false);
+    window.location.href = '/location';
+  };
+
   return (
     <>
       {restaurantInfo && (
@@ -96,6 +111,14 @@ const StoreInfoBar = () => {
             padding: { xs: '30px 20px', sm: '35px 40px', lg: '35px 100px' },
           }}
         >
+          <DialogBox
+            open={open}
+            handleClose={handleClose}
+            message={
+              'If you change location, your selected items will be removed from your basket, and you will have to choose the items again. Are you sure you want to change locations?'
+            }
+            handleDeleteFunction={() => handleDeleteFunction()}
+          />
           <Grid item xs={12}>
             <Grid container spacing={0} margin="auto">
               <Grid
@@ -223,9 +246,7 @@ const StoreInfoBar = () => {
                           cursor: 'pointer',
                           textDecorationLine: 'underline',
                         }}
-                        onClick={() => {
-                          window.location.href = '/location';
-                        }}
+                        onClick={() => handleClickOpen()}
                       >
                         Change location
                       </p>
