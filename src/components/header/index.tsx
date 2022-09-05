@@ -203,19 +203,22 @@ const Header = (props: any) => {
           </Typography>
           {isMobile ? (
             <>
-              <Link
-                to={restaurant ? '/menu/' + restaurant.slug : '/'}
-                className={
-                  window.location.pathname === '/login' ||
-                  window.location.pathname === '/register'
-                    ? classes.menuItemLink
-                    : classes.menuLink
-                }
-                title="Menu"
-                onClick={() => setShowAccountMenu(false)}
-              >
-                Menu
-              </Link>
+              {restaurant && (
+                <Link
+                  to={restaurant ? '/menu/' + restaurant.slug : '/'}
+                  className={
+                    window.location.pathname === '/login' ||
+                    window.location.pathname === '/register'
+                      ? classes.menuItemLink
+                      : classes.menuLink
+                  }
+                  title="Menu"
+                  onClick={() => setShowAccountMenu(false)}
+                >
+                  Menu
+                </Link>
+              )}
+
               {/* <Drawer open={openDrawer} onClose={() => setOpenDrawer(false)}>
                 <div style={{ padding: '20px' }}>
                   <Link
@@ -345,14 +348,17 @@ const Header = (props: any) => {
             </>
           ) : (
             <>
-              <Link
-                to={restaurant ? '/menu/' + restaurant.slug : '/'}
-                className={classes.menuLink}
-                title="Main Menu"
-                onClick={() => setShowAccountMenu(false)}
-              >
-                Main Menu
-              </Link>
+              {restaurant && (
+                <Link
+                  to={restaurant ? '/menu/' + restaurant.slug : '/'}
+                  className={classes.menuLink}
+                  title="Main Menu"
+                  onClick={() => setShowAccountMenu(false)}
+                >
+                  Main Menu
+                </Link>
+              )}
+
               {providerToken && providerToken.first_name
                 ? !hideLoginedPanel && (
                     <Grid
