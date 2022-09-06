@@ -1317,6 +1317,7 @@ const Product = () => {
                                         lg={5}
                                         sx={{
                                           width: '120px',
+                                          maxWidth: { lg: '120px', xs: 'auto' },
                                           height: '120px',
                                           display: 'flex',
                                           alignItems: 'center',
@@ -1538,7 +1539,7 @@ const Product = () => {
                     >
                       <label
                         title="Quantity"
-                        id={"quantity-label-id"}
+                        id={'quantity-label-id'}
                         className="label bold quantity-label"
                         htmlFor="quantityfield"
                       >
