@@ -21,7 +21,9 @@ const applyRewardOnBasketReducer = (state = initialState, action: any) => {
         error: null,
       };
     case Type.APPLY_REWARD_TO_BASKET_REQUEST_FAILURE:
-      return { ...state, loading: false, error: action.error };
+      return { ...state, error: action.error };
+    case Type.APPLY_REWARD_TO_BASKET_REQUEST_FAILURE_STOP_LOADER:
+      return { ...state, loading: false };
     case userTypes.USER_LOGOUT:
       return {
         ...initialState,
