@@ -1538,6 +1538,7 @@ const Product = () => {
                     >
                       <label
                         title="Quantity"
+                        id={"quantity-label-id"}
                         className="label bold quantity-label"
                         htmlFor="quantityfield"
                       >
