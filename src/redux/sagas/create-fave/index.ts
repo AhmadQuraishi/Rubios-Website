@@ -7,7 +7,7 @@ import {
   createFaveSuccess,
 } from '../../actions/create-fave';
 import {
-  markOrderAsFav,
+  markOrderFav,
   updateLocalRecentOrdersList,
 } from '../../../helpers/setRecentOrders';
 import { requestUserRecentOrders } from '../../../services/user';
@@ -16,7 +16,13 @@ import { getUserRecentOrdersSuccess } from '../../actions/user';
 function* createFaveHandler(action: any): any {
   try {
     const response = yield call(requestCreateFave, action.payload);
-    markOrderAsFav(action.payload.basketid);
+    const favId =
+      (response &&
+        response.faves &&
+        response.faves.length &&
+        response.faves[0].id) ||
+      '';
+    markOrderFav(action.payload.basketid, favId, true);
     updateLocalRecentOrdersList();
     const recentorders = yield call(requestUserRecentOrders);
     yield put(getUserRecentOrdersSuccess(recentorders));
