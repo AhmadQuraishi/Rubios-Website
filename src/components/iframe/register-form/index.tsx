@@ -136,6 +136,14 @@ const RegisterForm = () => {
     return errorsArray;
   };
 
+  window.parent.addEventListener(
+    'click',
+    function () {
+      console.log('workinggggggg')
+    },
+    false,
+  );
+
   return (
     <Grid container className="w-register">
       {/*<Grid item xs={6}>*/}
