@@ -58,11 +58,12 @@ const Rewards = (props: any) => {
         references: [refID],
       };
       if (
-        selectedRewardID === refID.toString() &&
         basketObj &&
         basketObj.basket &&
         basketObj.basket.appliedrewards &&
-        basketObj.basket.appliedrewards.length > 0
+        basketObj.basket.appliedrewards.filter(
+          (reward: any) => reward.reference === refID,
+        ).length > 0
       ) {
         setRemovedActionClicked(true);
         setSelectedRewardID(refID);
