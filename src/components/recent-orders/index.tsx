@@ -8,7 +8,7 @@ import {
   DialogActions,
   TextField,
   useTheme,
-  useMediaQuery
+  useMediaQuery,
 } from '@mui/material';
 import './index.css';
 import React, { Fragment, useEffect, useState } from 'react';
@@ -38,7 +38,6 @@ const RecentOrders = () => {
   const [items, setItems] = useState([]);
   const [price, setPrice] = useState('');
 
-
   const [prevOrderType, setPrevOrderType] = useState<string>();
   const { restaurant, error } = useSelector(
     (state: any) => state.restaurantInfoReducer,
@@ -62,7 +61,12 @@ const RecentOrders = () => {
     if (createBasketObj && clickAction) {
       if (createBasketObj.basket && clickAction) {
         dispatch(getResturantInfoRequest(createBasketObj.basket.vendorid));
-        dispatch(getUpsellsRequest(createBasketObj.basket.id, createBasketObj.basket.vendorid));
+        dispatch(
+          getUpsellsRequest(
+            createBasketObj.basket.id,
+            createBasketObj.basket.vendorid,
+          ),
+        );
       } else if (createBasketObj.error && createBasketObj.error.message) {
         setClickAction(false);
       }
@@ -79,7 +83,10 @@ const RecentOrders = () => {
         ),
       );
       dispatch(getBasketRequest('', createBasketObj.basket, 'Previous'));
-        displayToast('SUCCESS', 'The items from your recent order have been added to your cart.');
+      displayToast(
+        'SUCCESS',
+        'The items from your recent order have been added to your cart.',
+      );
       navigate('/checkout');
     }
     if (error && error.message) {
@@ -91,8 +98,13 @@ const RecentOrders = () => {
     if (userRecentOrders && userRecentOrders.orders) {
       let orders: any[] = [];
       userRecentOrders.orders.map((item: any) => {
-        if (isWebRecentOrder(item.oloid)) {
-          orders.push(item);
+        const response = isWebRecentOrder(item.oloid);
+        if (response.localExist) {
+          const newObj = {
+            ...item,
+            isMarkFav: response.isMarkFav,
+          };
+          orders.push(newObj);
         }
       });
       setOrders(orders);
@@ -110,7 +122,10 @@ const RecentOrders = () => {
     dispatch(createBasketFromPrevOrderRequest(requestBody));
   };
   //Set order as favorite
-  const handleClickOpen = (favid: string, products: any, price: string) => {
+  const handleClickOpen = (favid: string, products: any, price: string, isMarkFav: boolean) => {
+    if(isMarkFav){
+      return;
+    }
     if (products && products.length > 0) {
       setItems(products);
     }
@@ -127,13 +142,17 @@ const RecentOrders = () => {
   };
 
   const isWebRecentOrder = (id: any) => {
-    let result = false;
+    let result: any = {
+      localExist: false,
+      isMarkFav: false,
+    };
     let recentorders = localStorage.getItem('recentorders');
     if (recentorders) {
       let recentordersList = JSON.parse(recentorders);
-      let order = recentordersList.find((x: any) => x.orderid == id);
-      if (order && order.isMarkFav === false) {
-        result = true;
+      let order = recentordersList.find((x: any) => x.orderid === id);
+      if (order) {
+        result.localExist = true;
+        result.isMarkFav = order.isMarkFav;
       }
     }
     return result;
@@ -146,7 +165,7 @@ const RecentOrders = () => {
   return (
     <Fragment>
       {(loading || clickAction) && <OrderListSkeletonUI />}
-      {recentorders && recentorders.length == 0 && !loading && (
+      {recentorders && recentorders.length === 0 && !loading && (
         <Typography variant="h6" className="no-orders">
           You don't have any recent orders
         </Typography>
@@ -158,10 +177,7 @@ const RecentOrders = () => {
               <Card elevation={0} className="card-panel">
                 <Grid container>
                   <Grid item xs={10}>
-                    <Typography
-                      variant="caption"
-                      className="order-date"
-                    >
+                    <Typography variant="caption" className="order-date">
                       LAST ORDERED{' '}
                       {moment(order.timeplaced.split(' ')[0]).format('MM/DD')}
                     </Typography>
@@ -179,12 +195,13 @@ const RecentOrders = () => {
                       alt="Set Order as favorite"
                       title="Set Order as favorite"
                       style={{ cursor: 'pointer' }}
-                      className="grey"
+                      className={`${order.isMarkFav ? '' : 'grey'}`}
                       onClick={() => {
                         handleClickOpen(
                           order.oloid,
                           order.products,
                           order.total,
+                          order.isMarkFav
                         );
                       }}
                     />
@@ -250,7 +267,7 @@ const RecentOrders = () => {
                         addProductToBag(
                           order.orderref,
                           order.id,
-                          order.deliverymode
+                          order.deliverymode,
                         )
                       }
                     >

@@ -27,13 +27,19 @@ export function setRecentOrders(orderObj: any, basketid: string) {
   }
 }
 
-export function markOrderAsFav(id: any) {
+export function markOrderFav(basketId: string, favId: number, mark: boolean) {
   let recentorders = localStorage.getItem('recentorders');
   if (recentorders) {
     let recentordersList = JSON.parse(recentorders);
-    let order = recentordersList.find((x: any) => x.basketid === id);
+    let order = null;
+    if (basketId !== '') {
+      order = recentordersList.find((x: any) => x.basketid === basketId);
+    } else {
+      order = recentordersList.find((x: any) => x.favId === favId);
+    }
     if (order) {
-      order.isMarkFav = false;
+      order.isMarkFav = mark;
+      order.favId = favId;
       localStorage.setItem('recentorders', JSON.stringify(recentordersList));
     }
   }
