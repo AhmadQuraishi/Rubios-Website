@@ -424,6 +424,7 @@ const RegisterForm = () => {
                         onOpen={() => {
                           setSelectShrink(true);
                         }}
+                        MenuProps={{ PaperProps: { sx: { maxHeight: 150 } } }}
                       >
                         {locations &&
                           locations.map((location: any, index: number) => (
