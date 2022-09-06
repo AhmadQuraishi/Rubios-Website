@@ -424,13 +424,28 @@ const RegisterForm = () => {
                         onOpen={() => {
                           setSelectShrink(true);
                         }}
-                        MenuProps={{ PaperProps: { sx: { maxHeight: 150 } } }}
+                        MenuProps={{
+                          PaperProps: {
+                            sx: {
+                              position: 'relative',
+                              left: '-5px !important',
+                              marginLeft: 'auto',
+                              marginRight: 'auto',
+                              maxHeight: 150,
+                              width: 270,
+                            },
+                          },
+                        }}
                       >
                         {locations &&
                           locations.map((location: any, index: number) => (
                             <MenuItem
                               key={index++}
                               value={location.location_id}
+                              style={{
+                                whiteSpace: 'normal',
+                                wordBreak: 'break-all',
+                              }}
                             >
                               {location.name}
                             </MenuItem>
