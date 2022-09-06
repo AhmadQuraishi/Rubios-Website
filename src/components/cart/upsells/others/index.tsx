@@ -237,8 +237,8 @@ const UpsellsOthers = ({ upsellsType }: any) => {
                 itemChild.selected ? 'content-panel selected' : 'content-panel'
               }
               item
-              xs={12}
-              sm={12}
+              xs={6}
+              sm={6}
               md={6}
               lg={6}
               sx={{ position: 'relative' }}
