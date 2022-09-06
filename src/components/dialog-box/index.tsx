@@ -30,16 +30,16 @@ const DialogBox: React.FC<Props> = ({
         </DialogTitle>
         <DialogActions>
           <Button
-            aria-label="Cancel"
-            title="Cancel"
+            aria-label="No"
+            title="No"
             className="link"
             onClick={handleClose}
           >
             No
           </Button>
           <Button
-            aria-label="Delete"
-            title="Delete"
+            aria-label="Yes"
+            title="Yes"
             className="link default"
             onClick={handleDeleteFunction}
             autoFocus

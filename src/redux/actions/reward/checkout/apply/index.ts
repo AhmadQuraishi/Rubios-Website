@@ -39,3 +39,9 @@ export function applyRewardOnBasketRequestFailure(error: any) {
     error: error,
   };
 }
+
+export function applyRewardOnBasketFailureStopLoader() {
+  return {
+    type: Type.APPLY_REWARD_TO_BASKET_REQUEST_FAILURE_STOP_LOADER,
+  };
+}
