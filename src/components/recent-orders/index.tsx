@@ -122,8 +122,13 @@ const RecentOrders = () => {
     dispatch(createBasketFromPrevOrderRequest(requestBody));
   };
   //Set order as favorite
-  const handleClickOpen = (favid: string, products: any, price: string, isMarkFav: boolean) => {
-    if(isMarkFav){
+  const handleClickOpen = (
+    favid: string,
+    products: any,
+    price: string,
+    isMarkFav: boolean,
+  ) => {
+    if (isMarkFav) {
       return;
     }
     if (products && products.length > 0) {
@@ -201,7 +206,7 @@ const RecentOrders = () => {
                           order.oloid,
                           order.products,
                           order.total,
-                          order.isMarkFav
+                          order.isMarkFav,
                         );
                       }}
                     />
