@@ -5,10 +5,11 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import './check-in.css';
 import { makeStyles } from '@mui/styles';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createCheckIn } from '../../redux/actions/check-in';
 import { IMaskInput } from 'react-imask';
 import { forwardRef } from 'react';
+import { QRCodeSVG } from 'qrcode.react';
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     padding: '0px 20px 0px 20px',
@@ -57,6 +58,8 @@ const NumberFormatCustom = forwardRef<HTMLElement, CustomProps>(
 const CheckIn = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const { providerToken } = useSelector((state: any) => state.providerReducer);
+
   return (
     <div className={classes.root}>
       <Grid container>
@@ -79,14 +82,15 @@ const CheckIn = () => {
           >
             If you order online, you automatically checked in.
           </Typography>
-          <div style={{ textAlign: 'center' }}>
-            <Box
-              component="img"
-              alt="QR Code"
-              style={{ paddingTop: 25, paddingBottom: 50 }}
-              aria-label="QR Code"
-              src={qrCode}
-            />
+          <div style={{ textAlign: 'center', paddingTop: 25, paddingBottom: 50 }}>
+            {/*<Box*/}
+            {/*  component="img"*/}
+            {/*  alt="QR Code"*/}
+            {/*  style={{ paddingTop: 25, paddingBottom: 50 }}*/}
+            {/*  aria-label="QR Code"*/}
+            {/*  src={qrCode}*/}
+            {/*/>*/}
+            <QRCodeSVG size={200} value={providerToken.user_as_qrcode || ''} />
           </div>
         </Grid>
         <Grid item md={12}>
@@ -205,7 +209,14 @@ const CheckIn = () => {
                         appear in the barcode. e.g. 0600101234124
                       </Typography>
                     </Grid>
-                    <Grid item xs={12} sm={8} md={10} lg={10}>
+                    <Grid
+                      sx={{ paddingBottom: { xs: '25px', md: 0 } }}
+                      item
+                      xs={12}
+                      sm={8}
+                      md={10}
+                      lg={10}
+                    >
                       <Button
                         aria-label="SUBMIT"
                         title="SUBMIT"
