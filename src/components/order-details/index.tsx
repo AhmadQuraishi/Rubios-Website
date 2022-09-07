@@ -1,10 +1,12 @@
-import { Grid, Typography, Divider } from '@mui/material';
-import Tooltip from '@mui/material/Tooltip';
-import ClickAwayListener from '@mui/material/ClickAwayListener';
+import { Grid, Typography, Divider, Button } from '@mui/material';
 import './order-details.css';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { calculateTaxAndFee } from '../../helpers/common';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
 
 const getOptions = (options: any) => {
   let val = '';
@@ -15,21 +17,13 @@ const getOptions = (options: any) => {
 };
 
 const OrderDetails = ({ basket, tipPercentage, page }: any) => {
-  const [openToolTip, setOpenToolTip] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
   const [products, setProducts] = useState<any[]>();
 
   const utensilsReducer = useSelector((state: any) => state.utensilsReducer);
 
-  // const handleToolTip = () => {
-  //   setOpenToolTip(!openToolTip);
-  // };
-
-  const handleTooltipClose = () => {
-    setOpenToolTip(false);
-  };
-
-  const handleTooltipOpen = () => {
-    setOpenToolTip(!openToolTip);
+  const handleClose = () => {
+    setOpen(false);
   };
 
   useEffect(() => {
@@ -208,78 +202,76 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
               <Grid container>
                 <Grid item xs={9} sm={9} md={9} lg={9}>
                   <div>
-                    <ClickAwayListener onClickAway={handleTooltipClose}>
-                      <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <Typography
-                          variant="h6"
-                          className="n-bold"
-                          title="ESTIMATED TAX AND FEES"
-                        >
-                          ESTIMATED TAX AND FEES
-                        </Typography>
-                        <Tooltip
-                          PopperProps={{
-                            disablePortal: true,
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <Typography
+                        variant="h6"
+                        className="n-bold"
+                        title="ESTIMATED TAX AND FEES"
+                      >
+                        ESTIMATED TAX AND FEES
+                        <span
+                          onClick={() => {
+                            setOpen(true);
                           }}
-                          placement="top"
-                          onClose={handleTooltipClose}
-                          open={openToolTip}
-                          disableFocusListener
-                          disableHoverListener
-                          disableTouchListener
-                          title={
-                            <>
-                              <div className="tooltip-inner">
-                                <span>
-                                  <Typography className="text">
-                                    SALES TAX:
-                                  </Typography>
-                                </span>
-                                <span className="space-between"></span>
-                                <span>
-                                  <Typography className="text">
-                                    $
-                                    {basket &&
-                                      basket.taxes &&
-                                      basket.taxes
-                                        .reduce(
-                                          (sum: number, tax: any) =>
-                                            sum + tax.tax,
-                                          0,
-                                        )
-                                        .toFixed(2)}
-                                  </Typography>
-                                </span>
-                              </div>
-                              <div className="tooltip-inner">
-                                <span>
-                                  <Typography className="text">
-                                    SERVICE FEE:
-                                  </Typography>
-                                </span>
-                                <span className="space-between"></span>
-                                <span>
-                                  {' '}
-                                  <Typography className="text">
-                                    $
-                                    {(basket && basket.totalfees.toFixed(2)) ||
-                                      0}
-                                  </Typography>
-                                </span>
-                              </div>
-                            </>
-                          }
+                          aira-label="help Icon"
+                          className="help-icon"
                         >
-                          <span
-                            onClick={handleTooltipOpen}
-                            aira-label="help Icon"
-                            className="help-icon"
+                          ?
+                        </span>
+                      </Typography>
+
+                      <Dialog
+                        open={open}
+                        onClose={handleClose}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                      >
+                        <DialogTitle>ESTIMATED TAX AND FEES</DialogTitle>
+                        <DialogContent>
+                          <Grid container className={'taxes'} spacing={1}>
+                            <Grid item xs={9}>
+                              <Typography className="text-info-title">
+                                SALES TAX:
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={3} justifyContent={'flex-end'}>
+                              <Typography className="text-info-desc">
+                                $
+                                {basket &&
+                                  basket.taxes &&
+                                  basket.taxes
+                                    .reduce(
+                                      (sum: number, tax: any) => sum + tax.tax,
+                                      0,
+                                    )
+                                    .toFixed(2)}
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={9}>
+                              <Typography className="text-info-title">
+                                SERVICE FEE:
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={3}>
+                              <Typography className="text-info-desc">
+                                ${(basket && basket.totalfees.toFixed(2)) || 0}
+                              </Typography>
+                            </Grid>
+                          </Grid>
+                        </DialogContent>
+
+                        <DialogActions>
+                          <Button
+                            aria-label="OK"
+                            title="OK"
+                            className="link default"
+                            onClick={handleClose}
                           >
-                            ?
-                          </span>
-                        </Tooltip>
-                      </div>
-                    </ClickAwayListener>
+                            OK
+                          </Button>
+                        </DialogActions>
+                      </Dialog>
+                    </div>
                   </div>
                 </Grid>
                 <Grid item xs={3} sm={3} md={3} lg={3}>
