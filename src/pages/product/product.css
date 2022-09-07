@@ -483,6 +483,7 @@ input[type='check']:checked+label {
 
 .product-detail .menu-items .content-panel.selected .card-panel .name-img-panel .name-panel {
   color: #0073BD;
+  word-break: break-word;
 }
 
 .product-detail .menu-items .content-panel .card-panel .name-img-panel .name-panel {
