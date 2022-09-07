@@ -1308,6 +1308,7 @@ const Product = () => {
                                     <Grid
                                       container
                                       spacing={1}
+                                      style={{ width: '100%'}}
                                       className="name-img-panel"
                                       sx={{ padding: '0', marginTop: '0' }}
                                     >
