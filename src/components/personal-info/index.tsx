@@ -429,12 +429,31 @@ const PersonalInfo = () => {
                           value={favlocation && favlocation}
                           label="Favorite Location"
                           onChange={handleChangeLocation}
+                          MenuProps={{
+                            PaperProps: {
+                              sx: {
+                                // position: 'relative',
+                                // left: {
+                                //   xs: '0px !Important',
+                                //   sm: '-5px !important',
+                                // },
+                                // marginLeft: 'auto',
+                                // marginRight: 'auto',
+                                maxHeight: 150,
+                                width: 270,
+                              },
+                            },
+                          }}
                         >
                           {locations &&
                             locations.map((location: any, index: number) => (
                               <MenuItem
                                 key={index++}
                                 value={location.location_id}
+                                style={{
+                                  whiteSpace: 'normal',
+                                  wordBreak: 'break-all',
+                                }}
                               >
                                 {location.name}
                               </MenuItem>
