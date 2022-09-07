@@ -364,6 +364,16 @@ fieldset {
 
 }
 
+.taxes .text-info-title {
+  line-height: 1.0;
+  font-family: 'Poppins-Medium', sans-serif;
+}
+
+.taxes .text-info-desc {
+  line-height: 1.0;
+  text-align: right;
+  font-family: 'Poppins-Regular', sans-serif;
+}
 
 @media screen and (min-width: 600px) {
   .css-zv4r1b {
@@ -375,18 +385,4 @@ fieldset {
   .css-zv4r1b {
     width: 200px !important;
   }
-}
-
-.tooltip-inner {
-  display: flex;
-  justify-content: space-between;
-}
-
-
-.tooltip-inner .text {
-  font-size: 12px;
-}
-
-.tooltip-inner .space-between {
-  width: 20px
 }
