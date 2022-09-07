@@ -488,7 +488,7 @@ input[type='check']:checked+label {
 }
 
 .product-detail .menu-items .content-panel .card-panel .name-img-panel .name-panel {
-  padding-left: 12px;
+  padding-left: 24px;
   color: #2b4b62;
 }
 
