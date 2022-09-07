@@ -176,7 +176,7 @@
     }
     .upsells .content-panel.selected .card-panel .check-mark {
       /* margin: auto; */
-      left: 120px !important;
+      /*left: 120px !important;*/
       right: 0 !important;
       top: 130px !important;
       bottom: auto !important;

@@ -32,10 +32,16 @@
 
 @media screen and (max-width: 600px) {
   .footer-control {
-    margin-bottom: 175px !important;
+    margin-bottom: 120px !important;
   }
-   
+
 }
+
+  @media screen and (max-width: 468px) {
+    .footer-control {
+      margin-bottom: 100px !important;
+    }
+  }
 
 @media screen and (min-Width: 550px) {
     .footer-control .listsetting{
