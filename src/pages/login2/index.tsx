@@ -130,6 +130,7 @@ const Login2 = () => {
                   <li>
                     <ReactFacebookLogin
                       appId={process.env.REACT_APP_FACEBOOK_APP_ID || ''}
+                      isMobile={false}
                       fields="name,email,picture"
                       scope="public_profile,email"
                       callback={handleCallBackfacebook}

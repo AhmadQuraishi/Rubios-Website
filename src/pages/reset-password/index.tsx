@@ -101,6 +101,7 @@ const ResetPassword = () => {
                 </Typography>
                 <ReactFacebookLogin
                   appId={process.env.REACT_APP_FACEBOOK_APP_ID || ''}
+                  isMobile={false}
                   fields="name,email,picture"
                   callback={handleCallBackfacebook}
                   textButton="SIGN IN WITH FACEBOOK"
