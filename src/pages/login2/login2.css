@@ -93,8 +93,32 @@
     margin-top: 15px;
   }
 }
+@media screen and (max-width: 1200px) {
+  .login-wrapper {
+    margin: 80px 75px !important;
+  }
+  .login-wrapper .login-content {
+    padding: 35px 35px 45px 35px;
+  }
+  .login-content .left-col {
+    border-right: none !important;
+    border-bottom: 1px solid #0069aa;
+    padding: 0px 0px 40px 0px !important;
+    margin: 0px 0px 40px 0px !important;
+  }
+  .login-content .right-col {
+    padding: 0px 65px;
+  }
+  .login-content .right-col .acc-btn {
+    width: calc(100% - 40px);
+    margin: 45px 20px 0px 20px;
+  }
+  .login-wrapper .login-content .label.bold {
+    margin-top: 15px;
+  }
+}
 
-@media screen and (max-width: 468px) {
+@media screen and (max-width: 600px) {
   .login-wrapper {
     margin: 15px !important;
   }

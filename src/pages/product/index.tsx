@@ -34,6 +34,8 @@ import axios from 'axios';
 import { changeImageSize, checkTacoMatch } from '../../helpers/common';
 import { BorderRight } from '@mui/icons-material';
 import Page from '../../components/page-title';
+import { facebookSendEvent } from '../../redux/actions/facebook-conversion';
+import { facebookConversionTypes } from '../../redux/types/facebook-conversion';
 
 const Product = () => {
   const theme = useTheme();
@@ -54,6 +56,7 @@ const Product = () => {
   const { authToken } = useSelector((state: any) => state.authReducer);
   const upsellsObj = useSelector((state: any) => state.getUpsellsReducer);
   const utensilsReducer = useSelector((state: any) => state.utensilsReducer);
+  const { providerToken } = useSelector((state: any) => state.providerReducer);
   const productUpdateObj = useSelector(
     (state: any) => state.updateProductReducer,
   );
@@ -256,6 +259,24 @@ const Product = () => {
         dispatch(addProductRequest(basket?.id || '', request));
       }
     }
+    let userData: any = null;
+
+    if (providerToken) {
+      userData = {
+        first_name: providerToken.first_name || '',
+        last_name: providerToken.last_name || '',
+        email: providerToken.email || '',
+        phone: providerToken.phone || '',
+      };
+    }
+
+    dispatch(
+      facebookSendEvent(
+        facebookConversionTypes.FACEBOOK_ADD_CART_EVENT,
+        userData,
+        null,
+      ),
+    );
   };
 
   useEffect(() => {
@@ -1308,7 +1329,7 @@ const Product = () => {
                                     <Grid
                                       container
                                       spacing={1}
-                                      style={{ width: '100%'}}
+                                      style={{ width: '100%' }}
                                       className="name-img-panel"
                                       sx={{ padding: '0', marginTop: '0' }}
                                     >
