@@ -41,6 +41,8 @@ import { updateGuestUserInfo } from '../../redux/actions/order';
 import { navigateAppAction } from '../../redux/actions/navigate-app';
 import { getRewardsNew } from '../../redux/actions/reward';
 import TagManager from 'react-gtm-module';
+import { facebookSendEvent } from '../../redux/actions/facebook-conversion';
+import { facebookConversionTypes } from '../../redux/types/facebook-conversion';
 
 const Checkout = () => {
   const dispatch = useDispatch();
@@ -69,7 +71,7 @@ const Checkout = () => {
   const basketObj = useSelector((state: any) => state.basketReducer);
   const { authToken } = useSelector((state: any) => state.authReducer);
   const { providerToken } = useSelector((state: any) => state.providerReducer);
-  const { guestUser } = useSelector((state: any) => state.orderReducer);
+  const { guestUser } = useSelector((state: any) => state.guestReducer);
   const { rewards: qualifyingRewards } = useSelector(
     (state: any) => state.getRewardForCheckoutReducer,
   );
@@ -672,6 +674,7 @@ const Checkout = () => {
   };
 
   const fireEventAfterPlacingOrder = (order: any) => {
+    let userObj: any = null;
     const tagManagerArgs: any = {
       dataLayer: {
         event: 'trackTrans',
@@ -680,6 +683,33 @@ const Checkout = () => {
     };
 
     TagManager.dataLayer(tagManagerArgs);
+    if (providerToken) {
+      userObj = {
+        first_name: providerToken.first_name || '',
+        last_name: providerToken.last_name || '',
+        email: providerToken.email || '',
+        phone: providerToken.phone || '',
+      };
+    } else {
+      if (guestUser) {
+        userObj = {
+          first_name: guestUser.firstname || '',
+          last_name: guestUser.lastname || '',
+          email: guestUser.emailaddress || '',
+          phone: guestUser.contactnumber || '',
+        }
+      }
+    }
+    dispatch(
+      facebookSendEvent(
+        facebookConversionTypes.FACEBOOK_PURCHASE_EVENT,
+        userObj,
+        {
+          value: order.total,
+          currency: 'USD',
+        },
+      ),
+    );
   };
 
   React.useEffect(() => {
