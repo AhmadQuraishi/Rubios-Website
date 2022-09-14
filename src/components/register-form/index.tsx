@@ -428,14 +428,17 @@ const RegisterForm = () => {
                           PaperProps: {
                             sx: {
                               position: 'relative',
-                              left: {
-                                xs: '0px !Important',
-                                sm: '-5px !important',
+                              // left: {
+                              //   xs: '0px !Important',
+                              //   sm: '-5px !important',
+                              // },
+                              maxWidth: {
+                                xs: 190,
                               },
-                              marginLeft: 'auto',
-                              marginRight: 'auto',
-                              maxHeight: 150,
-                              width: 270,
+                              // marginLeft: 'auto',
+                              // marginRight: 'auto',
+                              // maxHeight: 150,
+                              // width: 270,
                             },
                           },
                         }}

@@ -78,9 +78,9 @@ const CheckIn = () => {
           <Typography
             variant="body2"
             className="body-text"
-            title="If you order online, you automatically checked in."
+            title="If you order online, you are automatically checked in."
           >
-            If you order online, you automatically checked in.
+            If you order online, you are automatically checked in.
           </Typography>
           <div style={{ textAlign: 'center', paddingTop: 25, paddingBottom: 50 }}>
             {/*<Box*/}

@@ -10,6 +10,7 @@ import './product.css';
 import * as React from 'react';
 import ProductOptionsSkeletonUI from '../../components/product-options-skeleton-ui';
 import StoreInfoBar from '../../components/restaurant-info-bar';
+
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategoriesRequest } from '../../redux/actions/category';
@@ -38,7 +39,7 @@ import Page from '../../components/page-title';
 const Product = () => {
   const theme = useTheme();
   const { id, edit } = useParams();
-
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [productDetails, setProductDetails] = useState<ProductInfo>();
   const [productOptions, setProductOptions] = useState<ResponseModifiers>();
   const [basket, setBasket] = useState<ResponseBasket>();
@@ -1308,7 +1309,7 @@ const Product = () => {
                                     <Grid
                                       container
                                       spacing={1}
-                                      style={{ width: '100%'}}
+                                      style={{ width: '100%' }}
                                       className="name-img-panel"
                                       sx={{ padding: '0', marginTop: '0' }}
                                     >
@@ -1538,14 +1539,25 @@ const Product = () => {
                       style={{ display: 'flex', alignItems: 'center' }}
                       className="button-panel-sx"
                     >
-                      <label
-                        title="Quantity"
-                        id={'quantity-label-id'}
-                        className="label bold quantity-label"
-                        htmlFor="quantityfield"
-                      >
-                        QUANTITY
-                      </label>
+                      {isMobile ? ( 
+                        <label
+                          title="Quantity"
+                          id={'quantity-label-id'}
+                          className="label bold quantity-label"
+                          htmlFor="quantityfield"
+                        >
+                          QTY
+                        </label>
+                      ) : (
+                        <label
+                          title="Quantity"
+                          id={'quantity-label-id'}
+                          className="label bold quantity-label"
+                          htmlFor="quantityfield"
+                        >
+                          QUANTITY
+                        </label>
+                       )}
                       <div className="quantity">
                         <Button
                           title=""
