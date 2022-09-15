@@ -1,4 +1,12 @@
-import { Grid, Typography, Card, CardContent, Theme, useMediaQuery, useTheme } from '@mui/material';
+import {
+  Grid,
+  Typography,
+  Card,
+  CardContent,
+  Theme,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Link } from 'react-router-dom';
 import { Fragment } from 'react';
@@ -10,6 +18,9 @@ import {
   changeImageSize,
   checkProductAvailability,
 } from '../../helpers/common';
+import { facebookSendEvent } from '../../redux/actions/facebook-conversion';
+import { facebookConversionTypes } from '../../redux/types/facebook-conversion';
+import { useSelector, useDispatch } from 'react-redux';
 
 const useStyles = makeStyles((theme: Theme) => ({
   img: {
@@ -50,10 +61,13 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const ProductListingCarousel = (props: any) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const { productList, shownItemsCount, imgPath, orderType } = props;
   let products: [Product] = productList;
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const { providerToken } = useSelector((state: any) => state.providerReducer);
+
   // if (shownItemsCount) {
   //   products = productList.slice(0, shownItemsCount);
   // }
@@ -146,6 +160,24 @@ const ProductListingCarousel = (props: any) => {
   //     </p>
   //   );
   // }
+  const triggerFacebookEventOnViewContentProduct = () => {
+    let userObj: any = null;
+    if (providerToken) {
+      userObj = {
+        first_name: providerToken.first_name || '',
+        last_name: providerToken.last_name || '',
+        email: providerToken.email || '',
+        phone: providerToken.phone || '',
+      };
+    }
+    dispatch(
+      facebookSendEvent(
+        facebookConversionTypes.FACEBOOK_VIEW_CONTENT_EVENT,
+        userObj,
+        null,
+      ),
+    );
+  };
 
   return (
     <Fragment>
@@ -169,8 +201,8 @@ const ProductListingCarousel = (props: any) => {
         deviceType={props.deviceType}
         dotListClass="custom-dot-list-style"
         itemClass="carousel-item-padding-40-px carousel-mobile-show-next-slide"
-      // customRightArrow={<CustomRightArrow onClick={undefined} />}
-      // customLeftArrow={<CustomLeftArrow onClick={undefined} />}
+        // customRightArrow={<CustomRightArrow onClick={undefined} />}
+        // customLeftArrow={<CustomLeftArrow onClick={undefined} />}
       >
         {products.map(
           (item: any, index: number) =>
@@ -190,6 +222,9 @@ const ProductListingCarousel = (props: any) => {
                 style={{ padding: 10 }}
               >
                 <Link
+                  onClick={() => {
+                    triggerFacebookEventOnViewContentProduct();
+                  }}
                   to={`/product/${item.id}`}
                   style={{ textDecoration: 'none' }}
                 >
@@ -243,18 +278,19 @@ const ProductListingCarousel = (props: any) => {
                           <Grid
                             item
                             xs={6}
-                            title={`${item.caloriesseparator
+                            title={`${
+                              item.caloriesseparator
                                 ? item.basecalories +
-                                item.caloriesseparator +
-                                item.maxcalories
+                                  item.caloriesseparator +
+                                  item.maxcalories
                                 : item.basecalories
-                              } cal`}
+                            } cal`}
                             className={classes.cal}
                           >
                             {item.caloriesseparator
                               ? item.basecalories +
-                              item.caloriesseparator +
-                              item.maxcalories
+                                item.caloriesseparator +
+                                item.maxcalories
                               : item.basecalories}{' '}
                             cal
                           </Grid>
