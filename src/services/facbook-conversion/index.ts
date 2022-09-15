@@ -6,11 +6,21 @@ import { sha256Method } from '../../helpers/common';
 const eventList = {
   purchase: {
     event_name: 'Purchase',
-    event_id: 12345,
   },
   addToCart: {
-    event_id: 12345,
-    event_name: 'TestEvent',
+    event_name: 'AddToCart',
+  },
+  completeRegistration: {
+    event_name: 'CompleteRegistration',
+  },
+  findLocation: {
+    event_name: 'FindLocation',
+  },
+  initiateCheckout: {
+    event_name: 'InitiateCheckout',
+  },
+  viewContent: {
+    event_name: 'ViewContent',
   },
 };
 
@@ -60,55 +70,46 @@ export const requestFacebookConversion = async (
   customData: any,
 ) => {
   try {
-    let current_timestamp: any = moment().unix();
-
-    let obj: any = {
-      event_time: current_timestamp,
-      event_source_url: window.location.href,
-      action_source: 'website',
-      user_data: {
-        client_ip_address: '203.175.78.102',
-        client_user_agent:
-          'Mozilla/5.0 (iPhone; CPU iPhone OS 13_3_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.5 Mobile/15E148 Safari/604.1',
-      },
+    let body: any = {
+      event_details: {},
+      custom_data: {},
+      user_data: {},
     };
 
-    const userHashedData = await hashUserData(userData);
-
-    if (Object.keys(userHashedData).length) {
-      const userDataTemp: any = {
-        ...obj.user_data,
-        ...userHashedData,
-      };
-      obj.user_data = userDataTemp;
+    if (userData) {
+      body.user_data = userData;
     }
 
-    let eventDetails = null;
+    let eventDetails: any = {};
     if (eventType === facebookConversionTypes.FACEBOOK_PURCHASE_EVENT) {
-      eventDetails = eventList.purchase;
+      eventDetails['event_name'] = eventList.purchase.event_name;
     } else if (eventType === facebookConversionTypes.FACEBOOK_ADD_CART_EVENT) {
-      eventDetails = eventList.addToCart;
+      eventDetails['event_name'] = eventList.addToCart.event_name;
+    } else if (
+      eventType === facebookConversionTypes.FACEBOOK_VIEW_CONTENT_EVENT
+    ) {
+      eventDetails['event_name'] = eventList.viewContent.event_name;
+    } else if (
+      eventType === facebookConversionTypes.FACEBOOK_COMPLETE_REGISTER_EVENT
+    ) {
+      eventDetails['event_name'] = eventList.completeRegistration.event_name;
+    } else if (
+      eventType === facebookConversionTypes.FACEBOOK_FIND_LOCATION_EVENT
+    ) {
+      eventDetails['event_name'] = eventList.findLocation.event_name;
+    } else if (
+      eventType === facebookConversionTypes.FACEBOOK_INITIATE_CHECKOUT_EVENT
+    ) {
+      eventDetails['event_name'] = eventList.initiateCheckout.event_name;
     }
-    console.log('eventDetails', eventDetails);
-    console.log('type', eventType);
-    if (eventDetails) {
-      console.log('workinggggggggg');
-      obj = {
-        ...obj,
-        ...eventDetails,
-      };
-    }
+
+    body.event_details = eventDetails;
 
     if (customData) {
-      obj['custom_data'] = customData;
+      body['custom_data'] = customData;
     }
 
-    const body = {
-      data: [obj],
-      test_event_code: 'TEST91250',
-    };
-
-    const url = `https://graph.facebook.com/v14.0/${process.env.REACT_APP_FACEBOOK_PIXEL_ID}/events?access_token=${process.env.REACT_APP_FACEBOOK_PIXEL_ACCESS_TOKEN}`;
+    const url = `${process.env.REACT_APP_FACEBOOK_CONVERSION_API}`;
     return axios
       .post(url, body)
       .then((response) => {
