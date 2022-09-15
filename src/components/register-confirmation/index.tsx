@@ -295,26 +295,27 @@ const RegisterConfirmation = ({ id }: any) => {
                     }
                   />
                 </Grid>
-                <div>
-                <Grid item xs={12} sm={12} md={12} lg={12} sx={{backgroundColor: "white", padding: '0px 10px 0px 0px !important', width: "99%"}}>
+                <div style={{marginTop:"10px", marginLeft: "-2.5px"}}>
+                <Grid item  xs={12} sm={12} md={12} lg={12} sx={{backgroundColor: "transparent", width: "99%",fontFamily:'Poppins-Regular, sans-serif !Important', spacing:"2px"}}>
                     <Typography
                       variant="body2"
-                      className="body-text"
-                      id="chkTermandCondition"
+                      // id="chkTermandCondition"
                       title="I agree to the  Rubios terms and conditions and to receiving marketing communications from Rubios."
-                      sx={{ width: '100%'}}
+                      sx={{ width: '100%', color: "white",fontFamily:'Poppins-Regular, sans-serif !Important'}}
+                      
                     >
                       <Checkbox
                         onChange={handleChangeCheckbox}
                         // inputProps={{
                         //   'aria-labelledby': 'chkTermandCondition',
                         // }}
-                        sx={{float: "left",}}
+                        sx={{float: "left",color: "white",padding: '0px 10px 0px 0px !important',}}
                        />{' '}
                       I agree to the{' '}
                       <Link
                         href={process.env.REACT_APP_TERMS_LINK}
                         underline="hover"
+                        sx={{color: "#1a86ff"}}
                       >
                         Rubio's terms and conditions{' '}
                       </Link>

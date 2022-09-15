@@ -948,6 +948,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                       display: 'flex',
                                       justifyContent: 'flex-start',
                                       padding: '0 !important',
+                                      alignItems:"center"
                                     }}
                                   >
                                     <Grid item xs={4} lg={4}>

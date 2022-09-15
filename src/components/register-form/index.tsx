@@ -432,8 +432,8 @@ const RegisterForm = () => {
                               //   xs: '0px !Important',
                               //   sm: '-5px !important',
                               // },
-                              maxWidth: {
-                                xs: 190,
+                              width: {
+                                xs: 270,
                               },
                               // marginLeft: 'auto',
                               // marginRight: 'auto',

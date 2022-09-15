@@ -4,7 +4,7 @@
 .order-confirmation .MuiPaper-root {
   padding: 95px;
   min-height: 480px;
-  max-height: 480px;
+  max-height: 680px;
 }
 .order-confirmation .MuiTextField-root {
   width: 100%;
@@ -51,7 +51,7 @@ h6.white {
 .order-confirmation .MuiPaper-root {
   padding: 95px;
   min-height: 410px;
-  max-height: 610px;
+  max-height: 670px;
 }
 .order-confirmation .phone-icon {
   position: absolute;
@@ -74,7 +74,7 @@ h6.white {
   .order-confirmation .card.next-order {
     background-image: none !important;
     max-height: 435px;
-    min-height: 515px;
+    min-height: 610px;
   }
   .order-confirmation .card.next-order .earn-reward {
     flex-basis: 50% !important;
