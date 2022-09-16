@@ -19,6 +19,7 @@ h6.white {
 .order-confirmation button {
   width: 40%;
   margin-top: 7px;
+  margin-right: 4px;
   float: right !important;
 }
 .order-confirmation input {
@@ -51,7 +52,7 @@ h6.white {
 .order-confirmation .MuiPaper-root {
   padding: 95px;
   min-height: 410px;
-  max-height: 670px;
+  max-height: 740px;
 }
 .order-confirmation .phone-icon {
   position: absolute;
@@ -74,7 +75,7 @@ h6.white {
   .order-confirmation .card.next-order {
     background-image: none !important;
     max-height: 435px;
-    min-height: 610px;
+    min-height: 640px;
   }
   .order-confirmation .card.next-order .earn-reward {
     flex-basis: 50% !important;
@@ -96,7 +97,7 @@ h6.white {
     margin-left: 0px !important;
   }
   .order-confirmation .card.next-order button {
-    width: 100%;
+    width: 98.8%;
   }
   .order-confirmation button {
     width: 50%;
