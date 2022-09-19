@@ -4,7 +4,7 @@
 .order-confirmation .MuiPaper-root {
   padding: 95px;
   min-height: 525px;
-  max-height: 680px;
+  max-height: 0px;
 }
 .order-confirmation .MuiTextField-root {
   width: 100%;
@@ -108,7 +108,7 @@ h6.white {
 @media screen and (max-width: 468px) {
   .order-confirmation .card.next-order {
     max-height: 890px;
-    min-height: 890px;
+    min-height: 920px;
   }
   .order-confirmation .order-info {
     padding: 45px 30px 55px;
