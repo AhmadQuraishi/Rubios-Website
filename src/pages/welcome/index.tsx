@@ -27,6 +27,8 @@ import BgImage from '../../assets/imgs/Family_Burrito_Box_mainA573LR.jpg';
 import BgImageNewUser from '../../assets/imgs/rubios-welcome-background.jpg';
 import Page from '../../components/page-title';
 import { getResturantListRequest } from '../../redux/actions/restaurant/list';
+import { facebookSendEvent } from '../../redux/actions/facebook-conversion';
+import { facebookConversionTypes } from '../../redux/types/facebook-conversion';
 
 const useStyle = makeStyles(() => ({
   root: {
@@ -111,6 +113,10 @@ const Welcome = () => {
     } else {
       setNewUser(false);
     }
+
+    if (new_user === 'true') {
+      triggerFacebookEventOnNewRegsiter();
+    }
   }, []);
 
   useEffect(() => {
@@ -178,7 +184,10 @@ const Welcome = () => {
         navigate(restaurant ? '/menu/' + restaurant.slug : '/');
         handleCart();
       }
-      displayToast('SUCCESS', 'The items from your recent order have been added to your cart.');
+      displayToast(
+        'SUCCESS',
+        'The items from your recent order have been added to your cart.',
+      );
       setIsEdit(false);
       setIsReoder(false);
       setIsbasket(false);
@@ -205,6 +214,25 @@ const Welcome = () => {
     dispatch(getResturantInfoRequest(vendorid));
     setIsEdit(true);
     setIsRestaurant(true);
+  };
+
+  const triggerFacebookEventOnNewRegsiter = () => {
+    let userObj: any = null;
+    if (providerToken) {
+      userObj = {
+        first_name: providerToken.first_name || '',
+        last_name: providerToken.last_name || '',
+        email: providerToken.email || '',
+        phone: providerToken.phone || '',
+      };
+    }
+    dispatch(
+      facebookSendEvent(
+        facebookConversionTypes.FACEBOOK_COMPLETE_REGISTER_EVENT,
+        userObj,
+        null,
+      ),
+    );
   };
 
   return (
@@ -268,10 +296,7 @@ const Welcome = () => {
                         .slice(0, 1)
                         .map((order: any, index: number) => (
                           <Fragment key={index + order.id}>
-                            <Typography
-                              variant="h2"
-                              className="label"
-                            >
+                            <Typography variant="h2" className="label">
                               LAST ORDER {order.timeplaced.substr(4, 2)}/
                               {order.timeplaced.substr(6, 2)}
                             </Typography>
