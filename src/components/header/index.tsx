@@ -352,10 +352,10 @@ const Header = (props: any) => {
                 <Link
                   to={restaurant ? '/menu/' + restaurant.slug : '/'}
                   className={classes.menuLink}
-                  title="Main Menu"
+                  title="View Menu"
                   onClick={() => setShowAccountMenu(false)}
                 >
-                  Main Menu
+                  View Menu
                 </Link>
               )}
 

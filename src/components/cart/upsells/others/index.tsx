@@ -140,7 +140,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
         basketObj.basket &&
         basketObj.basket.products.length > 0
       ) {
-        elem.style.height = cartBox?.clientHeight - 172 + 'px';
+        elem.style.height = cartBox?.clientHeight - 202 + 'px';
       } else {
         elem.style.height = cartBox?.clientHeight - 100 + 'px';
       }
@@ -382,7 +382,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
             </Grid>
           ))}
       </div>
-      <Grid container spacing={0}>
+      <Grid container spacing={0} sx={{paddingTop: "20px"}}>
         <Grid
           item
           xs={12}

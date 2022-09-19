@@ -222,7 +222,7 @@ const Upsells = ({ showCart, upsellsType }: any) => {
           {basketObj &&
             basketObj.basket &&
             basketObj.basket.products.length > 0 && (
-              <Grid item xs={12} sx={{ padding: '0 20px 0 0' }}>
+              <Grid item xs={12} >
                 <Typography
                   variant="h6"
                   component="h6"
