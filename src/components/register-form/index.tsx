@@ -397,6 +397,7 @@ const RegisterForm = () => {
                   <Grid item xs={12}>
                     <FormControl fullWidth>
                       <InputLabel
+                      disableAnimation
                         id="fav-location-label"
                         classes={{
                           root:
@@ -425,17 +426,21 @@ const RegisterForm = () => {
                           setSelectShrink(true);
                         }}
                         MenuProps={{
+                          
                           PaperProps: {
                             sx: {
                               position: 'relative',
-                              left: {
-                                xs: '0px !Important',
-                                sm: '-5px !important',
+                              // left: {
+                              //   xs: '0px !Important',
+                              //   sm: '-5px !important',
+                              // },
+                              width: {
+                                xs: 200,
                               },
-                              marginLeft: 'auto',
-                              marginRight: 'auto',
-                              maxHeight: 150,
-                              width: 270,
+                              // marginLeft: 'auto',
+                              // marginRight: 'auto',
+                              // maxHeight: 150,
+                              // width: 270,
                             },
                           },
                         }}
