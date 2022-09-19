@@ -137,7 +137,7 @@ const SplitPayment = forwardRef((props: any, _ref) => {
         basket,
       );
       dispatch(updateBasketBillingSchemes(updatedBillingSchemes));
-        displayToast('SUCCESS', 'Card Removed.');
+      displayToast('SUCCESS', 'Card Removed.');
     }
     handleClosePopup();
   };
@@ -217,7 +217,7 @@ const SplitPayment = forwardRef((props: any, _ref) => {
         billingSchemes.length > 0 &&
         billingSchemes.map((account: any, index: any) => {
           return (
-            <Grid key={account.localId} container spacing={2}>
+            <Grid key={account.localId} container spacing={1}>
               <Grid
                 item
                 xs={12}
@@ -259,10 +259,10 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                     item
                     style={{ display: 'flex' }}
                     alignItems="center"
-                    xs={12}
+                    xs={1.5}
                     sm={1}
-                    md={1}
-                    lg={1}
+                    md={1.5}
+                    lg={1.5}
                   >
                     {getCardImage(account)}
                   </Grid>
@@ -282,10 +282,10 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                     }}
                     alignItems="center"
                     justifyContent="flex-start"
-                    xs={5}
-                    sm={6}
-                    md={6}
-                    lg={6}
+                    xs={5.5}
+                    sm={5}
+                    md={5}
+                    lg={5}
                   >
                     {account.billingmethod === 'creditcard' && (
                       <Typography variant="h6">
@@ -329,9 +329,9 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                     }}
                     alignItems="center"
                     item
-                    xs={3}
+                    xs={1.5}
                     sm={2}
-                    md={2}
+                    md={1.5}
                     lg={2}
                   >
                     <Typography
@@ -345,9 +345,9 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                     style={{ display: 'flex' }}
                     alignItems="center"
                     item
-                    xs={4}
+                    xs={3.5}
                     sm={3}
-                    md={3}
+                    md={4}
                     lg={3}
                   >
                     <TextField
@@ -372,6 +372,9 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                   display: 'flex',
                   justifyContent: 'flex-end',
                   zIndex: 1,
+                }}
+                sx={{
+                  // marginTop: { md: 0, xs: '-15px', sm: '-15px' },
                 }}
                 xs={12}
                 sm={12}

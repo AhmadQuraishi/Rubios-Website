@@ -1,22 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Button,
-  Grid,
-  Typography,
-  ToggleButtonGroup,
-  ToggleButton,
-  CircularProgress,
-  useTheme,
-  useMediaQuery,
-  Card,
-} from '@mui/material';
-import FormControl from '@mui/material/FormControl';
+import { Grid, Typography, CircularProgress, Card } from '@mui/material';
 import './rewards.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { applyRewardOnBasketRequest } from '../../redux/actions/reward/checkout/apply';
 import { displayToast } from '../../helpers/toast';
 import { removeRewardFromBasketRequest } from '../../redux/actions/reward/checkout/remove';
 import moment from 'moment';
+import DialogBox from '../dialog-box';
 
 const Rewards = (props: any) => {
   const objApplyReward = useSelector(
@@ -27,21 +17,16 @@ const Rewards = (props: any) => {
   );
   const basketObj = useSelector((state: any) => state.basketReducer);
   const dispatch = useDispatch();
-  const theme = useTheme();
   const { rewardsList } = props;
   const rewardsArray: any[] = rewardsList;
 
   const [actionClicked, setActionClicked] = useState(false);
+  const [open, setOpen] = useState(false);
   const [removedActionClicked, setRemovedActionClicked] = useState(false);
   const [selectedRewardID, setSelectedRewardID] = useState('');
 
   const [alignment, setAlignment] = React.useState('web');
-  const onRewardSelect = (
-    event: React.MouseEvent<HTMLElement>,
-    newAlignment: string,
-  ) => {
-    setAlignment(newAlignment);
-  };
+  const [membershipId, setMembershipId] = React.useState<any>('');
 
   useEffect(() => {
     if (
@@ -50,10 +35,9 @@ const Rewards = (props: any) => {
       basketObj.basket.appliedrewards &&
       basketObj.basket.appliedrewards.length > 0
     ) {
-      setSelectedRewardID(
-        basketObj.basket.appliedrewards[0].reference.toString(),
-      );
-      setAlignment(basketObj.basket.appliedrewards[0].reference.toString());
+      const rewardId = basketObj.basket.appliedrewards[0].reference.toString();
+      setSelectedRewardID(rewardId);
+      setAlignment(rewardId);
     }
   }, []);
 
@@ -61,23 +45,25 @@ const Rewards = (props: any) => {
     if (objRemoveReward && objRemoveReward.basket && removedActionClicked) {
       setRemovedActionClicked(false);
       setSelectedRewardID('');
+      setAlignment('web');
       displayToast('SUCCESS', 'Reward removed successfully.');
     }
   }, [objRemoveReward]);
 
   const applyReward = (membershipid: number, refID: string) => {
     setTimeout(() => {
-      setAlignment(refID);
-      const request = {
+      // setAlignment(refID);
+      const request: any = {
         membershipid: membershipid,
         references: [refID],
       };
       if (
-        selectedRewardID === refID.toString() &&
         basketObj &&
         basketObj.basket &&
         basketObj.basket.appliedrewards &&
-        basketObj.basket.appliedrewards.length > 0
+        basketObj.basket.appliedrewards.filter(
+          (reward: any) => reward.reference === refID,
+        ).length > 0
       ) {
         setRemovedActionClicked(true);
         setSelectedRewardID(refID);
@@ -88,9 +74,19 @@ const Rewards = (props: any) => {
           ),
         );
       } else {
-        setActionClicked(true);
-        setSelectedRewardID(refID);
-        dispatch(applyRewardOnBasketRequest(basketObj.basket.id, request));
+        if (
+          basketObj &&
+          basketObj.basket &&
+          basketObj.basket.appliedrewards &&
+          basketObj.basket.appliedrewards.length > 0
+        ) {
+          setSelectedRewardID(refID);
+          setMembershipId(membershipid);
+          setOpen(true);
+        } else {
+          setActionClicked(true);
+          dispatch(applyRewardOnBasketRequest(basketObj.basket.id, request));
+        }
       }
     }, 500);
   };
@@ -103,6 +99,16 @@ const Rewards = (props: any) => {
       setActionClicked(false);
       if (objApplyReward.basket) {
         displayToast('SUCCESS', 'Reward applied successfully.');
+        if (
+          basketObj &&
+          basketObj.basket &&
+          basketObj.basket.appliedrewards &&
+          basketObj.basket.appliedrewards.length > 0
+        ) {
+          const rewardId =
+            basketObj.basket.appliedrewards[0].reference.toString();
+          setAlignment(rewardId);
+        }
       }
       if (objApplyReward.error) {
         setAlignment('web');
@@ -110,9 +116,31 @@ const Rewards = (props: any) => {
     }
   }, [objApplyReward]);
 
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleApplyReward = () => {
+    setOpen(false);
+    setActionClicked(true);
+    const request: any = {
+      membershipid: membershipId,
+      references: [selectedRewardID],
+    };
+    dispatch(applyRewardOnBasketRequest(basketObj.basket.id, request));
+  };
+
   return (
     <div style={{ position: 'relative' }}>
-      {(actionClicked || removedActionClicked) && (
+      <DialogBox
+        open={open}
+        handleClose={handleClose}
+        message={
+          'Only 1 reward can be redeemed per order. Do you want to replace the current reward?'
+        }
+        handleDeleteFunction={() => handleApplyReward()}
+      />
+      {(actionClicked || removedActionClicked || objApplyReward.loading) && (
         <div
           style={{
             position: 'absolute',
@@ -261,7 +289,9 @@ const Rewards = (props: any) => {
                               }}
                               className="button hide-button-apply"
                             >
-                              APPLY
+                              {alignment === reward.redeemable_id.toString()
+                                ? 'Remove'
+                                : 'APPLY'}
                             </Typography>
                           </Grid>
                           <Grid

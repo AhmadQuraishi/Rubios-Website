@@ -3,7 +3,7 @@ import { footerMenuItemSaga } from './footer';
 import { categoryItemsSaga } from './category';
 import { storeToken } from './token';
 import { userSaga } from './user';
-import {redeemRewardSada} from './reward';
+import { redeemRewardSada } from './reward';
 import { restaurantInfoSaga } from './restaurant';
 import { restaurantCalendarSaga } from './restaurant/calendar';
 import { productOptionsSaga } from './product/option';
@@ -13,7 +13,7 @@ import { resturantListSaga } from './restaurant/list';
 import { locationSaga } from './location';
 import { BasketSaga } from './basket';
 import { addMultipleProductsSaga } from './basket/addMultipleProducts';
-import { updateMultipleProductsSaga} from './basket/addMultipleProducts';
+import { updateMultipleProductsSaga } from './basket/addMultipleProducts';
 import { checkoutSaga } from './basket/checkout';
 import { createBasketSaga } from './basket/create';
 import { addProductSaga } from './basket/product/add';
@@ -34,6 +34,7 @@ import { storeOrder } from './order';
 import { deliveryAddressSaga } from './location/delivery-address';
 import { verifyDeliveryAddressSaga } from './location/verify-delivery-address';
 import { utensilsSaga } from './basket/utensils';
+import { facebookConversionSaga } from './facebook-conversion';
 
 export default function* rootSaga() {
   yield all([
@@ -72,5 +73,6 @@ export default function* rootSaga() {
     storeOrder(),
     deliveryAddressSaga(),
     verifyDeliveryAddressSaga(),
+    facebookConversionSaga(),
   ]);
 }

@@ -135,3 +135,21 @@ export function calculateTaxAndFee(basket: any) {
   }
   return total.toFixed(2);
 }
+
+export async function sha256Method(message: any){
+  // encode as UTF-8
+  const msgBuffer = new TextEncoder().encode(message);
+
+  // hash the message
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+
+  // convert ArrayBuffer to Array
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+
+  // convert bytes to hex string
+  const hashHex = hashArray
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
+  // console.log('hashHex', hashHex);
+  return hashHex;
+};

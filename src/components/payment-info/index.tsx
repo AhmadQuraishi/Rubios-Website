@@ -97,12 +97,14 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
 
   const handleZipCodeChange = (event: any) => {
     let newValue = event.target.value.trim();
-    newValue =
-      newValue && newValue >= 0 && newValue <= 99999
-        ? parseInt(newValue)
-        : newValue > 99999
-        ? zipCode
-        : '';
+    // newValue =
+    //   newValue && newValue >= 0 && newValue <= 99999
+    //     ? parseInt(newValue)
+    //     : newValue > 99999
+    //     ? zipCode
+    //     : '';
+
+    newValue = newValue.length > 5 ? newValue.slice(0, 5) : newValue;
 
     setZipCode(newValue);
   };
@@ -381,7 +383,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                               className="zipcode"
                               aria-label="Zip Code"
                               placeholder="Zip Code"
-                              type="text"
+                              type="number"
                               name="zipcode"
                               inputProps={{ shrink: false }}
                               value={zipCode}
@@ -410,7 +412,9 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                       // disabled={buttonDisabled}
                       autoFocus
                     >
-                      {editCreditCard ? 'Update Credit card' : 'Add Credit card'}
+                      {editCreditCard
+                        ? 'Update Credit card'
+                        : 'Add Credit card'}
                     </Button>
                   </div>
                 </div>

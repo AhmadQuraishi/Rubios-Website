@@ -33,11 +33,10 @@
   height: 18px;
   border: 1px solid #2b4b62;
   text-align: center;
-  display: inline-block;
   font-family: 'Poppins-Medium', sans-serif !important;
   font-size: 14px;
   margin-left: 5px;
-  display: flex;
+  display: inline-flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;

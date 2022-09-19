@@ -70,6 +70,7 @@ import { getProviderRequestSuccess } from '../../actions/provider';
 import { navigateAppAction } from '../../actions/navigate-app';
 import { basketActionsTypes } from '../../types/basket';
 import { Navigate, useNavigate } from 'react-router-dom';
+import {markOrderFav} from "../../../helpers/setRecentOrders";
 
 const breakpoints = {
   XS: 540
@@ -112,6 +113,7 @@ function* deleleteFavOrderHandler(action: any): any {
     const favOrders = yield call(requestUserFavoriteOrders);
     yield put(getUserFavoritetOrdersSuccess(favOrders));
     yield put(deleteFavOrderSuccess());
+    markOrderFav('', action.favid, false)
   } catch (error) {
     yield put(deleteFavOrderFailure(error));
   }

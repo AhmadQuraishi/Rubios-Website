@@ -136,6 +136,14 @@ const RegisterForm = () => {
     return errorsArray;
   };
 
+  window.parent.addEventListener(
+    'click',
+    function () {
+      console.log('workinggggggg')
+    },
+    false,
+  );
+
   return (
     <Grid container className="w-register">
       {/*<Grid item xs={6}>*/}
@@ -183,7 +191,7 @@ const RegisterForm = () => {
               .required('Last Name is required'),
             email: Yup.string()
               .matches(
-                /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
                 'Invalid Email ',
               )
               .email('Invalid email address')
@@ -419,12 +427,31 @@ const RegisterForm = () => {
                         onOpen={() => {
                           setSelectShrink(true);
                         }}
+                        MenuProps={{
+                          PaperProps: {
+                            sx: {
+                              position: 'relative',
+                              left: {
+                                xs: '0px !Important',
+                                sm: '-5px !important',
+                              },
+                              marginLeft: 'auto',
+                              marginRight: 'auto',
+                              maxHeight: 150,
+                              width: 270,
+                            },
+                          },
+                        }}
                       >
                         {locations &&
                           locations.map((location: any, index: number) => (
                             <MenuItem
                               key={index++}
                               value={location.location_id}
+                              style={{
+                                whiteSpace: 'normal',
+                                wordBreak: 'break-all',
+                              }}
                             >
                               {location.name}
                             </MenuItem>

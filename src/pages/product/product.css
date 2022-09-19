@@ -264,6 +264,7 @@ input[type='check']:checked+label {
 
   .product-detail .action-panel .content-panel {
     justify-content: center;
+    align-items: center;
   }
 
   .product-detail h5 {
@@ -316,26 +317,39 @@ input[type='check']:checked+label {
 
 @media screen and (max-width: 468px) {
   .action-panel .content-panel {
-    flex-direction: column;
+    flex-direction: row;
   }
 
   .button-panel-sx {
     width: 340px;
-    margin-bottom: 20px;
+    /*margin-bottom: 20px;*/
+    justify-content: flex-end;
   }
 
   .product-detail .add-to-bag {
     width: 340px;
+    font-size: 11px;
   }
 
   .quantity-label {
     padding-right: 10px;
+    font-size: 10px !important;
   }
 
   .sp-mobile {
     display: block;
   }
-
+  #quantity-label-id {
+    font-size: 10px !important;
+  }
+  .input-quantity {
+    width: 20px !important;
+  }
+  .product-detail .quantity input, .product-detail .quantity button {
+    height: 25px !important;
+    min-width: 23px !important;
+    font-size: 13px;
+  }
   .quantity-label {
     display: inline;
   }
@@ -365,7 +379,8 @@ input[type='check']:checked+label {
 
   .product-detail .quantity {
     margin: 0;
-    width: 280px;
+    width: 90px;
+    margin-right: 10px;
   }
 }
 
@@ -469,10 +484,11 @@ input[type='check']:checked+label {
 
 .product-detail .menu-items .content-panel.selected .card-panel .name-img-panel .name-panel {
   color: #0073BD;
+  word-break: break-word;
 }
 
 .product-detail .menu-items .content-panel .card-panel .name-img-panel .name-panel {
-  padding-left: 12px;
+  padding-left: 24px;
   color: #2b4b62;
 }
 
