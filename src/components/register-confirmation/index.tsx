@@ -295,21 +295,21 @@ const RegisterConfirmation = ({ id }: any) => {
                     }
                   />
                 </Grid>
-                <div style={{marginTop:"10px", marginLeft: "-2.5px"}}>
-                <Grid item  xs={12} sm={12} md={12} lg={12} sx={{backgroundColor: "transparent", width: "99%",fontFamily:'Poppins-Regular, sans-serif !Important', spacing:"2px"}}>
+                <Grid item  xs={12} sm={12} md={12} lg={12} sx={{backgroundColor: "transparent",fontFamily:'Poppins-Regular, sans-serif !Important'}}>
                     <Typography
                       variant="body2"
-                      // id="chkTermandCondition"
+                      id="chkTermandCondition"
                       title="I agree to the  Rubios terms and conditions and to receiving marketing communications from Rubios."
-                      sx={{ width: '100%', color: "white",fontFamily:'Poppins-Regular, sans-serif !Important'}}
+                      sx={{ width: '100%', fill:"white", color: "white",fontFamily:'Poppins-Regular, sans-serif !Important'}}
                       
                     >
                       <Checkbox
                         onChange={handleChangeCheckbox}
-                        // inputProps={{
-                        //   'aria-labelledby': 'chkTermandCondition',
-                        // }}
-                        sx={{float: "left",color: "white",padding: '0px 10px 0px 0px !important',}}
+                        inputProps={{
+                          'aria-labelledby': 'chkTermandCondition',
+                        }}
+                        color="default"
+                        sx={{float: "left",color: "white",padding: '0px 10px 0px 0px !important', marginBottom:{ xs: "50px !important"}}}
                        />{' '}
                       I agree to the{' '}
                       <Link
@@ -322,7 +322,6 @@ const RegisterConfirmation = ({ id }: any) => {
                       and to receiving marketing communications from Rubio's.
                     </Typography>
                   </Grid>
-                  </div>
                 <Grid item xs={12} sm={12} md={12} lg={12} >
                   <Button
                     aria-label="Sign Up"
