@@ -395,9 +395,9 @@ const RegisterForm = () => {
                     />
                   </Grid>
                   <Grid item xs={12}>
+                  <div>
                     <FormControl fullWidth>
                       <InputLabel
-                      disableAnimation
                         id="fav-location-label"
                         classes={{
                           root:
@@ -437,10 +437,7 @@ const RegisterForm = () => {
                               width: {
                                 xs: 200,
                               },
-                              // marginLeft: 'auto',
-                              // marginRight: 'auto',
-                              // maxHeight: 150,
-                              // width: 270,
+                              maxHeight: 150,
                             },
                           },
                         }}
@@ -460,7 +457,9 @@ const RegisterForm = () => {
                           ))}
                       </Select>
                     </FormControl>
+                    </div>
                   </Grid>
+                  
                   <Grid item xs={12}>
                     <Typography
                       variant="body2"
