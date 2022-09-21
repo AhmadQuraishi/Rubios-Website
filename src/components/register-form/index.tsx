@@ -9,7 +9,6 @@ import {
   Button,
   InputLabel,
   MenuItem,
-  Select,
   Link,
   Skeleton,
 } from '@mui/material';
@@ -24,18 +23,26 @@ import ReactDateInputs from 'react-date-inputs';
 import moment from 'moment';
 import './register-form.css';
 import { useLocation } from 'react-router-dom';
+import Select from 'react-select';
+
+const Countries = [
+  { label: 'Albania', value: 355 },
+  { label: 'Argentina', value: 54 },
+  { label: 'Austria', value: 43 },
+  { label: 'Venezuela', value: 58 },
+];
 // import { Grid, Skeleton } from '@mui/material';
 const names = [
-  "Oliver Hansen Oliver Hansen Oliver Hansen Oliver ",
-  "Van Henry",
-  "April Tucker",
-  "Ralph Hubbard",
-  "Omar Alexander",
-  "Carlos Abbott",
-  "Miriam Wagner",
-  "Bradley Wilkerson",
-  "Virginia Andrews",
-  "Kelly Snyder"
+  'Oliver Hansen Oliver Hansen Oliver Hansen Oliver ',
+  'Van Henry',
+  'April Tucker',
+  'Ralph Hubbard',
+  'Omar Alexander',
+  'Carlos Abbott',
+  'Miriam Wagner',
+  'Bradley Wilkerson',
+  'Virginia Andrews',
+  'Kelly Snyder',
 ];
 
 const RegisterForm = () => {
@@ -61,7 +68,7 @@ const RegisterForm = () => {
     return result;
   }
   const { locations } = useSelector((state: any) => state.locationReducer);
-
+  console.log('locations', locations);
   const [favLocation, setFavLocation] = useState('');
   const [birthDay, setBirthDay] = useState<Date | undefined>();
   const [termsAndConditions, setTermsAndconditions] = useState(false);
@@ -94,9 +101,12 @@ const RegisterForm = () => {
   }, [locations]);
 
   const handleChangeLocation = (event: SelectChangeEvent) => {
+    console.log('event', event);
     setFavLocation(event.target.value as string);
   };
-  const handleChangeMultiple = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleChangeMultiple = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
     const { options } = event.target;
     const value: string[] = [];
     for (let i = 0, l = options.length; i < l; i += 1) {
@@ -119,7 +129,28 @@ const RegisterForm = () => {
     onChange: (event: { target: { name: string; value: string } }) => void;
     name: string;
   }
-
+  const customStyles = {
+    option: (provided : any, state : any) => ({
+      ...provided,
+      color: state.isSelected ? 'black' : 'black',
+      backgroundColor: state.isSelected ? 'lightgray' : '',
+      marginTop: '0px',
+    }),
+    menu: (base : any ) => ({
+      ...base,
+      marginTop: 0
+    }),
+    control: (provided : any, state : any) => ({
+      ...provided,
+      // none of react-select's styles are passed to <Control />
+      //
+    }),
+    singleValue: (provided : any, state : any) => {
+      const opacity = state.isDisabled ? 0.5 : 1;
+      const transition = 'opacity 300ms';
+      return { ...provided, opacity, transition };
+    }
+  }
   const NumberFormatCustom = forwardRef<HTMLElement, CustomProps>(
     function NumberFormatCustom(props, ref) {
       const { onChange, ...other } = props;
@@ -415,17 +446,17 @@ const RegisterForm = () => {
                       show={['month', 'day', 'year']}
                     />
                   </Grid>
-                  
-                  <Grid item xs={12}>
+
+                  {/* <Grid item xs={12}>
                     <div>
-                    {/* <Typography
+                     <Typography
                       variant="body2"
                       className="body-text"
                       title="Favourite Location"
                       sx={{ width: '100%', marginBottom: '3px',}}
                     >
                       Favourite Location *
-                    </Typography> */}
+                    </Typography> 
                       <FormControl sx={{margin: "0px", maxWidth: 'auto' }}>
                         <InputLabel classes={{
                           root:
@@ -468,8 +499,8 @@ const RegisterForm = () => {
                         </Select>
                       </FormControl>
                     </div>
-                  </Grid>
-                   <Grid item xs={12}>
+                  </Grid> */}
+                  {/* <Grid item xs={12}>
                   <div>
                     <FormControl fullWidth>
                       <InputLabel
@@ -533,8 +564,37 @@ const RegisterForm = () => {
                       </Select>
                     </FormControl>
                     </div>
-                  </Grid> 
-
+                  </Grid>  */}
+                  <Grid item xs={12}>
+                    <Typography
+                      variant="body2"
+                      className="body-text"
+                      title="Favourite Location"
+                      sx={{ width: '100%', marginBottom: '3px' }}
+                    >
+                      Favourite Location *
+                    </Typography>
+                    <div>
+                      <div>
+                        <div>
+                          <Select
+                          className="select-options"
+                          isSearchable={false}
+                          styles={customStyles}
+                          options={locations?.map((loc: any) => {
+                              return { value: loc.name, label: loc.name };
+                            })}
+                            onChange={(selectedOption: any) => {
+                              console.log('selectedOption', selectedOption);
+                              setFavLocation(selectedOption);
+                            }}
+                            value={favLocation && favLocation}
+                            maxMenuHeight={150}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </Grid>
                   <Grid item xs={12}>
                     <Typography
                       variant="body2"
