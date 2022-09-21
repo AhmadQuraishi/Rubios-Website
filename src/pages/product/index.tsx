@@ -41,7 +41,7 @@ import { facebookConversionTypes } from '../../redux/types/facebook-conversion';
 const Product = () => {
   const theme = useTheme();
   const { id, edit } = useParams();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery('(max-width:468px)');
   const [productDetails, setProductDetails] = useState<ProductInfo>();
   const [productOptions, setProductOptions] = useState<ResponseModifiers>();
   const [basket, setBasket] = useState<ResponseBasket>();
@@ -1584,6 +1584,9 @@ const Product = () => {
                           title=""
                           className="subtract"
                           aria-label="reduce"
+                          sx={{ marginLeft: {
+                            xs:"5px"
+                          } }}
                           onClick={() => {
                             setCount(Math.max(count - 1, 1));
                             setTotalCost(
@@ -1607,6 +1610,9 @@ const Product = () => {
                           title=""
                           className="add"
                           aria-label="increase"
+                          sx={{ marginRight: {
+                            xs:"inherit"
+                          } }}
                           onClick={() => {
                             setCount(count + 1);
                             setTotalCost(
