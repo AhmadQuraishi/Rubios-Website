@@ -25,6 +25,18 @@ import moment from 'moment';
 import './register-form.css';
 import { useLocation } from 'react-router-dom';
 // import { Grid, Skeleton } from '@mui/material';
+const names = [
+  "Oliver Hansen Oliver Hansen Oliver Hansen Oliver ",
+  "Van Henry",
+  "April Tucker",
+  "Ralph Hubbard",
+  "Omar Alexander",
+  "Carlos Abbott",
+  "Miriam Wagner",
+  "Bradley Wilkerson",
+  "Virginia Andrews",
+  "Kelly Snyder"
+];
 
 const RegisterForm = () => {
   const dispatch = useDispatch();
@@ -54,7 +66,7 @@ const RegisterForm = () => {
   const [birthDay, setBirthDay] = useState<Date | undefined>();
   const [termsAndConditions, setTermsAndconditions] = useState(false);
   const [selectShrink, setSelectShrink] = useState(false);
-
+  const [personName, setPersonName] = React.useState<string[]>([names[0]]);
   useEffect(() => {
     dispatch(getlocations());
   }, []);
@@ -84,7 +96,16 @@ const RegisterForm = () => {
   const handleChangeLocation = (event: SelectChangeEvent) => {
     setFavLocation(event.target.value as string);
   };
-
+  const handleChangeMultiple = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const { options } = event.target;
+    const value: string[] = [];
+    for (let i = 0, l = options.length; i < l; i += 1) {
+      if (options[i].selected) {
+        value.push(options[i].value);
+        return setPersonName(value);
+      }
+    }
+  };
   const handleBirthDayChange = (value?: Date | undefined): undefined => {
     setBirthDay(value);
     return;
@@ -394,7 +415,61 @@ const RegisterForm = () => {
                       show={['month', 'day', 'year']}
                     />
                   </Grid>
+                  
                   <Grid item xs={12}>
+                    <div>
+                    {/* <Typography
+                      variant="body2"
+                      className="body-text"
+                      title="Favourite Location"
+                      sx={{ width: '100%', marginBottom: '3px',}}
+                    >
+                      Favourite Location *
+                    </Typography> */}
+                      <FormControl sx={{margin: "0px", maxWidth: 'auto' }}>
+                        <InputLabel classes={{
+                          root:
+                            !selectShrink && favLocation == ''
+                              ? 'select-custom-css'
+                              : '',
+                        }}
+                        // shrink={selectShrink || favLocation !== ''}
+                        shrink
+                        style={{ textAlign: 'left' }} aria-controls="fav-location"
+                        // aria-haspopup="false" 
+                        // id="fav-location-label" 
+                        // htmlFor="select-multiple-native"
+                        >
+                        Favorite Location *
+                        </InputLabel>
+                        <Select
+                          multiple
+                          native
+                          value={personName}
+                          // @ts-ignore Typings are not considering `native`
+                          onChange={handleChangeMultiple}
+                          label="Favorite Location *"
+                          inputProps={{
+                            id: 'select-multiple-native',
+                          }}
+                        >
+                          {names.map((name) => (
+                            <option
+                            key={name} value={name}  style={{
+
+                              whiteSpace: 'normal',
+                              wordBreak: 'break-all',
+                              padding: '8px 0px',
+                              font: '16px Roboto,Helvika,Arial, Sans Serif',
+                            }} >
+                              {name}
+                            </option>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    </div>
+                  </Grid>
+                   <Grid item xs={12}>
                   <div>
                     <FormControl fullWidth>
                       <InputLabel
@@ -458,8 +533,8 @@ const RegisterForm = () => {
                       </Select>
                     </FormControl>
                     </div>
-                  </Grid>
-                  
+                  </Grid> 
+
                   <Grid item xs={12}>
                     <Typography
                       variant="body2"
