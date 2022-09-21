@@ -26,16 +26,16 @@ import './register-form.css';
 import { useLocation } from 'react-router-dom';
 // import { Grid, Skeleton } from '@mui/material';
 const names = [
-  "Oliver Hansen Oliver Hansen Oliver Hansen Oliver ",
-  "Van Henry",
-  "April Tucker",
-  "Ralph Hubbard",
-  "Omar Alexander",
-  "Carlos Abbott",
-  "Miriam Wagner",
-  "Bradley Wilkerson",
-  "Virginia Andrews",
-  "Kelly Snyder"
+  'Oliver Hansen Oliver Hansen Oliver Hansen Oliver ',
+  'Van Henry',
+  'April Tucker',
+  'Ralph Hubbard',
+  'Omar Alexander',
+  'Carlos Abbott',
+  'Miriam Wagner',
+  'Bradley Wilkerson',
+  'Virginia Andrews',
+  'Kelly Snyder',
 ];
 
 const RegisterForm = () => {
@@ -62,11 +62,13 @@ const RegisterForm = () => {
   }
   const { locations } = useSelector((state: any) => state.locationReducer);
 
-  const [favLocation, setFavLocation] = useState('');
+  const [favLocation, setFavLocation] = React.useState<string[]>([]);
+  const [favLocationError, setFavLocationError] = useState(false);
   const [birthDay, setBirthDay] = useState<Date | undefined>();
   const [termsAndConditions, setTermsAndconditions] = useState(false);
   const [selectShrink, setSelectShrink] = useState(false);
   const [personName, setPersonName] = React.useState<string[]>([names[0]]);
+
   useEffect(() => {
     dispatch(getlocations());
   }, []);
@@ -93,16 +95,20 @@ const RegisterForm = () => {
     }
   }, [locations]);
 
-  const handleChangeLocation = (event: SelectChangeEvent) => {
-    setFavLocation(event.target.value as string);
-  };
-  const handleChangeMultiple = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  // const handleChangeLocation = (event: SelectChangeEvent) => {
+  //   setFavLocation(event.target.value as string);
+  // };
+  const handleChangeMultiple = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
     const { options } = event.target;
     const value: string[] = [];
     for (let i = 0, l = options.length; i < l; i += 1) {
       if (options[i].selected) {
         value.push(options[i].value);
-        return setPersonName(value);
+        setFavLocationError(false);
+        setFavLocation(value);
+        return;
       }
     }
   };
@@ -150,6 +156,10 @@ const RegisterForm = () => {
       monthField[0].after(dayField[0]);
     }
   }, []);
+
+  React.useEffect(() => {
+    console.log('favlocation', favLocation);
+  }, [favLocation]);
 
   return (
     <>
@@ -234,6 +244,11 @@ const RegisterForm = () => {
               .required('required'),
           })}
           onSubmit={async (values) => {
+            if (favLocation && !favLocation.length) {
+              setFavLocationError(true);
+              return;
+            }
+            setFavLocationError(false);
             const obj: any = {
               first_name: values.first_name,
               last_name: values.last_name,
@@ -242,7 +257,8 @@ const RegisterForm = () => {
               email: values.email,
               phone: values.phone ? values.phone.replace(/\D/g, '') : '',
               invite_code: values.invitecode,
-              fav_location_id: favLocation,
+              fav_location_id:
+                (favLocation && favLocation.length && favLocation[0]) || '',
               terms_and_conditions: termsAndConditions,
             };
 
@@ -415,37 +431,41 @@ const RegisterForm = () => {
                       show={['month', 'day', 'year']}
                     />
                   </Grid>
-                  
+
                   <Grid item xs={12}>
                     <div>
-                    {/* <Typography
-                      variant="body2"
-                      className="body-text"
-                      title="Favourite Location"
-                      sx={{ width: '100%', marginBottom: '3px',}}
-                    >
-                      Favourite Location *
-                    </Typography> */}
-                      <FormControl sx={{margin: "0px", maxWidth: 'auto' }}>
-                        <InputLabel classes={{
-                          root:
-                            !selectShrink && favLocation == ''
-                              ? 'select-custom-css'
-                              : '',
-                        }}
-                        // shrink={selectShrink || favLocation !== ''}
-                        shrink
-                        style={{ textAlign: 'left' }} aria-controls="fav-location"
-                        // aria-haspopup="false" 
-                        // id="fav-location-label" 
-                        // htmlFor="select-multiple-native"
-                        >
-                        Favorite Location *
-                        </InputLabel>
+                      <Typography
+                        variant="body2"
+                        className={`${
+                          favLocationError ? 'body-text-fav-error' : 'body-text'
+                        }`}
+                        title="Favourite Location"
+                        sx={{ width: '100%', marginBottom: '3px' }}
+                      >
+                        Favourite Location *
+                      </Typography>
+                      <FormControl sx={{ margin: '0px', maxWidth: 'auto' }}>
+                        {/*<InputLabel*/}
+                        {/*  classes={{*/}
+                        {/*    root:*/}
+                        {/*      !selectShrink && favLocation == ''*/}
+                        {/*        ? 'select-custom-css'*/}
+                        {/*        : '',*/}
+                        {/*  }}*/}
+                        {/*  // shrink={selectShrink || favLocation !== ''}*/}
+                        {/*  shrink*/}
+                        {/*  style={{ textAlign: 'left' }}*/}
+                        {/*  aria-controls="fav-location"*/}
+                        {/*  // aria-haspopup="false"*/}
+                        {/*  // id="fav-location-label"*/}
+                        {/*  // htmlFor="select-multiple-native"*/}
+                        {/*>*/}
+                        {/*  Favorite Location **/}
+                        {/*</InputLabel>*/}
                         <Select
                           multiple
                           native
-                          value={personName}
+                          value={(favLocation && favLocation) || []}
                           // @ts-ignore Typings are not considering `native`
                           onChange={handleChangeMultiple}
                           label="Favorite Location *"
@@ -453,87 +473,94 @@ const RegisterForm = () => {
                             id: 'select-multiple-native',
                           }}
                         >
-                          {names.map((name) => (
+                          {locations.map((location: any, index: number) => (
                             <option
-                            key={name} value={name}  style={{
-
-                              whiteSpace: 'normal',
-                              wordBreak: 'break-all',
-                              padding: '8px 0px',
-                              font: '16px Roboto,Helvika,Arial, Sans Serif',
-                            }} >
-                              {name}
-                            </option>
-                          ))}
-                        </Select>
-                      </FormControl>
-                    </div>
-                  </Grid>
-                   <Grid item xs={12}>
-                  <div>
-                    <FormControl fullWidth>
-                      <InputLabel
-                        id="fav-location-label"
-                        classes={{
-                          root:
-                            !selectShrink && favLocation == ''
-                              ? 'select-custom-css'
-                              : '',
-                        }}
-                        shrink={selectShrink || favLocation !== ''}
-                        style={{ textAlign: 'left' }}
-                        aria-controls="fav-location"
-                        aria-haspopup="false"
-                      >
-                        Favorite Location *
-                      </InputLabel>
-                      <Select
-                        labelId="fav-location-label"
-                        id="fav-location"
-                        name="favLocation"
-                        value={favLocation && favLocation}
-                        label="Favorite Location"
-                        onChange={handleChangeLocation}
-                        onClose={() => {
-                          setSelectShrink(false);
-                        }}
-                        onOpen={() => {
-                          setSelectShrink(true);
-                        }}
-                        MenuProps={{
-                          
-                          PaperProps: {
-                            sx: {
-                              position: 'relative',
-                              // left: {
-                              //   xs: '0px !Important',
-                              //   sm: '-5px !important',
-                              // },
-                              width: {
-                                xs: 200,
-                              },
-                              maxHeight: 150,
-                            },
-                          },
-                        }}
-                      >
-                        {locations &&
-                          locations.map((location: any, index: number) => (
-                            <MenuItem
                               key={index++}
                               value={location.location_id}
                               style={{
                                 whiteSpace: 'normal',
                                 wordBreak: 'break-all',
+                                padding: '8px 0px',
+                                font: '16px Roboto,Helvika,Arial, Sans Serif',
                               }}
                             >
                               {location.name}
-                            </MenuItem>
+                            </option>
                           ))}
-                      </Select>
-                    </FormControl>
+                        </Select>
+                      </FormControl>
+                      {favLocationError && (
+                        <p className="fav-error-message">
+                          Favorite Location is required
+                        </p>
+                      )}
                     </div>
-                  </Grid> 
+                  </Grid>
+                  {/* <Grid item xs={12}>*/}
+                  {/*<div>*/}
+                  {/*  <FormControl fullWidth>*/}
+                  {/*    <InputLabel*/}
+                  {/*      id="fav-location-label"*/}
+                  {/*      classes={{*/}
+                  {/*        root:*/}
+                  {/*          !selectShrink && favLocation == ''*/}
+                  {/*            ? 'select-custom-css'*/}
+                  {/*            : '',*/}
+                  {/*      }}*/}
+                  {/*      shrink={selectShrink || favLocation !== ''}*/}
+                  {/*      style={{ textAlign: 'left' }}*/}
+                  {/*      aria-controls="fav-location"*/}
+                  {/*      aria-haspopup="false"*/}
+                  {/*    >*/}
+                  {/*      Favorite Location **/}
+                  {/*    </InputLabel>*/}
+                  {/*    <Select*/}
+                  {/*      labelId="fav-location-label"*/}
+                  {/*      id="fav-location"*/}
+                  {/*      name="favLocation"*/}
+                  {/*      value={favLocation && favLocation}*/}
+                  {/*      label="Favorite Location"*/}
+                  {/*      onChange={handleChangeLocation}*/}
+                  {/*      onClose={() => {*/}
+                  {/*        setSelectShrink(false);*/}
+                  {/*      }}*/}
+                  {/*      onOpen={() => {*/}
+                  {/*        setSelectShrink(true);*/}
+                  {/*      }}*/}
+                  {/*      MenuProps={{*/}
+                  {/*        */}
+                  {/*        PaperProps: {*/}
+                  {/*          sx: {*/}
+                  {/*            position: 'relative',*/}
+                  {/*            // left: {*/}
+                  {/*            //   xs: '0px !Important',*/}
+                  {/*            //   sm: '-5px !important',*/}
+                  {/*            // },*/}
+                  {/*            width: {*/}
+                  {/*              xs: 200,*/}
+                  {/*            },*/}
+                  {/*            maxHeight: 150,*/}
+                  {/*          },*/}
+                  {/*        },*/}
+                  {/*      }}*/}
+                  {/*    >*/}
+                  {/*      {locations &&*/}
+                  {/*        locations.map((location: any, index: number) => (*/}
+                  {/*          <MenuItem*/}
+                  {/*            key={index++}*/}
+                  {/*            value={location.location_id}*/}
+                  {/*            style={{*/}
+                  {/*              whiteSpace: 'normal',*/}
+                  {/*              wordBreak: 'break-all',*/}
+                  {/*            }}*/}
+                  {/*          >*/}
+                  {/*            {location.name}*/}
+                  {/*          </MenuItem>*/}
+                  {/*        ))}*/}
+                  {/*    </Select>*/}
+                  {/*  </FormControl>*/}
+                  {/*  </div>*/}
+                  {/*</Grid> */}
 
                   <Grid item xs={12}>
                     <Typography
