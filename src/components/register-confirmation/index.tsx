@@ -1,13 +1,4 @@
-import {
-  Grid,
-  TextField,
-  Button,
-  InputLabel,
-  Select,
-  MenuItem,
-  FormControl,
-  SelectChangeEvent,
-} from '@mui/material';
+import { Grid, TextField, Button } from '@mui/material';
 import { Link, Checkbox, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik } from 'formik';
@@ -18,10 +9,12 @@ import { userRegister } from '../../redux/actions/user';
 import './register-confirmation.css';
 import ReactDateInputs from 'react-date-inputs';
 import moment from 'moment';
+import Select from 'react-select';
 
 const RegisterConfirmation = ({ id }: any) => {
   const dispatch = useDispatch();
-  const [favLocation, setFavLocation] = useState('');
+  const [favLocation, setFavLocation] = useState(null);
+  const [favLocationError, setFavLocationError] = useState(false);
   const [selectShrink, setSelectShrink] = useState(false);
   const [birthDay, setBirthDay] = useState<Date | undefined>();
   const [termsAndConditions, setTermsAndconditions] = useState(false);
@@ -42,7 +35,55 @@ const RegisterConfirmation = ({ id }: any) => {
   useEffect(() => {
     dispatch(getlocations());
   }, []);
+  const customStyles = {
+    option: (provided: any, state: any) => ({
+      ...provided,
+      background: 'none',
+      color: state.isSelected ? 'black' : 'black',
+      backgroundColor: state.isSelected ? 'lightgray' : '',
+      marginTop: '0px',
+      border: '0px',
 
+      fontFamily: 'Poppins-Regular, sans-serif !important',
+    }),
+    menu: (base: any) => ({
+      ...base,
+      marginBottom: '10px',
+      zIndex: '5555',
+      gridArea: '1/1/1/1',
+    }),
+    indicatorSeparator: (base: any) => ({
+      ...base,
+      width: '0px',
+      margin: '0px',
+    }),
+    dropdownIndicator: (base: any, state: any) => ({
+      ...base,
+      transition: 'all .2s ease',
+      transform: state.selectProps.menuIsOpen && 'rotate(180deg)',
+    }),
+    control: (provided: any, state: any) => ({
+      ...provided,
+      // none of react-select's styles are passed to <Control />
+      //
+      height: '45px',
+      width: 'inherit',
+      paddingTop: '-12px !importants',
+      paddingLeft: '5px !important',
+      margin: '0px 5px 10px 0px',
+      borderRadius: 'none',
+      border: 'none',
+      cursor: 'pointer',
+      boxShadow: 'none',
+      fontsize: '1rem',
+      fontFamily: 'Poppins-Regular, sans-serif !important',
+    }),
+    singleValue: (provided: any, state: any) => {
+      const opacity = state.isDisabled ? 0.5 : 1;
+      const transition = 'opacity 300ms';
+      return { ...provided, opacity, transition };
+    },
+  };
   const formDefaultData = (key: string) => {
     if (guestUser) {
       return guestUser[`${key}`] ? guestUser[`${key}`] : '';
@@ -50,9 +91,9 @@ const RegisterConfirmation = ({ id }: any) => {
     return '';
   };
 
-  const handleChangeLocation = (event: SelectChangeEvent) => {
-    setFavLocation(event.target.value as string);
-  };
+  // const handleChangeLocation = (event: SelectChangeEvent) => {
+  //   setFavLocation(event.target.value as string);
+  // };
 
   const handleBirthDayChange = (value?: Date | undefined): undefined => {
     setBirthDay(value);
@@ -122,6 +163,12 @@ const RegisterConfirmation = ({ id }: any) => {
             .required('required'),
         })}
         onSubmit={async (values) => {
+          console.log('favLocation', favLocation);
+          if (!favLocation) {
+            setFavLocationError(true);
+            return;
+          }
+          setFavLocationError(false);
           const obj: any = {
             first_name: values.first_name,
             last_name: values.last_name,
@@ -217,7 +264,7 @@ const RegisterConfirmation = ({ id }: any) => {
                     show={['month', 'day', 'year']}
                   />
                 </Grid>
-                <Grid item xs={12} sm={12} md={12} lg={12}>
+                {/* <Grid item xs={12} sm={12} md={12} lg={12}>
                   <FormControl fullWidth>
                     <InputLabel
                       id="fav-location-label"
@@ -256,6 +303,29 @@ const RegisterConfirmation = ({ id }: any) => {
                         ))}
                     </Select>
                   </FormControl>
+                </Grid> */}
+                <Grid item xs={12}>
+                  <Select
+                    placeholder="Favorite Location *"
+                    className="select-options"
+                    isSearchable={true}
+                    styles={customStyles}
+                    options={locations?.map((loc: any) => {
+                      return { value: loc.name, label: loc.name };
+                    })}
+                    onChange={(selectedOption: any) => {
+                      console.log('selectedOption', selectedOption);
+                      setFavLocationError(false);
+                      setFavLocation(selectedOption);
+                    }}
+                    value={favLocation && favLocation}
+                    maxMenuHeight={150}
+                  />
+                  {favLocationError && (
+                    <p className="fav-conf-error-message">
+                      Favorite Location is required
+                    </p>
+                  )}
                 </Grid>
                 <Grid item xs={12} sm={12} md={12} lg={6}>
                   <TextField
@@ -295,36 +365,54 @@ const RegisterConfirmation = ({ id }: any) => {
                     }
                   />
                 </Grid>
-                <Grid item  xs={12} sm={12} md={12} lg={12} sx={{backgroundColor: "transparent",fontFamily:'Poppins-Regular, sans-serif !Important' }}
-                      className="check-with-text"
-                      >
-                    <Typography
-                      variant="body2"
-                      id="chkTermandCondition"
-                      title="I agree to the  Rubios terms and conditions and to receiving marketing communications from Rubios."
-                      sx={{ width: '100%', fill:"white", color: "white",fontFamily:'Poppins-Regular, sans-serif !Important',}}
-                      
+                <Grid
+                  item
+                  xs={12}
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  sx={{
+                    backgroundColor: 'transparent',
+                    fontFamily: 'Poppins-Regular, sans-serif !Important',
+                  }}
+                  className="check-with-text"
+                >
+                  <Typography
+                    variant="body2"
+                    id="chkTermandCondition"
+                    title="I agree to the  Rubios terms and conditions and to receiving marketing communications from Rubios."
+                    sx={{
+                      width: '100%',
+                      fill: 'white',
+                      color: 'white',
+                      fontFamily: 'Poppins-Regular, sans-serif !Important',
+                    }}
+                  >
+                    <Checkbox
+                      onChange={handleChangeCheckbox}
+                      inputProps={{
+                        'aria-labelledby': 'chkTermandCondition',
+                      }}
+                      color="default"
+                      sx={{
+                        float: 'left',
+                        color: 'white',
+                        padding: '0px 10px 0px 0px !important',
+                        marginBottom: { xs: '50px !important' },
+                      }}
+                    />{' '}
+                    I agree to the{' '}
+                    <Link
+                      href={process.env.REACT_APP_TERMS_LINK}
+                      underline="hover"
+                      sx={{ color: '#1a86ff' }}
                     >
-                      <Checkbox
-                        onChange={handleChangeCheckbox}
-                        inputProps={{
-                          'aria-labelledby': 'chkTermandCondition',
-                        }}
-                        color="default"
-                        sx={{float: "left",color: "white",padding: '0px 10px 0px 0px !important', marginBottom:{ xs: "50px !important"}}}
-                       />{' '}
-                      I agree to the{' '}
-                      <Link
-                        href={process.env.REACT_APP_TERMS_LINK}
-                        underline="hover"
-                        sx={{color: "#1a86ff"}}
-                      >
-                        Rubio's terms and conditions{' '}
-                      </Link>
-                      and to receiving marketing communications from Rubio's.
-                    </Typography>
-                  </Grid>
-                <Grid item xs={12} sm={12} md={12} lg={12} >
+                      Rubio's terms and conditions{' '}
+                    </Link>
+                    and to receiving marketing communications from Rubio's.
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm={12} md={12} lg={12}>
                   <Button
                     aria-label="Sign Up"
                     variant="contained"
