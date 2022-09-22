@@ -25,26 +25,6 @@ import './register-form.css';
 import { useLocation } from 'react-router-dom';
 import Select from 'react-select';
 
-const Countries = [
-  { label: 'Albania', value: 355 },
-  { label: 'Argentina', value: 54 },
-  { label: 'Austria', value: 43 },
-  { label: 'Venezuela', value: 58 },
-];
-// import { Grid, Skeleton } from '@mui/material';
-const names = [
-  'Oliver Hansen Oliver Hansen Oliver Hansen Oliver ',
-  'Van Henry',
-  'April Tucker',
-  'Ralph Hubbard',
-  'Omar Alexander',
-  'Carlos Abbott',
-  'Miriam Wagner',
-  'Bradley Wilkerson',
-  'Virginia Andrews',
-  'Kelly Snyder',
-];
-
 const RegisterForm = () => {
   const dispatch = useDispatch();
   const query = new URLSearchParams(useLocation().search);
@@ -73,8 +53,6 @@ const RegisterForm = () => {
   const [favLocationError, setFavLocationError] = useState(false);
   const [birthDay, setBirthDay] = useState<Date | undefined>();
   const [termsAndConditions, setTermsAndconditions] = useState(false);
-  const [selectShrink, setSelectShrink] = useState(false);
-  const [personName, setPersonName] = React.useState<string[]>([names[0]]);
   useEffect(() => {
     dispatch(getlocations());
   }, []);
@@ -161,6 +139,7 @@ const RegisterForm = () => {
       paddingLeft: "5px",
       borderRadius: "none",
       border: "none",
+      cursor: "pointer",
       boxShadow: "0px 0px 6px lightgray",
       fontFamily: "Poppins-Regular, sans-serif !important",
 
@@ -473,124 +452,6 @@ const RegisterForm = () => {
                     />
                   </Grid>
 
-                  {/* <Grid item xs={12}>
-                    <div>
-                     <Typography
-                      variant="body2"
-                      className="body-text"
-                      title="Favourite Location"
-                      sx={{ width: '100%', marginBottom: '3px',}}
-                    >
-                      Favourite Location *
-                    </Typography>
-                      <FormControl sx={{margin: "0px", maxWidth: 'auto' }}>
-                        <InputLabel classes={{
-                          root:
-                            !selectShrink && favLocation == ''
-                              ? 'select-custom-css'
-                              : '',
-                        }}
-                        // shrink={selectShrink || favLocation !== ''}
-                        shrink
-                        style={{ textAlign: 'left' }} aria-controls="fav-location"
-                        // aria-haspopup="false"
-                        // id="fav-location-label"
-                        // htmlFor="select-multiple-native"
-                        >
-                        Favorite Location *
-                        </InputLabel>
-                        <Select
-                          multiple
-                          native
-                          value={personName}
-                          // @ts-ignore Typings are not considering `native`
-                          onChange={handleChangeMultiple}
-                          label="Favorite Location *"
-                          inputProps={{
-                            id: 'select-multiple-native',
-                          }}
-                        >
-                          {names.map((name) => (
-                            <option
-                            key={name} value={name}  style={{
-
-                              whiteSpace: 'normal',
-                              wordBreak: 'break-all',
-                              padding: '8px 0px',
-                              font: '16px Roboto,Helvika,Arial, Sans Serif',
-                            }} >
-                              {name}
-                            </option>
-                          ))}
-                        </Select>
-                      </FormControl>
-                    </div>
-                  </Grid> */}
-                  {/* <Grid item xs={12}>
-                  <div>
-                    <FormControl fullWidth>
-                      <InputLabel
-                        id="fav-location-label"
-                        classes={{
-                          root:
-                            !selectShrink && favLocation == ''
-                              ? 'select-custom-css'
-                              : '',
-                        }}
-                        shrink={selectShrink || favLocation !== ''}
-                        style={{ textAlign: 'left' }}
-                        aria-controls="fav-location"
-                        aria-haspopup="false"
-                      >
-                        Favorite Location *
-                      </InputLabel>
-                      <Select
-                        labelId="fav-location-label"
-                        id="fav-location"
-                        name="favLocation"
-                        value={favLocation && favLocation}
-                        label="Favorite Location"
-                        onChange={handleChangeLocation}
-                        onClose={() => {
-                          setSelectShrink(false);
-                        }}
-                        onOpen={() => {
-                          setSelectShrink(true);
-                        }}
-                        MenuProps={{
-
-                          PaperProps: {
-                            sx: {
-                              position: 'relative',
-                              // left: {
-                              //   xs: '0px !Important',
-                              //   sm: '-5px !important',
-                              // },
-                              width: {
-                                xs: 200,
-                              },
-                              maxHeight: 150,
-                            },
-                          },
-                        }}
-                      >
-                        {locations &&
-                          locations.map((location: any, index: number) => (
-                            <MenuItem
-                              key={index++}
-                              value={location.location_id}
-                              style={{
-                                whiteSpace: 'normal',
-                                wordBreak: 'break-all',
-                              }}
-                            >
-                              {location.name}
-                            </MenuItem>
-                          ))}
-                      </Select>
-                    </FormControl>
-                    </div>
-                  </Grid>  */}
                   <Grid item xs={12}>
                     <div>
                       <div>
