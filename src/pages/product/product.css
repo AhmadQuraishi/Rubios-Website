@@ -341,6 +341,7 @@ input[type='check']:checked+label {
   .button-panel-sx {
      width: 240px;
     /*margin-bottom: 20px;*/
+    margin-left: 18px;
     justify-content: flex-end;
   }
   /* .product-detail .quantity input {
