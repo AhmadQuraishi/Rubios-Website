@@ -135,15 +135,28 @@ const RegisterForm = () => {
       color: state.isSelected ? 'black' : 'black',
       backgroundColor: state.isSelected ? 'lightgray' : '',
       marginTop: '0px',
+      border : '0px',
+      fontFamily: "Poppins-Regular, sans-serif !important",
+
     }),
     menu: (base : any ) => ({
       ...base,
-      marginTop: 0
+      marginTop: 0,
+      
+    }),
+    indicatorSeparator:  (base : any ) => ({
+      ...base,
+      width: "0px"
     }),
     control: (provided : any, state : any) => ({
       ...provided,
       // none of react-select's styles are passed to <Control />
       //
+      borderRadius: "none",
+      border: "none",
+      boxShadow: "0px 0px 6px lightgray",
+      fontFamily: "Poppins-Regular, sans-serif !important",
+      
     }),
     singleValue: (provided : any, state : any) => {
       const opacity = state.isDisabled ? 0.5 : 1;

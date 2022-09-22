@@ -58,7 +58,14 @@
     right: auto;
     width: 100%;
   }
+  .check-with-text {
+    margin-top: 10px;
+  }
 }
-
+@media screen and (min-width: 1200px) {
+  .check-with-text {
+  margin-top: 50px;
+  }
+}
 
 
