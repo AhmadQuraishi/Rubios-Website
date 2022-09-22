@@ -679,81 +679,81 @@ const LocationCard = (props: any) => {
               )}
             </Grid>
             <Grid item xs={12} style={{ position: 'relative' }}>
-              {/*{showAllResturants}*/}
-              {/*{((!showAllResturants &&*/}
-              {/*  resturantOrderType &&*/}
-              {/*  resturantOrderType != 'dispatch' &&*/}
-              {/*  filteredRestaurants &&*/}
-              {/*  filteredRestaurants.length > 0) ||*/}
-              {/*  (!showAllResturants &&*/}
-              {/*    resturantOrderType == 'dispatch' &&*/}
-              {/*    deliveryRasturants &&*/}
-              {/*    deliveryRasturants.length > 0)) && (*/}
-              {/*  <Typography*/}
-              {/*    className="label"*/}
-              {/*    sx={{ display: { xs: 'none', lg: 'block' } }}*/}
-              {/*  >*/}
-              {/*    <Link*/}
-              {/*      style={{*/}
-              {/*        display: 'block',*/}
-              {/*        cursor: 'pointer',*/}
-              {/*        textDecoration: 'none',*/}
-              {/*        fontWeight: 500,*/}
-              {/*        color: '#0075BF',*/}
-              {/*      }}*/}
-              {/*      title="View All Resturants"*/}
-              {/*      role="button"*/}
-              {/*      tabIndex={0}*/}
-              {/*      aria-label="View All Resturants"*/}
-              {/*      onClick={() => {*/}
-              {/*        let updatedRestaurants = [];*/}
-              {/*        if (resturantOrderType === 'pickup') {*/}
-              {/*          updatedRestaurants = filteredRestaurants.filter(*/}
-              {/*            (x: any) => x.canpickup === true,*/}
-              {/*          );*/}
-              {/*        } else if (resturantOrderType === 'curbside') {*/}
-              {/*          updatedRestaurants = filteredRestaurants.filter(*/}
-              {/*            (x: any) => x.supportscurbside === true,*/}
-              {/*          );*/}
-              {/*        } else if (resturantOrderType === 'dispatch') {*/}
-              {/*          updatedRestaurants = filteredRestaurants.filter(*/}
-              {/*            (x: any) => x.supportsdispatch === true,*/}
-              {/*          );*/}
-              {/*        }*/}
-              {/*        setAllResturants(updatedRestaurants);*/}
-              {/*        setShowAllResturants(true);*/}
-              {/*      }}*/}
-              {/*      to="#"*/}
-              {/*    >*/}
-              {/*      View All Restaurants*/}
-              {/*    </Link>*/}
-              {/*  </Typography>*/}
-              {/*)}*/}
-              {/*{showAllResturants && (*/}
-              {/*  <Typography className="label">*/}
-              {/*    <Link*/}
-              {/*      style={{*/}
-              {/*        zIndex: 1,*/}
-              {/*        display: 'block',*/}
-              {/*        cursor: 'pointer',*/}
-              {/*        textDecoration: 'none',*/}
-              {/*        fontWeight: 500,*/}
-              {/*        color: '#0075BF',*/}
-              {/*      }}*/}
-              {/*      title="BACK TO MAP"*/}
-              {/*      role="button"*/}
-              {/*      tabIndex={0}*/}
-              {/*      aria-label="BACK TO MAP"*/}
-              {/*      onClick={() => {*/}
-              {/*        setAllResturants([]);*/}
-              {/*        setShowAllResturants(false);*/}
-              {/*      }}*/}
-              {/*      to="#"*/}
-              {/*    >*/}
-              {/*      BACK TO MAP*/}
-              {/*    </Link>*/}
-              {/*  </Typography>*/}
-              {/*)}*/}
+              {showAllResturants}
+              {((!showAllResturants &&
+                resturantOrderType &&
+                resturantOrderType !== 'dispatch' &&
+                filteredRestaurants &&
+                filteredRestaurants.length > 0) ||
+                (!showAllResturants &&
+                  resturantOrderType !== 'dispatch' &&
+                  deliveryRasturants &&
+                  deliveryRasturants.length > 0)) && (
+                <Typography
+                  className="label"
+                  sx={{ display: { xs: 'none', lg: 'block' } }}
+                >
+                  <Link
+                    style={{
+                      display: 'block',
+                      cursor: 'pointer',
+                      textDecoration: 'none',
+                      fontWeight: 500,
+                      color: '#0075BF',
+                    }}
+                    title="View All Resturants"
+                    role="button"
+                    tabIndex={0}
+                    aria-label="View All Resturants"
+                    onClick={() => {
+                      let updatedRestaurants = [];
+                      if (resturantOrderType === 'pickup') {
+                        updatedRestaurants = filteredRestaurants.filter(
+                          (x: any) => x.canpickup === true,
+                        );
+                      } else if (resturantOrderType === 'curbside') {
+                        updatedRestaurants = filteredRestaurants.filter(
+                          (x: any) => x.supportscurbside === true,
+                        );
+                      } else if (resturantOrderType === 'dispatch') {
+                        updatedRestaurants = filteredRestaurants.filter(
+                          (x: any) => x.supportsdispatch === true,
+                        );
+                      }
+                      setAllResturants(updatedRestaurants);
+                      setShowAllResturants(true);
+                    }}
+                    to="#"
+                  >
+                    View All Restaurants
+                  </Link>
+                </Typography>
+              )}
+              {showAllResturants && (
+                <Typography className="label">
+                  <Link
+                    style={{
+                      zIndex: 1,
+                      display: 'block',
+                      cursor: 'pointer',
+                      textDecoration: 'none',
+                      fontWeight: 500,
+                      color: '#0075BF',
+                    }}
+                    title="BACK TO MAP"
+                    role="button"
+                    tabIndex={0}
+                    aria-label="BACK TO MAP"
+                    onClick={() => {
+                      setAllResturants([]);
+                      setShowAllResturants(false);
+                    }}
+                    to="#"
+                  >
+                    BACK TO MAP
+                  </Link>
+                </Typography>
+              )}
               <Typography className="label">
                 {((isNearByRestaurantList &&
                   filteredRestaurants &&
