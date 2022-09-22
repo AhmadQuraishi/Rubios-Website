@@ -137,7 +137,6 @@ const RegisterForm = () => {
       marginTop: '0px',
       border : '0px',
       fontFamily: "Poppins-Regular, sans-serif !important",
-
     }),
     menu: (base : any ) => ({
       ...base,
@@ -148,15 +147,22 @@ const RegisterForm = () => {
       ...base,
       width: "0px"
     }),
+    dropdownIndicator: (base : any, state : any) => ({
+      ...base,
+      transition: 'all .2s ease',
+      transform: state.selectProps.menuIsOpen && 'rotate(180deg)',
+    }),
     control: (provided : any, state : any) => ({
       ...provided,
       // none of react-select's styles are passed to <Control />
       //
+      height: "55px",
+      paddingLeft: "5px",
       borderRadius: "none",
       border: "none",
       boxShadow: "0px 0px 6px lightgray",
       fontFamily: "Poppins-Regular, sans-serif !important",
-      
+
     }),
     singleValue: (provided : any, state : any) => {
       const opacity = state.isDisabled ? 0.5 : 1;
@@ -579,20 +585,13 @@ const RegisterForm = () => {
                     </div>
                   </Grid>  */}
                   <Grid item xs={12}>
-                    <Typography
-                      variant="body2"
-                      className="body-text"
-                      title="Favourite Location"
-                      sx={{ width: '100%', marginBottom: '3px' }}
-                    >
-                      Favourite Location *
-                    </Typography>
                     <div>
                       <div>
                         <div>
                           <Select
+                          placeholder="Favorite Location *"
                           className="select-options"
-                          isSearchable={false}
+                          isSearchable={true}
                           styles={customStyles}
                           options={locations?.map((loc: any) => {
                               return { value: loc.name, label: loc.name };
