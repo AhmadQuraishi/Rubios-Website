@@ -69,7 +69,8 @@ const RegisterForm = () => {
   }
   const { locations } = useSelector((state: any) => state.locationReducer);
   console.log('locations', locations);
-  const [favLocation, setFavLocation] = useState('');
+  const [favLocation, setFavLocation] = useState(null);
+  const [favLocationError, setFavLocationError] = useState(false);
   const [birthDay, setBirthDay] = useState<Date | undefined>();
   const [termsAndConditions, setTermsAndconditions] = useState(false);
   const [selectShrink, setSelectShrink] = useState(false);
@@ -100,22 +101,22 @@ const RegisterForm = () => {
     }
   }, [locations]);
 
-  const handleChangeLocation = (event: SelectChangeEvent) => {
-    console.log('event', event);
-    setFavLocation(event.target.value as string);
-  };
-  const handleChangeMultiple = (
-    event: React.ChangeEvent<HTMLSelectElement>,
-  ) => {
-    const { options } = event.target;
-    const value: string[] = [];
-    for (let i = 0, l = options.length; i < l; i += 1) {
-      if (options[i].selected) {
-        value.push(options[i].value);
-        return setPersonName(value);
-      }
-    }
-  };
+  // const handleChangeLocation = (event: SelectChangeEvent) => {
+  //   console.log('event', event);
+  //   setFavLocation(event.target.value as string);
+  // };
+  // const handleChangeMultiple = (
+  //   event: React.ChangeEvent<HTMLSelectElement>,
+  // ) => {
+  //   const { options } = event.target;
+  //   const value: string[] = [];
+  //   for (let i = 0, l = options.length; i < l; i += 1) {
+  //     if (options[i].selected) {
+  //       value.push(options[i].value);
+  //       return setPersonName(value);
+  //     }
+  //   }
+  // };
   const handleBirthDayChange = (value?: Date | undefined): undefined => {
     setBirthDay(value);
     return;
@@ -137,26 +138,32 @@ const RegisterForm = () => {
       marginTop: '0px',
       border : '0px',
       fontFamily: "Poppins-Regular, sans-serif !important",
-
     }),
     menu: (base : any ) => ({
       ...base,
       marginTop: 0,
-      
+
     }),
     indicatorSeparator:  (base : any ) => ({
       ...base,
       width: "0px"
     }),
+    dropdownIndicator: (base : any, state : any) => ({
+      ...base,
+      transition: 'all .2s ease',
+      transform: state.selectProps.menuIsOpen && 'rotate(180deg)',
+    }),
     control: (provided : any, state : any) => ({
       ...provided,
       // none of react-select's styles are passed to <Control />
       //
+      height: "55px",
+      paddingLeft: "5px",
       borderRadius: "none",
       border: "none",
       boxShadow: "0px 0px 6px lightgray",
       fontFamily: "Poppins-Regular, sans-serif !important",
-      
+
     }),
     singleValue: (provided : any, state : any) => {
       const opacity = state.isDisabled ? 0.5 : 1;
@@ -278,6 +285,12 @@ const RegisterForm = () => {
               .required('required'),
           })}
           onSubmit={async (values) => {
+            console.log('favLocation', favLocation)
+            if (!favLocation) {
+              setFavLocationError(true);
+              return;
+            }
+            setFavLocationError(false)
             const obj: any = {
               first_name: values.first_name,
               last_name: values.last_name,
@@ -469,7 +482,7 @@ const RegisterForm = () => {
                       sx={{ width: '100%', marginBottom: '3px',}}
                     >
                       Favourite Location *
-                    </Typography> 
+                    </Typography>
                       <FormControl sx={{margin: "0px", maxWidth: 'auto' }}>
                         <InputLabel classes={{
                           root:
@@ -480,8 +493,8 @@ const RegisterForm = () => {
                         // shrink={selectShrink || favLocation !== ''}
                         shrink
                         style={{ textAlign: 'left' }} aria-controls="fav-location"
-                        // aria-haspopup="false" 
-                        // id="fav-location-label" 
+                        // aria-haspopup="false"
+                        // id="fav-location-label"
                         // htmlFor="select-multiple-native"
                         >
                         Favorite Location *
@@ -545,7 +558,7 @@ const RegisterForm = () => {
                           setSelectShrink(true);
                         }}
                         MenuProps={{
-                          
+
                           PaperProps: {
                             sx: {
                               position: 'relative',
@@ -579,26 +592,20 @@ const RegisterForm = () => {
                     </div>
                   </Grid>  */}
                   <Grid item xs={12}>
-                    <Typography
-                      variant="body2"
-                      className="body-text"
-                      title="Favourite Location"
-                      sx={{ width: '100%', marginBottom: '3px' }}
-                    >
-                      Favourite Location *
-                    </Typography>
                     <div>
                       <div>
                         <div>
                           <Select
+                          placeholder="Favorite Location *"
                           className="select-options"
-                          isSearchable={false}
+                          isSearchable={true}
                           styles={customStyles}
                           options={locations?.map((loc: any) => {
                               return { value: loc.name, label: loc.name };
                             })}
                             onChange={(selectedOption: any) => {
                               console.log('selectedOption', selectedOption);
+                              setFavLocationError(false);
                               setFavLocation(selectedOption);
                             }}
                             value={favLocation && favLocation}
@@ -607,6 +614,11 @@ const RegisterForm = () => {
                         </div>
                       </div>
                     </div>
+                    {favLocationError && (
+                      <p className="fav-error-message">
+                        Favorite Location is required
+                      </p>
+                    )}
                   </Grid>
                   <Grid item xs={12}>
                     <Typography
