@@ -41,8 +41,9 @@ const TransactionHistory = () => {
           <Grid container spacing={0}>
             <Grid
               item
-              xs={0}
+              xs={3}
               sm={3}
+              lg={4}
               sx={{
                 fontFamily: 'Poppins-Bold',
                 textTransform: 'uppercase',
@@ -51,15 +52,16 @@ const TransactionHistory = () => {
                 padding: '10px 0',
                 fontSize: '14px',
                 color: 'secondary.main',
-                display: { xs: 'none', sm: 'grid' },
+                // display: { xs: 'none', sm: 'grid' },
               }}
             >
               Date
             </Grid>
             <Grid
               item
-              xs={4}
-              sm={3}
+              xs={6}
+              sm={6}
+              lg={4}
               sx={{
                 fontFamily: 'Poppins-Bold',
                 textTransform: 'uppercase',
@@ -74,8 +76,9 @@ const TransactionHistory = () => {
             </Grid>
             <Grid
               item
-              xs={8}
-              sm={6}
+              xs={3}
+              sm={3}
+              lg={4}
               sx={{
                 fontFamily: 'Poppins-Bold',
                 textTransform: 'uppercase',
@@ -93,8 +96,9 @@ const TransactionHistory = () => {
               <Fragment key={Math.random() + index}>
                 <Grid
                   item
-                  xs={0}
+                  xs={3}
                   sm={3}
+                  lg={4}
                   sx={{
                     fontFamily: 'Poppins-Medium',
                     fontWeight: '500',
@@ -102,7 +106,7 @@ const TransactionHistory = () => {
                     padding: '10px 0',
                     fontSize: '10px',
                     color: 'secondary.main',
-                    display: { xs: 'none', sm: 'grid' },
+                    // display: { xs: 'none', sm: 'grid' },
                   }}
                 >
                   {moment(item.timeplaced.split(' ')[0]).format('MM/DD/YYYY')}
@@ -110,8 +114,9 @@ const TransactionHistory = () => {
                 <Grid
                   item
                   key={index + '-col2'}
-                  xs={4}
-                  sm={3}
+                  xs={6}
+                  sm={6}
+                  lg={4}
                   sx={{
                     fontFamily: 'Poppins-Medium',
                     fontWeight: '500',
@@ -121,19 +126,20 @@ const TransactionHistory = () => {
                     color: 'secondary.main',
                   }}
                 >
-                  <Typography
-                    variant="caption"
-                    sx={{ display: { xs: 'block', sm: 'none' } }}
-                  >
-                    {moment(item.timeplaced.split(' ')[0]).format('MM/DD/YYYY')}
-                  </Typography>
+                  {/*<Typography*/}
+                  {/*  variant="caption"*/}
+                  {/*  sx={{ display: { xs: 'block', sm: 'none' } }}*/}
+                  {/*>*/}
+                  {/*  {moment(item.timeplaced.split(' ')[0]).format('MM/DD/YYYY')}*/}
+                  {/*</Typography>*/}
                   {item.oloid}
                 </Grid>
                 <Grid
                   item
                   key={index + '-col3'}
-                  xs={8}
-                  sm={6}
+                  xs={3}
+                  sm={3}
+                  lg={4}
                   sx={{
                     fontFamily: 'Poppins-Medium',
                     fontWeight: '500',
