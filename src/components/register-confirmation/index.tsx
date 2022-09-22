@@ -13,7 +13,7 @@ import Select from 'react-select';
 
 const RegisterConfirmation = ({ id }: any) => {
   const dispatch = useDispatch();
-  const [favLocation, setFavLocation] = useState(null);
+  const [favLocation, setFavLocation] = useState<any>(null);
   const [favLocationError, setFavLocationError] = useState(false);
   const [selectShrink, setSelectShrink] = useState(false);
   const [birthDay, setBirthDay] = useState<Date | undefined>();
@@ -164,7 +164,10 @@ const RegisterConfirmation = ({ id }: any) => {
         })}
         onSubmit={async (values) => {
           console.log('favLocation', favLocation);
-          if (!favLocation) {
+          if (
+            (!favLocation || !Object.keys(favLocation).length) ||
+            favLocation.value === ''
+          ) {
             setFavLocationError(true);
             return;
           }
@@ -175,7 +178,7 @@ const RegisterConfirmation = ({ id }: any) => {
             password: values.password,
             password_confirmation: values.password_confirmation,
             email: values.email,
-            fav_location_id: favLocation,
+            fav_location_id: favLocation.value.toString(),
             // terms_and_conditions: termsAndConditions,
           };
 
@@ -311,10 +314,9 @@ const RegisterConfirmation = ({ id }: any) => {
                     isSearchable={true}
                     styles={customStyles}
                     options={locations?.map((loc: any) => {
-                      return { value: loc.name, label: loc.name };
+                      return { value: loc.location_id, label: loc.name };
                     })}
                     onChange={(selectedOption: any) => {
-                      console.log('selectedOption', selectedOption);
                       setFavLocationError(false);
                       setFavLocation(selectedOption);
                     }}
