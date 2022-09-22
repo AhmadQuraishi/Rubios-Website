@@ -49,7 +49,7 @@ const RegisterForm = () => {
   }
   const { locations } = useSelector((state: any) => state.locationReducer);
   console.log('locations', locations);
-  const [favLocation, setFavLocation] = useState(null);
+  const [favLocation, setFavLocation] = useState<any>(null);
   const [favLocationError, setFavLocationError] = useState(false);
   const [birthDay, setBirthDay] = useState<Date | undefined>();
   const [termsAndConditions, setTermsAndconditions] = useState(false);
@@ -109,47 +109,45 @@ const RegisterForm = () => {
     name: string;
   }
   const customStyles = {
-    option: (provided : any, state : any) => ({
+    option: (provided: any, state: any) => ({
       ...provided,
       color: state.isSelected ? 'black' : 'black',
       backgroundColor: state.isSelected ? 'lightgray' : '',
       marginTop: '0px',
-      border : '0px',
-      fontFamily: "Poppins-Regular, sans-serif !important",
+      border: '0px',
+      fontFamily: 'Poppins-Regular, sans-serif !important',
     }),
-    menu: (base : any ) => ({
+    menu: (base: any) => ({
       ...base,
       marginTop: 0,
-
     }),
-    indicatorSeparator:  (base : any ) => ({
+    indicatorSeparator: (base: any) => ({
       ...base,
-      width: "0px"
+      width: '0px',
     }),
-    dropdownIndicator: (base : any, state : any) => ({
+    dropdownIndicator: (base: any, state: any) => ({
       ...base,
       transition: 'all .2s ease',
       transform: state.selectProps.menuIsOpen && 'rotate(180deg)',
     }),
-    control: (provided : any, state : any) => ({
+    control: (provided: any, state: any) => ({
       ...provided,
       // none of react-select's styles are passed to <Control />
       //
-      height: "55px",
-      paddingLeft: "5px",
-      borderRadius: "none",
-      border: "none",
-      cursor: "pointer",
-      boxShadow: "0px 0px 6px lightgray",
-      fontFamily: "Poppins-Regular, sans-serif !important",
-
+      height: '55px',
+      paddingLeft: '5px',
+      borderRadius: 'none',
+      border: 'none',
+      cursor: 'pointer',
+      boxShadow: '0px 0px 6px lightgray',
+      fontFamily: 'Poppins-Regular, sans-serif !important',
     }),
-    singleValue: (provided : any, state : any) => {
+    singleValue: (provided: any, state: any) => {
       const opacity = state.isDisabled ? 0.5 : 1;
       const transition = 'opacity 300ms';
       return { ...provided, opacity, transition };
-    }
-  }
+    },
+  };
   const NumberFormatCustom = forwardRef<HTMLElement, CustomProps>(
     function NumberFormatCustom(props, ref) {
       const { onChange, ...other } = props;
@@ -264,12 +262,16 @@ const RegisterForm = () => {
               .required('required'),
           })}
           onSubmit={async (values) => {
-            console.log('favLocation', favLocation)
-            if (!favLocation) {
+            console.log('favLocation', favLocation);
+            if (
+              !favLocation ||
+              !Object.keys(favLocation).length ||
+              favLocation.value === ''
+            ) {
               setFavLocationError(true);
               return;
             }
-            setFavLocationError(false)
+            setFavLocationError(false);
             const obj: any = {
               first_name: values.first_name,
               last_name: values.last_name,
@@ -278,7 +280,7 @@ const RegisterForm = () => {
               email: values.email,
               phone: values.phone ? values.phone.replace(/\D/g, '') : '',
               invite_code: values.invitecode,
-              fav_location_id: favLocation,
+              fav_location_id: favLocation.value.toString(),
               terms_and_conditions: termsAndConditions,
             };
 
@@ -457,15 +459,17 @@ const RegisterForm = () => {
                       <div>
                         <div>
                           <Select
-                          placeholder="Favorite Location *"
-                          className="select-options"
-                          isSearchable={true}
-                          styles={customStyles}
-                          options={locations?.map((loc: any) => {
-                              return { value: loc.name, label: loc.name };
+                            placeholder="Favorite Location *"
+                            className="select-options"
+                            isSearchable={true}
+                            styles={customStyles}
+                            options={locations?.map((loc: any) => {
+                              return {
+                                value: loc.location_id,
+                                label: loc.name,
+                              };
                             })}
                             onChange={(selectedOption: any) => {
-                              console.log('selectedOption', selectedOption);
                               setFavLocationError(false);
                               setFavLocation(selectedOption);
                             }}

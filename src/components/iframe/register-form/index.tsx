@@ -50,7 +50,7 @@ const RegisterForm = () => {
   const { locations } = useSelector((state: any) => state.locationReducer);
   const { error } = useSelector((state: any) => state.providerReducer);
 
-  const [favLocation, setFavLocation] = useState(null);
+  const [favLocation, setFavLocation] = useState<any>(null);
   const [favLocationError, setFavLocationError] = useState(false);
   const [birthDay, setBirthDay] = useState<Date | undefined>();
   const [termsAndConditions, setTermsAndconditions] = useState(false);
@@ -64,7 +64,7 @@ const RegisterForm = () => {
 
   useEffect(() => {
     if (error && Object.keys(error).length) {
-      console.log(error)
+      console.log(error);
       setSignUpErrors(errorMapping(error));
     }
   }, [error]);
@@ -87,47 +87,45 @@ const RegisterForm = () => {
     name: string;
   }
   const customStyles = {
-    option: (provided : any, state : any) => ({
+    option: (provided: any, state: any) => ({
       ...provided,
       color: state.isSelected ? 'black' : 'black',
       backgroundColor: state.isSelected ? 'lightgray' : '',
       marginTop: '0px',
-      border : '0px',
-      fontFamily: "Poppins-Regular, sans-serif !important",
+      border: '0px',
+      fontFamily: 'Poppins-Regular, sans-serif !important',
     }),
-    menu: (base : any ) => ({
+    menu: (base: any) => ({
       ...base,
       marginTop: 0,
-
     }),
-    indicatorSeparator:  (base : any ) => ({
+    indicatorSeparator: (base: any) => ({
       ...base,
-      width: "0px"
+      width: '0px',
     }),
-    dropdownIndicator: (base : any, state : any) => ({
+    dropdownIndicator: (base: any, state: any) => ({
       ...base,
       transition: 'all .2s ease',
       transform: state.selectProps.menuIsOpen && 'rotate(180deg)',
     }),
-    control: (provided : any, state : any) => ({
+    control: (provided: any, state: any) => ({
       ...provided,
       // none of react-select's styles are passed to <Control />
       //
-      height: "55px",
-      paddingLeft: "5px",
-      borderRadius: "none",
-      border: "none",
+      height: '55px',
+      paddingLeft: '5px',
+      borderRadius: 'none',
+      border: 'none',
       cursor: 'pointer',
-      boxShadow: "0px 0px 6px lightgray",
-      fontFamily: "Poppins-Regular, sans-serif !important",
-
+      boxShadow: '0px 0px 6px lightgray',
+      fontFamily: 'Poppins-Regular, sans-serif !important',
     }),
-    singleValue: (provided : any, state : any) => {
+    singleValue: (provided: any, state: any) => {
       const opacity = state.isDisabled ? 0.5 : 1;
       const transition = 'opacity 300ms';
       return { ...provided, opacity, transition };
-    }
-  }
+    },
+  };
   const NumberFormatCustom = forwardRef<HTMLElement, CustomProps>(
     function NumberFormatCustom(props, ref) {
       const { onChange, ...other } = props;
@@ -160,19 +158,39 @@ const RegisterForm = () => {
   }, []);
 
   const errorMapping = (error: any) => {
+    let generalError = true;
     const errorsArray: any = [];
     if (error?.data?.errors?.base && error.data.errors.base.length) {
       error?.data?.errors.base.forEach((msg: string) => {
+        generalError = false;
         errorsArray.push(msg);
       });
     } else {
-      errorsArray.push('ERROR! Please Try again later');
+      if (
+        error?.data?.errors?.device_already_shared &&
+        error?.data?.errors?.device_already_shared.length
+      ) {
+        if (
+          error?.data?.errors?.device_already_shared[0] ===
+          'with maximum number of guests allowed.'
+        ) {
+          generalError = false;
+          errorsArray.push(
+            'Device already shared with maximum number of guests allowed.',
+          );
+        }
+      }
     }
     if (error?.data?.errors?.email) {
+      generalError = false;
       errorsArray.push(`Email ${error?.data?.errors?.email[0]}`);
     }
     if (error?.data?.errors?.phone) {
+      generalError = false;
       errorsArray.push(`Phone ${error?.data?.errors?.phone[0]}`);
+    }
+    if (generalError) {
+      errorsArray.push(`ERROR! Please Try again later`);
     }
     return errorsArray;
   };
@@ -249,6 +267,15 @@ const RegisterForm = () => {
               .required('required'),
           })}
           onSubmit={async (values) => {
+            if (
+              !favLocation ||
+              !Object.keys(favLocation).length ||
+              favLocation.value === ''
+            ) {
+              setFavLocationError(true);
+              return;
+            }
+            setFavLocationError(false);
             const obj: any = {
               first_name: values.first_name,
               last_name: values.last_name,
@@ -257,7 +284,7 @@ const RegisterForm = () => {
               email: values.email,
               phone: values.phone ? values.phone.replace(/\D/g, '') : '',
               invite_code: values.invitecode,
-              fav_location_id: favLocation,
+              fav_location_id: favLocation.value,
               terms_and_conditions: termsAndConditions,
             };
 
@@ -438,21 +465,23 @@ const RegisterForm = () => {
                       show={['month', 'day', 'year']}
                     />
                   </Grid>
-                  
+
                   <Grid item xs={12}>
                     <div>
                       <div>
                         <div>
                           <Select
-                          placeholder="Favorite Location *"
-                          className="select-options"
-                          isSearchable={true}
-                          styles={customStyles}
-                          options={locations?.map((loc: any) => {
-                              return { value: loc.name, label: loc.name };
+                            placeholder="Favorite Location *"
+                            className="select-options"
+                            isSearchable={true}
+                            styles={customStyles}
+                            options={locations?.map((loc: any) => {
+                              return {
+                                value: loc.location_id,
+                                label: loc.name,
+                              };
                             })}
                             onChange={(selectedOption: any) => {
-                              console.log('selectedOption', selectedOption);
                               setFavLocationError(false);
                               setFavLocation(selectedOption);
                             }}
