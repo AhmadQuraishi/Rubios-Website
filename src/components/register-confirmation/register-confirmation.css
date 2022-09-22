@@ -1,7 +1,7 @@
 .confirmation-form .react-date-inputs {
   background: white;
   height: 45px;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   width: calc(100% - 5px);
   position: relative;
   z-index: 10;
@@ -16,7 +16,7 @@
   background-clip: padding-box;
   box-shadow: none !important;
   padding: 16px 14px;
-  margin: 0px 5px 5px 0px;
+  margin: 0px 5px 10px 0px;
   outline: none;
 }
 .confirmation-form .react-date-inputs input:before {
@@ -59,13 +59,36 @@
     width: 100%;
   }
   .check-with-text {
-    margin-top: 10px;
+    margin-top: 12px;
   }
 }
 @media screen and (min-width: 1200px) {
   .check-with-text {
-  margin-top: 50px;
+  margin-top: 17px;
+  margin-bottom: -15px;
   }
 }
 
+.fav-conf-error-message {
+  padding: 0;
+  font-family: "Roboto","Helvetica","Arial",sans-serif;
+  font-weight: 400;
+  font-size: 0.75rem;
+  line-height: 1.66;
+  letter-spacing: 0.03333em;
+  text-align: left;
+  margin-top: 3px;
+  margin-right: 14px;
+  margin-bottom: 0;
+  margin-left: 14px;
+  color: #E61F00 !important;
+}
 
+.css-6j8wv5-Input {
+  margin: 0;
+  padding: 0;
+}
+
+#react-select-3-input{
+  height: auto;
+}

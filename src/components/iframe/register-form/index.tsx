@@ -9,7 +9,6 @@ import {
   Button,
   InputLabel,
   MenuItem,
-  Select,
   Link,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,7 +24,7 @@ import './register-form.css';
 import { useLocation } from 'react-router-dom';
 import { displayToast } from '../../../helpers/toast';
 import { addAuthTokenIframeRedirect } from '../../../redux/actions/auth';
-
+import Select from 'react-select';
 const RegisterForm = () => {
   const dispatch = useDispatch();
   const query = new URLSearchParams(useLocation().search);
@@ -51,7 +50,8 @@ const RegisterForm = () => {
   const { locations } = useSelector((state: any) => state.locationReducer);
   const { error } = useSelector((state: any) => state.providerReducer);
 
-  const [favLocation, setFavLocation] = useState('');
+  const [favLocation, setFavLocation] = useState(null);
+  const [favLocationError, setFavLocationError] = useState(false);
   const [birthDay, setBirthDay] = useState<Date | undefined>();
   const [termsAndConditions, setTermsAndconditions] = useState(false);
   const [selectShrink, setSelectShrink] = useState(false);
@@ -69,9 +69,9 @@ const RegisterForm = () => {
     }
   }, [error]);
 
-  const handleChangeLocation = (event: SelectChangeEvent) => {
-    setFavLocation(event.target.value as string);
-  };
+  // const handleChangeLocation = (event: SelectChangeEvent) => {
+  //   setFavLocation(event.target.value as string);
+  // };
 
   const handleBirthDayChange = (value?: Date | undefined): undefined => {
     setBirthDay(value);
@@ -86,7 +86,48 @@ const RegisterForm = () => {
     onChange: (event: { target: { name: string; value: string } }) => void;
     name: string;
   }
+  const customStyles = {
+    option: (provided : any, state : any) => ({
+      ...provided,
+      color: state.isSelected ? 'black' : 'black',
+      backgroundColor: state.isSelected ? 'lightgray' : '',
+      marginTop: '0px',
+      border : '0px',
+      fontFamily: "Poppins-Regular, sans-serif !important",
+    }),
+    menu: (base : any ) => ({
+      ...base,
+      marginTop: 0,
 
+    }),
+    indicatorSeparator:  (base : any ) => ({
+      ...base,
+      width: "0px"
+    }),
+    dropdownIndicator: (base : any, state : any) => ({
+      ...base,
+      transition: 'all .2s ease',
+      transform: state.selectProps.menuIsOpen && 'rotate(180deg)',
+    }),
+    control: (provided : any, state : any) => ({
+      ...provided,
+      // none of react-select's styles are passed to <Control />
+      //
+      height: "55px",
+      paddingLeft: "5px",
+      borderRadius: "none",
+      border: "none",
+      cursor: 'pointer',
+      boxShadow: "0px 0px 6px lightgray",
+      fontFamily: "Poppins-Regular, sans-serif !important",
+
+    }),
+    singleValue: (provided : any, state : any) => {
+      const opacity = state.isDisabled ? 0.5 : 1;
+      const transition = 'opacity 300ms';
+      return { ...provided, opacity, transition };
+    }
+  }
   const NumberFormatCustom = forwardRef<HTMLElement, CustomProps>(
     function NumberFormatCustom(props, ref) {
       const { onChange, ...other } = props;
@@ -397,7 +438,37 @@ const RegisterForm = () => {
                       show={['month', 'day', 'year']}
                     />
                   </Grid>
+                  
                   <Grid item xs={12}>
+                    <div>
+                      <div>
+                        <div>
+                          <Select
+                          placeholder="Favorite Location *"
+                          className="select-options"
+                          isSearchable={true}
+                          styles={customStyles}
+                          options={locations?.map((loc: any) => {
+                              return { value: loc.name, label: loc.name };
+                            })}
+                            onChange={(selectedOption: any) => {
+                              console.log('selectedOption', selectedOption);
+                              setFavLocationError(false);
+                              setFavLocation(selectedOption);
+                            }}
+                            value={favLocation && favLocation}
+                            maxMenuHeight={150}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    {favLocationError && (
+                      <p className="fav-iframes-error-message">
+                        Favorite Location is required
+                      </p>
+                    )}
+                  </Grid>
+                  {/* <Grid item xs={12}>
                     <FormControl className="text-fields-background" fullWidth>
                       <InputLabel
                         id="fav-location-label"
@@ -458,7 +529,7 @@ const RegisterForm = () => {
                           ))}
                       </Select>
                     </FormControl>
-                  </Grid>
+                  </Grid> */}
                   <Grid item xs={12}>
                     <Typography
                       variant="body2"
