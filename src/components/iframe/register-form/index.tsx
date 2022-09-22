@@ -136,13 +136,13 @@ const RegisterForm = () => {
     return errorsArray;
   };
 
-  window.parent.addEventListener(
-    'click',
-    function () {
-      console.log('workinggggggg')
-    },
-    false,
-  );
+  // window.parent.addEventListener(
+  //   'click',
+  //   function () {
+  //     console.log('workinggggggg')
+  //   },
+  //   false,
+  // );
 
   return (
     <Grid container className="w-register">
@@ -431,7 +431,10 @@ const RegisterForm = () => {
                           PaperProps: {
                             sx: {
                               position: 'relative',
-                              left: '-5px !important',
+                              left: {
+                                xs: '0px !Important',
+                                sm: '-5px !important',
+                              },
                               marginLeft: 'auto',
                               marginRight: 'auto',
                               maxHeight: 150,

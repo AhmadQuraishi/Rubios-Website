@@ -28,6 +28,8 @@ import { setResturantInfoRequest } from '../../redux/actions/restaurant';
 import { displayToast } from '../../helpers/toast';
 import { capitalizeFirstLetter } from '../../helpers/common';
 import Page from '../../components/page-title';
+import { facebookSendEvent } from '../../redux/actions/facebook-conversion';
+import { facebookConversionTypes } from '../../redux/types/facebook-conversion';
 
 const useStyles = makeStyles((theme: Theme) => ({
   heading: {
@@ -156,10 +158,18 @@ const CategoryList = () => {
           checkRestaurantHandOffAvailability(objRestaurant, handoff)
         ) {
           dispatch(setResturantInfoRequest(objRestaurant, handoff));
-          if( basketObj && basketObj.basket){
-            displayToast('SUCCESS', 'Location changed to ' + objRestaurant.name + ' and basket is empty');
-          }else{
-            displayToast('SUCCESS', 'Location changed to ' + objRestaurant.name);
+          if (basketObj && basketObj.basket) {
+            displayToast(
+              'SUCCESS',
+              'Location changed to ' +
+                objRestaurant.name +
+                ' and basket is empty',
+            );
+          } else {
+            displayToast(
+              'SUCCESS',
+              'Location changed to ' + objRestaurant.name,
+            );
           }
           navigate('/menu/' + objRestaurant.slug);
           dispatch(getCategoriesRequest(objRestaurant.id));
@@ -313,6 +323,7 @@ const CategoryList = () => {
   };
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    triggerFacebookEventOnViewContent();
     setTimeout(() => {
       var elem = document.getElementById('#panel-' + newValue);
       elem?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -324,14 +335,38 @@ const CategoryList = () => {
 
   const changeRestaurant = (orderType: string) => {
     dispatch(setResturantInfoRequest(restaurantSelected, orderType));
-    if( basketObj && basketObj.basket){
-      displayToast('SUCCESS', 'Location changed to ' + restaurantSelected.name + ' and basket is empty');
-    }else{
+    if (basketObj && basketObj.basket) {
+      displayToast(
+        'SUCCESS',
+        'Location changed to ' +
+          restaurantSelected.name +
+          ' and basket is empty',
+      );
+    } else {
       displayToast('SUCCESS', 'Location changed to ' + restaurantSelected.name);
     }
     setOpen(false);
     navigate('/menu/' + restaurantSelected.slug);
     dispatch(getCategoriesRequest(restaurantSelected.id));
+  };
+
+  const triggerFacebookEventOnViewContent = () => {
+    let userObj: any = null;
+    if (providerToken) {
+      userObj = {
+        first_name: providerToken.first_name || '',
+        last_name: providerToken.last_name || '',
+        email: providerToken.email || '',
+        phone: providerToken.phone || '',
+      };
+    }
+    dispatch(
+      facebookSendEvent(
+        facebookConversionTypes.FACEBOOK_VIEW_CONTENT_EVENT,
+        userObj,
+        null,
+      ),
+    );
   };
   return (
     <Page title={'Menu'} className="">

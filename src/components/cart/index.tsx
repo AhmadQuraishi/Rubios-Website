@@ -35,6 +35,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Dialog from '@mui/material/Dialog';
+import { facebookSendEvent } from '../../redux/actions/facebook-conversion';
+import { facebookConversionTypes } from '../../redux/types/facebook-conversion';
 
 const useStyles = makeStyles((theme: Theme) => ({
   dimPanel: {
@@ -172,6 +174,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   const basketObj = useSelector((state: any) => state.basketReducer);
   const addUpsellsObj = useSelector((state: any) => state.addUpsellReducer);
   const { upsells } = useSelector((state: any) => state.getUpsellsReducer);
+  const { providerToken } = useSelector((state: any) => state.providerReducer);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -479,6 +482,29 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const triggerFacebookEventOnCheckout = () => {
+    let userObj: any = null;
+    if (providerToken) {
+      userObj = {
+        first_name: providerToken.first_name || '',
+        last_name: providerToken.last_name || '',
+        email: providerToken.email || '',
+        phone: providerToken.phone || '',
+      };
+    }
+    dispatch(
+      facebookSendEvent(
+        facebookConversionTypes.FACEBOOK_INITIATE_CHECKOUT_EVENT,
+        userObj,
+        null,
+      ),
+    );
+    setTimeout(() => {
+      navigate('/checkout');
+    }, 1000)
+
   };
 
   return (
@@ -948,6 +974,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                       display: 'flex',
                                       justifyContent: 'flex-start',
                                       padding: '0 !important',
+                                      alignItems:"center"
                                     }}
                                   >
                                     <Grid item xs={4} lg={4}>
@@ -1527,7 +1554,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                 id="proceedCheckout"
                 onClick={() => {
                   showCart();
-                  navigate('/checkout');
+                  triggerFacebookEventOnCheckout();
                   return false;
                 }}
                 sx={{

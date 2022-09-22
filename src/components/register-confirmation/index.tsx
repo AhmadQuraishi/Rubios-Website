@@ -8,7 +8,7 @@ import {
   FormControl,
   SelectChangeEvent,
 } from '@mui/material';
-
+import { Link, Checkbox, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -36,7 +36,9 @@ const RegisterConfirmation = ({ id }: any) => {
   const { loading: loadingAuth } = useSelector(
     (state: any) => state.authReducer,
   );
-
+  const handleChangeCheckbox = () => {
+    setTermsAndconditions(!termsAndConditions);
+  };
   useEffect(() => {
     dispatch(getlocations());
   }, []);
@@ -293,24 +295,34 @@ const RegisterConfirmation = ({ id }: any) => {
                     }
                   />
                 </Grid>
-                {/*<Grid item xs={12}>*/}
-                {/*  <Typography*/}
-                {/*    variant="body2"*/}
-                {/*    className="body-text"*/}
-                {/*    title="Password must be at least 8 characters."*/}
-                {/*    sx={{ width: '100%' }}*/}
-                {/*  >*/}
-                {/*    <Checkbox onChange={handleChangeCheckbox} /> I agree to the{' '}*/}
-                {/*    <Link*/}
-                {/*      href={process.env.REACT_APP_TERMS_LINK}*/}
-                {/*      underline="hover"*/}
-                {/*    >*/}
-                {/*      Rubio's terms and conditions{' '}*/}
-                {/*    </Link>*/}
-                {/*    and to receiving marketing communications from Rubio's.*/}
-                {/*  </Typography>*/}
-                {/*</Grid>*/}
-                <Grid item xs={12} sm={12} md={12} lg={12}>
+                <Grid item  xs={12} sm={12} md={12} lg={12} sx={{backgroundColor: "transparent",fontFamily:'Poppins-Regular, sans-serif !Important'}}>
+                    <Typography
+                      variant="body2"
+                      id="chkTermandCondition"
+                      title="I agree to the  Rubios terms and conditions and to receiving marketing communications from Rubios."
+                      sx={{ width: '100%', fill:"white", color: "white",fontFamily:'Poppins-Regular, sans-serif !Important'}}
+                      
+                    >
+                      <Checkbox
+                        onChange={handleChangeCheckbox}
+                        inputProps={{
+                          'aria-labelledby': 'chkTermandCondition',
+                        }}
+                        color="default"
+                        sx={{float: "left",color: "white",padding: '0px 10px 0px 0px !important', marginBottom:{ xs: "50px !important"}}}
+                       />{' '}
+                      I agree to the{' '}
+                      <Link
+                        href={process.env.REACT_APP_TERMS_LINK}
+                        underline="hover"
+                        sx={{color: "#1a86ff"}}
+                      >
+                        Rubio's terms and conditions{' '}
+                      </Link>
+                      and to receiving marketing communications from Rubio's.
+                    </Typography>
+                  </Grid>
+                <Grid item xs={12} sm={12} md={12} lg={12} >
                   <Button
                     aria-label="Sign Up"
                     variant="contained"

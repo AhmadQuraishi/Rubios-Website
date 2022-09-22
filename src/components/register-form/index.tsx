@@ -395,6 +395,7 @@ const RegisterForm = () => {
                     />
                   </Grid>
                   <Grid item xs={12}>
+                  <div>
                     <FormControl fullWidth>
                       <InputLabel
                         id="fav-location-label"
@@ -425,14 +426,18 @@ const RegisterForm = () => {
                           setSelectShrink(true);
                         }}
                         MenuProps={{
+                          
                           PaperProps: {
                             sx: {
                               position: 'relative',
-                              left: '-5px !important',
-                              marginLeft: 'auto',
-                              marginRight: 'auto',
+                              // left: {
+                              //   xs: '0px !Important',
+                              //   sm: '-5px !important',
+                              // },
+                              width: {
+                                xs: 200,
+                              },
                               maxHeight: 150,
-                              width: 270,
                             },
                           },
                         }}
@@ -452,7 +457,9 @@ const RegisterForm = () => {
                           ))}
                       </Select>
                     </FormControl>
+                    </div>
                   </Grid>
+                  
                   <Grid item xs={12}>
                     <Typography
                       variant="body2"

@@ -167,7 +167,7 @@ const Salsa = ({ upsellsType }: any) => {
         basketObj.basket &&
         basketObj.basket.products.length > 0
       ) {
-        elem.style.height = cartBox?.clientHeight - 220 + 'px';
+        elem.style.height = cartBox?.clientHeight - 175 + 'px';
       } else {
         elem.style.height = cartBox?.clientHeight - 150 + 'px';
       }
@@ -267,6 +267,7 @@ const Salsa = ({ upsellsType }: any) => {
                           flexDirection: 'column',
                           gap: '40px',
                           paddingLeft: '10px',
+                          maxWidth: "inherit"
                         }}
                       >
                         <Typography
@@ -346,7 +347,7 @@ const Salsa = ({ upsellsType }: any) => {
           style={{
             display: 'flex',
             justifyContent: 'flex-end',
-            minHeight: '45px',
+            minHeight: '0px',
           }}
         >
           {errorMsg && errorMsg !== '' && (
