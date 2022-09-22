@@ -28,11 +28,9 @@ const Login2 = () => {
   const { providerToken } = useSelector((state: any) => state.providerReducer);
   const { authToken } = useSelector((state: any) => state.authReducer);
   const { basket } = useSelector((state: any) => state.basketReducer);
+  const { restaurant } = useSelector((state: any) => state.restaurantInfoReducer);
 
   const { pageURL } = useSelector((state: any) => state.pageStateReducer);
-  const { restaurant } = useSelector(
-    (state: any) => state.restaurantInfoReducer,
-  );
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -47,7 +45,7 @@ const Login2 = () => {
       } else if (pageURL && pageURL.includes('reset-password')) {
         navigate('/welcome');
       } else {
-        if (basket) {
+        if (restaurant || basket) {
           navigate(pageURL);
         } else {
           navigate('/welcome');
