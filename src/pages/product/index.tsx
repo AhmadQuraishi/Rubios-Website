@@ -31,10 +31,9 @@ import { displayToast } from '../../helpers/toast';
 import ItemImage from '../../components/item-image';
 import { getUpsellsRequest } from '../../redux/actions/basket/upsell/Get';
 import axios from 'axios';
-import {changeImageSize, checkTacoMatch, generateDeviceId} from '../../helpers/common';
-import { BorderRight } from '@mui/icons-material';
+import { changeImageSize, checkTacoMatch } from '../../helpers/common';
 import Page from '../../components/page-title';
-import moment from "moment";
+import moment from 'moment';
 
 const Product = () => {
   const theme = useTheme();
@@ -45,7 +44,6 @@ const Product = () => {
   const [basket, setBasket] = useState<ResponseBasket>();
   const [actionStatus, setActionStatus] = useState<boolean>(false);
   const [totalCost, setTotalCost] = useState<number>();
-
   const { categories, loading } = useSelector(
     (state: any) => state.categoryReducer,
   );
@@ -307,6 +305,7 @@ const Product = () => {
     let newArray = options;
 
     const metaKeys = ['display-group-name', 'display-group-option-name'];
+    let startId = 555500000000;
     for (let i = 0; i < options.length; i++) {
       let filteredOptions: any = [];
       let newOptions = [];
@@ -345,11 +344,15 @@ const Product = () => {
         }
       });
 
+      console.log('filteredOptions', filteredOptions);
+
       if (filteredOptions.length) {
         groupNames.forEach((group: string, index: number) => {
           const filterOptionsFinal = filteredOptions.filter(
             (option: any) => option.groupName === group,
           );
+          const id = startId + 100;
+          startId = id;
           const newParentObj = {
             adjustsparentcalories: false,
             customDropDown: true,
@@ -370,7 +373,7 @@ const Product = () => {
             costoverridelabel: null,
             displayid: null,
             fields: null,
-            id: moment().unix() * (index + 30) * 100,
+            id: id,
             isdefault: false,
             maxcalories: null,
             menuitemlabels: [],
@@ -411,14 +414,16 @@ const Product = () => {
             description: '',
             name: group,
           };
-          newOptions.push(newParentObj)
+          newOptions.push(newParentObj);
         });
-        newOptions = newOptions.filter((value: any) => Object.keys(value).length !== 0);
-        newArray[i].options = newOptions
+        newOptions = newOptions.filter(
+          (value: any) => Object.keys(value).length !== 0,
+        );
+        newArray[i].options = newOptions;
       }
     }
-    console.log('newArray', newArray)
-   return newArray;
+    console.log('newArray', newArray);
+    return newArray;
   };
 
   useEffect(() => {
@@ -519,6 +524,9 @@ const Product = () => {
             const elem = option.options.find((x: any) => x.optionID == item);
             if (elem && elem.selectedValue) {
               options = options + elem.selectedValue + ',';
+              if (elem.option && elem.option.customDropDown) {
+                options = options.replace(`${item},`, '');
+              }
             }
           });
         }
@@ -553,6 +561,9 @@ const Product = () => {
             const elem = option.options.find((x: any) => x.optionID == item);
             if (elem && elem.selectedValue) {
               options = options + elem.selectedValue + ',';
+              if (elem.option && elem.option.customDropDown) {
+                options = options.replace(`${item},`, '');
+              }
             }
           });
         }
@@ -650,6 +661,13 @@ const Product = () => {
             dropDownValues: null,
           });
         }
+        if (option.customDropDown) {
+          if (
+            selectCustomDropDownOptionIdIfExist(option.modifiers[0].options)
+          ) {
+            editOptions.push(option.id);
+          }
+        }
         if (isExistInEdit(option.id)) {
           ptotalCost = ptotalCost + option.cost;
           getTotalCost(
@@ -691,22 +709,28 @@ const Product = () => {
               : false,
         },
       ]);
-      // if (
-      //   (itemMain.description &&
-      //   itemMain.description.toLowerCase().indexOf('remove or modify') == -1)
-      // ) {
-      //   itemMain.options.map(
-      //     (item: any, index2: number) =>
-      //       item.modifiers &&
-      //       prepareProductOptionsArray(
-      //         item.modifiers,
-      //         item.id,
-      //         selectedOptions,
-      //         (isParentSelected && parentDefaultOptionID.includes(parentID)) ||
-      //           parentID == null,
-      //       ),
-      //   );
-      // }
+      if (
+        itemMain.description &&
+        itemMain.description.toLowerCase().indexOf('remove or modify') == -1
+      ) {
+        itemMain.options.map((item: any, index2: number) => {
+          if (item.customDropDown) {
+            return;
+          } else {
+            return (
+              item.modifiers &&
+              prepareProductOptionsArray(
+                item.modifiers,
+                item.id,
+                selectedOptions,
+                (isParentSelected &&
+                  parentDefaultOptionID.includes(parentID)) ||
+                  parentID == null,
+              )
+            );
+          }
+        });
+      }
     });
   };
 
@@ -742,6 +766,22 @@ const Product = () => {
     return isExist;
   };
 
+  const selectCustomDropDownOptionIdIfExist = (options: any) => {
+    let isExist = false;
+    if (edit) {
+      const product = basketObj.basket.products.find(
+        (item: any) => item.id == edit,
+      );
+      product.choices.map((item: any, index: number) => {
+        const op = options.find((x: any) => item.optionid == x.id);
+        if (op) {
+          isExist = true;
+        }
+      });
+    }
+    return isExist;
+  };
+
   const [selectionExecute, setSelectionExecute] = useState(false);
 
   const showChildOptions = (
@@ -750,6 +790,10 @@ const Product = () => {
     optionsDDL: any = null,
     optionsDDLSelectedID: any = null,
   ) => {
+    console.log('optionId', optionId);
+    console.log('parnetOptionID', parnetOptionID);
+    console.log('optionsDDL', optionsDDL);
+    console.log('optionsDDLSelectedID', optionsDDLSelectedID);
     setSelectionExecute(false);
     setTimeout(() => {
       setSelectionExecute(false);
