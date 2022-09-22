@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   selected: {
     backgroundColor: '#f5f5f5',
-    color: theme.palette.success.main,
+    color: '#0075BF',
   },
 }));
 const AccountLinks = (props: any) => {
