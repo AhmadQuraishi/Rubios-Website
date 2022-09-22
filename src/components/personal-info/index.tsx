@@ -71,7 +71,7 @@ const PersonalInfo = () => {
   const { userProfile, loading, error, profile } = useSelector(
     (state: any) => state.userReducer,
   );
-  const [favLocation, setFavLocation] = useState(null);
+  const [favLocation, setFavLocation] = useState<any>(null);
   const [favLocationError, setFavLocationError] = useState(false);
   const [isupdate, setIsUpdate] = useState(false);
   const { locations, loading: loadingLocations } = useSelector(
@@ -91,7 +91,6 @@ const PersonalInfo = () => {
 
   useEffect(() => {
     if (userProfile && !loading) {
-      setFavLocation(userProfile.favourite_locations);
       setState({
         emailnotification: userProfile.marketing_email_subscription,
         pushnotification: userProfile.marketing_pn_subscription,
@@ -158,6 +157,23 @@ const PersonalInfo = () => {
     }
   }, [profile]);
 
+  useEffect(() => {
+    if (userProfile && locations && locations.length) {
+      if (
+        (userProfile.favourite_locations,
+        userProfile.favourite_locations !== '')
+      ) {
+        const fav = locations.filter(
+          (loc: any) =>
+            loc.location_id.toString() === userProfile.favourite_locations,
+        );
+        if (fav && fav.length) {
+          setFavLocation({ value: fav[0].location_id, label: fav[0].name });
+        }
+      }
+    }
+  }, [locations, userProfile]);
+
   return (
     <div className={classes.root}>
       {(loading || !userProfile || loadingLocations) && <LoadingBar />}
@@ -203,7 +219,10 @@ const PersonalInfo = () => {
             })}
             onSubmit={async (values) => {
               console.log('favLocation', favLocation);
-              if (!favLocation) {
+              if (
+                (!favLocation || !Object.keys(favLocation).length) ||
+                favLocation.value === ''
+              ) {
                 setFavLocationError(true);
                 return;
               }
@@ -214,7 +233,7 @@ const PersonalInfo = () => {
                     email: values.email,
                     first_name: values.firstName,
                     last_name: values.lastName,
-                    favourite_location_ids: favLocation,
+                    favourite_location_ids: favLocation.value,
                     marketing_email_subscription: state.emailnotification,
                     marketing_pn_subscription: state.pushnotification,
                     phone: values.phone
@@ -234,7 +253,7 @@ const PersonalInfo = () => {
                     email: values.email,
                     first_name: values.firstName,
                     last_name: values.lastName,
-                    favourite_location_ids: favLocation,
+                    favourite_location_ids: favLocation.value,
                     marketing_email_subscription: state.emailnotification,
                     marketing_pn_subscription: state.pushnotification,
                     phone: values.phone
@@ -517,7 +536,10 @@ const PersonalInfo = () => {
                               isSearchable={true}
                               styles={customStyles}
                               options={locations?.map((loc: any) => {
-                                return { value: loc.name, label: loc.name };
+                                return {
+                                  value: loc.location_id,
+                                  label: loc.name,
+                                };
                               })}
                               onChange={(selectedOption: any) => {
                                 console.log('selectedOption', selectedOption);
