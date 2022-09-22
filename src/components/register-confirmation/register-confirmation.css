@@ -1,7 +1,7 @@
 .confirmation-form .react-date-inputs {
   background: white;
   height: 45px;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   width: calc(100% - 5px);
   position: relative;
   z-index: 10;
@@ -16,7 +16,7 @@
   background-clip: padding-box;
   box-shadow: none !important;
   padding: 16px 14px;
-  margin: 0px 5px 5px 0px;
+  margin: 0px 5px 10px 0px;
   outline: none;
 }
 .confirmation-form .react-date-inputs input:before {
@@ -87,4 +87,8 @@
 .css-6j8wv5-Input {
   margin: 0;
   padding: 0;
+}
+
+#react-select-3-input{
+  height: auto;
 }
