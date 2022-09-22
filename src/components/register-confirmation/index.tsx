@@ -295,12 +295,14 @@ const RegisterConfirmation = ({ id }: any) => {
                     }
                   />
                 </Grid>
-                <Grid item  xs={12} sm={12} md={12} lg={12} sx={{backgroundColor: "transparent",fontFamily:'Poppins-Regular, sans-serif !Important'}}>
+                <Grid item  xs={12} sm={12} md={12} lg={12} sx={{backgroundColor: "transparent",fontFamily:'Poppins-Regular, sans-serif !Important' }}
+                      className="check-with-text"
+                      >
                     <Typography
                       variant="body2"
                       id="chkTermandCondition"
                       title="I agree to the  Rubios terms and conditions and to receiving marketing communications from Rubios."
-                      sx={{ width: '100%', fill:"white", color: "white",fontFamily:'Poppins-Regular, sans-serif !Important'}}
+                      sx={{ width: '100%', fill:"white", color: "white",fontFamily:'Poppins-Regular, sans-serif !Important',}}
                       
                     >
                       <Checkbox
