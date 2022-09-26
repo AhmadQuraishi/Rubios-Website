@@ -53,6 +53,7 @@ const RegisterForm = () => {
   const [favLocationError, setFavLocationError] = useState(false);
   const [birthDay, setBirthDay] = useState<Date | undefined>();
   const [termsAndConditions, setTermsAndconditions] = useState(false);
+  const [termsAndConditionsError, setTermsAndConditionsError] = useState(false);
   useEffect(() => {
     dispatch(getlocations());
   }, []);
@@ -101,9 +102,9 @@ const RegisterForm = () => {
   };
 
   const handleChangeCheckbox = () => {
+    setTermsAndConditionsError(false);
     setTermsAndconditions(!termsAndConditions);
   };
-
   interface CustomProps {
     onChange: (event: { target: { name: string; value: string } }) => void;
     name: string;
@@ -142,6 +143,16 @@ const RegisterForm = () => {
       boxShadow: '0px 0px 6px lightgray',
       fontFamily: 'Poppins-Regular, sans-serif !important',
     }),
+  placeholder: (base: any, state: any) => ({
+    ...base,
+  // className: favLocationError ? 'fav-conf-error-message' : 'body-text',
+    color: state.isFocused ? '#214F66' : 'rgba(0,0,0,0.6)'  ,
+    padding: state.isFocused ? '0px 0px 25px 7px !important': '0px 30px 25px px !important',
+    fontSize: state.isFocused ? '8px': '1rem' || state.isSelected ? '13px' : '1rem',
+    fontWeight: state.isFocused ? '800' : '400',
+    transition: ' 0.1s ease',
+    transform: state.selectProps.isFocused,
+  }),
     singleValue: (provided: any, state: any) => {
       const opacity = state.isDisabled ? 0.5 : 1;
       const transition = 'opacity 300ms';
@@ -230,7 +241,7 @@ const RegisterForm = () => {
             invitecode: invite_code && invite_code !== '' ? invite_code : '',
             favLocation: '',
             birthday: '',
-            // termsAndConditions: false
+            termsAndConditions: false
           }}
           validationSchema={Yup.object({
             first_name: Yup.string()
@@ -260,6 +271,8 @@ const RegisterForm = () => {
               .max(16, 'Must be at most 16 characters')
               .oneOf([Yup.ref('password'), null], 'Passwords must match')
               .required('required'),
+          
+
           })}
           onSubmit={async (values) => {
             console.log('favLocation', favLocation);
@@ -272,6 +285,14 @@ const RegisterForm = () => {
               return;
             }
             setFavLocationError(false);
+
+            if (termsAndConditions == false ){
+              setTermsAndConditionsError(true);
+              return;
+            }else{
+              setTermsAndConditionsError(false);
+            }
+  
             const obj: any = {
               first_name: values.first_name,
               last_name: values.last_name,
@@ -460,7 +481,9 @@ const RegisterForm = () => {
                         <div>
                           <Select
                             placeholder="Favorite Location *"
-                            className="select-options"
+                            // className={`${
+                            //   favLocationError ? 'fav-conf-error-message' : 'body-text'
+                            // }`}
                             isSearchable={true}
                             styles={customStyles}
                             options={locations?.map((loc: any) => {
@@ -492,9 +515,13 @@ const RegisterForm = () => {
                       id="chkTermandCondition"
                       title="I agree to the  Rubios terms and conditions and to receiving marketing communications from Rubios."
                       sx={{ width: '100%' }}
+                      
                     >
                       <Checkbox
-                        onChange={handleChangeCheckbox}
+                      onChange={handleChangeCheckbox}
+                      checked={termsAndConditions}
+                      id="termsAndConditions"
+                      name="termsAndConditions"
                         inputProps={{
                           'aria-labelledby': 'chkTermandCondition',
                         }}
@@ -508,6 +535,11 @@ const RegisterForm = () => {
                       </Link>
                       and to receiving marketing communications from Rubio's.
                     </Typography>
+                    {termsAndConditionsError && (
+                    <p className="fav-error-message">
+                      Terms and conditions are required
+                    </p>
+                  )}
                   </Grid>
                   <Grid
                     item
