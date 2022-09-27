@@ -335,7 +335,7 @@ const RegisterConfirmation = ({ id }: any) => {
                       <div>
                         <div>
                   <Select
-                    placeholder="Favorite Location *"
+                    placeholder={favLocationError ? <div style={{color: "red"}}>Favorite Location *</div> : <div>Favorite Location *</div>}
                     isSearchable={true}
                     noOptionsMessage={() => 'No Result Found'}
                     styles={customStyles}

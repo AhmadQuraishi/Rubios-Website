@@ -481,10 +481,11 @@ const RegisterForm = () => {
                       <div>
                         <div>
                           <Select
-                            placeholder="Favorite Location *"
+                            placeholder={favLocationError ? <div style={{color: "red"}}>Favorite Location *</div> : <div>Favorite Location *</div>}
                             className="select-options"
                             isSearchable={true}
                             styles={customStyles}
+                            noOptionsMessage={() => 'No Result Found'}
                             options={locations?.map((loc: any) => {
                               return {
                                 value: loc.location_id,

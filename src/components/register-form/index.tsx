@@ -145,7 +145,6 @@ const RegisterForm = () => {
     }),
   placeholder: (base: any, state: any) => ({
     ...base,
-  // className: favLocationError ? 'fav-conf-error-message' : 'body-text',
     color: state.isFocused ? '#214F66' : 'rgba(0,0,0,0.6)'  ,
     padding: state.isFocused ? '0px 0px 25px 7px !important': '0px 30px 25px px !important',
     fontSize: state.isFocused ? '8px': '1rem' || state.isSelected ? '13px' : '1rem',
@@ -480,10 +479,8 @@ const RegisterForm = () => {
                       <div>
                         <div>
                           <Select
-                            placeholder="Favorite Location *"
-                            // className={`${
-                            //   favLocationError ? 'fav-conf-error-message' : 'body-text'
-                            // }`}
+                            placeholder={favLocationError ? <div style={{color: "red"}}>Favorite Location *</div> : <div>Favorite Location *</div>}
+                            noOptionsMessage={() => 'No Result Found'}
                             isSearchable={true}
                             styles={customStyles}
                             options={locations?.map((loc: any) => {
