@@ -54,6 +54,7 @@ const RegisterForm = () => {
   const [favLocationError, setFavLocationError] = useState(false);
   const [birthDay, setBirthDay] = useState<Date | undefined>();
   const [termsAndConditions, setTermsAndconditions] = useState(false);
+  const [termsAndConditionsError, setTermsAndConditionsError] = useState(false);
   const [selectShrink, setSelectShrink] = useState(false);
   const [showError, setShowError] = useState(false);
   const [signUpErrors, setSignUpErrors] = useState<any>([]);
@@ -79,6 +80,7 @@ const RegisterForm = () => {
   };
 
   const handleChangeCheckbox = () => {
+    setTermsAndConditionsError(false);
     setTermsAndconditions(!termsAndConditions);
   };
 
@@ -235,7 +237,7 @@ const RegisterForm = () => {
             invitecode: invite_code && invite_code !== '' ? invite_code : '',
             favLocation: '',
             birthday: '',
-            // termsAndConditions: false
+            termsAndConditions: false
           }}
           validationSchema={Yup.object({
             first_name: Yup.string()
@@ -276,6 +278,14 @@ const RegisterForm = () => {
               return;
             }
             setFavLocationError(false);
+
+            if (termsAndConditions == false ){
+              setTermsAndConditionsError(true);
+              return;
+            }else{
+              setTermsAndConditionsError(false);
+            }
+  
             const obj: any = {
               first_name: values.first_name,
               last_name: values.last_name,
@@ -471,10 +481,11 @@ const RegisterForm = () => {
                       <div>
                         <div>
                           <Select
-                            placeholder="Favorite Location *"
+                            placeholder={favLocationError ? <div style={{color: "red"}}>Favorite Location *</div> : <div>Favorite Location *</div>}
                             className="select-options"
                             isSearchable={true}
                             styles={customStyles}
+                            noOptionsMessage={() => 'No Result Found'}
                             options={locations?.map((loc: any) => {
                               return {
                                 value: loc.location_id,
@@ -567,7 +578,10 @@ const RegisterForm = () => {
                       sx={{ width: '100%' }}
                     >
                       <Checkbox
-                        onChange={handleChangeCheckbox}
+                       onChange={handleChangeCheckbox}
+                       checked={termsAndConditions}
+                       id="termsAndConditions"
+                       name="termsAndConditions"
                         inputProps={{
                           'aria-label':
                             ' I agree to the  Rubios terms and conditions and to receiving marketing communications from Rubios ',
@@ -582,6 +596,11 @@ const RegisterForm = () => {
                       </Link>
                       and to receiving marketing communications from Rubio's.
                     </Typography>
+                    {termsAndConditionsError && (
+                    <p className="fav-iframes-error-message">
+                      Terms and conditions are required
+                    </p>
+                  )}
                   </Grid>
                   <Grid style={{ paddingTop: 10 }}>
                     {showError && signUpErrors && signUpErrors.length > 0

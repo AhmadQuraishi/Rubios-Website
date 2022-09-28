@@ -3,7 +3,7 @@
 }
 .order-confirmation .MuiPaper-root {
   padding: 95px;
-  min-height: 525px;
+  min-height: 625px;
   max-height: 0px;
 }
 .order-confirmation .MuiTextField-root {
@@ -31,7 +31,8 @@ h6.white {
   line-height: 0 !important;
 }
 .order-confirmation fieldset {
-  border: none;
+  border: none !important;
+  box-shadow: none !important;
 }
 .order-confirmation .card {
   background-color: #2b4b62;
@@ -51,8 +52,8 @@ h6.white {
 @media screen and (max-width: 1200px){
 .order-confirmation .MuiPaper-root {
   padding: 95px;
-  min-height: 410px;
-  max-height: 740px;
+  min-height: 810px;
+  max-height: 880px;
 }
 .order-confirmation .phone-icon {
   position: absolute;
@@ -75,7 +76,7 @@ h6.white {
   .order-confirmation .card.next-order {
     background-image: none !important;
     max-height: 435px;
-    min-height: 640px;
+    min-height: 660px;
   }
   .order-confirmation .card.next-order .earn-reward {
     flex-basis: 50% !important;
@@ -107,8 +108,8 @@ h6.white {
 }
 @media screen and (max-width: 468px) {
   .order-confirmation .card.next-order {
-    max-height: 890px;
-    min-height: 920px;
+    max-height: 990px;
+    min-height: 980px;
   }
   .order-confirmation .order-info {
     padding: 45px 30px 55px;
