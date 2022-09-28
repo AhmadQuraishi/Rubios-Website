@@ -284,6 +284,9 @@ const OrderTime = ({ orderType }: any) => {
               <LocalizationProvider dateAdapter={AdapterMoment}>
                 <MobileDatePicker
                   label="Order Date"
+                  DialogProps={{
+                    TransitionProps: { role: 'dialog', 'aria-modal': 'true' },
+                  }}
                   minDate={moment()}
                   maxDate={moment().add('days', 7)}
                   inputFormat="MM/DD/yyyy"
