@@ -613,7 +613,7 @@ const PersonalInfo = () => {
                         name="submit"
                         title="submit"
                         variant="contained"
-                        sx={{ width: { xs: '100%', lg: '400px' } }}
+                        sx={{ width: { xs: '100%', lg: '100%' } }}
                       >
                         Submit
                       </Button>
