@@ -6,7 +6,11 @@
   position: relative;
   z-index: 10;
 }
-
+.confirmation-form input {
+  /* margin-bottom: 10px; */
+  font-size: 13px;
+  height: 42px;
+}
 .confirmation-form .react-date-inputs input {
   width: 10%;
   background: white;
@@ -85,11 +89,16 @@
 }
 
 .css-6j8wv5-Input {
-  margin: 0;
+  margin: 0px !important;
   padding: 0;
 }
-
 #react-select-3-input{
   height: auto;
-  padding: 0px !important;
+  padding: 0px 0px 0px 8px !important;
+  color: black !important;
+  font: message-box !important;
+}
+
+.css-1jwi8f4-singleValue {
+  margin-left: 8px !important;
 }

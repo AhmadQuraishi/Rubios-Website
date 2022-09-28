@@ -50,3 +50,17 @@
   color: #E61F00 !important;
 }
 
+.css-6j8wv5-Input {
+  margin: 0px !important;
+  padding: 0;
+}
+#react-select-3-input{
+  height: auto;
+  padding: 0px 0px 0px 8px !important;
+  color: black !important;
+  font: message-box !important;
+}
+
+.css-1jwi8f4-singleValue {
+  margin-left: 8px !important;
+}
