@@ -59,7 +59,7 @@ const RegisterForm = () => {
 
   useEffect(() => {
     if (locations) {
-      const elem = document.getElementById('fav-location');
+      const elem = document.getElementById('react-select-3-input');
       if (elem) elem.removeAttribute('aria-haspopup');
       const dName = 'react-date-inputs__day';
       const mName = 'react-date-inputs__month';

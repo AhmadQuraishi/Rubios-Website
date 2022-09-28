@@ -116,6 +116,28 @@ const RegisterConfirmation = ({ id }: any) => {
     }
   }, []);
 
+  useEffect(() => {
+    if (locations) {
+      const elem = document.getElementById('react-select-5-input');
+      if (elem) elem.removeAttribute('aria-haspopup');
+      const dName = 'react-date-inputs__day';
+      const mName = 'react-date-inputs__month';
+      const yName = 'react-date-inputs__year';
+      const dateElem = document.getElementsByClassName(dName);
+      if (dateElem) {
+        dateElem[0].setAttribute('aria-label', 'Day');
+      }
+      const monthElem = document.getElementsByClassName(mName);
+      if (monthElem) {
+        monthElem[0].setAttribute('aria-label', 'Month');
+      }
+      const yearElem = document.getElementsByClassName(yName);
+      if (yearElem) {
+        yearElem[0].setAttribute('aria-label', 'Year');
+      }
+    }
+  }, [locations]);
+
   return (
     <>
       <Formik

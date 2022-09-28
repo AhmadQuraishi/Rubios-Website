@@ -174,6 +174,13 @@ const PersonalInfo = () => {
     }
   }, [locations, userProfile]);
 
+  useEffect(() => {
+    if (locations) {
+      const elem = document.getElementById('react-select-3-input');
+      if (elem) elem.removeAttribute('aria-haspopup');
+    }
+  }, [locations]);
+
   return (
     <div className={classes.root}>
       {(loading || !userProfile || loadingLocations) && <LoadingBar />}
