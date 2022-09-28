@@ -21,7 +21,6 @@ const RegisterConfirmation = ({ id }: any) => {
   const [termsAndConditions, setTermsAndconditions] = useState(false);
   const [termsAndConditionsError, setTermsAndConditionsError] = useState(false);
   const { locations } = useSelector((state: any) => state.locationReducer);
- 
 
 
   const { guestUser } = useSelector((state: any) => state.guestReducer);
@@ -32,10 +31,6 @@ const RegisterConfirmation = ({ id }: any) => {
   const { loading: loadingAuth } = useSelector(
     (state: any) => state.authReducer,
   );
-  // const handleChangeCheckbox = () => {
-  //   setTermsAndConditionsError(false);
-  // setTermsAndconditions(!termsAndConditions);
-  // };
   useEffect(() => {
     dispatch(getlocations());
   }, []);
@@ -47,14 +42,12 @@ const RegisterConfirmation = ({ id }: any) => {
       border: '0px',
       width: 'inherit',
       fontFamily: 'Poppins-Regular, sans-serif !important',
-      
     }),
-    menu: (base: any) => ({
+    menu: (base: any,state : any) => ({
       ...base,
       marginTop: '0px',
       zIndex: '5555',
       width: '99%',
-
     }),
     
     indicatorSeparator: (base: any) => ({
@@ -64,7 +57,7 @@ const RegisterConfirmation = ({ id }: any) => {
 
     placeholder: (base: any, state: any) => ({
       ...base,
-      color: state.isFocused ? '#214F66' : 'rgba(0,0,0,0.6)'  ,
+      color:  state.isFocused  ? '#214F66' : 'rgba(0,0,0,0.6)',
       padding: state.isFocused ? '0px 0px 25px 7px !important': '0px 30px 25px px !important',
       fontSize: state.isFocused ? '8px': '1rem',
       fontWeight: state.isFocused ? '800' : '400',
@@ -340,9 +333,6 @@ const RegisterConfirmation = ({ id }: any) => {
                     noOptionsMessage={() => 'No Result Found'}
                     styles={customStyles}
                     classNamePrefix="select"
-                    className={`${
-                      favLocationError ? 'red' : ''
-                    }`}
                     options={locations?.map((loc: any) => {
                       return { value: loc.location_id, label: loc.name };
                     })}
