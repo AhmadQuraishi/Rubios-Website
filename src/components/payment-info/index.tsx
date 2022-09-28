@@ -270,6 +270,8 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
 
               <div
                 id="myModal"
+                role={'dialog'}
+                aria-modal={'true'}
                 className={`modal ${hideShow ? 'show' : 'hide'}`}
               >
                 {/*<div className="modal-content">*/}
