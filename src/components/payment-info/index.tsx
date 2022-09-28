@@ -258,12 +258,14 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
           <Grid container>
             <Grid item xs={12} sm={12} md={12} lg={12} className="add-gift">
               {displayAddCreditCard() && (
-                <button
+                <Button
                   className={'add-credit-card-button'}
+                  title="Add Credit card"
+                  aria-label="Add Credit card"
                   onClick={() => handleHideShow()}
                 >
                   Add Credit card
-                </button>
+                </Button>
               )}
 
               <div
