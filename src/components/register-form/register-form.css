@@ -22,6 +22,7 @@
   padding: 16px 14px;
   margin: 5px 10px 0px 0px;
   outline: none;
+  caret-color: black !important;
 }
 
 #select-multiple-native {
@@ -57,9 +58,7 @@
 #react-select-3-input{
   height: auto;
   padding: 0px 0px 0px 7px !important;
-  /* color: black !important; */
   caret-color: black !important;
-  /* font: message-box !important; */
 }
 
 .css-1jwi8f4-singleValue {
