@@ -547,6 +547,11 @@ const Location = () => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
         sx={{ width: '100%' }}
+        TransitionProps={{
+          role: 'dialog',
+          'aria-modal': 'true',
+          'aria-label': 'Confirm Your Delivery Address',
+        }}
       >
         <DialogTitle id="alert-dialog-title">
           {'Confirm Your Delivery Address'}
