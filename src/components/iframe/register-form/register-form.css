@@ -37,6 +37,7 @@
   padding: 0px 14px;
   margin: 5px 10px 0px 0px;
   outline: none;
+  caret-color: black !important;
 }
 
 .css-1wc848c-MuiFormHelperText-root.Mui-error {
