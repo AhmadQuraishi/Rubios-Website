@@ -249,11 +249,6 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
     let lastFocusableElement = dialog.querySelector('.last-focusable-element');
 
     dialog.addEventListener('keydown', function (e: any) {
-      console.log('e.target', e.target);
-      console.log('e.key', e.key);
-      console.log('e.shiftKey', e.shiftKey);
-      console.log('firstFocusableElement', firstFocusableElement);
-      console.log('lastFocusableElement', lastFocusableElement);
       if (e.target == firstFocusableElement && e.key == 'Tab' && e.shiftKey) {
         e.preventDefault();
         lastFocusableElement.focus();
@@ -299,6 +294,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                 id="myModal"
                 role={'dialog'}
                 aria-modal={'true'}
+                aria-label={editCreditCard ? 'Edit Credit card' : 'Add Credit card'}
                 className={`modal ${hideShow ? 'show' : 'hide'}`}
               >
                 {/*<div className="modal-content">*/}
@@ -310,7 +306,11 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                     {/*<span onClick={() => handleHideShow()} className="close">*/}
                     {/*  &times;*/}
                     {/*</span>*/}
-                    <h2 tabIndex={0} style={{outline: 'none'}} className={'heading first-focusable-element'}>
+                    <h2
+                      tabIndex={0}
+                      style={{ outline: 'none' }}
+                      className={'heading first-focusable-element'}
+                    >
                       {editCreditCard ? 'Edit Credit card' : 'Add Credit card'}
                     </h2>
                   </div>
