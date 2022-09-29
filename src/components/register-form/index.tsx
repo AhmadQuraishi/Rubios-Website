@@ -60,7 +60,7 @@ const RegisterForm = () => {
 
   useEffect(() => {
     if (locations) {
-      const elem = document.getElementById('fav-location');
+      const elem = document.getElementById('react-select-3-input');
       if (elem) elem.removeAttribute('aria-haspopup');
       const dName = 'react-date-inputs__day';
       const mName = 'react-date-inputs__month';
@@ -146,11 +146,14 @@ const RegisterForm = () => {
   placeholder: (base: any, state: any) => ({
     ...base,
     color: state.isFocused ? '#214F66' : 'rgba(0,0,0,0.6)'  ,
-    padding: state.isFocused ? '0px 0px 25px 7px !important': '0px 30px 25px px !important',
-    fontSize: state.isFocused ? '8px': '1rem' || state.isSelected ? '13px' : '1rem',
-    fontWeight: state.isFocused ? '800' : '400',
+    padding: state.isFocused ? '0px 0px 35px 6px !important': '0px 30px 0px 0px !important',
+    fontSize: state.isFocused ? '8px': '1rem',
+    fontWeight: 'normal',
     transition: ' 0.1s ease',
+    letterSpacing: '0.25008px',
+    fontFamily: state.isFocused ? "'Poppins-Bold', sans-serif !important" : "'Roboto','Helvetica','Arial',sans-serif",
     transform: state.selectProps.isFocused,
+
   }),
     singleValue: (provided: any, state: any) => {
       const opacity = state.isDisabled ? 0.5 : 1;
@@ -158,6 +161,7 @@ const RegisterForm = () => {
       return { ...provided, opacity, transition };
     },
   };
+  
   const NumberFormatCustom = forwardRef<HTMLElement, CustomProps>(
     function NumberFormatCustom(props, ref) {
       const { onChange, ...other } = props;
@@ -243,11 +247,11 @@ const RegisterForm = () => {
             termsAndConditions: false
           }}
           validationSchema={Yup.object({
-            first_name: Yup.string()
-              .max(30, 'Must be 30 characters or less')
-              // .min(3, 'Must be at least 3 characters')
-              // .matches(/^[aA-zZ\s]+$/, 'Only letters are allowed for this field ')
-              .required('First Name is required'),
+            // first_name: Yup.string()
+            //   .max(30, 'Must be 30 characters or less')
+            //   // .min(3, 'Must be at least 3 characters')
+            //   // .matches(/^[aA-zZ\s]+$/, 'Only letters are allowed for this field ')
+            //   .required('First Name is required'),
             last_name: Yup.string()
               .max(30, 'Must be 30 characters or less')
               // .min(3, 'Must be at least 3 characters')
@@ -482,6 +486,7 @@ const RegisterForm = () => {
                             placeholder={favLocationError ? <div style={{color: "red"}}>Favorite Location *</div> : <div>Favorite Location *</div>}
                             noOptionsMessage={() => 'No Result Found'}
                             isSearchable={true}
+
                             styles={customStyles}
                             options={locations?.map((loc: any) => {
                               return {

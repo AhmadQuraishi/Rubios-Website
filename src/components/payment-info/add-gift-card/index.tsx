@@ -106,7 +106,7 @@ const AddGiftCard = forwardRef((props, _ref) => {
             body,
           );
           if (pinResponse && pinResponse.ispinrequired && !pinCheck) {
-              displayToast('SUCCESS', 'Please add gift card pin.');
+            displayToast('SUCCESS', 'Please add gift card pin.');
             setButtonDisabled(false);
             setPinCheck(true);
           } else {
@@ -133,7 +133,7 @@ const AddGiftCard = forwardRef((props, _ref) => {
                 );
 
                 dispatch(updateBasketBillingSchemes(billingSchemesNewArray));
-                  displayToast('SUCCESS', 'Gift Card Added');
+                displayToast('SUCCESS', 'Gift Card Added');
                 handleCloseAddGiftCard();
                 setButtonDisabled(false);
               } else {
@@ -146,7 +146,6 @@ const AddGiftCard = forwardRef((props, _ref) => {
         } catch (e) {
           setButtonDisabled(false);
         }
-
       }
     }
   };
@@ -208,9 +207,14 @@ const AddGiftCard = forwardRef((props, _ref) => {
         open={openAddGiftCard}
         onClose={handleCloseAddGiftCard}
         className="fav-dialog"
+        TransitionProps={{
+          role: 'dialog',
+          'aria-modal': 'true',
+          'aria-label': 'Add Gift Card',
+        }}
         fullWidth
       >
-        <DialogTitle>Add Gift Card</DialogTitle>
+        <DialogTitle id={'add-gift-card-heading'}>Add Gift Card</DialogTitle>
         <DialogContent>
           <Formik
             initialValues={{
