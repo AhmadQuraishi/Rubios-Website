@@ -404,6 +404,7 @@ const OrderTime = ({ orderType }: any) => {
                   <InputLabel
                     id="select-more-times"
                     aria-label="More Times"
+                    htmlFor={'select-label'}
                     title="More Times"
                     className="time-picker"
                     classes={{
