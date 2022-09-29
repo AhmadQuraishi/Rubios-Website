@@ -397,6 +397,11 @@ const CategoryList = () => {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
             sx={{ border: '0' }}
+            TransitionProps={{
+              role: 'dialog',
+              'aria-modal': 'true',
+              'aria-label': 'Please Choose Order Type',
+            }}
           >
             <div
               style={{

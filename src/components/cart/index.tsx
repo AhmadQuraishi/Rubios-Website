@@ -1350,6 +1350,11 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                 onClose={handleClose}
                                 aria-labelledby="alert-dialog-title"
                                 aria-describedby="alert-dialog-description"
+                                TransitionProps={{
+                                  role: 'dialog',
+                                  'aria-modal': 'true',
+                                  'aria-label': 'ESTIMATED TAX AND FEES',
+                                }}
                               >
                                 <DialogTitle
                                   sx={{
