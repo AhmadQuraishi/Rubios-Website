@@ -152,8 +152,7 @@ const RegisterForm = () => {
     transition: ' 0.1s ease',
     fontFamily: state.isFocused ? "'Poppins-bold', sans-serif !important" : "'Roboto','Helvetica','Arial',sans-serif",
     transform: state.selectProps.isFocused,
-    
-    
+
   }),
     singleValue: (provided: any, state: any) => {
       const opacity = state.isDisabled ? 0.5 : 1;
@@ -161,6 +160,7 @@ const RegisterForm = () => {
       return { ...provided, opacity, transition };
     },
   };
+  
   const NumberFormatCustom = forwardRef<HTMLElement, CustomProps>(
     function NumberFormatCustom(props, ref) {
       const { onChange, ...other } = props;
@@ -485,6 +485,7 @@ const RegisterForm = () => {
                             placeholder={favLocationError ? <div style={{color: "red"}}>Favorite Location *</div> : <div>Favorite Location *</div>}
                             noOptionsMessage={() => 'No Result Found'}
                             isSearchable={true}
+
                             styles={customStyles}
                             options={locations?.map((loc: any) => {
                               return {
