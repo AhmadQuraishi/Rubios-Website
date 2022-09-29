@@ -58,10 +58,11 @@ const RegisterConfirmation = ({ id }: any) => {
     placeholder: (base: any, state: any) => ({
       ...base,
       color:  state.isFocused  ? '#214F66' : 'rgba(0,0,0,0.6)',
-      padding: state.isFocused ? '0px 0px 25px 7px !important': '0px 30px 25px px !important',
-      fontSize: state.isFocused ? '8px': '1rem',
-      fontWeight: state.isFocused ? '800' : '400',
+      padding: state.isFocused ? '0px 0px 35px 6px !important': '0px 30px 0px 0px !important',
+      fontSize: state.isFocused ? '8.5px': '1rem',
+      //fontWeight: state.isFocused ? '800' : '400',
       transition: ' 0.1s ease',
+      fontFamily: state.isFocused ? "'Poppins-bold', sans-serif !important" : "'Roboto','Helvetica','Arial',sans-serif",
       transform: state.selectProps.isFocused,
     }),
     dropdownIndicator: (base: any, state: any) => ({
