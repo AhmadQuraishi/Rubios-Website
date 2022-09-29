@@ -177,23 +177,32 @@ const Rewards = (props: any) => {
                 <Grid container>
                   {rewardsArray.map((reward, index) => (
                     <Grid
-                      role="button"
-                      aria-lable={
-                        reward.quantityavailable > 1
-                          ? reward.quantityavailable + ' x ' + reward.label
-                          : reward.label
-                      }
                       item
                       xs={12}
                       sm={4}
                       sx={{ paddingTop: '16px', paddingRight: '16px' }}
                     >
                       <Card
+                        role="button"
+                        tabIndex={0}
+                        aria-label={
+                          reward.quantityavailable > 1
+                            ? reward.quantityavailable + ' x ' + reward.label
+                            : reward.label
+                        }
                         className={`reward-point-merge-panel ${
                           alignment == reward.redeemable_id.toString()
                             ? 'selected'
                             : ''
                         }`}
+                        onKeyPress={(e: any) => {
+                          if (e.key === 'Enter') {
+                            applyReward(
+                              reward.membershipid,
+                              reward.redeemable_id.toString(),
+                            );
+                          }
+                        }}
                         onClick={() => {
                           applyReward(
                             reward.membershipid,
