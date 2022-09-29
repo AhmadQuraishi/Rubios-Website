@@ -163,10 +163,7 @@ const RewardNew = () => {
                 </a>
               </Typography>
               {rewards && rewards.length > 0 && (
-                <Typography
-                  variant="body2"
-                  className="body-text-bold-reward"
-                >
+                <Typography variant="body2" className="body-text-bold-reward">
                   Click on a reward below only if you are redeeming in-store.
                 </Typography>
               )}
@@ -193,7 +190,22 @@ const RewardNew = () => {
                           lg={4}
                           sx={{ paddingTop: '10px' }}
                         >
-                          <Card className="reward-point-merge-panel">
+                          <Card
+                            role="button"
+                            tabIndex={0}
+                            aria-label={`${reward.name ? reward.name : ''}`}
+                            onKeyPress={(e: any) => {
+                              if (e.key === 'Enter') {
+                                onRedeemableClicked(
+                                  reward.reward_id,
+                                  reward.name,
+                                  true,
+                                  'reward',
+                                );
+                              }
+                            }}
+                            className="reward-point-merge-panel"
+                          >
                             <Grid container className="content-panel">
                               <Grid item xs={12} lg={5} className="img-panel">
                                 <img
@@ -202,7 +214,7 @@ const RewardNew = () => {
                                       ? reward.reward_image_url
                                       : ''
                                   }
-                                  alt=""
+                                  alt="Reward Image"
                                 />
                               </Grid>
                               <Grid
@@ -323,7 +335,8 @@ const RewardNew = () => {
                                 points >= key ? '' : ' disable'
                               }`}
                             >
-                              Click on a reward below only if you are redeeming in-store.
+                              Click on a reward below only if you are redeeming
+                              in-store.
                             </Typography>
                           </Grid>
                           <Grid
@@ -339,7 +352,24 @@ const RewardNew = () => {
                                   <>
                                     {/*<Grid container>*/}
                                     <Grid item xs={6} md={4}>
-                                      <Card className="reward-point-merge-panel">
+                                      <Card
+                                        role="button"
+                                        tabIndex={0}
+                                        aria-label={`${
+                                          redeem.name ? redeem.name : ''
+                                        }`}
+                                        onKeyPress={(e: any) => {
+                                          if (e.key === 'Enter') {
+                                            onRedeemableClicked(
+                                              redeem.id,
+                                              redeem.name,
+                                              points >= key,
+                                              'redeemable',
+                                            );
+                                          }
+                                        }}
+                                        className="reward-point-merge-panel"
+                                      >
                                         {/*<Link to="/account/reward-new/detail">*/}
                                         <Grid
                                           container
@@ -359,7 +389,7 @@ const RewardNew = () => {
                                               src={`${
                                                 redeem.image ? redeem.image : ''
                                               }`}
-                                              alt=""
+                                              alt="Reward image"
                                             />
                                           </Grid>
                                           <Grid
