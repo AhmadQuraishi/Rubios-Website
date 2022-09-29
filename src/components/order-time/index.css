@@ -31,8 +31,11 @@ label.time-picker:focus-within {
 .native-select.MuiInputBase-root.MuiInput-root {
   margin-top: 0px !important;
 }
+.time-slot-selected .native-select.MuiInputBase-root.MuiInput-root::after {
+  border-bottom: 3px solid #000000;
+}
 .native-select.MuiInputBase-root.MuiInput-root::after {
-  border-bottom: 3px solid #000;
+  border-bottom: 3px solid #B5B5B5;
 }
 .order-date .MuiInputAdornment-root {
   margin-right: 14px;

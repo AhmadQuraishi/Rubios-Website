@@ -285,7 +285,16 @@ const RecentOrders = () => {
           ))}
         </Grid>
       )}
-      <Dialog open={open} onClose={handleClose} className="fav-dialog">
+      <Dialog
+        TransitionProps={{
+          role: 'dialog',
+          'aria-modal': 'true',
+          'aria-label': 'Save Order as favorite',
+        }}
+        open={open}
+        onClose={handleClose}
+        className="fav-dialog"
+      >
         <Typography
           variant="h5"
           title="Save Order as favorite"

@@ -241,6 +241,28 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
     }
   };
 
+  React.useEffect(() => {
+    let dialog: any = document.querySelector('[role="dialog"]');
+    let firstFocusableElement = dialog.querySelector(
+      '.first-focusable-element',
+    );
+    let lastFocusableElement = dialog.querySelector('.last-focusable-element');
+
+    dialog.addEventListener('keydown', function (e: any) {
+      if (e.target == firstFocusableElement && e.key == 'Tab' && e.shiftKey) {
+        e.preventDefault();
+        lastFocusableElement.focus();
+      } else if (
+        e.target == lastFocusableElement &&
+        e.key == 'Tab' &&
+        !e.shiftKey
+      ) {
+        e.preventDefault();
+        firstFocusableElement.focus();
+      }
+    });
+  }, []);
+
   return (
     <Grid container>
       {/*column for space*/}
@@ -258,16 +280,21 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
           <Grid container>
             <Grid item xs={12} sm={12} md={12} lg={12} className="add-gift">
               {displayAddCreditCard() && (
-                <button
+                <Button
                   className={'add-credit-card-button'}
+                  title="Add Credit card"
+                  aria-label="Add Credit card"
                   onClick={() => handleHideShow()}
                 >
                   Add Credit card
-                </button>
+                </Button>
               )}
 
               <div
                 id="myModal"
+                role={'dialog'}
+                aria-modal={'true'}
+                aria-label={editCreditCard ? 'Edit Credit card' : 'Add Credit card'}
                 className={`modal ${hideShow ? 'show' : 'hide'}`}
               >
                 {/*<div className="modal-content">*/}
@@ -279,7 +306,11 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                     {/*<span onClick={() => handleHideShow()} className="close">*/}
                     {/*  &times;*/}
                     {/*</span>*/}
-                    <h2 className={'heading'}>
+                    <h2
+                      tabIndex={0}
+                      style={{ outline: 'none' }}
+                      className={'heading first-focusable-element'}
+                    >
                       {editCreditCard ? 'Edit Credit card' : 'Add Credit card'}
                     </h2>
                   </div>
@@ -404,10 +435,18 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                       Cancel{' '}
                     </Button>
                     <Button
-                      aria-label="Add Gift Card"
-                      title="Add Gift Card"
+                      aria-label={
+                        editCreditCard
+                          ? 'Update Credit card'
+                          : 'Add Credit card'
+                      }
+                      title={
+                        editCreditCard
+                          ? 'Update Credit card'
+                          : 'Add Credit card'
+                      }
                       type="submit"
-                      className="link default"
+                      className="link default last-focusable-element"
                       onClick={handleCreditCardSubmit}
                       // disabled={buttonDisabled}
                       autoFocus

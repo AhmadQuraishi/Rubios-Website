@@ -172,11 +172,18 @@ const StoreInfoBar = () => {
                     alignItems: 'center',
                     cursor: 'pointer',
                   }}
+                  role={'button'}
+                  tabIndex={0}
+                  onKeyPress={(e: any) => {
+                    if (e.key === 'Enter') {
+                      setShowMore(!showMore);
+                    }
+                  }}
+                  aria-label={`${showMore ? 'Hide' : 'View'} Details`}
                   xs={12}
                 >
                   <Typography
                     variant="h5"
-                    title="Show Hours"
                     sx={{
                       fontSize: '13px',
                       fontWeight: '500',
@@ -245,6 +252,14 @@ const StoreInfoBar = () => {
                         style={{
                           cursor: 'pointer',
                           textDecorationLine: 'underline',
+                        }}
+                        role={'button'}
+                        aria-label={'Change location'}
+                        tabIndex={0}
+                        onKeyPress={(e: any) => {
+                          if (e.key === 'Enter') {
+                            handleClickOpen();
+                          }
                         }}
                         onClick={() => handleClickOpen()}
                       >

@@ -234,6 +234,11 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                         onClose={handleClose}
                         aria-labelledby="alert-dialog-title"
                         aria-describedby="alert-dialog-description"
+                        TransitionProps={{
+                          role: 'dialog',
+                          'aria-modal': 'true',
+                          'aria-label': 'Add Gift Card',
+                        }}
                       >
                         <DialogTitle>ESTIMATED TAX AND FEES</DialogTitle>
                         <DialogContent>

@@ -24,6 +24,11 @@ const DialogBox: React.FC<Props> = ({
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
+        TransitionProps={{
+          role: 'dialog',
+          'aria-modal': 'true',
+          'aria-label': 'Alert Modal',
+        }}
       >
         <DialogTitle>
           <Typography variant="h6">{message}</Typography>
