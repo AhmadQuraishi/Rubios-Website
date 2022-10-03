@@ -13,7 +13,7 @@ const Page = forwardRef(
     return (
       <div ref={ref} className={className}>
         <Helmet>
-          <title>Rubio's Coastal Grill - {title}</title>
+          <title>Order Now - {title}</title>
         </Helmet>
         {children}
       </div>

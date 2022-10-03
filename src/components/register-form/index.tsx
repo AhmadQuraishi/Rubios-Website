@@ -143,25 +143,28 @@ const RegisterForm = () => {
       boxShadow: '0px 0px 6px lightgray',
       fontFamily: 'Poppins-Regular, sans-serif !important',
     }),
-  placeholder: (base: any, state: any) => ({
-    ...base,
-    color: state.isFocused ? '#214F66' : 'rgba(0,0,0,0.6)'  ,
-    padding: state.isFocused ? '0px 0px 35px 6px !important': '0px 30px 0px 0px !important',
-    fontSize: state.isFocused ? '8px': '1rem',
-    fontWeight: 'normal',
-    transition: ' 0.1s ease',
-    letterSpacing: '0.25008px',
-    fontFamily: state.isFocused ? "'Poppins-Bold', sans-serif !important" : "'Roboto','Helvetica','Arial',sans-serif",
-    transform: state.selectProps.isFocused,
-
-  }),
+    placeholder: (base: any, state: any) => ({
+      ...base,
+      color: state.isFocused ? '#214F66' : 'rgba(0,0,0,0.6)',
+      padding: state.isFocused
+        ? '0px 0px 35px 6px !important'
+        : '0px 30px 0px 0px !important',
+      fontSize: state.isFocused ? '8px' : '1rem',
+      fontWeight: 'normal',
+      transition: ' 0.1s ease',
+      letterSpacing: '0.25008px',
+      fontFamily: state.isFocused
+        ? "'Poppins-Bold', sans-serif !important"
+        : "'Roboto','Helvetica','Arial',sans-serif",
+      transform: state.selectProps.isFocused,
+    }),
     singleValue: (provided: any, state: any) => {
       const opacity = state.isDisabled ? 0.5 : 1;
       const transition = 'opacity 300ms';
       return { ...provided, opacity, transition };
     },
   };
-  
+
   const NumberFormatCustom = forwardRef<HTMLElement, CustomProps>(
     function NumberFormatCustom(props, ref) {
       const { onChange, ...other } = props;
@@ -244,14 +247,14 @@ const RegisterForm = () => {
             invitecode: invite_code && invite_code !== '' ? invite_code : '',
             favLocation: '',
             birthday: '',
-            termsAndConditions: false
+            termsAndConditions: false,
           }}
           validationSchema={Yup.object({
-            // first_name: Yup.string()
-            //   .max(30, 'Must be 30 characters or less')
-            //   // .min(3, 'Must be at least 3 characters')
-            //   // .matches(/^[aA-zZ\s]+$/, 'Only letters are allowed for this field ')
-            //   .required('First Name is required'),
+            first_name: Yup.string()
+              .max(30, 'Must be 30 characters or less')
+              //   // .min(3, 'Must be at least 3 characters')
+              //   // .matches(/^[aA-zZ\s]+$/, 'Only letters are allowed for this field ')
+              .required('First Name is required'),
             last_name: Yup.string()
               .max(30, 'Must be 30 characters or less')
               // .min(3, 'Must be at least 3 characters')
@@ -274,8 +277,6 @@ const RegisterForm = () => {
               .max(16, 'Must be at most 16 characters')
               .oneOf([Yup.ref('password'), null], 'Passwords must match')
               .required('required'),
-          
-
           })}
           onSubmit={async (values) => {
             console.log('favLocation', favLocation);
@@ -289,13 +290,13 @@ const RegisterForm = () => {
             }
             setFavLocationError(false);
 
-            if (termsAndConditions == false ){
+            if (termsAndConditions == false) {
               setTermsAndConditionsError(true);
               return;
-            }else{
+            } else {
               setTermsAndConditionsError(false);
             }
-  
+
             const obj: any = {
               first_name: values.first_name,
               last_name: values.last_name,
@@ -483,10 +484,17 @@ const RegisterForm = () => {
                       <div>
                         <div>
                           <Select
-                            placeholder={favLocationError ? <div style={{color: "red"}}>Favorite Location *</div> : <div>Favorite Location *</div>}
+                            placeholder={
+                              favLocationError ? (
+                                <div style={{ color: 'red' }}>
+                                  Favorite Location *
+                                </div>
+                              ) : (
+                                <div>Favorite Location *</div>
+                              )
+                            }
                             noOptionsMessage={() => 'No Result Found'}
                             isSearchable={true}
-
                             styles={customStyles}
                             options={locations?.map((loc: any) => {
                               return {
@@ -517,31 +525,31 @@ const RegisterForm = () => {
                       id="chkTermandCondition"
                       title="I agree to the  Rubios terms and conditions and to receiving marketing communications from Rubios."
                       sx={{ width: '100%' }}
-                      
                     >
                       <Checkbox
-                      onChange={handleChangeCheckbox}
-                      checked={termsAndConditions}
-                      id="termsAndConditions"
-                      name="termsAndConditions"
+                        onChange={handleChangeCheckbox}
+                        checked={termsAndConditions}
+                        id="termsAndConditions"
+                        name="termsAndConditions"
                         inputProps={{
                           'aria-labelledby': 'chkTermandCondition',
                         }}
                       />{' '}
                       I agree to the{' '}
                       <Link
-                        href={process.env.REACT_APP_TERMS_LINK}
+                        onClick={ () => window.open(process.env.REACT_APP_TERMS_LINK,"_blank" )}
                         underline="hover"
+                        sx={{ color: '#1a86ff' }}
                       >
                         Rubio's terms and conditions{' '}
                       </Link>
                       and to receiving marketing communications from Rubio's.
                     </Typography>
                     {termsAndConditionsError && (
-                    <p className="fav-error-message">
-                      Terms and conditions are required
-                    </p>
-                  )}
+                      <p className="fav-error-message">
+                        Terms and conditions are required
+                      </p>
+                    )}
                   </Grid>
                   <Grid
                     item
