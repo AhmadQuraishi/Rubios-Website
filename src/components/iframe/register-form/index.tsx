@@ -611,8 +611,9 @@ const RegisterForm = () => {
                       />{' '}
                       I agree to the{' '}
                       <Link
-                        href={process.env.REACT_APP_TERMS_LINK}
+                        onClick={ () => window.open(process.env.REACT_APP_TERMS_LINK,"_blank" )}
                         underline="hover"
+                        sx={{ color: '#1a86ff' }}
                       >
                         Rubio's terms and conditions{' '}
                       </Link>

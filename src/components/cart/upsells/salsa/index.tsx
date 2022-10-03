@@ -300,6 +300,7 @@ const Salsa = ({ upsellsType }: any) => {
                           </label>
                           <div className="quantity">
                             <Button
+                            sx={{ marginLeft: { xs:"7px" }}}
                               title=""
                               className="subtract"
                               aria-label="reduce"
@@ -320,6 +321,7 @@ const Salsa = ({ upsellsType }: any) => {
                               title="quantity"
                             />
                             <Button
+                            sx={{ marginRight: { xs:"7px" }}}
                               title=""
                               className="add"
                               aria-label="increase"

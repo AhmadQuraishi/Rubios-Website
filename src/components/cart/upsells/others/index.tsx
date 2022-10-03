@@ -419,6 +419,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
                     <div className="quantity">
                       <Button
                         title=""
+                        sx={{ marginLeft: { xs:"7px" }}}
                         className="subtract"
                         aria-label="reduce"
                         onClick={() => {
@@ -439,6 +440,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
                       />
                       <Button
                         title=""
+                        sx={{ marginRight: { xs:"7px" }}}
                         className="add"
                         aria-label="increase"
                         onClick={() => {
