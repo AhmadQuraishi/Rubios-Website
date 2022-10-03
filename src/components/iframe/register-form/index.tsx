@@ -10,6 +10,7 @@ import {
   InputLabel,
   MenuItem,
   Link,
+  CircularProgress,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik } from 'formik';
@@ -507,7 +508,14 @@ const RegisterForm = () => {
                             className="select-options"
                             isSearchable={true}
                             styles={customStyles}
-                            noOptionsMessage={() => 'No Result Found'}
+                            noOptionsMessage={() => {
+                              if(!locations || !locations.length){
+return <CircularProgress size={30}/>
+                              } else {
+                                return 'No Result Found'
+                              }
+
+                            }}
                             options={locations?.map((loc: any) => {
                               return {
                                 value: loc.location_id,
@@ -613,7 +621,7 @@ const RegisterForm = () => {
                       <Link
                         onClick={ () => window.open(process.env.REACT_APP_TERMS_LINK,"_blank" )}
                         underline="hover"
-                        sx={{ color: '#1a86ff' }}
+                        sx={{ color: '#1a86ff', cursor: 'pointer' }}
                       >
                         Rubio's terms and conditions{' '}
                       </Link>
