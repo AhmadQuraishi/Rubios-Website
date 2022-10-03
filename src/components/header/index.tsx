@@ -313,7 +313,7 @@ const Header = (props: any) => {
                     >
                       <img
                         style={{ width: '75%', display: 'block' }}
-                        src={require('../../assets/imgs/logout-icon.png')}
+                        src={require('../../assets/imgs/user-icon.png')}
                         alt="Login Icon"
                       />
                     </Grid>
