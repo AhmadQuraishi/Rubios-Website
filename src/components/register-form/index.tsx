@@ -145,10 +145,12 @@ const RegisterForm = () => {
     }),
   placeholder: (base: any, state: any) => ({
     ...base,
-    color: state.isFocused ? '#214F66' : 'rgba(0,0,0,0.6)'  ,
-    padding: state.isFocused ? '0px 0px 35px 6px !important': '0px 30px 0px 0px !important',
+    className: 'MuiFormLabel-filled',
+    color: state.isFocused ? '#214F66' : 'rgba(0,0,0,0.6)',
+    padding:  state.isFocused || state.isSearched ? '0px 0px 35px 6px !important': '0px 30px 0px 0px !important',
     fontSize: state.isFocused ? '8px': '1rem',
     fontWeight: 'normal',
+    display: `${state.isFilled || state.hasValue ? 'inline' : 'inline'}`,
     transition: ' 0.1s ease',
     letterSpacing: '0.25008px',
     fontFamily: state.isFocused ? "'Poppins-Bold', sans-serif !important" : "'Roboto','Helvetica','Arial',sans-serif",
@@ -486,7 +488,7 @@ const RegisterForm = () => {
                             placeholder={favLocationError ? <div style={{color: "red"}}>Favorite Location *</div> : <div>Favorite Location *</div>}
                             noOptionsMessage={() => 'No Result Found'}
                             isSearchable={true}
-
+                            
                             styles={customStyles}
                             options={locations?.map((loc: any) => {
                               return {
@@ -530,8 +532,9 @@ const RegisterForm = () => {
                       />{' '}
                       I agree to the{' '}
                       <Link
-                        href={process.env.REACT_APP_TERMS_LINK}
+                        onClick={ () => window.open(process.env.REACT_APP_TERMS_LINK,"_blank" )}
                         underline="hover"
+                        sx={{ color: '#1a86ff' }}
                       >
                         Rubio's terms and conditions{' '}
                       </Link>
