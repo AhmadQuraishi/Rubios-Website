@@ -22,6 +22,7 @@ import usePlacesAutocomplete, {
 import { getNearByResturantListRequest } from '../../redux/actions/restaurant/list';
 import './location.css';
 import { getAddress } from '../../helpers/common';
+import TagManager from 'react-gtm-module';
 
 const LocationCard = (props: any) => {
   const {
@@ -49,10 +50,7 @@ const LocationCard = (props: any) => {
             setDeliveryAddressString(address);
           } else {
             setActionPerform(false);
-            displayToast(
-              'ERROR',
-              'Please enter your full delivery address.',
-            );
+            displayToast('ERROR', 'Please enter your full delivery address.');
           }
         });
       })
@@ -175,8 +173,6 @@ const LocationCard = (props: any) => {
   };
 
   const getSearchResults = () => {
-    console.log('resturantOrderType', resturantOrderType);
-    console.log('searchText', searchText);
     setShowNotFoundMessage(false);
     if (resturantOrderType === 'dispatch') {
       // setfilteredRestaurants(
@@ -226,6 +222,12 @@ const LocationCard = (props: any) => {
       }
       let searchedRestaurant: ResponseRestaurant[] = [];
       if (searchText && searchText.trim() && searchText.length > 1) {
+        TagManager.dataLayer({
+          dataLayer: {
+            event: 'vpv',
+            virtualPagePath: searchText.trim().toLowerCase(),
+          },
+        });
         let searchTxt = searchText.trim().toLowerCase();
         // let zipCodeMatchedRestaurants = updatedRestaurants.filter(
         //   (x: any) => x.zip.toLowerCase() === searchTxt,
