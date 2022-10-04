@@ -312,7 +312,7 @@ const Header = (props: any) => {
                       sx={{ display: 'flex', justifyContent: 'center' }}
                     >
                       <img
-                        style={{ width: '75%', display: 'block' }}
+                        // style={{ width: '75%', display: 'block' }}
                         src={require('../../assets/imgs/user-icon.png')}
                         alt="Login Icon"
                       />
