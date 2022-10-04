@@ -675,10 +675,36 @@ const Checkout = () => {
 
   const fireEventAfterPlacingOrder = (order: any) => {
     let userObj: any = null;
+    let products = [];
+    let totalTax = 0;
+
+    if (order && order.products && order.products.length) {
+      products = order.products.map((prod: any) => {
+        return {
+          ...prod,
+          sku: '',
+        };
+      });
+    }
+
+    if (order.taxes && order.taxes.length) {
+      totalTax = order.taxes.reduce((sum: any, tax: any) => {
+        // if (tax.label === 'Estimated Tax') {
+        sum = sum + tax.tax;
+        // }
+        return sum;
+      }, 0);
+    }
+
     const tagManagerArgs: any = {
       dataLayer: {
         event: 'trackTrans',
         transactionRevenue: order.total,
+        transactionProducts: products,
+        transactionId: order.id,
+        transactionTax: totalTax,
+        transactionAffiliation: order.deliverymode,
+        transactionStoreReference: order.vendorextref,
       },
     };
 
