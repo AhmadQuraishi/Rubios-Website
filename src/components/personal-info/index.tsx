@@ -7,6 +7,7 @@ import {
   Button,
   Card,
   Theme,
+  CircularProgress,
 } from '@mui/material';
 import './index.css';
 import InputLabel from '@mui/material/InputLabel';
@@ -542,7 +543,14 @@ const PersonalInfo = () => {
                               className="select-options"
                               isSearchable={true}
                               styles={customStyles}
-                              noOptionsMessage={() => 'No Result Found'}
+                              noOptionsMessage={() => {
+                                if(!locations || !locations.length){
+  return <CircularProgress size={30}/>
+                                } else {
+                                  return 'No Result Found'
+                                }
+  
+                              }}
                               options={locations?.map((loc: any) => {
                                 return {
                                   value: loc.location_id,

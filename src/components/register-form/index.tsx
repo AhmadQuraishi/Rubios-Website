@@ -11,6 +11,7 @@ import {
   MenuItem,
   Link,
   Skeleton,
+  CircularProgress,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik } from 'formik';
@@ -50,6 +51,8 @@ const RegisterForm = () => {
   const { locations } = useSelector((state: any) => state.locationReducer);
   console.log('locations', locations);
   const [favLocation, setFavLocation] = useState<any>(null);
+  const [actionClicked, setActionClicked] = useState(false);
+  const [removedActionClicked, setRemovedActionClicked] = useState(false);
   const [favLocationError, setFavLocationError] = useState(false);
   const [birthDay, setBirthDay] = useState<Date | undefined>();
   const [termsAndConditions, setTermsAndconditions] = useState(false);
@@ -198,7 +201,7 @@ const RegisterForm = () => {
 
   return (
     <>
-      {!locations ? (
+      {/* {!locations ? (
         <>
           <Skeleton
             variant="rectangular"
@@ -231,238 +234,236 @@ const RegisterForm = () => {
             style={{ marginTop: '10px', marginLeft: '15%' }}
           />
         </>
-      ) : (
-        <Formik
-          initialValues={{
-            first_name: findGetParameter('fname')
-              ? findGetParameter('fname')
-              : '',
-            last_name: findGetParameter('lname')
-              ? findGetParameter('lname')
-              : '',
-            email: findGetParameter('email') ? findGetParameter('email') : '',
-            phone: '',
-            password: '',
-            password_confirmation: '',
-            invitecode: invite_code && invite_code !== '' ? invite_code : '',
-            favLocation: '',
-            birthday: '',
-            termsAndConditions: false,
-          }}
-          validationSchema={Yup.object({
-            first_name: Yup.string()
-              .max(30, 'Must be 30 characters or less')
-              //   // .min(3, 'Must be at least 3 characters')
-              //   // .matches(/^[aA-zZ\s]+$/, 'Only letters are allowed for this field ')
-              .required('First Name is required'),
-            last_name: Yup.string()
-              .max(30, 'Must be 30 characters or less')
-              // .min(3, 'Must be at least 3 characters')
-              // .matches(/^[aA-zZ\s]+$/, 'Only letters are allowed for this field ')
-              .required('Last Name is required'),
-            email: Yup.string()
-              .matches(
-                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                'Invalid Email ',
-              )
-              .email('Invalid email address')
-              .required('Email is required'),
-            phone: Yup.string().min(14, 'Enter valid number'),
-            password: Yup.string()
-              .min(8, 'Must be at least 8 characters')
-              .max(16, 'Must be at most 16 characters')
-              .required('required'),
-            password_confirmation: Yup.string()
-              .min(8, 'Must be at least 8 characters')
-              .max(16, 'Must be at most 16 characters')
-              .oneOf([Yup.ref('password'), null], 'Passwords must match')
-              .required('required'),
-          })}
-          onSubmit={async (values) => {
-            console.log('favLocation', favLocation);
-            if (
-              !favLocation ||
-              !Object.keys(favLocation).length ||
-              favLocation.value === ''
-            ) {
-              setFavLocationError(true);
-              return;
-            }
-            setFavLocationError(false);
+      ) : ( */}
+      <Formik
+        initialValues={{
+          first_name: findGetParameter('fname')
+            ? findGetParameter('fname')
+            : '',
+          last_name: findGetParameter('lname') ? findGetParameter('lname') : '',
+          email: findGetParameter('email') ? findGetParameter('email') : '',
+          phone: '',
+          password: '',
+          password_confirmation: '',
+          invitecode: invite_code && invite_code !== '' ? invite_code : '',
+          favLocation: '',
+          birthday: '',
+          termsAndConditions: false,
+        }}
+        validationSchema={Yup.object({
+          first_name: Yup.string()
+            .max(30, 'Must be 30 characters or less')
+            //   // .min(3, 'Must be at least 3 characters')
+            //   // .matches(/^[aA-zZ\s]+$/, 'Only letters are allowed for this field ')
+            .required('First Name is required'),
+          last_name: Yup.string()
+            .max(30, 'Must be 30 characters or less')
+            // .min(3, 'Must be at least 3 characters')
+            // .matches(/^[aA-zZ\s]+$/, 'Only letters are allowed for this field ')
+            .required('Last Name is required'),
+          email: Yup.string()
+            .matches(
+              /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+              'Invalid Email ',
+            )
+            .email('Invalid email address')
+            .required('Email is required'),
+          phone: Yup.string().min(14, 'Enter valid number'),
+          password: Yup.string()
+            .min(8, 'Must be at least 8 characters')
+            .max(16, 'Must be at most 16 characters')
+            .required('required'),
+          password_confirmation: Yup.string()
+            .min(8, 'Must be at least 8 characters')
+            .max(16, 'Must be at most 16 characters')
+            .oneOf([Yup.ref('password'), null], 'Passwords must match')
+            .required('required'),
+        })}
+        onSubmit={async (values) => {
+          console.log('favLocation', favLocation);
+          if (
+            !favLocation ||
+            !Object.keys(favLocation).length ||
+            favLocation.value === ''
+          ) {
+            setFavLocationError(true);
+            return;
+          }
+          setFavLocationError(false);
 
-            if (termsAndConditions == false) {
-              setTermsAndConditionsError(true);
-              return;
-            } else {
-              setTermsAndConditionsError(false);
-            }
+          if (termsAndConditions == false) {
+            setTermsAndConditionsError(true);
+            return;
+          } else {
+            setTermsAndConditionsError(false);
+          }
 
-            const obj: any = {
-              first_name: values.first_name,
-              last_name: values.last_name,
-              password: values.password,
-              password_confirmation: values.password_confirmation,
-              email: values.email,
-              phone: values.phone ? values.phone.replace(/\D/g, '') : '',
-              invite_code: values.invitecode,
-              fav_location_id: favLocation.value.toString(),
-              terms_and_conditions: termsAndConditions,
-            };
+          const obj: any = {
+            first_name: values.first_name,
+            last_name: values.last_name,
+            password: values.password,
+            password_confirmation: values.password_confirmation,
+            email: values.email,
+            phone: values.phone ? values.phone.replace(/\D/g, '') : '',
+            invite_code: values.invitecode,
+            fav_location_id: favLocation.value.toString(),
+            terms_and_conditions: termsAndConditions,
+          };
 
-            if (birthDay) {
-              obj.birthday = moment(birthDay).format('YYYY-MM-DD');
-            }
+          if (birthDay) {
+            obj.birthday = moment(birthDay).format('YYYY-MM-DD');
+          }
 
-            dispatch(userRegister(obj));
-          }}
-        >
-          {({
-            errors,
-            handleBlur,
-            handleChange,
-            handleSubmit,
-            touched,
-            values,
-          }) => (
-            <form onSubmit={handleSubmit} autoComplete="off">
-              <Grid item xs={12} md={12} lg={12}>
-                <Grid container>
-                  <Grid item xs={12}>
-                    <TextField
-                      aria-label="first name"
-                      label="First Name *"
-                      title="First Name"
-                      type="text"
-                      name="first_name"
-                      sx={{ width: '100%' }}
-                      value={values.first_name}
-                      autoComplete="off"
-                      onChange={handleChange('first_name')}
-                      onBlur={handleBlur('first_name')}
-                      error={Boolean(touched.first_name && errors.first_name)}
-                      helperText={touched.first_name && errors.first_name}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      aria-label="last name"
-                      label="Last Name *"
-                      title="Last Name"
-                      type="text"
-                      name="last_name"
-                      autoComplete="off"
-                      sx={{ width: '100%' }}
-                      value={values.last_name}
-                      onChange={handleChange('last_name')}
-                      onBlur={handleBlur('last_name')}
-                      error={Boolean(touched.last_name && errors.last_name)}
-                      helperText={touched.last_name && errors.last_name}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      aria-label="email"
-                      label="Email *"
-                      title="Email"
-                      type="text"
-                      name="email"
-                      autoComplete="off"
-                      sx={{ width: '100%' }}
-                      value={values.email}
-                      onChange={handleChange('email')}
-                      onBlur={handleBlur('email')}
-                      error={Boolean(touched.email && errors.email)}
-                      helperText={touched.email && errors.email}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      className="mobile-field"
-                      aria-label="mobile phone "
-                      label="Mobile Phone (Optional)"
-                      title="Mobile Phone (Optional)"
-                      value={values.phone}
-                      sx={{ width: '100%' }}
-                      onChange={handleChange}
-                      autoComplete="off"
-                      name="phone"
-                      id="formatted-numberformat-input"
-                      InputLabelProps={{
-                        shrink: touched && values.phone == '' ? false : true,
-                        classes: {
-                          root: values.phone !== '' ? 'mobile-field-label' : '',
-                        },
-                      }}
-                      InputProps={{
-                        inputComponent: NumberFormatCustom as any,
-                      }}
-                      error={Boolean(touched && errors.phone)}
-                      helperText={errors.phone}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      aria-label="password"
-                      label="Password *"
-                      title="Password"
-                      type="password"
-                      name="password"
-                      autoComplete="off"
-                      sx={{ width: '100%' }}
-                      value={values.password}
-                      onChange={handleChange('password')}
-                      onBlur={handleBlur('password')}
-                      error={Boolean(touched.password && errors.password)}
-                      helperText={touched.password && errors.password}
-                    />
-                    <Typography
-                      variant="body2"
-                      className="body-text"
-                      title="Password must be at least 8 characters."
-                      sx={{ width: '100%' }}
-                    >
-                      Password must be at least 8 characters.
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      aria-label="confirm password "
-                      label="Confirm Password *"
-                      title="Confirm Password"
-                      name="password_confirmation"
-                      autoComplete="off"
-                      type="password"
-                      sx={{ width: '100%' }}
-                      value={values.password_confirmation}
-                      onChange={handleChange('password_confirmation')}
-                      onBlur={handleBlur('password_confirmation')}
-                      error={Boolean(
-                        touched.password_confirmation &&
-                          errors.password_confirmation,
-                      )}
-                      helperText={
-                        touched.password_confirmation &&
-                        errors.password_confirmation
-                      }
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      aria-label="invite code"
-                      label="Invite Code (Optional)"
-                      title="Invite Code (Optional)"
-                      name="invitecode"
-                      type="text"
-                      sx={{ width: '100%' }}
-                      value={values.invitecode}
-                      onChange={handleChange('invitecode')}
-                      onBlur={handleBlur('invitecode')}
-                      error={Boolean(touched.invitecode && errors.invitecode)}
-                      helperText={touched.invitecode && errors.invitecode}
-                    />
-                  </Grid>
-                  <Grid item xs={12} className="date-field">
-                    {/* <Typography
+          dispatch(userRegister(obj));
+        }}
+      >
+        {({
+          errors,
+          handleBlur,
+          handleChange,
+          handleSubmit,
+          touched,
+          values,
+        }) => (
+          <form onSubmit={handleSubmit} autoComplete="off">
+            <Grid item xs={12} md={12} lg={12}>
+              <Grid container>
+                <Grid item xs={12}>
+                  <TextField
+                    aria-label="first name"
+                    label="First Name *"
+                    title="First Name"
+                    type="text"
+                    name="first_name"
+                    sx={{ width: '100%' }}
+                    value={values.first_name}
+                    autoComplete="off"
+                    onChange={handleChange('first_name')}
+                    onBlur={handleBlur('first_name')}
+                    error={Boolean(touched.first_name && errors.first_name)}
+                    helperText={touched.first_name && errors.first_name}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    aria-label="last name"
+                    label="Last Name *"
+                    title="Last Name"
+                    type="text"
+                    name="last_name"
+                    autoComplete="off"
+                    sx={{ width: '100%' }}
+                    value={values.last_name}
+                    onChange={handleChange('last_name')}
+                    onBlur={handleBlur('last_name')}
+                    error={Boolean(touched.last_name && errors.last_name)}
+                    helperText={touched.last_name && errors.last_name}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    aria-label="email"
+                    label="Email *"
+                    title="Email"
+                    type="text"
+                    name="email"
+                    autoComplete="off"
+                    sx={{ width: '100%' }}
+                    value={values.email}
+                    onChange={handleChange('email')}
+                    onBlur={handleBlur('email')}
+                    error={Boolean(touched.email && errors.email)}
+                    helperText={touched.email && errors.email}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    className="mobile-field"
+                    aria-label="mobile phone "
+                    label="Mobile Phone (Optional)"
+                    title="Mobile Phone (Optional)"
+                    value={values.phone}
+                    sx={{ width: '100%' }}
+                    onChange={handleChange}
+                    autoComplete="off"
+                    name="phone"
+                    id="formatted-numberformat-input"
+                    InputLabelProps={{
+                      shrink: touched && values.phone == '' ? false : true,
+                      classes: {
+                        root: values.phone !== '' ? 'mobile-field-label' : '',
+                      },
+                    }}
+                    InputProps={{
+                      inputComponent: NumberFormatCustom as any,
+                    }}
+                    error={Boolean(touched && errors.phone)}
+                    helperText={errors.phone}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    aria-label="password"
+                    label="Password *"
+                    title="Password"
+                    type="password"
+                    name="password"
+                    autoComplete="off"
+                    sx={{ width: '100%' }}
+                    value={values.password}
+                    onChange={handleChange('password')}
+                    onBlur={handleBlur('password')}
+                    error={Boolean(touched.password && errors.password)}
+                    helperText={touched.password && errors.password}
+                  />
+                  <Typography
+                    variant="body2"
+                    className="body-text"
+                    title="Password must be at least 8 characters."
+                    sx={{ width: '100%' }}
+                  >
+                    Password must be at least 8 characters.
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    aria-label="confirm password "
+                    label="Confirm Password *"
+                    title="Confirm Password"
+                    name="password_confirmation"
+                    autoComplete="off"
+                    type="password"
+                    sx={{ width: '100%' }}
+                    value={values.password_confirmation}
+                    onChange={handleChange('password_confirmation')}
+                    onBlur={handleBlur('password_confirmation')}
+                    error={Boolean(
+                      touched.password_confirmation &&
+                        errors.password_confirmation,
+                    )}
+                    helperText={
+                      touched.password_confirmation &&
+                      errors.password_confirmation
+                    }
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    aria-label="invite code"
+                    label="Invite Code (Optional)"
+                    title="Invite Code (Optional)"
+                    name="invitecode"
+                    type="text"
+                    sx={{ width: '100%' }}
+                    value={values.invitecode}
+                    onChange={handleChange('invitecode')}
+                    onBlur={handleBlur('invitecode')}
+                    error={Boolean(touched.invitecode && errors.invitecode)}
+                    helperText={touched.invitecode && errors.invitecode}
+                  />
+                </Grid>
+                <Grid item xs={12} className="date-field">
+                  {/* <Typography
                     variant="body2"
                     className="body-text"
                     title="Birthday (Optional)"
@@ -470,19 +471,33 @@ const RegisterForm = () => {
                   >
                     Birthday (Optional)
                   </Typography> */}
-                    <ReactDateInputs
-                      className="body-text"
-                      label="Birthday (Optional)"
-                      onChange={(value) => handleBirthDayChange(value)}
-                      value={birthDay}
-                      show={['month', 'day', 'year']}
-                    />
-                  </Grid>
-
+                  <ReactDateInputs
+                    className="body-text"
+                    label="Birthday (Optional)"
+                    onChange={(value) => handleBirthDayChange(value)}
+                    value={birthDay}
+                    show={['month', 'day', 'year']}
+                  />
+                </Grid>
+                
                   <Grid item xs={12}>
-                    <div>
-                      <div>
-                        <div>
+                     {/* { !locations&&  <div
+                    style={{
+                      position: 'absolute',
+                      // marginTop: '300px',
+                      // top: 720,
+                      // right: 370,
+                      background: 'rgba(255, 255, 255, 0)',
+                      zIndex: 1000,
+                      width: "418px",
+                      paddingTop: "7px",
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <CircularProgress />
+                  </div>} */}
                           <Select
                             placeholder={
                               favLocationError ? (
@@ -493,7 +508,14 @@ const RegisterForm = () => {
                                 <div>Favorite Location *</div>
                               )
                             }
-                            noOptionsMessage={() => 'No Result Found'}
+                            noOptionsMessage={() => {
+                              if(!locations || !locations.length){
+return <CircularProgress size={30}/>
+                              } else {
+                                return 'No Result Found'
+                              }
+
+                            }}
                             isSearchable={true}
                             styles={customStyles}
                             options={locations?.map((loc: any) => {
@@ -509,73 +531,73 @@ const RegisterForm = () => {
                             value={favLocation && favLocation}
                             maxMenuHeight={150}
                           />
-                        </div>
-                      </div>
-                    </div>
                     {favLocationError && (
                       <p className="fav-error-message">
                         Favorite Location is required
                       </p>
                     )}
                   </Grid>
-                  <Grid item xs={12}>
-                    <Typography
-                      variant="body2"
-                      className="body-text"
-                      id="chkTermandCondition"
-                      title="I agree to the  Rubios terms and conditions and to receiving marketing communications from Rubios."
+                <Grid item xs={12}>
+                  <Typography
+                    variant="body2"
+                    className="body-text"
+                    id="chkTermandCondition"
+                    title="I agree to the  Rubios terms and conditions and to receiving marketing communications from Rubios."
+                    sx={{ width: '100%' }}
+                  >
+                    <Checkbox
+                      onChange={handleChangeCheckbox}
+                      checked={termsAndConditions}
+                      id="termsAndConditions"
+                      name="termsAndConditions"
+                      inputProps={{
+                        'aria-labelledby': 'chkTermandCondition',
+                      }}
+                    />{' '}
+                    I agree to the{' '}
+                    <Link
+                      onClick={() =>
+                        window.open(process.env.REACT_APP_TERMS_LINK, '_blank')
+                      }
+
+                      underline="hover"
+                      sx={{ color: '#1a86ff', cursor: 'pointer' }}
+                    >
+                      Rubio's terms and conditions{' '}
+                    </Link>
+                    and to receiving marketing communications from Rubio's.
+                  </Typography>
+                  {termsAndConditionsError && (
+                    <p className="fav-error-message">
+                      Terms and conditions are required
+                    </p>
+                  )}
+                </Grid>
+                <Grid
+                  item
+                  xs={12}
+                  sx={{ display: 'flex', justifyContent: 'center' }}
+                >
+                  <Grid item xs={12} sm={8} md={8} lg={8}>
+                    <Button
+                      type="submit"
+                      disabled={loadingProvider || loadingAuth}
+                      aria-label="submit form to sign upm for rubios rewards"
+                      name="submit"
+                      title="submit"
+                      variant="contained"
                       sx={{ width: '100%' }}
                     >
-                      <Checkbox
-                        onChange={handleChangeCheckbox}
-                        checked={termsAndConditions}
-                        id="termsAndConditions"
-                        name="termsAndConditions"
-                        inputProps={{
-                          'aria-labelledby': 'chkTermandCondition',
-                        }}
-                      />{' '}
-                      I agree to the{' '}
-                      <Link
-                        onClick={ () => window.open(process.env.REACT_APP_TERMS_LINK,"_blank" )}
-                        underline="hover"
-                        sx={{ color: '#1a86ff' }}
-                      >
-                        Rubio's terms and conditions{' '}
-                      </Link>
-                      and to receiving marketing communications from Rubio's.
-                    </Typography>
-                    {termsAndConditionsError && (
-                      <p className="fav-error-message">
-                        Terms and conditions are required
-                      </p>
-                    )}
-                  </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    sx={{ display: 'flex', justifyContent: 'center' }}
-                  >
-                    <Grid item xs={12} sm={8} md={8} lg={8}>
-                      <Button
-                        type="submit"
-                        disabled={loadingProvider || loadingAuth}
-                        aria-label="submit form to sign upm for rubios rewards"
-                        name="submit"
-                        title="submit"
-                        variant="contained"
-                        sx={{ width: '100%' }}
-                      >
-                        Submit
-                      </Button>
-                    </Grid>
+                      Submit
+                    </Button>
                   </Grid>
                 </Grid>
               </Grid>
-            </form>
-          )}
-        </Formik>
-      )}
+            </Grid>
+          </form>
+        )}
+      </Formik>
+      {/* )} */}
     </>
   );
 };
