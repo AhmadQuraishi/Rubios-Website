@@ -619,10 +619,14 @@ return <CircularProgress size={30}/>
                       />{' '}
                       I agree to the{' '}
                       <Link
-                        onClick={ () => window.open(process.env.REACT_APP_TERMS_LINK,"_blank" )}
-                        underline="hover"
-                        sx={{ color: '#1a86ff', cursor: 'pointer' }}
-                      >
+                    target="popup"
+                      onClick={() =>
+                        window.open(process.env.REACT_APP_TERMS_LINK,'name','width=1000,height=1000')
+                      }
+                      
+                      underline="hover"
+                      sx={{ color: '#1a86ff', cursor: 'pointer' }}
+                    >
                         Rubio's terms and conditions{' '}
                       </Link>
                       and to receiving marketing communications from Rubio's.
