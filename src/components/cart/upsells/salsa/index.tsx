@@ -3,7 +3,7 @@ import { makeStyles } from '@mui/styles';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addMultipleProductsRequest } from '../../../../redux/actions/basket/addMultipleProducts';
-import {changeImageSize} from "../../../../helpers/common";
+import { changeImageSize, isEmpty } from '../../../../helpers/common';
 
 const useStyles = makeStyles((theme: Theme) => ({
   cartTitle: {
@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontWeight: '700',
     fontFamily: 'Poppins-Bold !important',
     padding: '10px 0px 18px 0px',
-  }
+  },
 }));
 
 const Salsa = ({ upsellsType }: any) => {
@@ -54,7 +54,7 @@ const Salsa = ({ upsellsType }: any) => {
         fitContainer();
       }, 500);
     }
-  }, [upsells]);
+  }, [upsells, upsellsType]);
 
   const submit = () => {
     if (products && products.length) {
@@ -84,22 +84,26 @@ const Salsa = ({ upsellsType }: any) => {
     basketCount: any,
     count: any,
     type: string,
+    maximumBasketQuantity: any,
+    maximumQuantity: any,
   ) => {
     if (
-      parseInt(obj.maximumbasketquantity || 0) === basketCount &&
+      maximumBasketQuantity !== -1 &&
+      maximumBasketQuantity === basketCount &&
       type === 'PLUS'
     ) {
       setErrorMsg(
-        `You may only order upto ${obj.maximumbasketquantity || 0} ${
+        `You may only order upto ${maximumBasketQuantity} ${
           obj.name ? obj.name : ''
         }`,
       );
     } else if (
-      obj.quantity + 1 > parseInt(obj.maximumquantity || 0) &&
+      maximumQuantity !== -1 &&
+      obj.quantity + 1 > maximumQuantity &&
       type === 'PLUS'
     ) {
       setErrorMsg(
-        `You may only add upto ${obj.maximumquantity || 0} ${
+        `You may only add upto ${maximumQuantity} ${
           obj.name ? obj.name : ''
         } at a time.`,
       );
@@ -127,18 +131,48 @@ const Salsa = ({ upsellsType }: any) => {
     }
     const updatedProducts = products.map((obj: any) => {
       if (obj.id === id) {
-        let limit = parseInt(obj.maximumbasketquantity || 0) - basketCount;
-        let count = type === 'PLUS' ? obj.quantity + 1 : obj.quantity - 1;
+        const maximumBasketQuantity = isEmpty(obj.maximumbasketquantity)
+          ? -1
+          : parseInt(obj.maximumbasketquantity);
+        const maximumQuantity = isEmpty(obj.maximumquantity)
+          ? -1
+          : parseInt(obj.maximumquantity);
+        let limit = maximumBasketQuantity - basketCount;
+        let count =
+          type === 'PLUS'
+            ? obj.quantity + 1
+            : obj.quantity === 0
+            ? 0
+            : obj.quantity - 1;
+
         count =
-          count >= parseInt(obj.maximumquantity || 0)
-            ? parseInt(obj.maximumquantity || 0)
+          maximumQuantity === -1 || maximumBasketQuantity === -1
+            ? count
+            : count >= maximumQuantity
+            ? maximumQuantity
+            : count >= maximumBasketQuantity
+            ? maximumBasketQuantity
             : count <= 0
             ? 0
             : count;
 
-        showErrorMsg(obj, basketCount, count, type);
+        // count =
+        //   count >= parseInt(obj.maximumquantity || 0)
+        //     ? parseInt(obj.maximumquantity || 0)
+        //     : count <= 0
+        //     ? 0
+        //     : count;
 
-        if (count <= limit) {
+        showErrorMsg(
+          obj,
+          basketCount,
+          count,
+          type,
+          maximumBasketQuantity,
+          maximumQuantity,
+        );
+
+        if (count <= limit || limit < 0) {
           return {
             ...obj,
             quantity: count,
@@ -254,7 +288,7 @@ const Salsa = ({ upsellsType }: any) => {
                             changeImageSize(
                               obj.imagefilename || '',
                               obj.images || '',
-                              'desktop-menu'
+                              'desktop-menu',
                             )
                           }
                         />
@@ -267,7 +301,7 @@ const Salsa = ({ upsellsType }: any) => {
                           flexDirection: 'column',
                           gap: '40px',
                           paddingLeft: '10px',
-                          maxWidth: "inherit"
+                          maxWidth: 'inherit',
                         }}
                       >
                         <Typography
@@ -300,7 +334,7 @@ const Salsa = ({ upsellsType }: any) => {
                           </label>
                           <div className="quantity">
                             <Button
-                            sx={{ marginLeft: { xs:"7px" }}}
+                              sx={{ marginLeft: { xs: '7px' } }}
                               title=""
                               className="subtract"
                               aria-label="reduce"
@@ -321,7 +355,7 @@ const Salsa = ({ upsellsType }: any) => {
                               title="quantity"
                             />
                             <Button
-                            sx={{ marginRight: { xs:"7px" }}}
+                              sx={{ marginRight: { xs: '7px' } }}
                               title=""
                               className="add"
                               aria-label="increase"

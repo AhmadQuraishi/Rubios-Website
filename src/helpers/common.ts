@@ -136,7 +136,7 @@ export function calculateTaxAndFee(basket: any) {
   return total.toFixed(2);
 }
 
-export async function sha256Method(message: any){
+export async function sha256Method(message: any) {
   // encode as UTF-8
   const msgBuffer = new TextEncoder().encode(message);
 
@@ -152,4 +152,8 @@ export async function sha256Method(message: any){
     .join('');
   // console.log('hashHex', hashHex);
   return hashHex;
-};
+}
+
+export function isEmpty(val: any) {
+  return val === undefined || val == null || val === '';
+}

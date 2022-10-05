@@ -237,7 +237,7 @@ const Upsells = ({ showCart, upsellsType }: any) => {
               </Grid>
             )}
 
-          {upsellsType === UPSELLS_TYPES.SALSA ? (
+          {upsellsType !== UPSELLS_TYPES.DRINK ? (
             <Salsa upsellsType={upsellsType} />
           ) : (
             <UpsellsOthers upsellsType={upsellsType} />
