@@ -104,9 +104,11 @@ const Location = () => {
     setShowNearBy(false);
     setNearByRestaurantsFound(false);
     setDeliveryAddressString(null);
-    if (type !== 'dispatch') {
-      dispatch(getResturantListRequest());
-    }
+    setSearchText('');
+    // if (type !== 'dispatch' && !restaurants && !loading) {
+    //   console.log('working 22', type)
+    //   dispatch(getResturantListRequest());
+    // }
 
     setOrderType(type);
   };
@@ -160,6 +162,7 @@ const Location = () => {
   useEffect(() => {
     if (LatLng && actionPerform) {
       if (LatLng) {
+        console.log('nearby');
         getNearByRestaurants(LatLng.lat, LatLng.lng);
       }
     } else if (showNearBy && orderType && orderType === 'dispatch') {
@@ -238,7 +241,9 @@ const Location = () => {
   }, [showNearBy, LatLng]);
 
   useEffect(() => {
-    console.log('rest working 1', restaurants);
+    if (orderType === 'dispatch') {
+      return;
+    }
     if (restaurants && restaurants.restaurants) {
       if (restaurants.restaurants.length === 0) {
         // if (showNearBy || LatLng) {
@@ -261,12 +266,10 @@ const Location = () => {
         //   setZoom(7);
         //   setActionPerform(false);
         // }
-        console.log('nearby');
         setfilteredRestaurants([]);
         setDeliveryRasturants([]);
         setAllResturants([]);
       } else {
-        console.log('rest working 2');
         // if (showNearBy || LatLng) {
         //   if (LatLng) {
         //     // const filterRest = getFilteredRestaurants(restaurants.restaurants);
@@ -294,7 +297,6 @@ const Location = () => {
         //     setNearByRestaurantsFound(true);
         //   }
         // } else {
-        console.log('restaurants.restaurants', restaurants.restaurants);
         if (orderType && orderType !== '') {
           setfilteredRestaurants(
             getFilteredRestaurants(restaurants.restaurants),
@@ -309,10 +311,9 @@ const Location = () => {
         setZoom(7);
       }
     }
-  }, [restaurants]);
+  }, [restaurants, orderType]);
 
   useEffect(() => {
-    console.log('nearbyRestaurants', nearbyRestaurants);
     if (nearbyRestaurants && nearbyRestaurants.restaurants) {
       if (nearbyRestaurants.restaurants.length === 0) {
         if (showNearBy || LatLng) {
@@ -336,14 +337,10 @@ const Location = () => {
           setZoom(7);
           setActionPerform(false);
         }
-        console.log('nearby');
-        console.log('showNearBy', showNearBy);
-        console.log('LatLng', LatLng);
         setfilteredRestaurants([]);
         setDeliveryRasturants([]);
         // setAllResturants([])
       } else {
-        console.log('rest working 2');
         if (showNearBy || LatLng) {
           if (LatLng) {
             // const filterRest = getFilteredRestaurants(restaurants.restaurants);
@@ -361,7 +358,6 @@ const Location = () => {
           }
           setLatLng(null);
           if (showNearBy) {
-            console.log('ppppppp');
             // if (orderType === 'dispatch') {
             //   setDeliveryRasturants(restaurants.restaurants);
             // } else {
@@ -626,10 +622,7 @@ const Location = () => {
                   sx={{ width: '100%' }}
                   value={selectedAddress && selectedAddress.zip}
                   onChange={(e) => {
-                    handleChange(
-                      'zip',
-                      e.target.value.trim()
-                    );
+                    handleChange('zip', e.target.value.trim());
                   }}
                   // onBlur={handleBlur('last_name')}
                   // error={Boolean(touched.last_name && errors.last_name)}

@@ -433,12 +433,12 @@ const LocationCard = (props: any) => {
   //   }
   // };
 
-  useEffect(() => {
-    if (restaurants) {
-      setShowAllResturants(false);
-      getSearchResults();
-    }
-  }, [resturantOrderType]);
+  // useEffect(() => {
+  //   if (restaurants) {
+  //     setShowAllResturants(false);
+  //     getSearchResults();
+  //   }
+  // }, [resturantOrderType]);
 
   const [alignment, setAlignment] = React.useState('web');
   const onServiceSelect = (
