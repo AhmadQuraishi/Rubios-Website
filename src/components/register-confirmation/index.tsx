@@ -466,7 +466,11 @@ return <CircularProgress size={30}/>
                     />{' '}
                     I agree to the{' '}
                     <Link
-                      onClick={ () => window.open(process.env.REACT_APP_TERMS_LINK,"_blank" )}
+                    target="popup"
+                      onClick={() =>
+                        window.open(process.env.REACT_APP_TERMS_LINK,'name','width=1000,height=1000')
+                      }
+                      
                       underline="hover"
                       sx={{ color: '#1a86ff', cursor: 'pointer' }}
                     >
