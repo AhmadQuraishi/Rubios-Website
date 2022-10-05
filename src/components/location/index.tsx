@@ -6,6 +6,8 @@ import {
   Typography,
   ToggleButton,
   ToggleButtonGroup,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
@@ -79,6 +81,8 @@ const LocationCard = (props: any) => {
     searchTextP,
   } = props;
   const dispatch = useDispatch();
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
   const [searchText, setSearchText] = useState<string>();
   const [resturantOrderType, setresturantOrderType] = useState<string>();
   const [showNotFoundMessage, setShowNotFoundMessage] = useState(false);
@@ -97,6 +101,12 @@ const LocationCard = (props: any) => {
   useEffect(() => {
     if (searchTextP == '') setValue('');
   }, [searchTextP]);
+
+  useEffect(() => {
+    if (!isDesktop) {
+      setShowAllResturants(false);
+    }
+  }, [isDesktop]);
 
   useEffect(() => {
     if (isNearByRestaurantList) {
