@@ -1,4 +1,4 @@
-import { Grid, Typography, Theme, Button } from '@mui/material';
+import { Grid, Typography, Theme, Button, useMediaQuery } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,11 +16,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const Salsa = ({ upsellsType }: any) => {
+const Salsa = ({ upsellsType, setErrorMsg }: any) => {
   const classes = useStyles();
   const [products, setProducts] = useState<any>();
   const [buttonDisabled, setButtonDisabled] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
 
   const basketObj = useSelector((state: any) => state.basketReducer);
   const { categories } = useSelector((state: any) => state.categoryReducer);
@@ -386,26 +385,27 @@ const Salsa = ({ upsellsType }: any) => {
             minHeight: '0px',
           }}
         >
-          {errorMsg && errorMsg !== '' && (
-            <Typography
-              variant="h6"
-              component="p"
-              fontSize="14px !important"
-              padding="12px 30px 6px 15px"
-              color="red"
-              textAlign="right"
-              lineHeight="1.2 !important"
-              textTransform="capitalize"
-              className={classes.cartTitle}
-              sx={{
-                display: 'inline',
-                fontFamily: 'Poppins-Medium !important',
-              }}
-              title="Maximum number of Salsa have been selected"
-            >
-              {errorMsg}
-            </Typography>
-          )}
+          {/*{errorMsg && errorMsg !== '' && (*/}
+          {/*<Typography*/}
+          {/*  variant="h6"*/}
+          {/*  component="p"*/}
+          {/*  fontSize="14px !important"*/}
+          {/*  padding="4px 30px 4px 0px"*/}
+          {/*  color="red"*/}
+          {/*  textAlign="left"*/}
+          {/*  lineHeight="1.2 !important"*/}
+          {/*  textTransform="capitalize"*/}
+          {/*  className={classes.cartTitle}*/}
+          {/*  sx={{*/}
+          {/*    display: 'inline',*/}
+          {/*    fontFamily: 'Poppins-Medium !important',*/}
+          {/*    minHeight: 14,*/}
+          {/*    fontSize: '12px !important',*/}
+          {/*  }}*/}
+          {/*>*/}
+          {/*  {errorMsg}*/}
+          {/*</Typography>*/}
+          {/*)}*/}
         </Grid>
         <Grid
           item
