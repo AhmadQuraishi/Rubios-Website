@@ -157,3 +157,14 @@ export async function sha256Method(message: any) {
 export function isEmpty(val: any) {
   return val === undefined || val == null || val === '';
 }
+
+export function checkFeaturedProduct(item: any) {
+  let checkFeatured = false;
+  if (item.metadata && item.metadata.length) {
+    const result = item.metadata.find((meta: any) => meta.key === 'featured');
+    if (result && result.value === 'true') {
+      checkFeatured = true;
+    }
+  }
+  return checkFeatured;
+}

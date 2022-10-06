@@ -334,8 +334,8 @@ const UpsellsOthers = ({ upsellsType }: any) => {
                             color: '#0075BF',
                             display: 'flex',
                             alignItems: 'center',
-                            justifyContent: 'center',
-                            textAlign: { xs: 'center', lg: 'left' },
+                            // justifyContent: 'center',
+                            justifyContent: { xs: 'center', md: 'left' },
                           }}
                         >
                           +$
