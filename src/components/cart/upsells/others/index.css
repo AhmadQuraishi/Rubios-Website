@@ -1,10 +1,14 @@
 
   .upsells .content-panel.selected .card-panel .check-mark {
     /*margin: auto;*/
-    left: 45px !important;
-    right: 0 !important;
-    top: 35px !important;
-    bottom: auto !important;
+    /*border-radius: 30px;*/
+    /*height: 55px;*/
+    /*width: 55px;*/
+    /*background-color: #e58734;*/
+    /*position: absolute;*/
+    /*top: 50%;*/
+    /*left: 50%;*/
+    /*transform: translate(-50%, -50%);*/
   }
 
   .upsells
@@ -69,8 +73,8 @@
     /* max-height: 90px; */
   }
   .upsells .content-panel .card-panel.card-item .check-mark {
-    top: 18px !important;
-    left: 25px !important;
+    /*top: 18px !important;*/
+    /*left: 25px !important;*/
   }
  .upsells .content-panel.selected .card-panel {
   border: 1px solid #e58734;
@@ -82,10 +86,9 @@
   width: 55px;
   background-color: #e58734;
   position: absolute;
-  top: 32%;
-  bottom: 0;
-  left: 50px;
-  right: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 .upsells .content-panel .card-panel .check-mark .checkmark {
   display: none;
@@ -162,7 +165,7 @@
     .card-panel
     .name-img-panel
     .name-panel {
-      padding-left: 0px !important;
+      padding-left: 5px !important;
       /* padding-top: 23px; */
       overflow-wrap: break-word;
       text-align: center;
@@ -177,9 +180,9 @@
     .upsells .content-panel.selected .card-panel .check-mark {
       /* margin: auto; */
       /*left: 120px !important;*/
-      right: 0 !important;
-      top: 130px !important;
-      bottom: auto !important;
+      /*right: 0 !important;*/
+      /*top: 30px !important;*/
+      /*bottom: auto !important;*/
     }
   }
 
@@ -228,7 +231,7 @@
     .card-panel
     .name-img-panel
     .name-panel {
-      padding-left: 0px !important;
+      padding-left: 5px !important;
       /* padding-top: 30px; */
       overflow-wrap: break-word;
       text-align: center;
@@ -267,7 +270,7 @@
     .card-panel
     .name-img-panel
     .name-panel {
-      padding-left: 0px !important;
+      padding-left: 5px !important;
       /* padding-top: 20px; */
       /* overflow-wrap: break-word; */
       text-align: center;

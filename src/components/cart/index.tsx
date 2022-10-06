@@ -955,11 +955,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                 // is-mandatory={itemMain.mandatory.toString()}
                                 // parent-option-id={itemMain.parentOptionID}
                               >
-                                <div className="check-mark">
-                                  <div aria-hidden="true" className="checkmark">
-                                    L
-                                  </div>
-                                </div>
+
                                 <Grid
                                   container
                                   spacing={1}
@@ -977,13 +973,18 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                       alignItems: 'center',
                                     }}
                                   >
-                                    <Grid item xs={4} lg={4}>
+                                    <Grid position={'relative'} item xs={4} lg={4}>
                                       <img
                                         className="item-image"
                                         src={require(`../../assets/imgs/${type}.jpg`)}
                                         // alt={option.name}
                                         // title={option.name}
                                       />
+                                      <div className="check-mark">
+                                        <div aria-hidden="true" className="checkmark">
+                                          L
+                                        </div>
+                                      </div>
                                     </Grid>
 
                                     <Grid
