@@ -30,7 +30,7 @@ export function getResturantInfoRequestFailure(error: any) {
 }
 
 export function setResturantInfoRequest(
-  restaurant: ResponseRestaurant,
+  restaurant: ResponseRestaurant | null,
   orderType: string,
 ) {
   return {
