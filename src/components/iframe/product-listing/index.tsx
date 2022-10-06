@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import 'react-multi-carousel/lib/styles.css';
 import {
   changeImageSize,
+  checkFeaturedProduct,
   checkProductAvailability,
 } from '../../../helpers/common';
 
@@ -131,6 +132,15 @@ const ProductListing = (props: any) => {
                       src={require('../../../assets/imgs/default_img.png')}
                       title={item.name}
                     />
+                  )}
+                  {checkFeaturedProduct(item) && (
+                    <Typography
+                      variant="h2"
+                      title={'FEATURED'}
+                      className="product-label"
+                    >
+                      FEATURED
+                    </Typography>
                   )}
                   <CardContent
                     style={{ paddingBottom: 0 }}

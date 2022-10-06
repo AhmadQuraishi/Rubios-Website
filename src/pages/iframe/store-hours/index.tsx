@@ -67,17 +67,20 @@ const StoreHoursIframe = () => {
             paddingTop: { xs: '5px', sm: '0px' },
           }}
         >
-          <Typography
-            className={classes.heading}
-            variant="h2"
-            textTransform="uppercase"
-            title="Hours"
-            sx={{
-              paddingBottom: '5px',
-            }}
-          >
-            Hours
-          </Typography>
+          {restaurantHours && restaurantHours.length > 0 && (
+            <Typography
+              className={classes.heading}
+              variant="h2"
+              textTransform="uppercase"
+              title="Hours"
+              sx={{
+                paddingBottom: '5px',
+              }}
+            >
+              Hours
+            </Typography>
+          )}
+
           {restaurantHours &&
             restaurantHours.length > 0 &&
             restaurantHours.map((item: HoursListing, index: number) => (
