@@ -16,6 +16,7 @@ import { HoursListing } from '../../helpers/hoursListing';
 import { CalendarTypeEnum } from '../../helpers/hoursListing';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import DialogBox from '../dialog-box';
 import { resetBasketRequest } from '../../redux/actions/basket';
 import { setResturantInfoRequest } from '../../redux/actions/restaurant';
@@ -31,6 +32,7 @@ const StoreInfoBar = () => {
   const theme = useTheme();
   const classes = useStyle();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isDesktop = useMediaQuery(theme.breakpoints.down('lg'));
   const [restaurantInfo, setRestaurantInfo] = useState<ResponseRestaurant>();
   const [restaurantHours, setRestaurantHours] = useState<HoursListing[]>();
   const [showMore, setShowMore] = useState(false);
@@ -231,6 +233,14 @@ const StoreInfoBar = () => {
                       variant="h2"
                       textTransform="uppercase"
                       title="Address"
+                      sx={{
+                        display: {
+                          xs: 'block',
+                          sm: 'none',
+                          md: 'none',
+                          lg: 'none',
+                        },
+                      }}
                     >
                       Address
                     </Typography>
@@ -242,6 +252,14 @@ const StoreInfoBar = () => {
                       fontSize={11}
                       paddingTop="8px"
                       title={`${restaurantInfo.streetaddress}, ${restaurantInfo.city}, ${restaurantInfo.state}`}
+                      sx={{
+                        display: {
+                          xs: 'block',
+                          sm: 'none',
+                          md: 'none',
+                          lg: 'none',
+                        },
+                      }}
                     >
                       <p style={{ paddingBottom: '2px' }}>
                         {restaurantInfo.streetaddress}
@@ -253,7 +271,19 @@ const StoreInfoBar = () => {
                         <p>{restaurantInfo.distance.toFixed(2)} Miles Away</p>
                       )}
                     </Typography>
-                    <Typography variant="body2" color="#fff" fontSize={11}>
+                    <Typography
+                      variant="body2"
+                      color="#fff"
+                      fontSize={11}
+                      sx={{
+                        display: {
+                          xs: 'block',
+                          sm: 'none',
+                          md: 'none',
+                          lg: 'none',
+                        },
+                      }}
+                    >
                       <p
                         style={{
                           cursor: 'pointer',
@@ -270,6 +300,85 @@ const StoreInfoBar = () => {
                         onClick={() => handleClickOpen()}
                       >
                         Change location
+                      </p>
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      color="#fff"
+                      fontSize={11}
+                      sx={{
+                        marginTop: '22px',
+                        display: {
+                          xs: 'none',
+                          sm: 'block',
+                          md: 'block',
+                          lg: 'block',
+                        },
+                      }}
+                    >
+                      <p
+                        style={{
+                          cursor: 'pointer',
+                          textDecorationLine: 'underline',
+                          fontSize: '13px',
+                        }}
+                        role={'button'}
+                        aria-label={'Change location'}
+                        tabIndex={0}
+                        onKeyPress={(e: any) => {
+                          if (e.key === 'Enter') {
+                            handleClickOpen();
+                          }
+                        }}
+                        onClick={() => handleClickOpen()}
+                      >
+                        Change location
+                      </p>
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      color="#fff"
+                      fontSize={11}
+                      sx={{
+                        display: {
+                          xs: 'none',
+                          sm: 'inline',
+                          md: 'inline',
+                          lg: 'inline',
+                        },
+                      }}
+                    >
+                      <p
+                        style={{
+                          cursor: 'pointer',
+                          textDecorationLine: 'underline',
+                          fontSize: '13px',
+                          marginTop: '5px',
+                        }}
+                        role={'button'}
+                        aria-label={'Change location'}
+                        tabIndex={0}
+
+                        // onKeyPress={(e: any) => {
+                        //   if (e.key === 'Enter') {
+                        //     handleClickOpen();
+                        //   }
+                        // }}
+                        // onClick={() => handleClickOpen()}
+                      >
+                        Add to Favourites
+                        <FavoriteBorderIcon
+                          sx={{
+                            fontSize: '15px',
+                            marginLeft: '3px',
+                            display: {
+                              xs: 'none',
+                              sm: 'inline',
+                              md: 'inline',
+                              lg: 'inline',
+                            },
+                          }}
+                        />
                       </p>
                     </Typography>
                   </Grid>
@@ -297,7 +406,19 @@ const StoreInfoBar = () => {
                       restaurantHours.length > 0 &&
                       restaurantHours.map(
                         (item: HoursListing, index: number) => (
-                          <Grid container spacing={0} key={index}>
+                          <Grid
+                            container
+                            spacing={0}
+                            key={index}
+                            sx={{
+                              display: {
+                                xs: 'flex',
+                                sm: 'none',
+                                md: 'none',
+                                lg: 'none',
+                              },
+                            }}
+                          >
                             <Grid item xs={3}>
                               <List
                                 sx={{
@@ -349,6 +470,271 @@ const StoreInfoBar = () => {
                           </Grid>
                         ),
                       )}
+                    <>
+                      {restaurantHours &&
+                        restaurantHours.length > 0 &&
+                        restaurantHours
+                          .slice(0, 1)
+                          .map((item: HoursListing, index: number) => (
+                            <Grid
+                              container
+                              spacing={0}
+                              key={index}
+                              sx={{
+                                display: {
+                                  xs: 'none',
+                                  sm: 'flex',
+                                  md: 'flex',
+                                  lg: 'flex',
+                                },
+                              }}
+                            >
+                              <Grid item xs={3}>
+                                <List
+                                  sx={{
+                                    padding: '2px 0 0 0',
+                                    fontSize: '12px',
+                                    fontWeight: '600',
+                                    color: 'background.paper',
+                                  }}
+                                  role="presentation"
+                                >
+                                  <ListItem
+                                    sx={{
+                                      padding: '0 0 0 0',
+                                      fontFamily: "'Poppins-Medium' !important",
+                                    }}
+                                    title={item.label}
+                                  >
+                                    {item.label}
+                                  </ListItem>
+                                </List>
+                              </Grid>
+                              <Grid item xs={9}>
+                                <List
+                                  sx={{
+                                    padding: '2px 0 0 0',
+                                    fontSize: '12px',
+                                    fontWeight: '500',
+                                    color: 'background.paper',
+                                    fontFamily: "'Poppins-Medium' !important",
+                                  }}
+                                  role="presentation"
+                                >
+                                  <ListItem
+                                    sx={{
+                                      padding: '0 0 0 0',
+                                    }}
+                                    title={
+                                      item.isOpenAllDay
+                                        ? 'Open 24 hours'
+                                        : item.start + ' - ' + item.end
+                                    }
+                                  >
+                                    {item.isOpenAllDay
+                                      ? 'Open 24 hours'
+                                      : item.start + ' - ' + item.end}
+                                  </ListItem>
+                                </List>
+                              </Grid>
+                            </Grid>
+                          ))}
+                      <Grid
+                        sx={{
+                          marginTop: '4px',
+                          display: {
+                            xs: 'none',
+                            sm: 'block',
+                            md: 'block',
+                            lg: 'block',
+                          },
+                        }}
+                        onClick={() => {
+                          setShowMore(!showMore);
+                        }}
+                        item
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          cursor: 'pointer',
+                        }}
+                        role={'button'}
+                        tabIndex={0}
+                        onKeyPress={(e: any) => {
+                          if (e.key === 'Enter') {
+                            setShowMore(!showMore);
+                          }
+                        }}
+                        aria-label={`${showMore ? 'Hide' : 'View'} Details`}
+                        xs={12}
+                      >
+                        <Typography
+                          variant="h5"
+                          sx={{
+                            fontSize: '13px',
+                            fontWeight: '500',
+                            fontFamily: 'Poppins-Medium !important',
+                            color: '#fff',
+                            // display: 'inline',
+                            display: {
+                              xs: 'none',
+                              sm: 'block',
+                              md: 'block',
+                              lg: 'block',
+                            },
+                          }}
+                        >
+                          {showMore ? 'Hide' : 'View'} Details
+                        </Typography>
+                        {showMore ? (
+                          <ExpandLessIcon
+                            sx={{
+                              display: {
+                                xs: 'none',
+                                sm: 'block',
+                                md: 'block',
+                                lg: 'block',
+                              },
+                            }}
+                            style={{ color: '#fff' }}
+                          />
+                        ) : (
+                          <ExpandMoreIcon
+                            sx={{
+                              display: {
+                                xs: 'none',
+                                sm: 'block',
+                                md: 'block',
+                                lg: 'block',
+                              },
+                            }}
+                            style={{ color: '#fff' }}
+                          />
+                        )}
+                      </Grid>
+                      {!showMore ? (
+                        <></>
+                      ) : (
+                        <>
+                          {restaurantHours &&
+                            restaurantHours.length > 0 &&
+                            restaurantHours.slice(1).map(
+                              (item: HoursListing, index: number) => (
+                                <Grid
+                                  container
+                                  spacing={0}
+                                  key={index}
+                                  sx={{
+                                    display: {
+                                      xs: 'none',
+                                      sm: 'flex',
+                                      md: 'flex',
+                                      lg: 'flex',
+                                    },
+                                  }}
+                                >
+                                  <Grid item xs={3}>
+                                    <List
+                                      sx={{
+                                        padding: '2px 0 0 0',
+                                        fontSize: '12px',
+                                        fontWeight: '600',
+                                        color: 'background.paper',
+                                      }}
+                                      role="presentation"
+                                    >
+                                      <ListItem
+                                        sx={{
+                                          padding: '0 0 0 0',
+                                          fontFamily:
+                                            "'Poppins-Medium' !important",
+                                        }}
+                                        title={item.label}
+                                      >
+                                        {item.label}
+                                      </ListItem>
+                                    </List>
+                                  </Grid>
+                                  <Grid item xs={9}>
+                                    <List
+                                      sx={{
+                                        padding: '2px 0 0 0',
+                                        fontSize: '12px',
+                                        fontWeight: '500',
+                                        color: 'background.paper',
+                                        fontFamily:
+                                          "'Poppins-Medium' !important",
+                                      }}
+                                      role="presentation"
+                                    >
+                                      <ListItem
+                                        sx={{
+                                          padding: '0 0 0 0',
+                                        }}
+                                        title={
+                                          item.isOpenAllDay
+                                            ? 'Open 24 hours'
+                                            : item.start + ' - ' + item.end
+                                        }
+                                      >
+                                        {item.isOpenAllDay
+                                          ? 'Open 24 hours'
+                                          : item.start + ' - ' + item.end}
+                                      </ListItem>
+                                    </List>
+                                  </Grid>
+                                </Grid>
+                              ),
+                            )}
+                          <Typography
+                            className={classes.heading}
+                            variant="h2"
+                            textTransform="uppercase"
+                            title="Address"
+                            sx={{
+                              marginTop: '10px',
+                              display: {
+                                xs: 'none',
+                                sm: 'block',
+                                md: 'block',
+                                lg: 'block',
+                              },
+                            }}
+                          >
+                            Address
+                          </Typography>
+                          <Typography
+                            variant="body1"
+                            color="#fff"
+                            component="div"
+                            textTransform="uppercase"
+                            fontSize={11}
+                            paddingTop="8px"
+                            title={`${restaurantInfo.streetaddress}, ${restaurantInfo.city}, ${restaurantInfo.state}`}
+                            sx={{
+                              display: {
+                                xs: 'none',
+                                sm: 'block',
+                                md: 'block',
+                                lg: 'block',
+                              },
+                            }}
+                          >
+                            <p style={{ paddingBottom: '2px' }}>
+                              {restaurantInfo.streetaddress}
+                            </p>
+                            <p style={{ paddingBottom: '2px' }}>
+                              {restaurantInfo.city}, {restaurantInfo.state}
+                            </p>
+                            {restaurantInfo.distance > 0 && (
+                              <p>
+                                {restaurantInfo.distance.toFixed(2)} Miles Away
+                              </p>
+                            )}
+                          </Typography>
+                        </>
+                      )}
+                    </>
                   </Grid>
                 </>
               )}
