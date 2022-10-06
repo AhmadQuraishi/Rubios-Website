@@ -18,6 +18,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import DialogBox from '../dialog-box';
+import { resetBasketRequest } from '../../redux/actions/basket';
+import { setResturantInfoRequest } from '../../redux/actions/restaurant';
 const useStyle = makeStyles({
   heading: {
     fontSize: '13px !important',
@@ -99,7 +101,11 @@ const StoreInfoBar = () => {
 
   const handleDeleteFunction = () => {
     setOpen(false);
-    window.location.href = '/location';
+    dispatch(resetBasketRequest());
+    dispatch(setResturantInfoRequest(null, ''));
+    setTimeout(() => {
+      window.location.href = '/location';
+    }, 500);
   };
 
   return (
