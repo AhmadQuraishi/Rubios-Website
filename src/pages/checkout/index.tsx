@@ -284,7 +284,10 @@ const Checkout = () => {
               cardtype: defaultCard.cardtype,
               cardlastfour: defaultCard.cardsuffix,
               billingaccountid: defaultCard.accountidstring,
-              billingschemeid: userBillingAccounts.billingaccounts.id,
+              billingschemeid:
+                basketObj.payment.allowedCards.data.billingschemes[
+                  creditCardIndex
+                ].id,
             };
             billingArray.push(cardObj);
           }
