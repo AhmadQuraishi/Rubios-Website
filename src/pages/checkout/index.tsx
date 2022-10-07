@@ -30,7 +30,10 @@ import {
   getUniqueId,
   updatePaymentCardsAmount,
 } from '../../helpers/checkout';
-import { getUserDeliveryAddresses } from '../../redux/actions/user';
+import {
+  getAllBillingAccounts,
+  getUserDeliveryAddresses,
+} from '../../redux/actions/user';
 import PickupForm from '../../components/pickup-form/index';
 import DeliveryForm from '../../components/delivery-form/index';
 import { getRewardsForCheckoutRequest } from '../../redux/actions/reward/checkout';
@@ -81,6 +84,9 @@ const Checkout = () => {
     (state: any) => state.restaurantInfoReducer,
   );
   const { userDeliveryAddresses } = useSelector(
+    (state: any) => state.userReducer,
+  );
+  const { userBillingAccounts, loading: billingAccountsLoading } = useSelector(
     (state: any) => state.userReducer,
   );
 
@@ -223,6 +229,7 @@ const Checkout = () => {
       );
       dispatch(validateBasket(basket.id, null, null, [], null, null, null));
       dispatch(getBasketAllowedCardsRequest(basket.id));
+      dispatch(getAllBillingAccounts());
       dispatch(removeBasketOrderSubmit());
       setRunOnce(false);
     }
@@ -243,7 +250,8 @@ const Checkout = () => {
       basketObj.payment.allowedCards.data.billingschemes.length &&
       basketObj.payment &&
       basketObj.payment.billingSchemes &&
-      basketObj.payment.billingSchemes.length === 0
+      basketObj.payment.billingSchemes.length === 0 &&
+      !billingAccountsLoading
     ) {
       const creditCardIndex =
         basketObj.payment.allowedCards.data.billingschemes.findIndex(
@@ -254,22 +262,18 @@ const Checkout = () => {
           (schemes: any) => schemes.type === 'giftcard',
         );
       let billingArray = [];
-      if (creditCardIndex !== -1) {
+      if (creditCardIndex !== -1 && userBillingAccounts) {
         if (
-          basketObj.payment.allowedCards.data.billingschemes[creditCardIndex]
-            .accounts &&
-          basketObj.payment.allowedCards.data.billingschemes[creditCardIndex]
-            .accounts.length
+          userBillingAccounts.billingaccounts &&
+          userBillingAccounts.billingaccounts.length
         ) {
           const defaultCardIndex =
-            basketObj.payment.allowedCards.data.billingschemes[
-              creditCardIndex
-            ].accounts.findIndex((card: any) => card.isdefault);
+            userBillingAccounts.billingaccounts.findIndex(
+              (card: any) => card.isdefault,
+            );
           if (defaultCardIndex !== -1) {
             const defaultCard =
-              basketObj.payment.allowedCards.data.billingschemes[
-                creditCardIndex
-              ].accounts[defaultCardIndex];
+              userBillingAccounts.billingaccounts[defaultCardIndex];
 
             let cardObj: any = {
               localId: getUniqueId(),
@@ -325,7 +329,7 @@ const Checkout = () => {
       }
       setDefaultCard(false);
     }
-  }, [basketObj.payment.allowedCards, validate]);
+  }, [basketObj.payment.allowedCards, validate, userBillingAccounts]);
 
   React.useEffect(() => {
     if (authToken?.authtoken && authToken.authtoken !== '') {
@@ -723,7 +727,7 @@ const Checkout = () => {
           last_name: guestUser.lastname || '',
           email: guestUser.emailaddress || '',
           phone: guestUser.contactnumber || '',
-        }
+        };
       }
     }
     dispatch(
