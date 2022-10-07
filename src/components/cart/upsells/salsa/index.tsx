@@ -250,7 +250,7 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
             container
             spacing={1}
             id="cart-main-container-upsells"
-            sx={{ paddingRight: '25px' }}
+            sx={{ paddingRight: '25px', alignContent: 'flex-start' }}
           >
             {products.map((obj: any) => {
               return (
