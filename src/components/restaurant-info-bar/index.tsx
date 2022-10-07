@@ -20,6 +20,9 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import DialogBox from '../dialog-box';
 import { resetBasketRequest } from '../../redux/actions/basket';
 import { setResturantInfoRequest } from '../../redux/actions/restaurant';
+import { updateUser } from '../../redux/actions/user';
+import { getlocations } from '../../redux/actions/location';
+import './index.css';
 const useStyle = makeStyles({
   heading: {
     fontSize: '13px !important',
@@ -37,13 +40,36 @@ const StoreInfoBar = () => {
   const [restaurantHours, setRestaurantHours] = useState<HoursListing[]>();
   const [showMore, setShowMore] = useState(false);
   const [open, setOpen] = useState(false);
+  const [locationId, setLocationId] = useState(null);
   const { restaurant, orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
   const { calendar } = useSelector(
     (state: any) => state.restaurantCalendarReducer,
   );
+  const { providerToken } = useSelector((state: any) => state.providerReducer);
+  const { authToken } = useSelector((state: any) => state.authReducer);
+
+  const { locations, loading: loadingLocations } = useSelector(
+    (state: any) => state.locationReducer,
+  );
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getlocations());
+  }, []);
+
+  useEffect(() => {
+    if (locations && locations.length && restaurant) {
+      const loc = locations.find(
+        (loc: any) => loc.store_number.toString() === restaurant.extref,
+      );
+      if (loc) {
+        setLocationId(loc.location_id);
+      }
+    }
+  }, [locations, restaurant]);
+
   useEffect(() => {
     if (restaurant) {
       setRestaurantInfo(restaurant);
@@ -106,6 +132,28 @@ const StoreInfoBar = () => {
     setTimeout(() => {
       window.location.href = '/location';
     }, 500);
+  };
+
+  const AddToFavourites = () => {
+    if (checkFavorite()) {
+      return;
+    }
+    if (locationId) {
+      const obj = {
+        favourite_location_ids: locationId,
+      };
+      dispatch(updateUser(obj, false));
+    }
+  };
+
+  const checkFavorite = () => {
+    let check = false;
+    if (providerToken && providerToken.favourite_store_numbers && restaurant) {
+      if (providerToken.favourite_store_numbers === restaurant.extref) {
+        check = true;
+      }
+    }
+    return check;
   };
 
   return (
@@ -335,52 +383,60 @@ const StoreInfoBar = () => {
                         Change location
                       </p>
                     </Typography>
-                    <Typography
-                      variant="body2"
-                      color="#fff"
-                      fontSize={11}
-                      sx={{
-                        display: {
-                          xs: 'none',
-                          sm: 'inline',
-                          md: 'inline',
-                          lg: 'inline',
-                        },
-                      }}
-                    >
-                      <p
-                        style={{
-                          cursor: 'pointer',
-                          textDecorationLine: 'underline',
-                          fontSize: '13px',
-                          marginTop: '5px',
-                        }}
-                        role={'button'}
-                        aria-label={'Change location'}
-                        tabIndex={0}
-
-                        // onKeyPress={(e: any) => {
-                        //   if (e.key === 'Enter') {
-                        //     handleClickOpen();
-                        //   }
-                        // }}
-                        // onClick={() => handleClickOpen()}
-                      >
-                        Add to Favourites
-                        <FavoriteBorderIcon
+                    {providerToken &&
+                      authToken &&
+                      authToken.authtoken &&
+                      authToken.authtoken !== '' && (
+                        <Typography
+                          variant="body2"
+                          color="#fff"
+                          fontSize={11}
                           sx={{
-                            fontSize: '15px',
-                            marginLeft: '3px',
                             display: {
-                              xs: 'none',
+                              xs: 'inline',
                               sm: 'inline',
                               md: 'inline',
                               lg: 'inline',
                             },
                           }}
-                        />
-                      </p>
-                    </Typography>
+                        >
+                          <p
+                            style={{
+                              cursor: checkFavorite() ? 'inherit' : 'pointer',
+                              textDecorationLine: checkFavorite()
+                                ? 'none'
+                                : 'underline',
+                            }}
+                            className={'add-favourite'}
+                            role={'button'}
+                            aria-label={'Change location'}
+                            tabIndex={0}
+                            onKeyPress={(e: any) => {
+                              if (e.key === 'Enter') {
+                                AddToFavourites();
+                              }
+                            }}
+                            onClick={() => AddToFavourites()}
+                          >
+                            {checkFavorite()
+                              ? 'Favourited'
+                              : 'Add to Favourites'}
+
+                            <FavoriteBorderIcon
+                              sx={{
+                                fontSize: '15px',
+                                marginLeft: '3px',
+                                display: {
+                                  xs: 'inline',
+                                  sm: 'inline',
+                                  md: 'inline',
+                                  lg: 'inline',
+                                },
+                              }}
+                            />
+                          </p>
+                        </Typography>
+                      )}
                   </Grid>
                   <Grid
                     item
@@ -618,8 +674,9 @@ const StoreInfoBar = () => {
                         <>
                           {restaurantHours &&
                             restaurantHours.length > 0 &&
-                            restaurantHours.slice(1).map(
-                              (item: HoursListing, index: number) => (
+                            restaurantHours
+                              .slice(1)
+                              .map((item: HoursListing, index: number) => (
                                 <Grid
                                   container
                                   spacing={0}
@@ -684,8 +741,7 @@ const StoreInfoBar = () => {
                                     </List>
                                   </Grid>
                                 </Grid>
-                              ),
-                            )}
+                              ))}
                           <Typography
                             className={classes.heading}
                             variant="h2"
