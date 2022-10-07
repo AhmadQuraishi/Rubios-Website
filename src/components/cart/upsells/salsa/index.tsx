@@ -319,6 +319,26 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                           // title={option.name}
                         >
                           {obj.name}
+                          {obj.cost > 0 && (
+                            <Grid
+                              item
+                              xs={12}
+                              title={`$${parseFloat(obj.cost).toFixed(2)}`}
+                              sx={{
+                                paddingTop: '5px',
+                                fontSize: '14px',
+                                fontFamily: 'Poppins-Bold',
+                                color: '#0075BF',
+                                display: 'flex',
+                                alignItems: 'center',
+                                // justifyContent: 'center',
+                                justifyContent: { xs: 'left', md: 'left' },
+                              }}
+                            >
+                              +$
+                              {parseFloat(obj.cost).toFixed(2)}
+                            </Grid>
+                          )}
                         </Typography>
                         <div
                           style={{ display: 'flex', alignItems: 'center' }}
