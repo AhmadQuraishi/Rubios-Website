@@ -86,7 +86,6 @@ const Welcome = () => {
       restaurants.restaurants &&
       restaurants.restaurants.length &&
       providerToken &&
-      providerToken.favourite_store_numbers &&
       providerToken.favourite_store_numbers
     ) {
       const filter = restaurants.restaurants.filter(
@@ -97,6 +96,18 @@ const Welcome = () => {
       }
     }
   }, [restaurants]);
+
+  useEffect(() => {
+    if (
+      !favloading &&
+      userRecentOrders &&
+      userRecentOrders.orders &&
+      !userRecentOrders.orders.length &&
+      !favRestaurant
+    ) {
+      setNewUser(true);
+    }
+  }, [favloading, userRecentOrders, favRestaurant]);
 
   useEffect(() => {
     setPageBackground(new_user === 'true' ? BgImageNewUser : BgImage);
@@ -284,6 +295,7 @@ const Welcome = () => {
                   (isReoder && <CardSkeletonUI />)}
 
                 {!loading &&
+                  !newUser &&
                   userRecentOrders &&
                   userRecentOrders.orders &&
                   userRecentOrders.orders.length > 0 &&
