@@ -96,9 +96,9 @@ const AccountHistory = () => {
               }}
             >
               <Tab
-                label="All History"
+                label="Rewards History"
                 className={classes.tabspanel}
-                title="All History"
+                title="Rewards Historyy"
                 {...a11yProps(0)}
               />
               <Tab
