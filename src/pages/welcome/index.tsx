@@ -317,14 +317,14 @@ const Welcome = () => {
                               className="p-card"
                               key={index + order.id}
                             >
-                              <CardMedia
+                              {/* <CardMedia
                                 component="img"
                                 title="image"
                                 aria-label="Recent Order Image Icon"
                                 image={require('../../assets/imgs/order-hidtory-icon.png')}
                                 alt=""
                                 className="order-img"
-                              />
+                              /> */}
                               <CardContent className="product-content">
                                 {order.products
                                   .slice(0, 3)

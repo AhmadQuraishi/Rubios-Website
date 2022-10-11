@@ -214,13 +214,13 @@ const RecentOrders = () => {
                 </Grid>
                 <Grid container>
                   <Grid item xs={12} sm={4}>
-                    <CardMedia
+                    {/* <CardMedia
                       component="img"
                       title="image"
                       image={require('../../assets/imgs/order-hidtory-icon.png')}
                       alt="image"
                       className="order-img"
-                    />
+                    /> */}
                   </Grid>
                   <Grid
                     item
