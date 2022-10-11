@@ -1,5 +1,5 @@
-import {Grid, List, ListItem, Skeleton, Typography} from '@mui/material';
-import { useEffect, useState } from 'react';
+import { Grid, List, ListItem, Skeleton, Typography } from '@mui/material';
+import { useState } from 'react';
 // import { useDispatch, useSelector } from 'react-redux';
 import { GetUserFriendlyHours } from '../../../helpers/getUserFriendlyHours';
 import { CalendarTypeEnum, HoursListing } from '../../../helpers/hoursListing';
@@ -80,13 +80,13 @@ const ListHours = (props: any) => {
                 fontWeight: '500',
                 fontFamily: 'Poppins-Medium !important',
                 color: '#214F66',
-                display: 'inline'
+                display: 'inline',
               }}
             >
               Show Hours
             </Typography>
             {/*<p style={{ display: 'inline', color: '#214F66' }}>Show Hours</p>*/}
-            <ExpandMoreIcon style={{color: '#214F66'}} />
+            <ExpandMoreIcon style={{ color: '#214F66' }} />
           </Grid>
         </Grid>
       )}
