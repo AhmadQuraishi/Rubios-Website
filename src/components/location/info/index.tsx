@@ -1,11 +1,11 @@
 import { setDeliveryAddress } from '../../../redux/actions/location/delivery-address';
-import { verifyDeliveryAddressRequest } from '../../../redux/actions/location/verify-delivery-address';
+// import { verifyDeliveryAddressRequest } from '../../../redux/actions/location/verify-delivery-address';
 import {
   Button,
   Grid,
   Typography,
-  useTheme,
-  useMediaQuery,
+  // useTheme,
+  // useMediaQuery,
 } from '@mui/material';
 import { displayToast } from '../../../helpers/toast';
 import { setResturantInfoRequest } from '../../../redux/actions/restaurant';
@@ -20,7 +20,7 @@ import { facebookConversionTypes } from '../../../redux/types/facebook-conversio
 const StoreInfo = (props: any) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const theme = useTheme();
+  // const theme = useTheme();
 
   const {
     setSelectedStoreID,
