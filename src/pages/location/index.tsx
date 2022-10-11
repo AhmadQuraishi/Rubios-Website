@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   GoogleMap,
-  LoadScript,
+  // LoadScript,
   Marker,
   useLoadScript,
 } from '@react-google-maps/api';
