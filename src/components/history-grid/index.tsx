@@ -101,6 +101,7 @@ const HistoryGrid = () => {
               value={value}
               allowScrollButtonsMobile
               onChange={handleChange}
+              scrollButtons
             //   aria-label="Account History Tabs"
               TabIndicatorProps={{
                 style: {
@@ -113,25 +114,51 @@ const HistoryGrid = () => {
                 label="Checkins"
                 className={classes.tabspanel}
                 title="Checkins"
+                sx={{
+                  fontFamily: 'Poppins-Medium !important',
+                  //padding: '10px 0px',
+                }}
                 {...a11yProps(0)}
+                tabIndex={0}
+                aria-label="Checkins"
               />
               <Tab
                 className={classes.tabspanel}
+                sx={{
+                  amily: 'Poppins-Medium !important',
+                  //padding: '10px 0px',
+
+                }}
                 label="Rewards"
                 title="Rewards"
+                tabIndex={1}
                 {...a11yProps(1)}
+                aria-label="Rewards"
               />
               <Tab
                 label="Reward Credit"
+                sx={{
+                  fontFamily: 'Poppins-Medium !important',
+                  //padding: '10px 0px',
+
+                }}
                 className={classes.tabspanel}
                 title="Reward Credit"
+                tabIndex={2}
                 {...a11yProps(2)}
+                aria-label="Reward Credit"
               />
               <Tab
                 className={classes.tabspanel}
+                sx={{
+                  fontFamily: 'Poppins-Medium !important',
+                  //padding: '10px 0px',
+                }}
                 label="Redemption"
                 title="Redemption"
                 {...a11yProps(3)}
+                tabIndex={3}
+                aria-label="Redemption"
               />
             </Tabs>
           </Box>
