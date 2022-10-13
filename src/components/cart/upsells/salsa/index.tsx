@@ -306,7 +306,7 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                         <Typography
                           variant="h6"
                           component="p"
-                          fontSize="14px !important"
+                          fontSize="12px !important"
                           padding={0}
                           textAlign="left"
                           lineHeight="1.2 !important"
