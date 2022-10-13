@@ -318,7 +318,7 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                           }}
                           // title={option.name}
                         >
-                          {obj.name}
+                          {obj.name = ((obj.name.length >26) ? obj.name.slice(0,30)+"..." : obj.name)}
                           {obj.cost > 0 && (
                             <Grid
                               item

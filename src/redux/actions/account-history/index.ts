@@ -1,8 +1,9 @@
 import { accountHistoryTypes as Type } from '../../types/account-hostory';
 
-export function getAccountHistory() {
+export function getAccountHistory(event_filter: string = '') {
   return {
     type: Type.GET_ACCOUNT_HISTORY,
+    event_filter,
   };
 }
 
