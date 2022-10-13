@@ -101,6 +101,7 @@ function App(props: any) {
     }
     if (
       window.location.href.toLocaleLowerCase().indexOf('/menu') !== -1 ||
+      window.location.href.toLocaleLowerCase().indexOf('/location') !== -1 ||
       window.location.href.toLocaleLowerCase().indexOf('/checkout') !== -1
     ) {
       setHideLoginPanel(false);

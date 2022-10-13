@@ -4,9 +4,9 @@ import { getAccountHistoryFailure, getAccountHistorySuccess } from '../../action
 import { accountHistoryTypes as Type } from '../../types/account-hostory';
 
 
-function* accountHistoryHandler(): any {
+function* accountHistoryHandler(action: any): any {
   try {
-    const response = yield call(requestAccountHistory ); 
+    const response = yield call(requestAccountHistory ,action.event_filter); 
     yield put(getAccountHistorySuccess(response));
   } catch (error) {
     yield put(getAccountHistoryFailure(error));
