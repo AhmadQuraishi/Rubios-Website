@@ -231,7 +231,11 @@ export function convertMetaDataToOptions(options: any) {
           displayid: null,
           fields: null,
           id: id,
-          isdefault: false,
+          isdefault:
+            (filterOptionsFinal &&
+              filterOptionsFinal.length &&
+              filterOptionsFinal[0].isdefault) ||
+            false,
           maxcalories: null,
           menuitemlabels: [],
           metadata: [
