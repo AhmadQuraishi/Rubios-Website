@@ -126,9 +126,9 @@ const ListHours = (props: any) => {
                     padding: '0 0 0 0',
                     fontFamily: "'Poppins-Medium' !important",
                   }}
-                  title={item.weekday.toUpperCase()}
+                  title={item.weekday && item.weekday.toUpperCase() || ""}
                   >
-                    {item.weekday.toUpperCase()}
+                    {item.weekday && item.weekday.toUpperCase() || ""}
                 </ListItem>
               </List>
             </Grid>
