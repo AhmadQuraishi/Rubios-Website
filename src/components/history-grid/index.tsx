@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   // padding: '0px 20px 40px 20px',
     maxWidth: '1260px',
     boxSizing: 'border-box',
-    margin: 'auto',
+    //margin: 'auto',
   },
   heading: {
     paddingBottom: '5px',
@@ -145,7 +145,7 @@ const HistoryGrid = () => {
                 className={classes.tabspanel}
                 title="Reward Credit"
                 tabIndex={2}
-                {...a11yProps(2)}
+                // {...a11yProps(2)}
                 aria-label="Reward Credit"
               />
               <Tab
