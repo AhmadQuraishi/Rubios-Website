@@ -106,16 +106,16 @@ const ProductListing = (props: any) => {
                           title={item.name}
                         />
                       )}
-                      {/*{checkFeaturedProduct(item) && (*/}
-                      {/*  <Typography*/}
-                      {/*    variant="h2"*/}
-                      {/*    title={'FEATURED'}*/}
-                      {/*    className="product-label"*/}
-                      {/*    style={{ left: 0, top: 10 }}*/}
-                      {/*  >*/}
-                      {/*    FEATURED*/}
-                      {/*  </Typography>*/}
-                      {/*)}*/}
+                      {checkFeaturedProduct(item) && (
+                        <Typography
+                          variant="h2"
+                          title={'FEATURED'}
+                          className="product-label"
+                          style={{ left: 0, top: 10 }}
+                        >
+                          FEATURED
+                        </Typography>
+                      )}
                       <CardContent sx={{ padding: '0' }}>
                         <Typography
                           variant="h2"
