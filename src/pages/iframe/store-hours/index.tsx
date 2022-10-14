@@ -102,9 +102,9 @@ const StoreHoursIframe = () => {
                         padding: '0 0 0 0',
                         fontFamily: "'Poppins-Medium' !important",
                       }}
-                      title={item.weekday}
+                      title={item.weekday && item.weekday.toUpperCase() || ""}
                     >
-                      {item.weekday}
+                      {item.weekday && item.weekday.toUpperCase() || ""}
                     </ListItem>
                   </List>
                 </Grid>

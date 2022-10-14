@@ -116,7 +116,7 @@ function App(props: any) {
     } else {
       setHideLoginedPanel(false);
     }
-  }, []);
+  }, [window.location.href]);
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
     if (window.location.href.toLocaleLowerCase().indexOf('/account') != -1) {
