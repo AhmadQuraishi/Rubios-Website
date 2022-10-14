@@ -17,6 +17,7 @@ import { Product } from '../../types/olo-api';
 import {
   changeImageSize,
   checkProductAvailability,
+  checkFeaturedProduct,
 } from '../../helpers/common';
 import { facebookSendEvent } from '../../redux/actions/facebook-conversion';
 import { facebookConversionTypes } from '../../redux/types/facebook-conversion';
@@ -258,6 +259,15 @@ const ProductListingCarousel = (props: any) => {
                         title={item.name}
                       />
                     )}
+                    {/*{checkFeaturedProduct(item) && (*/}
+                    {/*  <Typography*/}
+                    {/*    variant="h2"*/}
+                    {/*    title={'FEATURED'}*/}
+                    {/*    className="product-label"*/}
+                    {/*  >*/}
+                    {/*    FEATURED*/}
+                    {/*  </Typography>*/}
+                    {/*)}*/}
                     <CardContent sx={{ padding: '0' }}>
                       <Typography
                         variant="h2"

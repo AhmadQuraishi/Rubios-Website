@@ -119,10 +119,17 @@ const DeliveryAddress = () => {
                           <Typography
                             variant="button"
                             aria-label="Delete"
+                            tabIndex={0}
+                            role={'button'}
                             title="DELETE"
                             className="link"
                             onClick={() => {
                               handleClickOpen(address.id);
+                            }}
+                            onKeyPress={(e: any) => {
+                              if (e.key === 'Enter') {
+                                handleClickOpen(address.id);
+                              }
                             }}
                           >
                             DELETE
@@ -130,11 +137,18 @@ const DeliveryAddress = () => {
 
                           {!address.isdefault && (
                             <Typography
+                              tabIndex={0}
+                              role={'button'}
                               variant="button"
                               aria-label="MAke Default"
                               title="Make Default"
                               className="link default"
                               onClick={() => defaultAddressHandler(address.id)}
+                              onKeyPress={(e: any) => {
+                                if (e.key === 'Enter') {
+                                  defaultAddressHandler(address.id);
+                                }
+                              }}
                             >
                               MAKE DEFAULT
                             </Typography>
@@ -181,9 +195,16 @@ const DeliveryAddress = () => {
                       </Link> */}
                           <Typography
                             variant="button"
+                            tabIndex={0}
+                            role={'button'}
                             aria-label="Delete"
                             title="DELETE"
                             className="link"
+                            onKeyPress={(e: any) => {
+                              if (e.key === 'Enter') {
+                                handleClickOpen(address.id);
+                              }
+                            }}
                             onClick={() => {
                               handleClickOpen(address.id);
                             }}
@@ -194,9 +215,16 @@ const DeliveryAddress = () => {
                           {!address.isdefault && (
                             <Typography
                               variant="button"
+                              tabIndex={0}
+                              role={'button'}
                               aria-label="MAke Default"
                               title="Make Default"
                               className="link default"
+                              onKeyPress={(e: any) => {
+                                if (e.key === 'Enter') {
+                                  defaultAddressHandler(address.id);
+                                }
+                              }}
                               onClick={() => {
                                 defaultAddressHandler(address.id);
                               }}

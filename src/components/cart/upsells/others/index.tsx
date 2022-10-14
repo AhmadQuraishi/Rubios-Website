@@ -140,7 +140,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
         basketObj.basket &&
         basketObj.basket.products.length > 0
       ) {
-        elem.style.height = cartBox?.clientHeight - 172 + 'px';
+        elem.style.height = cartBox?.clientHeight - 202 + 'px';
       } else {
         elem.style.height = cartBox?.clientHeight - 100 + 'px';
       }
@@ -237,9 +237,9 @@ const UpsellsOthers = ({ upsellsType }: any) => {
                 itemChild.selected ? 'content-panel selected' : 'content-panel'
               }
               item
-              xs={6}
-              sm={6}
-              md={6}
+              xs={12}
+              // sm={6}
+              // md={6}
               lg={6}
               sx={{ position: 'relative' }}
             >
@@ -274,11 +274,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
                   // is-mandatory={itemMain.mandatory.toString()}
                   // parent-option-id={itemMain.parentOptionID}
                 >
-                  <div className="check-mark">
-                    <div aria-hidden="true" className="checkmark">
-                      L
-                    </div>
-                  </div>
+
                   <Grid
                     container
                     spacing={1}
@@ -287,8 +283,8 @@ const UpsellsOthers = ({ upsellsType }: any) => {
                   >
                     <Grid
                       item
-                      xs={12}
-                      lg={5}
+                      xs={6}
+                      lg={6}
                       sx={{
                         padding: '0px',
                         paddingLeft: {
@@ -299,6 +295,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
                           xs: '0px !important',
                           lg: '0px !important',
                         },
+                        position: 'relative'
                       }}
                     >
                       <img
@@ -319,8 +316,13 @@ const UpsellsOthers = ({ upsellsType }: any) => {
                         // alt={option.name}
                         // title={option.name}
                       />
+                      <div className="check-mark">
+                        <div aria-hidden="true" className="checkmark">
+                          L
+                        </div>
+                      </div>
                     </Grid>
-                    <Grid item xs={12} lg={7} className="name-panel">
+                    <Grid item xs={6} lg={6} className="name-panel">
                       {itemChild.name}
                       {itemChild.cost > 0 && (
                         <Grid
@@ -334,8 +336,8 @@ const UpsellsOthers = ({ upsellsType }: any) => {
                             color: '#0075BF',
                             display: 'flex',
                             alignItems: 'center',
-                            justifyContent: 'center',
-                            textAlign: { xs: 'center', lg: 'left' },
+                            // justifyContent: 'center',
+                            justifyContent: { xs: 'center', md: 'left' },
                           }}
                         >
                           +$
@@ -382,7 +384,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
             </Grid>
           ))}
       </div>
-      <Grid container spacing={0}>
+      <Grid container spacing={0} sx={{paddingTop: "20px"}}>
         <Grid
           item
           xs={12}
@@ -419,6 +421,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
                     <div className="quantity">
                       <Button
                         title=""
+                        sx={{ marginLeft: { xs:"7px" }}}
                         className="subtract"
                         aria-label="reduce"
                         onClick={() => {
@@ -439,6 +442,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
                       />
                       <Button
                         title=""
+                        sx={{ marginRight: { xs:"7px" }}}
                         className="add"
                         aria-label="increase"
                         onClick={() => {

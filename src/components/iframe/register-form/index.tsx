@@ -9,8 +9,8 @@ import {
   Button,
   InputLabel,
   MenuItem,
-  Select,
   Link,
+  CircularProgress,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik } from 'formik';
@@ -25,7 +25,7 @@ import './register-form.css';
 import { useLocation } from 'react-router-dom';
 import { displayToast } from '../../../helpers/toast';
 import { addAuthTokenIframeRedirect } from '../../../redux/actions/auth';
-
+import Select from 'react-select';
 const RegisterForm = () => {
   const dispatch = useDispatch();
   const query = new URLSearchParams(useLocation().search);
@@ -51,9 +51,11 @@ const RegisterForm = () => {
   const { locations } = useSelector((state: any) => state.locationReducer);
   const { error } = useSelector((state: any) => state.providerReducer);
 
-  const [favLocation, setFavLocation] = useState('');
+  const [favLocation, setFavLocation] = useState<any>(null);
+  const [favLocationError, setFavLocationError] = useState(false);
   const [birthDay, setBirthDay] = useState<Date | undefined>();
   const [termsAndConditions, setTermsAndconditions] = useState(false);
+  const [termsAndConditionsError, setTermsAndConditionsError] = useState(false);
   const [selectShrink, setSelectShrink] = useState(false);
   const [showError, setShowError] = useState(false);
   const [signUpErrors, setSignUpErrors] = useState<any>([]);
@@ -64,14 +66,14 @@ const RegisterForm = () => {
 
   useEffect(() => {
     if (error && Object.keys(error).length) {
-      console.log(error)
+      console.log(error);
       setSignUpErrors(errorMapping(error));
     }
   }, [error]);
 
-  const handleChangeLocation = (event: SelectChangeEvent) => {
-    setFavLocation(event.target.value as string);
-  };
+  // const handleChangeLocation = (event: SelectChangeEvent) => {
+  //   setFavLocation(event.target.value as string);
+  // };
 
   const handleBirthDayChange = (value?: Date | undefined): undefined => {
     setBirthDay(value);
@@ -79,6 +81,7 @@ const RegisterForm = () => {
   };
 
   const handleChangeCheckbox = () => {
+    setTermsAndConditionsError(false);
     setTermsAndconditions(!termsAndConditions);
   };
 
@@ -86,7 +89,46 @@ const RegisterForm = () => {
     onChange: (event: { target: { name: string; value: string } }) => void;
     name: string;
   }
-
+  const customStyles = {
+    option: (provided: any, state: any) => ({
+      ...provided,
+      color: state.isSelected ? 'black' : 'black',
+      backgroundColor: state.isSelected ? 'lightgray' : '',
+      marginTop: '0px',
+      border: '0px',
+      fontFamily: 'Poppins-Regular, sans-serif !important',
+    }),
+    menu: (base: any) => ({
+      ...base,
+      marginTop: 0,
+    }),
+    indicatorSeparator: (base: any) => ({
+      ...base,
+      width: '0px',
+    }),
+    dropdownIndicator: (base: any, state: any) => ({
+      ...base,
+      transition: 'all .2s ease',
+      transform: state.selectProps.menuIsOpen && 'rotate(180deg)',
+    }),
+    control: (provided: any, state: any) => ({
+      ...provided,
+      // none of react-select's styles are passed to <Control />
+      //
+      height: '55px',
+      paddingLeft: '5px',
+      borderRadius: 'none',
+      border: 'none',
+      cursor: 'pointer',
+      boxShadow: '0px 0px 6px lightgray',
+      fontFamily: 'Poppins-Regular, sans-serif !important',
+    }),
+    singleValue: (provided: any, state: any) => {
+      const opacity = state.isDisabled ? 0.5 : 1;
+      const transition = 'opacity 300ms';
+      return { ...provided, opacity, transition };
+    },
+  };
   const NumberFormatCustom = forwardRef<HTMLElement, CustomProps>(
     function NumberFormatCustom(props, ref) {
       const { onChange, ...other } = props;
@@ -118,20 +160,62 @@ const RegisterForm = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (locations) {
+      const elem = document.getElementById('react-select-3-input');
+      if (elem) elem.removeAttribute('aria-haspopup');
+      const dName = 'react-date-inputs__day';
+      const mName = 'react-date-inputs__month';
+      const yName = 'react-date-inputs__year';
+      const dateElem = document.getElementsByClassName(dName);
+      if (dateElem) {
+        dateElem[0].setAttribute('aria-label', 'Day');
+      }
+      const monthElem = document.getElementsByClassName(mName);
+      if (monthElem) {
+        monthElem[0].setAttribute('aria-label', 'Month');
+      }
+      const yearElem = document.getElementsByClassName(yName);
+      if (yearElem) {
+        yearElem[0].setAttribute('aria-label', 'Year');
+      }
+    }
+  }, [locations]);
+
   const errorMapping = (error: any) => {
+    let generalError = true;
     const errorsArray: any = [];
     if (error?.data?.errors?.base && error.data.errors.base.length) {
       error?.data?.errors.base.forEach((msg: string) => {
+        generalError = false;
         errorsArray.push(msg);
       });
     } else {
-      errorsArray.push('ERROR! Please Try again later');
+      if (
+        error?.data?.errors?.device_already_shared &&
+        error?.data?.errors?.device_already_shared.length
+      ) {
+        if (
+          error?.data?.errors?.device_already_shared[0] ===
+          'with maximum number of guests allowed.'
+        ) {
+          generalError = false;
+          errorsArray.push(
+            'Device already shared with maximum number of guests allowed.',
+          );
+        }
+      }
     }
     if (error?.data?.errors?.email) {
+      generalError = false;
       errorsArray.push(`Email ${error?.data?.errors?.email[0]}`);
     }
     if (error?.data?.errors?.phone) {
+      generalError = false;
       errorsArray.push(`Phone ${error?.data?.errors?.phone[0]}`);
+    }
+    if (generalError) {
+      errorsArray.push(`ERROR! Please Try again later`);
     }
     return errorsArray;
   };
@@ -176,7 +260,7 @@ const RegisterForm = () => {
             invitecode: invite_code && invite_code !== '' ? invite_code : '',
             favLocation: '',
             birthday: '',
-            // termsAndConditions: false
+            termsAndConditions: false
           }}
           validationSchema={Yup.object({
             first_name: Yup.string()
@@ -208,6 +292,23 @@ const RegisterForm = () => {
               .required('required'),
           })}
           onSubmit={async (values) => {
+            if (
+              !favLocation ||
+              !Object.keys(favLocation).length ||
+              favLocation.value === ''
+            ) {
+              setFavLocationError(true);
+              return;
+            }
+            setFavLocationError(false);
+
+            if (termsAndConditions == false ){
+              setTermsAndConditionsError(true);
+              return;
+            }else{
+              setTermsAndConditionsError(false);
+            }
+  
             const obj: any = {
               first_name: values.first_name,
               last_name: values.last_name,
@@ -216,7 +317,7 @@ const RegisterForm = () => {
               email: values.email,
               phone: values.phone ? values.phone.replace(/\D/g, '') : '',
               invite_code: values.invitecode,
-              fav_location_id: favLocation,
+              fav_location_id: favLocation.value,
               terms_and_conditions: termsAndConditions,
             };
 
@@ -397,7 +498,47 @@ const RegisterForm = () => {
                       show={['month', 'day', 'year']}
                     />
                   </Grid>
+
                   <Grid item xs={12}>
+                    <div>
+                      <div>
+                        <div>
+                          <Select
+                            placeholder={favLocationError ? <div style={{color: "red"}}>Favorite Location *</div> : <div>Favorite Location *</div>}
+                            className="select-options"
+                            isSearchable={true}
+                            styles={customStyles}
+                            noOptionsMessage={() => {
+                              if(!locations || !locations.length){
+return <CircularProgress size={30}/>
+                              } else {
+                                return 'No Result Found'
+                              }
+
+                            }}
+                            options={locations?.map((loc: any) => {
+                              return {
+                                value: loc.location_id,
+                                label: loc.name,
+                              };
+                            })}
+                            onChange={(selectedOption: any) => {
+                              setFavLocationError(false);
+                              setFavLocation(selectedOption);
+                            }}
+                            value={favLocation && favLocation}
+                            maxMenuHeight={150}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    {favLocationError && (
+                      <p className="fav-iframes-error-message">
+                        Favorite Location is required
+                      </p>
+                    )}
+                  </Grid>
+                  {/* <Grid item xs={12}>
                     <FormControl className="text-fields-background" fullWidth>
                       <InputLabel
                         id="fav-location-label"
@@ -458,7 +599,7 @@ const RegisterForm = () => {
                           ))}
                       </Select>
                     </FormControl>
-                  </Grid>
+                  </Grid> */}
                   <Grid item xs={12}>
                     <Typography
                       variant="body2"
@@ -467,7 +608,10 @@ const RegisterForm = () => {
                       sx={{ width: '100%' }}
                     >
                       <Checkbox
-                        onChange={handleChangeCheckbox}
+                       onChange={handleChangeCheckbox}
+                       checked={termsAndConditions}
+                       id="termsAndConditions"
+                       name="termsAndConditions"
                         inputProps={{
                           'aria-label':
                             ' I agree to the  Rubios terms and conditions and to receiving marketing communications from Rubios ',
@@ -475,13 +619,23 @@ const RegisterForm = () => {
                       />{' '}
                       I agree to the{' '}
                       <Link
-                        href={process.env.REACT_APP_TERMS_LINK}
-                        underline="hover"
-                      >
+                    target="popup"
+                      onClick={() =>
+                        window.open(process.env.REACT_APP_TERMS_LINK,'name','width=1000,height=1000')
+                      }
+                      
+                      underline="hover"
+                      sx={{ color: '#1a86ff', cursor: 'pointer' }}
+                    >
                         Rubio's terms and conditions{' '}
                       </Link>
                       and to receiving marketing communications from Rubio's.
                     </Typography>
+                    {termsAndConditionsError && (
+                    <p className="fav-iframes-error-message">
+                      Terms and conditions are required
+                    </p>
+                  )}
                   </Grid>
                   <Grid style={{ paddingTop: 10 }}>
                     {showError && signUpErrors && signUpErrors.length > 0

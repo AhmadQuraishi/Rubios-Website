@@ -49,4 +49,6 @@
     /*max-width: 195px !important;*/
   }
 }
-
+#react-select-3-input{
+  caret-color: black !important;
+}

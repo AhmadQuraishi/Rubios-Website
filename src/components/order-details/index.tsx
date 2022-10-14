@@ -7,6 +7,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
+import { DeliveryModeEnum } from '../../types/olo-api/olo-api.enums';
 
 const getOptions = (options: any) => {
   let val = '';
@@ -206,18 +207,26 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                       <Typography
                         variant="h6"
                         className="n-bold"
-                        title="ESTIMATED TAX AND FEES"
+                        // title="ESTIMATED TAX AND FEES"
                       >
-                        ESTIMATED TAX AND FEES
-                        <span
-                          onClick={() => {
-                            setOpen(true);
-                          }}
-                          aira-label="help Icon"
-                          className="help-icon"
-                        >
-                          ?
-                        </span>
+                        {basket &&
+                        basket.deliverymode !== DeliveryModeEnum.pickup &&
+                        basket.deliverymode !== DeliveryModeEnum.curbside ? (
+                          <>
+                            ESTIMATED TAX AND FEES
+                            <span
+                              onClick={() => {
+                                setOpen(true);
+                              }}
+                              aira-label="help Icon"
+                              className="help-icon"
+                            >
+                              ?
+                            </span>
+                          </>
+                        ) : (
+                          'ESTIMATED TAXES'
+                        )}
                       </Typography>
 
                       <Dialog
@@ -225,6 +234,11 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                         onClose={handleClose}
                         aria-labelledby="alert-dialog-title"
                         aria-describedby="alert-dialog-description"
+                        TransitionProps={{
+                          role: 'dialog',
+                          'aria-modal': 'true',
+                          'aria-label': 'Add Gift Card',
+                        }}
                       >
                         <DialogTitle>ESTIMATED TAX AND FEES</DialogTitle>
                         <DialogContent>

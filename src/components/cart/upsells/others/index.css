@@ -1,10 +1,14 @@
 
   .upsells .content-panel.selected .card-panel .check-mark {
     /*margin: auto;*/
-    left: 45px !important;
-    right: 0 !important;
-    top: 35px !important;
-    bottom: auto !important;
+    /*border-radius: 30px;*/
+    /*height: 55px;*/
+    /*width: 55px;*/
+    /*background-color: #e58734;*/
+    /*position: absolute;*/
+    /*top: 50%;*/
+    /*left: 50%;*/
+    /*transform: translate(-50%, -50%);*/
   }
 
   .upsells
@@ -31,7 +35,7 @@
   .name-img-panel
   .name-panel {
     padding-left: 15px !important;
-    padding-top: 23px;
+    /* padding-top: 23px; */
     overflow-wrap: break-word;
     text-align: left;
     font-size: 16px;
@@ -66,11 +70,11 @@
 }
   .upsells .content-panel .card-panel.card-item {
     min-height: 90px;
-    max-height: 90px;
+    /* max-height: 90px; */
   }
   .upsells .content-panel .card-panel.card-item .check-mark {
-    top: 18px !important;
-    left: 25px !important;
+    /*top: 18px !important;*/
+    /*left: 25px !important;*/
   }
  .upsells .content-panel.selected .card-panel {
   border: 1px solid #e58734;
@@ -82,10 +86,9 @@
   width: 55px;
   background-color: #e58734;
   position: absolute;
-  top: 32%;
-  bottom: 0;
-  left: 50px;
-  right: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 .upsells .content-panel .card-panel .check-mark .checkmark {
   display: none;
@@ -138,7 +141,7 @@
 .item-image {
   width: 85% !important;
   display: block;
-  margin: -9px 0px 12px 12px;
+  /* margin: -9px 0px 12px 12px; */
 }
 
 .upsells .content-panel .card-panel .name-img-panel .name-panel select {
@@ -162,8 +165,8 @@
     .card-panel
     .name-img-panel
     .name-panel {
-      padding-left: 0px !important;
-      padding-top: 15px;
+      padding-left: 5px !important;
+      /* padding-top: 23px; */
       overflow-wrap: break-word;
       text-align: center;
       font-size: 15px;
@@ -177,9 +180,9 @@
     .upsells .content-panel.selected .card-panel .check-mark {
       /* margin: auto; */
       /*left: 120px !important;*/
-      right: 0 !important;
-      top: 130px !important;
-      bottom: auto !important;
+      /*right: 0 !important;*/
+      /*top: 30px !important;*/
+      /*bottom: auto !important;*/
     }
   }
 
@@ -190,7 +193,7 @@
     .name-img-panel
     .name-panel {
       padding-left: 0px !important;
-      padding-top: 25px;
+      /* padding-top: 0px; */
       overflow-wrap: break-word;
       text-align: center;
       font-size: 14px;
@@ -222,8 +225,81 @@
     }
   }
 
-  @media screen and (max-width: 468px) {
-    .upsells .content-panel {
-      flex-direction: column;
+  @media screen and (max-width: 600px) {
+    .upsells
+    .content-panel
+    .card-panel
+    .name-img-panel
+    .name-panel {
+      padding-left: 5px !important;
+      /* padding-top: 30px; */
+      overflow-wrap: break-word;
+      text-align: center;
+      font-size: 14px;
+    }
+    .upsells
+    .content-panel
+    .card-panel
+    .name-img-panel
+    .item-image {
+      width: 65% !important;
+      display: block;
+      margin: 0px 0px 0px 20px !important;
+    }
+    #cart-box-upsells {
+      top: 0;
+      right: 0;
+      width: 100%;
+      border: 1px solid #666;
+      height: 100%;
+      z-index: 9999;
+      position: fixed;
+      background: #fff;
+      border-top: 0;
+      border-right: 0;
+      margin: 0px;
+    }
+    .upsells .content-panel .card-panel.card-item {
+      max-height: 100% !important;
     }
   }
+
+  @media screen and (max-width: 400px) {
+    .upsells
+    .content-panel
+    .card-panel
+    .name-img-panel
+    .name-panel {
+      padding-left: 5px !important;
+      /* padding-top: 20px; */
+      /* overflow-wrap: break-word; */
+      text-align: center;
+      font-size: 14px;
+    }
+    .upsells
+    .content-panel
+    .card-panel
+    .name-img-panel
+    .item-image {
+      width: 75% !important;
+      display: block;
+      margin: 0px 0px 0px 20px !important;
+    }
+    #cart-box-upsells {
+      top: 0;
+      right: 0;
+      width: 100%;
+      border: 1px solid #666;
+      height: 100%;
+      z-index: 9999;
+      position: fixed;
+      background: #fff;
+      border-top: 0;
+      border-right: 0;
+      margin: 0px;
+    }
+    .upsells .content-panel .card-panel.card-item {
+      max-height: 100% !important;
+    }
+  }
+

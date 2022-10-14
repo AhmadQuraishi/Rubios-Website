@@ -7,12 +7,13 @@ import {
   Button,
   Card,
   Theme,
+  CircularProgress,
 } from '@mui/material';
 import './index.css';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { SelectChangeEvent } from '@mui/material/Select';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { makeStyles } from '@mui/styles';
 import { useDispatch, useSelector } from 'react-redux';
@@ -26,7 +27,7 @@ import { IMaskInput } from 'react-imask';
 import { forwardRef } from 'react';
 import moment from 'moment';
 import { displayToast } from '../../helpers/toast';
-
+import Select from 'react-select';
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     padding: '0px 0px 20px 0px',
@@ -45,7 +46,6 @@ interface CustomProps {
   onChange: (event: { target: { name: string; value: string } }) => void;
   name: string;
 }
-
 const NumberFormatCustom = forwardRef<HTMLElement, CustomProps>(
   function NumberFormatCustom(props, ref) {
     const { onChange, ...other } = props;
@@ -72,7 +72,8 @@ const PersonalInfo = () => {
   const { userProfile, loading, error, profile } = useSelector(
     (state: any) => state.userReducer,
   );
-  const [favlocation, setFavLoc] = useState('');
+  const [favLocation, setFavLocation] = useState<any>(null);
+  const [favLocationError, setFavLocationError] = useState(false);
   const [isupdate, setIsUpdate] = useState(false);
   const { locations, loading: loadingLocations } = useSelector(
     (state: any) => state.locationReducer,
@@ -91,7 +92,6 @@ const PersonalInfo = () => {
 
   useEffect(() => {
     if (userProfile && !loading) {
-      setFavLoc(userProfile.favourite_locations);
       setState({
         emailnotification: userProfile.marketing_email_subscription,
         pushnotification: userProfile.marketing_pn_subscription,
@@ -99,10 +99,49 @@ const PersonalInfo = () => {
     }
   }, [userProfile, loading]);
 
-  const handleChangeLocation = (event: SelectChangeEvent) => {
-    setFavLoc(event.target.value as string);
+  // const handleChangeLocation = (event: SelectChangeEvent) => {
+  //   setFavLocation(event.target.value as string);
+  // };
+  const customStyles = {
+    option: (provided: any, state: any) => ({
+      ...provided,
+      color: state.isSelected ? 'black' : 'black',
+      backgroundColor: state.isSelected ? 'lightgray' : '',
+      marginTop: '0px',
+      border: '0px',
+      fontFamily: 'Poppins-Regular, sans-serif !important',
+    }),
+    menu: (base: any) => ({
+      ...base,
+      marginTop: 0,
+    }),
+    indicatorSeparator: (base: any) => ({
+      ...base,
+      width: '0px',
+    }),
+    dropdownIndicator: (base: any, state: any) => ({
+      ...base,
+      transition: 'all .2s ease',
+      transform: state.selectProps.menuIsOpen && 'rotate(180deg)',
+    }),
+    control: (provided: any, state: any) => ({
+      ...provided,
+      // none of react-select's styles are passed to <Control />
+      //
+      height: '55px',
+      paddingLeft: '5px',
+      borderRadius: 'none',
+      border: 'none',
+      cursor: 'pointer',
+      boxShadow: '0px 0px 6px lightgray',
+      fontFamily: 'Poppins-Regular, sans-serif !important',
+    }),
+    singleValue: (provided: any, state: any) => {
+      const opacity = state.isDisabled ? 0.5 : 1;
+      const transition = 'opacity 300ms';
+      return { ...provided, opacity, transition };
+    },
   };
-
   const handleChangeNotification = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
@@ -118,6 +157,30 @@ const PersonalInfo = () => {
       setIsUpdate(false);
     }
   }, [profile]);
+
+  useEffect(() => {
+    if (userProfile && locations && locations.length) {
+      if (
+        (userProfile.favourite_locations,
+        userProfile.favourite_locations !== '')
+      ) {
+        const fav = locations.filter(
+          (loc: any) =>
+            loc.location_id.toString() === userProfile.favourite_locations,
+        );
+        if (fav && fav.length) {
+          setFavLocation({ value: fav[0].location_id, label: fav[0].name });
+        }
+      }
+    }
+  }, [locations, userProfile]);
+
+  useEffect(() => {
+    if (locations) {
+      const elem = document.getElementById('react-select-3-input');
+      if (elem) elem.removeAttribute('aria-haspopup');
+    }
+  }, [locations]);
 
   return (
     <div className={classes.root}>
@@ -163,13 +226,22 @@ const PersonalInfo = () => {
                 .oneOf([Yup.ref('newpassword'), null], 'Passwords must match'),
             })}
             onSubmit={async (values) => {
+              console.log('favLocation', favLocation);
+              if (
+                (!favLocation || !Object.keys(favLocation).length) ||
+                favLocation.value === ''
+              ) {
+                setFavLocationError(true);
+                return;
+              }
+              setFavLocationError(false);
               if (values.confirmpassword === '' && values.newpassword === '') {
                 if (values.currentpassword === '') {
                   const obj = {
                     email: values.email,
                     first_name: values.firstName,
                     last_name: values.lastName,
-                    favourite_location_ids: favlocation,
+                    favourite_location_ids: favLocation.value,
                     marketing_email_subscription: state.emailnotification,
                     marketing_pn_subscription: state.pushnotification,
                     phone: values.phone
@@ -189,7 +261,7 @@ const PersonalInfo = () => {
                     email: values.email,
                     first_name: values.firstName,
                     last_name: values.lastName,
-                    favourite_location_ids: favlocation,
+                    favourite_location_ids: favLocation.value,
                     marketing_email_subscription: state.emailnotification,
                     marketing_pn_subscription: state.pushnotification,
                     phone: values.phone
@@ -221,7 +293,7 @@ const PersonalInfo = () => {
                     email: values.email,
                     first_name: values.firstName,
                     last_name: values.lastName,
-                    favourite_location_ids: favlocation,
+                    favourite_location_ids: favLocation,
                     marketing_email_subscription: state.emailnotification,
                     marketing_pn_subscription: state.pushnotification,
                     phone: values.phone
@@ -417,7 +489,7 @@ const PersonalInfo = () => {
                       </Button>
                     </Grid>
 
-                    <Grid item xs={12}>
+                    {/* <Grid item xs={12}>
                       <FormControl fullWidth>
                         <InputLabel id="fav-location-label">
                           Favorite Location
@@ -460,6 +532,47 @@ const PersonalInfo = () => {
                             ))}
                         </Select>
                       </FormControl>
+                    </Grid> */}
+
+                    <Grid item xs={12}>
+                      <div>
+                        <div>
+                          <div>
+                            <Select
+                              placeholder={favLocationError ? <div style={{color: "red"}}>Favorite Location *</div> : <div>Favorite Location *</div>}
+                              className="select-options"
+                              isSearchable={true}
+                              styles={customStyles}
+                              noOptionsMessage={() => {
+                                if(!locations || !locations.length){
+  return <CircularProgress size={30}/>
+                                } else {
+                                  return 'No Result Found'
+                                }
+  
+                              }}
+                              options={locations?.map((loc: any) => {
+                                return {
+                                  value: loc.location_id,
+                                  label: loc.name,
+                                };
+                              })}
+                              onChange={(selectedOption: any) => {
+                                console.log('selectedOption', selectedOption);
+                                setFavLocationError(false);
+                                setFavLocation(selectedOption);
+                              }}
+                              value={favLocation && favLocation}
+                              maxMenuHeight={150}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      {favLocationError && (
+                        <p className="fav-Profile-error-message">
+                          Favorite Location is required
+                        </p>
+                      )}
                     </Grid>
                     <Grid item xs={12}>
                       <Card className="card-border">
@@ -515,7 +628,7 @@ const PersonalInfo = () => {
                         name="submit"
                         title="submit"
                         variant="contained"
-                        sx={{ width: { xs: '100%', lg: '400px' } }}
+                        sx={{ width: { xs: '100%', lg: '100%' } }}
                       >
                         Submit
                       </Button>

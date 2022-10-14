@@ -1,9 +1,9 @@
-import { Grid, Typography, Theme, Button } from '@mui/material';
+import { Grid, Typography, Theme, Button, useMediaQuery } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addMultipleProductsRequest } from '../../../../redux/actions/basket/addMultipleProducts';
-import {changeImageSize} from "../../../../helpers/common";
+import { changeImageSize, isEmpty } from '../../../../helpers/common';
 
 const useStyles = makeStyles((theme: Theme) => ({
   cartTitle: {
@@ -13,14 +13,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontWeight: '700',
     fontFamily: 'Poppins-Bold !important',
     padding: '10px 0px 18px 0px',
-  }
+  },
 }));
 
-const Salsa = ({ upsellsType }: any) => {
+const Salsa = ({ upsellsType, setErrorMsg }: any) => {
   const classes = useStyles();
   const [products, setProducts] = useState<any>();
   const [buttonDisabled, setButtonDisabled] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
 
   const basketObj = useSelector((state: any) => state.basketReducer);
   const { categories } = useSelector((state: any) => state.categoryReducer);
@@ -54,7 +53,7 @@ const Salsa = ({ upsellsType }: any) => {
         fitContainer();
       }, 500);
     }
-  }, [upsells]);
+  }, [upsells, upsellsType]);
 
   const submit = () => {
     if (products && products.length) {
@@ -84,22 +83,26 @@ const Salsa = ({ upsellsType }: any) => {
     basketCount: any,
     count: any,
     type: string,
+    maximumBasketQuantity: any,
+    maximumQuantity: any,
   ) => {
     if (
-      parseInt(obj.maximumbasketquantity || 0) === basketCount &&
+      maximumBasketQuantity !== -1 &&
+      maximumBasketQuantity === basketCount &&
       type === 'PLUS'
     ) {
       setErrorMsg(
-        `You may only order upto ${obj.maximumbasketquantity || 0} ${
+        `You may only order upto ${maximumBasketQuantity} ${
           obj.name ? obj.name : ''
         }`,
       );
     } else if (
-      obj.quantity + 1 > parseInt(obj.maximumquantity || 0) &&
+      maximumQuantity !== -1 &&
+      obj.quantity + 1 > maximumQuantity &&
       type === 'PLUS'
     ) {
       setErrorMsg(
-        `You may only add upto ${obj.maximumquantity || 0} ${
+        `You may only add upto ${maximumQuantity} ${
           obj.name ? obj.name : ''
         } at a time.`,
       );
@@ -127,18 +130,48 @@ const Salsa = ({ upsellsType }: any) => {
     }
     const updatedProducts = products.map((obj: any) => {
       if (obj.id === id) {
-        let limit = parseInt(obj.maximumbasketquantity || 0) - basketCount;
-        let count = type === 'PLUS' ? obj.quantity + 1 : obj.quantity - 1;
+        const maximumBasketQuantity = isEmpty(obj.maximumbasketquantity)
+          ? -1
+          : parseInt(obj.maximumbasketquantity);
+        const maximumQuantity = isEmpty(obj.maximumquantity)
+          ? -1
+          : parseInt(obj.maximumquantity);
+        let limit = maximumBasketQuantity - basketCount;
+        let count =
+          type === 'PLUS'
+            ? obj.quantity + 1
+            : obj.quantity === 0
+            ? 0
+            : obj.quantity - 1;
+
         count =
-          count >= parseInt(obj.maximumquantity || 0)
-            ? parseInt(obj.maximumquantity || 0)
+          maximumQuantity === -1 || maximumBasketQuantity === -1
+            ? count
+            : count >= maximumQuantity
+            ? maximumQuantity
+            : count >= maximumBasketQuantity
+            ? maximumBasketQuantity
             : count <= 0
             ? 0
             : count;
 
-        showErrorMsg(obj, basketCount, count, type);
+        // count =
+        //   count >= parseInt(obj.maximumquantity || 0)
+        //     ? parseInt(obj.maximumquantity || 0)
+        //     : count <= 0
+        //     ? 0
+        //     : count;
 
-        if (count <= limit) {
+        showErrorMsg(
+          obj,
+          basketCount,
+          count,
+          type,
+          maximumBasketQuantity,
+          maximumQuantity,
+        );
+
+        if (count <= limit || limit < 0) {
           return {
             ...obj,
             quantity: count,
@@ -167,7 +200,7 @@ const Salsa = ({ upsellsType }: any) => {
         basketObj.basket &&
         basketObj.basket.products.length > 0
       ) {
-        elem.style.height = cartBox?.clientHeight - 220 + 'px';
+        elem.style.height = cartBox?.clientHeight - 175 + 'px';
       } else {
         elem.style.height = cartBox?.clientHeight - 150 + 'px';
       }
@@ -217,7 +250,7 @@ const Salsa = ({ upsellsType }: any) => {
             container
             spacing={1}
             id="cart-main-container-upsells"
-            sx={{ paddingRight: '25px' }}
+            sx={{ paddingRight: '25px', alignContent: 'flex-start' }}
           >
             {products.map((obj: any) => {
               return (
@@ -254,7 +287,7 @@ const Salsa = ({ upsellsType }: any) => {
                             changeImageSize(
                               obj.imagefilename || '',
                               obj.images || '',
-                              'desktop-menu'
+                              'desktop-menu',
                             )
                           }
                         />
@@ -267,6 +300,7 @@ const Salsa = ({ upsellsType }: any) => {
                           flexDirection: 'column',
                           gap: '40px',
                           paddingLeft: '10px',
+                          maxWidth: 'inherit',
                         }}
                       >
                         <Typography
@@ -285,6 +319,26 @@ const Salsa = ({ upsellsType }: any) => {
                           // title={option.name}
                         >
                           {obj.name}
+                          {obj.cost > 0 && (
+                            <Grid
+                              item
+                              xs={12}
+                              title={`$${parseFloat(obj.cost).toFixed(2)}`}
+                              sx={{
+                                paddingTop: '5px',
+                                fontSize: '14px',
+                                fontFamily: 'Poppins-Bold',
+                                color: '#0075BF',
+                                display: 'flex',
+                                alignItems: 'center',
+                                // justifyContent: 'center',
+                                justifyContent: { xs: 'left', md: 'left' },
+                              }}
+                            >
+                              +$
+                              {parseFloat(obj.cost).toFixed(2)}
+                            </Grid>
+                          )}
                         </Typography>
                         <div
                           style={{ display: 'flex', alignItems: 'center' }}
@@ -299,6 +353,7 @@ const Salsa = ({ upsellsType }: any) => {
                           </label>
                           <div className="quantity">
                             <Button
+                              sx={{ marginLeft: { xs: '7px' } }}
                               title=""
                               className="subtract"
                               aria-label="reduce"
@@ -319,6 +374,7 @@ const Salsa = ({ upsellsType }: any) => {
                               title="quantity"
                             />
                             <Button
+                              sx={{ marginRight: { xs: '7px' } }}
                               title=""
                               className="add"
                               aria-label="increase"
@@ -346,29 +402,30 @@ const Salsa = ({ upsellsType }: any) => {
           style={{
             display: 'flex',
             justifyContent: 'flex-end',
-            minHeight: '45px',
+            minHeight: '0px',
           }}
         >
-          {errorMsg && errorMsg !== '' && (
-            <Typography
-              variant="h6"
-              component="p"
-              fontSize="14px !important"
-              padding="12px 30px 6px 15px"
-              color="red"
-              textAlign="right"
-              lineHeight="1.2 !important"
-              textTransform="capitalize"
-              className={classes.cartTitle}
-              sx={{
-                display: 'inline',
-                fontFamily: 'Poppins-Medium !important',
-              }}
-              title="Maximum number of Salsa have been selected"
-            >
-              {errorMsg}
-            </Typography>
-          )}
+          {/*{errorMsg && errorMsg !== '' && (*/}
+          {/*<Typography*/}
+          {/*  variant="h6"*/}
+          {/*  component="p"*/}
+          {/*  fontSize="14px !important"*/}
+          {/*  padding="4px 30px 4px 0px"*/}
+          {/*  color="red"*/}
+          {/*  textAlign="left"*/}
+          {/*  lineHeight="1.2 !important"*/}
+          {/*  textTransform="capitalize"*/}
+          {/*  className={classes.cartTitle}*/}
+          {/*  sx={{*/}
+          {/*    display: 'inline',*/}
+          {/*    fontFamily: 'Poppins-Medium !important',*/}
+          {/*    minHeight: 14,*/}
+          {/*    fontSize: '12px !important',*/}
+          {/*  }}*/}
+          {/*>*/}
+          {/*  {errorMsg}*/}
+          {/*</Typography>*/}
+          {/*)}*/}
         </Grid>
         <Grid
           item

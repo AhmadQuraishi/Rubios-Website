@@ -4,7 +4,11 @@ import { Link } from 'react-router-dom';
 import { Fragment } from 'react';
 import './index.css';
 import { Product } from '../../types/olo-api';
-import { changeImageSize, checkProductAvailability } from '../../helpers/common';
+import {
+  changeImageSize,
+  checkFeaturedProduct,
+  checkProductAvailability,
+} from '../../helpers/common';
 
 const useStyles = makeStyles((theme: Theme) => ({
   img: {
@@ -48,7 +52,6 @@ const ProductListing = (props: any) => {
   const { productList, imgPath, orderType } = props;
   let products: [Product] = productList;
 
-
   return (
     <Fragment>
       <Grid container spacing={1}>
@@ -64,6 +67,7 @@ const ProductListing = (props: any) => {
                 md={3}
               >
                 <Grid
+                  id="foodmenuproduct"
                   scroll-id={'#panel-' + index}
                   key={index}
                   style={{ padding: 10 }}
@@ -74,7 +78,7 @@ const ProductListing = (props: any) => {
                   >
                     <Card
                       elevation={0}
-                      style={{ borderRadius: 0 }}
+                      style={{ borderRadius: 0, position: 'relative' }}
                       role="group"
                       aria-label={item.name}
                     >
@@ -102,6 +106,16 @@ const ProductListing = (props: any) => {
                           title={item.name}
                         />
                       )}
+                      {/*{checkFeaturedProduct(item) && (*/}
+                      {/*  <Typography*/}
+                      {/*    variant="h2"*/}
+                      {/*    title={'FEATURED'}*/}
+                      {/*    className="product-label"*/}
+                      {/*    style={{ left: 0, top: 10 }}*/}
+                      {/*  >*/}
+                      {/*    FEATURED*/}
+                      {/*  </Typography>*/}
+                      {/*)}*/}
                       <CardContent sx={{ padding: '0' }}>
                         <Typography
                           variant="h2"

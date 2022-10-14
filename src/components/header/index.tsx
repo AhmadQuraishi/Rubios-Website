@@ -192,7 +192,14 @@ const Header = (props: any) => {
             >
               <a href={process.env.REACT_APP_RUBIOS_HOME_PAGE}>
                 <img
-                  aria-label="Rubio's Cosatal Grill"
+                  role={'button'}
+                  tabIndex={0}
+                  onKeyPress={(e: any) => {
+                    if (e.key === 'Enter') {
+                      navigate(`${process.env.REACT_APP_RUBIOS_HOME_PAGE}`);
+                    }
+                  }}
+                  aria-label="Rubio's Cosatal Grill Logo"
                   src={logo}
                   style={{ display: 'flex' }}
                   alt="Rubio's Cosatal Grill"
@@ -250,6 +257,14 @@ const Header = (props: any) => {
                     height: '70px',
                     width: '65px',
                   }}
+                  role={'button'}
+                  aria-label={'Account Menu'}
+                  tabIndex={0}
+                  onKeyPress={(e: any) => {
+                    if (e.key === 'Enter') {
+                      setShowAccountMenu(!showAccountMenu);
+                    }
+                  }}
                   onClick={() => {
                     setShowAccountMenu(!showAccountMenu);
                   }}
@@ -279,6 +294,14 @@ const Header = (props: any) => {
                       height: '70px',
                       width: '65px',
                     }}
+                    role={'button'}
+                    aria-label={'Sign In'}
+                    tabIndex={0}
+                    onKeyPress={(e: any) => {
+                      if (e.key === 'Enter') {
+                        navigate('/login');
+                      }
+                    }}
                     onClick={() => {
                       navigate('/login');
                     }}
@@ -289,8 +312,8 @@ const Header = (props: any) => {
                       sx={{ display: 'flex', justifyContent: 'center' }}
                     >
                       <img
-                        style={{ width: '75%', display: 'block' }}
-                        src={require('../../assets/imgs/logout-icon.png')}
+                        // style={{ width: '75%', display: 'block' }}
+                        src={require('../../assets/imgs/user-icon.png')}
                         alt="Login Icon"
                       />
                     </Grid>
@@ -305,7 +328,15 @@ const Header = (props: any) => {
                     textAlign: 'center',
                     width: '72px',
                   }}
+                  aria-label="Open the cart"
+                  role={'button'}
                   onClick={handleShowCart}
+                  tabIndex={0}
+                  onKeyPress={(e: any) => {
+                    if (e.key === 'Enter') {
+                      handleShowCart();
+                    }
+                  }}
                 >
                   <img
                     src={cartIconMobile}
@@ -352,10 +383,10 @@ const Header = (props: any) => {
                 <Link
                   to={restaurant ? '/menu/' + restaurant.slug : '/'}
                   className={classes.menuLink}
-                  title="Main Menu"
+                  title="View Menu"
                   onClick={() => setShowAccountMenu(false)}
                 >
-                  Main Menu
+                  View Menu
                 </Link>
               )}
 
@@ -369,6 +400,14 @@ const Header = (props: any) => {
                         background: '#0073BD',
                         alignItems: 'center',
                         cursor: 'pointer',
+                      }}
+                      role={'button'}
+                      aria-label={'Account Menu'}
+                      tabIndex={0}
+                      onKeyPress={(e: any) => {
+                        if (e.key === 'Enter') {
+                          setShowAccountMenu(!showAccountMenu);
+                        }
                       }}
                       onClick={() => {
                         setShowAccountMenu(!showAccountMenu);
@@ -437,6 +476,14 @@ const Header = (props: any) => {
                         alignItems: 'center',
                         cursor: 'pointer',
                       }}
+                      role={'button'}
+                      aria-label={'Sign In'}
+                      tabIndex={0}
+                      onKeyPress={(e: any) => {
+                        if (e.key === 'Enter') {
+                          navigate('/login');
+                        }
+                      }}
                       onClick={() => {
                         navigate('/login');
                       }}
@@ -478,6 +525,11 @@ const Header = (props: any) => {
                   component="div"
                   onClick={handleShowCart}
                   aria-label="Open the cart"
+                  onKeyPress={(e: any) => {
+                    if (e.key === 'Enter') {
+                      handleShowCart();
+                    }
+                  }}
                   sx={{
                     paddingRight: { xs: '20px', md: '40px' },
                     paddingLeft: '20px',

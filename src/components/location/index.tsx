@@ -6,6 +6,8 @@ import {
   Typography,
   ToggleButton,
   ToggleButtonGroup,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
@@ -79,6 +81,8 @@ const LocationCard = (props: any) => {
     searchTextP,
   } = props;
   const dispatch = useDispatch();
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
   const [searchText, setSearchText] = useState<string>();
   const [resturantOrderType, setresturantOrderType] = useState<string>();
   const [showNotFoundMessage, setShowNotFoundMessage] = useState(false);
@@ -97,6 +101,12 @@ const LocationCard = (props: any) => {
   useEffect(() => {
     if (searchTextP == '') setValue('');
   }, [searchTextP]);
+
+  useEffect(() => {
+    if (!isDesktop) {
+      setShowAllResturants(false);
+    }
+  }, [isDesktop]);
 
   useEffect(() => {
     if (isNearByRestaurantList) {
@@ -431,12 +441,12 @@ const LocationCard = (props: any) => {
   //   }
   // };
 
-  useEffect(() => {
-    if (restaurants) {
-      setShowAllResturants(false);
-      getSearchResults();
-    }
-  }, [resturantOrderType]);
+  // useEffect(() => {
+  //   if (restaurants) {
+  //     setShowAllResturants(false);
+  //     getSearchResults();
+  //   }
+  // }, [resturantOrderType]);
 
   const [alignment, setAlignment] = React.useState('web');
   const onServiceSelect = (
@@ -684,11 +694,11 @@ const LocationCard = (props: any) => {
               {showAllResturants}
               {((!showAllResturants &&
                 resturantOrderType &&
-                resturantOrderType != 'dispatch' &&
+                resturantOrderType !== 'dispatch' &&
                 filteredRestaurants &&
                 filteredRestaurants.length > 0) ||
                 (!showAllResturants &&
-                  resturantOrderType == 'dispatch' &&
+                  resturantOrderType !== 'dispatch' &&
                   deliveryRasturants &&
                   deliveryRasturants.length > 0)) && (
                 <Typography
@@ -769,7 +779,7 @@ const LocationCard = (props: any) => {
                     resturantOrderType &&
                     resturantOrderType == 'dispatch')) && (
                   <>
-                    <p style={{ paddingTop: '5px' }}>NEARBY LOCATIONS</p>
+                    <p style={{ paddingTop: '5px' }}>SELECT LOCATION</p>
                   </>
                 )}
                 {!isNearByRestaurantList &&

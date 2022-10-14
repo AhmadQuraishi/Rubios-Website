@@ -3,13 +3,13 @@ import {
   Typography,
   Card,
   Button,
-  useTheme,
   useMediaQuery,
 } from '@mui/material';
 import './product.css';
 import * as React from 'react';
 import ProductOptionsSkeletonUI from '../../components/product-options-skeleton-ui';
 import StoreInfoBar from '../../components/restaurant-info-bar';
+
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategoriesRequest } from '../../redux/actions/category';
@@ -32,21 +32,19 @@ import ItemImage from '../../components/item-image';
 import { getUpsellsRequest } from '../../redux/actions/basket/upsell/Get';
 import axios from 'axios';
 import { changeImageSize, checkTacoMatch } from '../../helpers/common';
-import { BorderRight } from '@mui/icons-material';
 import Page from '../../components/page-title';
 import { facebookSendEvent } from '../../redux/actions/facebook-conversion';
 import { facebookConversionTypes } from '../../redux/types/facebook-conversion';
+import { convertMetaDataToOptions } from '../../helpers/product';
 
 const Product = () => {
-  const theme = useTheme();
   const { id, edit } = useParams();
-
+  const isMobile = useMediaQuery('(max-width:468px)');
   const [productDetails, setProductDetails] = useState<ProductInfo>();
   const [productOptions, setProductOptions] = useState<ResponseModifiers>();
   const [basket, setBasket] = useState<ResponseBasket>();
   const [actionStatus, setActionStatus] = useState<boolean>(false);
   const [totalCost, setTotalCost] = useState<number>();
-
   const { categories, loading } = useSelector(
     (state: any) => state.categoryReducer,
   );
@@ -149,7 +147,8 @@ const Product = () => {
     if (options && options.optiongroups && updatedOptions) {
       setUpdatedOptions(false);
       setProductOptions(options);
-      prepareProductOptionsArray(options.optiongroups, null, []);
+      const newOptions = convertMetaDataToOptions(options.optiongroups);
+      prepareProductOptionsArray(newOptions, null, []);
       getOptionsImages(options.optiongroups);
       getTotalCost();
     }
@@ -242,6 +241,9 @@ const Product = () => {
             const elem = option.options.find((x: any) => x.optionID == item);
             if (elem && elem.selectedValue) {
               options = options + elem.selectedValue + ',';
+              if (elem.option && elem.option.customDropDown) {
+                options = options.replace(`${item},`, '');
+              }
             }
           });
         }
@@ -294,6 +296,9 @@ const Product = () => {
             const elem = option.options.find((x: any) => x.optionID == item);
             if (elem && elem.selectedValue) {
               options = options + elem.selectedValue + ',';
+              if (elem.option && elem.option.customDropDown) {
+                options = options.replace(`${item},`, '');
+              }
             }
           });
         }
@@ -370,8 +375,10 @@ const Product = () => {
       let optionsArray: any[] = [];
       itemMain.options.map((option: any) => {
         if (
-          itemMain.description &&
-          itemMain.description.toLowerCase().indexOf('remove or modify') != -1
+          (itemMain.description &&
+            itemMain.description.toLowerCase().indexOf('remove or modify') !==
+              -1) ||
+          option.customDropDown
         ) {
           optionsArray.push({
             optionID: option.id,
@@ -388,6 +395,13 @@ const Product = () => {
             option: option,
             dropDownValues: null,
           });
+        }
+        if (option.customDropDown) {
+          if (
+            selectCustomDropDownOptionIdIfExist(option.modifiers[0].options)
+          ) {
+            editOptions.push(option.id);
+          }
         }
         if (isExistInEdit(option.id)) {
           ptotalCost = ptotalCost + option.cost;
@@ -434,17 +448,23 @@ const Product = () => {
         itemMain.description &&
         itemMain.description.toLowerCase().indexOf('remove or modify') == -1
       ) {
-        itemMain.options.map(
-          (item: any, index2: number) =>
-            item.modifiers &&
-            prepareProductOptionsArray(
-              item.modifiers,
-              item.id,
-              selectedOptions,
-              (isParentSelected && parentDefaultOptionID.includes(parentID)) ||
-                parentID == null,
-            ),
-        );
+        itemMain.options.map((item: any, index2: number) => {
+          if (item.customDropDown) {
+            return;
+          } else {
+            return (
+              item.modifiers &&
+              prepareProductOptionsArray(
+                item.modifiers,
+                item.id,
+                selectedOptions,
+                (isParentSelected &&
+                  parentDefaultOptionID.includes(parentID)) ||
+                  parentID == null,
+              )
+            );
+          }
+        });
       }
     });
   };
@@ -481,6 +501,22 @@ const Product = () => {
     return isExist;
   };
 
+  const selectCustomDropDownOptionIdIfExist = (options: any) => {
+    let isExist = false;
+    if (edit) {
+      const product = basketObj.basket.products.find(
+        (item: any) => item.id == edit,
+      );
+      product.choices.map((item: any, index: number) => {
+        const op = options.find((x: any) => item.optionid == x.id);
+        if (op) {
+          isExist = true;
+        }
+      });
+    }
+    return isExist;
+  };
+
   const [selectionExecute, setSelectionExecute] = useState(false);
 
   const showChildOptions = (
@@ -489,6 +525,10 @@ const Product = () => {
     optionsDDL: any = null,
     optionsDDLSelectedID: any = null,
   ) => {
+    console.log('optionId', optionId);
+    console.log('parnetOptionID', parnetOptionID);
+    console.log('optionsDDL', optionsDDL);
+    console.log('optionsDDLSelectedID', optionsDDLSelectedID);
     setSelectionExecute(false);
     setTimeout(() => {
       setSelectionExecute(false);
@@ -1559,19 +1599,35 @@ const Product = () => {
                       style={{ display: 'flex', alignItems: 'center' }}
                       className="button-panel-sx"
                     >
-                      <label
-                        title="Quantity"
-                        id={'quantity-label-id'}
-                        className="label bold quantity-label"
-                        htmlFor="quantityfield"
-                      >
-                        QUANTITY
-                      </label>
+                      {isMobile ? (
+                        <label
+                          title="Quantity"
+                          id={'quantity-label-id'}
+                          className="label bold quantity-label"
+                          htmlFor="quantityfield"
+                        >
+                          QTY
+                        </label>
+                      ) : (
+                        <label
+                          title="Quantity"
+                          id={'quantity-label-id'}
+                          className="label bold quantity-label"
+                          htmlFor="quantityfield"
+                        >
+                          QUANTITY
+                        </label>
+                      )}
                       <div className="quantity">
                         <Button
                           title=""
                           className="subtract"
                           aria-label="reduce"
+                          sx={{
+                            marginLeft: {
+                              xs: '5px',
+                            },
+                          }}
                           onClick={() => {
                             setCount(Math.max(count - 1, 1));
                             setTotalCost(
@@ -1595,6 +1651,11 @@ const Product = () => {
                           title=""
                           className="add"
                           aria-label="increase"
+                          sx={{
+                            marginRight: {
+                              xs: 'inherit',
+                            },
+                          }}
                           onClick={() => {
                             setCount(count + 1);
                             setTotalCost(

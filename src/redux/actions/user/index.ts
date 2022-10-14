@@ -9,7 +9,7 @@ import {
 import { displayToast } from '../../../helpers/toast';
 
 const breakpoints = {
-  XS: 540
+  XS: 540,
 };
 
 //profile actions
@@ -374,7 +374,7 @@ export function userLogin(data: any, basketID: string = '') {
   return {
     type: Type.USER_LOGIN_REQUEST,
     data,
-    basketID
+    basketID,
   };
 }
 
@@ -411,18 +411,39 @@ export function userRegisterSuccess(data: any) {
 }
 
 export function userRegisterFailure(error: any) {
+  let generalError = true;
   if (error?.data?.errors?.base && error.data.errors.base.length) {
     error?.data?.errors.base.forEach((msg: string) => {
+      generalError = false;
       displayToast('ERROR', msg);
     });
   } else {
-    displayToast('ERROR', 'ERROR! Please Try again later');
+    if (
+      error?.data?.errors?.device_already_shared &&
+      error?.data?.errors?.device_already_shared.length
+    ) {
+      if (
+        error?.data?.errors?.device_already_shared[0] ===
+        'with maximum number of guests allowed.'
+      ) {
+        generalError = false;
+        displayToast(
+          'ERROR',
+          'Device already shared with maximum number of guests allowed.',
+        );
+      }
+    }
   }
   if (error?.data?.errors?.email) {
+    generalError = false;
     displayToast('ERROR', `Email ${error?.data?.errors?.email[0]}`);
   }
   if (error?.data?.errors?.phone) {
+    generalError = false;
     displayToast('ERROR', `Phone ${error?.data?.errors?.phone[0]}`);
+  }
+  if (generalError) {
+    displayToast('ERROR', 'ERROR! Please Try again later');
   }
   return {
     type: Type.USER_REGISTER_FAILURE,
@@ -503,6 +524,6 @@ export function facebookUserLogin(data: any, basketID: string = '') {
   return {
     type: Type.USER_FACEBOOK_REQUEST,
     data,
-    basketID
+    basketID,
   };
 }

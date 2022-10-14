@@ -955,11 +955,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                 // is-mandatory={itemMain.mandatory.toString()}
                                 // parent-option-id={itemMain.parentOptionID}
                               >
-                                <div className="check-mark">
-                                  <div aria-hidden="true" className="checkmark">
-                                    L
-                                  </div>
-                                </div>
+
                                 <Grid
                                   container
                                   spacing={1}
@@ -974,15 +970,21 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                       display: 'flex',
                                       justifyContent: 'flex-start',
                                       padding: '0 !important',
+                                      alignItems: 'center',
                                     }}
                                   >
-                                    <Grid item xs={4} lg={4}>
+                                    <Grid position={'relative'} item xs={4} lg={4}>
                                       <img
                                         className="item-image"
                                         src={require(`../../assets/imgs/${type}.jpg`)}
                                         // alt={option.name}
                                         // title={option.name}
                                       />
+                                      <div className="check-mark">
+                                        <div aria-hidden="true" className="checkmark">
+                                          L
+                                        </div>
+                                      </div>
                                     </Grid>
 
                                     <Grid
@@ -1324,82 +1326,108 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                           fontFamily: 'Poppins-Regular',
                           display: 'flex',
                         }}
-                        title="ESTIMATED TAX AND FEES"
+                        // title="ESTIMATED TAX AND FEES"
                       >
                         <div>
-                          ESTIMATED TAX AND FEES
-                          <span
-                            onClick={() => {
-                              setOpen(true);
-                            }}
-                            aira-label="help Icon"
-                            className={classes.helpicon}
-                          >
-                            ?
-                          </span>
-                          <Dialog
-                            open={open}
-                            onClose={handleClose}
-                            aria-labelledby="alert-dialog-title"
-                            aria-describedby="alert-dialog-description"
-                          >
-                            <DialogTitle
-                              sx={{
-                                fontSize: { xs: '17px', sm: '1.25rem' },
-                              }}
-                            >
+                          {basketObj &&
+                          basketObj.basket &&
+                          basketObj.basket.deliverymode !==
+                            DeliveryModeEnum.pickup &&
+                          basketObj.basket.deliverymode !==
+                            DeliveryModeEnum.curbside ? (
+                            <>
                               ESTIMATED TAX AND FEES
-                            </DialogTitle>
-                            <DialogContent>
-                              <Grid container className={'taxes'} spacing={1}>
-                                <Grid item xs={9}>
-                                  <Typography className="text-info-title">
-                                    SALES TAX:
-                                  </Typography>
-                                </Grid>
-                                <Grid item xs={3} justifyContent={'flex-end'}>
-                                  <Typography className="text-info-desc">
-                                    $
-                                    {basketObj &&
-                                      basketObj.basket &&
-                                      basketObj.basket.taxes &&
-                                      basketObj.basket.taxes
-                                        .reduce(
-                                          (sum: number, tax: any) =>
-                                            sum + tax.tax,
-                                          0,
-                                        )
-                                        .toFixed(2)}
-                                  </Typography>
-                                </Grid>
-                                <Grid item xs={9}>
-                                  <Typography className="text-info-title">
-                                    SERVICE FEE:
-                                  </Typography>
-                                </Grid>
-                                <Grid item xs={3}>
-                                  <Typography className="text-info-desc">
-                                    $
-                                    {(basketObj &&
-                                      basketObj.basket &&
-                                      basketObj.basket.totalfees.toFixed(2)) ||
-                                      0}
-                                  </Typography>
-                                </Grid>
-                              </Grid>
-                            </DialogContent>
-
-                            <DialogActions>
-                              <Button
-                                aria-label="OK"
-                                title="OK"
-                                className="link default"
-                                onClick={handleClose}
+                              <span
+                                onClick={() => {
+                                  setOpen(true);
+                                }}
+                                aira-label="help Icon"
+                                className={classes.helpicon}
                               >
-                                OK
-                              </Button>
-                            </DialogActions>
-                          </Dialog>
+                                ?
+                              </span>
+                              <Dialog
+                                open={open}
+                                onClose={handleClose}
+                                aria-labelledby="alert-dialog-title"
+                                aria-describedby="alert-dialog-description"
+                                TransitionProps={{
+                                  role: 'dialog',
+                                  'aria-modal': 'true',
+                                  'aria-label': 'ESTIMATED TAX AND FEES',
+                                }}
+                              >
+                                <DialogTitle
+                                  sx={{
+                                    fontSize: { xs: '17px', sm: '1.25rem' },
+                                  }}
+                                >
+                                  ESTIMATED TAX AND FEES
+                                </DialogTitle>
+                                <DialogContent>
+                                  <Grid
+                                    container
+                                    className={'taxes'}
+                                    spacing={1}
+                                  >
+                                    <Grid item xs={9}>
+                                      <Typography className="text-info-title">
+                                        SALES TAX:
+                                      </Typography>
+                                    </Grid>
+                                    <Grid
+                                      item
+                                      xs={3}
+                                      justifyContent={'flex-end'}
+                                    >
+                                      <Typography className="text-info-desc">
+                                        $
+                                        {basketObj &&
+                                          basketObj.basket &&
+                                          basketObj.basket.taxes &&
+                                          basketObj.basket.taxes
+                                            .reduce(
+                                              (sum: number, tax: any) =>
+                                                sum + tax.tax,
+                                              0,
+                                            )
+                                            .toFixed(2)}
+                                      </Typography>
+                                    </Grid>
+                                    <Grid item xs={9}>
+                                      <Typography className="text-info-title">
+                                        SERVICE FEE:
+                                      </Typography>
+                                    </Grid>
+                                    <Grid item xs={3}>
+                                      <Typography className="text-info-desc">
+                                        $
+                                        {(basketObj &&
+                                          basketObj.basket &&
+                                          basketObj.basket.totalfees.toFixed(
+                                            2,
+                                          )) ||
+                                          0}
+                                      </Typography>
+                                    </Grid>
+                                  </Grid>
+                                </DialogContent>
+
+                                <DialogActions>
+                                  <Button
+                                    aria-label="OK"
+                                    title="OK"
+                                    className="link default"
+                                    onClick={handleClose}
+                                  >
+                                    OK
+                                  </Button>
+                                </DialogActions>
+                              </Dialog>
+                            </>
+                          ) : (
+                            'ESTIMATED TAXES'
+                          )}
                         </div>
                       </Grid>
                       <Grid

@@ -1,6 +1,6 @@
-import { Grid, Typography, Theme, Box, Button, useTheme, useMediaQuery } from '@mui/material';
+import { Grid, Typography, Theme, Box, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import crossIcon from '../../../assets/imgs/close.png';
 import { displayToast } from '../../../helpers/toast';
@@ -58,7 +58,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: '25px !important',
     fontWeight: '700',
     fontFamily: 'Poppins-Bold !important',
-    padding: '10px 0px 18px 0px',
+    padding: '0px 0px 0px 0px',
+    lineHeight: '1.0 !important',
   },
   crossIcon: {
     position: 'absolute',
@@ -111,7 +112,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 const Upsells = ({ showCart, upsellsType }: any) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const theme = useTheme();
+
+  const [errorMsg, setErrorMsg] = useState('');
 
   const basketObj = useSelector((state: any) => state.basketReducer);
   const addUpsellsObj = useSelector((state: any) => state.addUpsellReducer);
@@ -140,6 +142,10 @@ const Upsells = ({ showCart, upsellsType }: any) => {
     //   // }
     // }
   }, [addUpsellsObj, addProductObj]);
+
+  useEffect(() => {
+    setErrorMsg('');
+  }, [upsellsType]);
 
   useEffect(() => {
     // const focusableElements =
@@ -204,7 +210,11 @@ const Upsells = ({ showCart, upsellsType }: any) => {
           <Grid item xs={12}>
             <Button
               className={classes.crossIcon}
-              sx={{ position: 'absolute', minWidth: 'fit-content', marginRight:'15px'}}
+              sx={{
+                position: 'absolute',
+                minWidth: 'fit-content',
+                marginRight: '15px',
+              }}
               aria-label="Close Cart"
               onClick={showCart}
             >
@@ -222,23 +232,48 @@ const Upsells = ({ showCart, upsellsType }: any) => {
           {basketObj &&
             basketObj.basket &&
             basketObj.basket.products.length > 0 && (
-              <Grid item xs={12} sx={{ padding: '0 20px 0 0' }}>
+              <Grid paddingBottom={'5px'} item xs={12}>
                 <Typography
                   variant="h6"
                   component="h6"
                   className={classes.cartTitle}
-                  title="Your Order"
                 >
                   {upsellsType === UPSELLS_TYPES.SALSA
                     ? `Select Your `
                     : `Add A `}
                   {capitalizeFirstLetter(upsellsType)}
                 </Typography>
+                <Typography
+                  variant="h6"
+                  component="p"
+                  fontSize="14px !important"
+                  // padding="4px 30px 4px 0px"
+                  color="red"
+                  textAlign="left"
+                  lineHeight="1.2 !important"
+                  textTransform="capitalize"
+                  className={classes.cartTitle}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    fontFamily: 'Poppins-Medium !important',
+                    minHeight: 35,
+                    fontSize: '12px !important',
+                    paddingRight: 30,
+                  }}
+                >
+                  {errorMsg}
+                </Typography>
               </Grid>
             )}
 
-          {upsellsType === UPSELLS_TYPES.SALSA ? (
-            <Salsa upsellsType={upsellsType} />
+          {upsellsType !== UPSELLS_TYPES.DRINK ? (
+            <Salsa
+              setErrorMsg={(err: any) => {
+                setErrorMsg(err);
+              }}
+              upsellsType={upsellsType}
+            />
           ) : (
             <UpsellsOthers upsellsType={upsellsType} />
           )}
