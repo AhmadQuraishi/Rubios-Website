@@ -34,12 +34,16 @@ axiosInstance.interceptors.request.use(
           ? store.getState().authReducer.deviceId
           : generateDeviceId();
 
-        config.headers = {
-          ...config.headers,
-          'punchh-app-device-id': deviceId,
-        };
+        if (deviceId && config && config.headers) {
+          config.headers['punchh-app-device-id'] = deviceId;
+        }
 
-        console.log('working 2');
+        // config.headers = {
+        //   ...config.headers,
+        //   'punchh-app-device-id': deviceId,
+        // };
+
+        // console.log('working 2');
 
         // }
       }
