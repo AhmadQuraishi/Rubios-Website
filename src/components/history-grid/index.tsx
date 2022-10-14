@@ -5,6 +5,7 @@ import { Fragment } from 'react';
 import { useDispatch } from 'react-redux';
 import { getAccountHistory } from '../../redux/actions/account-history';
 import Page from '../page-title';
+import './index.css'
 import CheckInGrid from './filter-grid/checkin/index';
 
 const useStyles = makeStyles((theme: Theme) => ({
