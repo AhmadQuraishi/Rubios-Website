@@ -1,4 +1,4 @@
-import { Card, Grid, Typography, useTheme } from '@mui/material';
+import { Card, Grid, Typography } from '@mui/material';
 import './index.css';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -24,7 +24,6 @@ const FavoriteOrders = () => {
   const [open, setOpen] = useState(false);
   const [idtoDelete, setId] = useState(0);
   const [favOrders, setfavOrders] = React.useState([]);
-
 
   const createBasketObj = useSelector(
     (state: any) => state.createBasketReducer,
@@ -97,7 +96,10 @@ const FavoriteOrders = () => {
         ),
       );
       dispatch(getBasketRequest('', createBasketObj.basket, 'Favourite'));
-        displayToast('SUCCESS', 'The items from your favorite order have been added to your cart.');
+      displayToast(
+        'SUCCESS',
+        'The items from your favorite order have been added to your cart.',
+      );
       navigate('/checkout');
     }
     if (error && error.message) {
@@ -114,8 +116,8 @@ const FavoriteOrders = () => {
   };
 
   useEffect(() => {
-    console.log('favOrders', favOrders)
-  }, [favOrders])
+    console.log('favOrders', favOrders);
+  }, [favOrders]);
 
   return (
     <Fragment>
@@ -128,7 +130,7 @@ const FavoriteOrders = () => {
       {!loading && !clickAction && favOrders.length > 0 && (
         <Grid container spacing={3} className="order-history-card">
           {favOrders
-            // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((forder: any, index: number) => (
               <Grid item xs={12} md={6} key={index + forder.id}>
                 <Card elevation={0} className="card-panel">

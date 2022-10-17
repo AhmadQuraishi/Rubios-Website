@@ -166,7 +166,7 @@ const RecentOrders = () => {
 
   const handleClose = () => {
     setOpen(false);
-    setFavOrder(null)
+    setFavOrder(null);
   };
 
   return (
