@@ -153,25 +153,25 @@ const FavoriteOrders = () => {
                     </Grid>
                   </Grid>
                   <Grid container>
-                    <Grid item xs={12} sm={4}>
-                      <CardMedia
+                    {/*<Grid item xs={12} sm={4}>
+                       <CardMedia
                         component="img"
                         title="food item image"
                         image={require('../../assets/imgs/order-hidtory-icon.png')}
                         alt="Foot item"
                         className="order-img"
-                      />
-                    </Grid>
+                      /> 
+                    //</Grid>*/}
                     <Grid
                       item
                       xs={12}
                       sm={8}
-                      sx={{
-                        padding: {
-                          xs: '20px 10px 20px 10px',
-                          sm: '0px 0px 10px 20px',
-                        },
-                      }}
+                      // sx={{
+                      //   padding: {
+                      //     xs: '20px 10px 20px 10px',
+                      //     sm: '0px 0px 10px 20px',
+                      //   },
+                      // }}
                       className="order-detail-panel"
                     >
                       {forder.products &&
