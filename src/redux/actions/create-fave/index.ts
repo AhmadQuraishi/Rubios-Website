@@ -1,24 +1,18 @@
 import { displayToast } from '../../../helpers/toast';
-import { ResponseUserFaves } from '../../../types/olo-api';
+// import { ResponseUserFaves } from '../../../types/olo-api';
 import { createFaveTypes as Type } from '../../types/create-fave';
 
-const breakpoints = {
-  XS: 540
-};
-
-
-export function createFave(body: RequestNewFave) {
+export function createFave(body: any) {
   return {
     type: Type.CREATE_FAVE,
     payload: body,
   };
 }
 
-export function createFaveSuccess(data: ResponseUserFaves) {
+export function createFaveSuccess() {
   displayToast('SUCCESS', 'Order saved as favorite');
   return {
     type: Type.CREATE_FAVE_SUCCESS,
-    payload: data,
   };
 }
 

@@ -1,4 +1,4 @@
-import { Card, CardMedia, Grid, Typography, useTheme, useMediaQuery } from '@mui/material';
+import { Card, Grid, Typography, useTheme } from '@mui/material';
 import './index.css';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,7 +21,6 @@ import { getUpsellsRequest } from '../../redux/actions/basket/upsell/Get';
 
 const FavoriteOrders = () => {
   const dispatch = useDispatch();
-  const theme = useTheme();
   const [open, setOpen] = useState(false);
   const [idtoDelete, setId] = useState(0);
   const [favOrders, setfavOrders] = React.useState([]);
@@ -114,11 +113,14 @@ const FavoriteOrders = () => {
     dispatch(createBasketFromFavOrderRequest(requestBody));
   };
 
-  let x = 0;
+  useEffect(() => {
+    console.log('favOrders', favOrders)
+  }, [favOrders])
+
   return (
     <Fragment>
       {(loading || clickAction) && <OrderListSkeletonUI />}
-      {!loading && !clickAction && favOrders && favOrders.length == 0 && (
+      {!loading && !clickAction && favOrders && favOrders.length === 0 && (
         <Typography variant="h6" className="no-orders">
           You don’t have any favorite orders.
         </Typography>
@@ -126,7 +128,7 @@ const FavoriteOrders = () => {
       {!loading && !clickAction && favOrders.length > 0 && (
         <Grid container spacing={3} className="order-history-card">
           {favOrders
-            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((forder: any, index: number) => (
               <Grid item xs={12} md={6} key={index + forder.id}>
                 <Card elevation={0} className="card-panel">
@@ -160,7 +162,7 @@ const FavoriteOrders = () => {
                         image={require('../../assets/imgs/order-hidtory-icon.png')}
                         alt="Foot item"
                         className="order-img"
-                      /> 
+                      />
                     //</Grid>*/}
                     <Grid
                       item
@@ -179,7 +181,7 @@ const FavoriteOrders = () => {
                           .slice(0, 3)
                           .map((product: any, index: number) => (
                             <Fragment>
-                              {index == 2 && forder.products.length > 3 ? (
+                              {index === 2 && forder.products.length > 3 ? (
                                 <Typography
                                   className="order-detail"
                                   variant="body2"
