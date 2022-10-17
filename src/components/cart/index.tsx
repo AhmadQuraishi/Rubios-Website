@@ -1467,6 +1467,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                             'Poppins-Regular',
                                             fontSize: "14px !important",
                                             color: '#214F66',
+                                            marginBottom: "3px",
                                         }}
                                       >
                                         SERVICE FEE:
