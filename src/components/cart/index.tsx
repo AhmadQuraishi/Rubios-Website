@@ -1344,6 +1344,11 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                           basketObj.basket.deliverymode !==
                             DeliveryModeEnum.curbside ? (
                             <>
+                            <Typography sx={{
+                          fontSize: '14px',
+                          fontFamily: 'Poppins-Regular !important', cursor: 'pointer'}} onClick={() => {
+                                    setShowMore(!showMore);
+                                  }}>
                               ESTIMATED TAX AND FEES
                               {showMore ? (
                                 <ExpandLessIcon
@@ -1372,7 +1377,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                   }}
                                 />
                               )}
-                             
+                             </Typography>
                             </>
                           ) : (
                             'ESTIMATED TAXES'
@@ -1462,6 +1467,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                             'Poppins-Regular',
                                             fontSize: "14px !important",
                                             color: '#214F66',
+                                            marginBottom: "3px",
                                         }}
                                       >
                                         SERVICE FEE:

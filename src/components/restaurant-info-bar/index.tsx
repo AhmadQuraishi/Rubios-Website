@@ -168,7 +168,7 @@ const StoreInfoBar = () => {
           spacing={0}
           sx={{
             backgroundColor: theme.palette.secondary.main,
-            padding: { xs: '30px 20px', sm: '35px 40px', lg: '35px 100px' },
+            padding: { xs: '30px 20px', sm: '35px 40px', lg: '20px 100px' },
           }}
         >
           <DialogBox
