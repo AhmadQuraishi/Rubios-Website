@@ -186,7 +186,7 @@ const PersonalInfo = () => {
   return (
     <div className={classes.root}>
       {(loading || !userProfile || loadingLocations) && <ProfileSkeletonUI />}
-      {userProfile && locations && locations.length > 0 && (
+      {!loading && userProfile && locations && locations.length > 0 && (
         <Grid container>
           <Formik
             initialValues={{

@@ -9,10 +9,10 @@ const DeliveryAddressSkeletonUI = () => {
     //   }}
       spacing={3}
       xs={12}
-      lg={3}
+      lg={6}
       md={6}
       sm={9}
-      sx={{marginRight: '80px', marginTop: '5px'}}
+      sx={{marginRight: '40px', marginTop: '5px'}}
     >
       <Skeleton variant="rectangular" width={382} height={160} sx={{margin: '10px 0px 10px 25px'}}/>
       <Skeleton variant="rectangular" width={382} height={160} sx={{margin: '10px 0px 10px 25px'}}/>
