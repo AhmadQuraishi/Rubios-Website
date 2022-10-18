@@ -17,11 +17,12 @@ export function createFaveSuccess() {
 }
 
 export function createFaveFailure(error: any) {
+  console.log('error', error.response);
   displayToast(
     'ERROR',
-    error?.response?.data?.errors?.base[0]
-      ? error.response.data.errors.base[0]
-      : 'Error',
+    error?.response?.data?.errors?.base[0] ||
+      error?.response?.data?.message ||
+      'ERROR! Please Try again later',
   );
   return {
     type: Type.CREATE_FAVE_FAILURE,
