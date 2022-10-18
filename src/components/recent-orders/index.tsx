@@ -1,14 +1,11 @@
 import {
   Card,
-  CardMedia,
   Grid,
   Typography,
   Button,
   Dialog,
   DialogActions,
   TextField,
-  useTheme,
-  useMediaQuery,
 } from '@mui/material';
 import './index.css';
 import React, { Fragment, useEffect, useState } from 'react';
@@ -30,19 +27,18 @@ import moment from 'moment';
 import { getUpsellsRequest } from '../../redux/actions/basket/upsell/Get';
 
 const RecentOrders = () => {
-  const theme = useTheme();
   const [recentorders, setOrders] = React.useState<any>([]);
   const [clickAction, setClickAction] = useState(false);
   const [open, setOpen] = useState(false);
-  const [idtoFav, setId] = useState('');
-  const [items, setItems] = useState([]);
-  const [price, setPrice] = useState('');
+  const [favOrder, setFavOrder] = useState<any>(null);
+  // const [idtoFav, setId] = useState('');
+  // const [items, setItems] = useState([]);
+  // const [price, setPrice] = useState('');
 
   const [prevOrderType, setPrevOrderType] = useState<string>();
   const { restaurant, error } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
-  const { providerToken } = useSelector((state: any) => state.providerReducer);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const createBasketObj = useSelector(
@@ -96,17 +92,17 @@ const RecentOrders = () => {
 
   useEffect(() => {
     if (userRecentOrders && userRecentOrders.orders) {
-      let orders: any[] = [];
-      userRecentOrders.orders.map((item: any) => {
-        const response = isWebRecentOrder(item.oloid);
-        if (response.localExist) {
-          const newObj = {
-            ...item,
-            isMarkFav: response.isMarkFav,
-          };
-          orders.push(newObj);
-        }
-      });
+      let orders: any[] = userRecentOrders.orders;
+      // userRecentOrders.orders.map((item: any) => {
+      //   const response = isWebRecentOrder(item.oloid);
+      //   if (response.localExist) {
+      //     const newObj = {
+      //       ...item,
+      //       isMarkFav: response.isMarkFav,
+      //     };
+      //     orders.push(newObj);
+      //   }
+      // });
       setOrders(orders);
     }
   }, [userRecentOrders]);
@@ -123,48 +119,54 @@ const RecentOrders = () => {
   };
   //Set order as favorite
   const handleClickOpen = (
-    favid: string,
-    products: any,
-    price: string,
-    isMarkFav: boolean,
+    order: any,
+    // products: any,
+    // price: string,
+    // isMarkFav: boolean,
   ) => {
-    if (isMarkFav) {
-      return;
+    if (order) {
+      setFavOrder(order);
+      setOpen(true);
     }
-    if (products && products.length > 0) {
-      setItems(products);
-    }
-    let recentorders = localStorage.getItem('recentorders');
-    if (recentorders) {
-      let recentordersList = JSON.parse(recentorders);
-      let order = recentordersList.find((x: any) => x.orderid == favid);
-      if (order) {
-        setId(order.basketid);
-        setPrice(price);
-        setOpen(true);
-      }
-    }
+
+    // if (isMarkFav) {
+    //   return;
+    // }
+    // if (order && order.products && order.products.length > 0) {
+    //   setItems(products);
+    // }
+    // let recentorders = localStorage.getItem('recentorders');
+    // if (recentorders) {
+    //   let recentordersList = JSON.parse(recentorders);
+    //   let order = recentordersList.find((x: any) => x.orderid == favid);
+    //   if (order) {
+    //     setId(order.basketid);
+    //     setPrice(price);
+    //     setOpen(true);
+    //   }
+    // }
   };
 
-  const isWebRecentOrder = (id: any) => {
-    let result: any = {
-      localExist: false,
-      isMarkFav: false,
-    };
-    let recentorders = localStorage.getItem('recentorders');
-    if (recentorders) {
-      let recentordersList = JSON.parse(recentorders);
-      let order = recentordersList.find((x: any) => x.orderid === id);
-      if (order) {
-        result.localExist = true;
-        result.isMarkFav = order.isMarkFav;
-      }
-    }
-    return result;
-  };
+  // const isWebRecentOrder = (id: any) => {
+  //   let result: any = {
+  //     localExist: false,
+  //     isMarkFav: false,
+  //   };
+  //   let recentorders = localStorage.getItem('recentorders');
+  //   if (recentorders) {
+  //     let recentordersList = JSON.parse(recentorders);
+  //     let order = recentordersList.find((x: any) => x.orderid === id);
+  //     if (order) {
+  //       result.localExist = true;
+  //       result.isMarkFav = order.isMarkFav;
+  //     }
+  //   }
+  //   return result;
+  // };
 
   const handleClose = () => {
     setOpen(false);
+    setFavOrder(null);
   };
 
   return (
@@ -203,35 +205,35 @@ const RecentOrders = () => {
                       className={`${order.isMarkFav ? '' : 'grey'}`}
                       onClick={() => {
                         handleClickOpen(
-                          order.oloid,
-                          order.products,
-                          order.total,
-                          order.isMarkFav,
+                          order,
+                          // order.products,
+                          // order.total,
+                          // order.isMarkFav,
                         );
                       }}
                     />
                   </Grid>
                 </Grid>
                 <Grid container>
-                  <Grid item xs={12} sm={4}>
-                    <CardMedia
+                  {/* <Grid item xs={12} sm={4}>
+                    {/* <CardMedia
                       component="img"
                       title="image"
                       image={require('../../assets/imgs/order-hidtory-icon.png')}
                       alt="image"
                       className="order-img"
                     />
-                  </Grid>
+                  </Grid> */}
                   <Grid
                     item
                     xs={12}
                     sm={8}
-                    sx={{
-                      padding: {
-                        xs: '20px 10px 20px 10px',
-                        sm: '0px 0px 10px 20px',
-                      },
-                    }}
+                    // sx={{
+                    //   padding: {
+                    //     xs: '20px 10px 20px 10px',
+                    //     sm: '0px 0px 10px 20px',
+                    //   },
+                    // }}
                     className="order-detail-panel"
                   >
                     {order.products
@@ -319,12 +321,30 @@ const RecentOrders = () => {
               .required('Favorite Name is required'),
           })}
           onSubmit={async (values) => {
-            const body = {
-              basketid: idtoFav,
-              description: values.favorite_name,
-              isdefault: false,
+            const payload = {
+              order: {
+                orderref: '',
+                id: favOrder.id,
+                ignoreunavailableproducts: true,
+              },
+              basket: {
+                description: values.favorite_name,
+                isdefault: false,
+              },
             };
-            dispatch(createFave(body));
+            // const requestBody = {
+            //   orderref: '',
+            //   id: favOrder.id,
+            //   ignoreunavailableproducts: true,
+            // };
+            // dispatch(createBasketFromPrevOrderRequest(requestBody));
+            // const body = {
+            //   basketid: idtoFav,
+            //   description: values.favorite_name,
+            //   isdefault: false,
+            // };
+            console.log('payload', payload);
+            dispatch(createFave(payload));
             handleClose();
           }}
         >
@@ -351,32 +371,39 @@ const RecentOrders = () => {
               />
               <Grid container className="space">
                 <Grid item xs={8} md={6}>
-                  {items.slice(0, 3).map((item: any, index: number) => (
-                    <Fragment>
-                      {index == 2 && items.length > 3 ? (
-                        <Typography
-                          className="order-detail"
-                          variant="body2"
-                          title={item.name}
-                          key={Math.random() + item.name + item.quantity}
-                        >
-                          {item.quantity}x {item.name.substring(0, 19)}...
-                        </Typography>
-                      ) : (
-                        <Typography
-                          className="order-detail"
-                          variant="body2"
-                          title={item.name}
-                          key={Math.random() + item.name + item.quantity}
-                        >
-                          {item.quantity} x {item.name}
-                        </Typography>
-                      )}
-                    </Fragment>
-                  ))}
+                  {favOrder &&
+                    favOrder.products &&
+                    favOrder.products
+                      .slice(0, 3)
+                      .map((item: any, index: number) => (
+                        <Fragment>
+                          {index === 2 && favOrder.products.length > 3 ? (
+                            <Typography
+                              className="order-detail"
+                              variant="body2"
+                              title={item.name}
+                              key={Math.random() + item.name + item.quantity}
+                            >
+                              {item.quantity}x {item.name.substring(0, 19)}...
+                            </Typography>
+                          ) : (
+                            <Typography
+                              className="order-detail"
+                              variant="body2"
+                              title={item.name}
+                              key={Math.random() + item.name + item.quantity}
+                            >
+                              {item.quantity} x {item.name}
+                            </Typography>
+                          )}
+                        </Fragment>
+                      ))}
                 </Grid>
                 <Grid item xs={4} md={6}>
-                  <Typography className="price"> ${price}</Typography>
+                  <Typography className="price">
+                    {' '}
+                    ${(favOrder && favOrder.total) || 0}
+                  </Typography>
                 </Grid>
               </Grid>
               <DialogActions>

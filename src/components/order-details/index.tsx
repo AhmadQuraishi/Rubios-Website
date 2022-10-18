@@ -6,6 +6,8 @@ import { calculateTaxAndFee } from '../../helpers/common';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Dialog from '@mui/material/Dialog';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import DialogTitle from '@mui/material/DialogTitle';
 import { DeliveryModeEnum } from '../../types/olo-api/olo-api.enums';
 
@@ -20,7 +22,7 @@ const getOptions = (options: any) => {
 const OrderDetails = ({ basket, tipPercentage, page }: any) => {
   const [open, setOpen] = React.useState(false);
   const [products, setProducts] = useState<any[]>();
-
+  const [showMore, setShowMore] = useState(false);
   const utensilsReducer = useSelector((state: any) => state.utensilsReducer);
 
   const handleClose = () => {
@@ -199,6 +201,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
             {/*    </Grid>*/}
             {/*  </Grid>*/}
             {/*) : null}*/}
+            
             <li>
               <Grid container>
                 <Grid item xs={9} sm={9} md={9} lg={9}>
@@ -213,38 +216,74 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                         basket.deliverymode !== DeliveryModeEnum.pickup &&
                         basket.deliverymode !== DeliveryModeEnum.curbside ? (
                           <>
-                            ESTIMATED TAX AND FEES
-                            <span
-                              onClick={() => {
-                                setOpen(true);
-                              }}
-                              aira-label="help Icon"
-                              className="help-icon"
-                            >
-                              ?
-                            </span>
+                            <Typography sx={{
+                          fontSize: '16px',
+                          fontFamily: 'Poppins-Regular !important', cursor: 'pointer'}} onClick={() => {
+                                    setShowMore(!showMore);
+                                  }}>
+                              ESTIMATED TAX AND FEES
+                              {showMore ? (
+                                <ExpandLessIcon
+                                  aira-label="Expand Less"
+                                  onClick={() => {
+                                    setShowMore(!showMore);
+                                  }}
+                                  // className={classes.helpicon}
+                                  style={{
+                                    cursor: 'pointer',
+                                    verticalAlign: 'bottom',
+                                    color: 'secondary.main',
+                                  }}
+                                />
+                              ) : (
+                                <ExpandMoreIcon
+                                  aira-label="Expand Less"
+                                  onClick={() => {
+                                    setShowMore(!showMore);
+                                  }}
+                                  // className={classes.helpicon}
+                                  style={{
+                                    cursor: 'pointer',
+                                    verticalAlign: 'bottom',
+                                    color: 'secondary.main',
+                                  }}
+                                />
+                              )}
+                             </Typography>
                           </>
                         ) : (
                           'ESTIMATED TAXES'
                         )}
                       </Typography>
-
-                      <Dialog
-                        open={open}
-                        onClose={handleClose}
-                        aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description"
-                        TransitionProps={{
-                          role: 'dialog',
-                          'aria-modal': 'true',
-                          'aria-label': 'Add Gift Card',
-                        }}
+                    </div>
+                  </div>
+                </Grid>
+                {!showMore &&
+                <Grid item xs={3} sm={3} md={3} lg={3}>
+                  <Typography align={'right'} className="n-bold" variant="h6">
+                    ${calculateTaxAndFee(basket)}
+                  </Typography>
+                </Grid>
+}
+              </Grid>
+            </li>
+            {showMore &&
+            <li>
+                      <Grid
+                        // open={open}
+                        // onClose={handleClose}
+                        // aria-labelledby="alert-dialog-title"
+                        // aria-describedby="alert-dialog-description"
+                        // TransitionProps={{
+                        //   role: 'dialog',
+                        //   'aria-modal': 'true',
+                        //   'aria-label': 'Add Gift Card',
+                        // }}
                       >
-                        <DialogTitle>ESTIMATED TAX AND FEES</DialogTitle>
-                        <DialogContent>
+                        <Grid>
                           <Grid container className={'taxes'} spacing={1}>
-                            <Grid item xs={9}>
-                              <Typography className="text-info-title">
+                            <Grid item xs={9} >
+                              <Typography className="text-info-title"sx={{paddingTop: "3px",fontFamily: 'Poppins-Regular !important',color:"#285169 !important",}}>
                                 SALES TAX:
                               </Typography>
                             </Grid>
@@ -262,7 +301,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                               </Typography>
                             </Grid>
                             <Grid item xs={9}>
-                              <Typography className="text-info-title">
+                              <Typography className="text-info-title" sx={{paddingBottom: "3px",fontFamily: 'Poppins-Regular !important',color:"#285169 !important",}}>
                                 SERVICE FEE:
                               </Typography>
                             </Grid>
@@ -272,9 +311,10 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                               </Typography>
                             </Grid>
                           </Grid>
-                        </DialogContent>
-
-                        <DialogActions>
+                        </Grid>
+                        </Grid>
+                        </li>
+                       /*  <DialogActions>
                           <Button
                             aria-label="OK"
                             title="OK"
@@ -283,18 +323,8 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                           >
                             OK
                           </Button>
-                        </DialogActions>
-                      </Dialog>
-                    </div>
-                  </div>
-                </Grid>
-                <Grid item xs={3} sm={3} md={3} lg={3}>
-                  <Typography align={'right'} className="n-bold" variant="h6">
-                    ${calculateTaxAndFee(basket)}
-                  </Typography>
-                </Grid>
-              </Grid>
-            </li>
+                        </DialogActions> */
+                        }
             {/*{basket && basket.totalfees && basket.totalfees > 0 ? (*/}
             {/*  <li>*/}
             {/*    <Grid container>*/}

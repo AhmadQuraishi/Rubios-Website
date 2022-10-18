@@ -96,15 +96,17 @@ const AccountHistory = () => {
               }}
             >
               <Tab
-                label="All History"
+                label="Rewards History"
                 className={classes.tabspanel}
-                title="All History"
+                title="Rewards Historyy"
+                tabIndex={0}
                 {...a11yProps(0)}
               />
               <Tab
                 className={classes.tabspanel}
                 label="Transaction History"
                 title="Transaction History"
+                tabIndex={4}
                 {...a11yProps(1)}
               />
             </Tabs>

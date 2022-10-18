@@ -29,8 +29,8 @@ export function GetUserFriendlyHours(
             isOpenAllDay: isTimeSame(item.start, item.end),
           });
         } else {
-          newHoursArray[newHoursArray.length - 1].label =
-            newHoursArray[newHoursArray.length - 1].label
+          newHoursArray[newHoursArray.length -1].label =
+            newHoursArray[newHoursArray.length -1].label
               .split('-')[0]
               .substring(0, 1) +
             '-' +
@@ -40,6 +40,23 @@ export function GetUserFriendlyHours(
     });
     return newHoursArray;
   } else {
+    return [];
+  }
+}
+
+export function GetUserFriendlyHoursRAW(
+  hours: ResponseRestaurantCalendars,
+  type: CalendarTypeEnum,
+): HoursListing[] {
+  const selectedStoreHours = hours?.calendar.find((x) => x.type === type);
+  let newHoursArray: HoursListing[] = [];
+  
+
+  if(selectedStoreHours && selectedStoreHours.ranges && selectedStoreHours.ranges.length){
+    console.log('selectedStoreHours', selectedStoreHours.ranges)
+    return selectedStoreHours.ranges;
+  }
+  else {
     return [];
   }
 }

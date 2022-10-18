@@ -1,16 +1,17 @@
 import { Grid, List, ListItem, Skeleton, Typography } from '@mui/material';
 import { useState } from 'react';
 // import { useDispatch, useSelector } from 'react-redux';
-import { GetUserFriendlyHours } from '../../../helpers/getUserFriendlyHours';
+import { GetUserFriendlyHoursRAW } from '../../../helpers/getUserFriendlyHours';
 import { CalendarTypeEnum, HoursListing } from '../../../helpers/hoursListing';
 // import { getResturantCalendarRequest } from '../../../redux/actions/restaurant/calendar';
 import { getRestaurantCalendar } from '../../../services/restaurant/calendar';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import moment from 'moment';
 const ListHours = (props: any) => {
   const { id, resturantOrderType } = props;
 
   // const dispatch = useDispatch();
-  const [restaurantHours, setRestaurantHours] = useState<HoursListing[]>();
+  const [restaurantHours, setRestaurantHours] = useState<HoursListing[]>([]);
   const [loading, setLoading] = useState(false);
   const [showHours, setShowHours] = useState(false);
   // const { calendar } = useSelector(
@@ -41,10 +42,13 @@ const ListHours = (props: any) => {
     // console.log('response', response);
     if (calendar) {
       setRestaurantHours(
-        GetUserFriendlyHours(calendar, CalendarTypeEnum.business),
+        GetUserFriendlyHoursRAW(calendar, CalendarTypeEnum.business),
       );
     }
     setLoading(false);
+  };
+  const getTimeFormat = (date: string) => {
+    return moment(date, 'YYYYMMDD HH:mm').format('h:mm A');
   };
   // getCalendarData();
 
@@ -106,7 +110,7 @@ const ListHours = (props: any) => {
         showHours &&
         restaurantHours &&
         restaurantHours.length > 0 &&
-        restaurantHours.map((item: HoursListing, index: number) => (
+        restaurantHours.map((item: any, index: number) => (
           <Grid container spacing={0} key={index}>
             <Grid item xs={3}>
               <List
@@ -122,9 +126,9 @@ const ListHours = (props: any) => {
                     padding: '0 0 0 0',
                     fontFamily: "'Poppins-Medium' !important",
                   }}
-                  title={item.label}
-                >
-                  {item.label}
+                  title={item.weekday && item.weekday.toUpperCase() || ""}
+                  >
+                    {item.weekday && item.weekday.toUpperCase() || ""}
                 </ListItem>
               </List>
             </Grid>
@@ -145,12 +149,12 @@ const ListHours = (props: any) => {
                   title={
                     item.isOpenAllDay
                       ? 'Open 24 hours'
-                      : item.start + ' - ' + item.end
+                      : getTimeFormat(item.start) + ' - ' + getTimeFormat(item.end)
                   }
                 >
                   {item.isOpenAllDay
                     ? 'Open 24 hours'
-                    : item.start + ' - ' + item.end}
+                    : getTimeFormat(item.start) + ' - ' + getTimeFormat(item.end)}
                 </ListItem>
               </List>
             </Grid>

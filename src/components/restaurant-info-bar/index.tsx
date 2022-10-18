@@ -11,7 +11,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getResturantCalendarRequest } from '../../redux/actions/restaurant/calendar';
 import { ResponseRestaurant } from '../../types/olo-api';
-import { GetUserFriendlyHours } from '../../helpers/getUserFriendlyHours';
+import { GetUserFriendlyHoursRAW } from '../../helpers/getUserFriendlyHours';
 import { HoursListing } from '../../helpers/hoursListing';
 import { CalendarTypeEnum } from '../../helpers/hoursListing';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -23,6 +23,7 @@ import { setResturantInfoRequest } from '../../redux/actions/restaurant';
 import { updateUser } from '../../redux/actions/user';
 import { getlocations } from '../../redux/actions/location';
 import './index.css';
+import moment from 'moment';
 const useStyle = makeStyles({
   heading: {
     fontSize: '13px !important',
@@ -37,7 +38,7 @@ const StoreInfoBar = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isDesktop = useMediaQuery(theme.breakpoints.down('lg'));
   const [restaurantInfo, setRestaurantInfo] = useState<ResponseRestaurant>();
-  const [restaurantHours, setRestaurantHours] = useState<HoursListing[]>();
+  const [restaurantHours, setRestaurantHours] = useState<HoursListing[]>([]);
   const [showMore, setShowMore] = useState(false);
   const [open, setOpen] = useState(false);
   const [locationId, setLocationId] = useState(null);
@@ -55,6 +56,9 @@ const StoreInfoBar = () => {
   );
   const dispatch = useDispatch();
 
+  const getTimeFormat = (date: string) => {
+    return moment(date, 'YYYYMMDD HH:mm').format('h:mm A');
+  };
   useEffect(() => {
     dispatch(getlocations());
   }, []);
@@ -103,7 +107,7 @@ const StoreInfoBar = () => {
   useEffect(() => {
     if (calendar) {
       setRestaurantHours(
-        GetUserFriendlyHours(calendar, CalendarTypeEnum.business),
+        GetUserFriendlyHoursRAW(calendar, CalendarTypeEnum.business),
       );
     }
   }, [calendar]);
@@ -164,7 +168,7 @@ const StoreInfoBar = () => {
           spacing={0}
           sx={{
             backgroundColor: theme.palette.secondary.main,
-            padding: { xs: '30px 20px', sm: '35px 40px', lg: '35px 100px' },
+            padding: { xs: '30px 20px', sm: '35px 40px', lg: '20px 100px' },
           }}
         >
           <DialogBox
@@ -458,10 +462,11 @@ const StoreInfoBar = () => {
                     >
                       Hours
                     </Typography>
-                    {restaurantHours &&
+                    {
+                     restaurantHours &&
                       restaurantHours.length > 0 &&
                       restaurantHours.map(
-                        (item: HoursListing, index: number) => (
+                        (item: any, index: number,) => (                         
                           <Grid
                             container
                             spacing={0}
@@ -490,9 +495,9 @@ const StoreInfoBar = () => {
                                     padding: '0 0 0 0',
                                     fontFamily: "'Poppins-Medium' !important",
                                   }}
-                                  title={item.label}
+                                  title={item.weekday && item.weekday.toUpperCase() || ""}
                                 >
-                                  {item.label}
+                                  {item.weekday && item.weekday.toUpperCase() || ""}
                                 </ListItem>
                               </List>
                             </Grid>
@@ -514,12 +519,12 @@ const StoreInfoBar = () => {
                                   title={
                                     item.isOpenAllDay
                                       ? 'Open 24 hours'
-                                      : item.start + ' - ' + item.end
+                                      : getTimeFormat(item.start) + ' - ' + getTimeFormat(item.end)
                                   }
                                 >
                                   {item.isOpenAllDay
                                     ? 'Open 24 hours'
-                                    : item.start + ' - ' + item.end}
+                                    : getTimeFormat(item.start) + ' - ' + getTimeFormat(item.end) }
                                 </ListItem>
                               </List>
                             </Grid>
@@ -531,7 +536,7 @@ const StoreInfoBar = () => {
                         restaurantHours.length > 0 &&
                         restaurantHours
                           .slice(0, 1)
-                          .map((item: HoursListing, index: number) => (
+                          .map((item: any, index: number) => (
                             <Grid
                               container
                               spacing={0}
@@ -560,9 +565,9 @@ const StoreInfoBar = () => {
                                       padding: '0 0 0 0',
                                       fontFamily: "'Poppins-Medium' !important",
                                     }}
-                                    title={item.label}
+                                    title={item.weekday && item.weekday.toUpperCase() || ""}
                                   >
-                                    {item.label}
+                                    {item.weekday && item.weekday.toUpperCase() || ""}
                                   </ListItem>
                                 </List>
                               </Grid>
@@ -584,12 +589,12 @@ const StoreInfoBar = () => {
                                     title={
                                       item.isOpenAllDay
                                         ? 'Open 24 hours'
-                                        : item.start + ' - ' + item.end
+                                        : getTimeFormat(item.start) + ' - ' + getTimeFormat(item.end) 
                                     }
                                   >
                                     {item.isOpenAllDay
                                       ? 'Open 24 hours'
-                                      : item.start + ' - ' + item.end}
+                                      : getTimeFormat(item.start)  + ' - ' + getTimeFormat(item.end) }
                                   </ListItem>
                                 </List>
                               </Grid>
@@ -676,7 +681,7 @@ const StoreInfoBar = () => {
                             restaurantHours.length > 0 &&
                             restaurantHours
                               .slice(1)
-                              .map((item: HoursListing, index: number) => (
+                              .map((item: any, index: number) => (
                                 <Grid
                                   container
                                   spacing={0}
@@ -706,9 +711,9 @@ const StoreInfoBar = () => {
                                           fontFamily:
                                             "'Poppins-Medium' !important",
                                         }}
-                                        title={item.label}
+                                        title={item.weekday && item.weekday.toUpperCase() || ""}
                                       >
-                                        {item.label}
+                                        {item.weekday && item.weekday.toUpperCase() || ""}
                                       </ListItem>
                                     </List>
                                   </Grid>
@@ -731,12 +736,12 @@ const StoreInfoBar = () => {
                                         title={
                                           item.isOpenAllDay
                                             ? 'Open 24 hours'
-                                            : item.start + ' - ' + item.end
+                                            : getTimeFormat(item.start)+ ' - ' + getTimeFormat(item.end)
                                         }
                                       >
                                         {item.isOpenAllDay
                                           ? 'Open 24 hours'
-                                          : item.start + ' - ' + item.end}
+                                          : getTimeFormat(item.start) + ' - ' + getTimeFormat(item.end)}
                                       </ListItem>
                                     </List>
                                   </Grid>
