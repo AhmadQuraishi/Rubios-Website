@@ -7,6 +7,7 @@ import { displayToast } from '../../helpers/toast';
 import { removeRewardFromBasketRequest } from '../../redux/actions/reward/checkout/remove';
 import moment from 'moment';
 import DialogBox from '../dialog-box';
+import CheckoutSkeletonUI from '../checkout-skeleton-ui';
 
 const Rewards = (props: any) => {
   const objApplyReward = useSelector(
@@ -17,7 +18,7 @@ const Rewards = (props: any) => {
   );
   const basketObj = useSelector((state: any) => state.basketReducer);
   const dispatch = useDispatch();
-  const { rewardsList } = props;
+  const { rewardsList=[] } = props;
   const rewardsArray: any[] = rewardsList;
 
   const [actionClicked, setActionClicked] = useState(false);
@@ -158,7 +159,7 @@ const Rewards = (props: any) => {
           <CircularProgress />
         </div>
       )}
-      {rewardsArray && rewardsArray.length > 0 && (
+
         <Grid container>
           <Grid item xs={0} sm={0} md={1} lg={1} />
           <Grid item xs={12} sm={12} md={10} lg={10} className="choose-reward">
@@ -174,6 +175,8 @@ const Rewards = (props: any) => {
                   marginBottom: { xs: '25px', md: '20px' },
                 }}
               >
+                {rewardsArray?.length < 1 && <CheckoutSkeletonUI/>}
+                {rewardsArray && rewardsArray.length > 0 && (
                 <Grid container>
                   {rewardsArray.map((reward, index) => (
                     <Grid
@@ -322,6 +325,7 @@ const Rewards = (props: any) => {
                     </Grid>
                   ))}
                 </Grid>
+                                    )}
               </Grid>
               {/* <FormControl>
                 <ToggleButtonGroup
@@ -398,11 +402,12 @@ const Rewards = (props: any) => {
                   ))}
                 </ToggleButtonGroup>
               </FormControl> */}
+
             </Grid>
           </Grid>
           <Grid item xs={0} sm={0} md={1} lg={1} />
         </Grid>
-      )}
+
     </div>
   );
 };

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addMultipleProductsRequest } from '../../../../redux/actions/basket/addMultipleProducts';
 import { changeImageSize, isEmpty } from '../../../../helpers/common';
+import SalsaSkeletonUI from '../../../salsa-skeleton-ui';
 
 const useStyles = makeStyles((theme: Theme) => ({
   cartTitle: {
@@ -241,6 +242,7 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
 
   return (
     <>
+      {products?.length < 1 && <SalsaSkeletonUI />}
       {basketObj &&
         basketObj.basket &&
         basketObj.basket.products.length > 0 &&
