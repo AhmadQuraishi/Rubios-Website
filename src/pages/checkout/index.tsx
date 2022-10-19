@@ -960,10 +960,10 @@ const Checkout = () => {
                   />
                 </Grid>
               </Grid>
-              {providerToken &&
+              {/* {providerToken &&
                 providerToken.first_name &&
                 rewards &&
-                rewards.length > 0 && (
+                rewards.length > 0 && ( */}
                   <>
                     <br />
                     <br />
@@ -974,7 +974,7 @@ const Checkout = () => {
                     <br />
                     <Rewards rewardsList={rewards} />
                   </>
-                )}
+                {/* )} */}
               <br />
               <br />
               <br />
