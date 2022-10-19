@@ -5,6 +5,7 @@ import { UPSELLS_TYPES } from '../../../../helpers/upsells';
 import './index.css';
 import { addUpsellsRequest } from '../../../../redux/actions/basket/upsell/Add';
 import { changeImageSize } from '../../../../helpers/common';
+import SalsaSkeletonUI from '../../../salsa-skeleton-ui';
 
 const UpsellsOthers = ({ upsellsType }: any) => {
   const [products, setProducts] = useState<any>();
@@ -222,7 +223,9 @@ const UpsellsOthers = ({ upsellsType }: any) => {
 
   return (
     <>
+          {products?.length < 1 && <SalsaSkeletonUI />}
       <div id="cart-main-container-upsells" className={'upsells'}>
+
         {basketObj &&
           basketObj.basket &&
           basketObj.basket.products.length > 0 &&
