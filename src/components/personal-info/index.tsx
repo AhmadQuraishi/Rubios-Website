@@ -185,7 +185,7 @@ const PersonalInfo = () => {
 
   return (
     <div className={classes.root}>
-      {(loading || !userProfile || loadingLocations) && <ProfileSkeletonUI />}
+      {(loading || userProfile?.length < 1 || !locations || locations?.length < 1) && <ProfileSkeletonUI />}
       {!loading && userProfile && locations && locations.length > 0 && (
         <Grid container>
           <Formik
