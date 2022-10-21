@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const ProductListing = (props: any) => {
   const classes = useStyles();
-  const { productList, imgPath, orderType } = props;
+  const { productList, imgPath, orderType, categoryName } = props;
   let products: [Product] = productList;
 
   return (
@@ -106,7 +106,7 @@ const ProductListing = (props: any) => {
                           title={item.name}
                         />
                       )}
-                      {checkFeaturedProduct(item) && (
+                      {checkFeaturedProduct(item, categoryName) && (
                         <Typography
                           variant="h2"
                           title={'FEATURED'}

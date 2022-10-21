@@ -598,6 +598,7 @@ const CategoryList = () => {
                   index={Math.random()}
                   productList={item.products}
                   categoryID={item.id}
+                  categoryName={item.name}
                   imgPath={
                     categoriesWithProducts && categoriesWithProducts?.imagepath
                   }
