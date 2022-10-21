@@ -196,6 +196,7 @@ const CategoryList = () => {
               <ProductListing
                 productList={item.products}
                 categoryID={item.id}
+                categoryName={item.name}
                 imgPath={imagePath}
                 shownItemsCount={4}
               />

@@ -63,7 +63,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 const ProductListingCarousel = (props: any) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { productList, shownItemsCount, imgPath, orderType } = props;
+  const { productList, shownItemsCount, imgPath, orderType, categoryName } =
+    props;
   let products: [Product] = productList;
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -259,7 +260,7 @@ const ProductListingCarousel = (props: any) => {
                         title={item.name}
                       />
                     )}
-                    {checkFeaturedProduct(item) && (
+                    {checkFeaturedProduct(item, categoryName) && (
                       <Typography
                         variant="h2"
                         title={'FEATURED'}

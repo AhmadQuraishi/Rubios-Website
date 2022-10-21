@@ -158,8 +158,14 @@ export function isEmpty(val: any) {
   return val === undefined || val == null || val === '';
 }
 
-export function checkFeaturedProduct(item: any) {
+export function checkFeaturedProduct(item: any, categoryName: string) {
   let checkFeatured = false;
+  if (
+    categoryName &&
+    (categoryName === 'FEATURED ITEMS' || categoryName === 'SEASONAL MENU')
+  ) {
+    return checkFeatured;
+  }
   if (item.metadata && item.metadata.length) {
     const result = item.metadata.find((meta: any) => meta.key === 'featured');
     if (result && result.value === 'true') {
