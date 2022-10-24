@@ -85,6 +85,12 @@ const Location = () => {
   const [deliveryAddressString, setDeliveryAddressString] = useState<any>();
   const [searchText, setSearchText] = useState<string>('');
 
+  const { userDeliveryAddresses } = useSelector(
+    (state: any) => state.userReducer,
+  );
+  const { providerToken } = useSelector((state: any) => state.providerReducer);
+  const { authToken } = useSelector((state: any) => state.authReducer);
+
   useEffect(() => {
     if (!orderType) {
       setMapCenter({
@@ -135,6 +141,21 @@ const Location = () => {
     });
   };
 
+  const addCustomAddressCheck = () => {
+    if( providerToken &&
+      authToken &&
+      authToken.authtoken &&
+      authToken.authtoken !== '' &&
+      orderType === 'dispatch' &&
+      userDeliveryAddresses &&
+      userDeliveryAddresses.deliveryaddresses &&
+      userDeliveryAddresses.deliveryaddresses.length > 0){
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   const getLocationError = (error: any) => {
     let errorMsg = '';
     switch (error.code) {
@@ -165,7 +186,12 @@ const Location = () => {
         console.log('nearby');
         getNearByRestaurants(LatLng.lat, LatLng.lng);
       }
-    } else if (showNearBy && orderType && orderType === 'dispatch') {
+    } else if (
+      showNearBy &&
+      orderType &&
+      orderType === 'dispatch' &&
+      !addCustomAddressCheck()
+    ) {
       if (navigator.geolocation) {
         console.log('geolocation', navigator.geolocation);
         navigator.geolocation.getCurrentPosition(
@@ -699,6 +725,8 @@ const Location = () => {
                 loading={loading}
                 deliveryAddressString={deliveryAddressString}
                 setDeliveryAddressString={setDeliveryAddressString}
+                setSelectedLatLng={setSelectedLatLng}
+                addCustomAddressCheck={addCustomAddressCheck}
               />
             </GoogleMap>
           </div>
