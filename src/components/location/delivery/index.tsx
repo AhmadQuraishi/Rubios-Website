@@ -125,6 +125,7 @@ const DeliveryAddresses = (props: any) => {
           console.log('address', address)
           console.log('addDeliveryAddress', addDeliveryAddress)
 
+
           if (address.address1 !== '') {
             //setLatLng({ lat: lat, lng: lng });
             setDeliveryAddressString(addDeliveryAddress);
