@@ -221,7 +221,6 @@ export function validateBasket(
   userData: any,
   customFields: any,
   deliverymode: RequestSetDeliveryMode | null,
-  deliveryAddress: RequestDeliveryAddress | null,
   ccsfObj: any,
 ) {
   return {
@@ -231,7 +230,6 @@ export function validateBasket(
     userData,
     customFields,
     deliverymode,
-    deliveryAddress,
     ccsfObj,
   };
 }
