@@ -8,13 +8,13 @@ import {
   Typography,
   InputAdornment,
   useTheme,
-  useMediaQuery,
+  // useMediaQuery,
 } from '@mui/material';
 
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+// import Accordion from '@mui/material/Accordion';
+// import AccordionSummary from '@mui/material/AccordionSummary';
+// import AccordionDetails from '@mui/material/AccordionDetails';
+// import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import { ResponseBasket } from '../../../types/olo-api';
 import { useDispatch, useSelector } from 'react-redux';
@@ -81,32 +81,40 @@ const SplitPayment = forwardRef((props: any, _ref) => {
       displayToast('ERROR', 'Only 1 Credit Card can be used to make a payment');
       return;
     }
-    if (
-      (billingSchemeStats.selectedCreditCard === 1 &&
-        billingSchemeStats.selectedGiftCard === 0 &&
-        !e.target.checked) ||
-      (billingSchemeStats.selectedGiftCard === 1 &&
-        billingSchemeStats.selectedCreditCard === 0 &&
-        !e.target.checked)
-    ) {
-      displayToast(
-        'ERROR',
-        'Minimum 1 payment method is required to make a payment',
-      );
-      return;
-    }
+    // if (
+    //   (billingSchemeStats.selectedCreditCard === 1 &&
+    //     billingSchemeStats.selectedGiftCard === 0 &&
+    //     !e.target.checked) ||
+    //   (billingSchemeStats.selectedGiftCard === 1 &&
+    //     billingSchemeStats.selectedCreditCard === 0 &&
+    //     !e.target.checked)
+    // ) {
+    //   displayToast(
+    //     'ERROR',
+    //     'Minimum 1 payment method is required to make a payment',
+    //   );
+    //   return;
+    // }
 
     const accountIndex = billingSchemes.findIndex(
       (element: any) => element.localId === localId,
     );
     if (accountIndex !== -1) {
       let updatedBillingSchemes: any = billingSchemes;
-      updatedBillingSchemes[accountIndex].selected = e.target.checked;
-      updatedBillingSchemes = updatePaymentCardsAmount(
-        updatedBillingSchemes,
-        basket,
-      );
-      dispatch(updateBasketBillingSchemes(updatedBillingSchemes));
+      if (e.target.checked) {
+        updatedBillingSchemes[accountIndex].selected = e.target.checked;
+        updatedBillingSchemes = updatePaymentCardsAmount(
+          updatedBillingSchemes,
+          basket,
+        );
+        dispatch(updateBasketBillingSchemes(updatedBillingSchemes));
+      } else {
+        setOpenPopup(true);
+        setRemoveData({
+          localId: localId,
+          billingmethod: updatedBillingSchemes[accountIndex],
+        });
+      }
     }
   };
 
@@ -210,7 +218,7 @@ const SplitPayment = forwardRef((props: any, _ref) => {
       <DialogBox
         open={openPopup}
         handleClose={handleClosePopup}
-        message={'Do You Really Want To Delete This Card?'}
+        message={'Do You Really Want To Remove This Card?'}
         handleDeleteFunction={() => removeSingleBasketBillingSchemes()}
       />
       {billingSchemes &&
@@ -372,9 +380,6 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                   display: 'flex',
                   justifyContent: 'flex-end',
                   zIndex: 1,
-                }}
-                sx={{
-                  // marginTop: { md: 0, xs: '-15px', sm: '-15px' },
                 }}
                 xs={12}
                 sm={12}
