@@ -14,11 +14,17 @@
   background-color: rgb(255, 255, 255);
   z-index: 1;
 }
-.location-icon-panel .icon{  
+.location-icon-panel .icon{
   display: block;
   width: 19px;
   height: 19px;
   background-image: url(//maps.gstatic.com/tactile/mylocation/mylocation-sprite-1x.png);
   background-size: 180px 18px;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 

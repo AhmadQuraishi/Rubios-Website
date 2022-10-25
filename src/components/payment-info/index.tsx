@@ -97,6 +97,12 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
 
   const handleZipCodeChange = (event: any) => {
     let newValue = event.target.value.trim();
+    newValue = newValue.replace(/[^0-9]/gi, '');
+    newValue = newValue.length > 5 ? newValue.slice(0, 5) : newValue;
+    const regex = /[0-9]+/g;
+    if (newValue === '' || regex.test(newValue)) {
+      setZipCode(newValue);
+    }
     // newValue =
     //   newValue && newValue >= 0 && newValue <= 99999
     //     ? parseInt(newValue)
@@ -104,9 +110,9 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
     //     ? zipCode
     //     : '';
 
-    newValue = newValue.length > 5 ? newValue.slice(0, 5) : newValue;
-
-    setZipCode(newValue);
+    // newValue = newValue.length > 5 ? newValue.slice(0, 5) : newValue;
+    //
+    // setZipCode(newValue);
   };
 
   const handleCardExpiryChange = (event: any) => {
