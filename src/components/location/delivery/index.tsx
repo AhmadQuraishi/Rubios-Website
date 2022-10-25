@@ -256,7 +256,7 @@ const DeliveryAddresses = (props: any) => {
             notFound ? (
             <>
               <Grid item xs={12}>
-                <Typography className={'delivery-heading-text'} variant="body2">
+                <Typography style={{color: 'red'}} className={'delivery-heading-text'} variant="body2">
                   DELIVERY IS UNAVAILABLE FOR THIS ADDRESS
                 </Typography>
                 <Typography
