@@ -17,10 +17,11 @@ import {
   setBasketDeliveryAddress,
   setBasketDeliveryMode,
 } from '../../../../services/basket';
-import {
-  setBasketDeliveryAddressSuccess,
-  setBasketDeliveryModeSuccess,
-} from '../../../actions/basket/checkout';
+import { requestSetUserDefDelAddress } from '../../../../services/user';
+// import {
+//   setBasketDeliveryAddressSuccess,
+//   setBasketDeliveryModeSuccess,
+// } from '../../../actions/basket/checkout';
 
 function* asyncCreateBasketRequest(action: any): any {
   try {
@@ -32,6 +33,15 @@ function* asyncCreateBasketRequest(action: any): any {
         action.payload.basketId,
         action.payload.deliveryAddress,
       );
+      if (
+        action?.payload?.deliveryAddress?.id &&
+        action?.payload?.deliveryAddress?.isdefault
+      ) {
+        const defaultBody = {
+          addressid: action?.payload?.deliveryAddress?.id,
+        };
+        yield call(requestSetUserDefDelAddress, defaultBody);
+      }
       response = deliveryAddressResponse;
     }
     if (action.payload.deliverymode) {
