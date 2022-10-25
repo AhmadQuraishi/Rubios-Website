@@ -275,7 +275,7 @@ const DeliveryAddresses = (props: any) => {
                   }}
                   variant="body2"
                   className={'delivery-heading-text'}
-                  style={{ cursor: 'pointer' }}
+                  style={{ cursor: 'pointer', display: 'inline' }}
                 >
                   EDIT
                 </Typography>
@@ -361,7 +361,7 @@ const DeliveryAddresses = (props: any) => {
                             handleLCloseConfirm(
                               {
                                 address1: address.streetaddress || '',
-                                address2: '',
+                                address2: address.building || '',
                                 city: address.city || '',
                                 zip: address.zipcode || '',
                                 isdefault: address.isdefault,
@@ -377,11 +377,11 @@ const DeliveryAddresses = (props: any) => {
                         </Typography>
                         <Typography
                           className={'delivery-heading-text'}
-                          style={{ cursor: 'pointer' }}
+                          style={{ cursor: 'pointer', display: 'inline' }}
                           onClick={() => {
                             setAddDeliveryAddress({
                               address1: address.streetaddress || '',
-                              address2: '',
+                              address2: address.building || '',
                               city: address.city || '',
                               zip: address.zipcode || '',
                               isdefault: address.isdefault,
