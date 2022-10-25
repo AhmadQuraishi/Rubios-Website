@@ -555,17 +555,31 @@ const Location = () => {
     }
     if (key == 'city') {
       setSelectedAddress({ ...selectedAddress, city: value });
+      // }
     }
     if (key == 'zip') {
-      let newValue = value;
+      let newValue = value.replace(/[^0-9]/gi, '');
+      newValue = newValue.length > 5 ? newValue.slice(0, 5) : newValue;
+      const regex = /[0-9]+/g;
+      if (newValue === '' || regex.test(newValue)) {
+        setSelectedAddress({ ...selectedAddress, zip: newValue });
+      }
+
+      // let newValue = value.toString().replaceAll('.', '').replaceAll('-', '');
+      // newValue = newValue.length > 5 ? newValue.slice(0, 5) : newValue;
       // newValue =
       //   newValue && newValue >= 0 && newValue <= 99999
       //     ? parseInt(newValue)
       //     : newValue > 99999
       //     ? selectedAddress.zip
       //     : '';
-      newValue = newValue.length > 5 ? newValue.slice(0, 5) : newValue;
-      setSelectedAddress({ ...selectedAddress, zip: newValue });
+
+      // newValue = parseInt(newValue) !== 'NAN' ? parseInt(newValue) : ''
+      // if(newValue){
+      //   console.log('newValue 2', newValue);
+      // }
+
+      // }
     }
     if (key === 'isdefault') {
       setSelectedAddress({ ...selectedAddress, isdefault: value });
@@ -620,7 +634,7 @@ const Location = () => {
                   sx={{ width: '100%' }}
                   value={selectedAddress && selectedAddress.address2}
                   onChange={(e) => {
-                    handleChange('address2', e.target.value);
+                    handleChange('address2', e.target.value.trim());
                   }}
                   // onChange={handleChange('last_name')}
                   // onBlur={handleBlur('last_name')}
@@ -639,7 +653,7 @@ const Location = () => {
                   sx={{ width: '100%' }}
                   value={selectedAddress && selectedAddress.city}
                   onChange={(e) => {
-                    handleChange('city', e.target.value);
+                    handleChange('city', e.target.value.trim());
                   }}
                   // onBlur={handleBlur('last_name')}
                   // error={Boolean(touched.last_name && errors.last_name)}
@@ -658,6 +672,9 @@ const Location = () => {
                   value={selectedAddress && selectedAddress.zip}
                   onChange={(e) => {
                     handleChange('zip', e.target.value.trim());
+                  }}
+                  InputProps={{
+                    inputProps: { min: 0 },
                   }}
                   // onBlur={handleBlur('last_name')}
                   // error={Boolean(touched.last_name && errors.last_name)}
@@ -712,7 +729,7 @@ const Location = () => {
             disabled={
               selectedAddress &&
               (selectedAddress.address1 == '' ||
-                selectedAddress.city == '' ||
+                selectedAddress.city.trim() == '' ||
                 selectedAddress.zip == '')
             }
           >

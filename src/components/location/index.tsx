@@ -922,6 +922,7 @@ const LocationCard = (props: any) => {
                 setSelectedLatLng={setSelectedLatLng}
               />
             )}
+            {console.log('orderType', orderType)}
             <Grid
               item
               xs={12}
@@ -930,6 +931,12 @@ const LocationCard = (props: any) => {
                 overflowY: 'auto',
                 maxHeight: '350px',
                 minHeight: '350px',
+                display:
+                  resturantOrderType &&
+                  resturantOrderType === 'dispatch' &&
+                  addCustomAddressCheck()
+                    ? 'none'
+                    : 'block',
               }}
             >
               {showNotFoundMessage && (
