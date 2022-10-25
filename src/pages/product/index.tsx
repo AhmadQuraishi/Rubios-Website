@@ -1,10 +1,4 @@
-import {
-  Grid,
-  Typography,
-  Card,
-  Button,
-  useMediaQuery,
-} from '@mui/material';
+import { Grid, Typography, Card, Button, useMediaQuery } from '@mui/material';
 import './product.css';
 import * as React from 'react';
 import ProductOptionsSkeletonUI from '../../components/product-options-skeleton-ui';
@@ -184,24 +178,16 @@ const Product = () => {
   };
 
   const formatDeliveryAddress = () => {
-    const obj = {
-      building:
-        objDeliveryAddress && objDeliveryAddress.address
-          ? objDeliveryAddress.address.address2
-          : '',
-      streetaddress:
-        objDeliveryAddress && objDeliveryAddress.address
-          ? objDeliveryAddress.address.address1
-          : '',
-      city:
-        objDeliveryAddress && objDeliveryAddress.address
-          ? objDeliveryAddress.address.city
-          : '',
-      zipcode:
-        objDeliveryAddress && objDeliveryAddress.address
-          ? objDeliveryAddress.address.zip
-          : '',
+    let obj: any = {
+      building: objDeliveryAddress?.address?.address2 || '',
+      streetaddress: objDeliveryAddress?.address?.address1 || '',
+      city: objDeliveryAddress?.address?.city || '',
+      zipcode: objDeliveryAddress?.address?.zip || '',
+      isdefault: objDeliveryAddress?.address?.isdefault || false,
     };
+    if (objDeliveryAddress?.address?.id) {
+      obj['id'] = objDeliveryAddress?.address?.id;
+    }
     return obj;
   };
 

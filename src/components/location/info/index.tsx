@@ -1,4 +1,4 @@
-import { setDeliveryAddress } from '../../../redux/actions/location/delivery-address';
+// import { setDeliveryAddress } from '../../../redux/actions/location/delivery-address';
 // import { verifyDeliveryAddressRequest } from '../../../redux/actions/location/verify-delivery-address';
 import {
   Button,
@@ -7,38 +7,39 @@ import {
   // useTheme,
   // useMediaQuery,
 } from '@mui/material';
-import { displayToast } from '../../../helpers/toast';
-import { setResturantInfoRequest } from '../../../redux/actions/restaurant';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+// import { displayToast } from '../../../helpers/toast';
+// import { setResturantInfoRequest } from '../../../redux/actions/restaurant';
+// import { useDispatch, useSelector } from 'react-redux';
+// import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import ListHours from '../listHours';
-import { facebookSendEvent } from '../../../redux/actions/facebook-conversion';
-import { facebookConversionTypes } from '../../../redux/types/facebook-conversion';
+// import { facebookSendEvent } from '../../../redux/actions/facebook-conversion';
+// import { facebookConversionTypes } from '../../../redux/types/facebook-conversion';
 
 const StoreInfo = (props: any) => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  // const navigate = useNavigate();
+  // const dispatch = useDispatch();
   // const theme = useTheme();
 
   const {
-    setSelectedStoreID,
+    // setSelectedStoreID,
+    gotoCategoryPage,
     resturantOrderType,
-    deliveryRasturants,
+    // deliveryRasturants,
     deliveryAddressString,
-    restaurants,
-    orderType,
+    // restaurants,
+    // orderType,
     item,
     index,
-    restaurant,
+    // restaurant,
     allStores,
   } = props;
 
   const [candeliver, setCanDeliver] = useState(true);
   const [loading, setLoading] = useState(false);
-  const basketObj = useSelector((state: any) => state.basketReducer);
-  const { providerToken } = useSelector((state: any) => state.providerReducer);
+  // const basketObj = useSelector((state: any) => state.basketReducer);
+  // const { providerToken } = useSelector((state: any) => state.providerReducer);
 
   useEffect(() => {
     try {
@@ -74,63 +75,7 @@ const StoreInfo = (props: any) => {
     }
   }, []);
 
-  const gotoCategoryPage = (storeID: number) => {
-    setSelectedStoreID('');
-    if (resturantOrderType == undefined) {
-      displayToast('ERROR', 'Please select atleast one order type');
-      return false;
-    }
-    let restaurantObj = null;
-    if (resturantOrderType == 'dispatch') {
-      setSelectedStoreID(storeID.toString());
-      restaurantObj = deliveryRasturants.find((x: any) => x.id === storeID);
-      dispatch(setDeliveryAddress(deliveryAddressString));
-    } else {
-      restaurantObj = restaurants.find((x: any) => x.id === storeID);
-    }
-    if (restaurantObj) {
-      if (
-        restaurant == null ||
-        (restaurant && restaurant.id != storeID) ||
-        resturantOrderType != orderType
-      ) {
-        dispatch(
-          setResturantInfoRequest(restaurantObj, resturantOrderType || ''),
-        );
-        if (basketObj && basketObj.basket) {
-          displayToast(
-            'SUCCESS',
-            'Location changed to ' +
-              restaurantObj.name +
-              ' and basket is empty',
-          );
-        } else {
-          displayToast('SUCCESS', 'Location changed to ' + restaurantObj.name);
-        }
-        triggerFacebookEventOnLocationChange();
-      }
-      navigate('/menu/' + restaurantObj.slug);
-    }
-  };
 
-  const triggerFacebookEventOnLocationChange = () => {
-    let userObj: any = null;
-    if (providerToken) {
-      userObj = {
-        first_name: providerToken.first_name || '',
-        last_name: providerToken.last_name || '',
-        email: providerToken.email || '',
-        phone: providerToken.phone || '',
-      };
-    }
-    dispatch(
-      facebookSendEvent(
-        facebookConversionTypes.FACEBOOK_FIND_LOCATION_EVENT,
-        userObj,
-        null,
-      ),
-    );
-  };
 
   return allStores ? (
     <li className="list-sx">

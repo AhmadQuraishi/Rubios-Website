@@ -1,0 +1,16 @@
+.delivery-address-text {
+  font-size: 12px;
+  font-family: 'Poppins-Medium', sans-serif !important;
+  display: block;
+  color: #414141;
+  padding: 0px;
+}
+
+.delivery-heading-text {
+  display: inline;
+  font-size: 12px;
+  font-family: 'Poppins-Medium', sans-serif !important;
+  display: block;
+  color: #0075BF;
+  letter-spacing: 0.7px;
+}
