@@ -79,18 +79,28 @@ const DeliveryAddresses = (props: any) => {
       setAddDeliveryAddress({ ...addDeliveryAddress, address2: value });
     }
     if (key === 'city') {
+      // console.log('value', value)
+      // let newValue = value.trim().replace(/[^\s*a-zA-Z]/gi, '');
+      // console.log('newValue', newValue)
       setAddDeliveryAddress({ ...addDeliveryAddress, city: value });
     }
     if (key === 'zip') {
-      let newValue = value;
+      let newValue = value.replace(/[^0-9]/gi, '');
+      newValue = newValue.length > 5 ? newValue.slice(0, 5) : newValue;
+      const regex = /[0-9]+/g;
+      if (newValue === '' || regex.test(newValue)) {
+        setAddDeliveryAddress({ ...addDeliveryAddress, zip: newValue });
+      }
+
+      // let newValue = value;
       // newValue =
       //   newValue && newValue >= 0 && newValue <= 99999
       //     ? parseInt(newValue)
       //     : newValue > 99999
       //     ? addDeliveryAddress.zip
       //     : '';
-      newValue = newValue.length > 5 ? newValue.slice(0, 5) : newValue;
-      setAddDeliveryAddress({ ...addDeliveryAddress, zip: newValue });
+      // newValue = newValue.length > 5 ? newValue.slice(0, 5) : newValue;
+      // setAddDeliveryAddress({ ...addDeliveryAddress, zip: newValue });
     }
     if (key === 'isdefault') {
       setAddDeliveryAddress({ ...addDeliveryAddress, isdefault: value });
@@ -256,7 +266,11 @@ const DeliveryAddresses = (props: any) => {
             notFound ? (
             <>
               <Grid item xs={12}>
-                <Typography style={{color: 'red'}} className={'delivery-heading-text'} variant="body2">
+                <Typography
+                  style={{ color: 'red' }}
+                  className={'delivery-heading-text'}
+                  variant="body2"
+                >
                   DELIVERY IS UNAVAILABLE FOR THIS ADDRESS
                 </Typography>
                 <Typography
@@ -432,11 +446,11 @@ const DeliveryAddresses = (props: any) => {
             TransitionProps={{
               role: 'dialog',
               'aria-modal': 'true',
-              'aria-label': `${edit ? 'Edit' : 'Add'} Your Delivery Address`,
+              'aria-label': `Delivery Address`,
             }}
           >
             <DialogTitle id="modal-dialog-delivery-title">
-              {`${edit ? 'Edit' : 'Add'} Your Delivery Address`}
+              {`Delivery Address`}
             </DialogTitle>
             <DialogContent>
               <DialogContentText id="Modal-dialog-delivery-description">
@@ -452,7 +466,7 @@ const DeliveryAddresses = (props: any) => {
                       sx={{ width: '100%' }}
                       value={addDeliveryAddress && addDeliveryAddress.address1}
                       onChange={(e) => {
-                        handleChange('address1', e.target.value);
+                        handleChange('address1', e.target.value.trim());
                       }}
 
                       // onChange={handleChange('last_name')}
@@ -472,7 +486,7 @@ const DeliveryAddresses = (props: any) => {
                       sx={{ width: '100%' }}
                       value={addDeliveryAddress && addDeliveryAddress.address2}
                       onChange={(e) => {
-                        handleChange('address2', e.target.value);
+                        handleChange('address2', e.target.value.trim());
                       }}
 
                       // onChange={handleChange('last_name')}
@@ -492,7 +506,7 @@ const DeliveryAddresses = (props: any) => {
                       sx={{ width: '100%' }}
                       value={addDeliveryAddress && addDeliveryAddress.city}
                       onChange={(e) => {
-                        handleChange('city', e.target.value);
+                        handleChange('city', e.target.value.trim());
                       }}
 
                       // onBlur={handleBlur('last_name')}
@@ -582,7 +596,7 @@ const DeliveryAddresses = (props: any) => {
                     addDeliveryAddress.zip === '')
                 }
               >
-                {edit ? 'Edit' : 'Add'}
+                {edit ? 'Edit Address' : 'Add Address'}
               </Button>
             </DialogActions>
           </Dialog>
