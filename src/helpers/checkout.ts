@@ -174,48 +174,27 @@ export function formatCustomFields(customFields: any, formData: any) {
   return formatArray;
 }
 
-export function formatDeliveryAddress(
-  formData: any,
-  defaultDeliveryAddress: RequestDeliveryAddress | null,
-) {
-  if (defaultDeliveryAddress) {
-    const isSame = verifySameDeliveryAddress(formData, defaultDeliveryAddress);
-    if (isSame) {
-      defaultDeliveryAddress.isdefault = formData.saveAddressCheck;
-      return defaultDeliveryAddress;
-    }
-  }
-  let obj: RequestDeliveryAddress = {
-    building: formData.apartment,
-    streetaddress: formData.streetAddress,
-    city: formData.city,
-    zipcode: formData.zipcode,
-    phonenumber: formData.phone,
-    isdefault: formData.saveAddressCheck,
-  };
-  return obj;
-}
-
-const verifySameDeliveryAddress = (
-  formData: any,
-  defaultDeliveryAddress: RequestDeliveryAddress,
-) => {
-  const currentAddress: any = {
-    building: formData.apartment,
-    streetaddress: formData.streetAddress,
-    city: formData.city,
-    zipcode: formData.zipcode,
-  };
-  const defaultAddress: any = {
-    building: defaultDeliveryAddress.building,
-    streetaddress: defaultDeliveryAddress.streetaddress,
-    city: defaultDeliveryAddress.city,
-    zipcode: defaultDeliveryAddress.zipcode,
-  };
-  console.log('currentAddress', currentAddress);
-  console.log('defaultAddress', defaultAddress);
-  return JSON.stringify(currentAddress) === JSON.stringify(defaultAddress);
-};
+// export function formatDeliveryAddress(
+//   formData: any,
+//   defaultDeliveryAddress: RequestDeliveryAddress | null,
+// ) {
+//   if (defaultDeliveryAddress) {
+//     const isSame = verifySameDeliveryAddress(formData, defaultDeliveryAddress);
+//     if (isSame) {
+//       defaultDeliveryAddress.isdefault = formData.saveAddressCheck;
+//       return defaultDeliveryAddress;
+//     }
+//   }
+//   let obj: RequestDeliveryAddress = {
+//     building: formData.apartment,
+//     streetaddress: formData.streetAddress,
+//     city: formData.city,
+//     zipcode: formData.zipcode,
+//     phonenumber: formData.phone,
+//     isdefault: formData.saveAddressCheck,
+//   };
+//   return obj;
+// }
 
 const isTimeSame = (fTime: string, sTime: string): boolean => {
   return fTime.split(' ')[1] === sTime.split(' ')[1];
