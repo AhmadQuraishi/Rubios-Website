@@ -302,23 +302,24 @@ const LocationCard = (props: any) => {
             searchedRestaurant = updatedRestaurants.filter(
               (x: any) => x.state.toLowerCase() == searchTxt,
             );
-          }
-          if (searchedRestaurant.length === 0) {
-            // if (!hasNumber(searchTxt)) {
             getGeocode({ address: searchTxt })
               .then((results) => {
                 getLatLng(results[0]).then(({ lat, lng }) => {
                   console.log('lat', lat);
                   console.log('lng', lng);
                   getNearByRestaurants(lat, lng);
+                  setShowNearBy(true);
                 });
               })
-
               .catch((error) => {
                 console.log('error zipcode', error);
                 setShowNotFoundMessage(true);
               });
           }
+          // if (searchedRestaurant.length === 0) {
+          // if (!hasNumber(searchTxt)) {
+
+          // }
           setfilteredRestaurants(
             searchedRestaurant.length > 0 ? searchedRestaurant : [],
           );
@@ -504,7 +505,7 @@ const LocationCard = (props: any) => {
     if (resturantOrderType === 'dispatch') {
       // setSelectedStoreID(storeID.toString());
       restaurantObj = deliveryRasturants.find((x: any) => x.id === storeID);
-      console.log('deliveryAddressString', deliveryAddressString)
+      console.log('deliveryAddressString', deliveryAddressString);
       dispatch(setDeliveryAddress(deliveryAddressString));
     } else {
       restaurantObj = restaurants.find((x: any) => x.id === storeID);
@@ -703,41 +704,39 @@ const LocationCard = (props: any) => {
               {resturantOrderType &&
                 (resturantOrderType === 'dispatch' ? (
                   <>
-                    {
-                      !addCustomAddressCheck() && (
-                        <TextField
-                          aria-label="Enter your delivery address"
-                          label="Enter your delivery address"
-                          title="Enter your delivery address"
-                          aria-required="true"
-                          autoComplete="false"
-                          value={value}
-                          type="text"
-                          onChange={(e) => {
-                            setShowNotFoundMessage(false);
+                    {!addCustomAddressCheck() && (
+                      <TextField
+                        aria-label="Enter your delivery address"
+                        label="Enter your delivery address"
+                        title="Enter your delivery address"
+                        aria-required="true"
+                        autoComplete="false"
+                        value={value}
+                        type="text"
+                        onChange={(e) => {
+                          setShowNotFoundMessage(false);
+                          setDeliveryRasturants([]);
+                          if (e.target.value === '') {
+                            setValue('');
+                            setActionPerform(false);
                             setDeliveryRasturants([]);
-                            if (e.target.value === '') {
-                              setValue('');
-                              setActionPerform(false);
-                              setDeliveryRasturants([]);
+                          } else {
+                            setValue(e.target.value);
+                          }
+                        }}
+                        sx={{ fontSize: '14px', paddingRight: '0px' }}
+                        variant="outlined"
+                        onKeyPress={(e: any) => {
+                          if (e.key === 'Enter' && e.target.value !== '') {
+                            if (data.length === 0) {
+                              setShowNotFoundMessage(true);
                             } else {
-                              setValue(e.target.value);
+                              setShowNotFoundMessage(false);
                             }
-                          }}
-                          sx={{ fontSize: '14px', paddingRight: '0px' }}
-                          variant="outlined"
-                          onKeyPress={(e: any) => {
-                            if (e.key === 'Enter' && e.target.value !== '') {
-                              if (data.length === 0) {
-                                setShowNotFoundMessage(true);
-                              } else {
-                                setShowNotFoundMessage(false);
-                              }
-                            }
-                          }}
-                        />
-                      )
-                    }
+                          }
+                        }}
+                      />
+                    )}
                   </>
                 ) : (
                   <TextField
@@ -780,7 +779,7 @@ const LocationCard = (props: any) => {
                 </div>
               )}
             </Grid>
-            <Grid item xs={12} style={{ position: 'relative', }}>
+            <Grid item xs={12} style={{ position: 'relative' }}>
               {showAllResturants}
               {((!showAllResturants &&
                 resturantOrderType &&
@@ -857,73 +856,72 @@ const LocationCard = (props: any) => {
                 </Typography>
               )}
 
-                {((isNearByRestaurantList &&
-                  filteredRestaurants &&
-                  !showAllResturants &&
+              {((isNearByRestaurantList &&
+                filteredRestaurants &&
+                !showAllResturants &&
+                !addCustomAddressCheck() &&
+                filteredRestaurants.length > 0) ||
+                (!showAllResturants &&
+                  value &&
+                  deliveryRasturants &&
+                  value != '' &&
+                  deliveryRasturants.length > 0 &&
                   !addCustomAddressCheck() &&
-                  filteredRestaurants.length > 0) ||
-                  (!showAllResturants &&
-                    value &&
-                    deliveryRasturants &&
-                    value != '' &&
-                    deliveryRasturants.length > 0 &&
-                    !addCustomAddressCheck() &&
-                    resturantOrderType &&
-                    resturantOrderType == 'dispatch')) && (
-                  <>
+                  resturantOrderType &&
+                  resturantOrderType == 'dispatch')) && (
+                <>
                   <Typography className="label">
                     <p style={{ paddingTop: '5px' }}>SELECT LOCATION</p>
                   </Typography>
-                  </>
-                )}
+                </>
+              )}
               {console.log('mmm', addCustomAddressCheck())}
-                {!isNearByRestaurantList &&
-                  !showAllResturants &&
-                  resturantOrderType === 'dispatch' &&
-                  !addCustomAddressCheck() &&
-                  (filteredRestaurants == undefined ||
-                    (filteredRestaurants &&
-                      filteredRestaurants.length == 0)) && (
-                    <Link
-                      // style={{
-                      //   textAlign: 'left',
-                      //   display: 'block',
-                      //   cursor: 'pointer',
-                      //   fontWeight: 500,
-                      //   textDecoration: 'underline',
-                      //   color: '#0075BF',
-                      //   fontFamily: 'Poppins-Medium !important',
-                      //   fontSize: '14px !important'
-                      // }}
-                      className={'current-location'}
-                      title="USE YOUR CURRENT LOCATION?"
-                      role="button"
-                      tabIndex={0}
-                      aria-label="USE YOUR CURRENT LOCATION"
-                      onClick={() => {
-                        // setresturantOrderType(undefined);
-                        findNearByRestaurants();
-                        setShowNotFoundMessage(false);
-                      }}
-                      to="#"
-                    >
-                      USE YOUR CURRENT LOCATION?
-                    </Link>
-                  )}
+              {!isNearByRestaurantList &&
+                !showAllResturants &&
+                resturantOrderType === 'dispatch' &&
+                !addCustomAddressCheck() &&
+                (filteredRestaurants == undefined ||
+                  (filteredRestaurants && filteredRestaurants.length == 0)) && (
+                  <Link
+                    // style={{
+                    //   textAlign: 'left',
+                    //   display: 'block',
+                    //   cursor: 'pointer',
+                    //   fontWeight: 500,
+                    //   textDecoration: 'underline',
+                    //   color: '#0075BF',
+                    //   fontFamily: 'Poppins-Medium !important',
+                    //   fontSize: '14px !important'
+                    // }}
+                    className={'current-location'}
+                    title="USE YOUR CURRENT LOCATION?"
+                    role="button"
+                    tabIndex={0}
+                    aria-label="USE YOUR CURRENT LOCATION"
+                    onClick={() => {
+                      // setresturantOrderType(undefined);
+                      findNearByRestaurants();
+                      setShowNotFoundMessage(false);
+                    }}
+                    to="#"
+                  >
+                    USE YOUR CURRENT LOCATION?
+                  </Link>
+                )}
             </Grid>
             {addCustomAddressCheck() && (
-                <DeliveryAddresses
-                  deliveryAddressList={userDeliveryAddresses.deliveryaddresses}
-                  loading={deliveryAddressesLoading}
-                  setDeliveryAddressString={setDeliveryAddressString}
-                  deliveryAddressString={deliveryAddressString}
-                  filteredRestaurants={filteredRestaurants}
-                  gotoCategoryPage={gotoCategoryPage}
-                  setActionPerform={setActionPerform}
-                  setShowNearBy={setShowNearBy}
-                  setSelectedLatLng={setSelectedLatLng}
-                />
-              )}
+              <DeliveryAddresses
+                deliveryAddressList={userDeliveryAddresses.deliveryaddresses}
+                loading={deliveryAddressesLoading}
+                setDeliveryAddressString={setDeliveryAddressString}
+                deliveryAddressString={deliveryAddressString}
+                filteredRestaurants={filteredRestaurants}
+                gotoCategoryPage={gotoCategoryPage}
+                setActionPerform={setActionPerform}
+                setShowNearBy={setShowNearBy}
+                setSelectedLatLng={setSelectedLatLng}
+              />
+            )}
             <Grid
               item
               xs={12}

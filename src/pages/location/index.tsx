@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   GoogleMap,
   // LoadScript,
@@ -15,11 +15,14 @@ import {
 import LoadingBar from '../../components/loading-bar';
 import {
   Button,
+  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
+  FormControlLabel,
+  FormGroup,
   Grid,
   Modal,
   TextField,
@@ -142,14 +145,16 @@ const Location = () => {
   };
 
   const addCustomAddressCheck = () => {
-    if( providerToken &&
+    if (
+      providerToken &&
       authToken &&
       authToken.authtoken &&
       authToken.authtoken !== '' &&
       orderType === 'dispatch' &&
       userDeliveryAddresses &&
       userDeliveryAddresses.deliveryaddresses &&
-      userDeliveryAddresses.deliveryaddresses.length > 0){
+      userDeliveryAddresses.deliveryaddresses.length > 0
+    ) {
       return true;
     } else {
       return false;
@@ -553,13 +558,17 @@ const Location = () => {
     }
     if (key == 'zip') {
       let newValue = value;
-      newValue =
-        newValue && newValue >= 0 && newValue <= 99999
-          ? parseInt(newValue)
-          : newValue > 99999
-          ? selectedAddress.zip
-          : '';
+      // newValue =
+      //   newValue && newValue >= 0 && newValue <= 99999
+      //     ? parseInt(newValue)
+      //     : newValue > 99999
+      //     ? selectedAddress.zip
+      //     : '';
+      newValue = newValue.length > 5 ? newValue.slice(0, 5) : newValue;
       setSelectedAddress({ ...selectedAddress, zip: newValue });
+    }
+    if (key === 'isdefault') {
+      setSelectedAddress({ ...selectedAddress, isdefault: value });
     }
   };
   return (
@@ -655,6 +664,35 @@ const Location = () => {
                   // helperText={touched.last_name && errors.last_name}
                 />
               </Grid>
+              {authToken?.authtoken ? (
+                <Grid
+                  item
+                  xs={12}
+                  // style={{
+                  //   paddingBottom: '20px',
+                  // }}
+                >
+                  <FormGroup>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={selectedAddress && selectedAddress.isdefault}
+                          onChange={(e) => {
+                            // handleChange(e);
+                            handleChange('isdefault', e.target.checked);
+                          }}
+                        />
+                      }
+                      label="Make default delivery address."
+                      aria-label="Make default delivery address"
+                      aria-required="true"
+                      title="Make default delivery address"
+                      name="saveAddressCheck"
+                      className="size"
+                    />
+                  </FormGroup>
+                </Grid>
+              ) : null}
             </Grid>
           </DialogContentText>
         </DialogContent>

@@ -1,26 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import {
   Grid,
-  Checkbox,
+  // Checkbox,
   TextField,
-  FormControlLabel,
-  FormGroup,
+  // FormControlLabel,
+  // FormGroup,
   Typography,
 } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
+import {
+  // useDispatch,
+  useSelector } from 'react-redux';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { forwardRef } from 'react';
 import { IMaskInput } from 'react-imask';
-import { setBasketDeliveryAddress } from '../../redux/actions/basket/checkout';
-import { RequestDeliveryAddress } from '../../types/olo-api';
-import {
-  deleteUserDeliveryAddress,
-  setUserDefaultDelAddress,
-} from '../../redux/actions/user';
+// import { setBasketDeliveryAddress } from '../../redux/actions/basket/checkout';
+// import { RequestDeliveryAddress } from '../../types/olo-api';
+// import {
+//   deleteUserDeliveryAddress,
+//   setUserDefaultDelAddress,
+// } from '../../redux/actions/user';
 
-const DeliveryForm = ({ basket, deliveryFormRef, defaultAddress }: any) => {
-  const dispatch = useDispatch();
+const DeliveryForm = ({ basket, deliveryFormRef }: any) => {
+  // const dispatch = useDispatch();
   const [address, setAddress] = useState<any>(null);
   const { providerToken } = useSelector((state: any) => state.providerReducer);
   const objDeliveryAddress = useSelector(
@@ -31,12 +33,14 @@ const DeliveryForm = ({ basket, deliveryFormRef, defaultAddress }: any) => {
   useEffect(() => {
     if (basket && basket.deliveryaddress) {
       setAddress(basket.deliveryaddress);
-    } else if (defaultAddress) {
-      setAddress(defaultAddress);
-    } else {
+    }
+    // else if (defaultAddress) {
+    //   setAddress(defaultAddress);
+    // }
+    else {
       setAddress(null);
     }
-  }, [defaultAddress, basket]);
+  }, [basket]);
 
   interface CustomProps {
     onChange: (event: { target: { name: string; value: string } }) => void;
@@ -63,22 +67,22 @@ const DeliveryForm = ({ basket, deliveryFormRef, defaultAddress }: any) => {
     },
   );
 
-  const updateDefaultAddress = (event: any) => {
-    console.log('checked', event.target.checked);
-    if (address && address.id) {
-      let updatedAddress: any = {
-        building: address.building ? address.building : '',
-        streetaddress: address.streetaddress ? address.streetaddress : '',
-        city: address.city ? address.city : '',
-        zipcode: address.zipcode ? address.zipcode : '',
-        isdefault: false
-      };
-      updatedAddress.isdefault = event.target.checked;
-
-      dispatch(setBasketDeliveryAddress(basket.id, updatedAddress));
-      // dispatch(deleteUserDeliveryAddress(address.id));
-    }
-  };
+  // const updateDefaultAddress = (event: any) => {
+  //   console.log('checked', event.target.checked);
+  //   if (address && address.id) {
+  //     let updatedAddress: any = {
+  //       building: address.building ? address.building : '',
+  //       streetaddress: address.streetaddress ? address.streetaddress : '',
+  //       city: address.city ? address.city : '',
+  //       zipcode: address.zipcode ? address.zipcode : '',
+  //       isdefault: false
+  //     };
+  //     updatedAddress.isdefault = event.target.checked;
+  //
+  //     dispatch(setBasketDeliveryAddress(basket.id, updatedAddress));
+  //     // dispatch(deleteUserDeliveryAddress(address.id));
+  //   }
+  // };
 
   return (
     <Formik
@@ -359,37 +363,37 @@ const DeliveryForm = ({ basket, deliveryFormRef, defaultAddress }: any) => {
               </Grid>
             </Grid>
           </Grid>
-          {authToken?.authtoken ? (
-            <Grid
-              item
-              xs={12}
-              style={{
-                paddingBottom: '20px',
-              }}
-            >
-              <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={
-                        address && address.isdefault ? address.isdefault : false
-                      }
-                      onChange={(e) => {
-                        // handleChange(e);
-                        updateDefaultAddress(e);
-                      }}
-                    />
-                  }
-                  label="Make default delivery address."
-                  aria-label="Make default delivery address"
-                  aria-required="true"
-                  title="Make default delivery address"
-                  name="saveAddressCheck"
-                  className="size"
-                />
-              </FormGroup>
-            </Grid>
-          ) : null}
+          {/*{authToken?.authtoken ? (*/}
+          {/*  <Grid*/}
+          {/*    item*/}
+          {/*    xs={12}*/}
+          {/*    style={{*/}
+          {/*      paddingBottom: '20px',*/}
+          {/*    }}*/}
+          {/*  >*/}
+          {/*    <FormGroup>*/}
+          {/*      <FormControlLabel*/}
+          {/*        control={*/}
+          {/*          <Checkbox*/}
+          {/*            checked={*/}
+          {/*              address && address.isdefault ? address.isdefault : false*/}
+          {/*            }*/}
+          {/*            onChange={(e) => {*/}
+          {/*              // handleChange(e);*/}
+          {/*              updateDefaultAddress(e);*/}
+          {/*            }}*/}
+          {/*          />*/}
+          {/*        }*/}
+          {/*        label="Make default delivery address."*/}
+          {/*        aria-label="Make default delivery address"*/}
+          {/*        aria-required="true"*/}
+          {/*        title="Make default delivery address"*/}
+          {/*        name="saveAddressCheck"*/}
+          {/*        className="size"*/}
+          {/*      />*/}
+          {/*    </FormGroup>*/}
+          {/*  </Grid>*/}
+          {/*) : null}*/}
         </form>
       )}
     </Formik>
