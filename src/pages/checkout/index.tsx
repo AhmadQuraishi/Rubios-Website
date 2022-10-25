@@ -25,14 +25,14 @@ import {
 import { displayToast } from '../../helpers/toast';
 import {
   formatCustomFields,
-  formatDeliveryAddress,
+  // formatDeliveryAddress,
   generateSubmitBasketPayload,
   getUniqueId,
   updatePaymentCardsAmount,
 } from '../../helpers/checkout';
 import {
   getAllBillingAccounts,
-  getUserDeliveryAddresses,
+  // getUserDeliveryAddresses,
 } from '../../redux/actions/user';
 import PickupForm from '../../components/pickup-form/index';
 import DeliveryForm from '../../components/delivery-form/index';
@@ -67,8 +67,8 @@ const Checkout = () => {
   const [rewards, setRewards] = React.useState<any>([]);
   const [validate, setValidate] =
     React.useState<ResponseBasketValidation | null>(null);
-  const [defaultDeliveryAddress, setDefaultDeliveryAddress] =
-    React.useState<any>(null);
+  // const [defaultDeliveryAddress, setDefaultDeliveryAddress] =
+  //   React.useState<any>(null);
   const [ccsfObj, setccsfObj] = React.useState<any>();
 
   const basketObj = useSelector((state: any) => state.basketReducer);
@@ -83,9 +83,9 @@ const Checkout = () => {
   const { restaurant, orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
-  const { userDeliveryAddresses } = useSelector(
-    (state: any) => state.userReducer,
-  );
+  // const { userDeliveryAddresses } = useSelector(
+  //   (state: any) => state.userReducer,
+  // );
   const { userBillingAccounts, loading: billingAccountsLoading } = useSelector(
     (state: any) => state.userReducer,
   );
@@ -227,7 +227,7 @@ const Checkout = () => {
           selectedTime,
         ),
       );
-      dispatch(validateBasket(basket.id, null, null, [], null, null, null));
+      dispatch(validateBasket(basket.id, null, null, [], null, null));
       dispatch(getBasketAllowedCardsRequest(basket.id));
       dispatch(getAllBillingAccounts());
       dispatch(removeBasketOrderSubmit());
@@ -333,7 +333,7 @@ const Checkout = () => {
 
   React.useEffect(() => {
     if (authToken?.authtoken && authToken.authtoken !== '') {
-      dispatch(getUserDeliveryAddresses());
+      // dispatch(getUserDeliveryAddresses());
       if (restaurant && restaurant.id) {
         dispatch(
           getRewardsForCheckoutRequest(restaurant.id, authToken.authtoken),
@@ -343,21 +343,21 @@ const Checkout = () => {
     }
   }, []);
 
-  React.useEffect(() => {
-    if (
-      userDeliveryAddresses &&
-      userDeliveryAddresses.deliveryaddresses &&
-      userDeliveryAddresses.deliveryaddresses.length
-    ) {
-      let defaultAddress = userDeliveryAddresses.deliveryaddresses.filter(
-        (address: any) => {
-          return address.isdefault === true;
-        },
-      );
-      defaultAddress = defaultAddress.length ? defaultAddress[0] : null;
-      setDefaultDeliveryAddress(defaultAddress);
-    }
-  }, [userDeliveryAddresses]);
+  // React.useEffect(() => {
+  //   if (
+  //     userDeliveryAddresses &&
+  //     userDeliveryAddresses.deliveryaddresses &&
+  //     userDeliveryAddresses.deliveryaddresses.length
+  //   ) {
+  //     let defaultAddress = userDeliveryAddresses.deliveryaddresses.filter(
+  //       (address: any) => {
+  //         return address.isdefault === true;
+  //       },
+  //     );
+  //     defaultAddress = defaultAddress.length ? defaultAddress[0] : null;
+  //     setDefaultDeliveryAddress(defaultAddress);
+  //   }
+  // }, [userDeliveryAddresses]);
 
   React.useEffect(() => {
     if (basketObj.basket) {
@@ -507,7 +507,7 @@ const Checkout = () => {
   const placeOrder = async () => {
     setButtonDisabled(true);
     let customFields = [];
-    let deliveryAddress = null;
+    // let deliveryAddress = null;
     let deliverymode = {
       deliverymode: (basket && basket.deliverymode) || '',
     };
@@ -606,13 +606,13 @@ const Checkout = () => {
       customFields = formatCustomFields(restaurant.customfields, formDataValue);
     }
 
-    if (basket && basket.deliverymode === DeliveryModeEnum.dispatch) {
-      deliveryAddress = formatDeliveryAddress(
-        formDataValue,
-        defaultDeliveryAddress,
-      );
-      console.log('deliveryAddress', deliveryAddress);
-    }
+    // if (basket && basket.deliverymode === DeliveryModeEnum.dispatch) {
+    //   deliveryAddress = formatDeliveryAddress(
+    //     formDataValue,
+    //     defaultDeliveryAddress,
+    //   );
+    //   console.log('deliveryAddress', deliveryAddress);
+    // }
 
     if (basket) {
       setButtonDisabled(false);
@@ -654,7 +654,6 @@ const Checkout = () => {
           user,
           customFields,
           deliverymode,
-          deliveryAddress,
           ccsfObj,
         ),
       );
@@ -949,7 +948,7 @@ const Checkout = () => {
                       basket.deliverymode === DeliveryModeEnum.dispatch ? (
                         <DeliveryForm
                           basket={basket}
-                          defaultAddress={defaultDeliveryAddress}
+                          // defaultAddress={defaultDeliveryAddress}
                           deliveryFormRef={deliveryFormRef}
                         />
                       ) : null}
@@ -974,7 +973,7 @@ const Checkout = () => {
                     <br />
                     <Rewards rewardsList={rewards} />
                   </>
-                )} 
+                )}
               <br />
               <br />
               <br />
