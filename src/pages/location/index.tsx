@@ -181,7 +181,8 @@ const Location = () => {
     } else if (
       showNearBy &&
       orderType &&
-      orderType === 'dispatch' &&
+      searchText === '' &&
+      // orderType === 'dispatch' &&
       !addCustomAddressCheck()
     ) {
       if (navigator.geolocation) {
@@ -198,14 +199,22 @@ const Location = () => {
               .then((results) => {
                 const address = getAddress(results[0]);
                 if (address.address1 !== '') {
-                  handleClickOpen();
-                  setSelectedAddress(address);
-                  setActionPerform(false);
-                  setShowNearBy(true);
-                  setSelectedLatLng({
-                    lat: lat,
-                    lng: lng,
-                  });
+                  if (orderType !== 'dispatch') {
+                    getNearByRestaurants(lat, lng);
+                    setSelectedLatLng({
+                      lat: lat,
+                      lng: lng,
+                    });
+                  } else {
+                    handleClickOpen();
+                    setSelectedAddress(address);
+                    setActionPerform(false);
+                    setShowNearBy(true);
+                    setSelectedLatLng({
+                      lat: lat,
+                      lng: lng,
+                    });
+                  }
                   return;
                 } else {
                   setActionPerform(false);
@@ -239,7 +248,7 @@ const Location = () => {
   }, [showNearBy, LatLng]);
 
   useEffect(() => {
-    if (orderType === 'dispatch') {
+    if (orderType === 'dispatch' || showNearBy) {
       return;
     }
     if (restaurants && restaurants.restaurants) {
@@ -290,15 +299,21 @@ const Location = () => {
         setDeliveryRasturants([]);
       } else {
         if (showNearBy || LatLng) {
+          console.log('working 1');
           if (LatLng) {
             setDeliveryRasturants(
               getFilteredRestaurants(nearbyRestaurants.restaurants),
             );
+            setfilteredRestaurants(
+              getFilteredRestaurants(nearbyRestaurants.restaurants),
+            );
             setActionPerform(false);
           }
-          setLatLng(null);
           if (showNearBy) {
             setDeliveryRasturants(
+              getFilteredRestaurants(nearbyRestaurants.restaurants),
+            );
+            setfilteredRestaurants(
               getFilteredRestaurants(nearbyRestaurants.restaurants),
             );
             setShowNearBy(false);
@@ -314,6 +329,7 @@ const Location = () => {
           setZoom(7);
         } else {
           if (orderType && orderType !== '') {
+            console.log('working 2');
             setfilteredRestaurants(
               getFilteredRestaurants(nearbyRestaurants.restaurants),
             );
@@ -322,6 +338,40 @@ const Location = () => {
       }
     }
   }, [nearbyRestaurants]);
+
+  useEffect(() => {
+    setMarkers([]);
+    console.log('showNearBy', showNearBy);
+    console.log('selectedLatLng', selectedLatLng);
+    if (restaurants && restaurants.restaurants.length > 0) {
+      let filteredRest = !orderType
+        ? restaurants.restaurants
+        : orderType && !showNearBy
+        ? filteredRestaurants
+        : orderType && selectedLatLng
+        ? deliveryRasturants
+        : [];
+
+      filteredRest = getFilteredRestaurants(filteredRest);
+
+      filteredRest.map((item: ResponseRestaurant, index: number) => {
+        if (mapCenter == undefined) {
+          setMapCenter({
+            lat: item.latitude,
+            lng: item.longitude,
+          });
+        }
+        let latLong = {
+          lat: item.latitude,
+          lng: parseFloat(item.longitude),
+        };
+        setMarkers((markers) => [
+          ...markers,
+          <Marker key={Math.random() + index} position={latLong} />,
+        ]);
+      });
+    }
+  }, [restaurants, filteredRestaurants, deliveryRasturants, orderType]);
 
   const getNearByRestaurants = (lat: number, long: number) => {
     var today = new Date();
@@ -364,37 +414,6 @@ const Location = () => {
     filteredRestaurants = removeTestingStores(filteredRestaurants);
     return filteredRestaurants;
   };
-  useEffect(() => {
-    setMarkers([]);
-    if (restaurants && restaurants.restaurants.length > 0) {
-      let filteredRest = !orderType
-        ? restaurants.restaurants
-        : orderType && orderType !== 'dispatch'
-        ? filteredRestaurants
-        : orderType && orderType === 'dispatch'
-        ? deliveryRasturants
-        : [];
-
-      filteredRest = getFilteredRestaurants(filteredRest);
-
-      filteredRest.map((item: ResponseRestaurant, index: number) => {
-        if (mapCenter == undefined) {
-          setMapCenter({
-            lat: item.latitude,
-            lng: item.longitude,
-          });
-        }
-        let latLong = {
-          lat: item.latitude,
-          lng: parseFloat(item.longitude),
-        };
-        setMarkers((markers) => [
-          ...markers,
-          <Marker key={Math.random() + index} position={latLong} />,
-        ]);
-      });
-    }
-  }, [restaurants, filteredRestaurants, deliveryRasturants, orderType]);
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
