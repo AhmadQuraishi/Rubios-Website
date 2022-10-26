@@ -5,19 +5,13 @@ import {
   useTheme,
   useMediaQuery,
   Theme,
-  Drawer,
-  IconButton,
   Button,
   Grid,
   Dialog,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-
 import { Link, useNavigate } from 'react-router-dom';
-
 import { useState } from 'react';
-
-import MenuIcon from '@mui/icons-material/Menu';
 import logo from '../../assets/imgs/rubios-logo-color.png';
 import cartIconMobile from '../../assets/imgs/cart-icon-mobile.svg';
 
@@ -100,8 +94,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     textAlign: 'center',
     '&:hover': {
       color: '#0073BD',
-
-      // color: theme.palette.success.main,
     },
     transition: 'color 0.5s ease',
   },
@@ -127,13 +119,10 @@ const Header = (props: any) => {
   } = props;
   const classes = useStyles();
   const theme = useTheme();
-  const [openDrawer, setOpenDrawer] = useState(false);
-  // const [open, setOpen] = useState(false);
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [showCart, setShowCart] = useState(false);
   const [showUpsells, setShowUpsells] = useState(false);
   const [upsellsType, setUpsellsType] = useState('');
-  // const [state, setState] = useState(false);
   const basketObj = useSelector((state: any) => state.basketReducer);
   const { providerToken } = useSelector((state: any) => state.providerReducer);
   const { restaurant } = useSelector(
@@ -145,19 +134,9 @@ const Header = (props: any) => {
   const handleShowCart = () => {
     setShowAccountMenu(false);
     if (fromEditOrder) {
-      // setShowCart(true);
-      //document.body.style.overflow = 'hidden';
-      // setState(!state);
       fromEditOrder = false;
       setShowCart(false);
-      //document.body.style.overflow = 'auto';
     } else {
-      // if (!showCart) {
-      // document.body.style.overflow = 'hidden';
-      // } else {
-      // document.body.style.overflow = 'auto';
-      // }
-      // setOpen(!showCart);
       setShowCart(!showCart);
     }
     if (showCart) {
@@ -167,7 +146,6 @@ const Header = (props: any) => {
   };
 
   const handleUpsells = (type: string) => {
-    console.log('type', type);
     if (type === '') {
       setShowUpsells(false);
     } else {
@@ -177,7 +155,6 @@ const Header = (props: any) => {
   };
   return (
     <>
-      {console.log('window location', window.location.pathname)}
       <AppBar position="sticky" className={classes.navBar}>
         <Toolbar
           sx={{
@@ -186,8 +163,7 @@ const Header = (props: any) => {
           }}
         >
           <Typography variant="body1" className={classes.logo}>
-            <p
-              // to="/location"
+            <span
               className={classes.logoImg}
             >
               <a href={process.env.REACT_APP_RUBIOS_HOME_PAGE}>
@@ -206,7 +182,7 @@ const Header = (props: any) => {
                   title="Rubio's Cosatal Grill Logo"
                 />
               </a>
-            </p>
+            </span>
           </Typography>
           {isMobile ? (
             <>
@@ -225,25 +201,6 @@ const Header = (props: any) => {
                   Menu
                 </Link>
               )}
-
-              {/* <Drawer open={openDrawer} onClose={() => setOpenDrawer(false)}>
-                <div style={{ padding: '20px' }}>
-                  <Link
-                    to={restaurant ? '/menu/' + restaurant.slug : '/'}
-                    onClick={() => setOpenDrawer(false)}
-                    className={classes.menuLink}
-                    title="Main Menu"
-                  >
-                    Main Menu
-                  </Link>
-                </div>
-              </Drawer>
-              <IconButton
-                onClick={() => setOpenDrawer(!openDrawer)}
-                className={classes.icon}
-              >
-                <MenuIcon fontSize="large" titleAccess="Menu Icon" />
-              </IconButton> */}
               {providerToken && providerToken.first_name ? (
                 <Grid
                   container
@@ -312,7 +269,6 @@ const Header = (props: any) => {
                       sx={{ display: 'flex', justifyContent: 'center' }}
                     >
                       <img
-                        // style={{ width: '75%', display: 'block' }}
                         src={require('../../assets/imgs/user-icon.png')}
                         alt="Login Icon"
                       />

@@ -1,12 +1,5 @@
 import { setDeliveryAddress } from '../../../redux/actions/location/delivery-address';
-// import { verifyDeliveryAddressRequest } from '../../../redux/actions/location/verify-delivery-address';
-import {
-  Button,
-  Grid,
-  Typography,
-  // useTheme,
-  // useMediaQuery,
-} from '@mui/material';
+import { Button, Grid, Typography } from '@mui/material';
 import { displayToast } from '../../../helpers/toast';
 import { setResturantInfoRequest } from '../../../redux/actions/restaurant';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,10 +13,8 @@ import { facebookConversionTypes } from '../../../redux/types/facebook-conversio
 const StoreInfo = (props: any) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const theme = useTheme();
 
   const {
-    setSelectedStoreID,
     resturantOrderType,
     deliveryRasturants,
     deliveryAddressString,
@@ -75,14 +66,12 @@ const StoreInfo = (props: any) => {
   }, []);
 
   const gotoCategoryPage = (storeID: number) => {
-    setSelectedStoreID('');
     if (resturantOrderType == undefined) {
       displayToast('ERROR', 'Please select atleast one order type');
       return false;
     }
     let restaurantObj = null;
     if (resturantOrderType == 'dispatch') {
-      setSelectedStoreID(storeID.toString());
       restaurantObj = deliveryRasturants.find((x: any) => x.id === storeID);
       dispatch(setDeliveryAddress(deliveryAddressString));
     } else {
@@ -209,16 +198,13 @@ const StoreInfo = (props: any) => {
       sx={{
         marginBottom: '10px',
         cursor: 'pointer',
-        // cursor: candeliver == false ? 'not-allowed' : 'pointer',
       }}
       onClick={() => {
         !loading && gotoCategoryPage(item.id);
-        // candeliver && !loading && gotoCategoryPage(item.id);
       }}
       onKeyUp={(e) => {
         if (e.keyCode === 13) {
           !loading && gotoCategoryPage(item.id);
-          // candeliver && !loading && gotoCategoryPage(item.id);
         }
       }}
       key={index}

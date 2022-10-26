@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { Grid, Theme, Typography, Divider, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
@@ -8,7 +7,7 @@ import iosLogo from '../../assets/imgs/button-apple.png';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { getMenuRequest } from '../../redux/actions/footer';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import './footer.css';
 import fbIcon from '../../assets/imgs/facebook-icon.png';
 import instaIcon from '../../assets/imgs/insta-icon.png';
@@ -401,7 +400,6 @@ const Footer = () => {
                     </li>
                     <li>
                       <a
-                        // href="javascript:Optanon.ToggleInfoDisplay()"
                         href="#"
                         className={classes.smallLinks}
                         title="Cookies"
