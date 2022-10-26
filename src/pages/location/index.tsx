@@ -720,24 +720,24 @@ const Location = () => {
                         helperText={touched.zip && errors.zip}
                       />
                     </Grid>
-                    <Grid item xs={12}>
-                      <FormGroup>
-                        <FormControlLabel
-                          control={
-                            <Checkbox
-                              checked={values.isdefault}
-                              onChange={handleChange('isdefault')}
-                            />
-                          }
-                          label="Make default delivery address."
-                          aria-label="Make default delivery address"
-                          aria-required="true"
-                          title="Make default delivery address"
-                          name="saveAddressCheck"
-                          className="size"
-                        />
-                      </FormGroup>
-                    </Grid>
+                    {/*<Grid item xs={12}>*/}
+                    {/*  <FormGroup>*/}
+                    {/*    <FormControlLabel*/}
+                    {/*      control={*/}
+                    {/*        <Checkbox*/}
+                    {/*          checked={values.isdefault}*/}
+                    {/*          onChange={handleChange('isdefault')}*/}
+                    {/*        />*/}
+                    {/*      }*/}
+                    {/*      label="Make default delivery address."*/}
+                    {/*      aria-label="Make default delivery address"*/}
+                    {/*      aria-required="true"*/}
+                    {/*      title="Make default delivery address"*/}
+                    {/*      name="saveAddressCheck"*/}
+                    {/*      className="size"*/}
+                    {/*    />*/}
+                    {/*  </FormGroup>*/}
+                    {/*</Grid>*/}
                   </Grid>
                 </DialogContentText>
               </DialogContent>
