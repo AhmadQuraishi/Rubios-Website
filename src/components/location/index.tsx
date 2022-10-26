@@ -249,6 +249,11 @@ const LocationCard = (props: any) => {
             //     setShowNotFoundMessage(true);
             //   });
           }
+          if (searchedRestaurant.length === 0) {
+            searchedRestaurant = updatedRestaurants.filter(
+              (x: any) => x.zip.toLowerCase() == searchTxt,
+            );
+          }
           setfilteredRestaurants(
             searchedRestaurant.length > 0 ? searchedRestaurant : [],
           );
