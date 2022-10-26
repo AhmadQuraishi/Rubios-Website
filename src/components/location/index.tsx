@@ -145,16 +145,6 @@ const LocationCard = (props: any) => {
   }, [resturantOrderType]);
 
   useEffect(() => {
-    console.log('start------------>');
-    console.log('filteredRestaurants', filteredRestaurants);
-    console.log('AllResturants', AllResturants);
-    console.log('deliveryRasturants', deliveryRasturants);
-    console.log('end------------>');
-  }, [filteredRestaurants, AllResturants, deliveryRasturants]);
-
-  // const [selectedStoreID, setSelectedStoreID] = useState('');
-
-  useEffect(() => {
     setShowNotFoundMessage(false);
     if (isNearByRestaurantList && resturantOrderType != 'dispatch') {
       setfilteredRestaurants(restaurants);
@@ -244,14 +234,11 @@ const LocationCard = (props: any) => {
             getGeocode({ address: searchTxt })
               .then((results) => {
                 getLatLng(results[0]).then(({ lat, lng }) => {
-                  console.log('lat', lat);
-                  console.log('lng', lng);
                   getNearByRestaurants(lat, lng);
                   setShowNearBy(true);
                 });
               })
               .catch((error) => {
-                console.log('error zipcode', error);
                 setShowNotFoundMessage(true);
               });
           }
@@ -296,7 +283,6 @@ const LocationCard = (props: any) => {
   };
 
   const gotoCategoryPage = (storeID: number) => {
-    console.log('storeID', storeID);
     if (resturantOrderType === undefined) {
       displayToast('ERROR', 'Please select atleast one order type');
       return false;
@@ -304,13 +290,10 @@ const LocationCard = (props: any) => {
     let restaurantObj = null;
     if (resturantOrderType === 'dispatch') {
       restaurantObj = deliveryRasturants.find((x: any) => x.id === storeID);
-      console.log('deliveryAddressString', deliveryAddressString);
       dispatch(setDeliveryAddress(deliveryAddressString));
     } else {
       restaurantObj = restaurants.find((x: any) => x.id === storeID);
     }
-    console.log('restaurants', restaurants);
-    console.log('restaurantObj', restaurantObj);
     if (restaurantObj) {
       if (
         restaurant == null ||
@@ -673,7 +656,6 @@ const LocationCard = (props: any) => {
                   </Typography>
                 </>
               )}
-              {console.log('mmm', addCustomAddressCheck())}
               {!isNearByRestaurantList &&
                 !showAllResturants &&
                 resturantOrderType === 'dispatch' &&
@@ -710,7 +692,6 @@ const LocationCard = (props: any) => {
                 setSelectedLatLng={setSelectedLatLng}
               />
             )}
-            {console.log('orderType', orderType)}
             <Grid
               item
               xs={12}

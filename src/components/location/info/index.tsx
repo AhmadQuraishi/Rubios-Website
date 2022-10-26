@@ -1,14 +1,9 @@
-import {
-  Button,
-  Grid,
-  Typography,
-} from '@mui/material';
+import { Button, Grid, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import ListHours from '../listHours';
 
 const StoreInfo = (props: any) => {
-
   const {
     gotoCategoryPage,
     resturantOrderType,

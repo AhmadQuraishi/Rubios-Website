@@ -1,9 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import {
-  GoogleMap,
-  Marker,
-  useLoadScript,
-} from '@react-google-maps/api';
+import { GoogleMap, Marker, useLoadScript } from '@react-google-maps/api';
 import LocationCard from '../../components/location';
 import { useDispatch, useSelector } from 'react-redux';
 import { ResponseRestaurant } from '../../types/olo-api';
@@ -57,7 +53,7 @@ const mapContainerStyle = {
   height: 'auto',
 };
 const Location = () => {
-  const [ libraries ] = useState<any>(['places']);
+  const [libraries] = useState<any>(['places']);
   useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY?.toString() || '',
     libraries,
@@ -180,7 +176,6 @@ const Location = () => {
   useEffect(() => {
     if (LatLng && actionPerform) {
       if (LatLng) {
-        console.log('nearby');
         getNearByRestaurants(LatLng.lat, LatLng.lng);
       }
     } else if (
@@ -190,7 +185,6 @@ const Location = () => {
       !addCustomAddressCheck()
     ) {
       if (navigator.geolocation) {
-        console.log('geolocation', navigator.geolocation);
         navigator.geolocation.getCurrentPosition(
           function (position) {
             const lat = position.coords.latitude;
@@ -223,7 +217,6 @@ const Location = () => {
                 }
               })
               .catch((error) => {
-                console.log('Error: ', error);
                 displayToast(
                   'ERROR',
                   'No address found against your current location.',
@@ -397,10 +390,7 @@ const Location = () => {
         };
         setMarkers((markers) => [
           ...markers,
-          <Marker
-            key={Math.random() + index}
-            position={latLong}
-          />,
+          <Marker key={Math.random() + index} position={latLong} />,
         ]);
       });
     }
@@ -451,6 +441,25 @@ const Location = () => {
       });
   };
 
+  useEffect(() => {
+    console.log('start------------>');
+    console.log('orderType', orderType);
+    console.log('showNearBy', showNearBy);
+    console.log('LatLng', LatLng);
+    console.log('actionPerform', actionPerform);
+    console.log('selectedAddress', selectedAddress);
+    console.log('filteredRestaurants', filteredRestaurants);
+    console.log('AllResturants', allResturants);
+    console.log('deliveryRasturants', deliveryRasturants);
+    console.log('nearbyRestaurants', nearbyRestaurants);
+    console.log('end------------>');
+  }, [
+    filteredRestaurants,
+    allResturants,
+    deliveryRasturants,
+    nearbyRestaurants,
+  ]);
+
   return (
     <Page title={'Location'} className="">
       <Dialog
@@ -467,163 +476,166 @@ const Location = () => {
         <DialogTitle id="alert-dialog-title">
           {'Confirm Your Delivery Address'}
         </DialogTitle>
-        <Formik
-          initialValues={{
-            address1: selectedAddress && selectedAddress.address1,
-            address2: selectedAddress && selectedAddress.address2,
-            city: selectedAddress && selectedAddress.city,
-            zip: selectedAddress && selectedAddress.zip,
-            isdefault: (selectedAddress && selectedAddress.isdefault) || false,
-          }}
-          validationSchema={Yup.object({
-            address1: Yup.string()
-              .trim()
-              .max(40, 'Must be 40 characters or less')
-              .min(3, 'Must be at least 3 characters')
-              .required('Street address is required'),
-            address2: Yup.string()
-              .trim()
-              .max(40, 'Must be 30 characters or less'),
-            city: Yup.string()
-              .trim()
-              .max(40, 'Must be 40 characters or less')
-              .min(3, 'Must be at least 3 characters')
-              .required('City is required'),
-            zip: Yup.string()
-              .trim()
-              .min(3, 'Must be at least 3 digits')
-              .max(5, 'Must be at most 5 digits')
-              .matches(
-                /^[0-9\s]+$/,
-                'Only numbers are allowed for this field ',
-              )
-              .required('Postal code is required'),
-            isdefault: Yup.boolean(),
-          })}
-          onSubmit={async (values) => {}}
-        >
-          {({
-            errors,
-            handleBlur,
-            handleChange,
-            handleSubmit,
-            touched,
-            values,
-            isValid,
-            dirty,
-          }) => (
-            <form onSubmit={handleSubmit}>
-              <DialogContent>
-                <DialogContentText id="alert-dialog-description">
-                  <Grid container sx={{ width: '100%', maxWidth: '450px' }}>
-                    <Grid item xs={12}>
-                      <TextField
-                        aria-label="Address"
-                        label="Street Address"
-                        title="Street Address"
-                        type="text"
-                        name="address1"
-                        autoComplete="off"
-                        sx={{ width: '100%' }}
-                        value={values.address1}
-                        onChange={handleChange('address1')}
-                        onBlur={handleBlur('address1')}
-                        error={Boolean(touched.address1 && errors.address1)}
-                        helperText={touched.address1 && errors.address1}
-                      />
+        {selectedAddress && (
+          <Formik
+            initialValues={{
+              address1: selectedAddress && selectedAddress.address1,
+              address2: selectedAddress && selectedAddress.address2,
+              city: selectedAddress && selectedAddress.city,
+              zip: selectedAddress && selectedAddress.zip,
+              isdefault:
+                (selectedAddress && selectedAddress.isdefault) || false,
+            }}
+            validationSchema={Yup.object({
+              address1: Yup.string()
+                .trim()
+                .max(40, 'Must be 40 characters or less')
+                .min(3, 'Must be at least 3 characters')
+                .required('Street address is required'),
+              address2: Yup.string()
+                .trim()
+                .max(40, 'Must be 30 characters or less'),
+              city: Yup.string()
+                .trim()
+                .max(40, 'Must be 40 characters or less')
+                .min(3, 'Must be at least 3 characters')
+                .required('City is required'),
+              zip: Yup.string()
+                .trim()
+                .min(3, 'Must be at least 3 digits')
+                .max(5, 'Must be at most 5 digits')
+                .matches(
+                  /^[0-9\s]+$/,
+                  'Only numbers are allowed for this field ',
+                )
+                .required('Postal code is required'),
+              isdefault: Yup.boolean(),
+            })}
+            onSubmit={async (values) => {}}
+          >
+            {({
+              errors,
+              handleBlur,
+              handleChange,
+              handleSubmit,
+              touched,
+              values,
+              isValid,
+              dirty,
+            }) => (
+              <form onSubmit={handleSubmit}>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-description">
+                    <Grid container sx={{ width: '100%', maxWidth: '450px' }}>
+                      <Grid item xs={12}>
+                        <TextField
+                          aria-label="Address"
+                          label="Street Address"
+                          title="Street Address"
+                          type="text"
+                          name="address1"
+                          autoComplete="off"
+                          sx={{ width: '100%' }}
+                          value={values.address1}
+                          onChange={handleChange('address1')}
+                          onBlur={handleBlur('address1')}
+                          error={Boolean(touched.address1 && errors.address1)}
+                          helperText={touched.address1 && errors.address1}
+                        />
+                      </Grid>
+                      <Grid item xs={12} sx={{ paddingTop: '10px' }}>
+                        <TextField
+                          aria-label="Apt, Floor, Suite, Building, Company Address - Optional"
+                          label="Apt, Floor, Suite, Building, Company Address - Optional"
+                          title="Apt, Floor, Suite, Building, Company Address - Optional"
+                          type="text"
+                          name="second_address"
+                          autoComplete="off"
+                          sx={{ width: '100%' }}
+                          value={values.address2}
+                          onChange={handleChange('address2')}
+                          onBlur={handleBlur('address2')}
+                          error={Boolean(touched.address2 && errors.address2)}
+                          helperText={touched.address2 && errors.address2}
+                        />
+                      </Grid>
+                      <Grid item xs={12} sx={{ paddingTop: '10px' }}>
+                        <TextField
+                          aria-label="City"
+                          label="City"
+                          title="City"
+                          type="text"
+                          name="City"
+                          autoComplete="off"
+                          sx={{ width: '100%' }}
+                          value={values.city}
+                          onChange={handleChange('city')}
+                          onBlur={handleBlur('city')}
+                          error={Boolean(touched.city && errors.city)}
+                          helperText={touched.city && errors.city}
+                        />
+                      </Grid>
+                      <Grid item xs={12} sx={{ paddingTop: '10px' }}>
+                        <TextField
+                          aria-label="Postal Code"
+                          label="Postal Code"
+                          title="Postal Code"
+                          type="text"
+                          name="postal_code"
+                          autoComplete="off"
+                          sx={{ width: '100%' }}
+                          value={values.zip}
+                          onChange={handleChange('zip')}
+                          onBlur={handleBlur('zip')}
+                          error={Boolean(touched.zip && errors.zip)}
+                          helperText={touched.zip && errors.zip}
+                        />
+                      </Grid>
                     </Grid>
-                    <Grid item xs={12} sx={{ paddingTop: '10px' }}>
-                      <TextField
-                        aria-label="Apt, Floor, Suite, Building, Company Address - Optional"
-                        label="Apt, Floor, Suite, Building, Company Address - Optional"
-                        title="Apt, Floor, Suite, Building, Company Address - Optional"
-                        type="text"
-                        name="second_address"
-                        autoComplete="off"
-                        sx={{ width: '100%' }}
-                        value={values.address2}
-                        onChange={handleChange('address2')}
-                        onBlur={handleBlur('address2')}
-                        error={Boolean(touched.address2 && errors.address2)}
-                        helperText={touched.address2 && errors.address2}
-                      />
-                    </Grid>
-                    <Grid item xs={12} sx={{ paddingTop: '10px' }}>
-                      <TextField
-                        aria-label="City"
-                        label="City"
-                        title="City"
-                        type="text"
-                        name="City"
-                        autoComplete="off"
-                        sx={{ width: '100%' }}
-                        value={values.city}
-                        onChange={handleChange('city')}
-                        onBlur={handleBlur('city')}
-                        error={Boolean(touched.city && errors.city)}
-                        helperText={touched.city && errors.city}
-                      />
-                    </Grid>
-                    <Grid item xs={12} sx={{ paddingTop: '10px' }}>
-                      <TextField
-                        aria-label="Postal Code"
-                        label="Postal Code"
-                        title="Postal Code"
-                        type="text"
-                        name="postal_code"
-                        autoComplete="off"
-                        sx={{ width: '100%' }}
-                        value={values.zip}
-                        onChange={handleChange('zip')}
-                        onBlur={handleBlur('zip')}
-                        error={Boolean(touched.zip && errors.zip)}
-                        helperText={touched.zip && errors.zip}
-                      />
-                    </Grid>
-                  </Grid>
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button
-                  variant="contained"
-                  onClick={handleClose}
-                  sx={{ marginBottom: '15px' }}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  variant="contained"
-                  onClick={() => {
-                    setSelectedAddress({
-                      address1: values.address1 || '',
-                      address2: values.address2 || '',
-                      city: values.city || '',
-                      zip: values.zip || '',
-                      isdefault: values.isdefault,
-                    });
-                    handleLCloseConfirm({
-                      address1: values.address1 || '',
-                      address2: values.address2 || '',
-                      city: values.city || '',
-                      zip: values.zip || '',
-                      isdefault: values.isdefault,
-                    });
-                  }}
-                  sx={{ marginRight: '15px', marginBottom: '15px' }}
-                  autoFocus
-                  disabled={
-                    values.address1 === '' ||
-                    values.city === '' ||
-                    values.zip === '' ||
-                    !(isValid)
-                  }
-                >
-                  Confirm
-                </Button>
-              </DialogActions>
-            </form>
-          )}
-        </Formik>
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button
+                    variant="contained"
+                    onClick={handleClose}
+                    sx={{ marginBottom: '15px' }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    variant="contained"
+                    onClick={() => {
+                      setSelectedAddress({
+                        address1: values.address1 || '',
+                        address2: values.address2 || '',
+                        city: values.city || '',
+                        zip: values.zip || '',
+                        isdefault: values.isdefault,
+                      });
+                      handleLCloseConfirm({
+                        address1: values.address1 || '',
+                        address2: values.address2 || '',
+                        city: values.city || '',
+                        zip: values.zip || '',
+                        isdefault: values.isdefault,
+                      });
+                    }}
+                    sx={{ marginRight: '15px', marginBottom: '15px' }}
+                    autoFocus
+                    disabled={
+                      values.address1 === '' ||
+                      values.city === '' ||
+                      values.zip === '' ||
+                      !isValid
+                    }
+                  >
+                    Confirm
+                  </Button>
+                </DialogActions>
+              </form>
+            )}
+          </Formik>
+        )}
       </Dialog>
       <div style={{ minHeight: '300px', position: 'relative' }}>
         {(loading || window.google === undefined || actionPerform) && (
