@@ -23,7 +23,12 @@ import { getAddress } from '../../../helpers/common';
 import { getNearByResturantListRequest } from '../../../redux/actions/restaurant/list';
 import DeliveryAddressSkeltonUI from '../../skelton-views/delivery-address';
 import './index.css';
-import { RequestDeliveryAddress } from '../../../types/olo-api';
+// import { RequestDeliveryAddress } from '../../../types/olo-api';
+// import * as Yup from 'yup';
+// import moment from 'moment';
+// import { userRegister } from '../../../redux/actions/user';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 
 const DeliveryAddresses = (props: any) => {
   const dispatch = useDispatch();
@@ -71,41 +76,41 @@ const DeliveryAddresses = (props: any) => {
     console.log('open', open);
   }, [open]);
 
-  const handleChange = (key: any, value: any) => {
-    if (key === 'address1') {
-      setAddDeliveryAddress({ ...addDeliveryAddress, address1: value });
-    }
-    if (key === 'address2') {
-      setAddDeliveryAddress({ ...addDeliveryAddress, address2: value });
-    }
-    if (key === 'city') {
-      // console.log('value', value)
-      // let newValue = value.trim().replace(/[^\s*a-zA-Z]/gi, '');
-      // console.log('newValue', newValue)
-      setAddDeliveryAddress({ ...addDeliveryAddress, city: value });
-    }
-    if (key === 'zip') {
-      let newValue = value.replace(/[^0-9]/gi, '');
-      newValue = newValue.length > 5 ? newValue.slice(0, 5) : newValue;
-      const regex = /[0-9]+/g;
-      if (newValue === '' || regex.test(newValue)) {
-        setAddDeliveryAddress({ ...addDeliveryAddress, zip: newValue });
-      }
-
-      // let newValue = value;
-      // newValue =
-      //   newValue && newValue >= 0 && newValue <= 99999
-      //     ? parseInt(newValue)
-      //     : newValue > 99999
-      //     ? addDeliveryAddress.zip
-      //     : '';
-      // newValue = newValue.length > 5 ? newValue.slice(0, 5) : newValue;
-      // setAddDeliveryAddress({ ...addDeliveryAddress, zip: newValue });
-    }
-    if (key === 'isdefault') {
-      setAddDeliveryAddress({ ...addDeliveryAddress, isdefault: value });
-    }
-  };
+  // const handleChange = (key: any, value: any) => {
+  //   if (key === 'address1') {
+  //     setAddDeliveryAddress({ ...addDeliveryAddress, address1: value });
+  //   }
+  //   if (key === 'address2') {
+  //     setAddDeliveryAddress({ ...addDeliveryAddress, address2: value });
+  //   }
+  //   if (key === 'city') {
+  //     // console.log('value', value)
+  //     // let newValue = value.trim().replace(/[^\s*a-zA-Z]/gi, '');
+  //     // console.log('newValue', newValue)
+  //     setAddDeliveryAddress({ ...addDeliveryAddress, city: value });
+  //   }
+  //   if (key === 'zip') {
+  //     let newValue = value.replace(/[^0-9]/gi, '');
+  //     newValue = newValue.length > 5 ? newValue.slice(0, 5) : newValue;
+  //     const regex = /[0-9]+/g;
+  //     if (newValue === '' || regex.test(newValue)) {
+  //       setAddDeliveryAddress({ ...addDeliveryAddress, zip: newValue });
+  //     }
+  //
+  //     // let newValue = value;
+  //     // newValue =
+  //     //   newValue && newValue >= 0 && newValue <= 99999
+  //     //     ? parseInt(newValue)
+  //     //     : newValue > 99999
+  //     //     ? addDeliveryAddress.zip
+  //     //     : '';
+  //     // newValue = newValue.length > 5 ? newValue.slice(0, 5) : newValue;
+  //     // setAddDeliveryAddress({ ...addDeliveryAddress, zip: newValue });
+  //   }
+  //   if (key === 'isdefault') {
+  //     setAddDeliveryAddress({ ...addDeliveryAddress, isdefault: value });
+  //   }
+  // };
 
   const getNearByRestaurants = (lat: number, long: number) => {
     var today = new Date();
@@ -452,153 +457,186 @@ const DeliveryAddresses = (props: any) => {
             <DialogTitle id="modal-dialog-delivery-title">
               {`Delivery Address`}
             </DialogTitle>
-            <DialogContent>
-              <DialogContentText id="Modal-dialog-delivery-description">
-                <Grid container sx={{ width: '100%', maxWidth: '450px' }}>
-                  <Grid item xs={12}>
-                    <TextField
-                      aria-label="Address"
-                      label="Street Address"
-                      title="Street Address"
-                      type="text"
-                      name="street_address"
-                      autoComplete="off"
-                      sx={{ width: '100%' }}
-                      value={addDeliveryAddress && addDeliveryAddress.address1}
-                      onChange={(e) => {
-                        handleChange('address1', e.target.value.trim());
-                      }}
-
-                      // onChange={handleChange('last_name')}
-                      // onBlur={handleBlur('last_name')}
-                      // error={Boolean(touched.last_name && errors.last_name)}
-                      // helperText={touched.last_name && errors.last_name}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sx={{ paddingTop: '10px' }}>
-                    <TextField
-                      aria-label="Apt, Floor, Suite, Building, Company Address - Optional"
-                      label="Apt, Floor, Suite, Building, Company Address - Optional"
-                      title="Apt, Floor, Suite, Building, Company Address - Optional"
-                      type="text"
-                      name="second_address"
-                      autoComplete="off"
-                      sx={{ width: '100%' }}
-                      value={addDeliveryAddress && addDeliveryAddress.address2}
-                      onChange={(e) => {
-                        handleChange('address2', e.target.value.trim());
-                      }}
-
-                      // onChange={handleChange('last_name')}
-                      // onBlur={handleBlur('last_name')}
-                      // error={Boolean(touched.last_name && errors.last_name)}
-                      // helperText={touched.last_name && errors.last_name}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sx={{ paddingTop: '10px' }}>
-                    <TextField
-                      aria-label="City"
-                      label="City"
-                      title="City"
-                      type="text"
-                      name="City"
-                      autoComplete="off"
-                      sx={{ width: '100%' }}
-                      value={addDeliveryAddress && addDeliveryAddress.city}
-                      onChange={(e) => {
-                        handleChange('city', e.target.value.trim());
-                      }}
-
-                      // onBlur={handleBlur('last_name')}
-                      // error={Boolean(touched.last_name && errors.last_name)}
-                      // helperText={touched.last_name && errors.last_name}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sx={{ paddingTop: '10px' }}>
-                    <TextField
-                      aria-label="Postal Code"
-                      label="Postal Code"
-                      title="Postal Code"
-                      type="text"
-                      name="postal_code"
-                      autoComplete="off"
-                      sx={{ width: '100%' }}
-                      value={addDeliveryAddress && addDeliveryAddress.zip}
-                      onChange={(e) => {
-                        handleChange('zip', e.target.value.trim());
-                      }}
-
-                      // onBlur={handleBlur('last_name')}
-                      // error={Boolean(touched.last_name && errors.last_name)}
-                      // helperText={touched.last_name && errors.last_name}
-                    />
-                  </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    // style={{
-                    //   paddingBottom: '20px',
-                    // }}
-                  >
-                    <FormGroup>
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            checked={
-                              addDeliveryAddress && addDeliveryAddress.isdefault
-                            }
-                            onChange={(e) => {
-                              // handleChange(e);
-                              handleChange('isdefault', e.target.checked);
-                            }}
-                          />
-                        }
-                        label="Make default delivery address."
-                        aria-label="Make default delivery address"
-                        aria-required="true"
-                        title="Make default delivery address"
-                        name="saveAddressCheck"
-                        className="size"
-                      />
-                    </FormGroup>
-                  </Grid>
-                </Grid>
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button
-                variant="contained"
-                onClick={handleClose}
-                sx={{ marginBottom: '15px' }}
-              >
-                Cancel
-              </Button>
-              <Button
-                variant="contained"
-                onClick={() =>
-                  handleLCloseConfirm(
-                    {
-                      address1: addDeliveryAddress.address1 || '',
-                      address2: addDeliveryAddress.address2 || '',
-                      city: addDeliveryAddress.city || '',
-                      zip: addDeliveryAddress.zip || '',
-                      isdefault: addDeliveryAddress.isdefault,
-                    },
-                    null,
+            <Formik
+              initialValues={{
+                address1: addDeliveryAddress && addDeliveryAddress.address1,
+                address2: addDeliveryAddress && addDeliveryAddress.address2,
+                city: addDeliveryAddress && addDeliveryAddress.city,
+                zip: addDeliveryAddress && addDeliveryAddress.zip,
+                isdefault: false,
+              }}
+              validationSchema={Yup.object({
+                address1: Yup.string()
+                  .trim()
+                  .max(40, 'Must be 40 characters or less')
+                  .min(3, 'Must be at least 3 characters')
+                  .required('Street address is required'),
+                address2: Yup.string()
+                  .trim()
+                  .max(40, 'Must be 30 characters or less'),
+                city: Yup.string()
+                  .trim()
+                  .max(40, 'Must be 40 characters or less')
+                  .min(3, 'Must be at least 3 characters')
+                  .required('City is required'),
+                zip: Yup.string()
+                  .trim()
+                  .min(3, 'Must be at least 3 digits')
+                  .max(5, 'Must be at most 5 digits')
+                  .matches(
+                    /^[0-9\s]+$/,
+                    'Only numbers are allowed for this field ',
                   )
-                }
-                sx={{ marginRight: '15px', marginBottom: '15px' }}
-                autoFocus
-                disabled={
-                  addDeliveryAddress &&
-                  (addDeliveryAddress.address1 === '' ||
-                    addDeliveryAddress.city === '' ||
-                    addDeliveryAddress.zip === '')
-                }
-              >
-                {edit ? 'Edit Address' : 'Add Address'}
-              </Button>
-            </DialogActions>
+                  .required('Postal code is required'),
+                isdefault: Yup.boolean(),
+              })}
+              onSubmit={async (values) => {
+              }}
+            >
+              {({
+                errors,
+                handleBlur,
+                handleChange,
+                handleSubmit,
+                touched,
+                values,
+                isValid,
+                dirty,
+              }) => (
+                <form onSubmit={handleSubmit}>
+                  <DialogContent>
+                    <DialogContentText id="Modal-dialog-delivery-description">
+                      <Grid container sx={{ width: '100%', maxWidth: '450px' }}>
+                        <Grid item xs={12}>
+                          <TextField
+                            aria-label="Address"
+                            label="Street Address"
+                            title="Street Address"
+                            type="text"
+                            name="address1"
+                            autoComplete="off"
+                            sx={{ width: '100%' }}
+                            value={values.address1}
+                            onChange={handleChange('address1')}
+                            onBlur={handleBlur('address1')}
+                            error={Boolean(touched.address1 && errors.address1)}
+                            helperText={touched.address1 && errors.address1}
+                          />
+                        </Grid>
+                        <Grid item xs={12} sx={{ paddingTop: '10px' }}>
+                          <TextField
+                            aria-label="Apt, Floor, Suite, Building, Company Address - Optional"
+                            label="Apt, Floor, Suite, Building, Company Address - Optional"
+                            title="Apt, Floor, Suite, Building, Company Address - Optional"
+                            type="text"
+                            name="address2"
+                            autoComplete="off"
+                            sx={{ width: '100%' }}
+                            value={values.address2}
+                            onChange={handleChange('address2')}
+                            onBlur={handleBlur('address2')}
+                            error={Boolean(touched.address2 && errors.address2)}
+                            helperText={touched.address2 && errors.address2}
+                          />
+                        </Grid>
+                        <Grid item xs={12} sx={{ paddingTop: '10px' }}>
+                          <TextField
+                            aria-label="City"
+                            label="City"
+                            title="City"
+                            type="text"
+                            name="city"
+                            autoComplete="off"
+                            sx={{ width: '100%' }}
+                            value={values.city}
+                            onChange={handleChange('city')}
+                            onBlur={handleBlur('city')}
+                            error={Boolean(touched.city && errors.city)}
+                            helperText={touched.city && errors.city}
+                          />
+                        </Grid>
+                        <Grid item xs={12} sx={{ paddingTop: '10px' }}>
+                          <TextField
+                            aria-label="Postal Code"
+                            label="Postal Code"
+                            title="Postal Code"
+                            type="text"
+                            name="zip"
+                            autoComplete="off"
+                            sx={{ width: '100%' }}
+                            value={values.zip}
+                            onChange={handleChange('zip')}
+                            onBlur={handleBlur('zip')}
+                            error={Boolean(touched.zip && errors.zip)}
+                            helperText={touched.zip && errors.zip}
+                          />
+                        </Grid>
+                        {/*<Grid item xs={12}>*/}
+                        {/*  <FormGroup>*/}
+                        {/*    <FormControlLabel*/}
+                        {/*      control={*/}
+                        {/*        <Checkbox*/}
+                        {/*          checked={values.isdefault}*/}
+                        {/*          onChange={handleChange('isdefault')}*/}
+                        {/*        />*/}
+                        {/*      }*/}
+                        {/*      label="Make default delivery address."*/}
+                        {/*      aria-label="Make default delivery address"*/}
+                        {/*      aria-required="true"*/}
+                        {/*      title="Make default delivery address"*/}
+                        {/*      name="isdefault"*/}
+                        {/*      className="size"*/}
+                        {/*    />*/}
+                        {/*  </FormGroup>*/}
+                        {/*</Grid>*/}
+                      </Grid>
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button
+                      variant="contained"
+                      onClick={handleClose}
+                      sx={{ marginBottom: '15px' }}
+                    >
+                      Cancel
+                    </Button>
+
+                    <Button
+                      variant="contained"
+                      onClick={() => {
+                        setAddDeliveryAddress({
+                          address1: values.address1 || '',
+                          address2: values.address2 || '',
+                          city: values.city || '',
+                          zip: values.zip || '',
+                          isdefault: values.isdefault,
+                        });
+                        handleLCloseConfirm(
+                          {
+                            address1: values.address1 || '',
+                            address2: values.address2 || '',
+                            city: values.city || '',
+                            zip: values.zip || '',
+                            isdefault: values.isdefault,
+                          },
+                          null,
+                        );
+                      }}
+                      sx={{ marginRight: '15px', marginBottom: '15px' }}
+                      autoFocus
+                      disabled={
+                        values.address1 === '' ||
+                        values.city === '' ||
+                        values.zip === '' ||
+                        !(isValid && dirty)
+                      }
+                    >
+                      {edit ? 'Edit Address' : 'Add Address'}
+                    </Button>
+                  </DialogActions>
+                </form>
+              )}
+            </Formik>
           </Dialog>
         </>
       )}
