@@ -233,6 +233,29 @@ const DeliveryAddresses = (props: any) => {
     console.log('notFound', notFound);
   }, [notFound]);
 
+  const checkButtonDisabled = (
+    values: any,
+    isValid: any,
+    dirty: any,
+    edit: any,
+  ) => {
+    if (edit) {
+      return (
+        values.address1 === '' ||
+        values.city === '' ||
+        values.zip === '' ||
+        !isValid
+      );
+    } else {
+      return (
+        values.address1 === '' ||
+        values.city === '' ||
+        values.zip === '' ||
+        !(isValid && dirty)
+      );
+    }
+  };
+
   return (
     <Grid item xs={12} style={{ position: 'relative', marginTop: -32 }}>
       {loading ? (
@@ -241,7 +264,7 @@ const DeliveryAddresses = (props: any) => {
         <>
           {filteredRestaurants && filteredRestaurants.length > 0 ? (
             <>
-              <Grid item xs={12}>
+              <Grid sx={{ paddingBottom: '150px' }} item xs={12}>
                 <Typography className={'delivery-heading-text'} variant="body2">
                   DELIVERY IS AVAILABLE FOR THIS ADDRESS
                 </Typography>
@@ -270,7 +293,7 @@ const DeliveryAddresses = (props: any) => {
             editDeliveryAddress.address1 !== '' &&
             notFound ? (
             <>
-              <Grid item xs={12}>
+              <Grid sx={{ paddingBottom: '150px' }} item xs={12}>
                 <Typography
                   style={{ color: 'red' }}
                   className={'delivery-heading-text'}
@@ -490,8 +513,7 @@ const DeliveryAddresses = (props: any) => {
                   .required('Postal code is required'),
                 isdefault: Yup.boolean(),
               })}
-              onSubmit={async (values) => {
-              }}
+              onSubmit={async (values) => {}}
             >
               {({
                 errors,
@@ -624,14 +646,14 @@ const DeliveryAddresses = (props: any) => {
                       }}
                       sx={{ marginRight: '15px', marginBottom: '15px' }}
                       autoFocus
-                      disabled={
-                        values.address1 === '' ||
-                        values.city === '' ||
-                        values.zip === '' ||
-                        !(isValid && dirty)
-                      }
+                      disabled={checkButtonDisabled(
+                        values,
+                        isValid,
+                        dirty,
+                        edit,
+                      )}
                     >
-                      {edit ? 'Edit Address' : 'Add Address'}
+                      {edit ? 'Confirm' : 'Add'} Address
                     </Button>
                   </DialogActions>
                 </form>
