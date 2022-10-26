@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   GoogleMap,
-  // LoadScript,
   Marker,
   useLoadScript,
 } from '@react-google-maps/api';
@@ -15,16 +14,12 @@ import {
 import LoadingBar from '../../components/loading-bar';
 import {
   Button,
-  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
-  FormControlLabel,
-  FormGroup,
   Grid,
-  Modal,
   TextField,
   Theme,
 } from '@mui/material';
@@ -62,9 +57,10 @@ const mapContainerStyle = {
   height: 'auto',
 };
 const Location = () => {
-  const { isLoaded, loadError } = useLoadScript({
+  const [ libraries ] = useState<any>(['places']);
+  useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY?.toString() || '',
-    libraries: ['places'],
+    libraries,
   });
   const classes = useStyles();
   const { restaurants, nearbyRestaurants, loading } = useSelector(
@@ -116,15 +112,9 @@ const Location = () => {
     setNearByRestaurantsFound(false);
     setDeliveryAddressString(null);
     setSearchText('');
-    // if (type !== 'dispatch' && !restaurants && !loading) {
-    //   console.log('working 22', type)
-    //   dispatch(getResturantListRequest());
-    // }
-
     setOrderType(type);
   };
 
-  let newMarker: any;
   const setMayLocation = () => {
     navigator.geolocation.getCurrentPosition(function (position) {
       const latLong = {
@@ -203,14 +193,8 @@ const Location = () => {
         console.log('geolocation', navigator.geolocation);
         navigator.geolocation.getCurrentPosition(
           function (position) {
-            console.log('position', position);
-
-            //const lat = 33.1358598;
-            //const lng = -117.2815619;
             const lat = position.coords.latitude;
             const lng = position.coords.longitude;
-
-            // getNearByRestaurants(lat, lng);
             getGeocode({
               location: {
                 lat: lat,
@@ -218,9 +202,7 @@ const Location = () => {
               },
             })
               .then((results) => {
-                console.log('results', results);
                 const address = getAddress(results[0]);
-                console.log('address', address);
                 if (address.address1 !== '') {
                   handleClickOpen();
                   setSelectedAddress(address);
@@ -231,11 +213,6 @@ const Location = () => {
                     lng: lng,
                   });
                   return;
-                  // setLatLng({
-                  //   lat: lat,
-                  //   lng: lng,
-                  // });
-                  //setDeliveryAddressString(address);
                 } else {
                   setActionPerform(false);
                   setShowNearBy(false);
@@ -264,11 +241,6 @@ const Location = () => {
             setZoom(7);
           },
         );
-      } else {
-        // setShowNearBy(false);
-        // setActionPerform(false);
-        // setZoom(7);
-        // displayToast('ERROR', 'Please turn on location');
       }
     }
   }, [showNearBy, LatLng]);
@@ -279,64 +251,16 @@ const Location = () => {
     }
     if (restaurants && restaurants.restaurants) {
       if (restaurants.restaurants.length === 0) {
-        // if (showNearBy || LatLng) {
-        //   setShowNearBy(false);
-        //   setNearByRestaurantsFound(false);
-        //   if (LatLng) {
-        //     setDeliveryRasturants([]);
-        //     displayToast(
-        //       'ERROR',
-        //       "We could not find any Rubio's within 10 miles of your address.",
-        //     );
-        //   } else {
-        //     displayToast(
-        //       'ERROR',
-        //       "We could not find any Rubio's within 10 miles of your current location.",
-        //     );
-        //   }
-        //   setLatLng(null);
-        //   dispatch(getResturantListRequest());
-        //   setZoom(7);
-        //   setActionPerform(false);
-        // }
         setfilteredRestaurants([]);
         setDeliveryRasturants([]);
         setAllResturants([]);
       } else {
-        // if (showNearBy || LatLng) {
-        //   if (LatLng) {
-        //     // const filterRest = getFilteredRestaurants(restaurants.restaurants);
-        //     // if (!filterRest.length) {
-        //     //   displayToast(
-        //     //     'ERROR',
-        //     //     "We could not find any Rubio's within 10 miles of your address.",
-        //     //   );
-        //     // }
-        //     // setDeliveryRasturants(restaurants.restaurants);
-        //     setDeliveryRasturants(restaurants.restaurants);
-        //     setActionPerform(false);
-        //   }
-        //   setLatLng(null);
-        //   if (showNearBy) {
-        //     console.log('ppppppp');
-        //     // if (orderType === 'dispatch') {
-        //     //   setDeliveryRasturants(restaurants.restaurants);
-        //     // } else {
-        //     //   console.log('ppppppp 2', restaurants.restaurants);
-        //     setDeliveryRasturants(restaurants.restaurants);
-        //     // }
-        //
-        //     setShowNearBy(false);
-        //     setNearByRestaurantsFound(true);
-        //   }
-        // } else {
         if (orderType && orderType !== '') {
           setfilteredRestaurants(
             getFilteredRestaurants(restaurants.restaurants),
           );
         }
         setAllResturants(getFilteredRestaurants(restaurants.restaurants));
-        // }
         setMapCenter({
           lat: restaurants.restaurants[0].latitude,
           lng: restaurants.restaurants[0].longitude,
@@ -366,24 +290,14 @@ const Location = () => {
             );
           }
           setLatLng(null);
-          // dispatch(getResturantListRequest());
           setZoom(7);
           setActionPerform(false);
         }
         setfilteredRestaurants([]);
         setDeliveryRasturants([]);
-        // setAllResturants([])
       } else {
         if (showNearBy || LatLng) {
           if (LatLng) {
-            // const filterRest = getFilteredRestaurants(restaurants.restaurants);
-            // if (!filterRest.length) {
-            //   displayToast(
-            //     'ERROR',
-            //     "We could not find any Rubio's within 10 miles of your address.",
-            //   );
-            // }
-            // setDeliveryRasturants(restaurants.restaurants);
             setDeliveryRasturants(
               getFilteredRestaurants(nearbyRestaurants.restaurants),
             );
@@ -391,15 +305,9 @@ const Location = () => {
           }
           setLatLng(null);
           if (showNearBy) {
-            // if (orderType === 'dispatch') {
-            //   setDeliveryRasturants(restaurants.restaurants);
-            // } else {
-            //   console.log('ppppppp 2', restaurants.restaurants);
             setDeliveryRasturants(
               getFilteredRestaurants(nearbyRestaurants.restaurants),
             );
-            // }
-
             setShowNearBy(false);
             setNearByRestaurantsFound(true);
           }
@@ -417,13 +325,7 @@ const Location = () => {
               getFilteredRestaurants(nearbyRestaurants.restaurants),
             );
           }
-          // setAllResturants(restaurants.restaurants);
         }
-        // setMapCenter({
-        //   lat: restaurants.restaurants[0].latitude,
-        //   lng: restaurants.restaurants[0].longitude,
-        // });
-        // setZoom(7);
       }
     }
   }, [nearbyRestaurants]);
@@ -498,10 +400,6 @@ const Location = () => {
           <Marker
             key={Math.random() + index}
             position={latLong}
-            // icon={{
-            //   url: '/marker.png',
-            //   scaledSize: new google.maps.Size(40, 40),
-            // }}
           />,
         ]);
       });
@@ -552,45 +450,7 @@ const Location = () => {
         getNearByRestaurants(selectedLatLng.lat, selectedLatLng.lng);
       });
   };
-  const handleChange = (key: any, value: any) => {
-    if (key == 'address1') {
-      setSelectedAddress({ ...selectedAddress, address1: value });
-    }
-    if (key == 'address2') {
-      setSelectedAddress({ ...selectedAddress, address2: value });
-    }
-    if (key == 'city') {
-      setSelectedAddress({ ...selectedAddress, city: value });
-      // }
-    }
-    if (key == 'zip') {
-      let newValue = value.replace(/[^0-9]/gi, '');
-      newValue = newValue.length > 5 ? newValue.slice(0, 5) : newValue;
-      const regex = /[0-9]+/g;
-      if (newValue === '' || regex.test(newValue)) {
-        setSelectedAddress({ ...selectedAddress, zip: newValue });
-      }
 
-      // let newValue = value.toString().replaceAll('.', '').replaceAll('-', '');
-      // newValue = newValue.length > 5 ? newValue.slice(0, 5) : newValue;
-      // newValue =
-      //   newValue && newValue >= 0 && newValue <= 99999
-      //     ? parseInt(newValue)
-      //     : newValue > 99999
-      //     ? selectedAddress.zip
-      //     : '';
-
-      // newValue = parseInt(newValue) !== 'NAN' ? parseInt(newValue) : ''
-      // if(newValue){
-      //   console.log('newValue 2', newValue);
-      // }
-
-      // }
-    }
-    if (key === 'isdefault') {
-      setSelectedAddress({ ...selectedAddress, isdefault: value });
-    }
-  };
   return (
     <Page title={'Location'} className="">
       <Dialog
@@ -720,24 +580,6 @@ const Location = () => {
                         helperText={touched.zip && errors.zip}
                       />
                     </Grid>
-                    {/*<Grid item xs={12}>*/}
-                    {/*  <FormGroup>*/}
-                    {/*    <FormControlLabel*/}
-                    {/*      control={*/}
-                    {/*        <Checkbox*/}
-                    {/*          checked={values.isdefault}*/}
-                    {/*          onChange={handleChange('isdefault')}*/}
-                    {/*        />*/}
-                    {/*      }*/}
-                    {/*      label="Make default delivery address."*/}
-                    {/*      aria-label="Make default delivery address"*/}
-                    {/*      aria-required="true"*/}
-                    {/*      title="Make default delivery address"*/}
-                    {/*      name="saveAddressCheck"*/}
-                    {/*      className="size"*/}
-                    {/*    />*/}
-                    {/*  </FormGroup>*/}
-                    {/*</Grid>*/}
                   </Grid>
                 </DialogContentText>
               </DialogContent>
@@ -749,7 +591,6 @@ const Location = () => {
                 >
                   Cancel
                 </Button>
-
                 <Button
                   variant="contained"
                   onClick={() => {

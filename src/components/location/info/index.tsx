@@ -1,45 +1,25 @@
-// import { setDeliveryAddress } from '../../../redux/actions/location/delivery-address';
-// import { verifyDeliveryAddressRequest } from '../../../redux/actions/location/verify-delivery-address';
 import {
   Button,
   Grid,
   Typography,
-  // useTheme,
-  // useMediaQuery,
 } from '@mui/material';
-// import { displayToast } from '../../../helpers/toast';
-// import { setResturantInfoRequest } from '../../../redux/actions/restaurant';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import ListHours from '../listHours';
-// import { facebookSendEvent } from '../../../redux/actions/facebook-conversion';
-// import { facebookConversionTypes } from '../../../redux/types/facebook-conversion';
 
 const StoreInfo = (props: any) => {
-  // const navigate = useNavigate();
-  // const dispatch = useDispatch();
-  // const theme = useTheme();
 
   const {
-    // setSelectedStoreID,
     gotoCategoryPage,
     resturantOrderType,
-    // deliveryRasturants,
     deliveryAddressString,
-    // restaurants,
-    // orderType,
     item,
     index,
-    // restaurant,
     allStores,
   } = props;
 
   const [candeliver, setCanDeliver] = useState(true);
   const [loading, setLoading] = useState(false);
-  // const basketObj = useSelector((state: any) => state.basketReducer);
-  // const { providerToken } = useSelector((state: any) => state.providerReducer);
 
   useEffect(() => {
     try {
@@ -74,8 +54,6 @@ const StoreInfo = (props: any) => {
       throw error;
     }
   }, []);
-
-
 
   return allStores ? (
     <li className="list-sx">
@@ -154,16 +132,13 @@ const StoreInfo = (props: any) => {
       sx={{
         marginBottom: '10px',
         cursor: 'pointer',
-        // cursor: candeliver == false ? 'not-allowed' : 'pointer',
       }}
       onClick={() => {
         !loading && gotoCategoryPage(item.id);
-        // candeliver && !loading && gotoCategoryPage(item.id);
       }}
       onKeyUp={(e) => {
         if (e.keyCode === 13) {
           !loading && gotoCategoryPage(item.id);
-          // candeliver && !loading && gotoCategoryPage(item.id);
         }
       }}
       key={index}
