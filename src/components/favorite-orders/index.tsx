@@ -132,8 +132,8 @@ const FavoriteOrders = () => {
           {favOrders
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((forder: any, index: number) => (
-              <Grid item xs={12} md={4} key={index + forder.id}>
-                <Card elevation={0} className="card-panel">
+              <Grid item xs={12} md={4} key={index + forder.id} sx={{display: 'flex', alignItems: 'stretch'}}>
+                <Card elevation={0} className="card-panel"  sx={{width: "100%"}}>
                   <Grid container>
                     <Grid item xs={10}>
                       <Typography
