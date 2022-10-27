@@ -5,19 +5,13 @@ import {
   useTheme,
   useMediaQuery,
   Theme,
-  Drawer,
-  IconButton,
   Button,
   Grid,
   Dialog,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-
 import { Link, useNavigate } from 'react-router-dom';
-
 import { useState } from 'react';
-
-import MenuIcon from '@mui/icons-material/Menu';
 import logo from '../../assets/imgs/rubios-logo-color.png';
 import cartIconMobile from '../../assets/imgs/cart-icon-mobile.svg';
 
@@ -186,7 +180,7 @@ const Header = (props: any) => {
           }}
         >
           <Typography variant="body1" className={classes.logo}>
-            <p
+            <span
               // to="/location"
               className={classes.logoImg}
             >
@@ -206,7 +200,7 @@ const Header = (props: any) => {
                   title="Rubio's Cosatal Grill Logo"
                 />
               </a>
-            </p>
+            </span>
           </Typography>
           {isMobile ? (
             <>
