@@ -1404,6 +1404,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                     container
                                     className={'taxes'}
                                     spacing={1}
+                                    
                                   >
                                     <Grid item xs={9}>
                                       <Typography
@@ -1413,6 +1414,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                             'Poppins-Regular',
                                             fontSize: "14px !important",
                                             color: '#214F66',
+                                            marginLeft: "22px !important"
                                         }}
                                       >
                                         SALES TAX:
@@ -1468,6 +1470,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                             fontSize: "14px !important",
                                             color: '#214F66',
                                             marginBottom: "3px",
+                                            marginLeft: "22px !important"
                                         }}
                                       >
                                         SERVICE FEE:
