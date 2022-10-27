@@ -283,7 +283,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                         <Grid>
                           <Grid container className={'taxes'} spacing={1}>
                             <Grid item xs={9} >
-                              <Typography className="text-info-title"sx={{paddingTop: "3px",fontFamily: 'Poppins-Regular !important',color:"#285169 !important",}}>
+                              <Typography className="text-info-title"sx={{paddingTop: "3px",fontFamily: 'Poppins-Regular !important',color:"#285169 !important",marginLeft: "22px !important"}}>
                                 SALES TAX:
                               </Typography>
                             </Grid>
@@ -301,7 +301,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                               </Typography>
                             </Grid>
                             <Grid item xs={9}>
-                              <Typography className="text-info-title" sx={{paddingBottom: "3px",fontFamily: 'Poppins-Regular !important',color:"#285169 !important",}}>
+                              <Typography className="text-info-title" sx={{paddingBottom: "3px",fontFamily: 'Poppins-Regular !important',color:"#285169 !important",marginLeft: "22px !important"}}>
                                 SERVICE FEE:
                               </Typography>
                             </Grid>

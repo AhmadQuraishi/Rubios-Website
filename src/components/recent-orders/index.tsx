@@ -180,7 +180,7 @@ const RecentOrders = () => {
       {!loading && !clickAction && recentorders.length > 0 && (
         <Grid container spacing={3} className="order-history-card">
           {recentorders.map((order: any, index: number) => (
-            <Grid key={Math.random() + index} item xs={12} md={6}>
+            <Grid key={Math.random() + index} item xs={12} md={4}>
               <Card elevation={0} className="card-panel">
                 <Grid container>
                   <Grid item xs={10}>
