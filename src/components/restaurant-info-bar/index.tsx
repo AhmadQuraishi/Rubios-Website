@@ -423,8 +423,8 @@ const StoreInfoBar = () => {
                             onClick={() => AddToFavourites()}
                           >
                             {checkFavorite()
-                              ? 'Favourited'
-                              : 'Add to Favourites'}
+                              ? 'Favorite'
+                              : 'Add to Favorites'}
 
                             <FavoriteBorderIcon
                               sx={{
