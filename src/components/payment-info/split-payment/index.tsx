@@ -255,6 +255,15 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                               account.billingmethod,
                             )
                           }
+                          onKeyPress={(e: any) => {
+                            if (e.key === 'Enter') {
+                              handleCheckBox(
+                                e,
+                                account.localId,
+                                account.billingmethod,
+                              );
+                            }
+                          }}
                         />
                       }
                       label=""
@@ -393,6 +402,13 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                       onClick={() => {
                         setHideShow(true);
                       }}
+                      onKeyPress={(e: any) => {
+                        if (e.key === 'Enter') {
+                          setHideShow(true);
+                        }
+                      }}
+                      aria-label={'Edit Card'}
+                      tabIndex={0}
                       style={{
                         cursor: 'pointer',
                         display: 'inline-block',
@@ -413,9 +429,20 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                       billingmethod: account.billingmethod,
                     });
                   }}
+                  onKeyPress={(e: any) => {
+                    if (e.key === 'Enter') {
+                      setOpenPopup(true);
+                      setRemoveData({
+                        localId: account.localId,
+                        billingmethod: account.billingmethod,
+                      });
+                    }
+                  }}
                   style={{ cursor: 'pointer', display: 'inline-block' }}
                   align={'right'}
                   variant="h6"
+                  aria-label={'Remove Card'}
+                  tabIndex={0}
                 >
                   REMOVE
                 </Typography>

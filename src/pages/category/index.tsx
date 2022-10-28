@@ -224,10 +224,10 @@ const CategoryList = () => {
           const arrowButtons: any = document.getElementsByClassName(
             'MuiTabScrollButton-horizontal',
           );
-          arrowButtons[0].setAttribute('role', 'button');
+          arrowButtons[0].setAttribute('role', 'tab');
           arrowButtons[0].setAttribute('tabindex', '0');
           arrowButtons[0].setAttribute('aria-label', 'previous');
-          arrowButtons[1].setAttribute('role', 'button');
+          arrowButtons[1].setAttribute('role', 'tab');
           arrowButtons[1].setAttribute('tabindex', '0');
           arrowButtons[1].setAttribute('aria-label', 'next');
         } catch (e) {}
@@ -541,7 +541,7 @@ const CategoryList = () => {
                       marginRight: '20px',
                     }}
                     tabIndex={0}
-                    role="link"
+                    role="tab"
                     href={`#cat-panel-${index}`}
                   />
                 ))}
