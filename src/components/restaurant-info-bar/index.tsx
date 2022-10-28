@@ -413,18 +413,17 @@ const StoreInfoBar = () => {
                             }}
                             className={'add-favourite'}
                             role={'button'}
-                            aria-label={'Change location'}
+                            aria-label={'Add to Favorites'}
                             tabIndex={0}
                             onKeyPress={(e: any) => {
                               if (e.key === 'Enter') {
+                                console.log('e.key', e.key);
                                 AddToFavourites();
                               }
                             }}
                             onClick={() => AddToFavourites()}
                           >
-                            {checkFavorite()
-                              ? 'Favorite'
-                              : 'Add to Favorites'}
+                            {checkFavorite() ? 'Favorite' : 'Add to Favorites'}
 
                             <FavoriteBorderIcon
                               sx={{
@@ -462,75 +461,81 @@ const StoreInfoBar = () => {
                     >
                       Hours
                     </Typography>
-                    {
-                     restaurantHours &&
+                    {restaurantHours &&
                       restaurantHours.length > 0 &&
-                      restaurantHours.map(
-                        (item: any, index: number,) => (                         
-                          <Grid
-                            container
-                            spacing={0}
-                            key={index}
-                            sx={{
-                              display: {
-                                xs: 'flex',
-                                sm: 'none',
-                                md: 'none',
-                                lg: 'none',
-                              },
-                            }}
-                          >
-                            <Grid item xs={3}>
-                              <List
+                      restaurantHours.map((item: any, index: number) => (
+                        <Grid
+                          container
+                          spacing={0}
+                          key={index}
+                          sx={{
+                            display: {
+                              xs: 'flex',
+                              sm: 'none',
+                              md: 'none',
+                              lg: 'none',
+                            },
+                          }}
+                        >
+                          <Grid item xs={3}>
+                            <List
+                              sx={{
+                                padding: '2px 0 0 0',
+                                fontSize: '12px',
+                                fontWeight: '600',
+                                color: 'background.paper',
+                              }}
+                              role="presentation"
+                            >
+                              <ListItem
                                 sx={{
-                                  padding: '2px 0 0 0',
-                                  fontSize: '12px',
-                                  fontWeight: '600',
-                                  color: 'background.paper',
-                                }}
-                                role="presentation"
-                              >
-                                <ListItem
-                                  sx={{
-                                    padding: '0 0 0 0',
-                                    fontFamily: "'Poppins-Medium' !important",
-                                  }}
-                                  title={item.weekday && item.weekday.toUpperCase() || ""}
-                                >
-                                  {item.weekday && item.weekday.toUpperCase() || ""}
-                                </ListItem>
-                              </List>
-                            </Grid>
-                            <Grid item xs={9}>
-                              <List
-                                sx={{
-                                  padding: '2px 0 0 0',
-                                  fontSize: '12px',
-                                  fontWeight: '500',
-                                  color: 'background.paper',
+                                  padding: '0 0 0 0',
                                   fontFamily: "'Poppins-Medium' !important",
                                 }}
-                                role="presentation"
+                                title={
+                                  (item.weekday &&
+                                    item.weekday.toUpperCase()) ||
+                                  ''
+                                }
                               >
-                                <ListItem
-                                  sx={{
-                                    padding: '0 0 0 0',
-                                  }}
-                                  title={
-                                    item.isOpenAllDay
-                                      ? 'Open 24 hours'
-                                      : getTimeFormat(item.start) + ' - ' + getTimeFormat(item.end)
-                                  }
-                                >
-                                  {item.isOpenAllDay
-                                    ? 'Open 24 hours'
-                                    : getTimeFormat(item.start) + ' - ' + getTimeFormat(item.end) }
-                                </ListItem>
-                              </List>
-                            </Grid>
+                                {(item.weekday && item.weekday.toUpperCase()) ||
+                                  ''}
+                              </ListItem>
+                            </List>
                           </Grid>
-                        ),
-                      )}
+                          <Grid item xs={9}>
+                            <List
+                              sx={{
+                                padding: '2px 0 0 0',
+                                fontSize: '12px',
+                                fontWeight: '500',
+                                color: 'background.paper',
+                                fontFamily: "'Poppins-Medium' !important",
+                              }}
+                              role="presentation"
+                            >
+                              <ListItem
+                                sx={{
+                                  padding: '0 0 0 0',
+                                }}
+                                title={
+                                  item.isOpenAllDay
+                                    ? 'Open 24 hours'
+                                    : getTimeFormat(item.start) +
+                                      ' - ' +
+                                      getTimeFormat(item.end)
+                                }
+                              >
+                                {item.isOpenAllDay
+                                  ? 'Open 24 hours'
+                                  : getTimeFormat(item.start) +
+                                    ' - ' +
+                                    getTimeFormat(item.end)}
+                              </ListItem>
+                            </List>
+                          </Grid>
+                        </Grid>
+                      ))}
                     <>
                       {restaurantHours &&
                         restaurantHours.length > 0 &&
@@ -565,9 +570,15 @@ const StoreInfoBar = () => {
                                       padding: '0 0 0 0',
                                       fontFamily: "'Poppins-Medium' !important",
                                     }}
-                                    title={item.weekday && item.weekday.toUpperCase() || ""}
+                                    title={
+                                      (item.weekday &&
+                                        item.weekday.toUpperCase()) ||
+                                      ''
+                                    }
                                   >
-                                    {item.weekday && item.weekday.toUpperCase() || ""}
+                                    {(item.weekday &&
+                                      item.weekday.toUpperCase()) ||
+                                      ''}
                                   </ListItem>
                                 </List>
                               </Grid>
@@ -589,12 +600,16 @@ const StoreInfoBar = () => {
                                     title={
                                       item.isOpenAllDay
                                         ? 'Open 24 hours'
-                                        : getTimeFormat(item.start) + ' - ' + getTimeFormat(item.end) 
+                                        : getTimeFormat(item.start) +
+                                          ' - ' +
+                                          getTimeFormat(item.end)
                                     }
                                   >
                                     {item.isOpenAllDay
                                       ? 'Open 24 hours'
-                                      : getTimeFormat(item.start)  + ' - ' + getTimeFormat(item.end) }
+                                      : getTimeFormat(item.start) +
+                                        ' - ' +
+                                        getTimeFormat(item.end)}
                                   </ListItem>
                                 </List>
                               </Grid>
@@ -711,9 +726,15 @@ const StoreInfoBar = () => {
                                           fontFamily:
                                             "'Poppins-Medium' !important",
                                         }}
-                                        title={item.weekday && item.weekday.toUpperCase() || ""}
+                                        title={
+                                          (item.weekday &&
+                                            item.weekday.toUpperCase()) ||
+                                          ''
+                                        }
                                       >
-                                        {item.weekday && item.weekday.toUpperCase() || ""}
+                                        {(item.weekday &&
+                                          item.weekday.toUpperCase()) ||
+                                          ''}
                                       </ListItem>
                                     </List>
                                   </Grid>
@@ -736,12 +757,16 @@ const StoreInfoBar = () => {
                                         title={
                                           item.isOpenAllDay
                                             ? 'Open 24 hours'
-                                            : getTimeFormat(item.start)+ ' - ' + getTimeFormat(item.end)
+                                            : getTimeFormat(item.start) +
+                                              ' - ' +
+                                              getTimeFormat(item.end)
                                         }
                                       >
                                         {item.isOpenAllDay
                                           ? 'Open 24 hours'
-                                          : getTimeFormat(item.start) + ' - ' + getTimeFormat(item.end)}
+                                          : getTimeFormat(item.start) +
+                                            ' - ' +
+                                            getTimeFormat(item.end)}
                                       </ListItem>
                                     </List>
                                   </Grid>
