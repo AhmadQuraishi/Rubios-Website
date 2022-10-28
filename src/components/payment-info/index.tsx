@@ -300,7 +300,9 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                 id="myModal"
                 role={'dialog'}
                 aria-modal={'true'}
-                aria-label={editCreditCard ? 'Edit Credit card' : 'Add Credit card'}
+                aria-label={
+                  editCreditCard ? 'Edit Credit card' : 'Add Credit card'
+                }
                 className={`modal ${hideShow ? 'show' : 'hide'}`}
               >
                 {/*<div className="modal-content">*/}
