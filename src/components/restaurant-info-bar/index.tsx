@@ -17,6 +17,7 @@ import { CalendarTypeEnum } from '../../helpers/hoursListing';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import DialogBox from '../dialog-box';
 import { resetBasketRequest } from '../../redux/actions/basket';
 import { setResturantInfoRequest } from '../../redux/actions/restaurant';
@@ -24,6 +25,7 @@ import { updateUser } from '../../redux/actions/user';
 import { getlocations } from '../../redux/actions/location';
 import './index.css';
 import moment from 'moment';
+
 const useStyle = makeStyles({
   heading: {
     fontSize: '13px !important',
@@ -417,26 +419,39 @@ const StoreInfoBar = () => {
                             tabIndex={0}
                             onKeyPress={(e: any) => {
                               if (e.key === 'Enter') {
-                                console.log('e.key', e.key);
                                 AddToFavourites();
                               }
                             }}
                             onClick={() => AddToFavourites()}
                           >
                             {checkFavorite() ? 'Favorite' : 'Add to Favorites'}
-
-                            <FavoriteBorderIcon
-                              sx={{
-                                fontSize: '15px',
-                                marginLeft: '3px',
-                                display: {
-                                  xs: 'inline',
-                                  sm: 'inline',
-                                  md: 'inline',
-                                  lg: 'inline',
-                                },
-                              }}
-                            />
+                            {checkFavorite() ? (
+                              <FavoriteIcon
+                                sx={{
+                                  fontSize: '15px',
+                                  marginLeft: '3px',
+                                  display: {
+                                    xs: 'inline',
+                                    sm: 'inline',
+                                    md: 'inline',
+                                    lg: 'inline',
+                                  },
+                                }}
+                              />
+                            ) : (
+                              <FavoriteBorderIcon
+                                sx={{
+                                  fontSize: '15px',
+                                  marginLeft: '3px',
+                                  display: {
+                                    xs: 'inline',
+                                    sm: 'inline',
+                                    md: 'inline',
+                                    lg: 'inline',
+                                  },
+                                }}
+                              />
+                            )}
                           </p>
                         </Typography>
                       )}
