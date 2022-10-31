@@ -11,7 +11,7 @@ import {
 import './payment-info.css';
 import SplitPayment from './split-payment';
 import AddGiftCard from './add-gift-card';
-import AddCreditCard from './add-credit-card';
+// import AddCreditCard from './add-credit-card';
 // import AddCreditCardCopy from './add-credit-card-copy';
 import { displayToast } from '../../helpers/toast';
 import {
@@ -94,6 +94,16 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
   const handleHideShow = () => {
     setHideShow(!hideShow);
   };
+
+  React.useEffect(() => {
+    if (hideShow) {
+      let dialog: any = document.querySelector('[role="dialog"]');
+      let firstFocusableElement = dialog.querySelector(
+        '.first-focusable-element',
+      );
+      firstFocusableElement.focus();
+    }
+  }, [hideShow]);
 
   const handleZipCodeChange = (event: any) => {
     let newValue = event.target.value.trim();
@@ -299,10 +309,13 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
               <div
                 id="myModal"
                 role={'dialog'}
+                tabIndex={-1}
                 aria-modal={'true'}
                 aria-label={
                   editCreditCard ? 'Edit Credit card' : 'Add Credit card'
                 }
+                aria-labelledby="add-credit-card-dialog"
+                aria-hidden={!hideShow}
                 className={`modal ${hideShow ? 'show' : 'hide'}`}
               >
                 {/*<div className="modal-content">*/}
@@ -317,6 +330,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                     <h2
                       tabIndex={0}
                       style={{ outline: 'none' }}
+                      id="add-credit-card-dialog"
                       className={'heading first-focusable-element'}
                     >
                       {editCreditCard ? 'Edit Credit card' : 'Add Credit card'}
