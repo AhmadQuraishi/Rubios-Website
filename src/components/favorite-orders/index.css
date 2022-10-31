@@ -54,7 +54,10 @@
 .no-orders {
   text-align: center;
 }
-
+.order-detail-panel {
+  flex-basis: 100%;
+  max-width: 100%;
+}
 @media screen and (max-width: 468px) {
   .MuiTablePagination-actions {
     margin-left: 0 !important;
