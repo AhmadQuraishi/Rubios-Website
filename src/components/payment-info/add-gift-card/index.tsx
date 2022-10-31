@@ -8,7 +8,7 @@ import {
   Dialog,
   DialogActions,
   useTheme,
-  useMediaQuery
+  // useMediaQuery
 } from '@mui/material';
 
 import { Formik } from 'formik';
@@ -297,7 +297,7 @@ const AddGiftCard = forwardRef((props, _ref) => {
                     type="submit"
                     className="link default"
                     disabled={buttonDisabled}
-                    autoFocus
+                    // autoFocus
                   >
                     Add Gift Card
                   </Button>
