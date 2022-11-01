@@ -698,7 +698,7 @@ const LocationCard = (props: any) => {
                   resturantOrderType == 'dispatch')) && (
                 <>
                   <Typography className="label">
-                    <p style={{ paddingTop: '5px' }}>SELECT LOCATION</p>
+                    <p style={{ paddingTop: '5px' }}>SELECT LOCATION BELOW</p>
                   </Typography>
                 </>
               )}
