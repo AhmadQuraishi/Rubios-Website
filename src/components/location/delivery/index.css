@@ -14,3 +14,10 @@
   color: #0075BF;
   letter-spacing: 0.7px;
 }
+.delivery-heading-edit{
+  display: inline-flex;
+  font-size: 12px;
+  font-family: 'Poppins-Medium', sans-serif !important;
+  color: #0075BF;
+  letter-spacing: 0.7px;
+}

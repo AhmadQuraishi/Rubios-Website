@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { getAccountHistory } from '../../redux/actions/account-history';
 import Page from '../page-title';
 import './index.css'
-import CheckInGrid from './rewards-redemptions/index';
+import CheckIn from './check-ins/index';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -51,7 +51,7 @@ function TabPanel(props: TabPanelProps) {
         {...other}
       >
         {value === index && (
-          <Box sx={{ padding: '20px 0' }}>
+          <Box sx={{ padding: '10px 0' }}>
             <Typography component="div">{children}</Typography>
           </Box>
         )}
@@ -67,76 +67,21 @@ function a11yProps(index: number) {
   };
 }
 
-const HistoryGrid = () => {
+const PointsGrid = () => {
   const [value, setValue] = useState(0);
   const dispatch = useDispatch();
-  const [ event_filter,setEventFilter] = useState("rewards");
+  const [ event_filter,setEventFilter] = useState("checkins");
   useEffect(() => {
     dispatch(getAccountHistory(event_filter));
   }, [event_filter]);
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    console.log('newValue', newValue)
-    if(newValue===0){
-        setEventFilter("rewards")
-    }
-    if(newValue===1){
-      setEventFilter("redemptions")
-  }
-    setValue(newValue);
-  };
   const classes = useStyles();
   return (
     <Fragment>
       <Grid container className={classes.root}>
         <Grid item xs={12}>
-          <Box>
-            <Tabs
-            variant="scrollable"
-              value={value}
-              allowScrollButtonsMobile
-              onChange={handleChange}
-              scrollButtons
-            //   aria-label="Account History Tabs"
-              TabIndicatorProps={{
-                style: {
-                  backgroundColor: '#79C043',
-                  bottom: '0px',
-                },
-              }}
-            >
-              <Tab
-                className={classes.tabspanel}
-                sx={{
-                  amily: 'Poppins-Medium !important',
-                  //padding: '10px 0px',
-
-                }}
-                label="Rewards"
-                title="Rewards"
-                tabIndex={1}
-                {...a11yProps(0)}
-                aria-label="Rewards"
-              />
-              <Tab
-                className={classes.tabspanel}
-                sx={{
-                  fontFamily: 'Poppins-Medium !important',
-                  //padding: '10px 0px',
-                }}
-                label="Redemption"
-                title="Redemption"
-                {...a11yProps(1)}
-                tabIndex={2}
-                aria-label="Redemption"
-              />
-            </Tabs>
-          </Box>
           <TabPanel value={value} index={0}>
-            <CheckInGrid />
-          </TabPanel>
-          <TabPanel value={value} index={1}>
-            <CheckInGrid />
+            <CheckIn />
           </TabPanel>
         </Grid>
       </Grid>
@@ -144,4 +89,4 @@ const HistoryGrid = () => {
   );
 };
 
-export default HistoryGrid;
+export default PointsGrid;
