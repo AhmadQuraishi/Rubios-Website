@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { getAccountHistory } from '../../redux/actions/account-history';
 import Page from '../page-title';
 import './index.css'
-import CheckInGrid from './filter-grid/checkin/index';
+import CheckInGrid from './rewards-redemptions/index';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -70,7 +70,7 @@ function a11yProps(index: number) {
 const HistoryGrid = () => {
   const [value, setValue] = useState(0);
   const dispatch = useDispatch();
-  const [ event_filter,setEventFilter] = useState("checkins");
+  const [ event_filter,setEventFilter] = useState("rewards");
   useEffect(() => {
     dispatch(getAccountHistory(event_filter));
   }, [event_filter]);
@@ -78,15 +78,9 @@ const HistoryGrid = () => {
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     console.log('newValue', newValue)
     if(newValue===0){
-        setEventFilter("checkins")
-    }
-    if(newValue===1){
         setEventFilter("rewards")
     }
-    if(newValue===2){
-        setEventFilter("reward_credits")
-    }
-    if(newValue===3){
+    if(newValue===1){
       setEventFilter("redemptions")
   }
     setValue(newValue);
@@ -112,18 +106,6 @@ const HistoryGrid = () => {
               }}
             >
               <Tab
-                label="Checkins"
-                className={classes.tabspanel}
-                title="Checkins"
-                sx={{
-                  fontFamily: 'Poppins-Medium !important',
-                  //padding: '10px 0px',
-                }}
-                {...a11yProps(0)}
-                tabIndex={0}
-                aria-label="Checkins"
-              />
-              <Tab
                 className={classes.tabspanel}
                 sx={{
                   amily: 'Poppins-Medium !important',
@@ -133,21 +115,8 @@ const HistoryGrid = () => {
                 label="Rewards"
                 title="Rewards"
                 tabIndex={1}
-                {...a11yProps(1)}
+                {...a11yProps(0)}
                 aria-label="Rewards"
-              />
-              <Tab
-                label="Reward Credit"
-                sx={{
-                  fontFamily: 'Poppins-Medium !important',
-                  //padding: '10px 0px',
-
-                }}
-                className={classes.tabspanel}
-                title="Reward Credit"
-                tabIndex={2}
-                // {...a11yProps(2)}
-                aria-label="Reward Credit"
               />
               <Tab
                 className={classes.tabspanel}
@@ -157,8 +126,8 @@ const HistoryGrid = () => {
                 }}
                 label="Redemption"
                 title="Redemption"
-                {...a11yProps(3)}
-                tabIndex={3}
+                {...a11yProps(1)}
+                tabIndex={2}
                 aria-label="Redemption"
               />
             </Tabs>
@@ -167,12 +136,6 @@ const HistoryGrid = () => {
             <CheckInGrid />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <CheckInGrid />
-          </TabPanel>
-          <TabPanel value={value} index={2}>
-            <CheckInGrid />
-          </TabPanel>
-          <TabPanel value={value} index={3}>
             <CheckInGrid />
           </TabPanel>
         </Grid>
