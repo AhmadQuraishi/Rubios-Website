@@ -55,8 +55,8 @@ const OrderConfirmation = () => {
     if (
       guestUser &&
       !authToken?.authtoken &&
-      order &&
-      order.vendorid &&
+      restaurant &&
+      restaurant.extref &&
       runOnceEclubSignUp
     ) {
       if (
@@ -65,10 +65,10 @@ const OrderConfirmation = () => {
         guestUser.marketing_email_subscription
       ) {
         const response = requestEclubSignup({
-          store_number: order.vendorid,
+          store_number: restaurant.extref,
           user: {
-            first_name: guestUser.firstname,
-            last_name: guestUser.lastname,
+            first_name: guestUser.firstname || '',
+            last_name: guestUser.lastname || '',
             email: guestUser.emailaddress,
             marketing_email_subscription: 'True',
           },
@@ -76,7 +76,7 @@ const OrderConfirmation = () => {
         setRunOnceEclubSignUp(false);
       }
     }
-  }, [order]);
+  }, [restaurant]);
 
   useEffect(() => {
     if (runOnce && order && order.vendorid) {
