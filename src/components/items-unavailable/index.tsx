@@ -34,14 +34,6 @@ export default function ItemsUnavailable() {
     };
     return (
         <Grid>
-            <Button onKeyPress={(e: any) => {
-                if (e.key === 'Enter') {
-                    handleClickOpenOrder();
-                }
-            }}
-                onClick={() => handleClickOpenOrder()}>
-                Error
-            </Button>
             <Dialog
             fullScreen={fullScreen}
                classes={{ paper: classes.paper}}
