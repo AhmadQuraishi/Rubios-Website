@@ -509,19 +509,7 @@ const Welcome = () => {
                                 </Button>
                               </li>
                             )}
-                            {favRestaurant.supportsdispatch === true && (
-                              <li>
-                                <Button
-                                  aria-label="delivery button"
-                                  variant="contained"
-                                  title="DELIVERY"
-                                  name="dispatch"
-                                  onClick={gotoCategoryPage}
-                                >
-                                  DELIVERY
-                                </Button>
-                              </li>
-                            )}
+
 
                             {favRestaurant.supportscurbside === true && (
                               <li>
@@ -533,6 +521,19 @@ const Welcome = () => {
                                   onClick={gotoCategoryPage}
                                 >
                                   CURBSIDE
+                                </Button>
+                              </li>
+                            )}
+                            {favRestaurant.supportsdispatch === true && (
+                              <li>
+                                <Button
+                                  aria-label="delivery button"
+                                  variant="contained"
+                                  title="DELIVERY"
+                                  name="dispatch"
+                                  onClick={gotoCategoryPage}
+                                >
+                                  DELIVERY
                                 </Button>
                               </li>
                             )}
