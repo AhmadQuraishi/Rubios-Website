@@ -353,6 +353,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                             sm={6}
                             md={6}
                             lg={6}
+                            textAlign={'left'}
                             className="payment-form image-field align"
                           >
                             {/*<div*/}
@@ -360,34 +361,57 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                             {/*  className="card-fields"*/}
                             {/*  data-olo-pay-card-number*/}
                             {/*/>*/}
+                            <label
+                              className="add-credit-card-label"
+                              htmlFor="cardnumber"
+                            >
+                              Card Number
+                            </label>
                             <div className="card-fields">
                               <div
                                 style={{ display: 'contents' }}
                                 className="credit-card-info-div"
                               ></div>
                             </div>
-                            <img
-                              alt="card icon"
-                              src={require('../../assets/imgs/card-icon.png')}
-                            />
+                            <div>
+                              <img
+                                alt=""
+                                src={require('../../assets/imgs/card-icon.png')}
+                              />
+                            </div>
                           </Grid>
-                          <Grid item xs={12} sm={6} md={6} lg={6}>
+                          <Grid
+                            item
+                            textAlign={'left'}
+                            xs={12}
+                            sm={6}
+                            md={6}
+                            lg={6}
+                          >
                             {/*<div className="card-fields" data-olo-pay-card-cvc />*/}
+                            <label
+                              className="add-credit-card-label"
+                              htmlFor="cvv"
+                            >
+                              CVV
+                            </label>
                             <div className="card-fields">
                               <div
                                 style={{ display: 'contents' }}
                                 className="cvv-info-div"
                               ></div>
                             </div>
-                            <img
-                              alt="cvc icon"
-                              src={require('../../assets/imgs/ccv-icon.png')}
-                            />
+                            <div>
+                              <img
+                                alt=""
+                                src={require('../../assets/imgs/ccv-icon.png')}
+                              />
+                            </div>
                           </Grid>
                         </Grid>
                       </Grid>
                       <Grid item xs={12} sm={12} md={12} lg={12}>
-                        <Grid container spacing={2}>
+                        <Grid container textAlign={'left'} spacing={2}>
                           <Grid
                             item
                             xs={12}
@@ -407,17 +431,24 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                             {/*  value={cardExpiry}*/}
                             {/*  onChange={handleCardExpiryChange}*/}
                             {/*/>*/}
+                            <label
+                              className="add-credit-card-label"
+                              htmlFor="card-expiry"
+                            >
+                              Card Expiry MM/YY
+                            </label>
                             <TextField
                               className="zipcode"
                               aria-label="Card Expiry"
                               // onBlur={handleBlur}
                               // label="Card Expiry"
-                              placeholder="Card Expiry MM/YY"
+                              // placeholder="Card Expiry MM/YY"
                               // aria-required="true"
                               // title="Card Expiry"
                               value={cardExpiry}
                               onChange={handleCardExpiryChange}
                               name="phone"
+                              id="card-expiry"
                               // InputLabelProps={{
                               //   shrink: false,
                               //   classes: {
@@ -431,13 +462,27 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                               // helperText={errors.phone}
                             />
                           </Grid>
-                          <Grid item xs={12} sm={6} md={6} lg={6}>
+                          <Grid
+                            textAlign={'left'}
+                            item
+                            xs={12}
+                            sm={6}
+                            md={6}
+                            lg={6}
+                          >
+                            <label
+                              className="add-credit-card-label"
+                              htmlFor="card-zipcode"
+                            >
+                              Zip Code
+                            </label>
                             <TextField
                               className="zipcode"
                               aria-label="Zip Code"
-                              placeholder="Zip Code"
+                              // placeholder="Zip Code"
                               type="number"
                               name="zipcode"
+                              id="card-zipcode"
                               inputProps={{ shrink: false }}
                               value={zipCode}
                               onChange={handleZipCodeChange}
