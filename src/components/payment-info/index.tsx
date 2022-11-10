@@ -200,7 +200,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
     }
     setButtonDisabled(false);
     handleHideShow();
-
+    moveFocusBackToScreen();
     // if (ccsfObj) {
     //   ccsfObj.registerError((errors: any) => {
     //     console.log('ccsf error 2', errors);
@@ -279,6 +279,19 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
     });
   }, []);
 
+  const moveFocusBackToScreen = () => {
+    const addCardElement = document.getElementById('add-credit-card');
+    const addGiftCardElement = document.getElementById('add-gift-card');
+    const placeOrderElement = document.getElementById('place-order-button');
+    if (addCardElement && displayAddCreditCard()) {
+      addCardElement.focus();
+    } else if (addGiftCardElement) {
+      addGiftCardElement.focus();
+    } else if (placeOrderElement) {
+      placeOrderElement.focus();
+    }
+  };
+
   return (
     <Grid container>
       {/*column for space*/}
@@ -301,6 +314,8 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                   title="Add Credit card"
                   aria-label="Add Credit card"
                   onClick={() => handleHideShow()}
+                  tabIndex={!hideShow ? 0 : -1}
+                  id={'add-credit-card'}
                 >
                   Add Credit card
                 </Button>
@@ -353,6 +368,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                             sm={6}
                             md={6}
                             lg={6}
+                            textAlign={'left'}
                             className="payment-form image-field align"
                           >
                             {/*<div*/}
@@ -360,29 +376,45 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                             {/*  className="card-fields"*/}
                             {/*  data-olo-pay-card-number*/}
                             {/*/>*/}
+                            <label
+                              className="add-credit-card-label"
+                              htmlFor="cardnumber"
+                            >
+                              Card Number
+                            </label>
                             <div className="card-fields">
                               <div
                                 style={{ display: 'contents' }}
                                 className="credit-card-info-div"
                               ></div>
                             </div>
-                            <img
-                              alt="card icon"
-                              src={require('../../assets/imgs/card-icon.png')}
-                            />
+                            <div>
+                              <img
+                                alt=""
+                                src={require('../../assets/imgs/card-icon.png')}
+                              />
+                            </div>
                           </Grid>
-                          <Grid item xs={12} sm={6} md={6} lg={6}>
+                          <Grid   textAlign={'left'} item xs={12} sm={6} md={6} lg={6}>
                             {/*<div className="card-fields" data-olo-pay-card-cvc />*/}
+                            <label
+                              className="add-credit-card-label"
+                              htmlFor="cvv"
+                            >
+                              CVV
+                            </label>
                             <div className="card-fields">
                               <div
                                 style={{ display: 'contents' }}
                                 className="cvv-info-div"
                               ></div>
                             </div>
-                            <img
-                              alt="cvc icon"
-                              src={require('../../assets/imgs/ccv-icon.png')}
-                            />
+                            <div>
+                              <img
+                                alt=""
+                                src={require('../../assets/imgs/ccv-icon.png')}
+                              />
+                            </div>
                           </Grid>
                         </Grid>
                       </Grid>
@@ -394,53 +426,45 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                             sm={6}
                             md={6}
                             lg={6}
+                            textAlign={'left'}
                             className="payment-form image-field align"
                           >
-                            {/*<div className="card-fields" data-olo-pay-card-expiry />*/}
-                            {/*<TextField*/}
-                            {/*  className="zipcode"*/}
-                            {/*  aria-label="Card Expiry"*/}
-                            {/*  placeholder="Card Expiry"*/}
-                            {/*  type="text"*/}
-                            {/*  name="expiry"*/}
-                            {/*  inputProps={{ shrink: false }}*/}
-                            {/*  value={cardExpiry}*/}
-                            {/*  onChange={handleCardExpiryChange}*/}
-                            {/*/>*/}
+                            <label
+                              className="add-credit-card-label"
+                              htmlFor="card-expiry"
+                            >
+                              Card Expiry MM/YY
+                            </label>
                             <TextField
                               className="zipcode"
                               aria-label="Card Expiry"
-                              // onBlur={handleBlur}
-                              // label="Card Expiry"
-                              placeholder="Card Expiry MM/YY"
-                              // aria-required="true"
-                              // title="Card Expiry"
+                              // placeholder="Card Expiry MM/YY"
                               value={cardExpiry}
                               onChange={handleCardExpiryChange}
                               name="phone"
-                              // InputLabelProps={{
-                              //   shrink: false,
-                              //   classes: {
-                              //     root: cardExpiry !== '' ? 'mobile-field-label' : '',
-                              //   },
-                              // }}
                               InputProps={{
                                 inputComponent: NumberFormatCustom as any,
                               }}
-                              // error={Boolean(cardExpiry.phone && errors.phone)}
-                              // helperText={errors.phone}
+                              id="card-expiry"
                             />
                           </Grid>
-                          <Grid item xs={12} sm={6} md={6} lg={6}>
+                          <Grid textAlign={'left'} item xs={12} sm={6} md={6} lg={6}>
+                            <label
+                              className="add-credit-card-label"
+                              htmlFor="card-zipcode"
+                            >
+                              Zip Code
+                            </label>
                             <TextField
                               className="zipcode"
                               aria-label="Zip Code"
-                              placeholder="Zip Code"
+                              // placeholder="Zip Code"
                               type="number"
                               name="zipcode"
                               inputProps={{ shrink: false }}
                               value={zipCode}
                               onChange={handleZipCodeChange}
+                              id="card-zipcode"
                             />
                           </Grid>
                         </Grid>
@@ -452,7 +476,10 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                       aria-label="Cancel"
                       title="Cancel"
                       className="link"
-                      onClick={() => handleHideShow()}
+                      onClick={() => {
+                        moveFocusBackToScreen();
+                        handleHideShow();
+                      }}
                     >
                       Cancel{' '}
                     </Button>
@@ -470,7 +497,6 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                       type="submit"
                       className="link default last-focusable-element"
                       onClick={handleCreditCardSubmit}
-                      // disabled={buttonDisabled}
                       autoFocus
                     >
                       {editCreditCard
