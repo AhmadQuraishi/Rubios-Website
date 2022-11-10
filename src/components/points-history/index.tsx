@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { getAccountHistory } from '../../redux/actions/account-history';
 import Page from '../page-title';
 import './index.css'
-import RewardsGrid from './rewards-redemptions/index';
+import CheckIn from './check-ins/index';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -67,28 +67,21 @@ function a11yProps(index: number) {
   };
 }
 
-const HistoryGrid = () => {
+const PointsGrid = () => {
   const [value, setValue] = useState(0);
   const dispatch = useDispatch();
-  const [ event_filter,setEventFilter] = useState("rewards");
+  const [ event_filter,setEventFilter] = useState("checkins");
   useEffect(() => {
     dispatch(getAccountHistory(event_filter));
   }, [event_filter]);
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    console.log('newValue', newValue)
-    if(newValue===0){
-        setEventFilter("rewards")
-    }
-    setValue(newValue);
-  };
   const classes = useStyles();
   return (
     <Fragment>
       <Grid container className={classes.root}>
         <Grid item xs={12}>
           <TabPanel value={value} index={0}>
-            <RewardsGrid />
+            <CheckIn />
           </TabPanel>
         </Grid>
       </Grid>
@@ -96,4 +89,4 @@ const HistoryGrid = () => {
   );
 };
 
-export default HistoryGrid;
+export default PointsGrid;

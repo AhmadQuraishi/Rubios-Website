@@ -41,7 +41,7 @@ const DeliveryAddresses = (props: any) => {
     gotoCategoryPage,
     setActionPerform,
     setShowNearBy,
-    setSelectedLatLng,
+    setLatLng,
   } = props;
   const [open, setOpen] = useState(false);
   const [notFound, setNotFound] = useState(false);
@@ -175,7 +175,7 @@ const DeliveryAddresses = (props: any) => {
             getNearByRestaurants(lat, lng);
             setActionPerform(false);
             setShowNearBy(true);
-            setSelectedLatLng({
+            setLatLng({
               lat: lat,
               lng: lng,
             });
@@ -383,9 +383,9 @@ const DeliveryAddresses = (props: any) => {
                         }}
                       >
                         <Typography
-                          style={{ cursor: 'pointer' }}
+                          // style={{ cursor: 'pointer' }}
                           className="delivery-address-text"
-                          onClick={() => {
+                         // onClick={() => {
                             // setAddDeliveryAddress({
                             //   address1: address.streetaddress || '',
                             //   address2: '',
@@ -398,28 +398,28 @@ const DeliveryAddresses = (props: any) => {
                             //   city: address.city || '',
                             //   zip: address.zipcode || '',
                             // });
-                            setSelectedAddressId(address.id);
+                            //setSelectedAddressId(address.id);
                             // setTimeout(() => {
-                            handleLCloseConfirm(
-                              {
-                                address1: address.streetaddress || '',
-                                address2: address.building || '',
-                                city: address.city || '',
-                                zip: address.zipcode || '',
-                                isdefault: address.isdefault,
-                              },
-                              address.id,
-                            );
+                            //handleLCloseConfirm(
+                            //   {
+                            //     address1: address.streetaddress || '',
+                            //     address2: address.building || '',
+                            //     city: address.city || '',
+                            //     zip: address.zipcode || '',
+                            //     isdefault: address.isdefault,
+                            //   },
+                            //   address.id,
+                            // );
                             // }, 500);
-                          }}
-                          variant="body2"
+                         // }}
+                          //variant="body2"
                         >
                           {address.streetaddress}, {address.city},{' '}
                           {address.zipcode}
                         </Typography>
                         <Typography
-                          className={'delivery-heading-text'}
-                          style={{ cursor: 'pointer', display: 'inline' }}
+                          className={'delivery-heading-edit'}
+                          style={{ cursor: 'pointer', }}
                           onClick={() => {
                             setAddDeliveryAddress({
                               address1: address.streetaddress || '',
@@ -435,6 +435,26 @@ const DeliveryAddresses = (props: any) => {
                           variant="body2"
                         >
                           EDIT
+                        </Typography>
+                        <Typography
+                          style={{ cursor: 'pointer',marginLeft:"20px" }}
+                          className={'delivery-heading-edit'}
+                          onClick={() => {
+                            setSelectedAddressId(address.id);
+                            handleLCloseConfirm(
+                              {
+                                address1: address.streetaddress || '',
+                                address2: address.building || '',
+                                city: address.city || '',
+                                zip: address.zipcode || '',
+                                isdefault: address.isdefault,
+                              },
+                              address.id,
+                            );
+                          }}
+                          variant="body2"
+                        >
+                          SELECT
                         </Typography>
                       </CardContent>
                     </Card>

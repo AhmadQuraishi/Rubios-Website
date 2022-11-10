@@ -201,7 +201,6 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
     setButtonDisabled(false);
     handleHideShow();
     moveFocusBackToScreen();
-
     // if (ccsfObj) {
     //   ccsfObj.registerError((errors: any) => {
     //     console.log('ccsf error 2', errors);
@@ -434,19 +433,9 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                             sm={6}
                             md={6}
                             lg={6}
+                            textAlign={'left'}
                             className="payment-form image-field align"
                           >
-                            {/*<div className="card-fields" data-olo-pay-card-expiry />*/}
-                            {/*<TextField*/}
-                            {/*  className="zipcode"*/}
-                            {/*  aria-label="Card Expiry"*/}
-                            {/*  placeholder="Card Expiry"*/}
-                            {/*  type="text"*/}
-                            {/*  name="expiry"*/}
-                            {/*  inputProps={{ shrink: false }}*/}
-                            {/*  value={cardExpiry}*/}
-                            {/*  onChange={handleCardExpiryChange}*/}
-                            {/*/>*/}
                             <label
                               className="add-credit-card-label"
                               htmlFor="card-expiry"
@@ -456,36 +445,17 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                             <TextField
                               className="zipcode"
                               aria-label="Card Expiry"
-                              // onBlur={handleBlur}
-                              // label="Card Expiry"
                               // placeholder="Card Expiry MM/YY"
-                              // aria-required="true"
-                              // title="Card Expiry"
                               value={cardExpiry}
                               onChange={handleCardExpiryChange}
                               name="phone"
-                              id="card-expiry"
-                              // InputLabelProps={{
-                              //   shrink: false,
-                              //   classes: {
-                              //     root: cardExpiry !== '' ? 'mobile-field-label' : '',
-                              //   },
-                              // }}
                               InputProps={{
                                 inputComponent: NumberFormatCustom as any,
                               }}
-                              // error={Boolean(cardExpiry.phone && errors.phone)}
-                              // helperText={errors.phone}
+                              id="card-expiry"
                             />
                           </Grid>
-                          <Grid
-                            textAlign={'left'}
-                            item
-                            xs={12}
-                            sm={6}
-                            md={6}
-                            lg={6}
-                          >
+                          <Grid textAlign={'left'} item xs={12} sm={6} md={6} lg={6}>
                             <label
                               className="add-credit-card-label"
                               htmlFor="card-zipcode"
@@ -498,10 +468,10 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                               // placeholder="Zip Code"
                               type="number"
                               name="zipcode"
-                              id="card-zipcode"
                               inputProps={{ shrink: false }}
                               value={zipCode}
                               onChange={handleZipCodeChange}
+                              id="card-zipcode"
                             />
                           </Grid>
                         </Grid>
