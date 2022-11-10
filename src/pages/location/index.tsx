@@ -134,6 +134,7 @@ const Location = () => {
   };
 
   const addCustomAddressCheck = () => {
+    return false;
     if (
       providerToken &&
       authToken &&
