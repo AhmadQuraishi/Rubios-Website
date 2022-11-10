@@ -200,6 +200,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
     }
     setButtonDisabled(false);
     handleHideShow();
+    moveFocusBackToScreen();
 
     // if (ccsfObj) {
     //   ccsfObj.registerError((errors: any) => {
@@ -279,6 +280,19 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
     });
   }, []);
 
+  const moveFocusBackToScreen = () => {
+    const addCardElement = document.getElementById('add-credit-card');
+    const addGiftCardElement = document.getElementById('add-gift-card');
+    const placeOrderElement = document.getElementById('place-order-button');
+    if (addCardElement && displayAddCreditCard()) {
+      addCardElement.focus();
+    } else if (addGiftCardElement) {
+      addGiftCardElement.focus();
+    } else if (placeOrderElement) {
+      placeOrderElement.focus();
+    }
+  };
+
   return (
     <Grid container>
       {/*column for space*/}
@@ -301,6 +315,8 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                   title="Add Credit card"
                   aria-label="Add Credit card"
                   onClick={() => handleHideShow()}
+                  tabIndex={!hideShow ? 0 : -1}
+                  id={'add-credit-card'}
                 >
                   Add Credit card
                 </Button>
@@ -497,7 +513,10 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                       aria-label="Cancel"
                       title="Cancel"
                       className="link"
-                      onClick={() => handleHideShow()}
+                      onClick={() => {
+                        moveFocusBackToScreen();
+                        handleHideShow();
+                      }}
                     >
                       Cancel{' '}
                     </Button>
@@ -515,7 +534,6 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                       type="submit"
                       className="link default last-focusable-element"
                       onClick={handleCreditCardSubmit}
-                      // disabled={buttonDisabled}
                       autoFocus
                     >
                       {editCreditCard
