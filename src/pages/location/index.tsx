@@ -20,7 +20,7 @@ import {
   Theme,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-// import { displayToast } from '../../helpers/toast';
+import { displayToast } from '../../helpers/toast';
 import './index.css';
 import Page from '../../components/page-title';
 import { getAddress } from '../../helpers/common';
@@ -28,6 +28,7 @@ import { getOrderTypeRestaurants } from '../../helpers/location';
 import { getGeocode, getLatLng } from 'use-places-autocomplete';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
+// import { staticMapUrl } from 'static-google-map';
 
 const useStyles = makeStyles((theme: Theme) => ({
   dummyBg: {
@@ -77,8 +78,8 @@ const Location = () => {
   const [mapCenter, setMapCenter] = useState<any>();
   const [zoom, setZoom] = useState<number>(7);
   // const [showNearBy, setShowNearBy] = useState(false);
-  const [LatLng, setLatLng] = useState<any>();
-  const [orderType, setOrderType] = useState<string>();
+  const [LatLng, setLatLng] = useState<any>(null);
+  const [orderType, setOrderType] = useState<string | null>(null);
   const [action, setAction] = useState(actionTypes.All);
   const [actionPerform, setActionPerform] = useState(false);
   // const [allRestaurants, setAllRestaurants] = useState<any>();
@@ -87,6 +88,8 @@ const Location = () => {
   const [selectedAddress, setSelectedAddress] = useState<any>();
   const [deliveryAddressString, setDeliveryAddressString] = useState<any>();
   const [searchText, setSearchText] = useState<string>('');
+  const [restaurantNotFound, setRestaurantNotFound] = useState(false);
+  const [hideCurrentLocation, setHideCurrentLocation] = useState(false);
 
   const {
     restaurants,
@@ -131,6 +134,8 @@ const Location = () => {
     setDeliveryAddressString(null);
     setSelectedAddress(null);
     setFilteredRestaurants([]);
+    setRestaurantNotFound(false);
+    setHideCurrentLocation(false)
     // setDeliveryRestaurants([]);
     if (
       restaurants?.restaurants?.length > 0 &&
@@ -227,79 +232,78 @@ const Location = () => {
     return errorMsg;
   };
 
-  const useCurrentLocation = (latLng) => {
-      // if (LatLng && actionPerform) {
-      //   if (LatLng) {
-      //     getNearByRestaurants(LatLng.lat, LatLng.lng);
-      //   }
-      // } else if (
-      //   showNearBy &&
-      //   orderType &&
-      //   searchText === '' &&
-      //   // orderType === 'dispatch' &&
-      //   !addCustomAddressCheck()
-      // ) {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(
-            function (position) {
-              const lat = position.coords.latitude;
-              const lng = position.coords.longitude;
-              getGeocode({
-                location: {
-                  lat: lat,
-                  lng: lng,
-                },
-              })
-                .then((results) => {
-                  const address = getAddress(results[0]);
-                  if (address.address1 !== '') {
-                    if (orderType !== 'dispatch') {
-                      getNearByRestaurants(lat, lng);
-                      // setSelectedLatLng({
-                      //   lat: lat,
-                      //   lng: lng,
-                      // });
-                    } else {
-                      handleClickOpen();
-                      setSelectedAddress(address);
-                      setActionPerform(false);
-                      // setShowNearBy(true);
-                      // setSelectedLatLng({
-                      //   lat: lat,
-                      //   lng: lng,
-                      // });
-                    }
-                    return;
-                  } else {
-                    setActionPerform(false);
-                    // setShowNearBy(false);
-                    displayToast(
-                      'ERROR',
-                      'No address found against your current location.',
-                    );
-                  }
-                })
-                .catch((error) => {
-                  displayToast(
-                    'ERROR',
-                    'No address found against your current location.',
-                  );
+  const currentLocation = () => {
+    setLatLng(null);
+    setActionPerform(true);
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        function (position) {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          getGeocode({
+            location: {
+              lat: lat,
+              lng: lng,
+            },
+          })
+            .then((results) => {
+              const address = getAddress(results[0]);
+              if (address.address1 !== '') {
+                if (orderType !== 'dispatch') {
+                  setActionPerform(true);
+                  setLatLng({
+                    lat: lat,
+                    lng: lng,
+                  });
+                  getNearByRestaurants(lat, lng);
+                  // setSelectedLatLng({
+                  //   lat: lat,
+                  //   lng: lng,
+                  // });
+                } else {
+                  setLatLng({
+                    lat: lat,
+                    lng: lng,
+                  });
+                  handleClickOpen();
+                  setSelectedAddress(address);
                   setActionPerform(false);
-                  // setShowNearBy(false);
-                });
-
-              setZoom(7);
-            },
-            function (error) {
-              displayToast('ERROR', getLocationError(error));
-              // setShowNearBy(false);
+                  // setShowNearBy(true);
+                  // setSelectedLatLng({
+                  //   lat: lat,
+                  //   lng: lng,
+                  // });
+                }
+                return;
+              } else {
+                setActionPerform(false);
+                // setShowNearBy(false);
+                displayToast(
+                  'ERROR',
+                  'No address found against your current location.',
+                );
+              }
+            })
+            .catch((error) => {
+              displayToast(
+                'ERROR',
+                'No address found against your current location.',
+              );
               setActionPerform(false);
-              setZoom(7);
-            },
-          );
-        }
-      }
-  }
+              // setShowNearBy(false);
+            });
+
+          setZoom(7);
+        },
+        function (error) {
+          displayToast('ERROR', getLocationError(error));
+          // setShowNearBy(false);
+          setActionPerform(false);
+          setZoom(7);
+        },
+      );
+    }
+  };
 
   // const [selectedLatLng, setSelectedLatLng] = useState<any>();
   // useEffect(() => {
@@ -377,21 +381,13 @@ const Location = () => {
   // }, [LatLng]);
 
   useEffect(() => {
-    // if (orderType === 'dispatch' || showNearBy) {
-    //   return;
-    // }
     if (restaurants?.restaurants) {
       if (restaurants.restaurants.length === 0) {
         setFilteredRestaurants([]);
-        // setDeliveryRestaurants([]);
-        // setAllRestaurants([]);
       } else {
-        // if (orderType && orderType !== '') {
         const rest = getOrderTypeRestaurants(restaurants.restaurants, null);
         setFilteredRestaurants(rest);
         populateMarkersOnMap(rest);
-        // }
-        // setAllRestaurants(getFilteredRestaurants(restaurants.restaurants));
         setMapCenter({
           lat: restaurants.restaurants[0].latitude,
           lng: restaurants.restaurants[0].longitude,
@@ -402,8 +398,34 @@ const Location = () => {
   }, [restaurants]);
 
   useEffect(() => {
-    populateMarkersOnMap(filteredRestaurants)
-  }, [filteredRestaurants])
+    if (nearbyRestaurants?.restaurants) {
+      if (nearbyRestaurants?.restaurants?.length === 0) {
+        setActionPerform(false);
+        setRestaurantNotFound(true);
+        setFilteredRestaurants([]);
+        setHideCurrentLocation(false)
+      } else {
+        const rest = getOrderTypeRestaurants(
+          nearbyRestaurants.restaurants,
+          orderType,
+        );
+        setFilteredRestaurants(rest);
+        populateMarkersOnMap(rest);
+        setMapCenter({
+          lat: nearbyRestaurants.restaurants[0].latitude,
+          lng: nearbyRestaurants.restaurants[0].longitude,
+        });
+        setZoom(7);
+        setActionPerform(false);
+        setRestaurantNotFound(false);
+        setHideCurrentLocation(true)
+      }
+    }
+  }, [nearbyRestaurants]);
+
+  useEffect(() => {
+    populateMarkersOnMap(filteredRestaurants);
+  }, [filteredRestaurants]);
 
   // useEffect(() => {
   //   if (nearbyRestaurants && nearbyRestaurants.restaurants) {
@@ -561,15 +583,15 @@ const Location = () => {
           const address = getAddress(results[0]);
           setDeliveryAddressString(selectedAddress);
           if (address.address1 !== '') {
-            //setLatLng({ lat: lat, lng: lng });
+            setLatLng({ lat: lat, lng: lng });
             getNearByRestaurants(lat, lng);
           } else {
-            // getNearByRestaurants(selectedLatLng.lat, selectedLatLng.lng);
+            getNearByRestaurants(LatLng.lat, LatLng.lng);
           }
         });
       })
       .catch((err: any) => {
-        // getNearByRestaurants(selectedLatLng.lat, selectedLatLng.lng);
+        getNearByRestaurants(LatLng.lat, LatLng.lng);
       });
   };
 
@@ -803,18 +825,23 @@ const Location = () => {
                 searchTextP={searchText}
                 orderType={orderType}
                 changeOrderType={changeOrderType}
-                latLng={LatLng}
+                LatLng={LatLng}
                 setLatLng={setLatLng}
                 setActionPerform={setActionPerform}
                 action={action}
                 deliveryAddressString={deliveryAddressString}
                 setDeliveryAddressString={setDeliveryAddressString}
                 allRestaurants={restaurants?.restaurants || []}
-                setfilteredRestaurants={setFilteredRestaurants}
+                setFilteredRestaurants={setFilteredRestaurants}
                 filteredRestaurants={filteredRestaurants}
                 setOrderTypeMain={orderType}
                 loading={restaurantLoading}
                 addCustomAddressCheck={addCustomAddressCheck}
+                currentLocation={currentLocation}
+                setRestaurantNotFound={setRestaurantNotFound}
+                restaurantNotFound={restaurantNotFound}
+                hideCurrentLocation={hideCurrentLocation}
+                setHideCurrentLocation={setHideCurrentLocation}
               />
             </GoogleMap>
           </div>

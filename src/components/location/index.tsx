@@ -32,7 +32,6 @@ import { setResturantInfoRequest } from '../../redux/actions/restaurant';
 import { facebookSendEvent } from '../../redux/actions/facebook-conversion';
 import { facebookConversionTypes } from '../../redux/types/facebook-conversion';
 import { getOrderTypeRestaurants } from '../../helpers/location';
-
 const LocationCard = (props: any) => {
   const {
     allRestaurants,
@@ -41,19 +40,24 @@ const LocationCard = (props: any) => {
     // isNearByRestaurantList,
     setShowNearBy,
     setLatLng,
-    latLng,
+    LatLng,
     setActionPerform,
     deliveryRasturants,
-    setDeliveryRasturants,
+    // setDeliveryRasturants,
     // setOrderTypeMain,
-    setfilteredRestaurants,
+    setFilteredRestaurants,
     filteredRestaurants,
     loading,
     deliveryAddressString,
     setDeliveryAddressString,
-    searchTextP,
+    // searchTextP,
     // setSelectedLatLng,
     addCustomAddressCheck,
+    currentLocation,
+    restaurantNotFound,
+    setRestaurantNotFound,
+    hideCurrentLocation,
+    setHideCurrentLocation
   } = props;
   const {
     value,
@@ -95,6 +99,7 @@ const LocationCard = (props: any) => {
   const navigate = useNavigate();
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
   const [searchText, setSearchText] = useState<string>();
+  const [showAllRestaurants, setShowAllRestaurants] = useState(false);
   // const [orderType, setorderType] = useState<string>();
   // const [showNotFoundMessage, setShowNotFoundMessage] = useState(false);
   // const [AllResturants, setAllResturants] = useState([]);
@@ -103,14 +108,14 @@ const LocationCard = (props: any) => {
   // );
   const { userDeliveryAddresses, loading: deliveryAddressesLoading } =
     useSelector((state: any) => state.userReducer);
+  const { restaurant: selectedRestaurant, orderType: selectedOrderType } =
+    useSelector((state: any) => state.restaurantInfoReducer);
   const { providerToken } = useSelector((state: any) => state.providerReducer);
   const basketObj = useSelector((state: any) => state.basketReducer);
 
   useEffect(() => {
     dispatch(getUserDeliveryAddresses());
   }, []);
-
-  const [showAllResturants, setShowAllResturants] = useState(false);
 
   const handleChange = (e: any) => {
     setSearchText(e.target.value);
@@ -121,7 +126,7 @@ const LocationCard = (props: any) => {
 
   useEffect(() => {
     if (!isDesktop) {
-      setShowAllResturants(false);
+      setShowAllRestaurants(false);
     }
   }, [isDesktop]);
 
@@ -140,7 +145,7 @@ const LocationCard = (props: any) => {
   //   setValue('');
   //   setSearchText('');
   //   setDeliveryRasturants([]);
-  //   setfilteredRestaurants([]);
+  //   setFilteredRestaurants([]);
   //   setAllResturants([]);
   //   setDeliveryAddressString(null);
   //   setShowNotFoundMessage(false);
@@ -151,10 +156,10 @@ const LocationCard = (props: any) => {
   // useEffect(() => {
   //   setShowNotFoundMessage(false);
   //   // if (isNearByRestaurantList && orderType && !showNearBy) {
-  //   //   setfilteredRestaurants(restaurants);
+  //   //   setFilteredRestaurants(restaurants);
   //   // } else
   //     if (orderType && showNearBy) {
-  //     setfilteredRestaurants(
+  //     setFilteredRestaurants(
   //       deliveryRasturants && deliveryRasturants.length
   //         ? deliveryRasturants
   //         : [],
@@ -183,19 +188,21 @@ const LocationCard = (props: any) => {
   };
 
   const getSearchResults = () => {
+    setLatLng(null);
+    setHideCurrentLocation(false);
     // setShowNotFoundMessage(false);
     // if (orderType === 'dispatch') {
-    //   setfilteredRestaurants(
+    //   setFilteredRestaurants(
     //     deliveryRasturants && deliveryRasturants.length
     //       ? deliveryRasturants
     //       : [],
     //   );
     //   return false;
     // }
-    // setfilteredRestaurants(isNearByRestaurantList ? allRestaurants : []);
+    // setFilteredRestaurants(isNearByRestaurantList ? allRestaurants : []);
     // if (orderType) {
     let availableRestaurants = [];
-    let resultsFound = false;
+    // let resultsFound = false;
     // if (orderType && orderType !== '') {
     //   if (orderType === 'pickup') {
     //     updatedRestaurants = allRestaurants.filter(
@@ -218,7 +225,8 @@ const LocationCard = (props: any) => {
     // }
     // }
     let searchedRestaurant: ResponseRestaurant[] = [];
-    const searchTextTrim = (searchText && searchText.trim()) || '';
+    const searchTextTrim =
+      (searchText && searchText.trim().toLowerCase()) || '';
     if (searchTextTrim.length > 1) {
       TagManager.dataLayer({
         dataLayer: {
@@ -229,7 +237,7 @@ const LocationCard = (props: any) => {
       // let searchTxt = searchText.trim().toLowerCase();
       // if (!resultsFound) {
       // setShowNotFoundMessage(true);
-      //   setfilteredRestaurants([]);
+      //   setFilteredRestaurants([]);
       // } else {
       searchedRestaurant = availableRestaurants.filter(
         (x: any) => x.city.toLowerCase() == searchTextTrim,
@@ -239,9 +247,7 @@ const LocationCard = (props: any) => {
           (x: any) => x.state.toLowerCase() == searchTextTrim,
         );
         // setShowNotFoundMessage(false);
-        // setfilteredRestaurants([]);
-
-
+        // setFilteredRestaurants([]);
       }
       if (searchedRestaurant.length === 0) {
         // searchedRestaurant = availableRestaurants.filter(
@@ -252,27 +258,35 @@ const LocationCard = (props: any) => {
             getLatLng(results[0]).then(({ lat, lng }) => {
               getNearByRestaurants(lat, lng);
               // setShowNearBy(true);
-              setActionPerform(true)
+              setActionPerform(true);
               setLatLng({ lat: lat, lng: lng });
               // setSelectedLatLng({ lat: lat, lng: lng });
             });
           })
           .catch((error) => {
-            // setShowNotFoundMessage(true);
+            setRestaurantNotFound(true);
           });
       }
-      setfilteredRestaurants(searchedRestaurant);
-      // if (searchedRestaurant.length === 0) {
-      // setShowNotFoundMessage(true);
-      // }
+      setFilteredRestaurants(searchedRestaurant);
+      if (searchedRestaurant.length > 0) {
+        setRestaurantNotFound(false);
+      } else {
+        setRestaurantNotFound(true);
+      }
       // }
     } else {
-      setfilteredRestaurants(availableRestaurants);
+      setFilteredRestaurants(availableRestaurants);
+      if (availableRestaurants?.length > 0) {
+        setRestaurantNotFound(false);
+      } else {
+        setRestaurantNotFound(true);
+      }
     }
+
     // } else {
     // if (!isNearByRestaurantList) {
     //   // setShowNotFoundMessage(false);
-    //   setfilteredRestaurants([]);
+    //   setFilteredRestaurants([]);
     // }
     // }
   };
@@ -301,6 +315,7 @@ const LocationCard = (props: any) => {
     setLatLng(null);
     setActionPerform(true);
     setSearchText('');
+    currentLocation();
   };
 
   const gotoCategoryPage = (storeID: number) => {
@@ -309,33 +324,31 @@ const LocationCard = (props: any) => {
       return false;
     }
     let restaurantObj = null;
-    if (orderType === 'dispatch') {
-      restaurantObj = deliveryRasturants.find((x: any) => x.id === storeID);
+    restaurantObj = allRestaurants.find((x: any) => x.id === storeID);
+    if (orderType === 'dispatch' && restaurantObj) {
       dispatch(setDeliveryAddress(deliveryAddressString));
-    } else {
-      restaurantObj = allRestaurants.find((x: any) => x.id === storeID);
     }
-    // if (restaurantObj) {
-    //   if (
-    //     restaurant == null ||
-    //     (restaurant && restaurant.id !== storeID) ||
-    //     orderType !== orderType
-    //   ) {
-    //     dispatch(setResturantInfoRequest(restaurantObj, orderType || ''));
-    //     if (basketObj && basketObj.basket) {
-    //       displayToast(
-    //         'SUCCESS',
-    //         'Location changed to ' +
-    //           restaurantObj.name +
-    //           ' and basket is empty',
-    //       );
-    //     } else {
-    //       displayToast('SUCCESS', 'Location changed to ' + restaurantObj.name);
-    //     }
-    //     triggerFacebookEventOnLocationChange();
-    //   }
-    //   navigate('/menu/' + restaurantObj.slug);
-    // }
+    if (restaurantObj) {
+      if (
+        !selectedRestaurant ||
+        (selectedRestaurant && selectedRestaurant.id !== storeID) ||
+        orderType !== selectedOrderType
+      ) {
+        dispatch(setResturantInfoRequest(restaurantObj, orderType || ''));
+        if (basketObj && basketObj.basket) {
+          displayToast(
+            'SUCCESS',
+            'Location changed to ' +
+              restaurantObj.name +
+              ' and basket is empty',
+          );
+        } else {
+          displayToast('SUCCESS', 'Location changed to ' + restaurantObj.name);
+        }
+        triggerFacebookEventOnLocationChange();
+      }
+      navigate('/menu/' + restaurantObj.slug);
+    }
   };
 
   const triggerFacebookEventOnLocationChange = () => {
@@ -367,7 +380,7 @@ const LocationCard = (props: any) => {
         lg={4}
         sx={{ zIndex: 1, margin: '20px 30px' }}
       >
-        {showAllResturants && (
+        {showAllRestaurants && (
           <div
             style={{
               position: 'absolute',
@@ -456,6 +469,7 @@ const LocationCard = (props: any) => {
                   role="radio"
                   value="Pick up"
                   onClick={() => {
+                    setSearchText('');
                     changeOrderType('pickup');
                   }}
                   className="selected-btn"
@@ -467,7 +481,10 @@ const LocationCard = (props: any) => {
                 <ToggleButton
                   role="radio"
                   value="Curbside"
-                  onClick={() => changeOrderType('curbside')}
+                  onClick={() => {
+                    setSearchText('');
+                    changeOrderType('curbside');
+                  }}
                   className="selected-btn"
                   aria-current={alignment === 'Curbside'}
                   aria-label=" Curbside, Activating this element will cause results to load below "
@@ -478,6 +495,7 @@ const LocationCard = (props: any) => {
                   value="Delivery"
                   role="radio"
                   onClick={() => {
+                    setSearchText('');
                     changeOrderType('dispatch');
                   }}
                   className="selected-btn"
@@ -491,7 +509,7 @@ const LocationCard = (props: any) => {
             <Grid item xs={12} style={{ position: 'relative', zIndex: 1 }}>
               {orderType &&
                 orderType === 'dispatch' &&
-                !addCustomAddressCheck()(
+                !addCustomAddressCheck() && (
                   <TextField
                     aria-label="Enter your delivery address"
                     label="Enter your delivery address"
@@ -501,12 +519,10 @@ const LocationCard = (props: any) => {
                     value={value}
                     type="text"
                     onChange={(e) => {
-                      // setShowNotFoundMessage(false);
-                      setDeliveryRasturants([]);
+                      setRestaurantNotFound(false);
                       if (e.target.value === '') {
                         setValue('');
                         setActionPerform(false);
-                        setDeliveryRasturants([]);
                       } else {
                         setValue(e.target.value);
                       }
@@ -522,7 +538,7 @@ const LocationCard = (props: any) => {
                         }
                       }
                     }}
-                  />,
+                  />
                 )}
               {orderType && orderType !== 'dispatch' && (
                 <TextField
@@ -576,6 +592,7 @@ const LocationCard = (props: any) => {
                 //  &&
                 //   filteredRestaurants && filteredRestaurants.length == 0 &&
                 orderType &&
+                  !hideCurrentLocation &&
                   !(orderType === 'dispatch' && addCustomAddressCheck()) && (
                     <Link
                       className={'current-location'}
@@ -583,68 +600,58 @@ const LocationCard = (props: any) => {
                       role="button"
                       tabIndex={0}
                       aria-label="USE YOUR CURRENT LOCATION"
-                      onClick={() => {
-                        // setorderType(undefined);
-                        findNearByRestaurants();
-                        // setShowNotFoundMessage(false);
-                      }}
+                      onClick={findNearByRestaurants}
                       to="#"
                     >
                       USE YOUR CURRENT LOCATION?
                     </Link>
                   )
               }
-              {showAllResturants}
-              {((!showAllResturants &&
-                orderType &&
+
+              {orderType &&
                 orderType !== 'dispatch' &&
-                filteredRestaurants &&
-                filteredRestaurants.length > 0) ||
-                (!showAllResturants &&
-                  orderType !== 'dispatch' &&
-                  deliveryRasturants &&
-                  deliveryRasturants.length > 0)) && (
-                <Typography
-                  className="label"
-                  sx={{ display: { xs: 'none', lg: 'block' } }}
-                >
-                  <Link
-                    style={{
-                      display: 'block',
-                      cursor: 'pointer',
-                      textDecoration: 'none',
-                      fontWeight: 500,
-                      color: '#0075BF',
-                    }}
-                    title="View All Resturants"
-                    role="button"
-                    tabIndex={0}
-                    aria-label="View All Resturants"
-                    onClick={() => {
-                      // let updatedRestaurants = [];
-                      // if (orderType === 'pickup') {
-                      //   updatedRestaurants = filteredRestaurants.filter(
-                      //     (x: any) => x.canpickup === true,
-                      //   );
-                      // } else if (orderType === 'curbside') {
-                      //   updatedRestaurants = filteredRestaurants.filter(
-                      //     (x: any) => x.supportscurbside === true,
-                      //   );
-                      // } else if (orderType === 'dispatch') {
-                      //   updatedRestaurants = filteredRestaurants.filter(
-                      //     (x: any) => x.supportsdispatch === true,
-                      //   );
-                      // }
-                      // setAllResturants(updatedRestaurants);
-                      setShowAllResturants(true);
-                    }}
-                    to="#"
+                filteredRestaurants?.length > 0 && (
+                  <Typography
+                    className="label"
+                    sx={{ display: { xs: 'none', lg: 'block' } }}
                   >
-                    View All Restaurants
-                  </Link>
-                </Typography>
-              )}
-              {showAllResturants && (
+                    <Link
+                      style={{
+                        display: 'block',
+                        cursor: 'pointer',
+                        textDecoration: 'none',
+                        fontWeight: 500,
+                        color: '#0075BF',
+                      }}
+                      title="View All Resturants"
+                      role="button"
+                      tabIndex={0}
+                      aria-label="View All Resturants"
+                      onClick={() => {
+                        // let updatedRestaurants = [];
+                        // if (orderType === 'pickup') {
+                        //   updatedRestaurants = filteredRestaurants.filter(
+                        //     (x: any) => x.canpickup === true,
+                        //   );
+                        // } else if (orderType === 'curbside') {
+                        //   updatedRestaurants = filteredRestaurants.filter(
+                        //     (x: any) => x.supportscurbside === true,
+                        //   );
+                        // } else if (orderType === 'dispatch') {
+                        //   updatedRestaurants = filteredRestaurants.filter(
+                        //     (x: any) => x.supportsdispatch === true,
+                        //   );
+                        // }
+                        // setAllResturants(updatedRestaurants);
+                        setShowAllRestaurants(true);
+                      }}
+                      to="#"
+                    >
+                      View All Restaurants
+                    </Link>
+                  </Typography>
+                )}
+              {showAllRestaurants && (
                 <Typography className="label">
                   <Link
                     style={{
@@ -661,7 +668,7 @@ const LocationCard = (props: any) => {
                     aria-label="BACK TO MAP"
                     onClick={() => {
                       // setAllResturants([]);
-                      setShowAllResturants(false);
+                      setShowAllRestaurants(false);
                     }}
                     to="#"
                   >
@@ -670,32 +677,19 @@ const LocationCard = (props: any) => {
                 </Typography>
               )}
 
-              {
-                // isNearByRestaurantList &&
-                ((latLng &&
-                  filteredRestaurants &&
-                  !showAllResturants &&
-                  !addCustomAddressCheck() &&
-                  filteredRestaurants.length > 0) ||
-                  (!showAllResturants &&
-                    value &&
-                    deliveryRasturants &&
-                    value != '' &&
-                    deliveryRasturants.length > 0 &&
-                    !addCustomAddressCheck() &&
-                    orderType &&
-                    orderType == 'dispatch')) && (
-                  <>
-                    <Typography className="label">
-                      <p style={{ paddingTop: '5px' }}>SELECT LOCATION BELOW</p>
-                    </Typography>
-                  </>
-                )
-              }
+              {!showAllRestaurants &&
+                orderType &&
+                orderType === 'dispatch' &&
+                filteredRestaurants.length > 0 &&
+                !addCustomAddressCheck() && (
+                  <Typography className="label">
+                    <p style={{ paddingTop: '5px' }}>SELECT LOCATION BELOW</p>
+                  </Typography>
+                )}
             </Grid>
             {addCustomAddressCheck() && (
               <DeliveryAddresses
-                deliveryAddressList={userDeliveryAddresses.deliveryaddresses}
+                deliveryAddressList={userDeliveryAddresses?.deliveryaddresses}
                 loading={deliveryAddressesLoading}
                 setDeliveryAddressString={setDeliveryAddressString}
                 deliveryAddressString={deliveryAddressString}
@@ -722,18 +716,17 @@ const LocationCard = (props: any) => {
                     : 'block',
               }}
             >
-              {/*{*/}
-              {/*  // showNotFoundMessage*/}
-              {/*  <Typography*/}
-              {/*    className="label msg"*/}
-              {/*    title="We were unable to find any participating locations in the area you have selected. Please try increasing the radius or enter another address. Be sure to include city, state, or zip code for the most accurate results."*/}
-              {/*  >*/}
-              {/*    We were unable to find any participating locations in the area*/}
-              {/*    you have selected. Please try increasing the radius or enter*/}
-              {/*    another address. Be sure to include city, state, or zip code*/}
-              {/*    for the most accurate results.*/}
-              {/*  </Typography>*/}
-              {/*}*/}
+              {restaurantNotFound && (
+                <Typography
+                  className="label msg"
+                  title="We were unable to find any participating locations in the area you have selected. Please try increasing the radius or enter another address. Be sure to include city, state, or zip code for the most accurate results."
+                >
+                  We were unable to find any participating locations in the area
+                  you have selected. Please try increasing the radius or enter
+                  another address. Be sure to include city, state, or zip code
+                  for the most accurate results.
+                </Typography>
+              )}
               <Grid container spacing={1}>
                 {orderType &&
                   !addCustomAddressCheck() &&
