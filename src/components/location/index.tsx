@@ -32,32 +32,27 @@ import { setResturantInfoRequest } from '../../redux/actions/restaurant';
 import { facebookSendEvent } from '../../redux/actions/facebook-conversion';
 import { facebookConversionTypes } from '../../redux/types/facebook-conversion';
 import { getOrderTypeRestaurants } from '../../helpers/location';
+
 const LocationCard = (props: any) => {
   const {
-    allRestaurants,
-    changeOrderType,
+    actionTypes,
+    setAction,
     orderType,
-    // isNearByRestaurantList,
-    setShowNearBy,
+    changeOrderType,
     setLatLng,
-    LatLng,
     setActionPerform,
-    deliveryRasturants,
-    // setDeliveryRasturants,
-    // setOrderTypeMain,
+    deliveryAddressString,
+    setDeliveryAddressString,
+    allRestaurants,
     setFilteredRestaurants,
     filteredRestaurants,
     loading,
-    deliveryAddressString,
-    setDeliveryAddressString,
-    // searchTextP,
-    // setSelectedLatLng,
     addCustomAddressCheck,
     currentLocation,
-    restaurantNotFound,
     setRestaurantNotFound,
+    restaurantNotFound,
     hideCurrentLocation,
-    setHideCurrentLocation
+    getNearByRestaurants,
   } = props;
   const {
     value,
@@ -70,42 +65,20 @@ const LocationCard = (props: any) => {
       radius: 200 * 1000,
     },
   });
-  const handleSelect = (description: any) => {
-    setValue(description, false);
-    clearSuggestions();
-    setActionPerform(true);
-    getGeocode({ address: description })
-      .then((results) => {
-        getLatLng(results[0]).then(({ lat, lng }) => {
-          const address = getAddress(results[0]);
-          if (address.address1 !== '') {
-            setLatLng({ lat: lat, lng: lng });
-            setDeliveryAddressString(address);
-          } else {
-            setActionPerform(false);
-            displayToast('ERROR', 'Please enter your full delivery address.');
-          }
-        });
-      })
-
-      .catch((error) => {
-        displayToast('ERROR', 'Please enter your full delivery address.');
-        setActionPerform(false);
-      });
-  };
-
   const dispatch = useDispatch();
   const theme = useTheme();
   const navigate = useNavigate();
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
   const [searchText, setSearchText] = useState<string>();
   const [showAllRestaurants, setShowAllRestaurants] = useState(false);
-  // const [orderType, setorderType] = useState<string>();
-  // const [showNotFoundMessage, setShowNotFoundMessage] = useState(false);
-  // const [AllResturants, setAllResturants] = useState([]);
-  // const { restaurant, orderType } = useSelector(
-  //   (state: any) => state.restaurantInfoReducer,
-  // );
+  const [alignment, setAlignment] = React.useState('web');
+  const onServiceSelect = (
+    event: React.MouseEvent<HTMLElement>,
+    newAlignment: string,
+  ) => {
+    setAlignment(newAlignment);
+  };
+
   const { userDeliveryAddresses, loading: deliveryAddressesLoading } =
     useSelector((state: any) => state.userReducer);
   const { restaurant: selectedRestaurant, orderType: selectedOrderType } =
@@ -120,9 +93,6 @@ const LocationCard = (props: any) => {
   const handleChange = (e: any) => {
     setSearchText(e.target.value);
   };
-  // useEffect(() => {
-  //   if (searchTextP == '') setValue('');
-  // }, [searchTextP]);
 
   useEffect(() => {
     if (!isDesktop) {
@@ -130,100 +100,41 @@ const LocationCard = (props: any) => {
     }
   }, [isDesktop]);
 
-  // useEffect(() => {
-  //   if (isNearByRestaurantList) {
-  //     if (searchText) {
-  //       setSearchText(searchText?.trim() + ' ');
-  //       setTimeout(() => {
-  //         setSearchText(searchText?.trim());
-  //       }, 500);
-  //     }
-  //   }
-  // }, [isNearByRestaurantList]);
+  useEffect(() => {
+    if (orderType) {
+      setValue('');
+    }
+  }, [orderType]);
 
-  // useEffect(() => {
-  //   setValue('');
-  //   setSearchText('');
-  //   setDeliveryRasturants([]);
-  //   setFilteredRestaurants([]);
-  //   setAllResturants([]);
-  //   setDeliveryAddressString(null);
-  //   setShowNotFoundMessage(false);
-  //   setShowAllResturants(false);
-  //   setOrderTypeMain(orderType);
-  // }, [orderType]);
+  const handleSelect = (description: any) => {
+    setValue(description, false);
+    clearSuggestions();
+    setAction(actionTypes.GOOGLE_SEARCH);
+    setActionPerform(true);
+    getGeocode({ address: description })
+      .then((results) => {
+        getLatLng(results[0]).then(({ lat, lng }) => {
+          const address = getAddress(results[0]);
+          if (address.address1 !== '') {
+            setLatLng({ lat: lat, lng: lng });
+            setDeliveryAddressString(address);
+            getNearByRestaurants(lat, lng);
+          } else {
+            setActionPerform(false);
+            displayToast('ERROR', 'Please enter your full delivery address.');
+          }
+        });
+      })
 
-  // useEffect(() => {
-  //   setShowNotFoundMessage(false);
-  //   // if (isNearByRestaurantList && orderType && !showNearBy) {
-  //   //   setFilteredRestaurants(restaurants);
-  //   // } else
-  //     if (orderType && showNearBy) {
-  //     setFilteredRestaurants(
-  //       deliveryRasturants && deliveryRasturants.length
-  //         ? deliveryRasturants
-  //         : [],
-  //     );
-  //   }
-  // }, [isNearByRestaurantList, restaurants, deliveryRasturants]);
-
-  const getNearByRestaurants = (lat: number, long: number) => {
-    var today = new Date();
-    const dateFrom =
-      today.getFullYear() * 1e4 +
-      (today.getMonth() + 1) * 100 +
-      today.getDate() +
-      '';
-    const lastWeekDate = new Date(
-      today.getFullYear(),
-      today.getMonth(),
-      today.getDate() + 6,
-    );
-    const dateTo =
-      lastWeekDate.getFullYear() * 1e4 +
-      (lastWeekDate.getMonth() + 1) * 100 +
-      lastWeekDate.getDate() +
-      '';
-    dispatch(getNearByResturantListRequest(lat, long, 40, 6, dateFrom, dateTo));
+      .catch((error) => {
+        displayToast('ERROR', 'Please enter your full delivery address.');
+        setActionPerform(false);
+      });
   };
-
   const getSearchResults = () => {
-    setLatLng(null);
-    setHideCurrentLocation(false);
-    // setShowNotFoundMessage(false);
-    // if (orderType === 'dispatch') {
-    //   setFilteredRestaurants(
-    //     deliveryRasturants && deliveryRasturants.length
-    //       ? deliveryRasturants
-    //       : [],
-    //   );
-    //   return false;
-    // }
-    // setFilteredRestaurants(isNearByRestaurantList ? allRestaurants : []);
-    // if (orderType) {
+    setAction(actionTypes.LOCAL_SEARCH);
     let availableRestaurants = [];
-    // let resultsFound = false;
-    // if (orderType && orderType !== '') {
-    //   if (orderType === 'pickup') {
-    //     updatedRestaurants = allRestaurants.filter(
-    //       (x: any) => x.canpickup === true,
-    //     );
-    //   } else if (orderType === 'curbside') {
-    //     updatedRestaurants = allRestaurants.filter(
-    //       (x: any) => x.supportscurbside === true,
-    //     );
-    //   } else if (orderType === 'dispatch') {
-    //     updatedRestaurants = allRestaurants.filter(
-    //       (x: any) => x.supportsdispatch === true,
-    //     );
-    //   }
     availableRestaurants = getOrderTypeRestaurants(allRestaurants, orderType);
-    // if (availableRestaurants.length > 0) {
-    //   resultsFound = true;
-    // } else {
-    //   // setShowNotFoundMessage(true);
-    // }
-    // }
     let searchedRestaurant: ResponseRestaurant[] = [];
     const searchTextTrim =
       (searchText && searchText.trim().toLowerCase()) || '';
@@ -234,11 +145,6 @@ const LocationCard = (props: any) => {
           virtualPagePath: searchTextTrim,
         },
       });
-      // let searchTxt = searchText.trim().toLowerCase();
-      // if (!resultsFound) {
-      // setShowNotFoundMessage(true);
-      //   setFilteredRestaurants([]);
-      // } else {
       searchedRestaurant = availableRestaurants.filter(
         (x: any) => x.city.toLowerCase() == searchTextTrim,
       );
@@ -246,57 +152,28 @@ const LocationCard = (props: any) => {
         searchedRestaurant = availableRestaurants.filter(
           (x: any) => x.state.toLowerCase() == searchTextTrim,
         );
-        // setShowNotFoundMessage(false);
-        // setFilteredRestaurants([]);
       }
       if (searchedRestaurant.length === 0) {
-        // searchedRestaurant = availableRestaurants.filter(
-        //   (x: any) => x.zip.toLowerCase() == searchTextTrim,
-        // );
         getGeocode({ address: searchTextTrim })
           .then((results) => {
             getLatLng(results[0]).then(({ lat, lng }) => {
               getNearByRestaurants(lat, lng);
-              // setShowNearBy(true);
               setActionPerform(true);
               setLatLng({ lat: lat, lng: lng });
-              // setSelectedLatLng({ lat: lat, lng: lng });
             });
           })
           .catch((error) => {
+            setFilteredRestaurants([]);
             setRestaurantNotFound(true);
           });
-      }
-      setFilteredRestaurants(searchedRestaurant);
-      if (searchedRestaurant.length > 0) {
-        setRestaurantNotFound(false);
       } else {
-        setRestaurantNotFound(true);
+        setFilteredRestaurants(searchedRestaurant);
+        setRestaurantNotFound(false);
       }
-      // }
     } else {
       setFilteredRestaurants(availableRestaurants);
-      if (availableRestaurants?.length > 0) {
-        setRestaurantNotFound(false);
-      } else {
-        setRestaurantNotFound(true);
-      }
+      setRestaurantNotFound(false);
     }
-
-    // } else {
-    // if (!isNearByRestaurantList) {
-    //   // setShowNotFoundMessage(false);
-    //   setFilteredRestaurants([]);
-    // }
-    // }
-  };
-
-  const [alignment, setAlignment] = React.useState('web');
-  const onServiceSelect = (
-    event: React.MouseEvent<HTMLElement>,
-    newAlignment: string,
-  ) => {
-    setAlignment(newAlignment);
   };
 
   const Icon = () => (
@@ -311,10 +188,10 @@ const LocationCard = (props: any) => {
   );
 
   const findNearByRestaurants = () => {
-    // setShowNearBy(true);
     setLatLng(null);
     setActionPerform(true);
     setSearchText('');
+    setAction(actionTypes.CURRENT_LOCATION);
     currentLocation();
   };
 
@@ -438,15 +315,10 @@ const LocationCard = (props: any) => {
                     <StoreInfo
                       gotoCategoryPage={gotoCategoryPage}
                       orderType={orderType}
-                      deliveryRasturants={deliveryRasturants}
                       deliveryAddressString={deliveryAddressString}
-                      // restaurants={restaurants}
-                      // orderType={orderType}
-                      setDeliveryAddressString={setDeliveryAddressString}
                       item={item}
                       index={index + Math.random()}
                       key={index + Math.random()}
-                      allRestaurants={allRestaurants}
                       allStores={true}
                     />
                   ))}
@@ -496,6 +368,7 @@ const LocationCard = (props: any) => {
                   role="radio"
                   onClick={() => {
                     setSearchText('');
+                    setShowAllRestaurants(false);
                     changeOrderType('dispatch');
                   }}
                   className="selected-btn"
@@ -532,9 +405,9 @@ const LocationCard = (props: any) => {
                     onKeyPress={(e: any) => {
                       if (e.key === 'Enter' && e.target.value !== '') {
                         if (data.length === 0) {
-                          // setShowNotFoundMessage(true);
+                          // setRestaurantNotFound(true);
                         } else {
-                          // setShowNotFoundMessage(false);
+                          // setRestaurantNotFound(false);
                         }
                       }
                     }}
@@ -583,32 +456,24 @@ const LocationCard = (props: any) => {
               )}
             </Grid>
             <Grid item xs={12} style={{ position: 'relative' }}>
-              {
-                // (!filteredRestaurants || filteredRestaurants && filteredRestaurants.length == 0)
-                // && (orderType !== 'dispatch' && !addCustomAddressCheck())
-                // // !isNearByRestaurantList &&
-                // // !showAllResturants &&
-                // // orderType === 'dispatch' &&
-                //  &&
-                //   filteredRestaurants && filteredRestaurants.length == 0 &&
-                orderType &&
-                  !hideCurrentLocation &&
-                  !(orderType === 'dispatch' && addCustomAddressCheck()) && (
-                    <Link
-                      className={'current-location'}
-                      title="USE YOUR CURRENT LOCATION?"
-                      role="button"
-                      tabIndex={0}
-                      aria-label="USE YOUR CURRENT LOCATION"
-                      onClick={findNearByRestaurants}
-                      to="#"
-                    >
-                      USE YOUR CURRENT LOCATION?
-                    </Link>
-                  )
-              }
-
               {orderType &&
+                !hideCurrentLocation &&
+                !(orderType === 'dispatch' && addCustomAddressCheck()) && (
+                  <Link
+                    className={'current-location'}
+                    title="USE YOUR CURRENT LOCATION?"
+                    role="button"
+                    tabIndex={0}
+                    aria-label="USE YOUR CURRENT LOCATION"
+                    onClick={findNearByRestaurants}
+                    to="#"
+                  >
+                    USE YOUR CURRENT LOCATION?
+                  </Link>
+                )}
+
+              {!showAllRestaurants &&
+                orderType &&
                 orderType !== 'dispatch' &&
                 filteredRestaurants?.length > 0 && (
                   <Typography
@@ -628,21 +493,6 @@ const LocationCard = (props: any) => {
                       tabIndex={0}
                       aria-label="View All Resturants"
                       onClick={() => {
-                        // let updatedRestaurants = [];
-                        // if (orderType === 'pickup') {
-                        //   updatedRestaurants = filteredRestaurants.filter(
-                        //     (x: any) => x.canpickup === true,
-                        //   );
-                        // } else if (orderType === 'curbside') {
-                        //   updatedRestaurants = filteredRestaurants.filter(
-                        //     (x: any) => x.supportscurbside === true,
-                        //   );
-                        // } else if (orderType === 'dispatch') {
-                        //   updatedRestaurants = filteredRestaurants.filter(
-                        //     (x: any) => x.supportsdispatch === true,
-                        //   );
-                        // }
-                        // setAllResturants(updatedRestaurants);
                         setShowAllRestaurants(true);
                       }}
                       to="#"
@@ -667,7 +517,6 @@ const LocationCard = (props: any) => {
                     tabIndex={0}
                     aria-label="BACK TO MAP"
                     onClick={() => {
-                      // setAllResturants([]);
                       setShowAllRestaurants(false);
                     }}
                     to="#"
@@ -696,7 +545,6 @@ const LocationCard = (props: any) => {
                 filteredRestaurants={filteredRestaurants}
                 gotoCategoryPage={gotoCategoryPage}
                 setActionPerform={setActionPerform}
-                setShowNearBy={setShowNearBy}
                 setLatLng={setLatLng}
               />
             )}
@@ -735,10 +583,7 @@ const LocationCard = (props: any) => {
                       <StoreInfo
                         gotoCategoryPage={gotoCategoryPage}
                         orderType={orderType}
-                        deliveryRasturants={deliveryRasturants}
                         deliveryAddressString={deliveryAddressString}
-                        restaurants={allRestaurants}
-                        setDeliveryAddressString={setDeliveryAddressString}
                         item={item}
                         index={index + Math.random()}
                         key={index + Math.random()}
