@@ -4,7 +4,7 @@ import { useState,Fragment, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 //import { getAccountHistory } from '../../../../redux/actions/account-history';
 import HistorySkeletonUI from '../../history-grid-skeleton-ui';
-const CheckInGrid = ({}) => {
+const RewardsGrid = ({}) => {
   const dispatch = useDispatch();
   const { accountHistory, loading } = useSelector(
     (state: any) => state.accountHistoryReducer,
@@ -137,4 +137,4 @@ const CheckInGrid = ({}) => {
   );
 };
 
-export default CheckInGrid;
+export default RewardsGrid;
