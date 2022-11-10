@@ -314,7 +314,9 @@ const AddGiftCard = forwardRef((props, _ref) => {
             <Button
               onClick={handleCloseAddGiftCard}
               title="ADD GIFT CARD"
+              aria-label="ADD GIFT CARD"
               className="label"
+              id={'add-gift-card'}
             >
               ADD Gift CARD
             </Button>

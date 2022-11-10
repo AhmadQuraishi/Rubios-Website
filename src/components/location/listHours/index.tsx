@@ -1,24 +1,15 @@
 import { Grid, List, ListItem, Skeleton, Typography } from '@mui/material';
 import { useState } from 'react';
-// import { useDispatch, useSelector } from 'react-redux';
 import { GetUserFriendlyHoursRAW } from '../../../helpers/getUserFriendlyHours';
 import { CalendarTypeEnum, HoursListing } from '../../../helpers/hoursListing';
-// import { getResturantCalendarRequest } from '../../../redux/actions/restaurant/calendar';
 import { getRestaurantCalendar } from '../../../services/restaurant/calendar';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import moment from 'moment';
 const ListHours = (props: any) => {
-  const { id, resturantOrderType } = props;
-
-  // const dispatch = useDispatch();
+  const { id } = props;
   const [restaurantHours, setRestaurantHours] = useState<HoursListing[]>([]);
   const [loading, setLoading] = useState(false);
   const [showHours, setShowHours] = useState(false);
-  // const { calendar } = useSelector(
-  //   (state: any) => state.restaurantCalendarReducer,
-  // );
-
-  // useEffect(() => {
   const getCalendarData = async () => {
     setLoading(true);
     let today = new Date();
@@ -39,7 +30,6 @@ const ListHours = (props: any) => {
       '';
 
     const calendar = await getRestaurantCalendar(id, dateFrom, dateTo);
-    // console.log('response', response);
     if (calendar) {
       setRestaurantHours(
         GetUserFriendlyHoursRAW(calendar, CalendarTypeEnum.business),
@@ -50,19 +40,6 @@ const ListHours = (props: any) => {
   const getTimeFormat = (date: string) => {
     return moment(date, 'YYYYMMDD HH:mm').format('h:mm A');
   };
-  // getCalendarData();
-
-  // dispatch(getResturantCalendarRequest(id, dateFrom, dateTo));
-  // }, [resturantOrderType]);
-
-  // useEffect(() => {
-  //   if (calendar) {
-  //     setRestaurantHours(
-  //       GetUserFriendlyHours(calendar, CalendarTypeEnum.business),
-  //     );
-  //   }
-  // }, [calendar]);
-
   return (
     <>
       {!showHours && (
@@ -89,7 +66,6 @@ const ListHours = (props: any) => {
             >
               Show Hours
             </Typography>
-            {/*<p style={{ display: 'inline', color: '#214F66' }}>Show Hours</p>*/}
             <ExpandMoreIcon style={{ color: '#214F66' }} />
           </Grid>
         </Grid>
@@ -126,9 +102,9 @@ const ListHours = (props: any) => {
                     padding: '0 0 0 0',
                     fontFamily: "'Poppins-Medium' !important",
                   }}
-                  title={item.weekday && item.weekday.toUpperCase() || ""}
-                  >
-                    {item.weekday && item.weekday.toUpperCase() || ""}
+                  title={(item.weekday && item.weekday.toUpperCase()) || ''}
+                >
+                  {(item.weekday && item.weekday.toUpperCase()) || ''}
                 </ListItem>
               </List>
             </Grid>
@@ -149,12 +125,16 @@ const ListHours = (props: any) => {
                   title={
                     item.isOpenAllDay
                       ? 'Open 24 hours'
-                      : getTimeFormat(item.start) + ' - ' + getTimeFormat(item.end)
+                      : getTimeFormat(item.start) +
+                        ' - ' +
+                        getTimeFormat(item.end)
                   }
                 >
                   {item.isOpenAllDay
                     ? 'Open 24 hours'
-                    : getTimeFormat(item.start) + ' - ' + getTimeFormat(item.end)}
+                    : getTimeFormat(item.start) +
+                      ' - ' +
+                      getTimeFormat(item.end)}
                 </ListItem>
               </List>
             </Grid>

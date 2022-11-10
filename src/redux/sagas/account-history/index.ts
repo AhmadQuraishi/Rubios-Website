@@ -6,8 +6,18 @@ import { accountHistoryTypes as Type } from '../../types/account-hostory';
 
 function* accountHistoryHandler(action: any): any {
   try {
-    const response = yield call(requestAccountHistory ,action.event_filter); 
-    yield put(getAccountHistorySuccess(response));
+    
+    const response = yield call(requestAccountHistory ,action.event_filter);
+    if (action.event_filter==="rewards"){
+      const redemptionresponse = yield call(requestAccountHistory ,"redemptions");
+      yield put(getAccountHistorySuccess([
+        ...response,
+        ...redemptionresponse
+      ]));
+    } else {
+        yield put(getAccountHistorySuccess(response));
+    }
+   
   } catch (error) {
     yield put(getAccountHistoryFailure(error));
   }
