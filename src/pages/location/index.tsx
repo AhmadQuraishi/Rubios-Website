@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { GoogleMap, Marker, useLoadScript } from '@react-google-maps/api';
 import LocationCard from '../../components/location';
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,6 +25,8 @@ import './index.css';
 import Page from '../../components/page-title';
 import { getAddress, removeTestingStores } from '../../helpers/common';
 import { getGeocode, getLatLng } from 'use-places-autocomplete';
+import * as Yup from 'yup';
+import { Formik } from 'formik';
 
 const useStyles = makeStyles((theme: Theme) => ({
   dummyBg: {
@@ -52,7 +54,7 @@ const mapContainerStyle = {
 };
 
 const Location = () => {
-  const [ libraries ] = useState<any>(['places']);
+  const [libraries] = useState<any>(['places']);
   useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY?.toString() || '',
     libraries,
@@ -80,6 +82,12 @@ const Location = () => {
   const [filteredRestaurants, setfilteredRestaurants] = useState<any>([]);
   const [deliveryAddressString, setDeliveryAddressString] = useState<any>();
   const [searchText, setSearchText] = useState<string>('');
+
+  const { userDeliveryAddresses } = useSelector(
+    (state: any) => state.userReducer,
+  );
+  const { providerToken } = useSelector((state: any) => state.providerReducer);
+  const { authToken } = useSelector((state: any) => state.authReducer);
 
   useEffect(() => {
     if (!orderType) {
@@ -125,6 +133,23 @@ const Location = () => {
     });
   };
 
+  const addCustomAddressCheck = () => {
+    if (
+      providerToken &&
+      authToken &&
+      authToken.authtoken &&
+      authToken.authtoken !== '' &&
+      orderType === 'dispatch' &&
+      userDeliveryAddresses &&
+      userDeliveryAddresses.deliveryaddresses &&
+      userDeliveryAddresses.deliveryaddresses.length > 0
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   const getLocationError = (error: any) => {
     let errorMsg = '';
     switch (error.code) {
@@ -152,12 +177,16 @@ const Location = () => {
   useEffect(() => {
     if (LatLng && actionPerform) {
       if (LatLng) {
-        console.log('nearby');
         getNearByRestaurants(LatLng.lat, LatLng.lng);
       }
-    } else if (showNearBy && orderType && orderType === 'dispatch') {
+    } else if (
+      showNearBy &&
+      orderType &&
+      searchText === '' &&
+      // orderType === 'dispatch' &&
+      !addCustomAddressCheck()
+    ) {
       if (navigator.geolocation) {
-        console.log('geolocation', navigator.geolocation);
         navigator.geolocation.getCurrentPosition(
           function (position) {
             const lat = position.coords.latitude;
@@ -171,14 +200,22 @@ const Location = () => {
               .then((results) => {
                 const address = getAddress(results[0]);
                 if (address.address1 !== '') {
-                  handleClickOpen();
-                  setSelectedAddress(address);
-                  setActionPerform(false);
-                  setShowNearBy(true);
-                  setSelectedLatLng({
-                    lat: lat,
-                    lng: lng,
-                  });
+                  if (orderType !== 'dispatch') {
+                    getNearByRestaurants(lat, lng);
+                    setSelectedLatLng({
+                      lat: lat,
+                      lng: lng,
+                    });
+                  } else {
+                    handleClickOpen();
+                    setSelectedAddress(address);
+                    setActionPerform(false);
+                    setShowNearBy(true);
+                    setSelectedLatLng({
+                      lat: lat,
+                      lng: lng,
+                    });
+                  }
                   return;
                 } else {
                   setActionPerform(false);
@@ -190,7 +227,6 @@ const Location = () => {
                 }
               })
               .catch((error) => {
-                console.log('Error: ', error);
                 displayToast(
                   'ERROR',
                   'No address found against your current location.',
@@ -213,7 +249,7 @@ const Location = () => {
   }, [showNearBy, LatLng]);
 
   useEffect(() => {
-    if (orderType === 'dispatch') {
+    if (orderType === 'dispatch' || showNearBy) {
       return;
     }
     if (restaurants && restaurants.restaurants) {
@@ -264,15 +300,21 @@ const Location = () => {
         setDeliveryRasturants([]);
       } else {
         if (showNearBy || LatLng) {
+          console.log('working 1');
           if (LatLng) {
             setDeliveryRasturants(
               getFilteredRestaurants(nearbyRestaurants.restaurants),
             );
+            setfilteredRestaurants(
+              getFilteredRestaurants(nearbyRestaurants.restaurants),
+            );
             setActionPerform(false);
           }
-          setLatLng(null);
           if (showNearBy) {
             setDeliveryRasturants(
+              getFilteredRestaurants(nearbyRestaurants.restaurants),
+            );
+            setfilteredRestaurants(
               getFilteredRestaurants(nearbyRestaurants.restaurants),
             );
             setShowNearBy(false);
@@ -288,6 +330,7 @@ const Location = () => {
           setZoom(7);
         } else {
           if (orderType && orderType !== '') {
+            console.log('working 2');
             setfilteredRestaurants(
               getFilteredRestaurants(nearbyRestaurants.restaurants),
             );
@@ -296,6 +339,40 @@ const Location = () => {
       }
     }
   }, [nearbyRestaurants]);
+
+  useEffect(() => {
+    setMarkers([]);
+    console.log('showNearBy', showNearBy);
+    console.log('selectedLatLng', selectedLatLng);
+    if (restaurants && restaurants.restaurants.length > 0) {
+      let filteredRest = !orderType
+        ? restaurants.restaurants
+        : orderType && !showNearBy
+        ? filteredRestaurants
+        : orderType && selectedLatLng
+        ? deliveryRasturants
+        : [];
+
+      filteredRest = getFilteredRestaurants(filteredRest);
+
+      filteredRest.map((item: ResponseRestaurant, index: number) => {
+        if (mapCenter == undefined) {
+          setMapCenter({
+            lat: item.latitude,
+            lng: item.longitude,
+          });
+        }
+        let latLong = {
+          lat: item.latitude,
+          lng: parseFloat(item.longitude),
+        };
+        setMarkers((markers) => [
+          ...markers,
+          <Marker key={Math.random() + index} position={latLong} />,
+        ]);
+      });
+    }
+  }, [restaurants, filteredRestaurants, deliveryRasturants, orderType]);
 
   const getNearByRestaurants = (lat: number, long: number) => {
     var today = new Date();
@@ -338,37 +415,6 @@ const Location = () => {
     filteredRestaurants = removeTestingStores(filteredRestaurants);
     return filteredRestaurants;
   };
-  useEffect(() => {
-    setMarkers([]);
-    if (restaurants && restaurants.restaurants.length > 0) {
-      let filteredRest = !orderType
-        ? restaurants.restaurants
-        : orderType && orderType !== 'dispatch'
-        ? filteredRestaurants
-        : orderType && orderType === 'dispatch'
-        ? deliveryRasturants
-        : [];
-
-      filteredRest = getFilteredRestaurants(filteredRest);
-
-      filteredRest.map((item: ResponseRestaurant, index: number) => {
-        if (mapCenter == undefined) {
-          setMapCenter({
-            lat: item.latitude,
-            lng: item.longitude,
-          });
-        }
-        let latLong = {
-          lat: item.latitude,
-          lng: parseFloat(item.longitude),
-        };
-        setMarkers((markers) => [
-          ...markers,
-          <Marker key={Math.random() + index} position={latLong} />,
-        ]);
-      });
-    }
-  }, [restaurants, filteredRestaurants, deliveryRasturants, orderType]);
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -386,50 +432,54 @@ const Location = () => {
     selectedLatLng(null);
   };
 
-  const handleLCloseConfirm = () => {
+  const handleLCloseConfirm = (updatedAddress: any) => {
     setOpen(false);
     getGeocode({
       address:
-        selectedAddress.address1 +
+        updatedAddress.address1 +
         ' ' +
-        selectedAddress.address2 +
+        updatedAddress.address2 +
         ', ' +
-        selectedAddress.city +
+        updatedAddress.city +
         ', ' +
-        selectedAddress.zip,
-    }).then((results) => {
-      getLatLng(results[0]).then(({ lat, lng }) => {
-        const address = getAddress(results[0]);
-        setDeliveryAddressString(selectedAddress);
-        if (address.address1 !== '') {
-          getNearByRestaurants(lat, lng);
-        } else {
-          getNearByRestaurants(selectedLatLng.lat, selectedLatLng.lng);
-        }
+        updatedAddress.zip,
+    })
+      .then((results) => {
+        getLatLng(results[0]).then(({ lat, lng }) => {
+          const address = getAddress(results[0]);
+          setDeliveryAddressString(selectedAddress);
+          if (address.address1 !== '') {
+            //setLatLng({ lat: lat, lng: lng });
+            getNearByRestaurants(lat, lng);
+          } else {
+            getNearByRestaurants(selectedLatLng.lat, selectedLatLng.lng);
+          }
+        });
+      })
+      .catch((err: any) => {
+        getNearByRestaurants(selectedLatLng.lat, selectedLatLng.lng);
       });
-    });
   };
-  const handleChange = (key: any, value: any) => {
-    if (key == 'address1') {
-      setSelectedAddress({ ...selectedAddress, address1: value });
-    }
-    if (key == 'address2') {
-      setSelectedAddress({ ...selectedAddress, address2: value });
-    }
-    if (key == 'city') {
-      setSelectedAddress({ ...selectedAddress, city: value });
-    }
-    if (key == 'zip') {
-      let newValue = value;
-      newValue =
-        newValue && newValue >= 0 && newValue <= 99999
-          ? parseInt(newValue)
-          : newValue > 99999
-          ? selectedAddress.zip
-          : '';
-      setSelectedAddress({ ...selectedAddress, zip: newValue });
-    }
-  };
+
+  useEffect(() => {
+    console.log('start------------>');
+    console.log('orderType', orderType);
+    console.log('showNearBy', showNearBy);
+    console.log('LatLng', LatLng);
+    console.log('actionPerform', actionPerform);
+    console.log('selectedAddress', selectedAddress);
+    console.log('filteredRestaurants', filteredRestaurants);
+    console.log('AllResturants', allResturants);
+    console.log('deliveryRasturants', deliveryRasturants);
+    console.log('nearbyRestaurants', nearbyRestaurants);
+    console.log('end------------>');
+  }, [
+    filteredRestaurants,
+    allResturants,
+    deliveryRasturants,
+    nearbyRestaurants,
+  ]);
+
   return (
     <Page title={'Location'} className="">
       <Dialog
@@ -446,95 +496,166 @@ const Location = () => {
         <DialogTitle id="alert-dialog-title">
           {'Confirm Your Delivery Address'}
         </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            <Grid container sx={{ width: '100%', maxWidth: '450px' }}>
-              <Grid item xs={12}>
-                <TextField
-                  aria-label="Address"
-                  label="Street Address"
-                  title="Street Address"
-                  type="text"
-                  name="street_address"
-                  autoComplete="off"
-                  sx={{ width: '100%' }}
-                  value={selectedAddress && selectedAddress.address1}
-                  onChange={(e) => {
-                    handleChange('address1', e.target.value);
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12} sx={{ paddingTop: '10px' }}>
-                <TextField
-                  aria-label="Apt, Floor, Suite, Building, Company Address - Optional"
-                  label="Apt, Floor, Suite, Building, Company Address - Optional"
-                  title="Apt, Floor, Suite, Building, Company Address - Optional"
-                  type="text"
-                  name="second_address"
-                  autoComplete="off"
-                  sx={{ width: '100%' }}
-                  value={selectedAddress && selectedAddress.address2}
-                  onChange={(e) => {
-                    handleChange('address2', e.target.value);
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12} sx={{ paddingTop: '10px' }}>
-                <TextField
-                  aria-label="City"
-                  label="City"
-                  title="City"
-                  type="text"
-                  name="City"
-                  autoComplete="off"
-                  sx={{ width: '100%' }}
-                  value={selectedAddress && selectedAddress.city}
-                  onChange={(e) => {
-                    handleChange('city', e.target.value);
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12} sx={{ paddingTop: '10px' }}>
-                <TextField
-                  aria-label="Postal Code"
-                  label="Postal Code"
-                  title="Postal Code"
-                  type="text"
-                  name="postal_code"
-                  autoComplete="off"
-                  sx={{ width: '100%' }}
-                  value={selectedAddress && selectedAddress.zip}
-                  onChange={(e) => {
-                    handleChange('zip', e.target.value.trim());
-                  }}
-                />
-              </Grid>
-            </Grid>
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            variant="contained"
-            onClick={handleClose}
-            sx={{ marginBottom: '15px' }}
+        {selectedAddress && (
+          <Formik
+            initialValues={{
+              address1: selectedAddress && selectedAddress.address1,
+              address2: selectedAddress && selectedAddress.address2,
+              city: selectedAddress && selectedAddress.city,
+              zip: selectedAddress && selectedAddress.zip,
+              isdefault:
+                (selectedAddress && selectedAddress.isdefault) || false,
+            }}
+            validationSchema={Yup.object({
+              address1: Yup.string()
+                .trim()
+                .max(40, 'Must be 40 characters or less')
+                .min(3, 'Must be at least 3 characters')
+                .required('Street address is required'),
+              address2: Yup.string()
+                .trim()
+                .max(40, 'Must be 30 characters or less'),
+              city: Yup.string()
+                .trim()
+                .max(40, 'Must be 40 characters or less')
+                .min(3, 'Must be at least 3 characters')
+                .required('City is required'),
+              zip: Yup.string()
+                .trim()
+                .min(3, 'Must be at least 3 digits')
+                .max(5, 'Must be at most 5 digits')
+                .matches(
+                  /^[0-9\s]+$/,
+                  'Only numbers are allowed for this field ',
+                )
+                .required('Postal code is required'),
+              isdefault: Yup.boolean(),
+            })}
+            onSubmit={async (values) => {}}
           >
-            Cancel
-          </Button>
-          <Button
-            variant="contained"
-            onClick={handleLCloseConfirm}
-            sx={{ marginRight: '15px', marginBottom: '15px' }}
-            autoFocus
-            disabled={
-              selectedAddress &&
-              (selectedAddress.address1 == '' ||
-                selectedAddress.city == '' ||
-                selectedAddress.zip == '')
-            }
-          >
-            Confirm
-          </Button>
-        </DialogActions>
+            {({
+              errors,
+              handleBlur,
+              handleChange,
+              handleSubmit,
+              touched,
+              values,
+              isValid,
+              dirty,
+            }) => (
+              <form onSubmit={handleSubmit}>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-description">
+                    <Grid container sx={{ width: '100%', maxWidth: '450px' }}>
+                      <Grid item xs={12}>
+                        <TextField
+                          aria-label="Address"
+                          label="Street Address"
+                          title="Street Address"
+                          type="text"
+                          name="address1"
+                          autoComplete="off"
+                          sx={{ width: '100%' }}
+                          value={values.address1}
+                          onChange={handleChange('address1')}
+                          onBlur={handleBlur('address1')}
+                          error={Boolean(touched.address1 && errors.address1)}
+                          helperText={touched.address1 && errors.address1}
+                        />
+                      </Grid>
+                      <Grid item xs={12} sx={{ paddingTop: '10px' }}>
+                        <TextField
+                          aria-label="Apt, Floor, Suite, Building, Company Address - Optional"
+                          label="Apt, Floor, Suite, Building, Company Address - Optional"
+                          title="Apt, Floor, Suite, Building, Company Address - Optional"
+                          type="text"
+                          name="second_address"
+                          autoComplete="off"
+                          sx={{ width: '100%' }}
+                          value={values.address2}
+                          onChange={handleChange('address2')}
+                          onBlur={handleBlur('address2')}
+                          error={Boolean(touched.address2 && errors.address2)}
+                          helperText={touched.address2 && errors.address2}
+                        />
+                      </Grid>
+                      <Grid item xs={12} sx={{ paddingTop: '10px' }}>
+                        <TextField
+                          aria-label="City"
+                          label="City"
+                          title="City"
+                          type="text"
+                          name="City"
+                          autoComplete="off"
+                          sx={{ width: '100%' }}
+                          value={values.city}
+                          onChange={handleChange('city')}
+                          onBlur={handleBlur('city')}
+                          error={Boolean(touched.city && errors.city)}
+                          helperText={touched.city && errors.city}
+                        />
+                      </Grid>
+                      <Grid item xs={12} sx={{ paddingTop: '10px' }}>
+                        <TextField
+                          aria-label="Postal Code"
+                          label="Postal Code"
+                          title="Postal Code"
+                          type="text"
+                          name="postal_code"
+                          autoComplete="off"
+                          sx={{ width: '100%' }}
+                          value={values.zip}
+                          onChange={handleChange('zip')}
+                          onBlur={handleBlur('zip')}
+                          error={Boolean(touched.zip && errors.zip)}
+                          helperText={touched.zip && errors.zip}
+                        />
+                      </Grid>
+                    </Grid>
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button
+                    variant="contained"
+                    onClick={handleClose}
+                    sx={{ marginBottom: '15px' }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    variant="contained"
+                    onClick={() => {
+                      setSelectedAddress({
+                        address1: values.address1 || '',
+                        address2: values.address2 || '',
+                        city: values.city || '',
+                        zip: values.zip || '',
+                        isdefault: values.isdefault,
+                      });
+                      handleLCloseConfirm({
+                        address1: values.address1 || '',
+                        address2: values.address2 || '',
+                        city: values.city || '',
+                        zip: values.zip || '',
+                        isdefault: values.isdefault,
+                      });
+                    }}
+                    sx={{ marginRight: '15px', marginBottom: '15px' }}
+                    autoFocus
+                    disabled={
+                      values.address1 === '' ||
+                      values.city === '' ||
+                      values.zip === '' ||
+                      !isValid
+                    }
+                  >
+                    Confirm
+                  </Button>
+                </DialogActions>
+              </form>
+            )}
+          </Formik>
+        )}
       </Dialog>
       <div style={{ minHeight: '300px', position: 'relative' }}>
         {(loading || window.google === undefined || actionPerform) && (
@@ -579,6 +700,8 @@ const Location = () => {
                 loading={loading}
                 deliveryAddressString={deliveryAddressString}
                 setDeliveryAddressString={setDeliveryAddressString}
+                setSelectedLatLng={setSelectedLatLng}
+                addCustomAddressCheck={addCustomAddressCheck}
               />
             </GoogleMap>
           </div>

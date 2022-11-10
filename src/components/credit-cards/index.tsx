@@ -9,6 +9,8 @@ import {
 // import { BillingAccount, ResponseUserBillingAccounts } from '../../types/olo-api';
 import LoadingBar from '../loading-bar';
 import DialogBox from '../../components/dialog-box';
+import OrderListSkeletonUI from '../order-list-skeleton-ui';
+import PaymentListSkeletonUI from '../payment-method-skeleton-ui';
 
 const CreditCards = ({ billingAccounts, loading }: any) => {
   const [open, setOpen] = useState(false);
@@ -58,7 +60,7 @@ const CreditCards = ({ billingAccounts, loading }: any) => {
           {!loading && billingAccounts && billingAccounts.length === 0 ? (
             <h6>No Billing Account Found</h6>
           ) : loading ? (
-            <LoadingBar />
+            <PaymentListSkeletonUI />
           ) : null}
           {!loading &&
             billingAccounts.length > 0 &&

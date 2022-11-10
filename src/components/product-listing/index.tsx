@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const ProductListing = (props: any) => {
   const classes = useStyles();
-  const { productList, imgPath, orderType } = props;
+  const { productList, imgPath, orderType, categoryName } = props;
   let products: [Product] = productList;
 
   return (
@@ -106,16 +106,16 @@ const ProductListing = (props: any) => {
                           title={item.name}
                         />
                       )}
-                      {/*{checkFeaturedProduct(item) && (*/}
-                      {/*  <Typography*/}
-                      {/*    variant="h2"*/}
-                      {/*    title={'FEATURED'}*/}
-                      {/*    className="product-label"*/}
-                      {/*    style={{ left: 0, top: 10 }}*/}
-                      {/*  >*/}
-                      {/*    FEATURED*/}
-                      {/*  </Typography>*/}
-                      {/*)}*/}
+                      {checkFeaturedProduct(item, categoryName) && (
+                        <Typography
+                          variant="h2"
+                          title={'FEATURED'}
+                          className="product-label"
+                          style={{ left: 0, top: 10 }}
+                        >
+                          FEATURED
+                        </Typography>
+                      )}
                       <CardContent sx={{ padding: '0' }}>
                         <Typography
                           variant="h2"

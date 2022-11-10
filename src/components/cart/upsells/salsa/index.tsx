@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addMultipleProductsRequest } from '../../../../redux/actions/basket/addMultipleProducts';
 import { changeImageSize, isEmpty } from '../../../../helpers/common';
+import SalsaSkeletonUI from '../../../salsa-skeleton-ui';
 
 const useStyles = makeStyles((theme: Theme) => ({
   cartTitle: {
@@ -241,6 +242,7 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
 
   return (
     <>
+      {products?.length < 1 && <SalsaSkeletonUI />}
       {basketObj &&
         basketObj.basket &&
         basketObj.basket.products.length > 0 &&
@@ -306,7 +308,7 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                         <Typography
                           variant="h6"
                           component="p"
-                          fontSize="14px !important"
+                          fontSize="12px !important"
                           padding={0}
                           textAlign="left"
                           lineHeight="1.2 !important"
@@ -315,10 +317,11 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                           sx={{
                             display: 'inline',
                             fontFamily: 'Poppins-Medium !important',
+                            fontSize:{ lg:"12px !important", xs: "14px !important"}
                           }}
                           // title={option.name}
                         >
-                          {obj.name}
+                          {obj.name = ((obj.name.length >26) ? obj.name.slice(0,30)+"..." : obj.name)}
                           {obj.cost > 0 && (
                             <Grid
                               item

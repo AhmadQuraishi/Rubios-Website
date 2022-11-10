@@ -35,6 +35,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Dialog from '@mui/material/Dialog';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { facebookSendEvent } from '../../redux/actions/facebook-conversion';
 import { facebookConversionTypes } from '../../redux/types/facebook-conversion';
 
@@ -162,7 +164,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   const [clickAction, setClickAction] = useState('');
   const [upsellsProductKeys, setUpsellsProductKeys] = useState<any[]>();
   const [products, setProducts] = useState<any[]>();
-
+  const [showMore, setShowMore] = useState(false);
   const productRemoveObj = useSelector(
     (state: any) => state.removeProductReducer,
   );
@@ -503,8 +505,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
     );
     setTimeout(() => {
       navigate('/checkout');
-    }, 1000)
-
+    }, 1000);
   };
 
   return (
@@ -955,7 +956,6 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                 // is-mandatory={itemMain.mandatory.toString()}
                                 // parent-option-id={itemMain.parentOptionID}
                               >
-
                                 <Grid
                                   container
                                   spacing={1}
@@ -973,7 +973,12 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                       alignItems: 'center',
                                     }}
                                   >
-                                    <Grid position={'relative'} item xs={4} lg={4}>
+                                    <Grid
+                                      position={'relative'}
+                                      item
+                                      xs={4}
+                                      lg={4}
+                                    >
                                       <img
                                         className="item-image"
                                         src={require(`../../assets/imgs/${type}.jpg`)}
@@ -981,7 +986,10 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                         // title={option.name}
                                       />
                                       <div className="check-mark">
-                                        <div aria-hidden="true" className="checkmark">
+                                        <div
+                                          aria-hidden="true"
+                                          className="checkmark"
+                                        >
                                           L
                                         </div>
                                       </div>
@@ -1336,100 +1344,47 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                           basketObj.basket.deliverymode !==
                             DeliveryModeEnum.curbside ? (
                             <>
+                            <Typography sx={{
+                          fontSize: '14px',
+                          fontFamily: 'Poppins-Regular !important', cursor: 'pointer'}} onClick={() => {
+                                    setShowMore(!showMore);
+                                  }}>
                               ESTIMATED TAX AND FEES
-                              <span
-                                onClick={() => {
-                                  setOpen(true);
-                                }}
-                                aira-label="help Icon"
-                                className={classes.helpicon}
-                              >
-                                ?
-                              </span>
-                              <Dialog
-                                open={open}
-                                onClose={handleClose}
-                                aria-labelledby="alert-dialog-title"
-                                aria-describedby="alert-dialog-description"
-                                TransitionProps={{
-                                  role: 'dialog',
-                                  'aria-modal': 'true',
-                                  'aria-label': 'ESTIMATED TAX AND FEES',
-                                }}
-                              >
-                                <DialogTitle
-                                  sx={{
-                                    fontSize: { xs: '17px', sm: '1.25rem' },
+                              {showMore ? (
+                                <ExpandLessIcon
+                                  aira-label="Expand Less"
+                                  onClick={() => {
+                                    setShowMore(!showMore);
                                   }}
-                                >
-                                  ESTIMATED TAX AND FEES
-                                </DialogTitle>
-                                <DialogContent>
-                                  <Grid
-                                    container
-                                    className={'taxes'}
-                                    spacing={1}
-                                  >
-                                    <Grid item xs={9}>
-                                      <Typography className="text-info-title">
-                                        SALES TAX:
-                                      </Typography>
-                                    </Grid>
-                                    <Grid
-                                      item
-                                      xs={3}
-                                      justifyContent={'flex-end'}
-                                    >
-                                      <Typography className="text-info-desc">
-                                        $
-                                        {basketObj &&
-                                          basketObj.basket &&
-                                          basketObj.basket.taxes &&
-                                          basketObj.basket.taxes
-                                            .reduce(
-                                              (sum: number, tax: any) =>
-                                                sum + tax.tax,
-                                              0,
-                                            )
-                                            .toFixed(2)}
-                                      </Typography>
-                                    </Grid>
-                                    <Grid item xs={9}>
-                                      <Typography className="text-info-title">
-                                        SERVICE FEE:
-                                      </Typography>
-                                    </Grid>
-                                    <Grid item xs={3}>
-                                      <Typography className="text-info-desc">
-                                        $
-                                        {(basketObj &&
-                                          basketObj.basket &&
-                                          basketObj.basket.totalfees.toFixed(
-                                            2,
-                                          )) ||
-                                          0}
-                                      </Typography>
-                                    </Grid>
-                                  </Grid>
-                                </DialogContent>
-
-                                <DialogActions>
-                                  <Button
-                                    aria-label="OK"
-                                    title="OK"
-                                    className="link default"
-                                    onClick={handleClose}
-                                  >
-                                    OK
-                                  </Button>
-                                </DialogActions>
-                              </Dialog>
+                                  // className={classes.helpicon}
+                                  style={{
+                                    cursor: 'pointer',
+                                    verticalAlign: 'bottom',
+                                    color: 'secondary.main',
+                                  }}
+                                />
+                              ) : (
+                                <ExpandMoreIcon
+                                  aira-label="Expand Less"
+                                  onClick={() => {
+                                    setShowMore(!showMore);
+                                  }}
+                                  // className={classes.helpicon}
+                                  style={{
+                                    cursor: 'pointer',
+                                    verticalAlign: 'bottom',
+                                    color: 'secondary.main',
+                                  }}
+                                />
+                              )}
+                             </Typography>
                             </>
                           ) : (
                             'ESTIMATED TAXES'
                           )}
                         </div>
                       </Grid>
+                      {!showMore &&
                       <Grid
                         item
                         xs={3}
@@ -1444,7 +1399,124 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                       >
                         ${calculateTaxAndFee(basketObj.basket)}
                       </Grid>
+}                      {showMore ? (
+                                  <Grid
+                                    container
+                                    className={'taxes'}
+                                    spacing={1}
+                                    
+                                  >
+                                    <Grid item xs={9}>
+                                      <Typography
+                                        sx={{
+                                          lineHeight: '1.0',
+                                          fontFamily:
+                                            'Poppins-Regular',
+                                            fontSize: "14px !important",
+                                            color: '#214F66',
+                                            marginLeft: "22px !important"
+                                        }}
+                                      >
+                                        SALES TAX:
+                                      </Typography>
+                                    </Grid>
+                                    <Grid
+                                      item
+                                      xs={3}
+                                      justifyContent={'flex-end'}
+                                    >
+                                      <Typography
+                                        sx={{
+                                          lineHeight: '1.0',
+                                          textAlign: 'right',
+                                          fontFamily:
+                                            'Poppins-Regular',
+                                            color: '#214F66',
+                                            
+                                            fontSize: "14px !important",
+                                        }}
 
+                                        title={ '$' +
+                                          (basketObj &&
+                                            basketObj.basket &&
+                                            basketObj.basket.taxes &&
+                                            basketObj.basket.taxes
+                                              .reduce(
+                                                (sum: number, tax: any) =>
+                                                  sum + tax.tax,
+                                                0,
+                                              )
+                                              .toFixed(2))}
+                                      >
+                                        $
+                                        {basketObj &&
+                                          basketObj.basket &&
+                                          basketObj.basket.taxes &&
+                                          basketObj.basket.taxes
+                                            .reduce(
+                                              (sum: number, tax: any) =>
+                                                sum + tax.tax,
+                                              0,
+                                            )
+                                            .toFixed(2)}
+                                      </Typography>
+                                    </Grid>
+                                    <Grid item xs={9}>
+                                      <Typography
+                                        sx={{
+                                          lineHeight: '1.0',
+                                          fontFamily:
+                                            'Poppins-Regular',
+                                            fontSize: "14px !important",
+                                            color: '#214F66',
+                                            marginBottom: "3px",
+                                            marginLeft: "22px !important"
+                                        }}
+                                      >
+                                        SERVICE FEE:
+                                      </Typography>
+                                    </Grid>
+                                    <Grid item xs={3}>
+                                      <Typography
+                                        sx={{
+                                          lineHeight: '1.0',
+                                          textAlign: 'right',
+                                          fontFamily:
+                                            'Poppins-Regular',
+                                            fontSize: "14px !important",
+                                            color: '#214F66',
+                                        }}
+                                        title={'$' + (basketObj &&
+                                          basketObj.basket &&
+                                          basketObj.basket.totalfees.toFixed(
+                                            2,
+                                          ))
+                                          }
+                                      >
+                                        $
+                                        {(basketObj &&
+                                          basketObj.basket &&
+                                          basketObj.basket.totalfees.toFixed(
+                                            2,
+                                          )) ||
+                                          0}
+                                      </Typography>
+                                    </Grid>
+                                  </Grid>
+                              ) : (
+                                /* <DialogActions>
+                                  <Button
+                                    aria-label="OK"
+                                    title="OK"
+                                    className="link default"
+                                    onClick={handleClose}
+                                  >
+                                    OK
+                                  </Button>
+                                </DialogActions> */
+
+                                ''
+                              )}
                       {/*{basketObj &&*/}
                       {/*basketObj.basket &&*/}
                       {/*basketObj.basket.totalfees &&*/}

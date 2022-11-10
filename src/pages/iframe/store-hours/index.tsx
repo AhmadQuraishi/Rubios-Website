@@ -2,11 +2,11 @@ import { Grid, List, ListItem, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useEffect, useState } from 'react';
 import { CalendarTypeEnum, HoursListing } from '../../../helpers/hoursListing';
-import { GetUserFriendlyHours } from '../../../helpers/getUserFriendlyHours';
+import { GetUserFriendlyHoursRAW } from '../../../helpers/getUserFriendlyHours';
 import { getResturantCalendarRequest } from '../../../redux/actions/restaurant/calendar';
 import { useParams } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
-
+import moment from 'moment';
 const useStyle = makeStyles({
   heading: {
     fontSize: '13px !important',
@@ -20,7 +20,7 @@ const StoreHoursIframe = () => {
   const dispatch = useDispatch();
   const { id }: any = useParams();
 
-  const [restaurantHours, setRestaurantHours] = useState<HoursListing[]>();
+  const [restaurantHours, setRestaurantHours] = useState<HoursListing[]>([]);
   const { calendar } = useSelector(
     (state: any) => state.restaurantCalendarReducer,
   );
@@ -46,11 +46,13 @@ const StoreHoursIframe = () => {
       dispatch(getResturantCalendarRequest(id, dateFrom, dateTo));
     }
   }, [id]);
-
+  const getTimeFormat = (date: string) => {
+    return moment(date, 'YYYYMMDD HH:mm').format('h:mm A');
+  };
   useEffect(() => {
     if (calendar) {
       setRestaurantHours(
-        GetUserFriendlyHours(calendar, CalendarTypeEnum.business),
+        GetUserFriendlyHoursRAW(calendar, CalendarTypeEnum.business),
       );
     }
   }, [calendar]);
@@ -83,7 +85,7 @@ const StoreHoursIframe = () => {
 
           {restaurantHours &&
             restaurantHours.length > 0 &&
-            restaurantHours.map((item: HoursListing, index: number) => (
+            restaurantHours.map((item: any, index: number) => (
               <Grid container spacing={0} key={index}>
                 <Grid item xs={3}>
                   <List
@@ -100,9 +102,9 @@ const StoreHoursIframe = () => {
                         padding: '0 0 0 0',
                         fontFamily: "'Poppins-Medium' !important",
                       }}
-                      title={item.label}
+                      title={item.weekday && item.weekday.toUpperCase() || ""}
                     >
-                      {item.label}
+                      {item.weekday && item.weekday.toUpperCase() || ""}
                     </ListItem>
                   </List>
                 </Grid>
@@ -124,12 +126,12 @@ const StoreHoursIframe = () => {
                       title={
                         item.isOpenAllDay
                           ? 'Open 24 hours'
-                          : item.start + ' - ' + item.end
+                          : getTimeFormat(item.start) + ' - ' + getTimeFormat(item.end)
                       }
                     >
                       {item.isOpenAllDay
                         ? 'Open 24 hours'
-                        : item.start + ' - ' + item.end}
+                        : getTimeFormat(item.start) + ' - ' + getTimeFormat(item.end)}
                     </ListItem>
                   </List>
                 </Grid>

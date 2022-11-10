@@ -85,18 +85,6 @@ const OrdersHistory = () => {
           <br />
           {value === '1' && <FavoriteOrders />}
           {value === '2' && <RecentOrders />}
-          {/*{value === '2' && (*/}
-          {/*  <Fragment>*/}
-          {/*    <h1>Recent Orders</h1>*/}
-          {/*  </Fragment>*/}
-          {/*)}*/}
-          {/*{orders.length > 0 && (*/}
-          {/*  <Fragment>*/}
-          {/*    {orders.map((order: any, index) => (*/}
-          {/*      <h1 key={index}>{order.timeplaced}</h1>*/}
-          {/*    ))}*/}
-          {/*  </Fragment>*/}
-          {/*)}*/}
         </Grid>
       </Grid>
     </Page>

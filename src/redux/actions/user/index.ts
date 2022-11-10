@@ -88,9 +88,18 @@ export function getUserDeliveryAddresses() {
 export function getUserDeliveryAddressesSuccess(
   data: ResponseUserDeliveryAddresses,
 ) {
+  let sortArray =
+    (data &&
+      data.deliveryaddresses &&
+      data.deliveryaddresses.length > 0 &&
+      data.deliveryaddresses) ||
+    [];
+
+  sortArray = sortArray.sort((a: any, b: any) => b.isdefault - a.isdefault);
+  console.log('sortArray', sortArray);
   return {
     type: Type.GET_USER_DELIVERY_ADDRESSES_SUCCESS,
-    payload: data,
+    payload: { deliveryaddresses: sortArray},
   };
 }
 

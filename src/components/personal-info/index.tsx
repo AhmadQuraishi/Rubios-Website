@@ -28,6 +28,7 @@ import { forwardRef } from 'react';
 import moment from 'moment';
 import { displayToast } from '../../helpers/toast';
 import Select from 'react-select';
+import ProfileSkeletonUI from '../profile-skeleton-ui';
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     padding: '0px 0px 20px 0px',
@@ -184,8 +185,8 @@ const PersonalInfo = () => {
 
   return (
     <div className={classes.root}>
-      {(loading || !userProfile || loadingLocations) && <LoadingBar />}
-      {userProfile && locations && locations.length > 0 && (
+      {(loading || userProfile?.length < 1 || !locations || locations?.length < 1) && <ProfileSkeletonUI />}
+      {!loading && userProfile && locations && locations.length > 0 && (
         <Grid container>
           <Formik
             initialValues={{

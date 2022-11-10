@@ -11,6 +11,7 @@ import {
 import LoadingBar from '../../components/loading-bar';
 import DialogBox from '../../components/dialog-box';
 import Page from '../../components/page-title';
+import DeliveryAddressSkeletonUI from '../../components/delivery-address-skeleton-ui';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -89,7 +90,7 @@ const DeliveryAddress = () => {
             placing an order and enter the updated delivery address during
             checkout.
           </Typography>
-          {loading && <LoadingBar />}
+          {loading && <DeliveryAddressSkeletonUI />}
 
           {!loading &&
             deliveryaddresses.length > 0 &&

@@ -70,7 +70,7 @@ const responsive = {
 
 const ProductListing = (props: any) => {
   const classes = useStyles();
-  const { productList, imgPath } = props;
+  const { productList, imgPath, categoryName } = props;
   let products: [Product] = productList;
 
   const checkProductAvailability = (item: any) => {
@@ -133,15 +133,15 @@ const ProductListing = (props: any) => {
                       title={item.name}
                     />
                   )}
-                  {/*{checkFeaturedProduct(item) && (*/}
-                  {/*  <Typography*/}
-                  {/*    variant="h2"*/}
-                  {/*    title={'FEATURED'}*/}
-                  {/*    className="product-label"*/}
-                  {/*  >*/}
-                  {/*    FEATURED*/}
-                  {/*  </Typography>*/}
-                  {/*)}*/}
+                  {checkFeaturedProduct(item, categoryName) && (
+                    <Typography
+                      variant="h2"
+                      title={'FEATURED'}
+                      className="product-label"
+                    >
+                      FEATURED
+                    </Typography>
+                  )}
                   <CardContent
                     style={{ paddingBottom: 0 }}
                     sx={{ padding: '0' }}
