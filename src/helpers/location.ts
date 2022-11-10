@@ -1,3 +1,5 @@
+import { US_STATES } from './usStates';
+
 export function removeTestingStores(restaurants: any) {
   const restaurantIds: any =
     `${process.env.REACT_APP_TESTING_RESTAURANTS_IDS}` || '';
@@ -32,4 +34,23 @@ export function getOrderTypeRestaurants(restaurants: any, type: string | null) {
   }
   filteredRestaurants = removeTestingStores(filteredRestaurants);
   return filteredRestaurants;
-};
+}
+
+export function addStateFullNameRestaurant(data: any) {
+  if (data?.restaurants?.length) {
+    let updatedRestaurants = data.restaurants.map((restaurant: any) => {
+      const newRestaurant = {
+        ...restaurant,
+      };
+      if (restaurant.state && US_STATES[restaurant.state]) {
+        newRestaurant['stateName'] = US_STATES[restaurant.state];
+      }
+      return newRestaurant;
+    });
+    return {
+      restaurants: updatedRestaurants,
+    };
+  } else {
+    return data;
+  }
+}

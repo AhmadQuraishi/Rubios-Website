@@ -150,7 +150,9 @@ const LocationCard = (props: any) => {
       );
       if (searchedRestaurant.length === 0) {
         searchedRestaurant = availableRestaurants.filter(
-          (x: any) => x.state.toLowerCase() == searchTextTrim,
+          (x: any) =>
+            x.state.toLowerCase() == searchTextTrim ||
+            (x.stateName && x.stateName.toLowerCase() == searchTextTrim),
         );
       }
       if (searchedRestaurant.length === 0) {

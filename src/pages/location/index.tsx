@@ -250,7 +250,6 @@ const Location = () => {
                 return;
               } else {
                 setActionPerform(false);
-                // setShowNearBy(false);
                 displayToast(
                   'ERROR',
                   'No address found against your current location.',
@@ -345,7 +344,7 @@ const Location = () => {
       (lastWeekDate.getMonth() + 1) * 100 +
       lastWeekDate.getDate() +
       '';
-    dispatch(getNearByResturantListRequest(lat, long, 10, 6, dateFrom, dateTo));
+    dispatch(getNearByResturantListRequest(lat, long, 40, 6, dateFrom, dateTo));
   };
   const [markers, setMarkers] = useState<any[]>([]);
 
