@@ -6,7 +6,7 @@ import ListHours from '../listHours';
 const StoreInfo = (props: any) => {
   const {
     gotoCategoryPage,
-    resturantOrderType,
+    orderType,
     deliveryAddressString,
     item,
     index,
@@ -19,7 +19,7 @@ const StoreInfo = (props: any) => {
   useEffect(() => {
     try {
       if (
-        resturantOrderType === 'dispatch' &&
+        orderType === 'dispatch' &&
         deliveryAddressString &&
         Object.keys(deliveryAddressString).length
       ) {
@@ -93,7 +93,7 @@ const StoreInfo = (props: any) => {
         >
           Hours
         </Typography>
-        <ListHours id={item.id} resturantOrderType={resturantOrderType} />
+        <ListHours id={item.id} />
         {candeliver == false && (
           <Typography
             variant="body2"

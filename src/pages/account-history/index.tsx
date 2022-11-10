@@ -2,9 +2,9 @@ import { Grid, Typography, Tabs, Box, Tab, Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useState } from 'react';
 import { Fragment } from 'react';
-
 import HistoryGrid from '../../components/history-grid';
 import Page from '../../components/page-title';
+import PointsGrid from '../../components/points-history';
 import TransactionHistory from '../../components/transaction-history';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -96,25 +96,35 @@ const AccountHistory = () => {
               }}
             >
               <Tab
-                label="Rewards History"
+                label="Points"
                 className={classes.tabspanel}
-                title="Rewards Historyy"
+                title="Points"
                 tabIndex={0}
                 {...a11yProps(0)}
               />
               <Tab
+                label="Rewards"
                 className={classes.tabspanel}
-                label="Transaction History"
-                title="Transaction History"
-                tabIndex={4}
+                title="Rewards"
+                tabIndex={1}
                 {...a11yProps(1)}
+              />
+              <Tab
+                className={classes.tabspanel}
+                label="Transaction"
+                title="Transaction"
+                tabIndex={2}
+                {...a11yProps(2)}
               />
             </Tabs>
           </Box>
           <TabPanel value={value} index={0}>
-            <HistoryGrid />
+          <PointsGrid/>
           </TabPanel>
           <TabPanel value={value} index={1}>
+            <HistoryGrid />
+          </TabPanel>
+          <TabPanel value={value} index={2}>
             <TransactionHistory />
           </TabPanel>
         </Grid>
