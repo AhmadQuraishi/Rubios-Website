@@ -234,7 +234,7 @@ const SignUpGuest = ({ guestSignupCheckout, signupFormRef }: any) => {
                         variant="body2"
                         title="I accept the terms and conditions."
                         sx={{
-                          width: '100%',
+                          width: {lg:'130%',xs:"100%",md:"130%",sm: "130%"},
                           paddingTop: '3px !important',
                           display: 'flex',
                           alignItems: 'center',
