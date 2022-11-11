@@ -47,6 +47,7 @@ import TagManager from 'react-gtm-module';
 import { facebookSendEvent } from '../../redux/actions/facebook-conversion';
 import { facebookConversionTypes } from '../../redux/types/facebook-conversion';
 import SignUpGuest from '../../components/sign-up-guest';
+import { userRegister } from '../../redux/actions/user';
 
 const Checkout = () => {
   const dispatch = useDispatch();
@@ -60,7 +61,7 @@ const Checkout = () => {
   const [showIframeOnce, setShowIframeOnce] = React.useState<boolean>(true);
   const [removeCreditCardOnce, setRemoveCreditCardOnce] =
     React.useState<boolean>(true);
-    const [showSignUpGuest, setShowSignUpGuest] = React.useState<boolean>(false);
+  const [showSignUpGuest, setShowSignUpGuest] = React.useState<boolean>(false);
   const [defaultCard, setDefaultCard] = React.useState<boolean>(true);
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
   const [tipPercentage, setTipPercentage] = React.useState<any>(null);
@@ -436,6 +437,7 @@ const Checkout = () => {
 
     return data;
   };
+
   const validateGuestSignUpForm = (): any => {
     let data = {
       isValidForm: false,
@@ -472,34 +474,34 @@ const Checkout = () => {
     return data;
   };
 
-  const validatePaymentForm = async () => {
-    let data: any = {
-      isValidCard: false,
-      cardDetails: null,
-      errors: {},
-    };
-
-    const cardDetails = await paymentInfoRef.current.getCardDetails();
-
-    if (cardDetails.error) {
-      data.errors = cardDetails.error;
-    } else if (cardDetails.paymentMethod) {
-      if (
-        cardDetails.paymentMethod &&
-        cardDetails.paymentMethod.billing_details &&
-        cardDetails.paymentMethod.billing_details.address.postal_code &&
-        cardDetails.paymentMethod.billing_details.address.postal_code !== ''
-      ) {
-        data.cardDetails = cardDetails.paymentMethod;
-        data.isValidCard = true;
-      } else {
-        data.isValidCard = false;
-        data.errors.message = 'Zip Code is required';
-      }
-    }
-
-    return data;
-  };
+  // const validatePaymentForm = async () => {
+  //   let data: any = {
+  //     isValidCard: false,
+  //     cardDetails: null,
+  //     errors: {},
+  //   };
+  //
+  //   const cardDetails = await paymentInfoRef.current.getCardDetails();
+  //
+  //   if (cardDetails.error) {
+  //     data.errors = cardDetails.error;
+  //   } else if (cardDetails.paymentMethod) {
+  //     if (
+  //       cardDetails.paymentMethod &&
+  //       cardDetails.paymentMethod.billing_details &&
+  //       cardDetails.paymentMethod.billing_details.address.postal_code &&
+  //       cardDetails.paymentMethod.billing_details.address.postal_code !== ''
+  //     ) {
+  //       data.cardDetails = cardDetails.paymentMethod;
+  //       data.isValidCard = true;
+  //     } else {
+  //       data.isValidCard = false;
+  //       data.errors.message = 'Zip Code is required';
+  //     }
+  //   }
+  //
+  //   return data;
+  // };
 
   // const getGiftCardAmount = () => {
   //   const giftCardIndex = billingSchemes.findIndex(
@@ -552,26 +554,23 @@ const Checkout = () => {
       formDataValue = formData;
     }
 
-    if (
-      basket && basket.deliverymode === DeliveryModeEnum.dispatch &&
-      (basket.deliverymode === '' ||
-        basket.deliverymode === DeliveryModeEnum.pickup ||
-        basket.deliverymode === DeliveryModeEnum.curbside ||
-        basket.deliverymode === DeliveryModeEnum.dinein)
-    ) {
-      const { isValidForm, formData } = validateGuestSignUpForm();
-      if (!isValidForm) {
-        displayToast(
-          'ERROR',
-          `Sign Up fields are required.`,
-        );
-        scrollToTop();
-        setButtonDisabled(false);
-        return;
-      }
-      formDataValue = formData;
-    }
-    
+    // if (
+    //   basket &&
+    //   basket.deliverymode === DeliveryModeEnum.dispatch &&
+    //   (basket.deliverymode === '' ||
+    //     basket.deliverymode === DeliveryModeEnum.pickup ||
+    //     basket.deliverymode === DeliveryModeEnum.curbside ||
+    //     basket.deliverymode === DeliveryModeEnum.dinein)
+    // ) {
+    //   const { isValidForm, formData } = validateGuestSignUpForm();
+    //   if (!isValidForm) {
+    //     displayToast('ERROR', `Sign Up fields are required.`);
+    //     scrollToTop();
+    //     setButtonDisabled(false);
+    //     return;
+    //   }
+    //   formDataValue = formData;
+    // }
 
     if (basket && basket.deliverymode === DeliveryModeEnum.dispatch) {
       const { isValidForm, formData } = validateDeliveryForm();
@@ -858,6 +857,64 @@ const Checkout = () => {
     // }
   }, []);
 
+  const guestSignupCheckout = () => {
+    let formDataValue;
+    if (
+      basket?.deliverymode === '' ||
+      basket?.deliverymode === DeliveryModeEnum.pickup ||
+      basket?.deliverymode === DeliveryModeEnum.curbside ||
+      basket?.deliverymode === DeliveryModeEnum.dinein
+    ) {
+      const { isValidForm, formData } = validatePickupForm();
+      if (!isValidForm) {
+        displayToast(
+          'ERROR',
+          `${formatOrderType(basket.deliverymode)} fields are required.`,
+        );
+        scrollToTop();
+        setButtonDisabled(false);
+        return;
+      }
+      formDataValue = formData;
+    }
+    if (basket?.deliverymode === DeliveryModeEnum.dispatch) {
+      const { isValidForm, formData } = validateDeliveryForm();
+      if (!isValidForm) {
+        displayToast('ERROR', 'Delivery fields are required.');
+        scrollToTop();
+        setButtonDisabled(false);
+        return;
+      }
+      formDataValue = formData;
+    }
+    const { isValidForm: isValidFormSignup, formData: formDataSignup } =
+      validateGuestSignUpForm();
+    if (!isValidFormSignup) {
+      displayToast('ERROR', ` Signup fields are required.`);
+      return;
+    }
+
+    const signUpObj: any = {
+      first_name: formDataValue?.firstName,
+      last_name: formDataValue?.lastName,
+      email: formDataValue?.email,
+      phone: formDataSignup?.phone.replace(/\D/g, '') || '',
+      password: formDataSignup?.password,
+      password_confirmation: formDataSignup?.password_confirmation,
+      fav_location_id: '345077',
+      // fav_location_id: restaurant?.id.toString(),
+      terms_and_conditions: formDataSignup?.termsAndConditions,
+      marketing_email_subscription: formDataSignup?.emailNotification,
+    };
+    if (formDataSignup?.birthDay) {
+      signUpObj.birthday = moment(formDataSignup.birthDay).format('YYYY-MM-DD');
+    }
+    console.log('signUpObj', signUpObj)
+
+    dispatch(userRegister(signUpObj));
+
+  };
+
   return (
     <Page title={'Checkout'} className="">
       <Typography variant="h1" className="sr-only">
@@ -980,8 +1037,8 @@ const Checkout = () => {
                         basket.deliverymode === DeliveryModeEnum.curbside ||
                         basket.deliverymode === DeliveryModeEnum.dinein) ? (
                         <PickupForm
-                        setShowSignUpGuest={setShowSignUpGuest}
-                        showSignUpGuest={!showSignUpGuest}
+                          setShowSignUpGuest={setShowSignUpGuest}
+                          showSignUpGuest={!showSignUpGuest}
                           basket={basket}
                           pickupFormRef={pickupFormRef}
                           orderType={basket.deliverymode}
@@ -996,33 +1053,32 @@ const Checkout = () => {
                         />
                       ) : null}
                     </Grid>
-
-
                   </Grid>
                   <OrderTime
                     orderType={(basket && basket.deliverymode) || ''}
                   />
                 </Grid>
               </Grid>
-              {!providerToken &&
-                  showSignUpGuest && (
-                    <>
-                      <br />
-                      <br />
-                      <Divider />
-                      <br />
-                      <br />
-                      <br />
-                      <SignUpGuest signupFormRef={signupFormRef}/>
-                    </>
-                  )
-                }
-              {providerToken && authToken &&
-                  authToken.authtoken &&
-                  authToken.authtoken !== '' &&
+              {!providerToken && showSignUpGuest && (
+                <>
+                  <br />
+                  <br />
+                  <Divider />
+                  <br />
+                  <br />
+                  <br />
+                  <SignUpGuest
+                    guestSignupCheckout={guestSignupCheckout}
+                    signupFormRef={signupFormRef}
+                  />
+                </>
+              )}
+              {providerToken &&
+                authToken &&
+                authToken.authtoken &&
+                authToken.authtoken !== '' &&
                 providerToken.first_name &&
-                rewards &&
-                (
+                rewards && (
                   <>
                     <br />
                     <br />
