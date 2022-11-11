@@ -57,6 +57,7 @@ const SignUpGuest = ({ guestSignupCheckout, signupFormRef }: any) => {
                 sm: 'center',
                 xs: 'left',
               },
+              marginBottom: '5px'
             }}
             variant="h6"
           >
