@@ -1084,6 +1084,7 @@ const Checkout = () => {
                       ccsfObj
                     }
                     onClick={placeOrder}
+                    id={'place-order-button'}
                     variant="contained"
                     title="PLACE ORDER"
                   >

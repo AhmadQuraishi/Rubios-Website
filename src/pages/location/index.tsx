@@ -23,10 +23,12 @@ import { makeStyles } from '@mui/styles';
 import { displayToast } from '../../helpers/toast';
 import './index.css';
 import Page from '../../components/page-title';
-import { getAddress, removeTestingStores } from '../../helpers/common';
+import { getAddress } from '../../helpers/common';
+import { getOrderTypeRestaurants } from '../../helpers/location';
 import { getGeocode, getLatLng } from 'use-places-autocomplete';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
+// import { staticMapUrl } from 'static-google-map';
 
 const useStyles = makeStyles((theme: Theme) => ({
   dummyBg: {
@@ -52,36 +54,44 @@ const mapContainerStyle = {
   width: '100%',
   height: 'auto',
 };
+
+const actionTypes: any = {
+  CURRENT_LOCATION: 'CURRENT_LOCATION',
+  LOCAL_SEARCH: 'LOCAL_SEARCH',
+  GOOGLE_SEARCH: 'GOOGLE_SEARCH',
+  ALL: 'ALL',
+};
 const Location = () => {
+  const mapRef = useRef();
+  const classes = useStyles();
+  const dispatch = useDispatch();
   const [libraries] = useState<any>(['places']);
   useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY?.toString() || '',
     libraries,
   });
-  const classes = useStyles();
-  const { restaurants, nearbyRestaurants, loading } = useSelector(
-    (state: any) => state.restaurantListReducer,
-  );
 
-  const mapRef = useRef();
   const loadMap = useCallback((map: any) => {
     mapRef.current = map;
   }, []);
 
   const [mapCenter, setMapCenter] = useState<any>();
-  const [showNearBy, setShowNearBy] = useState(false);
-  const [LatLng, setLatLng] = useState<any>();
-  const [orderType, setOrderType] = useState<string>();
   const [zoom, setZoom] = useState<number>(7);
-  const [nearByRestaurantsFound, setNearByRestaurantsFound] = useState(false);
+  const [LatLng, setLatLng] = useState<any>(null);
+  const [orderType, setOrderType] = useState<string | null>(null);
+  const [action, setAction] = useState(actionTypes.All);
   const [actionPerform, setActionPerform] = useState(false);
-  const dispatch = useDispatch();
-  const [deliveryRasturants, setDeliveryRasturants] = useState<any>();
-  const [allResturants, setAllResturants] = useState<any>();
-  const [filteredRestaurants, setfilteredRestaurants] = useState<any>([]);
+  const [filteredRestaurants, setFilteredRestaurants] = useState<any>([]);
+  const [selectedAddress, setSelectedAddress] = useState<any>();
   const [deliveryAddressString, setDeliveryAddressString] = useState<any>();
-  const [searchText, setSearchText] = useState<string>('');
+  const [restaurantNotFound, setRestaurantNotFound] = useState(false);
+  const [hideCurrentLocation, setHideCurrentLocation] = useState(false);
 
+  const {
+    restaurants,
+    nearbyRestaurants,
+    loading: restaurantLoading,
+  } = useSelector((state: any) => state.restaurantListReducer);
   const { userDeliveryAddresses } = useSelector(
     (state: any) => state.userReducer,
   );
@@ -98,17 +108,50 @@ const Location = () => {
     }
   }, []);
 
-  const setOrderTypeMain = (type: any) => {
-    setfilteredRestaurants([]);
-    setAllResturants([]);
-    setDeliveryRasturants([]);
+
+  const changeOrderType = (orderType: string) => {
+    setOrderType(orderType);
+    setAction(actionTypes.All);
     setActionPerform(false);
     setLatLng(null);
-    setShowNearBy(false);
-    setNearByRestaurantsFound(false);
     setDeliveryAddressString(null);
-    setSearchText('');
-    setOrderType(type);
+    setSelectedAddress(null);
+    setFilteredRestaurants([]);
+    setRestaurantNotFound(false);
+    setHideCurrentLocation(false);
+    if (
+      restaurants?.restaurants?.length > 0 &&
+      orderType &&
+      orderType !== 'dispatch'
+    ) {
+      const rest = getOrderTypeRestaurants(restaurants.restaurants, orderType);
+      setFilteredRestaurants(rest);
+      setMapCenter({
+        lat: restaurants.restaurants[0].latitude,
+        lng: restaurants.restaurants[0].longitude,
+      });
+      setZoom(7);
+    }
+  };
+
+  const populateMarkersOnMap = (restaurants: any) => {
+    setMarkers([]);
+    restaurants.forEach((item: ResponseRestaurant, index: number) => {
+      if (mapCenter === undefined) {
+        setMapCenter({
+          lat: item.latitude,
+          lng: item.longitude,
+        });
+      }
+      let latLong = {
+        lat: item.latitude,
+        lng: parseFloat(item.longitude),
+      };
+      setMarkers((markers) => [
+        ...markers,
+        <Marker key={Math.random() + index} position={latLong} />,
+      ]);
+    });
   };
 
   const setMayLocation = () => {
@@ -171,98 +214,75 @@ const Location = () => {
     return errorMsg;
   };
 
-  const [selectedAddress, setSelectedAddress] = useState<any>();
-  const [selectedLatLng, setSelectedLatLng] = useState<any>();
-  useEffect(() => {
-    if (LatLng && actionPerform) {
-      if (LatLng) {
-        getNearByRestaurants(LatLng.lat, LatLng.lng);
-      }
-    } else if (
-      showNearBy &&
-      orderType &&
-      searchText === '' &&
-      // orderType === 'dispatch' &&
-      !addCustomAddressCheck()
-    ) {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          function (position) {
-            const lat = position.coords.latitude;
-            const lng = position.coords.longitude;
-            getGeocode({
-              location: {
-                lat: lat,
-                lng: lng,
-              },
-            })
-              .then((results) => {
-                const address = getAddress(results[0]);
-                if (address.address1 !== '') {
-                  if (orderType !== 'dispatch') {
-                    getNearByRestaurants(lat, lng);
-                    setSelectedLatLng({
-                      lat: lat,
-                      lng: lng,
-                    });
-                  } else {
-                    handleClickOpen();
-                    setSelectedAddress(address);
-                    setActionPerform(false);
-                    setShowNearBy(true);
-                    setSelectedLatLng({
-                      lat: lat,
-                      lng: lng,
-                    });
-                  }
-                  return;
+  const currentLocation = () => {
+    setLatLng(null);
+    setActionPerform(true);
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        function (position) {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          getGeocode({
+            location: {
+              lat: lat,
+              lng: lng,
+            },
+          })
+            .then((results) => {
+              const address = getAddress(results[0]);
+              if (address.address1 !== '') {
+                if (orderType !== 'dispatch') {
+                  setActionPerform(true);
+                  setLatLng({
+                    lat: lat,
+                    lng: lng,
+                  });
+                  getNearByRestaurants(lat, lng);
                 } else {
+                  setLatLng({
+                    lat: lat,
+                    lng: lng,
+                  });
+                  handleClickOpen();
+                  setSelectedAddress(address);
                   setActionPerform(false);
-                  setShowNearBy(false);
-                  displayToast(
-                    'ERROR',
-                    'No address found against your current location.',
-                  );
                 }
-              })
-              .catch((error) => {
+                return;
+              } else {
+                setActionPerform(false);
                 displayToast(
                   'ERROR',
                   'No address found against your current location.',
                 );
-                setActionPerform(false);
-                setShowNearBy(false);
-              });
+              }
+            })
+            .catch((error) => {
+              displayToast(
+                'ERROR',
+                'No address found against your current location.',
+              );
+              setActionPerform(false);
+            });
 
-            setZoom(7);
-          },
-          function (error) {
-            displayToast('ERROR', getLocationError(error));
-            setShowNearBy(false);
-            setActionPerform(false);
-            setZoom(7);
-          },
-        );
-      }
+          setZoom(7);
+        },
+        function (error) {
+          displayToast('ERROR', getLocationError(error));
+          setActionPerform(false);
+          setZoom(7);
+        },
+      );
     }
-  }, [showNearBy, LatLng]);
+  };
 
   useEffect(() => {
-    if (orderType === 'dispatch' || showNearBy) {
-      return;
-    }
-    if (restaurants && restaurants.restaurants) {
+    if (restaurants?.restaurants) {
       if (restaurants.restaurants.length === 0) {
-        setfilteredRestaurants([]);
-        setDeliveryRasturants([]);
-        setAllResturants([]);
+        setFilteredRestaurants([]);
       } else {
-        if (orderType && orderType !== '') {
-          setfilteredRestaurants(
-            getFilteredRestaurants(restaurants.restaurants),
-          );
-        }
-        setAllResturants(getFilteredRestaurants(restaurants.restaurants));
+        const rest = getOrderTypeRestaurants(restaurants.restaurants, null);
+        setFilteredRestaurants(rest);
+        populateMarkersOnMap(rest);
         setMapCenter({
           lat: restaurants.restaurants[0].latitude,
           lng: restaurants.restaurants[0].longitude,
@@ -270,108 +290,42 @@ const Location = () => {
         setZoom(7);
       }
     }
-  }, [restaurants, orderType]);
+  }, [restaurants]);
 
   useEffect(() => {
-    if (nearbyRestaurants && nearbyRestaurants.restaurants) {
-      if (nearbyRestaurants.restaurants.length === 0) {
-        if (showNearBy || LatLng) {
-          setShowNearBy(false);
-          setNearByRestaurantsFound(false);
-          if (LatLng) {
-            setDeliveryRasturants([]);
-            displayToast(
-              'ERROR',
-              "We could not find any Rubio's within 10 miles of your address.",
-            );
-          } else {
-            setDeliveryRasturants([]);
-            displayToast(
-              'ERROR',
-              "We could not find any Rubio's within 10 miles of your current location.",
-            );
-          }
-          setLatLng(null);
-          setZoom(7);
-          setActionPerform(false);
-        }
-        setfilteredRestaurants([]);
-        setDeliveryRasturants([]);
+    if (nearbyRestaurants?.restaurants) {
+      if (nearbyRestaurants?.restaurants?.length === 0) {
+        displayToast(
+          'ERROR',
+          "We could not find any Rubio's within 10 miles of your address.",
+        );
+        setActionPerform(false);
+        setFilteredRestaurants([]);
       } else {
-        if (showNearBy || LatLng) {
-          console.log('working 1');
-          if (LatLng) {
-            setDeliveryRasturants(
-              getFilteredRestaurants(nearbyRestaurants.restaurants),
-            );
-            setfilteredRestaurants(
-              getFilteredRestaurants(nearbyRestaurants.restaurants),
-            );
-            setActionPerform(false);
-          }
-          if (showNearBy) {
-            setDeliveryRasturants(
-              getFilteredRestaurants(nearbyRestaurants.restaurants),
-            );
-            setfilteredRestaurants(
-              getFilteredRestaurants(nearbyRestaurants.restaurants),
-            );
-            setShowNearBy(false);
-            setNearByRestaurantsFound(true);
-          }
-          setLatLng(null);
-          setShowNearBy(false);
-          setActionPerform(false);
-          setMapCenter({
-            lat: nearbyRestaurants.restaurants[0].latitude,
-            lng: nearbyRestaurants.restaurants[0].longitude,
-          });
-          setZoom(7);
-        } else {
-          if (orderType && orderType !== '') {
-            console.log('working 2');
-            setfilteredRestaurants(
-              getFilteredRestaurants(nearbyRestaurants.restaurants),
-            );
-          }
+        const rest = getOrderTypeRestaurants(
+          nearbyRestaurants.restaurants,
+          orderType,
+        );
+        setFilteredRestaurants(rest);
+        populateMarkersOnMap(rest);
+        setMapCenter({
+          lat: nearbyRestaurants.restaurants[0].latitude,
+          lng: nearbyRestaurants.restaurants[0].longitude,
+        });
+        setZoom(7);
+        setActionPerform(false);
+        setRestaurantNotFound(false);
+
+        if(action === actionTypes.CURRENT_LOCATION){
+          setHideCurrentLocation(true);
         }
       }
     }
   }, [nearbyRestaurants]);
 
   useEffect(() => {
-    setMarkers([]);
-    console.log('showNearBy', showNearBy);
-    console.log('selectedLatLng', selectedLatLng);
-    if (restaurants && restaurants.restaurants.length > 0) {
-      let filteredRest = !orderType
-        ? restaurants.restaurants
-        : orderType && !showNearBy
-        ? filteredRestaurants
-        : orderType && selectedLatLng
-        ? deliveryRasturants
-        : [];
-
-      filteredRest = getFilteredRestaurants(filteredRest);
-
-      filteredRest.map((item: ResponseRestaurant, index: number) => {
-        if (mapCenter == undefined) {
-          setMapCenter({
-            lat: item.latitude,
-            lng: item.longitude,
-          });
-        }
-        let latLong = {
-          lat: item.latitude,
-          lng: parseFloat(item.longitude),
-        };
-        setMarkers((markers) => [
-          ...markers,
-          <Marker key={Math.random() + index} position={latLong} />,
-        ]);
-      });
-    }
-  }, [restaurants, filteredRestaurants, deliveryRasturants, orderType]);
+    populateMarkersOnMap(filteredRestaurants);
+  }, [filteredRestaurants]);
 
   const getNearByRestaurants = (lat: number, long: number) => {
     var today = new Date();
@@ -390,30 +344,10 @@ const Location = () => {
       (lastWeekDate.getMonth() + 1) * 100 +
       lastWeekDate.getDate() +
       '';
-    dispatch(getNearByResturantListRequest(lat, long, 10, 6, dateFrom, dateTo));
+    dispatch(getNearByResturantListRequest(lat, long, 40, 6, dateFrom, dateTo));
   };
   const [markers, setMarkers] = useState<any[]>([]);
 
-  const getFilteredRestaurants = (restaurants: any) => {
-    let filteredRestaurants = restaurants;
-    if (orderType && orderType !== '') {
-      if (orderType === 'pickup') {
-        filteredRestaurants = restaurants.filter(
-          (x: any) => x.canpickup === true,
-        );
-      } else if (orderType === 'curbside') {
-        filteredRestaurants = restaurants.filter(
-          (x: any) => x.supportscurbside === true,
-        );
-      } else if (orderType === 'dispatch') {
-        filteredRestaurants = restaurants.filter(
-          (x: any) => x.supportsdispatch === true,
-        );
-      }
-    }
-    filteredRestaurants = removeTestingStores(filteredRestaurants);
-    return filteredRestaurants;
-  };
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -423,12 +357,8 @@ const Location = () => {
   const handleClose = () => {
     setOpen(false);
     setLatLng(null);
-    setShowNearBy(false);
     setActionPerform(false);
-    setSearchText('');
-    setfilteredRestaurants([]);
-    setDeliveryRasturants([]);
-    selectedLatLng(null);
+    setFilteredRestaurants([]);
   };
 
   const handleLCloseConfirm = (updatedAddress: any) => {
@@ -448,36 +378,17 @@ const Location = () => {
           const address = getAddress(results[0]);
           setDeliveryAddressString(selectedAddress);
           if (address.address1 !== '') {
-            //setLatLng({ lat: lat, lng: lng });
+            setLatLng({ lat: lat, lng: lng });
             getNearByRestaurants(lat, lng);
           } else {
-            getNearByRestaurants(selectedLatLng.lat, selectedLatLng.lng);
+            getNearByRestaurants(LatLng.lat, LatLng.lng);
           }
         });
       })
       .catch((err: any) => {
-        getNearByRestaurants(selectedLatLng.lat, selectedLatLng.lng);
+        getNearByRestaurants(LatLng.lat, LatLng.lng);
       });
   };
-
-  useEffect(() => {
-    console.log('start------------>');
-    console.log('orderType', orderType);
-    console.log('showNearBy', showNearBy);
-    console.log('LatLng', LatLng);
-    console.log('actionPerform', actionPerform);
-    console.log('selectedAddress', selectedAddress);
-    console.log('filteredRestaurants', filteredRestaurants);
-    console.log('AllResturants', allResturants);
-    console.log('deliveryRasturants', deliveryRasturants);
-    console.log('nearbyRestaurants', nearbyRestaurants);
-    console.log('end------------>');
-  }, [
-    filteredRestaurants,
-    allResturants,
-    deliveryRasturants,
-    nearbyRestaurants,
-  ]);
 
   return (
     <Page title={'Location'} className="">
@@ -657,7 +568,9 @@ const Location = () => {
         )}
       </Dialog>
       <div style={{ minHeight: '300px', position: 'relative' }}>
-        {(loading || window.google === undefined || actionPerform) && (
+        {(restaurantLoading ||
+          window.google === undefined ||
+          actionPerform) && (
           <div className={classes.dummyBg}>
             <LoadingBar />
           </div>
@@ -685,22 +598,24 @@ const Location = () => {
                 <span className="icon"></span>
               </div>
               <LocationCard
-                searchTextP={searchText}
-                isNearByRestaurantList={nearByRestaurantsFound}
-                restaurants={allResturants}
-                deliveryRasturants={deliveryRasturants}
-                setOrderTypeMain={setOrderTypeMain}
-                setShowNearBy={setShowNearBy}
+                actionTypes={actionTypes}
+                setAction={setAction}
+                orderType={orderType}
+                changeOrderType={changeOrderType}
                 setLatLng={setLatLng}
                 setActionPerform={setActionPerform}
-                setDeliveryRasturants={setDeliveryRasturants}
-                setfilteredRestaurants={setfilteredRestaurants}
-                filteredRestaurants={filteredRestaurants}
-                loading={loading}
                 deliveryAddressString={deliveryAddressString}
                 setDeliveryAddressString={setDeliveryAddressString}
-                setSelectedLatLng={setSelectedLatLng}
+                allRestaurants={restaurants?.restaurants || []}
+                setFilteredRestaurants={setFilteredRestaurants}
+                filteredRestaurants={filteredRestaurants}
+                loading={restaurantLoading}
                 addCustomAddressCheck={addCustomAddressCheck}
+                currentLocation={currentLocation}
+                setRestaurantNotFound={setRestaurantNotFound}
+                restaurantNotFound={restaurantNotFound}
+                hideCurrentLocation={hideCurrentLocation}
+                getNearByRestaurants={getNearByRestaurants}
               />
             </GoogleMap>
           </div>

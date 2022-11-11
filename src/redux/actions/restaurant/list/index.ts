@@ -1,6 +1,7 @@
 import { restaurantListDataActionsTypes } from '../../../types/restaurant/list';
 import { ResponseRestaurantList } from '../../../../types/olo-api';
 import { displayToast } from '../../../../helpers/toast';
+import { addStateFullNameRestaurant } from '../../../../helpers/location';
 
 export function getNearByResturantListRequest(
   lat: number,
@@ -50,9 +51,10 @@ export function getResturantListRequest() {
 }
 
 export function getResturantListRequestSuccess(data: ResponseRestaurantList) {
+  const updatedRestaurant = addStateFullNameRestaurant(data);
   return {
     type: restaurantListDataActionsTypes.GET_RESTAURANT_LIST_SUCCESS,
-    payload: data,
+    payload: updatedRestaurant,
   };
 }
 
