@@ -17,7 +17,6 @@ import { DeliveryModeEnum } from '../../types/olo-api/olo-api.enums';
 
 const PickupForm = ({ basket, pickupFormRef, orderType, setShowSignUpGuest,showSignUpGuest }: any) => {
 
-  { console.log("setShowSignUpGuest", setShowSignUpGuest) }
   const { providerToken } = useSelector((state: any) => state.providerReducer);
   const { authToken } = useSelector((state: any) => state.authReducer);
   const [show, setShow] = React.useState<boolean>(false);
