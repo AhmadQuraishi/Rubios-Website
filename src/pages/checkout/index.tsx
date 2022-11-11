@@ -46,6 +46,7 @@ import { getRewardsNew } from '../../redux/actions/reward';
 import TagManager from 'react-gtm-module';
 import { facebookSendEvent } from '../../redux/actions/facebook-conversion';
 import { facebookConversionTypes } from '../../redux/types/facebook-conversion';
+import SignUpGuest from '../../components/sign-up-guest';
 
 const Checkout = () => {
   const dispatch = useDispatch();
@@ -53,11 +54,13 @@ const Checkout = () => {
   const pickupFormRef = React.useRef<any>(null);
   const deliveryFormRef = React.useRef<any>(null);
   const paymentInfoRef = React.useRef<any>();
+  const signupFormRef = React.useRef<any>(null);
 
   const [runOnce, setRunOnce] = React.useState<boolean>(true);
   const [showIframeOnce, setShowIframeOnce] = React.useState<boolean>(true);
   const [removeCreditCardOnce, setRemoveCreditCardOnce] =
     React.useState<boolean>(true);
+    const [showSignUpGuest, setShowSignUpGuest] = React.useState<boolean>(false);
   const [defaultCard, setDefaultCard] = React.useState<boolean>(true);
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
   const [tipPercentage, setTipPercentage] = React.useState<any>(null);
@@ -433,6 +436,23 @@ const Checkout = () => {
 
     return data;
   };
+  const validateGuestSignUpForm = (): any => {
+    let data = {
+      isValidForm: false,
+      formData: null,
+    };
+    console.log('signupFormRef.current', signupFormRef.current);
+    if (!signupFormRef.current) {
+    } else if (!signupFormRef.current.dirty) {
+      signupFormRef.current.submitForm();
+    } else if (Object.keys(signupFormRef.current.errors).length > 0) {
+    } else {
+      data.isValidForm = true;
+      data.formData = signupFormRef.current.values;
+    }
+
+    return data;
+  };
 
   const validateDeliveryForm = (): any => {
     let data = {
@@ -531,6 +551,27 @@ const Checkout = () => {
       }
       formDataValue = formData;
     }
+
+    if (
+      basket && basket.deliverymode === DeliveryModeEnum.dispatch &&
+      (basket.deliverymode === '' ||
+        basket.deliverymode === DeliveryModeEnum.pickup ||
+        basket.deliverymode === DeliveryModeEnum.curbside ||
+        basket.deliverymode === DeliveryModeEnum.dinein)
+    ) {
+      const { isValidForm, formData } = validateGuestSignUpForm();
+      if (!isValidForm) {
+        displayToast(
+          'ERROR',
+          `Sign Up fields are required.`,
+        );
+        scrollToTop();
+        setButtonDisabled(false);
+        return;
+      }
+      formDataValue = formData;
+    }
+    
 
     if (basket && basket.deliverymode === DeliveryModeEnum.dispatch) {
       const { isValidForm, formData } = validateDeliveryForm();
@@ -939,6 +980,8 @@ const Checkout = () => {
                         basket.deliverymode === DeliveryModeEnum.curbside ||
                         basket.deliverymode === DeliveryModeEnum.dinein) ? (
                         <PickupForm
+                        setShowSignUpGuest={setShowSignUpGuest}
+                        showSignUpGuest={!showSignUpGuest}
                           basket={basket}
                           pickupFormRef={pickupFormRef}
                           orderType={basket.deliverymode}
@@ -953,18 +996,34 @@ const Checkout = () => {
                         />
                       ) : null}
                     </Grid>
+
+
                   </Grid>
                   <OrderTime
                     orderType={(basket && basket.deliverymode) || ''}
                   />
                 </Grid>
               </Grid>
-              {providerToken &&
+              {!providerToken &&
+                  showSignUpGuest && (
+                    <>
+                      <br />
+                      <br />
+                      <Divider />
+                      <br />
+                      <br />
+                      <br />
+                      <SignUpGuest signupFormRef={signupFormRef}/>
+                    </>
+                  )
+                }
+              {providerToken && authToken &&
+                  authToken.authtoken &&
+                  authToken.authtoken !== '' &&
                 providerToken.first_name &&
                 rewards &&
                 (
                   <>
-                    <br />
                     <br />
                     <br />
                     <Divider />

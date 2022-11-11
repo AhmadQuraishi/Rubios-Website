@@ -4,6 +4,8 @@ import {
   Checkbox,
   TextField,
   FormControlLabel,
+  Typography,
+  Link,
   FormGroup,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,10 +15,12 @@ import { forwardRef } from 'react';
 import { IMaskInput } from 'react-imask';
 import { DeliveryModeEnum } from '../../types/olo-api/olo-api.enums';
 
-const PickupForm = ({ basket, pickupFormRef, orderType }: any) => {
+const PickupForm = ({ basket, pickupFormRef, orderType, setShowSignUpGuest,showSignUpGuest }: any) => {
+
+  { console.log("setShowSignUpGuest", setShowSignUpGuest) }
   const { providerToken } = useSelector((state: any) => state.providerReducer);
   const { authToken } = useSelector((state: any) => state.authReducer);
-
+  const [show, setShow] = React.useState<boolean>(false);
   interface CustomProps {
     onChange: (event: { target: { name: string; value: string } }) => void;
     name: string;
@@ -41,7 +45,6 @@ const PickupForm = ({ basket, pickupFormRef, orderType }: any) => {
       );
     },
   );
-
   const formatTableNumber = (e: any, tableNumber: any) => {
     let newValue = e.target.value.trim();
     if (newValue && newValue !== '') {
@@ -55,8 +58,8 @@ const PickupForm = ({ basket, pickupFormRef, orderType }: any) => {
       newValue && newValue >= 0 && newValue <= 9999999999999999999
         ? newValue
         : newValue > 9999999999999999999
-        ? tableNumber
-        : '';
+          ? tableNumber
+          : '';
 
     const newEvent: any = {
       target: {
@@ -102,8 +105,8 @@ const PickupForm = ({ basket, pickupFormRef, orderType }: any) => {
         phone:
           orderType !== DeliveryModeEnum.dinein
             ? Yup.string()
-                .min(14, 'Enter valid number')
-                .required('Phone is required')
+              .min(14, 'Enter valid number')
+              .required('Phone is required')
             : Yup.string(),
         tableNumber:
           orderType === DeliveryModeEnum.dinein
@@ -123,7 +126,7 @@ const PickupForm = ({ basket, pickupFormRef, orderType }: any) => {
             : Yup.string(),
         emailNotification: Yup.bool().optional(),
       })}
-      onSubmit={(values, actions) => {}}
+      onSubmit={(values, actions) => { }}
     >
       {({
         errors,
@@ -288,24 +291,45 @@ const PickupForm = ({ basket, pickupFormRef, orderType }: any) => {
             </>
           ) : null}
           {!authToken?.authtoken && (
+
             <Grid item xs={12}>
-              <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={values.emailNotification}
-                      onChange={handleChange}
+              {!providerToken  && showSignUpGuest &&
+                (
+                  <FormGroup>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={values.emailNotification}
+                          onChange={handleChange}
+                        />
+                      }
+                      label="Send me emails with special offers and updates."
+                      aria-label="Send me emails with special offers and updates"
+                      aria-required="true"
+                      title="Send me emails with special offers and updates"
+                      name="emailNotification"
+                      className="size"
                     />
-                  }
-                  label="Send me emails with special offers and updates."
-                  aria-label="Send me emails with special offers and updates"
-                  aria-required="true"
-                  title="Send me emails with special offers and updates"
-                  name="emailNotification"
-                  className="size"
-                />
-              </FormGroup>
+                    <Grid item xs={12} sm={12} md={12} lg={12}>
+                      <Typography
+                        variant="body2"
+                        title="Don't have an account?"
+                        sx={{ width: '100%', padding: "0pxx !important" }}
+                      >
+                        Don't have an account?
+                        <Link
+                          underline="hover"
+                          sx={{ color: '#1a86ff', cursor: 'pointer' }}
+                          onClick={() => setShowSignUpGuest(true)}
+                        >
+                          Sign up?
+                        </Link>
+                      </Typography>
+                    </Grid>
+                  </FormGroup>
+                )}
             </Grid>
+
           )}
         </form>
       )}
