@@ -19,7 +19,7 @@ function* asyncAuthItemRequest(action: any): any {
       yield put(navigateAppAction('/welcome?new_user=true'));
     } else if (
       action?.registerType &&
-      action.registerType === 'REGSITER_CHECKOUT'
+      action.registerType === 'REGISTER_CHECKOUT'
     ) {
       yield put(navigateAppAction('/checkout'));
     }
