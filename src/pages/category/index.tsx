@@ -30,6 +30,7 @@ import { capitalizeFirstLetter } from '../../helpers/common';
 import Page from '../../components/page-title';
 import { facebookSendEvent } from '../../redux/actions/facebook-conversion';
 import { facebookConversionTypes } from '../../redux/types/facebook-conversion';
+import { resetBasketRequest } from '../../redux/actions/basket';
 
 const useStyles = makeStyles((theme: Theme) => ({
   heading: {
@@ -158,19 +159,18 @@ const CategoryList = () => {
           checkRestaurantHandOffAvailability(objRestaurant, handoff)
         ) {
           dispatch(setResturantInfoRequest(objRestaurant, handoff));
-          if (basketObj && basketObj.basket) {
-            displayToast(
-              'SUCCESS',
-              'Location changed to ' +
-                objRestaurant.name +
-                ' and basket is empty',
-            );
-          } else {
-            displayToast(
-              'SUCCESS',
-              'Location changed to ' + objRestaurant.name,
-            );
-          }
+          dispatch(resetBasketRequest());
+          // if (basketObj && basketObj.basket) {
+
+          // displayToast(
+          //   'SUCCESS',
+          //   'Location changed to ' +
+          //     objRestaurant.name +
+          //     ' and basket is empty',
+          // );
+          // } else {
+          displayToast('SUCCESS', 'Location changed to ' + objRestaurant.name);
+          // }
           navigate('/menu/' + objRestaurant.slug);
           dispatch(getCategoriesRequest(objRestaurant.id));
         } else {

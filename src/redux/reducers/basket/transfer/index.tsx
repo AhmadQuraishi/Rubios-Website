@@ -3,20 +3,20 @@ import { userTypes } from '../../../types/user';
 
 const INITIAL_STATE = {
   loading: false,
-  basket: null,
+  data: null,
   error: null,
 };
 
 const basketTransferReducer = (state = INITIAL_STATE, action: any) => {
   switch (action.type) {
     case basketActionsTypes.BASKET_TRANSFER_REQUEST:
-      return { ...state, loading: true, basket: null, error: null };
+      return { ...state, loading: true, data: null, error: null };
 
     case basketActionsTypes.BASKET_TRANSFER_SUCCESS:
       return {
         ...state,
         loading: false,
-        basket: action.payload,
+        data: action.payload || null,
         error: null,
       };
     case basketActionsTypes.SET_BASKET_FAILURE:
