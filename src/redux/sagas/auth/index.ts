@@ -11,8 +11,19 @@ function* asyncAuthItemRequest(action: any): any {
   try {
     const response = yield call(getAuthToken, action.basketID);
     yield put(getAuthRequestSuccess(action.successMsg, response.data));
-    if (action.successMsg === 'Signup Success') {
+    if (
+      action?.registerType &&
+      (action.registerType === 'REGISTER_MAIN' ||
+        action.registerType === 'REGISTER_CONFIRMATION')
+    ) {
       yield put(navigateAppAction('/welcome?new_user=true'));
+    } else if (
+      action?.registerType &&
+      action.registerType === 'REGISTER_CHECKOUT'
+    ) {
+      setTimeout(() => {
+        window.location.href = '/checkout';
+      }, 500);
     }
   } catch (error) {
     yield put(getAuthRequestFailure(error));

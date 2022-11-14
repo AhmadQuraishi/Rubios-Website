@@ -1,16 +1,16 @@
 import React from 'react';
 import {
   Grid,
-  SelectChangeEvent,
+  // SelectChangeEvent,
   Checkbox,
-  FormControl,
+  // FormControl,
   Typography,
   TextField,
   Button,
-  InputLabel,
-  MenuItem,
+  // InputLabel,
+  // MenuItem,
   Link,
-  Skeleton,
+  // Skeleton,
   CircularProgress,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
@@ -36,6 +36,8 @@ const RegisterForm = () => {
   const { loading: loadingAuth } = useSelector(
     (state: any) => state.authReducer,
   );
+  const basketObj = useSelector((state: any) => state.basketReducer);
+
   function findGetParameter(parameterName: any) {
     var result = null,
       tmp = [];
@@ -51,8 +53,8 @@ const RegisterForm = () => {
   const { locations } = useSelector((state: any) => state.locationReducer);
   console.log('locations', locations);
   const [favLocation, setFavLocation] = useState<any>(null);
-  const [actionClicked, setActionClicked] = useState(false);
-  const [removedActionClicked, setRemovedActionClicked] = useState(false);
+  // const [actionClicked, setActionClicked] = useState(false);
+  // const [removedActionClicked, setRemovedActionClicked] = useState(false);
   const [favLocationError, setFavLocationError] = useState(false);
   const [birthDay, setBirthDay] = useState<Date | undefined>();
   const [termsAndConditions, setTermsAndconditions] = useState(false);
@@ -313,8 +315,8 @@ const RegisterForm = () => {
           if (birthDay) {
             obj.birthday = moment(birthDay).format('YYYY-MM-DD');
           }
-
-          dispatch(userRegister(obj));
+          const basketId = basketObj?.basket?.id || '';
+          dispatch(userRegister(obj, 'REGISTER_MAIN', basketId));
         }}
       >
         {({
@@ -479,9 +481,9 @@ const RegisterForm = () => {
                     show={['month', 'day', 'year']}
                   />
                 </Grid>
-                
-                  <Grid item xs={12}>
-                     {/* { !locations&&  <div
+
+                <Grid item xs={12}>
+                  {/* { !locations&&  <div
                     style={{
                       position: 'absolute',
                       // marginTop: '300px',
@@ -498,45 +500,42 @@ const RegisterForm = () => {
                   >
                     <CircularProgress />
                   </div>} */}
-                          <Select
-                            placeholder={
-                              favLocationError ? (
-                                <div style={{ color: 'red' }}>
-                                  Favorite Location *
-                                </div>
-                              ) : (
-                                <div>Favorite Location *</div>
-                              )
-                            }
-                            noOptionsMessage={() => {
-                              if(!locations || !locations.length){
-return <CircularProgress size={30}/>
-                              } else {
-                                return 'No Result Found'
-                              }
-
-                            }}
-                            isSearchable={true}
-                            styles={customStyles}
-                            options={locations?.map((loc: any) => {
-                              return {
-                                value: loc.location_id,
-                                label: loc.name,
-                              };
-                            })}
-                            onChange={(selectedOption: any) => {
-                              setFavLocationError(false);
-                              setFavLocation(selectedOption);
-                            }}
-                            value={favLocation && favLocation}
-                            maxMenuHeight={150}
-                          />
-                    {favLocationError && (
-                      <p className="fav-error-message">
-                        Favorite Location is required
-                      </p>
-                    )}
-                  </Grid>
+                  <Select
+                    placeholder={
+                      favLocationError ? (
+                        <div style={{ color: 'red' }}>Favorite Location *</div>
+                      ) : (
+                        <div>Favorite Location *</div>
+                      )
+                    }
+                    noOptionsMessage={() => {
+                      if (!locations || !locations.length) {
+                        return <CircularProgress size={30} />;
+                      } else {
+                        return 'No Result Found';
+                      }
+                    }}
+                    isSearchable={true}
+                    styles={customStyles}
+                    options={locations?.map((loc: any) => {
+                      return {
+                        value: loc.location_id,
+                        label: loc.name,
+                      };
+                    })}
+                    onChange={(selectedOption: any) => {
+                      setFavLocationError(false);
+                      setFavLocation(selectedOption);
+                    }}
+                    value={favLocation && favLocation}
+                    maxMenuHeight={150}
+                  />
+                  {favLocationError && (
+                    <p className="fav-error-message">
+                      Favorite Location is required
+                    </p>
+                  )}
+                </Grid>
                 <Grid item xs={12}>
                   <Typography
                     variant="body2"
@@ -556,11 +555,14 @@ return <CircularProgress size={30}/>
                     />{' '}
                     I agree to the{' '}
                     <Link
-                    target="popup"
+                      target="popup"
                       onClick={() =>
-                        window.open(process.env.REACT_APP_TERMS_LINK,'name','width=1000,height=1000')
+                        window.open(
+                          process.env.REACT_APP_TERMS_LINK,
+                          'name',
+                          'width=1000,height=1000',
+                        )
                       }
-                      
                       underline="hover"
                       sx={{ color: '#1a86ff', cursor: 'pointer' }}
                     >

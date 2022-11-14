@@ -15,31 +15,46 @@ import {
   Typography,
 } from '@mui/material';
 import {
-  // useDispatch,
+  useDispatch,
   useSelector } from 'react-redux';
+  import { displayToast } from '../../helpers/toast';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { getAddress } from '../../helpers/common';
 import { forwardRef } from 'react';
 import { IMaskInput } from 'react-imask';
-// import { setBasketDeliveryAddress } from '../../redux/actions/basket/checkout';
-// import { RequestDeliveryAddress } from '../../types/olo-api';
-// import {
-//   deleteUserDeliveryAddress,
-//   setUserDefaultDelAddress,
-// } from '../../redux/actions/user';
-
-const DeliveryForm = ({ basket, deliveryFormRef }: any) => {
-  // const dispatch = useDispatch();
+import { getNearByResturantListRequest } from '../../redux/actions/restaurant/list';
+import { setBasketDeliveryAddress } from '../../redux/actions/basket/checkout';
+import { RequestDeliveryAddress } from '../../types/olo-api';
+import {
+  deleteUserDeliveryAddress,
+  setUserDefaultDelAddress,
+} from '../../redux/actions/user';
+import { getGeocode, getLatLng } from 'use-places-autocomplete';
+const DeliveryForm = ({ basket, deliveryFormRef }: any,props : any) => {
+  const dispatch = useDispatch();
+  const {
+    deliveryAddressList,
+    loading,
+    deliveryAddressString,
+    setDeliveryAddressString,
+    filteredRestaurants,
+    gotoCategoryPage,
+    setActionPerform,
+    setShowNearBy,
+    setSelectedLatLng,
+  } = props;
   const [open, setOpen] = useState(false);
   const [edit, setEdit] = useState(false);
+  const [notFound, setNotFound] = useState(false);
   const [address, setAddress] = useState<any>(null);
   const { providerToken } = useSelector((state: any) => state.providerReducer);
   const objDeliveryAddress = useSelector(
     (state: any) => state.deliveryAddressReducer,
   );
+  
   const [selectedAddressId, setSelectedAddressId] = useState(null);
   const { authToken } = useSelector((state: any) => state.authReducer);
-
   useEffect(() => {
     if (basket && basket.deliveryaddress) {
       setAddress(basket.deliveryaddress);
@@ -51,13 +66,13 @@ const DeliveryForm = ({ basket, deliveryFormRef }: any) => {
       setAddress(null);
     }
   }, [basket]);
-  const [editDeliveryAddress, setEditDeliveryAddress] = useState({
-    address1: '',
-    address2: '',
-    city: '',
-    zip: '',
-    isdefault: false,
-  });
+  // const [editDeliveryAddress, setEditDeliveryAddress] = useState({
+  //   address1: '',
+  //   address2: '',
+  //   city: '',
+  //   zip: '',
+  //   isdefault: false,
+  // });
   const [addDeliveryAddress, setAddDeliveryAddress] = useState({
     address1: '',
     address2: '',
@@ -124,23 +139,146 @@ const DeliveryForm = ({ basket, deliveryFormRef }: any) => {
     },
   );
 
-  // const updateDefaultAddress = (event: any) => {
-  //   console.log('checked', event.target.checked);
-  //   if (address && address.id) {
-  //     let updatedAddress: any = {
-  //       building: address.building ? address.building : '',
-  //       streetaddress: address.streetaddress ? address.streetaddress : '',
-  //       city: address.city ? address.city : '',
-  //       zipcode: address.zipcode ? address.zipcode : '',
-  //       isdefault: false
-  //     };
-  //     updatedAddress.isdefault = event.target.checked;
-  //
-  //     dispatch(setBasketDeliveryAddress(basket.id, updatedAddress));
-  //     // dispatch(deleteUserDeliveryAddress(address.id));
-  //   }
-  // };
+  const updateDefaultAddress = (event: any) => {
+    console.log('checked', event.target.checked);
+    if (address && address.id) {
+      let updatedAddress: any = {
+        building: address.building ? address.building : '',
+        streetaddress: address.streetaddress ? address.streetaddress : '',
+        city: address.city ? address.city : '',
+        zipcode: address.zipcode ? address.zipcode : '',
+        isdefault: false
+      };
+      updatedAddress.isdefault = event.target.checked;
+  
+      dispatch(setBasketDeliveryAddress(basket.id, updatedAddress));
+      dispatch(deleteUserDeliveryAddress(address.id));
+    }
+  };
+  
+  const handleLCloseConfirm = (address: any, id: any) => {
+    setOpen(false);
+    setEdit(false);
+    console.log('addDeliveryAddress 1', );
+    getGeocode({
+      address:
+        address.address1 +
+        ' ' +
+        address.address2 +
+        ', ' +
+        address.city +
+        ', ' +
+        address.zip,
+    })
+      .then((results) => {
+        getLatLng(results[0]).then(({ lat, lng }) => {
+          const googleAddress = getAddress(results[0]);
 
+          if (googleAddress.address1 !== '') {
+            //setLatLng({ lat: lat, lng: lng });
+            let newAddress: any = {
+              ...address,
+            };
+            console.log('selectedAddressId', selectedAddressId);
+            const selectedId = selectedAddressId || id || null;
+            if (
+              selectedId &&
+              verifySameDeliveryAddress(
+                address,
+                deliveryAddressList,
+                selectedId,
+              )
+            ) {
+              
+              newAddress['id'] = selectedId;
+            }
+
+            console.log('newAddress', newAddress);
+
+            setDeliveryAddressString(newAddress);
+            updateDefaultAddress(newAddress);
+            //setEditDeliveryAddress(address);
+            //getNearByRestaurants(lat, lng);
+            setActionPerform(false);
+            setShowNearBy(true);
+            setSelectedLatLng({
+              lat: lat,
+              lng: lng,
+            });
+            setNotFound(false);
+            return;
+          } else {
+            //setEditDeliveryAddress(address);
+            displayToast('ERROR', 'Your delivery address is not Found');
+            setNotFound(true);
+          }
+        });
+      })
+      .catch((err) => {
+        //setEditDeliveryAddress(address);
+        setNotFound(true);
+      });
+  };
+
+  const verifySameDeliveryAddress = (
+    formData: any,
+    deliveryAddresses: any,
+    id: any,
+  ) => {
+    let sameCheck = false;
+    const selectedDeliveryAddress = deliveryAddresses.find(
+      (address: any) => address.id === id,
+    );
+
+    if (selectedDeliveryAddress) {
+      const currentAddress: any = {
+        building: formData.address2,
+        streetaddress: formData.address1,
+        city: formData.city,
+        zipcode: formData.zip,
+      };
+      const existingAddress: any = {
+        building: selectedDeliveryAddress.building,
+        streetaddress: selectedDeliveryAddress.streetaddress,
+        city: selectedDeliveryAddress.city,
+        zipcode: selectedDeliveryAddress.zipcode,
+      };
+      console.log('currentAddress', currentAddress);
+      console.log('defaultAddress', existingAddress);
+      sameCheck =
+        JSON.stringify(currentAddress) === JSON.stringify(existingAddress);
+    }
+    return sameCheck;
+  };
+
+  useEffect(() => {
+    console.log('addDeliveryAddress', addDeliveryAddress);
+    //console.log('editDeliveryAddress', editDeliveryAddress);
+  }, [addDeliveryAddress, addDeliveryAddress]);
+
+  useEffect(() => {
+    console.log('notFound', notFound);
+  }, [notFound]);
+
+  // const getNearByRestaurants = (lat: number, long: number) => {
+  //   var today = new Date();
+  //   const dateFrom =
+  //     today.getFullYear() * 1e4 +
+  //     (today.getMonth() + 1) * 100 +
+  //     today.getDate() +
+  //     '';
+  //   const lastWeekDate = new Date(
+  //     today.getFullYear(),
+  //     today.getMonth(),
+  //     today.getDate() + 6,
+  //   );
+  //   const dateTo =
+  //     lastWeekDate.getFullYear() * 1e4 +
+  //     (lastWeekDate.getMonth() + 1) * 100 +
+  //     lastWeekDate.getDate() +
+  //     '';
+  //   dispatch(getNearByResturantListRequest(lat, long, 10, 6, dateFrom, dateTo));
+  // };
   return (
     <Formik
       innerRef={deliveryFormRef}
@@ -379,6 +517,7 @@ const DeliveryForm = ({ basket, deliveryFormRef }: any) => {
               </Grid>
             </Grid>
           </Grid>
+         
           <Grid
             item
             xs={12}
@@ -423,10 +562,10 @@ const DeliveryForm = ({ basket, deliveryFormRef }: any) => {
                 sx={{cursor: 'pointer'}}
                 onClick={() => {
                   setAddDeliveryAddress({
-                  address1: objDeliveryAddress.address.streetaddress || '',
-                  address2: objDeliveryAddress.address.building || '',
+                  address1: objDeliveryAddress.address.address1 || '',
+                  address2: objDeliveryAddress.address.address2 || '',
                   city: objDeliveryAddress.address.city || '',
-                  zip: objDeliveryAddress.address.zipcode || '',
+                  zip: objDeliveryAddress.address.zip || '',
                   isdefault: objDeliveryAddress.address.isdefault,
                   });
                   setEdit(true);
@@ -607,16 +746,16 @@ const DeliveryForm = ({ basket, deliveryFormRef }: any) => {
                           zip: values.zip || '',
                           isdefault: values.isdefault,
                         });
-                        // handleLCloseConfirm(
-                        //   {
-                        //     address1: values.address1 || '',
-                        //     address2: values.address2 || '',
-                        //     city: values.city || '',
-                        //     zip: values.zip || '',
-                        //     isdefault: values.isdefault,
-                        //   },
-                        //   null,
-                        // );
+                        handleLCloseConfirm(
+                          {
+                            address1: values.address1 || '',
+                            address2: values.address2 || '',
+                            city: values.city || '',
+                            zip: values.zip || '',
+                            isdefault: values.isdefault,
+                          },
+                          null,
+                        );
                       }}
                       sx={{ marginRight: '15px', marginBottom: '15px' }}
                       autoFocus
@@ -627,7 +766,7 @@ const DeliveryForm = ({ basket, deliveryFormRef }: any) => {
                         edit,
                       )}
                     >
-                      {edit ? 'Confirm' : 'Add'} Address
+                      Update Address
                     </Button>
                   </DialogActions>
                 </form>
