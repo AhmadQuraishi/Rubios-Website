@@ -3,9 +3,30 @@
     "apps": [],
     "details": [
       {
-        "appID": "RCTR8ME8YU.com.rubiosmobileapp.live",
-        "paths": [ "*" ]
+        "appID": "N4UCH5237X.com.rubiosmobileapp.live",
+        "paths": [
+          "*"
+        ]
+      },
+      {
+        "appID": "N4UCH5237X.com.rubiosmobileapp.dev",
+        "paths": [
+          "*"
+        ]
+      },
+      {
+        "appID": "N4UCH5237X.com.rubiosmobileapp.staging",
+        "paths": [
+          "*"
+        ]
       }
+    ]
+  },
+  "webcredentials": {
+    "apps": [
+      "N4UCH5237X.com.rubiosmobileapp.live",
+      "N4UCH5237X.com.rubiosmobileapp.dev",
+      "N4UCH5237X.com.rubiosmobileapp.staging",
     ]
   }
 }
