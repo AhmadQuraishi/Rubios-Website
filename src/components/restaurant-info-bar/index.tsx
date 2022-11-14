@@ -106,7 +106,7 @@ const StoreInfoBar = () => {
   useEffect(() => {
     if (restaurant) {
       setRestaurantInfo(restaurant);
-      if (restaurant?.extref && !providerToken) {
+      if (restaurant?.extref) {
         dispatch(getSingleLocation(restaurant.extref));
       }
     }

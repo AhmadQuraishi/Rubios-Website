@@ -204,6 +204,10 @@ const LocationCard = (props: any) => {
     }
     let restaurantObj = null;
     restaurantObj = allRestaurants.find((x: any) => x.id === storeID);
+    if (basketObj?.basket && restaurantObj) {
+
+      return;
+    }
     if (orderType === 'dispatch' && restaurantObj) {
       dispatch(setDeliveryAddress(deliveryAddressString));
     }
