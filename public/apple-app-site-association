@@ -3,30 +3,29 @@
     "apps": [],
     "details": [
       {
-        "appID": "N4UCH5237X.com.rubiosmobileapp.live",
+        "appID": "VCK4DNZ7FP.com.urbanplates.urbanplates",
         "paths": [
           "*"
         ]
       },
       {
-        "appID": "N4UCH5237X.com.rubiosmobileapp.dev",
+        "appID": "VCK4DNZ7FP.com.urbanplates.urbanplates.stagging",
         "paths": [
           "*"
         ]
       },
       {
-        "appID": "N4UCH5237X.com.rubiosmobileapp.staging",
+        "appID": "N4UCH5237X.com.urbanplates.urbanplates.qa",
+        "paths": [
+          "*"
+        ]
+      },
+      {
+        "appID": "N4UCH5237X.com.urbanplates.urbanplates.dev",
         "paths": [
           "*"
         ]
       }
-    ]
-  },
-  "webcredentials": {
-    "apps": [
-      "N4UCH5237X.com.rubiosmobileapp.live",
-      "N4UCH5237X.com.rubiosmobileapp.dev",
-      "N4UCH5237X.com.rubiosmobileapp.staging",
     ]
   }
 }
