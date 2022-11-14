@@ -1,12 +1,24 @@
-import axios from "axios";
+import axios from 'axios';
 
 export const requestLocations = () => {
   try {
     const url = `${process.env.REACT_APP_PUNCHH_API}/api2/dashboard/locations`;
     return axios
       .get(url, {
-        headers: {
-        },
+        headers: {},
+      })
+      .then((response) => response.data);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const requestSingleLocation = (store_number: any) => {
+  try {
+    const url = `${process.env.REACT_APP_PUNCHH_API}/api2/dashboard/locations?store_number=${store_number}`;
+    return axios
+      .get(url, {
+        headers: {},
       })
       .then((response) => response.data);
   } catch (error) {
@@ -23,11 +35,11 @@ export const getNearByRestaurants = (
   endDate: string,
 ) => {
   try {
-    const url = process.env.REACT_APP_OLO_API || "";
+    const url = process.env.REACT_APP_OLO_API || '';
     return axios
       .get(
         url +
-        `/restaurants/near?lat=${lat}&long=${long}&radius=${radius}&limit=${limit}&calendarstart=${startDate}&calendarend=${endDate}`
+          `/restaurants/near?lat=${lat}&long=${long}&radius=${radius}&limit=${limit}&calendarstart=${startDate}&calendarend=${endDate}`,
       )
       .then((response) => response.data)
       .catch((error) => {
@@ -41,7 +53,7 @@ export const getNearByRestaurants = (
 
 export const getAllResturants = () => {
   try {
-    const url = process.env.REACT_APP_OLO_API || "";
+    const url = process.env.REACT_APP_OLO_API || '';
     return axios
       .get(url + `/restaurants?includePrivate=true`)
       .then((response) => response.data)

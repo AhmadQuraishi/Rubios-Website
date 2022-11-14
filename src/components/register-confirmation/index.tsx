@@ -1,4 +1,4 @@
-import { Grid, TextField, Button,CircularProgress, } from '@mui/material';
+import { Grid, TextField, Button, CircularProgress } from '@mui/material';
 import { Link, Checkbox, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik } from 'formik';
@@ -11,18 +11,15 @@ import ReactDateInputs from 'react-date-inputs';
 import moment from 'moment';
 import Select from 'react-select';
 
-
-
 const RegisterConfirmation = ({ id }: any) => {
   const dispatch = useDispatch();
   const [favLocation, setFavLocation] = useState<any>(null);
   const [favLocationError, setFavLocationError] = useState(false);
-  const [selectShrink, setSelectShrink] = useState(false);
+  // const [selectShrink, setSelectShrink] = useState(false);
   const [birthDay, setBirthDay] = useState<Date | undefined>();
   const [termsAndConditions, setTermsAndconditions] = useState(false);
   const [termsAndConditionsError, setTermsAndConditionsError] = useState(false);
   const { locations } = useSelector((state: any) => state.locationReducer);
-
 
   const { guestUser } = useSelector((state: any) => state.guestReducer);
 
@@ -44,13 +41,13 @@ const RegisterConfirmation = ({ id }: any) => {
       width: 'inherit',
       fontFamily: 'Poppins-Regular, sans-serif !important',
     }),
-    menu: (base: any,state : any) => ({
+    menu: (base: any, state: any) => ({
       ...base,
       marginTop: '0px',
       zIndex: '5555',
       width: '99%',
     }),
-    
+
     indicatorSeparator: (base: any) => ({
       ...base,
       width: '0px',
@@ -58,12 +55,16 @@ const RegisterConfirmation = ({ id }: any) => {
 
     placeholder: (base: any, state: any) => ({
       ...base,
-      color:  state.isFocused  ? '#214F66' : 'rgba(0,0,0,0.6)',
-      padding: state.isFocused ? '0px 0px 35px 6px !important': '0px 30px 0px 0px !important',
-      fontSize: state.isFocused ? '8.5px': '1rem',
+      color: state.isFocused ? '#214F66' : 'rgba(0,0,0,0.6)',
+      padding: state.isFocused
+        ? '0px 0px 35px 6px !important'
+        : '0px 30px 0px 0px !important',
+      fontSize: state.isFocused ? '8.5px' : '1rem',
       //fontWeight: state.isFocused ? '800' : '400',
       transition: ' 0.1s ease',
-      fontFamily: state.isFocused ? "'Poppins-bold', sans-serif !important" : "'Roboto','Helvetica','Arial',sans-serif",
+      fontFamily: state.isFocused
+        ? "'Poppins-bold', sans-serif !important"
+        : "'Roboto','Helvetica','Arial',sans-serif",
       transform: state.selectProps.isFocused,
     }),
     dropdownIndicator: (base: any, state: any) => ({
@@ -158,7 +159,7 @@ const RegisterConfirmation = ({ id }: any) => {
           password_confirmation: '',
           favLocation: '',
           birthday: '',
-          termsAndConditions: false
+          termsAndConditions: false,
         }}
         validationSchema={Yup.object({
           first_name: Yup.string()
@@ -196,19 +197,19 @@ const RegisterConfirmation = ({ id }: any) => {
         })}
         onSubmit={async (values) => {
           if (
-            (!favLocation || !Object.keys(favLocation).length) ||
+            !favLocation ||
+            !Object.keys(favLocation).length ||
             favLocation.value === ''
           ) {
             setFavLocationError(true);
             return;
-          }else{
-
+          } else {
             setFavLocationError(false);
           }
-          if (termsAndConditions == false ){
+          if (termsAndConditions == false) {
             setTermsAndConditionsError(true);
             return;
-          }else{
+          } else {
             setTermsAndConditionsError(false);
           }
 
@@ -228,7 +229,7 @@ const RegisterConfirmation = ({ id }: any) => {
             obj.birthday = moment(birthDay).format('YYYY-MM-DD');
           }
           //
-          dispatch(userRegister(obj));
+          dispatch(userRegister(obj, 'REGISTER_CONFIRMATION', ''));
         }}
       >
         {({
@@ -348,36 +349,42 @@ const RegisterConfirmation = ({ id }: any) => {
                   </FormControl>
                 </Grid> */}
                 <Grid item xs={12}>
-                <div>
+                  <div>
+                    <div>
                       <div>
-                        <div>
-                  <Select
-                    placeholder={favLocationError ? <div style={{color: "red"}}>Favorite Location *</div> : <div>Favorite Location *</div>}
-                    isSearchable={true}
-                    noOptionsMessage={() => {
-                      if(!locations || !locations.length){
-return <CircularProgress size={30}/>
-                      } else {
-                        return 'No Result Found'
-                      }
-
-                    }}
-                    styles={customStyles}
-                    classNamePrefix="select"
-                    options={locations?.map((loc: any) => {
-                      return { value: loc.location_id, label: loc.name };
-                    })}
-                    onChange={(selectedOption: any) => {
-                      setFavLocationError(false);
-                      setFavLocation(selectedOption);
-                    }}
-                    
-                    value={favLocation && favLocation }
-                    maxMenuHeight={150}
-                  />
-                   </div>
+                        <Select
+                          placeholder={
+                            favLocationError ? (
+                              <div style={{ color: 'red' }}>
+                                Favorite Location *
+                              </div>
+                            ) : (
+                              <div>Favorite Location *</div>
+                            )
+                          }
+                          isSearchable={true}
+                          noOptionsMessage={() => {
+                            if (!locations || !locations.length) {
+                              return <CircularProgress size={30} />;
+                            } else {
+                              return 'No Result Found';
+                            }
+                          }}
+                          styles={customStyles}
+                          classNamePrefix="select"
+                          options={locations?.map((loc: any) => {
+                            return { value: loc.location_id, label: loc.name };
+                          })}
+                          onChange={(selectedOption: any) => {
+                            setFavLocationError(false);
+                            setFavLocation(selectedOption);
+                          }}
+                          value={favLocation && favLocation}
+                          maxMenuHeight={150}
+                        />
                       </div>
                     </div>
+                  </div>
                   {favLocationError && (
                     <p className="fav-conf-error-message">
                       Favorite Location is required
@@ -433,7 +440,6 @@ return <CircularProgress size={30}/>
                     fontFamily: 'Poppins-Regular, sans-serif !Important',
                   }}
                   className="check-with-text"
-
                 >
                   <Typography
                     variant="body2"
@@ -446,7 +452,6 @@ return <CircularProgress size={30}/>
                       fontFamily: 'Poppins-Regular, sans-serif !Important',
                     }}
                   >
-
                     <Checkbox
                       onChange={handleChangeCheckbox}
                       checked={termsAndConditions}
@@ -456,7 +461,6 @@ return <CircularProgress size={30}/>
                         'aria-labelledby': 'chkTermandCondition',
                       }}
                       color="default"
-
                       sx={{
                         float: 'left',
                         color: 'white',
@@ -466,11 +470,14 @@ return <CircularProgress size={30}/>
                     />{' '}
                     I agree to the{' '}
                     <Link
-                    target="popup"
+                      target="popup"
                       onClick={() =>
-                        window.open(process.env.REACT_APP_TERMS_LINK,'name','width=1000,height=1000')
+                        window.open(
+                          process.env.REACT_APP_TERMS_LINK,
+                          'name',
+                          'width=1000,height=1000',
+                        )
                       }
-                      
                       underline="hover"
                       sx={{ color: '#1a86ff', cursor: 'pointer' }}
                     >
