@@ -314,7 +314,7 @@ const RegisterForm = () => {
             obj.birthday = moment(birthDay).format('YYYY-MM-DD');
           }
 
-          dispatch(userRegister(obj));
+          dispatch(userRegister(obj, 'REGISTER_MAIN'));
         }}
       >
         {({
@@ -479,7 +479,7 @@ const RegisterForm = () => {
                     show={['month', 'day', 'year']}
                   />
                 </Grid>
-                
+
                   <Grid item xs={12}>
                      {/* { !locations&&  <div
                     style={{
@@ -560,7 +560,7 @@ return <CircularProgress size={30}/>
                       onClick={() =>
                         window.open(process.env.REACT_APP_TERMS_LINK,'name','width=1000,height=1000')
                       }
-                      
+
                       underline="hover"
                       sx={{ color: '#1a86ff', cursor: 'pointer' }}
                     >

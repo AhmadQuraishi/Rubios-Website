@@ -286,6 +286,7 @@ function* userRegisterHandler(action: any): any {
     yield put({
       type: authActionsTypes.GET_AUTHTOKEN_REQUEST,
       successMsg: 'Signup Success',
+      registerType: action.registerType,
     });
   } catch (error) {
     yield put(userRegisterFailure(error));

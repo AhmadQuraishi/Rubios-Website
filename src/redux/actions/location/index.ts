@@ -33,3 +33,24 @@ export function getLocationsFailure(error: any) {
     error: error,
   };
 }
+
+export function getSingleLocation(store_number: any) {
+  return {
+    type: Type.GET_SINGLE_LOCATION,
+    payload: store_number,
+  };
+}
+
+export function getSingleLocationSuccess(data: any) {
+  return {
+    type: Type.GET_SINGLE_LOCATION_SUCCESS,
+    payload: data,
+  };
+}
+
+export function getSingleLocationFailure(error: any) {
+  return {
+    type: Type.GET_SINGLE_LOCATION_FAILURE,
+    error: error,
+  };
+}

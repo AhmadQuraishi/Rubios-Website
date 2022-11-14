@@ -1,14 +1,10 @@
 import React from 'react';
 import {
   Grid,
-  SelectChangeEvent,
   Checkbox,
-  FormControl,
   Typography,
   TextField,
   Button,
-  InputLabel,
-  MenuItem,
   Link,
   CircularProgress,
 } from '@mui/material';
@@ -23,7 +19,6 @@ import ReactDateInputs from 'react-date-inputs';
 import moment from 'moment';
 import './register-form.css';
 import { useLocation } from 'react-router-dom';
-import { displayToast } from '../../../helpers/toast';
 import { addAuthTokenIframeRedirect } from '../../../redux/actions/auth';
 import Select from 'react-select';
 const RegisterForm = () => {
@@ -260,7 +255,7 @@ const RegisterForm = () => {
             invitecode: invite_code && invite_code !== '' ? invite_code : '',
             favLocation: '',
             birthday: '',
-            termsAndConditions: false
+            termsAndConditions: false,
           }}
           validationSchema={Yup.object({
             first_name: Yup.string()
@@ -302,13 +297,13 @@ const RegisterForm = () => {
             }
             setFavLocationError(false);
 
-            if (termsAndConditions == false ){
+            if (termsAndConditions == false) {
               setTermsAndConditionsError(true);
               return;
-            }else{
+            } else {
               setTermsAndConditionsError(false);
             }
-  
+
             const obj: any = {
               first_name: values.first_name,
               last_name: values.last_name,
@@ -325,7 +320,7 @@ const RegisterForm = () => {
               obj.birthday = moment(birthDay).format('YYYY-MM-DD');
             }
             setShowError(true);
-            dispatch(userRegister(obj));
+            dispatch(userRegister(obj, 'REGISTER_IFRAME'));
             dispatch(addAuthTokenIframeRedirect());
           }}
         >
@@ -504,17 +499,24 @@ const RegisterForm = () => {
                       <div>
                         <div>
                           <Select
-                            placeholder={favLocationError ? <div style={{color: "red"}}>Favorite Location *</div> : <div>Favorite Location *</div>}
+                            placeholder={
+                              favLocationError ? (
+                                <div style={{ color: 'red' }}>
+                                  Favorite Location *
+                                </div>
+                              ) : (
+                                <div>Favorite Location *</div>
+                              )
+                            }
                             className="select-options"
                             isSearchable={true}
                             styles={customStyles}
                             noOptionsMessage={() => {
-                              if(!locations || !locations.length){
-return <CircularProgress size={30}/>
+                              if (!locations || !locations.length) {
+                                return <CircularProgress size={30} />;
                               } else {
-                                return 'No Result Found'
+                                return 'No Result Found';
                               }
-
                             }}
                             options={locations?.map((loc: any) => {
                               return {
@@ -608,10 +610,10 @@ return <CircularProgress size={30}/>
                       sx={{ width: '100%' }}
                     >
                       <Checkbox
-                       onChange={handleChangeCheckbox}
-                       checked={termsAndConditions}
-                       id="termsAndConditions"
-                       name="termsAndConditions"
+                        onChange={handleChangeCheckbox}
+                        checked={termsAndConditions}
+                        id="termsAndConditions"
+                        name="termsAndConditions"
                         inputProps={{
                           'aria-label':
                             ' I agree to the  Rubios terms and conditions and to receiving marketing communications from Rubios ',
@@ -619,23 +621,26 @@ return <CircularProgress size={30}/>
                       />{' '}
                       I agree to the{' '}
                       <Link
-                    target="popup"
-                      onClick={() =>
-                        window.open(process.env.REACT_APP_TERMS_LINK,'name','width=1000,height=1000')
-                      }
-                      
-                      underline="hover"
-                      sx={{ color: '#1a86ff', cursor: 'pointer' }}
-                    >
+                        target="popup"
+                        onClick={() =>
+                          window.open(
+                            process.env.REACT_APP_TERMS_LINK,
+                            'name',
+                            'width=1000,height=1000',
+                          )
+                        }
+                        underline="hover"
+                        sx={{ color: '#1a86ff', cursor: 'pointer' }}
+                      >
                         Rubio's terms and conditions{' '}
                       </Link>
                       and to receiving marketing communications from Rubio's.
                     </Typography>
                     {termsAndConditionsError && (
-                    <p className="fav-iframes-error-message">
-                      Terms and conditions are required
-                    </p>
-                  )}
+                      <p className="fav-iframes-error-message">
+                        Terms and conditions are required
+                      </p>
+                    )}
                   </Grid>
                   <Grid style={{ paddingTop: 10 }}>
                     {showError && signUpErrors && signUpErrors.length > 0

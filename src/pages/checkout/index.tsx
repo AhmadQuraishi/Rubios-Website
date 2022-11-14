@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Button, Card, Grid, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -69,6 +69,7 @@ const Checkout = () => {
   const [basket, setBasket] = React.useState<ResponseBasket>();
   const [billingSchemes, setBillingSchemes] = React.useState<any>([]);
   const [rewards, setRewards] = React.useState<any>([]);
+  const [locationId, setLocationId] = useState(null);
   const [validate, setValidate] =
     React.useState<ResponseBasketValidation | null>(null);
   // const [defaultDeliveryAddress, setDefaultDeliveryAddress] =
@@ -93,6 +94,7 @@ const Checkout = () => {
   const { userBillingAccounts, loading: billingAccountsLoading } = useSelector(
     (state: any) => state.userReducer,
   );
+  const { singleLocation } = useSelector((state: any) => state.locationReducer);
 
   useEffect(() => {
     const LoadExternalScript = () => {
@@ -110,6 +112,12 @@ const Checkout = () => {
     };
     LoadExternalScript();
   }, []);
+
+  useEffect(() => {
+    if (singleLocation?.data?.length) {
+      setLocationId(singleLocation.data[0].location_id);
+    }
+  }, [singleLocation]);
 
   useEffect(() => {
     if (qualifyingRewards && qualifyingRewards.length) {
@@ -662,7 +670,7 @@ const Checkout = () => {
           email: providerToken.email,
           first_name: providerToken?.first_name,
           last_name: providerToken?.last_name,
-          favourite_locations: providerToken?.favourite_locations,
+          favourite_locations: locationId || '',
           marketing_email_subscription: formDataValue.emailNotification,
           phone: formDataValue.phone,
         };
@@ -893,12 +901,11 @@ const Checkout = () => {
       displayToast('ERROR', ` Signup fields are required.`);
       return;
     }
-
     const signUpObj: any = {
       first_name: formDataValue?.firstName,
       last_name: formDataValue?.lastName,
       email: formDataValue?.email,
-      phone: formDataSignup?.phone.replace(/\D/g, '') || '',
+      phone: formDataValue?.phone?.replace(/\D/g, '') || '',
       password: formDataSignup?.password,
       password_confirmation: formDataSignup?.password_confirmation,
       fav_location_id: '345077',
@@ -909,10 +916,9 @@ const Checkout = () => {
     if (formDataSignup?.birthDay) {
       signUpObj.birthday = moment(formDataSignup.birthDay).format('YYYY-MM-DD');
     }
-    console.log('signUpObj', signUpObj)
+    console.log('signUpObj', signUpObj);
 
-    dispatch(userRegister(signUpObj));
-
+    dispatch(userRegister(signUpObj, 'REGISTER_CHECKOUT'));
   };
 
   return (

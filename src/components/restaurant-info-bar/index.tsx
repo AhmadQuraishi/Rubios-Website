@@ -14,7 +14,6 @@ import {
   Checkbox,
   TextField,
   Divider,
-
 } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -22,7 +21,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Dialog from '@mui/material/Dialog';
 import { makeStyles } from '@mui/styles';
-import Select from 'react-select';
+// import Select from 'react-select';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getResturantCalendarRequest } from '../../redux/actions/restaurant/calendar';
@@ -38,7 +37,7 @@ import DialogBox from '../dialog-box';
 import { resetBasketRequest } from '../../redux/actions/basket';
 import { setResturantInfoRequest } from '../../redux/actions/restaurant';
 import { updateUser } from '../../redux/actions/user';
-import { getlocations } from '../../redux/actions/location';
+import { getSingleLocation } from '../../redux/actions/location';
 import './index.css';
 import moment from 'moment';
 import { Formik } from 'formik';
@@ -61,13 +60,13 @@ const StoreInfoBar = () => {
     zip: '',
     isdefault: false,
   });
-  const [editDeliveryAddress, setEditDeliveryAddress] = useState({
-    address1: '',
-    address2: '',
-    city: '',
-    zip: '',
-    isdefault: false,
-  });
+  // const [editDeliveryAddress, setEditDeliveryAddress] = useState({
+  //   address1: '',
+  //   address2: '',
+  //   city: '',
+  //   zip: '',
+  //   isdefault: false,
+  // });
   const options = [
     { label: 'Pickup', id: 1 },
     { label: 'Curbside', id: 2 },
@@ -91,34 +90,28 @@ const StoreInfoBar = () => {
   const { providerToken } = useSelector((state: any) => state.providerReducer);
   const { authToken } = useSelector((state: any) => state.authReducer);
   const [alignment, setAlignment] = React.useState('use-existing');
-  const { locations, loading: loadingLocations } = useSelector(
-    (state: any) => state.locationReducer,
-  );
+  const { singleLocation } = useSelector((state: any) => state.locationReducer);
   const dispatch = useDispatch();
 
   const getTimeFormat = (date: string) => {
     return moment(date, 'YYYYMMDD HH:mm').format('h:mm A');
   };
-  useEffect(() => {
-    dispatch(getlocations());
-  }, []);
 
   useEffect(() => {
-    if (locations && locations.length && restaurant) {
-      const loc = locations.find(
-        (loc: any) => loc.store_number.toString() === restaurant.extref,
-      );
-      if (loc) {
-        setLocationId(loc.location_id);
-      }
+    if (singleLocation?.data?.length) {
+      setLocationId(singleLocation.data[0].location_id);
     }
-  }, [locations, restaurant]);
+  }, [singleLocation]);
 
   useEffect(() => {
     if (restaurant) {
       setRestaurantInfo(restaurant);
+      if (restaurant?.extref && !providerToken) {
+        dispatch(getSingleLocation(restaurant.extref));
+      }
     }
   }, [restaurant]);
+
   const checkButtonDisabled = (
     values: any,
     isValid: any,
@@ -196,7 +189,6 @@ const StoreInfoBar = () => {
   ) => {
     setAlignment(newAlignment);
   };
-
 
   const handleDeleteFunction = () => {
     setOpen(false);
@@ -302,7 +294,7 @@ const StoreInfoBar = () => {
                   .required('Postal code is required'),
                 isdefault: Yup.boolean(),
               })}
-              onSubmit={async (values) => { }}
+              onSubmit={async (values) => {}}
             >
               {({
                 errors,
@@ -315,7 +307,9 @@ const StoreInfoBar = () => {
                 dirty,
               }) => (
                 <form onSubmit={handleSubmit}>
-                  <DialogContent sx={{ padding: "0px 24px !important", textAlign: "center", }}>
+                  <DialogContent
+                    sx={{ padding: '0px 24px !important', textAlign: 'center' }}
+                  >
                     <DialogTitle id="modal-dialog-delivery-title">
                       {`Order Type`}
                     </DialogTitle>
@@ -324,14 +318,18 @@ const StoreInfoBar = () => {
                         disablePortal
                         // id="combo-box-demo"
                         options={options}
-                        sx={{ width: "100%", top: "0px !important" }}
-                        renderInput={(params) => <TextField {...params} label={"Order Type"} />}
+                        sx={{ width: '100%', top: '0px !important' }}
+                        renderInput={(params) => (
+                          <TextField {...params} label={'Order Type'} />
+                        )}
                       />
                     </Grid>
                     <br />
                     <Divider />
                   </DialogContent>
-                  <DialogContent sx={{ padding: "0px 24px !important", textAlign: "center", }}>
+                  <DialogContent
+                    sx={{ padding: '0px 24px !important', textAlign: 'center' }}
+                  >
                     <DialogTitle id="modal-dialog-delivery-title">
                       {`Delivery Address`}
                     </DialogTitle>
@@ -343,18 +341,45 @@ const StoreInfoBar = () => {
                         onChange={handleChangeDelivery}
                         aria-label="Use Existing"
                       >
-                        <ToggleButton value="use-existing" sx={{ padding: { xs: "0px 22px", sm: "0px 61px", md: "0px 61px", lg: "0px 61px" } }}>Use Existing</ToggleButton>
-                        <ToggleButton value="add-new" sx={{ padding: { xs: "0px 22px", lg: "0px 61px", md: "0px 61px", sm: "0px 61px" } }}>Add New</ToggleButton>
+                        <ToggleButton
+                          value="use-existing"
+                          sx={{
+                            padding: {
+                              xs: '0px 22px',
+                              sm: '0px 61px',
+                              md: '0px 61px',
+                              lg: '0px 61px',
+                            },
+                          }}
+                        >
+                          Use Existing
+                        </ToggleButton>
+                        <ToggleButton
+                          value="add-new"
+                          sx={{
+                            padding: {
+                              xs: '0px 22px',
+                              lg: '0px 61px',
+                              md: '0px 61px',
+                              sm: '0px 61px',
+                            },
+                          }}
+                        >
+                          Add New
+                        </ToggleButton>
                       </ToggleButtonGroup>
                     </Grid>
                     <br />
                     <Divider />
                   </DialogContent>
 
-                  {alignment === "use-existing" &&
+                  {alignment === 'use-existing' && (
                     <DialogContent>
                       <DialogContentText id="Modal-dialog-delivery-description">
-                        <Grid container sx={{ width: '100%', maxWidth: '450px' }}>
+                        <Grid
+                          container
+                          sx={{ width: '100%', maxWidth: '450px' }}
+                        >
                           <Grid item xs={12}>
                             <TextField
                               aria-label="Address"
@@ -367,32 +392,45 @@ const StoreInfoBar = () => {
                               value={values.address1}
                               onChange={handleChange('address1')}
                               onBlur={handleBlur('address1')}
-                              error={Boolean(touched.address1 && errors.address1)}
+                              error={Boolean(
+                                touched.address1 && errors.address1,
+                              )}
                               helperText={touched.address1 && errors.address1}
                             />
                           </Grid>
                         </Grid>
                       </DialogContentText>
                     </DialogContent>
-                  }
+                  )}
 
                   <br />
-                  {alignment === "use-existing" &&
-                    <DialogTitle id="modal-dialog-delivery-title" sx={{ fontSize: "14px", padding: "0px 24px !important", textAlign: "center", }}>
+                  {alignment === 'use-existing' && (
+                    <DialogTitle
+                      id="modal-dialog-delivery-title"
+                      sx={{
+                        fontSize: '14px',
+                        padding: '0px 24px !important',
+                        textAlign: 'center',
+                      }}
+                    >
                       {`Address Details`}
                     </DialogTitle>
-                  }
-                  {alignment === "add-new" &&
-                    <DialogTitle id="modal-dialog-delivery-title" sx={{ fontSize: "14px", padding: "0px 24px !important", textAlign: "center", }}>
+                  )}
+                  {alignment === 'add-new' && (
+                    <DialogTitle
+                      id="modal-dialog-delivery-title"
+                      sx={{
+                        fontSize: '14px',
+                        padding: '0px 24px !important',
+                        textAlign: 'center',
+                      }}
+                    >
                       {`Add Address Details`}
                     </DialogTitle>
-                  }
-                  <DialogContent >
-
+                  )}
+                  <DialogContent>
                     <DialogContentText id="Modal-dialog-delivery-description">
                       <Grid container sx={{ width: '100%', maxWidth: '450px' }}>
-
-
                         <Grid item xs={12}>
                           <TextField
                             aria-label="Address"
@@ -609,7 +647,6 @@ const StoreInfoBar = () => {
 
               {showHideFunc() && (
                 <>
-
                   <Grid
                     item
                     xs={12}
@@ -945,15 +982,15 @@ const StoreInfoBar = () => {
                                   item.isOpenAllDay
                                     ? 'Open 24 hours'
                                     : getTimeFormat(item.start) +
-                                    ' - ' +
-                                    getTimeFormat(item.end)
+                                      ' - ' +
+                                      getTimeFormat(item.end)
                                 }
                               >
                                 {item.isOpenAllDay
                                   ? 'Open 24 hours'
                                   : getTimeFormat(item.start) +
-                                  ' - ' +
-                                  getTimeFormat(item.end)}
+                                    ' - ' +
+                                    getTimeFormat(item.end)}
                               </ListItem>
                             </List>
                           </Grid>
@@ -1024,15 +1061,15 @@ const StoreInfoBar = () => {
                                       item.isOpenAllDay
                                         ? 'Open 24 hours'
                                         : getTimeFormat(item.start) +
-                                        ' - ' +
-                                        getTimeFormat(item.end)
+                                          ' - ' +
+                                          getTimeFormat(item.end)
                                     }
                                   >
                                     {item.isOpenAllDay
                                       ? 'Open 24 hours'
                                       : getTimeFormat(item.start) +
-                                      ' - ' +
-                                      getTimeFormat(item.end)}
+                                        ' - ' +
+                                        getTimeFormat(item.end)}
                                   </ListItem>
                                 </List>
                               </Grid>
@@ -1181,15 +1218,15 @@ const StoreInfoBar = () => {
                                           item.isOpenAllDay
                                             ? 'Open 24 hours'
                                             : getTimeFormat(item.start) +
-                                            ' - ' +
-                                            getTimeFormat(item.end)
+                                              ' - ' +
+                                              getTimeFormat(item.end)
                                         }
                                       >
                                         {item.isOpenAllDay
                                           ? 'Open 24 hours'
                                           : getTimeFormat(item.start) +
-                                          ' - ' +
-                                          getTimeFormat(item.end)}
+                                            ' - ' +
+                                            getTimeFormat(item.end)}
                                       </ListItem>
                                     </List>
                                   </Grid>
