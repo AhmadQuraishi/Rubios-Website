@@ -918,7 +918,7 @@ const Checkout = () => {
     }
     console.log('signUpObj', signUpObj);
 
-    dispatch(userRegister(signUpObj, 'REGISTER_CHECKOUT'));
+    dispatch(userRegister(signUpObj, 'REGISTER_CHECKOUT', basket?.id));
   };
 
   return (

@@ -320,7 +320,7 @@ const RegisterForm = () => {
               obj.birthday = moment(birthDay).format('YYYY-MM-DD');
             }
             setShowError(true);
-            dispatch(userRegister(obj, 'REGISTER_IFRAME'));
+            dispatch(userRegister(obj, 'REGISTER_IFRAME', ''));
             dispatch(addAuthTokenIframeRedirect());
           }}
         >

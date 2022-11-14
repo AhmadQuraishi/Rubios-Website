@@ -405,11 +405,12 @@ export function userLoginFailure(error: any) {
   };
 }
 
-export function userRegister(data: any, registerType: any) {
+export function userRegister(data: any, registerType: any, basketID: any) {
   return {
     type: Type.USER_REGISTER_REQUEST,
     data,
     registerType,
+    basketID,
   };
 }
 

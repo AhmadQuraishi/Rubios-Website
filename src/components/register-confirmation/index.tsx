@@ -229,7 +229,7 @@ const RegisterConfirmation = ({ id }: any) => {
             obj.birthday = moment(birthDay).format('YYYY-MM-DD');
           }
           //
-          dispatch(userRegister(obj, 'REGISTER_CONFIRMATION'));
+          dispatch(userRegister(obj, 'REGISTER_CONFIRMATION', ''));
         }}
       >
         {({

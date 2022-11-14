@@ -287,6 +287,7 @@ function* userRegisterHandler(action: any): any {
       type: authActionsTypes.GET_AUTHTOKEN_REQUEST,
       successMsg: 'Signup Success',
       registerType: action.registerType,
+      basketID: action.basketID,
     });
   } catch (error) {
     yield put(userRegisterFailure(error));

@@ -17,6 +17,11 @@ function* asyncAuthItemRequest(action: any): any {
         action.registerType === 'REGISTER_CONFIRMATION')
     ) {
       yield put(navigateAppAction('/welcome?new_user=true'));
+    } else if (
+      action?.registerType &&
+      action.registerType === 'REGSITER_CHECKOUT'
+    ) {
+      yield put(navigateAppAction('/checkout'));
     }
   } catch (error) {
     yield put(getAuthRequestFailure(error));
