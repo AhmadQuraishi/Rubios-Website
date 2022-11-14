@@ -57,6 +57,7 @@ const SignUpGuest = ({ guestSignupCheckout, signupFormRef }: any) => {
                 sm: 'center',
                 xs: 'left',
               },
+              marginBottom: '5px'
             }}
             variant="h6"
           >
@@ -124,7 +125,7 @@ const SignUpGuest = ({ guestSignupCheckout, signupFormRef }: any) => {
                       variant="body2"
                       className="body-text-signup"
                       title="Password must be at least 8 characters."
-                      sx={{ width: '100%' }}
+                      sx={{ width: '100%',marginBottom: '10px', }}
                     >
                       Password must be at least 8 characters.
                     </Typography>
@@ -143,7 +144,7 @@ const SignUpGuest = ({ guestSignupCheckout, signupFormRef }: any) => {
                         name="password_confirmation"
                         autoComplete="off"
                         type="password"
-                        sx={{ width: '100%' }}
+                        sx={{ width: '100%',marginBottom: "10px", }}
                         value={values.password_confirmation}
                         onChange={handleChange('password_confirmation')}
                         onBlur={handleBlur('password_confirmation')}
@@ -233,7 +234,7 @@ const SignUpGuest = ({ guestSignupCheckout, signupFormRef }: any) => {
                         variant="body2"
                         title="I accept the terms and conditions."
                         sx={{
-                          width: '100%',
+                          width: {lg:'130%',xs:"100%",md:"130%",sm: "130%"},
                           paddingTop: '3px !important',
                           display: 'flex',
                           alignItems: 'center',
@@ -258,7 +259,7 @@ const SignUpGuest = ({ guestSignupCheckout, signupFormRef }: any) => {
                       sm={12}
                       md={12}
                       lg={12}
-                      sx={{ display: 'flex', justifyContent: 'center' }}
+                      sx={{ display: 'flex', justifyContent: 'center',marginTop: "10px", }}
                     >
                       <Typography
                         variant="body2"
