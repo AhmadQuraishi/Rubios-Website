@@ -21,7 +21,9 @@ function* asyncAuthItemRequest(action: any): any {
       action?.registerType &&
       action.registerType === 'REGISTER_CHECKOUT'
     ) {
-      yield put(navigateAppAction('/checkout'));
+      setTimeout(() => {
+        window.location.href = '/checkout';
+      }, 500);
     }
   } catch (error) {
     yield put(getAuthRequestFailure(error));
