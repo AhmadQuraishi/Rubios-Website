@@ -80,7 +80,7 @@ const Checkout = () => {
   const { authToken } = useSelector((state: any) => state.authReducer);
   const { providerToken } = useSelector((state: any) => state.providerReducer);
   const { guestUser } = useSelector((state: any) => state.guestReducer);
-  const { rewards: qualifyingRewards } = useSelector(
+  const { rewards: qualifyingRewards, loading: loadingRewards } = useSelector(
     (state: any) => state.getRewardForCheckoutReducer,
   );
   const { data: rewardsRedemptionsData, loading: loadingRedemptions } =
@@ -1084,6 +1084,7 @@ const Checkout = () => {
                 authToken.authtoken &&
                 authToken.authtoken !== '' &&
                 providerToken.first_name &&
+               !(!loadingRewards && rewards?.length === 0) &&
                 rewards && (
                   <>
                     <br />
