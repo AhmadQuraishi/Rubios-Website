@@ -23,7 +23,7 @@ export const ItemsNotAvailableComponent = ({ items }: any) => {
               lineHeight: '1.1 !important',
               textAlign: 'center',
               color: '#214F66',
-              fontSize: '32px',
+              fontSize: {xs: "32px !important", lg: '27px !important', md: '27px !important', sm:'27px !important'},
               fontWeight: '900',
               fontFamily: 'Poppins-Bold, sans-serif !important',
             }}
@@ -34,7 +34,8 @@ export const ItemsNotAvailableComponent = ({ items }: any) => {
           <Typography
             sx={{
               textAlign: 'center',
-              fontSize: '16px !important',
+              marginTop: "-3px",
+              fontSize: {xs: "15px !important", lg: '14px !important', md: '14px !important', sm:'14px !important'},
               fontFamily: 'Poppins-Regular, sans-serif !important',
             }}
           >
