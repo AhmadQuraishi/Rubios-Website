@@ -22,8 +22,8 @@ function* setResturantInfoRequest(action: any): any {
   try {
     yield put(
       setResturantInfoRequestSuccess(action.restaurant, action.orderType),
-    );    
-    yield put(getBasketRequest('', null));
+    );
+    // yield put(getBasketRequest('', null));
   } catch (error) {
     yield put(setResturantInfoRequestFailure(error));
   }

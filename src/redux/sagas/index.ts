@@ -35,6 +35,7 @@ import { deliveryAddressSaga } from './location/delivery-address';
 import { verifyDeliveryAddressSaga } from './location/verify-delivery-address';
 import { utensilsSaga } from './basket/utensils';
 import { facebookConversionSaga } from './facebook-conversion';
+import { basketTransferSaga } from './basket/transfer';
 
 export default function* rootSaga() {
   yield all([
@@ -74,5 +75,6 @@ export default function* rootSaga() {
     deliveryAddressSaga(),
     verifyDeliveryAddressSaga(),
     facebookConversionSaga(),
+    basketTransferSaga(),
   ]);
 }

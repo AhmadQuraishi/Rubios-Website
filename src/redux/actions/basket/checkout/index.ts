@@ -412,3 +412,34 @@ export function updateBasketBillingSchemes(data: any) {
     payload: data,
   };
 }
+
+export function setBasketOrderTypeRequest(
+  basketid: string,
+  payload: RequestDeliveryAddress,
+) {
+  return {
+    type: basketActionsTypes.SET_BASKET_ORDER_TYPE_REQUEST,
+    basketid,
+    payload,
+  };
+}
+
+export function setBasketOrderTypeSuccess(data: ResponseBasket) {
+  return {
+    type: basketActionsTypes.SET_BASKET_ORDER_TYPE_SUCCESS,
+    payload: data,
+  };
+}
+
+export function setBasketOrderTypeFailure(error: any) {
+  displayToast(
+    'ERROR',
+    error?.response?.data?.message
+      ? error.response.data.message
+      : 'ERROR! Please Try again later',
+  );
+  return {
+    type: basketActionsTypes.SET_BASKET_ORDER_TYPE_FAILURE,
+    error: error,
+  };
+}

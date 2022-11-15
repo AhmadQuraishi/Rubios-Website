@@ -106,7 +106,7 @@ const StoreInfoBar = () => {
   useEffect(() => {
     if (restaurant) {
       setRestaurantInfo(restaurant);
-      if (restaurant?.extref && !providerToken) {
+      if (restaurant?.extref) {
         dispatch(getSingleLocation(restaurant.extref));
       }
     }
@@ -192,11 +192,11 @@ const StoreInfoBar = () => {
 
   const handleDeleteFunction = () => {
     setOpen(false);
-    dispatch(resetBasketRequest());
-    dispatch(setResturantInfoRequest(null, ''));
-    setTimeout(() => {
-      window.location.href = '/location';
-    }, 500);
+    // dispatch(resetBasketRequest());
+    // dispatch(setResturantInfoRequest(null, ''));
+    // setTimeout(() => {
+    window.location.href = '/location';
+    // }, 500);
   };
   const handleCloseOrder = () => {
     setOpenOrder(false);
