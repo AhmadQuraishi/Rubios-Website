@@ -242,7 +242,7 @@ const StoreInfoBar = () => {
             open={open}
             handleClose={handleClose}
             message={
-              'If you change location, your selected items will be removed from your basket, and you will have to choose the items again. Are you sure you want to change locations?'
+              'If you change location, your selected items may not be available at the new location. Are you sure you want to change location?'
             }
             handleDeleteFunction={() => handleDeleteFunction()}
           />

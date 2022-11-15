@@ -49,11 +49,11 @@ export const ItemsAvailableComponent = ({ restaurant }: any) => {
               paddingBottom: '5px',
             }}
           >
-            {restaurant.name}
+            {restaurant?.name}
           </Typography>
           <Typography variant="body2">
-            {restaurant.streetaddress}, <br /> {restaurant.city},{' '}
-            {restaurant.state}, {restaurant.zip}
+            {restaurant?.streetaddress}, <br /> {restaurant?.city},{' '}
+            {restaurant?.state}, {restaurant?.zip}
           </Typography>
           {restaurant?.distance > 0 && (
             <Typography variant="body2" sx={{ color: '#0069aa' }}>

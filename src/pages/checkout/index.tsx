@@ -48,6 +48,7 @@ import { facebookSendEvent } from '../../redux/actions/facebook-conversion';
 import { facebookConversionTypes } from '../../redux/types/facebook-conversion';
 import SignUpGuest from '../../components/sign-up-guest';
 import { userRegister } from '../../redux/actions/user';
+import CheckoutSkeletonUI from '../../components/checkout-skeleton-ui';
 
 const Checkout = () => {
   const dispatch = useDispatch();
@@ -80,7 +81,7 @@ const Checkout = () => {
   const { authToken } = useSelector((state: any) => state.authReducer);
   const { providerToken } = useSelector((state: any) => state.providerReducer);
   const { guestUser } = useSelector((state: any) => state.guestReducer);
-  const { rewards: qualifyingRewards, loading: loadingRewards } = useSelector(
+  const { rewards: qualifyingRewards, loading: loading } = useSelector(
     (state: any) => state.getRewardForCheckoutReducer,
   );
   const { data: rewardsRedemptionsData, loading: loadingRedemptions } =
@@ -928,9 +929,8 @@ const Checkout = () => {
       </Typography>
       <StoreInfoBar />
       <Box
-        className={`checkout-wrapper ${
-          buttonDisabled || basketObj?.orderSubmit ? 'disable-pointer' : ''
-        }`}
+        className={`checkout-wrapper ${buttonDisabled || basketObj?.orderSubmit ? 'disable-pointer' : ''
+          }`}
       >
         <Grid container>
           <Grid item xs={12} sm={12} md={12} lg={12}>
@@ -948,8 +948,8 @@ const Checkout = () => {
                   >
                     <Grid container>
                       {basket &&
-                      (basket.deliverymode === '' ||
-                        basket.deliverymode === DeliveryModeEnum.pickup) ? (
+                        (basket.deliverymode === '' ||
+                          basket.deliverymode === DeliveryModeEnum.pickup) ? (
                         <>
                           <Grid item xs={12}>
                             <Typography
@@ -1038,10 +1038,10 @@ const Checkout = () => {
                         </>
                       ) : null}
                       {basket &&
-                      (basket.deliverymode === '' ||
-                        basket.deliverymode === DeliveryModeEnum.pickup ||
-                        basket.deliverymode === DeliveryModeEnum.curbside ||
-                        basket.deliverymode === DeliveryModeEnum.dinein) ? (
+                        (basket.deliverymode === '' ||
+                          basket.deliverymode === DeliveryModeEnum.pickup ||
+                          basket.deliverymode === DeliveryModeEnum.curbside ||
+                          basket.deliverymode === DeliveryModeEnum.dinein) ? (
                         <PickupForm
                           setShowSignUpGuest={setShowSignUpGuest}
                           showSignUpGuest={!showSignUpGuest}
@@ -1051,7 +1051,7 @@ const Checkout = () => {
                         />
                       ) : null}
                       {basket &&
-                      basket.deliverymode === DeliveryModeEnum.dispatch ? (
+                        basket.deliverymode === DeliveryModeEnum.dispatch ? (
                         <DeliveryForm
                           basket={basket}
                           // defaultAddress={defaultDeliveryAddress}
@@ -1060,9 +1060,18 @@ const Checkout = () => {
                       ) : null}
                     </Grid>
                   </Grid>
-                  <OrderTime
-                    orderType={(basket && basket.deliverymode) || ''}
-                  />
+                  <Grid sx={{
+                    display: {
+                      xs: 'none',
+                      sm: 'block',
+                      md: 'block',
+                      lg: 'block',
+                    }
+                  }}>
+                    <OrderTime
+                      orderType={(basket && basket.deliverymode) || ''}
+                    />
+                  </Grid>
                 </Grid>
               </Grid>
               {!providerToken && showSignUpGuest && (
@@ -1079,13 +1088,31 @@ const Checkout = () => {
                   />
                 </>
               )}
+              <Grid sx={{
+                display: {
+                  xs: 'block',
+                  sm: 'none',
+                  md: 'none',
+                  lg: 'none',
+                }
+              }}>
+                <Divider />
+                <br />
+                <br />
+                <br />
+                <OrderTime
+                  orderType={(basket && basket.deliverymode) || ''}
+                />
+              </Grid>
+              {console.log(rewards, "rewards")}
+              {console.log(null,)}
               {providerToken &&
                 authToken &&
                 authToken.authtoken &&
                 authToken.authtoken !== '' &&
                 providerToken.first_name &&
-               !(!loadingRewards && rewards?.length === 0) &&
-                rewards && (
+                rewards &&
+                (
                   <>
                     <br />
                     <br />
@@ -1093,6 +1120,7 @@ const Checkout = () => {
                     <br />
                     <br />
                     <br />
+
                     <Rewards rewardsList={rewards} />
                   </>
                 )}
