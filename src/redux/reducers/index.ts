@@ -17,6 +17,7 @@ import authReducer from './auth';
 import restaurantListReducer from './restaurant/list';
 import createBasketReducer from './basket/create';
 import basketReducer from './basket';
+import basketTransferReducer from './basket/transfer';
 // import addMultipleProductsReducer from './basket/addMultipleProducts';
 import addProductReducer from './basket/product/add';
 import removeProductReducer from './basket/product/remove';
@@ -78,6 +79,7 @@ const rootReducers = combineReducers({
   restaurantListReducer,
   createBasketReducer,
   basketReducer,
+  basketTransferReducer,
   orderReducer,
   guestReducer,
   // addMultipleProductsReducer,
