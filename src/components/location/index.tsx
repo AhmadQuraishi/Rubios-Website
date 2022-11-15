@@ -59,18 +59,13 @@ const LocationCard = (props: any) => {
     restaurantNotFound,
     hideCurrentLocation,
     getNearByRestaurants,
-  } = props;
-  const {
     value,
-    suggestions: { status, data },
     setValue,
     clearSuggestions,
-  } = usePlacesAutocomplete({
-    requestOptions: {
-      location: new google.maps.LatLng({ lat: 37.772, lng: -122.214 }),
-      radius: 200 * 1000,
-    },
-  });
+    status,
+    data,
+  } = props;
+
   const dispatch = useDispatch();
   const theme = useTheme();
   const navigate = useNavigate();
@@ -81,11 +76,27 @@ const LocationCard = (props: any) => {
   const [showAllRestaurants, setShowAllRestaurants] = useState(false);
   const [updatebasket, setUpdatebasket] = useState(false);
   const [alignment, setAlignment] = React.useState('web');
+
   const onServiceSelect = (
     event: React.MouseEvent<HTMLElement>,
     newAlignment: string,
   ) => {
-    setAlignment(newAlignment);
+    if (newAlignment) {
+      setAlignment(newAlignment);
+      const orderT =
+        newAlignment === 'Pick up'
+          ? 'pickup'
+          : newAlignment === 'Curbside'
+          ? 'curbside'
+          : newAlignment === 'Delivery'
+          ? 'dispatch'
+          : 'web';
+      setSearchText('');
+      changeOrderType(orderT);
+      if (orderT === 'dispatch') {
+        setShowAllRestaurants(false)
+      }
+    }
   };
 
   const { userDeliveryAddresses, loading: deliveryAddressesLoading } =
@@ -103,6 +114,10 @@ const LocationCard = (props: any) => {
   useEffect(() => {
     dispatch(getUserDeliveryAddresses());
   }, []);
+
+  useEffect(() => {
+    console.log('orderType 1', orderType);
+  }, [orderType]);
 
   useEffect(() => {
     if (updatebasket) {
@@ -123,6 +138,16 @@ const LocationCard = (props: any) => {
   useEffect(() => {
     if (orderType) {
       setValue('');
+      const orderT =
+        orderType === 'pickup'
+          ? 'Pick up'
+          : orderType === 'curbside'
+          ? 'Curbside'
+          : orderType === 'dispatch'
+          ? 'Delivery'
+          : 'web';
+      console.log('orderT', orderT);
+      setAlignment(orderT);
     }
   }, [orderType]);
 
@@ -494,10 +519,10 @@ const LocationCard = (props: any) => {
                 <ToggleButton
                   role="radio"
                   value="Pick up"
-                  onClick={() => {
-                    setSearchText('');
-                    changeOrderType('pickup');
-                  }}
+                  // onClick={() => {
+                  //   setSearchText('');
+                  //   changeOrderType('pickup');
+                  // }}
                   className="selected-btn"
                   aria-current={alignment === 'Pick up'}
                   aria-label="PickUp, Activating this element will cause results to load below "
@@ -507,10 +532,10 @@ const LocationCard = (props: any) => {
                 <ToggleButton
                   role="radio"
                   value="Curbside"
-                  onClick={() => {
-                    setSearchText('');
-                    changeOrderType('curbside');
-                  }}
+                  // onClick={() => {
+                  //   setSearchText('');
+                  //   changeOrderType('curbside');
+                  // }}
                   className="selected-btn"
                   aria-current={alignment === 'Curbside'}
                   aria-label=" Curbside, Activating this element will cause results to load below "
@@ -520,11 +545,11 @@ const LocationCard = (props: any) => {
                 <ToggleButton
                   value="Delivery"
                   role="radio"
-                  onClick={() => {
-                    setSearchText('');
-                    setShowAllRestaurants(false);
-                    changeOrderType('dispatch');
-                  }}
+                  // onClick={() => {
+                  //   setSearchText('');
+                  //   setShowAllRestaurants(false);
+                  //   changeOrderType('dispatch');
+                  // }}
                   className="selected-btn"
                   aria-current={alignment === 'Delivery'}
                   aria-label=" Delivery, Enter your address below to get nearby restaurants"
@@ -594,18 +619,20 @@ const LocationCard = (props: any) => {
               {status === 'OK' && (
                 <div className="autocomplete-combo">
                   {value !== '' &&
-                    data.map(({ place_id, description }) => (
-                      <a
-                        href="#"
-                        className="prg"
-                        onClick={() => {
-                          handleSelect(description);
-                        }}
-                        key={place_id}
-                      >
-                        {description}
-                      </a>
-                    ))}
+                    data.map(({ place_id, description }: any) => {
+                      return (
+                        <a
+                          href="#"
+                          className="prg"
+                          onClick={() => {
+                            handleSelect(description);
+                          }}
+                          key={place_id}
+                        >
+                          {description}
+                        </a>
+                      );
+                    })}
                 </div>
               )}
             </Grid>
