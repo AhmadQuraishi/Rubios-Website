@@ -17,11 +17,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import StoreInfo from './info';
 import { displayToast } from '../../helpers/toast';
+import { LocationChangeModal } from '../../components/location-change-modal';
 import usePlacesAutocomplete, {
   getGeocode,
   getLatLng,
 } from 'use-places-autocomplete';
-import { getNearByResturantListRequest } from '../../redux/actions/restaurant/list';
+// import { getNearByResturantListRequest } from '../../redux/actions/restaurant/list';
 import './location.css';
 import { getAddress } from '../../helpers/common';
 import TagManager from 'react-gtm-module';
@@ -32,6 +33,11 @@ import { setResturantInfoRequest } from '../../redux/actions/restaurant';
 import { facebookSendEvent } from '../../redux/actions/facebook-conversion';
 import { facebookConversionTypes } from '../../redux/types/facebook-conversion';
 import { getOrderTypeRestaurants } from '../../helpers/location';
+import { basketTransferRequest } from '../../redux/actions/basket/transfer';
+import { setBasketDeliveryAddress } from '../../redux/actions/basket/checkout';
+import { getBasketRequestSuccess } from '../../redux/actions/basket';
+// import { toast } from 'react-toastify';
+// import error = toast.error;
 
 const LocationCard = (props: any) => {
   const {
@@ -70,7 +76,10 @@ const LocationCard = (props: any) => {
   const navigate = useNavigate();
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
   const [searchText, setSearchText] = useState<string>();
+  const [showLocationChangeModal, setShowLocationChangeModal] = useState(false);
+  const [newRestaurant, setNewRestaurant] = useState<any>(null);
   const [showAllRestaurants, setShowAllRestaurants] = useState(false);
+  const [updatebasket, setUpdatebasket] = useState(false);
   const [alignment, setAlignment] = React.useState('web');
   const onServiceSelect = (
     event: React.MouseEvent<HTMLElement>,
@@ -85,10 +94,21 @@ const LocationCard = (props: any) => {
     useSelector((state: any) => state.restaurantInfoReducer);
   const { providerToken } = useSelector((state: any) => state.providerReducer);
   const basketObj = useSelector((state: any) => state.basketReducer);
+  const {
+    data: newBasket,
+    loading: newBasketLoading,
+    error: newBasketError,
+  } = useSelector((state: any) => state.basketTransferReducer);
 
   useEffect(() => {
     dispatch(getUserDeliveryAddresses());
   }, []);
+
+  useEffect(() => {
+    if (updatebasket) {
+      setActionPerform(false);
+    }
+  }, [basketObj]);
 
   const handleChange = (e: any) => {
     setSearchText(e.target.value);
@@ -197,6 +217,46 @@ const LocationCard = (props: any) => {
     currentLocation();
   };
 
+  useEffect(() => {
+    if (!newBasketLoading) {
+      if (newBasketError) {
+        setActionPerform(false);
+      } else if (newBasket?.basket) {
+        setShowLocationChangeModal(true);
+        setActionPerform(false);
+      }
+    }
+  }, [newBasket, newBasketLoading, newBasketError]);
+
+  const handleChangeLocation = () => {
+    setShowLocationChangeModal(false);
+    if (newBasket?.basket && newRestaurant) {
+      dispatch(getBasketRequestSuccess(newBasket?.basket));
+      dispatch(setResturantInfoRequest(newRestaurant, orderType || ''));
+      navigate('/menu/' + newRestaurant?.slug);
+      displayToast('SUCCESS', 'Location changed to ' + newRestaurant.name);
+    }
+  };
+
+  const handleCancelChangeLocation = () => {
+    navigate('/menu/' + selectedRestaurant?.slug);
+    setShowLocationChangeModal(false);
+  };
+
+  // const formatDeliveryAddress = () => {
+  //   let obj: any = {
+  //     building: deliveryAddressString?.address?.address2 || '',
+  //     streetaddress: deliveryAddressString?.address?.address1 || '',
+  //     city: deliveryAddressString?.address?.city || '',
+  //     zipcode: deliveryAddressString?.address?.zip || '',
+  //     isdefault: deliveryAddressString?.address?.isdefault || false,
+  //   };
+  //   if (deliveryAddressString?.address?.id) {
+  //     obj['id'] = deliveryAddressString?.address?.id;
+  //   }
+  //   return obj;
+  // };
+
   const gotoCategoryPage = (storeID: number) => {
     if (orderType === undefined) {
       displayToast('ERROR', 'Please select at least one order type');
@@ -204,30 +264,114 @@ const LocationCard = (props: any) => {
     }
     let restaurantObj = null;
     restaurantObj = allRestaurants.find((x: any) => x.id === storeID);
-    if (orderType === 'dispatch' && restaurantObj) {
+
+    if (orderType === 'dispatch' && deliveryAddressString) {
       dispatch(setDeliveryAddress(deliveryAddressString));
     }
-    if (restaurantObj) {
-      if (
-        !selectedRestaurant ||
-        (selectedRestaurant && selectedRestaurant.id !== storeID) ||
-        orderType !== selectedOrderType
-      ) {
-        dispatch(setResturantInfoRequest(restaurantObj, orderType || ''));
-        if (basketObj && basketObj.basket) {
-          displayToast(
-            'SUCCESS',
-            'Location changed to ' +
-              restaurantObj.name +
-              ' and basket is empty',
-          );
+
+    if (selectedRestaurant) {
+      if (basketObj?.basket) {
+        if (selectedRestaurant?.id === storeID) {
+          // if (deliveryAddressString) {
+          //   const deliveryAddress = formatDeliveryAddress();
+          //   dispatch(
+          //     setBasketDeliveryAddress(basketObj?.basket?.id, deliveryAddress),
+          //   );
+          //   setUpdatebasket(true);
+          //   setActionPerform(true);
+          dispatch(setResturantInfoRequest(restaurantObj, orderType || ''));
+          navigate('/menu/' + restaurantObj.slug);
+          return;
         } else {
-          displayToast('SUCCESS', 'Location changed to ' + restaurantObj.name);
+          dispatch(
+            basketTransferRequest(basketObj?.basket?.id, restaurantObj.id),
+          );
+          setNewRestaurant(restaurantObj);
+          setActionPerform(true);
+          return;
         }
-        triggerFacebookEventOnLocationChange();
       }
-      navigate('/menu/' + restaurantObj.slug);
     }
+    dispatch(setResturantInfoRequest(restaurantObj, orderType || ''));
+    navigate('/menu/' + restaurantObj.slug);
+    //   if (selectedRestaurant?.id === storeID) {
+    //     if (orderType === selectedOrderType) {
+    //       dispatch(setResturantInfoRequest(restaurantObj, orderType || ''));
+    //     }
+    //       // if (deliveryAddressString) {
+    //       //   const deliveryAddress = formatDeliveryAddress();
+    //       //   dispatch(
+    //       //     setBasketDeliveryAddress(basketObj?.basket?.id, deliveryAddress),
+    //       //   );
+    //       //   setUpdatebasket(true);
+    //       //   setActionPerform(true);
+    //       // } else {
+    //       //   navigate('/menu/' + restaurantObj.slug);
+    //       // }
+    //     // } else {
+    //     //   dispatch(setResturantInfoRequest(restaurantObj, orderType || ''));
+    //     // }
+    //
+    //     if (orderType === 'dispatch' && deliveryAddressString) {
+    //       dispatch(setDeliveryAddress(deliveryAddressString));
+    //     }
+    //     navigate('/menu/' + restaurantObj.slug);
+    //   }
+    //
+    //   // displayToast('SUCCESS', 'Location changed to ' + restaurantObj.name);
+    // }
+    //
+    // // if (basketObj?.basket?.id && restaurantObj) {
+    // //   dispatch(basketTransferRequest(basketObj?.basket?.id, restaurantObj.id));
+    // //   setNewRestaurant(restaurantObj);
+    // //   return;
+    // // }
+    //
+    // if (selectedRestaurant && !basketObj?.basket) {
+    //   dispatch(setResturantInfoRequest(restaurantObj, orderType || ''));
+    //   if (orderType === 'dispatch' && restaurantObj) {
+    //     dispatch(setDeliveryAddress(deliveryAddressString));
+    //   }
+    //   // displayToast('SUCCESS', 'Location changed to ' + restaurantObj.name);
+    // }
+    //
+    // if (!selectedRestaurant) {
+    //   dispatch(setResturantInfoRequest(restaurantObj, orderType || ''));
+    //   if (orderType === 'dispatch' && restaurantObj) {
+    //     dispatch(setDeliveryAddress(deliveryAddressString));
+    //   }
+    //   displayToast('SUCCESS', 'Location changed to ' + restaurantObj.name);
+    // }
+    //
+    //
+    //
+    //
+    // // if()
+    //
+    // if (orderType === 'dispatch' && restaurantObj) {
+    //   dispatch(setDeliveryAddress(deliveryAddressString));
+    // }
+    // if (restaurantObj) {
+    //   if (
+    //     !selectedRestaurant ||
+    //     (selectedRestaurant && selectedRestaurant.id !== storeID) ||
+    //     orderType !== selectedOrderType
+    //   ) {
+    //     dispatch(setResturantInfoRequest(restaurantObj, orderType || ''));
+    //     if (basketObj && basketObj.basket) {
+    //       displayToast(
+    //         'SUCCESS',
+    //         'Location changed to ' +
+    //           restaurantObj.name +
+    //           ' and basket is empty',
+    //       );
+    //     } else {
+    //       displayToast('SUCCESS', 'Location changed to ' + restaurantObj.name);
+    //     }
+    //     triggerFacebookEventOnLocationChange();
+    //   }
+    //   navigate('/menu/' + restaurantObj.slug);
+    // }
   };
 
   const triggerFacebookEventOnLocationChange = () => {
@@ -251,6 +395,14 @@ const LocationCard = (props: any) => {
 
   return (
     <Grid container className="list-wrapper">
+      <LocationChangeModal
+        showLocationChangeModal={showLocationChangeModal}
+        setShowLocationChangeModal={setShowLocationChangeModal}
+        itemsNotAvailable={newBasket?.itemsnottransferred || []}
+        restaurant={newRestaurant}
+        handleChangeLocation={handleChangeLocation}
+        handleCancelChangeLocation={handleCancelChangeLocation}
+      />
       <Grid
         item
         xs={12}
