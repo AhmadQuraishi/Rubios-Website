@@ -79,9 +79,16 @@ export const LocationChangeModal = ({
 
           <Grid sx={{ alignSelf: 'center' }}>
             <Button
-              aria-label="KEEP ORIGINAL LOCATION"
-              title="KEEP ORIGINAL LOCATION"
-              name="keep original location"
+              aria-label={`${
+                itemsNotAvailable?.length > 0
+                  ? 'KEEP ORIGINAL LOCATION'
+                  : 'CANCEL LOCATION CHANGE'
+              }`}
+              title={`${
+                itemsNotAvailable?.length > 0
+                  ? 'KEEP ORIGINAL LOCATION'
+                  : 'CANCEL LOCATION CHANGE'
+              }`}
               onClick={handleCancelChangeLocation}
               sx={{
                 boxShadow: '0px 3px 3px 2px rgba(0, 0, 0, 0.2) !important',
@@ -92,12 +99,24 @@ export const LocationChangeModal = ({
                 height: '70px',
               }}
             >
-              KEEP ORGINAL LOCATION
+              {`${
+                itemsNotAvailable?.length > 0
+                  ? 'KEEP ORIGINAL LOCATION'
+                  : 'CANCEL LOCATION CHANGE'
+              }`}
             </Button>
             <Button
-              aria-label="CHANGE LOCATION"
+              aria-label={`${
+                itemsNotAvailable?.length > 0
+                  ? 'CHANGE LOCATION'
+                  : 'CONFIRM'
+              }`}
               variant="contained"
-              title="CHANGE LOCATION"
+              title={`${
+                itemsNotAvailable?.length > 0
+                  ? 'CHANGE LOCATION'
+                  : 'CONFIRM'
+              }`}
               onClick={handleChangeLocation}
               sx={{
                 letterSpacing: '0.2em !important',
@@ -106,7 +125,11 @@ export const LocationChangeModal = ({
                 height: '70px',
               }}
             >
-              CHANGE LOCATION
+              {`${
+                itemsNotAvailable?.length > 0
+                  ? 'CHANGE LOCATION'
+                  : 'CONFIRM'
+              }`}
             </Button>
           </Grid>
         </Grid>
