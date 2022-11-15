@@ -33,7 +33,10 @@ import { setResturantInfoRequest } from '../../redux/actions/restaurant';
 import { facebookSendEvent } from '../../redux/actions/facebook-conversion';
 import { facebookConversionTypes } from '../../redux/types/facebook-conversion';
 import { getOrderTypeRestaurants } from '../../helpers/location';
-import { basketTransferRequest } from '../../redux/actions/basket/transfer';
+import {
+  basketTransferRequest,
+  basketTransferReset,
+} from '../../redux/actions/basket/transfer';
 import { setBasketDeliveryAddress } from '../../redux/actions/basket/checkout';
 import { getBasketRequestSuccess } from '../../redux/actions/basket';
 // import { toast } from 'react-toastify';
@@ -77,6 +80,10 @@ const LocationCard = (props: any) => {
   const [updatebasket, setUpdatebasket] = useState(false);
   const [alignment, setAlignment] = React.useState('web');
 
+  useEffect(() => {
+    dispatch(basketTransferReset());
+  }, []);
+
   const onServiceSelect = (
     event: React.MouseEvent<HTMLElement>,
     newAlignment: string,
@@ -94,7 +101,7 @@ const LocationCard = (props: any) => {
       setSearchText('');
       changeOrderType(orderT);
       if (orderT === 'dispatch') {
-        setShowAllRestaurants(false)
+        setShowAllRestaurants(false);
       }
     }
   };
@@ -420,14 +427,17 @@ const LocationCard = (props: any) => {
 
   return (
     <Grid container className="list-wrapper">
-      <LocationChangeModal
-        showLocationChangeModal={showLocationChangeModal}
-        setShowLocationChangeModal={setShowLocationChangeModal}
-        itemsNotAvailable={newBasket?.itemsnottransferred || []}
-        restaurant={newRestaurant}
-        handleChangeLocation={handleChangeLocation}
-        handleCancelChangeLocation={handleCancelChangeLocation}
-      />
+      {newBasket?.basket && (
+        <LocationChangeModal
+          showLocationChangeModal={showLocationChangeModal}
+          setShowLocationChangeModal={setShowLocationChangeModal}
+          itemsNotAvailable={newBasket?.itemsnottransferred || []}
+          restaurant={newRestaurant}
+          handleChangeLocation={handleChangeLocation}
+          handleCancelChangeLocation={handleCancelChangeLocation}
+        />
+      )}
+
       <Grid
         item
         xs={12}
