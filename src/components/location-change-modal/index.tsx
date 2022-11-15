@@ -40,6 +40,7 @@ export const LocationChangeModal = ({
       <Dialog
         fullScreen={fullScreen}
         classes={{ paper: classes.paper }}
+        onClose={handleClose}
         PaperProps={{
           sx: {
             marginTop: { xs: '130px', sm: '0%', lg: '0%', md: '0%' },
@@ -89,7 +90,10 @@ export const LocationChangeModal = ({
                   ? 'KEEP ORIGINAL LOCATION'
                   : 'CANCEL LOCATION CHANGE'
               }`}
-              onClick={handleCancelChangeLocation}
+              onClick={() => {
+                handleClose();
+                handleCancelChangeLocation();
+              }}
               sx={{
                 boxShadow: '0px 3px 3px 2px rgba(0, 0, 0, 0.2) !important',
                 color: '#0075BF',
@@ -107,17 +111,16 @@ export const LocationChangeModal = ({
             </Button>
             <Button
               aria-label={`${
-                itemsNotAvailable?.length > 0
-                  ? 'CHANGE LOCATION'
-                  : 'CONFIRM'
+                itemsNotAvailable?.length > 0 ? 'CHANGE LOCATION' : 'CONFIRM'
               }`}
               variant="contained"
               title={`${
-                itemsNotAvailable?.length > 0
-                  ? 'CHANGE LOCATION'
-                  : 'CONFIRM'
+                itemsNotAvailable?.length > 0 ? 'CHANGE LOCATION' : 'CONFIRM'
               }`}
-              onClick={handleChangeLocation}
+              onClick={() => {
+                handleClose();
+                handleChangeLocation();
+              }}
               sx={{
                 letterSpacing: '0.2em !important',
                 width: '100%',
@@ -126,9 +129,7 @@ export const LocationChangeModal = ({
               }}
             >
               {`${
-                itemsNotAvailable?.length > 0
-                  ? 'CHANGE LOCATION'
-                  : 'CONFIRM'
+                itemsNotAvailable?.length > 0 ? 'CHANGE LOCATION' : 'CONFIRM'
               }`}
             </Button>
           </Grid>

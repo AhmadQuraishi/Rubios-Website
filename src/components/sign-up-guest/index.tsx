@@ -31,9 +31,9 @@ const SignUpGuest = ({ guestSignupCheckout, signupFormRef }: any) => {
   return (
     <>
       <Grid container>
-        <Grid item xs={0} sm={0} md={3} lg={3} />
+        <Grid item xs={0} sm={0} md={3} lg={2} />
 
-        <Grid item style={{ paddingBottom: 30 }} xs={12} sm={12} md={6} lg={6}>
+        <Grid item style={{ paddingBottom: 30 }} xs={12} sm={12} md={6} lg={8}>
           <Typography
             fontWeight={500}
             title="ORDER DETAILS"
@@ -57,7 +57,7 @@ const SignUpGuest = ({ guestSignupCheckout, signupFormRef }: any) => {
                 sm: 'center',
                 xs: 'left',
               },
-              marginBottom: '5px'
+              marginTop: "10px",marginBottom: '5px'
             }}
             variant="h6"
           >
@@ -104,7 +104,7 @@ const SignUpGuest = ({ guestSignupCheckout, signupFormRef }: any) => {
                     xs={12}
                     sm={8}
                     md={8}
-                    lg={8}
+                    lg={7}
                     sx={{ margin: 'auto' }}
                   >
                     <TextField
@@ -188,7 +188,7 @@ const SignUpGuest = ({ guestSignupCheckout, signupFormRef }: any) => {
                         checked={values.termsAndConditions}
                         id="termsAndConditions"
                         onChange={handleChange('termsAndConditions')}
-                        sx={{ padding: '0px !important', float: 'left' }}
+                        sx={{ padding: '0px !important', float: 'left', marginRight: "5px"}}
                         name="termsAndConditions"
                         inputProps={{
                           'aria-labelledby': 'chkTermandCondition',
@@ -196,7 +196,8 @@ const SignUpGuest = ({ guestSignupCheckout, signupFormRef }: any) => {
                       />{' '}
                       <Typography
                         variant="body2"
-                        sx={{ width: '100%', paddingTop: '3px' }}
+                        sx={{ width: '100%', paddingTop: '4px',fontSize: '11px !important',
+                        fontFamily: 'Poppins-Regular', }}
                       >
                         I accept the{' '}
                         <Link
@@ -236,8 +237,11 @@ const SignUpGuest = ({ guestSignupCheckout, signupFormRef }: any) => {
                         sx={{
                           width: {lg:'130%',xs:"100%",md:"130%",sm: "130%"},
                           paddingTop: '3px !important',
-                          display: 'flex',
+                          display: 'inline-block',
                           alignItems: 'center',
+                          fontSize: '11px !important',
+                          fontFamily: 'Poppins-Regular',
+                          marginTop: '8px',
                         }}
                       >
                         <Checkbox
@@ -245,11 +249,11 @@ const SignUpGuest = ({ guestSignupCheckout, signupFormRef }: any) => {
                           onChange={handleChange('emailNotification')}
                           id="emailNotification"
                           name="emailNotification"
-                          sx={{ padding: '0px !important', float: 'left' }}
+                          sx={{ marginTop: '-3px',padding: '0px 5px 0px 0px !important', float: 'left'}}
                           inputProps={{
                             'aria-labelledby': 'emailNotification',
                           }}
-                        />{' '}
+                        />{'  '}
                         Send me email with special Offers and Updates.
                       </Typography>
                     </Grid>

@@ -29,3 +29,9 @@ export function basketTransferFailure(error: any) {
     error: error,
   };
 }
+
+export function basketTransferReset() {
+  return {
+    type: basketActionsTypes.BASKET_TRANSFER_RESET,
+  };
+}
