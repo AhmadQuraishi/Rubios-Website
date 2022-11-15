@@ -38,7 +38,7 @@ export const ItemsNotAvailableComponent = ({ items }: any) => {
               fontFamily: 'Poppins-Regular, sans-serif !important',
             }}
           >
-            If you switch locations, the following $
+            If you switch locations, the following{' '}
             {items.length > 1 ? 'items' : 'item'} will be removed.
           </Typography>
           <br />
