@@ -293,6 +293,7 @@ export function getBillingSchemesStats(billingSchemes: any) {
     giftCard: 0,
     selectedCreditCard: 0,
     selectedGiftCard: 0,
+    savedCards: 0,
   };
 
   billingSchemes.forEach((account: any) => {
@@ -313,6 +314,10 @@ export function getBillingSchemesStats(billingSchemes: any) {
         account.billingmethod === 'storedvalue' && account.selected
           ? billingSchemeStats.selectedGiftCard + 1
           : billingSchemeStats.selectedGiftCard,
+      savedCards:
+        account.billingmethod === 'creditcard' && account.savedCard
+          ? billingSchemeStats.savedCards + 1
+          : billingSchemeStats.savedCards,
     };
   });
 
