@@ -81,7 +81,7 @@ const Checkout = () => {
   const { authToken } = useSelector((state: any) => state.authReducer);
   const { providerToken } = useSelector((state: any) => state.providerReducer);
   const { guestUser } = useSelector((state: any) => state.guestReducer);
-  const { rewards: qualifyingRewards, loading: loadingRewards } = useSelector(
+  const { rewards: qualifyingRewards, loading: loading } = useSelector(
     (state: any) => state.getRewardForCheckoutReducer,
   );
   const { data: rewardsRedemptionsData, loading: loadingRedemptions } =
@@ -274,36 +274,42 @@ const Checkout = () => {
         basketObj.payment.allowedCards.data.billingschemes.findIndex(
           (schemes: any) => schemes.type === 'giftcard',
         );
-      let billingArray = [];
+      let billingArray: any = [];
       if (creditCardIndex !== -1 && userBillingAccounts) {
         if (
           userBillingAccounts.billingaccounts &&
           userBillingAccounts.billingaccounts.length
         ) {
-          const defaultCardIndex =
-            userBillingAccounts.billingaccounts.findIndex(
-              (card: any) => card.isdefault,
-            );
-          if (defaultCardIndex !== -1) {
-            const defaultCard =
-              userBillingAccounts.billingaccounts[defaultCardIndex];
+          // const defaultCardIndex =
+          //   userBillingAccounts.billingaccounts.findIndex(
+          //     (card: any) => card.isdefault,
+          //   );
+          // if (defaultCardIndex !== -1) {
+          //   const defaultCard =
+          //     userBillingAccounts.billingaccounts[defaultCardIndex];
 
-            let cardObj: any = {
-              localId: getUniqueId(),
-              selected: true,
-              billingmethod: 'creditcard',
-              amount: 0,
-              tipportion: 0.0,
-              cardtype: defaultCard.cardtype,
-              cardlastfour: defaultCard.cardsuffix,
-              billingaccountid: defaultCard.accountidstring,
-              billingschemeid:
-                basketObj.payment.allowedCards.data.billingschemes[
-                  creditCardIndex
-                ].id,
-            };
-            billingArray.push(cardObj);
-          }
+          userBillingAccounts.billingaccounts.forEach((card: any) => {
+            if (card?.accounttype === 'creditcard') {
+              let cardObj: any = {
+                localId: getUniqueId(),
+                selected: card.isdefault,
+                savedCard: true,
+                billingmethod: 'creditcard',
+                amount: 0,
+                tipportion: 0.0,
+                cardtype: card.cardtype,
+                cardlastfour: card.cardsuffix,
+                billingaccountid: card.accountidstring,
+                billingschemeid:
+                  basketObj.payment.allowedCards.data.billingschemes[
+                    creditCardIndex
+                  ].id,
+              };
+              billingArray.push(cardObj);
+            }
+          });
+
+          // }
         }
       }
       if (giftCardIndex !== -1) {
@@ -401,11 +407,12 @@ const Checkout = () => {
   const createDefaultGiftCards = (defaultGiftCards: any) => {
     let array = [];
     for (let i = 0; i < defaultGiftCards.length; i++) {
-      if (i === 4) {
-        break;
-      }
+      // if (i === 4) {
+      //   break;
+      // }
       let gitfCardObj: any = {
         localId: getUniqueId(),
+        savedCard: true,
         selected: true,
         billingmethod: 'storedvalue',
         amount: 0,
@@ -929,8 +936,9 @@ const Checkout = () => {
       </Typography>
       <StoreInfoBar />
       <Box
-        className={`checkout-wrapper ${buttonDisabled || basketObj?.orderSubmit ? 'disable-pointer' : ''
-          }`}
+        className={`checkout-wrapper ${
+          buttonDisabled || basketObj?.orderSubmit ? 'disable-pointer' : ''
+        }`}
       >
         <Grid container>
           <Grid item xs={12} sm={12} md={12} lg={12}>
@@ -948,8 +956,8 @@ const Checkout = () => {
                   >
                     <Grid container>
                       {basket &&
-                        (basket.deliverymode === '' ||
-                          basket.deliverymode === DeliveryModeEnum.pickup) ? (
+                      (basket.deliverymode === '' ||
+                        basket.deliverymode === DeliveryModeEnum.pickup) ? (
                         <>
                           <Grid item xs={12}>
                             <Typography
@@ -1038,10 +1046,10 @@ const Checkout = () => {
                         </>
                       ) : null}
                       {basket &&
-                        (basket.deliverymode === '' ||
-                          basket.deliverymode === DeliveryModeEnum.pickup ||
-                          basket.deliverymode === DeliveryModeEnum.curbside ||
-                          basket.deliverymode === DeliveryModeEnum.dinein) ? (
+                      (basket.deliverymode === '' ||
+                        basket.deliverymode === DeliveryModeEnum.pickup ||
+                        basket.deliverymode === DeliveryModeEnum.curbside ||
+                        basket.deliverymode === DeliveryModeEnum.dinein) ? (
                         <PickupForm
                           setShowSignUpGuest={setShowSignUpGuest}
                           showSignUpGuest={!showSignUpGuest}
@@ -1051,7 +1059,7 @@ const Checkout = () => {
                         />
                       ) : null}
                       {basket &&
-                        basket.deliverymode === DeliveryModeEnum.dispatch ? (
+                      basket.deliverymode === DeliveryModeEnum.dispatch ? (
                         <DeliveryForm
                           basket={basket}
                           // defaultAddress={defaultDeliveryAddress}
@@ -1060,14 +1068,16 @@ const Checkout = () => {
                       ) : null}
                     </Grid>
                   </Grid>
-                  <Grid sx={{
-                    display: {
-                      xs: 'none',
-                      sm: 'block',
-                      md: 'block',
-                      lg: 'block',
-                    }
-                  }}>
+                  <Grid
+                    sx={{
+                      display: {
+                        xs: 'none',
+                        sm: 'block',
+                        md: 'block',
+                        lg: 'block',
+                      },
+                    }}
+                  >
                     <OrderTime
                       orderType={(basket && basket.deliverymode) || ''}
                     />
@@ -1088,29 +1098,29 @@ const Checkout = () => {
                   />
                 </>
               )}
-              <Grid sx={{
-                display: {
-                  xs: 'block',
-                  sm: 'none',
-                  md: 'none',
-                  lg: 'none',
-                }
-              }}>
+              <Grid
+                sx={{
+                  display: {
+                    xs: 'block',
+                    sm: 'none',
+                    md: 'none',
+                    lg: 'none',
+                  },
+                }}
+              >
                 <Divider />
                 <br />
                 <br />
                 <br />
-                <OrderTime
-                  orderType={(basket && basket.deliverymode) || ''}
-                />
+                <OrderTime orderType={(basket && basket.deliverymode) || ''} />
               </Grid>
-              
+              {console.log(rewards, "rewards")}
+              {console.log(null,)}
               {providerToken &&
                 authToken &&
                 authToken.authtoken &&
                 authToken.authtoken !== '' &&
                 providerToken.first_name &&
-                !(!loadingRewards && rewards.length > 0) &&
                 rewards &&
                 (
                   <>
@@ -1139,7 +1149,6 @@ const Checkout = () => {
               />
               <br />
               <br />
-              <br />
               <Divider />
               <br />
               <br />
@@ -1162,6 +1171,11 @@ const Checkout = () => {
                 ccsfObj={ccsfObj}
                 basketAccessToken={basketAccessToken}
               />
+
+              <Divider />
+              <br />
+              <br />
+              <br />
 
               {/*second section ends here*/}
               <Grid container className="add-order">

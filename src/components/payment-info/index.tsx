@@ -63,7 +63,11 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
   const [basket, setBasket] = React.useState<ResponseBasket>();
   const [allowedCards, setAllowedCards] = React.useState<any>();
+  const [displaySavedCards, setDisplaySavedCards] =
+    React.useState<boolean>(false);
   const basketObj = useSelector((state: any) => state.basketReducer);
+  const { authToken } = useSelector((state: any) => state.authReducer);
+  const { providerToken } = useSelector((state: any) => state.providerReducer);
 
   React.useEffect(() => {
     setBillingSchemes(basketObj.payment.billingSchemes);
@@ -241,7 +245,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
     const billingSchemeStats = getBillingSchemesStats(billingSchemes);
     return (
       basket &&
-      billingSchemeStats.creditCard < 1 &&
+      billingSchemeStats.selectedCreditCard === 0 &&
       allowedCards &&
       allowedCards.length &&
       allowedCards.filter((element: any) => {
@@ -305,9 +309,46 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
         <Grid container spacing={2} className="payment-form">
           <SplitPayment
             setHideShow={(value: boolean) => HandleEditCreditCard(value)}
+            displaySavedCards={displaySavedCards}
           />
           <Grid container>
             <Grid item xs={12} sm={12} md={12} lg={12} className="add-gift">
+              {!displaySavedCards &&
+                basket &&
+                providerToken &&
+                authToken?.authtoken !== '' &&
+                billingSchemes &&
+                billingSchemes.length > 0 &&
+                billingSchemes.filter(
+                  (account: any) => account.savedCard && !account.selected,
+                ).length > 0 &&
+                allowedCards &&
+                allowedCards.length &&
+                allowedCards.filter((element: any) => {
+                  return element.type === 'creditcard';
+                }).length > 0 && (
+                  <Grid container spacing={2}>
+                    <Grid
+                      item
+                      padding={0}
+                      textAlign={'center'}
+                      xs={12}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                    >
+                      <Button
+                        className={'add-credit-card-button'}
+                        title="Change Payment Method"
+                        aria-label="Change Payment Method"
+                        onClick={() => setDisplaySavedCards(true)}
+                        id={'add-credit-card'}
+                      >
+                        Change Payment Method
+                      </Button>
+                    </Grid>
+                  </Grid>
+                )}
               {displayAddCreditCard() && (
                 <Button
                   className={'add-credit-card-button'}
@@ -395,7 +436,14 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                               />
                             </div>
                           </Grid>
-                          <Grid   textAlign={'left'} item xs={12} sm={6} md={6} lg={6}>
+                          <Grid
+                            textAlign={'left'}
+                            item
+                            xs={12}
+                            sm={6}
+                            md={6}
+                            lg={6}
+                          >
                             {/*<div className="card-fields" data-olo-pay-card-cvc />*/}
                             <label
                               className="add-credit-card-label"
@@ -448,7 +496,14 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                               id="card-expiry"
                             />
                           </Grid>
-                          <Grid textAlign={'left'} item xs={12} sm={6} md={6} lg={6}>
+                          <Grid
+                            textAlign={'left'}
+                            item
+                            xs={12}
+                            sm={6}
+                            md={6}
+                            lg={6}
+                          >
                             <label
                               className="add-credit-card-label"
                               htmlFor="card-zipcode"

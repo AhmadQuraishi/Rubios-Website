@@ -39,7 +39,8 @@ export const ItemsNotAvailableComponent = ({ items }: any) => {
               fontFamily: 'Poppins-Regular, sans-serif !important',
             }}
           >
-            If you switch locations, the following items will be removed.
+            If you switch locations, the following{' '}
+            {items.length > 1 ? 'items' : 'item'} will be removed.
           </Typography>
           <br />
           {items?.map((productName: string, index: number) => {
