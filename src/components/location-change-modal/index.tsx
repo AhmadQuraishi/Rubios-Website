@@ -42,7 +42,7 @@ export const LocationChangeModal = ({
         classes={{ paper: classes.paper }}
         PaperProps={{
           sx: {
-            marginTop: { xs: '130px', sm: '0%', lg: '0%', md: '0%' },
+            marginTop: { xs: '70px !important', sm: '0%', lg: '0%', md: '0%' },
           },
         }}
         TransitionProps={{
@@ -55,7 +55,7 @@ export const LocationChangeModal = ({
         aria-describedby="modal-location-change"
       >
         {' '}
-        <IconButton sx={{ marginLeft: 'auto' }} onClick={() => handleClose()}>
+        <IconButton sx={{ marginLeft: 'auto', marginRight: "10px", marginTop: "5px" }} onClick={() => handleClose()}>
           <CloseIcon />
         </IconButton>
         <Grid

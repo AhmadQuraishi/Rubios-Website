@@ -81,7 +81,7 @@ const Checkout = () => {
   const { authToken } = useSelector((state: any) => state.authReducer);
   const { providerToken } = useSelector((state: any) => state.providerReducer);
   const { guestUser } = useSelector((state: any) => state.guestReducer);
-  const { rewards: qualifyingRewards, loading: loading } = useSelector(
+  const { rewards: qualifyingRewards, loading: loadingRewards } = useSelector(
     (state: any) => state.getRewardForCheckoutReducer,
   );
   const { data: rewardsRedemptionsData, loading: loadingRedemptions } =
@@ -1104,13 +1104,13 @@ const Checkout = () => {
                   orderType={(basket && basket.deliverymode) || ''}
                 />
               </Grid>
-              {console.log(rewards, "rewards")}
-              {console.log(null,)}
+              
               {providerToken &&
                 authToken &&
                 authToken.authtoken &&
                 authToken.authtoken !== '' &&
                 providerToken.first_name &&
+                !(!loadingRewards && rewards.length > 0) &&
                 rewards &&
                 (
                   <>
