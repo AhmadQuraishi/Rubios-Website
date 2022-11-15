@@ -1,5 +1,9 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { GoogleMap, Marker, useLoadScript } from '@react-google-maps/api';
+import {
+  // GoogleMap,
+  Marker,
+  // useLoadScript
+} from '@react-google-maps/api';
 import LocationCard from '../../components/location';
 import { useDispatch, useSelector } from 'react-redux';
 import { ResponseRestaurant } from '../../types/olo-api';
@@ -28,7 +32,8 @@ import { getOrderTypeRestaurants } from '../../helpers/location';
 import { getGeocode, getLatLng } from 'use-places-autocomplete';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-// import { staticMapUrl } from 'static-google-map';
+import { staticMapUrl } from 'static-google-map';
+import GoogleMapComponent from '../../components/location/google-map';
 
 const useStyles = makeStyles((theme: Theme) => ({
   dummyBg: {
@@ -65,15 +70,6 @@ const Location = () => {
   const mapRef = useRef();
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [libraries] = useState<any>(['places']);
-  useLoadScript({
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY?.toString() || '',
-    libraries,
-  });
-
-  const loadMap = useCallback((map: any) => {
-    mapRef.current = map;
-  }, []);
 
   const [mapCenter, setMapCenter] = useState<any>();
   const [zoom, setZoom] = useState<number>(7);
@@ -86,6 +82,17 @@ const Location = () => {
   const [deliveryAddressString, setDeliveryAddressString] = useState<any>();
   const [restaurantNotFound, setRestaurantNotFound] = useState(false);
   const [hideCurrentLocation, setHideCurrentLocation] = useState(false);
+  const [staticMapImageUrl, setStaticMapImageUrl] = useState('');
+
+  // const [libraries] = useState<any>(['places']);
+  // useLoadScript({
+  //   googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY?.toString() || '',
+  //   libraries,
+  // });
+  //
+  // const loadMap = useCallback((map: any) => {
+  //   mapRef.current = map;
+  // }, []);
 
   const {
     restaurants,
@@ -107,7 +114,6 @@ const Location = () => {
       dispatch(getResturantListRequest());
     }
   }, []);
-
 
   const changeOrderType = (orderType: string) => {
     setOrderType(orderType);
@@ -136,7 +142,22 @@ const Location = () => {
 
   const populateMarkersOnMap = (restaurants: any) => {
     setMarkers([]);
+    // {
+    //   color: 'red',
+    //     markers: [
+    //   {location: { lat: '28.3125', lng: '-97.6257' }},
+    // ]
+    // }
+    let markersStatic: any = [];
     restaurants.forEach((item: ResponseRestaurant, index: number) => {
+      // console.log('item name', item.name);
+      if (item.id !== 64081) {
+        markersStatic.push({
+          color: 'red',
+          markers: [{ location: { lat: item.latitude, lng: item.longitude } }],
+        });
+      }
+
       if (mapCenter === undefined) {
         setMapCenter({
           lat: item.latitude,
@@ -152,6 +173,19 @@ const Location = () => {
         <Marker key={Math.random() + index} position={latLong} />,
       ]);
     });
+    // console.log('markersStatic', markersStatic);
+    const url = staticMapUrl({
+      key: process.env.REACT_APP_GOOGLE_API_KEY?.toString(),
+      scale: 2,
+      center: '34.5072833,-117.3999287',
+      size: '640x640',
+      format: 'png',
+      maptype: 'roadmap',
+      zoom: 6,
+      markerGroups: markersStatic,
+    });
+    setStaticMapImageUrl(url);
+    // console.log(url);
   };
 
   const setMayLocation = () => {
@@ -316,7 +350,7 @@ const Location = () => {
         setActionPerform(false);
         setRestaurantNotFound(false);
 
-        if(action === actionTypes.CURRENT_LOCATION){
+        if (action === actionTypes.CURRENT_LOCATION) {
           setHideCurrentLocation(true);
         }
       }
@@ -389,6 +423,10 @@ const Location = () => {
         getNearByRestaurants(LatLng.lat, LatLng.lng);
       });
   };
+
+  useEffect(() => {
+    console.log('orderType', orderType);
+  }, [orderType]);
 
   return (
     <Page title={'Location'} className="">
@@ -569,57 +607,87 @@ const Location = () => {
       </Dialog>
       <div style={{ minHeight: '300px', position: 'relative' }}>
         {(restaurantLoading ||
-          window.google === undefined ||
+          // window.google === undefined ||
+          (orderType && window.google === undefined) ||
           actionPerform) && (
           <div className={classes.dummyBg}>
             <LoadingBar />
           </div>
         )}
-        {window.google && (
-          <div role="region" aria-label="map">
-            <GoogleMap
-              mapContainerStyle={mapContainerStyle}
+        <div
+          style={{
+            backgroundImage: `url(${staticMapImageUrl})`,
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'right',
+            height: '100%',
+            width: 'auto',
+            backgroundColor: '#8ab4f8',
+          }}
+          role="region"
+          aria-label="map"
+        >
+          {/*<img*/}
+          {/*  src={staticMapImageUrl}*/}
+          {/*  style={{*/}
+          {/*    height: '100%',*/}
+          {/*    width: 'auto',*/}
+          {/*    position: 'absolute',*/}
+          {/*    left: '50%',*/}
+          {/*    transform: 'translate(-50%, 0)',*/}
+          {/*  }}*/}
+          {/*/>*/}
+          {orderType && (
+            <GoogleMapComponent
               zoom={zoom}
-              center={mapCenter}
-              options={{
-                streetViewControl: false,
-                mapTypeControl: false,
-                fullscreenControl: false,
-              }}
-              onLoad={loadMap}
-            >
-              {markers}
-              <div
-                onClick={() => {
-                  setMayLocation();
-                }}
-                className="location-icon-panel"
-              >
-                <span className="icon"></span>
-              </div>
-              <LocationCard
-                actionTypes={actionTypes}
-                setAction={setAction}
-                orderType={orderType}
-                changeOrderType={changeOrderType}
-                setLatLng={setLatLng}
-                setActionPerform={setActionPerform}
-                deliveryAddressString={deliveryAddressString}
-                setDeliveryAddressString={setDeliveryAddressString}
-                allRestaurants={restaurants?.restaurants || []}
-                setFilteredRestaurants={setFilteredRestaurants}
-                filteredRestaurants={filteredRestaurants}
-                loading={restaurantLoading}
-                addCustomAddressCheck={addCustomAddressCheck}
-                currentLocation={currentLocation}
-                setRestaurantNotFound={setRestaurantNotFound}
-                restaurantNotFound={restaurantNotFound}
-                hideCurrentLocation={hideCurrentLocation}
-                getNearByRestaurants={getNearByRestaurants}
-              />
-            </GoogleMap>
-          </div>
-        )}
+              mapCenter={mapCenter}
+              markers={markers}
+              actionTypes={actionTypes}
+              setAction={setAction}
+              orderType={orderType}
+              changeOrderType={changeOrderType}
+              setLatLng={setLatLng}
+              setActionPerform={setActionPerform}
+              deliveryAddressString={deliveryAddressString}
+              setDeliveryAddressString={setDeliveryAddressString}
+              allRestaurants={restaurants?.restaurants || []}
+              setFilteredRestaurants={setFilteredRestaurants}
+              filteredRestaurants={filteredRestaurants}
+              loading={restaurantLoading}
+              addCustomAddressCheck={addCustomAddressCheck}
+              currentLocation={currentLocation}
+              setRestaurantNotFound={setRestaurantNotFound}
+              restaurantNotFound={restaurantNotFound}
+              hideCurrentLocation={hideCurrentLocation}
+              getNearByRestaurants={getNearByRestaurants}
+            />
+          )}
+
+          {/*<div></div>*/}
+
+          {!orderType && (
+            <LocationCard
+              actionTypes={actionTypes}
+              setAction={setAction}
+              orderType={orderType}
+              changeOrderType={changeOrderType}
+              setLatLng={setLatLng}
+              setActionPerform={setActionPerform}
+              deliveryAddressString={deliveryAddressString}
+              setDeliveryAddressString={setDeliveryAddressString}
+              allRestaurants={restaurants?.restaurants || []}
+              setFilteredRestaurants={setFilteredRestaurants}
+              filteredRestaurants={filteredRestaurants}
+              loading={restaurantLoading}
+              addCustomAddressCheck={addCustomAddressCheck}
+              currentLocation={currentLocation}
+              setRestaurantNotFound={setRestaurantNotFound}
+              restaurantNotFound={restaurantNotFound}
+              hideCurrentLocation={hideCurrentLocation}
+              getNearByRestaurants={getNearByRestaurants}
+            />
+          )}
+        </div>
+        {/*)}*/}
       </div>
     </Page>
   );

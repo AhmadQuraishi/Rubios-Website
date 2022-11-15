@@ -315,13 +315,13 @@ const PickupForm = ({ basket, pickupFormRef, orderType, setShowSignUpGuest,showS
                         title="Don't have an account?"
                         sx={{ width: '100%', padding: "0pxx !important" }}
                       >
-                        Don't have an account?
+                        Don't have an account? {" "}
                         <Link
                           underline="hover"
-                          sx={{ color: '#1a86ff', cursor: 'pointer' }}
+                          sx={{ color: '#1a86ff', cursor: 'pointer', textDecoration:"underline" }}
                           onClick={() => setShowSignUpGuest(true)}
                         >
-                          Sign up?
+                          Sign Up?
                         </Link>
                       </Typography>
                     </Grid>
