@@ -24,7 +24,6 @@ import {
 } from '../../redux/actions/basket/checkout';
 import { displayToast } from '../../helpers/toast';
 import {
-
   formatCustomFields,
   // formatDeliveryAddress,
   generateSubmitBasketPayload,
@@ -932,7 +931,6 @@ const Checkout = () => {
       console.log('birthdaysschgtvdy',signUpObj.birthday);
     }
     console.log('signUpObj', signUpObj);
-    console.log('bithDay', birthDay);
 
     dispatch(userRegister(signUpObj, 'REGISTER_CHECKOUT', basket?.id));
   };
@@ -1069,6 +1067,8 @@ const Checkout = () => {
                         basket.deliverymode === DeliveryModeEnum.dispatch ? (
                         <DeliveryForm
                           basket={basket}
+                          setShowSignUpGuest={setShowSignUpGuest}
+                          showSignUpGuest={!showSignUpGuest}
                           // defaultAddress={defaultDeliveryAddress}
                           deliveryFormRef={deliveryFormRef}
                         />

@@ -18,10 +18,12 @@ import { useNavigate } from 'react-router-dom';
 import OrderListSkeletonUI from '../order-list-skeleton-ui';
 import { displayToast } from '../../helpers/toast';
 import { getUpsellsRequest } from '../../redux/actions/basket/upsell/Get';
+import { OrderTypeDialog } from '../order-type-dialog';
 
 const FavoriteOrders = () => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
+  const [openOrder, setOpenOrder] = useState(false);
   const [idtoDelete, setId] = useState(0);
   const [favOrders, setfavOrders] = React.useState([]);
 
@@ -72,7 +74,7 @@ const FavoriteOrders = () => {
   };
   useEffect(() => {
     if (createBasketObj && clickAction) {
-      if (createBasketObj.basket && clickAction) {
+      if (createBasketObj.basket) {
         dispatch(getResturantInfoRequest(createBasketObj.basket.vendorid));
         dispatch(
           getUpsellsRequest(
@@ -86,24 +88,33 @@ const FavoriteOrders = () => {
     }
   }, [createBasketObj]);
 
+  const navigateAfterSuccess = () => {
+    setOpenOrder(false);
+    setClickAction(false);
+    dispatch(
+      setResturantInfoRequest(
+        restaurant,
+        createBasketObj.basket.deliverymode || '',
+      ),
+    );
+    dispatch(getBasketRequest('', createBasketObj?.basket, 'Favourite'));
+    displayToast(
+      'SUCCESS',
+      'The items from your favorite order have been added to your cart.',
+    );
+    navigate('/checkout');
+  };
+
   useEffect(() => {
+    console.log('restaurant', restaurant)
+    console.log('clickAction', clickAction)
     if (restaurant && clickAction) {
-      setClickAction(false);
-      dispatch(
-        setResturantInfoRequest(
-          restaurant,
-          createBasketObj.basket.deliverymode || '',
-        ),
-      );
-      dispatch(getBasketRequest('', createBasketObj.basket, 'Favourite'));
-      displayToast(
-        'SUCCESS',
-        'The items from your favorite order have been added to your cart.',
-      );
-      navigate('/checkout');
-    }
-    if (error && error.message) {
-      setClickAction(false);
+      if (error && error.message) {
+        setClickAction(false);
+        return;
+      } else {
+        setOpenOrder(true);
+      }
     }
   }, [restaurant]);
   const addProductToBag = (faveid: any) => {
@@ -115,12 +126,12 @@ const FavoriteOrders = () => {
     dispatch(createBasketFromFavOrderRequest(requestBody));
   };
 
-  useEffect(() => {
-    console.log('favOrders', favOrders);
-  }, [favOrders]);
-
   return (
     <Fragment>
+      <OrderTypeDialog
+        openModal={openOrder}
+        setOpenModal={navigateAfterSuccess}
+      />
       {(loading || clickAction) && <OrderListSkeletonUI />}
       {!loading && !clickAction && favOrders && favOrders.length === 0 && (
         <Typography variant="h6" className="no-orders">
@@ -132,8 +143,18 @@ const FavoriteOrders = () => {
           {favOrders
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((forder: any, index: number) => (
-              <Grid item xs={12} md={4} key={index + forder.id} sx={{display: 'flex', alignItems: 'stretch'}}>
-                <Card elevation={0} className="card-panel"  sx={{width: "100%"}}>
+              <Grid
+                item
+                xs={12}
+                md={4}
+                key={index + forder.id}
+                sx={{ display: 'flex', alignItems: 'stretch' }}
+              >
+                <Card
+                  elevation={0}
+                  className="card-panel"
+                  sx={{ width: '100%' }}
+                >
                   <Grid container>
                     <Grid item xs={10}>
                       <Typography
@@ -173,7 +194,6 @@ const FavoriteOrders = () => {
                         padding: {
                           xs: '0px 10px 20px 0px',
                           sm: '0px 0px 20px 0px',
-  
                         },
                       }}
                       className="order-detail-panel"
