@@ -127,7 +127,7 @@ const Checkout = () => {
 
   useEffect(() => {
     if (singleLocation?.data?.length) {
-      setLocationId(singleLocation.data[0].location_id);
+      setLocationId(singleLocation?.data[0]?.location_id);
     }
   }, [singleLocation]);
 
@@ -705,7 +705,7 @@ const Checkout = () => {
           email: providerToken.email,
           first_name: providerToken?.first_name,
           last_name: providerToken?.last_name,
-          favourite_locations: locationId || '',
+          favourite_locations: providerToken?.favourite_locations,
           marketing_email_subscription: formDataValue.emailNotification,
           phone: formDataValue.phone,
         };
@@ -943,8 +943,7 @@ const Checkout = () => {
       phone: formDataValue?.phone?.replace(/\D/g, '') || '',
       password: formDataSignup?.password,
       password_confirmation: formDataSignup?.password_confirmation,
-      fav_location_id: '345077',
-      // fav_location_id: restaurant?.id.toString(),
+      fav_location_id: locationId || '345077',
       terms_and_conditions: formDataSignup?.termsAndConditions,
       marketing_email_subscription: formDataSignup?.emailNotification,
     };
