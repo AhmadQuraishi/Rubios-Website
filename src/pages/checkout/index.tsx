@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  Button,
-  Card,
-  Grid,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import { Box, Button, Card, Grid, Typography, useMediaQuery, useTheme, } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Divider from '@mui/material/Divider';
@@ -952,8 +944,11 @@ const Checkout = () => {
       terms_and_conditions: formDataSignup?.termsAndConditions,
       marketing_email_subscription: formDataSignup?.emailNotification,
     };
+    console.log('birthDay', birthDay);
     if (birthDay) {
-      signUpObj.birthday = moment(formDataSignup.birthDay).format('YYYY-MM-DD');
+      console.log('birthdayssss',birthDay);
+      signUpObj.birthday = moment(birthDay).format('YYYY-MM-DD');
+      console.log('birthdaysschgtvdy',signUpObj.birthday);
     }
     console.log('signUpObj', signUpObj);
 
@@ -967,9 +962,8 @@ const Checkout = () => {
       </Typography>
       <StoreInfoBar />
       <Box
-        className={`checkout-wrapper ${
-          buttonDisabled || basketObj?.orderSubmit ? 'disable-pointer' : ''
-        }`}
+        className={`checkout-wrapper ${buttonDisabled || basketObj?.orderSubmit ? 'disable-pointer' : ''
+          }`}
       >
         <Grid container>
           <Grid item xs={12} sm={12} md={12} lg={12}>
@@ -987,8 +981,8 @@ const Checkout = () => {
                   >
                     <Grid container>
                       {basket &&
-                      (basket.deliverymode === '' ||
-                        basket.deliverymode === DeliveryModeEnum.pickup) ? (
+                        (basket.deliverymode === '' ||
+                          basket.deliverymode === DeliveryModeEnum.pickup) ? (
                         <>
                           <Grid item xs={12}>
                             <Typography
@@ -1077,10 +1071,10 @@ const Checkout = () => {
                         </>
                       ) : null}
                       {basket &&
-                      (basket.deliverymode === '' ||
-                        basket.deliverymode === DeliveryModeEnum.pickup ||
-                        basket.deliverymode === DeliveryModeEnum.curbside ||
-                        basket.deliverymode === DeliveryModeEnum.dinein) ? (
+                        (basket.deliverymode === '' ||
+                          basket.deliverymode === DeliveryModeEnum.pickup ||
+                          basket.deliverymode === DeliveryModeEnum.curbside ||
+                          basket.deliverymode === DeliveryModeEnum.dinein) ? (
                         <PickupForm
                           setShowSignUpGuest={setShowSignUpGuest}
                           showSignUpGuest={!showSignUpGuest}
@@ -1090,7 +1084,7 @@ const Checkout = () => {
                         />
                       ) : null}
                       {basket &&
-                      basket.deliverymode === DeliveryModeEnum.dispatch ? (
+                        basket.deliverymode === DeliveryModeEnum.dispatch ? (
                         <DeliveryForm
                           basket={basket}
                           setShowSignUpGuest={setShowSignUpGuest}
@@ -1118,12 +1112,23 @@ const Checkout = () => {
                   <br />
                   <SignUpGuest
                     birthDay={birthDay}
-                    setBirthday={setBirthDay}
+                    setBirthDay={setBirthDay}
                     guestSignupCheckout={guestSignupCheckout}
                     signupFormRef={signupFormRef}
                   />
                 </>
               )}
+              <Grid sx={{
+                display: {
+                  xs: 'block',
+                  sm: 'none',
+                  md: 'none',
+                  lg: 'none',
+                }
+              }}>
+                <br />
+                <br />
+              </Grid>
               <Grid
                 sx={{
                   display: {
@@ -1163,8 +1168,6 @@ const Checkout = () => {
                 )}
 
               <br />
-              <br />
-              <br />
               <Divider />
               <br />
               <br />
@@ -1175,6 +1178,7 @@ const Checkout = () => {
                 loading={basketObj?.loading}
                 updateOrderDetailTipPercent={setTipPercentage}
               />
+              <br />
               <br />
               <br />
               <Divider />
