@@ -10,8 +10,16 @@ import { Button, Grid } from '@mui/material';
 import { ItemsNotAvailableComponent } from './items-not-available';
 import { ItemsAvailableComponent } from './items-available';
 const useStyles = makeStyles((theme: Theme) => ({
-  paper: { minWidth: '65%', minHeight: '550px', margin: 'auto !important' },
+  paper: { minWidth: '65%', minHeight: '550px', margin: 'auto !important',backgroundColor:
+  `${theme.palette.background.paper} !important`, },
+  root: {
+    '& .MuiBackdrop-root': {
+      backgroundColor:
+      `transparent !important`,
+    },
+  },
 }));
+
 export const LocationChangeModal = ({
   showLocationChangeModal,
   setShowLocationChangeModal,
@@ -39,11 +47,14 @@ export const LocationChangeModal = ({
     <Grid>
       <Dialog
         fullScreen={fullScreen}
-        classes={{ paper: classes.paper }}
+        className={classes.root }
+        classes={{ paper: classes.paper}}
+        // style={{background: 'transparent !important'}}
         onClose={handleClose}
         PaperProps={{
           sx: {
             marginTop: { xs: '70px !important', sm: '0%', lg: '0%', md: '0%' },
+            // boxShadow: 'none',
           },
         }}
         TransitionProps={{

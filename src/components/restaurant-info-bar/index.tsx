@@ -215,6 +215,8 @@ const StoreInfoBar = () => {
                 </Typography>
               </Grid>
               {isMobile && (
+                <Grid>
+                
                 <Grid
                   onClick={() => {
                     setShowMore(!showMore);
@@ -253,8 +255,7 @@ const StoreInfoBar = () => {
                     <ExpandMoreIcon style={{ color: '#fff' }} />
                   )}
                 </Grid>
-              )}  
-              <Grid>
+              
                     {window?.location?.href
                       ?.toLocaleLowerCase()
                       ?.indexOf('/checkout') !== -1 && (
@@ -292,6 +293,7 @@ const StoreInfoBar = () => {
                         </Typography>
                       </>
                     )}
+     
                    &nbsp;
                     <Typography
                       variant="body2"
@@ -326,6 +328,7 @@ const StoreInfoBar = () => {
                       </p>
                     </Typography>
                     </Grid>
+               )}
               {showHideFunc() && (
                 <>
                   <Grid
