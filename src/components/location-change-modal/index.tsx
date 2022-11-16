@@ -57,7 +57,7 @@ export const LocationChangeModal = ({
       >
         {' '}
         <IconButton sx={{ marginLeft: 'auto', marginRight: "10px", marginTop: "5px" }} onClick={() => handleClose()}>
-          <CloseIcon />
+          <CloseIcon  sx={{color: "#0075BF"}}/>
         </IconButton>
         <Grid
           xs={12}
