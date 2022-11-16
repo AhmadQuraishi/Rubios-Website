@@ -190,12 +190,17 @@ const Location = () => {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           function (position) {
-            const lat = position.coords.latitude;
-            const lng = position.coords.longitude;
+            const lat: any = parseFloat(
+              String(position.coords.latitude),
+            ).toFixed(0);
+            const lng: any = parseFloat(
+              String(position.coords.longitude),
+            ).toFixed(0);
+
             getGeocode({
               location: {
-                lat: lat,
-                lng: lng,
+                lat: Number(lat),
+                lng: Number(lng),
               },
             })
               .then((results) => {
