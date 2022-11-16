@@ -63,3 +63,10 @@ export function setResturantInfoRequestFailure(error: any) {
     error: error,
   };
 }
+
+export function setRestaurantInfoOrderType(orderType: string) {
+  return {
+    type: restaurantActionsTypes.SET_RESTAURANT_INFO_ORDER_TYPE,
+    orderType,
+  };
+}
