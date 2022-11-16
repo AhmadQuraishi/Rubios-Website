@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { Grid, TextField, Typography } from '@mui/material';
+import {
+  Checkbox,
+  FormGroup,
+  FormControlLabel,
+  Grid,
+  Link,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { useSelector } from 'react-redux';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -7,7 +15,12 @@ import { forwardRef } from 'react';
 import { IMaskInput } from 'react-imask';
 import { OrderTypeDialog } from '../order-type-dialog';
 
-const DeliveryForm = ({ basket, deliveryFormRef }: any) => {
+const DeliveryForm = ({
+  basket,
+  deliveryFormRef,
+  showSignUpGuest,
+  setShowSignUpGuest,
+}: any) => {
   const [open, setOpen] = useState(false);
   const { providerToken } = useSelector((state: any) => state.providerReducer);
   const { authToken } = useSelector((state: any) => state.authReducer);
@@ -48,6 +61,7 @@ const DeliveryForm = ({ basket, deliveryFormRef }: any) => {
           lastName: providerToken?.last_name ? providerToken?.last_name : '',
           phone: providerToken?.phone ? providerToken?.phone : '',
           email: providerToken?.email ? providerToken?.email : '',
+          emailNotification: true,
         }}
         validationSchema={Yup.object({
           firstName: Yup.string()
@@ -68,6 +82,7 @@ const DeliveryForm = ({ basket, deliveryFormRef }: any) => {
           phone: Yup.string()
             .min(14, 'Enter valid number')
             .required('Phone is required'),
+          emailNotification: Yup.bool().optional(),
         })}
         onSubmit={(values, actions) => {}}
       >
@@ -155,7 +170,44 @@ const DeliveryForm = ({ basket, deliveryFormRef }: any) => {
                 helperText={errors.email}
               />
             </Grid>
-
+            {!providerToken && showSignUpGuest && (
+              <Grid item xs={12} sm={12} md={12} lg={12}>
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={values.emailNotification}
+                        onChange={handleChange}
+                      />
+                    }
+                    label="Send me emails with special offers and updates."
+                    aria-label="Send me emails with special offers and updates"
+                    aria-required="true"
+                    title="Send me emails with special offers and updates"
+                    name="emailNotification"
+                    className="size"
+                  />
+                </FormGroup>
+                <Typography
+                  variant="body2"
+                  title="Don't have an account?"
+                  sx={{ width: '100%', padding: '0pxx !important' }}
+                >
+                  Don't have an account?{' '}
+                  <Link
+                    underline="hover"
+                    sx={{
+                      color: '#1a86ff',
+                      cursor: 'pointer',
+                      textDecoration: 'underline',
+                    }}
+                    onClick={() => setShowSignUpGuest(true)}
+                  >
+                    Sign Up?
+                  </Link>
+                </Typography>
+              </Grid>
+            )}
             <Grid
               item
               xs={12}
