@@ -11,19 +11,52 @@ import { useSelector } from 'react-redux';
 import ReactDateInputs from 'react-date-inputs';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { useEffect, forwardRef } from 'react';
 import './index.css';
 import { useNavigate } from 'react-router-dom';
+import moment from 'moment';
 const SignUpGuest = ({ guestSignupCheckout, signupFormRef }: any) => {
   const navigate = useNavigate();
+    const { locations } = useSelector((state: any) => state.locationReducer);
   const [birthDay, setBirthDay] = useState<Date | undefined>();
-
+  const [termsAndConditions, setTermsAndconditions] = useState(false);
   const { loading: loadingProvider } = useSelector(
     (state: any) => state.providerReducer,
   );
   const { loading: loadingAuth } = useSelector(
     (state: any) => state.authReducer,
-  );
+  ); 
+  React.useEffect(() => {
+    const monthField = document.getElementsByClassName(
+      'react-date-inputs__month',
+    );
+    const dayField = document.getElementsByClassName('react-date-inputs__day');
 
+    if (monthField && monthField.length && dayField && dayField.length) {
+      monthField[0].after(dayField[0]);
+    }
+  }, []);
+  useEffect(() => {
+    if (locations) {
+      const elem = document.getElementById('react-select-3-input');
+      if (elem) elem.removeAttribute('aria-haspopup');
+      const dName = 'react-date-inputs__day';
+      const mName = 'react-date-inputs__month';
+      const yName = 'react-date-inputs__year';
+      const dateElem = document.getElementsByClassName(dName);
+      if (dateElem) {
+        dateElem[0].setAttribute('aria-label', 'Day');
+      }
+      const monthElem = document.getElementsByClassName(mName);
+      if (monthElem) {
+        monthElem[0].setAttribute('aria-label', 'Month');
+      }
+      const yearElem = document.getElementsByClassName(yName);
+      if (yearElem) {
+        yearElem[0].setAttribute('aria-label', 'Year');
+      }
+    }
+  }, [locations]);
   const handleBirthDayChange = (value?: Date | undefined): undefined => {
     setBirthDay(value);
     return;
@@ -71,7 +104,7 @@ const SignUpGuest = ({ guestSignupCheckout, signupFormRef }: any) => {
               password_confirmation: '',
               birthday: '',
               termsAndConditions: false,
-              emailNotification: false,
+              emailNotification: true,
             }}
             validationSchema={Yup.object({
               password: Yup.string()
@@ -83,9 +116,16 @@ const SignUpGuest = ({ guestSignupCheckout, signupFormRef }: any) => {
                 .max(16, 'Must be at most 16 characters')
                 .oneOf([Yup.ref('password'), null], 'Passwords must match')
                 .required('required'),
-              termsAndConditions: Yup.boolean().required(),
+                termsAndConditions: Yup.boolean().required(),
             })}
             onSubmit={async (values) => {
+                const obj: any = {
+                  password: values.password,
+                  password_confirmation: values.password_confirmation,
+                }
+              if (birthDay) {
+                obj.birthday = moment(birthDay).format('YYYY-MM-DD');
+              }
             }}
           >
             {({
@@ -185,9 +225,9 @@ const SignUpGuest = ({ guestSignupCheckout, signupFormRef }: any) => {
                       sx={{ margin: 'auto' }}
                     >
                       <Checkbox
-                        checked={values.termsAndConditions}
-                        id="termsAndConditions"
-                        onChange={handleChange('termsAndConditions')}
+                           checked={values.termsAndConditions}
+                           id="termsAndConditions"
+                           onChange={handleChange('termsAndConditions')}
                         sx={{ padding: '0px !important', float: 'left', marginRight: "5px"}}
                         name="termsAndConditions"
                         inputProps={{
@@ -297,7 +337,7 @@ const SignUpGuest = ({ guestSignupCheckout, signupFormRef }: any) => {
                         <Button
                           type="submit"
                           onClick={guestSignupCheckout}
-                          disabled={loadingProvider || loadingAuth}
+                          disabled={(!values.termsAndConditions) || loadingProvider || loadingAuth}
                           aria-label="submit form to sign upm for rubios rewards"
                           name="signup"
                           title="signup"
