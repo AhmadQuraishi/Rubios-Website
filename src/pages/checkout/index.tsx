@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Card, Grid, Typography,  useMediaQuery,useTheme, } from '@mui/material';
+import {
+  Box,
+  Button,
+  Card,
+  Grid,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Divider from '@mui/material/Divider';
@@ -63,7 +71,7 @@ const Checkout = () => {
   const [showIframeOnce, setShowIframeOnce] = React.useState<boolean>(true);
   const [removeCreditCardOnce, setRemoveCreditCardOnce] =
     React.useState<boolean>(true);
-    const [birthDay, setBirthDay] = useState<Date | undefined>();
+  const [birthDay, setBirthDay] = useState<Date | undefined>();
   const [showSignUpGuest, setShowSignUpGuest] = React.useState<boolean>(false);
   const [defaultCard, setDefaultCard] = React.useState<boolean>(true);
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
@@ -439,7 +447,7 @@ const Checkout = () => {
     });
   };
 
-  const validatePickupForm = (): any => {
+  const validatePickupForm = (type: string): any => {
     let data = {
       isValidForm: false,
       formData: null,
@@ -449,6 +457,26 @@ const Checkout = () => {
     } else if (!pickupFormRef.current.dirty) {
       pickupFormRef.current.submitForm();
     } else if (Object.keys(pickupFormRef.current.errors).length > 0) {
+      console.log('pickupFormRef.current.errors', pickupFormRef.current.errors);
+      if (
+        type === 'GUEST_SIGNUP' &&
+        (basket?.deliverymode === 'curbside' ||
+          basket?.deliverymode === 'dinein')
+      ) {
+        let checkGuest = false;
+        Object.keys(pickupFormRef.current.errors).forEach((field) => {
+          const text =
+            basket?.deliverymode === 'curbside' ? 'vehicle' : 'table';
+          if (!field.startsWith(text)) {
+            checkGuest = true;
+          }
+        });
+
+        if (!checkGuest) {
+          data.isValidForm = true;
+          data.formData = pickupFormRef.current.values;
+        }
+      }
     } else {
       data.isValidForm = true;
       data.formData = pickupFormRef.current.values;
@@ -560,7 +588,7 @@ const Checkout = () => {
         basket.deliverymode === DeliveryModeEnum.curbside ||
         basket.deliverymode === DeliveryModeEnum.dinein)
     ) {
-      const { isValidForm, formData } = validatePickupForm();
+      const { isValidForm, formData } = validatePickupForm('PLACE_ORDER');
       if (!isValidForm) {
         displayToast(
           'ERROR',
@@ -884,7 +912,7 @@ const Checkout = () => {
       basket?.deliverymode === DeliveryModeEnum.curbside ||
       basket?.deliverymode === DeliveryModeEnum.dinein
     ) {
-      const { isValidForm, formData } = validatePickupForm();
+      const { isValidForm, formData } = validatePickupForm('GUEST_SIGNUP');
       if (!isValidForm) {
         displayToast(
           'ERROR',
@@ -1073,11 +1101,11 @@ const Checkout = () => {
                       ) : null}
                     </Grid>
                   </Grid>
-                  {isDesktop &&
+                  {isDesktop && (
                     <OrderTime
                       orderType={(basket && basket.deliverymode) || ''}
                     />
-                  }
+                  )}
                 </Grid>
               </Grid>
               {!providerToken && showSignUpGuest && (
@@ -1089,8 +1117,8 @@ const Checkout = () => {
                   <br />
                   <br />
                   <SignUpGuest
-                  birthDay={birthDay}
-                  setBirthday={setBirthDay}
+                    birthDay={birthDay}
+                    setBirthday={setBirthDay}
                     guestSignupCheckout={guestSignupCheckout}
                     signupFormRef={signupFormRef}
                   />
@@ -1112,18 +1140,16 @@ const Checkout = () => {
                 <br />
                 <OrderTime orderType={(basket && basket.deliverymode) || ''} />
               </Grid>
-              {console.log(rewards, "rewards")}
-              {console.log(null,)}
-              {(!loadingRewards && rewards?.length === 0) && ( null)}
-
+              {console.log(rewards, 'rewards')}
+              {console.log(null)}
+              {!loadingRewards && rewards?.length === 0 && null}
 
               {providerToken &&
                 authToken &&
                 authToken.authtoken &&
                 authToken.authtoken !== '' &&
                 providerToken.first_name &&
-                rewards &&
-                (
+                rewards && (
                   <>
                     <br />
                     <br />
