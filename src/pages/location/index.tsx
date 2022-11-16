@@ -254,15 +254,22 @@ const Location = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         function (position) {
-          const lat = position.coords.latitude;
-          const lng = position.coords.longitude;
+          console.log('working 11', position);
+          const lat: any = parseFloat(String(position.coords.latitude)).toFixed(
+            0,
+          );
+          const lng: any = parseFloat(
+            String(position.coords.longitude),
+          ).toFixed(0);
+
           getGeocode({
             location: {
-              lat: lat,
-              lng: lng,
+              lat: Number(lat),
+              lng: Number(lng),
             },
           })
             .then((results) => {
+              console.log('working 22', results);
               const address = getAddress(results[0]);
               if (address.address1 !== '') {
                 if (orderType !== 'dispatch') {
@@ -283,6 +290,7 @@ const Location = () => {
                 }
                 return;
               } else {
+                console.log('working 33');
                 setActionPerform(false);
                 displayToast(
                   'ERROR',
@@ -291,6 +299,7 @@ const Location = () => {
               }
             })
             .catch((error) => {
+              console.log('working 44', error);
               displayToast(
                 'ERROR',
                 'No address found against your current location.',
@@ -301,6 +310,7 @@ const Location = () => {
           setZoom(7);
         },
         function (error) {
+          console.log('working 55', error);
           displayToast('ERROR', getLocationError(error));
           setActionPerform(false);
           setZoom(7);
