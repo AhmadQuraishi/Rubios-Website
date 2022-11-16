@@ -192,7 +192,7 @@ const Checkout = () => {
   }, [qualifyingRewards, rewardsRedemptionsData]);
 
   const getBasketAccessToken = async () => {
-    console.log('checkingg...')
+    console.log('checkingg...');
     const body = {
       authtoken: authToken?.authtoken || '',
     };
@@ -1155,7 +1155,9 @@ const Checkout = () => {
               {providerToken &&
                 authToken?.authtoken !== '' &&
                 rewards.length === 0 &&
-                (loadingRewards || loadingRedemptions) && <CheckoutSkeletonUI />}
+                (loadingRewards || loadingRedemptions) && (
+                  <CheckoutSkeletonUI />
+                )}
 
               {providerToken &&
                 authToken?.authtoken !== '' &&
