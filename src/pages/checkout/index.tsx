@@ -588,7 +588,7 @@ const Checkout = () => {
       if (!isValidForm) {
         displayToast(
           'ERROR',
-          `${formatOrderType(basket.deliverymode)} fields are required.`,
+          `${formatOrderType(basket?.deliverymode)} fields are required.`,
         );
         scrollToTop();
         setButtonDisabled(false);
@@ -912,7 +912,7 @@ const Checkout = () => {
       if (!isValidForm) {
         displayToast(
           'ERROR',
-          `${formatOrderType(basket.deliverymode)} fields are required.`,
+          `${formatOrderType(basket?.deliverymode)} fields are required.`,
         );
         scrollToTop();
         setButtonDisabled(false);
@@ -1101,7 +1101,7 @@ const Checkout = () => {
                   </Grid>
                   {isDesktop && (
                     <OrderTime
-                      orderType={(basket && basket.deliverymode) || ''}
+                      orderType={(basket?.deliverymode) || ''}
                     />
                   )}
                 </Grid>
@@ -1149,7 +1149,7 @@ const Checkout = () => {
                 <br />
                 <br />
                 <br />
-                <OrderTime orderType={(basket && basket.deliverymode) || ''} />
+                <OrderTime orderType={(basket?.deliverymode) || ''} />
               </Grid>
 
               {providerToken &&
