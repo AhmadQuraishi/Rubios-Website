@@ -15,10 +15,9 @@ import { useEffect, forwardRef } from 'react';
 import './index.css';
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
-const SignUpGuest = ({ guestSignupCheckout, signupFormRef }: any) => {
+const SignUpGuest = ({ guestSignupCheckout, signupFormRef, birthDay, setBirthDay }: any) => {
   const navigate = useNavigate();
     const { locations } = useSelector((state: any) => state.locationReducer);
-  const [birthDay, setBirthDay] = useState<Date | undefined>();
   const [termsAndConditions, setTermsAndconditions] = useState(false);
   const { loading: loadingProvider } = useSelector(
     (state: any) => state.providerReducer,
@@ -119,13 +118,6 @@ const SignUpGuest = ({ guestSignupCheckout, signupFormRef }: any) => {
                 termsAndConditions: Yup.boolean().required(),
             })}
             onSubmit={async (values) => {
-                const obj: any = {
-                  password: values.password,
-                  password_confirmation: values.password_confirmation,
-                }
-              if (birthDay) {
-                obj.birthday = moment(birthDay).format('YYYY-MM-DD');
-              }
             }}
           >
             {({
