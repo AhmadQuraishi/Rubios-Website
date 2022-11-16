@@ -294,7 +294,7 @@ const SignUpGuest = ({ guestSignupCheckout, signupFormRef }: any) => {
                             'aria-labelledby': 'emailNotification',
                           }}
                         />{'  '}
-                        Send me email with special Offers and Updates.
+                        Send me emails with special Offers and Updates.
                       </Typography>
                     </Grid>
                     <Grid
