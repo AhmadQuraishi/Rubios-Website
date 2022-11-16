@@ -322,8 +322,9 @@ const PickupForm = ({
                       <Link
                         underline="hover"
                         sx={{
-                          color: '#1a86ff',
+                          color: '#214F66',
                           cursor: 'pointer',
+                          fontFamily: 'Poppins-Medium',
                           textDecoration: 'underline',
                         }}
                         onClick={() => setShowSignUpGuest(true)}

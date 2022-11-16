@@ -298,16 +298,15 @@ const SignUpGuest = ({ guestSignupCheckout, signupFormRef, birthDay, setBirthDay
                       sx={{ display: 'flex', justifyContent: 'center',marginTop: "10px", }}
                     >
                       <Typography
-                        variant="body2"
                         className="body-text-signup"
                         title="Already a Rewards member?"
-                        sx={{ width: '100%' }}
+                        sx={{ width: '100%', }}
                       >
                         Already a Rewards member?{' '}
                         <Link
                           onClick={() => navigate('/login')}
                           underline="hover"
-                          sx={{ color: '#1a86ff', cursor: 'pointer' }}
+                          sx={{ color: '#214F66',fontFamily: 'Poppins-Medium',cursor: 'pointer', textDecoration: 'underline', }}
                         >
                           Log In
                         </Link>
