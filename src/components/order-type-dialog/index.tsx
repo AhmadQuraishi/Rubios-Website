@@ -35,6 +35,8 @@ export const OrderTypeDialog = ({ openModal, setOpenModal }: any) => {
     (state: any) => state.restaurantInfoReducer,
   );
   const basketObj = useSelector((state: any) => state.basketReducer);
+  const { providerToken } = useSelector((state: any) => state.providerReducer);
+  const { authToken } = useSelector((state: any) => state.authReducer);
 
   const handleClose = () => {
     setOpenModal(false);
@@ -95,9 +97,9 @@ export const OrderTypeDialog = ({ openModal, setOpenModal }: any) => {
   };
 
   const checkButtonDisable = (values: any, isValid: any) => {
-    console.log('isValid', isValid)
-    console.log('buttonDisabled', buttonDisabled)
-    console.log('values', values)
+    console.log('isValid', isValid);
+    console.log('buttonDisabled', buttonDisabled);
+    console.log('values', values);
     return (
       buttonDisabled ||
       (values.orderType !== 'dispatch' && values.orderType === orderType) ||
@@ -269,24 +271,26 @@ export const OrderTypeDialog = ({ openModal, setOpenModal }: any) => {
                           helperText={touched.zip && errors.zip}
                         />
                       </Grid>
-                      <Grid item xs={12}>
-                        <FormGroup>
-                          <FormControlLabel
-                            control={
-                              <Checkbox
-                                checked={values.isdefault}
-                                onChange={handleChange('isdefault')}
-                              />
-                            }
-                            label="Make default delivery address."
-                            aria-label="Make default delivery address"
-                            aria-required="true"
-                            title="Make default delivery address"
-                            name="isdefault"
-                            className="size"
-                          />
-                        </FormGroup>
-                      </Grid>
+                      {providerToken && authToken?.authtoken !== '' && (
+                        <Grid item xs={12}>
+                          <FormGroup>
+                            <FormControlLabel
+                              control={
+                                <Checkbox
+                                  checked={values.isdefault}
+                                  onChange={handleChange('isdefault')}
+                                />
+                              }
+                              label="Make default delivery address."
+                              aria-label="Make default delivery address"
+                              aria-required="true"
+                              title="Make default delivery address"
+                              name="isdefault"
+                              className="size"
+                            />
+                          </FormGroup>
+                        </Grid>
+                      )}
                     </>
                   )}
                 </Grid>
