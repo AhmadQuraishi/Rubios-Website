@@ -39,10 +39,12 @@ const restaurantInfoReducer = (state = INITIAL_STATE, action: any) => {
       };
     case restaurantActionsTypes.SET_RESTAURANT_INFO_FAILURE:
       return { ...state, loading: false, error: action.error };
-    case userTypes.USER_LOGOUT: 
+    case restaurantActionsTypes.SET_RESTAURANT_INFO_ORDER_TYPE:
+      return { ...state, orderType: action.orderType };
+    case userTypes.USER_LOGOUT:
       return {
-        ...INITIAL_STATE
-      }    
+        ...INITIAL_STATE,
+      };
     default:
       return state;
   }
