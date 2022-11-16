@@ -37,7 +37,11 @@ import {
   basketTransferRequest,
   basketTransferReset,
 } from '../../redux/actions/basket/transfer';
-import { setBasketDeliveryAddress } from '../../redux/actions/basket/checkout';
+import { setBasketDeliveryAddressSuccess } from '../../redux/actions/basket/checkout';
+import {
+  setBasketDeliveryAddress,
+  setBasketDeliveryMode,
+} from '../../services/basket';
 import { getBasketRequestSuccess } from '../../redux/actions/basket';
 // import { toast } from 'react-toastify';
 // import error = toast.error;
@@ -289,7 +293,7 @@ const LocationCard = (props: any) => {
   //   return obj;
   // };
 
-  const gotoCategoryPage = (storeID: number) => {
+  const gotoCategoryPage = async (storeID: number) => {
     if (orderType === undefined) {
       displayToast('ERROR', 'Please select at least one order type');
       return false;
@@ -297,22 +301,70 @@ const LocationCard = (props: any) => {
     let restaurantObj = null;
     restaurantObj = allRestaurants.find((x: any) => x.id === storeID);
 
-    if (orderType === 'dispatch' && deliveryAddressString) {
-      dispatch(setDeliveryAddress(deliveryAddressString));
-    }
-
     if (selectedRestaurant) {
       if (basketObj?.basket) {
         if (selectedRestaurant?.id === storeID) {
-          // if (deliveryAddressString) {
-          //   const deliveryAddress = formatDeliveryAddress();
-          //   dispatch(
-          //     setBasketDeliveryAddress(basketObj?.basket?.id, deliveryAddress),
-          //   );
+          if (deliveryAddressString && orderType === 'dispatch') {
+            // const deliveryAddress = formatDeliveryAddress();
+            // dispatch(
+            //   setBasketDeliveryAddress(basketObj?.basket?.id, deliveryAddress),
+            // );
+            let updatedAddress: any = {
+              building: deliveryAddressString?.address2 || '',
+              streetaddress: deliveryAddressString?.address1 || '',
+              city: deliveryAddressString?.city || '',
+              zipcode: deliveryAddressString?.zip || '',
+              isdefault: deliveryAddressString?.isdefault || false,
+            };
+            try {
+              setActionPerform(true);
+              const response: any = await setBasketDeliveryAddress(
+                basketObj?.basket?.id,
+                updatedAddress,
+              );
+              setActionPerform(false);
+              dispatch(setBasketDeliveryAddressSuccess(response));
+              dispatch(setResturantInfoRequest(restaurantObj, orderType || ''));
+              navigate('/menu/' + restaurantObj.slug);
+            } catch (error: any) {
+              setActionPerform(false);
+              displayToast(
+                'ERROR',
+                error?.response?.data?.message
+                  ? error.response.data.message
+                  : 'ERROR! Please Try again later',
+              );
+            }
+          } else if (
+            orderType !== selectedOrderType &&
+            orderType !== 'dispatch'
+          ) {
+            try {
+              setActionPerform(true);
+              const body = {
+                deliverymode: orderType,
+              };
+              const response: any = await setBasketDeliveryMode(
+                basketObj?.basket?.id,
+                body,
+              );
+              setActionPerform(false);
+              dispatch(setBasketDeliveryAddressSuccess(response));
+              dispatch(setResturantInfoRequest(restaurantObj, orderType || ''));
+              navigate('/menu/' + restaurantObj.slug);
+            } catch (error: any) {
+              setActionPerform(false);
+              displayToast(
+                'ERROR',
+                error?.response?.data?.message
+                  ? error.response.data.message
+                  : 'ERROR! Please Try again later',
+              );
+            }
+          }
           //   setUpdatebasket(true);
           //   setActionPerform(true);
-          dispatch(setResturantInfoRequest(restaurantObj, orderType || ''));
-          navigate('/menu/' + restaurantObj.slug);
+
           return;
         } else {
           dispatch(
@@ -323,6 +375,9 @@ const LocationCard = (props: any) => {
           return;
         }
       }
+    }
+    if (orderType === 'dispatch' && deliveryAddressString) {
+      dispatch(setDeliveryAddress(deliveryAddressString));
     }
     dispatch(setResturantInfoRequest(restaurantObj, orderType || ''));
     navigate('/menu/' + restaurantObj.slug);
