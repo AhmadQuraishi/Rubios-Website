@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Card, Grid, Typography } from '@mui/material';
+import { Box, Button, Card, Grid, Typography,  useMediaQuery,useTheme, } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Divider from '@mui/material/Divider';
@@ -24,6 +24,7 @@ import {
 } from '../../redux/actions/basket/checkout';
 import { displayToast } from '../../helpers/toast';
 import {
+  
   formatCustomFields,
   // formatDeliveryAddress,
   generateSubmitBasketPayload,
@@ -53,6 +54,7 @@ import CheckoutSkeletonUI from '../../components/checkout-skeleton-ui';
 const Checkout = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const theme = useTheme();
   const pickupFormRef = React.useRef<any>(null);
   const deliveryFormRef = React.useRef<any>(null);
   const paymentInfoRef = React.useRef<any>();
@@ -62,6 +64,7 @@ const Checkout = () => {
   const [showIframeOnce, setShowIframeOnce] = React.useState<boolean>(true);
   const [removeCreditCardOnce, setRemoveCreditCardOnce] =
     React.useState<boolean>(true);
+    const [birthDay, setBirthDay] = useState<Date | undefined>();
   const [showSignUpGuest, setShowSignUpGuest] = React.useState<boolean>(false);
   const [defaultCard, setDefaultCard] = React.useState<boolean>(true);
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
@@ -81,7 +84,7 @@ const Checkout = () => {
   const { authToken } = useSelector((state: any) => state.authReducer);
   const { providerToken } = useSelector((state: any) => state.providerReducer);
   const { guestUser } = useSelector((state: any) => state.guestReducer);
-  const { rewards: qualifyingRewards, loading: loading } = useSelector(
+  const { rewards: qualifyingRewards, loading: loadingRewards } = useSelector(
     (state: any) => state.getRewardForCheckoutReducer,
   );
   const { data: rewardsRedemptionsData, loading: loadingRedemptions } =
@@ -89,6 +92,7 @@ const Checkout = () => {
   const { restaurant, orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
+  const isDesktop = useMediaQuery(theme.breakpoints.up('sm'));
   // const { userDeliveryAddresses } = useSelector(
   //   (state: any) => state.userReducer,
   // );
@@ -921,11 +925,11 @@ const Checkout = () => {
       terms_and_conditions: formDataSignup?.termsAndConditions,
       marketing_email_subscription: formDataSignup?.emailNotification,
     };
-    if (formDataSignup?.birthDay) {
+    if (birthDay) {
       signUpObj.birthday = moment(formDataSignup.birthDay).format('YYYY-MM-DD');
     }
     console.log('signUpObj', signUpObj);
-
+    
     dispatch(userRegister(signUpObj, 'REGISTER_CHECKOUT', basket?.id));
   };
 
@@ -1068,20 +1072,11 @@ const Checkout = () => {
                       ) : null}
                     </Grid>
                   </Grid>
-                  <Grid
-                    sx={{
-                      display: {
-                        xs: 'none',
-                        sm: 'block',
-                        md: 'block',
-                        lg: 'block',
-                      },
-                    }}
-                  >
+                  {isDesktop &&
                     <OrderTime
                       orderType={(basket && basket.deliverymode) || ''}
                     />
-                  </Grid>
+                  }
                 </Grid>
               </Grid>
               {!providerToken && showSignUpGuest && (
@@ -1093,6 +1088,8 @@ const Checkout = () => {
                   <br />
                   <br />
                   <SignUpGuest
+                  birthDay={birthDay}
+                  setBirthday={setBirthDay}
                     guestSignupCheckout={guestSignupCheckout}
                     signupFormRef={signupFormRef}
                   />
@@ -1116,6 +1113,9 @@ const Checkout = () => {
               </Grid>
               {console.log(rewards, "rewards")}
               {console.log(null,)}
+              {(!loadingRewards && rewards?.length === 0) && ( null)}
+
+            
               {providerToken &&
                 authToken &&
                 authToken.authtoken &&
@@ -1134,6 +1134,7 @@ const Checkout = () => {
                     <Rewards rewardsList={rewards} />
                   </>
                 )}
+                
               <br />
               <br />
               <br />
