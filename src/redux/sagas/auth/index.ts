@@ -21,9 +21,9 @@ function* asyncAuthItemRequest(action: any): any {
       action?.registerType &&
       action.registerType === 'REGISTER_CHECKOUT'
     ) {
-      setTimeout(() => {
-        window.location.href = '/checkout';
-      }, 500);
+      // setTimeout(() => {
+      //   window.location.href = '/checkout';
+      // }, 500);
     }
   } catch (error) {
     yield put(getAuthRequestFailure(error));
