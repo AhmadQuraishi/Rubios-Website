@@ -25,12 +25,15 @@ import * as Yup from 'yup';
 import { createFave } from '../../redux/actions/create-fave';
 import moment from 'moment';
 import { getUpsellsRequest } from '../../redux/actions/basket/upsell/Get';
+import { OrderTypeDialog } from '../order-type-dialog';
 
 const RecentOrders = () => {
   const [recentorders, setOrders] = React.useState<any>([]);
   const [clickAction, setClickAction] = useState(false);
   const [open, setOpen] = useState(false);
   const [favOrder, setFavOrder] = useState<any>(null);
+  const [openOrder, setOpenOrder] = useState(false);
+
   // const [idtoFav, setId] = useState('');
   // const [items, setItems] = useState([]);
   // const [price, setPrice] = useState('');
@@ -53,17 +56,34 @@ const RecentOrders = () => {
     dispatch(getUserRecentOrders());
   }, []);
 
+  const navigateAfterSuccess = () => {
+    setOpenOrder(false);
+    setClickAction(false);
+    dispatch(
+      setResturantInfoRequest(
+        restaurant,
+        createBasketObj.basket.deliverymode || '',
+      ),
+    );
+    dispatch(getBasketRequest('', createBasketObj?.basket, 'Favourite'));
+    displayToast(
+      'SUCCESS',
+      'The items from your recent order have been added to your cart.',
+    );
+    navigate('/checkout');
+  };
+
   useEffect(() => {
     if (createBasketObj && clickAction) {
-      if (createBasketObj.basket && clickAction) {
+      if (createBasketObj.basket) {
         dispatch(getResturantInfoRequest(createBasketObj.basket.vendorid));
         dispatch(
           getUpsellsRequest(
-            createBasketObj.basket.id,
-            createBasketObj.basket.vendorid,
+            createBasketObj?.basket?.id,
+            createBasketObj?.basket?.vendorid,
           ),
         );
-      } else if (createBasketObj.error && createBasketObj.error.message) {
+      } else if (createBasketObj?.error?.message) {
         setClickAction(false);
       }
     }
@@ -71,22 +91,12 @@ const RecentOrders = () => {
 
   useEffect(() => {
     if (restaurant && clickAction) {
-      setClickAction(false);
-      dispatch(
-        setResturantInfoRequest(
-          restaurant,
-          prevOrderType || createBasketObj.basket.deliverymode || '',
-        ),
-      );
-      dispatch(getBasketRequest('', createBasketObj.basket, 'Previous'));
-      displayToast(
-        'SUCCESS',
-        'The items from your recent order have been added to your cart.',
-      );
-      navigate('/checkout');
-    }
-    if (error && error.message) {
-      setClickAction(false);
+      if (error && error.message) {
+        setClickAction(false);
+        return;
+      } else {
+        setOpenOrder(true);
+      }
     }
   }, [restaurant]);
 
@@ -171,6 +181,10 @@ const RecentOrders = () => {
 
   return (
     <Fragment>
+      <OrderTypeDialog
+        openModal={openOrder}
+        setOpenModal={navigateAfterSuccess}
+      />
       {(loading || clickAction) && <OrderListSkeletonUI />}
       {recentorders && recentorders.length === 0 && !loading && (
         <Typography variant="h6" className="no-orders">
@@ -180,8 +194,14 @@ const RecentOrders = () => {
       {!loading && !clickAction && recentorders.length > 0 && (
         <Grid container spacing={3} className="order-history-card">
           {recentorders.map((order: any, index: number) => (
-            <Grid key={Math.random() + index} item xs={12} md={4} sx={{display: 'flex', alignItems: 'stretch'}}>
-              <Card elevation={0} className="card-panel" sx={{width: "100%"}}>
+            <Grid
+              key={Math.random() + index}
+              item
+              xs={12}
+              md={4}
+              sx={{ display: 'flex', alignItems: 'stretch' }}
+            >
+              <Card elevation={0} className="card-panel" sx={{ width: '100%' }}>
                 <Grid container>
                   <Grid item xs={10}>
                     <Typography variant="caption" className="order-date">
@@ -232,7 +252,6 @@ const RecentOrders = () => {
                       padding: {
                         xs: '0px 10px 20px 0px',
                         sm: '0px 0px 20px 0px',
-
                       },
                     }}
                     className="order-detail-rpanel"

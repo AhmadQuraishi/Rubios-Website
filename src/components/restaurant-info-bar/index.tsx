@@ -316,70 +316,77 @@ const StoreInfoBar = () => {
                         <p>{restaurantInfo.distance.toFixed(2)} Miles Away</p>
                       )}
                     </Typography>
-                    <Typography
-                      variant="body2"
-                      color="#fff"
-                      fontSize={11}
-                      sx={{
-                        display: {
-                          xs: 'block',
-                          sm: 'none',
-                          md: 'none',
-                          lg: 'none',
-                        },
-                      }}
-                    >
-                      <p
-                        style={{
-                          cursor: 'pointer',
-                          textDecorationLine: 'underline',
-                        }}
-                        role={'button'}
-                        aria-label={'Change Order Type'}
-                        tabIndex={0}
-                        onKeyPress={(e: any) => {
-                          if (e.key === 'Enter') {
-                            setOpenOrder(true);
-                          }
-                        }}
-                        onClick={() => setOpenOrder(true)}
-                      >
-                        Change Order Type
-                      </p>
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      color="#fff"
-                      fontSize={11}
-                      sx={{
-                        marginTop: '22px',
-                        display: {
-                          xs: 'none',
-                          sm: 'block',
-                          md: 'block',
-                          lg: 'block',
-                        },
-                      }}
-                    >
-                      <p
-                        style={{
-                          cursor: 'pointer',
-                          textDecorationLine: 'underline',
-                          fontSize: '13px',
-                        }}
-                        role={'button'}
-                        aria-label={'Change Order Type'}
-                        tabIndex={0}
-                        onKeyPress={(e: any) => {
-                          if (e.key === 'Enter') {
-                            setOpenOrder(true);
-                          }
-                        }}
-                        onClick={() => setOpenOrder(true)}
-                      >
-                        Change Order Type
-                      </p>
-                    </Typography>
+                    {window?.location?.href
+                      ?.toLocaleLowerCase()
+                      ?.indexOf('/checkout') !== -1 && (
+                      <>
+                        <Typography
+                          variant="body2"
+                          color="#fff"
+                          fontSize={11}
+                          sx={{
+                            display: {
+                              xs: 'block',
+                              sm: 'none',
+                              md: 'none',
+                              lg: 'none',
+                            },
+                          }}
+                        >
+                          <p
+                            style={{
+                              cursor: 'pointer',
+                              textDecorationLine: 'underline',
+                            }}
+                            role={'button'}
+                            aria-label={'Change Order Type'}
+                            tabIndex={0}
+                            onKeyPress={(e: any) => {
+                              if (e.key === 'Enter') {
+                                setOpenOrder(true);
+                              }
+                            }}
+                            onClick={() => setOpenOrder(true)}
+                          >
+                            Change Order Type
+                          </p>
+                        </Typography>
+
+                        <Typography
+                          variant="body2"
+                          color="#fff"
+                          fontSize={11}
+                          sx={{
+                            marginBottom: '5px',
+                            display: {
+                              xs: 'none',
+                              sm: 'block',
+                              md: 'block',
+                              lg: 'block',
+                            },
+                          }}
+                        >
+                          <p
+                            style={{
+                              cursor: 'pointer',
+                              textDecorationLine: 'underline',
+                              fontSize: '13px',
+                            }}
+                            role={'button'}
+                            aria-label={'Change Order Type'}
+                            tabIndex={0}
+                            onKeyPress={(e: any) => {
+                              if (e.key === 'Enter') {
+                                setOpenOrder(true);
+                              }
+                            }}
+                            onClick={() => setOpenOrder(true)}
+                          >
+                            Change Order Type
+                          </p>
+                        </Typography>
+                      </>
+                    )}
                     <Typography
                       variant="body2"
                       color="#fff"
@@ -416,8 +423,8 @@ const StoreInfoBar = () => {
                       color="#fff"
                       fontSize={11}
                       sx={{
-                        marginTop: '5px',
                         display: {
+                          marginBottom: 3,
                           xs: 'none',
                           sm: 'block',
                           md: 'block',
