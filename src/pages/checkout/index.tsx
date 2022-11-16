@@ -1154,6 +1154,7 @@ const Checkout = () => {
                 authToken.authtoken &&
                 authToken.authtoken !== '' &&
                 providerToken.first_name &&
+                
                 rewards && (
                   <>
                     <br />
