@@ -40,7 +40,7 @@ const DeliveryAddresses = (props: any) => {
     filteredRestaurants,
     gotoCategoryPage,
     setActionPerform,
-    setShowNearBy,
+    // setShowNearBy,
     setLatLng,
   } = props;
   const [open, setOpen] = useState(false);
@@ -174,7 +174,7 @@ const DeliveryAddresses = (props: any) => {
             setEditDeliveryAddress(address);
             getNearByRestaurants(lat, lng);
             setActionPerform(false);
-            setShowNearBy(true);
+            // setShowNearBy(true);
             setLatLng({
               lat: lat,
               lng: lng,
