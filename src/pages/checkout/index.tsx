@@ -194,7 +194,7 @@ const Checkout = () => {
   const getBasketAccessToken = async () => {
     console.log('checkingg...')
     const body = {
-      authtoken:  authToken?.authtoken|| '',
+      authtoken: authToken?.authtoken || '',
     };
     const baskId = basketObj?.basket?.id || '';
     const response = await generateCCSFToken(baskId, body);
@@ -1151,16 +1151,15 @@ const Checkout = () => {
                 <br />
                 <OrderTime orderType={(basket && basket.deliverymode) || ''} />
               </Grid>
-              {console.log(rewards, 'rewards')}
-              {console.log(null)}
-              {!loadingRewards && rewards?.length === 0 && null}
 
               {providerToken &&
-                authToken &&
-                authToken.authtoken &&
-                authToken.authtoken !== '' &&
-                providerToken.first_name &&
-                rewards && (
+                authToken?.authtoken !== '' &&
+                rewards.length === 0 &&
+                (loadingRewards || loadingRedemptions) && <CheckoutSkeletonUI />}
+
+              {providerToken &&
+                authToken?.authtoken !== '' &&
+                rewards.length > 0 && (
                   <>
                     <br />
                     <br />
