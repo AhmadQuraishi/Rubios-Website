@@ -253,8 +253,79 @@ const StoreInfoBar = () => {
                     <ExpandMoreIcon style={{ color: '#fff' }} />
                   )}
                 </Grid>
-              )}
-
+              )}  
+              <Grid>
+                    {window?.location?.href
+                      ?.toLocaleLowerCase()
+                      ?.indexOf('/checkout') !== -1 && (
+                      <>
+                        <Typography
+                          variant="body2"
+                          color="#fff"
+                          fontSize={11}
+                          sx={{
+                            display: {
+                              xs: 'block',
+                              sm: 'none',
+                              md: 'none',
+                              lg: 'none',
+                            },
+                          }}
+                        >
+                          <p
+                            style={{
+                              cursor: 'pointer',
+                              textDecorationLine: 'underline',
+                            }}
+                            role={'button'}
+                            aria-label={'Change Order Type'}
+                            tabIndex={0}
+                            onKeyPress={(e: any) => {
+                              if (e.key === 'Enter') {
+                                setOpenOrder(true);
+                              }
+                            }}
+                            onClick={() => setOpenOrder(true)}
+                          >
+                            Change Order Type
+                          </p>{'\n'}
+                        </Typography>
+                      </>
+                    )}
+                   &nbsp;
+                    <Typography
+                      variant="body2"
+                      color="#fff"
+                      fontSize={11}
+                      sx={{
+                        marginTop: '-12px',
+                        display: {
+                          xs: 'flex',
+                          sm: 'none',
+                          md: 'none',
+                          lg: 'none',
+                        },
+                      }}
+                    >
+                      <p
+                        style={{
+                          cursor: 'pointer',
+                          textDecorationLine: 'underline',
+                        }}
+                        role={'button'}
+                        aria-label={'Change location'}
+                        tabIndex={1}
+                        onKeyPress={(e: any) => {
+                          if (e.key === 'Enter') {
+                            handleClickOpen();
+                          }
+                        }}
+                        onClick={() => handleClickOpen()}
+                      >
+                        Change location
+                      </p>
+                    </Typography>
+                    </Grid>
               {showHideFunc() && (
                 <>
                   <Grid
@@ -320,37 +391,6 @@ const StoreInfoBar = () => {
                       ?.toLocaleLowerCase()
                       ?.indexOf('/checkout') !== -1 && (
                       <>
-                        <Typography
-                          variant="body2"
-                          color="#fff"
-                          fontSize={11}
-                          sx={{
-                            display: {
-                              xs: 'block',
-                              sm: 'none',
-                              md: 'none',
-                              lg: 'none',
-                            },
-                          }}
-                        >
-                          <p
-                            style={{
-                              cursor: 'pointer',
-                              textDecorationLine: 'underline',
-                            }}
-                            role={'button'}
-                            aria-label={'Change Order Type'}
-                            tabIndex={0}
-                            onKeyPress={(e: any) => {
-                              if (e.key === 'Enter') {
-                                setOpenOrder(true);
-                              }
-                            }}
-                            onClick={() => setOpenOrder(true)}
-                          >
-                            Change Order Type
-                          </p>
-                        </Typography>
 
                         <Typography
                           variant="body2"
@@ -387,37 +427,6 @@ const StoreInfoBar = () => {
                         </Typography>
                       </>
                     )}
-                    <Typography
-                      variant="body2"
-                      color="#fff"
-                      fontSize={11}
-                      sx={{
-                        display: {
-                          xs: 'block',
-                          sm: 'none',
-                          md: 'none',
-                          lg: 'none',
-                        },
-                      }}
-                    >
-                      <p
-                        style={{
-                          cursor: 'pointer',
-                          textDecorationLine: 'underline',
-                        }}
-                        role={'button'}
-                        aria-label={'Change location'}
-                        tabIndex={1}
-                        onKeyPress={(e: any) => {
-                          if (e.key === 'Enter') {
-                            handleClickOpen();
-                          }
-                        }}
-                        onClick={() => handleClickOpen()}
-                      >
-                        Change location
-                      </p>
-                    </Typography>
                     <Typography
                       variant="body2"
                       color="#fff"
