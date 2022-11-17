@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Card, Grid, Typography, useMediaQuery, useTheme, } from '@mui/material';
+import {
+  Box,
+  Button,
+  Card,
+  Grid,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Divider from '@mui/material/Divider';
@@ -119,7 +127,7 @@ const Checkout = () => {
 
   useEffect(() => {
     if (singleLocation?.data?.length) {
-      setLocationId(singleLocation.data[0].location_id);
+      setLocationId(singleLocation?.data[0]?.location_id);
     }
   }, [singleLocation]);
 
@@ -183,25 +191,21 @@ const Checkout = () => {
     }
   }, [qualifyingRewards, rewardsRedemptionsData]);
 
-  useEffect(() => {
-    const getBasketAccessToken = async () => {
-      const body = {
-        authtoken:
-          authToken && authToken.authtoken && authToken.authtoken !== ''
-            ? authToken.authtoken
-            : '',
-      };
-      const baskId =
-        basketObj && basketObj.basket && basketObj.basket.id
-          ? basketObj.basket.id
-          : '';
-      const response = await generateCCSFToken(baskId, body);
-      if (response && response.accesstoken) {
-        setBasketAccessToken(response.accesstoken);
-      }
+  const getBasketAccessToken = async () => {
+    console.log('checkingg...');
+    const body = {
+      authtoken: authToken?.authtoken || '',
     };
+    const baskId = basketObj?.basket?.id || '';
+    const response = await generateCCSFToken(baskId, body);
+    if (response && response.accesstoken) {
+      setBasketAccessToken(response.accesstoken);
+    }
+  };
+
+  useEffect(() => {
     getBasketAccessToken();
-  }, []);
+  }, [authToken]);
 
   React.useEffect(() => {
     if (
@@ -584,7 +588,7 @@ const Checkout = () => {
       if (!isValidForm) {
         displayToast(
           'ERROR',
-          `${formatOrderType(basket.deliverymode)} fields are required.`,
+          `${formatOrderType(basket?.deliverymode)} fields are required.`,
         );
         scrollToTop();
         setButtonDisabled(false);
@@ -701,7 +705,7 @@ const Checkout = () => {
           email: providerToken.email,
           first_name: providerToken?.first_name,
           last_name: providerToken?.last_name,
-          favourite_locations: locationId || '',
+          favourite_locations: providerToken?.favourite_locations,
           marketing_email_subscription: formDataValue.emailNotification,
           phone: formDataValue.phone,
         };
@@ -908,7 +912,7 @@ const Checkout = () => {
       if (!isValidForm) {
         displayToast(
           'ERROR',
-          `${formatOrderType(basket.deliverymode)} fields are required.`,
+          `${formatOrderType(basket?.deliverymode)} fields are required.`,
         );
         scrollToTop();
         setButtonDisabled(false);
@@ -939,16 +943,15 @@ const Checkout = () => {
       phone: formDataValue?.phone?.replace(/\D/g, '') || '',
       password: formDataSignup?.password,
       password_confirmation: formDataSignup?.password_confirmation,
-      fav_location_id: '345077',
-      // fav_location_id: restaurant?.id.toString(),
+      fav_location_id: locationId || '345077',
       terms_and_conditions: formDataSignup?.termsAndConditions,
       marketing_email_subscription: formDataSignup?.emailNotification,
     };
     console.log('birthDay', birthDay);
     if (birthDay) {
-      console.log('birthdayssss',birthDay);
+      console.log('birthdayssss', birthDay);
       signUpObj.birthday = moment(birthDay).format('YYYY-MM-DD');
-      console.log('birthdaysschgtvdy',signUpObj.birthday);
+      console.log('birthdaysschgtvdy', signUpObj.birthday);
     }
     console.log('signUpObj', signUpObj);
 
@@ -962,8 +965,9 @@ const Checkout = () => {
       </Typography>
       <StoreInfoBar />
       <Box
-        className={`checkout-wrapper ${buttonDisabled || basketObj?.orderSubmit ? 'disable-pointer' : ''
-          }`}
+        className={`checkout-wrapper ${
+          buttonDisabled || basketObj?.orderSubmit ? 'disable-pointer' : ''
+        }`}
       >
         <Grid container>
           <Grid item xs={12} sm={12} md={12} lg={12}>
@@ -981,8 +985,8 @@ const Checkout = () => {
                   >
                     <Grid container>
                       {basket &&
-                        (basket.deliverymode === '' ||
-                          basket.deliverymode === DeliveryModeEnum.pickup) ? (
+                      (basket.deliverymode === '' ||
+                        basket.deliverymode === DeliveryModeEnum.pickup) ? (
                         <>
                           <Grid item xs={12}>
                             <Typography
@@ -1071,10 +1075,10 @@ const Checkout = () => {
                         </>
                       ) : null}
                       {basket &&
-                        (basket.deliverymode === '' ||
-                          basket.deliverymode === DeliveryModeEnum.pickup ||
-                          basket.deliverymode === DeliveryModeEnum.curbside ||
-                          basket.deliverymode === DeliveryModeEnum.dinein) ? (
+                      (basket.deliverymode === '' ||
+                        basket.deliverymode === DeliveryModeEnum.pickup ||
+                        basket.deliverymode === DeliveryModeEnum.curbside ||
+                        basket.deliverymode === DeliveryModeEnum.dinein) ? (
                         <PickupForm
                           setShowSignUpGuest={setShowSignUpGuest}
                           showSignUpGuest={!showSignUpGuest}
@@ -1084,7 +1088,7 @@ const Checkout = () => {
                         />
                       ) : null}
                       {basket &&
-                        basket.deliverymode === DeliveryModeEnum.dispatch ? (
+                      basket.deliverymode === DeliveryModeEnum.dispatch ? (
                         <DeliveryForm
                           basket={basket}
                           setShowSignUpGuest={setShowSignUpGuest}
@@ -1097,7 +1101,7 @@ const Checkout = () => {
                   </Grid>
                   {isDesktop && (
                     <OrderTime
-                      orderType={(basket && basket.deliverymode) || ''}
+                      orderType={(basket?.deliverymode) || ''}
                     />
                   )}
                 </Grid>
@@ -1118,14 +1122,16 @@ const Checkout = () => {
                   />
                 </>
               )}
-              <Grid sx={{
-                display: {
-                  xs: 'block',
-                  sm: 'none',
-                  md: 'none',
-                  lg: 'none',
-                }
-              }}>
+              <Grid
+                sx={{
+                  display: {
+                    xs: 'block',
+                    sm: 'none',
+                    md: 'none',
+                    lg: 'none',
+                  },
+                }}
+              >
                 <br />
                 <br />
               </Grid>
@@ -1143,19 +1149,19 @@ const Checkout = () => {
                 <br />
                 <br />
                 <br />
-                <OrderTime orderType={(basket && basket.deliverymode) || ''} />
+                <OrderTime orderType={(basket?.deliverymode) || ''} />
               </Grid>
-              {console.log(rewards, 'rewards')}
-              {console.log(null)}
-              {!loadingRewards && rewards?.length === 0 && null}
 
               {providerToken &&
-                authToken &&
-                authToken.authtoken &&
-                authToken.authtoken !== '' &&
-                providerToken.first_name &&
-                
-                rewards && (
+                authToken?.authtoken !== '' &&
+                rewards.length === 0 &&
+                (loadingRewards || loadingRedemptions) && (
+                  <CheckoutSkeletonUI />
+                )}
+
+              {providerToken &&
+                authToken?.authtoken !== '' &&
+                rewards.length > 0 && (
                   <>
                     <br />
                     <br />

@@ -264,9 +264,65 @@ const LocationCard = (props: any) => {
     }
   }, [newBasket, newBasketLoading, newBasketError]);
 
-  const handleChangeLocation = () => {
+  const handleChangeLocation = async () => {
     setShowLocationChangeModal(false);
     if (newBasket?.basket && newRestaurant) {
+      if (deliveryAddressString && orderType === 'dispatch') {
+        let updatedAddress: any = {
+          building: deliveryAddressString?.address2 || '',
+          streetaddress: deliveryAddressString?.address1 || '',
+          city: deliveryAddressString?.city || '',
+          zipcode: deliveryAddressString?.zip || '',
+          isdefault: deliveryAddressString?.isdefault || false,
+        };
+        try {
+          setActionPerform(true);
+          const response: any = await setBasketDeliveryAddress(
+            newBasket?.basket?.id,
+            updatedAddress,
+          );
+          setActionPerform(false);
+          dispatch(setBasketDeliveryAddressSuccess(response));
+          dispatch(setResturantInfoRequest(newRestaurant, orderType || ''));
+          navigate('/menu/' + newRestaurant.slug);
+          displayToast('SUCCESS', 'Location changed to ' + newRestaurant.name);
+        } catch (error: any) {
+          setActionPerform(false);
+          displayToast(
+            'ERROR',
+            error?.response?.data?.message
+              ? error.response.data.message
+              : 'ERROR! Please Try again later',
+          );
+        }
+        return;
+      } else if (orderType !== selectedOrderType && orderType !== 'dispatch') {
+        try {
+          setActionPerform(true);
+          const body = {
+            deliverymode: orderType,
+          };
+          const response: any = await setBasketDeliveryMode(
+            newBasket?.basket?.id,
+            body,
+          );
+          setActionPerform(false);
+          dispatch(setBasketDeliveryAddressSuccess(response));
+          dispatch(setResturantInfoRequest(newRestaurant, orderType || ''));
+          navigate('/menu/' + newRestaurant.slug);
+          displayToast('SUCCESS', 'Location changed to ' + newRestaurant.name);
+        } catch (error: any) {
+          setActionPerform(false);
+          displayToast(
+            'ERROR',
+            error?.response?.data?.message
+              ? error.response.data.message
+              : 'ERROR! Please Try again later',
+          );
+        }
+        return;
+      }
+
       dispatch(getBasketRequestSuccess(newBasket?.basket));
       dispatch(setResturantInfoRequest(newRestaurant, orderType || ''));
       navigate('/menu/' + newRestaurant?.slug);
@@ -293,7 +349,62 @@ const LocationCard = (props: any) => {
   //   return obj;
   // };
 
+  const updateBasketDeliveryAddress = async (restaurantObj: any) => {
+    let updatedAddress: any = {
+      building: deliveryAddressString?.address2 || '',
+      streetaddress: deliveryAddressString?.address1 || '',
+      city: deliveryAddressString?.city || '',
+      zipcode: deliveryAddressString?.zip || '',
+      isdefault: deliveryAddressString?.isdefault || false,
+    };
+    try {
+      setActionPerform(true);
+      const response: any = await setBasketDeliveryAddress(
+        basketObj?.basket?.id,
+        updatedAddress,
+      );
+      setActionPerform(false);
+      dispatch(setBasketDeliveryAddressSuccess(response));
+      dispatch(setResturantInfoRequest(restaurantObj, orderType || ''));
+      navigate('/menu/' + restaurantObj.slug);
+    } catch (error: any) {
+      setActionPerform(false);
+      displayToast(
+        'ERROR',
+        error?.response?.data?.message
+          ? error.response.data.message
+          : 'ERROR! Please Try again later',
+      );
+    }
+  };
+
+  const updateBasketHandOffMode = async (restaurantObj: any) => {
+    try {
+      setActionPerform(true);
+      const body = {
+        deliverymode: orderType,
+      };
+      const response: any = await setBasketDeliveryMode(
+        basketObj?.basket?.id,
+        body,
+      );
+      setActionPerform(false);
+      dispatch(setBasketDeliveryAddressSuccess(response));
+      dispatch(setResturantInfoRequest(restaurantObj, orderType || ''));
+      navigate('/menu/' + restaurantObj.slug);
+    } catch (error: any) {
+      setActionPerform(false);
+      displayToast(
+        'ERROR',
+        error?.response?.data?.message
+          ? error.response.data.message
+          : 'ERROR! Please Try again later',
+      );
+    }
+  };
+
   const gotoCategoryPage = async (storeID: number) => {
+    console.log('storeId', storeID);
     if (orderType === undefined) {
       displayToast('ERROR', 'Please select at least one order type');
       return false;
@@ -305,67 +416,15 @@ const LocationCard = (props: any) => {
       if (basketObj?.basket) {
         if (selectedRestaurant?.id === storeID) {
           if (deliveryAddressString && orderType === 'dispatch') {
-            // const deliveryAddress = formatDeliveryAddress();
-            // dispatch(
-            //   setBasketDeliveryAddress(basketObj?.basket?.id, deliveryAddress),
-            // );
-            let updatedAddress: any = {
-              building: deliveryAddressString?.address2 || '',
-              streetaddress: deliveryAddressString?.address1 || '',
-              city: deliveryAddressString?.city || '',
-              zipcode: deliveryAddressString?.zip || '',
-              isdefault: deliveryAddressString?.isdefault || false,
-            };
-            try {
-              setActionPerform(true);
-              const response: any = await setBasketDeliveryAddress(
-                basketObj?.basket?.id,
-                updatedAddress,
-              );
-              setActionPerform(false);
-              dispatch(setBasketDeliveryAddressSuccess(response));
-              dispatch(setResturantInfoRequest(restaurantObj, orderType || ''));
-              navigate('/menu/' + restaurantObj.slug);
-            } catch (error: any) {
-              setActionPerform(false);
-              displayToast(
-                'ERROR',
-                error?.response?.data?.message
-                  ? error.response.data.message
-                  : 'ERROR! Please Try again later',
-              );
-            }
+            await updateBasketDeliveryAddress(restaurantObj);
+            return;
           } else if (
             orderType !== selectedOrderType &&
             orderType !== 'dispatch'
           ) {
-            try {
-              setActionPerform(true);
-              const body = {
-                deliverymode: orderType,
-              };
-              const response: any = await setBasketDeliveryMode(
-                basketObj?.basket?.id,
-                body,
-              );
-              setActionPerform(false);
-              dispatch(setBasketDeliveryAddressSuccess(response));
-              dispatch(setResturantInfoRequest(restaurantObj, orderType || ''));
-              navigate('/menu/' + restaurantObj.slug);
-            } catch (error: any) {
-              setActionPerform(false);
-              displayToast(
-                'ERROR',
-                error?.response?.data?.message
-                  ? error.response.data.message
-                  : 'ERROR! Please Try again later',
-              );
-            }
+            await updateBasketHandOffMode(restaurantObj);
+            return;
           }
-          //   setUpdatebasket(true);
-          //   setActionPerform(true);
-
-          return;
         } else {
           dispatch(
             basketTransferRequest(basketObj?.basket?.id, restaurantObj.id),
@@ -376,91 +435,13 @@ const LocationCard = (props: any) => {
         }
       }
     }
+    console.log('selectedRs', selectedRestaurant);
     if (orderType === 'dispatch' && deliveryAddressString) {
       dispatch(setDeliveryAddress(deliveryAddressString));
     }
     dispatch(setResturantInfoRequest(restaurantObj, orderType || ''));
     navigate('/menu/' + restaurantObj.slug);
-    //   if (selectedRestaurant?.id === storeID) {
-    //     if (orderType === selectedOrderType) {
-    //       dispatch(setResturantInfoRequest(restaurantObj, orderType || ''));
-    //     }
-    //       // if (deliveryAddressString) {
-    //       //   const deliveryAddress = formatDeliveryAddress();
-    //       //   dispatch(
-    //       //     setBasketDeliveryAddress(basketObj?.basket?.id, deliveryAddress),
-    //       //   );
-    //       //   setUpdatebasket(true);
-    //       //   setActionPerform(true);
-    //       // } else {
-    //       //   navigate('/menu/' + restaurantObj.slug);
-    //       // }
-    //     // } else {
-    //     //   dispatch(setResturantInfoRequest(restaurantObj, orderType || ''));
-    //     // }
-    //
-    //     if (orderType === 'dispatch' && deliveryAddressString) {
-    //       dispatch(setDeliveryAddress(deliveryAddressString));
-    //     }
-    //     navigate('/menu/' + restaurantObj.slug);
-    //   }
-    //
-    //   // displayToast('SUCCESS', 'Location changed to ' + restaurantObj.name);
-    // }
-    //
-    // // if (basketObj?.basket?.id && restaurantObj) {
-    // //   dispatch(basketTransferRequest(basketObj?.basket?.id, restaurantObj.id));
-    // //   setNewRestaurant(restaurantObj);
-    // //   return;
-    // // }
-    //
-    // if (selectedRestaurant && !basketObj?.basket) {
-    //   dispatch(setResturantInfoRequest(restaurantObj, orderType || ''));
-    //   if (orderType === 'dispatch' && restaurantObj) {
-    //     dispatch(setDeliveryAddress(deliveryAddressString));
-    //   }
-    //   // displayToast('SUCCESS', 'Location changed to ' + restaurantObj.name);
-    // }
-    //
-    // if (!selectedRestaurant) {
-    //   dispatch(setResturantInfoRequest(restaurantObj, orderType || ''));
-    //   if (orderType === 'dispatch' && restaurantObj) {
-    //     dispatch(setDeliveryAddress(deliveryAddressString));
-    //   }
-    //   displayToast('SUCCESS', 'Location changed to ' + restaurantObj.name);
-    // }
-    //
-    //
-    //
-    //
-    // // if()
-    //
-    // if (orderType === 'dispatch' && restaurantObj) {
-    //   dispatch(setDeliveryAddress(deliveryAddressString));
-    // }
-    // if (restaurantObj) {
-    //   if (
-    //     !selectedRestaurant ||
-    //     (selectedRestaurant && selectedRestaurant.id !== storeID) ||
-    //     orderType !== selectedOrderType
-    //   ) {
-    //     dispatch(setResturantInfoRequest(restaurantObj, orderType || ''));
-    //     if (basketObj && basketObj.basket) {
-    //       displayToast(
-    //         'SUCCESS',
-    //         'Location changed to ' +
-    //           restaurantObj.name +
-    //           ' and basket is empty',
-    //       );
-    //     } else {
-    //       displayToast('SUCCESS', 'Location changed to ' + restaurantObj.name);
-    //     }
-    //     triggerFacebookEventOnLocationChange();
-    //   }
-    //   navigate('/menu/' + restaurantObj.slug);
-    // }
   };
-
   const triggerFacebookEventOnLocationChange = () => {
     let userObj: any = null;
     if (providerToken) {
