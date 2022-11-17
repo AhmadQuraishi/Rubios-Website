@@ -13,10 +13,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   paper: { minWidth: '65%', minHeight: '550px', margin: 'auto !important',backgroundColor:
   `${theme.palette.background.paper} !important`, },
   root: {
-    '& .MuiBackdrop-root': {
-      backgroundColor:
+    [theme.breakpoints.down(480)]: {
+    ' & .MuiBackdrop-root': {
+
+       backgroundColor: 
       `transparent !important`,
+
     },
+    }
   },
 }));
 
@@ -47,6 +51,7 @@ export const LocationChangeModal = ({
     <Grid>
       <Dialog
         fullScreen={fullScreen}
+        onBackdropClick={() => setOpen(true)}
         className={classes.root }
         classes={{ paper: classes.paper}}
         // style={{background: 'transparent !important'}}
@@ -54,7 +59,7 @@ export const LocationChangeModal = ({
         PaperProps={{
           sx: {
             marginTop: { xs: '70px !important', sm: '0%', lg: '0%', md: '0%' },
-            // boxShadow: 'none',
+            boxShadow: {xs:'none'}
           },
         }}
         TransitionProps={{
@@ -76,11 +81,15 @@ export const LocationChangeModal = ({
           md={12}
           lg={12}
           sx={{
-            textAlign: 'center',
-            marginTop: { xs: '10%', lg: '5%', md: '5%', sm: '10%' },
-            marginBottom: '5%',
+            textAlign: 'center',    
+            justifyContent: {xs:'center',},
+            display: {xs:'flex',},
+            flexDirection: {xs:'column',},
+            marginBottom: { xs:'117px', lg: '0%'},
+            marginTop: { xs: '10%', lg: '10%', md: '10%', sm: '10%' },
             marginLeft: { xs: '5%', lg: '20%' },
             marginRight: { xs: '5%', lg: '20%' },
+
           }}
         >
           {itemsNotAvailable?.length > 0 ? (
