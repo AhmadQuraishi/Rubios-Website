@@ -111,8 +111,8 @@ const AccountHistory = () => {
               />
               <Tab
                 className={classes.tabspanel}
-                label="Transaction"
-                title="Transaction"
+                label="Transactions"
+                title="Transactions"
                 tabIndex={2}
                 {...a11yProps(2)}
               />
