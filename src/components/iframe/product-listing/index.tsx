@@ -150,8 +150,18 @@ const ProductListing = (props: any) => {
                       variant="h2"
                       title={item.name}
                       className={classes.title}
+                      sx={{
+                        height: {
+                          lg: '35px',
+                          md: '37px',
+                          sm: '30px',
+                          xs: '35px',
+                        },
+                      }}
                     >
-                      {item.name}
+                      {item?.name?.length > 26
+                        ? item?.name?.slice(0, 27) + '...'
+                        : item?.name}
                     </Typography>
                     <Button
                       className="custom-btn cta2-btn"

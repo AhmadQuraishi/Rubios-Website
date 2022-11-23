@@ -25,6 +25,7 @@ export const ItemsAvailableComponent = ({ restaurant }: any) => {
               color: '#214F66',
               fontSize: '32px',
               fontWeight: '900',
+              textAlignLast:'center',
               fontFamily: 'Poppins-Bold, sans-serif !important',
             }}
           >
@@ -46,17 +47,18 @@ export const ItemsAvailableComponent = ({ restaurant }: any) => {
             sx={{
               fontWeight: 'bold',
               fontSize: '18px',
+              textAlignLast:'center',
               paddingBottom: '5px',
             }}
           >
             {restaurant?.name}
           </Typography>
-          <Typography variant="body2">
+          <Typography variant="body2" sx={{ textAlignLast:'center', }}>
             {restaurant?.streetaddress}, <br /> {restaurant?.city},{' '}
             {restaurant?.state}, {restaurant?.zip}
           </Typography>
           {restaurant?.distance > 0 && (
-            <Typography variant="body2" sx={{ color: '#0069aa' }}>
+            <Typography variant="body2" sx={{ color: '#0069aa',textAlignLast:'center', }}>
               {restaurant.distance} Miles Away
             </Typography>
           )}

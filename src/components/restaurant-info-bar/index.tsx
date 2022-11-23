@@ -22,6 +22,7 @@ import DialogBox from '../dialog-box';
 import { updateUser } from '../../redux/actions/user';
 import { getSingleLocation } from '../../redux/actions/location';
 import './index.css';
+import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
 import { OrderTypeDialog } from '../order-type-dialog';
 const useStyle = makeStyles({
@@ -34,6 +35,7 @@ const useStyle = makeStyles({
 
 const StoreInfoBar = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const classes = useStyle();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [restaurantInfo, setRestaurantInfo] = useState<ResponseRestaurant>();
@@ -173,14 +175,14 @@ const StoreInfoBar = () => {
             padding: { xs: '30px 20px', sm: '35px 40px', lg: '20px 100px' },
           }}
         >
-          <DialogBox
+          {/* <DialogBox
             open={open}
             handleClose={handleClose}
             message={
               'If you change location, your selected items may not be available at the new location. Are you sure you want to change location?'
             }
             handleDeleteFunction={() => handleDeleteFunction()}
-          />
+          /> */}
           <OrderTypeDialog openModal={openOrder} setOpenModal={setOpenOrder} />
           <Grid item xs={12}>
             <Grid container spacing={0} margin="auto">
@@ -321,12 +323,12 @@ const StoreInfoBar = () => {
                       role={'button'}
                       aria-label={'Change location'}
                       tabIndex={1}
-                      onKeyPress={(e: any) => {
-                        if (e.key === 'Enter') {
-                          handleClickOpen();
-                        }
-                      }}
-                      onClick={() => handleClickOpen()}
+                      // onKeyPress={(e: any) => {
+                      //   if (e.key === 'Enter') {
+                      //     handleClickOpen();
+                      //   }
+                      // }}
+                       onClick={() => navigate('/location')}
                     >
                       Change location
                     </p>
@@ -456,12 +458,12 @@ const StoreInfoBar = () => {
                         role={'button'}
                         aria-label={'Change location'}
                         tabIndex={1}
-                        onKeyPress={(e: any) => {
-                          if (e.key === 'Enter') {
-                            handleClickOpen();
-                          }
-                        }}
-                        onClick={() => handleClickOpen()}
+                        // onKeyPress={(e: any) => {
+                        //   if (e.key === 'Enter') {
+                        //     handleClickOpen();
+                        //   }
+                        // }}
+                        onClick={() => navigate('/location')}
                       >
                         Change location
                       </p>

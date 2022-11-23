@@ -525,9 +525,10 @@ const Header = (props: any) => {
                     }
                   }}
                   sx={{
-                    paddingRight: { xs: '20px', md: '40px' },
-                    paddingLeft: '20px',
-                    paddingTop: '5px',
+                    paddingRight: { xs: '20px', md: '30px' },
+                    paddingLeft: {xs: '20px', md:'30px'},
+                    display: 'flex',
+                    alignItems:'center',
                     backgroundColor: 'transparent',
                     '&:hover': {
                       backgroundColor: 'transparent',
