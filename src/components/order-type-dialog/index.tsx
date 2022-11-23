@@ -121,7 +121,7 @@ export const OrderTypeDialog = ({ openModal, setOpenModal }: any) => {
       }}
       fullWidth
     >
-      <DialogTitle id="modal-dialog-delivery-title">{`Edit Order`}</DialogTitle>
+      <DialogTitle id="modal-dialog-delivery-title">{`Confirm Order Type`}</DialogTitle>
       <Formik
         initialValues={{
           orderType: basketObj?.basket?.deliverymode || orderType || 'pickup',
