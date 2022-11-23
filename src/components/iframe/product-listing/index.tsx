@@ -150,16 +150,24 @@ const ProductListing = (props: any) => {
                       variant="h2"
                       title={item.name}
                       className={classes.title}
-                      sx={{height: {lg: '35px', md: '37px', sm: '30px', xs: '35px'}}}
+                      sx={{
+                        height: {
+                          lg: '35px',
+                          md: '37px',
+                          sm: '30px',
+                          xs: '35px',
+                        },
+                      }}
                     >
-                     {item.name = ((item.name.length >26) ? item.name.slice(0,27)+"..." : item.name)}
-                     {/* {item.name} */}
+                      {item?.name?.length > 26
+                        ? item?.name?.slice(0, 27) + '...'
+                        : item?.name}
                     </Typography>
                     <Button
                       className="custom-btn cta2-btn"
                       variant="contained"
                       title="ORDER NOW"
-                      style={{ width: '80%', margin: '5px', }}
+                      style={{ width: '80%', margin: '5px' }}
                       onClick={() => {
                         window.parent.location.href = `${process.env.REACT_APP_ORDERING_URL}`;
                       }}
