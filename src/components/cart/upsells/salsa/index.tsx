@@ -278,17 +278,19 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
             {products.map((obj: any) => {
               return (
                 <>
-                  <Grid item xs={12} lg={6}>
+                  <Grid item xs={12} lg={6}                                     sx={{ display: 'flex', alignItems: 'stretch' }}>
                     <Grid
                       key={Math.random() + '-'}
                       item
                       xs={12}
+
                       style={{
                         display: 'flex',
                         border: '1px solid rgba(0, 0, 0, 0.2)',
                         padding: 10,
                         minHeight: '140px',
                         alignItems: 'center',
+                        
                         boxShadow: '0px 2px 3px 0px rgba(0, 0, 0, 0.2)',
                       }}
                       sx={{ cursor: 'pointer' }}
