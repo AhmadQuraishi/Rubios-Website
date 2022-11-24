@@ -294,9 +294,9 @@ const PickupForm = ({
               </Grid>
             </>
           ) : null}
-          {!authToken?.authtoken && (
+           {!authToken?.authtoken && (
             <Grid item xs={12}>
-              {!providerToken && showSignUpGuest && (
+              {/* {!providerToken && showSignUpGuest && ( */}
                 <FormGroup>
                   <FormControlLabel
                     control={
@@ -312,7 +312,7 @@ const PickupForm = ({
                     name="emailNotification"
                     className="size"
                   />
-                  <Grid item xs={12} sm={12} md={12} lg={12}>
+                  {/* <Grid item xs={12} sm={12} md={12} lg={12}>
                     <Typography
                       variant="body2"
                       title="Don't have an account?"
@@ -332,11 +332,11 @@ const PickupForm = ({
                         Sign Up?
                       </Link>
                     </Typography>
-                  </Grid>
+                  </Grid> */}
                 </FormGroup>
-              )}
-            </Grid>
-          )}
+               {/* )}  */}
+            </Grid> 
+          )} 
         </form>
       )}
     </Formik>

@@ -72,7 +72,7 @@ const Checkout = () => {
   const [removeCreditCardOnce, setRemoveCreditCardOnce] =
     React.useState<boolean>(true);
   const [birthDay, setBirthDay] = useState<Date | undefined>();
-  const [showSignUpGuest, setShowSignUpGuest] = React.useState<boolean>(false);
+  //const [showSignUpGuest, setShowSignUpGuest] = React.useState<boolean>(true);
   const [defaultCard, setDefaultCard] = React.useState<boolean>(true);
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
   const [tipPercentage, setTipPercentage] = React.useState<any>(null);
@@ -1080,8 +1080,8 @@ const Checkout = () => {
                         basket.deliverymode === DeliveryModeEnum.curbside ||
                         basket.deliverymode === DeliveryModeEnum.dinein) ? (
                         <PickupForm
-                          setShowSignUpGuest={setShowSignUpGuest}
-                          showSignUpGuest={!showSignUpGuest}
+                          // setShowSignUpGuest={setShowSignUpGuest}
+                          // showSignUpGuest={!showSignUpGuest}
                           basket={basket}
                           pickupFormRef={pickupFormRef}
                           orderType={basket.deliverymode}
@@ -1091,8 +1091,8 @@ const Checkout = () => {
                       basket.deliverymode === DeliveryModeEnum.dispatch ? (
                         <DeliveryForm
                           basket={basket}
-                          setShowSignUpGuest={setShowSignUpGuest}
-                          showSignUpGuest={!showSignUpGuest}
+                          // setShowSignUpGuest={setShowSignUpGuest}
+                          // showSignUpGuest={!showSignUpGuest}
                           // defaultAddress={defaultDeliveryAddress}
                           deliveryFormRef={deliveryFormRef}
                         />
@@ -1106,7 +1106,7 @@ const Checkout = () => {
                   )}
                 </Grid>
               </Grid>
-              {!providerToken && showSignUpGuest && (
+              {!providerToken && (
                 <>
                   <br />
                   <br />
@@ -1117,7 +1117,7 @@ const Checkout = () => {
                   <SignUpGuest
                     birthDay={birthDay}
                     setBirthDay={setBirthDay}
-                    guestSignupCheckout={guestSignupCheckout}
+                    //guestSignupCheckout={guestSignupCheckout}
                     signupFormRef={signupFormRef}
                   />
                 </>

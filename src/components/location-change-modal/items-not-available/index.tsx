@@ -3,7 +3,8 @@ import { Grid, Typography } from '@mui/material';
 
 export const ItemsNotAvailableComponent = ({ items }: any) => {
   return (
-    <Grid>
+    <Grid sx={{alignItems: 'center',
+}}>
       <Grid
         xs={12}
         sm={12}
@@ -11,13 +12,14 @@ export const ItemsNotAvailableComponent = ({ items }: any) => {
         lg={12}
         sx={{
           textAlign: 'center',
+          alignItems: 'center',
           // marginTop: { xs: '10%', lg: '5%', md: '5%', sm: '10%' },
           // marginBottom: '5%',
           // marginLeft: { xs: '5%', lg: '20%' },
           // marginRight: { xs: '5%', lg: '20%' },
         }}
       >
-        <Grid xs={12} sm={12} md={12} lg={12}>
+        <Grid xs={12} sm={12} md={12} lg={12} sx={{alignItems: 'center'}}>
           <Typography
             sx={{
               lineHeight: '1.1 !important',
@@ -26,6 +28,7 @@ export const ItemsNotAvailableComponent = ({ items }: any) => {
               fontSize: {xs: "32px !important", lg: '27px !important', md: '27px !important', sm:'27px !important'},
               fontWeight: '900',
               fontFamily: 'Poppins-Bold, sans-serif !important',
+              alignItems: 'center',
             }}
           >
             SORRY, SOME ITEMS AREN'T AVAILABLE AT YOUR NEW LOCATION.

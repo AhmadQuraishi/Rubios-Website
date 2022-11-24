@@ -170,7 +170,7 @@ const DeliveryForm = ({
                 helperText={errors.email}
               />
             </Grid>
-            {!providerToken && showSignUpGuest && (
+                       {!authToken?.authtoken && (
               <Grid item xs={12} sm={12} md={12} lg={12}>
                 <FormGroup>
                   <FormControlLabel
@@ -188,7 +188,7 @@ const DeliveryForm = ({
                     className="size"
                   />
                 </FormGroup>
-                <Typography
+                {/* <Typography
                   variant="body2"
                   title="Don't have an account?"
                   sx={{ width: '100%', padding: '0pxx !important' }}
@@ -205,9 +205,9 @@ const DeliveryForm = ({
                   >
                     Sign Up?
                   </Link>
-                </Typography>
+                </Typography> */}
               </Grid>
-            )}
+            )} 
             <Grid
               item
               xs={12}

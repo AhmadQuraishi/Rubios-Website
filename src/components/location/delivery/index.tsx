@@ -418,26 +418,7 @@ const DeliveryAddresses = (props: any) => {
                           {address.zipcode}
                         </Typography>
                         <Typography
-                          className={'delivery-heading-edit'}
-                          style={{ cursor: 'pointer', }}
-                          onClick={() => {
-                            setAddDeliveryAddress({
-                              address1: address.streetaddress || '',
-                              address2: address.building || '',
-                              city: address.city || '',
-                              zip: address.zipcode || '',
-                              isdefault: address.isdefault,
-                            });
-                            setEdit(true);
-                            setSelectedAddressId(address.id);
-                            handleClickOpen();
-                          }}
-                          variant="body2"
-                        >
-                          EDIT
-                        </Typography>
-                        <Typography
-                          style={{ cursor: 'pointer',marginLeft:"20px" }}
+                          style={{ cursor: 'pointer' }}
                           className={'delivery-heading-edit'}
                           onClick={() => {
                             setSelectedAddressId(address.id);
@@ -456,6 +437,26 @@ const DeliveryAddresses = (props: any) => {
                         >
                           SELECT
                         </Typography>
+                        <Typography
+                          className={'delivery-heading-edit'}
+                          style={{ cursor: 'pointer',marginLeft:"20px" }}
+                          onClick={() => {
+                            setAddDeliveryAddress({
+                              address1: address.streetaddress || '',
+                              address2: address.building || '',
+                              city: address.city || '',
+                              zip: address.zipcode || '',
+                              isdefault: address.isdefault,
+                            });
+                            setEdit(true);
+                            setSelectedAddressId(address.id);
+                            handleClickOpen();
+                          }}
+                          variant="body2"
+                        >
+                          EDIT
+                        </Typography>
+
                       </CardContent>
                     </Card>
                   ))}
