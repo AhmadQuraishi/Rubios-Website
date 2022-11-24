@@ -33,7 +33,7 @@ export const LocationChangeModal = ({
   handleChangeLocation,
 }: any) => {
   const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const fullScreen = useMediaQuery(theme.breakpoints.down(480));
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   // const handleClickOpenOrder = () => {
@@ -85,8 +85,9 @@ export const LocationChangeModal = ({
             justifyContent: {xs:'center',},
             display: {xs:'flex',},
             flexDirection: {xs:'column',},
-            marginBottom: { xs:'117px', lg: '0%'},
-            marginTop: { xs: '10%', lg: '10%', md: '10%', sm: '10%' },
+            marginBottom: { xs:'117px', lg: '0%', md:'0%', sm: "0%"},
+            paddingBottom: {lg:'10%',md: '10%', sm: '10%'},
+            paddingTop: { xs: '0%', lg: '10%', md: '10%', sm: '10%' },
             marginLeft: { xs: '5%', lg: '20%' },
             marginRight: { xs: '5%', lg: '20%' },
 

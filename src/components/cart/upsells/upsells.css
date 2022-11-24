@@ -72,3 +72,14 @@
     padding: 0px !important;
   }
 }
+
+.add-side-select {
+  width: 100% !important;
+  height: 30px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  color: #2B4B62;
+  padding: 5px;
+  text-overflow: ellipsis;
+  margin-top: 5px;
+}
