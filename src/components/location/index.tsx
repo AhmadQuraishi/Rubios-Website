@@ -750,17 +750,16 @@ const LocationCard = (props: any) => {
               {orderType &&
                 !hideCurrentLocation &&
                 !(orderType === 'dispatch' && addCustomAddressCheck()) && (
-                  <Link
+                  <a
                     className={'current-location'}
                     title="USE YOUR CURRENT LOCATION?"
                     role="button"
                     tabIndex={0}
                     aria-label="USE YOUR CURRENT LOCATION"
                     onClick={findNearByRestaurants}
-                    to="#"
                   >
                     USE YOUR CURRENT LOCATION?
-                  </Link>
+                  </a>
                 )}
 
               {!showAllRestaurants &&

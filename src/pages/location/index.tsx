@@ -686,6 +686,7 @@ const Location = () => {
                 zoom={zoom}
                 mapCenter={mapCenter}
                 markers={markers}
+                action={action}
                 actionTypes={actionTypes}
                 setAction={setAction}
                 orderType={orderType}
