@@ -226,7 +226,7 @@ export const OrderTypeDialog = (props: any) => {
                         role="radio"
                         value={'pickup'}
                         // onClick={() => {
-                        //   setSearchText('');
+                        //   //setSearchText('');
                         //   changeOrderType('pickup');
                         // }}
                         className="selected-toggle-btn"
@@ -239,7 +239,7 @@ export const OrderTypeDialog = (props: any) => {
                         role="radio"
                         value={'curbside'}
                         // onClick={() => {
-                        //   setSearchText('');
+                        //   //setSearchText('');
                         //   changeOrderType('curbside');
                         // }}
                         className="selected-toggle-btn"
@@ -249,11 +249,24 @@ export const OrderTypeDialog = (props: any) => {
                         Curbside
                       </ToggleButton>
                       <ToggleButton
+                        role="radio"
+                        value={'dinein'}
+                        // onClick={() => {
+                        //   //setSearchText('');
+                        //   changeOrderType('dinein');
+                        // }}
+                        className="selected-toggle-btn"
+                        aria-current={changeOrderType === 'dinein'}
+                        aria-label=" Curbside, Activating this element will cause results to load below "
+                      >
+                        Dine In
+                      </ToggleButton>
+                      <ToggleButton
                         value={'dispatch'}
                         role="radio"
                         // onClick={() => {
-                        //   setSearchText('');
-                        //   setShowAllRestaurants(false);
+                        //   // setSearchText('');
+                        //   // setShowAllRestaurants(false);
                         //   changeOrderType('dispatch');
                         // }}
                         className="selected-toggle-btn"
