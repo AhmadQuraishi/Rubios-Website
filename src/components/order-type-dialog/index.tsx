@@ -30,11 +30,12 @@ import './order-type.css';
 export const OrderTypeDialog = (props: any) => {
   const {
     setValue,
-    openModal, setOpenModal,
+    openModal,
+    setOpenModal,
     // changeOrderType,
   } = props;
   const dispatch = useDispatch();
-  const [buttonDisabled, setButtonDisabled] = useState(false);  
+  const [buttonDisabled, setButtonDisabled] = useState(false);
   const { orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
@@ -43,11 +44,20 @@ export const OrderTypeDialog = (props: any) => {
   const { providerToken } = useSelector((state: any) => state.providerReducer);
   const { authToken } = useSelector((state: any) => state.authReducer);
 
-  const [changeOrderType, setChangeOrderType] = useState<any>(basketObj?.basket?.deliverymode || orderType || 'pickup');
+  const [changeOrderType, setChangeOrderType] = useState<any>(
+    basketObj?.basket?.deliverymode || orderType || 'pickup',
+  );
 
   const handleClose = () => {
     setOpenModal(false);
     setButtonDisabled(false);
+  };
+
+  const backdropClose = (event: any, reason: any) => {
+    if (reason && reason === 'backdropClick') {
+      return;
+    }
+    handleClose();
   };
 
   const basketSuccess = (response: any) => {
@@ -74,7 +84,7 @@ export const OrderTypeDialog = (props: any) => {
     event: React.MouseEvent<HTMLElement>,
     newAlignment: string,
   ) => {
-    if(newAlignment){
+    if (newAlignment) {
       setChangeOrderType(newAlignment);
     }
   };
@@ -125,14 +135,15 @@ export const OrderTypeDialog = (props: any) => {
     return (
       buttonDisabled ||
       (changeOrderType !== 'dispatch' && changeOrderType === orderType) ||
-      (changeOrderType === 'dispatch' && (
-        values.address1 === ''|| values.city === '' || values.zip === '')));
+      (changeOrderType === 'dispatch' &&
+        (values.address1 === '' || values.city === '' || values.zip === ''))
+    );
   };
 
   return (
     <Dialog
       open={openModal}
-      onClose={handleClose}
+      onClose={backdropClose}
       aria-labelledby="modal-dialog-delivery-address"
       aria-describedby="modal-dialog-delivery-address-form"
       sx={{ width: '100%' }}
@@ -175,7 +186,7 @@ export const OrderTypeDialog = (props: any) => {
             .required('Postal code is required'),
           isdefault: Yup.boolean(),
         })}
-        onSubmit={async (values) => { }}
+        onSubmit={async (values) => {}}
       >
         {({
           errors,
@@ -190,13 +201,16 @@ export const OrderTypeDialog = (props: any) => {
           <form onSubmit={handleSubmit}>
             <DialogContent>
               <DialogContentText id="alert-dialog-description">
-                <Grid container sx={{ width: '100%',justifyContent: 'center', }}>
-                   {/*<Grid item xs={12}>
+                <Grid
+                  container
+                  sx={{ width: '100%', justifyContent: 'center' }}
+                >
+                  {/*<Grid item xs={12}>
                     <FormControl fullWidth>
                       <InputLabel id="demo-simple-select-label">
                         Order Type
                      // </InputLabel>
-                      // <Select 
+                      // <Select
                       //   labelId="demo-simple-select-label"
                       //   id="demo-simple-select"
                       //   value={values.orderType}
@@ -212,15 +226,15 @@ export const OrderTypeDialog = (props: any) => {
                       // </Select>
                     </FormControl>
                   </Grid>*/}
-                  <Grid item  className='order-tickmark'>
+                  <Grid item className="order-tickmark">
                     {/* <Typography variant="h1" className="sr-only">
                 Choose your location
               </Typography> */}
                     <ToggleButtonGroup
-                    style={{display: 'inline'}}
-                    exclusive
-                    value={changeOrderType}
-                    onChange={onServiceSelect}
+                      style={{ display: 'inline' }}
+                      exclusive
+                      value={changeOrderType}
+                      onChange={onServiceSelect}
                     >
                       <ToggleButton
                         role="radio"
