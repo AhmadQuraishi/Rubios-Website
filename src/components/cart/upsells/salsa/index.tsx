@@ -255,6 +255,12 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
             sx={{ paddingRight: '25px', alignContent: 'flex-start' }}
           >
             {products.map((obj: any) => {
+              if (
+                obj.chainproductid === 547172 ||
+                obj.chainproductid === 185965
+              ) {
+                return <></>;
+              }
               return (
                 <>
                   <Grid item xs={12} lg={6}>
@@ -317,11 +323,19 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                           sx={{
                             display: 'inline',
                             fontFamily: 'Poppins-Medium !important',
-                            fontSize:{ lg:"12px !important", xs: "14px !important"}
+                            fontSize: {
+                              lg: '12px !important',
+                              xs: '14px !important',
+                            },
                           }}
                           // title={option.name}
                         >
-                          {obj.name = ((obj.name.length >26) ? obj.name.slice(0,30)+"..." : obj.name)}
+                          {
+                            (obj.name =
+                              obj.name.length > 26
+                                ? obj.name.slice(0, 30) + '...'
+                                : obj.name)
+                          }
                           {obj.cost > 0 && (
                             <Grid
                               item
