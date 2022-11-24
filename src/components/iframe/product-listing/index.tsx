@@ -153,14 +153,14 @@ const ProductListing = (props: any) => {
                       sx={{
                         height: {
                           lg: '35px',
-                          md: '37px',
-                          sm: '30px',
-                          xs: '35px',
+                          md: '50px',
+                          sm: '45px',
+                          xs: '50px',
                         },
                       }}
                     >
-                      {item?.name?.length > 26
-                        ? item?.name?.slice(0, 27) + '...'
+                      {item?.name?.length > 48
+                        ? item?.name?.slice(0, 50) + '...'
                         : item?.name}
                     </Typography>
                     <Button
