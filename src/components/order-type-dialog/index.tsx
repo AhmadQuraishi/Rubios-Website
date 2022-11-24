@@ -74,24 +74,9 @@ export const OrderTypeDialog = (props: any) => {
     event: React.MouseEvent<HTMLElement>,
     newAlignment: string,
   ) => {
-    console.log("New Alignment",newAlignment)
-    setChangeOrderType(newAlignment);
-    // if (newAlignment) {
-    //   // setAlignment(newAlignment);
-    //   const orderT =
-    //     newAlignment === 'Pick up'
-    //       ? 'pickup'
-    //       : newAlignment === 'Curbside'
-    //       ? 'curbside'
-    //       : newAlignment === 'Delivery'
-    //       ? 'dispatch'
-    //       : 'web';
-    //   //setSearchText('');
-     
-    //   if (orderT === 'dispatch') {
-    //     //setShowAllRestaurants(false);
-    //   }
-    // }
+    if(newAlignment){
+      setChangeOrderType(newAlignment);
+    }
   };
 
   const handleOrderUpdate = async (formData: any) => {
