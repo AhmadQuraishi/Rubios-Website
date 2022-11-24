@@ -101,7 +101,7 @@ const LocationCard = (props: any) => {
 
   useEffect(() => {
     if (isMapLoaded) {
-      console.log('init')
+      console.log('init');
       init();
       // setRequestOptions({
       //   location:
@@ -270,7 +270,7 @@ const LocationCard = (props: any) => {
   );
 
   const findNearByRestaurants = () => {
-    setLoadDynamicMap(true)
+    setLoadDynamicMap(true);
     setLatLng(null);
     setActionPerform(true);
     setSearchText('');
@@ -486,6 +486,43 @@ const LocationCard = (props: any) => {
     );
   };
 
+  const fitViewAllRestaurant = () => {
+    const locationCardView = document.getElementById('location-card-view');
+    const viewAllRest = document.getElementById('view-all-restaurant');
+    const pageHeader: any = document.getElementById('page-header');
+
+    if (viewAllRest) {
+      if (locationCardView) {
+        viewAllRest.style.height = locationCardView?.clientHeight + 'px';
+      }
+      if (pageHeader) {
+        viewAllRest.style.top = pageHeader?.clientHeight + 'px';
+      }
+    }
+  };
+
+  window.addEventListener(
+    'orientationchange',
+    function () {
+      fitViewAllRestaurant();
+    },
+    false,
+  );
+
+  window.addEventListener(
+    'resize',
+    function () {
+      fitViewAllRestaurant();
+    },
+    false,
+  );
+
+  useEffect(() => {
+    if (showAllRestaurants) {
+      fitViewAllRestaurant();
+    }
+  }, [showAllRestaurants]);
+
   return (
     <Grid container className="list-wrapper" id={'location-card-view'}>
       {newBasket?.basket && (
@@ -509,6 +546,7 @@ const LocationCard = (props: any) => {
       >
         {showAllRestaurants && (
           <div
+            id={'view-all-restaurant'}
             style={{
               position: 'absolute',
               width: '100%',
@@ -647,7 +685,7 @@ const LocationCard = (props: any) => {
                         setValue('');
                         setActionPerform(false);
                       } else {
-                        setLoadDynamicMap(true)
+                        setLoadDynamicMap(true);
                         setValue(e.target.value);
                       }
                     }}
