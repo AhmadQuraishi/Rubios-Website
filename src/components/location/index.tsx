@@ -48,6 +48,19 @@ import { getBasketRequestSuccess } from '../../redux/actions/basket';
 
 const LocationCard = (props: any) => {
   const {
+    value,
+    suggestions: { status, data },
+    setValue,
+    clearSuggestions,
+    init,
+  } = usePlacesAutocomplete({
+    requestOptions: {
+      location:
+        window.google && new google.maps.LatLng({ lat: 37.772, lng: -122.214 }),
+      radius: 200 * 1000,
+    },
+  });
+  const {
     actionTypes,
     setAction,
     orderType,
@@ -66,11 +79,9 @@ const LocationCard = (props: any) => {
     restaurantNotFound,
     hideCurrentLocation,
     getNearByRestaurants,
-    value,
-    setValue,
-    clearSuggestions,
-    status,
-    data,
+    loadDynamicMap,
+    setLoadDynamicMap,
+    isMapLoaded,
   } = props;
 
   const dispatch = useDispatch();
@@ -87,6 +98,19 @@ const LocationCard = (props: any) => {
   useEffect(() => {
     dispatch(basketTransferReset());
   }, []);
+
+  useEffect(() => {
+    if (isMapLoaded) {
+      console.log('init')
+      init();
+      // setRequestOptions({
+      //   location:
+      //     window.google &&
+      //     new google.maps.LatLng({ lat: 37.772, lng: -122.214 }),
+      //   radius: 200 * 1000,
+      // });
+    }
+  }, [isMapLoaded]);
 
   const onServiceSelect = (
     event: React.MouseEvent<HTMLElement>,
@@ -246,6 +270,7 @@ const LocationCard = (props: any) => {
   );
 
   const findNearByRestaurants = () => {
+    setLoadDynamicMap(true)
     setLatLng(null);
     setActionPerform(true);
     setSearchText('');
@@ -462,7 +487,7 @@ const LocationCard = (props: any) => {
   };
 
   return (
-    <Grid container className="list-wrapper">
+    <Grid container className="list-wrapper" id={'location-card-view'}>
       {newBasket?.basket && (
         <LocationChangeModal
           showLocationChangeModal={showLocationChangeModal}
@@ -622,6 +647,7 @@ const LocationCard = (props: any) => {
                         setValue('');
                         setActionPerform(false);
                       } else {
+                        setLoadDynamicMap(true)
                         setValue(e.target.value);
                       }
                     }}
@@ -804,6 +830,7 @@ const LocationCard = (props: any) => {
               )}
               <Grid container spacing={1}>
                 {orderType &&
+                  !showAllRestaurants &&
                   !addCustomAddressCheck() &&
                   filteredRestaurants?.map(
                     (item: ResponseRestaurant, index: number) => (
