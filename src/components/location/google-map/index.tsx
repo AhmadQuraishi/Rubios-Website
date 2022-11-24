@@ -8,10 +8,13 @@ const GoogleMapComponent = ({
   fitMapView,
   setActionPerform,
   setIsMapLoaded,
+  action,
+  actionTypes,
+  currentLocation,
 }: any) => {
   const mapRef = useRef();
   const [libraries] = useState<any>(['places']);
- const { isLoaded } = useLoadScript({
+  const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY?.toString() || '',
     libraries,
   });
@@ -25,6 +28,9 @@ const GoogleMapComponent = ({
       setActionPerform(false);
       setIsMapLoaded(true);
       fitMapView();
+      if (action === actionTypes.CURRENT_LOCATION) {
+        currentLocation();
+      }
     }
   }, [isLoaded]);
   useEffect(() => {
