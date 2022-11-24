@@ -836,6 +836,7 @@ const LocationCard = (props: any) => {
                 gotoCategoryPage={gotoCategoryPage}
                 setActionPerform={setActionPerform}
                 setLatLng={setLatLng}
+                setLoadDynamicMap={setLoadDynamicMap}
               />
             )}
             <Grid
