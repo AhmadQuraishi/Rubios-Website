@@ -294,9 +294,9 @@ const PickupForm = ({
               </Grid>
             </>
           ) : null}
-          {/* {!authToken?.authtoken && (
+           {!authToken?.authtoken && (
             <Grid item xs={12}>
-              {/* {!providerToken && showSignUpGuest && ( 
+              {/* {!providerToken && showSignUpGuest && ( */}
                 <FormGroup>
                   <FormControlLabel
                     control={
@@ -332,11 +332,11 @@ const PickupForm = ({
                         Sign Up?
                       </Link>
                     </Typography>
-                  </Grid> 
+                  </Grid> */}
                 </FormGroup>
-              {/* )} 
+               {/* )}  */}
             </Grid> 
-          )} */}
+          )} 
         </form>
       )}
     </Formik>

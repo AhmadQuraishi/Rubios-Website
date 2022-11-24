@@ -255,7 +255,7 @@ const SignUpGuest = ({ guestSignupCheckout, signupFormRef, birthDay, setBirthDay
                       )}
                     </Grid>
 
-                    <Grid
+                    {/* <Grid
                       item
                       xs={12}
                       sm={12}
@@ -288,7 +288,7 @@ const SignUpGuest = ({ guestSignupCheckout, signupFormRef, birthDay, setBirthDay
                         />{'  '}
                         Send me emails with special Offers and Updates.
                       </Typography>
-                    </Grid>
+                    </Grid> */}
                     <Grid
                       item
                       xs={12}

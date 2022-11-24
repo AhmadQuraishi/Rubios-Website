@@ -10,7 +10,7 @@ export const ItemsAvailableComponent = ({ restaurant }: any) => {
         md={12}
         lg={12}
         sx={{
-          textAlign: 'left',
+          textAlign: 'center',
           // marginTop: { xs: '10%', lg: '5%', md: '5%', sm: '10%' },
           // marginBottom: '5%',
           // marginLeft: { xs: '5%', lg: '20%' },
@@ -21,11 +21,11 @@ export const ItemsAvailableComponent = ({ restaurant }: any) => {
           <Typography
             sx={{
               lineHeight: '1.1 !important',
-              textAlign: 'left',
+              textAlign: 'center',
               color: '#214F66',
               fontSize: '32px',
               fontWeight: '900',
-              textAlignLast:'center',
+              ttextAlign: 'center',
               fontFamily: 'Poppins-Bold, sans-serif !important',
             }}
           >
@@ -47,18 +47,18 @@ export const ItemsAvailableComponent = ({ restaurant }: any) => {
             sx={{
               fontWeight: 'bold',
               fontSize: '18px',
-              textAlignLast:'center',
+              textAlign: 'center',
               paddingBottom: '5px',
             }}
           >
             {restaurant?.name}
           </Typography>
-          <Typography variant="body2" sx={{ textAlignLast:'center', }}>
+          <Typography variant="body2" sx={{ textAlign: 'center', }}>
             {restaurant?.streetaddress}, <br /> {restaurant?.city},{' '}
             {restaurant?.state}, {restaurant?.zip}
           </Typography>
           {restaurant?.distance > 0 && (
-            <Typography variant="body2" sx={{ color: '#0069aa',textAlignLast:'center', }}>
+            <Typography variant="body2" sx={{ color: '#0069aa',textAlign: 'center', }}>
               {restaurant.distance} Miles Away
             </Typography>
           )}
