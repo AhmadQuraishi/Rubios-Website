@@ -171,8 +171,7 @@ const Header = (props: any) => {
   };
   return (
     <>
-      {console.log('window location', window.location.pathname)}
-      <AppBar position="sticky" className={classes.navBar}>
+      <AppBar id={'page-header'} position="sticky" className={classes.navBar}>
         <Toolbar
           sx={{
             alignItems: { sm: 'inherit' },
