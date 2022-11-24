@@ -83,6 +83,8 @@ const Location = () => {
   const [restaurantNotFound, setRestaurantNotFound] = useState(false);
   const [hideCurrentLocation, setHideCurrentLocation] = useState(false);
   const [staticMapImageUrl, setStaticMapImageUrl] = useState('');
+  const [loadDynamicMap, setLoadDynamicMap] = useState(false);
+  const [isMapLoaded, setIsMapLoaded] = useState(false);
 
   // const [libraries] = useState<any>(['places']);
   // useLoadScript({
@@ -438,6 +440,37 @@ const Location = () => {
     console.log('orderType', orderType);
   }, [orderType]);
 
+  const fitMapView = () => {
+    const locationCardView = document.getElementById('location-card-view');
+    const googleMapLocation = document.getElementById('google-map-location');
+    const pageHeader: any = document.getElementById('page-header');
+
+    if (googleMapLocation) {
+      if (locationCardView) {
+        googleMapLocation.style.height = locationCardView?.clientHeight + 'px';
+      }
+      if (pageHeader) {
+        googleMapLocation.style.top = pageHeader?.clientHeight + 'px';
+      }
+    }
+  };
+
+  window.addEventListener(
+    'orientationchange',
+    function () {
+      fitMapView();
+    },
+    false,
+  );
+
+  window.addEventListener(
+    'resize',
+    function () {
+      fitMapView();
+    },
+    false,
+  );
+
   return (
     <Page title={'Location'} className="">
       <Dialog
@@ -615,11 +648,9 @@ const Location = () => {
           </Formik>
         )}
       </Dialog>
-      <div style={{ minHeight: '300px', position: 'relative' }}>
-        {(restaurantLoading ||
-          // window.google === undefined ||
-          (orderType && window.google === undefined) ||
-          actionPerform) && (
+
+      <div style={{ minHeight: '300px', zIndex: 1, height: 'auto' }}>
+        {(restaurantLoading || actionPerform) && (
           <div className={classes.dummyBg}>
             <LoadingBar />
           </div>
@@ -646,56 +677,65 @@ const Location = () => {
           {/*    transform: 'translate(-50%, 0)',*/}
           {/*  }}*/}
           {/*/>*/}
-          {orderType && (
-            <GoogleMapComponent
-              zoom={zoom}
-              mapCenter={mapCenter}
-              markers={markers}
-              actionTypes={actionTypes}
-              setAction={setAction}
-              orderType={orderType}
-              changeOrderType={changeOrderType}
-              setLatLng={setLatLng}
-              setActionPerform={setActionPerform}
-              deliveryAddressString={deliveryAddressString}
-              setDeliveryAddressString={setDeliveryAddressString}
-              allRestaurants={restaurants?.restaurants || []}
-              setFilteredRestaurants={setFilteredRestaurants}
-              filteredRestaurants={filteredRestaurants}
-              loading={restaurantLoading}
-              addCustomAddressCheck={addCustomAddressCheck}
-              currentLocation={currentLocation}
-              setRestaurantNotFound={setRestaurantNotFound}
-              restaurantNotFound={restaurantNotFound}
-              hideCurrentLocation={hideCurrentLocation}
-              getNearByRestaurants={getNearByRestaurants}
-            />
-          )}
 
           {/*<div></div>*/}
 
-          {!orderType && (
-            <LocationCard
-              actionTypes={actionTypes}
-              setAction={setAction}
-              orderType={orderType}
-              changeOrderType={changeOrderType}
-              setLatLng={setLatLng}
-              setActionPerform={setActionPerform}
-              deliveryAddressString={deliveryAddressString}
-              setDeliveryAddressString={setDeliveryAddressString}
-              allRestaurants={restaurants?.restaurants || []}
-              setFilteredRestaurants={setFilteredRestaurants}
-              filteredRestaurants={filteredRestaurants}
-              loading={restaurantLoading}
-              addCustomAddressCheck={addCustomAddressCheck}
-              currentLocation={currentLocation}
-              setRestaurantNotFound={setRestaurantNotFound}
-              restaurantNotFound={restaurantNotFound}
-              hideCurrentLocation={hideCurrentLocation}
-              getNearByRestaurants={getNearByRestaurants}
-            />
+          {orderType && loadDynamicMap && (
+            <div>
+              <GoogleMapComponent
+                zoom={zoom}
+                mapCenter={mapCenter}
+                markers={markers}
+                actionTypes={actionTypes}
+                setAction={setAction}
+                orderType={orderType}
+                changeOrderType={changeOrderType}
+                setLatLng={setLatLng}
+                setActionPerform={setActionPerform}
+                deliveryAddressString={deliveryAddressString}
+                setDeliveryAddressString={setDeliveryAddressString}
+                allRestaurants={restaurants?.restaurants || []}
+                setFilteredRestaurants={setFilteredRestaurants}
+                filteredRestaurants={filteredRestaurants}
+                loading={restaurantLoading}
+                addCustomAddressCheck={addCustomAddressCheck}
+                currentLocation={currentLocation}
+                setRestaurantNotFound={setRestaurantNotFound}
+                restaurantNotFound={restaurantNotFound}
+                hideCurrentLocation={hideCurrentLocation}
+                getNearByRestaurants={getNearByRestaurants}
+                fitMapView={fitMapView}
+                isMapLoaded={isMapLoaded}
+                setIsMapLoaded={setIsMapLoaded}
+              />
+            </div>
           )}
+
+          {/*{!orderType && (*/}
+          <LocationCard
+            actionTypes={actionTypes}
+            setAction={setAction}
+            orderType={orderType}
+            changeOrderType={changeOrderType}
+            setLatLng={setLatLng}
+            setActionPerform={setActionPerform}
+            deliveryAddressString={deliveryAddressString}
+            setDeliveryAddressString={setDeliveryAddressString}
+            allRestaurants={restaurants?.restaurants || []}
+            setFilteredRestaurants={setFilteredRestaurants}
+            filteredRestaurants={filteredRestaurants}
+            loading={restaurantLoading}
+            addCustomAddressCheck={addCustomAddressCheck}
+            currentLocation={currentLocation}
+            setRestaurantNotFound={setRestaurantNotFound}
+            restaurantNotFound={restaurantNotFound}
+            hideCurrentLocation={hideCurrentLocation}
+            getNearByRestaurants={getNearByRestaurants}
+            loadDynamicMap={loadDynamicMap}
+            setLoadDynamicMap={setLoadDynamicMap}
+            isMapLoaded={isMapLoaded}
+          />
+          {/*)}*/}
         </div>
         {/*)}*/}
       </div>
