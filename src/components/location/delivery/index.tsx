@@ -23,10 +23,6 @@ import { getAddress } from '../../../helpers/common';
 import { getNearByResturantListRequest } from '../../../redux/actions/restaurant/list';
 import DeliveryAddressSkeltonUI from '../../skelton-views/delivery-address';
 import './index.css';
-// import { RequestDeliveryAddress } from '../../../types/olo-api';
-// import * as Yup from 'yup';
-// import moment from 'moment';
-// import { userRegister } from '../../../redux/actions/user';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
@@ -35,13 +31,12 @@ const DeliveryAddresses = (props: any) => {
   const {
     deliveryAddressList,
     loading,
-    deliveryAddressString,
     setDeliveryAddressString,
     filteredRestaurants,
     gotoCategoryPage,
     setActionPerform,
-    // setShowNearBy,
     setLatLng,
+    setLoadDynamicMap,
   } = props;
   const [open, setOpen] = useState(false);
   const [notFound, setNotFound] = useState(false);
@@ -73,44 +68,8 @@ const DeliveryAddresses = (props: any) => {
   };
 
   useEffect(() => {
-    console.log('open', open);
-  }, [open]);
-
-  // const handleChange = (key: any, value: any) => {
-  //   if (key === 'address1') {
-  //     setAddDeliveryAddress({ ...addDeliveryAddress, address1: value });
-  //   }
-  //   if (key === 'address2') {
-  //     setAddDeliveryAddress({ ...addDeliveryAddress, address2: value });
-  //   }
-  //   if (key === 'city') {
-  //     // console.log('value', value)
-  //     // let newValue = value.trim().replace(/[^\s*a-zA-Z]/gi, '');
-  //     // console.log('newValue', newValue)
-  //     setAddDeliveryAddress({ ...addDeliveryAddress, city: value });
-  //   }
-  //   if (key === 'zip') {
-  //     let newValue = value.replace(/[^0-9]/gi, '');
-  //     newValue = newValue.length > 5 ? newValue.slice(0, 5) : newValue;
-  //     const regex = /[0-9]+/g;
-  //     if (newValue === '' || regex.test(newValue)) {
-  //       setAddDeliveryAddress({ ...addDeliveryAddress, zip: newValue });
-  //     }
-  //
-  //     // let newValue = value;
-  //     // newValue =
-  //     //   newValue && newValue >= 0 && newValue <= 99999
-  //     //     ? parseInt(newValue)
-  //     //     : newValue > 99999
-  //     //     ? addDeliveryAddress.zip
-  //     //     : '';
-  //     // newValue = newValue.length > 5 ? newValue.slice(0, 5) : newValue;
-  //     // setAddDeliveryAddress({ ...addDeliveryAddress, zip: newValue });
-  //   }
-  //   if (key === 'isdefault') {
-  //     setAddDeliveryAddress({ ...addDeliveryAddress, isdefault: value });
-  //   }
-  // };
+    setLoadDynamicMap(true);
+  }, []);
 
   const getNearByRestaurants = (lat: number, long: number) => {
     var today = new Date();
@@ -385,33 +344,33 @@ const DeliveryAddresses = (props: any) => {
                         <Typography
                           // style={{ cursor: 'pointer' }}
                           className="delivery-address-text"
-                         // onClick={() => {
-                            // setAddDeliveryAddress({
-                            //   address1: address.streetaddress || '',
-                            //   address2: '',
-                            //   city: address.city || '',
-                            //   zip: address.zipcode || '',
-                            // });
-                            // setEditDeliveryAddress({
-                            //   address1: address.streetaddress || '',
-                            //   address2: '',
-                            //   city: address.city || '',
-                            //   zip: address.zipcode || '',
-                            // });
-                            //setSelectedAddressId(address.id);
-                            // setTimeout(() => {
-                            //handleLCloseConfirm(
-                            //   {
-                            //     address1: address.streetaddress || '',
-                            //     address2: address.building || '',
-                            //     city: address.city || '',
-                            //     zip: address.zipcode || '',
-                            //     isdefault: address.isdefault,
-                            //   },
-                            //   address.id,
-                            // );
-                            // }, 500);
-                         // }}
+                          // onClick={() => {
+                          // setAddDeliveryAddress({
+                          //   address1: address.streetaddress || '',
+                          //   address2: '',
+                          //   city: address.city || '',
+                          //   zip: address.zipcode || '',
+                          // });
+                          // setEditDeliveryAddress({
+                          //   address1: address.streetaddress || '',
+                          //   address2: '',
+                          //   city: address.city || '',
+                          //   zip: address.zipcode || '',
+                          // });
+                          //setSelectedAddressId(address.id);
+                          // setTimeout(() => {
+                          //handleLCloseConfirm(
+                          //   {
+                          //     address1: address.streetaddress || '',
+                          //     address2: address.building || '',
+                          //     city: address.city || '',
+                          //     zip: address.zipcode || '',
+                          //     isdefault: address.isdefault,
+                          //   },
+                          //   address.id,
+                          // );
+                          // }, 500);
+                          // }}
                           //variant="body2"
                         >
                           {address.streetaddress}, {address.city},{' '}
@@ -439,7 +398,7 @@ const DeliveryAddresses = (props: any) => {
                         </Typography>
                         <Typography
                           className={'delivery-heading-edit'}
-                          style={{ cursor: 'pointer',marginLeft:"20px" }}
+                          style={{ cursor: 'pointer', marginLeft: '20px' }}
                           onClick={() => {
                             setAddDeliveryAddress({
                               address1: address.streetaddress || '',
@@ -456,7 +415,6 @@ const DeliveryAddresses = (props: any) => {
                         >
                           EDIT
                         </Typography>
-
                       </CardContent>
                     </Card>
                   ))}

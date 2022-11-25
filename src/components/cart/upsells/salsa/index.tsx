@@ -323,7 +323,8 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                         sx={{
                           display: 'flex',
                           flexDirection: 'column',
-                          gap: '40px',
+                          gap: {lg:'60px', xs:'40px', md: '40px', sm: '40px'},
+                          alignSelf : {lg:'flex-end',md: 'center', sm: 'center', xs: 'center'},
                           paddingLeft: '10px',
                           maxWidth: 'inherit',
                         }}
@@ -340,6 +341,7 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                           sx={{
                             display: 'inline',
                             fontFamily: 'Poppins-Medium !important',
+                            
                             fontSize: {
                               lg: '12px !important',
                               xs: '14px !important',
