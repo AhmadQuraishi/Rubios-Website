@@ -17,12 +17,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import StoreInfo from './info';
 import { displayToast } from '../../helpers/toast';
-import { LocationChangeModal } from '../../components/location-change-modal';
+import { LocationChangeModal } from '../location-change-modal';
 import usePlacesAutocomplete, {
   getGeocode,
   getLatLng,
 } from 'use-places-autocomplete';
-// import { getNearByResturantListRequest } from '../../redux/actions/restaurant/list';
 import './location.css';
 import { getAddress } from '../../helpers/common';
 import TagManager from 'react-gtm-module';
@@ -43,8 +42,6 @@ import {
   setBasketDeliveryMode,
 } from '../../services/basket';
 import { getBasketRequestSuccess } from '../../redux/actions/basket';
-// import { toast } from 'react-toastify';
-// import error = toast.error;
 
 const LocationCard = (props: any) => {
   const {
@@ -79,7 +76,6 @@ const LocationCard = (props: any) => {
     restaurantNotFound,
     hideCurrentLocation,
     getNearByRestaurants,
-    loadDynamicMap,
     setLoadDynamicMap,
     isMapLoaded,
   } = props;
@@ -92,7 +88,7 @@ const LocationCard = (props: any) => {
   const [showLocationChangeModal, setShowLocationChangeModal] = useState(false);
   const [newRestaurant, setNewRestaurant] = useState<any>(null);
   const [showAllRestaurants, setShowAllRestaurants] = useState(false);
-  const [updatebasket, setUpdatebasket] = useState(false);
+  // const [updatebasket] = useState(false);
   const [alignment, setAlignment] = React.useState('web');
 
   useEffect(() => {
@@ -101,14 +97,7 @@ const LocationCard = (props: any) => {
 
   useEffect(() => {
     if (isMapLoaded) {
-      console.log('init');
       init();
-      // setRequestOptions({
-      //   location:
-      //     window.google &&
-      //     new google.maps.LatLng({ lat: 37.772, lng: -122.214 }),
-      //   radius: 200 * 1000,
-      // });
     }
   }, [isMapLoaded]);
 
@@ -150,17 +139,14 @@ const LocationCard = (props: any) => {
     dispatch(getUserDeliveryAddresses());
   }, []);
 
-  useEffect(() => {
-    console.log('orderType 1', orderType);
-  }, [orderType]);
-
-  useEffect(() => {
-    if (updatebasket) {
-      setActionPerform(false);
-    }
-  }, [basketObj]);
+  // useEffect(() => {
+  //   if (updatebasket) {
+  //     setActionPerform(false);
+  //   }
+  // }, [basketObj]);
 
   const handleChange = (e: any) => {
+    setLoadDynamicMap(true);
     setSearchText(e.target.value);
   };
 
@@ -360,20 +346,6 @@ const LocationCard = (props: any) => {
     setShowLocationChangeModal(false);
   };
 
-  // const formatDeliveryAddress = () => {
-  //   let obj: any = {
-  //     building: deliveryAddressString?.address?.address2 || '',
-  //     streetaddress: deliveryAddressString?.address?.address1 || '',
-  //     city: deliveryAddressString?.address?.city || '',
-  //     zipcode: deliveryAddressString?.address?.zip || '',
-  //     isdefault: deliveryAddressString?.address?.isdefault || false,
-  //   };
-  //   if (deliveryAddressString?.address?.id) {
-  //     obj['id'] = deliveryAddressString?.address?.id;
-  //   }
-  //   return obj;
-  // };
-
   const updateBasketDeliveryAddress = async (restaurantObj: any) => {
     let updatedAddress: any = {
       building: deliveryAddressString?.address2 || '',
@@ -391,6 +363,7 @@ const LocationCard = (props: any) => {
       setActionPerform(false);
       dispatch(setBasketDeliveryAddressSuccess(response));
       dispatch(setResturantInfoRequest(restaurantObj, orderType || ''));
+      triggerFacebookEventOnLocationChange();
       navigate('/menu/' + restaurantObj.slug);
     } catch (error: any) {
       setActionPerform(false);
@@ -416,6 +389,7 @@ const LocationCard = (props: any) => {
       setActionPerform(false);
       dispatch(setBasketDeliveryAddressSuccess(response));
       dispatch(setResturantInfoRequest(restaurantObj, orderType || ''));
+      triggerFacebookEventOnLocationChange();
       navigate('/menu/' + restaurantObj.slug);
     } catch (error: any) {
       setActionPerform(false);
@@ -465,6 +439,7 @@ const LocationCard = (props: any) => {
       dispatch(setDeliveryAddress(deliveryAddressString));
     }
     dispatch(setResturantInfoRequest(restaurantObj, orderType || ''));
+    triggerFacebookEventOnLocationChange();
     navigate('/menu/' + restaurantObj.slug);
   };
   const triggerFacebookEventOnLocationChange = () => {
@@ -535,7 +510,6 @@ const LocationCard = (props: any) => {
           handleCancelChangeLocation={handleCancelChangeLocation}
         />
       )}
-
       <Grid
         item
         xs={12}
@@ -715,6 +689,7 @@ const LocationCard = (props: any) => {
                   sx={{ fontSize: '14px', paddingRight: '0px' }}
                   onKeyPress={(e: any) => {
                     if (e.key === 'Enter') {
+                      setLoadDynamicMap(true);
                       setSearchText(e.target.value);
                       getSearchResults();
                     }
@@ -836,6 +811,7 @@ const LocationCard = (props: any) => {
                 gotoCategoryPage={gotoCategoryPage}
                 setActionPerform={setActionPerform}
                 setLatLng={setLatLng}
+                setLoadDynamicMap={setLoadDynamicMap}
               />
             )}
             <Grid
