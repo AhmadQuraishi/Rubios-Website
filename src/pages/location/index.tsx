@@ -1,9 +1,5 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import {
-  // GoogleMap,
-  Marker,
-  // useLoadScript
-} from '@react-google-maps/api';
+import React, { useEffect, useState } from 'react';
+import { Marker } from '@react-google-maps/api';
 import LocationCard from '../../components/location';
 import { useDispatch, useSelector } from 'react-redux';
 import { ResponseRestaurant } from '../../types/olo-api';
@@ -12,17 +8,7 @@ import {
   getResturantListRequest,
 } from '../../redux/actions/restaurant/list';
 import LoadingBar from '../../components/loading-bar';
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Grid,
-  TextField,
-  Theme,
-} from '@mui/material';
+import { Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { displayToast } from '../../helpers/toast';
 import './index.css';
@@ -30,10 +16,9 @@ import Page from '../../components/page-title';
 import { getAddress } from '../../helpers/common';
 import { getOrderTypeRestaurants } from '../../helpers/location';
 import { getGeocode, getLatLng } from 'use-places-autocomplete';
-import * as Yup from 'yup';
-import { Formik } from 'formik';
 import { staticMapUrl } from 'static-google-map';
 import GoogleMapComponent from '../../components/location/google-map';
+import DeliveryAddressConfirmDialog from '../../components/dialogs/delivery-address-confirm';
 
 const useStyles = makeStyles((theme: Theme) => ({
   dummyBg: {
@@ -55,11 +40,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const mapContainerStyle = {
-  width: '100%',
-  height: 'auto',
-};
-
 const actionTypes: any = {
   CURRENT_LOCATION: 'CURRENT_LOCATION',
   LOCAL_SEARCH: 'LOCAL_SEARCH',
@@ -67,7 +47,6 @@ const actionTypes: any = {
   ALL: 'ALL',
 };
 const Location = () => {
-  const mapRef = useRef();
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -85,16 +64,6 @@ const Location = () => {
   const [staticMapImageUrl, setStaticMapImageUrl] = useState('');
   const [loadDynamicMap, setLoadDynamicMap] = useState(false);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
-
-  // const [libraries] = useState<any>(['places']);
-  // useLoadScript({
-  //   googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY?.toString() || '',
-  //   libraries,
-  // });
-  //
-  // const loadMap = useCallback((map: any) => {
-  //   mapRef.current = map;
-  // }, []);
 
   const {
     restaurants,
@@ -142,14 +111,22 @@ const Location = () => {
     }
   };
 
+  const generateStaticMap = (markersStatic: any) => {
+    const url = staticMapUrl({
+      key: process.env.REACT_APP_GOOGLE_API_KEY?.toString(),
+      scale: 2,
+      center: '34.5072833,-117.3999287',
+      size: '640x640',
+      format: 'png',
+      maptype: 'roadmap',
+      zoom: 5,
+      markerGroups: markersStatic,
+    });
+    setStaticMapImageUrl(url);
+  };
+
   const populateMarkersOnMap = (restaurants: any) => {
     setMarkers([]);
-    // {
-    //   color: 'red',
-    //     markers: [
-    //   {location: { lat: '28.3125', lng: '-97.6257' }},
-    // ]
-    // }
     let markersStatic: any = [];
     restaurants.forEach((item: ResponseRestaurant, index: number) => {
       // console.log('item name', item.name);
@@ -175,52 +152,38 @@ const Location = () => {
         <Marker key={Math.random() + index} position={latLong} />,
       ]);
     });
-    // console.log('markersStatic', markersStatic);
-    const url = staticMapUrl({
-      key: process.env.REACT_APP_GOOGLE_API_KEY?.toString(),
-      scale: 2,
-      center: '34.5072833,-117.3999287',
-      size: '640x640',
-      format: 'png',
-      maptype: 'roadmap',
-      zoom: 6,
-      markerGroups: markersStatic,
-    });
-    setStaticMapImageUrl(url);
-    // console.log(url);
+    if (!loadDynamicMap) {
+      generateStaticMap(markersStatic);
+    }
   };
 
-  const setMayLocation = () => {
-    navigator.geolocation.getCurrentPosition(function (position) {
-      const latLong = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
-      };
-      setMapCenter(latLong);
-      setMarkers((markers) => [
-        ...markers,
-        <Marker
-          key={Math.random() + 'index'}
-          position={latLong}
-          icon={
-            'https://maps.gstatic.com/mapfiles/maps_lite/images/1x/ic_my_location_24dp_3.png'
-          }
-        />,
-      ]);
-      setZoom(16);
-    });
-  };
+  // const setMayLocation = () => {
+  //   navigator.geolocation.getCurrentPosition(function (position) {
+  //     const latLong = {
+  //       lat: position.coords.latitude,
+  //       lng: position.coords.longitude,
+  //     };
+  //     setMapCenter(latLong);
+  //     setMarkers((markers) => [
+  //       ...markers,
+  //       <Marker
+  //         key={Math.random() + 'index'}
+  //         position={latLong}
+  //         icon={
+  //           'https://maps.gstatic.com/mapfiles/maps_lite/images/1x/ic_my_location_24dp_3.png'
+  //         }
+  //       />,
+  //     ]);
+  //     setZoom(16);
+  //   });
+  // };
 
   const addCustomAddressCheck = () => {
     if (
       providerToken &&
-      authToken &&
-      authToken.authtoken &&
-      authToken.authtoken !== '' &&
+      authToken?.authtoken !== '' &&
       orderType === 'dispatch' &&
-      userDeliveryAddresses &&
-      userDeliveryAddresses.deliveryaddresses &&
-      userDeliveryAddresses.deliveryaddresses.length > 0
+      userDeliveryAddresses?.deliveryaddresses?.length > 0
     ) {
       return true;
     } else {
@@ -436,10 +399,6 @@ const Location = () => {
       });
   };
 
-  useEffect(() => {
-    console.log('orderType', orderType);
-  }, [orderType]);
-
   const fitMapView = () => {
     const locationCardView = document.getElementById('location-card-view');
     const googleMapLocation = document.getElementById('google-map-location');
@@ -473,182 +432,13 @@ const Location = () => {
 
   return (
     <Page title={'Location'} className="">
-      <Dialog
+      <DeliveryAddressConfirmDialog
         open={open}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-        sx={{ width: '100%' }}
-        TransitionProps={{
-          role: 'dialog',
-          'aria-modal': 'true',
-          'aria-label': 'Confirm Your Delivery Address',
-        }}
-      >
-        <DialogTitle id="alert-dialog-title">
-          {'Confirm Your Delivery Address'}
-        </DialogTitle>
-        {selectedAddress && (
-          <Formik
-            initialValues={{
-              address1: selectedAddress && selectedAddress.address1,
-              address2: selectedAddress && selectedAddress.address2,
-              city: selectedAddress && selectedAddress.city,
-              zip: selectedAddress && selectedAddress.zip,
-              isdefault:
-                (selectedAddress && selectedAddress.isdefault) || false,
-            }}
-            validationSchema={Yup.object({
-              address1: Yup.string()
-                .trim()
-                .max(40, 'Must be 40 characters or less')
-                .min(3, 'Must be at least 3 characters')
-                .required('Street address is required'),
-              address2: Yup.string()
-                .trim()
-                .max(40, 'Must be 30 characters or less'),
-              city: Yup.string()
-                .trim()
-                .max(40, 'Must be 40 characters or less')
-                .min(3, 'Must be at least 3 characters')
-                .required('City is required'),
-              zip: Yup.string()
-                .trim()
-                .min(3, 'Must be at least 3 digits')
-                .max(5, 'Must be at most 5 digits')
-                .matches(
-                  /^[0-9\s]+$/,
-                  'Only numbers are allowed for this field ',
-                )
-                .required('Postal code is required'),
-              isdefault: Yup.boolean(),
-            })}
-            onSubmit={async (values) => {}}
-          >
-            {({
-              errors,
-              handleBlur,
-              handleChange,
-              handleSubmit,
-              touched,
-              values,
-              isValid,
-              dirty,
-            }) => (
-              <form onSubmit={handleSubmit}>
-                <DialogContent>
-                  <DialogContentText id="alert-dialog-description">
-                    <Grid container sx={{ width: '100%', maxWidth: '450px' }}>
-                      <Grid item xs={12}>
-                        <TextField
-                          aria-label="Address"
-                          label="Street Address"
-                          title="Street Address"
-                          type="text"
-                          name="address1"
-                          autoComplete="off"
-                          sx={{ width: '100%' }}
-                          value={values.address1}
-                          onChange={handleChange('address1')}
-                          onBlur={handleBlur('address1')}
-                          error={Boolean(touched.address1 && errors.address1)}
-                          helperText={touched.address1 && errors.address1}
-                        />
-                      </Grid>
-                      <Grid item xs={12} sx={{ paddingTop: '10px' }}>
-                        <TextField
-                          aria-label="Apt, Floor, Suite, Building, Company Address - Optional"
-                          label="Apt, Floor, Suite, Building, Company Address - Optional"
-                          title="Apt, Floor, Suite, Building, Company Address - Optional"
-                          type="text"
-                          name="second_address"
-                          autoComplete="off"
-                          sx={{ width: '100%' }}
-                          value={values.address2}
-                          onChange={handleChange('address2')}
-                          onBlur={handleBlur('address2')}
-                          error={Boolean(touched.address2 && errors.address2)}
-                          helperText={touched.address2 && errors.address2}
-                        />
-                      </Grid>
-                      <Grid item xs={12} sx={{ paddingTop: '10px' }}>
-                        <TextField
-                          aria-label="City"
-                          label="City"
-                          title="City"
-                          type="text"
-                          name="City"
-                          autoComplete="off"
-                          sx={{ width: '100%' }}
-                          value={values.city}
-                          onChange={handleChange('city')}
-                          onBlur={handleBlur('city')}
-                          error={Boolean(touched.city && errors.city)}
-                          helperText={touched.city && errors.city}
-                        />
-                      </Grid>
-                      <Grid item xs={12} sx={{ paddingTop: '10px' }}>
-                        <TextField
-                          aria-label="Postal Code"
-                          label="Postal Code"
-                          title="Postal Code"
-                          type="text"
-                          name="postal_code"
-                          autoComplete="off"
-                          sx={{ width: '100%' }}
-                          value={values.zip}
-                          onChange={handleChange('zip')}
-                          onBlur={handleBlur('zip')}
-                          error={Boolean(touched.zip && errors.zip)}
-                          helperText={touched.zip && errors.zip}
-                        />
-                      </Grid>
-                    </Grid>
-                  </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                  <Button
-                    variant="contained"
-                    onClick={handleClose}
-                    sx={{ marginBottom: '15px' }}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    variant="contained"
-                    onClick={() => {
-                      setSelectedAddress({
-                        address1: values.address1 || '',
-                        address2: values.address2 || '',
-                        city: values.city || '',
-                        zip: values.zip || '',
-                        isdefault: values.isdefault,
-                      });
-                      handleLCloseConfirm({
-                        address1: values.address1 || '',
-                        address2: values.address2 || '',
-                        city: values.city || '',
-                        zip: values.zip || '',
-                        isdefault: values.isdefault,
-                      });
-                    }}
-                    sx={{ marginRight: '15px', marginBottom: '15px' }}
-                    autoFocus
-                    disabled={
-                      values.address1 === '' ||
-                      values.city === '' ||
-                      values.zip === '' ||
-                      !isValid
-                    }
-                  >
-                    Confirm
-                  </Button>
-                </DialogActions>
-              </form>
-            )}
-          </Formik>
-        )}
-      </Dialog>
-
+        selectedAddress={selectedAddress}
+        handleClose={handleClose}
+        setSelectedAddress={setSelectedAddress}
+        handleLCloseConfirm={handleLCloseConfirm}
+      />
       <div style={{ minHeight: '300px', zIndex: 1, height: 'auto' }}>
         {(restaurantLoading || actionPerform) && (
           <div className={classes.dummyBg}>
@@ -667,52 +457,21 @@ const Location = () => {
           role="region"
           aria-label="map"
         >
-          {/*<img*/}
-          {/*  src={staticMapImageUrl}*/}
-          {/*  style={{*/}
-          {/*    height: '100%',*/}
-          {/*    width: 'auto',*/}
-          {/*    position: 'absolute',*/}
-          {/*    left: '50%',*/}
-          {/*    transform: 'translate(-50%, 0)',*/}
-          {/*  }}*/}
-          {/*/>*/}
-
-          {/*<div></div>*/}
-
           {orderType && loadDynamicMap && (
             <div>
               <GoogleMapComponent
                 zoom={zoom}
                 mapCenter={mapCenter}
                 markers={markers}
+                fitMapView={fitMapView}
+                setActionPerform={setActionPerform}
+                setIsMapLoaded={setIsMapLoaded}
                 action={action}
                 actionTypes={actionTypes}
-                setAction={setAction}
-                orderType={orderType}
-                changeOrderType={changeOrderType}
-                setLatLng={setLatLng}
-                setActionPerform={setActionPerform}
-                deliveryAddressString={deliveryAddressString}
-                setDeliveryAddressString={setDeliveryAddressString}
-                allRestaurants={restaurants?.restaurants || []}
-                setFilteredRestaurants={setFilteredRestaurants}
-                filteredRestaurants={filteredRestaurants}
-                loading={restaurantLoading}
-                addCustomAddressCheck={addCustomAddressCheck}
                 currentLocation={currentLocation}
-                setRestaurantNotFound={setRestaurantNotFound}
-                restaurantNotFound={restaurantNotFound}
-                hideCurrentLocation={hideCurrentLocation}
-                getNearByRestaurants={getNearByRestaurants}
-                fitMapView={fitMapView}
-                isMapLoaded={isMapLoaded}
-                setIsMapLoaded={setIsMapLoaded}
               />
             </div>
           )}
-
-          {/*{!orderType && (*/}
           <LocationCard
             actionTypes={actionTypes}
             setAction={setAction}
@@ -736,9 +495,7 @@ const Location = () => {
             setLoadDynamicMap={setLoadDynamicMap}
             isMapLoaded={isMapLoaded}
           />
-          {/*)}*/}
         </div>
-        {/*)}*/}
       </div>
     </Page>
   );
