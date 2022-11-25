@@ -23,10 +23,6 @@ import { getAddress } from '../../../helpers/common';
 import { getNearByResturantListRequest } from '../../../redux/actions/restaurant/list';
 import DeliveryAddressSkeltonUI from '../../skelton-views/delivery-address';
 import './index.css';
-// import { RequestDeliveryAddress } from '../../../types/olo-api';
-// import * as Yup from 'yup';
-// import moment from 'moment';
-// import { userRegister } from '../../../redux/actions/user';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
@@ -35,12 +31,10 @@ const DeliveryAddresses = (props: any) => {
   const {
     deliveryAddressList,
     loading,
-    deliveryAddressString,
     setDeliveryAddressString,
     filteredRestaurants,
     gotoCategoryPage,
     setActionPerform,
-    // setShowNearBy,
     setLatLng,
     setLoadDynamicMap,
   } = props;
@@ -74,48 +68,8 @@ const DeliveryAddresses = (props: any) => {
   };
 
   useEffect(() => {
-    console.log('open', open);
-  }, [open]);
-
-  useEffect(() => {
     setLoadDynamicMap(true);
-  }, [open]);
-
-  // const handleChange = (key: any, value: any) => {
-  //   if (key === 'address1') {
-  //     setAddDeliveryAddress({ ...addDeliveryAddress, address1: value });
-  //   }
-  //   if (key === 'address2') {
-  //     setAddDeliveryAddress({ ...addDeliveryAddress, address2: value });
-  //   }
-  //   if (key === 'city') {
-  //     // console.log('value', value)
-  //     // let newValue = value.trim().replace(/[^\s*a-zA-Z]/gi, '');
-  //     // console.log('newValue', newValue)
-  //     setAddDeliveryAddress({ ...addDeliveryAddress, city: value });
-  //   }
-  //   if (key === 'zip') {
-  //     let newValue = value.replace(/[^0-9]/gi, '');
-  //     newValue = newValue.length > 5 ? newValue.slice(0, 5) : newValue;
-  //     const regex = /[0-9]+/g;
-  //     if (newValue === '' || regex.test(newValue)) {
-  //       setAddDeliveryAddress({ ...addDeliveryAddress, zip: newValue });
-  //     }
-  //
-  //     // let newValue = value;
-  //     // newValue =
-  //     //   newValue && newValue >= 0 && newValue <= 99999
-  //     //     ? parseInt(newValue)
-  //     //     : newValue > 99999
-  //     //     ? addDeliveryAddress.zip
-  //     //     : '';
-  //     // newValue = newValue.length > 5 ? newValue.slice(0, 5) : newValue;
-  //     // setAddDeliveryAddress({ ...addDeliveryAddress, zip: newValue });
-  //   }
-  //   if (key === 'isdefault') {
-  //     setAddDeliveryAddress({ ...addDeliveryAddress, isdefault: value });
-  //   }
-  // };
+  }, []);
 
   const getNearByRestaurants = (lat: number, long: number) => {
     var today = new Date();
