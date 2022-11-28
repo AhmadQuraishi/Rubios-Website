@@ -96,6 +96,7 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
     case basketActionsTypes.REMOVE_UTENSILS_SUCCESS:
     case basketActionsTypes.ADD_UPSELLS_REQUEST_SUCCESS:
     case basketActionsTypes.UPDATE_PRODUCT_SUCCESS:
+    case basketActionsTypes.CREATE_BASKET_FROM_PREV_ORDER_SUCCESS:
       return {
         ...state,
         loading: false,
