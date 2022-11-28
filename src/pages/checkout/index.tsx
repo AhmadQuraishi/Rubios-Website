@@ -1117,7 +1117,7 @@ const Checkout = () => {
                   <SignUpGuest
                     birthDay={birthDay}
                     setBirthDay={setBirthDay}
-                    //guestSignupCheckout={guestSignupCheckout}
+                    guestSignupCheckout={guestSignupCheckout}
                     signupFormRef={signupFormRef}
                   />
                 </>
