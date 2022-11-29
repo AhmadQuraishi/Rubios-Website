@@ -10,6 +10,7 @@ import ReactFacebookLogin from 'react-facebook-login';
 import { facebookUserLogin } from '../../redux/actions/user';
 import { displayToast } from '../../helpers/toast';
 import Page from '../../components/page-title';
+import { isLoginUser } from '../../helpers/auth';
 
 const useStyle = makeStyles(() => ({
   root: {
@@ -31,7 +32,7 @@ const ForgotPassword = () => {
   );
 
   useEffect(() => {
-    if (providerToken) {
+    if (isLoginUser()) {
       navigate('/account/');
     }
   }, [providerToken]);

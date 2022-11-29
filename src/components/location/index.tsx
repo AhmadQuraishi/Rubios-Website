@@ -43,6 +43,7 @@ import {
   setBasketDeliveryMode,
 } from '../../services/basket';
 import { getBasketRequestSuccess } from '../../redux/actions/basket';
+import { isLoginUser } from '../../helpers/auth';
 // import { toast } from 'react-toastify';
 // import error = toast.error;
 
@@ -469,7 +470,7 @@ const LocationCard = (props: any) => {
   };
   const triggerFacebookEventOnLocationChange = () => {
     let userObj: any = null;
-    if (providerToken) {
+    if (isLoginUser()) {
       userObj = {
         first_name: providerToken.first_name || '',
         last_name: providerToken.last_name || '',

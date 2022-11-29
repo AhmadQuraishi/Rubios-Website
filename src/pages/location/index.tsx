@@ -34,6 +34,7 @@ import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { staticMapUrl } from 'static-google-map';
 import GoogleMapComponent from '../../components/location/google-map';
+import { isLoginUser } from '../../helpers/auth';
 
 const useStyles = makeStyles((theme: Theme) => ({
   dummyBg: {
@@ -104,8 +105,6 @@ const Location = () => {
   const { userDeliveryAddresses } = useSelector(
     (state: any) => state.userReducer,
   );
-  const { providerToken } = useSelector((state: any) => state.providerReducer);
-  const { authToken } = useSelector((state: any) => state.authReducer);
 
   useEffect(() => {
     if (!orderType) {
@@ -213,10 +212,7 @@ const Location = () => {
 
   const addCustomAddressCheck = () => {
     if (
-      providerToken &&
-      authToken &&
-      authToken.authtoken &&
-      authToken.authtoken !== '' &&
+      isLoginUser() &&
       orderType === 'dispatch' &&
       userDeliveryAddresses &&
       userDeliveryAddresses.deliveryaddresses &&

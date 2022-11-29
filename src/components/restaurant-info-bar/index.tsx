@@ -25,6 +25,7 @@ import './index.css';
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
 import { OrderTypeDialog } from '../order-type-dialog';
+import { isLoginUser } from '../../helpers/auth';
 const useStyle = makeStyles({
   heading: {
     fontSize: '13px !important',
@@ -51,7 +52,6 @@ const StoreInfoBar = () => {
     (state: any) => state.restaurantCalendarReducer,
   );
   const { providerToken } = useSelector((state: any) => state.providerReducer);
-  const { authToken } = useSelector((state: any) => state.authReducer);
   const { singleLocation } = useSelector((state: any) => state.locationReducer);
   const basketObj = useSelector((state: any) => state.basketReducer);
 
@@ -148,7 +148,7 @@ const StoreInfoBar = () => {
 
   const checkFavorite = () => {
     let check = false;
-    if (providerToken && providerToken.favourite_store_numbers && restaurant) {
+    if (isLoginUser() && providerToken?.favourite_store_numbers && restaurant) {
       if (providerToken.favourite_store_numbers === restaurant.extref) {
         check = true;
       }
@@ -468,10 +468,7 @@ const StoreInfoBar = () => {
                         Change location
                       </p>
                     </Typography>
-                    {providerToken &&
-                      authToken &&
-                      authToken.authtoken &&
-                      authToken.authtoken !== '' && (
+                    {isLoginUser()  && (
                         <Typography
                           variant="body2"
                           color="#fff"

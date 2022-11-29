@@ -22,6 +22,7 @@ import {
 import { facebookSendEvent } from '../../redux/actions/facebook-conversion';
 import { facebookConversionTypes } from '../../redux/types/facebook-conversion';
 import { useSelector, useDispatch } from 'react-redux';
+import { isLoginUser } from '../../helpers/auth';
 
 const useStyles = makeStyles((theme: Theme) => ({
   img: {
@@ -164,7 +165,7 @@ const ProductListingCarousel = (props: any) => {
   // }
   const triggerFacebookEventOnViewContentProduct = () => {
     let userObj: any = null;
-    if (providerToken) {
+    if (isLoginUser()) {
       userObj = {
         first_name: providerToken.first_name || '',
         last_name: providerToken.last_name || '',

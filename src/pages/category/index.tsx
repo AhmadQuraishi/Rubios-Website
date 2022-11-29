@@ -31,6 +31,7 @@ import Page from '../../components/page-title';
 import { facebookSendEvent } from '../../redux/actions/facebook-conversion';
 import { facebookConversionTypes } from '../../redux/types/facebook-conversion';
 import { resetBasketRequest } from '../../redux/actions/basket';
+import { isLoginUser } from '../../helpers/auth';
 
 const useStyles = makeStyles((theme: Theme) => ({
   heading: {
@@ -352,7 +353,7 @@ const CategoryList = () => {
 
   const triggerFacebookEventOnViewContent = () => {
     let userObj: any = null;
-    if (providerToken) {
+    if (isLoginUser()) {
       userObj = {
         first_name: providerToken.first_name || '',
         last_name: providerToken.last_name || '',

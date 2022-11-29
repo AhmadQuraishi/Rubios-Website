@@ -27,6 +27,7 @@ import {
 import { setBasketDeliveryAddressSuccess } from '../../redux/actions/basket/checkout';
 import { displayToast } from '../../helpers/toast';
 import './order-type.css';
+import { isLoginUser } from '../../helpers/auth';
 export const OrderTypeDialog = (props: any) => {
   const {
     setValue,
@@ -41,8 +42,6 @@ export const OrderTypeDialog = (props: any) => {
   );
   const [alignment, setAlignment] = React.useState('web');
   const basketObj = useSelector((state: any) => state.basketReducer);
-  const { providerToken } = useSelector((state: any) => state.providerReducer);
-  const { authToken } = useSelector((state: any) => state.authReducer);
 
   const [changeOrderType, setChangeOrderType] = useState<any>(
     basketObj?.basket?.deliverymode || orderType || 'pickup',
@@ -371,7 +370,7 @@ export const OrderTypeDialog = (props: any) => {
                           helperText={touched.zip && errors.zip}
                         />
                       </Grid>
-                      {providerToken && authToken?.authtoken !== '' && (
+                      {isLoginUser() && (
                         <Grid item xs={12}>
                           <FormGroup>
                             <FormControlLabel

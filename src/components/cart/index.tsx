@@ -39,6 +39,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { facebookSendEvent } from '../../redux/actions/facebook-conversion';
 import { facebookConversionTypes } from '../../redux/types/facebook-conversion';
+import { isLoginUser } from '../../helpers/auth';
 
 const useStyles = makeStyles((theme: Theme) => ({
   dimPanel: {
@@ -488,12 +489,12 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
 
   const triggerFacebookEventOnCheckout = () => {
     let userObj: any = null;
-    if (providerToken) {
+    if (isLoginUser()) {
       userObj = {
-        first_name: providerToken.first_name || '',
-        last_name: providerToken.last_name || '',
-        email: providerToken.email || '',
-        phone: providerToken.phone || '',
+        first_name: providerToken?.first_name || '',
+        last_name: providerToken?.last_name || '',
+        email: providerToken?.email || '',
+        phone: providerToken?.phone || '',
       };
     }
     dispatch(

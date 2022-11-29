@@ -31,6 +31,7 @@ import {
   validateBasket,
 } from '../../redux/actions/basket/checkout';
 import { displayToast } from '../../helpers/toast';
+import { isLoginUser } from '../../helpers/auth';
 import {
   formatCustomFields,
   // formatDeliveryAddress,
@@ -358,11 +359,11 @@ const Checkout = () => {
   }, [basketObj.payment.allowedCards, validate, userBillingAccounts]);
 
   React.useEffect(() => {
-    if (authToken?.authtoken && authToken.authtoken !== '') {
+    if (isLoginUser()) {
       // dispatch(getUserDeliveryAddresses());
       if (restaurant && restaurant.id) {
         dispatch(
-          getRewardsForCheckoutRequest(restaurant.id, authToken.authtoken),
+          getRewardsForCheckoutRequest(restaurant?.id, authToken?.authtoken),
         );
         dispatch(getRewardsNew());
       }
@@ -700,7 +701,7 @@ const Checkout = () => {
     if (basket) {
       setButtonDisabled(false);
       let user: any = null;
-      if (authToken?.authtoken && authToken.authtoken !== '') {
+      if (isLoginUser()) {
         user = {
           email: providerToken.email,
           first_name: providerToken?.first_name,
@@ -1106,7 +1107,7 @@ const Checkout = () => {
                   )}
                 </Grid>
               </Grid>
-              {!providerToken && (
+              {!isLoginUser() && (
                 <>
                   <br />
                   <br />
@@ -1152,15 +1153,13 @@ const Checkout = () => {
                 <OrderTime orderType={(basket?.deliverymode) || ''} />
               </Grid>
 
-              {providerToken &&
-                authToken?.authtoken !== '' &&
-                rewards.length === 0 &&
+              {isLoginUser() &&
+                rewards?.length === 0 &&
                 (loadingRewards || loadingRedemptions) && (
                   <CheckoutSkeletonUI />
                 )}
 
-              {providerToken &&
-                authToken?.authtoken !== '' &&
+              {isLoginUser() &&
                 rewards.length > 0 && (
                   <>
                     <br />
