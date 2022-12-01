@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import './invite.css';
 import { useSelector } from 'react-redux';
 import { displayToast } from '../../helpers/toast';
+import { isLoginUser } from '../../helpers/auth';
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     padding: '0px 20px 40px 20px',
@@ -25,8 +26,8 @@ const Invite = () => {
   const [inviteCode, setInviteCode] = useState('');
   const { providerToken } = useSelector((state: any) => state.providerReducer);
   useEffect(() => {
-    if (providerToken && providerToken.referral_code) {
-      setInviteCode(providerToken.referral_code);
+    if (isLoginUser() && providerToken?.referral_code) {
+      setInviteCode(providerToken?.referral_code);
     }
   }, [providerToken]);
   const copy = async () => {

@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import bgImage from '../../assets/imgs/login-bg.png';
 import './register.css';
 import Page from '../../components/page-title';
+import { isLoginUser } from '../../helpers/auth';
 
 const useStyle = makeStyles(() => ({
   root: {
@@ -26,11 +27,10 @@ const Register = () => {
   const navigate = useNavigate();
 
   const { providerToken } = useSelector((state: any) => state.providerReducer);
-  const { authToken } = useSelector((state: any) => state.authReducer);
   const { pageURL } = useSelector((state: any) => state.pageStateReducer);
 
   useEffect(() => {
-    if (providerToken && authToken) {
+    if (isLoginUser()) {
       if (pageURL == undefined || pageURL == null) {
         navigate('/welcome');
       } else {

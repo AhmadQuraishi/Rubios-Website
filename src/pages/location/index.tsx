@@ -18,6 +18,7 @@ import { getOrderTypeRestaurants } from '../../helpers/location';
 import { getGeocode, getLatLng } from 'use-places-autocomplete';
 import { staticMapUrl } from 'static-google-map';
 import GoogleMapComponent from '../../components/location/google-map';
+import { isLoginUser } from '../../helpers/auth';
 import DeliveryAddressConfirmDialog from '../../components/dialogs/delivery-address-confirm';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -73,8 +74,6 @@ const Location = () => {
   const { userDeliveryAddresses } = useSelector(
     (state: any) => state.userReducer,
   );
-  const { providerToken } = useSelector((state: any) => state.providerReducer);
-  const { authToken } = useSelector((state: any) => state.authReducer);
 
   useEffect(() => {
     if (!orderType) {
@@ -180,8 +179,7 @@ const Location = () => {
 
   const addCustomAddressCheck = () => {
     if (
-      providerToken &&
-      authToken?.authtoken !== '' &&
+      isLoginUser() &&
       orderType === 'dispatch' &&
       userDeliveryAddresses?.deliveryaddresses?.length > 0
     ) {
