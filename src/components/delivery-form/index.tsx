@@ -14,6 +14,7 @@ import * as Yup from 'yup';
 import { forwardRef } from 'react';
 import { IMaskInput } from 'react-imask';
 import { OrderTypeDialog } from '../order-type-dialog';
+import { isLoginUser } from '../../helpers/auth';
 
 const DeliveryForm = ({
   basket,
@@ -23,7 +24,6 @@ const DeliveryForm = ({
 }: any) => {
   const [open, setOpen] = useState(false);
   const { providerToken } = useSelector((state: any) => state.providerReducer);
-  const { authToken } = useSelector((state: any) => state.authReducer);
 
   interface CustomProps {
     onChange: (event: { target: { name: string; value: string } }) => void;
@@ -98,7 +98,7 @@ const DeliveryForm = ({
             <Grid item xs={12}>
               <TextField
                 aria-label="First Name"
-                disabled={authToken?.authtoken ? true : false}
+                disabled={isLoginUser()}
                 onBlur={handleBlur}
                 label="First Name"
                 aria-required="true"
@@ -115,7 +115,7 @@ const DeliveryForm = ({
             <Grid item xs={12}>
               <TextField
                 aria-label="Last Name"
-                disabled={authToken?.authtoken ? true : false}
+                disabled={isLoginUser()}
                 onBlur={handleBlur}
                 label="Last Name"
                 aria-required="true"
@@ -157,7 +157,7 @@ const DeliveryForm = ({
             <Grid item xs={12}>
               <TextField
                 aria-label="Email"
-                disabled={authToken?.authtoken ? true : false}
+                disabled={isLoginUser()}
                 onBlur={handleBlur}
                 label="Email"
                 aria-required="true"
@@ -170,7 +170,7 @@ const DeliveryForm = ({
                 helperText={errors.email}
               />
             </Grid>
-                       {!authToken?.authtoken && (
+                       {!isLoginUser() && (
               <Grid item xs={12} sm={12} md={12} lg={12}>
                 <FormGroup>
                   <FormControlLabel

@@ -10,6 +10,7 @@ import { facebookUserLogin } from '../../redux/actions/user';
 import ReactFacebookLogin from 'react-facebook-login';
 import { displayToast } from '../../helpers/toast';
 import Page from '../../components/page-title';
+import { isLoginUser } from '../../helpers/auth';
 const useStyle = makeStyles(() => ({
   root: {
     background: `url(${bgImage}) center center fixed`,
@@ -31,7 +32,7 @@ const ResetPassword = () => {
   );
 
   useEffect(() => {
-    if (providerToken) {
+    if (isLoginUser()) {
       navigate('/account/reward');
     }
   }, [providerToken]);

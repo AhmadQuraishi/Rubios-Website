@@ -26,6 +26,7 @@ import { facebookSendEvent } from '../../redux/actions/facebook-conversion';
 import { facebookConversionTypes } from '../../redux/types/facebook-conversion';
 import { OrderTypeDialog } from '../../components/order-type-dialog';
 import { getUpsellsRequest } from '../../redux/actions/basket/upsell/Get';
+import { isLoginUser } from '../../helpers/auth';
 
 const Welcome = () => {
   const dispatch = useDispatch();
@@ -68,11 +69,11 @@ const Welcome = () => {
       restaurants &&
       restaurants.restaurants &&
       restaurants.restaurants.length &&
-      providerToken &&
-      providerToken.favourite_store_numbers
+      isLoginUser() && 
+      providerToken?.favourite_store_numbers
     ) {
       const filter = restaurants.restaurants.filter(
-        (rest: any) => rest.extref === providerToken.favourite_store_numbers,
+        (rest: any) => rest.extref === providerToken?.favourite_store_numbers,
       );
       if (filter.length) {
         setFavRestaurant(filter[0]);
@@ -115,23 +116,20 @@ const Welcome = () => {
 
   useEffect(() => {
     if (
-      providerToken &&
-      authToken &&
-      authToken.authtoken &&
-      authToken.authtoken !== ''
+      isLoginUser() 
     ) {
     } else {
       navigate('/login');
     }
   }, [authToken, providerToken]);
   useEffect(() => {
-    if (authToken && authToken.authtoken) dispatch(getUserRecentOrders());
+    if (isLoginUser()) dispatch(getUserRecentOrders());
   }, [authToken]);
   useEffect(() => {
     if (
-      providerToken &&
-      providerToken.favourite_store_numbers &&
-      providerToken.favourite_store_numbers
+      isLoginUser() &&
+      providerToken?.favourite_store_numbers &&
+      providerToken?.favourite_store_numbers
     )
       dispatch(getResturantListRequest());
   }, []);
@@ -217,12 +215,12 @@ const Welcome = () => {
 
   const triggerFacebookEventOnNewRegsiter = () => {
     let userObj: any = null;
-    if (providerToken) {
+    if (isLoginUser()) {
       userObj = {
-        first_name: providerToken.first_name || '',
-        last_name: providerToken.last_name || '',
-        email: providerToken.email || '',
-        phone: providerToken.phone || '',
+        first_name: providerToken?.first_name || '',
+        last_name: providerToken?.last_name || '',
+        email: providerToken?.email || '',
+        phone: providerToken?.phone || '',
       };
     }
     dispatch(
@@ -270,17 +268,17 @@ const Welcome = () => {
                   variant="h1"
                   className="user-name"
                   title={
-                    providerToken &&
+                    isLoginUser() &&
                     providerToken.first_name &&
                     providerToken.first_name
                   }
                 >
                   {newUser ? "WELCOME TO RUBIO'S REWARDS" : 'WELCOME BACK'}{' '}
                   <br />
-                  {providerToken &&
+                  {isLoginUser() &&
                     newUser &&
-                    providerToken.first_name &&
-                    `${providerToken.first_name}!`}
+                    providerToken?.first_name &&
+                    `${providerToken?.first_name}!`}
                 </Typography>
                 {(loading && <CardSkeletonUI />) ||
                   (isEdit && <CardSkeletonUI />) ||
@@ -291,8 +289,7 @@ const Welcome = () => {
                   userRecentOrders &&
                   userRecentOrders.orders &&
                   userRecentOrders.orders.length > 0 &&
-                  authToken &&
-                  authToken.authtoken &&
+                  isLoginUser() &&
                   !isEdit &&
                   !isReoder && (
                     <Fragment>
@@ -370,8 +367,7 @@ const Welcome = () => {
                   userRecentOrders &&
                   userRecentOrders.orders &&
                   userRecentOrders.orders.length === 0 &&
-                  authToken &&
-                  authToken.authtoken &&
+                  isLoginUser() &&
                   !newUser &&
                   !isEdit &&
                   !isReoder && (

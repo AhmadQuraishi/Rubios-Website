@@ -24,6 +24,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ResponseBasket } from '../../types/olo-api';
 import { IMaskInput } from 'react-imask';
 import moment from 'moment';
+import { isLoginUser } from '../../helpers/auth';
 
 interface CustomProps {
   onChange: (event: { target: { name: string; value: string } }) => void;
@@ -66,8 +67,6 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
   const [displaySavedCards, setDisplaySavedCards] =
     React.useState<boolean>(false);
   const basketObj = useSelector((state: any) => state.basketReducer);
-  const { authToken } = useSelector((state: any) => state.authReducer);
-  const { providerToken } = useSelector((state: any) => state.providerReducer);
 
   React.useEffect(() => {
     setBillingSchemes(basketObj.payment.billingSchemes);
@@ -315,11 +314,10 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
             <Grid item xs={12} sm={12} md={12} lg={12} className="add-gift">
               {!displaySavedCards &&
                 basket &&
-                providerToken &&
-                authToken?.authtoken !== '' &&
+                isLoginUser() &&
                 billingSchemes &&
-                billingSchemes.length > 0 &&
-                billingSchemes.filter(
+                billingSchemes?.length > 0 &&
+                billingSchemes?.filter(
                   (account: any) => account.savedCard && !account.selected,
                 ).length > 0 &&
                 allowedCards &&
