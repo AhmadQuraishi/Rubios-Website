@@ -287,7 +287,7 @@ const Rewards = (props: any) => {
                                   <>
                                     Expires{' '}
                                     {moment(reward.expiring_at_tz).format(
-                                      'DD/MM/YY',
+                                      'MM/DD/YY',
                                     )}
                                   </>
                                 )}

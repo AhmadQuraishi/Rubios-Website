@@ -237,7 +237,7 @@ const RewardNew = () => {
                                     reward.expiring_at_tz !== ''
                                       ? `Expires ${moment(
                                           reward.expiring_at_tz,
-                                        ).format('DD/MM/YY')}`
+                                        ).format('MM/DD/YY')}`
                                       : ''}
                                   </p>
                                 </p>
