@@ -69,10 +69,6 @@ export const OrderTypeDialog = (props: any) => {
 
     }
 
-    if (restaurant?.canpickup == 'true' || restaurant?.supportscurbside == 'true' || restaurant?.supportsdinein == 'true' || restaurant?.supportsdispatch == 'true') {
-      return
-    }
-
   }
 
   const backdropClose = (event: any, reason: any) => {
