@@ -58,7 +58,7 @@ export const OrderTypeDialog = (props: any) => {
         case 'pickup':
           return restaurant?.canpickup;
         case 'curbside':
-         return restaurant?.supportscurbside;
+          return restaurant?.supportscurbside;
         case 'dinein':
           return restaurant?.supportsdinein;
         case 'dispatch':
@@ -273,52 +273,52 @@ export const OrderTypeDialog = (props: any) => {
                       }
                       {
                         restaurantSupportedHanOffMode('curbside') && (
-                      <ToggleButton
-                        role="radio"
-                        value={'curbside'}
-                        // onClick={() => {
-                        //   //setSearchText('');
-                        //   changeOrderType('curbside');
-                        // }}
-                        className="selected-toggle-btn"
-                        aria-current={changeOrderType === 'curbside'}
-                        aria-label=" Curbside, Activating this element will cause results to load below "
-                      >
-                        Curbside
-                      </ToggleButton>
-)}
-{
-  restaurantSupportedHanOffMode('dinein') && (
-                      <ToggleButton
-                        role="radio"
-                        value={'dinein'}
-                        // onClick={() => {
-                        //   //setSearchText('');
-                        //   changeOrderType('dinein');
-                        // }}
-                        className="selected-toggle-btn"
-                        aria-current={changeOrderType === 'dinein'}
-                        aria-label=" Curbside, Activating this element will cause results to load below "
-                      >
-                        Dine In
-                      </ToggleButton>
-  )}
-                        {
-                        restaurantSupportedHanOffMode('pickup') && (
-                      <ToggleButton
-                        value={'dispatch'}
-                        role="radio"
-                        // onClick={() => {
-                        //   // setSearchText('');
-                        //   // setShowAllRestaurants(false);
-                        //   changeOrderType('dispatch');
-                        // }}
-                        className="selected-toggle-btn"
-                        aria-current={changeOrderType === 'dispatch'}
-                        aria-label=" Delivery, Enter your address below to get nearby restaurants"
-                      >
-                        Delivery
-                      </ToggleButton>
+                          <ToggleButton
+                            role="radio"
+                            value={'curbside'}
+                            // onClick={() => {
+                            //   //setSearchText('');
+                            //   changeOrderType('curbside');
+                            // }}
+                            className="selected-toggle-btn"
+                            aria-current={changeOrderType === 'curbside'}
+                            aria-label=" Curbside, Activating this element will cause results to load below "
+                          >
+                            Curbside
+                          </ToggleButton>
+                        )}
+                      {
+                        restaurantSupportedHanOffMode('dinein') && (
+                          <ToggleButton
+                            role="radio"
+                            value={'dinein'}
+                            // onClick={() => {
+                            //   //setSearchText('');
+                            //   changeOrderType('dinein');
+                            // }}
+                            className="selected-toggle-btn"
+                            aria-current={changeOrderType === 'dinein'}
+                            aria-label=" Curbside, Activating this element will cause results to load below "
+                          >
+                            Dine In
+                          </ToggleButton>
+                        )}
+                      {
+                        restaurantSupportedHanOffMode('dispatch') && (
+                          <ToggleButton
+                            value={'dispatch'}
+                            role="radio"
+                            // onClick={() => {
+                            //   // setSearchText('');
+                            //   // setShowAllRestaurants(false);
+                            //   changeOrderType('dispatch');
+                            // }}
+                            className="selected-toggle-btn"
+                            aria-current={changeOrderType === 'dispatch'}
+                            aria-label=" Delivery, Enter your address below to get nearby restaurants"
+                          >
+                            Delivery
+                          </ToggleButton>
                         )}
                     </ToggleButtonGroup>
                   </Grid>
@@ -444,7 +444,7 @@ export const OrderTypeDialog = (props: any) => {
                 }}
                 sx={{ marginRight: '15px', marginBottom: '15px' }}
                 autoFocus
-                //disabled={checkButtonDisable(values, isValid)}
+              //disabled={checkButtonDisable(values, isValid)}
               >
                 Confirm
               </Button>
