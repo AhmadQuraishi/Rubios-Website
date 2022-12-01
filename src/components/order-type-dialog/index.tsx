@@ -37,7 +37,7 @@ export const OrderTypeDialog = (props: any) => {
   } = props;
   const dispatch = useDispatch();
   const [buttonDisabled, setButtonDisabled] = useState(false);
-  const { orderType } = useSelector(
+  const { orderType, restaurant } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
   const [alignment, setAlignment] = React.useState('web');
@@ -51,6 +51,29 @@ export const OrderTypeDialog = (props: any) => {
     setOpenModal(false);
     setButtonDisabled(false);
   };
+  const restaurantSupportedHanOffMode = (mode: string) => {
+    if (restaurant && mode) {
+
+      switch (mode) {
+        case 'pickup':
+          return restaurant?.canpickup;
+        case 'curbside':
+         return restaurant?.supportscurbside;
+        case 'dinein':
+          return restaurant?.supportsdinein;
+        case 'dispatch':
+          return restaurant?.supportsdispatch;
+        default:
+          return false
+      }
+
+    }
+
+    if (restaurant?.canpickup == 'true' || restaurant?.supportscurbside == 'true' || restaurant?.supportsdinein == 'true' || restaurant?.supportsdispatch == 'true') {
+      return
+    }
+
+  }
 
   const backdropClose = (event: any, reason: any) => {
     if (reason && reason === 'backdropClick') {
@@ -185,7 +208,7 @@ export const OrderTypeDialog = (props: any) => {
             .required('Postal code is required'),
           isdefault: Yup.boolean(),
         })}
-        onSubmit={async (values) => {}}
+        onSubmit={async (values) => { }}
       >
         {({
           errors,
@@ -235,19 +258,25 @@ export const OrderTypeDialog = (props: any) => {
                       value={changeOrderType}
                       onChange={onServiceSelect}
                     >
-                      <ToggleButton
-                        role="radio"
-                        value={'pickup'}
-                        // onClick={() => {
-                        //   //setSearchText('');
-                        //   changeOrderType('pickup');
-                        // }}
-                        className="selected-toggle-btn"
-                        aria-current={changeOrderType === 'pickup'}
-                        aria-label="PickUp, Activating this element will cause results to load below "
-                      >
-                        PickUp
-                      </ToggleButton>
+                      {
+                        restaurantSupportedHanOffMode('pickup') && (
+                          <ToggleButton
+                            role="radio"
+                            value={'pickup'}
+                            // onClick={() => {
+                            //   //setSearchText('');
+                            //   changeOrderType('pickup');
+                            // }}
+                            className="selected-toggle-btn"
+                            aria-current={changeOrderType === 'pickup'}
+                            aria-label="PickUp, Activating this element will cause results to load below "
+                          >
+                            PickUp
+                          </ToggleButton>
+                        )
+                      }
+                      {
+                        restaurantSupportedHanOffMode('curbside') && (
                       <ToggleButton
                         role="radio"
                         value={'curbside'}
@@ -261,6 +290,9 @@ export const OrderTypeDialog = (props: any) => {
                       >
                         Curbside
                       </ToggleButton>
+)}
+{
+  restaurantSupportedHanOffMode('dinein') && (
                       <ToggleButton
                         role="radio"
                         value={'dinein'}
@@ -274,6 +306,9 @@ export const OrderTypeDialog = (props: any) => {
                       >
                         Dine In
                       </ToggleButton>
+  )}
+                        {
+                        restaurantSupportedHanOffMode('pickup') && (
                       <ToggleButton
                         value={'dispatch'}
                         role="radio"
@@ -288,6 +323,7 @@ export const OrderTypeDialog = (props: any) => {
                       >
                         Delivery
                       </ToggleButton>
+                        )}
                     </ToggleButtonGroup>
                   </Grid>
                   {changeOrderType === 'dispatch' && (

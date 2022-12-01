@@ -914,6 +914,8 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                             key={Math.random() + index}
                             option-id={index}
                             onClick={() => handleUpsells(type)}
+                            onKeyPress={() => handleUpsells(type)
+                            }
                             className={
                               upsellsType === type
                                 ? 'content-panel selected'
