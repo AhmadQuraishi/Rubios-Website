@@ -19,6 +19,7 @@ import Cart from '../cart';
 import Upsells from '../cart/upsells';
 import { useSelector } from 'react-redux';
 import RightMenuBar from '../right-menu-bar';
+import { isLoginUser } from '../../helpers/auth';
 
 const useStyles = makeStyles((theme: Theme) => ({
   navBar: {
@@ -237,7 +238,7 @@ const Header = (props: any) => {
               >
                 <MenuIcon fontSize="large" titleAccess="Menu Icon" />
               </IconButton> */}
-              {providerToken && providerToken.first_name ? (
+              {isLoginUser() && providerToken?.first_name ? (
                 <Grid
                   container
                   sx={{
@@ -383,7 +384,7 @@ const Header = (props: any) => {
                 </Link>
               )}
 
-              {providerToken && providerToken.first_name
+              {isLoginUser() && providerToken?.first_name
                 ? !hideLoginedPanel && (
                     <Grid
                       container
@@ -433,7 +434,7 @@ const Header = (props: any) => {
                             fontSize: '14px',
                           }}
                         >
-                          Hi {(providerToken && providerToken.first_name) || ''}
+                          Hi {(isLoginUser() && providerToken?.first_name) || ''}
                           !
                         </Typography>
                         {!showAccountMenu && (

@@ -27,6 +27,7 @@ import {
 import { setBasketDeliveryAddressSuccess } from '../../redux/actions/basket/checkout';
 import { displayToast } from '../../helpers/toast';
 import './order-type.css';
+import { isLoginUser } from '../../helpers/auth';
 export const OrderTypeDialog = (props: any) => {
   const {
     setValue,
@@ -36,13 +37,11 @@ export const OrderTypeDialog = (props: any) => {
   } = props;
   const dispatch = useDispatch();
   const [buttonDisabled, setButtonDisabled] = useState(false);
-  const { orderType } = useSelector(
+  const { orderType, restaurant } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
   const [alignment, setAlignment] = React.useState('web');
   const basketObj = useSelector((state: any) => state.basketReducer);
-  const { providerToken } = useSelector((state: any) => state.providerReducer);
-  const { authToken } = useSelector((state: any) => state.authReducer);
 
   const [changeOrderType, setChangeOrderType] = useState<any>(
     basketObj?.basket?.deliverymode || orderType || 'pickup',
@@ -52,6 +51,25 @@ export const OrderTypeDialog = (props: any) => {
     setOpenModal(false);
     setButtonDisabled(false);
   };
+  const restaurantSupportedHanOffMode = (mode: string) => {
+    if (restaurant && mode) {
+
+      switch (mode) {
+        case 'pickup':
+          return restaurant?.canpickup;
+        case 'curbside':
+          return restaurant?.supportscurbside;
+        case 'dinein':
+          return restaurant?.supportsdinein;
+        case 'dispatch':
+          return restaurant?.supportsdispatch;
+        default:
+          return false
+      }
+
+    }
+
+  }
 
   const backdropClose = (event: any, reason: any) => {
     if (reason && reason === 'backdropClick') {
@@ -133,8 +151,8 @@ export const OrderTypeDialog = (props: any) => {
     console.log('buttonDisabled', buttonDisabled);
     console.log('values', values);
     return (
-      buttonDisabled ||
-      (changeOrderType !== 'dispatch' && changeOrderType === orderType) ||
+      buttonDisabled
+    ||
       (changeOrderType === 'dispatch' &&
         (values.address1 === '' || values.city === '' || values.zip === ''))
     );
@@ -186,7 +204,7 @@ export const OrderTypeDialog = (props: any) => {
             .required('Postal code is required'),
           isdefault: Yup.boolean(),
         })}
-        onSubmit={async (values) => {}}
+        onSubmit={async (values) => { }}
       >
         {({
           errors,
@@ -236,59 +254,72 @@ export const OrderTypeDialog = (props: any) => {
                       value={changeOrderType}
                       onChange={onServiceSelect}
                     >
-                      <ToggleButton
-                        role="radio"
-                        value={'pickup'}
-                        // onClick={() => {
-                        //   //setSearchText('');
-                        //   changeOrderType('pickup');
-                        // }}
-                        className="selected-toggle-btn"
-                        aria-current={changeOrderType === 'pickup'}
-                        aria-label="PickUp, Activating this element will cause results to load below "
-                      >
-                        PickUp
-                      </ToggleButton>
-                      <ToggleButton
-                        role="radio"
-                        value={'curbside'}
-                        // onClick={() => {
-                        //   //setSearchText('');
-                        //   changeOrderType('curbside');
-                        // }}
-                        className="selected-toggle-btn"
-                        aria-current={changeOrderType === 'curbside'}
-                        aria-label=" Curbside, Activating this element will cause results to load below "
-                      >
-                        Curbside
-                      </ToggleButton>
-                      <ToggleButton
-                        role="radio"
-                        value={'dinein'}
-                        // onClick={() => {
-                        //   //setSearchText('');
-                        //   changeOrderType('dinein');
-                        // }}
-                        className="selected-toggle-btn"
-                        aria-current={changeOrderType === 'dinein'}
-                        aria-label=" Curbside, Activating this element will cause results to load below "
-                      >
-                        Dine In
-                      </ToggleButton>
-                      <ToggleButton
-                        value={'dispatch'}
-                        role="radio"
-                        // onClick={() => {
-                        //   // setSearchText('');
-                        //   // setShowAllRestaurants(false);
-                        //   changeOrderType('dispatch');
-                        // }}
-                        className="selected-toggle-btn"
-                        aria-current={changeOrderType === 'dispatch'}
-                        aria-label=" Delivery, Enter your address below to get nearby restaurants"
-                      >
-                        Delivery
-                      </ToggleButton>
+                      {
+                        restaurantSupportedHanOffMode('pickup') && (
+                          <ToggleButton
+                            role="radio"
+                            value={'pickup'}
+                            // onClick={() => {
+                            //   //setSearchText('');
+                            //   changeOrderType('pickup');
+                            // }}
+                            className="selected-toggle-btn"
+                            aria-current={changeOrderType === 'pickup'}
+                            aria-label="PickUp, Activating this element will cause results to load below "
+                          >
+                            PickUp
+                          </ToggleButton>
+                        )
+                      }
+                      {
+                        restaurantSupportedHanOffMode('curbside') && (
+                          <ToggleButton
+                            role="radio"
+                            value={'curbside'}
+                            // onClick={() => {
+                            //   //setSearchText('');
+                            //   changeOrderType('curbside');
+                            // }}
+                            className="selected-toggle-btn"
+                            aria-current={changeOrderType === 'curbside'}
+                            aria-label=" Curbside, Activating this element will cause results to load below "
+                          >
+                            Curbside
+                          </ToggleButton>
+                        )}
+                      {
+                        restaurantSupportedHanOffMode('dinein') && (
+                          <ToggleButton
+                            role="radio"
+                            value={'dinein'}
+                            // onClick={() => {
+                            //   //setSearchText('');
+                            //   changeOrderType('dinein');
+                            // }}
+                            className="selected-toggle-btn"
+                            aria-current={changeOrderType === 'dinein'}
+                            aria-label=" Curbside, Activating this element will cause results to load below "
+                          >
+                            Dine In
+                          </ToggleButton>
+                        )}
+                      {
+                        restaurantSupportedHanOffMode('dispatch') && (
+                          <ToggleButton
+                            value={'dispatch'}
+                            role="radio"
+                            // onClick={() => {
+                            //   // setSearchText('');
+                            //   // setShowAllRestaurants(false);
+                            //   changeOrderType('dispatch');
+                            // }}
+                            className="selected-toggle-btn"
+                            aria-current={changeOrderType === 'dispatch'}
+                            aria-label=" Delivery, Enter your address below to get nearby restaurants"
+                          >
+                            Delivery
+                          </ToggleButton>
+                        )}
                     </ToggleButtonGroup>
                   </Grid>
                   {changeOrderType === 'dispatch' && (
@@ -371,7 +402,7 @@ export const OrderTypeDialog = (props: any) => {
                           helperText={touched.zip && errors.zip}
                         />
                       </Grid>
-                      {providerToken && authToken?.authtoken !== '' && (
+                      {isLoginUser() && (
                         <Grid item xs={12}>
                           <FormGroup>
                             <FormControlLabel
@@ -399,13 +430,6 @@ export const OrderTypeDialog = (props: any) => {
             <DialogActions>
               <Button
                 variant="contained"
-                onClick={handleClose}
-                sx={{ marginBottom: '15px' }}
-              >
-                Cancel
-              </Button>
-              <Button
-                variant="contained"
                 onClick={() => {
                   handleOrderUpdate({
                     address: {
@@ -420,9 +444,9 @@ export const OrderTypeDialog = (props: any) => {
                 }}
                 sx={{ marginRight: '15px', marginBottom: '15px' }}
                 autoFocus
-                disabled={checkButtonDisable(values, isValid)}
+              disabled={checkButtonDisable(values, isValid)}
               >
-                Update
+                Confirm
               </Button>
             </DialogActions>
           </form>

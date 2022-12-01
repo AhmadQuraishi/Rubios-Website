@@ -10,6 +10,7 @@ import ReactFacebookLogin from 'react-facebook-login';
 import { facebookUserLogin } from '../../redux/actions/user';
 import { displayToast } from '../../helpers/toast';
 import Page from '../../components/page-title';
+import { isLoginUser } from '../../helpers/auth';
 
 const useStyle = makeStyles(() => ({
   root: {
@@ -35,10 +36,7 @@ const Login2 = () => {
 
   useEffect(() => {
     if (
-      providerToken &&
-      authToken &&
-      authToken.authtoken &&
-      authToken.authtoken !== ''
+      isLoginUser()
     ) {
       if (pageURL == undefined || pageURL == null) {
         navigate('/welcome');
@@ -102,16 +100,14 @@ const Login2 = () => {
                 <Typography
                   variant="h1"
                   title={
-                    providerToken &&
-                    providerToken.first_name &&
-                    providerToken.first_name
+                    isLoginUser() &&
+                    providerToken?.first_name 
                   }
                 >
                   SIGN IN TO <br />
                   RUBIO'S REWARDS{' '}
-                  {providerToken &&
-                    providerToken.first_name &&
-                    providerToken.first_name}
+                  {isLoginUser() &&
+                    providerToken?.first_name}
                 </Typography>
                 <LoginForm />
               </Grid>

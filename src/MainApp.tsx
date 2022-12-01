@@ -18,6 +18,7 @@ import moment from 'moment';
 // import {generateCCSFToken} from "./services/basket";
 import TagManager from 'react-gtm-module';
 import { resetBasketRequest } from './redux/actions/basket';
+import {isLoginUser} from './helpers/auth'
 
 function App(props: any) {
   const location = useLocation();
@@ -25,14 +26,16 @@ function App(props: any) {
   const [hideLoginPanel, setHideLoginPanel] = useState(true);
   const [hideLoginedPanel, setHideLoginedPanel] = useState(false);
   const dispatch = useDispatch();
-  const { providerToken } = useSelector((state: any) => state.providerReducer);
-  const { authToken } = useSelector((state: any) => state.authReducer);
   const { deviceId } = useSelector((state: any) => state.authReducer);
   const { basket, createdTime } = useSelector(
     (state: any) => state.basketReducer,
   );
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log('isLoginUser', isLoginUser())
+  }, [])
 
   const updateDeviceId = () => {
     const newDeviceId = generateDeviceId();
@@ -95,7 +98,7 @@ function App(props: any) {
 
   useEffect(() => {
     if (window.location.href.toLocaleLowerCase().indexOf('/account') != -1) {
-      if (providerToken == null || providerToken == undefined) {
+      if (!isLoginUser()) {
         navigate('/login');
       }
     }
@@ -123,7 +126,7 @@ function App(props: any) {
     window.scrollTo(0, 0);
     if (window.location.href.toLocaleLowerCase().indexOf('/account') != -1) {
       setIsAccountSection(true);
-      if (providerToken == null || providerToken == undefined) {
+      if (!isLoginUser()) {
         navigate('/login');
       }
     } else {
@@ -161,10 +164,7 @@ function App(props: any) {
     if (window.location.pathname === '/') {
       if (basket) {
       } else if (
-        providerToken &&
-        authToken &&
-        authToken.authtoken &&
-        authToken.authtoken !== ''
+        isLoginUser()
       ) {
         navigate('/welcome');
       }

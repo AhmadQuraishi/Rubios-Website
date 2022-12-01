@@ -14,6 +14,7 @@ import * as Yup from 'yup';
 import { forwardRef } from 'react';
 import { IMaskInput } from 'react-imask';
 import { DeliveryModeEnum } from '../../types/olo-api/olo-api.enums';
+import { isLoginUser } from '../../helpers/auth';
 
 const PickupForm = ({
   basket,
@@ -23,7 +24,6 @@ const PickupForm = ({
   showSignUpGuest,
 }: any) => {
   const { providerToken } = useSelector((state: any) => state.providerReducer);
-  const { authToken } = useSelector((state: any) => state.authReducer);
   const [show, setShow] = React.useState<boolean>(false);
   interface CustomProps {
     onChange: (event: { target: { name: string; value: string } }) => void;
@@ -146,7 +146,7 @@ const PickupForm = ({
           <Grid item xs={12}>
             <TextField
               aria-label="First Name"
-              disabled={authToken?.authtoken ? true : false}
+              disabled={isLoginUser()}
               onBlur={handleBlur}
               label="First Name"
               aria-required="true"
@@ -163,7 +163,7 @@ const PickupForm = ({
           <Grid item xs={12}>
             <TextField
               aria-label="Last Name"
-              disabled={authToken?.authtoken ? true : false}
+              disabled={isLoginUser()}
               onBlur={handleBlur}
               label="Last Name"
               aria-required="true"
@@ -207,7 +207,7 @@ const PickupForm = ({
           <Grid item xs={12}>
             <TextField
               aria-label="Email"
-              disabled={authToken?.authtoken ? true : false}
+              disabled={isLoginUser()}
               onBlur={handleBlur}
               label="Email"
               aria-required="true"
@@ -294,7 +294,7 @@ const PickupForm = ({
               </Grid>
             </>
           ) : null}
-           {!authToken?.authtoken && (
+           {!isLoginUser() && (
             <Grid item xs={12}>
               {/* {!providerToken && showSignUpGuest && ( */}
                 <FormGroup>
