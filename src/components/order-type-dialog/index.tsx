@@ -151,8 +151,8 @@ export const OrderTypeDialog = (props: any) => {
     console.log('buttonDisabled', buttonDisabled);
     console.log('values', values);
     return (
-      buttonDisabled ||
-      (changeOrderType !== 'dispatch' && changeOrderType === orderType) ||
+      buttonDisabled
+    ||
       (changeOrderType === 'dispatch' &&
         (values.address1 === '' || values.city === '' || values.zip === ''))
     );
@@ -444,7 +444,7 @@ export const OrderTypeDialog = (props: any) => {
                 }}
                 sx={{ marginRight: '15px', marginBottom: '15px' }}
                 autoFocus
-              //disabled={checkButtonDisable(values, isValid)}
+              disabled={checkButtonDisable(values, isValid)}
               >
                 Confirm
               </Button>
