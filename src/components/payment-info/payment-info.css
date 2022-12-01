@@ -36,7 +36,11 @@
   top: 10px;
 }
 .payment-form .image-field.align img {
-  top: 25px;
+  top: 48px;
+}
+.add-credit-card-label {
+  font-family: 'Poppins-Regular', sans-serif !Important;
+  font-size: 14px !important;
 }
 
 .payment-form .card-fields {
