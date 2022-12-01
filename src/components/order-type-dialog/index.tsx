@@ -430,13 +430,6 @@ export const OrderTypeDialog = (props: any) => {
             <DialogActions>
               <Button
                 variant="contained"
-                onClick={handleClose}
-                sx={{ marginBottom: '15px' }}
-              >
-                Cancel
-              </Button>
-              <Button
-                variant="contained"
                 onClick={() => {
                   handleOrderUpdate({
                     address: {
@@ -451,9 +444,9 @@ export const OrderTypeDialog = (props: any) => {
                 }}
                 sx={{ marginRight: '15px', marginBottom: '15px' }}
                 autoFocus
-                disabled={checkButtonDisable(values, isValid)}
+                //disabled={checkButtonDisable(values, isValid)}
               >
-                Update
+                Confirm
               </Button>
             </DialogActions>
           </form>
