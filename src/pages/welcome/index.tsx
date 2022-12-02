@@ -196,9 +196,13 @@ const Welcome = () => {
 
   const gotoCategoryPage = (e: BaseSyntheticEvent) => {
     const orderType = e.target.name;
-    if (favRestaurant && orderType != undefined) {
+    if (favRestaurant && orderType) {
+      let url =
+        orderType === 'dispatch'
+          ? '/location'
+          : '/menu/' + favRestaurant.slug + '?handoff=' + orderType;
       dispatch(setResturantInfoRequest(favRestaurant, orderType));
-      navigate(favRestaurant ? '/menu/' + favRestaurant.slug : '/');
+      navigate(url);
     }
   };
   const reoderHandler = (vendorid: number) => {
@@ -486,11 +490,11 @@ const Welcome = () => {
                                 <Button
                                   aria-label="pickup button"
                                   variant="contained"
-                                  title="PICKUP"
+                                  title="PICK UP"
                                   name="pickup"
                                   onClick={gotoCategoryPage}
                                 >
-                                  PICKUP
+                                  PICK UP
                                 </Button>
                               </li>
                             )}
@@ -505,6 +509,19 @@ const Welcome = () => {
                                   onClick={gotoCategoryPage}
                                 >
                                   CURBSIDE
+                                </Button>
+                              </li>
+                            )}
+                            {favRestaurant.supportsdinein === true && (
+                              <li>
+                                <Button
+                                  aria-label="dinein button"
+                                  variant="contained"
+                                  title="DINE IN"
+                                  name="dinein"
+                                  onClick={gotoCategoryPage}
+                                >
+                                  DINE IN
                                 </Button>
                               </li>
                             )}

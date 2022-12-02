@@ -221,7 +221,7 @@ export const OrderTypeDialog = (props: any) => {
               <DialogContentText id="alert-dialog-description">
                 <Grid
                   container
-                  sx={{ width: '100%', justifyContent: 'center' }}
+                  sx={{ width: '100%', justifyContent: 'center', maxHeight: "180px" }}
                 >
                   {/*<Grid item xs={12}>
                     <FormControl fullWidth>
