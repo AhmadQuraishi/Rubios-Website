@@ -218,12 +218,8 @@ const Location = () => {
       navigator.geolocation.getCurrentPosition(
         function (position) {
           console.log('working 11', position);
-          const lat: any = parseFloat(String(position.coords.latitude)).toFixed(
-            0,
-          );
-          const lng: any = parseFloat(
-            String(position.coords.longitude),
-          ).toFixed(0);
+          const lat: any = parseFloat(String(position.coords.latitude));
+          const lng: any = parseFloat(String(position.coords.longitude));
 
           getGeocode({
             location: {
