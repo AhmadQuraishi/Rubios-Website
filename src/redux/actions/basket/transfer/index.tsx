@@ -18,12 +18,12 @@ export function basketTransferSuccess(data: ResponseBasket) {
 }
 
 export function basketTransferFailure(error: any) {
-  displayToast(
-    'ERROR',
-    error?.response?.data?.message
-      ? error.response.data.message
-      : 'ERROR! Please Try again later',
-  );
+  // displayToast(
+  //   'ERROR',
+  //   error?.response?.data?.message
+  //     ? error.response.data.message
+  //     : 'ERROR! Please Try again later',
+  // );
   return {
     type: basketActionsTypes.BASKET_TRANSFER_FAILURE,
     error: error,

@@ -41,7 +41,10 @@ import {
   setBasketDeliveryAddress,
   setBasketDeliveryMode,
 } from '../../services/basket';
-import { getBasketRequestSuccess } from '../../redux/actions/basket';
+import {
+  getBasketRequestSuccess,
+  resetBasketRequest,
+} from '../../redux/actions/basket';
 import { isLoginUser } from '../../helpers/auth';
 // import { toast } from 'react-toastify';
 // import error = toast.error;
@@ -264,13 +267,24 @@ const LocationCard = (props: any) => {
     setActionPerform(true);
     setSearchText('');
     setAction(actionTypes.CURRENT_LOCATION);
-    currentLocation();
+    if (isMapLoaded) {
+      currentLocation();
+    }
   };
 
   useEffect(() => {
     if (!newBasketLoading) {
       if (newBasketError) {
         setActionPerform(false);
+        if (orderType === 'dispatch' && deliveryAddressString) {
+          dispatch(setDeliveryAddress(deliveryAddressString));
+        }
+        if (newRestaurant && orderType) {
+          dispatch(resetBasketRequest());
+          dispatch(setResturantInfoRequest(newRestaurant, orderType || ''));
+          triggerFacebookEventOnLocationChange();
+          navigate('/menu/' + newRestaurant.slug);
+        }
       } else if (newBasket?.basket) {
         setShowLocationChangeModal(true);
         setActionPerform(false);
