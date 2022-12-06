@@ -1,0 +1,37 @@
+.react-date-inputs input {
+    width: 12%;
+    background: white;
+    border: none;
+    height: auto;
+    -webkit-appearance: none;
+    background-clip: padding-box;
+    -webkit-box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.2) !important;
+    -moz-box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.2) !important;
+    box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.2) !important;
+    padding: 16px 14px;
+    margin: 5px 10px 0px 0px;
+    outline: none;
+    caret-color: black !important;
+  }
+
+.fav-error-message {
+  padding: 0;
+  font-family: "Roboto","Helvetica","Arial",sans-serif;
+  font-weight: 400;
+  font-size: 0.75rem;
+  line-height: 1.66;
+  letter-spacing: 0.03333em;
+  text-align: left;
+  margin-top: 3px;
+  margin-right: 14px;
+  margin-bottom: 0;
+  margin-left: 14px;
+  color: #E61F00 !important;
+}
+
+.body-text-signup {
+    font-size: 12px;
+    font-family: 'Poppins-Regular', sans-serif !important;
+    color: #414141;
+    padding-top: 3px;
+  }

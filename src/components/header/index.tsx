@@ -19,6 +19,7 @@ import Cart from '../cart';
 import Upsells from '../cart/upsells';
 import { useSelector } from 'react-redux';
 import RightMenuBar from '../right-menu-bar';
+import { isLoginUser } from '../../helpers/auth';
 
 const useStyles = makeStyles((theme: Theme) => ({
   navBar: {
@@ -155,7 +156,7 @@ const Header = (props: any) => {
   };
   return (
     <>
-      <AppBar position="sticky" className={classes.navBar}>
+      <AppBar id={'page-header'} position="sticky" className={classes.navBar}>
         <Toolbar
           sx={{
             alignItems: { sm: 'inherit' },
@@ -201,7 +202,26 @@ const Header = (props: any) => {
                   Menu
                 </Link>
               )}
-              {providerToken && providerToken.first_name ? (
+
+              {/* <Drawer open={openDrawer} onClose={() => setOpenDrawer(false)}>
+                <div style={{ padding: '20px' }}>
+                  <Link
+                    to={restaurant ? '/menu/' + restaurant.slug : '/'}
+                    onClick={() => setOpenDrawer(false)}
+                    className={classes.menuLink}
+                    title="Main Menu"
+                  >
+                    Main Menu
+                  </Link>
+                </div>
+              </Drawer>
+              <IconButton
+                onClick={() => setOpenDrawer(!openDrawer)}
+                className={classes.icon}
+              >
+                <MenuIcon fontSize="large" titleAccess="Menu Icon" />
+              </IconButton> */}
+              {isLoginUser() && providerToken?.first_name ? (
                 <Grid
                   container
                   sx={{
@@ -346,7 +366,7 @@ const Header = (props: any) => {
                 </Link>
               )}
 
-              {providerToken && providerToken.first_name
+              {isLoginUser() && providerToken?.first_name
                 ? !hideLoginedPanel && (
                     <Grid
                       container
@@ -396,7 +416,7 @@ const Header = (props: any) => {
                             fontSize: '14px',
                           }}
                         >
-                          Hi {(providerToken && providerToken.first_name) || ''}
+                          Hi {(isLoginUser() && providerToken?.first_name) || ''}
                           !
                         </Typography>
                         {!showAccountMenu && (
@@ -487,9 +507,10 @@ const Header = (props: any) => {
                     }
                   }}
                   sx={{
-                    paddingRight: { xs: '20px', md: '40px' },
-                    paddingLeft: '20px',
-                    paddingTop: '5px',
+                    paddingRight: { xs: '20px', md: '30px' },
+                    paddingLeft: {xs: '20px', md:'30px'},
+                    display: 'flex',
+                    alignItems:'center',
                     backgroundColor: 'transparent',
                     '&:hover': {
                       backgroundColor: 'transparent',

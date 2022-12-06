@@ -1,0 +1,35 @@
+.selected-toggle-btn.MuiToggleButton-standard {
+    background: #214F66;
+    color: white;
+    border: none;
+    width: 100%;
+    height: 40px;
+    margin: 10px 8px 0px 0px !important;
+    font-size: 13px;
+  }
+
+  .selected-toggle-btn.MuiToggleButton-standard:focus {
+    outline: 1px dotted #0075EF !important;
+    outline-offset: 2px !important;
+  }
+  
+  .selected-toggle-btn.MuiToggleButton-standard:hover {
+    background: #214F66;
+  }
+  
+  .selected-toggle-btn.Mui-selected {
+    background: #0075BF !important;
+    color: white !important;
+  }
+  .order-tickmark .selected-toggle-btn.Mui-selected:before {
+    content: '';
+    display: inline-block;
+    transform: rotate(45deg);
+    height: 14px;
+    width: 6px;
+    border-bottom: 3px solid white;
+    border-right: 3px solid white;
+    position: absolute;
+    left: calc(50% - 28%);
+    top: 22%;
+  }

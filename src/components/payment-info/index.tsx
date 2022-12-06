@@ -24,6 +24,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ResponseBasket } from '../../types/olo-api';
 import { IMaskInput } from 'react-imask';
 import moment from 'moment';
+import { isLoginUser } from '../../helpers/auth';
 
 interface CustomProps {
   onChange: (event: { target: { name: string; value: string } }) => void;
@@ -63,6 +64,8 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
   const [basket, setBasket] = React.useState<ResponseBasket>();
   const [allowedCards, setAllowedCards] = React.useState<any>();
+  const [displaySavedCards, setDisplaySavedCards] =
+    React.useState<boolean>(false);
   const basketObj = useSelector((state: any) => state.basketReducer);
 
   React.useEffect(() => {
@@ -201,7 +204,6 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
     setButtonDisabled(false);
     handleHideShow();
     moveFocusBackToScreen();
-
     // if (ccsfObj) {
     //   ccsfObj.registerError((errors: any) => {
     //     console.log('ccsf error 2', errors);
@@ -242,7 +244,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
     const billingSchemeStats = getBillingSchemesStats(billingSchemes);
     return (
       basket &&
-      billingSchemeStats.creditCard < 1 &&
+      billingSchemeStats.selectedCreditCard === 0 &&
       allowedCards &&
       allowedCards.length &&
       allowedCards.filter((element: any) => {
@@ -306,9 +308,45 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
         <Grid container spacing={2} className="payment-form">
           <SplitPayment
             setHideShow={(value: boolean) => HandleEditCreditCard(value)}
+            displaySavedCards={displaySavedCards}
           />
           <Grid container>
             <Grid item xs={12} sm={12} md={12} lg={12} className="add-gift">
+              {!displaySavedCards &&
+                basket &&
+                isLoginUser() &&
+                billingSchemes &&
+                billingSchemes?.length > 0 &&
+                billingSchemes?.filter(
+                  (account: any) => account.savedCard && !account.selected,
+                ).length > 0 &&
+                allowedCards &&
+                allowedCards.length &&
+                allowedCards.filter((element: any) => {
+                  return element.type === 'creditcard';
+                }).length > 0 && (
+                  <Grid container spacing={2}>
+                    <Grid
+                      item
+                      padding={0}
+                      textAlign={'center'}
+                      xs={12}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                    >
+                      <Button
+                        className={'add-credit-card-button'}
+                        title="Change Payment Method"
+                        aria-label="Change Payment Method"
+                        onClick={() => setDisplaySavedCards(true)}
+                        id={'add-credit-card'}
+                      >
+                        Change Payment Method
+                      </Button>
+                    </Grid>
+                  </Grid>
+                )}
               {displayAddCreditCard() && (
                 <Button
                   className={'add-credit-card-button'}
@@ -396,7 +434,14 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                               />
                             </div>
                           </Grid>
-                          <Grid textAlign={'left'} item xs={12} sm={6} md={6} lg={6}>
+                          <Grid
+                            item
+                            textAlign={'left'}
+                            xs={12}
+                            sm={6}
+                            md={6}
+                            lg={6}
+                          >
                             {/*<div className="card-fields" data-olo-pay-card-cvc />*/}
                             <label
                               className="add-credit-card-label"
@@ -420,7 +465,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                         </Grid>
                       </Grid>
                       <Grid item xs={12} sm={12} md={12} lg={12}>
-                        <Grid container spacing={2}>
+                        <Grid container textAlign={'left'} spacing={2}>
                           <Grid
                             item
                             xs={12}
@@ -439,6 +484,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                             <TextField
                               className="zipcode"
                               aria-label="Card Expiry"
+                              // placeholder="Card Expiry MM/YY"
                               value={cardExpiry}
                               onChange={handleCardExpiryChange}
                               name="phone"
@@ -448,12 +494,19 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                               id="card-expiry"
                             />
                           </Grid>
-                          <Grid textAlign={'left'} item xs={12} sm={6} md={6} lg={6}>
+                          <Grid
+                            textAlign={'left'}
+                            item
+                            xs={12}
+                            sm={6}
+                            md={6}
+                            lg={6}
+                          >
                             <label
                               className="add-credit-card-label"
-                              htmlFor="card-expiry"
+                              htmlFor="card-zipcode"
                             >
-                              Card Expiry MM/YY
+                              Zip Code
                             </label>
                             <TextField
                               className="zipcode"
@@ -464,6 +517,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                               inputProps={{ shrink: false }}
                               value={zipCode}
                               onChange={handleZipCodeChange}
+                              id="card-zipcode"
                             />
                           </Grid>
                         </Grid>

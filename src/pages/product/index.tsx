@@ -30,6 +30,7 @@ import Page from '../../components/page-title';
 import { facebookSendEvent } from '../../redux/actions/facebook-conversion';
 import { facebookConversionTypes } from '../../redux/types/facebook-conversion';
 import { convertMetaDataToOptions } from '../../helpers/product';
+import { isLoginUser } from '../../helpers/auth';
 
 const Product = () => {
   const { id, edit } = useParams();
@@ -210,7 +211,7 @@ const Product = () => {
       }
 
       request.vendorid = restaurant.id;
-      if (authToken?.authtoken && authToken.authtoken !== '') {
+      if (isLoginUser()) {
         request.authtoken = authToken.authtoken;
       }
       payload.request = request;
@@ -249,12 +250,12 @@ const Product = () => {
     }
     let userData: any = null;
 
-    if (providerToken) {
+    if (isLoginUser()) {
       userData = {
-        first_name: providerToken.first_name || '',
-        last_name: providerToken.last_name || '',
-        email: providerToken.email || '',
-        phone: providerToken.phone || '',
+        first_name: providerToken?.first_name || '',
+        last_name: providerToken?.last_name || '',
+        email: providerToken?.email || '',
+        phone: providerToken?.phone || '',
       };
     }
 

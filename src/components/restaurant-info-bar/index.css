@@ -1,5 +1,5 @@
 .add-favourite {
-  margin-top: 5px;
+  /*margin-top: 5px;*/
   display: flex;
   align-items: center;
   font-size: 13px;
@@ -9,4 +9,7 @@
   .add-favourite {
     font-size: 11px;
   }
+}
+.css-1q60rmi-MuiAutocomplete-endAdornment{
+  top: calc(25% - 11px);
 }

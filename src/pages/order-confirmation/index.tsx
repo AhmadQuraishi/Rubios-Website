@@ -15,6 +15,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import RegisterConfirmation from '../../components/register-confirmation';
 import Page from '../../components/page-title';
 import { requestEclubSignup } from '../../services/user';
+import { isLoginUser } from '../../helpers/auth';
 
 const useStyle = makeStyles(() => ({
   root: {
@@ -54,7 +55,7 @@ const OrderConfirmation = () => {
   useEffect(() => {
     if (
       guestUser &&
-      !authToken?.authtoken &&
+      !isLoginUser() &&
       restaurant &&
       restaurant.extref &&
       runOnceEclubSignUp
@@ -87,7 +88,7 @@ const OrderConfirmation = () => {
 
   const composeTitleText = () => {
     let msg = '';
-    if (authToken?.authtoken) {
+    if (isLoginUser()) {
       if (process.env.REACT_APP_SHOW_REWARD_POINTS === 'TRUE') {
         msg = "You've earned points for Free Rubio's!";
       } else {
@@ -101,7 +102,7 @@ const OrderConfirmation = () => {
 
   const composeDescriptionText = () => {
     let msg = '';
-    if (authToken?.authtoken) {
+    if (isLoginUser()) {
       if (process.env.REACT_APP_SHOW_REWARD_POINTS === 'TRUE') {
         msg =
           "You can cash in your points for free food when you get to 400, 700 or 1300 points. So keep enjoying your Rubio's favorites - tasty rewards are coming your way!";
@@ -131,7 +132,7 @@ const OrderConfirmation = () => {
               </Grid>
               <Grid item xs={12} sm={12} md={12} lg={6}>
                 <Card
-                  className={authToken?.authtoken ? 'card ' : 'card next-order'}
+                  className={isLoginUser() ? 'card ' : 'card next-order'}
                 >
                   <Grid container>
                     <Grid
@@ -143,7 +144,7 @@ const OrderConfirmation = () => {
                       className="earn-reward"
                     >
                       <Typography variant="h2" className="label white">
-                        {authToken?.authtoken ? 'YOUR REWARDS' : 'EARN REWARDS'}
+                        {isLoginUser() ? 'YOUR REWARDS' : 'EARN REWARDS'}
                       </Typography>
                       <Typography
                         variant="body1"
@@ -168,7 +169,7 @@ const OrderConfirmation = () => {
                         {composeDescriptionText()}
                       </Typography>
                       <br />
-                      {authToken?.authtoken ? (
+                      {isLoginUser() ? (
                         ''
                       ) : (
                         <img
@@ -178,7 +179,7 @@ const OrderConfirmation = () => {
                         />
                       )}
                     </Grid>
-                    {authToken?.authtoken ? (
+                    {isLoginUser() ? (
                       <Grid item xs={12} sm={12} md={12} lg={12}>
                         <Button
                           aria-label="view account"

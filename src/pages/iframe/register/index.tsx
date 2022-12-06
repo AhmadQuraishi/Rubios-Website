@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import React, { useEffect } from 'react';
 import './register.css';
 import { removeAuthTokenIframeRedirect } from '../../../redux/actions/auth';
+import { isLoginUser } from '../../../helpers/auth';
 
 const useStyle = makeStyles(() => ({
   root: {
@@ -29,7 +30,7 @@ const RegisterIframe = () => {
   );
 
   useEffect(() => {
-    if (providerToken && authToken) {
+    if (isLoginUser()) {
       if (iframeRedirect) {
         dispatch(removeAuthTokenIframeRedirect());
         window.parent.location.href = `${process.env.REACT_APP_ORDERING_URL}/welcome?new_user=true`;
@@ -42,7 +43,7 @@ const RegisterIframe = () => {
       <Grid container component="main" className={classes.root}>
         <Grid item xs={12}>
           <Grid container className="sign-up-section">
-            {providerToken && authToken ? (
+            {isLoginUser() ? (
               <Button
                 aria-label="view account"
                 variant="contained"

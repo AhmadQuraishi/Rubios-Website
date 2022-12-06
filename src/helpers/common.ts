@@ -54,21 +54,6 @@ export function checkTacoMatch(name: string, isdefault: boolean) {
   return filterTaco.length > 0;
 }
 
-export function removeTestingStores(restaurants: any) {
-  const restaurantIds: any =
-    `${process.env.REACT_APP_TESTING_RESTAURANTS_IDS}` || '';
-  if (restaurantIds == 'undefined') {
-    return restaurants;
-  }
-  let filterRestaurants: any = [];
-  const testingStores: any = JSON.parse(restaurantIds) || [];
-
-  filterRestaurants = restaurants.filter((rest: any) => {
-    return !testingStores.includes(rest.id.toString());
-  });
-  return filterRestaurants;
-}
-
 export function getAddress(place: any) {
   const address = {
     address1: '',

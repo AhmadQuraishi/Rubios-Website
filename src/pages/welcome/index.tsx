@@ -1,27 +1,22 @@
 import { makeStyles } from '@mui/styles';
-import {
-  Grid,
-  Typography,
-  CardMedia,
-  Card,
-  CardContent,
-  Button,
-  useTheme,
-} from '@mui/material';
+import { Grid, Typography, Card, CardContent, Button } from '@mui/material';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './welcome.css';
-import { BaseSyntheticEvent, Fragment, useEffect, useState } from 'react';
+import React, {
+  BaseSyntheticEvent,
+  Fragment,
+  useEffect,
+  useState,
+} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserRecentOrders } from '../../redux/actions/user';
 import {
   getResturantInfoRequest,
   setResturantInfoRequest,
 } from '../../redux/actions/restaurant';
-
 import CardSkeletonUI from '../../components/card-skeleton-ui';
 import { createBasketFromPrev } from '../../redux/actions/basket/create';
 import { displayToast } from '../../helpers/toast';
-import { handleCart } from '../../components/header';
 import WelcomeNewUser from '../../components/welcome/new-user';
 import BgImage from '../../assets/imgs/Family_Burrito_Box_mainA573LR.jpg';
 import BgImageNewUser from '../../assets/imgs/rubios-welcome-background.jpg';
@@ -29,16 +24,9 @@ import Page from '../../components/page-title';
 import { getResturantListRequest } from '../../redux/actions/restaurant/list';
 import { facebookSendEvent } from '../../redux/actions/facebook-conversion';
 import { facebookConversionTypes } from '../../redux/types/facebook-conversion';
-
-const useStyle = makeStyles(() => ({
-  root: {
-    // background: `url(${BgImage}) center center fixed`,
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'cover',
-    justifyContent: 'center',
-  },
-  caption: {},
-}));
+import { OrderTypeDialog } from '../../components/order-type-dialog';
+import { getUpsellsRequest } from '../../redux/actions/basket/upsell/Get';
+import { isLoginUser } from '../../helpers/auth';
 
 const Welcome = () => {
   const dispatch = useDispatch();
@@ -46,7 +34,6 @@ const Welcome = () => {
 
   const query = new URLSearchParams(useLocation().search);
   const new_user = query.get('new_user');
-
   const [recentorders, setOrders] = useState([]);
   const [favRestaurant, setFavRestaurant] = useState<any>(null);
   const [pageBackground, setPageBackground] = useState(BgImage);
@@ -61,6 +48,7 @@ const Welcome = () => {
     id: '',
     ignoreunavailableproducts: true,
   });
+  const [openOrder, setOpenOrder] = useState(false);
 
   const { providerToken } = useSelector((state: any) => state.providerReducer);
   const { authToken } = useSelector((state: any) => state.authReducer);
@@ -76,20 +64,16 @@ const Welcome = () => {
   const { restaurant, orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
-  // const { favRestaurant, favloading } = useSelector(
-  //   (state: any) => state.favRestaurantReducer,
-  // );
-
   useEffect(() => {
     if (
       restaurants &&
       restaurants.restaurants &&
       restaurants.restaurants.length &&
-      providerToken &&
-      providerToken.favourite_store_numbers
+      isLoginUser() && 
+      providerToken?.favourite_store_numbers
     ) {
       const filter = restaurants.restaurants.filter(
-        (rest: any) => rest.extref === providerToken.favourite_store_numbers,
+        (rest: any) => rest.extref === providerToken?.favourite_store_numbers,
       );
       if (filter.length) {
         setFavRestaurant(filter[0]);
@@ -132,26 +116,22 @@ const Welcome = () => {
 
   useEffect(() => {
     if (
-      providerToken &&
-      authToken &&
-      authToken.authtoken &&
-      authToken.authtoken !== ''
+      isLoginUser() 
     ) {
     } else {
       navigate('/login');
     }
   }, [authToken, providerToken]);
   useEffect(() => {
-    if (authToken && authToken.authtoken) dispatch(getUserRecentOrders());
+    if (isLoginUser()) dispatch(getUserRecentOrders());
   }, [authToken]);
   useEffect(() => {
     if (
-      providerToken &&
-      providerToken.favourite_store_numbers &&
-      providerToken.favourite_store_numbers
+      isLoginUser() &&
+      providerToken?.favourite_store_numbers &&
+      providerToken?.favourite_store_numbers
     )
       dispatch(getResturantListRequest());
-    // dispatch(getFavRestaurant(providerToken.favourite_store_numbers));
   }, []);
   useEffect(() => {
     if (
@@ -180,6 +160,23 @@ const Welcome = () => {
     }
   }, [restaurant, orderType]);
 
+  const navigateAfterSuccess = () => {
+    setOpenOrder(false);
+    if (isReoder) {
+      navigate('/checkout');
+    }
+    if (isEdit) {
+      navigate(restaurant ? '/menu/' + restaurant.slug : '/');
+      // handleCart();
+    }
+    displayToast(
+      'SUCCESS',
+      'The items from your recent order have been added to your cart.',
+    );
+    setIsEdit(false);
+    setIsReoder(false);
+    setIsbasket(false);
+  };
   useEffect(() => {
     if (
       basketObj &&
@@ -188,20 +185,8 @@ const Welcome = () => {
       basketObj.basket.products.length > 0 &&
       isbasket
     ) {
-      if (isReoder) {
-        navigate('/checkout');
-      }
-      if (isEdit) {
-        navigate(restaurant ? '/menu/' + restaurant.slug : '/');
-        handleCart();
-      }
-      displayToast(
-        'SUCCESS',
-        'The items from your recent order have been added to your cart.',
-      );
-      setIsEdit(false);
-      setIsReoder(false);
-      setIsbasket(false);
+      setOpenOrder(true);
+      return;
     } else if (error && error.message) {
       setIsEdit(false);
       setIsReoder(false);
@@ -211,13 +196,18 @@ const Welcome = () => {
 
   const gotoCategoryPage = (e: BaseSyntheticEvent) => {
     const orderType = e.target.name;
-    if (favRestaurant && orderType != undefined) {
+    if (favRestaurant && orderType) {
+      let url =
+        orderType === 'dispatch'
+          ? '/location'
+          : '/menu/' + favRestaurant.slug + '?handoff=' + orderType;
       dispatch(setResturantInfoRequest(favRestaurant, orderType));
-      navigate(favRestaurant ? '/menu/' + favRestaurant.slug : '/');
+      navigate(url);
     }
   };
   const reoderHandler = (vendorid: number) => {
     dispatch(getResturantInfoRequest(vendorid));
+    dispatch(getUpsellsRequest(basketObj?.basket?.id, vendorid));
     setIsReoder(true);
     setIsRestaurant(true);
   };
@@ -229,12 +219,12 @@ const Welcome = () => {
 
   const triggerFacebookEventOnNewRegsiter = () => {
     let userObj: any = null;
-    if (providerToken) {
+    if (isLoginUser()) {
       userObj = {
-        first_name: providerToken.first_name || '',
-        last_name: providerToken.last_name || '',
-        email: providerToken.email || '',
-        phone: providerToken.phone || '',
+        first_name: providerToken?.first_name || '',
+        last_name: providerToken?.last_name || '',
+        email: providerToken?.email || '',
+        phone: providerToken?.phone || '',
       };
     }
     dispatch(
@@ -248,6 +238,10 @@ const Welcome = () => {
 
   return (
     <Page title={'Welcome'} className="">
+      <OrderTypeDialog
+        openModal={openOrder}
+        setOpenModal={navigateAfterSuccess}
+      />
       <Fragment>
         <Grid
           style={{
@@ -278,17 +272,17 @@ const Welcome = () => {
                   variant="h1"
                   className="user-name"
                   title={
-                    providerToken &&
+                    isLoginUser() &&
                     providerToken.first_name &&
                     providerToken.first_name
                   }
                 >
                   {newUser ? "WELCOME TO RUBIO'S REWARDS" : 'WELCOME BACK'}{' '}
                   <br />
-                  {providerToken &&
+                  {isLoginUser() &&
                     newUser &&
-                    providerToken.first_name &&
-                    `${providerToken.first_name}!`}
+                    providerToken?.first_name &&
+                    `${providerToken?.first_name}!`}
                 </Typography>
                 {(loading && <CardSkeletonUI />) ||
                   (isEdit && <CardSkeletonUI />) ||
@@ -299,8 +293,7 @@ const Welcome = () => {
                   userRecentOrders &&
                   userRecentOrders.orders &&
                   userRecentOrders.orders.length > 0 &&
-                  authToken &&
-                  authToken.authtoken &&
+                  isLoginUser() &&
                   !isEdit &&
                   !isReoder && (
                     <Fragment>
@@ -317,14 +310,6 @@ const Welcome = () => {
                               className="p-card"
                               key={index + order.id}
                             >
-                              {/* <CardMedia
-                                component="img"
-                                title="image"
-                                aria-label="Recent Order Image Icon"
-                                image={require('../../assets/imgs/order-hidtory-icon.png')}
-                                alt=""
-                                className="order-img"
-                              /> */}
                               <CardContent className="product-content">
                                 {order.products
                                   .slice(0, 3)
@@ -367,6 +352,11 @@ const Welcome = () => {
                                     onClick={() => {
                                       reoderHandler(order.vendorid);
                                     }}
+                                    onKeyPress={(e: any) => {
+                                      if (e.key === 'Enter') {
+                                        reoderHandler(order.vendorid);
+                                      }
+                                    }}
                                   >
                                     Reorder
                                   </Button>
@@ -381,8 +371,7 @@ const Welcome = () => {
                   userRecentOrders &&
                   userRecentOrders.orders &&
                   userRecentOrders.orders.length === 0 &&
-                  authToken &&
-                  authToken.authtoken &&
+                  isLoginUser() &&
                   !newUser &&
                   !isEdit &&
                   !isReoder && (
@@ -501,24 +490,11 @@ const Welcome = () => {
                                 <Button
                                   aria-label="pickup button"
                                   variant="contained"
-                                  title="PICKUP"
+                                  title="PICK UP"
                                   name="pickup"
                                   onClick={gotoCategoryPage}
                                 >
-                                  PICKUP
-                                </Button>
-                              </li>
-                            )}
-                            {favRestaurant.supportsdispatch === true && (
-                              <li>
-                                <Button
-                                  aria-label="delivery button"
-                                  variant="contained"
-                                  title="DELIVERY"
-                                  name="dispatch"
-                                  onClick={gotoCategoryPage}
-                                >
-                                  DELIVERY
+                                  PICK UP
                                 </Button>
                               </li>
                             )}
@@ -533,6 +509,32 @@ const Welcome = () => {
                                   onClick={gotoCategoryPage}
                                 >
                                   CURBSIDE
+                                </Button>
+                              </li>
+                            )}
+                            {favRestaurant.supportsdinein === true && (
+                              <li>
+                                <Button
+                                  aria-label="dinein button"
+                                  variant="contained"
+                                  title="DINE IN"
+                                  name="dinein"
+                                  onClick={gotoCategoryPage}
+                                >
+                                  DINE IN
+                                </Button>
+                              </li>
+                            )}
+                            {favRestaurant.supportsdispatch === true && (
+                              <li>
+                                <Button
+                                  aria-label="delivery button"
+                                  variant="contained"
+                                  title="DELIVERY"
+                                  name="dispatch"
+                                  onClick={gotoCategoryPage}
+                                >
+                                  DELIVERY
                                 </Button>
                               </li>
                             )}

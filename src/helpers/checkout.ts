@@ -14,6 +14,7 @@ import {
 import { CalendarTypeEnum, HoursListing } from './hoursListing';
 import moment from 'moment';
 import {generateCCSFToken} from "../services/basket";
+import { isLoginUser } from './auth';
 
 const cardTypes: any = {
   amex: 'Amex',
@@ -124,7 +125,7 @@ export function generateSubmitBasketPayload(
     };
   }
 
-  if (authtoken && authtoken !== '') {
+  if (isLoginUser()) {
     // payload.authtoken = authtoken;
     payload.usertype = UserTypeEnum.user;
     // delete payload.firstname;
@@ -293,6 +294,7 @@ export function getBillingSchemesStats(billingSchemes: any) {
     giftCard: 0,
     selectedCreditCard: 0,
     selectedGiftCard: 0,
+    savedCards: 0,
   };
 
   billingSchemes.forEach((account: any) => {
@@ -313,6 +315,10 @@ export function getBillingSchemesStats(billingSchemes: any) {
         account.billingmethod === 'storedvalue' && account.selected
           ? billingSchemeStats.selectedGiftCard + 1
           : billingSchemeStats.selectedGiftCard,
+      savedCards:
+        account.billingmethod === 'creditcard' && account.savedCard
+          ? billingSchemeStats.savedCards + 1
+          : billingSchemeStats.savedCards,
     };
   });
 

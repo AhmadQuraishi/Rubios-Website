@@ -44,9 +44,6 @@ export const setBasketDeliveryMode = (
   body: RequestSetDeliveryMode,
 ) => {
   try {
-
-    console.log('basketid', basketid)
-    console.log('body', body)
     const url = process.env.REACT_APP_OLO_API || '';
     return axios
       .put(url + `/baskets/${basketid}/deliverymode`, body)
@@ -274,6 +271,24 @@ export const generateCCSFToken = (basketid: string, body: any) => {
     const url = process.env.REACT_APP_OLO_API || '';
     return axios
       .post(url + `/baskets/${basketid}/checkout`, body)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.log(error.response);
+        throw error;
+      });
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const basketTransfer = (basketId: string, vendorId: any) => {
+  try {
+    const url = process.env.REACT_APP_OLO_API || '';
+    const body = {
+      vendorid: vendorId,
+    };
+    return axios
+      .post(url + `/baskets/${basketId}/transfer`, body)
       .then((response) => response.data)
       .catch((error) => {
         console.log(error.response);

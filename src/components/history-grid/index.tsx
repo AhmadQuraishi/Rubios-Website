@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { getAccountHistory } from '../../redux/actions/account-history';
 import Page from '../page-title';
 import './index.css'
-import CheckInGrid from './filter-grid/checkin/index';
+import RewardsGrid from './rewards-redemptions/index';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -51,7 +51,7 @@ function TabPanel(props: TabPanelProps) {
         {...other}
       >
         {value === index && (
-          <Box sx={{ padding: '20px 0' }}>
+          <Box sx={{ padding: '0px 0' }}>
             <Typography component="div">{children}</Typography>
           </Box>
         )}
@@ -70,7 +70,7 @@ function a11yProps(index: number) {
 const HistoryGrid = () => {
   const [value, setValue] = useState(0);
   const dispatch = useDispatch();
-  const [ event_filter,setEventFilter] = useState("checkins");
+  const [ event_filter,setEventFilter] = useState("rewards");
   useEffect(() => {
     dispatch(getAccountHistory(event_filter));
   }, [event_filter]);
@@ -78,17 +78,8 @@ const HistoryGrid = () => {
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     console.log('newValue', newValue)
     if(newValue===0){
-        setEventFilter("checkins")
-    }
-    if(newValue===1){
         setEventFilter("rewards")
     }
-    if(newValue===2){
-        setEventFilter("reward_credits")
-    }
-    if(newValue===3){
-      setEventFilter("redemptions")
-  }
     setValue(newValue);
   };
   const classes = useStyles();
@@ -96,84 +87,8 @@ const HistoryGrid = () => {
     <Fragment>
       <Grid container className={classes.root}>
         <Grid item xs={12}>
-          <Box>
-            <Tabs
-            variant="scrollable"
-              value={value}
-              allowScrollButtonsMobile
-              onChange={handleChange}
-              scrollButtons
-            //   aria-label="Account History Tabs"
-              TabIndicatorProps={{
-                style: {
-                  backgroundColor: '#79C043',
-                  bottom: '0px',
-                },
-              }}
-            >
-              <Tab
-                label="Checkins"
-                className={classes.tabspanel}
-                title="Checkins"
-                sx={{
-                  fontFamily: 'Poppins-Medium !important',
-                  //padding: '10px 0px',
-                }}
-                {...a11yProps(0)}
-                tabIndex={0}
-                aria-label="Checkins"
-              />
-              <Tab
-                className={classes.tabspanel}
-                sx={{
-                  amily: 'Poppins-Medium !important',
-                  //padding: '10px 0px',
-
-                }}
-                label="Rewards"
-                title="Rewards"
-                tabIndex={1}
-                {...a11yProps(1)}
-                aria-label="Rewards"
-              />
-              <Tab
-                label="Reward Credit"
-                sx={{
-                  fontFamily: 'Poppins-Medium !important',
-                  //padding: '10px 0px',
-
-                }}
-                className={classes.tabspanel}
-                title="Reward Credit"
-                tabIndex={2}
-                // {...a11yProps(2)}
-                aria-label="Reward Credit"
-              />
-              <Tab
-                className={classes.tabspanel}
-                sx={{
-                  fontFamily: 'Poppins-Medium !important',
-                  //padding: '10px 0px',
-                }}
-                label="Redemption"
-                title="Redemption"
-                {...a11yProps(3)}
-                tabIndex={3}
-                aria-label="Redemption"
-              />
-            </Tabs>
-          </Box>
           <TabPanel value={value} index={0}>
-            <CheckInGrid />
-          </TabPanel>
-          <TabPanel value={value} index={1}>
-            <CheckInGrid />
-          </TabPanel>
-          <TabPanel value={value} index={2}>
-            <CheckInGrid />
-          </TabPanel>
-          <TabPanel value={value} index={3}>
-            <CheckInGrid />
+            <RewardsGrid />
           </TabPanel>
         </Grid>
       </Grid>

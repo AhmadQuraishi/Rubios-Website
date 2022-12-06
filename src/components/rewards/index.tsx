@@ -175,7 +175,7 @@ const Rewards = (props: any) => {
                   marginBottom: { xs: '25px', md: '20px' },
                 }}
               >
-                {rewardsArray?.length < 1 && <CheckoutSkeletonUI/>}
+
                 {rewardsArray && rewardsArray.length > 0 && (
                 <Grid container>
                   {rewardsArray.map((reward, index) => (
@@ -283,6 +283,7 @@ const Rewards = (props: any) => {
                               <p className="expire">
                                 {' '}
                                 {reward.expiring_at_tz && (
+
                                   <>
                                     Expires{' '}
                                     {moment(reward.expiring_at_tz).format(

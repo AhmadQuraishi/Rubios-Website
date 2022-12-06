@@ -5,12 +5,22 @@ const initialState = {
   location: null,
   loading: false,
   error: {},
+  singleLocation: {
+    loading: false,
+    error: {},
+    data: null,
+  },
 };
 
 const locationReducer = (state = initialState, action: any) => {
   switch (action.type) {
     case Type.GET_LOCATIONS:
-      return { ...state, loading: true, error: {} };
+      return {
+        ...state,
+        loading: true,
+        error: {},
+        singleLocation: initialState.singleLocation,
+      };
 
     case Type.GET_LOCATIONS_SUCCESS:
       return {
@@ -22,10 +32,39 @@ const locationReducer = (state = initialState, action: any) => {
 
     case Type.GET_LOCATIONS_FAILURE:
       return { ...state, loading: false, error: action.error };
-    case userTypes.USER_LOGOUT: 
+    case Type.GET_SINGLE_LOCATION:
       return {
-        ...initialState
-      }   
+        ...state,
+        singleLocation: {
+          loading: true,
+          error: {},
+          data: null,
+        },
+      };
+
+    case Type.GET_SINGLE_LOCATION_SUCCESS:
+      return {
+        ...state,
+        singleLocation: {
+          loading: false,
+          error: {},
+          data: action.payload,
+        },
+      };
+
+    case Type.GET_SINGLE_LOCATION_FAILURE:
+      return {
+        ...state,
+        singleLocation: {
+          loading: false,
+          error: action.error,
+          data: null,
+        },
+      };
+    case userTypes.USER_LOGOUT:
+      return {
+        ...initialState,
+      };
     default:
       return state;
   }

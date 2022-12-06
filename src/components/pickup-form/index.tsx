@@ -4,6 +4,8 @@ import {
   Checkbox,
   TextField,
   FormControlLabel,
+  Typography,
+  Link,
   FormGroup,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,11 +14,17 @@ import * as Yup from 'yup';
 import { forwardRef } from 'react';
 import { IMaskInput } from 'react-imask';
 import { DeliveryModeEnum } from '../../types/olo-api/olo-api.enums';
+import { isLoginUser } from '../../helpers/auth';
 
-const PickupForm = ({ basket, pickupFormRef, orderType }: any) => {
+const PickupForm = ({
+  basket,
+  pickupFormRef,
+  orderType,
+  setShowSignUpGuest,
+  showSignUpGuest,
+}: any) => {
   const { providerToken } = useSelector((state: any) => state.providerReducer);
-  const { authToken } = useSelector((state: any) => state.authReducer);
-
+  const [show, setShow] = React.useState<boolean>(false);
   interface CustomProps {
     onChange: (event: { target: { name: string; value: string } }) => void;
     name: string;
@@ -41,7 +49,6 @@ const PickupForm = ({ basket, pickupFormRef, orderType }: any) => {
       );
     },
   );
-
   const formatTableNumber = (e: any, tableNumber: any) => {
     let newValue = e.target.value.trim();
     if (newValue && newValue !== '') {
@@ -139,7 +146,7 @@ const PickupForm = ({ basket, pickupFormRef, orderType }: any) => {
           <Grid item xs={12}>
             <TextField
               aria-label="First Name"
-              disabled={authToken?.authtoken ? true : false}
+              disabled={isLoginUser()}
               onBlur={handleBlur}
               label="First Name"
               aria-required="true"
@@ -156,7 +163,7 @@ const PickupForm = ({ basket, pickupFormRef, orderType }: any) => {
           <Grid item xs={12}>
             <TextField
               aria-label="Last Name"
-              disabled={authToken?.authtoken ? true : false}
+              disabled={isLoginUser()}
               onBlur={handleBlur}
               label="Last Name"
               aria-required="true"
@@ -200,7 +207,7 @@ const PickupForm = ({ basket, pickupFormRef, orderType }: any) => {
           <Grid item xs={12}>
             <TextField
               aria-label="Email"
-              disabled={authToken?.authtoken ? true : false}
+              disabled={isLoginUser()}
               onBlur={handleBlur}
               label="Email"
               aria-required="true"
@@ -287,26 +294,49 @@ const PickupForm = ({ basket, pickupFormRef, orderType }: any) => {
               </Grid>
             </>
           ) : null}
-          {!authToken?.authtoken && (
+           {!isLoginUser() && (
             <Grid item xs={12}>
-              <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={values.emailNotification}
-                      onChange={handleChange}
-                    />
-                  }
-                  label="Send me emails with special offers and updates."
-                  aria-label="Send me emails with special offers and updates"
-                  aria-required="true"
-                  title="Send me emails with special offers and updates"
-                  name="emailNotification"
-                  className="size"
-                />
-              </FormGroup>
-            </Grid>
-          )}
+              {/* {!providerToken && showSignUpGuest && ( */}
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={values.emailNotification}
+                        onChange={handleChange}
+                      />
+                    }
+                    label="Send me emails with special offers and updates."
+                    aria-label="Send me emails with special offers and updates"
+                    aria-required="true"
+                    title="Send me emails with special offers and updates"
+                    name="emailNotification"
+                    className="size"
+                  />
+                  {/* <Grid item xs={12} sm={12} md={12} lg={12}>
+                    <Typography
+                      variant="body2"
+                      title="Don't have an account?"
+                      sx={{ width: '100%', padding: '0pxx !important' }}
+                    >
+                      Don't have an account?{' '}
+                      <Link
+                        underline="hover"
+                        sx={{
+                          color: '#214F66',
+                          cursor: 'pointer',
+                          fontFamily: 'Poppins-Medium',
+                          textDecoration: 'underline',
+                        }}
+                        onClick={() => setShowSignUpGuest(true)}
+                      >
+                        Sign Up?
+                      </Link>
+                    </Typography>
+                  </Grid> */}
+                </FormGroup>
+               {/* )}  */}
+            </Grid> 
+          )} 
         </form>
       )}
     </Formik>

@@ -21,7 +21,7 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
   const classes = useStyles();
   const [products, setProducts] = useState<any>();
   const [buttonDisabled, setButtonDisabled] = useState(false);
-
+  const [optionSelected, setOptionSelected] = useState<any>(null);
   const basketObj = useSelector((state: any) => state.basketReducer);
   const { categories } = useSelector((state: any) => state.categoryReducer);
   const { upsells } = useSelector((state: any) => state.getUpsellsReducer);
@@ -40,12 +40,17 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
       }
 
       if (prod && prod.length) {
+        const options: any = {};
         prod = prod.map((obj: any) => {
+          if (obj?.options?.length > 0) {
+            options[`${obj.id}`] = `${obj.options[0].id}`;
+          }
           return {
             ...obj,
             quantity: 0,
           };
         });
+        setOptionSelected(options);
       }
 
       setProducts(prod);
@@ -61,10 +66,18 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
       const finalProducts: any = [];
       products.forEach((product: any) => {
         if (product.quantity > 0) {
+          let choices: any = [];
+          if (optionSelected[product.id]) {
+            choices = [
+              {
+                choiceid: optionSelected[product.id],
+              },
+            ];
+          }
           const obj = {
             productid: product.id,
             quantity: product.quantity,
-            choices: [],
+            choices: choices,
           };
           finalProducts.push(obj);
         }
@@ -192,6 +205,10 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
     fitContainer();
   };
 
+  const optionChange = (e: any, id: any) => {
+    setOptionSelected({ ...optionSelected, [id]: e.target.value });
+  };
+
   const fitContainer = () => {
     const elem = document.getElementById('cart-main-container-upsells');
     const cartBox = document.getElementById('cart-box-upsells');
@@ -252,7 +269,11 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
             container
             spacing={1}
             id="cart-main-container-upsells"
-            sx={{ paddingRight: '25px', alignContent: 'flex-start' }}
+            sx={{
+              paddingRight: '25px',
+              alignContent: 'flex-start',
+              alignItems: 'stretch',
+            }}
           >
             {products.map((obj: any) => {
               if (
@@ -263,17 +284,19 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
               }
               return (
                 <>
-                  <Grid item xs={12} lg={6}>
+                  <Grid item xs={12} lg={6}                                     sx={{ display: 'flex', alignItems: 'stretch' }}>
                     <Grid
                       key={Math.random() + '-'}
                       item
                       xs={12}
+
                       style={{
                         display: 'flex',
                         border: '1px solid rgba(0, 0, 0, 0.2)',
                         padding: 10,
                         minHeight: '140px',
                         alignItems: 'center',
+                        
                         boxShadow: '0px 2px 3px 0px rgba(0, 0, 0, 0.2)',
                       }}
                       sx={{ cursor: 'pointer' }}
@@ -306,7 +329,8 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                         sx={{
                           display: 'flex',
                           flexDirection: 'column',
-                          gap: '40px',
+                          gap: {lg:'60px', xs:'40px', md: '40px', sm: '40px'},
+                          alignSelf : {lg:'flex-end',md: 'center', sm: 'center', xs: 'center'},
                           paddingLeft: '10px',
                           maxWidth: 'inherit',
                         }}
@@ -322,7 +346,7 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                           className={classes.cartTitle}
                           sx={{
                             display: 'inline',
-                            fontFamily: 'Poppins-Medium !important',
+                            fontFamily: 'Poppins-Medium !important',                            
                             fontSize: {
                               lg: '12px !important',
                               xs: '14px !important',
@@ -356,7 +380,51 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                               {parseFloat(obj.cost).toFixed(2)}
                             </Grid>
                           )}
+                          <>
+                            {obj?.options?.length > 0 && (
+                              <select
+                                className="add-side-select"
+                                // style={{
+                                //   width: '100% !important',
+                                //   height: '30px',
+                                //   borderRadius: '5px',
+                                //   border: '1px solid #ccc',
+                                //   color: '#2B4B62',
+                                //   padding: '5px',
+                                //   textOverflow: 'ellipsis',
+                                // }}
+                                parent-select-option-id={obj.chainproductid}
+                                onClick={(e) => e.stopPropagation()}
+                                value={
+                                  (optionSelected && optionSelected[obj.id]) ||
+                                  ''
+                                }
+                                data-select-id={obj.chainproductid || '0'}
+                                onChange={(e) => optionChange(e, obj.id)}
+                              >
+                                {obj.options.map(
+                                  (option: any, index: number) => (
+                                    <option
+                                      key={Math.random() + index}
+                                      value={`${option.id}`}
+                                      // onClick={() => {
+                                      //   setTotalCost(
+                                      //     ((productDetails?.cost ||
+                                      //         0) +
+                                      //       option.cost) *
+                                      //     count,
+                                      //   );
+                                      // }}
+                                    >
+                                      {option.name}
+                                    </option>
+                                  ),
+                                )}
+                              </select>
+                            )}
+                          </>
                         </Typography>
+
                         <div
                           style={{ display: 'flex', alignItems: 'center' }}
                           className="upsells-details"

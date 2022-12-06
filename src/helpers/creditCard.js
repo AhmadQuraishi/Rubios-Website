@@ -18,10 +18,10 @@ export class CreditCardCCSF {
         cvv: 'font-size: 14px;padding-top: 5px;border-top-width: 0px;border-right-width: 0px;border-bottom-width: 0px;border-left-width: 0px; width: 80%',
       },
       cardNumber: {
-        // placeholder: 'Credit Card',
+        placeholder: '',
       },
       cvv: {
-        // placeholder: 'CVV',
+        placeholder: '',
       },
     });
   }

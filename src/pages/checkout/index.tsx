@@ -1,5 +1,13 @@
-import React, { useEffect } from 'react';
-import { Box, Button, Card, Grid, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import {
+  Box,
+  Button,
+  Card,
+  Grid,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Divider from '@mui/material/Divider';
@@ -23,6 +31,7 @@ import {
   validateBasket,
 } from '../../redux/actions/basket/checkout';
 import { displayToast } from '../../helpers/toast';
+import { isLoginUser } from '../../helpers/auth';
 import {
   formatCustomFields,
   // formatDeliveryAddress,
@@ -46,18 +55,25 @@ import { getRewardsNew } from '../../redux/actions/reward';
 import TagManager from 'react-gtm-module';
 import { facebookSendEvent } from '../../redux/actions/facebook-conversion';
 import { facebookConversionTypes } from '../../redux/types/facebook-conversion';
+import SignUpGuest from '../../components/sign-up-guest';
+import { userRegister } from '../../redux/actions/user';
+import CheckoutSkeletonUI from '../../components/checkout-skeleton-ui';
 
 const Checkout = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const theme = useTheme();
   const pickupFormRef = React.useRef<any>(null);
   const deliveryFormRef = React.useRef<any>(null);
   const paymentInfoRef = React.useRef<any>();
+  const signupFormRef = React.useRef<any>(null);
 
   const [runOnce, setRunOnce] = React.useState<boolean>(true);
   const [showIframeOnce, setShowIframeOnce] = React.useState<boolean>(true);
   const [removeCreditCardOnce, setRemoveCreditCardOnce] =
     React.useState<boolean>(true);
+  const [birthDay, setBirthDay] = useState<Date | undefined>();
+  //const [showSignUpGuest, setShowSignUpGuest] = React.useState<boolean>(true);
   const [defaultCard, setDefaultCard] = React.useState<boolean>(true);
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
   const [tipPercentage, setTipPercentage] = React.useState<any>(null);
@@ -65,6 +81,7 @@ const Checkout = () => {
   const [basket, setBasket] = React.useState<ResponseBasket>();
   const [billingSchemes, setBillingSchemes] = React.useState<any>([]);
   const [rewards, setRewards] = React.useState<any>([]);
+  const [locationId, setLocationId] = useState(null);
   const [validate, setValidate] =
     React.useState<ResponseBasketValidation | null>(null);
   // const [defaultDeliveryAddress, setDefaultDeliveryAddress] =
@@ -75,7 +92,7 @@ const Checkout = () => {
   const { authToken } = useSelector((state: any) => state.authReducer);
   const { providerToken } = useSelector((state: any) => state.providerReducer);
   const { guestUser } = useSelector((state: any) => state.guestReducer);
-  const { rewards: qualifyingRewards } = useSelector(
+  const { rewards: qualifyingRewards, loading: loadingRewards } = useSelector(
     (state: any) => state.getRewardForCheckoutReducer,
   );
   const { data: rewardsRedemptionsData, loading: loadingRedemptions } =
@@ -83,12 +100,14 @@ const Checkout = () => {
   const { restaurant, orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
+  const isDesktop = useMediaQuery(theme.breakpoints.up('sm'));
   // const { userDeliveryAddresses } = useSelector(
   //   (state: any) => state.userReducer,
   // );
   const { userBillingAccounts, loading: billingAccountsLoading } = useSelector(
     (state: any) => state.userReducer,
   );
+  const { singleLocation } = useSelector((state: any) => state.locationReducer);
 
   useEffect(() => {
     const LoadExternalScript = () => {
@@ -106,6 +125,12 @@ const Checkout = () => {
     };
     LoadExternalScript();
   }, []);
+
+  useEffect(() => {
+    if (singleLocation?.data?.length) {
+      setLocationId(singleLocation?.data[0]?.location_id);
+    }
+  }, [singleLocation]);
 
   useEffect(() => {
     if (qualifyingRewards && qualifyingRewards.length) {
@@ -167,25 +192,21 @@ const Checkout = () => {
     }
   }, [qualifyingRewards, rewardsRedemptionsData]);
 
-  useEffect(() => {
-    const getBasketAccessToken = async () => {
-      const body = {
-        authtoken:
-          authToken && authToken.authtoken && authToken.authtoken !== ''
-            ? authToken.authtoken
-            : '',
-      };
-      const baskId =
-        basketObj && basketObj.basket && basketObj.basket.id
-          ? basketObj.basket.id
-          : '';
-      const response = await generateCCSFToken(baskId, body);
-      if (response && response.accesstoken) {
-        setBasketAccessToken(response.accesstoken);
-      }
+  const getBasketAccessToken = async () => {
+    console.log('checkingg...');
+    const body = {
+      authtoken: authToken?.authtoken || '',
     };
+    const baskId = basketObj?.basket?.id || '';
+    const response = await generateCCSFToken(baskId, body);
+    if (response && response.accesstoken) {
+      setBasketAccessToken(response.accesstoken);
+    }
+  };
+
+  useEffect(() => {
     getBasketAccessToken();
-  }, []);
+  }, [authToken]);
 
   React.useEffect(() => {
     if (
@@ -261,36 +282,42 @@ const Checkout = () => {
         basketObj.payment.allowedCards.data.billingschemes.findIndex(
           (schemes: any) => schemes.type === 'giftcard',
         );
-      let billingArray = [];
+      let billingArray: any = [];
       if (creditCardIndex !== -1 && userBillingAccounts) {
         if (
           userBillingAccounts.billingaccounts &&
           userBillingAccounts.billingaccounts.length
         ) {
-          const defaultCardIndex =
-            userBillingAccounts.billingaccounts.findIndex(
-              (card: any) => card.isdefault,
-            );
-          if (defaultCardIndex !== -1) {
-            const defaultCard =
-              userBillingAccounts.billingaccounts[defaultCardIndex];
+          // const defaultCardIndex =
+          //   userBillingAccounts.billingaccounts.findIndex(
+          //     (card: any) => card.isdefault,
+          //   );
+          // if (defaultCardIndex !== -1) {
+          //   const defaultCard =
+          //     userBillingAccounts.billingaccounts[defaultCardIndex];
 
-            let cardObj: any = {
-              localId: getUniqueId(),
-              selected: true,
-              billingmethod: 'creditcard',
-              amount: 0,
-              tipportion: 0.0,
-              cardtype: defaultCard.cardtype,
-              cardlastfour: defaultCard.cardsuffix,
-              billingaccountid: defaultCard.accountidstring,
-              billingschemeid:
-                basketObj.payment.allowedCards.data.billingschemes[
-                  creditCardIndex
-                ].id,
-            };
-            billingArray.push(cardObj);
-          }
+          userBillingAccounts.billingaccounts.forEach((card: any) => {
+            if (card?.accounttype === 'creditcard') {
+              let cardObj: any = {
+                localId: getUniqueId(),
+                selected: card.isdefault,
+                savedCard: true,
+                billingmethod: 'creditcard',
+                amount: 0,
+                tipportion: 0.0,
+                cardtype: card.cardtype,
+                cardlastfour: card.cardsuffix,
+                billingaccountid: card.accountidstring,
+                billingschemeid:
+                  basketObj.payment.allowedCards.data.billingschemes[
+                    creditCardIndex
+                  ].id,
+              };
+              billingArray.push(cardObj);
+            }
+          });
+
+          // }
         }
       }
       if (giftCardIndex !== -1) {
@@ -332,11 +359,11 @@ const Checkout = () => {
   }, [basketObj.payment.allowedCards, validate, userBillingAccounts]);
 
   React.useEffect(() => {
-    if (authToken?.authtoken && authToken.authtoken !== '') {
+    if (isLoginUser()) {
       // dispatch(getUserDeliveryAddresses());
       if (restaurant && restaurant.id) {
         dispatch(
-          getRewardsForCheckoutRequest(restaurant.id, authToken.authtoken),
+          getRewardsForCheckoutRequest(restaurant?.id, authToken?.authtoken),
         );
         dispatch(getRewardsNew());
       }
@@ -388,11 +415,12 @@ const Checkout = () => {
   const createDefaultGiftCards = (defaultGiftCards: any) => {
     let array = [];
     for (let i = 0; i < defaultGiftCards.length; i++) {
-      if (i === 4) {
-        break;
-      }
+      // if (i === 4) {
+      //   break;
+      // }
       let gitfCardObj: any = {
         localId: getUniqueId(),
+        savedCard: true,
         selected: true,
         billingmethod: 'storedvalue',
         amount: 0,
@@ -416,7 +444,7 @@ const Checkout = () => {
     });
   };
 
-  const validatePickupForm = (): any => {
+  const validatePickupForm = (type: string): any => {
     let data = {
       isValidForm: false,
       formData: null,
@@ -426,9 +454,47 @@ const Checkout = () => {
     } else if (!pickupFormRef.current.dirty) {
       pickupFormRef.current.submitForm();
     } else if (Object.keys(pickupFormRef.current.errors).length > 0) {
+      console.log('pickupFormRef.current.errors', pickupFormRef.current.errors);
+      if (
+        type === 'GUEST_SIGNUP' &&
+        (basket?.deliverymode === 'curbside' ||
+          basket?.deliverymode === 'dinein')
+      ) {
+        let checkGuest = false;
+        Object.keys(pickupFormRef.current.errors).forEach((field) => {
+          const text =
+            basket?.deliverymode === 'curbside' ? 'vehicle' : 'table';
+          if (!field.startsWith(text)) {
+            checkGuest = true;
+          }
+        });
+
+        if (!checkGuest) {
+          data.isValidForm = true;
+          data.formData = pickupFormRef.current.values;
+        }
+      }
     } else {
       data.isValidForm = true;
       data.formData = pickupFormRef.current.values;
+    }
+
+    return data;
+  };
+
+  const validateGuestSignUpForm = (): any => {
+    let data = {
+      isValidForm: false,
+      formData: null,
+    };
+    console.log('signupFormRef.current', signupFormRef.current);
+    if (!signupFormRef.current) {
+    } else if (!signupFormRef.current.dirty) {
+      signupFormRef.current.submitForm();
+    } else if (Object.keys(signupFormRef.current.errors).length > 0) {
+    } else {
+      data.isValidForm = true;
+      data.formData = signupFormRef.current.values;
     }
 
     return data;
@@ -452,34 +518,34 @@ const Checkout = () => {
     return data;
   };
 
-  const validatePaymentForm = async () => {
-    let data: any = {
-      isValidCard: false,
-      cardDetails: null,
-      errors: {},
-    };
-
-    const cardDetails = await paymentInfoRef.current.getCardDetails();
-
-    if (cardDetails.error) {
-      data.errors = cardDetails.error;
-    } else if (cardDetails.paymentMethod) {
-      if (
-        cardDetails.paymentMethod &&
-        cardDetails.paymentMethod.billing_details &&
-        cardDetails.paymentMethod.billing_details.address.postal_code &&
-        cardDetails.paymentMethod.billing_details.address.postal_code !== ''
-      ) {
-        data.cardDetails = cardDetails.paymentMethod;
-        data.isValidCard = true;
-      } else {
-        data.isValidCard = false;
-        data.errors.message = 'Zip Code is required';
-      }
-    }
-
-    return data;
-  };
+  // const validatePaymentForm = async () => {
+  //   let data: any = {
+  //     isValidCard: false,
+  //     cardDetails: null,
+  //     errors: {},
+  //   };
+  //
+  //   const cardDetails = await paymentInfoRef.current.getCardDetails();
+  //
+  //   if (cardDetails.error) {
+  //     data.errors = cardDetails.error;
+  //   } else if (cardDetails.paymentMethod) {
+  //     if (
+  //       cardDetails.paymentMethod &&
+  //       cardDetails.paymentMethod.billing_details &&
+  //       cardDetails.paymentMethod.billing_details.address.postal_code &&
+  //       cardDetails.paymentMethod.billing_details.address.postal_code !== ''
+  //     ) {
+  //       data.cardDetails = cardDetails.paymentMethod;
+  //       data.isValidCard = true;
+  //     } else {
+  //       data.isValidCard = false;
+  //       data.errors.message = 'Zip Code is required';
+  //     }
+  //   }
+  //
+  //   return data;
+  // };
 
   // const getGiftCardAmount = () => {
   //   const giftCardIndex = billingSchemes.findIndex(
@@ -519,11 +585,11 @@ const Checkout = () => {
         basket.deliverymode === DeliveryModeEnum.curbside ||
         basket.deliverymode === DeliveryModeEnum.dinein)
     ) {
-      const { isValidForm, formData } = validatePickupForm();
+      const { isValidForm, formData } = validatePickupForm('PLACE_ORDER');
       if (!isValidForm) {
         displayToast(
           'ERROR',
-          `${formatOrderType(basket.deliverymode)} fields are required.`,
+          `${formatOrderType(basket?.deliverymode)} fields are required.`,
         );
         scrollToTop();
         setButtonDisabled(false);
@@ -531,6 +597,24 @@ const Checkout = () => {
       }
       formDataValue = formData;
     }
+
+    // if (
+    //   basket &&
+    //   basket.deliverymode === DeliveryModeEnum.dispatch &&
+    //   (basket.deliverymode === '' ||
+    //     basket.deliverymode === DeliveryModeEnum.pickup ||
+    //     basket.deliverymode === DeliveryModeEnum.curbside ||
+    //     basket.deliverymode === DeliveryModeEnum.dinein)
+    // ) {
+    //   const { isValidForm, formData } = validateGuestSignUpForm();
+    //   if (!isValidForm) {
+    //     displayToast('ERROR', `Sign Up fields are required.`);
+    //     scrollToTop();
+    //     setButtonDisabled(false);
+    //     return;
+    //   }
+    //   formDataValue = formData;
+    // }
 
     if (basket && basket.deliverymode === DeliveryModeEnum.dispatch) {
       const { isValidForm, formData } = validateDeliveryForm();
@@ -617,7 +701,7 @@ const Checkout = () => {
     if (basket) {
       setButtonDisabled(false);
       let user: any = null;
-      if (authToken?.authtoken && authToken.authtoken !== '') {
+      if (isLoginUser()) {
         user = {
           email: providerToken.email,
           first_name: providerToken?.first_name,
@@ -817,6 +901,64 @@ const Checkout = () => {
     // }
   }, []);
 
+  const guestSignupCheckout = () => {
+    let formDataValue;
+    if (
+      basket?.deliverymode === '' ||
+      basket?.deliverymode === DeliveryModeEnum.pickup ||
+      basket?.deliverymode === DeliveryModeEnum.curbside ||
+      basket?.deliverymode === DeliveryModeEnum.dinein
+    ) {
+      const { isValidForm, formData } = validatePickupForm('GUEST_SIGNUP');
+      if (!isValidForm) {
+        displayToast(
+          'ERROR',
+          `${formatOrderType(basket?.deliverymode)} fields are required.`,
+        );
+        scrollToTop();
+        setButtonDisabled(false);
+        return;
+      }
+      formDataValue = formData;
+    }
+    if (basket?.deliverymode === DeliveryModeEnum.dispatch) {
+      const { isValidForm, formData } = validateDeliveryForm();
+      if (!isValidForm) {
+        displayToast('ERROR', 'Delivery fields are required.');
+        scrollToTop();
+        setButtonDisabled(false);
+        return;
+      }
+      formDataValue = formData;
+    }
+    const { isValidForm: isValidFormSignup, formData: formDataSignup } =
+      validateGuestSignUpForm();
+    if (!isValidFormSignup) {
+      displayToast('ERROR', ` Signup fields are required.`);
+      return;
+    }
+    const signUpObj: any = {
+      first_name: formDataValue?.firstName,
+      last_name: formDataValue?.lastName,
+      email: formDataValue?.email,
+      phone: formDataValue?.phone?.replace(/\D/g, '') || '',
+      password: formDataSignup?.password,
+      password_confirmation: formDataSignup?.password_confirmation,
+      fav_location_id: locationId || '345077',
+      terms_and_conditions: formDataSignup?.termsAndConditions,
+      marketing_email_subscription: formDataSignup?.emailNotification,
+    };
+    console.log('birthDay', birthDay);
+    if (birthDay) {
+      console.log('birthdayssss', birthDay);
+      signUpObj.birthday = moment(birthDay).format('YYYY-MM-DD');
+      console.log('birthdaysschgtvdy', signUpObj.birthday);
+    }
+    console.log('signUpObj', signUpObj);
+
+    dispatch(userRegister(signUpObj, 'REGISTER_CHECKOUT', basket?.id));
+  };
+
   return (
     <Page title={'Checkout'} className="">
       <Typography variant="h1" className="sr-only">
@@ -939,6 +1081,8 @@ const Checkout = () => {
                         basket.deliverymode === DeliveryModeEnum.curbside ||
                         basket.deliverymode === DeliveryModeEnum.dinein) ? (
                         <PickupForm
+                          // setShowSignUpGuest={setShowSignUpGuest}
+                          // showSignUpGuest={!showSignUpGuest}
                           basket={basket}
                           pickupFormRef={pickupFormRef}
                           orderType={basket.deliverymode}
@@ -948,34 +1092,87 @@ const Checkout = () => {
                       basket.deliverymode === DeliveryModeEnum.dispatch ? (
                         <DeliveryForm
                           basket={basket}
+                          // setShowSignUpGuest={setShowSignUpGuest}
+                          // showSignUpGuest={!showSignUpGuest}
                           // defaultAddress={defaultDeliveryAddress}
                           deliveryFormRef={deliveryFormRef}
                         />
                       ) : null}
                     </Grid>
                   </Grid>
-                  <OrderTime
-                    orderType={(basket && basket.deliverymode) || ''}
-                  />
+                  {isDesktop && (
+                    <OrderTime
+                      orderType={(basket?.deliverymode) || ''}
+                    />
+                  )}
                 </Grid>
               </Grid>
-              {providerToken &&
-                providerToken.first_name &&
-                rewards &&
-                (
+              {!isLoginUser() && (
+                <>
+                  <br />
+                  <br />
+                  <Divider />
+                  <br />
+                  <br />
+                  <br />
+                  <SignUpGuest
+                    birthDay={birthDay}
+                    setBirthDay={setBirthDay}
+                    guestSignupCheckout={guestSignupCheckout}
+                    signupFormRef={signupFormRef}
+                  />
+                </>
+              )}
+              <Grid
+                sx={{
+                  display: {
+                    xs: 'block',
+                    sm: 'none',
+                    md: 'none',
+                    lg: 'none',
+                  },
+                }}
+              >
+                <br />
+                <br />
+              </Grid>
+              <Grid
+                sx={{
+                  display: {
+                    xs: 'block',
+                    sm: 'none',
+                    md: 'none',
+                    lg: 'none',
+                  },
+                }}
+              >
+                <Divider />
+                <br />
+                <br />
+                <br />
+                <OrderTime orderType={(basket?.deliverymode) || ''} />
+              </Grid>
+
+              {isLoginUser() &&
+                rewards?.length === 0 &&
+                (loadingRewards || loadingRedemptions) && (
+                  <CheckoutSkeletonUI />
+                )}
+
+              {isLoginUser() &&
+                rewards.length > 0 && (
                   <>
-                    <br />
                     <br />
                     <br />
                     <Divider />
                     <br />
                     <br />
                     <br />
+
                     <Rewards rewardsList={rewards} />
                   </>
                 )}
-              <br />
-              <br />
+
               <br />
               <Divider />
               <br />
@@ -1012,6 +1209,11 @@ const Checkout = () => {
                 ccsfObj={ccsfObj}
                 basketAccessToken={basketAccessToken}
               />
+
+              <Divider />
+              <br />
+              <br />
+              <br />
 
               {/*second section ends here*/}
               <Grid container className="add-order">
