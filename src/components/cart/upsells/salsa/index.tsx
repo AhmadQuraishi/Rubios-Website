@@ -42,7 +42,7 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
       if (prod && prod.length) {
         const options: any = {};
         prod = prod.map((obj: any) => {
-          if (obj?.options?.length > 0) {
+          if (obj?.options?.length > 0 && obj?.chainproductid !== 248629) {
             options[`${obj.id}`] = `${obj.options[0].id}`;
           }
           return {
@@ -389,47 +389,49 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                             </Grid>
                           )}
                           <>
-                            {obj?.options?.length > 0 && (
-                              <select
-                                className="add-side-select"
-                                // style={{
-                                //   width: '100% !important',
-                                //   height: '30px',
-                                //   borderRadius: '5px',
-                                //   border: '1px solid #ccc',
-                                //   color: '#2B4B62',
-                                //   padding: '5px',
-                                //   textOverflow: 'ellipsis',
-                                // }}
-                                parent-select-option-id={obj.chainproductid}
-                                onClick={(e) => e.stopPropagation()}
-                                value={
-                                  (optionSelected && optionSelected[obj.id]) ||
-                                  ''
-                                }
-                                data-select-id={obj.chainproductid || '0'}
-                                onChange={(e) => optionChange(e, obj.id)}
-                              >
-                                {obj.options.map(
-                                  (option: any, index: number) => (
-                                    <option
-                                      key={Math.random() + index}
-                                      value={`${option.id}`}
-                                      // onClick={() => {
-                                      //   setTotalCost(
-                                      //     ((productDetails?.cost ||
-                                      //         0) +
-                                      //       option.cost) *
-                                      //     count,
-                                      //   );
-                                      // }}
-                                    >
-                                      {option.name}
-                                    </option>
-                                  ),
-                                )}
-                              </select>
-                            )}
+                            {obj?.options?.length > 0 &&
+                              obj?.chainproductid !== 248629 && (
+                                <select
+                                  className="add-side-select"
+                                  // style={{
+                                  //   width: '100% !important',
+                                  //   height: '30px',
+                                  //   borderRadius: '5px',
+                                  //   border: '1px solid #ccc',
+                                  //   color: '#2B4B62',
+                                  //   padding: '5px',
+                                  //   textOverflow: 'ellipsis',
+                                  // }}
+                                  parent-select-option-id={obj.chainproductid}
+                                  onClick={(e) => e.stopPropagation()}
+                                  value={
+                                    (optionSelected &&
+                                      optionSelected[obj.id]) ||
+                                    ''
+                                  }
+                                  data-select-id={obj.chainproductid || '0'}
+                                  onChange={(e) => optionChange(e, obj.id)}
+                                >
+                                  {obj.options.map(
+                                    (option: any, index: number) => (
+                                      <option
+                                        key={Math.random() + index}
+                                        value={`${option.id}`}
+                                        // onClick={() => {
+                                        //   setTotalCost(
+                                        //     ((productDetails?.cost ||
+                                        //         0) +
+                                        //       option.cost) *
+                                        //     count,
+                                        //   );
+                                        // }}
+                                      >
+                                        {option.name}
+                                      </option>
+                                    ),
+                                  )}
+                                </select>
+                              )}
                           </>
                         </Typography>
 
