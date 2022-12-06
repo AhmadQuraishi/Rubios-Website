@@ -179,7 +179,6 @@ const Location = () => {
   // };
 
   const addCustomAddressCheck = () => {
-    return false;
     if (
       isLoginUser() &&
       orderType === 'dispatch' &&
