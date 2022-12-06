@@ -276,27 +276,25 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
             }}
           >
             {products.map((obj: any) => {
-              if (
-                obj.chainproductid === 547172 ||
-                obj.chainproductid === 185965
-              ) {
-                return <></>;
-              }
               return (
                 <>
-                  <Grid item xs={12} lg={6}                                     sx={{ display: 'flex', alignItems: 'stretch' }}>
+                  <Grid
+                    item
+                    xs={12}
+                    lg={6}
+                    sx={{ display: 'flex', alignItems: 'stretch' }}
+                  >
                     <Grid
                       key={Math.random() + '-'}
                       item
                       xs={12}
-
                       style={{
                         display: 'flex',
                         border: '1px solid rgba(0, 0, 0, 0.2)',
                         padding: 10,
                         minHeight: '140px',
                         alignItems: 'center',
-                        
+
                         boxShadow: '0px 2px 3px 0px rgba(0, 0, 0, 0.2)',
                       }}
                       sx={{ cursor: 'pointer' }}
@@ -329,8 +327,18 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                         sx={{
                           display: 'flex',
                           flexDirection: 'column',
-                          gap: {lg:'60px', xs:'40px', md: '40px', sm: '40px'},
-                          alignSelf : {lg:'flex-end',md: 'center', sm: 'center', xs: 'center'},
+                          gap: {
+                            lg: '60px',
+                            xs: '40px',
+                            md: '40px',
+                            sm: '40px',
+                          },
+                          alignSelf: {
+                            lg: 'flex-end',
+                            md: 'center',
+                            sm: 'center',
+                            xs: 'center',
+                          },
                           paddingLeft: '10px',
                           maxWidth: 'inherit',
                         }}
@@ -346,7 +354,7 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                           className={classes.cartTitle}
                           sx={{
                             display: 'inline',
-                            fontFamily: 'Poppins-Medium !important',                            
+                            fontFamily: 'Poppins-Medium !important',
                             fontSize: {
                               lg: '12px !important',
                               xs: '14px !important',
