@@ -338,10 +338,6 @@ const Product = () => {
 
   const [optionsSelectionArray, setOptionsSelectionArray] = useState<any>([]);
 
-  useEffect(() => {
-    console.log(optionsSelectionArray);
-  }, [optionsSelectionArray]);
-
   let ptotalCost = 0;
 
   const prepareProductOptionsArray = (
@@ -512,14 +508,12 @@ const Product = () => {
     optionsDDL: any = null,
     optionsDDLSelectedID: any = null,
   ) => {
-    console.log('optionId', optionId);
-    console.log('parnetOptionID', parnetOptionID);
-    console.log('optionsDDL', optionsDDL);
-    console.log('optionsDDLSelectedID', optionsDDLSelectedID);
     setSelectionExecute(false);
     setTimeout(() => {
       setSelectionExecute(false);
     }, 200);
+    let optionPrice = optionsCost;
+    let totalPrice = totalCost || 0;
     optionsSelectionArray.map((item: any) => {
       if (item.id === parnetOptionID) {
         if (item.mandatory) {
@@ -631,8 +625,10 @@ const Product = () => {
                 x.selectedOptions = x.defaultOption ? [x.defaultOption] : [];
               });
             }
-            setOptionsCost(optionsCost - mainOptionCost);
-            setTotalCost((totalCost || 0) - mainOptionCost * count);
+            optionPrice -= mainOptionCost;
+            totalPrice = totalPrice - mainOptionCost * count;
+            // setOptionsCost(optionsCost - mainOptionCost);
+            // setTotalCost((totalCost || 0) - mainOptionCost * count);
           } else {
             const optionX = item.options.find(
               (option: any) => option.optionID == item.selectedOptions[0],
@@ -746,9 +742,11 @@ const Product = () => {
               (option: any) => option.optionID == optionId,
             );
             if (option) {
-              setOptionsCost(optionsCost - mainOptionCost + option.option.cost);
               const prc = option.option.cost * count;
-              setTotalCost((totalCost || 0) - mainOptionCost + prc);
+              optionPrice = optionPrice - mainOptionCost + option.option.cost;
+              totalPrice = totalPrice - mainOptionCost + prc;
+              // setOptionsCost(optionsCost - mainOptionCost + option.option.cost);
+              // setTotalCost((totalCost || 0) - mainOptionCost + prc);
             }
             elems = optionsSelectionArray.filter(
               (x: any) => x.parentOptionID == optionId,
@@ -790,14 +788,19 @@ const Product = () => {
                 (option: any) => option.optionID == optionId,
               );
               if (option) {
-                setOptionsCost(
-                  optionsCost -
-                    ((optionDDLE ? optionDDLE.cost : 0) + option.option.cost),
-                );
                 const prc =
                   ((optionDDLE ? optionDDLE.cost : 0) + option.option.cost) *
                   count;
-                setTotalCost((totalCost || 0) - prc);
+                optionPrice =
+                  optionPrice -
+                  ((optionDDLE ? optionDDLE.cost : 0) + option.option.cost);
+                // setOptionsCost(
+                //   optionsCost -
+                //     ((optionDDLE ? optionDDLE.cost : 0) + option.option.cost),
+                // );
+
+                totalPrice -= prc;
+                // setTotalCost((totalCost || 0) - prc);
               }
               //item.selected = !(item.selectedOptions.length == 0);
               let elems = optionsSelectionArray.filter(
@@ -842,11 +845,13 @@ const Product = () => {
                 optionsCost +
                 (optionDDLE ? optionDDLE.cost : 0) +
                 option.option.cost;
-              setOptionsCost(cc);
+              optionPrice = cc;
+              // setOptionsCost(cc);
               const opc =
                 ((optionDDLE ? optionDDLE.cost : 0) + option.option.cost) *
                 count;
-              setTotalCost((totalCost || 0) + opc);
+              totalPrice += opc;
+              // setTotalCost((totalCost || 0) + opc);
             }
             let elems = optionsSelectionArray.filter(
               (x: any) => x.parentOptionID == optionId,
@@ -876,7 +881,8 @@ const Product = () => {
         }
       }
     });
-    console.log(optionsSelectionArray);
+    setOptionsCost(optionPrice);
+    setTotalCost(totalPrice);
     setOptionsSelectionArray((optionsSelectionArray: any) => [
       ...optionsSelectionArray,
     ]);
@@ -961,17 +967,21 @@ const Product = () => {
   ) => {
     const id = target.getAttribute('data-select-id');
     const option = options.find((x: any) => x.id == id);
+    let optionPrice = optionsCost;
+    let totalPrice = totalCost || 0;
     if (option) {
       const prc = option.cost * count;
-      setOptionsCost(optionsCost - option.cost);
-      setTotalCost((totalCost || 0) - prc);
+      optionPrice = optionPrice - option.cost;
+      totalPrice -= prc;
     }
     const optionAdd = options.find((x: any) => x.id == value);
     if (optionAdd) {
       const prc = optionAdd.cost * count;
-      setOptionsCost(optionsCost + optionAdd.cost);
-      setTotalCost((totalCost || 0) + prc);
+      optionPrice = optionPrice + optionAdd.cost;
+      totalPrice += prc;
     }
+    setOptionsCost(optionPrice);
+    setTotalCost(totalPrice);
     optionsSelectionArray.map((itemP: any) => {
       itemP.options.map((itemC: any) => {
         if (itemC.optionID == optionID) {
@@ -1045,7 +1055,6 @@ const Product = () => {
   return (
     <Page title={'Product Detail'} className="">
       <div style={{ minHeight: '500px' }}>
-        {console.log('productOptions', productOptions)}
         <Typography variant="h1" className="sr-only">
           Product details
         </Typography>

@@ -335,7 +335,7 @@ export const OrderTypeDialog = (props: any) => {
                           textAlign={'center'}
                           variant={'body1'}
                         >
-                          {`Delivery Address`}
+                          {`Add Delivery Address`}
                         </Typography>
                       </Grid>
                       <Grid item xs={12}>
