@@ -312,41 +312,41 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
           />
           <Grid container>
             <Grid item xs={12} sm={12} md={12} lg={12} className="add-gift">
-              {!displaySavedCards &&
-                basket &&
-                isLoginUser() &&
-                billingSchemes &&
-                billingSchemes?.length > 0 &&
-                billingSchemes?.filter(
-                  (account: any) => account.savedCard && !account.selected,
-                ).length > 0 &&
-                allowedCards &&
-                allowedCards.length &&
-                allowedCards.filter((element: any) => {
-                  return element.type === 'creditcard';
-                }).length > 0 && (
-                  <Grid container spacing={2}>
-                    <Grid
-                      item
-                      padding={0}
-                      textAlign={'center'}
-                      xs={12}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                    >
-                      <Button
-                        className={'add-credit-card-button'}
-                        title="Change Payment Method"
-                        aria-label="Change Payment Method"
-                        onClick={() => setDisplaySavedCards(true)}
-                        id={'add-credit-card'}
-                      >
-                        Change Payment Method
-                      </Button>
-                    </Grid>
-                  </Grid>
-                )}
+              {/*{!displaySavedCards &&*/}
+              {/*  basket &&*/}
+              {/*  isLoginUser() &&*/}
+              {/*  billingSchemes &&*/}
+              {/*  billingSchemes?.length > 0 &&*/}
+              {/*  billingSchemes?.filter(*/}
+              {/*    (account: any) => account.savedCard && !account.selected,*/}
+              {/*  ).length > 0 &&*/}
+              {/*  allowedCards &&*/}
+              {/*  allowedCards.length &&*/}
+              {/*  allowedCards.filter((element: any) => {*/}
+              {/*    return element.type === 'creditcard';*/}
+              {/*  }).length > 0 && (*/}
+              {/*    <Grid container spacing={2}>*/}
+              {/*      <Grid*/}
+              {/*        item*/}
+              {/*        padding={0}*/}
+              {/*        textAlign={'center'}*/}
+              {/*        xs={12}*/}
+              {/*        sm={12}*/}
+              {/*        md={12}*/}
+              {/*        lg={12}*/}
+              {/*      >*/}
+              {/*        <Button*/}
+              {/*          className={'add-credit-card-button'}*/}
+              {/*          title="Change Payment Method"*/}
+              {/*          aria-label="Change Payment Method"*/}
+              {/*          onClick={() => setDisplaySavedCards(true)}*/}
+              {/*          id={'add-credit-card'}*/}
+              {/*        >*/}
+              {/*          Change Payment Method*/}
+              {/*        </Button>*/}
+              {/*      </Grid>*/}
+              {/*    </Grid>*/}
+              {/*  )}*/}
               {displayAddCreditCard() && (
                 <Button
                   className={'add-credit-card-button'}
