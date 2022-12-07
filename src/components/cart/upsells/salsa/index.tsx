@@ -256,7 +256,48 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
 
     return total === 0;
   };
+  useEffect(() => {
+    // const focusableElements =
+    //   'button, [href], input, ul , li ,  select, textarea, [tabindex]:not([tabindex="-1"])';
+    const modal = document.querySelector('#cart-salsa'); // select the modal by it's id
+    if (modal) {
+      const focusableContent = modal.querySelectorAll('[tabindex="0"]');
+      const firstFocusableElement = focusableContent[0]; // get first element to be focused inside modal
 
+      const lastFocusableElement =
+        focusableContent[focusableContent.length - 1]; // get last element to be focused inside modal
+
+      document.addEventListener('keydown', function (e) {
+        let isTabPressed = e.key === 'Tab' || e.keyCode === 9;
+
+        if (!isTabPressed) {
+          return;
+        }
+
+        if (e.shiftKey) {
+          // if shift key pressed for shift + tab combination
+          if (document.activeElement === firstFocusableElement) {
+            // add focus for the last focusable element
+            lastFocusableElement &&
+              (lastFocusableElement as HTMLElement)?.focus();
+            e.preventDefault();
+          }
+        } else {
+          // if tab key is pressed
+          if (document.activeElement === lastFocusableElement) {
+            // if focused has reached to last focusable element then focus first focusable element after pressing tab
+            firstFocusableElement &&
+              (firstFocusableElement as HTMLElement)?.focus(); // add focus for the first focusable element
+            e.preventDefault();
+          }
+        }
+      });
+
+      firstFocusableElement && (firstFocusableElement as HTMLElement)?.focus();
+    }
+  }, []);
+
+ 
   return (
     <>
       {products?.length < 1 && <SalsaSkeletonUI />}
@@ -278,7 +319,7 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
             {products.map((obj: any) => {
               return (
                 <>
-                  <Grid item xs={12} lg={6}                                     sx={{ display: 'flex', alignItems: 'stretch' }}>
+                  <Grid item xs={12} lg={6}         id='cart-salsa'             sx={{ display: 'flex', alignItems: 'stretch' }}>
                     <Grid
                       key={Math.random() + '-'}
                       item
@@ -295,7 +336,7 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                       }}
                       sx={{ cursor: 'pointer' }}
                       onClick={() => {}}
-                      // tabIndex={0}
+                      tabIndex={0}
                       // onKeyUp={(e) => {
                       //   if (e.keyCode === 13) {
                       //     addUpsells(option.id);
@@ -378,6 +419,8 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                           <>
                             {obj?.options?.length > 0 && (
                               <select
+                              
+                              id="cart-salsa"
                                 className="add-side-select"
                                 // style={{
                                 //   width: '100% !important',

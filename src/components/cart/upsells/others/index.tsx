@@ -172,9 +172,9 @@ const UpsellsOthers = ({ upsellsType }: any) => {
   useEffect(() => {
     // const focusableElements =
     //   'button, [href], input, ul , li ,  select, textarea, [tabindex]:not([tabindex="-1"])';
-    const modal = document.querySelector('#cart-box-upsells'); // select the modal by it's id
+    const modal = document.querySelector('#cart-box-others'); // select the modal by it's id
     if (modal) {
-      const focusableContent = modal.querySelectorAll('[tabindex="0"]');
+      const focusableContent = modal.querySelectorAll('[tabindex="1"]');
       const firstFocusableElement = focusableContent[0]; // get first element to be focused inside modal
 
       const lastFocusableElement =
@@ -233,6 +233,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
           products.length > 0 &&
           products.map((itemChild: any, index1: number) => (
             <Grid
+            id="cart-box-others"
               key={Math.random() + index1}
               option-id={itemChild.id}
               onClick={() => updateSelection(itemChild.id, itemChild.selected)}
@@ -319,7 +320,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
                         // alt={option.name}
                         // title={option.name}
                       />
-                      <div className="check-mark">
+                      <div className="check-mark"  tabIndex={1}>
                         <div aria-hidden="true" className="checkmark">
                           L
                         </div>
@@ -352,6 +353,8 @@ const UpsellsOthers = ({ upsellsType }: any) => {
                           itemChild.options &&
                           itemChild.options.length > 0 && (
                             <select
+                            autoFocus
+                            id="cart-box-others"
                               className="ss-panl"
                               parent-select-option-id={itemChild.chainproductid}
                               onClick={(e) => e.stopPropagation()}
@@ -387,7 +390,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
             </Grid>
           ))}
       </div>
-      <Grid container spacing={0} sx={{paddingTop: "20px"}}>
+      <Grid container spacing={0} sx={{paddingTop: "20px"}} id="cart-box-others">
         <Grid
           item
           xs={12}
