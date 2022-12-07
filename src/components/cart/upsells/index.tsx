@@ -190,11 +190,11 @@ const Upsells = ({ showCart, upsellsType }: any) => {
 
   return (
     <>
-      <div className={classes.dimPanel} onClick={showCart}></div>
+      <div className={classes.dimPanel} onClick={showCart}         id="cart-box-upsells"></div>
 
       <Box
         className={classes.cartBox}
-        id="cart-box-upsells"
+        //id="cart-box-upsells"
         aria-label="view your cart"
         role="dialog"
         aria-modal="true"
@@ -269,13 +269,14 @@ const Upsells = ({ showCart, upsellsType }: any) => {
 
           {upsellsType !== UPSELLS_TYPES.DRINK ? (
             <Salsa
+            id="cart-box-upsells"
               setErrorMsg={(err: any) => {
                 setErrorMsg(err);
               }}
               upsellsType={upsellsType}
             />
           ) : (
-            <UpsellsOthers upsellsType={upsellsType} />
+            <UpsellsOthers id="cart-box-upsells"  upsellsType={upsellsType} />
           )}
         </Grid>
       </Box>
