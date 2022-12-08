@@ -961,17 +961,21 @@ const Product = () => {
   ) => {
     const id = target.getAttribute('data-select-id');
     const option = options.find((x: any) => x.id == id);
+    let optionPrice = optionsCost;
+    let totalPrice = totalCost || 0;
     if (option) {
       const prc = option.cost * count;
-      setOptionsCost(optionsCost - option.cost);
-      setTotalCost((totalCost || 0) - prc);
+      optionPrice = optionPrice - option.cost;
+      totalPrice -= prc;
     }
     const optionAdd = options.find((x: any) => x.id == value);
     if (optionAdd) {
       const prc = optionAdd.cost * count;
-      setOptionsCost(optionsCost + optionAdd.cost);
-      setTotalCost((totalCost || 0) + prc);
+      optionPrice = optionPrice + optionAdd.cost;
+      totalPrice += prc;
     }
+    setOptionsCost(optionPrice);
+    setTotalCost(totalPrice);
     optionsSelectionArray.map((itemP: any) => {
       itemP.options.map((itemC: any) => {
         if (itemC.optionID == optionID) {
