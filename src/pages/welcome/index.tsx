@@ -69,7 +69,7 @@ const Welcome = () => {
       restaurants &&
       restaurants.restaurants &&
       restaurants.restaurants.length &&
-      isLoginUser() && 
+      isLoginUser() &&
       providerToken?.favourite_store_numbers
     ) {
       const filter = restaurants.restaurants.filter(
@@ -115,9 +115,7 @@ const Welcome = () => {
   }, []);
 
   useEffect(() => {
-    if (
-      isLoginUser() 
-    ) {
+    if (isLoginUser()) {
     } else {
       navigate('/login');
     }
@@ -185,7 +183,8 @@ const Welcome = () => {
       basketObj.basket.products.length > 0 &&
       isbasket
     ) {
-      setOpenOrder(true);
+      navigateAfterSuccess();
+      // setOpenOrder(true);
       return;
     } else if (error && error.message) {
       setIsEdit(false);
@@ -238,10 +237,10 @@ const Welcome = () => {
 
   return (
     <Page title={'Welcome'} className="">
-      <OrderTypeDialog
-        openModal={openOrder}
-        setOpenModal={navigateAfterSuccess}
-      />
+      {/*<OrderTypeDialog*/}
+      {/*  openModal={openOrder}*/}
+      {/*  setOpenModal={navigateAfterSuccess}*/}
+      {/*/>*/}
       <Fragment>
         <Grid
           style={{

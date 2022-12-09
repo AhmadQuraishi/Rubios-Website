@@ -262,44 +262,44 @@ const StoreInfoBar = () => {
                       <ExpandMoreIcon style={{ color: '#fff' }} />
                     )}
                   </Grid>
-                  {window?.location?.href
-                    ?.toLocaleLowerCase()
-                    ?.indexOf('/checkout') !== -1 && (
-                    <>
-                      <Typography
-                        variant="body2"
-                        color="#fff"
-                        fontSize={11}
-                        sx={{
-                          display: {
-                            xs: 'block',
-                            sm: 'none',
-                            md: 'none',
-                            lg: 'none',
-                          },
-                        }}
-                      >
-                        <p
-                          style={{
-                            cursor: 'pointer',
-                            textDecorationLine: 'underline',
-                          }}
-                          role={'button'}
-                          aria-label={'Change Order Type'}
-                          tabIndex={0}
-                          onKeyPress={(e: any) => {
-                            if (e.key === 'Enter') {
-                              setOpenOrder(true);
-                            }
-                          }}
-                          onClick={() => setOpenOrder(true)}
-                        >
-                          Change Order Type
-                        </p>
-                        {'\n'}
-                      </Typography>
-                    </>
-                  )}
+                  {/*{window?.location?.href*/}
+                  {/*  ?.toLocaleLowerCase()*/}
+                  {/*  ?.indexOf('/checkout') !== -1 && (*/}
+                  {/*  <>*/}
+                  {/*    <Typography*/}
+                  {/*      variant="body2"*/}
+                  {/*      color="#fff"*/}
+                  {/*      fontSize={11}*/}
+                  {/*      sx={{*/}
+                  {/*        display: {*/}
+                  {/*          xs: 'block',*/}
+                  {/*          sm: 'none',*/}
+                  {/*          md: 'none',*/}
+                  {/*          lg: 'none',*/}
+                  {/*        },*/}
+                  {/*      }}*/}
+                  {/*    >*/}
+                  {/*      <p*/}
+                  {/*        style={{*/}
+                  {/*          cursor: 'pointer',*/}
+                  {/*          textDecorationLine: 'underline',*/}
+                  {/*        }}*/}
+                  {/*        role={'button'}*/}
+                  {/*        aria-label={'Change Order Type'}*/}
+                  {/*        tabIndex={0}*/}
+                  {/*        onKeyPress={(e: any) => {*/}
+                  {/*          if (e.key === 'Enter') {*/}
+                  {/*            setOpenOrder(true);*/}
+                  {/*          }*/}
+                  {/*        }}*/}
+                  {/*        onClick={() => setOpenOrder(true)}*/}
+                  {/*      >*/}
+                  {/*        Change Order Type*/}
+                  {/*      </p>*/}
+                  {/*      {'\n'}*/}
+                  {/*    </Typography>*/}
+                  {/*  </>*/}
+                  {/*)}*/}
                   &nbsp;
                   <Typography
                     variant="body2"
@@ -328,7 +328,7 @@ const StoreInfoBar = () => {
                       //     handleClickOpen();
                       //   }
                       // }}
-                       onClick={() => navigate('/location')}
+                      onClick={() => navigate('/location')}
                     >
                       Change location
                     </p>
@@ -396,45 +396,45 @@ const StoreInfoBar = () => {
                         <p>{restaurantInfo.distance.toFixed(2)} Miles Away</p>
                       )}
                     </Typography>
-                    {window?.location?.href
-                      ?.toLocaleLowerCase()
-                      ?.indexOf('/checkout') !== -1 && (
-                      <>
-                        <Typography
-                          variant="body2"
-                          color="#fff"
-                          fontSize={11}
-                          sx={{
-                            marginBottom: '5px',
-                            display: {
-                              xs: 'none',
-                              sm: 'block',
-                              md: 'block',
-                              lg: 'block',
-                            },
-                          }}
-                        >
-                          <p
-                            style={{
-                              cursor: 'pointer',
-                              textDecorationLine: 'underline',
-                              fontSize: '13px',
-                            }}
-                            role={'button'}
-                            aria-label={'Change Order Type'}
-                            tabIndex={0}
-                            onKeyPress={(e: any) => {
-                              if (e.key === 'Enter') {
-                                setOpenOrder(true);
-                              }
-                            }}
-                            onClick={() => setOpenOrder(true)}
-                          >
-                            Change Order Type
-                          </p>
-                        </Typography>
-                      </>
-                    )}
+                    {/*{window?.location?.href*/}
+                    {/*  ?.toLocaleLowerCase()*/}
+                    {/*  ?.indexOf('/checkout') !== -1 && (*/}
+                    {/*  <>*/}
+                    {/*    <Typography*/}
+                    {/*      variant="body2"*/}
+                    {/*      color="#fff"*/}
+                    {/*      fontSize={11}*/}
+                    {/*      sx={{*/}
+                    {/*        marginBottom: '5px',*/}
+                    {/*        display: {*/}
+                    {/*          xs: 'none',*/}
+                    {/*          sm: 'block',*/}
+                    {/*          md: 'block',*/}
+                    {/*          lg: 'block',*/}
+                    {/*        },*/}
+                    {/*      }}*/}
+                    {/*    >*/}
+                    {/*      <p*/}
+                    {/*        style={{*/}
+                    {/*          cursor: 'pointer',*/}
+                    {/*          textDecorationLine: 'underline',*/}
+                    {/*          fontSize: '13px',*/}
+                    {/*        }}*/}
+                    {/*        role={'button'}*/}
+                    {/*        aria-label={'Change Order Type'}*/}
+                    {/*        tabIndex={0}*/}
+                    {/*        onKeyPress={(e: any) => {*/}
+                    {/*          if (e.key === 'Enter') {*/}
+                    {/*            setOpenOrder(true);*/}
+                    {/*          }*/}
+                    {/*        }}*/}
+                    {/*        onClick={() => setOpenOrder(true)}*/}
+                    {/*      >*/}
+                    {/*        Change Order Type*/}
+                    {/*      </p>*/}
+                    {/*    </Typography>*/}
+                    {/*  </>*/}
+                    {/*)}*/}
                     <Typography
                       variant="body2"
                       color="#fff"
@@ -468,69 +468,69 @@ const StoreInfoBar = () => {
                         Change location
                       </p>
                     </Typography>
-                    {isLoginUser()  && (
-                        <Typography
-                          variant="body2"
-                          color="#fff"
-                          fontSize={11}
-                          sx={{
-                            display: {
-                              xs: 'inline',
-                              sm: 'inline',
-                              md: 'inline',
-                              lg: 'inline',
-                            },
+                    {isLoginUser() && (
+                      <Typography
+                        variant="body2"
+                        color="#fff"
+                        fontSize={11}
+                        sx={{
+                          display: {
+                            xs: 'inline',
+                            sm: 'inline',
+                            md: 'inline',
+                            lg: 'inline',
+                          },
+                        }}
+                      >
+                        <p
+                          style={{
+                            cursor: checkFavorite() ? 'inherit' : 'pointer',
+                            textDecorationLine: checkFavorite()
+                              ? 'none'
+                              : 'underline',
                           }}
+                          className={'add-favourite'}
+                          role={'button'}
+                          aria-label={'Add to Favorites'}
+                          tabIndex={0}
+                          onKeyPress={(e: any) => {
+                            if (e.key === 'Enter') {
+                              AddToFavourites();
+                            }
+                          }}
+                          onClick={() => AddToFavourites()}
                         >
-                          <p
-                            style={{
-                              cursor: checkFavorite() ? 'inherit' : 'pointer',
-                              textDecorationLine: checkFavorite()
-                                ? 'none'
-                                : 'underline',
-                            }}
-                            className={'add-favourite'}
-                            role={'button'}
-                            aria-label={'Add to Favorites'}
-                            tabIndex={0}
-                            onKeyPress={(e: any) => {
-                              if (e.key === 'Enter') {
-                                AddToFavourites();
-                              }
-                            }}
-                            onClick={() => AddToFavourites()}
-                          >
-                            {checkFavorite() ? 'Favorite' : 'Add to Favorites'}
-                            {checkFavorite() ? (
-                              <FavoriteIcon
-                                sx={{
-                                  fontSize: '15px',
-                                  marginLeft: '3px',
-                                  display: {
-                                    xs: 'inline',
-                                    sm: 'inline',
-                                    md: 'inline',
-                                    lg: 'inline',
-                                  },
-                                }}
-                              />
-                            ) : (
-                              <FavoriteBorderIcon
-                                sx={{
-                                  fontSize: '15px',
-                                  marginLeft: '3px',
-                                  display: {
-                                    xs: 'inline',
-                                    sm: 'inline',
-                                    md: 'inline',
-                                    lg: 'inline',
-                                  },
-                                }}
-                              />
-                            )}
-                          </p>
-                        </Typography>
-                      )}
+                          {checkFavorite() ? 'Favorite' : 'Add to Favorites'}
+                          {checkFavorite() ? (
+                            <FavoriteIcon
+                              sx={{
+                                fontSize: '15px',
+                                marginLeft: '3px',
+                                display: {
+                                  xs: 'inline',
+                                  sm: 'inline',
+                                  md: 'inline',
+                                  lg: 'inline',
+                                },
+                              }}
+                            />
+                          ) : (
+                            <FavoriteBorderIcon
+                              sx={{
+                                fontSize: '15px',
+                                marginLeft: '3px',
+                                display: {
+                                  xs: 'inline',
+                                  sm: 'inline',
+                                  md: 'inline',
+                                  lg: 'inline',
+                                },
+                              }}
+                            />
+                          )}
+                        </p>
+                      </Typography>
+                    )}
                   </Grid>
                   <Grid
                     item

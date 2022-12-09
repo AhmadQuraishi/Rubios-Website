@@ -95,7 +95,8 @@ const RecentOrders = () => {
         setClickAction(false);
         return;
       } else {
-        setOpenOrder(true);
+        navigateAfterSuccess();
+        // setOpenOrder(true);
       }
     }
   }, [restaurant]);
@@ -181,10 +182,10 @@ const RecentOrders = () => {
 
   return (
     <Fragment>
-      <OrderTypeDialog
-        openModal={openOrder}
-        setOpenModal={navigateAfterSuccess}
-      />
+      {/*<OrderTypeDialog*/}
+      {/*  openModal={openOrder}*/}
+      {/*  setOpenModal={navigateAfterSuccess}*/}
+      {/*/>*/}
       {(loading || clickAction) && <OrderListSkeletonUI />}
       {recentorders && recentorders.length === 0 && !loading && (
         <Typography variant="h6" className="no-orders">

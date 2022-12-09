@@ -207,7 +207,7 @@ const DeliveryForm = ({
                   </Link>
                 </Typography> */}
               </Grid>
-            )} 
+            )}
             <Grid
               item
               xs={12}
@@ -243,15 +243,15 @@ const DeliveryForm = ({
                     {basket?.deliveryaddress?.city},&nbsp;
                     {basket?.deliveryaddress?.zipcode}
                   </Typography>
-                  <Typography
-                    variant="body1"
-                    className="label"
-                    sx={{ cursor: 'pointer', display: 'inline' }}
-                    aria-label={'Edit Address'}
-                    onClick={() => setOpen(true)}
-                  >
-                    Edit
-                  </Typography>
+                  {/*<Typography*/}
+                  {/*  variant="body1"*/}
+                  {/*  className="label"*/}
+                  {/*  sx={{ cursor: 'pointer', display: 'inline' }}*/}
+                  {/*  aria-label={'Edit Address'}*/}
+                  {/*  onClick={() => setOpen(true)}*/}
+                  {/*>*/}
+                  {/*  Edit*/}
+                  {/*</Typography>*/}
                 </Grid>
               </Grid>
             </Grid>

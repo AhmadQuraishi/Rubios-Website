@@ -113,7 +113,8 @@ const FavoriteOrders = () => {
         setClickAction(false);
         return;
       } else {
-        setOpenOrder(true);
+        navigateAfterSuccess();
+        // setOpenOrder(true);
       }
     }
   }, [restaurant]);
@@ -128,10 +129,10 @@ const FavoriteOrders = () => {
 
   return (
     <Fragment>
-      <OrderTypeDialog
-        openModal={openOrder}
-        setOpenModal={navigateAfterSuccess}
-      />
+      {/*<OrderTypeDialog*/}
+      {/*  openModal={openOrder}*/}
+      {/*  setOpenModal={navigateAfterSuccess}*/}
+      {/*/>*/}
       {(loading || clickAction) && <OrderListSkeletonUI />}
       {!loading && !clickAction && favOrders && favOrders.length === 0 && (
         <Typography variant="h6" className="no-orders">
