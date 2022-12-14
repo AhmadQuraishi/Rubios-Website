@@ -20,6 +20,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setRestaurantInfoOrderType } from '../../redux/actions/restaurant';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+
 import {
   setBasketDeliveryAddress,
   setBasketDeliveryMode,
@@ -141,7 +142,6 @@ export const OrderTypeDialog = (props: any) => {
       }
     }
   };
-
   useEffect(() => {
     console.log('orderType 1', orderType);
   }, [orderType]);
@@ -297,6 +297,7 @@ export const OrderTypeDialog = (props: any) => {
                             //   changeOrderType('dinein');
                             // }}
                             className="selected-toggle-btn"
+                            
                             aria-current={changeOrderType === 'dinein'}
                             aria-label=" Curbside, Activating this element will cause results to load below "
                           >
@@ -313,6 +314,14 @@ export const OrderTypeDialog = (props: any) => {
                             //   // setShowAllRestaurants(false);
                             //   changeOrderType('dispatch');
                             // }}
+                            href="#changer"
+                            sx={{fontFamily: "'Poppins-Bold', sans-serif !important",
+                            fontSize: "15px",
+                            height: "50px",
+                            boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.2) !important",
+                            textTransform: "uppercase",
+                            borderRadius: "0 !important",
+                            letterSpacing: "2.25px !important"}}
                             className="selected-toggle-btn"
                             aria-current={changeOrderType === 'dispatch'}
                             aria-label=" Delivery, Enter your address below to get nearby restaurants"
@@ -324,12 +333,10 @@ export const OrderTypeDialog = (props: any) => {
                   </Grid>
                   {changeOrderType === 'dispatch' && (
                     <>
-                      <Grid item xs={12}>
+                      <Grid item xs={12} id="changer" >
                         <Typography
                           style={{
                             padding: '10px 0px',
-                            fontFamily:
-                              "'Poppins-Regular', sans-serif !important",
                             color: '#000000',
                           }}
                           textAlign={'center'}
@@ -338,7 +345,7 @@ export const OrderTypeDialog = (props: any) => {
                           {`Delivery Address`}
                         </Typography>
                       </Grid>
-                      <Grid item xs={12}>
+                      <Grid item xs={12} >
                         <TextField
                           aria-label="Address"
                           label="Street Address"
@@ -370,7 +377,7 @@ export const OrderTypeDialog = (props: any) => {
                           helperText={touched.address2 && errors.address2}
                         />
                       </Grid>
-                      <Grid item xs={12} sx={{ paddingTop: '10px' }}>
+                      <Grid item xs={12} sx={{ paddingTop: '10px' }} >
                         <TextField
                           aria-label="City"
                           label="City"
@@ -386,7 +393,7 @@ export const OrderTypeDialog = (props: any) => {
                           helperText={touched.city && errors.city}
                         />
                       </Grid>
-                      <Grid item xs={12} sx={{ paddingTop: '10px' }}>
+                      <Grid item xs={12} sx={{ paddingTop: '10px' }} >
                         <TextField
                           aria-label="Postal Code"
                           label="Postal Code"

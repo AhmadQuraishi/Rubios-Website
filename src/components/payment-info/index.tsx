@@ -65,7 +65,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
   const [basket, setBasket] = React.useState<ResponseBasket>();
   const [allowedCards, setAllowedCards] = React.useState<any>();
   const [displaySavedCards, setDisplaySavedCards] =
-    React.useState<boolean>(false);
+  React.useState<boolean>(false);
   const basketObj = useSelector((state: any) => state.basketReducer);
 
   React.useEffect(() => {
@@ -244,7 +244,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
     const billingSchemeStats = getBillingSchemesStats(billingSchemes);
     return (
       basket &&
-      billingSchemeStats.selectedCreditCard === 0 &&
+      //billingSchemeStats.selectedCreditCard === 0 &&
       allowedCards &&
       allowedCards.length &&
       allowedCards.filter((element: any) => {

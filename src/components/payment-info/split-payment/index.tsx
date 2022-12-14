@@ -433,7 +433,7 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                       </Typography>
                     )}
 
-                  <Typography
+                   {/* <Typography
                     onClick={() => {
                       setOpenPopup(true);
                       setRemoveData({
@@ -457,7 +457,7 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                     tabIndex={0}
                   >
                     REMOVE
-                  </Typography>
+                  </Typography> */}
                   {/*)}*/}
                 </Grid>
               </Grid>
