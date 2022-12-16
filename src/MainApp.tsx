@@ -107,7 +107,7 @@ function App(props: any) {
       window.location.href.toLocaleLowerCase().indexOf('/location') !== -1 ||
       window.location.href.toLocaleLowerCase().indexOf('/checkout') !== -1 ||
       window.location.href.toLocaleLowerCase().indexOf('/category') !== -1 ||
-      window.location.href.toLocaleLowerCase().indexOf('/product') !== -1 
+      window.location.href.toLocaleLowerCase().indexOf('/product') !== -1
     ) {
       setHideLoginPanel(false);
     } else {
@@ -194,6 +194,7 @@ function App(props: any) {
       {/*  style={{ fontFamily: 'Poppins-Regular' }}*/}
       {/*></div>*/}
       <NavigateApp />
+      <a href="#main" className="skip-link">Skip to Main Content</a>
       <Header
         style={{ margin: '0 !important', padding: '0 !important' }}
         removeCartForLocation={
@@ -212,7 +213,7 @@ function App(props: any) {
             .indexOf('/order-confirmation') !== -1
         }
       />
-      <main>
+      <main id={'main'} >
         <ToastContainer hideProgressBar />
         {isAccountSection ? (
           <Fragment>

@@ -322,13 +322,13 @@ const StoreInfoBar = () => {
                       }}
                       role={'button'}
                       aria-label={'Change location'}
-                      tabIndex={1}
+                      tabIndex={0}
                       // onKeyPress={(e: any) => {
                       //   if (e.key === 'Enter') {
                       //     handleClickOpen();
                       //   }
                       // }}
-                       onClick={() => navigate('/location')}
+                      onClick={() => navigate('/location')}
                     >
                       Change location
                     </p>
@@ -457,7 +457,7 @@ const StoreInfoBar = () => {
                         }}
                         role={'button'}
                         aria-label={'Change location'}
-                        tabIndex={1}
+                        tabIndex={0}
                         // onKeyPress={(e: any) => {
                         //   if (e.key === 'Enter') {
                         //     handleClickOpen();
@@ -468,69 +468,69 @@ const StoreInfoBar = () => {
                         Change location
                       </p>
                     </Typography>
-                    {isLoginUser()  && (
-                        <Typography
-                          variant="body2"
-                          color="#fff"
-                          fontSize={11}
-                          sx={{
-                            display: {
-                              xs: 'inline',
-                              sm: 'inline',
-                              md: 'inline',
-                              lg: 'inline',
-                            },
+                    {isLoginUser() && (
+                      <Typography
+                        variant="body2"
+                        color="#fff"
+                        fontSize={11}
+                        sx={{
+                          display: {
+                            xs: 'inline',
+                            sm: 'inline',
+                            md: 'inline',
+                            lg: 'inline',
+                          },
+                        }}
+                      >
+                        <p
+                          style={{
+                            cursor: checkFavorite() ? 'inherit' : 'pointer',
+                            textDecorationLine: checkFavorite()
+                              ? 'none'
+                              : 'underline',
                           }}
+                          className={'add-favourite'}
+                          role={'button'}
+                          aria-label={'Add to Favorites'}
+                          tabIndex={0}
+                          onKeyPress={(e: any) => {
+                            if (e.key === 'Enter') {
+                              AddToFavourites();
+                            }
+                          }}
+                          onClick={() => AddToFavourites()}
                         >
-                          <p
-                            style={{
-                              cursor: checkFavorite() ? 'inherit' : 'pointer',
-                              textDecorationLine: checkFavorite()
-                                ? 'none'
-                                : 'underline',
-                            }}
-                            className={'add-favourite'}
-                            role={'button'}
-                            aria-label={'Add to Favorites'}
-                            tabIndex={0}
-                            onKeyPress={(e: any) => {
-                              if (e.key === 'Enter') {
-                                AddToFavourites();
-                              }
-                            }}
-                            onClick={() => AddToFavourites()}
-                          >
-                            {checkFavorite() ? 'Favorite' : 'Add to Favorites'}
-                            {checkFavorite() ? (
-                              <FavoriteIcon
-                                sx={{
-                                  fontSize: '15px',
-                                  marginLeft: '3px',
-                                  display: {
-                                    xs: 'inline',
-                                    sm: 'inline',
-                                    md: 'inline',
-                                    lg: 'inline',
-                                  },
-                                }}
-                              />
-                            ) : (
-                              <FavoriteBorderIcon
-                                sx={{
-                                  fontSize: '15px',
-                                  marginLeft: '3px',
-                                  display: {
-                                    xs: 'inline',
-                                    sm: 'inline',
-                                    md: 'inline',
-                                    lg: 'inline',
-                                  },
-                                }}
-                              />
-                            )}
-                          </p>
-                        </Typography>
-                      )}
+                          {checkFavorite() ? 'Favorite' : 'Add to Favorites'}
+                          {checkFavorite() ? (
+                            <FavoriteIcon
+                              sx={{
+                                fontSize: '15px',
+                                marginLeft: '3px',
+                                display: {
+                                  xs: 'inline',
+                                  sm: 'inline',
+                                  md: 'inline',
+                                  lg: 'inline',
+                                },
+                              }}
+                            />
+                          ) : (
+                            <FavoriteBorderIcon
+                              sx={{
+                                fontSize: '15px',
+                                marginLeft: '3px',
+                                display: {
+                                  xs: 'inline',
+                                  sm: 'inline',
+                                  md: 'inline',
+                                  lg: 'inline',
+                                },
+                              }}
+                            />
+                          )}
+                        </p>
+                      </Typography>
+                    )}
                   </Grid>
                   <Grid
                     item
