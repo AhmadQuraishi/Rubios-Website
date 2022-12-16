@@ -20,7 +20,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setRestaurantInfoOrderType } from '../../redux/actions/restaurant';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-
+import { LocationChangeModal } from '../location-change-modal';
 import {
   setBasketDeliveryAddress,
   setBasketDeliveryMode,
@@ -29,7 +29,37 @@ import { setBasketDeliveryAddressSuccess } from '../../redux/actions/basket/chec
 import { displayToast } from '../../helpers/toast';
 import './order-type.css';
 import { isLoginUser } from '../../helpers/auth';
+import usePlacesAutocomplete, {
+  getGeocode,
+  getLatLng,
+  Init
+} from 'use-places-autocomplete';
+import { getAddress } from '../../helpers/common';
+import {
+  getNearByResturantListRequest,
+  getResturantListRequest,
+} from '../../redux/actions/restaurant/list';
+import {useNavigate } from 'react-router-dom';
+import {
+  getBasketRequestSuccess,
+  resetBasketRequest,
+} from '../../redux/actions/basket';
+import { setResturantInfoRequest } from '../../redux/actions/restaurant';
+import { setDeliveryAddress } from '../../redux/actions/location/delivery-address';
+import {
+  basketTransferRequest,
+  basketTransferReset,
+} from '../../redux/actions/basket/transfer';
 export const OrderTypeDialog = (props: any) => {
+  const {
+    init,
+  } = usePlacesAutocomplete({
+    requestOptions: {
+      // location:
+      //   window.google && new google.maps.LatLng({ lat: 37.772, lng: -122.214 }),
+      // radius: 200 * 1000,
+    },
+  });
   const {
     setValue,
     openModal,
@@ -37,16 +67,41 @@ export const OrderTypeDialog = (props: any) => {
     // changeOrderType,
   } = props;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const { orderType, restaurant } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
   const [alignment, setAlignment] = React.useState('web');
+  const [actionPerform, setActionPerform] = useState(false);
   const basketObj = useSelector((state: any) => state.basketReducer);
-
+  const [LatLng, setLatLng] = useState<any>(null);
+  const [showLocationChangeModal, setShowLocationChangeModal] = useState(false);
+  const [selectedAddress, setSelectedAddress] = useState<any>();
+  const [deliveryAddressString, setDeliveryAddressString] = useState<any>();
+  const [newDeliveryAddress, setNewDeliveryAddress] = useState<any>(null);
+  const [filteredRestaurants, setFilteredRestaurants] = useState<any>([]); 
   const [changeOrderType, setChangeOrderType] = useState<any>(
     basketObj?.basket?.deliverymode || orderType || 'pickup',
   );
+  
+  const [newRestaurant, setNewRestaurant] = useState<any>(null);
+  const { restaurant: selectedRestaurant, orderType: selectedOrderType } =
+    useSelector((state: any) => state.restaurantInfoReducer);
+    
+  const {
+    restaurants,
+    nearbyRestaurants,
+    loading: restaurantLoading,
+  } = useSelector((state: any) => state.restaurantListReducer);
+  const {
+    data: newBasket,
+    loading: newBasketLoading,
+    error: newBasketError,
+  } = useSelector((state: any) => state.basketTransferReducer);
+  useEffect(() => {
+init();
+  }, [])
 
   const handleClose = () => {
     setOpenModal(false);
@@ -84,11 +139,13 @@ export const OrderTypeDialog = (props: any) => {
     dispatch(setRestaurantInfoOrderType(response?.deliverymode));
     setButtonDisabled(false);
     displayToast('SUCCESS', 'Order updated!');
+    setActionPerform(false);
     handleClose();
   };
 
   const basketError = (error: any) => {
     setButtonDisabled(false);
+    setActionPerform(false);
     displayToast(
       'ERROR',
       error?.response?.data?.message
@@ -96,6 +153,26 @@ export const OrderTypeDialog = (props: any) => {
         : 'ERROR! Please Try again later',
     );
   };
+  const getNearByRestaurants = (lat: number, long: number) => {
+    var today = new Date();
+    const dateFrom =
+      today.getFullYear() * 1e4 +
+      (today.getMonth() + 1) * 100 +
+      today.getDate() +
+      '';
+    const lastWeekDate = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate() + 6,
+    );
+    const dateTo =
+      lastWeekDate.getFullYear() * 1e4 +
+      (lastWeekDate.getMonth() + 1) * 100 +
+      lastWeekDate.getDate() +
+      '';
+    dispatch(getNearByResturantListRequest(lat, long, 40, 6, dateFrom, dateTo));
+  };
+  
   useEffect(() => {
     console.log('orderType 1', orderType);
   }, [orderType]);
@@ -107,9 +184,154 @@ export const OrderTypeDialog = (props: any) => {
       setChangeOrderType(newAlignment);
     }
   };
+  const handleChangeLocation = async () => {    
+    
+    if (newBasket?.basket && newRestaurant) {
+      if (newDeliveryAddress && changeOrderType === 'dispatch') {
+        let updatedAddress: any = {
+          building: newDeliveryAddress?.address?.address2 || '',
+          streetaddress: newDeliveryAddress?.address?.address1 || '',
+          city: newDeliveryAddress?.address?.city || '',
+          zipcode: newDeliveryAddress?.address?.zip || '',
+          isdefault: newDeliveryAddress?.address?.isdefault || false,
+        };
+        try {
+          
+          //setActionPerform(true);
+          const response: any = await setBasketDeliveryAddress(
+            newBasket?.basket?.id,
+            updatedAddress,
+          );
+
+          //setActionPerform(false);
+          dispatch(setBasketDeliveryAddressSuccess(response));
+          dispatch(setResturantInfoRequest(newRestaurant, orderType || ''));
+          setActionPerform(false)
+          handleClose();
+          // navigate('/');
+          // displayToast('SUCCESS', 'Location changed to ' + newRestaurant.name);
+        } catch (error: any) {
+          //setActionPerform(false);
+          displayToast(
+            'ERROR',
+            error?.response?.data?.message
+              ? error.response.data.message
+              : 'ERROR! Please Try again later',
+          );
+          setActionPerform(false);
+          handleClose();
+        }
+        setShowLocationChangeModal(false);
+      } 
+      // else if (orderType !== selectedOrderType && orderType !== 'dispatch') {
+      //   try {
+      //     //setActionPerform(true);
+      //     const body = {
+      //       deliverymode: orderType,
+      //     };
+      //     const response: any = await setBasketDeliveryMode(
+      //       newBasket?.basket?.id,
+      //       body,
+      //     );
+      //    //setActionPerform(false);
+      //     dispatch(setBasketDeliveryAddressSuccess(response));
+      //     dispatch(setResturantInfoRequest(newRestaurant, orderType || ''));
+      //     navigate('/checkout');
+      //     displayToast('SUCCESS', 'Location changed to ' + newRestaurant.name);
+      //   } catch (error: any) {
+      //     //setActionPerform(false);
+          
+      //     displayToast(
+      //       'ERROR',
+      //       error?.response?.data?.message
+      //         ? error.response.data.message
+      //         : 'ERROR! Please Try again later',
+      //     );
+      //   }
+      //   return;
+      // }
+
+      // dispatch(getBasketRequestSuccess(newBasket?.basket));
+      // dispatch(setResturantInfoRequest(newRestaurant, orderType || ''));
+      // navigate('/checkout');
+      // setOpenModal(false);
+      // displayToast('SUCCESS', 'Location changed to ' + newRestaurant.name);
+    }
+  };
+
+  useEffect(() => {
+    if (
+      !newBasketLoading && actionPerform) {
+      if (newBasketError) {       
+        dispatch(resetBasketRequest());
+        dispatch(setResturantInfoRequest(newRestaurant, orderType || ''));
+        setButtonDisabled(false)
+        setActionPerform(false)
+        navigate('/');
+      }
+      else if (newBasket?.basket) {
+        setShowLocationChangeModal(true);
+       setActionPerform(false);
+      }
+    }
+  }, [newBasket, newBasketLoading, newBasketError]);
+
+  const nearbyRestaurantAction = async () => {
+    if (nearbyRestaurants?.restaurants?.length === 0) {
+      displayToast(
+        'ERROR',
+        "We could not find any Rubio's within 10 miles of your address.",
+      );
+      setButtonDisabled(false);
+      setActionPerform(false)
+    } else if (nearbyRestaurants?.restaurants?.length > 0){
+     if(basketObj?.basket) {
+        if(nearbyRestaurants?.restaurants[0]?.id === basketObj?.basket?.vendorid){
+          try {
+            let updatedAddress: any = {
+              building: newDeliveryAddress?.address?.address2 || '',
+              streetaddress: newDeliveryAddress?.address?.address1 || '',
+              city: newDeliveryAddress?.address?.city || '',
+              zipcode: newDeliveryAddress?.address?.zip || '',
+              isdefault: newDeliveryAddress?.address?.isdefault || false,
+            };
+            const response = await setBasketDeliveryAddress(
+              basketObj?.basket?.id,
+              updatedAddress,
+            );
+            basketSuccess(response);
+          } catch (error: any) {
+            basketError(error);
+          }
+        } else {
+          dispatch(basketTransferRequest(basketObj?.basket?.id, nearbyRestaurants?.restaurants[0]?.id))
+          setNewRestaurant(nearbyRestaurants?.restaurants[0]);
+        }
+
+     } else {
+      dispatch(setResturantInfoRequest(nearbyRestaurants?.restaurants[0], changeOrderType || ''));
+      setButtonDisabled(false);
+      setActionPerform(false);
+      handleClose();
+      navigate('/');
+     }
+     
+    }
+  }
+
+  useEffect(() => {
+    if(!actionPerform){
+      return;
+    }
+    nearbyRestaurantAction();
+      
+  }, [nearbyRestaurants]);
+
 
   const handleOrderUpdate = async (formData: any) => {
     setButtonDisabled(true);
+    setActionPerform(true);
+    setNewDeliveryAddress(formData)
     if (changeOrderType !== 'dispatch') {
       try {
         const body = {
@@ -131,16 +353,40 @@ export const OrderTypeDialog = (props: any) => {
         zipcode: formData?.address?.zip || '',
         isdefault: formData?.address?.isdefault || false,
       };
-      try {
-        const response = await setBasketDeliveryAddress(
-          basketObj?.basket?.id,
-          updatedAddress,
-        );
-        basketSuccess(response);
-      } catch (error: any) {
-        basketError(error);
-      }
+      console.log("updatedAddress", updatedAddress)
+      // getGeocode(updatedAddress)
+      //   .then((results) => {
+      //     console.log(getLatLng(results[0]), "getlatLng");
+      //     getLatLng(results[0]).then(({ lat, lng }) => {
+      //       const address = getAddress(results[0]);
+      //       setDeliveryAddressString(selectedAddress);
+      //       if (address.address1 !== '') {
+      //         setLatLng({ lat: lat, lng: lng });
+      //         getNearByRestaurants(lat, lng);
+      // if (restaurants?.restaurants) {
+      //   if (restaurants.restaurants.length === 0) {
+      //     setFilteredRestaurants([]);
+      //   } else {
+      //     const rest = getOrderTypeRestaurants(restaurants.restaurants, null);
+      //     setFilteredRestaurants(rest);
+      //         dispatch(getResturantInfoRequest(vendorid));
+                
+      //       } else {
+      //         displayToast('ERROR', 'Please enter your full delivery address.');
+      //         getNearByRestaurants(LatLng.lat, LatLng.lng);
+      //       }
+      //     });
+      //   })
+        // .catch((err: any) => {
+        //   console.log(err, "err");
+          getNearByRestaurants(33.68611, -118.00662);
+        // });
     }
+  };
+  const handleCancelChangeLocation = () => {
+    // navigate('/checkout');
+    setShowLocationChangeModal(false);
+    setOpenModal(false);
   };
   useEffect(() => {
     console.log('orderType 1', orderType);
@@ -159,7 +405,18 @@ export const OrderTypeDialog = (props: any) => {
   };
 
   return (
-    <Dialog
+    <>
+    {newBasket?.basket && (
+        <LocationChangeModal
+          showLocationChangeModal={showLocationChangeModal}
+          setShowLocationChangeModal={setShowLocationChangeModal}
+          itemsNotAvailable={newBasket?.itemsnottransferred || []}
+          restaurant={newRestaurant}
+          handleChangeLocation={handleChangeLocation}
+          handleCancelChangeLocation={handleCancelChangeLocation}
+        />
+      )}
+      <Dialog
       open={openModal}
       onClose={backdropClose}
       aria-labelledby="modal-dialog-delivery-address"
@@ -172,6 +429,7 @@ export const OrderTypeDialog = (props: any) => {
       }}
       fullWidth
     >
+            
       <DialogTitle id="modal-dialog-delivery-title">{`Confirm Order Type`}</DialogTitle>
       <Formik
         initialValues={{
@@ -342,7 +600,7 @@ export const OrderTypeDialog = (props: any) => {
                           textAlign={'center'}
                           variant={'body1'}
                         >
-                          {`Delivery Address`}
+                          {`Add Delivery Address`}
                         </Typography>
                       </Grid>
                       <Grid item xs={12} >
@@ -445,9 +703,10 @@ export const OrderTypeDialog = (props: any) => {
                       city: values.city || '',
                       zip: values.zip || '',
                       isdefault: values.isdefault,
-                    },
+                    }
+                    });
+                    
                     // orderType: values.orderType,
-                  });
                 }}
                 sx={{ marginRight: '15px', marginBottom: '15px' }}
                 autoFocus
@@ -460,5 +719,7 @@ export const OrderTypeDialog = (props: any) => {
         )}
       </Formik>
     </Dialog>
+    </>
+    
   );
 };
