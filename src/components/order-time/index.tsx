@@ -296,8 +296,8 @@ const OrderTime = ({ orderType }: any) => {
                     value={selectedDate}
                     views={['day']}
                     className="order-date"
-                    onChange={(e) => handleDateChange(e)}
-                    renderInput={(params) => (
+                    onChange={(e: any) => handleDateChange(e)}
+                    renderInput={(params: any) => (
                       <TextField
                         id="dateTime_check"
                         className="order-date"
