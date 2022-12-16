@@ -51,7 +51,7 @@ const StoreInfo = (props: any) => {
   }, []);
 
   return allStores ? (
-    <li className="list-sx">
+    <li role="group" aria-label={'Restaurant'} className="list-sx">
       <div
         style={{
           boxShadow: '0px 2px 3px 0px rgb(0 0 0 / 20%)',
@@ -124,6 +124,8 @@ const StoreInfo = (props: any) => {
     <Grid
       item
       xs={12}
+      role="group"
+      aria-label={'Restaurant'}
       sx={{
         marginBottom: '10px',
         cursor: 'pointer',
