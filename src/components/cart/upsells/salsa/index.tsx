@@ -319,7 +319,7 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
             {products.map((obj: any) => {
               return (
                 <>
-                  <Grid item xs={12} lg={6}         id='cart-salsa'             sx={{ display: 'flex', alignItems: 'stretch' }}>
+                  <Grid item xs={12} lg={6}            sx={{ display: 'flex', alignItems: 'stretch' }}>
                     <Grid
                       key={Math.random() + '-'}
                       item
@@ -419,8 +419,6 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                           <>
                             {obj?.options?.length > 0 && (
                               <select
-                              
-                              id="cart-salsa"
                                 className="add-side-select"
                                 // style={{
                                 //   width: '100% !important',
@@ -454,8 +452,7 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                                       //   );
                                       // }}
                                     >
-                                      {option.name.includes("Regular") ? "Regular" : option.name.includes("Large") ? "Large" : option.name}
-                                      {/* // {option.name} */}
+                                      {option.name}
                                     </option>
                                   ),
                                 )}

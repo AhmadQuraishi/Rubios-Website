@@ -125,6 +125,7 @@ export const OrderTypeDialog = (props: any) => {
     handleClose();
   };
 
+
   const basketSuccess = (response: any) => {
     dispatch(setBasketDeliveryAddressSuccess(response));
     dispatch(setRestaurantInfoOrderType(response?.deliverymode));
@@ -311,7 +312,7 @@ export const OrderTypeDialog = (props: any) => {
         basketError(error);
       }
     } else if (formData.address) {
-      const address =
+        const address =
         formData?.address?.address1 +
         ' ' +
         formData?.address?.address2 +
@@ -342,6 +343,7 @@ export const OrderTypeDialog = (props: any) => {
     setShowLocationChangeModal(false);
     setOpenModal(false);
   };
+
   useEffect(() => {
     console.log('orderType 1', orderType);
   }, [orderType]);
@@ -356,6 +358,7 @@ export const OrderTypeDialog = (props: any) => {
         (values.address1 === '' || values.city === '' || values.zip === ''))
     );
   };
+
 
   return (
     <>
@@ -522,7 +525,6 @@ export const OrderTypeDialog = (props: any) => {
                             //   // setShowAllRestaurants(false);
                             //   changeOrderType('dispatch');
                             // }}
-                            href="#changer"
                             sx={{
                               fontFamily:
                                 "'Poppins-Bold', sans-serif !important",
@@ -545,7 +547,9 @@ export const OrderTypeDialog = (props: any) => {
                     </Grid>
                     {changeOrderType === 'dispatch' && (
                       <>
-                        <Grid item xs={12} id="changer">
+                        <Grid item xs={12} 
+                         id="changer"
+                        >
                           <Typography
                             style={{
                               padding: '10px 0px',
