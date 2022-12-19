@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addMultipleProductsRequest } from '../../../../redux/actions/basket/addMultipleProducts';
 import { changeImageSize, isEmpty } from '../../../../helpers/common';
 import SalsaSkeletonUI from '../../../salsa-skeleton-ui';
+import moment from 'moment';
 
 const useStyles = makeStyles((theme: Theme) => ({
   cartTitle: {
@@ -42,19 +43,49 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
       if (prod && prod.length) {
         const options: any = {};
         prod = prod.map((obj: any) => {
-          if (obj?.options?.length > 0) {
-            options[`${obj.id}`] = `${obj.options[0].id}`;
-          }
-          return {
+          const updatedProd = {
             ...obj,
             quantity: 0,
           };
+          if (updatedProd?.options?.length > 0) {
+            if (updatedProd?.mandatory === false) {
+              const newOption = {
+                adjustsparentcalories: false,
+                adjustsparentprice: false,
+                availability: {
+                  always: true,
+                  description: null,
+                  enddate: null,
+                  isdisabled: false,
+                  now: true,
+                  startdate: null,
+                },
+                basecalories: null,
+                caloriesseparator: null,
+                chainoptionid: moment().unix() + 1500,
+                children: false,
+                cost: 0,
+                costoverridelabel: null,
+                displayid: null,
+                fields: null,
+                id: 55555555555,
+                isdefault: false,
+                maxcalories: null,
+                menuitemlabels: [],
+                metadata: null,
+                modifiers: null,
+                name: 'As is',
+              };
+              updatedProd.options.unshift(newOption);
+            }
+
+            options[`${updatedProd.id}`] = `${updatedProd.options[0].id}`;
+          }
+          return updatedProd;
         });
         setOptionSelected(options);
       }
-
       setProducts(prod);
-
       setTimeout(() => {
         fitContainer();
       }, 500);
@@ -67,7 +98,10 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
       products.forEach((product: any) => {
         if (product.quantity > 0) {
           let choices: any = [];
-          if (optionSelected[product.id]) {
+          if (
+            optionSelected[product.id] &&
+            optionSelected[product.id] !== '55555555555'
+          ) {
             choices = [
               {
                 choiceid: optionSelected[product.id],
@@ -297,7 +331,6 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
     }
   }, []);
 
- 
   return (
     <>
       {products?.length < 1 && <SalsaSkeletonUI />}
@@ -319,19 +352,24 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
             {products.map((obj: any) => {
               return (
                 <>
-                  <Grid item xs={12} lg={6}         id='cart-salsa'             sx={{ display: 'flex', alignItems: 'stretch' }}>
+                  <Grid
+                    item
+                    xs={12}
+                    lg={6}
+                    id="cart-salsa"
+                    sx={{ display: 'flex', alignItems: 'stretch' }}
+                  >
                     <Grid
                       key={Math.random() + '-'}
                       item
                       xs={12}
-
                       style={{
                         display: 'flex',
                         border: '1px solid rgba(0, 0, 0, 0.2)',
                         padding: 10,
                         minHeight: '140px',
                         alignItems: 'center',
-                        
+
                         boxShadow: '0px 2px 3px 0px rgba(0, 0, 0, 0.2)',
                       }}
                       sx={{ cursor: 'pointer' }}
@@ -364,8 +402,18 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                         sx={{
                           display: 'flex',
                           flexDirection: 'column',
-                          gap: {lg:'60px', xs:'40px', md: '40px', sm: '40px'},
-                          alignSelf : {lg:'flex-end',md: 'center', sm: 'center', xs: 'center'},
+                          gap: {
+                            lg: '60px',
+                            xs: '40px',
+                            md: '40px',
+                            sm: '40px',
+                          },
+                          alignSelf: {
+                            lg: 'flex-end',
+                            md: 'center',
+                            sm: 'center',
+                            xs: 'center',
+                          },
                           paddingLeft: '10px',
                           maxWidth: 'inherit',
                         }}
@@ -382,7 +430,7 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                           sx={{
                             display: 'inline',
                             fontFamily: 'Poppins-Medium !important',
-                            
+
                             fontSize: {
                               lg: '12px !important',
                               xs: '14px !important',
@@ -419,8 +467,7 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                           <>
                             {obj?.options?.length > 0 && (
                               <select
-                              
-                              id="cart-salsa"
+                                id="cart-salsa"
                                 className="add-side-select"
                                 // style={{
                                 //   width: '100% !important',
@@ -454,7 +501,11 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                                       //   );
                                       // }}
                                     >
-                                      {option.name.includes("Regular") ? "Regular" : option.name.includes("Large") ? "Large" : option.name}
+                                      {option.name.includes('Regular')
+                                        ? 'Regular'
+                                        : option.name.includes('Large')
+                                        ? 'Large'
+                                        : option.name}
                                       {/* // {option.name} */}
                                     </option>
                                   ),
