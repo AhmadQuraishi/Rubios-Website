@@ -167,8 +167,11 @@ const StoreInfoBar = () => {
   };
 
   const EstimatedTime = () => {
+    const type = basketObj?.basket?.deliverymode || orderType || '';
     const time = basketObj?.basket;
+    if (type === 'dispatch'){
       return getEstTimeFormat(time.earliestreadytime);
+    }
    }
   return (
     <>
@@ -201,7 +204,7 @@ const StoreInfoBar = () => {
                   paddingBottom: { xs: '0px', sm: '0px' },
                 }}
               >
-                <Grid sx={{display: "flex", flexDirection: "inherit", justifyContent: "space-between"}}>
+                <Grid sx={{display: "flex", flexDirection: "inherit",}}>
                 <Typography
                   className={classes.heading}
                   variant="h2"
@@ -220,6 +223,7 @@ const StoreInfoBar = () => {
                         color="#fff"
                         fontSize={11}
                         sx={{
+                          marginLeft:"20px",
                           display: {
                             xs: 'block',
                             sm: 'none',
@@ -270,7 +274,7 @@ const StoreInfoBar = () => {
                 </Typography>
                 {window?.location?.href
                     ?.toLocaleLowerCase()
-                    ?.indexOf('/checkout') !== -1 && (
+                    ?.indexOf('/checkout') !== -1 && EstimatedTime() &&( 
                       <> 
                       <Typography
                         className={classes.heading}
