@@ -23,7 +23,50 @@
 }
 
 /***** Heading Styles *****/
+@font-face {
+  font-family: 'grit_sansbold';
+  src: url('https://rubioslivedev.wpengine.com/wp-content/webfonts/gritsans-bold-webfont.woff2') format('woff2'),
+       url('https://rubioslivedev.wpengine.com/wp-content/webfonts/gritsans-bold-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
 
+}
+
+
+
+
+@font-face {
+  font-family: 'libre_franklinlight';
+  src: url('https://rubioslivedev.wpengine.com/wp-content/webfonts/librefranklin-light-webfont.woff2') format('woff2'),
+       url('https://rubioslivedev.wpengine.com/wp-content/webfonts/librefranklin-light-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+
+
+
+@font-face {
+  font-family: 'sunbornsans_one';
+  src: url('https://rubioslivedev.wpengine.com/wp-content/webfonts/sunborn-sansone-webfont.woff2') format('woff2'),
+       url('https://rubioslivedev.wpengine.com/wp-content/webfonts/sunborn-sansone-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+.grit-sansbold {
+  font-family: 'grit_sansbold' !important;
+}
+
+.libre-franklinlight {
+  font-family: 'libre_franklinlight' !important;
+}
+
+.sunbornsans-one {
+      font-family: 'sunbornsans_one' !important;
+}
 h1 {
   font-family: 'Poppins-Bold', sans-serif !important;
   color: #214F66;

@@ -1,6 +1,8 @@
+import { Opacity } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import axios from 'axios';
 import { useState } from 'react';
+
 import './stay-current.css';
 const StayCurrentIframe = () => {
   const [email, setEmail] = useState('');
@@ -70,8 +72,7 @@ const StayCurrentIframe = () => {
       <div className="stay-connect-actions">
         <div className="panel-cc" style={{ paddingRight: '15px' }}>
           <p>
-            Sign up to be the first to hear about new menu items, special
-            offers, and all things Rubio’s.
+          You're craving Even more, we get it. Sign up today for the latest Rubio's news, menu items, special offers and more.
           </p>
         </div>
         <div className="panel-cc">
@@ -81,6 +82,7 @@ const StayCurrentIframe = () => {
               name="name"
               id="name"
               value={email}
+
               onChange={(e) => {
                 setMsg({ msg: '', type: '' });
                 setEmail(e.target.value);
@@ -99,15 +101,28 @@ const StayCurrentIframe = () => {
               autoComplete="off"
               aria-label="Enter Your Email"
             />
-            <Button
-              disabled={loading}
-              variant="contained"
-              className="button-right"
+            <a
+              role="button"
+              style={{marginLeft: "5px"}}
+            >
+              {loading ? (
+              <img
               aria-label="Click To Submit Your Email"
               onClick={() => submitEmail()}
-            >
-              &#8594;
-            </Button>
+                        style={{marginLeft: "5px",opacity: "0.4",height:'inherit', display: 'block', borderRadius: "5px" }}
+                        src={require('../../../assets/imgs/btn.png')}
+                        alt="Arrow Icon"
+                      />
+              ) : (
+              <img
+              aria-label="Click To Submit Your Email"
+              onClick={() => submitEmail()}
+                        style={{marginLeft: "5px",opacity: "1",height:'inherit', display: 'block', borderRadius: "5px" }}
+                        src={require('../../../assets/imgs/btn.png')}
+                        alt="Arrow Icon"
+                      />
+              )}
+            </a>
           </div>
           <div className={`msg-status ${msg.type}`}>{msg.msg}</div>
         </div>

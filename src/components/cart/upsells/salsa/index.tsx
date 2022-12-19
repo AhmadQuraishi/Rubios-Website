@@ -454,7 +454,8 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                                       //   );
                                       // }}
                                     >
-                                      {option.name}
+                                      {option.name.includes("Regular") ? "Regular" : option.name.includes("Large") ? "Large" : option.name}
+                                      {/* // {option.name} */}
                                     </option>
                                   ),
                                 )}

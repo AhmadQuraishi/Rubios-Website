@@ -19,12 +19,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: '100%',
   },
   title: {
-    color: theme.palette.secondary.main,
+    color: "#474747 !important",
     padding: '20px 0 10px 0',
     fontSize: '18px !important',
     fontWeight: '600 !important',
-    fontFamily: 'Poppins-Medium !important',
+    fontFamily: "'libre_franklinlight' !important",
     letterSpacing: '0.00938em !important',
+    
   },
   content: {
     color: theme.palette.secondary.main,
@@ -138,6 +139,7 @@ const ProductListing = (props: any) => {
                       variant="h2"
                       title={'FEATURED'}
                       className="product-label"
+                      sx={{fontFamily: "'sunbornsans_one' !important"}}
                     >
                       FEATURED
                     </Typography>
@@ -151,6 +153,7 @@ const ProductListing = (props: any) => {
                       title={item.name}
                       className={classes.title}
                       sx={{
+                        
                         height: {
                           lg: '35px',
                           md: '50px',
@@ -172,7 +175,7 @@ const ProductListing = (props: any) => {
                         window.parent.location.href = `${process.env.REACT_APP_ORDERING_URL}`;
                       }}
                     >
-                      ORDER NOW
+                      ORDER
                     </Button>
                   </CardContent>
                 </Card>
