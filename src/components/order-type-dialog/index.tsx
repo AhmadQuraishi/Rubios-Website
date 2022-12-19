@@ -137,6 +137,7 @@ export const OrderTypeDialog = (props: any) => {
   const basketError = (error: any) => {
     setButtonDisabled(false);
     setActionPerform(false);
+    handleClose();
     displayToast(
       'ERROR',
       error?.response?.data?.message
@@ -195,6 +196,7 @@ export const OrderTypeDialog = (props: any) => {
           //setActionPerform(false);
           dispatch(setBasketDeliveryAddressSuccess(response));
           dispatch(setResturantInfoRequest(newRestaurant, orderType || ''));
+          setShowLocationChangeModal(false);
           setActionPerform(false);
           handleClose();
           // navigate('/');
@@ -225,7 +227,7 @@ export const OrderTypeDialog = (props: any) => {
         navigate('/');
       } else if (newBasket?.basket) {
         setShowLocationChangeModal(true);
-        setActionPerform(false);
+        setActionPerform(true);
       }
     }
   }, [newBasket, newBasketLoading, newBasketError]);
@@ -238,6 +240,7 @@ export const OrderTypeDialog = (props: any) => {
       );
       setButtonDisabled(false);
       setActionPerform(false);
+      handleClose();
     } else if (nearbyRestaurants?.restaurants?.length > 0) {
       if (basketObj?.basket) {
         if (
@@ -322,6 +325,7 @@ export const OrderTypeDialog = (props: any) => {
           const { lat, lng } = response?.results[0]?.geometry?.location;
           const address = getAddress(response.results[0]);
           if (address.address1 !== '') {
+            setActionPerform(true);
             getNearByRestaurants(lat, lng);
           } else {
             displayToast('ERROR', 'Please enter your full delivery address.');
