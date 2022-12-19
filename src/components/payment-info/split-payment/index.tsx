@@ -60,11 +60,29 @@ const SplitPayment = forwardRef((props: any, _ref) => {
       billingSchemeStats.selectedGiftCard +
       billingSchemeStats.selectedCreditCard;
     if (totalCardsSelected === 5 && e.target.checked) {
-      displayToast(
-        'ERROR',
-        'Maximum 5 payment methods can be used to make a payment',
-      );
-      return;
+      if (billingmethod === 'creditcard') {
+        let updatedBillingSchemes: any = billingSchemes.map((element: any) => {
+          if (element.billingmethod === 'creditcard') {
+            return {
+              ...element,
+              selected: element.localId === localId,
+            };
+          }
+          return element;
+        });
+        updatedBillingSchemes = updatePaymentCardsAmount(
+          updatedBillingSchemes,
+          basket,
+        );
+        dispatch(updateBasketBillingSchemes(updatedBillingSchemes));
+        return;
+      } else {
+        displayToast(
+          'ERROR',
+          'Maximum 5 payment methods can be used to make a payment',
+        );
+        return;
+      }
     }
     if (
       billingSchemeStats.selectedGiftCard === 4 &&
@@ -79,7 +97,22 @@ const SplitPayment = forwardRef((props: any, _ref) => {
       e.target.checked &&
       billingmethod === 'creditcard'
     ) {
-      displayToast('ERROR', 'Only 1 Credit Card can be used to make a payment');
+      let updatedBillingSchemes: any = billingSchemes.map((element: any) => {
+        if (element.billingmethod === 'creditcard') {
+          return {
+            ...element,
+            selected: element.localId === localId,
+          };
+        }
+        return element;
+      });
+      updatedBillingSchemes = updatePaymentCardsAmount(
+        updatedBillingSchemes,
+        basket,
+      );
+      dispatch(updateBasketBillingSchemes(updatedBillingSchemes));
+      // displayToast('ERROR', 'Only 1 Credit Card can be used to make a payment');
+
       return;
     }
     // if (
@@ -433,7 +466,7 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                       </Typography>
                     )}
 
-                  <Typography
+                  {/* <Typography
                     onClick={() => {
                       setOpenPopup(true);
                       setRemoveData({
@@ -457,7 +490,7 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                     tabIndex={0}
                   >
                     REMOVE
-                  </Typography>
+                  </Typography> */}
                   {/*)}*/}
                 </Grid>
               </Grid>
@@ -593,10 +626,12 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                             <>
                               <Typography variant="h6">
                                 {account.billingfields
-                                  ? `Gift Card x${giftCardLastFourDigits(account)}`
+                                  ? `Gift Card x${giftCardLastFourDigits(
+                                      account,
+                                    )}`
                                   : account.cardlastfour
-                                    ? `Gift Card x${account.cardlastfour}`
-                                    : ''}
+                                  ? `Gift Card x${account.cardlastfour}`
+                                  : ''}
                               </Typography>
                               <Typography
                                 style={{
