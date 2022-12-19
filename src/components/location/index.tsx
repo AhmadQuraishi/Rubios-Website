@@ -670,7 +670,7 @@ const LocationCard = (props: any) => {
                     autoComplete="false"
                     value={value}
                     type="text"
-                    onChange={(e) => {
+                    onChange={(e : any) => {
                       setRestaurantNotFound(false);
                       if (e.target.value === '') {
                         setValue('');
@@ -702,7 +702,7 @@ const LocationCard = (props: any) => {
                   value={searchText || ''}
                   autoComplete="false"
                   type="search"
-                  onChange={(e) => handleChange(e)}
+                  onChange={(e : any) => handleChange(e)}
                   sx={{ fontSize: '14px', paddingRight: '0px' }}
                   onKeyPress={(e: any) => {
                     if (e.key === 'Enter') {
