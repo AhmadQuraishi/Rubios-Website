@@ -145,7 +145,6 @@ const StoreInfoBar = () => {
       dispatch(updateUser(obj, false));
     }
   };
-
   const checkFavorite = () => {
     let check = false;
     if (isLoginUser() && providerToken?.favourite_store_numbers && restaurant) {
@@ -163,7 +162,14 @@ const StoreInfoBar = () => {
     if (type === 'dinein') return 'Dine In At';
     if (type === 'pickup' || type === 'curbside') return 'Pick Up From';
   };
+  const getEstTimeFormat = (date: string) => {
+    return moment(date, 'YYYYMMDD HH:mm').format('dddd h:mm A');
+  };
 
+  const EstimatedTime = () => {
+    const time = basketObj?.basket;
+      return getEstTimeFormat(time.earliestreadytime);
+   }
   return (
     <>
       {restaurantInfo && (
@@ -195,6 +201,7 @@ const StoreInfoBar = () => {
                   paddingBottom: { xs: '0px', sm: '0px' },
                 }}
               >
+                <Grid sx={{display: "flex", flexDirection: "inherit", justifyContent: "space-between"}}>
                 <Typography
                   className={classes.heading}
                   variant="h2"
@@ -203,6 +210,46 @@ const StoreInfoBar = () => {
                 >
                   {orderSelectedType()}
                 </Typography>
+
+                {window?.location?.href
+                    ?.toLocaleLowerCase()
+                    ?.indexOf('/checkout') !== -1 && (
+                    <>
+                      <Typography
+                        variant="body2"
+                        color="#fff"
+                        fontSize={11}
+                        sx={{
+                          display: {
+                            xs: 'block',
+                            sm: 'none',
+                            md: 'none',
+                            lg: 'none',
+                          },
+                        }}
+                      >
+                        <p
+                          style={{
+                            cursor: 'pointer',
+                            textDecorationLine: 'underline',
+                          }}
+                          role={'button'}
+                          aria-label={'Change Order Type'}
+                          tabIndex={0}
+                          onKeyPress={(e: any) => {
+                            if (e.key === 'Enter') {
+                              setOpenOrder(true);
+                            }
+                          }}
+                          onClick={() => setOpenOrder(true)}
+                        >
+                          Change Order Type
+                        </p>
+                        {'\n'}
+                      </Typography>
+                    </>
+                  )}
+                    </Grid>
                 <Typography
                   variant="h2"
                   color="#fff"
@@ -221,9 +268,58 @@ const StoreInfoBar = () => {
                 >
                   {restaurantInfo.name}
                 </Typography>
+                {window?.location?.href
+                    ?.toLocaleLowerCase()
+                    ?.indexOf('/checkout') !== -1 && (
+                      <> 
+                      <Typography
+                        className={classes.heading}
+                        variant="h2"
+                        textTransform="uppercase"
+                        title="Pick Up From"
+      
+                      >
+                      Estimated Delivery Time: {" "}
+                        {EstimatedTime()}
+                      </Typography>
+                      </>
+                      )}
               </Grid>
               {isMobile && (
                 <Grid>
+                    &nbsp;
+                  <Typography
+                  variant="body2"
+                  color="#fff"
+                  fontSize={11}
+                  sx={{
+                    marginTop: '-12px',
+                    display: {
+                      xs: 'flex',
+                      sm: 'none',
+                      md: 'none',
+                      lg: 'none',
+                    },
+                  }}
+                >
+                  <p
+                    style={{
+                      cursor: 'pointer',
+                      textDecorationLine: 'underline',
+                    }}
+                    role={'button'}
+                    aria-label={'Change location'}
+                    tabIndex={1}
+                    // onKeyPress={(e: any) => {
+                    //   if (e.key === 'Enter') {
+                    //     handleClickOpen();
+                    //   }
+                    // }}
+                     onClick={() => navigate('/location')}
+                  >
+                    Change location
+                  </p>
+                </Typography>
                   <Grid
                     onClick={() => {
                       setShowMore(!showMore);
@@ -262,77 +358,6 @@ const StoreInfoBar = () => {
                       <ExpandMoreIcon style={{ color: '#fff' }} />
                     )}
                   </Grid>
-                  {window?.location?.href
-                    ?.toLocaleLowerCase()
-                    ?.indexOf('/checkout') !== -1 && (
-                    <>
-                      <Typography
-                        variant="body2"
-                        color="#fff"
-                        fontSize={11}
-                        sx={{
-                          display: {
-                            xs: 'block',
-                            sm: 'none',
-                            md: 'none',
-                            lg: 'none',
-                          },
-                        }}
-                      >
-                        <p
-                          style={{
-                            cursor: 'pointer',
-                            textDecorationLine: 'underline',
-                          }}
-                          role={'button'}
-                          aria-label={'Change Order Type'}
-                          tabIndex={0}
-                          onKeyPress={(e: any) => {
-                            if (e.key === 'Enter') {
-                              setOpenOrder(true);
-                            }
-                          }}
-                          onClick={() => setOpenOrder(true)}
-                        >
-                          Change Order Type
-                        </p>
-                        {'\n'}
-                      </Typography>
-                    </>
-                  )}
-                  &nbsp;
-                  <Typography
-                    variant="body2"
-                    color="#fff"
-                    fontSize={11}
-                    sx={{
-                      marginTop: '-12px',
-                      display: {
-                        xs: 'flex',
-                        sm: 'none',
-                        md: 'none',
-                        lg: 'none',
-                      },
-                    }}
-                  >
-                    <p
-                      style={{
-                        cursor: 'pointer',
-                        textDecorationLine: 'underline',
-                      }}
-                      role={'button'}
-                      aria-label={'Change location'}
-                      tabIndex={0}
-                      // onKeyPress={(e: any) => {
-                      //   if (e.key === 'Enter') {
-                      //     handleClickOpen();
-                      //   }
-                      // }}
-                      onClick={() => navigate('/location')}
-                    >
-                      Change location
-                    </p>
-                  </Typography>
                 </Grid>
               )}
               {showHideFunc() && (
