@@ -6,21 +6,21 @@
         "appID": "N4UCH5237X.com.rubiosmobileapp.live",
         "paths": [
           "/reset-password",
-          "/menu"
+          "/menu/*"
         ]
       },
       {
         "appID": "N4UCH5237X.com.rubiosmobileapp.dev",
         "paths": [
           "/reset-password",
-          "/menu"
+          "/menu/*"
         ]
       },
       {
         "appID": "N4UCH5237X.com.rubiosmobileapp.staging",
         "paths": [
           "/reset-password",
-          "/menu"
+          "/menu/*"
         ]
       }
     ]
