@@ -227,7 +227,7 @@ const StoreInfoBar = () => {
                         color="#fff"
                         fontSize={11}
                         sx={{
-                          marginLeft: '20px',
+                          marginLeft: '5px',
                           display: {
                             xs: 'block',
                             sm: 'none',
@@ -251,7 +251,7 @@ const StoreInfoBar = () => {
                           }}
                           onClick={() => setOpenOrder(true)}
                         >
-                          Change Order Type
+                          {"("}Change Order Type {")"}
                         </p>
                         {'\n'}
                       </Typography>
