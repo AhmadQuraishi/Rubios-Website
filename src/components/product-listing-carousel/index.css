@@ -58,6 +58,17 @@ overflow:unset;
 .MuiTabs-root .Mui-disabled {
   display: none;
 }
+
+.carousel-container img {
+  max-height: 250px;
+  object-fit: cover;
+}
+.carousel-container .react-multiple-carousel__arrow--right {
+top: 24%
+}
+.carousel-container .react-multiple-carousel__arrow--left {
+  top: 24%
+}
 /*@media screen and (max-width: 464px) {*/
 /*.carousel-mobile-show-next-slide {*/
 /*  width: 80vw !important;*/
