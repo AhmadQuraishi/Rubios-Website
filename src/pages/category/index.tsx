@@ -370,7 +370,7 @@ const CategoryList = () => {
     );
   };
   return (
-    <Page title={'Menu'} className="">
+    <Page title={'Menu'} description={'Satisfy your cravings for Baja-inspired, Mexican flavors.'} className="">
       <div style={{ minHeight: '500px' }}>
         <Typography variant="h1" className="sr-only">
           Main Menu

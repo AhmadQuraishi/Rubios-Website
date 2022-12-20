@@ -425,7 +425,13 @@ const Location = () => {
   );
 
   return (
-    <Page title={'Location'} className="">
+    <Page
+      title={'Location'}
+      description={
+        'Skip the line & order ahead for quick & easy pick-up or delivery.'
+      }
+      className=""
+    >
       <DeliveryAddressConfirmDialog
         open={open}
         selectedAddress={selectedAddress}
