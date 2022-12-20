@@ -51,6 +51,7 @@ import {
   basketTransferRequest,
   // basketTransferReset,
 } from '../../redux/actions/basket/transfer';
+import { setDeliveryAddress } from '../../redux/actions/location/delivery-address';
 
 Geocode.setApiKey(`${process.env.REACT_APP_GOOGLE_API_KEY}`);
 Geocode.setLanguage('en');
@@ -59,6 +60,7 @@ Geocode.setLocationType('ROOFTOP');
 
 export const OrderTypeDialog = (props: any) => {
   const {
+    type,
     openModal,
     setOpenModal,
     // changeOrderType,
@@ -96,10 +98,59 @@ export const OrderTypeDialog = (props: any) => {
     loading: newBasketLoading,
     error: newBasketError,
   } = useSelector((state: any) => state.basketTransferReducer);
+  const onServiceSelect = (
+    event: React.MouseEvent<HTMLElement>,
+    newAlignment: string,
+  ) => {
+    if (newAlignment) {
+      setChangeOrderType(newAlignment);
+    }
+  };
+  useEffect(() => {
+    if (!actionPerform) {
+      return;
+    }
+    nearbyRestaurantAction();
+  }, [nearbyRestaurants]);
+  useEffect(() => {
+    if (!newBasketLoading && actionPerform) {
+      if (newBasketError) {
+        displayToast(
+          'ERROR',
+          newBasketError?.response?.data?.message ||
+            'ERROR! Please Try again later',
+        );
+        displayToast('SUCCESS', 'Location changed to ' + newRestaurant.name);
+        dispatch(resetBasketRequest());
+        dispatch(setResturantInfoRequest(newRestaurant, orderType || ''));
+        dispatch(setDeliveryAddress(newDeliveryAddress.address));
+        setButtonDisabled(false);
+        setActionPerform(false);
+        navigate('/');
+      } else if (newBasket?.basket) {
+        setShowLocationChangeModal(true);
+        setActionPerform(true);
+      }
+    }
+  }, [newBasket, newBasketLoading, newBasketError]);
 
   const handleClose = () => {
     setOpenModal(false);
     setButtonDisabled(false);
+  };
+  const checkButtonDisable = (values: any, isValid: any) => {
+    console.log('orderType 1', orderType);
+    console.log('isValid', isValid);
+    console.log('buttonDisabled', buttonDisabled);
+    console.log('values', values);
+    return (
+      buttonDisabled ||
+      (changeOrderType === 'dispatch' &&
+        (values.address1 === '' ||
+          values.city === '' ||
+          values.zip === '' ||
+          !isValid))
+    );
   };
   const restaurantSupportedHanOffMode = (mode: string) => {
     if (restaurant && mode) {
@@ -117,33 +168,58 @@ export const OrderTypeDialog = (props: any) => {
       }
     }
   };
-
   const backdropClose = (event: any, reason: any) => {
     if (reason && reason === 'backdropClick') {
       return;
     }
     handleClose();
   };
+  const handleOrderUpdate = async (formData: any) => {
+    setButtonDisabled(true);
+    setActionPerform(true);
+    setNewDeliveryAddress(formData);
+    if (changeOrderType !== 'dispatch') {
+      try {
+        const body = {
+          deliverymode: changeOrderType,
+        };
+        const response = await setBasketDeliveryMode(
+          basketObj?.basket?.id,
+          body,
+        );
+        basketSuccess(response);
+      } catch (error: any) {
+        basketError(error);
+      }
+    } else if (formData.address) {
+      const address =
+        formData?.address?.address1 +
+        ' ' +
+        formData?.address?.address2 +
+        ', ' +
+        formData?.address?.city +
+        ', ' +
+        formData?.address?.zip;
 
-
-  const basketSuccess = (response: any) => {
-    dispatch(setBasketDeliveryAddressSuccess(response));
-    dispatch(setRestaurantInfoOrderType(response?.deliverymode));
-    setButtonDisabled(false);
-    displayToast('SUCCESS', 'Order updated!');
-    setActionPerform(false);
-    handleClose();
-  };
-
-  const basketError = (error: any) => {
-    setButtonDisabled(false);
-    setActionPerform(false);
-    displayToast(
-      'ERROR',
-      error?.response?.data?.message
-        ? error.response.data.message
-        : 'ERROR! Please Try again later',
-    );
+      Geocode.fromAddress(address).then(
+        (response: any) => {
+          const { lat, lng } = response?.results[0]?.geometry?.location;
+          const address = getAddress(response.results[0]);
+          setActionPerform(true);
+          if (address.address1 !== '') {
+            getNearByRestaurants(lat, lng);
+          } else {
+            setButtonDisabled(false);
+            displayToast('ERROR', 'Please enter valid delivery address.');
+          }
+        },
+        (error: any) => {
+          setActionPerform(false);
+          setButtonDisabled(false);
+          displayToast('ERROR', 'Please enter valid delivery address.');
+        },
+      );
+    }
   };
   const getNearByRestaurants = (lat: number, long: number) => {
     var today = new Date();
@@ -164,73 +240,6 @@ export const OrderTypeDialog = (props: any) => {
       '';
     dispatch(getNearByResturantListRequest(lat, long, 40, 6, dateFrom, dateTo));
   };
-
-  useEffect(() => {
-    console.log('orderType 1', orderType);
-  }, [orderType]);
-  const onServiceSelect = (
-    event: React.MouseEvent<HTMLElement>,
-    newAlignment: string,
-  ) => {
-    if (newAlignment) {
-      setChangeOrderType(newAlignment);
-    }
-  };
-  const handleChangeLocation = async () => {
-    if (newBasket?.basket && newRestaurant) {
-      if (newDeliveryAddress && changeOrderType === 'dispatch') {
-        let updatedAddress: any = {
-          building: newDeliveryAddress?.address?.address2 || '',
-          streetaddress: newDeliveryAddress?.address?.address1 || '',
-          city: newDeliveryAddress?.address?.city || '',
-          zipcode: newDeliveryAddress?.address?.zip || '',
-          isdefault: newDeliveryAddress?.address?.isdefault || false,
-        };
-        try {
-          //setActionPerform(true);
-          const response: any = await setBasketDeliveryAddress(
-            newBasket?.basket?.id,
-            updatedAddress,
-          );
-
-          //setActionPerform(false);
-          dispatch(setBasketDeliveryAddressSuccess(response));
-          dispatch(setResturantInfoRequest(newRestaurant, orderType || ''));
-          setActionPerform(false);
-          handleClose();
-          // navigate('/');
-          // displayToast('SUCCESS', 'Location changed to ' + newRestaurant.name);
-        } catch (error: any) {
-          //setActionPerform(false);
-          displayToast(
-            'ERROR',
-            error?.response?.data?.message
-              ? error.response.data.message
-              : 'ERROR! Please Try again later',
-          );
-          setActionPerform(false);
-          handleClose();
-        }
-        setShowLocationChangeModal(false);
-      }
-    }
-  };
-
-  useEffect(() => {
-    if (!newBasketLoading && actionPerform) {
-      if (newBasketError) {
-        dispatch(resetBasketRequest());
-        dispatch(setResturantInfoRequest(newRestaurant, orderType || ''));
-        setButtonDisabled(false);
-        setActionPerform(false);
-        navigate('/');
-      } else if (newBasket?.basket) {
-        setShowLocationChangeModal(true);
-        setActionPerform(false);
-      }
-    }
-  }, [newBasket, newBasketLoading, newBasketError]);
-
   const nearbyRestaurantAction = async () => {
     if (nearbyRestaurants?.restaurants?.length === 0) {
       displayToast(
@@ -239,6 +248,7 @@ export const OrderTypeDialog = (props: any) => {
       );
       setButtonDisabled(false);
       setActionPerform(false);
+      // handleClose();
     } else if (nearbyRestaurants?.restaurants?.length > 0) {
       if (basketObj?.basket) {
         if (
@@ -256,9 +266,34 @@ export const OrderTypeDialog = (props: any) => {
               basketObj?.basket?.id,
               updatedAddress,
             );
-            basketSuccess(response);
+            dispatch(setBasketDeliveryAddressSuccess(response));
+            dispatch(
+              setResturantInfoRequest(
+                nearbyRestaurants?.restaurants[0],
+                changeOrderType || '',
+              ),
+            );
+            setShowLocationChangeModal(false);
+            handleClose();
+            setActionPerform(false);
+            displayToast('SUCCESS', 'Order updated!');
+            if (type === 'RECENT_ORDER') {
+              navigate('/checkout');
+            } else if ('WELCOME') {
+              navigate('/checkout');
+            } else {
+            }
+            // basketSuccess(response);
           } catch (error: any) {
-            basketError(error);
+            displayToast(
+              'ERROR',
+              error?.response?.data?.message
+                ? error.response.data.message
+                : 'ERROR! Please Try again later',
+            );
+            setButtonDisabled(false);
+            setActionPerform(false);
+            // basketError(error);
           }
         } else {
           dispatch(
@@ -283,82 +318,112 @@ export const OrderTypeDialog = (props: any) => {
       }
     }
   };
-
-  useEffect(() => {
-    if (!actionPerform) {
-      return;
+  const basketSuccess = (response: any) => {
+    dispatch(setBasketDeliveryAddressSuccess(response));
+    // dispatch(setRestaurantInfoOrderType(selectedRestaurant, changeOrderType));
+    dispatch(
+      setResturantInfoRequest(selectedRestaurant, changeOrderType || ''),
+    );
+    setButtonDisabled(false);
+    setShowLocationChangeModal(false);
+    setActionPerform(false);
+    handleClose();
+    displayToast('SUCCESS', 'Order updated!');
+    if (type === 'RECENT_ORDER') {
+      navigate('/checkout');
+    } else if ('WELCOME') {
+      navigate('/checkout');
+    } else {
     }
-    nearbyRestaurantAction();
-  }, [nearbyRestaurants]);
+  };
+  const basketError = (error: any) => {
+    // resetBasketRequest();
+    // dispatch();
 
-  const handleOrderUpdate = async (formData: any) => {
-    setButtonDisabled(true);
-    setActionPerform(true);
-    setNewDeliveryAddress(formData);
-    if (changeOrderType !== 'dispatch') {
-      try {
-        const body = {
-          deliverymode: changeOrderType,
+    displayToast(
+      'ERROR',
+      error?.response?.data?.message
+        ? error.response.data.message
+        : 'ERROR! Please Try again later',
+    );
+    setButtonDisabled(false);
+    setActionPerform(false);
+    // handleClose();
+  };
+  const handleChangeLocation = async () => {
+    console.log('working 1');
+    if (newBasket?.basket && newRestaurant) {
+      console.log('working 2');
+      if (newDeliveryAddress && changeOrderType === 'dispatch') {
+        console.log('working 3');
+        let updatedAddress: any = {
+          building: newDeliveryAddress?.address?.address2 || '',
+          streetaddress: newDeliveryAddress?.address?.address1 || '',
+          city: newDeliveryAddress?.address?.city || '',
+          zipcode: newDeliveryAddress?.address?.zip || '',
+          isdefault: newDeliveryAddress?.address?.isdefault || false,
         };
-        const response = await setBasketDeliveryMode(
-          basketObj?.basket?.id,
-          body,
-        );
-        basketSuccess(response);
-      } catch (error: any) {
-        basketError(error);
-      }
-    } else if (formData.address) {
-        const address =
-        formData?.address?.address1 +
-        ' ' +
-        formData?.address?.address2 +
-        ', ' +
-        formData?.address?.city +
-        ', ' +
-        formData?.address?.zip;
+        try {
+          console.log('working 4');
+          //setActionPerform(true);
+          const response: any = await setBasketDeliveryAddress(
+            newBasket?.basket?.id,
+            updatedAddress,
+          );
 
-      Geocode.fromAddress(address).then(
-        (response: any) => {
-          const { lat, lng } = response?.results[0]?.geometry?.location;
-          const address = getAddress(response.results[0]);
-          if (address.address1 !== '') {
-            getNearByRestaurants(lat, lng);
+          //setActionPerform(false);
+          dispatch(setBasketDeliveryAddressSuccess(response));
+          dispatch(
+            setResturantInfoRequest(newRestaurant, changeOrderType || ''),
+          );
+          // setShowLocationChangeModal(false);
+          setActionPerform(false);
+          handleClose();
+          // debugger;
+          // navigate('/');
+          displayToast('SUCCESS', 'Location changed to ' + newRestaurant.name);
+          if (type === 'RECENT_ORDER') {
+            navigate('/checkout');
+          } else if ('WELCOME') {
+            navigate('/checkout');
           } else {
-            displayToast('ERROR', 'Please enter your full delivery address.');
           }
-        },
-        (error: any) => {
-          displayToast('ERROR', 'Please enter your full delivery address.');
-        },
-      );
+          // debugger;
+        } catch (error: any) {
+          console.log('working 5');
+          //setActionPerform(false);
+          displayToast(
+            'ERROR',
+            error?.response?.data?.message
+              ? error.response.data.message
+              : 'ERROR! Please Try again later',
+          );
+          setShowLocationChangeModal(false);
+          setActionPerform(false);
+          handleClose();
+          // debugger;
+        }
+      }
     }
+    console.log('working 6');
   };
   const handleCancelChangeLocation = () => {
     // navigate('/checkout');
     setShowLocationChangeModal(false);
+    setButtonDisabled(false);
+    setActionPerform(false);
     setOpenModal(false);
+    if (type === 'RECENT_ORDER') {
+      navigate('/checkout');
+    } else if ('WELCOME') {
+      navigate('/checkout');
+    } else {
+    }
   };
-
-  useEffect(() => {
-    console.log('orderType 1', orderType);
-  }, [orderType]);
-  const checkButtonDisable = (values: any, isValid: any) => {
-    console.log('orderType 1', orderType);
-    console.log('isValid', isValid);
-    console.log('buttonDisabled', buttonDisabled);
-    console.log('values', values);
-    return (
-      buttonDisabled ||
-      (changeOrderType === 'dispatch' &&
-        (values.address1 === '' || values.city === '' || values.zip === ''))
-    );
-  };
-
 
   return (
     <>
-      {newBasket?.basket && (
+      {newBasket?.basket && showLocationChangeModal && (
         <LocationChangeModal
           showLocationChangeModal={showLocationChangeModal}
           setShowLocationChangeModal={setShowLocationChangeModal}
@@ -543,9 +608,7 @@ export const OrderTypeDialog = (props: any) => {
                     </Grid>
                     {changeOrderType === 'dispatch' && (
                       <>
-                        <Grid item xs={12} 
-                         id="changer"
-                        >
+                        <Grid item xs={12} id="changer">
                           <Typography
                             style={{
                               padding: '10px 0px',

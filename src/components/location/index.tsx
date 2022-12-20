@@ -670,7 +670,7 @@ const LocationCard = (props: any) => {
                     autoComplete="false"
                     value={value}
                     type="text"
-                    onChange={(e : any) => {
+                    onChange={(e: any) => {
                       setRestaurantNotFound(false);
                       if (e.target.value === '') {
                         setValue('');
@@ -702,7 +702,7 @@ const LocationCard = (props: any) => {
                   value={searchText || ''}
                   autoComplete="false"
                   type="search"
-                  onChange={(e : any) => handleChange(e)}
+                  onChange={(e: any) => handleChange(e)}
                   sx={{ fontSize: '14px', paddingRight: '0px' }}
                   onKeyPress={(e: any) => {
                     if (e.key === 'Enter') {
@@ -813,9 +813,40 @@ const LocationCard = (props: any) => {
                 orderType === 'dispatch' &&
                 filteredRestaurants.length > 0 &&
                 !addCustomAddressCheck() && (
-                  <Typography className="label">
-                    <p style={{ paddingTop: '5px' }}>SELECT LOCATION BELOW</p>
-                  </Typography>
+                  // <Typography className="label">
+                  //   <p style={{ paddingTop: '5px' }}>SELECT LOCATION BELOW</p>
+                  // </Typography>
+                  <>
+                    <Grid sx={{ paddingBottom: '150px' }} item xs={12}>
+                      <Typography
+                        className={'delivery-heading-text'}
+                        variant="body2"
+                      >
+                        DELIVERY IS AVAILABLE FOR THIS ADDRESS
+                      </Typography>
+
+                      <Typography
+                        style={{ padding: '15px 0px 25px' }}
+                        className={'delivery-address-text'}
+                        variant="body2"
+                      >
+                        {deliveryAddressString &&
+                          `${deliveryAddressString.address1}, ${deliveryAddressString.city}, ${deliveryAddressString.zip} `}
+                      </Typography>
+                      <Button
+                        aria-label="START ORDER BUTTON"
+                        variant="contained"
+                        title="START ORDER"
+                        name="START ORDER"
+                        style={{ width: '100%' }}
+                        onClick={() =>
+                          gotoCategoryPage(filteredRestaurants[0].id)
+                        }
+                      >
+                        START ORDER
+                      </Button>
+                    </Grid>
+                  </>
                 )}
             </Grid>
             {addCustomAddressCheck() && (
@@ -860,6 +891,7 @@ const LocationCard = (props: any) => {
               )}
               <Grid container spacing={1}>
                 {orderType &&
+                  orderType !== 'dispatch' &&
                   !showAllRestaurants &&
                   !addCustomAddressCheck() &&
                   filteredRestaurants?.map(

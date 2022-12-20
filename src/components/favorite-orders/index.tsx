@@ -88,22 +88,22 @@ const FavoriteOrders = () => {
     }
   }, [createBasketObj]);
 
-  const navigateAfterSuccess = () => {
-    setOpenOrder(false);
-    setClickAction(false);
-    dispatch(
-      setResturantInfoRequest(
-        restaurant,
-        createBasketObj.basket.deliverymode || '',
-      ),
-    );
-    dispatch(getBasketRequest('', createBasketObj?.basket, 'Favourite'));
-    displayToast(
-      'SUCCESS',
-      'The items from your favorite order have been added to your cart.',
-    );
-    navigate('/checkout');
-  };
+  // const navigateAfterSuccess = () => {
+  //   setOpenOrder(false);
+  //   setClickAction(false);
+  //   dispatch(
+  //     setResturantInfoRequest(
+  //       restaurant,
+  //       createBasketObj.basket.deliverymode || '',
+  //     ),
+  //   );
+  //   dispatch(getBasketRequest('', createBasketObj?.basket, 'Favourite'));
+  //   displayToast(
+  //     'SUCCESS',
+  //     'The items from your favorite order have been added to your cart.',
+  //   );
+  //   navigate('/checkout');
+  // };
 
   useEffect(() => {
     console.log('restaurant', restaurant)
@@ -129,8 +129,11 @@ const FavoriteOrders = () => {
   return (
     <Fragment>
       <OrderTypeDialog
+        type={'RECENT_ORDER'}
         openModal={openOrder}
-        setOpenModal={navigateAfterSuccess}
+        setOpenModal={(value: any) => {
+          setOpenOrder(value);
+        }}
       />
       {(loading || clickAction) && <OrderListSkeletonUI />}
       {!loading && !clickAction && favOrders && favOrders.length === 0 && (
