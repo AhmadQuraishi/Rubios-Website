@@ -169,10 +169,10 @@ const StoreInfoBar = () => {
   const EstimatedTime = () => {
     const type = basketObj?.basket?.deliverymode || orderType || '';
     const time = basketObj?.basket;
-    if (type === 'dispatch'){
+    if (type === 'dispatch') {
       return getEstTimeFormat(time.earliestreadytime);
     }
-   }
+  };
   return (
     <>
       {restaurantInfo && (
@@ -192,7 +192,11 @@ const StoreInfoBar = () => {
             }
             handleDeleteFunction={() => handleDeleteFunction()}
           /> */}
-          <OrderTypeDialog openModal={openOrder} setOpenModal={setOpenOrder} />
+          <OrderTypeDialog
+            type={'CHECKOUT'}
+            openModal={openOrder}
+            setOpenModal={setOpenOrder}
+          />
           <Grid item xs={12}>
             <Grid container spacing={0} margin="auto">
               <Grid
@@ -204,17 +208,17 @@ const StoreInfoBar = () => {
                   paddingBottom: { xs: '0px', sm: '0px' },
                 }}
               >
-                <Grid sx={{display: "flex", flexDirection: "inherit",}}>
-                <Typography
-                  className={classes.heading}
-                  variant="h2"
-                  textTransform="uppercase"
-                  title="Pick Up From"
-                >
-                  {orderSelectedType()}
-                </Typography>
+                <Grid sx={{ display: 'flex', flexDirection: 'inherit' }}>
+                  <Typography
+                    className={classes.heading}
+                    variant="h2"
+                    textTransform="uppercase"
+                    title="Pick Up From"
+                  >
+                    {orderSelectedType()}
+                  </Typography>
 
-                {window?.location?.href
+                  {window?.location?.href
                     ?.toLocaleLowerCase()
                     ?.indexOf('/checkout') !== -1 && (
                     <>
@@ -223,7 +227,7 @@ const StoreInfoBar = () => {
                         color="#fff"
                         fontSize={11}
                         sx={{
-                          marginLeft:"20px",
+                          marginLeft: '20px',
                           display: {
                             xs: 'block',
                             sm: 'none',
@@ -253,7 +257,7 @@ const StoreInfoBar = () => {
                       </Typography>
                     </>
                   )}
-                    </Grid>
+                </Grid>
                 <Typography
                   variant="h2"
                   color="#fff"
@@ -273,57 +277,56 @@ const StoreInfoBar = () => {
                   {restaurantInfo.name}
                 </Typography>
                 {window?.location?.href
-                    ?.toLocaleLowerCase()
-                    ?.indexOf('/checkout') !== -1 && EstimatedTime() &&( 
-                      <> 
+                  ?.toLocaleLowerCase()
+                  ?.indexOf('/checkout') !== -1 &&
+                  EstimatedTime() && (
+                    <>
                       <Typography
                         className={classes.heading}
                         variant="h2"
                         textTransform="uppercase"
                         title="Pick Up From"
-      
                       >
-                      Estimated Delivery Time: {" "}
-                        {EstimatedTime()}
+                        Estimated Delivery Time: {EstimatedTime()}
                       </Typography>
-                      </>
-                      )}
+                    </>
+                  )}
               </Grid>
               {isMobile && (
                 <Grid>
-                    &nbsp;
+                  &nbsp;
                   <Typography
-                  variant="body2"
-                  color="#fff"
-                  fontSize={11}
-                  sx={{
-                    marginTop: '-12px',
-                    display: {
-                      xs: 'flex',
-                      sm: 'none',
-                      md: 'none',
-                      lg: 'none',
-                    },
-                  }}
-                >
-                  <p
-                    style={{
-                      cursor: 'pointer',
-                      textDecorationLine: 'underline',
+                    variant="body2"
+                    color="#fff"
+                    fontSize={11}
+                    sx={{
+                      marginTop: '-12px',
+                      display: {
+                        xs: 'flex',
+                        sm: 'none',
+                        md: 'none',
+                        lg: 'none',
+                      },
                     }}
-                    role={'button'}
-                    aria-label={'Change location'}
-                    tabIndex={1}
-                    // onKeyPress={(e: any) => {
-                    //   if (e.key === 'Enter') {
-                    //     handleClickOpen();
-                    //   }
-                    // }}
-                     onClick={() => navigate('/location')}
                   >
-                    Change location
-                  </p>
-                </Typography>
+                    <p
+                      style={{
+                        cursor: 'pointer',
+                        textDecorationLine: 'underline',
+                      }}
+                      role={'button'}
+                      aria-label={'Change location'}
+                      tabIndex={1}
+                      // onKeyPress={(e: any) => {
+                      //   if (e.key === 'Enter') {
+                      //     handleClickOpen();
+                      //   }
+                      // }}
+                      onClick={() => navigate('/location')}
+                    >
+                      Change location
+                    </p>
+                  </Typography>
                   <Grid
                     onClick={() => {
                       setShowMore(!showMore);
