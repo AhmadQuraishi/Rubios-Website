@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down(480)]: {
     ' & .MuiBackdrop-root': {
 
-       backgroundColor: 
+       backgroundColor:
       `transparent !important`,
 
     },
@@ -81,7 +81,7 @@ export const LocationChangeModal = ({
           md={12}
           lg={12}
           sx={{
-            textAlign: 'center',    
+            textAlign: 'center',
             justifyContent: {xs:'center',},
             display: {xs:'flex',},
             flexDirection: {xs:'column',},
