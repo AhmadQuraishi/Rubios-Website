@@ -86,7 +86,7 @@ const LoginForm = () => {
                       name="email"
                       className="form-field"
                       sx={{ width: '100%' }}
-                      value={values.email}
+                      value={values.email ? values.email : null}
                       onChange={handleChange}
                       error={Boolean(touched && errors.email)}
                       helperText={errors.email}
@@ -103,7 +103,7 @@ const LoginForm = () => {
                       name="password"
                       className="form-field"
                       sx={{ width: '100%' }}
-                      value={values.password}
+                      value={values.password ? values.password : null}
                       onChange={handleChange('password')}
                       onBlur={handleBlur('password')}
                       error={Boolean(touched.password && errors.password)}
