@@ -33,6 +33,7 @@ const RecentOrders = () => {
   const [open, setOpen] = useState(false);
   const [favOrder, setFavOrder] = useState<any>(null);
   const [openOrder, setOpenOrder] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   // const [idtoFav, setId] = useState('');
   // const [items, setItems] = useState([]);
@@ -56,22 +57,22 @@ const RecentOrders = () => {
     dispatch(getUserRecentOrders());
   }, []);
 
-  const navigateAfterSuccess = () => {
-    setOpenOrder(false);
-    setClickAction(false);
-    dispatch(
-      setResturantInfoRequest(
-        restaurant,
-        createBasketObj.basket.deliverymode || '',
-      ),
-    );
-    dispatch(getBasketRequest('', createBasketObj?.basket, 'Favourite'));
-    displayToast(
-      'SUCCESS',
-      'The items from your recent order have been added to your cart.',
-    );
-    navigate('/checkout');
-  };
+  // const navigateAfterSuccess = () => {
+  //   setOpenOrder(false);
+  //   setClickAction(false);
+  //   dispatch(
+  //     setResturantInfoRequest(
+  //       restaurant,
+  //       createBasketObj.basket.deliverymode || '',
+  //     ),
+  //   );
+  //   dispatch(getBasketRequest('', createBasketObj?.basket, 'Favourite'));
+  //   displayToast(
+  //     'SUCCESS',
+  //     'The items from your recent order have been added to your cart.',
+  //   );
+  //   navigate('/checkout');
+  // };
 
   useEffect(() => {
     if (createBasketObj && clickAction) {
@@ -182,8 +183,11 @@ const RecentOrders = () => {
   return (
     <Fragment>
       <OrderTypeDialog
+        type={'RECENT_ORDER'}
         openModal={openOrder}
-        setOpenModal={navigateAfterSuccess}
+        setOpenModal={(value: any) => {
+          setOpenOrder(value);
+        }}
       />
       {(loading || clickAction) && <OrderListSkeletonUI />}
       {recentorders && recentorders.length === 0 && !loading && (

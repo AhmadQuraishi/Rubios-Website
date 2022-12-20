@@ -69,7 +69,7 @@ const Welcome = () => {
       restaurants &&
       restaurants.restaurants &&
       restaurants.restaurants.length &&
-      isLoginUser() && 
+      isLoginUser() &&
       providerToken?.favourite_store_numbers
     ) {
       const filter = restaurants.restaurants.filter(
@@ -116,7 +116,7 @@ const Welcome = () => {
 
   useEffect(() => {
     if (
-      isLoginUser() 
+      isLoginUser()
     ) {
     } else {
       navigate('/login');
@@ -160,23 +160,23 @@ const Welcome = () => {
     }
   }, [restaurant, orderType]);
 
-  const navigateAfterSuccess = () => {
-    setOpenOrder(false);
-    if (isReoder) {
-      navigate('/checkout');
-    }
-    if (isEdit) {
-      navigate(restaurant ? '/menu/' + restaurant.slug : '/');
-      // handleCart();
-    }
-    displayToast(
-      'SUCCESS',
-      'The items from your recent order have been added to your cart.',
-    );
-    setIsEdit(false);
-    setIsReoder(false);
-    setIsbasket(false);
-  };
+  // const navigateAfterSuccess = () => {
+  //   setOpenOrder(false);
+  //   if (isReoder) {
+  //     navigate('/checkout');
+  //   }
+  //   if (isEdit) {
+  //     navigate(restaurant ? '/menu/' + restaurant.slug : '/');
+  //     // handleCart();
+  //   }
+  //   displayToast(
+  //     'SUCCESS',
+  //     'The items from your recent order have been added to your cart.',
+  //   );
+  //   setIsEdit(false);
+  //   setIsReoder(false);
+  //   setIsbasket(false);
+  // };
   useEffect(() => {
     if (
       basketObj &&
@@ -239,8 +239,11 @@ const Welcome = () => {
   return (
     <Page title={'Welcome'} className="">
       <OrderTypeDialog
+        type={'WELCOME'}
         openModal={openOrder}
-        setOpenModal={navigateAfterSuccess}
+        setOpenModal={(value: any) => {
+          setOpenOrder(value);
+        }}
       />
       <Fragment>
         <Grid
