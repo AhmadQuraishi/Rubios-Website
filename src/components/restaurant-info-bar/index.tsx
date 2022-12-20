@@ -251,7 +251,7 @@ const StoreInfoBar = () => {
                           }}
                           onClick={() => setOpenOrder(true)}
                         >
-                          {"("}Change Order Type {")"}
+                          Change Order Type
                         </p>
                         {'\n'}
                       </Typography>
