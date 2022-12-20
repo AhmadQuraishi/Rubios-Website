@@ -115,6 +115,11 @@ export const OrderTypeDialog = (props: any) => {
   useEffect(() => {
     if (!newBasketLoading && actionPerform) {
       if (newBasketError) {
+        displayToast(
+          'ERROR',
+          newBasketError?.response?.data?.message ||
+            'ERROR! Please Try again later',
+        );
         displayToast('SUCCESS', 'Location changed to ' + newRestaurant.name);
         dispatch(resetBasketRequest());
         dispatch(setResturantInfoRequest(newRestaurant, orderType || ''));
@@ -315,7 +320,10 @@ export const OrderTypeDialog = (props: any) => {
   };
   const basketSuccess = (response: any) => {
     dispatch(setBasketDeliveryAddressSuccess(response));
-    dispatch(setResturantInfoRequest(newRestaurant, changeOrderType || ''));
+    // dispatch(setRestaurantInfoOrderType(selectedRestaurant, changeOrderType));
+    dispatch(
+      setResturantInfoRequest(selectedRestaurant, changeOrderType || ''),
+    );
     setButtonDisabled(false);
     setShowLocationChangeModal(false);
     setActionPerform(false);
