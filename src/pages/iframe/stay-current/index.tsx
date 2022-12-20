@@ -1,5 +1,5 @@
 import { Opacity } from '@mui/icons-material';
-import { Button } from '@mui/material';
+import { Button, Grid } from '@mui/material';
 import axios from 'axios';
 import { useState } from 'react';
 
@@ -66,13 +66,14 @@ const StayCurrentIframe = () => {
   };
   return (
     <div className="stay-connect-bg">
-      <div style={{ width: '100%' }}>
+      <div>
+      <div style={{ width: '50%' }}>
         <h2 aria-label="stay current">Stay Current</h2>
       </div>
       <div className="stay-connect-actions">
-        <div className="panel-cc" style={{ paddingRight: '15px' }}>
+        <div className="panel-cc" style={{ paddingRight: '35px' }}>
           <p>
-          You're craving Even more, we get it. Sign up today for the latest Rubio's news, menu items, special offers and more.
+          You're craving even more, we get it. Sign up today for the latest Rubio's news, menu items, special offers and more.
           </p>
         </div>
         <div className="panel-cc">
@@ -126,6 +127,7 @@ const StayCurrentIframe = () => {
           </div>
           <div className={`msg-status ${msg.type}`}>{msg.msg}</div>
         </div>
+      </div>
       </div>
     </div>
   );

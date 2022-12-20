@@ -11,16 +11,17 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
-  padding: 30px 322px 30px 322px;}
+  padding: 30px 152px 30px 152px;
+}
 .stay-connect-bg h2 {
   font-family: 'grit_sansbold' !important;
   font-weight: 700;
   margin: 0;
-  font-size: 35px;
+  font-size: 28.91pt;
   text-transform: uppercase;
-  color: #0075BF;
+  color: #196DB6;
   display: block;
-  line-height: 45px;
+  line-height: 44pt;
   letter-spacing: 2.5px;
   /* padding-bottom: 15px; */
 }
@@ -28,10 +29,11 @@
   font-family: 'libre_franklinlight' !important;
   margin: 0;
   font-size: 35px;
-  color: #414141;
+  color: #58595b;
   display: block;
-  line-height: 22px;
-  font-size: 16px;
+  line-height: 28pt;
+  font-size: 17pt;
+  font-weight: 500;
 }
 .stay-connect-actions {
   display: flex;
@@ -42,7 +44,7 @@
 }
 .stay-connect-bg input {
   width: 100%;
-  line-height: 18px !important;
+  line-height: 58px !important;
   font-size: 15px;
   padding: 0 1em;
   outline: 0;
@@ -85,17 +87,17 @@
 }
 @media screen and (max-width: 1024px) {
   .stay-connect-bg {
-    padding: 30px 152px 30px 152px;
+    padding: 30px 52px 30px 52px;
   }
 }
 @media screen and (max-width: 768px) {
   .stay-connect-bg {
-    padding: 30px 36px 30px 36px;
+    padding: 30px 16px 30px 16px;
   }
 }
 @media screen and (max-width: 600px) {
   .stay-connect-bg {
-    padding: 30px 50px 30px 50px;
+    padding: 30px 10px 30px 10px;
   }
   .stay-connect-actions {
     flex-direction: column;
