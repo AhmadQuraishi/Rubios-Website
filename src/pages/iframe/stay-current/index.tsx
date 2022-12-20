@@ -110,7 +110,7 @@ const StayCurrentIframe = () => {
               <img
               aria-label="Click To Submit Your Email"
               onClick={() => submitEmail()}
-                        style={{marginLeft: "5px",opacity: "0.4",height:'inherit', display: 'block', borderRadius: "5px" }}
+                        style={{ cursor: "pointer",marginLeft: "5px",opacity: "0.4",height:'inherit', display: 'block', borderRadius: "5px" }}
                         src={require('../../../assets/imgs/btn.png')}
                         alt="Arrow Icon"
                       />
@@ -118,7 +118,7 @@ const StayCurrentIframe = () => {
               <img
               aria-label="Click To Submit Your Email"
               onClick={() => submitEmail()}
-                        style={{marginLeft: "5px",opacity: "1",height:'inherit', display: 'block', borderRadius: "5px" }}
+                        style={{cursor: "pointer",marginLeft: "5px",opacity: "1",height:'inherit', display: 'block', borderRadius: "5px" }}
                         src={require('../../../assets/imgs/btn.png')}
                         alt="Arrow Icon"
                       />
