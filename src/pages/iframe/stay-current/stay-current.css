@@ -28,10 +28,9 @@
 .stay-connect-bg p {
   font-family: 'libre_franklinlight' !important;
   margin: 0;
-  font-size: 35px;
   color: #58595b;
   display: block;
-  line-height: 28pt;
+  line-height: 25pt;
   font-size: 17pt;
   font-weight: 500;
 }
@@ -89,11 +88,34 @@
   .stay-connect-bg {
     padding: 30px 52px 30px 52px;
   }
+
 }
 @media screen and (max-width: 768px) {
   .stay-connect-bg {
     padding: 30px 16px 30px 16px;
   }
+  .stay-connect-bg p {
+    font-family: 'libre_franklinlight' !important;
+    margin: 0;
+    color: #58595b;
+    display: block;
+    line-height: 25pt;
+    font-size: 14pt;
+    font-weight: 500;
+  }
+  .stay-connect-bg h2 {
+    font-family: 'grit_sansbold' !important;
+    font-weight: 700;
+    margin: 0;
+    font-size: 25.91pt;
+    text-transform: uppercase;
+    color: #196DB6;
+    display: block;
+    line-height: 44pt;
+    letter-spacing: 2.5px;
+    /* padding-bottom: 15px; */
+  }
+
 }
 @media screen and (max-width: 600px) {
   .stay-connect-bg {
