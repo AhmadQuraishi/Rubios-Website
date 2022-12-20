@@ -608,7 +608,7 @@ export const OrderTypeDialog = (props: any) => {
                     </Grid>
                     {changeOrderType === 'dispatch' && (
                       <>
-                        <Grid item xs={12} id="changer">
+                        <Grid item xs={12}>
                           <Typography
                             style={{
                               padding: '10px 0px',
@@ -626,6 +626,7 @@ export const OrderTypeDialog = (props: any) => {
                             label="Street Address"
                             title="Street Address"
                             type="text"
+                            autoFocus
                             name="address1"
                             autoComplete="off"
                             sx={{ width: '100%' }}
