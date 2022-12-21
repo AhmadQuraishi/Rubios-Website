@@ -44,6 +44,17 @@
   display: none;
 }
 
+.carousel-container img {
+  max-height: 250px;
+  object-fit: cover;
+}
+.carousel-container .react-multiple-carousel__arrow--right {
+  top: 29%
+}
+.carousel-container .react-multiple-carousel__arrow--left {
+  top: 29%
+}
+
 @media (max-width: 464px) {
   .react-multi-carousel-track > li:only-child {
     transform: translate3d(-50px, 0px, 0px) !important;
