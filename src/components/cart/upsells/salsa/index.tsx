@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addMultipleProductsRequest } from '../../../../redux/actions/basket/addMultipleProducts';
 import { changeImageSize, isEmpty } from '../../../../helpers/common';
 import SalsaSkeletonUI from '../../../salsa-skeleton-ui';
+import moment from 'moment';
 
 const useStyles = makeStyles((theme: Theme) => ({
   cartTitle: {
@@ -42,19 +43,49 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
       if (prod && prod.length) {
         const options: any = {};
         prod = prod.map((obj: any) => {
-          if (obj?.options?.length > 0 && obj?.chainproductid !== 248629) {
-            options[`${obj.id}`] = `${obj.options[0].id}`;
-          }
-          return {
+          const updatedProd = {
             ...obj,
             quantity: 0,
           };
+          if (updatedProd?.options?.length > 0) {
+            if (updatedProd?.mandatory === false) {
+              const newOption = {
+                adjustsparentcalories: false,
+                adjustsparentprice: false,
+                availability: {
+                  always: true,
+                  description: null,
+                  enddate: null,
+                  isdisabled: false,
+                  now: true,
+                  startdate: null,
+                },
+                basecalories: null,
+                caloriesseparator: null,
+                chainoptionid: moment().unix() + 1500,
+                children: false,
+                cost: 0,
+                costoverridelabel: null,
+                displayid: null,
+                fields: null,
+                id: 55555555555,
+                isdefault: false,
+                maxcalories: null,
+                menuitemlabels: [],
+                metadata: null,
+                modifiers: null,
+                name: 'As is',
+              };
+              updatedProd.options.unshift(newOption);
+            }
+
+            options[`${updatedProd.id}`] = `${updatedProd.options[0].id}`;
+          }
+          return updatedProd;
         });
         setOptionSelected(options);
       }
-
       setProducts(prod);
-
       setTimeout(() => {
         fitContainer();
       }, 500);
@@ -67,7 +98,10 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
       products.forEach((product: any) => {
         if (product.quantity > 0) {
           let choices: any = [];
-          if (optionSelected[product.id]) {
+          if (
+            optionSelected[product.id] &&
+            optionSelected[product.id] !== '55555555555'
+          ) {
             choices = [
               {
                 choiceid: optionSelected[product.id],
@@ -155,19 +189,19 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
           type === 'PLUS'
             ? obj.quantity + 1
             : obj.quantity === 0
-            ? 0
-            : obj.quantity - 1;
+              ? 0
+              : obj.quantity - 1;
 
         count =
           maximumQuantity === -1 || maximumBasketQuantity === -1
             ? count
             : count >= maximumQuantity
-            ? maximumQuantity
-            : count >= maximumBasketQuantity
-            ? maximumBasketQuantity
-            : count <= 0
-            ? 0
-            : count;
+              ? maximumQuantity
+              : count >= maximumBasketQuantity
+                ? maximumBasketQuantity
+                : count <= 0
+                  ? 0
+                  : count;
 
         // count =
         //   count >= parseInt(obj.maximumquantity || 0)
@@ -256,6 +290,46 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
 
     return total === 0;
   };
+  useEffect(() => {
+    // const focusableElements =
+    //   'button, [href], input, ul , li ,  select, textarea, [tabindex]:not([tabindex="-1"])';
+    const modal = document.querySelector('#cart-salsa'); // select the modal by it's id
+    if (modal) {
+      const focusableContent = modal.querySelectorAll('[tabindex="0"]');
+      const firstFocusableElement = focusableContent[0]; // get first element to be focused inside modal
+
+      const lastFocusableElement =
+        focusableContent[focusableContent.length - 1]; // get last element to be focused inside modal
+
+      document.addEventListener('keydown', function (e) {
+        let isTabPressed = e.key === 'Tab' || e.keyCode === 9;
+
+        if (!isTabPressed) {
+          return;
+        }
+
+        if (e.shiftKey) {
+          // if shift key pressed for shift + tab combination
+          if (document.activeElement === firstFocusableElement) {
+            // add focus for the last focusable element
+            lastFocusableElement &&
+            (lastFocusableElement as HTMLElement)?.focus();
+            e.preventDefault();
+          }
+        } else {
+          // if tab key is pressed
+          if (document.activeElement === lastFocusableElement) {
+            // if focused has reached to last focusable element then focus first focusable element after pressing tab
+            firstFocusableElement &&
+            (firstFocusableElement as HTMLElement)?.focus(); // add focus for the first focusable element
+            e.preventDefault();
+          }
+        }
+      });
+
+      firstFocusableElement && (firstFocusableElement as HTMLElement)?.focus();
+    }
+  }, []);
 
   return (
     <>
@@ -282,6 +356,7 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                     item
                     xs={12}
                     lg={6}
+                    id="cart-salsa"
                     sx={{ display: 'flex', alignItems: 'stretch' }}
                   >
                     <Grid
@@ -299,7 +374,7 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                       }}
                       sx={{ cursor: 'pointer' }}
                       onClick={() => {}}
-                      // tabIndex={0}
+                      tabIndex={0}
                       // onKeyUp={(e) => {
                       //   if (e.keyCode === 13) {
                       //     addUpsells(option.id);
@@ -355,6 +430,7 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                           sx={{
                             display: 'inline',
                             fontFamily: 'Poppins-Medium !important',
+
                             fontSize: {
                               lg: '12px !important',
                               xs: '14px !important',
@@ -389,49 +465,47 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                             </Grid>
                           )}
                           <>
-                            {obj?.options?.length > 0 &&
-                              obj?.chainproductid !== 248629 && (
-                                <select
-                                  className="add-side-select"
-                                  // style={{
-                                  //   width: '100% !important',
-                                  //   height: '30px',
-                                  //   borderRadius: '5px',
-                                  //   border: '1px solid #ccc',
-                                  //   color: '#2B4B62',
-                                  //   padding: '5px',
-                                  //   textOverflow: 'ellipsis',
-                                  // }}
-                                  parent-select-option-id={obj.chainproductid}
-                                  onClick={(e) => e.stopPropagation()}
-                                  value={
-                                    (optionSelected &&
-                                      optionSelected[obj.id]) ||
-                                    ''
-                                  }
-                                  data-select-id={obj.chainproductid || '0'}
-                                  onChange={(e) => optionChange(e, obj.id)}
-                                >
-                                  {obj.options.map(
-                                    (option: any, index: number) => (
-                                      <option
-                                        key={Math.random() + index}
-                                        value={`${option.id}`}
-                                        // onClick={() => {
-                                        //   setTotalCost(
-                                        //     ((productDetails?.cost ||
-                                        //         0) +
-                                        //       option.cost) *
-                                        //     count,
-                                        //   );
-                                        // }}
-                                      >
-                                        {option.name}
-                                      </option>
-                                    ),
-                                  )}
-                                </select>
-                              )}
+                            {obj?.options?.length > 0 && (
+                              <select
+                                className="add-side-select"
+                                // style={{
+                                //   width: '100% !important',
+                                //   height: '30px',
+                                //   borderRadius: '5px',
+                                //   border: '1px solid #ccc',
+                                //   color: '#2B4B62',
+                                //   padding: '5px',
+                                //   textOverflow: 'ellipsis',
+                                // }}
+                                parent-select-option-id={obj.chainproductid}
+                                onClick={(e) => e.stopPropagation()}
+                                value={
+                                  (optionSelected && optionSelected[obj.id]) ||
+                                  ''
+                                }
+                                data-select-id={obj.chainproductid || '0'}
+                                onChange={(e) => optionChange(e, obj.id)}
+                              >
+                                {obj.options.map(
+                                  (option: any, index: number) => (
+                                    <option
+                                      key={Math.random() + index}
+                                      value={`${option.id}`}
+                                      // onClick={() => {
+                                      //   setTotalCost(
+                                      //     ((productDetails?.cost ||
+                                      //         0) +
+                                      //       option.cost) *
+                                      //     count,
+                                      //   );
+                                      // }}
+                                    >
+                                      {option.name}
+                                    </option>
+                                  ),
+                                )}
+                              </select>
+                            )}
                           </>
                         </Typography>
 
