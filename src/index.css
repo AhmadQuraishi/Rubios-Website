@@ -392,6 +392,25 @@ fieldset {
   letter-spacing: 0.7px !important;
 }
 
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  padding: 6px;
+}
+
+.skip-link:focus {
+  position: absolute;
+  z-index: 99999;
+  top: 0px;
+  left: 0px;
+  background: #214F66;
+  padding: 10px;
+  text-decoration: none;
+  color: #ffffff;
+  font-family: 'Poppins-Regular';
+}
+
 @media screen and (min-width: 600px) {
   .css-zv4r1b {
     width: 170px !important;

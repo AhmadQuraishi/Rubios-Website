@@ -145,7 +145,6 @@ const StoreInfoBar = () => {
       dispatch(updateUser(obj, false));
     }
   };
-
   const checkFavorite = () => {
     let check = false;
     if (isLoginUser() && providerToken?.favourite_store_numbers && restaurant) {
@@ -163,7 +162,17 @@ const StoreInfoBar = () => {
     if (type === 'dinein') return 'Dine In At';
     if (type === 'pickup' || type === 'curbside') return 'Pick Up From';
   };
+  const getEstTimeFormat = (date: string) => {
+    return moment(date, 'YYYYMMDD HH:mm').format('dddd h:mm A');
+  };
 
+  const EstimatedTime = () => {
+    const type = basketObj?.basket?.deliverymode || orderType || '';
+    const time = basketObj?.basket;
+    if (type === 'dispatch') {
+      return getEstTimeFormat(time.earliestreadytime);
+    }
+  };
   return (
     <>
       {restaurantInfo && (
@@ -183,7 +192,11 @@ const StoreInfoBar = () => {
             }
             handleDeleteFunction={() => handleDeleteFunction()}
           /> */}
-          <OrderTypeDialog openModal={openOrder} setOpenModal={setOpenOrder} />
+          <OrderTypeDialog
+            type={'CHECKOUT'}
+            openModal={openOrder}
+            setOpenModal={setOpenOrder}
+          />
           <Grid item xs={12}>
             <Grid container spacing={0} margin="auto">
               <Grid
@@ -195,14 +208,56 @@ const StoreInfoBar = () => {
                   paddingBottom: { xs: '0px', sm: '0px' },
                 }}
               >
-                <Typography
-                  className={classes.heading}
-                  variant="h2"
-                  textTransform="uppercase"
-                  title="Pick Up From"
-                >
-                  {orderSelectedType()}
-                </Typography>
+                <Grid sx={{ display: 'flex', flexDirection: 'inherit' }}>
+                  <Typography
+                    className={classes.heading}
+                    variant="h2"
+                    textTransform="uppercase"
+                    title="Pick Up From"
+                  >
+                    {orderSelectedType()}
+                  </Typography>
+
+                  {/*{window?.location?.href*/}
+                  {/*  ?.toLocaleLowerCase()*/}
+                  {/*  ?.indexOf('/checkout') !== -1 && (*/}
+                  {/*  <>*/}
+                  {/*    <Typography*/}
+                  {/*      variant="body2"*/}
+                  {/*      color="#fff"*/}
+                  {/*      fontSize={11}*/}
+                  {/*      sx={{*/}
+                  {/*        marginLeft: '5px',*/}
+                  {/*        display: {*/}
+                  {/*          xs: 'block',*/}
+                  {/*          sm: 'none',*/}
+                  {/*          md: 'none',*/}
+                  {/*          lg: 'none',*/}
+                  {/*        },*/}
+                  {/*      }}*/}
+                  {/*    >*/}
+                  {/*      <p*/}
+                  {/*        style={{*/}
+                  {/*          cursor: 'pointer',*/}
+                  {/*          textDecorationLine: 'underline',*/}
+                  {/*        }}*/}
+                  {/*        role={'button'}*/}
+                  {/*        aria-label={'Change Order Type'}*/}
+                  {/*        tabIndex={0}*/}
+                  {/*        onKeyPress={(e: any) => {*/}
+                  {/*          if (e.key === 'Enter') {*/}
+                  {/*            setOpenOrder(true);*/}
+                  {/*          }*/}
+                  {/*        }}*/}
+                  {/*        onClick={() => setOpenOrder(true)}*/}
+                  {/*      >*/}
+                  {/*        Change Order Type*/}
+                  {/*      </p>*/}
+                  {/*      {'\n'}*/}
+                  {/*    </Typography>*/}
+                  {/*  </>*/}
+                  {/*)}*/}
+                </Grid>
                 <Typography
                   variant="h2"
                   color="#fff"
@@ -221,9 +276,57 @@ const StoreInfoBar = () => {
                 >
                   {restaurantInfo.name}
                 </Typography>
+                {/*{window?.location?.href*/}
+                {/*    ?.toLocaleLowerCase()*/}
+                {/*    ?.indexOf('/checkout') !== -1 &&*/}
+                {/*  EstimatedTime() && (*/}
+                {/*    <>*/}
+                {/*      <Typography*/}
+                {/*        className={classes.heading}*/}
+                {/*        variant="h2"*/}
+                {/*        textTransform="uppercase"*/}
+                {/*        title="Pick Up From"*/}
+                {/*      >*/}
+                {/*        Estimated Delivery Time: {EstimatedTime()}*/}
+                {/*      </Typography>*/}
+                {/*    </>*/}
+                {/*  )}*/}
               </Grid>
               {isMobile && (
                 <Grid>
+                  &nbsp;
+                  <Typography
+                    variant="body2"
+                    color="#fff"
+                    fontSize={11}
+                    sx={{
+                      marginTop: '-12px',
+                      display: {
+                        xs: 'flex',
+                        sm: 'none',
+                        md: 'none',
+                        lg: 'none',
+                      },
+                    }}
+                  >
+                    <p
+                      style={{
+                        cursor: 'pointer',
+                        textDecorationLine: 'underline',
+                      }}
+                      role={'button'}
+                      aria-label={'Change location'}
+                      tabIndex={1}
+                      // onKeyPress={(e: any) => {
+                      //   if (e.key === 'Enter') {
+                      //     handleClickOpen();
+                      //   }
+                      // }}
+                      onClick={() => navigate('/location')}
+                    >
+                      Change location
+                    </p>
+                  </Typography>
                   <Grid
                     onClick={() => {
                       setShowMore(!showMore);
@@ -262,77 +365,6 @@ const StoreInfoBar = () => {
                       <ExpandMoreIcon style={{ color: '#fff' }} />
                     )}
                   </Grid>
-                  {/*{window?.location?.href*/}
-                  {/*  ?.toLocaleLowerCase()*/}
-                  {/*  ?.indexOf('/checkout') !== -1 && (*/}
-                  {/*  <>*/}
-                  {/*    <Typography*/}
-                  {/*      variant="body2"*/}
-                  {/*      color="#fff"*/}
-                  {/*      fontSize={11}*/}
-                  {/*      sx={{*/}
-                  {/*        display: {*/}
-                  {/*          xs: 'block',*/}
-                  {/*          sm: 'none',*/}
-                  {/*          md: 'none',*/}
-                  {/*          lg: 'none',*/}
-                  {/*        },*/}
-                  {/*      }}*/}
-                  {/*    >*/}
-                  {/*      <p*/}
-                  {/*        style={{*/}
-                  {/*          cursor: 'pointer',*/}
-                  {/*          textDecorationLine: 'underline',*/}
-                  {/*        }}*/}
-                  {/*        role={'button'}*/}
-                  {/*        aria-label={'Change Order Type'}*/}
-                  {/*        tabIndex={0}*/}
-                  {/*        onKeyPress={(e: any) => {*/}
-                  {/*          if (e.key === 'Enter') {*/}
-                  {/*            setOpenOrder(true);*/}
-                  {/*          }*/}
-                  {/*        }}*/}
-                  {/*        onClick={() => setOpenOrder(true)}*/}
-                  {/*      >*/}
-                  {/*        Change Order Type*/}
-                  {/*      </p>*/}
-                  {/*      {'\n'}*/}
-                  {/*    </Typography>*/}
-                  {/*  </>*/}
-                  {/*)}*/}
-                  &nbsp;
-                  <Typography
-                    variant="body2"
-                    color="#fff"
-                    fontSize={11}
-                    sx={{
-                      marginTop: '-12px',
-                      display: {
-                        xs: 'flex',
-                        sm: 'none',
-                        md: 'none',
-                        lg: 'none',
-                      },
-                    }}
-                  >
-                    <p
-                      style={{
-                        cursor: 'pointer',
-                        textDecorationLine: 'underline',
-                      }}
-                      role={'button'}
-                      aria-label={'Change location'}
-                      tabIndex={1}
-                      // onKeyPress={(e: any) => {
-                      //   if (e.key === 'Enter') {
-                      //     handleClickOpen();
-                      //   }
-                      // }}
-                      onClick={() => navigate('/location')}
-                    >
-                      Change location
-                    </p>
-                  </Typography>
                 </Grid>
               )}
               {showHideFunc() && (
@@ -457,7 +489,7 @@ const StoreInfoBar = () => {
                         }}
                         role={'button'}
                         aria-label={'Change location'}
-                        tabIndex={1}
+                        tabIndex={0}
                         // onKeyPress={(e: any) => {
                         //   if (e.key === 'Enter') {
                         //     handleClickOpen();
@@ -613,15 +645,15 @@ const StoreInfoBar = () => {
                                   item.isOpenAllDay
                                     ? 'Open 24 hours'
                                     : getTimeFormat(item.start) +
-                                      ' - ' +
-                                      getTimeFormat(item.end)
+                                    ' - ' +
+                                    getTimeFormat(item.end)
                                 }
                               >
                                 {item.isOpenAllDay
                                   ? 'Open 24 hours'
                                   : getTimeFormat(item.start) +
-                                    ' - ' +
-                                    getTimeFormat(item.end)}
+                                  ' - ' +
+                                  getTimeFormat(item.end)}
                               </ListItem>
                             </List>
                           </Grid>
@@ -668,7 +700,7 @@ const StoreInfoBar = () => {
                                     }
                                   >
                                     {(item.weekday &&
-                                      item.weekday.toUpperCase()) ||
+                                        item.weekday.toUpperCase()) ||
                                       ''}
                                   </ListItem>
                                 </List>
@@ -692,15 +724,15 @@ const StoreInfoBar = () => {
                                       item.isOpenAllDay
                                         ? 'Open 24 hours'
                                         : getTimeFormat(item.start) +
-                                          ' - ' +
-                                          getTimeFormat(item.end)
+                                        ' - ' +
+                                        getTimeFormat(item.end)
                                     }
                                   >
                                     {item.isOpenAllDay
                                       ? 'Open 24 hours'
                                       : getTimeFormat(item.start) +
-                                        ' - ' +
-                                        getTimeFormat(item.end)}
+                                      ' - ' +
+                                      getTimeFormat(item.end)}
                                   </ListItem>
                                 </List>
                               </Grid>
@@ -824,7 +856,7 @@ const StoreInfoBar = () => {
                                         }
                                       >
                                         {(item.weekday &&
-                                          item.weekday.toUpperCase()) ||
+                                            item.weekday.toUpperCase()) ||
                                           ''}
                                       </ListItem>
                                     </List>
@@ -849,15 +881,15 @@ const StoreInfoBar = () => {
                                           item.isOpenAllDay
                                             ? 'Open 24 hours'
                                             : getTimeFormat(item.start) +
-                                              ' - ' +
-                                              getTimeFormat(item.end)
+                                            ' - ' +
+                                            getTimeFormat(item.end)
                                         }
                                       >
                                         {item.isOpenAllDay
                                           ? 'Open 24 hours'
                                           : getTimeFormat(item.start) +
-                                            ' - ' +
-                                            getTimeFormat(item.end)}
+                                          ' - ' +
+                                          getTimeFormat(item.end)}
                                       </ListItem>
                                     </List>
                                   </Grid>
