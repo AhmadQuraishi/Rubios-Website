@@ -118,7 +118,7 @@ const Location = () => {
       size: '640x640',
       format: 'png',
       maptype: 'roadmap',
-      zoom: 4,
+      zoom: 5,
       markerGroups: markersStatic,
     });
     setStaticMapImageUrl(url);

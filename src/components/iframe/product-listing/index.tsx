@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontWeight: '600 !important',
     fontFamily: "'libre_franklinlight' !important",
     letterSpacing: '0.00938em !important',
-    
+
   },
   content: {
     color: theme.palette.secondary.main,
@@ -112,6 +112,7 @@ const ProductListing = (props: any) => {
                   role="group"
                   aria-label={item.name}
                 >
+
                   {item.imagefilename ? (
                     <img
                       className={classes.img}
@@ -139,7 +140,7 @@ const ProductListing = (props: any) => {
                       variant="h2"
                       title={'FEATURED'}
                       className="product-label"
-                      sx={{fontFamily: "'sunbornsans_one' !important"}}
+                      sx={{ fontFamily: "'grit_sansbold' !important" }}
                     >
                       FEATURED
                     </Typography>
@@ -148,12 +149,13 @@ const ProductListing = (props: any) => {
                     style={{ paddingBottom: 0 }}
                     sx={{ padding: '0' }}
                   >
+
                     <Typography
                       variant="h2"
                       title={item.name}
                       className={classes.title}
                       sx={{
-                        
+
                         height: {
                           lg: '35px',
                           md: '50px',
