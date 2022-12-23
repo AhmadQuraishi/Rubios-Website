@@ -15,7 +15,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Dialog from '@mui/material/Dialog';
-import React, { useState, useEffect } from 'react';
+import React, {useRef, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setRestaurantInfoOrderType } from '../../redux/actions/restaurant';
 import { Formik } from 'formik';
@@ -87,7 +87,6 @@ export const OrderTypeDialog = (props: any) => {
   const [newRestaurant, setNewRestaurant] = useState<any>(null);
   const { restaurant: selectedRestaurant, orderType: selectedOrderType } =
     useSelector((state: any) => state.restaurantInfoReducer);
-
   const {
     restaurants,
     nearbyRestaurants,
@@ -112,6 +111,8 @@ export const OrderTypeDialog = (props: any) => {
     }
     nearbyRestaurantAction();
   }, [nearbyRestaurants]);
+  
+
   useEffect(() => {
     if (!newBasketLoading && actionPerform) {
       if (newBasketError) {
@@ -163,6 +164,7 @@ export const OrderTypeDialog = (props: any) => {
           return restaurant?.supportsdinein;
         case 'dispatch':
           return restaurant?.supportsdispatch;
+
         default:
           return false;
       }
@@ -498,7 +500,7 @@ export const OrderTypeDialog = (props: any) => {
                     sx={{
                       width: '100%',
                       justifyContent: 'center',
-                      maxHeight: '180px',
+                      maxHeight: '220px',
                     }}
                   >
                     {/*<Grid item xs={12}>
@@ -597,6 +599,7 @@ export const OrderTypeDialog = (props: any) => {
                               borderRadius: '0 !important',
                               letterSpacing: '2.25px !important',
                             }}
+                            id ="changer"
                             className="selected-toggle-btn"
                             aria-current={changeOrderType === 'dispatch'}
                             aria-label=" Delivery, Enter your address below to get nearby restaurants"
@@ -606,6 +609,7 @@ export const OrderTypeDialog = (props: any) => {
                         )}
                       </ToggleButtonGroup>
                     </Grid>
+                    
                     {changeOrderType === 'dispatch' && (
                       <>
                         <Grid item xs={12}>
@@ -626,8 +630,8 @@ export const OrderTypeDialog = (props: any) => {
                             label="Street Address"
                             title="Street Address"
                             type="text"
-                            autoFocus
                             name="address1"
+                            //autoFocus
                             autoComplete="off"
                             sx={{ width: '100%' }}
                             value={values.address1}
@@ -639,6 +643,7 @@ export const OrderTypeDialog = (props: any) => {
                         </Grid>
                         <Grid item xs={12} sx={{ paddingTop: '10px' }}>
                           <TextField
+                          
                             aria-label="Apt, Floor, Suite, Building, Company Address - Optional"
                             label="Apt, Floor, Suite, Building, Company Address - Optional"
                             title="Apt, Floor, Suite, Building, Company Address - Optional"
@@ -685,6 +690,7 @@ export const OrderTypeDialog = (props: any) => {
                             helperText={touched.zip && errors.zip}
                           />
                         </Grid>
+                        
                         {isLoginUser() && (
                           <Grid item xs={12}>
                             <FormGroup>
@@ -707,6 +713,7 @@ export const OrderTypeDialog = (props: any) => {
                         )}
                       </>
                     )}
+                    
                   </Grid>
                 </DialogContentText>
               </DialogContent>

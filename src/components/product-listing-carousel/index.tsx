@@ -31,33 +31,34 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: '100%',
   },
   title: {
-    color: theme.palette.secondary.main,
+    color: "#0075BF",
     padding: '20px 0 10px 0',
     fontSize: '18px !important',
     fontWeight: '600 !important',
-    fontFamily: 'Poppins-Medium !important',
+    fontFamily: "'grit_sansbold' !important",
     letterSpacing: '0.00938em !important',
+    textTransform: 'uppercase',
   },
   content: {
     color: theme.palette.secondary.main,
     fontSize: '14px',
     lineHeight: '7px',
-    fontFamily: 'Poppins-Medium !important',
+    fontFamily: "'libre_franklinlight' !important",
     letterSpacing: 0,
   },
   cal: {
     paddingTop: '10px',
-    fontFamily: 'Poppins-Regular !important',
+    fontFamily: "'grit_sansbold' !important",
     fontSize: '14px',
     fontWeight: 600,
     color: '#0075BF',
   },
   price: {
     paddingTop: '10px',
-    fontFamily: 'Poppins-Regular !important',
+    fontFamily: "'grit_sansbold' !important",
     fontSize: '14px',
     fontWeight: 600,
-    color: theme.palette.secondary.main,
+    color: "#0075BF",
   },
 }));
 
@@ -286,10 +287,33 @@ const ProductListingCarousel = (props: any) => {
                         {item.description}
                       </Typography>
                       <Grid container spacing={0}>
+                      {item.cost > 0 && (
+                          <Grid
+                            item
+                            xs={5}
+                            title={`$${parseFloat(item.cost).toFixed(2)}`}
+                            className={classes.price}
+                            sx={{display: "flex", flexDirection: 'column'}}
+                          >
+                            ${parseFloat(item.cost).toFixed(2)}
+
+                          </Grid>
+                          
+                        )}
+                        {(item.basecalories > 0 || item.maxcalories > 0) &&  item.cost > 0 && (
+                          <Grid
+                          item
+                          xs={2}>
+
+                           <Typography className={classes.price} sx={{marginRight: "10px"}}>
+                           {"|"}
+                            </Typography>
+                          </Grid>
+                        )}
                         {(item.basecalories > 0 || item.maxcalories > 0) && (
                           <Grid
                             item
-                            xs={6}
+                            xs={5}
                             title={`${
                               item.caloriesseparator
                                 ? item.basecalories +
@@ -299,6 +323,7 @@ const ProductListingCarousel = (props: any) => {
                             } cal`}
                             className={classes.cal}
                           >
+
                             {item.caloriesseparator
                               ? item.basecalories +
                                 item.caloriesseparator +
@@ -307,16 +332,7 @@ const ProductListingCarousel = (props: any) => {
                             cal
                           </Grid>
                         )}
-                        {item.cost > 0 && (
-                          <Grid
-                            item
-                            xs={6}
-                            title={`$${parseFloat(item.cost).toFixed(2)}`}
-                            className={classes.price}
-                          >
-                            ${parseFloat(item.cost).toFixed(2)}
-                          </Grid>
-                        )}
+                        
                       </Grid>
                     </CardContent>
                   </Card>
