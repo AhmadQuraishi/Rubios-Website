@@ -1001,7 +1001,7 @@ const Checkout = () => {
                           <Grid item xs={12}>
                             <Typography
                               variant="h1"
-                              style={{ marginBottom: '0px' }}
+                              sx={{ marginBottom: '0px', fontFamily: "'grit_sansbold' !important" }}
                               title="PICK UP INFO"
                             >
                               PICK UP INFO
@@ -1023,7 +1023,7 @@ const Checkout = () => {
                           <Grid item xs={12}>
                             <Typography
                               variant="h1"
-                              style={{ marginBottom: '0px' }}
+                              sx={{ marginBottom: '0px', fontFamily: "'grit_sansbold' !important" }}
                               title="CURBSIDE PICK INFO"
                             >
                               CURBSIDE PICK UP
@@ -1045,7 +1045,7 @@ const Checkout = () => {
                           <Grid item xs={12}>
                             <Typography
                               variant="h1"
-                              style={{ marginBottom: '0px' }}
+                              sx={{ marginBottom: '0px', fontFamily: "'grit_sansbold' !important" }}
                               title="DELIVERY INFO"
                             >
                               DELIVERY INFO
@@ -1067,7 +1067,7 @@ const Checkout = () => {
                           <Grid item xs={12}>
                             <Typography
                               variant="h1"
-                              style={{ marginBottom: '0px' }}
+                              sx={{ marginBottom: '0px', fontFamily: "'grit_sansbold' !important" }}
                               title="DELIVERY INFO"
                             >
                               DINE IN INFO
