@@ -32,20 +32,19 @@ import { facebookSendEvent } from '../../redux/actions/facebook-conversion';
 import { facebookConversionTypes } from '../../redux/types/facebook-conversion';
 import { resetBasketRequest } from '../../redux/actions/basket';
 import { isLoginUser } from '../../helpers/auth';
-import "./index.css";
+
 const useStyles = makeStyles((theme: Theme) => ({
   heading: {
-    fontFamily: "'sunbornsans_one'!important",
-    color: "#0075BF !important",
+    fontFamily: 'Poppins-Bold !important',
+    color: theme.palette.secondary.main,
     fontSize: '25px !important',
     textTransform: 'uppercase',
     paddingBottom: '30px',
   },
-  
   link: {
     textAlign: 'right',
     '& a': {
-      fontFamily: "'grit_sansbold' !important",
+      fontFamily: 'Poppins-Medium !important',
       color: '#0069aa',
       fontSize: '13px',
       textTransform: 'uppercase',
@@ -508,7 +507,6 @@ const CategoryList = () => {
                 width: '100%',
                 background: '#FFF',
                 zIndex: '1099',
-                
                 padding: {
                   xs: '20px 5px 10px 20px',
                   sm: '20px 30px 5px 40px',
@@ -521,12 +519,12 @@ const CategoryList = () => {
               <Tabs
                 value={value}
                 onChange={handleChange}
-                // textColor="secondary"
-                // indicatorColor="primary"
+                textColor="secondary"
+                indicatorColor="primary"
                 variant="scrollable"
-                //scrollButtons
+                scrollButtons
                 allowScrollButtonsMobile
-                sx={{ fontFamily: "'sunbornsans_one' !important", }}
+                sx={{ fontFamily: 'Poppins-Medium !important' }}
                 role="region"
                 aria-label="Food Menu"
               >
@@ -537,14 +535,11 @@ const CategoryList = () => {
                     value={`${index}`}
                     label={item.name}
                     title={item.name}
-                    
+                    color="secondary.main"
                     sx={{
-                      fontFamily: "'sunbornsans_one' !important",
+                      fontFamily: 'Poppins-Medium !important',
                       padding: '10px 0px',
                       marginRight: '20px',
-                      fontSize:"15px",
-                      color: "#2B2929 !important" 
-                      
                     }}
                     tabIndex={0}
                     role="tab"
@@ -590,12 +585,8 @@ const CategoryList = () => {
                   {item.products.length > 4 && (
                     <Grid item xs={4}>
                       <Typography className={classes.link}>
-                        <Link to={`/category/${item.id}`} title="view all" style={{color: "#214F66"}}>
-                          view all <span style={{fontSize:"17px"}}><img
-                        // style={{ width: '75%', display: 'block' }}
-                        src={require('../../assets/imgs/arrow2.png')}
-                        alt="Login Icon"
-                      /></span>
+                        <Link to={`/category/${item.id}`} title="view all">
+                          view all →
                         </Link>
                       </Typography>
                     </Grid>

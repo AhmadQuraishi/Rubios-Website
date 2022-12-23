@@ -30,7 +30,7 @@ const useStyle = makeStyles({
   heading: {
     fontSize: '13px !important',
     color: '#fff',
-    fontFamily: "'grit_sansbold' !important"
+    fontFamily: 'Poppins-Medium !important',
   },
 });
 
@@ -262,8 +262,9 @@ const StoreInfoBar = () => {
                   variant="h2"
                   color="#fff"
                   textTransform="uppercase"
+                  fontWeight={700}
                   lineHeight={1.3}
-                  fontFamily= "'sunbornsans_one' !important"
+                  fontFamily="Poppins-Bold !important"
                   sx={{
                     fontSize: {
                       xs: '30px !important',
