@@ -196,6 +196,7 @@ const StoreInfoBar = () => {
             type={'CHECKOUT'}
             openModal={openOrder}
             setOpenModal={setOpenOrder}
+            hideIt={false}
           />
           <Grid item xs={12}>
             <Grid container spacing={0} margin="auto">
