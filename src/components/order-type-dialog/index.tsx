@@ -63,6 +63,7 @@ export const OrderTypeDialog = (props: any) => {
     type,
     openModal,
     setOpenModal,
+    hideIt
     // changeOrderType,
   } = props;
   const dispatch = useDispatch();
@@ -448,7 +449,8 @@ export const OrderTypeDialog = (props: any) => {
         }}
         fullWidth
       >
-        <DialogTitle id="modal-dialog-delivery-title">{`Confirm Order Type`}</DialogTitle>
+        {!hideIt && 
+        <DialogTitle id="modal-dialog-delivery-title" >{`Confirm Order Type`}</DialogTitle> }
         <Formik
           initialValues={{
             orderType: basketObj?.basket?.deliverymode || orderType || 'pickup',
@@ -534,7 +536,7 @@ export const OrderTypeDialog = (props: any) => {
                         value={changeOrderType}
                         onChange={onServiceSelect}
                       >
-                        {restaurantSupportedHanOffMode('pickup') && (
+                        {restaurantSupportedHanOffMode('pickup') && !hideIt && (
                           <ToggleButton
                             role="radio"
                             value={'pickup'}
@@ -549,7 +551,7 @@ export const OrderTypeDialog = (props: any) => {
                             PickUp
                           </ToggleButton>
                         )}
-                        {restaurantSupportedHanOffMode('curbside') && (
+                        {restaurantSupportedHanOffMode('curbside') && !hideIt &&(
                           <ToggleButton
                             role="radio"
                             value={'curbside'}
@@ -564,7 +566,7 @@ export const OrderTypeDialog = (props: any) => {
                             Curbside
                           </ToggleButton>
                         )}
-                        {restaurantSupportedHanOffMode('dinein') && (
+                        {restaurantSupportedHanOffMode('dinein') && !hideIt &&(
                           <ToggleButton
                             role="radio"
                             value={'dinein'}
@@ -579,7 +581,7 @@ export const OrderTypeDialog = (props: any) => {
                             Dine In
                           </ToggleButton>
                         )}
-                        {restaurantSupportedHanOffMode('dispatch') && (
+                        {restaurantSupportedHanOffMode('dispatch') && !hideIt  &&(
                           <ToggleButton
                             value={'dispatch'}
                             role="radio"
@@ -613,6 +615,7 @@ export const OrderTypeDialog = (props: any) => {
                     {changeOrderType === 'dispatch' && (
                       <>
                         <Grid item xs={12}>
+                          {hideIt ? (
                           <Typography
                             style={{
                               padding: '10px 0px',
@@ -621,8 +624,20 @@ export const OrderTypeDialog = (props: any) => {
                             textAlign={'center'}
                             variant={'body1'}
                           >
-                            {`Add Delivery Address`}
+                            {`Edit Delivery Address`}
                           </Typography>
+                    ) : (
+                      <Typography
+                      style={{
+                        padding: '10px 0px',
+                        color: '#000000',
+                      }}
+                      textAlign={'center'}
+                      variant={'body1'}
+                    >
+                      {`Add Delivery Address`}
+                    </Typography>
+                    )}
                         </Grid>
                         <Grid item xs={12}>
                           <TextField
