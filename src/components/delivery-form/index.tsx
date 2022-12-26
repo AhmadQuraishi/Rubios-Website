@@ -23,13 +23,17 @@ const DeliveryForm = ({
   setShowSignUpGuest,
 }: any) => {
   const [open, setOpen] = useState(false);
+  const [hideIt, setHideIt] = useState(false);
   const { providerToken } = useSelector((state: any) => state.providerReducer);
 
   interface CustomProps {
     onChange: (event: { target: { name: string; value: string } }) => void;
     name: string;
   }
-
+  const handleClick = () => {
+    setOpen(true);
+    setHideIt(!hideIt);
+  }
   const NumberFormatCustom = forwardRef<HTMLElement, CustomProps>(
     function NumberFormatCustom(props, ref) {
       const { onChange, ...other } = props;
@@ -52,7 +56,7 @@ const DeliveryForm = ({
 
   return (
     <>
-      <OrderTypeDialog openModal={open} setOpenModal={setOpen} />
+      <OrderTypeDialog openModal={open} setOpenModal={setOpen} hideIt={true}  />
       <Formik
         innerRef={deliveryFormRef}
         enableReinitialize={true}
@@ -248,7 +252,9 @@ const DeliveryForm = ({
                     className="label"
                     sx={{ cursor: 'pointer', display: 'inline' }}
                     aria-label={'Edit Address'}
-                    onClick={() => setOpen(true)}
+                    onClick={() =>{
+                       handleClick()
+                      }}
                   >
                     Edit
                   </Typography>
