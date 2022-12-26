@@ -4,7 +4,7 @@ import RegisterForm from '../../components/register-form';
 import { useSelector } from 'react-redux';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import bgImage from '../../assets/imgs/login-bg.png';
+import bgImage from '../../assets/imgs/20221027_RCG_Brand_5tacos_0501-login.jpg';
 import './register.css';
 import Page from '../../components/page-title';
 import { isLoginUser } from '../../helpers/auth';

@@ -12,7 +12,7 @@ import {
 import { makeStyles } from '@mui/styles';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import logo from '../../assets/imgs/rubios-logo-color.png';
+import logo from '../../assets/imgs/3.png';
 import cartIconMobile from '../../assets/imgs/cart-icon-mobile.svg';
 
 import Cart from '../cart';
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   logoImg: {
     display: 'inline-block',
-    padding: '18px 70px 18px 20px',
+    padding: '22px 70px 18px 85px',
     [theme.breakpoints.down('lg')]: {
       padding: '18px 0 14px 20px',
     },
