@@ -502,7 +502,7 @@ export const OrderTypeDialog = (props: any) => {
                     sx={{
                       width: '100%',
                       justifyContent: 'center',
-                      maxHeight: '220px',
+                      maxHeight: '270px',
                     }}
                   >
                     {/*<Grid item xs={12}>
