@@ -29,6 +29,7 @@ const pickupTime = (order: any) => {
       <Typography
         variant="h2"
         className="label"
+        sx={{fontSize: "11pt !important",fontFamily: "'sunbornsans_one'!important"}}
         title={
           order && order.deliverymode === DeliveryModeEnum.dispatch
             ? 'DELIVERY TIME'

@@ -68,7 +68,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                     <>
                       <Grid key={item.id} container>
                         <Grid item xs={1} sm={1} md={1} lg={1}>
-                          <Typography variant="h6" title={item.name}>
+                          <Typography variant="h6"  title={item.name}>
                             {item.productId !==
                             utensilsReducer.utensilsProductId
                               ? item.quantity

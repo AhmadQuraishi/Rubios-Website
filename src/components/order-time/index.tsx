@@ -231,6 +231,7 @@ const OrderTime = ({ orderType }: any) => {
           <Grid item xs={12}>
             <Typography
               variant="h3"
+              sx={{fontSize: "11pt !important",fontFamily: "'sunbornsans_one'!important"}}
               title={
                 orderType === DeliveryModeEnum.dinein
                   ? 'DATE'
@@ -272,7 +273,7 @@ const OrderTime = ({ orderType }: any) => {
                 className="caption-grey"
                 style={{
                   marginTop: -10,
-                  color: '#707070',
+                  color: '#58595b',
                   border: 'none',
                   fontFamily: "'libre_franklinlight' !important",
                   background: 'transparent',

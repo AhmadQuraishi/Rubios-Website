@@ -604,7 +604,7 @@ const StoreInfoBar = () => {
                               sx={{
                                 padding: '2px 0 0 0',
                                 fontSize: '12px',
-                                fontWeight: '600',
+                                //fontWeight: '600',
                                 color: 'background.paper',
                               }}
                               role="presentation"
@@ -612,7 +612,7 @@ const StoreInfoBar = () => {
                               <ListItem
                                 sx={{
                                   padding: '0 0 0 0',
-                                  fontFamily: "'Poppins-Medium' !important",
+                                  fontFamily:"'libre_franklinlight' !important",
                                 }}
                                 title={
                                   (item.weekday &&
@@ -632,7 +632,7 @@ const StoreInfoBar = () => {
                                 fontSize: '12px',
                                 fontWeight: '500',
                                 color: 'background.paper',
-                                fontFamily: "'Poppins-Medium' !important",
+                                fontFamily:"'libre_franklinlight' !important",
                               }}
                               role="presentation"
                             >
@@ -690,7 +690,7 @@ const StoreInfoBar = () => {
                                   <ListItem
                                     sx={{
                                       padding: '0 0 0 0',
-                                      fontFamily: "'Poppins-Medium' !important",
+                                      fontFamily:"'libre_franklinlight' !important",
                                     }}
                                     title={
                                       (item.weekday &&
@@ -711,7 +711,7 @@ const StoreInfoBar = () => {
                                     fontSize: '12px',
                                     fontWeight: '500',
                                     color: 'background.paper',
-                                    fontFamily: "'Poppins-Medium' !important",
+                                    fontFamily:"'libre_franklinlight' !important",
                                   }}
                                   role="presentation"
                                 >
@@ -845,8 +845,7 @@ const StoreInfoBar = () => {
                                       <ListItem
                                         sx={{
                                           padding: '0 0 0 0',
-                                          fontFamily:
-                                            "'Poppins-Medium' !important",
+                                          fontFamily:"'libre_franklinlight' !important",
                                         }}
                                         title={
                                           (item.weekday &&
@@ -867,8 +866,7 @@ const StoreInfoBar = () => {
                                         fontSize: '12px',
                                         fontWeight: '500',
                                         color: 'background.paper',
-                                        fontFamily:
-                                          "'Poppins-Medium' !important",
+                                        fontFamily:"'libre_franklinlight' !important",
                                       }}
                                       role="presentation"
                                     >
@@ -917,7 +915,7 @@ const StoreInfoBar = () => {
                             component="div"
                             textTransform="uppercase"
                             fontSize={11}
-                            paddingTop="8px"
+                            fontFamily={"'libre_franklinlight' !important"}                            paddingTop="8px"
                             title={`${restaurantInfo.streetaddress}, ${restaurantInfo.city}, ${restaurantInfo.state}`}
                             sx={{
                               display: {

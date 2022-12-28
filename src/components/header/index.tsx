@@ -7,20 +7,21 @@ import {
   Theme,
   Button,
   Grid,
+  Divider,
   Dialog,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import logo from '../../assets/imgs/3.png';
-import cartIconMobile from '../../assets/imgs/cart-icon-mobile.svg';
-
+import cartIconMobile from '../../assets/imgs/cart-icon.svg';
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import Cart from '../cart';
 import Upsells from '../cart/upsells';
 import { useSelector } from 'react-redux';
 import RightMenuBar from '../right-menu-bar';
 import { isLoginUser } from '../../helpers/auth';
-
+import './index.css';
 const useStyles = makeStyles((theme: Theme) => ({
   navBar: {
     backgroundColor: '#fff !important',
@@ -55,24 +56,24 @@ const useStyles = makeStyles((theme: Theme) => ({
   menuLink: {
     textTransform: 'uppercase',
     display: 'block',
-    paddingTop: '25px',
+    paddingTop: '28px',
     paddingRight: '12px',
     [theme.breakpoints.down('md')]: {
       paddingTop: '27px',
       paddingBottom: '22px',
       paddingRight: '12px',
-      fontSize: '14px',
+      fontSize: '11pt',
     },
     [theme.breakpoints.down('sm')]: {
       paddingTop: '27px',
       paddingBottom: '22px',
       paddingRight: '12px',
-      fontSize: '14px',
+      fontSize: '11pt',
     },
     color: theme.palette.primary.main,
-    fontFamily: 'Poppins-Medium !important',
+    fontFamily: "'sunbornsans_one'!important",
     textDecoration: 'none',
-    fontSize: '17px',
+    fontSize: '12pt',
     textAlign: 'center',
     '&:hover': {
       color: '#0073BD',
@@ -89,7 +90,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       fontSize: '14px',
     },
     color: theme.palette.primary.main,
-    fontFamily: 'Poppins-Medium !important',
+    fontFamily: "'sunbornsans_one'!important",
     textDecoration: 'none',
     fontSize: '17px',
     textAlign: 'center',
@@ -242,9 +243,9 @@ const Header = (props: any) => {
                 <Grid
                   container
                   sx={{
-                    background: '#0073BD',
+                    background: 'white',
                     alignItems: 'center',
-                    fontFamily: 'Poppins-Medium',
+                    fontFamily: "'sunbornsans_one'!important",
                     textAlign: 'center',
                     textTransform: 'uppercase',
                     fontSize: '14px',
@@ -268,10 +269,11 @@ const Header = (props: any) => {
                     xs={12}
                     sx={{ display: 'flex', justifyContent: 'center' }}
                   >
-                    <img
-                      src={require('../../assets/imgs/user-icon.png')}
+                    <AccountCircleOutlinedIcon sx={{color:"#0073BD"}}/>
+                    {/* <img
+                      src={AccountCircleOutlinedIcon}
                       alt="Profile Icon"
-                    />
+                    /> */}
                   </Grid>
                 </Grid>
               ) : (
@@ -279,9 +281,9 @@ const Header = (props: any) => {
                   <Grid
                     container
                     sx={{
-                      background: '#0073BD',
+                      background: 'white',
                       alignItems: 'center',
-                      fontFamily: 'Poppins-Medium',
+                      fontFamily: "'sunbornsans_one'!important",
                       textAlign: 'center',
                       textTransform: 'uppercase',
                       fontSize: '14px',
@@ -305,11 +307,12 @@ const Header = (props: any) => {
                       xs={12}
                       sx={{ display: 'flex', justifyContent: 'center' }}
                     >
-                      <img
+                      <AccountCircleOutlinedIcon sx={{color:"#0073BD"}}/>
+                      {/* <img
                         // style={{ width: '75%', display: 'block' }}
-                        src={require('../../assets/imgs/user-icon.png')}
+                        src={AccountCircleOutlinedIcon}
                         alt="Login Icon"
-                      />
+                      /> */}
                     </Grid>
                   </Grid>
                 )
@@ -321,6 +324,10 @@ const Header = (props: any) => {
                     cursor: 'pointer',
                     textAlign: 'center',
                     width: '72px',
+                    backgroundColor: '#0073BD',
+                    height: '70px',
+                    display: 'flex',
+
                   }}
                   aria-label="Open the cart"
                   role={'button'}
@@ -344,15 +351,16 @@ const Header = (props: any) => {
                   />
                   <div
                     style={{
-                      color: 'rgb(34, 76, 101)',
+                      //color: 'rgb(34, 76, 101)',
                       position: 'absolute',
                       margin: 'auto',
                       inset: 'auto',
                       display: 'inline-block',
-                      paddingTop: '18px',
+                      paddingTop: '34px',
                       top: 0,
                       left: 0,
                       right: 0,
+                      color: " white !important",
                       bottom: 0,
                       textAlign: 'center',
                       fontSize: '13px',
@@ -360,7 +368,7 @@ const Header = (props: any) => {
                   >
                     <span
                       style={{
-                        fontFamily: 'Poppins-Medium',
+                        fontFamily: "'sunbornsans_one'!important",
                       }}
                     >
                       {basketObj.basket &&
@@ -383,7 +391,14 @@ const Header = (props: any) => {
                   View Menu
                 </Link>
               )}
+        <Grid
+        item
+        >
+                      
+        <Typography className="v-line" sx={{marginTop: {sm: "10px",lg:"15px", md: "11px"}, marginLeft: "45px", marginRight: "-12px"}}>
 
+        </Typography>
+        </Grid>
               {isLoginUser() && providerToken?.first_name
                 ? !hideLoginedPanel && (
                     <Grid
@@ -391,7 +406,6 @@ const Header = (props: any) => {
                       sx={{
                         width: { sm: '170px', md: '200px' },
                         marginLeft: '15px',
-                        background: '#0073BD',
                         alignItems: 'center',
                         cursor: 'pointer',
                       }}
@@ -414,12 +428,14 @@ const Header = (props: any) => {
                           display: 'flex',
                           justifyContent: 'center',
                           alignItems: 'center',
+                          //color: '#0073BD',
                         }}
                       >
-                        <img
-                          src={require('../../assets/imgs/user-icon.png')}
+                        <AccountCircleOutlinedIcon sx={{color:"#0073BD"}}/>
+                        {/* <img
+                          src={AccountCircleOutlinedIcon}
                           alt="Profile Icon"
-                        />{' '}
+                        />{' '} */}
                         <Typography
                           sx={{
                             paddingLeft: '5px',
@@ -428,10 +444,11 @@ const Header = (props: any) => {
                             whiteSpace: 'nowrap',
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
-                            fontFamily: 'Poppins-Medium',
+                            fontFamily: "'sunbornsans_one'!important",
                             textAlign: 'center',
                             textTransform: 'uppercase',
-                            fontSize: '14px',
+                            fontSize: '11pt',
+                            color: "#0073BD",
                           }}
                         >
                           Hi {(isLoginUser() && providerToken?.first_name) || ''}
@@ -442,6 +459,7 @@ const Header = (props: any) => {
                             style={{
                               paddingLeft: '5px',
                               fontSize: '12px',
+                              color: "#0073BD",
                             }}
                           >
                             &#9660;
@@ -452,6 +470,7 @@ const Header = (props: any) => {
                             style={{
                               paddingLeft: '5px',
                               fontSize: '12px',
+                              color: "#0073BD",
                             }}
                           >
                             &#9650;
@@ -466,7 +485,7 @@ const Header = (props: any) => {
                       sx={{
                         width: { sm: '170px', md: '200px' },
                         marginLeft: '15px',
-                        background: '#0073BD',
+                        //background: '#0073BD',
                         alignItems: 'center',
                         cursor: 'pointer',
                       }}
@@ -491,10 +510,11 @@ const Header = (props: any) => {
                           alignItems: 'center',
                         }}
                       >
-                        <img
-                          src={require('../../assets/imgs/user-icon.png')}
+                        <AccountCircleOutlinedIcon sx={{color:"#0073BD"}}/>
+                        {/* <img
+                          src={AccountCircleOutlinedIcon}
                           alt="Profile Icon"
-                        />{' '}
+                        />{' '} */}
                         <Typography
                           sx={{
                             paddingLeft: '5px',
@@ -503,10 +523,11 @@ const Header = (props: any) => {
                             whiteSpace: 'nowrap',
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
-                            fontFamily: 'Poppins-Medium',
+                            fontFamily: "'sunbornsans_one'!important",
                             textAlign: 'center',
                             textTransform: 'uppercase',
-                            fontSize: '14px',
+                            fontSize: '11pt',
+                            color: '#0073BD',
                           }}
                         >
                           Sign In!
@@ -529,9 +550,10 @@ const Header = (props: any) => {
                     paddingLeft: {xs: '20px', md:'30px'},
                     display: 'flex',
                     alignItems:'center',
-                    backgroundColor: 'transparent',
+                    borderRadius: "0px !important",
+                    backgroundColor: '#0073BD',
                     '&:hover': {
-                      backgroundColor: 'transparent',
+                      backgroundColor: '#0073BD',
                     },
                   }}
                 >
@@ -546,9 +568,10 @@ const Header = (props: any) => {
                       position: 'absolute',
                       margin: 'auto',
                       inset: 'auto',
-                      fontFamily: 'Poppins-Medium',
+                      fontFamily: "'sunbornsans_one'!important",
                       display: 'inline',
                       paddingTop: '10px',
+                      color: "white"
                     }}
                   >
                     {basketObj.basket &&

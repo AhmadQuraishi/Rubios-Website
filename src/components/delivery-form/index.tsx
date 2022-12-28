@@ -221,8 +221,11 @@ const DeliveryForm = ({
                   <Typography
                     variant="body1"
                     className="label"
+                    fontFamily= {"'sunbornsans_one'!important"}
+                    fontSize={"11pt !important"}
                     style={{
                       paddingTop: '10px',
+                      
                     }}
                   >
                     Your delivery Address
