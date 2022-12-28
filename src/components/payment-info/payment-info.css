@@ -143,7 +143,7 @@ input[type=number] {
 .add-credit-card-button {
   border-radius: 0 !important;
   letter-spacing: 2.25px !important;
-  font-family: 'Poppins-Medium' !important;
+  font-family: "'sunbornsans_one'!important";
   position: relative;
   background-color: transparent;
   outline: 0;

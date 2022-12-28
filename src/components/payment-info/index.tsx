@@ -356,6 +356,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                   onClick={() => handleHideShow()}
                   tabIndex={!hideShow ? 0 : -1}
                   id={'add-credit-card'}
+                  sx={{fontFamily: "'sunbornsans_one'!important",}}
                 >
                   Add Credit card
                 </Button>

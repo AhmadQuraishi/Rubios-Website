@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { Grid, Theme, Typography, Divider, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
-import footerLogo from '../../assets/imgs/rubios-logo-white.png';
+import footerLogo from '../../assets/imgs/ariginalFishTacos.png';
 import andriodLogo from '../../assets/imgs/button-google.png';
 import iosLogo from '../../assets/imgs/button-apple.png';
 
@@ -14,12 +14,12 @@ import fbIcon from '../../assets/imgs/facebook-icon.png';
 import instaIcon from '../../assets/imgs/insta-icon.png';
 import twitterIcon from '../../assets/imgs/twitter-icon.png';
 import tiktokIcon from '../../assets/imgs/tik-tok.png';
-
+import image from '../../assets/imgs/blue-bg.png';
 const useStyles = makeStyles((theme: Theme) => ({
   links: {
     textTransform: 'uppercase',
     fontSize: '13px',
-    fontFamily: 'Poppins-Bold !important',
+    fontFamily: 'sunbornsans_one !important',
     textDecoration: 'none',
     color: '#fff',
     '&:hover': {
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     textAlign: 'center',
     display: 'inline-block',
     paddingLeft: '30px',
-    fontFamily: 'Roboto,Helvetica,Arial,sans-serif !important',
+    fontFamily: "'libre_franklinlight' !important",
     textDecoration: 'none',
     '&:hover': {
       color: theme.palette.success.main,
@@ -55,45 +55,48 @@ const Footer = () => {
     dispatch(getMenuRequest());
   }, []);
 
-  useEffect(() => {}, [menu]);
+  useEffect(() => { }, [menu]);
 
   return (
     <footer
-      className={`${
-        window.location.href.toLocaleLowerCase().indexOf('/product') !== -1
+      className={`${window.location.href.toLocaleLowerCase().indexOf('/product') !== -1
           ? 'footer-control'
           : 'footer-setting'
-      }`}
+        }`}
     >
       <Grid
         container
         spacing={0}
         sx={{
           display: 'flex',
-          backgroundColor: 'secondary.main',
+          backgroundImage: `url(${image})`,
+          //backgroundColor: 'secondary.main',
           width: '100%',
+          height: {sm:"500px", lg: "500px", md: "500px", xs: "620px"},
           margin: 0,
-          padding: { xs: '25px 0px', lg: '35px 0px 40px 0px' },
+          padding: { xs: '100px 0px',sm: '100px 0px 10px 0px',md: '150px 0px 20px 0px', lg: '220px 0px 40px 0px' },
         }}
       >
-        <Grid item xs={12} sm={6} md={12}>
+        <Grid item xs={12} sm={6} md={7} lg={7}>
           <Grid
             container
             spacing={2}
             sx={{
+              marginTop : {lg:"0px"},
               padding: {
                 xs: '0px 20px',
                 sm: '0px 30px',
-                lg: '0px 30px 0 70px',
+                md: '30px 30px 0px 70px',
+                lg: '0px 0px 0 100px',
               },
             }}
           >
-            <Grid item xs={12}>
+            <Grid item xs={4} >
               <Button
                 sx={{
                   display: 'flex',
                   padding: {
-                    xs: '0px 0px 10px 0px',
+                    xs: '70px 0px 10px 0px', lg: '50px 0px 10px 0px',md: '50px 0px 10px 0px', sm: "80px 0px 10px 0px "
                   },
                   maxWidth: {
                     md: '236px',
@@ -111,19 +114,19 @@ const Footer = () => {
                 </a>
               </Button>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={8} sx={{paddingTop: {xs: "0px", sm: "36px !important",md: "16px !important",lg: "16px !important"}}}>
               <Grid
                 container
                 spacing={1}
                 sx={{
-                  flexWrap: { xs: 'wrap', md: 'nowrap' },
+                  flexWrap: { xs: 'wrap', md: 'wrap' },
                   maxWidth: '1024px',
                 }}
               >
                 <ul className="list">
                   {menu &&
                     menu.items.map((item: any, index: number) => (
-                      <li key={Math.random()}>
+                      <li key={Math.random()} style={{    margin: "0px 20px 20px 0px"}}>
                         <a
                           key={Math.random() + index}
                           className={classes.links}
@@ -140,27 +143,44 @@ const Footer = () => {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={12} sm={6} md={12}>
+        <Grid
+          item
+
+          sx={{
+            display: {xs: "none", lg: "flex", md: "flex", sm: "none"},
+            padding: '0 !important',
+            paddingTop: { xs: '20px !important', lg: '0px !important' },
+            paddingBottom: { xs: '0px !important',md: '30px !important', lg: '20px !important' },
+            marginLeft: {lg: "20px"},
+            marginRight: {md: "20px"},
+          }}
+        >
+          <Divider orientation="vertical" color="#fff" sx={{ padding: '0' }} />
+        </Grid>
+        <Grid item xs={12} sm={6} md={4} lg={4}>
           <Grid
             container
             spacing={1}
             sx={{
+              marginTop: {lg:"0px"},
+              display: 'flex', flexDirection: 'column', alignItems: 'flex-start',
               padding: {
                 xs: '0px 20px',
                 sm: '0px 30px',
+                
                 lg: '0px 30px 0 70px',
               },
             }}
           >
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={6} sx={{display: { md: "-webkit-inline-box",lg:"-webkit-inline-box"}}}>
               <Typography
                 sx={{
                   fontSize: '16px',
                   color: '#fff',
                   textTransform: 'uppercase',
-                  fontWeight: 600,
-                  fontFamily: 'Poppins-Medium !important',
-                  paddingTop: { xs: '40px', md: '30px', lg: '60px' },
+                  //fontWeight: 600,
+                  fontFamily: 'sunbornsans_one !important',
+                  paddingTop: {xs: "20px",sm:"15px", md: '28px', lg: '0px' },
                 }}
                 title="Connect with Us"
               >
@@ -171,26 +191,15 @@ const Footer = () => {
                 spacing={1}
                 width={200}
                 sx={{
+                  marginTop: {lg: "-15px"},
+                  marginLeft: {lg:"20px",md: "10px", sm: "-8px", xs: "-8px"},
                   padding: {
                     xs: '10px 0 0 0',
-                    md: '10px 0 0 0',
+                    md: '25px 0 0 0',
                     lg: '5px 0 0 0',
                   },
                 }}
               >
-                <Grid item xs={2} style={{ marginRight: '10px' }}>
-                  <a
-                    href={'https://www.facebook.com/rubios/'}
-                    target={'_blank'}
-                    rel="noreferrer"
-                  >
-                    <img
-                      src={fbIcon}
-                      style={{ width: '100%' }}
-                      alt="Facebook Icon"
-                    />
-                  </a>
-                </Grid>
                 <Grid item xs={2} style={{ marginRight: '10px' }}>
                   <a
                     href={'https://www.instagram.com/rubioscoastalgrill/'}
@@ -204,6 +213,20 @@ const Footer = () => {
                     />
                   </a>
                 </Grid>
+                <Grid item xs={2} style={{ marginRight: '10px' }}>
+                  <a
+                    href={'https://www.facebook.com/rubios/'}
+                    target={'_blank'}
+                    rel="noreferrer"
+                  >
+                    <img
+                      src={fbIcon}
+                      style={{ width: '100%' }}
+                      alt="Facebook Icon"
+                    />
+                  </a>
+                </Grid>
+
                 <Grid item xs={2} style={{ marginRight: '10px' }}>
                   <a
                     href={'https://twitter.com/RubiosTweets'}
@@ -232,15 +255,16 @@ const Footer = () => {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={12}    sx={{ display: 'flex',flexDirection: 'column',alignItems: "flex-start"}} >
               <Typography
                 sx={{
                   fontSize: '16px',
                   color: '#fff',
                   textTransform: 'uppercase',
-                  fontWeight: 600,
-                  fontFamily: 'Poppins-Medium !important',
-                  paddingTop: { xs: '40px', md: '30px', lg: '60px' },
+                  //fontWeight: 600,
+                  fontFamily: 'sunbornsans_one !important',
+                  paddingTop: { xs: '40px', md: '30px', lg: '0px' },
+                  //paddingLeft: {lg: "107px"},
                 }}
                 title="Get The Rubio's App"
               >
@@ -250,9 +274,11 @@ const Footer = () => {
                 container
                 spacing={4}
                 maxWidth={300}
-                sx={{ padding: '0px 0 0 0' }}
+                sx={{ padding: '0px 0 0 0', 
+                //paddingLeft: {lg: "107px"},
+               }}
               >
-                <Grid item xs={6}>
+                <Grid item xs={6} sx={{paddingTop: "40px !important"}}>
                   <Button sx={{ padding: 0 }}>
                     <a
                       href={process.env.REACT_APP_IOS_DOWNLOAD_LINK}
@@ -267,7 +293,7 @@ const Footer = () => {
                     </a>
                   </Button>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={6} sx={{paddingTop: "40px !important"}}>
                   <Button sx={{ padding: 0 }}>
                     <a
                       href={process.env.REACT_APP_GOOGLE_DOWNLOAD_LINK}
@@ -297,12 +323,13 @@ const Footer = () => {
             component="p"
             color="#fff"
             fontSize={9}
+            fontFamily= {"'libre_franklinlight' !important"}
             title="Copyright 2021 Rubios's Restaurants, Inc. All Rights reserved."
           >
             Copyright 2021 Rubios's Restaurants, Inc. All Rights reserved.
           </Typography>
         </Grid>
-        <Grid
+        {/* <Grid
           item
           xs={12}
           sx={{
@@ -311,7 +338,7 @@ const Footer = () => {
           }}
         >
           <Divider color="#fff" sx={{ padding: '0' }} />
-        </Grid>
+        </Grid> */}
         <Grid item xs={12} sx={{ paddingLeft: { xs: '0px' } }}>
           <Grid container spacing={1}>
             <Grid
@@ -319,7 +346,10 @@ const Footer = () => {
               xs={5}
               sx={{
                 display: { xs: 'none', md: 'flex' },
-                padding: { xs: '30px 0px 0px 0px', lg: '50px 0px 0px 0px' },
+                padding: { 
+                  xs: '30px 0px 0px 0px',
+                   lg: '50px 0px 0px 0px' },
+                justifyContent: { md: 'end' }
               }}
             >
               <Typography
@@ -330,21 +360,22 @@ const Footer = () => {
                 variant="caption"
                 color="#fff"
                 fontSize={9}
+                fontFamily= {"'libre_franklinlight' !important"}
                 title="Copyright 2021 Rubios's Restaurants, Inc. All Rights reserved."
               >
                 Copyright 2021 Rubios's Restaurants, Inc. All Rights reserved.
               </Typography>
             </Grid>
-            <Grid
+            {/* <Grid
               item
               xs={1}
               sx={{ display: { xs: 'none', md: 'flex' } }}
-            ></Grid>
+            ></Grid> */}
             <Grid item xs={12} md={6}>
               <Grid
                 container
                 spacing={1}
-                sx={{ paddingTop: '10px', paddingLeft: { xs: '10px' } }}
+                sx={{ paddingTop: '6px', paddingLeft: { xs: '10px', md: "0px", lg: "0px" } }}
               >
                 <Grid
                   item
@@ -352,9 +383,10 @@ const Footer = () => {
                   md={12}
                   sx={{
                     display: 'flex',
-                    paddingTop: '30px !important',
-                    paddingRight: { md: '60px', sm: '30px', xs: '30px' },
-                    justifyContent: { xs: 'left', md: 'right' },
+                    paddingTop: '29px !important',
+                    paddingLeft: '0px !important',
+                    paddingRight: { md: '90px', sm: '30px', xs: '30px' },
+                    justifyContent: { xs: 'center', md: 'start' },
                   }}
                 >
                   <ul style={{ listStyle: 'none', display: 'flex' }}>
