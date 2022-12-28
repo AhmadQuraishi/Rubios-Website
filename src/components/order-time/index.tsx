@@ -231,6 +231,7 @@ const OrderTime = ({ orderType }: any) => {
           <Grid item xs={12}>
             <Typography
               variant="h3"
+              sx={{fontSize: "11pt !important",fontFamily: "'sunbornsans_one'!important"}}
               title={
                 orderType === DeliveryModeEnum.dinein
                   ? 'DATE'
@@ -272,8 +273,9 @@ const OrderTime = ({ orderType }: any) => {
                 className="caption-grey"
                 style={{
                   marginTop: -10,
-                  color: '#0075BF',
+                  color: '#58595b',
                   border: 'none',
+                  fontFamily: "'libre_franklinlight' !important",
                   background: 'transparent',
                   cursor: 'pointer',
                 }}
@@ -344,6 +346,7 @@ const OrderTime = ({ orderType }: any) => {
                     {/* <Grid container spacing={2}> */}
                     {timeSlots.length !== 0 && hideRemoveAsap() && (
                       <ToggleButton
+                      style={{backgroundColor: "#062C43"}}
                         key={`button-${basketObj.basket?.earliestreadytime}`}
                         value={basketObj.basket?.earliestreadytime}
                         className="selected-btn"
@@ -381,6 +384,7 @@ const OrderTime = ({ orderType }: any) => {
                           key={`button-${time}`}
                           value={time}
                           className="selected-btn"
+                          style={{backgroundColor: "#062C43"}}
                           selected={selectedTime === time ? true : false}
                         >
                           {/* {index === 0 ? */}
@@ -399,6 +403,7 @@ const OrderTime = ({ orderType }: any) => {
               <Grid item xs={12}>
                 <FormControl
                   fullWidth
+                  style={{backgroundColor:"#0073bd"}}
                   className={`${
                     timeSlots.slice(4).includes(selectedTime)
                       ? 'time-slot-selected'
@@ -418,6 +423,7 @@ const OrderTime = ({ orderType }: any) => {
                           ? 'select-custom-css'
                           : '',
                     }}
+                    sx={{fontFamily: "'grit_sansbold' !important", backgroundColor: "#0073bd !important" }}
                     style={{ textAlign: 'center' }}
                     shrink={
                       selectShrink || timeSlots.slice(4).includes(selectedTime)

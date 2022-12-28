@@ -1,5 +1,5 @@
 .checkout-wrapper {
-  background: #73AAC7;
+  background-image: url('../../assets/imgs/yellow-bg.png');
   padding: 100px 135px;
 }
 .checkout-wrapper .order {
@@ -69,8 +69,8 @@
 }
 
 .checkout-wrapper h2 {
-  font-family: 'Poppins-Bold', sans-serif !important;
-  color: #214F66;
+  font-family: 'grit_sansbold' !important;
+  color: #062C43;
   font-size: 36px !important;
 }
 

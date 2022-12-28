@@ -177,6 +177,8 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
                       selected={tipPercentage === 10}
                       value={10}
                       className="selected-btn"
+                      sx={{backgroundColor: "#0075BF !important",fontFamily: "'libre_franklinlight' !important",
+                      fontSize: '25px', fontWeight: "1000 !important"}}
                     >
                       10%
                     </ToggleButton>
@@ -186,6 +188,8 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
                       selected={tipPercentage === 15}
                       value={15}
                       className="selected-btn"
+                      sx={{fontFamily: "'libre_franklinlight' !important",
+                      fontSize: '25px',fontWeight: "1000 !important"}}
                     >
                       15%
                     </ToggleButton>
@@ -195,6 +199,8 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
                       selected={tipPercentage === 20}
                       value={20}
                       className="selected-btn"
+                      sx={{fontFamily: "'libre_franklinlight' !important",
+                      fontSize: '25px', fontWeight: "1000 !important"}}
                     >
                       20%
                     </ToggleButton>

@@ -18,7 +18,7 @@ import CardSkeletonUI from '../../components/card-skeleton-ui';
 import { createBasketFromPrev } from '../../redux/actions/basket/create';
 import { displayToast } from '../../helpers/toast';
 import WelcomeNewUser from '../../components/welcome/new-user';
-import BgImage from '../../assets/imgs/Family_Burrito_Box_mainA573LR.jpg';
+import BgImage from '../../assets/imgs/20221028_RCG_Brand_5tacoLow_2393.jpg';
 import BgImageNewUser from '../../assets/imgs/rubios-welcome-background.jpg';
 import Page from '../../components/page-title';
 import { getResturantListRequest } from '../../redux/actions/restaurant/list';

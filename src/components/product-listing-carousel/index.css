@@ -18,6 +18,10 @@
 .react-multi-carousel-list {
   /*display: block !important;*/
 }
+.vertical-line{
+  border-left: 3px solid #58595b;
+  height: 16px;
+}
 
 .carousel-container .title {
   min-height: 45px;
