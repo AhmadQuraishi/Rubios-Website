@@ -61,12 +61,16 @@ const Footer = () => {
     <footer
       className={`${window.location.href.toLocaleLowerCase().indexOf('/product') !== -1
           ? 'footer-control'
-          : 'footer-setting'
+          : 'footer-image'
         }`}
     >
       <Grid
         container
         spacing={0}
+        className={`${window.location.href.toLocaleLowerCase().indexOf('/menu') || window.location.href.toLocaleLowerCase().indexOf('/menu') !== -1
+          ? 'footer-image'
+          : 'footer-setting'
+        }`}
         sx={{
           display: 'flex',
           backgroundImage: `url(${image})`,

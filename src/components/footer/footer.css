@@ -10,8 +10,12 @@
       }
 
 .footer-setting{
-   bottom:0;
-   margin-bottom: 0%;
+
+   margin-top: -80px !important;
+      }
+      .footer.image{
+        bottom:0;
+        margin-top: 0% !important;
       }
 
 @media screen and (min-width: 900px){
