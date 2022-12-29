@@ -58,7 +58,7 @@ const StoreInfoBar = () => {
   const dispatch = useDispatch();
 
   const getTimeFormat = (date: string) => {
-    return moment(date, 'YYYYMMDD HH:mm').format('h:mm A');
+    return moment(date, 'YYYYMMDD HH:mm').format('h:mm a');
   };
 
   useEffect(() => {

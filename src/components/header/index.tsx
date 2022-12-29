@@ -58,16 +58,37 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'block',
     paddingTop: '28px',
     paddingRight: '12px',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.up('md')]: {
       paddingTop: '27px',
       paddingBottom: '22px',
       paddingRight: '12px',
       fontSize: '11pt',
+      
     },
     [theme.breakpoints.down('sm')]: {
       paddingTop: '27px',
       paddingBottom: '22px',
       paddingRight: '12px',
+      fontSize: '11pt',
+    },
+    color: theme.palette.primary.main,
+    fontFamily: "'sunbornsans_one'!important",
+    textDecoration: 'none',
+    fontSize: '12pt',
+    textAlign: 'center',
+    '&:hover': {
+      color: '#0073BD',
+    },
+    transition: 'color 0.5s ease',
+  },
+  menuLinkview: {
+    textTransform: 'uppercase',
+    display: 'block',
+    [theme.breakpoints.up('md')]: {
+      fontSize: '11pt',
+      
+    },
+    [theme.breakpoints.down('sm')]: {
       fontSize: '11pt',
     },
     color: theme.palette.primary.main,
@@ -382,23 +403,31 @@ const Header = (props: any) => {
           ) : (
             <>
               {restaurant && (
+                <Grid                 sx={{    display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: {padding: "0px !important",margin: "0px !important",lg:"200px", md: "200px", sm: '170px'}}}>
                 <Link
+
                   to={restaurant ? '/menu/' + restaurant.slug : '/'}
-                  className={classes.menuLink}
+                  className={classes.menuLinkview}
                   title="View Menu"
                   onClick={() => setShowAccountMenu(false)}
                 >
                   View Menu
                 </Link>
+                </Grid>
               )}
+{/* 
         <Grid
         item
         >
                       
-        <Typography className="v-line" sx={{marginTop: {sm: "10px",lg:"15px", md: "11px"}, marginLeft: "45px", marginRight: "-12px"}}>
+        <Typography className="v-line" sx={{marginTop: {sm: "10px",lg:"15px", md: "11px"}}}>
 
         </Typography>
-        </Grid>
+        </Grid> */}
+
               {isLoginUser() && providerToken?.first_name
                 ? !hideLoginedPanel && (
                     <Grid
@@ -484,7 +513,7 @@ const Header = (props: any) => {
                       container
                       sx={{
                         width: { sm: '170px', md: '200px' },
-                        marginLeft: '15px',
+                        //marginLeft: '15px',
                         //background: '#0073BD',
                         alignItems: 'center',
                         cursor: 'pointer',
