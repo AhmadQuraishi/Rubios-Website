@@ -30,7 +30,7 @@ const useStyle = makeStyles({
   heading: {
     fontSize: '13px !important',
     color: '#fff',
-    fontFamily: 'Poppins-Medium !important',
+    fontFamily: "'grit_sansbold' !important"
   },
 });
 
@@ -196,7 +196,6 @@ const StoreInfoBar = () => {
             type={'CHECKOUT'}
             openModal={openOrder}
             setOpenModal={setOpenOrder}
-            hideIt={false}
           />
           <Grid item xs={12}>
             <Grid container spacing={0} margin="auto">
@@ -263,9 +262,8 @@ const StoreInfoBar = () => {
                   variant="h2"
                   color="#fff"
                   textTransform="uppercase"
-                  fontWeight={700}
                   lineHeight={1.3}
-                  fontFamily="Poppins-Bold !important"
+                  fontFamily= "'sunbornsans_one' !important"
                   sx={{
                     fontSize: {
                       xs: '30px !important',
