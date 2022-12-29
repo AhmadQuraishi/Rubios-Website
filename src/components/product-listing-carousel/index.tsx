@@ -185,7 +185,7 @@ const ProductListingCarousel = (props: any) => {
 
   return (
     <Fragment>
-      {/<Grid container spacing={3}>/}
+      {/* <Grid container spacing={3}> */}
       <Carousel
         swipeable={true}
         draggable={false}
@@ -286,7 +286,7 @@ const ProductListingCarousel = (props: any) => {
                       >
                         {item.description}
                       </Typography>
-                      <Grid container spacing={0} xs={12}>
+                      <Grid container spacing={0} >
                       {item.cost > 0 && (
                           <Grid
                             item
