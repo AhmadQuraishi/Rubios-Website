@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios,{ AxiosRequestHeaders } from 'axios';
 import { store } from '../../redux/store';
 import { generateDeviceId } from '../../helpers/common';
 const axiosInstance = axios.create();
@@ -13,7 +13,6 @@ const withoutTokenEndpoints = [
 axiosInstance.interceptors.request.use(
   function (config) {
     try {
-      const punchhId: string = 'punchh-app-device-id'
       const url = config.url || '';
       let isPunchhApi = url?.toString().includes('punchh_api');
       // let mobile = url?.toString().includes('mobile')
@@ -29,14 +28,14 @@ axiosInstance.interceptors.request.use(
             Authorization: `Bearer ${
               store.getState().providerReducer.providerToken.access_token
             }`,
-          };
+          } as AxiosRequestHeaders;
         }
-        const deviceId: string = store.getState().authReducer.deviceId
+        const deviceId = store.getState().authReducer.deviceId
           ? store.getState().authReducer.deviceId
           : generateDeviceId();
 
         if (deviceId && config && config.headers) {
-          config.headers[punchhId] = deviceId;
+          config.headers['punchh-app-device-id']   = deviceId;
         }
 
         // config.headers = {
