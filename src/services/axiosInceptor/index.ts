@@ -16,13 +16,12 @@ axiosInstance.interceptors.request.use(
       const url = config.url || '';
       let isPunchhApi = url?.toString().includes('punchh_api');
       // let mobile = url?.toString().includes('mobile')
-      if (isPunchhApi) {
-      const headers: AxiosRequestHeaders = {} ;
+      if (isPunchhApi && config.headers) {
         // if (mobile) {
         let endpoint: any = url?.toString().split('punchh_api/');
         endpoint = endpoint[1];
         if (!withoutTokenEndpoints.includes(endpoint)) {
-          headers.Authorization = `Bearer ${
+          config.headers.Authorization = `Bearer ${
             store.getState().providerReducer.providerToken.access_token
           }`
         }
@@ -30,9 +29,8 @@ axiosInstance.interceptors.request.use(
           ? store.getState().authReducer.deviceId
           : generateDeviceId();
         if (deviceId) {
-            headers['punchh-app-device-id'] = deviceId;
+            config.headers['punchh-app-device-id'] = deviceId;
         }
-        config.headers = headers;
       }
       return config;
     } catch (e) {
