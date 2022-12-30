@@ -13,6 +13,7 @@ const withoutTokenEndpoints = [
 axiosInstance.interceptors.request.use(
   function (config) {
     try {
+      const punchhId: string = 'punchh-app-device-id'
       const url = config.url || '';
       let isPunchhApi = url?.toString().includes('punchh_api');
       // let mobile = url?.toString().includes('mobile')
@@ -30,12 +31,12 @@ axiosInstance.interceptors.request.use(
             }`,
           };
         }
-        const deviceId = store.getState().authReducer.deviceId
+        const deviceId: string = store.getState().authReducer.deviceId
           ? store.getState().authReducer.deviceId
           : generateDeviceId();
 
         if (deviceId && config && config.headers) {
-          config.headers['punchh-app-device-id'] = deviceId;
+          config.headers[punchhId] = deviceId;
         }
 
         // config.headers = {
