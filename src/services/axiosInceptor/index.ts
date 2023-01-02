@@ -21,7 +21,7 @@ axiosInstance.interceptors.request.use(
         let endpoint: any = url?.toString().split('punchh_api/');
         endpoint = endpoint[1];
         if (!withoutTokenEndpoints.includes(endpoint)) {
-          config.headers.Authorization = `Bearer ${
+          config.headers['Authorization'] = `Bearer ${
             store.getState().providerReducer.providerToken.access_token
           }`
         }
