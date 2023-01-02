@@ -64,6 +64,7 @@ const Footer = () => {
           : 'footer-image'
         }`}
     >
+      {/* New Changes */}
       <Grid
         container
         spacing={0}
