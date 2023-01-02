@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       paddingBottom: '22px',
       paddingRight: '12px',
       fontSize: '11pt',
-      
+
     },
     [theme.breakpoints.down('sm')]: {
       paddingTop: '27px',
@@ -86,7 +86,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'block',
     [theme.breakpoints.up('md')]: {
       fontSize: '11pt',
-      
+
     },
     [theme.breakpoints.down('sm')]: {
       fontSize: '11pt',
@@ -231,7 +231,7 @@ const Header = (props: any) => {
                   to={restaurant ? '/menu/' + restaurant.slug : '/'}
                   className={
                     window.location.pathname === '/login' ||
-                    window.location.pathname === '/register'
+                      window.location.pathname === '/register'
                       ? classes.menuItemLink
                       : classes.menuLink
                   }
@@ -290,7 +290,7 @@ const Header = (props: any) => {
                     xs={12}
                     sx={{ display: 'flex', justifyContent: 'center' }}
                   >
-                    <AccountCircleOutlinedIcon sx={{color:"#0073BD"}}/>
+                    <AccountCircleOutlinedIcon sx={{ color: "#0073BD" }} />
                     {/* <img
                       src={AccountCircleOutlinedIcon}
                       alt="Profile Icon"
@@ -328,7 +328,7 @@ const Header = (props: any) => {
                       xs={12}
                       sx={{ display: 'flex', justifyContent: 'center' }}
                     >
-                      <AccountCircleOutlinedIcon sx={{color:"#0073BD"}}/>
+                      <AccountCircleOutlinedIcon sx={{ color: "#0073BD" }} />
                       {/* <img
                         // style={{ width: '75%', display: 'block' }}
                         src={AccountCircleOutlinedIcon}
@@ -403,167 +403,165 @@ const Header = (props: any) => {
           ) : (
             <>
               {restaurant && (
-                <Grid                 sx={{    display: 'flex',
+                <Grid sx={{
+                  display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  width: {padding: "0px !important",margin: "0px !important",lg:"200px", md: "200px", sm: '170px'}}}>
-                <Link
+                  width: { padding: "0px !important", margin: "0px !important", lg: "106.5px", md: "106.5px", sm: '106.5px' }
+                }}>
+                  <Link
 
-                  to={restaurant ? '/menu/' + restaurant.slug : '/'}
-                  className={classes.menuLinkview}
-                  title="View Menu"
-                  onClick={() => setShowAccountMenu(false)}
-                >
-                  View Menu
-                </Link>
+                    to={restaurant ? '/menu/' + restaurant.slug : '/'}
+                    className={classes.menuLinkview}
+                    title="View Menu"
+                    onClick={() => setShowAccountMenu(false)}
+                  >
+                    View Menu
+                  </Link>
                 </Grid>
               )}
-{/* 
-        <Grid
-        item
-        >
-                      
-        <Typography className="v-line" sx={{marginTop: {sm: "10px",lg:"15px", md: "11px"}}}>
+              {/* <Grid
+              >
+                <Typography className="v-line" sx={{ marginTop: { sm: "10px", lg: "15px", md: "11px" } }}>
 
-        </Typography>
-        </Grid> */}
-
+                </Typography>
+              </Grid> */}
               {isLoginUser() && providerToken?.first_name
                 ? !hideLoginedPanel && (
-                    <Grid
-                      container
-                      sx={{
-                        width: { sm: '170px', md: '200px' },
-                        marginLeft: '15px',
-                        alignItems: 'center',
-                        cursor: 'pointer',
-                      }}
-                      role={'button'}
-                      aria-label={'Account Menu'}
-                      tabIndex={0}
-                      onKeyPress={(e: any) => {
-                        if (e.key === 'Enter') {
-                          setShowAccountMenu(!showAccountMenu);
-                        }
-                      }}
-                      onClick={() => {
+                  <Grid
+                    container
+                    sx={{
+                      width: { sm: '170px', md: '200px' },
+                     // marginLeft: '15px',
+                      alignItems: 'center',
+                      cursor: 'pointer',
+                    }}
+                    role={'button'}
+                    aria-label={'Account Menu'}
+                    tabIndex={0}
+                    onKeyPress={(e: any) => {
+                      if (e.key === 'Enter') {
                         setShowAccountMenu(!showAccountMenu);
+                      }
+                    }}
+                    onClick={() => {
+                      setShowAccountMenu(!showAccountMenu);
+                    }}
+                  >
+                    <Grid
+                      item
+                      xs={12}
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        //color: '#0073BD',
                       }}
                     >
-                      <Grid
-                        item
-                        xs={12}
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          //color: '#0073BD',
-                        }}
-                      >
-                        <AccountCircleOutlinedIcon sx={{color:"#0073BD"}}/>
-                        {/* <img
+                      <AccountCircleOutlinedIcon sx={{ color: "#0073BD" }} />
+                      {/* <img
                           src={AccountCircleOutlinedIcon}
                           alt="Profile Icon"
                         />{' '} */}
-                        <Typography
-                          sx={{
+                      <Typography
+                        sx={{
+                          paddingLeft: '5px',
+                          display: 'block',
+                          maxWidth: { sm: '100px', lg: '130px' },
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          fontFamily: "'sunbornsans_one'!important",
+                          textAlign: 'center',
+                          textTransform: 'uppercase',
+                          fontSize: '11pt',
+                          color: "#0073BD",
+                        }}
+                      >
+                        Hi {(isLoginUser() && providerToken?.first_name) || ''}
+                        !
+                      </Typography>
+                      {!showAccountMenu && (
+                        <span
+                          style={{
                             paddingLeft: '5px',
-                            display: 'block',
-                            maxWidth: { sm: '100px', lg: '130px' },
-                            whiteSpace: 'nowrap',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            fontFamily: "'sunbornsans_one'!important",
-                            textAlign: 'center',
-                            textTransform: 'uppercase',
-                            fontSize: '11pt',
+                            fontSize: '12px',
                             color: "#0073BD",
                           }}
                         >
-                          Hi {(isLoginUser() && providerToken?.first_name) || ''}
-                          !
-                        </Typography>
-                        {!showAccountMenu && (
-                          <span
-                            style={{
-                              paddingLeft: '5px',
-                              fontSize: '12px',
-                              color: "#0073BD",
-                            }}
-                          >
-                            &#9660;
-                          </span>
-                        )}
-                        {showAccountMenu && (
-                          <span
-                            style={{
-                              paddingLeft: '5px',
-                              fontSize: '12px',
-                              color: "#0073BD",
-                            }}
-                          >
-                            &#9650;
-                          </span>
-                        )}
-                      </Grid>
+                          &#9660;
+                        </span>
+                      )}
+                      {showAccountMenu && (
+                        <span
+                          style={{
+                            paddingLeft: '5px',
+                            fontSize: '12px',
+                            color: "#0073BD",
+                          }}
+                        >
+                          &#9650;
+                        </span>
+                      )}
                     </Grid>
-                  )
+                  </Grid>
+                )
                 : !hideLoginPanel && (
-                    <Grid
-                      container
-                      sx={{
-                        width: { sm: '170px', md: '200px' },
-                        //marginLeft: '15px',
-                        //background: '#0073BD',
-                        alignItems: 'center',
-                        cursor: 'pointer',
-                      }}
-                      role={'button'}
-                      aria-label={'Sign In'}
-                      tabIndex={0}
-                      onKeyPress={(e: any) => {
-                        if (e.key === 'Enter') {
-                          navigate('/login');
-                        }
-                      }}
-                      onClick={() => {
+                  <Grid
+                    container
+                    sx={{
+                      width: { sm: '170px', md: '200px' },
+                      //marginLeft: '15px',
+                      //background: '#0073BD',
+                      alignItems: 'center',
+                      cursor: 'pointer',
+                    }}
+                    role={'button'}
+                    aria-label={'Sign In'}
+                    tabIndex={0}
+                    onKeyPress={(e: any) => {
+                      if (e.key === 'Enter') {
                         navigate('/login');
+                      }
+                    }}
+                    onClick={() => {
+                      navigate('/login');
+                    }}
+                  >
+                    <Grid
+                      item
+                      xs={12}
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
                       }}
                     >
-                      <Grid
-                        item
-                        xs={12}
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                        }}
-                      >
-                        <AccountCircleOutlinedIcon sx={{color:"#0073BD"}}/>
-                        {/* <img
+                      <AccountCircleOutlinedIcon sx={{ color: "#0073BD" }} />
+                      {/* <img
                           src={AccountCircleOutlinedIcon}
                           alt="Profile Icon"
                         />{' '} */}
-                        <Typography
-                          sx={{
-                            paddingLeft: '5px',
-                            display: 'block',
-                            maxWidth: { sm: '100px', lg: '130px' },
-                            whiteSpace: 'nowrap',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            fontFamily: "'sunbornsans_one'!important",
-                            textAlign: 'center',
-                            textTransform: 'uppercase',
-                            fontSize: '11pt',
-                            color: '#0073BD',
-                          }}
-                        >
-                          Sign In!
-                        </Typography>
-                      </Grid>
+                      <Typography
+                        sx={{
+                          paddingLeft: '5px',
+                          display: 'block',
+                          maxWidth: { sm: '100px', lg: '130px' },
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          fontFamily: "'sunbornsans_one'!important",
+                          textAlign: 'center',
+                          textTransform: 'uppercase',
+                          fontSize: '11pt',
+                          color: '#0073BD',
+                        }}
+                      >
+                        Sign In!
+                      </Typography>
                     </Grid>
-                  )}
+                  </Grid>
+                )}
               {!removeCart && (
                 <Button
                   component="div"
@@ -576,9 +574,9 @@ const Header = (props: any) => {
                   }}
                   sx={{
                     paddingRight: { xs: '20px', md: '30px' },
-                    paddingLeft: {xs: '20px', md:'30px'},
+                    paddingLeft: { xs: '20px', md: '30px' },
                     display: 'flex',
-                    alignItems:'center',
+                    alignItems: 'center',
                     borderRadius: "0px !important",
                     backgroundColor: '#0073BD',
                     '&:hover': {
