@@ -402,12 +402,16 @@ const Header = (props: any) => {
             </>
           ) : (
             <>
+            <Grid xs={12} sx={{display: "flex", justifyContent: "space-evenly", width: "23%"}}>
+
               {restaurant && (
-                <Grid sx={{
+                <Grid xs={6} sx={{
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  width: { padding: "0px !important", margin: "0px !important", lg: "106.5px", md: "106.5px", sm: '106.5px' }
+                  //width: { padding: "0px !important", margin: "0px !important"
+                  //, lg: "106.5px", md: "106.5px", sm: '106.5px' 
+                //}
                 }}>
                   <Link
 
@@ -420,18 +424,19 @@ const Header = (props: any) => {
                   </Link>
                 </Grid>
               )}
-              {/* <Grid
+              <Grid
               >
                 <Typography className="v-line" sx={{ marginTop: { sm: "10px", lg: "15px", md: "11px" } }}>
 
                 </Typography>
-              </Grid> */}
+              </Grid>
               {isLoginUser() && providerToken?.first_name
                 ? !hideLoginedPanel && (
                   <Grid
+                  xs={6}
                     container
                     sx={{
-                      width: { sm: '170px', md: '200px' },
+                     // width: { sm: '170px', md: '200px' },
                      // marginLeft: '15px',
                       alignItems: 'center',
                       cursor: 'pointer',
@@ -465,9 +470,9 @@ const Header = (props: any) => {
                         />{' '} */}
                       <Typography
                         sx={{
-                          paddingLeft: '5px',
+                          //paddingLeft: '5px',
                           display: 'block',
-                          maxWidth: { sm: '100px', lg: '130px' },
+                          //maxWidth: { sm: '100px', lg: '130px' },
                           whiteSpace: 'nowrap',
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
@@ -484,7 +489,7 @@ const Header = (props: any) => {
                       {!showAccountMenu && (
                         <span
                           style={{
-                            paddingLeft: '5px',
+                            //paddingLeft: '5px',
                             fontSize: '12px',
                             color: "#0073BD",
                           }}
@@ -495,7 +500,7 @@ const Header = (props: any) => {
                       {showAccountMenu && (
                         <span
                           style={{
-                            paddingLeft: '5px',
+                            //paddingLeft: '5px',
                             fontSize: '12px',
                             color: "#0073BD",
                           }}
@@ -508,9 +513,11 @@ const Header = (props: any) => {
                 )
                 : !hideLoginPanel && (
                   <Grid
+                  xs={6}
+
                     container
                     sx={{
-                      width: { sm: '170px', md: '200px' },
+                      //width: { sm: '170px', md: '200px' },
                       //marginLeft: '15px',
                       //background: '#0073BD',
                       alignItems: 'center',
@@ -544,9 +551,9 @@ const Header = (props: any) => {
                         />{' '} */}
                       <Typography
                         sx={{
-                          paddingLeft: '5px',
+                          //paddingLeft: '5px',
                           display: 'block',
-                          maxWidth: { sm: '100px', lg: '130px' },
+                          //maxWidth: { sm: '100px', lg: '130px' },
                           whiteSpace: 'nowrap',
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
@@ -562,6 +569,8 @@ const Header = (props: any) => {
                     </Grid>
                   </Grid>
                 )}
+                
+            </Grid>
               {!removeCart && (
                 <Button
                   component="div"

@@ -161,17 +161,24 @@ const StoreInfoBar = () => {
     if (type === 'dinein') return 'Dine In At';
     if (type === 'pickup' || type === 'curbside') return 'Pick Up From';
   };
-  const getEstTimeFormat = (date: string) => {
-    return moment(date, 'YYYYMMDD HH:mm').format('dddd h:mm A');
+  const getEstTimeFormat = (date: string, data2: string) => {
+    return moment(date, 'YYYYMMDD HH:mm').add(data2, 'minutes').format('dddd h:mm A');
+    // moment(startTime, 'HH:mm:ss').add(durationInMinutes, 'minutes').format('HH:mm');
+    
   };
-
   const EstimatedTime = () => {
     const type = basketObj?.basket?.deliverymode || orderType || '';
     const time = basketObj?.basket;
-    if (type === 'dispatch') {
-      return getEstTimeFormat(time.earliestreadytime);
+    // const 
+    if (time?.timemode === 'asap') {
+      return getEstTimeFormat(time.earliestreadytime,time.leadtimeestimateminutes);
     }
-  };
+    else if (time?.timewanted)
+     {
+      return getEstTimeFormat(time.timewanted,time.leadtimeestimateminutes);
+    }
+    
+  }
   return (
     <>
       {restaurantInfo && (

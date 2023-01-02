@@ -155,7 +155,7 @@ const Footer = () => {
             display: {xs: "none", lg: "flex", md: "flex", sm: "none"},
             padding: '0 !important',
             paddingTop: { xs: '20px !important', lg: '0px !important' },
-            paddingBottom: { xs: '0px !important',md: '30px !important', lg: '20px !important' },
+            paddingBottom: { xs: '0px !important',md: '30px !important', lg: '35px !important' },
             marginLeft: {lg: "20px"},
             marginRight: {md: "20px"},
           }}
@@ -183,7 +183,8 @@ const Footer = () => {
                   fontSize: '16px',
                   color: '#fff',
                   textTransform: 'uppercase',
-                  //fontWeight: 600,
+                  fontWeight: '100 !important',
+                  letterSpacing: "0.07938em !important",
                   fontFamily: 'sunbornsans_one !important',
                   paddingTop: {xs: "20px",sm:"15px", md: '28px', lg: '0px' },
                 }}
@@ -266,7 +267,8 @@ const Footer = () => {
                   fontSize: '16px',
                   color: '#fff',
                   textTransform: 'uppercase',
-                  //fontWeight: 600,
+                  fontWeight: '100 !important',
+                  letterSpacing: "0.07938em !important",
                   fontFamily: 'sunbornsans_one !important',
                   paddingTop: { xs: '40px', md: '30px', lg: '0px' },
                   //paddingLeft: {lg: "107px"},

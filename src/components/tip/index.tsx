@@ -7,7 +7,7 @@ import {
   ToggleButtonGroup,
   ToggleButton,
 } from '@mui/material';
-import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { useDispatch } from 'react-redux';
 import FormControl from '@mui/material/FormControl';
 import './tip.css';
@@ -121,10 +121,12 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
         updateTipAmountCall(tipCustomAmount);
         setTipPercentage(0);
       }}
+
       disabled={(loading && tipLoading) || !tipCustomAmount}
       aria-label="proceed"
+
     >
-      <ArrowRightAltIcon />
+      <ArrowForwardIosIcon />
     </Button>
   );
 
@@ -136,6 +138,7 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
     <Button
       onClick={() => updateCouponCodeCall(couponCode)}
       style={{
+        
         fontSize:
           basket && basket.coupon && basket.coupon.couponcode
             ? '8px'
@@ -147,7 +150,7 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
       {basket && basket.coupon && basket.coupon.couponcode ? (
         <>Remove</>
       ) : (
-        <ArrowRightAltIcon />
+        <ArrowForwardIosIcon />
       )}
     </Button>
   );
@@ -177,8 +180,8 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
                       selected={tipPercentage === 10}
                       value={10}
                       className="selected-btn"
-                      sx={{backgroundColor: "#0075BF !important",fontFamily: "'libre_franklinlight' !important",
-                      fontSize: '25px', fontWeight: "1000 !important"}}
+                      sx={{backgroundColor: "#0075BF !important",fontFamily: "libre_franklin !important",
+                      fontSize: '25px', fontWeight: "1000 !important", lineSpacing: "0px !important"}}
                     >
                       10%
                     </ToggleButton>
@@ -188,8 +191,8 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
                       selected={tipPercentage === 15}
                       value={15}
                       className="selected-btn"
-                      sx={{fontFamily: "'libre_franklinlight' !important",
-                      fontSize: '25px',fontWeight: "1000 !important"}}
+                      sx={{fontFamily: "libre_franklin !important",
+                      fontSize: '25px',fontWeight: "1000 !important" ,lineSpacing: "0px !important"}}
                     >
                       15%
                     </ToggleButton>
@@ -199,8 +202,8 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
                       selected={tipPercentage === 20}
                       value={20}
                       className="selected-btn"
-                      sx={{fontFamily: "'libre_franklinlight' !important",
-                      fontSize: '25px', fontWeight: "1000 !important"}}
+                      sx={{fontFamily: "libre_franklin !important",
+                      fontSize: '25px', fontWeight: "1000 !important",lineSpacing: "0px !important"}}
                     >
                       20%
                     </ToggleButton>
