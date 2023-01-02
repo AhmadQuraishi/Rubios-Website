@@ -91,6 +91,7 @@ const CategoryList = () => {
     <Grid
       sx={{
         minHeight: 'auto',
+        backgroundColor: 'transparent',
         padding: {
           xs: '0px 15px',
           sm: '0px 15px',

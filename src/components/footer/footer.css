@@ -6,6 +6,8 @@
   padding-left: 10px;
   /* padding-left: -webi; */
   text-align: -webkit-left;
+  font-weight: 100 !important;
+  letter-spacing: 0.07938em !important;
 }
 
 .footer-setting {

@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   title: {
     color: theme.palette.secondary.main,
     padding: '20px 0 10px 0',
-    fontSize: '18px !important',
+    fontSize: '16px !important',
     fontWeight: '600 !important',
     fontFamily: 'Poppins-Medium !important',
     letterSpacing: '0.00938em !important',

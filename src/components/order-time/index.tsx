@@ -231,7 +231,7 @@ const OrderTime = ({ orderType }: any) => {
           <Grid item xs={12}>
             <Typography
               variant="h3"
-              sx={{fontSize: "11pt !important",fontFamily: "'sunbornsans_one'!important"}}
+              sx={{fontSize: "11pt !important",fontFamily: "'sunbornsans_one'!important",letterSpacing:"0.03562em"}}
               title={
                 orderType === DeliveryModeEnum.dinein
                   ? 'DATE'
@@ -384,7 +384,7 @@ const OrderTime = ({ orderType }: any) => {
                           key={`button-${time}`}
                           value={time}
                           className="selected-btn"
-                          style={{backgroundColor: "#062C43"}}
+                          style={{backgroundColor: "#062C43", fontSize: "16px"}}
                           selected={selectedTime === time ? true : false}
                         >
                           {/* {index === 0 ? */}
