@@ -72,6 +72,7 @@
   font-family: 'grit_sansbold' !important;
   color: #062C43;
   font-size: 36px !important;
+ letter-spacing:0.03562em;
 }
 
 @media screen and (max-width: 900px) {

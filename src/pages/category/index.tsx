@@ -40,6 +40,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: '25px !important',
     textTransform: 'uppercase',
     paddingBottom: '30px',
+    letterSpacing: '0.04833em !important',
   },
   
   link: {

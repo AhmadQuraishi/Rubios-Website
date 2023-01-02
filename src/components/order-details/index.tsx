@@ -92,7 +92,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                           <Typography
                             align={'right'}
                             variant="h6"
-                            sx={{fontFamily: "'libre_franklinlight' !important",fontWeight: 'bold !important'}}
+                            sx={{fontFamily: "'libre_franklin' !important",fontWeight: 'bold !important'}}
                             title={item.totalcost.toFixed(2)}
                           >
                             ${item.totalcost.toFixed(2)}
@@ -119,7 +119,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                     align={'right'}
                     variant="h6"
                     title={basket && basket.subtotal.toFixed(2)}
-                    sx={{fontFamily: "'libre_franklinlight' !important",fontWeight: 'bold !important'}}
+                    sx={{fontFamily: "'libre_franklin' !important",fontWeight: 'bold !important'}}
                   >
                     ${basket && basket.subtotal.toFixed(2)}
                   </Typography>
@@ -150,7 +150,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                             </Typography>
                           </Grid>
                           <Grid item xs={3} sm={3} md={3} lg={3}>
-                            <Typography align={'right'} variant="h6" sx={{fontFamily: "'libre_franklinlight' !important",fontWeight: 'bold !important'}}>
+                            <Typography align={'right'} variant="h6" sx={{fontFamily: "'libre_franklin' !important",fontWeight: 'bold !important'}}>
                               {/*-$*/}
                               {/*{basket.discounts[0].amount > basket.subtotal*/}
                               {/*  ? parseFloat(basket.subtotal.toString()).toFixed(2)*/}
@@ -179,7 +179,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                       <Typography
                         align={'right'}
                         variant="h6"
-                        sx={{fontFamily: "'libre_franklinlight' !important",fontWeight: 'bold !important'}}
+                        sx={{fontFamily: "'libre_franklin' !important",fontWeight: 'bold !important'}}
                         title={basket && basket.tip.toFixed(2)}
                       >
                         +${basket && basket.tip.toFixed(2)}
@@ -220,8 +220,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                         basket.deliverymode !== DeliveryModeEnum.curbside ? (
                           <>
                             <Typography sx={{
-                          fontSize: '16px',
-                          fontFamily: 'sunbornsans_one !important', cursor: 'pointer'}} onClick={() => {
+                          fontSize: '16px', cursor: 'pointer'}} onClick={() => {
                                     setShowMore(!showMore);
                                   }}>
                               ESTIMATED TAX AND FEES
@@ -255,7 +254,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                              </Typography>
                           </>
                         ) : (
-                          <Typography sx={{fontFamily: 'sunbornsans_one !important',}}>
+                          <Typography>
                           ESTIMATED TAXES
                           </Typography>
                         )}
@@ -265,7 +264,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                 </Grid>
                 {!showMore &&
                 <Grid item xs={3} sm={3} md={3} lg={3}>
-                  <Typography align={'right'} className="n-bold" variant="h6" sx={{fontFamily: "'libre_franklinlight' !important",fontWeight: 'bold !important'}} >
+                  <Typography align={'right'} className="n-bold" variant="h6" sx={{fontFamily: "'poppins-regular' !important"}} >
                     ${calculateTaxAndFee(basket)}
                   </Typography>
                 </Grid>
@@ -293,7 +292,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                               </Typography>
                             </Grid>
                             <Grid item xs={3} justifyContent={'flex-end'}>
-                              <Typography className="text-info-desc" sx={{fontFamily: "'libre_franklinlight' !important", fontWeight: 'bold !important'}}>
+                              <Typography className="text-info-desc" sx={{fontFamily: "'libre_franklin' !important", fontWeight: 'bold !important'}}>
                                 $
                                 {basket &&
                                   basket.taxes &&
@@ -311,7 +310,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                               </Typography>
                             </Grid>
                             <Grid item xs={3}>
-                              <Typography className="text-info-desc" sx={{fontFamily: "'libre_franklinlight' !important",fontWeight: 'bold !important'}}>
+                              <Typography className="text-info-desc" sx={{fontFamily: "'libre_franklin' !important",fontWeight: 'bold !important'}}>
                                 ${(basket && basket.totalfees.toFixed(2)) || 0}
                               </Typography>
                             </Grid>
@@ -358,7 +357,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                     </Typography>
                   </Grid>
                   <Grid item xs={3} sm={3} md={3} lg={3}>
-                    <Typography align={'right'} variant="h6" sx={{fontFamily: "'libre_franklinlight' !important",fontWeight: 'bold !important'}}>
+                    <Typography align={'right'} variant="h6" sx={{fontFamily: "'libre_franklin' !important",fontWeight: 'bold !important'}}>
                       ${basket.customerhandoffcharge.toFixed(2)}
                     </Typography>
                   </Grid>
@@ -381,7 +380,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                     align={'right'}
                     variant="h6"
                     title={basket && basket.total.toFixed(2)}
-                    sx={{fontFamily: "'libre_franklinlight' !important",fontWeight: 'bold !important'}}
+                    sx={{fontFamily: "'libre_franklin' !important",fontWeight: 'bold !important'}}
                   >
                     ${basket && basket.total.toFixed(2)}
                   </Typography>
