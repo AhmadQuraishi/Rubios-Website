@@ -14,13 +14,13 @@
   padding-left: 10px;
 }
 .tip-wrapper .action-btn button {
-  background: #0075BF ;
+  background: #0075BF;
   color: white;
   height: 56px;
 }
 
 .tip-wrapper .action-btn .Mui-disabled {
-  background:  #062C43;
+  background: #d3d3d3;
 }
 
 @media screen and (max-width: 900px) {
