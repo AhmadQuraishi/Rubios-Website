@@ -2,7 +2,7 @@
   min-width: 69px;
   width: 69px;
   height: 60px;
-  font-size: 16px;
+  font-size: 18pt;
   margin: 20px 18px 0px 0px !important;
 }
 .tip-wrapper .action-btn {
@@ -14,7 +14,7 @@
   padding-left: 10px;
 }
 .tip-wrapper .action-btn button {
-  background: #214F66;
+  background: #0075BF;
   color: white;
   height: 56px;
 }

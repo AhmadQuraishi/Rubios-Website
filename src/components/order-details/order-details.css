@@ -15,12 +15,13 @@
   margin: 0px auto 0px auto !important;
 }
 .order-details h6 {
-  font-family: 'sunbornsans_one'!important;
+  /* font-family: 'libre_franklin'!important; */
   font-size: 16px !important;
   color: #58595b;
+  font-weight: bold;
 }
 .order-details h6.n-bold {
-  font-family: 'Poppins-Regular' !important;
+  /* font-family: 'Poppins-Regular' !important; */
 }
 .order-details hr {
   background: #285169;

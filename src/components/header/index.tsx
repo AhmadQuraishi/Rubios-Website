@@ -13,8 +13,9 @@ import {
 import { makeStyles } from '@mui/styles';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import logo from '../../assets/imgs/3.png';
-import cartIconMobile from '../../assets/imgs/cart-icon.svg';
+import logo from '../../assets/imgs/unnamed.png';
+import cartIcon from '../../assets/imgs/cart-icon.svg';
+import cartIconMobile from '../../assets/imgs/cart-icon-mobile.svg';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import Cart from '../cart';
 import Upsells from '../cart/upsells';
@@ -36,12 +37,12 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   logoImg: {
     display: 'inline-block',
-    padding: '22px 70px 18px 85px',
+    padding: '9px 70px 12px 85px',
     [theme.breakpoints.down('lg')]: {
-      padding: '18px 0 14px 20px',
+      padding: '14px 0 14px 20px',
     },
     [theme.breakpoints.down('sm')]: {
-      padding: '18px 0 14px 20px',
+      padding: '14px 0 14px 20px',
     },
     '& img': {
       width: '90%',
@@ -63,7 +64,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       paddingBottom: '22px',
       paddingRight: '12px',
       fontSize: '11pt',
-      
+
     },
     [theme.breakpoints.down('sm')]: {
       paddingTop: '27px',
@@ -84,9 +85,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   menuLinkview: {
     textTransform: 'uppercase',
     display: 'block',
+    whiteSpace: "nowrap",
     [theme.breakpoints.up('md')]: {
       fontSize: '11pt',
-      
+
     },
     [theme.breakpoints.down('sm')]: {
       fontSize: '11pt',
@@ -231,7 +233,7 @@ const Header = (props: any) => {
                   to={restaurant ? '/menu/' + restaurant.slug : '/'}
                   className={
                     window.location.pathname === '/login' ||
-                    window.location.pathname === '/register'
+                      window.location.pathname === '/register'
                       ? classes.menuItemLink
                       : classes.menuLink
                   }
@@ -264,13 +266,13 @@ const Header = (props: any) => {
                 <Grid
                   container
                   sx={{
-                    background: 'white',
+                    background: '#0075BF',
                     alignItems: 'center',
                     fontFamily: "'sunbornsans_one'!important",
                     textAlign: 'center',
                     textTransform: 'uppercase',
                     fontSize: '14px',
-                    height: '70px',
+                    height: '80px',
                     width: '65px',
                   }}
                   role={'button'}
@@ -290,11 +292,11 @@ const Header = (props: any) => {
                     xs={12}
                     sx={{ display: 'flex', justifyContent: 'center' }}
                   >
-                    <AccountCircleOutlinedIcon sx={{color:"#0073BD"}}/>
-                    {/* <img
-                      src={AccountCircleOutlinedIcon}
+                    {/* <AccountCircleOutlinedIcon sx={{ color: "#0073BD" }} /> */}
+                    <img
+                      src={require('../../assets/imgs/user-icon.png')}
                       alt="Profile Icon"
-                    /> */}
+                    />
                   </Grid>
                 </Grid>
               ) : (
@@ -302,13 +304,13 @@ const Header = (props: any) => {
                   <Grid
                     container
                     sx={{
-                      background: 'white',
+                      background: '#0075BF',
                       alignItems: 'center',
                       fontFamily: "'sunbornsans_one'!important",
                       textAlign: 'center',
                       textTransform: 'uppercase',
                       fontSize: '14px',
-                      height: '70px',
+                      height: '80px',
                       width: '65px',
                     }}
                     role={'button'}
@@ -328,12 +330,12 @@ const Header = (props: any) => {
                       xs={12}
                       sx={{ display: 'flex', justifyContent: 'center' }}
                     >
-                      <AccountCircleOutlinedIcon sx={{color:"#0073BD"}}/>
-                      {/* <img
+                      {/* <AccountCircleOutlinedIcon sx={{ color: "#0073BD" }} /> */}
+                      <img
                         // style={{ width: '75%', display: 'block' }}
-                        src={AccountCircleOutlinedIcon}
+                        src={require('../../assets/imgs/user-icon.png')}
                         alt="Login Icon"
-                      /> */}
+                      />
                     </Grid>
                   </Grid>
                 )
@@ -345,7 +347,7 @@ const Header = (props: any) => {
                     cursor: 'pointer',
                     textAlign: 'center',
                     width: '72px',
-                    backgroundColor: '#0073BD',
+                    backgroundColor: 'white',
                     height: '70px',
                     display: 'flex',
 
@@ -402,168 +404,181 @@ const Header = (props: any) => {
             </>
           ) : (
             <>
+            <Grid  sx={{display: "flex", justifyContent: "space-evenly"}}>
+
               {restaurant && (
-                <Grid                 sx={{    display: 'flex',
+                <Grid sx={{
+                  display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  width: {padding: "0px !important",margin: "0px !important",lg:"200px", md: "200px", sm: '170px'}}}>
-                <Link
+                  marginRight: "50px",
+                  marginLeft: "50px",
+                  //width: { padding: "0px !important", margin: "0px !important"
+                  //, lg: "106.5px", md: "106.5px", sm: '106.5px' 
+                //}
+                }}>
+                  <Link
 
-                  to={restaurant ? '/menu/' + restaurant.slug : '/'}
-                  className={classes.menuLinkview}
-                  title="View Menu"
-                  onClick={() => setShowAccountMenu(false)}
-                >
-                  View Menu
-                </Link>
+                    to={restaurant ? '/menu/' + restaurant.slug : '/'}
+                    className={classes.menuLinkview}
+                    title="View Menu"
+                    onClick={() => setShowAccountMenu(false)}
+                  >
+                    View Menu
+                  </Link>
                 </Grid>
               )}
-{/* 
-        <Grid
-        item
-        >
-                      
-        <Typography className="v-line" sx={{marginTop: {sm: "10px",lg:"15px", md: "11px"}}}>
-
-        </Typography>
-        </Grid> */}
-
+              {
+                  restaurant && (!hideLoginPanel || !hideLoginedPanel) && (
+                    <Grid
+                    >
+                      <Typography className="v-line" sx={{ marginTop: { sm: "10px", lg: "15px", md: "11px" } }}>
+      
+                      </Typography>
+                    </Grid>
+                  )
+                }
+             
               {isLoginUser() && providerToken?.first_name
                 ? !hideLoginedPanel && (
-                    <Grid
-                      container
-                      sx={{
-                        width: { sm: '170px', md: '200px' },
-                        marginLeft: '15px',
-                        alignItems: 'center',
-                        cursor: 'pointer',
-                      }}
-                      role={'button'}
-                      aria-label={'Account Menu'}
-                      tabIndex={0}
-                      onKeyPress={(e: any) => {
-                        if (e.key === 'Enter') {
-                          setShowAccountMenu(!showAccountMenu);
-                        }
-                      }}
-                      onClick={() => {
+                  <Grid
+                    container
+                    sx={{
+                      marginRight: "50px",
+                      marginLeft: "50px",                     // width: { sm: '170px', md: '200px' },
+                     // marginLeft: '15px',
+                      alignItems: 'center',
+                      cursor: 'pointer',
+                    }}
+                    role={'button'}
+                    aria-label={'Account Menu'}
+                    tabIndex={0}
+                    onKeyPress={(e: any) => {
+                      if (e.key === 'Enter') {
                         setShowAccountMenu(!showAccountMenu);
+                      }
+                    }}
+                    onClick={() => {
+                      setShowAccountMenu(!showAccountMenu);
+                    }}
+                  >
+                    <Grid
+                      item
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
                       }}
                     >
-                      <Grid
-                        item
-                        xs={12}
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          //color: '#0073BD',
-                        }}
-                      >
-                        <AccountCircleOutlinedIcon sx={{color:"#0073BD"}}/>
-                        {/* <img
+                      <AccountCircleOutlinedIcon sx={{ color: "#0073BD",marginBottom:"3px", }} />
+                      {/* <img
                           src={AccountCircleOutlinedIcon}
                           alt="Profile Icon"
                         />{' '} */}
-                        <Typography
-                          sx={{
+                      <Typography
+                        sx={{
+                          paddingLeft: '5px',
+                          display: 'block',
+                          maxWidth: { sm: 'auto', lg: 'auto' },
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          fontFamily: "'sunbornsans_one'!important",
+                          textAlign: 'center',
+                          textTransform: 'uppercase',
+                          fontSize: '11pt',
+                          
+                          color: "#0073BD",
+                        }}
+                      >
+                        Hi {(isLoginUser() && providerToken?.first_name) || ''}
+                        !
+                      </Typography>
+                      {!showAccountMenu && (
+                        <span
+                          style={{
                             paddingLeft: '5px',
-                            display: 'block',
-                            maxWidth: { sm: '100px', lg: '130px' },
-                            whiteSpace: 'nowrap',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            fontFamily: "'sunbornsans_one'!important",
-                            textAlign: 'center',
-                            textTransform: 'uppercase',
-                            fontSize: '11pt',
+                            fontSize: '12px',
                             color: "#0073BD",
                           }}
                         >
-                          Hi {(isLoginUser() && providerToken?.first_name) || ''}
-                          !
-                        </Typography>
-                        {!showAccountMenu && (
-                          <span
-                            style={{
-                              paddingLeft: '5px',
-                              fontSize: '12px',
-                              color: "#0073BD",
-                            }}
-                          >
-                            &#9660;
-                          </span>
-                        )}
-                        {showAccountMenu && (
-                          <span
-                            style={{
-                              paddingLeft: '5px',
-                              fontSize: '12px',
-                              color: "#0073BD",
-                            }}
-                          >
-                            &#9650;
-                          </span>
-                        )}
-                      </Grid>
+                          &#9660;
+                        </span>
+                      )}
+                      {showAccountMenu && (
+                        <span
+                          style={{
+                            paddingLeft: '5px',
+                            fontSize: '12px',
+                            color: "#0073BD",
+                          }}
+                        >
+                          &#9650;
+                        </span>
+                      )}
                     </Grid>
-                  )
+                  </Grid>
+                )
                 : !hideLoginPanel && (
-                    <Grid
-                      container
-                      sx={{
-                        width: { sm: '170px', md: '200px' },
-                        //marginLeft: '15px',
-                        //background: '#0073BD',
-                        alignItems: 'center',
-                        cursor: 'pointer',
-                      }}
-                      role={'button'}
-                      aria-label={'Sign In'}
-                      tabIndex={0}
-                      onKeyPress={(e: any) => {
-                        if (e.key === 'Enter') {
-                          navigate('/login');
-                        }
-                      }}
-                      onClick={() => {
+                  <Grid
+                    container
+                    sx={{
+                      //width: { sm: '170px', md: '200px' },
+                      //marginLeft: '15px',
+                      //background: '#0073BD',
+                      alignItems: 'center',
+                      cursor: 'pointer',
+                      marginRight: "50px",
+                      marginLeft: "50px",
+
+                    }}
+                    role={'button'}
+                    aria-label={'Sign In'}
+                    tabIndex={0}
+                    onKeyPress={(e: any) => {
+                      if (e.key === 'Enter') {
                         navigate('/login');
+                      }
+                    }}
+                    onClick={() => {
+                      navigate('/login');
+                    }}
+                  >
+                    <Grid
+                      item
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
                       }}
                     >
-                      <Grid
-                        item
-                        xs={12}
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                        }}
-                      >
-                        <AccountCircleOutlinedIcon sx={{color:"#0073BD"}}/>
-                        {/* <img
+                      <AccountCircleOutlinedIcon sx={{ color: "#0073BD" }} />
+                      {/* <img
                           src={AccountCircleOutlinedIcon}
                           alt="Profile Icon"
                         />{' '} */}
-                        <Typography
-                          sx={{
-                            paddingLeft: '5px',
-                            display: 'block',
-                            maxWidth: { sm: '100px', lg: '130px' },
-                            whiteSpace: 'nowrap',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            fontFamily: "'sunbornsans_one'!important",
-                            textAlign: 'center',
-                            textTransform: 'uppercase',
-                            fontSize: '11pt',
-                            color: '#0073BD',
-                          }}
-                        >
-                          Sign In!
-                        </Typography>
-                      </Grid>
+                      <Typography
+                        sx={{
+                          paddingLeft: '5px',
+                          display: 'block',
+                          maxWidth: { sm: 'auto', lg: 'auto' },
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          fontFamily: "'sunbornsans_one'!important",
+                          textAlign: 'center',
+                          textTransform: 'uppercase',
+                          fontSize: '11pt',
+                          color: '#0073BD',
+                        }}
+                      >
+                        Sign In!
+                      </Typography>
                     </Grid>
-                  )}
+                  </Grid>
+                )}
+                
+            </Grid>
               {!removeCart && (
                 <Button
                   component="div"
@@ -576,9 +591,9 @@ const Header = (props: any) => {
                   }}
                   sx={{
                     paddingRight: { xs: '20px', md: '30px' },
-                    paddingLeft: {xs: '20px', md:'30px'},
+                    paddingLeft: { xs: '20px', md: '30px' },
                     display: 'flex',
-                    alignItems:'center',
+                    alignItems: 'center',
                     borderRadius: "0px !important",
                     backgroundColor: '#0073BD',
                     '&:hover': {
@@ -587,7 +602,7 @@ const Header = (props: any) => {
                   }}
                 >
                   <img
-                    src={cartIconMobile}
+                    src={cartIcon}
                     style={{ width: '36px' }}
                     alt="Cart Icon"
                     title="Cart Icon"

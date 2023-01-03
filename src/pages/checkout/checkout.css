@@ -25,7 +25,7 @@
   letter-spacing: 1px !important;
 }
 .order .right-col .time-slot {
-  background: #214F66;
+  background: #062C43;
   margin-top: 10px;
   width: calc(100% - 8px);
 }
@@ -72,6 +72,7 @@
   font-family: 'grit_sansbold' !important;
   color: #062C43;
   font-size: 36px !important;
+ letter-spacing:0.03562em;
 }
 
 @media screen and (max-width: 900px) {
