@@ -24,11 +24,9 @@ axiosInstance.interceptors.request.use(
         endpoint = endpoint[1];
 
         if (!withoutTokenEndpoints.includes(endpoint)) {
-          config.headers = {
-            Authorization: `Bearer ${
-              store.getState().providerReducer.providerToken.access_token
-            }`,
-          };
+          config.headers['Authorization'] = `Bearer ${
+            store.getState().providerReducer.providerToken.access_token
+          }`
         }
         const deviceId = store.getState().authReducer.deviceId
           ? store.getState().authReducer.deviceId
