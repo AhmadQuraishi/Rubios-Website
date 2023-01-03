@@ -14,7 +14,8 @@ import { makeStyles } from '@mui/styles';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import logo from '../../assets/imgs/unnamed.png';
-import cartIconMobile from '../../assets/imgs/cart-icon.svg';
+import cartIcon from '../../assets/imgs/cart-icon.svg';
+import cartIconMobile from '../../assets/imgs/cart-icon-mobile.svg';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import Cart from '../cart';
 import Upsells from '../cart/upsells';
@@ -265,13 +266,13 @@ const Header = (props: any) => {
                 <Grid
                   container
                   sx={{
-                    background: 'white',
+                    background: '#0075BF',
                     alignItems: 'center',
                     fontFamily: "'sunbornsans_one'!important",
                     textAlign: 'center',
                     textTransform: 'uppercase',
                     fontSize: '14px',
-                    height: '70px',
+                    height: '80px',
                     width: '65px',
                   }}
                   role={'button'}
@@ -291,11 +292,11 @@ const Header = (props: any) => {
                     xs={12}
                     sx={{ display: 'flex', justifyContent: 'center' }}
                   >
-                    <AccountCircleOutlinedIcon sx={{ color: "#0073BD" }} />
-                    {/* <img
-                      src={AccountCircleOutlinedIcon}
+                    {/* <AccountCircleOutlinedIcon sx={{ color: "#0073BD" }} /> */}
+                    <img
+                      src={require('../../assets/imgs/user-icon.png')}
                       alt="Profile Icon"
-                    /> */}
+                    />
                   </Grid>
                 </Grid>
               ) : (
@@ -303,13 +304,13 @@ const Header = (props: any) => {
                   <Grid
                     container
                     sx={{
-                      background: 'white',
+                      background: '#0075BF',
                       alignItems: 'center',
                       fontFamily: "'sunbornsans_one'!important",
                       textAlign: 'center',
                       textTransform: 'uppercase',
                       fontSize: '14px',
-                      height: '70px',
+                      height: '80px',
                       width: '65px',
                     }}
                     role={'button'}
@@ -329,12 +330,12 @@ const Header = (props: any) => {
                       xs={12}
                       sx={{ display: 'flex', justifyContent: 'center' }}
                     >
-                      <AccountCircleOutlinedIcon sx={{ color: "#0073BD" }} />
-                      {/* <img
+                      {/* <AccountCircleOutlinedIcon sx={{ color: "#0073BD" }} /> */}
+                      <img
                         // style={{ width: '75%', display: 'block' }}
-                        src={AccountCircleOutlinedIcon}
+                        src={require('../../assets/imgs/user-icon.png')}
                         alt="Login Icon"
-                      /> */}
+                      />
                     </Grid>
                   </Grid>
                 )
@@ -346,7 +347,7 @@ const Header = (props: any) => {
                     cursor: 'pointer',
                     textAlign: 'center',
                     width: '72px',
-                    backgroundColor: '#0073BD',
+                    backgroundColor: 'white',
                     height: '70px',
                     display: 'flex',
 
@@ -601,7 +602,7 @@ const Header = (props: any) => {
                   }}
                 >
                   <img
-                    src={cartIconMobile}
+                    src={cartIcon}
                     style={{ width: '36px' }}
                     alt="Cart Icon"
                     title="Cart Icon"
