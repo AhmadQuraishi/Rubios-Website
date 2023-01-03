@@ -10,7 +10,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getMenuRequest } from '../../redux/actions/footer';
 import { useEffect, useState } from 'react';
 import './footer.css';
-import fbIcon from '../../assets/imgs/facebook-icon.png';
+import FacebookOutlinedIcon from '@mui/icons-material/FacebookOutlined';
+import TwitterIcon from '@mui/icons-material/Twitter';
 import instaIcon from '../../assets/imgs/insta-icon.png';
 import twitterIcon from '../../assets/imgs/twitter-icon.png';
 import tiktokIcon from '../../assets/imgs/tik-tok.png';
@@ -101,7 +102,7 @@ const Footer = () => {
                 sx={{
                   display: 'flex',
                   padding: {
-                    xs: '70px 0px 10px 0px', lg: '50px 0px 10px 0px',md: '50px 0px 10px 0px', sm: "80px 0px 10px 0px "
+                    xs: '70px 0px 10px 0px', lg: '20px 0px 10px 0px',md: '50px 0px 10px 0px', sm: "80px 0px 10px 0px "
                   },
                   maxWidth: {
                     md: '236px',
@@ -180,13 +181,13 @@ const Footer = () => {
             <Grid item xs={12} md={6} sx={{display: { md: "-webkit-inline-box",lg:"-webkit-inline-box"}}}>
               <Typography
                 sx={{
-                  fontSize: '16px',
+                  fontSize: '13px',
                   color: '#fff',
                   textTransform: 'uppercase',
                   fontWeight: '100 !important',
                   letterSpacing: "0.07938em !important",
                   fontFamily: 'sunbornsans_one !important',
-                  paddingTop: {xs: "20px",sm:"15px", md: '28px', lg: '0px' },
+                  paddingTop: {xs: "20px",sm:"15px", md: '28px', lg: '2px' },
                 }}
                 title="Connect with Us"
               >
@@ -219,31 +220,28 @@ const Footer = () => {
                     />
                   </a>
                 </Grid>
-                <Grid item xs={2} style={{ marginRight: '10px' }}>
+                <Grid item xs={2} sx={{paddingLeft: "0px !important",paddingTop: "5px !important"}}>
                   <a
                     href={'https://www.facebook.com/rubios/'}
                     target={'_blank'}
                     rel="noreferrer"
                   >
-                    <img
-                      src={fbIcon}
-                      style={{ width: '100%' }}
-                      alt="Facebook Icon"
-                    />
+                    <FacebookOutlinedIcon style={{color: "white", fontSize: "xx-large"}}/>
                   </a>
                 </Grid>
 
-                <Grid item xs={2} style={{ marginRight: '10px' }}>
+                <Grid item xs={2} sx={{paddingLeft: "0px !important",paddingTop: "5px !important"}}>
                   <a
                     href={'https://twitter.com/RubiosTweets'}
                     target={'_blank'}
                     rel="noreferrer"
                   >
-                    <img
+                    {/* <img
                       src={twitterIcon}
                       style={{ width: '100%' }}
                       alt="Twitter Icon"
-                    />
+                    /> */}
+                    <TwitterIcon style={{color: "white", fontSize: "xx-large",marginLeft: "5px"}}/>
                   </a>
                 </Grid>
                 <Grid item xs={2} style={{ marginRight: '10px' }}>
@@ -264,7 +262,7 @@ const Footer = () => {
             <Grid item xs={12} md={12}    sx={{ display: 'flex',flexDirection: 'column',alignItems: "flex-start"}} >
               <Typography
                 sx={{
-                  fontSize: '16px',
+                  fontSize: '13px',
                   color: '#fff',
                   textTransform: 'uppercase',
                   fontWeight: '100 !important',

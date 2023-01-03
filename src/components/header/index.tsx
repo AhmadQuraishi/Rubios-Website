@@ -13,7 +13,7 @@ import {
 import { makeStyles } from '@mui/styles';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import logo from '../../assets/imgs/3.png';
+import logo from '../../assets/imgs/unnamed.png';
 import cartIconMobile from '../../assets/imgs/cart-icon.svg';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import Cart from '../cart';
@@ -36,12 +36,12 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   logoImg: {
     display: 'inline-block',
-    padding: '22px 70px 18px 85px',
+    padding: '9px 70px 12px 85px',
     [theme.breakpoints.down('lg')]: {
-      padding: '18px 0 14px 20px',
+      padding: '14px 0 14px 20px',
     },
     [theme.breakpoints.down('sm')]: {
-      padding: '18px 0 14px 20px',
+      padding: '14px 0 14px 20px',
     },
     '& img': {
       width: '90%',
@@ -469,14 +469,14 @@ const Header = (props: any) => {
                         alignItems: 'center',
                       }}
                     >
-                      <AccountCircleOutlinedIcon sx={{ color: "#0073BD",marginBottom: "2.70px", }} />
+                      <AccountCircleOutlinedIcon sx={{ color: "#0073BD",marginBottom:"3px", }} />
                       {/* <img
                           src={AccountCircleOutlinedIcon}
                           alt="Profile Icon"
                         />{' '} */}
                       <Typography
                         sx={{
-                          //paddingLeft: '5px',
+                          paddingLeft: '5px',
                           display: 'block',
                           maxWidth: { sm: 'auto', lg: 'auto' },
                           whiteSpace: 'nowrap',
@@ -496,7 +496,7 @@ const Header = (props: any) => {
                       {!showAccountMenu && (
                         <span
                           style={{
-                            //paddingLeft: '5px',
+                            paddingLeft: '5px',
                             fontSize: '12px',
                             color: "#0073BD",
                           }}
@@ -507,7 +507,7 @@ const Header = (props: any) => {
                       {showAccountMenu && (
                         <span
                           style={{
-                            //paddingLeft: '5px',
+                            paddingLeft: '5px',
                             fontSize: '12px',
                             color: "#0073BD",
                           }}
@@ -558,7 +558,7 @@ const Header = (props: any) => {
                         />{' '} */}
                       <Typography
                         sx={{
-                          //paddingLeft: '5px',
+                          paddingLeft: '5px',
                           display: 'block',
                           maxWidth: { sm: 'auto', lg: 'auto' },
                           whiteSpace: 'nowrap',
