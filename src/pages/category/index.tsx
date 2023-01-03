@@ -576,7 +576,7 @@ const CategoryList = () => {
                   <Grid item xs={item.products.length > 4 ? 8 : 12}>
                     <Typography
                       variant="h2"
-                      className={classes.heading}
+                      className={`${classes.heading} rubios-menu-category`}
                       title={item.name}
                     >
                       {item.name}

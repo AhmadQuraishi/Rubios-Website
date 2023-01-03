@@ -623,7 +623,7 @@ const LocationCard = (props: any) => {
                   //   setSearchText('');
                   //   changeOrderType('pickup');
                   // }}
-                  className="selected-btn"
+                  className="selected-btn rubios-order-mode"
                   aria-current={alignment === 'Pick up'}
                   aria-label="PickUp, Activating this element will cause results to load below "
                 >
@@ -636,7 +636,7 @@ const LocationCard = (props: any) => {
                   //   setSearchText('');
                   //   changeOrderType('curbside');
                   // }}
-                  className="selected-btn"
+                  className="selected-btn rubios-order-mode"
                   aria-current={alignment === 'Curbside'}
                   aria-label=" Curbside, Activating this element will cause results to load below "
                 >
@@ -650,7 +650,7 @@ const LocationCard = (props: any) => {
                   //   setShowAllRestaurants(false);
                   //   changeOrderType('dispatch');
                   // }}
-                  className="selected-btn"
+                  className="selected-btn rubios-order-mode"
                   aria-current={alignment === 'Delivery'}
                   aria-label=" Delivery, Enter your address below to get nearby restaurants"
                 >
