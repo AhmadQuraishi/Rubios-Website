@@ -11,7 +11,7 @@ const withoutTokenEndpoints = [
   'api/auth/users/connect_with_facebook',
 ];
 axiosInstance.interceptors.request.use(
-  function (config) {
+  function (config: any) {
     try {
       const url = config.url || '';
       let isPunchhApi = url?.toString().includes('punchh_api');
@@ -24,11 +24,9 @@ axiosInstance.interceptors.request.use(
         endpoint = endpoint[1];
 
         if (!withoutTokenEndpoints.includes(endpoint)) {
-          config.headers = {
-            Authorization: `Bearer ${
-              store.getState().providerReducer.providerToken.access_token
-            }`,
-          };
+          config.headers['Authorization'] = `Bearer ${
+            store.getState().providerReducer.providerToken.access_token
+          }`;
         }
         const deviceId = store.getState().authReducer.deviceId
           ? store.getState().authReducer.deviceId
@@ -49,11 +47,11 @@ axiosInstance.interceptors.request.use(
       }
 
       return config;
-    } catch (e) {
+    } catch (e: any) {
       throw e;
     }
   },
-  function (error) {
+  function (error: any) {
     return Promise.reject(error);
   },
 );
