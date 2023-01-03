@@ -239,7 +239,7 @@ const DeliveryForm = ({
                     style={{
                       fontSize: '14px',
                       fontFamily: 'Poppins-Medium',
-                      color: '#333',
+                      color: '#58595b',
                       paddingTop: '5px',
                     }}
                   >
