@@ -403,7 +403,6 @@ const OrderTime = ({ orderType }: any) => {
               <Grid item xs={12}>
                 <FormControl
                   fullWidth
-                  style={{backgroundColor:"#0073bd"}}
                   className={`${
                     timeSlots.slice(4).includes(selectedTime)
                       ? 'time-slot-selected'
@@ -423,7 +422,7 @@ const OrderTime = ({ orderType }: any) => {
                           ? 'select-custom-css'
                           : '',
                     }}
-                    sx={{fontFamily: "'grit_sansbold' !important", backgroundColor: "#0073bd !important" }}
+                    sx={{fontFamily: "'grit_sansbold' !important" }}
                     style={{ textAlign: 'center' }}
                     shrink={
                       selectShrink || timeSlots.slice(4).includes(selectedTime)
