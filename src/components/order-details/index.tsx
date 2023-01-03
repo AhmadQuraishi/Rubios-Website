@@ -287,12 +287,12 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                         <Grid>
                           <Grid container className={'taxes'} spacing={1}>
                             <Grid item xs={9} >
-                              <Typography className="text-info-title"sx={{fontWeight: 'bold !important',paddingTop: "3px",fontFamily: 'libre_franklinlight !important',marginLeft: "22px !important"}}>
+                              <Typography className="text-info-title"sx={{color: "#58595b",fontWeight: 'bold !important',paddingTop: "3px",fontFamily: 'libre_franklinlight !important',marginLeft: "22px !important"}}>
                                 SALES TAX:
                               </Typography>
                             </Grid>
                             <Grid item xs={3} justifyContent={'flex-end'}>
-                              <Typography className="text-info-desc" sx={{fontFamily: "'libre_franklinlight' !important", fontWeight: 'bold !important'}}>
+                              <Typography className="text-info-desc" sx={{ color: "#58595b",fontFamily: "'libre_franklinlight' !important", fontWeight: 'bold !important'}}>
                                 $
                                 {basket &&
                                   basket.taxes &&
@@ -305,12 +305,12 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                               </Typography>
                             </Grid>
                             <Grid item xs={9}>
-                              <Typography className="text-info-title" sx={{paddingBottom: "3px",fontFamily: 'libre_franklinlight !important',fontWeight: 'bold !important',marginLeft: "22px !important"}}>
+                              <Typography className="text-info-title" sx={{color: "#58595b",paddingBottom: "3px",fontFamily: 'libre_franklinlight !important',fontWeight: 'bold !important',marginLeft: "22px !important"}}>
                                 SERVICE FEE:
                               </Typography>
                             </Grid>
                             <Grid item xs={3}>
-                              <Typography className="text-info-desc" sx={{fontFamily: "'libre_franklinlight' !important",fontWeight: 'bold !important'}}>
+                              <Typography className="text-info-desc" sx={{color: "#58595b", fontFamily: "'libre_franklinlight' !important",fontWeight: 'bold !important'}}>
                                 ${(basket && basket.totalfees.toFixed(2)) || 0}
                               </Typography>
                             </Grid>
@@ -352,7 +352,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
               <li>
                 <Grid container>
                   <Grid item xs={9} sm={9} md={9} lg={9}>
-                    <Typography variant="h6" title="DELIVERY FEE" sx={{fontFamily: 'libre_franklinlight !important',fontWeight: 'bold !important'}}>
+                    <Typography variant="h6" title="DELIVERY FEE" sx={{color: "#58595b",fontFamily: 'libre_franklinlight !important',fontWeight: 'bold !important'}}>
                       DELIVERY FEE
                     </Typography>
                   </Grid>
