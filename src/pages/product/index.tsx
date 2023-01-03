@@ -1691,6 +1691,9 @@ const Product = () => {
                       title="ADD TO BAG"
                       className="add-to-bag"
                       variant="contained"
+                      data-product-name={`${productDetails?.name || ''}`}
+                      data-product-id={`${productDetails?.chainproductid || ''}`}
+                      data-product-price={`${totalCost?.toFixed(2)}`}
                       disabled={checkDisable()}
                       onClick={() => {
                         addProductToBag();
