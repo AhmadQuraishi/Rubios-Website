@@ -84,6 +84,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   menuLinkview: {
     textTransform: 'uppercase',
     display: 'block',
+    whiteSpace: "nowrap",
     [theme.breakpoints.up('md')]: {
       fontSize: '11pt',
 
@@ -402,13 +403,15 @@ const Header = (props: any) => {
             </>
           ) : (
             <>
-            <Grid xs={12} sx={{display: "flex", justifyContent: "space-evenly", width: "23%"}}>
+            <Grid  sx={{display: "flex", justifyContent: "space-evenly"}}>
 
               {restaurant && (
-                <Grid xs={6} sx={{
+                <Grid sx={{
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
+                  marginRight: "50px",
+                  marginLeft: "50px",
                   //width: { padding: "0px !important", margin: "0px !important"
                   //, lg: "106.5px", md: "106.5px", sm: '106.5px' 
                 //}
@@ -424,19 +427,24 @@ const Header = (props: any) => {
                   </Link>
                 </Grid>
               )}
-              <Grid
-              >
-                <Typography className="v-line" sx={{ marginTop: { sm: "10px", lg: "15px", md: "11px" } }}>
-
-                </Typography>
-              </Grid>
+              {
+                  restaurant && (!hideLoginPanel || !hideLoginedPanel) && (
+                    <Grid
+                    >
+                      <Typography className="v-line" sx={{ marginTop: { sm: "10px", lg: "15px", md: "11px" } }}>
+      
+                      </Typography>
+                    </Grid>
+                  )
+                }
+             
               {isLoginUser() && providerToken?.first_name
                 ? !hideLoginedPanel && (
                   <Grid
-                  xs={6}
                     container
                     sx={{
-                     // width: { sm: '170px', md: '200px' },
+                      marginRight: "50px",
+                      marginLeft: "50px",                     // width: { sm: '170px', md: '200px' },
                      // marginLeft: '15px',
                       alignItems: 'center',
                       cursor: 'pointer',
@@ -455,15 +463,13 @@ const Header = (props: any) => {
                   >
                     <Grid
                       item
-                      xs={12}
                       style={{
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
-                        //color: '#0073BD',
                       }}
                     >
-                      <AccountCircleOutlinedIcon sx={{ color: "#0073BD" }} />
+                      <AccountCircleOutlinedIcon sx={{ color: "#0073BD",marginBottom: "2.70px", }} />
                       {/* <img
                           src={AccountCircleOutlinedIcon}
                           alt="Profile Icon"
@@ -472,7 +478,7 @@ const Header = (props: any) => {
                         sx={{
                           //paddingLeft: '5px',
                           display: 'block',
-                          //maxWidth: { sm: '100px', lg: '130px' },
+                          maxWidth: { sm: 'auto', lg: 'auto' },
                           whiteSpace: 'nowrap',
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
@@ -480,6 +486,7 @@ const Header = (props: any) => {
                           textAlign: 'center',
                           textTransform: 'uppercase',
                           fontSize: '11pt',
+                          
                           color: "#0073BD",
                         }}
                       >
@@ -513,8 +520,6 @@ const Header = (props: any) => {
                 )
                 : !hideLoginPanel && (
                   <Grid
-                  xs={6}
-
                     container
                     sx={{
                       //width: { sm: '170px', md: '200px' },
@@ -522,6 +527,9 @@ const Header = (props: any) => {
                       //background: '#0073BD',
                       alignItems: 'center',
                       cursor: 'pointer',
+                      marginRight: "50px",
+                      marginLeft: "50px",
+
                     }}
                     role={'button'}
                     aria-label={'Sign In'}
@@ -537,7 +545,6 @@ const Header = (props: any) => {
                   >
                     <Grid
                       item
-                      xs={12}
                       style={{
                         display: 'flex',
                         justifyContent: 'center',
@@ -553,7 +560,7 @@ const Header = (props: any) => {
                         sx={{
                           //paddingLeft: '5px',
                           display: 'block',
-                          //maxWidth: { sm: '100px', lg: '130px' },
+                          maxWidth: { sm: 'auto', lg: 'auto' },
                           whiteSpace: 'nowrap',
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
