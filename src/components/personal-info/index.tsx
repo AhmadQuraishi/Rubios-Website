@@ -110,7 +110,7 @@ const PersonalInfo = () => {
       backgroundColor: state.isSelected ? 'lightgray' : '',
       marginTop: '0px',
       border: '0px',
-      fontFamily: 'Poppins-Regular, sans-serif !important',
+      fontFamily: "'libre_franklinlight' !important",
     }),
     menu: (base: any) => ({
       ...base,
@@ -135,7 +135,7 @@ const PersonalInfo = () => {
       border: 'none',
       cursor: 'pointer',
       boxShadow: '0px 0px 6px lightgray',
-      fontFamily: 'Poppins-Regular, sans-serif !important',
+      fontFamily: "'libre_franklinlight' !important",
     }),
     singleValue: (provided: any, state: any) => {
       const opacity = state.isDisabled ? 0.5 : 1;

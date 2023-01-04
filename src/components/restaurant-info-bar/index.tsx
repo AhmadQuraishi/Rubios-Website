@@ -32,6 +32,12 @@ const useStyle = makeStyles({
     color: '#fff',
     fontFamily: "'grit_sansbold' !important"
   },
+  heading1: {
+    fontSize: '13px !important',
+    color: '#fff',
+    //fontFamily: "'grit_sansbold' !important",
+    fontFamily:"'libre_franklinlight' !important",
+  },
 });
 
 const StoreInfoBar = () => {
@@ -223,9 +229,11 @@ const StoreInfoBar = () => {
                     ?.indexOf('/checkout') !== -1 && (
                     <>
                       <Typography
-                        variant="body2"
+                        //variant="body2"
                         color="#fff"
                         fontSize={11}
+                        className={classes.heading1}
+                        variant="h2"
                         sx={{
                           marginLeft: '5px',
                           display: {
@@ -295,7 +303,8 @@ const StoreInfoBar = () => {
                 <Grid>
                   &nbsp;
                   <Typography
-                    variant="body2"
+                    className={classes.heading1}
+                    variant="h2"
                     color="#fff"
                     fontSize={11}
                     sx={{
@@ -312,6 +321,7 @@ const StoreInfoBar = () => {
                       style={{
                         cursor: 'pointer',
                         textDecorationLine: 'underline',
+                        
                       }}
                       role={'button'}
                       aria-label={'Change location'}
@@ -348,11 +358,11 @@ const StoreInfoBar = () => {
                   >
                     <Typography
                       variant="h5"
+                      className={classes.heading1}
                       sx={{
                         fontSize: '13px',
-                        fontWeight: '500',
-                        fontFamily: 'Poppins-Medium !important',
                         color: '#fff',
+
                         display: 'inline',
                       }}
                     >
@@ -432,9 +442,10 @@ const StoreInfoBar = () => {
                       ?.indexOf('/checkout') !== -1 && (
                       <>
                         <Typography
-                          variant="body2"
                           color="#fff"
                           fontSize={11}
+                          className={classes.heading1}
+                          variant="h2"
                           sx={{
                             marginBottom: '5px',
                             display: {
@@ -467,9 +478,10 @@ const StoreInfoBar = () => {
                       </>
                     )}
                     <Typography
-                      variant="body2"
                       color="#fff"
                       fontSize={11}
+                      className={classes.heading1}
+                      variant="h2"
                       sx={{
                         display: {
                           marginBottom: 3,
@@ -501,9 +513,9 @@ const StoreInfoBar = () => {
                     </Typography>
                     {isLoginUser() && (
                       <Typography
-                        variant="body2"
                         color="#fff"
-                        fontSize={11}
+                        className={classes.heading1}
+                        variant="h2"
                         sx={{
                           display: {
                             xs: 'inline',
@@ -768,10 +780,10 @@ const StoreInfoBar = () => {
                       >
                         <Typography
                           variant="h5"
+                          className={classes.heading1}
                           sx={{
                             fontSize: '13px',
                             fontWeight: '500',
-                            fontFamily: 'Poppins-Medium !important',
                             color: '#fff',
                             // display: 'inline',
                             display: {

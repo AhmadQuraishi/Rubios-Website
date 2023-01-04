@@ -44,8 +44,8 @@ const pickupTime = (order: any) => {
         variant="body1"
         title="6:10 PM"
         sx={{
-          fontFamily: 'Poppins-Bold !important',
-          color: '#214F66',
+          fontFamily: "'sunbornsans_one' !important",
+          color: '#062C43 !important',
           fontSize: '36px !important',
           lineHeight: '1.2',
           letterSpacing: '-0.00833em',
@@ -123,8 +123,8 @@ const pickupAddress = (restaurant: any, order: any) => {
         variant="body1"
         sx={{
           textTransform: 'uppercase',
-          fontFamily: 'Poppins-Bold !important',
-          color: '#214F66',
+          fontFamily: "'sunbornsans_one' !important",
+          color: '#062C43 !important',
           fontSize: '36px !important',
           lineHeight: '1.2',
           letterSpacing: '-0.00833em',
@@ -155,8 +155,8 @@ const deliveryAddress = (order: any) => {
       <Typography
         sx={{
           textTransform: 'uppercase',
-          fontFamily: 'Poppins-Bold !important',
-          color: '#214F66',
+          fontFamily: "'sunbornsans_one' !important",
+          color: '#062C43 !important',
           fontSize: '36px !important',
           lineHeight: '1.2',
           letterSpacing: '-0.00833em',
@@ -220,7 +220,7 @@ const OrderConfirmedCard = ({
                   title="ORDER CONFIRMED"
                   sx={{
                     color: '#0075BF',
-                    fontFamily: 'Poppins-Medium !important',
+                    fontFamily: "'grit_sansbold' !important",
                     fontSize: { xs: '14px !important' },
                     fontWeight: 400,
                     textTransform: 'uppercase',
@@ -238,8 +238,8 @@ const OrderConfirmedCard = ({
                   sx={{
                     lineHeight: '1.2',
                     letterSpacing: '-0.00833em',
-                    fontFamily: 'Poppins-Bold !important',
-                    color: '#214F66',
+                    fontFamily: "'sunbornsans_one' !important",
+                    color: '#062C43 !important',
                     fontSize: '36px !important',
                   }}
                 >

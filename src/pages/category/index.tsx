@@ -425,7 +425,7 @@ const CategoryList = () => {
                 sx={{
                   fontSize: '16px',
                   fontWeight: '700',
-                  fontFamily: 'Poppins-Bold',
+                  fontFamily: "'sunbornsans_one' !important",
                   textTransform: 'uppercase',
                 }}
               >
@@ -444,7 +444,7 @@ const CategoryList = () => {
                       borderRadius: 0,
                       padding: '30px 10px',
                       fontSize: '16px',
-                      fontFamily: "'Poppins-Medium', sans-serif !important;",
+                      fontFamily: "'grit_sansbold' !important",
                       marginBottom: '10px',
                     }}
                     title="Checkout"
@@ -465,7 +465,7 @@ const CategoryList = () => {
                     borderRadius: 0,
                     padding: '30px 10px',
                     fontSize: '16px',
-                    fontFamily: "'Poppins-Medium', sans-serif !important;",
+                    fontFamily: "'grit_sansbold' !important",
                     marginBottom: '10px',
                   }}
                   title="Checkout"
@@ -485,7 +485,8 @@ const CategoryList = () => {
                     borderRadius: 0,
                     padding: '30px 10px',
                     fontSize: '16px',
-                    fontFamily: "'Poppins-Medium', sans-serif !important;",
+                    fontFamily: "'grit_sansbold' !important",
+
                   }}
                   title="Checkout"
                   onClick={() => changeRestaurant('delivery')}
@@ -591,7 +592,7 @@ const CategoryList = () => {
                   {item.products.length > 4 && (
                     <Grid item xs={4}>
                       <Typography className={classes.link}>
-                        <Link to={`/category/${item.id}`} title="view all" style={{color: "#214F66"}}>
+                        <Link to={`/category/${item.id}`} title="view all" style={{color: "#062C43"}}>
                           view all <span style={{fontSize:"17px"}}><img
                         // style={{ width: '75%', display: 'block' }}
                         src={require('../../assets/imgs/arrow2.png')}
@@ -632,7 +633,7 @@ const CategoryList = () => {
             <Divider sx={{ borderColor: '#224c65' }} />
           </Grid>
           <Typography
-            sx={{ fontSize: '13px', color: '#214F66', fontStyle: 'italic' }}
+            sx={{ fontSize: '13px', color: '#062C43', fontStyle: 'italic' }}
             variant="caption"
             title="Due to potential cross-contact when preparing menu items, it is not possible to guarantee your meal is completely free of any particular allergen or ingredient. Impossible™ meat, fish, tortillas, veggies, toasted cheese and shellfish are cooked on the same grill."
           >

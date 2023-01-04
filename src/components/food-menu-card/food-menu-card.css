@@ -16,7 +16,7 @@
   text-transform: uppercase;
   color: #0069aa;
   font-weight: 500;
-  font-family: 'Poppins-Medium', sans-serif !important;
+  font-family: 'grit_sansbold' !important;
   font-size: 18px;
   padding-bottom: 10px;
 }
@@ -65,7 +65,7 @@
 }
 
 .item-name {
-  font-family: 'Poppins-Medium' !important;
+  font-family: 'grit_sansbold' !important;
   font-size: 1rem !important;
   color: rgba(0, 0, 0, 0.54);
   min-height: 40px;

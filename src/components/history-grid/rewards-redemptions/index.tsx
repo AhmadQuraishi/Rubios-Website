@@ -31,7 +31,7 @@ const RewardsGrid = ({}) => {
               xs={3}
               sm={3}
               sx={{
-                fontFamily: 'Poppins-Bold',
+                fontFamily: "'sunbornsans_one' !important",
                 textTransform: 'uppercase',
                 borderBottom: '1px solid #CCC',
                 borderTop: '1px solid #CCC',
@@ -49,7 +49,7 @@ const RewardsGrid = ({}) => {
               xs={0}
               sm={3}
               sx={{
-                fontFamily: 'Poppins-Bold',
+                fontFamily: "'sunbornsans_one' !important",
                 textTransform: 'uppercase',
                 borderBottom: '1px solid #CCC',
                 borderTop: '1px solid #CCC',
@@ -67,7 +67,7 @@ const RewardsGrid = ({}) => {
               xs={8}
               sm={6}
               sx={{
-                fontFamily: 'Poppins-Bold',
+                fontFamily: "'sunbornsans_one' !important",
                 textTransform: 'uppercase',
                 borderBottom: '1px solid #CCC',
                 borderTop: '1px solid #CCC',
@@ -85,7 +85,7 @@ const RewardsGrid = ({}) => {
                   xs={3}
                   sm={3}
                   sx={{
-                    fontFamily: 'Poppins-Medium',
+                    fontFamily: "'grit_sansbold' !important",
                     fontWeight: '500',
                     borderBottom: '1px solid #CCC',
                     padding: '10px 0',
@@ -101,7 +101,7 @@ const RewardsGrid = ({}) => {
                   xs={0}
                   sm={3}
                   sx={{
-                    fontFamily: 'Poppins-Medium',
+                    fontFamily: "'grit_sansbold' !important",
                     fontWeight: '500',
                     borderBottom: '1px solid #CCC',
                     padding: '10px 0',
@@ -118,7 +118,7 @@ const RewardsGrid = ({}) => {
                   xs={8}
                   sm={6}
                   sx={{
-                    fontFamily: 'Poppins-Medium',
+                    fontFamily: "'grit_sansbold' !important",
                     fontWeight: '500',
                     borderBottom: '1px solid #CCC',
                     padding: '10px 0',

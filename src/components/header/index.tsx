@@ -428,7 +428,7 @@ const Header = (props: any) => {
                   </Link>
                 </Grid>
               )}
-              {
+              { window.location.href.toLocaleLowerCase().indexOf('/login') === -1 && window.location.href.toLocaleLowerCase().indexOf('/register') === -1 && window.location.href.toLocaleLowerCase().indexOf('/forgot') === -1 &&
                   restaurant && (!hideLoginPanel || !hideLoginedPanel) && (
                     <Grid
                     >

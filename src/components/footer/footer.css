@@ -9,12 +9,15 @@
   font-weight: 100 !important;
   letter-spacing: 0.07938em !important;
 }
-
+.login-setting{
+  background-color:#8AB4F8;
+  margin-top: 0px !important;
+}
 .footer-setting {
   margin-top: -80px !important;
 }
 
-.footer.image {
+.footer-image {
   bottom: 0;
   margin-top: 0% !important;
 }
