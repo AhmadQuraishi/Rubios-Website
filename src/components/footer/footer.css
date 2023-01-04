@@ -17,6 +17,10 @@
   margin-top: -80px !important;
 }
 
+.footer-lg{
+  background-image: url('../../assets/imgs/blue-bg.png');
+}
+
 .footer-image {
   bottom: 0;
   margin-top: 0% !important;
@@ -42,9 +46,11 @@
   .footer-control {
     margin-bottom: 120px !important;
   }
-  .footer-setting {
-    margin-top: 0px !important;
+  .footer-mobile {
     background-color: #136CAC;
+  }
+  .footer-lg{
+    background-image: none;
   }
 
 }
