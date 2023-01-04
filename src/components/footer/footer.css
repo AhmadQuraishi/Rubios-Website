@@ -42,6 +42,10 @@
   .footer-control {
     margin-bottom: 120px !important;
   }
+  .footer-setting {
+    margin-top: 0px !important;
+    background-color: #136CAC;
+  }
 
 }
 

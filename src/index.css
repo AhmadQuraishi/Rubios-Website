@@ -265,7 +265,7 @@ button {
 .MuiFormControl-root .MuiSelect-select {
   color: #000;
   border-radius: 0;
-  font-family: 'libre_franklinlight' !important;
+  font-family: 'Poppins-Regular', sans-serif !important;
   caret-color: black !important;
   padding: 16px 20px !important;
 }
