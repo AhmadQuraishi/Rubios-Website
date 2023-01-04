@@ -72,14 +72,14 @@ const Footer = () => {
       <Grid
         container
         spacing={0}
-        className={`${window.location.href.toLocaleLowerCase().indexOf('/account') !== -1 || window.location.href.toLocaleLowerCase().indexOf('/menu') !== -1 ||  window.location.href.toLocaleLowerCase().indexOf('/location') !== -1
-          ? 'footer-image'
-          : 'footer-setting'
+        className={`${window.location.href.toLocaleLowerCase().indexOf('/account') !== -1 || window.location.href.toLocaleLowerCase().indexOf('/product') !== -1  || window.location.href.toLocaleLowerCase().indexOf('/menu') !== -1 ||  window.location.href.toLocaleLowerCase().indexOf('/location') !== -1
+          ? 'footer-image footer-mobile footer-lg'
+          : 'footer-setting footer-mobile footer-lg'
         }` }
         sx={{
           display: 'flex',
-          backgroundImage: `url(${image})`,
-          //backgroundColor: 'secondary.main',
+          //backgroundImage: `url(${image})`,
+          //backgroundColor: {xs:"#136CAC",md: "none",lg: "none", sm: "none"},
           width: '100%',
           height: {sm:"500px", lg: "500px", md: "500px", xs: "620px"},
           margin: 0,
