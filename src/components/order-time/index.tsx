@@ -340,13 +340,14 @@ const OrderTime = ({ orderType }: any) => {
                   <ToggleButtonGroup
                     value={selectedTime}
                     exclusive
+                    sx={{fontFamily: "Poppins-Bold !important"}}
                     onChange={(event) => onTimeSlotSelect(event)}
                     className="selected-btn-group"
                   >
                     {/* <Grid container spacing={2}> */}
                     {timeSlots.length !== 0 && hideRemoveAsap() && (
                       <ToggleButton
-                      style={{backgroundColor: "#062C43"}}
+                      sx={{backgroundColor: "#062C43",fontFamily: "Poppins-Bold !important"}}
                         key={`button-${basketObj.basket?.earliestreadytime}`}
                         value={basketObj.basket?.earliestreadytime}
                         className="selected-btn"
@@ -365,7 +366,7 @@ const OrderTime = ({ orderType }: any) => {
                               display: 'block',
                               textTransform: 'none',
                               letterSpacing: 1,
-                              fontFamily: 'Poppins-Regular',
+                              fontFamily: "'libre_franklinlight' !important",
                             }}
                           >
                             Est{' '}
@@ -384,6 +385,7 @@ const OrderTime = ({ orderType }: any) => {
                           key={`button-${time}`}
                           value={time}
                           className="selected-btn"
+                          sx={{fontFamily: 'Poppins-Bold !important',}}
                           style={{backgroundColor: "#062C43", fontSize: "16px"}}
                           selected={selectedTime === time ? true : false}
                         >

@@ -25,10 +25,9 @@ const styleObject = {
   base: {
     color: 'lightslategrey',
     fontSize: '5rem',
-    fontFamily: 'sans-serif',
     '::placeholder': {
       color: '#000',
-      fontFamily: 'Poppins-Regular, sans-serif',
+      fontFamily: "'libre_franklinlight' !important",
     },
   },
 };

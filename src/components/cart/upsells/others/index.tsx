@@ -336,7 +336,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
                           sx={{
                             paddingTop: '5px',
                             fontSize: '14px',
-                            fontFamily: 'Poppins-Bold',
+                            fontFamily: "'sunbornsans_one' !important",
                             color: '#0075BF',
                             display: 'flex',
                             alignItems: 'center',
@@ -481,7 +481,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
                     borderRadius: 0,
                     padding: '30px 10px',
                     fontSize: '16px',
-                    fontFamily: "'Poppins-Medium', sans-serif !important;",
+                    fontFamily: "'grit_sansbold' !important",
                   }}
                   title="Checkout"
                   aria-label="Checkout"

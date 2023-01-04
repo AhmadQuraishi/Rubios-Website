@@ -50,7 +50,7 @@
   transition: all 0.2s ease;
   border: 1px solid;
   border-radius: 5px;
-  font-family: 'Poppins-Regular' !important;
+  font-family: 'libre_franklin' !important;
   color: #395775;
 }
 .stay-connect-bg .button-right {
@@ -58,7 +58,7 @@
   background: #0a6fb8;
   padding-top: 16px;
   padding-bottom: 15px;
-  font-family: 'Poppins-Bold' !important;
+  font-family: 'sunbornsans_one' !important;
   font-weight: 700;
   width: 80px;
 }
@@ -69,7 +69,7 @@
 }
 .stay-connect-bg .msg-status {
   display: flex;
-  font-family: 'Poppins-Medium' !important;
+  font-family: 'grit_sansbold' !important;
   font-size: 12px;
   padding: 5px 0;
   visibility: hidden;

@@ -70,18 +70,18 @@
       font-family: 'sunbornsans_one' !important;
 }
 h1 {
-  font-family: 'Poppins-Bold', sans-serif !important;
-  color: #214F66;
+  font-family: 'sunbornsans_one' !important;
+  color:  #062C43;
   font-size: 36px !important;
 }
 
 h5 {
-  font-family: 'Poppins-Bold', sans-serif !important;
+  font-family: 'sunbornsans_one' !important;
   color: #414141;
 }
 
 h6 {
-  font-family: 'Poppins-Regular', sans-serif !Important;
+  font-family: 'sunbornsans_one' !important;
   font-size: 16px !important;
   color: #525252;
 }
@@ -91,7 +91,7 @@ h6 {
 
 .label {
   color: #0075BF;
-  font-family: 'Poppins-Medium' !important;
+  font-family: 'grit_sansbold' !important;
   font-size: 14px !important;
   font-weight: 600;
   text-transform: uppercase;
@@ -107,7 +107,7 @@ h6 {
 
 .custom-btn,
 button {
-  font-family: 'Poppins-Bold', sans-serif !important;
+  font-family: 'sunbornsans_one'!important;
   font-size: 15px;
   height: 50px;
   box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.2) !important;
@@ -133,7 +133,7 @@ button {
 }
 
 .cta1-btn:hover {
-  background: #214F66;
+  background: #062C43;
   color: white;
 }
 
@@ -147,7 +147,7 @@ button {
 }
 
 .cta3-btn {
-  background: #214F66 !important;
+  background: #062C43 !important;
   color: white;
 }
 
@@ -160,7 +160,7 @@ button {
 /***** Toggle Button Style *****/
 
 .selected-btn.MuiToggleButton-standard {
-  background: #214F66;
+  background: #062C43;
   color: white;
   border: none;
   width: 100%;
@@ -175,7 +175,7 @@ button {
 }
 
 .selected-btn.MuiToggleButton-standard:hover {
-  background: #214F66;
+  background: #062C43;
 }
 
 .selected-btn.Mui-selected {
@@ -217,9 +217,9 @@ button {
 .MuiTextField-root .MuiInputLabel-root.MuiFormLabel-filled,
 .MuiTextField-root .MuiInputLabel-root.MuiFormLabel-filled.Mui-focused,
 .MuiTextField-root .MuiInputLabel-root.Mui-error {
-  font-family: 'Poppins-Bold', sans-serif !important;
+  font-family: 'sunbornsans_one' !important;
   padding: 20px 0px 0px 9px;
-  color: #214F66;
+  color:  #062C43;
   font-size: 10px;
 }
 
@@ -245,10 +245,11 @@ button {
 .MuiFormControl-root .MuiInputLabel-root.Mui-focused,
 .MuiFormControl-root .MuiInputLabel-root.MuiFormLabel-filled,
 .MuiFormControl-root .MuiInputLabel-root.MuiFormLabel-filled.Mui-focused {
-  font-family: 'Poppins-Bold', sans-serif !important;
+  font-family: 'sunbornsans_one' !important;
   padding: 20px 0px 0px 9px;
-  color: #214F66;
+  color: #062C43;
   font-size: 10px;
+  letter-spacing: 1.7px;
 }
 
 .MuiInputBase-root {
@@ -264,7 +265,7 @@ button {
 .MuiFormControl-root .MuiSelect-select {
   color: #000;
   border-radius: 0;
-  font-family: 'Poppins-Regular', sans-serif !important;
+  font-family: 'libre_franklinlight' !important;
   caret-color: black !important;
   padding: 16px 20px !important;
 }
@@ -294,7 +295,7 @@ fieldset {
   display: inline-block !important;
   text-align: center;
   font-size: 12px !important;
-  font-family: 'Poppins-Bold' !important;
+  font-family: 'sunbornsans_one' !important;
   padding: 8px 0px !important;
   letter-spacing: 1.5px !important;
 }
@@ -319,10 +320,10 @@ fieldset {
 
 .mobile-field .MuiInputLabel-root.Mui-focused,
 .mobile-field .MuiInputLabel-root.Mui-focused.Mui-error {
-  font-family: 'Poppins-Bold', sans-serif !important;
+  font-family: 'sunbornsans_one' !important;
   padding: 20px 0px 0px 9px !important;
   font-size: 10px !important;
-  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+font-family: 'sunbornsans_one' !important;
   font-weight: 400;
   font-size: 1rem;
   line-height: 1.4375em;
@@ -353,16 +354,16 @@ fieldset {
 }
 
 .mobile-field .MuiInputLabel-root.MuiFormLabel-filled.Mui-focused {
-  font-family: 'Poppins-Bold', sans-serif !important;
+  font-family: 'sunbornsans_one' !important;
   padding: 20px 0px 0px 9px !important;
-  color: #214F66 !important;
+  color: #062C43 !important;
   font-size: 10px !important;
 }
 
 .mobile-field-label {
-  font-family: 'Poppins-Bold', sans-serif !important;
+  font-family: 'sunbornsans_one' !important;
   padding: 20px 0px 0px 9px !important;
-  color: #214F66 !important;
+  color: #062C43 !important;
   font-size: 10px !important;
 }
 
@@ -411,13 +412,13 @@ fieldset {
 
 .taxes .text-info-title {
   line-height: 1.0;
-  font-family: '', sans-serif;
+  font-family: 'libre_franklinlight' !important;
 }
 
 .taxes .text-info-desc {
   line-height: 1.0;
   text-align: right;
-  font-family: 'Poppins-Regular', sans-serif;
+  font-family: 'libre_franklinlight' !important;
 }
 
 .product-label {
@@ -433,7 +434,7 @@ fieldset {
   border-radius: 80px;
   width: 40%;
   font-size: 10px !important;
-  font-family: Poppins-Medium, serif !important;
+  font-family: 'grit_sansbold' !important;
   letter-spacing: 0.7px !important;
 }
 
@@ -449,11 +450,11 @@ fieldset {
   z-index: 99999;
   top: 0px;
   left: 0px;
-  background: #214F66;
+  background: #062C43;
   padding: 10px;
   text-decoration: none;
   color: #ffffff;
-  font-family: 'Poppins-Regular';
+  font-family: 'libre_franklinlight' !important;
 }
 
 @media screen and (min-width: 600px) {
@@ -467,4 +468,16 @@ fieldset {
     width: 200px !important;
   }
 }
+.css-bdhsul-MuiTypography-root-MuiDialogTitle-root {
+  font-family: 'sunbornsans_one' !important;
+}
+.css-ahj2mt-MuiTypography-root {
+  font-family: 'libre_franklinlight' !important;
+}
+.css-e784if-MuiTypography-root {
+  font-family: 'libre_franklin' !important;
+}
 
+.css-vnnh45-MuiTypography-root  {
+  font-weight: 100 !important;
+}

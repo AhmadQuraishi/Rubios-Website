@@ -87,7 +87,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     textTransform: 'uppercase',
     fontSize: '25px !important',
     fontWeight: '700',
-    fontFamily: 'Poppins-Bold !important',
+    fontFamily: "'sunbornsans_one' !important",
     padding: '10px 0px 18px 0px',
   },
   crossIcon: {
@@ -104,7 +104,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   smallLink: {
     color: '#0075BF !important',
     fontSize: '11px !important',
-    fontFamily: "'Poppins-Bold' !important",
+    fontFamily: "'sunbornsans_one' !important",
     textDecoration: 'underline !important',
     display: 'inline',
     cursor: 'pointer',
@@ -114,7 +114,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   disabledLink: {
     color: '#ccc !important',
     fontSize: '11px !important',
-    fontFamily: 'Poppins-Bold !important',
+    fontFamily: "'sunbornsans_one' !important",
     display: 'inline',
     cursor: 'default',
     textDecoration: 'underline',
@@ -134,7 +134,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginTop: '-5px !important',
   },
   emptyCart: {
-    fontFamily: 'Poppins-Regular, sans-serif !Important',
+    fontFamily: "'libre_franklinlight' !important",
     fontSize: '16px !important',
     color: '#525252',
     fontWeight: 'bold',
@@ -146,7 +146,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     border: '1px solid #2b4b62',
     textAlign: 'center',
     display: 'inline-flex',
-    fontFamily: "'Poppins-Medium', sans-serif !important",
+    fontFamily: "'grit_sansbold' !important",
     fontSize: 14,
     marginLeft: 5,
     justifyContent: 'center',
@@ -669,7 +669,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         sx={{
                           fontSize: '14px',
                           color: 'secondary.main',
-                          fontFamily: "'Poppins-Medium' !important",
+                          fontFamily: "'grit_sansbold' !important",
                         }}
                       >
                         {item.productId !== utensilsReducer.utensilsProductId
@@ -687,7 +687,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                           textAlign: 'right',
                           fontSize: '14px',
                           fontWeight: '700',
-                          fontFamily: 'Poppins-Bold !important',
+                          fontFamily: "'sunbornsans_one' !important",
                           color: 'secondary.main',
                         }}
                       >
@@ -867,7 +867,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         }}
                         sx={{
                           paddingLeft: 0,
-                          fontFamily: 'Poppins-Medium !important',
+                          fontFamily: "'grit_sansbold' !important",
                         }}
                       />
                       Add utensils to my order.
@@ -1204,7 +1204,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         width: '100%',
                         borderRadius: 0,
                         padding: '30px',
-                        fontFamily: "'Poppins-Medium', sans-serif !important;",
+                        fontFamily: "'grit_sansbold' !important",
                         fontSize: '15px',
                       }}
                     >
@@ -1221,7 +1221,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         item
                         xs={9}
                         sx={{
-                          fontFamily: 'Poppins-Bold !important',
+                          fontFamily: "'sunbornsans_one' !important",
                           color: 'secondary.main',
                           fontSize: '14px',
                           paddingBottom: '2px',
@@ -1234,7 +1234,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         item
                         xs={3}
                         sx={{
-                          fontFamily: 'Poppins-Bold !important',
+                          fontFamily: "'sunbornsans_one' !important",
                           color: 'secondary.main',
                           fontSize: '14px',
                           textAlign: 'right',
@@ -1266,7 +1266,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                     color: 'secondary.main',
                                     fontSize: '14px',
                                     paddingBottom: '2px',
-                                    fontFamily: 'Poppins-Regular',
+                                    fontFamily: "'libre_franklinlight' !important",
                                   }}
                                 >
                                   {discount.type === 'Coupon'
@@ -1282,7 +1282,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                     fontSize: '14px',
                                     textAlign: 'right',
                                     paddingBottom: '2px',
-                                    fontFamily: 'Poppins-Regular',
+                                    fontFamily: "'libre_franklinlight' !important",
                                   }}
                                 >
                                   -$
@@ -1305,7 +1305,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                               color: 'secondary.main',
                               fontSize: '14px',
                               paddingBottom: '2px',
-                              fontFamily: 'Poppins-Regular',
+                              fontFamily: "'libre_franklinlight' !important",
                             }}
                             title="TIP"
                           >
@@ -1319,7 +1319,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                               fontSize: '14px',
                               textAlign: 'right',
                               paddingBottom: '2px',
-                              fontFamily: 'Poppins-Regular',
+                              fontFamily: "'libre_franklinlight' !important",
                             }}
                           >
                             +${basketObj.basket && basketObj.basket.tip}
@@ -1334,7 +1334,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                           color: 'secondary.main',
                           fontSize: '14px',
                           paddingBottom: '2px',
-                          fontFamily: 'Poppins-Regular',
+                          fontFamily: "'libre_franklinlight' !important",
                           display: 'flex',
                         }}
                         // title="ESTIMATED TAX AND FEES"
@@ -1349,7 +1349,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                             <>
                             <Typography sx={{
                           fontSize: '14px',
-                          fontFamily: 'Poppins-Regular !important', cursor: 'pointer'}} onClick={() => {
+                          fontFamily: "'libre_franklinlight' !important",cursor: 'pointer'}} onClick={() => {
                                     setShowMore(!showMore);
                                   }}>
                               ESTIMATED TAX AND FEES
@@ -1396,7 +1396,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                           fontSize: '14px',
                           textAlign: 'right',
                           paddingBottom: '2px',
-                          fontFamily: 'Poppins-Regular',
+                          fontFamily: "'libre_franklinlight' !important",
                         }}
                         title={'$' + calculateTaxAndFee(basketObj.basket)}
                       >
@@ -1413,10 +1413,9 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                       <Typography
                                         sx={{
                                           lineHeight: '1.0',
-                                          fontFamily:
-                                            'Poppins-Regular',
+                                          fontFamily: "'libre_franklinlight' !important",
                                             fontSize: "14px !important",
-                                            color: '#214F66',
+                                            color: '#062C43 !important',
                                             marginLeft: "22px !important"
                                         }}
                                       >
@@ -1432,9 +1431,8 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                         sx={{
                                           lineHeight: '1.0',
                                           textAlign: 'right',
-                                          fontFamily:
-                                            'Poppins-Regular',
-                                            color: '#214F66',
+                                          fontFamily: "'libre_franklinlight' !important",
+                                            color: '#062C43 !important',
                                             
                                             fontSize: "14px !important",
                                         }}
@@ -1468,8 +1466,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                       <Typography
                                         sx={{
                                           lineHeight: '1.0',
-                                          fontFamily:
-                                            'Poppins-Regular',
+                                          fontFamily: "'libre_franklinlight' !important",
                                             fontSize: "14px !important",
                                             color: '#214F66',
                                             marginBottom: "3px",
@@ -1484,8 +1481,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                         sx={{
                                           lineHeight: '1.0',
                                           textAlign: 'right',
-                                          fontFamily:
-                                            'Poppins-Regular',
+                                          fontFamily: "'libre_franklinlight' !important",
                                             fontSize: "14px !important",
                                             color: '#214F66',
                                         }}
@@ -1572,7 +1568,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                             sx={{
                               color: 'secondary.main',
                               fontSize: '14px',
-                              fontFamily: 'Poppins-Regular',
+                              fontFamily: "'libre_franklinlight' !important",
                             }}
                             title="DELIVERY FEE"
                           >
@@ -1585,7 +1581,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                               color: 'secondary.main',
                               fontSize: '14px',
                               textAlign: 'right',
-                              fontFamily: 'Poppins-Regular',
+                              fontFamily: "'libre_franklinlight' !important",
                             }}
                             title={
                               '$' +
@@ -1611,7 +1607,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         item
                         xs={9}
                         sx={{
-                          fontFamily: 'Poppins-Bold !important',
+                          fontFamily: "'sunbornsans_one' !important",
                           color: 'secondary.main',
                           fontSize: '15px',
                         }}
@@ -1623,7 +1619,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         item
                         xs={3}
                         sx={{
-                          fontFamily: 'Poppins-Bold !important',
+                          fontFamily: "'sunbornsans_one' !important",
                           color: 'secondary.main',
                           fontSize: '15px',
                           textAlign: 'right',
@@ -1667,7 +1663,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                   borderRadius: 0,
                   padding: '30px 10px',
                   fontSize: '16px',
-                  fontFamily: "'Poppins-Medium', sans-serif !important;",
+                  fontFamily: "'grit_sansbold' !important",
                 }}
                 title="Checkout"
                 aria-label="Checkout"
@@ -1686,7 +1682,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                   borderRadius: 0,
                   padding: '30px 10px',
                   fontSize: '16px',
-                  fontFamily: "'Poppins-Medium', sans-serif !important;",
+                  fontFamily: "'grit_sansbold' !important",
                 }}
                 title="Checkout"
                 aria-label="Checkout Button  disabled"

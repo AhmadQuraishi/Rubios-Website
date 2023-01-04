@@ -72,12 +72,12 @@
 }
 
 .welcome-content .order-action .caption-grey {
-  font-family: 'Poppins-Bold' !important;
+  font-family: 'sunbornsans_one' !important;
   color: #a4a4a4;
 }
 
 .welcome-content .order-action .button {
-  font-family: 'Poppins-Bold' !important;
+  font-family: 'sunbornsans_one' !important;
   font-size: 13px !important;
 }
 
@@ -130,7 +130,7 @@
 .welcome-content .caption-grey {
   font-size: 12px;
   text-decoration: none;
-  font-family: 'Poppins-Regular' !important;
+  font-family: 'libre_franklin' !important;
   margin-left: 5px;
 }
 

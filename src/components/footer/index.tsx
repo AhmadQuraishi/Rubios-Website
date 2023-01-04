@@ -62,14 +62,17 @@ const Footer = () => {
     <footer
       className={`${window.location.href.toLocaleLowerCase().indexOf('/product') !== -1
           ? 'footer-control'
-          : 'footer-image'
-        }`}
+          : ''
+        }` || `${window.location.href.toLocaleLowerCase().indexOf('/location') !== -1
+        ? 'login-setting'
+        : ''
+      }`}
     >
       {/* New Changes */}
       <Grid
         container
         spacing={0}
-        className={`${window.location.href.toLocaleLowerCase().indexOf('/account') !== -1 || window.location.href.toLocaleLowerCase().indexOf('/menu') !== -1 
+        className={`${window.location.href.toLocaleLowerCase().indexOf('/account') !== -1 || window.location.href.toLocaleLowerCase().indexOf('/menu') !== -1 ||  window.location.href.toLocaleLowerCase().indexOf('/location') !== -1
           ? 'footer-image'
           : 'footer-setting'
         }` }

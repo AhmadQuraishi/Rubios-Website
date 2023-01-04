@@ -2,7 +2,6 @@
   /*margin-top: 5px;*/
   display: flex;
   align-items: center;
-  font-size: 13px;
 }
 
 @media(max-width: 600px){

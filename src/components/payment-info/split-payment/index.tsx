@@ -396,7 +396,7 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                     >
                       <Typography
                         variant="h6"
-                        fontFamily="Poppins-Bold !important"
+                        fontFamily= "'sunbornsans_one' !important"
                       >
                         AMOUNT
                       </Typography>

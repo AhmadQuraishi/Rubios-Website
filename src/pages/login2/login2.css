@@ -48,7 +48,7 @@
   margin: 14px 0px 15px 0px;
 }
 .login-content .label.bold {
-  font-family: 'Poppins-Bold', sans-serif !important;
+  font-family: 'sunbornsans_one' !important;
   font-size: 15px !important;
   margin-top: 0px;
   text-align: center;
@@ -65,7 +65,7 @@
 .login-content .caption-grey {
   font-size: 12px;
   text-decoration: none;
-  font-family: 'Poppins-Regular' !important;
+  font-family: 'libre_franklin' !important;
   margin-left: 5px;
 }
 

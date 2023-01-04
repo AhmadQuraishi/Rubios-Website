@@ -88,7 +88,7 @@ const StoreInfo = (props: any) => {
             paddingTop: '15px',
             fontSize: '13px',
             fontWeight: '500',
-            fontFamily: 'Poppins-Medium !important',
+            fontFamily: "'grit_sansbold' !important",
           }}
         >
           Hours

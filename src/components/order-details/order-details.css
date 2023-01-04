@@ -15,7 +15,7 @@
   margin: 0px auto 0px auto !important;
 }
 .order-details h6 {
-  /* font-family: 'libre_franklin'!important; */
+  font-family: 'libre_franklin'!important;
   font-size: 16px !important;
   color: #58595b;
   font-weight: bold;
@@ -34,7 +34,7 @@
   height: 18px;
   border: 1px solid #2b4b62;
   text-align: center;
-  font-family: 'Poppins-Medium', sans-serif !important;
+  font-family: 'grit_sansbold' !important;
   font-size: 14px;
   margin-left: 5px;
   display: inline-flex;

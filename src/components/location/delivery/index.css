@@ -1,15 +1,16 @@
 .delivery-address-text {
-  font-size: 12px;
-  font-family: 'Poppins-Medium', sans-serif !important;
+  padding: 0px;
+  font-size: 11px;
   display: block;
   color: #414141;
-  padding: 0px;
+  font-family: 'sunbornsans_one'!important;
+  letter-spacing: 0.5px;
 }
 
 .delivery-heading-text {
   display: inline;
-  font-size: 12px;
-  font-family: 'Poppins-Medium', sans-serif !important;
+  font-size: 11px;
+  font-family: 'grit_sansbold' !important;
   display: block;
   color: #0075BF;
   letter-spacing: 0.7px;
@@ -17,7 +18,7 @@
 .delivery-heading-edit{
   display: inline-flex;
   font-size: 12px;
-  font-family: 'Poppins-Medium', sans-serif !important;
+  font-family: 'grit_sansbold' !important;
   color: #0075BF;
   letter-spacing: 0.7px;
 }

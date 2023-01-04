@@ -146,7 +146,7 @@ const CategoryList = () => {
                     title="View All"
                     style={{
                       textDecoration: 'none',
-                      color: "#214F66",
+                      color: "#062C43",
                       textTransform: 'uppercase',
                       marginBottom: "10px",
                     }}
@@ -168,7 +168,7 @@ const CategoryList = () => {
               variant="scrollable"
               scrollButtons
               allowScrollButtonsMobile
-              sx={{ fontFamily: 'Poppins-Medium !important' }}
+              sx={{  fontFamily: "'grit_sansbold' !important"}}
               role="region"
               aria-label="Food Menu"
             >
