@@ -3,7 +3,7 @@
   border-radius: 0px;
   border: 1px solid #c6c6c6;
   box-shadow: 0px 4px 5px 0px rgb(0 0 0 / 20%);
-  font-family: 'Poppins-Medium';
+  font-family: 'grit_sansbold' !important;
   text-align: center;
   width: 100%;
   max-width: 400px;
@@ -14,7 +14,7 @@
 }
 .body-text-bold-reward {
   font-size: 16px !important;
-  font-family: 'Poppins-Bold', sans-serif !important;
+  font-family: 'sunbornsans_one' !important;
   color: #414141;
   padding-top: 8px;
   padding-bottom: 20px;
@@ -22,7 +22,7 @@
 
 .body-text-bold-redeem {
   font-size: 16px !important;
-  font-family: 'Poppins-Bold', sans-serif !important;
+  font-family: 'sunbornsans_one' !important;
   color: #414141;
   padding-bottom: 20px;
 }
@@ -38,13 +38,13 @@
   margin: 20px 0 25px 0;
 }
 #reward-points-container .bold-title {
-  font-family: 'DoubleTake', sans-serif !important;
+  font-family: 'sunbornsans_one' !important;
   font-size: 30px;
   text-transform: uppercase;
 }
 
 #reward-points-container .small-heading {
-  font-family: 'Poppins-Bold', sans-serif !important;
+  font-family: 'sunbornsans_one' !important;
   font-size: 25px;
   text-transform: uppercase;
   color: #2b4b62;
@@ -59,7 +59,7 @@
   border: 1px solid #2b4b62;
   text-align: center;
   display: inline-block;
-  font-family: 'Poppins-Medium', sans-serif !important;
+  font-family: 'grit_sansbold' !important;
   font-size: 14px;
   margin-left: 5px;
   display: flex;
@@ -70,7 +70,7 @@
   border-radius: 0px;
   border: 1px solid #c6c6c6;
   box-shadow: 0px 4px 5px 0px rgb(0 0 0 / 20%);
-  font-family: 'Poppins-Medium';
+  font-family: 'sunbornsans_one' !important;
   text-align: center;
   color: #2b4b62;
   padding: 10px;
@@ -125,7 +125,7 @@
   .expire {
   font-size: 11px;
   color: #333;
-  font-family: 'Poppins-bold' !important;
+  font-family: 'sunbornsans_one' !important;
   display: block;
   padding: 3px 0px 5px 0px;
 }
@@ -138,7 +138,7 @@
   padding-top: 2px;
   margin-bottom: 2px;
   color: #333;
-  font-family: 'Poppins-bold' !important;
+  font-family: 'sunbornsans_one' !important;
   text-transform: uppercase;
 }
 #reward-points-container .reward-point-merge-panel .button {
@@ -146,7 +146,7 @@
   line-height: 20px;
   letter-spacing: 2px;
   text-transform: uppercase;
-  font-family: 'Poppins-Bold', sans-serif !important;
+  font-family: 'sunbornsans_one' !important;
   color: #0075bf;
   font-size: 15px;
   font-weight: 600;
@@ -168,25 +168,25 @@
 }
 #reward-points-container .message-panel {
   padding: 0px 0 5px 0;
-  font-family: 'Poppins-Medium', sans-serif !important;
+  font-family: 'grit_sansbold' !important;
   font-size: 15px;
   color: #333;
 }
 #reward-points-container .message-panel h3 {
   font-size: 25px;
   color: #2b4b62;
-  font-family: 'Poppins-Bold', sans-serif !important;
+  font-family: 'sunbornsans_one' !important;
   line-height: 32px;
 }
 #reward-points-container .message-panel .low-head {
   font-size: 18px;
-  font-family: 'DoubleTake', sans-serif !important;
+  font-family: 'sunbornsans_one' !important;
   text-transform: uppercase;
   color: #2b4b62;
   margin: 15px 0px 5px 0;
 }
 #reward-points-container .message-panel .back-link {
-  font-family: 'Poppins-Medium', sans-serif !important;
+  font-family: 'grit_sansbold' !important;
   letter-spacing: 2px;
   margin-top: 30px;
   color: #2b4b62;

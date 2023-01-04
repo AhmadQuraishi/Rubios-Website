@@ -51,7 +51,7 @@
 .upsells .content-panel {
   padding: 10px 20px 10px 0px;
   cursor: pointer;
-  font-family: 'Poppins-Medium', sans-serif !important;
+  font-family: 'grit_sansbold' !important;
   color: #2b4b62;
   /* max-width: 354px; */
   /*min-height: 170px;*/
@@ -102,7 +102,7 @@
   display: block;
   font-size: 40px;
   font-weight: bold;
-  font-family: 'Poppins-Medium';
+  font-family: 'grit_sansbold' !important;
   text-align: center;
   margin-top: -5px;
   -ms-transform: scaleX(-1) rotate(-35deg); /* IE 9 */
@@ -131,7 +131,7 @@
 .name-panel {
   padding-left: 20px;
   color: #2b4b62;
-  font-size: 14px;
+  font-size: 12pt;
 }
 
 .upsells

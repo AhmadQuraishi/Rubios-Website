@@ -1,6 +1,6 @@
 .redeem-sec .body-text {
   font-size: 16px !important;
-  font-family: 'Poppins-Medium', sans-serif !important;
+  font-family: 'grit_sansbold' !important;
   color: #414141;
   padding-top: 8px;
   padding-bottom: 25px;
@@ -8,7 +8,7 @@
 }
 .redeem-sec .body-text-bold {
   font-size: 16px !important;
-  font-family: 'Poppins-Bold', sans-serif !important;
+  font-family: 'sunbornsans_one' !important;
   color: #414141;
   padding-top: 8px;
   line-height: 32px;
@@ -31,7 +31,7 @@
   height: auto;
 }
 .redeem-sec .item-name span {
-  font-family: 'Poppins-Medium';
+  font-family: 'grit_sansbold' !important;
   font-size: 18px;
   text-align: left !important;
   color: #2b4b62;

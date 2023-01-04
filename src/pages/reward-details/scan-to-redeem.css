@@ -10,7 +10,7 @@
 }
 .invite-section .body-text {
   font-size: 16px !important;
-  font-family: 'Poppins-Medium', sans-serif !important;
+  font-family: 'grit_sansbold' !important;
   color: #414141;
   padding-top: 8px;
   padding-bottom: 25px;
@@ -26,7 +26,7 @@
 .invite-section .scan-reward h6 {
   font-size: 20px !important;
   line-height: 1;
-  font-family: "Poppins-Medium" !important;
+  font-family: 'grit_sansbold' !important;
   color: #2B4B62;
 }
 .invite-section .back-btn {
@@ -43,7 +43,7 @@
   text-align: center;
   margin-bottom: auto;
   margin-top: 10px;
-  font-family: 'Poppins-Medium', sans-serif !important;
+  font-family: 'grit_sansbold' !important;
   font-size: 13px;
 }
 

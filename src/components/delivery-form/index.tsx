@@ -238,7 +238,7 @@ const DeliveryForm = ({
                     variant="body1"
                     style={{
                       fontSize: '14px',
-                      fontFamily: 'Poppins-Medium',
+                      fontFamily: "'grit_sansbold' !important",
                       color: '#58595b',
                       paddingTop: '5px',
                     }}

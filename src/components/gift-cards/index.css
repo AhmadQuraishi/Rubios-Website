@@ -22,7 +22,7 @@
 
 .gift-cards-panel .card-panel .panel h6 {
   font-size: 16px !important;
-  font-family: 'Poppins-Medium', sans-serif !important;
+  font-family: 'grit_sansbold' !important;
   font-weight: 500;
 }
 
@@ -40,7 +40,7 @@
   font-size: 15px;
   display: block;
   color: #b9b9b9;
-  font-family: 'Poppins-Medium', sans-serif !important;
+  font-family: 'grit_sansbold' !important;
   height: auto;
   padding: 0;
   padding-left: 15px;
