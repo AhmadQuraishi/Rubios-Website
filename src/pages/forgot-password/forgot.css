@@ -1,5 +1,5 @@
 .forgot-wrapper {
-  margin: 62px 139px !important;
+  margin: 62px 139px 100px 139px !important;
 }
 .forgot-wrapper .login-content {
   background: white;
@@ -94,7 +94,7 @@
 
 @media screen and (max-width: 468px) {
   .forgot-wrapper {
-    margin: 15px !important;
+    margin: 15px 15px 100px 15px !important;
   }
   .login-content {
     padding: 30px;

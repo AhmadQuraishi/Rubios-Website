@@ -1204,8 +1204,8 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         width: '100%',
                         borderRadius: 0,
                         padding: '30px',
-                        fontFamily: "'grit_sansbold' !important",
-                        fontSize: '15px',
+                        fontFamily: "'sunbornsans_one'!important",
+                        fontSize: '10pt',
                       }}
                     >
                       Add Another Menu Item
