@@ -66,13 +66,14 @@ const Footer = () => {
         }` || `${window.location.href.toLocaleLowerCase().indexOf('/location') !== -1
         ? 'login-setting'
         : ''
-      }`}
+      }` || `${window.location.href.toLocaleLowerCase().indexOf('/checkout') !== -1 || window.location.href.toLocaleLowerCase().indexOf('/order-confirmation') !== -1
+      ? 'footer-confirmation-checkout' : '' }` }
     >
       {/* New Changes */}
       <Grid
         container
         spacing={0}
-        className={`${window.location.href.toLocaleLowerCase().indexOf('/account') !== -1 || window.location.href.toLocaleLowerCase().indexOf('/product') !== -1  || window.location.href.toLocaleLowerCase().indexOf('/menu') !== -1 ||  window.location.href.toLocaleLowerCase().indexOf('/location') !== -1
+        className={`${window.location.href.toLocaleLowerCase().indexOf('/account') !== -1 || window.location.href.toLocaleLowerCase().indexOf('/menu') !== -1 || window.location.href.toLocaleLowerCase().indexOf('/product') !== -1  || window.location.href.toLocaleLowerCase().indexOf('/category') !== -1 ||  window.location.href.toLocaleLowerCase().indexOf('/location') !== -1 || window.location.href.toLocaleLowerCase().indexOf('/order-confirmation') !== -1
           ? 'footer-image footer-mobile footer-lg'
           : 'footer-setting footer-mobile footer-lg'
         }` }

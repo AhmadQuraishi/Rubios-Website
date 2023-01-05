@@ -20,7 +20,6 @@ import { isLoginUser } from '../../helpers/auth';
 const useStyle = makeStyles(() => ({
   root: {
     minHeight: '100vh',
-    backgroundColor: '#73aac7',
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
     justifyContent: 'center',
@@ -117,9 +116,9 @@ const OrderConfirmation = () => {
   };
 
   return (
-    <Page title={'Order Confirmation'} className="">
+    <Page title={'Order Confirmation'} className="order-bg">
       <Fragment>
-        <Grid container component="main" className={classes.root}>
+        <Grid container component="main" className={classes.root }>
           <Grid item xs={12} sm={12} md={12} lg={12}>
             <Grid container className="order-confirmation">
               <Grid item xs={12} sm={12} md={12} lg={6}>
