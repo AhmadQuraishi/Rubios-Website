@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: theme.palette.secondary.main,
     fontSize: '14px',
     lineHeight: '7px',
-    fontFamily: "'libre_franklinlight' !important",
+    fontFamily: "'libre_franklin' !important",
     letterSpacing: 0,
   },
   cal: {
@@ -319,7 +319,7 @@ const ProductListingCarousel = (props: any) => {
                                   item.caloriesseparator +
                                   item.maxcalories
                                 : item.basecalories
-                            } cal`}
+                            } CAL`}
                             className={classes.cal}
                           >
 
@@ -328,7 +328,7 @@ const ProductListingCarousel = (props: any) => {
                                 item.caloriesseparator +
                                 item.maxcalories
                               : item.basecalories}{' '}
-                            cal
+                            CAL
                           </Grid>
                         )}
                         

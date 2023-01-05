@@ -6,7 +6,10 @@
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
 }
-
+.vertical-line{
+  border-left: 3px solid #58595b;
+  height: 17px;
+}
 .fix-span {
   overflow: hidden;
   text-overflow: ellipsis;

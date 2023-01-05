@@ -43,6 +43,10 @@ h6.white {
   background-repeat: no-repeat;
 
 }
+
+.order-bg {
+  background-image:url(../../assets/imgs/yellow-bg.png);
+}
 .order-confirmation .phone-icon {
   position: absolute;
   bottom: 0;

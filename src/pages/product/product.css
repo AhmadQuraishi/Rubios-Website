@@ -21,8 +21,9 @@ margin-bottom: 20px;
   font-family: 'grit_sansbold' !important;
   padding-bottom: 15px;
   font-size: 32px;
-  color: #062C43;
+  color: #0075BF;
   margin-top: 14px;
+  text-transform: uppercase;
 }
 
 .product-detail .label.bold {

@@ -374,7 +374,7 @@ const Header = (props: any) => {
                   />
                   <div
                     style={{
-                      //color: 'rgb(34, 76, 101)',
+                      color: 'rgb(34, 76, 101)',
                       position: 'absolute',
                       margin: 'auto',
                       inset: 'auto',
@@ -383,21 +383,15 @@ const Header = (props: any) => {
                       top: 0,
                       left: 0,
                       right: 0,
-                      color: " white !important",
                       bottom: 0,
                       textAlign: 'center',
                       fontSize: '13px',
+                      fontFamily: "'sunbornsans_one'!important",
                     }}
                   >
-                    <span
-                      style={{
-                        fontFamily: "'sunbornsans_one'!important",
-                      }}
-                    >
                       {basketObj.basket &&
                         basketObj.basket.products.length > 0 &&
                         getBasketCount(basketObj.basket)}
-                    </span>
                   </div>
                 </div>
               )}
@@ -604,6 +598,7 @@ const Header = (props: any) => {
                   <img
                     src={cartIcon}
                     style={{ width: '36px' }}
+                    
                     alt="Cart Icon"
                     title="Cart Icon"
                   />
