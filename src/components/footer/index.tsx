@@ -82,7 +82,7 @@ const Footer = () => {
           //backgroundImage: `url(${image})`,
           //backgroundColor: {xs:"#136CAC",md: "none",lg: "none", sm: "none"},
           width: '100%',
-          height: {sm:"500px", lg: "500px", md: "500px", xs: "620px"},
+          height: {sm:"500px", lg: "500px", md: "500px", xs: "633px"},
           margin: 0,
           padding: { xs: '100px 0px',sm: '100px 0px 10px 0px',md: '150px 0px 20px 0px', lg: '220px 0px 40px 0px' },
         }}
