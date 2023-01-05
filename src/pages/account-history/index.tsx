@@ -86,6 +86,9 @@ const AccountHistory = () => {
           <Box>
             <Tabs
               value={value}
+              scrollButtons
+              variant="scrollable"
+              allowScrollButtonsMobile
               onChange={handleChange}
               aria-label="Account History Tabs"
               TabIndicatorProps={{

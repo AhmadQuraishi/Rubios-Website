@@ -423,7 +423,7 @@ const Header = (props: any) => {
                 </Grid>
               )}
               { window.location.href.toLocaleLowerCase().indexOf('/login') === -1 && window.location.href.toLocaleLowerCase().indexOf('/register') === -1 && window.location.href.toLocaleLowerCase().indexOf('/forgot') === -1 &&
-                  restaurant && (!hideLoginPanel || !hideLoginedPanel) && (
+                  restaurant && (!hideLoginPanel || !hideLoginedPanel) &&(
                     <Grid
                     >
                       <Typography className="v-line" sx={{ marginTop: { sm: "10px", lg: "15px", md: "11px" } }}>
@@ -598,7 +598,7 @@ const Header = (props: any) => {
                   <img
                     src={cartIcon}
                     style={{ width: '36px' }}
-                    
+
                     alt="Cart Icon"
                     title="Cart Icon"
                   />
