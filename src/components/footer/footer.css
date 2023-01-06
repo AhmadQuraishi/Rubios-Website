@@ -10,8 +10,7 @@
   letter-spacing: 0.07938em !important;
 }
 .login-setting{
-  background-color:#8AB4F8;
-  margin-top: 0px !important;
+  margin-top: -80px !important;
 }
 .footer-setting {
   margin-top: -80px !important;
@@ -26,8 +25,8 @@
   margin-top: 0% !important;
 }
 .footer-confirmation-checkout {
-background-color: #FFCC38;
-margin-top: 0px !important;
+  margin-top: -80px !important;
+
 }
 
 @media screen and (min-width: 900px) {
@@ -55,6 +54,10 @@ margin-top: 0px !important;
   }
   .footer-lg{
     background-image: none;
+  }
+  .footer-confirmation-checkout {
+    margin-top: 80px !important;
+  
   }
 
 }

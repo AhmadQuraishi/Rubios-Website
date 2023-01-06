@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       fontSize: '13px',
       textTransform: 'uppercase',
       textDecoration: 'none',
-      paddingTop: '10px',
+      // paddingTop: '10px',
       display: 'block',
     },
   },
@@ -574,12 +574,12 @@ const CategoryList = () => {
                 position: 'relative',
               }}
             >
-              <Grid item xs={12}>
+              <Grid item xs={12} >
                 <div
                   id={'#panel-' + index}
                   style={{ position: 'absolute', top: '-120px' }}
                 ></div>
-                <Grid container>
+                <Grid container sx={{alignItems: "center"}}>
                   <Grid item xs={item.products.length > 4 ? 8 : 12}>
                     <Typography
                       variant="h2"
@@ -590,7 +590,7 @@ const CategoryList = () => {
                     </Typography>
                   </Grid>
                   {item.products.length > 4 && (
-                    <Grid item xs={4}>
+                    <Grid item xs={4} sx={{padding: "0px 0px 35px 0px"}}>
                       <Typography className={classes.link}>
                         <Link to={`/category/${item.id}`} title="view all" style={{color: "#062C43"}}>
                           view all <span style={{fontSize:"17px"}}><img

@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingBottom: '5px',
     textTransform: 'uppercase',
     [theme.breakpoints.down('sm')]: {
-      fontSize: '25px !important',
+      fontSize: '22px !important',
     },
   },
 }));

@@ -532,7 +532,7 @@ export const OrderTypeDialog = (props: any) => {
                 Choose your location
               </Typography> */}
                       <ToggleButtonGroup
-                        style={{ display: 'inline' }}
+                        style={{ display: 'grid', justifyContent: "center"  }}
                         exclusive
                         value={changeOrderType}
                         onChange={onServiceSelect}
@@ -540,6 +540,7 @@ export const OrderTypeDialog = (props: any) => {
                         {restaurantSupportedHanOffMode('pickup') && !hideIt && (
                           <ToggleButton
                             role="radio"
+                            sx={{ width: {lg:"310px !important", md: "310px !important", xs: "250px !important", sm: "310px !important"}}}
                             value={'pickup'}
                             // onClick={() => {
                             //   //setSearchText('');
@@ -556,6 +557,7 @@ export const OrderTypeDialog = (props: any) => {
                           <ToggleButton
                             role="radio"
                             value={'curbside'}
+                            sx={{ width: {lg:"310px !important", md: "310px !important", xs: "250px !important", sm: "310px !important"}}}
                             // onClick={() => {
                             //   //setSearchText('');
                             //   changeOrderType('curbside');
@@ -571,6 +573,7 @@ export const OrderTypeDialog = (props: any) => {
                           <ToggleButton
                             role="radio"
                             value={'dinein'}
+                            sx={{ width: {lg:"310px !important", md: "310px !important", xs: "250px !important", sm: "310px !important"}}}
                             // onClick={() => {
                             //   //setSearchText('');
                             //   changeOrderType('dinein');
@@ -595,6 +598,7 @@ export const OrderTypeDialog = (props: any) => {
                               fontFamily: "'sunbornsans_one' !important",
                               fontSize: '15px',
                               height: '50px',
+                              width: {lg:"310px !important", md: "310px !important", xs: "250px !important", sm: "310px !important"},
                               boxShadow:
                                 '0px 0px 0px rgba(0, 0, 0, 0.2) !important',
                               textTransform: 'uppercase',

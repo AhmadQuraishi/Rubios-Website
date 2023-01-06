@@ -284,7 +284,7 @@ const RegisterConfirmation = ({ id }: any) => {
                     name="email"
                     autoComplete="email"
                     sx={{ width: '100%' }}
-                    value={values.email}
+                    value={values.email ? values.email : null}
                     onChange={handleChange('email')}
                     onBlur={handleBlur('email')}
                     error={Boolean(touched.email && errors.email)}

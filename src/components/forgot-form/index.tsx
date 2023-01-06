@@ -61,7 +61,7 @@ const ForgotForm = () => {
                       name="email"
                       className="form-field"
                       sx={{ width: '100%' }}
-                      value={values.email}
+                      value={values.email ? values.email : null}
                       onChange={handleChange}
                       error={Boolean(touched && errors.email)}
                       helperText={errors.email}
