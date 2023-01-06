@@ -27,3 +27,13 @@
   font-family: 'grit_sansbold' !important;
   font-size: 13px;
 }
+
+.name {
+  font-size: 25px !important;
+}
+
+@media screen and (max-width: 468px) {
+  .name{
+    font-size: 20px !important;
+  }
+}

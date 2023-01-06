@@ -125,9 +125,9 @@ const ResetForm = () => {
                       <Button
                         type="submit"
                         disabled={loading}
-                        aria-label="sign in"
+                        aria-label="Reset password"
                         name="submit"
-                        title="sign in"
+                        title="Reset password"
                         variant="contained"
                       >
                         Reset Password

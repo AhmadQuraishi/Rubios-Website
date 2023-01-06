@@ -31,7 +31,7 @@
   color: #58595b;
   display: block;
   line-height: 25pt;
-  font-size: 12pt;
+  font-size: 17pt;
   font-weight: 500;
 }
 .stay-connect-actions {
@@ -50,7 +50,7 @@
   transition: all 0.2s ease;
   border: 1px solid;
   border-radius: 5px;
-  font-family: 'libre_franklin' !important;
+  font-family: 'libre_franklinlight' !important;
   color: #395775;
 }
 .stay-connect-bg .button-right {
@@ -107,7 +107,7 @@
     font-family: 'grit_sansbold' !important;
     font-weight: 700;
     margin: 0;
-    font-size: 25.91pt;
+    font-size: 20.91pt;
     text-transform: uppercase;
     color: #196DB6;
     display: block;
