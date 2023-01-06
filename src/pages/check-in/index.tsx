@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingBottom: '0px',
     fontSize: '30px !important',
     [theme.breakpoints.down('sm')]: {
-      fontSize: '25px !important',
+      fontSize: '22px !important',
     },
   },
   input: {

@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingBottom: '5px',
     textTransform: 'uppercase',
     [theme.breakpoints.down('sm')]: {
-      fontSize: '25px !important',
+      fontSize: '22px !important',
     },
   },
 }));
@@ -334,7 +334,7 @@ const PersonalInfo = () => {
                         type="text"
                         name="email"
                         sx={{ width: '100%' }}
-                        value={values.email}
+                        value={values.email ? values.email : null}
                         onChange={handleChange}
                         error={Boolean(touched && errors.email)}
                         helperText={errors.email}
