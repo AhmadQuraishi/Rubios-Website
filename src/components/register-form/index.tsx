@@ -371,7 +371,7 @@ const RegisterForm = () => {
                     name="email"
                     autoComplete="off"
                     sx={{ width: '100%' }}
-                    value={values.email}
+                    value={values.email ? values.email : null}
                     onChange={handleChange('email')}
                     onBlur={handleBlur('email')}
                     error={Boolean(touched.email && errors.email)}
