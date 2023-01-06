@@ -1676,6 +1676,7 @@ const Product = () => {
                       data-test-button="addToCart"
                       title="ADD TO BAG"
                       className="add-to-bag"
+                      sx={{    letterSpacing: "0px !important"}}
                       variant="contained"
                       disabled
                     >
@@ -1691,6 +1692,7 @@ const Product = () => {
                       title="ADD TO BAG"
                       className="add-to-bag"
                       variant="contained"
+                      sx={{    letterSpacing: "0px !important"}}
                       disabled={checkDisable()}
                       onClick={() => {
                         addProductToBag();
