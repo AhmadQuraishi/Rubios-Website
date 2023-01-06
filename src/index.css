@@ -265,7 +265,7 @@ button {
 .MuiFormControl-root .MuiSelect-select {
   color: #000;
   border-radius: 0;
-  font-family: 'libre_franklin' !important;
+  font-family: 'libre_franklinlight' !important;
   caret-color: black !important;
   padding: 16px 20px !important;
 }
@@ -396,7 +396,7 @@ font-family: 'sunbornsans_one' !important;
   }
 
   button {
-    letter-spacing: inherit !important;
+    letter-spacing: 2px !important;
   }
 }
 
