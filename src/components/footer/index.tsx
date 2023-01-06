@@ -106,7 +106,7 @@ const Footer = () => {
                 sx={{
                   display: 'flex',
                   padding: {
-                    xs: '70px 0px 10px 0px', lg: '20px 0px 10px 0px',md: '50px 0px 10px 0px', sm: "80px 0px 10px 0px "
+                    xs: '70px 0px 30px 0px', lg: '20px 0px 10px 0px',md: '50px 0px 10px 0px', sm: "80px 0px 10px 0px "
                   },
                   maxWidth: {
                     md: '236px',
