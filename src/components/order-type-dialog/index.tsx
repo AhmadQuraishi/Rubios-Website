@@ -303,6 +303,7 @@ export const OrderTypeDialog = (props: any) => {
             basketTransferRequest(
               basketObj?.basket?.id,
               nearbyRestaurants?.restaurants[0]?.id,
+              basketObj?.basket?.deliverymode
             ),
           );
           setNewRestaurant(nearbyRestaurants?.restaurants[0]);
