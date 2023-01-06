@@ -82,9 +82,9 @@ const Footer = () => {
           //backgroundImage: `url(${image})`,
           //backgroundColor: {xs:"#136CAC",md: "none",lg: "none", sm: "none"},
           width: '100%',
-          height: {sm:"500px", lg: "500px", md: "500px", xs: "633px"},
+          height: {sm:"500px", lg: "500px", md: "500px", xs: "650px"},
           margin: 0,
-          padding: { xs: '100px 0px',sm: '100px 0px 10px 0px',md: '150px 0px 20px 0px', lg: '220px 0px 40px 0px' },
+          padding: { xs: '80px 0px',sm: '100px 0px 10px 0px',md: '150px 0px 20px 0px', lg: '220px 0px 40px 0px' },
         }}
       >
         <Grid item xs={12} sm={6} md={7} lg={7}>
@@ -106,7 +106,7 @@ const Footer = () => {
                 sx={{
                   display: 'flex',
                   padding: {
-                    xs: '70px 0px 10px 0px', lg: '20px 0px 10px 0px',md: '50px 0px 10px 0px', sm: "80px 0px 10px 0px "
+                    xs: '70px 0px 30px 0px', lg: '20px 0px 10px 0px',md: '50px 0px 10px 0px', sm: "80px 0px 10px 0px "
                   },
                   maxWidth: {
                     md: '236px',
