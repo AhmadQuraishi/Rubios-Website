@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   heading: {
     paddingBottom: '5px',
     [theme.breakpoints.down('sm')]: {
-      fontSize: '25px !important',
+      fontSize: '22px !important',
     },
   },
 }));

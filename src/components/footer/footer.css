@@ -55,6 +55,10 @@
   .footer-lg{
     background-image: none;
   }
+  .footer-confirmation-checkout {
+    margin-top: 80px !important;
+  
+  }
 
 }
 

@@ -265,7 +265,7 @@ button {
 .MuiFormControl-root .MuiSelect-select {
   color: #000;
   border-radius: 0;
-  font-family: 'Poppins-Regular', sans-serif !important;
+  font-family: 'libre_franklin' !important;
   caret-color: black !important;
   padding: 16px 20px !important;
 }
@@ -392,7 +392,7 @@ font-family: 'sunbornsans_one' !important;
 
 @media screen and (max-width: 468px) {
   h1 {
-    font-size: 28px;
+    font-size: 27px !important;
   }
 
   button {
@@ -480,4 +480,8 @@ font-family: 'sunbornsans_one' !important;
 
 .css-vnnh45-MuiTypography-root  {
   font-weight: 100 !important;
+}
+
+.css-1sn4lm3-MuiTypography-root {
+  font-family: 'libre_franklin' !important;
 }

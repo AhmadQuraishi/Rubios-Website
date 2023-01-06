@@ -100,6 +100,12 @@
   }
 }
 @media screen and (max-width: 468px) {
+  .checkout-wrapper h2 {
+    font-family: 'grit_sansbold' !important;
+    color: #062C43;
+    font-size: 27px !important;
+   letter-spacing:0.03562em;
+  }
   .checkout-wrapper .order {
     padding: 45px !important;
   }
