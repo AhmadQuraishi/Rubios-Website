@@ -359,7 +359,7 @@ input[type='check']:checked+label {
   }
   .product-detail .add-to-bag {
     width: 300px;
-    font-size: 13px;
+    font-size: 12px;
   }
 
   .quantity-label {

@@ -1676,6 +1676,7 @@ const Product = () => {
                       data-test-button="addToCart"
                       title="ADD TO BAG"
                       className="add-to-bag"
+                      sx={{    letterSpacing: "0px !important"}}
                       variant="contained"
                       disabled
                     >
@@ -1694,6 +1695,7 @@ const Product = () => {
                       data-product-name={`${productDetails?.name || ''}`}
                       data-product-id={`${productDetails?.chainproductid || ''}`}
                       data-product-price={`${totalCost?.toFixed(2)}`}
+                      sx={{    letterSpacing: "0px !important"}}
                       disabled={checkDisable()}
                       onClick={() => {
                         addProductToBag();
