@@ -9,14 +9,12 @@ import { DeliveryModeEnum } from '../../../../types/olo-api/olo-api.enums';
 
 function* asyncBasketTransferSaga(action: any): any {
   try {
-    console.log('action', action)
-    console.log('action new', action?.deliveryMode === DeliveryModeEnum.dispatch)
     if(action?.deliveryMode === DeliveryModeEnum.dispatch){
       const modeResponse = yield call(
         setBasketDeliveryMode,
         action.basketId,
         {
-          deliverymode: 'pickup'
+          deliverymode: DeliveryModeEnum.pickup
         }
       );
 
