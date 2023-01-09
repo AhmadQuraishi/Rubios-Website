@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: '20px 0 10px 0',
     fontSize: '18px !important',
     fontWeight: '600 !important',
-    fontFamily: "'libre_franklinlight' !important",
+    fontFamily: "'Libre Franklin' !important",
     letterSpacing: '0.00938em !important',
 
   },

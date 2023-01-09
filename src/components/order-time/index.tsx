@@ -275,7 +275,7 @@ const OrderTime = ({ orderType }: any) => {
                   marginTop: -10,
                   color: '#58595b',
                   border: 'none',
-                  fontFamily: "'libre_franklinlight' !important",
+                  fontFamily: "'Libre Franklin' !important",
                   background: 'transparent',
                   cursor: 'pointer',
                 }}
@@ -366,7 +366,7 @@ const OrderTime = ({ orderType }: any) => {
                               display: 'block',
                               textTransform: 'none',
                               letterSpacing: 1,
-                              fontFamily: "'libre_franklinlight' !important",
+                              fontFamily: "'Libre Franklin' !important",
                             }}
                           >
                             Est{' '}

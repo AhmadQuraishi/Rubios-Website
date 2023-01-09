@@ -35,7 +35,7 @@ const useStyle = makeStyles({
   heading1: {
     fontSize: '13px !important',
     color: '#fff',
-    fontFamily:"'libre_franklinlight' !important",
+    fontFamily:"'Libre Franklin' !important",
   },
 });
 
@@ -623,7 +623,7 @@ const StoreInfoBar = () => {
                               <ListItem
                                 sx={{
                                   padding: '0 0 0 0',
-                                  fontFamily:"'libre_franklinlight' !important",
+                                  fontFamily:"'Libre Franklin' !important",
                                 }}
                                 title={
                                   (item.weekday &&
@@ -643,7 +643,7 @@ const StoreInfoBar = () => {
                                 fontSize: '12px',
                                 fontWeight: '500',
                                 color: 'background.paper',
-                                fontFamily:"'libre_franklinlight' !important",
+                                fontFamily:"'Libre Franklin' !important",
                               }}
                               role="presentation"
                             >
@@ -701,7 +701,7 @@ const StoreInfoBar = () => {
                                   <ListItem
                                     sx={{
                                       padding: '0 0 0 0',
-                                      fontFamily:"'libre_franklinlight' !important",
+                                      fontFamily:"'Libre Franklin' !important",
                                     }}
                                     title={
                                       (item.weekday &&
@@ -722,7 +722,7 @@ const StoreInfoBar = () => {
                                     fontSize: '12px',
                                     fontWeight: '500',
                                     color: 'background.paper',
-                                    fontFamily:"'libre_franklinlight' !important",
+                                    fontFamily:"'Libre Franklin' !important",
                                   }}
                                   role="presentation"
                                 >
@@ -856,7 +856,7 @@ const StoreInfoBar = () => {
                                       <ListItem
                                         sx={{
                                           padding: '0 0 0 0',
-                                          fontFamily:"'libre_franklinlight' !important",
+                                          fontFamily:"'Libre Franklin' !important",
                                         }}
                                         title={
                                           (item.weekday &&
@@ -877,7 +877,7 @@ const StoreInfoBar = () => {
                                         fontSize: '12px',
                                         fontWeight: '500',
                                         color: 'background.paper',
-                                        fontFamily:"'libre_franklinlight' !important",
+                                        fontFamily:"'Libre Franklin' !important",
                                       }}
                                       role="presentation"
                                     >
@@ -926,7 +926,7 @@ const StoreInfoBar = () => {
                             component="div"
                             textTransform="uppercase"
                             fontSize={11}
-                            fontFamily={"'libre_franklinlight' !important"}                            paddingTop="8px"
+                            fontFamily={"'Libre Franklin' !important"}                            paddingTop="8px"
                             title={`${restaurantInfo.streetaddress}, ${restaurantInfo.city}, ${restaurantInfo.state}`}
                             sx={{
                               display: {

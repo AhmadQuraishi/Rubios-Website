@@ -102,7 +102,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     letterSpacing: 'normal !important',
   },
   emptyCart: {
-    fontFamily: "'libre_franklinlight' !important",
+    fontFamily: "'Libre Franklin' !important",
     fontSize: '16px !important',
     color: '#525252',
     fontWeight: 'bold',

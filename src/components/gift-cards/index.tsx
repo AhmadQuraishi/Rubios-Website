@@ -93,7 +93,7 @@ const GiftCards = ({ billingAccounts, loading }: any) => {
       />
       <Grid item xs={12}>
         <br/>
-        <Typography variant="h6"  sx={{fontFamily: "'libre_franklinlight' !important"}} title="To add a gift card to your account, place an order and enter the gift card information during checkout.">
+        <Typography variant="h6"  sx={{fontFamily: "'Libre Franklin' !important"}} title="To add a gift card to your account, place an order and enter the gift card information during checkout.">
           To add a gift card to your account, place an order and enter the gift card information during checkout.
         </Typography>
       </Grid>

@@ -1446,7 +1446,7 @@ const Product = () => {
                                               <span
                                                 style={{
                                                   fontSize: '16px',
-                                                  fontFamily: "'libre_franklin' !important",
+                                                  fontFamily: "'Libre Franklin' !important",
                                                   color: '#AAA',
                                                   marginTop: '-2%',
                                                 }}
@@ -1483,7 +1483,7 @@ const Product = () => {
                                               <span
                                                 style={{
                                                   fontSize: '16px',
-                                                  fontFamily: "'libre_franklin' !important",
+                                                  fontFamily: "'Libre Franklin' !important",
                                                   color: '#AAA',
                                                   marginTop: '-2%',
                                                 }}
