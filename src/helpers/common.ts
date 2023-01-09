@@ -159,3 +159,17 @@ export function checkFeaturedProduct(item: any, categoryName: string) {
   }
   return checkFeatured;
 }
+
+export function orderFees (basket: any)  {
+  let fees = 0;
+  if(basket?.fees?.length){
+    const livingWage = basket.fees.filter((fee: any) => fee.description === 'UCSD Living Wage Surcharge')
+    if(livingWage?.length){
+      fees = livingWage[0].amount?.toFixed(2);
+      return fees;
+    }
+  }   
+  fees = basket?.totalfees?.toFixed(2) || 0;
+
+  return fees;
+}

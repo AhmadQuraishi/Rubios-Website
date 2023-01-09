@@ -2,7 +2,7 @@ import { Grid, Typography, Divider, Button } from '@mui/material';
 import './order-details.css';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { calculateTaxAndFee } from '../../helpers/common';
+import { calculateTaxAndFee, orderFees } from '../../helpers/common';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Dialog from '@mui/material/Dialog';
@@ -215,10 +215,10 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                         className="n-bold"
                         // title="ESTIMATED TAX AND FEES"
                       >
-                        {basket &&
+                        {/* {basket &&
                         basket.deliverymode !== DeliveryModeEnum.pickup &&
                         basket.deliverymode !== DeliveryModeEnum.curbside ? (
-                          <>
+                          <> */}
                             <Typography sx={{
                           fontSize: '16px', cursor: 'pointer',fontFamily: "libre_franklinlight !important",fontWeight: "600"}} onClick={() => {
                                     setShowMore(!showMore);
@@ -252,12 +252,12 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                                 />
                               )}
                              </Typography>
-                          </>
-                        ) : (
-                          <Typography sx={{fontFamily: "libre_franklinlight !important",fontWeight: "600"}}>
-                          ESTIMATED TAXES
-                          </Typography>
-                        )}
+                          {/* </> */}
+                        {/* // ) : (
+                        //   <Typography sx={{fontFamily: "libre_franklinlight !important",fontWeight: "600"}}>
+                        //   ESTIMATED TAXES
+                        //   </Typography>
+                        // )} */}
                       </Typography>
                     </div>
                   </div>
@@ -306,12 +306,16 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                             </Grid>
                             <Grid item xs={9}>
                               <Typography className="text-info-title" sx={{color: "#58595b",paddingBottom: "3px",fontFamily: 'libre_franklinlight !important',fontWeight: 'bold !important',marginLeft: "22px !important"}}>
-                                SERVICE FEE:
+                              {
+                                          basket?.fees?.length && 
+                                          basket.fees.filter((fee: any) => fee.description === 'UCSD Living Wage Surcharge').length > 0 ? 
+                                          'UCSD Living Wage Surcharge:' : 'SERVICE FEE:'
+                                        }
                               </Typography>
                             </Grid>
                             <Grid item xs={3}>
                               <Typography className="text-info-desc" sx={{color: "#58595b", fontFamily: "'libre_franklinlight' !important",fontWeight: 'bold !important'}}>
-                                ${(basket && basket.totalfees.toFixed(2)) || 0}
+                                ${orderFees(basket)}
                               </Typography>
                             </Grid>
                           </Grid>
