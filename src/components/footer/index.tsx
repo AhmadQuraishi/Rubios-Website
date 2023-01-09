@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     textAlign: 'center',
     display: 'inline-block',
     paddingLeft: '30px',
-    fontFamily: "'libre_franklinlight' !important",
+    fontFamily: "'Libre Franklin' !important",
     textDecoration: 'none',
     '&:hover': {
       color: theme.palette.success.main,
@@ -332,7 +332,7 @@ const Footer = () => {
             component="p"
             color="#fff"
             fontSize={9}
-            fontFamily= {"'libre_franklinlight' !important"}
+            fontFamily= {"'Libre Franklin' !important"}
             title="Copyright 2021 Rubios's Restaurants, Inc. All Rights reserved."
           >
             Copyright 2021 Rubios's Restaurants, Inc. All Rights reserved.
@@ -369,7 +369,7 @@ const Footer = () => {
                 variant="caption"
                 color="#fff"
                 fontSize={9}
-                fontFamily= {"'libre_franklinlight' !important"}
+                fontFamily= {"'Libre Franklin' !important"}
                 title="Copyright 2021 Rubios's Restaurants, Inc. All Rights reserved."
               >
                 Copyright 2021 Rubios's Restaurants, Inc. All Rights reserved.

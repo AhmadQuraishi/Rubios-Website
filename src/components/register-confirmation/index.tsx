@@ -39,7 +39,7 @@ const RegisterConfirmation = ({ id }: any) => {
       backgroundColor: state.isSelected ? 'lightgray' : '',
       border: '0px',
       width: 'inherit',
-      fontFamily: "'libre_franklin' !important",
+      fontFamily: "'Libre Franklin' !important",
     }),
     menu: (base: any, state: any) => ({
       ...base,
@@ -85,7 +85,7 @@ const RegisterConfirmation = ({ id }: any) => {
       cursor: 'pointer',
       cursorColor: 'black',
       boxShadow: 'none',
-      fontFamily: "'libre_franklin' !important",
+      fontFamily: "'Libre Franklin' !important",
     }),
     singleValue: (provided: any, state: any) => {
       const opacity = state.isDisabled ? 0.5 : 1;
@@ -437,7 +437,7 @@ const RegisterConfirmation = ({ id }: any) => {
                   lg={12}
                   sx={{
                     backgroundColor: 'transparent',
-                    fontFamily: "'libre_franklin' !important",
+                    fontFamily: "'Libre Franklin' !important",
                   }}
                   className="check-with-text"
                 >
@@ -449,7 +449,7 @@ const RegisterConfirmation = ({ id }: any) => {
                       width: '100%',
                       fill: 'white',
                       color: 'white',
-                      fontFamily: "'libre_franklin' !important",
+                      fontFamily: "'Libre Franklin' !important",
                     }}
                   >
                     <Checkbox
