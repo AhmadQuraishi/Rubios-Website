@@ -39,7 +39,7 @@ export const ItemsNotAvailableComponent = ({ items }: any) => {
               textAlign: 'center',
               marginTop: "-3px",
               fontSize: {xs: "15px !important", lg: '14px !important', md: '14px !important', sm:'14px !important'},
-              fontFamily: "'libre_franklinlight' !important",
+              fontFamily: "'Libre Franklin' !important",
             }}
           >
             If you switch locations, the following{' '}
@@ -56,7 +56,7 @@ export const ItemsNotAvailableComponent = ({ items }: any) => {
                     color: '#062C43 !important',
                     fontSize: '14px !important',
                     fontWeight: '600',
-                    fontFamily: "'libre_franklinlight' !important",
+                    fontFamily: "'Libre Franklin' !important",
                   }}
                 >
                   {productName}

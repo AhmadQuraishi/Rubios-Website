@@ -121,7 +121,7 @@ const RegisterForm = () => {
       backgroundColor: state.isSelected ? 'lightgray' : '',
       marginTop: '0px',
       border: '0px',
-      fontFamily: "'libre_franklin' !important"
+      fontFamily: "'Libre Franklin' !important"
     }),
     menu: (base: any) => ({
       ...base,
@@ -146,7 +146,7 @@ const RegisterForm = () => {
       border: 'none',
       cursor: 'pointer',
       boxShadow: '0px 0px 6px lightgray',
-      fontFamily: "'libre_franklin' !important",
+      fontFamily: "'Libre Franklin' !important",
     }),
     placeholder: (base: any, state: any) => ({
       ...base,

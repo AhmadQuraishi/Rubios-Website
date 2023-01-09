@@ -462,14 +462,14 @@ const Welcome = () => {
 
                           <Typography
                             variant="h6"
-                            sx={{    fontFamily: "'libre_franklin' !important"}}
+                            sx={{    fontFamily: "'Libre Franklin' !important"}}
                             title={`${favRestaurant.streetaddress}, ${favRestaurant.zip}`}
                           >
                             {favRestaurant.streetaddress}, {favRestaurant.zip}
                           </Typography>
                           <Typography
                             variant="h6"
-                            sx={{    fontFamily: "'libre_franklin' !important"}}
+                            sx={{    fontFamily: "'Libre Franklin' !important"}}
                             title={`${favRestaurant.city}, ${favRestaurant.state}`}
                           >
                             {favRestaurant.city}, {favRestaurant.state}

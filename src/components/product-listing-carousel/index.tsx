@@ -43,20 +43,22 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: theme.palette.secondary.main,
     fontSize: '14px',
     lineHeight: '7px',
-    fontFamily: "'libre_franklinlight' !important",
+    fontFamily: "'Libre Franklin' !important",
     letterSpacing: 0,
   },
   cal: {
     paddingTop: '10px',
-    fontFamily: "'libre_franklinlight' !important",
+    fontFamily: "'Libre Franklin' !important",
     fontSize: '14px',
     color: theme.palette.primary.main,
+    fontWeight: "bold",
   },
   price: {
     paddingTop: '10px',
-    fontFamily: "'libre_franklinlight' !important",
+    fontFamily: "'Libre Franklin' !important",
     fontSize: '14px',
     color: '#0075BF',
+    fontWeight: "bold",
   },
 }));
 

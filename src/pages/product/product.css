@@ -6,8 +6,8 @@
 
 legend.heading-ui, h2.heading-ui {
   font-size: 24px;
-  font-family: 'sunbornsans_one' !important;
-  color: #062C43;
+  font-family: 'grit_sansbold' !important;
+  color: #0075BF;
   text-transform: uppercase;
 }
 
@@ -27,7 +27,7 @@ margin-bottom: 20px;
 }
 
 .product-detail .label.bold {
-  font-family: 'libre_franklinlight' !important;
+  font-family: 'Libre Franklin' !important;
   font-size: 18px !important;
   text-transform: capitalize !important;
   line-height: 1.2;
@@ -37,13 +37,13 @@ margin-bottom: 20px;
 .product-detail .desc {
   margin-bottom: 25px;
   color: #062C43;
-  font-family: 'libre_franklinlight' !important;
+  font-family: 'Libre Franklin' !important;
   font-size: 16px !important;
   white-space: pre-line;
 }
 
 .product-detail .price {
-  font-family: 'libre_franklinlight' !important;
+  font-family: 'Libre Franklin' !important;
   margin-bottom: 25px;
   color: #0075BF;
   font-weight: bold;
@@ -133,7 +133,7 @@ input[type='check']:checked+label {
 }
 
 .product-detail .quantity button {
-  font-family: 'libre_franklin' !important;
+  font-family: 'Libre Franklin' !important;
   font-size: 30px;
   color: #414141;
 }
@@ -392,7 +392,7 @@ input[type='check']:checked+label {
     border-top: none;
     border-bottom: none;
     font-size: 15px;
-    font-family: 'libre_franklinlight' !important;
+    font-family: 'Libre Franklin' !important;
     font-weight: bold;
 }
   .quantity-label {
@@ -450,7 +450,7 @@ input[type='check']:checked+label {
 .product-detail .menu-items .content-panel {
   padding: 10px 20px 10px 0px;
   cursor: pointer;
-  font-family: 'libre_franklinlight' !important;
+  font-family: 'Libre Franklin' !important;
   color: #2b4b62;
   /* max-width: 354px; */
   min-height: 140px;
@@ -577,6 +577,6 @@ input[type='check']:checked+label {
   border-top: none;
   border-bottom: none;
   font-size: 15px;
-  font-family: 'libre_franklinlight' !important;
+  font-family: 'Libre Franklin' !important;
   font-weight: bold;
 }

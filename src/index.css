@@ -36,7 +36,7 @@
 
 
 @font-face {
-  font-family: 'libre_franklinlight';
+  font-family: 'Libre Franklin';
   src: url('https://rubioslivedev.wpengine.com/wp-content/webfonts/librefranklin-light-webfont.woff2') format('woff2'),
        url('https://rubioslivedev.wpengine.com/wp-content/webfonts/librefranklin-light-webfont.woff') format('woff');
   font-weight: normal;
@@ -55,16 +55,18 @@
   font-style: normal;
 
 }
-
+.phone-field .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input  {
+  letter-spacing: -0.7px !important;
+}
 .grit-sansbold {
   font-family: 'grit_sansbold' !important;
 }
 
 .libre-franklinlight {
-  font-family: 'libre_franklinlight' !important;
+  font-family: 'Libre Franklin' !important;
 }
 .libre-franklin {
-  font-family: 'libre_franklinlight' !important;
+  font-family: 'Libre Franklin' !important;
 }
 .sunbornsans-one {
       font-family: 'sunbornsans_one' !important;
@@ -265,7 +267,7 @@ button {
 .MuiFormControl-root .MuiSelect-select {
   color: #000;
   border-radius: 0;
-  font-family: 'libre_franklinlight' !important;
+  font-family: 'Libre Franklin' !important;
   caret-color: black !important;
   padding: 16px 20px !important;
 }
@@ -412,13 +414,13 @@ font-family: 'sunbornsans_one' !important;
 
 .taxes .text-info-title {
   line-height: 1.0;
-  font-family: 'libre_franklinlight' !important;
+  font-family: 'Libre Franklin' !important;
 }
 
 .taxes .text-info-desc {
   line-height: 1.0;
   text-align: right;
-  font-family: 'libre_franklinlight' !important;
+  font-family: 'Libre Franklin' !important;
 }
 
 .product-label {
@@ -454,7 +456,7 @@ font-family: 'sunbornsans_one' !important;
   padding: 10px;
   text-decoration: none;
   color: #ffffff;
-  font-family: 'libre_franklinlight' !important;
+  font-family: 'Libre Franklin' !important;
 }
 
 @media screen and (min-width: 600px) {
@@ -472,10 +474,10 @@ font-family: 'sunbornsans_one' !important;
   font-family: 'sunbornsans_one' !important;
 }
 .css-ahj2mt-MuiTypography-root {
-  font-family: 'libre_franklinlight' !important;
+  font-family: 'Libre Franklin' !important;
 }
 .css-e784if-MuiTypography-root {
-  font-family: 'libre_franklinlight' !important;
+  font-family: 'Libre Franklin' !important;
 }
 
 .css-vnnh45-MuiTypography-root  {
@@ -487,14 +489,14 @@ font-family: 'sunbornsans_one' !important;
 }
 
 .css-1m0s4ei-MuiInputBase-root-MuiOutlinedInput-root {
-  font-family: 'libre_franklinlight' !important;
+  font-family: 'Libre Franklin' !important;
 
 }
 
 .css-4mkbcn-MuiInputBase-root-MuiOutlinedInput-root {
-  font-family: 'libre_franklinlight' !important;
+  font-family: 'Libre Franklin' !important;
 }
 
 .css-q2wzpm-MuiTypography-root {
-  font-family: 'libre_franklinlight' !important;
+  font-family: 'Libre Franklin' !important;
 }
