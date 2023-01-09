@@ -108,7 +108,8 @@ const ProductListing = (props: any) => {
               <div key={index} style={{ padding: 10 }}>
                 <Card
                   elevation={0}
-                  style={{ borderRadius: 0 }}
+                  style={{ borderRadius: 0}}
+                  sx={{backgroundColor: "transparent !important"}}
                   role="group"
                   aria-label={item.name}
                 >

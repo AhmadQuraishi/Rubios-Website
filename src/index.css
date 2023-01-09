@@ -64,7 +64,7 @@
   font-family: 'libre_franklinlight' !important;
 }
 .libre-franklin {
-  font-family: 'libre_franklin' !important;
+  font-family: 'libre_franklinlight' !important;
 }
 .sunbornsans-one {
       font-family: 'sunbornsans_one' !important;
@@ -475,7 +475,7 @@ font-family: 'sunbornsans_one' !important;
   font-family: 'libre_franklinlight' !important;
 }
 .css-e784if-MuiTypography-root {
-  font-family: 'libre_franklin' !important;
+  font-family: 'libre_franklinlight' !important;
 }
 
 .css-vnnh45-MuiTypography-root  {
@@ -483,5 +483,18 @@ font-family: 'sunbornsans_one' !important;
 }
 
 .css-1sn4lm3-MuiTypography-root {
-  font-family: 'libre_franklin' !important;
+  font-family: 'grit_sansbold' !important;
+}
+
+.css-1m0s4ei-MuiInputBase-root-MuiOutlinedInput-root {
+  font-family: 'libre_franklinlight' !important;
+
+}
+
+.css-4mkbcn-MuiInputBase-root-MuiOutlinedInput-root {
+  font-family: 'libre_franklinlight' !important;
+}
+
+.css-q2wzpm-MuiTypography-root {
+  font-family: 'libre_franklinlight' !important;
 }

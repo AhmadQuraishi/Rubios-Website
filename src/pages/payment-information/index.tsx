@@ -64,7 +64,7 @@ const PaymentInformation = () => {
     <Page title={'Payment Information'} className="">
       <Grid container className={classes.root}>
         <Grid item xs={12}>
-          <Typography variant="h1" className={classes.heading}>
+          <Typography variant="h1" className={classes.heading} sx={{fontFamily: "'grit_sansbold' !important"}}>
             PAYMENT INFORMATION
           </Typography>
           <Tabs

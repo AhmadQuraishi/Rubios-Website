@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   heading: {
     paddingBottom: '5px',
     textTransform: 'uppercase',
+    
     [theme.breakpoints.down('sm')]: {
       fontSize: '22px !important',
     },
@@ -134,6 +135,8 @@ const RewardNew = () => {
             variant="h1"
             className={classes.heading}
             title="My Rewards"
+            sx={{fontFamily: "'grit_sansbold' !important"}}
+
           >
             My Rewards
           </Typography>

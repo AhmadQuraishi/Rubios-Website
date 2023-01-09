@@ -13,7 +13,7 @@ import {
 import { makeStyles } from '@mui/styles';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import logo from '../../assets/imgs/unnamed.png';
+import logo from '../../assets/imgs/header-logo.png';
 import cartIcon from '../../assets/imgs/cart-icon.svg';
 import cartIconMobile from '../../assets/imgs/cart-icon-mobile.svg';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
