@@ -55,7 +55,9 @@
   font-style: normal;
 
 }
-
+.phone-field .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input  {
+  letter-spacing: -0.7px !important;
+}
 .grit-sansbold {
   font-family: 'grit_sansbold' !important;
 }
