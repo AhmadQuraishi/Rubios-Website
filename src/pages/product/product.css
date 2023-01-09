@@ -20,31 +20,33 @@ margin-bottom: 20px;
 .product-detail h2.heading {
   font-family: 'grit_sansbold' !important;
   padding-bottom: 15px;
-  font-size: 32px;
+  font-size: 25px;
   color: #0075BF;
   margin-top: 14px;
   text-transform: uppercase;
 }
 
 .product-detail .label.bold {
-  font-family: 'sunbornsans_one' !important;
+  font-family: 'libre_franklinlight' !important;
   font-size: 18px !important;
   text-transform: capitalize !important;
   line-height: 1.2;
+  font-weight: bold;
 }
 
 .product-detail .desc {
   margin-bottom: 25px;
   color: #062C43;
-  font-family: 'libre_franklin' !important;
+  font-family: 'libre_franklinlight' !important;
   font-size: 16px !important;
   white-space: pre-line;
 }
 
 .product-detail .price {
-  font-family: 'sunbornsans_one' !important;
+  font-family: 'libre_franklinlight' !important;
   margin-bottom: 25px;
-  color: #062C43;
+  color: #0075BF;
+  font-weight: bold;
   font-size: 16px !important;
 }
 
@@ -390,7 +392,7 @@ input[type='check']:checked+label {
     border-top: none;
     border-bottom: none;
     font-size: 15px;
-    font-family: 'libre_franklin' !important;
+    font-family: 'libre_franklinlight' !important;
     font-weight: bold;
 }
   .quantity-label {
@@ -448,7 +450,7 @@ input[type='check']:checked+label {
 .product-detail .menu-items .content-panel {
   padding: 10px 20px 10px 0px;
   cursor: pointer;
-  font-family: "'grit_sansbold' !important";
+  font-family: 'libre_franklinlight' !important;
   color: #2b4b62;
   /* max-width: 354px; */
   min-height: 140px;
@@ -575,6 +577,6 @@ input[type='check']:checked+label {
   border-top: none;
   border-bottom: none;
   font-size: 15px;
-  font-family: 'libre_franklin' !important;
+  font-family: 'libre_franklinlight' !important;
   font-weight: bold;
 }

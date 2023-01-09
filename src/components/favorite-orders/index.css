@@ -17,9 +17,10 @@
 
 .order-history-card .card-panel .order-name {
   font-size: 20px;
-  font-family: 'grit_sansbold' !important;
+  font-family: 'libre_franklinlight' !important;
   display: block;
   color: #414141;
+  font-weight: bold;
   padding-bottom: 8px;
   white-space: nowrap !important;
   overflow: hidden !important;

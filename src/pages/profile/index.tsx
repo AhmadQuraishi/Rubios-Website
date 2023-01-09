@@ -36,6 +36,7 @@ const Profile = () => {
             aria-label="edit profile"
             variant="h1"
             title="Edit Profile"
+            sx={{fontFamily: "'grit_sansbold' !important"}}
           >
             EDIT PROFILE
           </Typography>
