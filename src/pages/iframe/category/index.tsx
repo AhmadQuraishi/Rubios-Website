@@ -106,7 +106,7 @@ const CategoryList = () => {
           <Box
             sx={{
               width: '100%',
-              background: '#FFF',
+              background: 'transparent',
               zIndex: '1099',
               padding: {
                 xs: '0px 5px 10px 5px',

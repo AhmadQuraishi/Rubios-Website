@@ -52,6 +52,7 @@ const OrdersHistory = () => {
             aria-label="your orders"
             variant="h1"
             title="your orders"
+            sx={{fontFamily: "'grit_sansbold' !important"}}
           >
             YOUR ORDERS
           </Typography>

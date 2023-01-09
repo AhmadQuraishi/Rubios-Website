@@ -80,6 +80,7 @@ const AccountHistory = () => {
             variant="h1"
             className={classes.heading}
             title="Account History"
+            sx={{fontFamily: "'grit_sansbold' !important"}}
           >
             ACCOUNT HISTORY
           </Typography>

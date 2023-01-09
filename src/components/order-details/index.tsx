@@ -68,7 +68,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                     <>
                       <Grid key={item.id} container>
                         <Grid item xs={1} sm={1} md={1} lg={1} >
-                          <Typography variant="h6"  title={item.name} sx={{fontFamily: 'libre_franklin !important',}}>
+                          <Typography variant="h6"  title={item.name} sx={{fontFamily: 'libre_franklinlight !important',}}>
                             {item.productId !==
                             utensilsReducer.utensilsProductId
                               ? item.quantity
@@ -76,7 +76,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                           </Typography>
                         </Grid>
                         <Grid item xs={8} sm={8} md={8} lg={8}>
-                          <Typography variant="h6" title={item.name} sx={{fontFamily: 'libre_franklin !important',}}>
+                          <Typography variant="h6" title={item.name} sx={{fontFamily: 'libre_franklinlight !important',}}>
                             {item.name}
                           </Typography>
                           <Typography
@@ -92,7 +92,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                           <Typography
                             align={'right'}
                             variant="h6"
-                            sx={{fontFamily: "'libre_franklin' !important",fontWeight: 'bold !important'}}
+                            sx={{fontFamily: "'libre_franklinlight' !important",fontWeight: 'bold !important'}}
                             title={item.totalcost.toFixed(2)}
                           >
                             ${item.totalcost.toFixed(2)}
@@ -109,7 +109,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
             <li>
               <Grid container>
                 <Grid item xs={9} sm={9} md={9} lg={9}>
-                  <Typography variant="h6" title="SUB TOTAL" sx={{fontFamily: 'libre_franklin !important',}}>
+                  <Typography variant="h6" title="SUB TOTAL" sx={{fontFamily: 'libre_franklinlight !important',}}>
                     SUB TOTAL
                   </Typography>
                   <br />
@@ -119,7 +119,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                     align={'right'}
                     variant="h6"
                     title={basket && basket.subtotal.toFixed(2)}
-                    sx={{fontFamily: "'libre_franklin' !important",fontWeight: 'bold !important'}}
+                    sx={{fontFamily: "'libre_franklinlight' !important",fontWeight: 'bold !important'}}
                   >
                     ${basket && basket.subtotal.toFixed(2)}
                   </Typography>
@@ -141,7 +141,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                               <i
                                 style={{
                                   fontWeight: 'normal',
-                                  fontFamily: 'libre_franklin !important',
+                                  fontFamily: 'libre_franklinlight !important',
                                   fontSize: '15px',
                                 }}
                               >
@@ -150,7 +150,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                             </Typography>
                           </Grid>
                           <Grid item xs={3} sm={3} md={3} lg={3}>
-                            <Typography align={'right'} variant="h6" sx={{fontFamily: "'libre_franklin' !important",fontWeight: 'bold !important'}}>
+                            <Typography align={'right'} variant="h6" sx={{fontFamily: "'libre_franklinlight' !important",fontWeight: 'bold !important'}}>
                               {/*-$*/}
                               {/*{basket.discounts[0].amount > basket.subtotal*/}
                               {/*  ? parseFloat(basket.subtotal.toString()).toFixed(2)*/}
@@ -179,7 +179,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                       <Typography
                         align={'right'}
                         variant="h6"
-                        sx={{fontFamily: "'libre_franklin' !important",fontWeight: 'bold !important'}}
+                        sx={{fontFamily: "'libre_franklinlight' !important",fontWeight: 'bold !important'}}
                         title={basket && basket.tip.toFixed(2)}
                       >
                         +${basket && basket.tip.toFixed(2)}
@@ -371,7 +371,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
             <li>
               <Grid container>
                 <Grid item xs={9} sm={9} md={9} lg={9}>
-                  <Typography variant="h6" title="Total" sx={{fontFamily: 'libre_franklin !important',fontWeight: 'bold !important'}}>
+                  <Typography variant="h6" title="Total" sx={{fontFamily: 'libre_franklinlight !important',fontWeight: 'bold !important'}}>
                     TOTAL
                   </Typography>
                 </Grid>
@@ -380,7 +380,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                     align={'right'}
                     variant="h6"
                     title={basket && basket.total.toFixed(2)}
-                    sx={{fontFamily: "'libre_franklin' !important",fontWeight: 'bold !important'}}
+                    sx={{fontFamily: "'libre_franklinlight' !important",fontWeight: 'bold !important'}}
                   >
                     ${basket && basket.total.toFixed(2)}
                   </Typography>

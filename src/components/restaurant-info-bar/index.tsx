@@ -34,7 +34,6 @@ const useStyle = makeStyles({
   heading1: {
     fontSize: '13px !important',
     color: '#fff',
-    //fontFamily: "'grit_sansbold' !important",
     fontFamily:"'libre_franklinlight' !important",
   },
 });
@@ -401,7 +400,7 @@ const StoreInfoBar = () => {
                     }}
                   >
                     <Typography
-                      className={classes.heading}
+                      className={classes.heading1}
                       variant="h2"
                       textTransform="uppercase"
                       title="Address"
@@ -591,7 +590,7 @@ const StoreInfoBar = () => {
                     }}
                   >
                     <Typography
-                      className={classes.heading}
+                      className={classes.heading1}
                       variant="h2"
                       textTransform="uppercase"
                       title="Hours"
@@ -911,7 +910,7 @@ const StoreInfoBar = () => {
                                 </Grid>
                               ))}
                           <Typography
-                            className={classes.heading}
+                            className={classes.heading1}
                             variant="h2"
                             textTransform="uppercase"
                             title="Address"

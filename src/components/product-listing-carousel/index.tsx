@@ -43,22 +43,20 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: theme.palette.secondary.main,
     fontSize: '14px',
     lineHeight: '7px',
-    fontFamily: "'libre_franklin' !important",
+    fontFamily: "'libre_franklinlight' !important",
     letterSpacing: 0,
   },
   cal: {
     paddingTop: '10px',
-    fontFamily: "'grit_sansbold' !important",
+    fontFamily: "'libre_franklinlight' !important",
     fontSize: '14px',
-    fontWeight: 600,
-    color: '#0075BF',
+    color: theme.palette.primary.main,
   },
   price: {
     paddingTop: '10px',
-    fontFamily: "'grit_sansbold' !important",
+    fontFamily: "'libre_franklinlight' !important",
     fontSize: '14px',
-    fontWeight: 600,
-    color: "#0075BF",
+    color: '#0075BF',
   },
 }));
 
@@ -305,7 +303,7 @@ const ProductListingCarousel = (props: any) => {
                           item
                           >
                             
-                           <Typography className="vertical-line" style={{marginTop:"14px", marginLeft: "10px", marginRight: "10px"}}>
+                           <Typography className="vertical-line" style={{marginTop:"11px", marginLeft: "10px", marginRight: "10px"}}>
 
                             </Typography>
                           </Grid>

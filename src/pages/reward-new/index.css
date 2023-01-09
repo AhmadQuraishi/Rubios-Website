@@ -3,7 +3,7 @@
   border-radius: 0px;
   border: 1px solid #c6c6c6;
   box-shadow: 0px 4px 5px 0px rgb(0 0 0 / 20%);
-  font-family: 'grit_sansbold' !important;
+  font-family: 'libre_franklinlight' !important;
   text-align: center;
   width: 100%;
   max-width: 400px;
@@ -14,7 +14,7 @@
 }
 .body-text-bold-reward {
   font-size: 16px !important;
-  font-family: 'sunbornsans_one' !important;
+  font-family: 'libre_franklinlight' !important;
   color: #414141;
   padding-top: 8px;
   padding-bottom: 20px;
@@ -22,7 +22,7 @@
 
 .body-text-bold-redeem {
   font-size: 16px !important;
-  font-family: 'sunbornsans_one' !important;
+  font-family: 'libre_franklinlight' !important;
   color: #414141;
   padding-bottom: 20px;
 }
@@ -38,13 +38,14 @@
   margin: 20px 0 25px 0;
 }
 #reward-points-container .bold-title {
-  font-family: 'sunbornsans_one' !important;
+  font-family: 'libre_franklinlight' !important;
   font-size: 30px;
   text-transform: uppercase;
+  font-weight: bold;
 }
 
 #reward-points-container .small-heading {
-  font-family: 'sunbornsans_one' !important;
+  font-family: 'grit_sansbold' !important;
   font-size: 25px;
   text-transform: uppercase;
   color: #2b4b62;
@@ -70,7 +71,7 @@
   border-radius: 0px;
   border: 1px solid #c6c6c6;
   box-shadow: 0px 4px 5px 0px rgb(0 0 0 / 20%);
-  font-family: 'sunbornsans_one' !important;
+  font-family: 'libre_franklinlight' !important;
   text-align: center;
   color: #2b4b62;
   padding: 10px;
@@ -146,7 +147,7 @@
   line-height: 20px;
   letter-spacing: 2px;
   text-transform: uppercase;
-  font-family: 'sunbornsans_one' !important;
+  font-family: 'libre_franklinlight' !important;
   color: #0075bf;
   font-size: 15px;
   font-weight: 600;
@@ -168,14 +169,14 @@
 }
 #reward-points-container .message-panel {
   padding: 0px 0 5px 0;
-  font-family: 'grit_sansbold' !important;
+  font-family: 'libre_franklinlight' !important;
   font-size: 15px;
   color: #333;
 }
 #reward-points-container .message-panel h3 {
   font-size: 25px;
   color: #2b4b62;
-  font-family: 'sunbornsans_one' !important;
+  font-family: 'grit_sansbold' !important;
   line-height: 32px;
 }
 #reward-points-container .message-panel .low-head {

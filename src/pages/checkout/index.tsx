@@ -1003,7 +1003,7 @@ const Checkout = () => {
                           <Grid item xs={12}>
                             <Typography
                               variant="h1"
-                              sx={{ marginBottom: '0px',color: "#062C43", fontFamily: "'grit_sansbold' !important",letterSpacing:"0.03562em" }}
+                              sx={{ fontSize: '29px !important', marginBottom: '0px',color: "#062C43", fontFamily: "'grit_sansbold' !important",letterSpacing:"0.03562em" }}
                               title="PICK UP INFO"
                             >
                               PICK UP INFO

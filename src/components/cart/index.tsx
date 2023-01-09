@@ -669,7 +669,8 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         sx={{
                           fontSize: '14px',
                           color: 'secondary.main',
-                          fontFamily: "'grit_sansbold' !important",
+                          fontFamily: "'libre_franklinlight' !important",
+                          textTransform: "uppercase",
                         }}
                       >
                         {item.productId !== utensilsReducer.utensilsProductId
@@ -679,7 +680,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                           : item.name.toString()}
                       </Typography>
                     </Grid>
-                    <Grid item xs={3} sx={{ textAlign: 'right' }}>
+                    <Grid item xs={3} sx={{ textAlign: 'right', }}>
                       <Typography
                         variant="caption"
                         title={'$' + item.totalcost.toFixed(2)}
@@ -687,7 +688,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                           textAlign: 'right',
                           fontSize: '14px',
                           fontWeight: '700',
-                          fontFamily: "'sunbornsans_one' !important",
+                          fontFamily: "'libre_franklinlight' !important",
                           color: 'secondary.main',
                         }}
                       >
@@ -708,6 +709,8 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                           paddingBottom: '0px',
                           paddingTop: '10px',
                           display: 'block',
+                          fontFamily: "'libre_franklinlight' !important",
+                          textTransform: "uppercase",
                         }}
                       >
                         {getOptions(item.choices)}
@@ -850,7 +853,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                       variant="body2"
                       className="body-text"
                       // title="I agree to the  Rubios terms and conditions and to receiving marketing communications from Rubios."
-                      sx={{ width: '100%', color: '#224c65' }}
+                      sx={{ width: '100%', color: '#224c65',fontFamily: "'libre_franklinlight' !important", }}
                     >
                       <Checkbox
                         checked={utensils}
@@ -1221,7 +1224,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         item
                         xs={9}
                         sx={{
-                          fontFamily: "'sunbornsans_one' !important",
+                          fontFamily: "'libre_franklinlight' !important",
                           color: 'secondary.main',
                           fontSize: '14px',
                           paddingBottom: '2px',
@@ -1234,7 +1237,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         item
                         xs={3}
                         sx={{
-                          fontFamily: "'sunbornsans_one' !important",
+                          fontFamily: "'libre_franklinlight' !important",
                           color: 'secondary.main',
                           fontSize: '14px',
                           textAlign: 'right',
@@ -1607,7 +1610,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         item
                         xs={9}
                         sx={{
-                          fontFamily: "'sunbornsans_one' !important",
+                          fontFamily: "'libre_franklinlight' !important",
                           color: 'secondary.main',
                           fontSize: '15px',
                         }}
@@ -1619,7 +1622,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         item
                         xs={3}
                         sx={{
-                          fontFamily: "'sunbornsans_one' !important",
+                          fontFamily: "'libre_franklinlight' !important",
                           color: 'secondary.main',
                           fontSize: '15px',
                           textAlign: 'right',
@@ -1663,7 +1666,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                   borderRadius: 0,
                   padding: '30px 10px',
                   fontSize: '16px',
-                  fontFamily: "'grit_sansbold' !important",
+                  fontFamily: "'sunbornsans_one'!important",
                 }}
                 title="Checkout"
                 aria-label="Checkout"
@@ -1682,7 +1685,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                   borderRadius: 0,
                   padding: '30px 10px',
                   fontSize: '16px',
-                  fontFamily: "'grit_sansbold' !important",
+                  fontFamily: "'sunbornsans_one'!important",
                 }}
                 title="Checkout"
                 aria-label="Checkout Button  disabled"
