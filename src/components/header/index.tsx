@@ -422,9 +422,9 @@ const Header = (props: any) => {
                   </Link>
                 </Grid>
               )}
-              { window.location.href.toLocaleLowerCase().indexOf('/login') === -1 && window.location.href.toLocaleLowerCase().indexOf('/register') === -1 && window.location.href.toLocaleLowerCase().indexOf('/forgot') === -1 &&
-                  restaurant && (!hideLoginPanel || !hideLoginedPanel) &&(
-                    <Grid
+              {
+                  restaurant && (!hideLoginPanel || !hideLoginedPanel && isLoginUser() && providerToken?.first_name) &&(
+                    <Grid 
                     >
                       <Typography className="v-line" sx={{ marginTop: { sm: "10px", lg: "15px", md: "11px" } }}>
       
