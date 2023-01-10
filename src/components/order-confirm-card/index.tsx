@@ -44,7 +44,7 @@ const pickupTime = (order: any) => {
         variant="body1"
         title="6:10 PM"
         sx={{
-          fontFamily: "'sunbornsans_one' !important",
+          fontFamily: "'grit_sansbold'!important",
           color: '#062C43 !important',
           fontSize: '25px !important',
           lineHeight: '1.2',
@@ -123,7 +123,7 @@ const pickupAddress = (restaurant: any, order: any) => {
         variant="body1"
         sx={{
           textTransform: 'uppercase',
-          fontFamily: "'sunbornsans_one' !important",
+          fontFamily: "'grit_sansbold'!important",
           color: '#062C43 !important',
           fontSize: '25px !important',
           lineHeight: '1.2',
@@ -155,7 +155,7 @@ const deliveryAddress = (order: any) => {
       <Typography
         sx={{
           textTransform: 'uppercase',
-          fontFamily: "'sunbornsans_one' !important",
+          fontFamily: "'grit_sansbold'!important",
           color: '#062C43 !important',
           fontSize: '25px !important',
           lineHeight: '1.2',
