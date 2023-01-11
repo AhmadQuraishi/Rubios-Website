@@ -178,14 +178,15 @@ const PickupForm = ({
           </Grid>
 
           {orderType !== DeliveryModeEnum.dinein && (
-            <Grid item xs={12}>
+            <Grid item xs={12} sx={{letterSpacing: "0.1px !important"}}>
               <TextField
-                className="mobile-field"
+                className=" phone-field"
                 aria-label="Phone Number"
                 onBlur={handleBlur}
                 label="Phone Number"
                 aria-required="true"
                 title="Phone Number"
+                sx={{letterSpacing: "0.1px !important"}}
                 value={values.phone}
                 onChange={handleChange}
                 name="phone"

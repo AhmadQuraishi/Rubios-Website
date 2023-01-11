@@ -13,7 +13,7 @@ import {
 import { makeStyles } from '@mui/styles';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import logo from '../../assets/imgs/unnamed.png';
+import logo from '../../assets/imgs/header-logo.png';
 import cartIcon from '../../assets/imgs/cart-icon.svg';
 import cartIconMobile from '../../assets/imgs/cart-icon-mobile.svg';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
@@ -422,9 +422,9 @@ const Header = (props: any) => {
                   </Link>
                 </Grid>
               )}
-              { window.location.href.toLocaleLowerCase().indexOf('/login') === -1 && window.location.href.toLocaleLowerCase().indexOf('/register') === -1 && window.location.href.toLocaleLowerCase().indexOf('/forgot') === -1 &&
-                  restaurant && (!hideLoginPanel || !hideLoginedPanel) &&(
-                    <Grid
+              {
+                  restaurant && (!hideLoginPanel || !hideLoginedPanel && isLoginUser() && providerToken?.first_name) &&(
+                    <Grid 
                     >
                       <Typography className="v-line" sx={{ marginTop: { sm: "10px", lg: "15px", md: "11px" } }}>
       

@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: '20px 0 10px 0',
     fontSize: '18px !important',
     fontWeight: '600 !important',
-    fontFamily: "'libre_franklinlight' !important",
+    fontFamily: "'Libre Franklin' !important",
     letterSpacing: '0.00938em !important',
 
   },
@@ -108,7 +108,8 @@ const ProductListing = (props: any) => {
               <div key={index} style={{ padding: 10 }}>
                 <Card
                   elevation={0}
-                  style={{ borderRadius: 0 }}
+                  style={{ borderRadius: 0}}
+                  sx={{backgroundColor: "transparent !important"}}
                   role="group"
                   aria-label={item.name}
                 >

@@ -35,8 +35,7 @@ const useStyle = makeStyles({
   heading1: {
     fontSize: '13px !important',
     color: '#fff',
-    //fontFamily: "'grit_sansbold' !important",
-    fontFamily:"'libre_franklinlight' !important",
+    fontFamily:"'Libre Franklin' !important",
   },
 });
 
@@ -223,10 +222,6 @@ const StoreInfoBar = () => {
                   >
                     {orderSelectedType()}
                   </Typography>
-
-                  {window?.location?.href
-                    ?.toLocaleLowerCase()
-                    ?.indexOf('/checkout') !== -1 && (
                     <>
                       <Typography
                         //variant="body2"
@@ -264,7 +259,7 @@ const StoreInfoBar = () => {
                         {'\n'}
                       </Typography>
                     </>
-                  )}
+                  
                 </Grid>
                 <Typography
                   variant="h2"
@@ -395,7 +390,7 @@ const StoreInfoBar = () => {
                     }}
                   >
                     <Typography
-                      className={classes.heading}
+                      className={classes.heading1}
                       variant="h2"
                       textTransform="uppercase"
                       title="Address"
@@ -437,9 +432,6 @@ const StoreInfoBar = () => {
                         <p>{restaurantInfo.distance.toFixed(2)} Miles Away</p>
                       )}
                     </Typography>
-                    {window?.location?.href
-                      ?.toLocaleLowerCase()
-                      ?.indexOf('/checkout') !== -1 && (
                       <>
                         <Typography
                           color="#fff"
@@ -476,7 +468,7 @@ const StoreInfoBar = () => {
                           </p>
                         </Typography>
                       </>
-                    )}
+                    
                     <Typography
                       color="#fff"
                       fontSize={11}
@@ -585,7 +577,7 @@ const StoreInfoBar = () => {
                     }}
                   >
                     <Typography
-                      className={classes.heading}
+                      className={classes.heading1}
                       variant="h2"
                       textTransform="uppercase"
                       title="Hours"
@@ -624,7 +616,7 @@ const StoreInfoBar = () => {
                               <ListItem
                                 sx={{
                                   padding: '0 0 0 0',
-                                  fontFamily:"'libre_franklinlight' !important",
+                                  fontFamily:"'Libre Franklin' !important",
                                 }}
                                 title={
                                   (item.weekday &&
@@ -644,7 +636,7 @@ const StoreInfoBar = () => {
                                 fontSize: '12px',
                                 fontWeight: '500',
                                 color: 'background.paper',
-                                fontFamily:"'libre_franklinlight' !important",
+                                fontFamily:"'Libre Franklin' !important",
                               }}
                               role="presentation"
                             >
@@ -702,7 +694,7 @@ const StoreInfoBar = () => {
                                   <ListItem
                                     sx={{
                                       padding: '0 0 0 0',
-                                      fontFamily:"'libre_franklinlight' !important",
+                                      fontFamily:"'Libre Franklin' !important",
                                     }}
                                     title={
                                       (item.weekday &&
@@ -723,7 +715,7 @@ const StoreInfoBar = () => {
                                     fontSize: '12px',
                                     fontWeight: '500',
                                     color: 'background.paper',
-                                    fontFamily:"'libre_franklinlight' !important",
+                                    fontFamily:"'Libre Franklin' !important",
                                   }}
                                   role="presentation"
                                 >
@@ -857,7 +849,7 @@ const StoreInfoBar = () => {
                                       <ListItem
                                         sx={{
                                           padding: '0 0 0 0',
-                                          fontFamily:"'libre_franklinlight' !important",
+                                          fontFamily:"'Libre Franklin' !important",
                                         }}
                                         title={
                                           (item.weekday &&
@@ -878,7 +870,7 @@ const StoreInfoBar = () => {
                                         fontSize: '12px',
                                         fontWeight: '500',
                                         color: 'background.paper',
-                                        fontFamily:"'libre_franklinlight' !important",
+                                        fontFamily:"'Libre Franklin' !important",
                                       }}
                                       role="presentation"
                                     >
@@ -905,7 +897,7 @@ const StoreInfoBar = () => {
                                 </Grid>
                               ))}
                           <Typography
-                            className={classes.heading}
+                            className={classes.heading1}
                             variant="h2"
                             textTransform="uppercase"
                             title="Address"
@@ -927,7 +919,7 @@ const StoreInfoBar = () => {
                             component="div"
                             textTransform="uppercase"
                             fontSize={11}
-                            fontFamily={"'libre_franklinlight' !important"}                            paddingTop="8px"
+                            fontFamily={"'Libre Franklin' !important"}                            paddingTop="8px"
                             title={`${restaurantInfo.streetaddress}, ${restaurantInfo.city}, ${restaurantInfo.state}`}
                             sx={{
                               display: {

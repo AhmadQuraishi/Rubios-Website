@@ -1003,7 +1003,7 @@ const Checkout = () => {
                           <Grid item xs={12}>
                             <Typography
                               variant="h1"
-                              sx={{ marginBottom: '0px',color: "#062C43", fontFamily: "'grit_sansbold' !important",letterSpacing:"0.03562em" }}
+                              sx={{ fontSize: '29px !important', marginBottom: '0px',color: "#062C43", fontFamily: "'grit_sansbold' !important",letterSpacing:"0.03562em" }}
                               title="PICK UP INFO"
                             >
                               PICK UP INFO
@@ -1027,7 +1027,7 @@ const Checkout = () => {
                           <Grid item xs={12}>
                             <Typography
                               variant="h1"
-                              sx={{ marginBottom: '0px', fontFamily: "'grit_sansbold' !important",letterSpacing:"0.03562em"}}
+                              sx={{fontSize: '29px !important', marginBottom: '0px', fontFamily: "'grit_sansbold' !important",letterSpacing:"0.03562em"}}
                               title="CURBSIDE PICK INFO"
                             >
                               CURBSIDE PICK UP
@@ -1050,7 +1050,7 @@ const Checkout = () => {
                           <Grid item xs={12}>
                             <Typography
                               variant="h1"
-                              sx={{ marginBottom: '0px', fontFamily: "'grit_sansbold' !important", color: "#062c43",letterSpacing:"0.03562em" }}
+                              sx={{fontSize: '29px !important', marginBottom: '0px', fontFamily: "'grit_sansbold' !important", color: "#062c43",letterSpacing:"0.03562em" }}
                               title="DELIVERY INFO"
                             >
                               DELIVERY INFO
@@ -1074,7 +1074,7 @@ const Checkout = () => {
                           <Grid item xs={12}>
                             <Typography
                               variant="h1"
-                              sx={{ marginBottom: '0px', fontFamily: "'grit_sansbold' !important",letterSpacing:"0.03562em" }}
+                              sx={{fontSize: '29px !important', marginBottom: '0px', fontFamily: "'grit_sansbold' !important",letterSpacing:"0.03562em" }}
                               title="DELIVERY INFO"
                               style={{    fontSize: '11pt!important',fontFamily: "'sunbornsans_one'!important"}}
                             >

@@ -29,22 +29,22 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: theme.palette.secondary.main,
     fontSize: '14px',
     lineHeight: '7px',
-    fontFamily: "'libre_franklin' !important",
+    fontFamily: "'Libre Franklin' !important",
     letterSpacing: 0,
   },
   cal: {
     paddingTop: '10px',
-    fontFamily: "'grit_sansbold' !important",
+    fontFamily: "'Libre Franklin' !important",
     fontSize: '14px',
-    fontWeight: 600,
     color: theme.palette.primary.main,
+    fontWeight: "bold",
   },
   price: {
     paddingTop: '10px',
-    fontFamily: "'grit_sansbold' !important",
+    fontFamily: "'Libre Franklin' !important",
     fontSize: '14px',
-    fontWeight: 600,
     color: '#0075BF',
+    fontWeight: "bold",
   },
 }));
 
@@ -151,7 +151,7 @@ const ProductListing = (props: any) => {
                           item
                           >
                             
-                           <Typography className="vertical-line" style={{marginTop:"13px", marginLeft: "10px", marginRight: "10px"}}>
+                           <Typography className="vertical-line" style={{marginTop:"10px", marginLeft: "10px", marginRight: "10px"}}>
 
                             </Typography>
                           </Grid>
