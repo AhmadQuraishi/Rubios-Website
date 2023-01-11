@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   content: {
     color: theme.palette.secondary.main,
-    fontSize: '14px',
+    fontSize: '13px !important',
     lineHeight: '7px',
     fontFamily: "'Libre Franklin' !important",
     letterSpacing: 0,
@@ -277,14 +277,16 @@ const ProductListingCarousel = (props: any) => {
                         title={item.name}
                         className={classes.title}
                       >
-                        {item.name}
+                        {item.name.includes("®") ? item.name.replace(<sup>R</sup>) : item.name}
+                                    {/* {item.name.replace("R superscript", <span style={{verticalAlign: 'super'}}>R</span>)} */}
                       </Typography>
                       <Typography
                         variant="caption"
                         title={item.description}
                         className={classes.content + ' fix-span'}
+                        
                       >
-                        {item.description}
+                        {item.description }
                       </Typography>
                       <Grid container spacing={0} >
                       {item.cost > 0 && (

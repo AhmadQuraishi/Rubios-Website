@@ -429,8 +429,8 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                           className={classes.cartTitle}
                           sx={{
                             display: 'inline',
-                            fontFamily: "'grit_sansbold' !important",
-
+                            fontFamily: "'Libre Franklin' !important",
+                            fontWeight: "bold",
                             fontSize: {
                               lg: '12px !important',
                               xs: '14px !important',

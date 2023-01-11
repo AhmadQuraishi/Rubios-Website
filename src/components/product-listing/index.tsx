@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   content: {
     color: theme.palette.secondary.main,
-    fontSize: '14px',
+    fontSize: '13px !important',
     lineHeight: '7px',
     fontFamily: "'Libre Franklin' !important",
     letterSpacing: 0,

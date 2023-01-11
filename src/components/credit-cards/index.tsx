@@ -86,7 +86,7 @@ const CreditCards = ({ billingAccounts, loading }: any) => {
                             >
                               {cardData.isdefault ? (
                                 <Fragment>
-                                  <b>DEFAULT</b> {cardData.accounttype}
+                                  <b >DEFAULT</b> {cardData.accounttype}
                                 </Fragment>
                               ) : (
                                 `${cardData.accounttype}`

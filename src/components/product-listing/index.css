@@ -7,7 +7,7 @@
   -webkit-box-orient: vertical;
 }
 .vertical-line{
-  border-left: 3px solid #58595b;
+  border-left: 2px solid #58595b;
   height: 17px;
 }
 .fix-span {

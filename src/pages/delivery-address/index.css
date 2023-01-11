@@ -26,7 +26,7 @@
 
 .delivery-address-container .card-panel .card-content p b {
   font-family: 'Libre Franklin' !important;
-  font-weight: 700;
+  font-weight: bold;
 }
 
 .delivery-address-container a {
@@ -40,9 +40,9 @@
 
 .delivery-address-container .card-panel .small-button-panel .link {
   padding-left: 20px;
-  font-family: 'grit_sansbold' !important;
+  font-family: 'Libre Franklin' !important;
   color: #b9b9b9;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
 }

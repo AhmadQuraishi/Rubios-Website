@@ -46,7 +46,7 @@ const pickupTime = (order: any) => {
         sx={{
           fontFamily: "'grit_sansbold'!important",
           color: '#062C43 !important',
-          fontSize: '25px !important',
+          fontSize: '22px !important',
           lineHeight: '1.2',
           letterSpacing: '-0.00833em',
         }}
@@ -125,7 +125,7 @@ const pickupAddress = (restaurant: any, order: any) => {
           textTransform: 'uppercase',
           fontFamily: "'grit_sansbold'!important",
           color: '#062C43 !important',
-          fontSize: '25px !important',
+          fontSize: '22px !important',
           lineHeight: '1.2',
           letterSpacing: '-0.00833em',
         }}
@@ -157,7 +157,7 @@ const deliveryAddress = (order: any) => {
           textTransform: 'uppercase',
           fontFamily: "'grit_sansbold'!important",
           color: '#062C43 !important',
-          fontSize: '25px !important',
+          fontSize: '22px !important',
           lineHeight: '1.2',
           letterSpacing: '-0.00833em',
         }}
@@ -240,7 +240,7 @@ const OrderConfirmedCard = ({
                     lineHeight: '1.2',
                     letterSpacing: '-0.00833em',
                     color: '#062C43 !important',
-                    fontSize: '25px !important',
+                    fontSize: '22px !important',
                     fontFamily: "'grit_sansbold' !important",
                   }}
                 >
