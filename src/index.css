@@ -74,7 +74,7 @@
 h1 {
   font-family: 'sunbornsans_one' !important;
   color:  #062C43;
-  font-size: 36px !important;
+  font-size: 25px !important;
 }
 
 h5 {
@@ -186,6 +186,13 @@ button {
 }
 
 /****** Toast Styling  ******/
+
+.Toastify__toast-theme--light {
+    font-family: 'Libre Franklin' !important;
+}
+.Toastify__toast-body {
+  font-family: 'Libre Franklin' !important;
+}
 
 @media only screen and (max-width: 480px) {
 
@@ -392,6 +399,14 @@ font-family: 'sunbornsans_one' !important;
   color: #474747 !important;
 }
 
+.css-1wc848c-MuiFormHelperText-root.Mui-error {
+  font-family: 'Libre Franklin';
+  color: #d32f2f;
+}
+.css-1wc848c-MuiFormHelperText-root.Mui-error {
+  font-family: 'Libre Franklin';
+  color: #E61F00 !important;
+}
 @media screen and (max-width: 468px) {
   h1 {
     font-size: 27px !important;

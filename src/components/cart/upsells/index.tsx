@@ -256,7 +256,7 @@ const Upsells = ({ showCart, upsellsType }: any) => {
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    fontFamily: "'grit_sansbold' !important",
+                    fontFamily: "'Libre Franklin' !important",
                     minHeight: 35,
                     fontSize: '12px !important',
                     paddingRight: 30,
