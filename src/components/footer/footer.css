@@ -1,75 +1,60 @@
-.list {
-  width: 100%;
-  display: grid;
-  list-style: none;
-  grid-template-columns: auto auto auto;
-  padding-left: 10px;
-  /* padding-left: -webi; */
-  text-align: -webkit-left;
-  font-weight: 100 !important;
-  letter-spacing: 0.07938em !important;
-}
-.login-setting{
-  margin-top: -80px !important;
-}
-.footer-setting {
-  margin-top: -80px !important;
-}
 
-.footer-lg{
-  background-image: url('../../assets/imgs/blue-bg.png');
-}
-
-.footer-image {
-  bottom: 0;
-  margin-top: 0% !important;
-}
-.footer-confirmation-checkout {
-  margin-top: -80px !important;
-
-}
-
-@media screen and (min-width: 900px) {
-  .footer-control {
-    margin-bottom: 130px !important;
+  .list {
+    width: 100%;
+    display: grid;
+    list-style: none;
+    grid-template-columns: auto auto auto auto auto auto auto auto;
+    padding-left: 40px;
+    /* padding-left: -webi; */
+    text-align: -webkit-left;
   }
+
+.footer-setting{
+bottom:0;
+margin-bottom: 0%;
+  }
+
+  .footer-img-logo {
+    width: 150px;
+    height: 150px;
+  }
+
+@media screen and (min-width: 900px){
+.footer-control{
+margin-bottom: 130px !important;
+}
 }
 
 @media screen and (max-width: 900px) {
-  .list {
+.list
+{
     grid-template-columns: auto auto;
-  }
-
-  .footer-control {
-    margin-bottom: 125px !important;
-  }
+}
+.footer-control {
+margin-bottom: 125px !important;
+}
 }
 
 @media screen and (max-width: 600px) {
-  .footer-control {
-    margin-bottom: 120px !important;
-  }
-  .footer-mobile {
-    background-color: #136CAC;
-  }
-  .footer-lg{
-    background-image: none;
-  }
-  .footer-confirmation-checkout {
-    margin-top: 80px !important;
-  
-  }
+.footer-control {
+margin-bottom: 120px !important;
+}
+.footer-img-logo {
+  width: 80%;
+  height: 80%;
+}
 
 }
 
 @media screen and (max-width: 468px) {
-  .footer-control {
-    margin-bottom: 100px !important;
-  }
+.footer-control {
+  margin-bottom: 100px !important;
+}
+
 }
 
 @media screen and (min-Width: 550px) {
-  .footer-control .listsetting {
+.footer-control .listsetting{
     margin-right: 20px !important;
-  }
+}
 }

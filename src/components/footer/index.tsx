@@ -5,7 +5,7 @@ import { makeStyles } from '@mui/styles';
 import footerLogo from '../../assets/imgs/ariginalFishTacos.png';
 import andriodLogo from '../../assets/imgs/button-google.png';
 import iosLogo from '../../assets/imgs/button-apple.png';
-
+import FooterBg from '../../assets/imgs/BottomBG.png'
 import { useDispatch, useSelector } from 'react-redux';
 import { getMenuRequest } from '../../redux/actions/footer';
 import { useEffect, useState } from 'react';
@@ -13,16 +13,16 @@ import './footer.css';
 import FacebookOutlinedIcon from '@mui/icons-material/FacebookOutlined';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import instaIcon from '../../assets/imgs/insta-icon.png';
-import twitterIcon from '../../assets/imgs/twitter-icon.png';
 import tiktokIcon from '../../assets/imgs/tik-tok.png';
-import image from '../../assets/imgs/blue-bg.png';
+
 const useStyles = makeStyles((theme: Theme) => ({
   links: {
     textTransform: 'uppercase',
-    fontSize: '13px',
-    fontFamily: 'sunbornsans_one !important',
+    fontSize: '11px',
+    fontFamily: "'sunbornsans_one' !important",
     textDecoration: 'none',
     color: '#fff',
+    letterSpacing: "1.00938px",
     '&:hover': {
       color: theme.palette.success.main,
     },
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     textAlign: 'center',
     display: 'inline-block',
     paddingLeft: '30px',
-    fontFamily: "'Libre Franklin' !important",
+    fontFamily: 'Roboto,Helvetica,Arial,sans-serif !important',
     textDecoration: 'none',
     '&:hover': {
       color: theme.palette.success.main,
@@ -56,87 +56,85 @@ const Footer = () => {
     dispatch(getMenuRequest());
   }, []);
 
-  useEffect(() => { }, [menu]);
+  useEffect(() => {}, [menu]);
 
   return (
     <footer
-      className={`${window.location.href.toLocaleLowerCase().indexOf('/product') !== -1
+      className={`${
+        window.location.href.toLocaleLowerCase().indexOf('/product') !== -1
           ? 'footer-control'
-          : ''
-        }` || `${window.location.href.toLocaleLowerCase().indexOf('/location') !== -1
-        ? 'login-setting'
-        : ''
-      }` || `${window.location.href.toLocaleLowerCase().indexOf('/checkout') !== -1 || window.location.href.toLocaleLowerCase().indexOf('/order-confirmation') !== -1
-      ? 'footer-confirmation-checkout' : '' }` }
+          : 'footer-setting'
+      }`}
     >
-      {/* New Changes */}
       <Grid
         container
         spacing={0}
-        className={`${window.location.href.toLocaleLowerCase().indexOf('/account') !== -1 || window.location.href.toLocaleLowerCase().indexOf('/menu') !== -1 || window.location.href.toLocaleLowerCase().indexOf('/product') !== -1  || window.location.href.toLocaleLowerCase().indexOf('/category') !== -1 ||  window.location.href.toLocaleLowerCase().indexOf('/location') !== -1 || window.location.href.toLocaleLowerCase().indexOf('/order-confirmation') !== -1
-          ? 'footer-image footer-mobile footer-lg'
-          : 'footer-setting footer-mobile footer-lg'
-        }` }
         sx={{
           display: 'flex',
-          //backgroundImage: `url(${image})`,
-          //backgroundColor: {xs:"#136CAC",md: "none",lg: "none", sm: "none"},
+          //backgroundColor: 'secondary.main',
+          backgroundImage: `url(${FooterBg})`,
           width: '100%',
-          height: {sm:"500px", lg: "500px", md: "500px", xs: "650px"},
           margin: 0,
-          padding: { xs: '80px 0px',sm: '100px 0px 10px 0px',md: '150px 0px 20px 0px', lg: '220px 0px 40px 0px' },
+          padding: { xs: '50px 0px', lg: '130px 0px 40px 0px', md: "130px 0px 40px 0px" },
         }}
       >
-        <Grid item xs={12} sm={6} md={7} lg={7}>
+        <Grid item xs={12} sm={6} md={12} lg={12}>
           <Grid
             container
             spacing={2}
             sx={{
-              marginTop : {lg:"0px"},
+              flexDirection: {sm:"column", xs: "row", lg: "row", md: "row"},
               padding: {
                 xs: '0px 20px',
                 sm: '0px 30px',
-                md: '30px 30px 0px 70px',
-                lg: '0px 0px 0 100px',
+                lg: '0px 30px 0 70px',
               },
             }}
           >
-            <Grid item xs={4} >
+            <Grid item xs={2} sx={{paddingLeft : {sm: "25px !important", xs: "0px !important", md: "-25px !important", lg: "0px !important"}}}> 
               <Button
                 sx={{
                   display: 'flex',
+                  marginLeft: { sm: "30px"},
                   padding: {
-                    xs: '70px 0px 30px 0px', lg: '20px 0px 10px 0px',md: '50px 0px 10px 0px', sm: "80px 0px 10px 0px "
+                    xs: '40px 0px 45px 0px',
+                    md: '0px 0px 70px 0px',
+                    lg: '25px 20px 45px 0px',
+                    sm: '70px 0px 45px 0px',
                   },
                   maxWidth: {
-                    md: '236px',
-                    xs: '186px',
+                    md: '150px',
+                    xs: '150px',
+                    sm: '150px',
                   },
                 }}
               >
                 <a href={process.env.REACT_APP_RUBIOS_HOME_PAGE}>
                   <img
+
                     src={footerLogo}
-                    style={{ width: '100%' }}
+                    className="footer-img-logo"
                     alt="Rubios Coastal Grill"
                     title="Rubios Coastal Grill"
                   />
                 </a>
               </Button>
             </Grid>
-            <Grid item xs={8} sx={{paddingTop: {xs: "0px", sm: "36px !important",md: "16px !important",lg: "16px !important"}}}>
+            <Grid item xs={9} sx={{paddingLeft : {sm: "25px !important", xs: "0px !important", md: "-25px !important", lg: "0px !important"}}}>
               <Grid
                 container
                 spacing={1}
                 sx={{
-                  flexWrap: { xs: 'wrap', md: 'wrap' },
-                  maxWidth: '1024px',
+                  flexWrap: { xs: 'wrap', md: 'nowrap' },
+                  marginTop : {sm: "25px", xs: "0px", md: "-25px", lg: "0px"},
+                   marginLeft: {md: "10px !important",sm: "0px", xs: "0px",lg: "0px" }
+                  // maxWidth: '1024px',
                 }}
               >
                 <ul className="list">
                   {menu &&
                     menu.items.map((item: any, index: number) => (
-                      <li key={Math.random()} style={{    margin: "0px 20px 20px 0px"}}>
+                      <li key={Math.random()}>
                         <a
                           key={Math.random() + index}
                           className={classes.links}
@@ -153,64 +151,57 @@ const Footer = () => {
             </Grid>
           </Grid>
         </Grid>
-        <Grid
-          item
-
-          sx={{
-            display: {xs: "none", lg: "flex", md: "flex", sm: "none"},
-            padding: '0 !important',
-            paddingTop: { xs: '20px !important', lg: '0px !important' },
-            paddingBottom: { xs: '0px !important',md: '30px !important', lg: '35px !important' },
-            marginLeft: {lg: "20px"},
-            marginRight: {md: "20px"},
-          }}
-        >
-          <Divider orientation="vertical" color="#fff" sx={{ padding: '0' }} />
-        </Grid>
-        <Grid item xs={12} sm={6} md={4} lg={4}>
+        <Grid item xs={12} sm={6} md={12}>
           <Grid
             container
             spacing={1}
             sx={{
-              marginTop: {lg:"0px"},
-              display: 'flex', flexDirection: 'column', alignItems: 'flex-start',
               padding: {
                 xs: '0px 20px',
                 sm: '0px 30px',
-                
                 lg: '0px 30px 0 70px',
               },
             }}
           >
-            <Grid item xs={12} md={6} sx={{display: { md: "-webkit-inline-box",lg:"-webkit-inline-box"}}}>
+            <Grid item xs={12} md={4} sx={{paddingLeft: {md:"45px !important", lg: "17px !important", sm:"0px", xs:"0px"}}}>
               <Typography
                 sx={{
-                  fontSize: '13px',
+                  fontSize: '11px',
                   color: '#fff',
                   textTransform: 'uppercase',
-                  fontWeight: '100 !important',
-                  letterSpacing: "0.07938em !important",
-                  fontFamily: 'sunbornsans_one !important',
-                  paddingTop: {xs: "20px",sm:"15px", md: '28px', lg: '2px' },
+                  fontFamily: "'sunbornsans_one'!important",
+                  letterSpacing: "1.00938px",
+                  paddingTop: { xs: '40px', md: '30px', lg: '60px' },
                 }}
                 title="Connect with Us"
               >
                 Connect with Us
               </Typography>
-              <Grid
+              {/* <Grid
                 container
                 spacing={1}
                 width={200}
                 sx={{
-                  marginTop: {lg: "-15px"},
-                  marginLeft: {lg:"20px",md: "10px", sm: "-8px", xs: "-8px"},
                   padding: {
                     xs: '10px 0 0 0',
-                    md: '25px 0 0 0',
+                    md: '10px 0 0 0',
                     lg: '5px 0 0 0',
                   },
                 }}
               >
+                <Grid item xs={2} style={{ marginRight: '10px' }}>
+                  <a
+                    href={'https://www.facebook.com/rubios/'}
+                    target={'_blank'}
+                    rel="noreferrer"
+                  >
+                    <img
+                      src={fbIcon}
+                      style={{ width: '100%' }}
+                      alt="Facebook Icon"
+                    />
+                  </a>
+                </Grid>
                 <Grid item xs={2} style={{ marginRight: '10px' }}>
                   <a
                     href={'https://www.instagram.com/rubioscoastalgrill/'}
@@ -224,28 +215,17 @@ const Footer = () => {
                     />
                   </a>
                 </Grid>
-                <Grid item xs={2} sx={{paddingLeft: "0px !important",paddingTop: "5px !important"}}>
-                  <a
-                    href={'https://www.facebook.com/rubios/'}
-                    target={'_blank'}
-                    rel="noreferrer"
-                  >
-                    <FacebookOutlinedIcon style={{color: "white", fontSize: "xx-large"}}/>
-                  </a>
-                </Grid>
-
-                <Grid item xs={2} sx={{paddingLeft: "0px !important",paddingTop: "5px !important"}}>
+                <Grid item xs={2} style={{ marginRight: '10px' }}>
                   <a
                     href={'https://twitter.com/RubiosTweets'}
                     target={'_blank'}
                     rel="noreferrer"
                   >
-                    {/* <img
+                    <img
                       src={twitterIcon}
                       style={{ width: '100%' }}
                       alt="Twitter Icon"
-                    /> */}
-                    <TwitterIcon style={{color: "white", fontSize: "xx-large",marginLeft: "5px"}}/>
+                    />
                   </a>
                 </Grid>
                 <Grid item xs={2} style={{ marginRight: '10px' }}>
@@ -261,19 +241,82 @@ const Footer = () => {
                     />
                   </a>
                 </Grid>
+              </Grid> */}
+              <Grid
+                container
+                spacing={1}
+                width={200}
+                sx={{
+                  marginTop: {lg: "0px"},
+                  marginLeft: {lg:"-7px",md: "-6px", sm: "-8px", xs: "-8px"},
+                  padding: {
+                    xs: '10px 0 0 0',
+                    md: '15px 0 0 0',
+                    lg: '5px 0 0 0',
+                  },
+                }}
+              >
+                <Grid item xs={2} style={{ marginRight: '20px'}}>
+                  <a
+                    href={'https://www.instagram.com/rubioscoastalgrill/'}
+                    target={'_blank'}
+                    rel="noreferrer"
+                  >
+                    <img
+                      src={instaIcon}
+                      style={{ width: '35px' }}
+                      alt="Instagram Icon"
+                    />
+                  </a>
+                </Grid>
+                <Grid item xs={2} sx={{paddingLeft: "0px !important",paddingTop: "5px !important",marginRight: "10px !important"}}>
+                  <a
+                    href={'https://www.facebook.com/rubios/'}
+                    target={'_blank'}
+                    rel="noreferrer"
+                  >
+                    <FacebookOutlinedIcon style={{color: "white", fontSize: "40px"}}/>
+                  </a>
+                </Grid>
+
+                <Grid item xs={2} sx={{paddingLeft: "0px !important",paddingTop: "5px !important",marginRight: "10px !important"}}>
+                  <a
+                    href={'https://twitter.com/RubiosTweets'}
+                    target={'_blank'}
+                    rel="noreferrer"
+                  >
+                    {/* <img
+                      src={twitterIcon}
+                      style={{ width: '100%' }}
+                      alt="Twitter Icon"
+                    /> */}
+                    <TwitterIcon style={{color: "white", fontSize: "40px",marginLeft: "5px"}}/>
+                  </a>
+                </Grid>
+                <Grid item xs={2} style={{ marginRight: '10px' }}>
+                  <a
+                    href={'https://www.tiktok.com/@officialrubios'}
+                    target={'_blank'}
+                    rel="noreferrer"
+                  >
+                    <img
+                      src={tiktokIcon}
+                      style={{ width: '35px' }}
+                      alt="Tiktok Icon"
+                    />
+                  </a>
+                </Grid>
               </Grid>
             </Grid>
-            <Grid item xs={12} md={12}    sx={{ display: 'flex',flexDirection: 'column',alignItems: "flex-start"}} >
+            <Grid item xs={12} md={4}>
               <Typography
                 sx={{
-                  fontSize: '13px',
+                  fontSize: '11px',
                   color: '#fff',
                   textTransform: 'uppercase',
-                  fontWeight: '100 !important',
-                  letterSpacing: "0.07938em !important",
-                  fontFamily: 'sunbornsans_one !important',
-                  paddingTop: { xs: '40px', md: '30px', lg: '0px' },
-                  //paddingLeft: {lg: "107px"},
+                  fontFamily: "'sunbornsans_one'!important",
+                  letterSpacing: '1.00938px',
+                  paddingTop: { xs: '40px', md: '30px', lg: '60px' },
                 }}
                 title="Get The Rubio's App"
               >
@@ -283,11 +326,9 @@ const Footer = () => {
                 container
                 spacing={4}
                 maxWidth={300}
-                sx={{ padding: '0px 0 0 0', 
-                //paddingLeft: {lg: "107px"},
-               }}
+                sx={{ padding: '0px 0 0 0' }}
               >
-                <Grid item xs={6} sx={{paddingTop: "40px !important"}}>
+                <Grid item xs={6} sx={{marginTop: "12px !important"}}>
                   <Button sx={{ padding: 0 }}>
                     <a
                       href={process.env.REACT_APP_IOS_DOWNLOAD_LINK}
@@ -302,7 +343,7 @@ const Footer = () => {
                     </a>
                   </Button>
                 </Grid>
-                <Grid item xs={6} sx={{paddingTop: "40px !important"}}>
+                <Grid item xs={6} sx={{marginTop: "12px !important"}}>
                   <Button sx={{ padding: 0 }}>
                     <a
                       href={process.env.REACT_APP_GOOGLE_DOWNLOAD_LINK}
@@ -332,13 +373,12 @@ const Footer = () => {
             component="p"
             color="#fff"
             fontSize={9}
-            fontFamily= {"'Libre Franklin' !important"}
             title="Copyright 2021 Rubios's Restaurants, Inc. All Rights reserved."
           >
             Copyright 2021 Rubios's Restaurants, Inc. All Rights reserved.
           </Typography>
         </Grid>
-        {/* <Grid
+        <Grid
           item
           xs={12}
           sx={{
@@ -347,7 +387,7 @@ const Footer = () => {
           }}
         >
           <Divider color="#fff" sx={{ padding: '0' }} />
-        </Grid> */}
+        </Grid>
         <Grid item xs={12} sx={{ paddingLeft: { xs: '0px' } }}>
           <Grid container spacing={1}>
             <Grid
@@ -355,10 +395,7 @@ const Footer = () => {
               xs={5}
               sx={{
                 display: { xs: 'none', md: 'flex' },
-                padding: { 
-                  xs: '30px 0px 0px 0px',
-                   lg: '50px 0px 0px 0px' },
-                justifyContent: { md: 'end' }
+                padding: { xs: '30px 0px 0px 0px', lg: '50px 0px 0px 0px' },
               }}
             >
               <Typography
@@ -369,22 +406,21 @@ const Footer = () => {
                 variant="caption"
                 color="#fff"
                 fontSize={9}
-                fontFamily= {"'Libre Franklin' !important"}
                 title="Copyright 2021 Rubios's Restaurants, Inc. All Rights reserved."
               >
                 Copyright 2021 Rubios's Restaurants, Inc. All Rights reserved.
               </Typography>
             </Grid>
-            {/* <Grid
+            <Grid
               item
               xs={1}
               sx={{ display: { xs: 'none', md: 'flex' } }}
-            ></Grid> */}
+            ></Grid>
             <Grid item xs={12} md={6}>
               <Grid
                 container
                 spacing={1}
-                sx={{ paddingTop: '6px', paddingLeft: { xs: '10px', md: "0px", lg: "0px" } }}
+                sx={{ paddingTop: '10px', paddingLeft: { xs: '10px' } }}
               >
                 <Grid
                   item
@@ -392,10 +428,9 @@ const Footer = () => {
                   md={12}
                   sx={{
                     display: 'flex',
-                    paddingTop: '29px !important',
-                    paddingLeft: '0px !important',
-                    paddingRight: { md: '90px', sm: '30px', xs: '30px' },
-                    justifyContent: { xs: 'center', md: 'start' },
+                    paddingTop: '30px !important',
+                    paddingRight: { md: '60px', sm: '30px', xs: '30px' },
+                    justifyContent: { xs: 'left', md: 'right' },
                   }}
                 >
                   <ul style={{ listStyle: 'none', display: 'flex' }}>
