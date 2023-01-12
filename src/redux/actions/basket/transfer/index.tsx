@@ -2,11 +2,12 @@ import { basketActionsTypes } from '../../../types/basket';
 import { ResponseBasket } from '../../../../types/olo-api';
 import { displayToast } from '../../../../helpers/toast';
 
-export function basketTransferRequest(basketId: any, vendorId: any) {
+export function basketTransferRequest(basketId: string, vendorId: string | number, deliveryMode: string) {
   return {
     type: basketActionsTypes.BASKET_TRANSFER_REQUEST,
     basketId,
     vendorId,
+    deliveryMode
   };
 }
 

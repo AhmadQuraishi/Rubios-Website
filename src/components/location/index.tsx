@@ -443,7 +443,7 @@ const LocationCard = (props: any) => {
           }
         } else {
           dispatch(
-            basketTransferRequest(basketObj?.basket?.id, restaurantObj.id),
+            basketTransferRequest(basketObj?.basket?.id, restaurantObj.id, basketObj?.basket?.deliverymode),
           );
           setNewRestaurant(restaurantObj);
           setActionPerform(true);
