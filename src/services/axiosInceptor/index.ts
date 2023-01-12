@@ -11,7 +11,7 @@ const withoutTokenEndpoints = [
   'api/auth/users/connect_with_facebook',
 ];
 axiosInstance.interceptors.request.use(
-  function (config) {
+  function (config: any) {
     try {
       const url = config.url || '';
       let isPunchhApi = url?.toString().includes('punchh_api');
