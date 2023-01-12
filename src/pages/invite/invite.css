@@ -6,6 +6,8 @@
   color: black !important;
   justify-content: left !important;
   padding-left: 20px !important;
+  font-family: 'Libre Franklin' !important;
+  font-weight: bold;
 }
 .copy-text {
   text-transform: initial;

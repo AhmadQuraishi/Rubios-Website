@@ -710,7 +710,6 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                           paddingTop: '10px',
                           display: 'block',
                           fontFamily: "'Libre Franklin' !important",
-                          textTransform: "uppercase",
                         }}
                       >
                         {getOptions(item.choices)}
@@ -1227,6 +1226,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                           fontFamily: "'Libre Franklin' !important",
                           color: 'secondary.main',
                           fontSize: '14px',
+                          fontWeight: "bold",
                           paddingBottom: '2px',
                         }}
                         title="Sub Total"
@@ -1241,6 +1241,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                           color: 'secondary.main',
                           fontSize: '14px',
                           textAlign: 'right',
+                          fontWeight: "bold",
                           paddingBottom: '2px',
                         }}
                         title={
@@ -1613,6 +1614,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                           fontFamily: "'Libre Franklin' !important",
                           color: 'secondary.main',
                           fontSize: '15px',
+                          fontWeight: "bold",
                         }}
                         title="Total"
                       >
@@ -1625,6 +1627,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                           fontFamily: "'Libre Franklin' !important",
                           color: 'secondary.main',
                           fontSize: '15px',
+                          fontWeight: "bold",
                           textAlign: 'right',
                         }}
                         title={

@@ -323,12 +323,11 @@
 #reward-points-container .reward-point-merge-panel .button {
   margin: 0;
   line-height: 20px;
-  letter-spacing: 2px;
   text-transform: uppercase;
   font-family: 'Libre Franklin' !important;
   color: #0075bf;
   font-size: 15px;
-  font-weight: 600;
+  font-weight: bold;
   cursor: pointer;
 }
 #reward-points-container .reward-point-merge-panel .button.disable {
