@@ -1387,7 +1387,9 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                              </Typography>
                             </>
                           ) : (
-                            'ESTIMATED TAXES'
+                            <Typography sx={{fontSize: '14px',fontFamily: "Libre Franklin !important"}}>
+                          ESTIMATED TAXES
+                          </Typography>
                           )}
                         </div>
                       </Grid>
