@@ -1318,11 +1318,8 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         // title="ESTIMATED TAX AND FEES"
                       >
                         <div>
-                          {/* { 
-                          basketObj?.basket?.deliverymode !==
-                            DeliveryModeEnum.pickup &&
-                          basketObj?.basket?.deliverymode !==
-                            DeliveryModeEnum.curbside ? ( */}
+                          { 
+                          basketObj?.basket?.totalfees > 0 ? (
                             <>
                             <Typography sx={{
                           fontSize: '14px',
@@ -1359,9 +1356,9 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                               )}
                              </Typography>
                             </>
-                          {/* ) : (
+                           ) : (
                             'ESTIMATED TAXES'
-                          )} */}
+                          )} 
                         </div>
                       </Grid>
                       {!showMore &&

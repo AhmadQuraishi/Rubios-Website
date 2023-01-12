@@ -215,10 +215,9 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                         className="n-bold"
                         // title="ESTIMATED TAX AND FEES"
                       >
-                        {/* {basket &&
-                        basket.deliverymode !== DeliveryModeEnum.pickup &&
-                        basket.deliverymode !== DeliveryModeEnum.curbside ? (
-                          <> */}
+                         { 
+                          basket?.totalfees > 0 ? (
+                            <>
                             <Typography sx={{
                           fontSize: '16px', cursor: 'pointer',fontFamily: "libre_franklinlight !important",fontWeight: "600"}} onClick={() => {
                                     setShowMore(!showMore);
@@ -252,12 +251,12 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                                 />
                               )}
                              </Typography>
-                          {/* </> */}
-                        {/* // ) : (
-                        //   <Typography sx={{fontFamily: "libre_franklinlight !important",fontWeight: "600"}}>
-                        //   ESTIMATED TAXES
-                        //   </Typography>
-                        // )} */}
+                          </> 
+                       ) : (
+                           <Typography sx={{fontFamily: "libre_franklinlight !important",fontWeight: "600"}}>
+                                ESTIMATED TAXES
+                           </Typography>
+                         )}
                       </Typography>
                     </div>
                   </div>
