@@ -215,50 +215,48 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                         className="n-bold"
                       // title="ESTIMATED TAX AND FEES"
                       >
-                        {/* {basket &&
-                        basket.deliverymode !== DeliveryModeEnum.pickup &&
-                        basket.deliverymode !== DeliveryModeEnum.curbside ? (
-                          <> */}
-                        <Typography sx={{
-                          fontSize: '16px', cursor: 'pointer', fontFamily: "Libre Franklin !important", fontWeight: "600"
-                        }} onClick={() => {
-                          setShowMore(!showMore);
-                        }}>
-                          ESTIMATED TAX AND FEES
-                          {showMore ? (
-                            <ExpandLessIcon
-                              aira-label="Expand Less"
-                              onClick={() => {
-                                setShowMore(!showMore);
-                              }}
-                              // className={classes.helpicon}
-                              style={{
-                                cursor: 'pointer',
-                                verticalAlign: 'bottom',
-                                color: 'secondary.main',
-                              }}
-                            />
-                          ) : (
-                            <ExpandMoreIcon
-                              aira-label="Expand Less"
-                              onClick={() => {
-                                setShowMore(!showMore);
-                              }}
-                              // className={classes.helpicon}
-                              style={{
-                                cursor: 'pointer',
-                                verticalAlign: 'bottom',
-                                color: 'secondary.main',
-                              }}
-                            />
-                          )}
-                        </Typography>
-                        {/* </> */}
-                        {/* // ) : (
-                        //   <Typography sx={{fontFamily: "libre_franklinlight !important",fontWeight: "600"}}>
-                        //   ESTIMATED TAXES
-                        //   </Typography>
-                        // )} */}
+                         { 
+                          basket?.totalfees > 0 ? (
+                            <>
+                            <Typography sx={{
+                          fontSize: '16px', cursor: 'pointer',fontFamily: "libre_franklinlight !important",fontWeight: "600"}} onClick={() => {
+                                    setShowMore(!showMore);
+                                  }}>
+                              ESTIMATED TAX AND FEES
+                              {showMore ? (
+                                <ExpandLessIcon
+                                  aira-label="Expand Less"
+                                  onClick={() => {
+                                    setShowMore(!showMore);
+                                  }}
+                                  // className={classes.helpicon}
+                                  style={{
+                                    cursor: 'pointer',
+                                    verticalAlign: 'bottom',
+                                    color: 'secondary.main',
+                                  }}
+                                />
+                              ) : (
+                                <ExpandMoreIcon
+                                  aira-label="Expand Less"
+                                  onClick={() => {
+                                    setShowMore(!showMore);
+                                  }}
+                                  // className={classes.helpicon}
+                                  style={{
+                                    cursor: 'pointer',
+                                    verticalAlign: 'bottom',
+                                    color: 'secondary.main',
+                                  }}
+                                />
+                              )}
+                             </Typography>
+                          </> 
+                       ) : (
+                           <Typography sx={{fontFamily: "libre_franklinlight !important",fontWeight: "600"}}>
+                                ESTIMATED TAXES
+                           </Typography>
+                         )}
                       </Typography>
                     </div>
                   </div>
