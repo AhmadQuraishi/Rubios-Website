@@ -452,7 +452,7 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                               sx={{
                                 paddingTop: '5px',
                                 fontSize: '14px',
-                                fontFamily: "'sunbornsans_one' !important",
+                                fontFamily: "'Libre Franklin' !important",
                                 color: '#0075BF',
                                 display: 'flex',
                                 alignItems: 'center',

@@ -39,11 +39,16 @@
 }
 .body-text {
   font-size: 15px;
+  font-family: 'Libre Franklin' !important;
+  color: #414141;
+  padding-top: 8px;
+}
+.body-text-keep {
+  font-size: 15px;
   font-family: 'grit_sansbold' !important;
   color: #414141;
   padding-top: 8px;
 }
-
 #fav-location {
   white-space: normal;
 }

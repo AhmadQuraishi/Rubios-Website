@@ -11,7 +11,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  line-height: 1.9 !important;
+  line-height: 1.5 !important;
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
 }
@@ -19,7 +19,7 @@
   /*display: block !important;*/
 }
 .vertical-line{
-  border-left: 2px solid #58595b;
+  border-left: 2px solid #0075BF;
   height: 16px;
 }
 

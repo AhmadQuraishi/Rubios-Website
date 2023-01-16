@@ -670,7 +670,6 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                           fontSize: '14px',
                           color: 'secondary.main',
                           fontFamily: "'Libre Franklin' !important",
-                          textTransform: "uppercase",
                         }}
                       >
                         {item.productId !== utensilsReducer.utensilsProductId

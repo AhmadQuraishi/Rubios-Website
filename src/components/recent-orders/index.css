@@ -46,11 +46,12 @@
 
 .order-history-card .card-panel .order-Link {
   font-size: 15px;
-  font-family: 'sunbornsans_one' !important;
+  font-family: 'Libre Franklin' !important;
   display: block;
   color: #2e75bf;
   padding-bottom: 0px;
   text-align: right;
+  font-weight: bold !important;
   text-transform: uppercase;
   position: absolute;
   bottom: 15px;

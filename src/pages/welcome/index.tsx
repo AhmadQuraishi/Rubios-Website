@@ -322,7 +322,7 @@ const Welcome = () => {
                                       order.products.length > 3 ? (
                                         <Typography
                                           variant="h6"
-                                          sx={{fontFamily: "'grit_sansbold' !important"}}
+                                          sx={{fontFamily: "'Libre Franklin' !important"}}
                                           title={product.name}
                                           key={product.name + product.quantity}
                                         >
@@ -333,7 +333,7 @@ const Welcome = () => {
                                         <Typography
                                           variant="h6"
                                           title={product.name}
-                                          sx={{fontFamily: "'grit_sansbold' !important"}}
+                                          sx={{fontFamily: "'Libre Franklin' !important"}}
                                           key={product.name + product.quantity}
                                         >
                                           {product.quantity}x {product.name}
