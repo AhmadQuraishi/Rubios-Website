@@ -122,8 +122,8 @@ const ProductListing = (props: any) => {
                           variant="h2"
                           title={item.name}
                           className={classes.title}
+                          dangerouslySetInnerHTML={{__html: item?.name?.includes("®") ? item.name.replace('®', '<sup>®</sup>') : item.name}}
                         >
-                          {item.name}
                         </Typography>
                         <Typography
                           variant="caption"

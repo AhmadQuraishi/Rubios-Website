@@ -40,10 +40,10 @@
 
 .delivery-address-container .card-panel .small-button-panel .link {
   padding-left: 20px;
-  font-family: 'Libre Franklin' !important;
+  font-family: 'libre_franklinlight' !important;
   color: #b9b9b9;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: bold;
   cursor: pointer;
 }
 

@@ -1078,8 +1078,8 @@ const Product = () => {
                     variant="h2"
                     className="heading"
                     title={productDetails.name}
+                    dangerouslySetInnerHTML={{__html: productDetails?.name?.includes("®") ? productDetails?.name?.replace('®', '<sup>®</sup>') : productDetails.name}}
                   >
-                    {productDetails.name}
                   </Typography>
                   <Typography
                     variant="body1"

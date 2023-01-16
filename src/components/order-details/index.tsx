@@ -219,7 +219,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                           basket?.totalfees > 0 ? (
                             <>
                             <Typography sx={{
-                          fontSize: '16px', cursor: 'pointer',fontFamily: "libre_franklinlight !important",fontWeight: "600"}} onClick={() => {
+                          fontWeight: "none",fontSize: '16px', cursor: 'pointer',fontFamily: "Libre Franklin !important"}} onClick={() => {
                                     setShowMore(!showMore);
                                   }}>
                               ESTIMATED TAX AND FEES
@@ -251,26 +251,25 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                                 />
                               )}
                              </Typography>
-                          </> 
-                       ) : (
-                           <Typography sx={{fontFamily: "libre_franklinlight !important",fontWeight: "600"}}>
-                                ESTIMATED TAXES
-                           </Typography>
-                         )}
+                          </>
+                        ) : (
+                          <Typography sx={{fontSize: "16px",fontFamily: "Libre Franklin !important", fontWeight: "none"}}>
+                          ESTIMATED TAXES
+                          </Typography>
+                        )}
                       </Typography>
                     </div>
                   </div>
                 </Grid>
-                {!showMore &&
-                  <Grid item xs={3} sm={3} md={3} lg={3}>
-                    <Typography align={'right'} className="n-bold" variant="h6" sx={{ fontFamily: "Libre Franklin !important", fontWeight: "600" }} >
+                {!showMore &&              <Grid item xs={3} sm={3} md={3} lg={3}>
+                  <Typography align={'right'} className="n-bold" sx={{  fontSize: "16px !important",Color: "#58595b",fontWeight: "none",fontFamily: "Libre Franklin !important"}} >
                       ${calculateTaxAndFee(basket)}
                     </Typography>
                   </Grid>
                 }
               </Grid>
             </li>
-            {showMore &&
+            {showMore && (
               <li>
                 <Grid
                 // open={open}
@@ -286,12 +285,12 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                   <Grid>
                     <Grid container className={'taxes'} spacing={1}>
                       <Grid item xs={9} >
-                        <Typography className="text-info-title" sx={{ color: "#58595b", fontWeight: 'bold !important', paddingTop: "3px", fontFamily: 'Libre Franklin !important', marginLeft: "22px !important" }}>
+                      <Typography className="text-info-title"sx={{color: "#58595b",fontWeight: 'none',paddingTop: "3px",fontFamily: 'Libre Franklin !important',marginLeft: "22px !important"}}>
                           SALES TAX:
                         </Typography>
                       </Grid>
                       <Grid item xs={3} justifyContent={'flex-end'}>
-                        <Typography className="text-info-desc" sx={{ color: "#58595b", fontFamily: "'Libre Franklin' !important", fontWeight: 'bold !important' }}>
+                      <Typography className="text-info-desc" sx={{ color: "#58595b",fontFamily: "'Libre Franklin' !important", fontWeight: 'none !important'}}>
                           $
                           {basket &&
                             basket.taxes &&
@@ -304,7 +303,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                         </Typography>
                       </Grid>
                       <Grid item xs={9}>
-                        <Typography className="text-info-title" sx={{ color: "#58595b", paddingBottom: "3px", fontFamily: 'libre_franklinlight !important', fontWeight: 'bold !important', marginLeft: "22px !important" }}>
+                      <Typography className="text-info-title" sx={{color: "#58595b",paddingBottom: "3px",fontFamily: 'Libre Franklin !important',fontWeight: 'none !important',marginLeft: "22px !important"}}>
                           {
                             basket?.fees?.length &&
                               basket.fees.filter((fee: any) => fee.description === 'UCSD Living Wage Surcharge').length > 0 ?
@@ -313,7 +312,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                         </Typography>
                       </Grid>
                       <Grid item xs={3}>
-                        <Typography className="text-info-desc" sx={{ color: "#58595b", fontFamily: "'libre_franklinlight' !important", fontWeight: 'bold !important' }}>
+                      <Typography className="text-info-desc" sx={{color: "#58595b", fontFamily: "'Libre Franklin' !important",fontWeight: 'none !important'}}>
                           ${orderFees(basket)}
                         </Typography>
                       </Grid>
@@ -321,46 +320,20 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                   </Grid>
                 </Grid>
               </li>
-              /*  <DialogActions>
-                 <Button
-                   aria-label="OK"
-                   title="OK"
-                   className="link default"
-                   onClick={handleClose}
-                 >
-                   OK
-                 </Button>
-               </DialogActions> */
-            }
-            {/*{basket && basket.totalfees && basket.totalfees > 0 ? (*/}
-            {/*  <li>*/}
-            {/*    <Grid container>*/}
-            {/*      <Grid item xs={9} sm={9} md={9} lg={9}>*/}
-            {/*        <Typography variant="h6" title="SERVICE FEE">*/}
-            {/*          SERVICE FEE*/}
-            {/*        </Typography>*/}
-            {/*      </Grid>*/}
-            {/*      <Grid item xs={3} sm={3} md={3} lg={3}>*/}
-            {/*        <Typography align={'right'} variant="h6">*/}
-            {/*          ${basket.totalfees.toFixed(2)}*/}
-            {/*        </Typography>*/}
-            {/*      </Grid>*/}
-            {/*    </Grid>*/}
-            {/*  </li>*/}
-            {/*) : null}*/}
-
+            )
+              }
             {basket &&
               basket.customerhandoffcharge &&
               basket.customerhandoffcharge > 0 ? (
               <li>
                 <Grid container>
                   <Grid item xs={9} sm={9} md={9} lg={9}>
-                    <Typography variant="h6" title="DELIVERY FEE" sx={{ color: "#58595b", fontFamily: 'Libre Franklin !important', fontWeight: 'bold !important' }}>
+                    <Typography variant="h6" title="DELIVERY FEE" sx={{color: "#58595b",fontFamily: 'Libre Franklin !important', fontWeight: "500 !important"}}>
                       DELIVERY FEE
                     </Typography>
                   </Grid>
                   <Grid item xs={3} sm={3} md={3} lg={3}>
-                    <Typography align={'right'} variant="h6" sx={{ fontFamily: "'Libre Franklin' !important", fontWeight: 'bold !important' }}>
+                    <Typography align={'right'} variant="h6" sx={{fontFamily: "'Libre Franklin' !important",fontWeight: "500 !important"}}>
                       ${basket.customerhandoffcharge.toFixed(2)}
                     </Typography>
                   </Grid>

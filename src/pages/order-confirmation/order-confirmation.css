@@ -36,16 +36,15 @@ h6.white {
 }
 .order-confirmation .card {
   background-color: #2b4b62;
-  background-color: #2b4b62;
-  background-image: url("../../assets/imgs/bg1.png");
-  background-size: 70% auto;
-  background-position: bottom -45px right -40px;
+  background-image: url("../../assets/imgs/rewards_background.jpg");
   background-repeat: no-repeat;
+  background-size: cover;
+  background-position: right;
 
 }
 
 .order-bg {
-  background-color: #73AAC7;
+  background-image: url("../../assets/imgs/yellow-bg.png");
 }
 .order-confirmation .phone-icon {
   position: absolute;
@@ -78,7 +77,7 @@ h6.white {
     flex-basis: 100%;
   }
   .order-confirmation .card.next-order {
-    background-image: none !important;
+    /* background-image: none !important; */
     max-height: 435px;
     min-height: 660px;
   }

@@ -69,6 +69,7 @@ const Checkout = () => {
   const signupFormRef = React.useRef<any>(null);
 
   const [runOnce, setRunOnce] = React.useState<boolean>(true);
+  const [callOnce, setCallOnce] = React.useState<boolean>(true);
   const [showIframeOnce, setShowIframeOnce] = React.useState<boolean>(true);
   const [removeCreditCardOnce, setRemoveCreditCardOnce] =
     React.useState<boolean>(true);
@@ -108,6 +109,8 @@ const Checkout = () => {
     (state: any) => state.userReducer,
   );
   const { singleLocation } = useSelector((state: any) => state.locationReducer);
+
+
 
   useEffect(() => {
     const LoadExternalScript = () => {
@@ -385,6 +388,8 @@ const Checkout = () => {
   //     setDefaultDeliveryAddress(defaultAddress);
   //   }
   // }, [userDeliveryAddresses]);
+
+
 
   React.useEffect(() => {
     if (basketObj.basket) {
@@ -958,6 +963,14 @@ const Checkout = () => {
 
     dispatch(userRegister(signUpObj, 'REGISTER_CHECKOUT', basket?.id));
   };
+  React.useEffect(() => {
+    console.log(callOnce,"callOnce");
+  if (basketObj.basket.products.length == 0 && callOnce) {
+    navigate(restaurant ? '/menu/' + restaurant.slug : '/');
+    displayToast('SUCCESS', 'Please add new items in a bag to proceed');
+    setCallOnce(!callOnce);
+
+}}, [basketObj.basket]);
 
   return (
     <Page title={'Checkout'} className="">
