@@ -274,11 +274,10 @@ const ProductListingCarousel = (props: any) => {
                     <CardContent sx={{ padding: '0' }}>
                       <Typography
                         variant="h2"
-                        title={item.name}
+                        title={item?.name || ''}
                         className={classes.title}
-                      >
-                        {item.name.includes("®") ? item.name.replace(<sup>R</sup>) : item.name}
-                                    {/* {item.name.replace("R superscript", <span style={{verticalAlign: 'super'}}>R</span>)} */}
+                        dangerouslySetInnerHTML={{__html: item?.name?.includes("®") ? item.name.replace('®', '<sup>®</sup>') : item.name}}
+                      > 
                       </Typography>
                       <Typography
                         variant="caption"
