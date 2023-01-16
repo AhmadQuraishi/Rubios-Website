@@ -11,7 +11,7 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
-  padding: 30px 152px 30px 152px;
+
 }
 .stay-connect-bg h2 {
   font-family: 'grit_sansbold' !important;
@@ -39,7 +39,7 @@
   padding-bottom: 20px;
 }
 .stay-connect-actions .panel-cc {
-  width: 50%;
+  width: 100;
 }
 .stay-connect-bg input {
   width: 100%;
@@ -61,11 +61,12 @@
   font-family: 'sunbornsans_one' !important;
   font-weight: 700;
   width: 80px;
+
+
 }
 .stay-connect-bg .email-action-panel {
   display: flex;
   padding-top: 0px;
-  padding-right: 20px;
 }
 .stay-connect-bg .msg-status {
   display: flex;
@@ -86,13 +87,17 @@
 }
 @media screen and (max-width: 1024px) {
   .stay-connect-bg {
-    padding: 30px 52px 30px 52px;
+    padding: 0px;
   }
 
 }
-@media screen and (max-width: 768px) {
+
+.panel-sxc {
+  align-self: flex-end !important;
+}
+@media screen and (max-width: 775px) {
   .stay-connect-bg {
-    padding: 30px 16px 30px 16px;
+    padding: 0px;
   }
   .stay-connect-bg p {
     font-family: 'Libre Franklin' !important;
@@ -115,11 +120,14 @@
     letter-spacing: 2.5px;
     /* padding-bottom: 15px; */
   }
+ .panel-sxc {
+    align-self: center !important;
+  }
 
 }
 @media screen and (max-width: 600px) {
   .stay-connect-bg {
-    padding: 30px 10px 30px 10px;
+    padding: 0px;
   }
   .stay-connect-actions {
     flex-direction: column;
@@ -128,7 +136,7 @@
     width: 100%;
   }
   .stay-connect-bg .email-action-panel {
-    padding-top: 40px;
+    padding-top: 10px;
   }
   .stay-connect-bg h2 {
     padding-bottom: 5px;
@@ -136,7 +144,7 @@
 }
 @media screen and (max-width: 460px) {
   .stay-connect-bg {
-    padding: 30px 20px 30px 20px;
+    padding: 0px;
   }
   .stay-connect-actions {
     flex-direction: column;
@@ -145,7 +153,7 @@
     width: 100%;
   }
   .stay-connect-bg .email-action-panel {
-    padding-top: 40px;
+    padding-top: 10px;
   }
   .stay-connect-bg h2 {
     padding-bottom: 5px;

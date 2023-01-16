@@ -188,10 +188,10 @@ button {
 /****** Toast Styling  ******/
 
 .Toastify__toast-theme--light {
-    font-family: 'Libre Franklin' !important;
+    font-family: 'libre_franklinlight' !important;
 }
 .Toastify__toast-body {
-  font-family: 'Libre Franklin' !important;
+  font-family: 'libre_franklinlight' !important;
 }
 
 @media only screen and (max-width: 480px) {

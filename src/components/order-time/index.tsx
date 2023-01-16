@@ -270,12 +270,11 @@ const OrderTime = ({ orderType }: any) => {
                 aria-expanded={open}
                 aria-controls="date-picker"
                 title="Change Order Time"
-                className="caption-grey"
+                className="caption-grey font-change"
                 style={{
                   marginTop: -10,
                   color: '#58595b',
                   border: 'none',
-                  fontFamily: "'Libre Franklin' !important",
                   background: 'transparent',
                   cursor: 'pointer',
                 }}
@@ -340,14 +339,14 @@ const OrderTime = ({ orderType }: any) => {
                   <ToggleButtonGroup
                     value={selectedTime}
                     exclusive
-                    sx={{fontFamily: "Poppins-Bold !important"}}
+                    sx={{fontFamily: "Libre Franklin !important"}}
                     onChange={(event) => onTimeSlotSelect(event)}
                     className="selected-btn-group"
                   >
                     {/* <Grid container spacing={2}> */}
                     {timeSlots.length !== 0 && hideRemoveAsap() && (
                       <ToggleButton
-                      sx={{backgroundColor: "#062C43",fontFamily: "Poppins-Bold !important"}}
+                      sx={{backgroundColor: "#062C43",fontFamily: "Libre Franklin !important"}}
                         key={`button-${basketObj.basket?.earliestreadytime}`}
                         value={basketObj.basket?.earliestreadytime}
                         className="selected-btn"
@@ -385,7 +384,7 @@ const OrderTime = ({ orderType }: any) => {
                           key={`button-${time}`}
                           value={time}
                           className="selected-btn"
-                          sx={{fontFamily: 'Poppins-Bold !important',}}
+                          sx={{fontFamily: 'Libre Franklin !important',}}
                           style={{backgroundColor: "#062C43", fontSize: "16px"}}
                           selected={selectedTime === time ? true : false}
                         >
@@ -424,7 +423,7 @@ const OrderTime = ({ orderType }: any) => {
                           ? 'select-custom-css'
                           : '',
                     }}
-                    sx={{fontFamily: "'grit_sansbold' !important" }}
+                    sx={{fontFamily: "'Libre Franklin' !important" }}
                     style={{ textAlign: 'center' }}
                     shrink={
                       selectShrink || timeSlots.slice(4).includes(selectedTime)
@@ -436,6 +435,7 @@ const OrderTime = ({ orderType }: any) => {
                   <NativeSelect
                     id="select-label"
                     className={`native-select`}
+                    sx={{fontFamily: "Libre Franklin !important"}}
                     aria-label="select more time"
                     value={
                       timeSlots.slice(4).includes(selectedTime)
