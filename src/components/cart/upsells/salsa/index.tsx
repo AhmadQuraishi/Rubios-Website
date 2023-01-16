@@ -36,19 +36,17 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
       let upsellsCategory: any = upsells.find(
         (obj: any) => obj.type === upsellsType,
       );
-      if (upsellsCategory && upsellsCategory.products) {
-        prod = upsellsCategory.products;
-      }
-
-      if (prod && prod.length) {
+      
+      if (upsellsCategory?.products?.length > 0) {
         const options: any = {};
-        prod = prod.map((obj: any) => {
+        prod = upsellsCategory.products.map((obj: any) => {
           const updatedProd = {
             ...obj,
             quantity: 0,
           };
           if (updatedProd?.options?.length > 0) {
-            if (updatedProd?.mandatory === false) {
+            if (updatedProd?.mandatory === false 
+              && updatedProd?.options?.findIndex((opt: any) => opt.id ===  55555555555) === -1) {
               const newOption = {
                 adjustsparentcalories: false,
                 adjustsparentprice: false,
