@@ -598,6 +598,7 @@ const PersonalInfo = () => {
                                 name="emailnotification"
                               />
                               <Typography
+                              sx={{fontFamily: "Libre Franklin !important"}}
                                 variant="caption"
                                 title="Email Notification"
                               >
@@ -612,6 +613,7 @@ const PersonalInfo = () => {
                                 name="pushnotification"
                               />
                               <Typography
+                              sx={{fontFamily: "Libre Franklin !important"}}
                                 variant="caption"
                                 title="Push Notification"
                               >
