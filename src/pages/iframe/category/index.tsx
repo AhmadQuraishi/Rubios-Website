@@ -91,6 +91,7 @@ const CategoryList = () => {
     <Grid
       sx={{
         minHeight: 'auto',
+        backgroundColor: 'transparent',
         padding: {
           xs: '0px 15px',
           sm: '0px 15px',
@@ -105,7 +106,7 @@ const CategoryList = () => {
           <Box
             sx={{
               width: '100%',
-              background: '#FFF',
+              background: 'transparent',
               zIndex: '1099',
               padding: {
                 xs: '0px 5px 10px 5px',
@@ -145,7 +146,7 @@ const CategoryList = () => {
                     title="View All"
                     style={{
                       textDecoration: 'none',
-                      color: "#214F66",
+                      color: "#062C43",
                       textTransform: 'uppercase',
                       marginBottom: "10px",
                     }}
@@ -167,7 +168,7 @@ const CategoryList = () => {
               variant="scrollable"
               scrollButtons
               allowScrollButtonsMobile
-              sx={{ fontFamily: 'Poppins-Medium !important' }}
+              sx={{  fontFamily: "'grit_sansbold' !important"}}
               role="region"
               aria-label="Food Menu"
             >

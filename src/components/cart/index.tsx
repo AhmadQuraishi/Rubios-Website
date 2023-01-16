@@ -24,6 +24,7 @@ import { UPSELLS_TYPES } from '../../helpers/upsells';
 import {
   calculateTaxAndFee,
   capitalizeFirstLetter,
+  orderFees
 } from '../../helpers/common';
 // import { Category, Product as ProductInfo } from '../../types/olo-api';
 import {
@@ -87,7 +88,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     textTransform: 'uppercase',
     fontSize: '25px !important',
     fontWeight: '700',
-    fontFamily: 'Poppins-Bold !important',
+    fontFamily: "'sunbornsans_one' !important",
     padding: '10px 0px 18px 0px',
   },
   crossIcon: {
@@ -104,7 +105,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   smallLink: {
     color: '#0075BF !important',
     fontSize: '11px !important',
-    fontFamily: "'Poppins-Bold' !important",
+    fontFamily: "'sunbornsans_one' !important",
     textDecoration: 'underline !important',
     display: 'inline',
     cursor: 'pointer',
@@ -114,7 +115,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   disabledLink: {
     color: '#ccc !important',
     fontSize: '11px !important',
-    fontFamily: 'Poppins-Bold !important',
+    fontFamily: "'sunbornsans_one' !important",
     display: 'inline',
     cursor: 'default',
     textDecoration: 'underline',
@@ -134,7 +135,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginTop: '-5px !important',
   },
   emptyCart: {
-    fontFamily: 'Poppins-Regular, sans-serif !Important',
+    fontFamily: "'Libre Franklin' !important",
     fontSize: '16px !important',
     color: '#525252',
     fontWeight: 'bold',
@@ -146,7 +147,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     border: '1px solid #2b4b62',
     textAlign: 'center',
     display: 'inline-flex',
-    fontFamily: "'Poppins-Medium', sans-serif !important",
+    fontFamily: "'grit_sansbold' !important",
     fontSize: 14,
     marginLeft: 5,
     justifyContent: 'center',
@@ -185,12 +186,12 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
 
   useEffect(() => {
     console.log('upsells', upsells);
-    if (upsells && upsells.length) {
+    if (upsells?.length) {
       const upsellsProductKeys: any = [];
       upsells.forEach((upsell: any) => {
         const productIds = upsell.products.map((prod: any) => prod.id);
 
-        if (productIds && productIds.length) {
+        if (productIds?.length) {
           Array.prototype.push.apply(upsellsProductKeys, productIds);
         }
       });
@@ -209,9 +210,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
     console.log('cartBox', cartBox);
     if (elem && cartBox) {
       if (
-        basketObj &&
-        basketObj.basket &&
-        basketObj.basket.products.length > 0
+        basketObj?.basket?.products?.length > 0
       ) {
         elem.style.height = cartBox?.clientHeight - 172 + 'px';
       } else {
@@ -240,7 +239,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   useEffect(() => {
     window.scrollTo(0, 0);
     fitContainer();
-    setBasketType((basketObj && basketObj.basketType) || '');
+    setBasketType((basketObj?.basketType) || '');
   }, []);
 
   // const updateUpsells = (upsells: any) => {
@@ -256,7 +255,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   // };
 
   useEffect(() => {
-    if (addUpsellsObj && addUpsellsObj.basket && clickAction != '') {
+    if (addUpsellsObj?.basket && clickAction != '') {
       setClickAction('');
       // displayToast('SUCCESS', '1 item added to cart.');
       fitContainer();
@@ -265,12 +264,12 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   }, [addUpsellsObj]);
 
   useEffect(() => {
-    if (productRemoveObj && productRemoveObj.basket && actionStatus) {
+    if (productRemoveObj?.basket && actionStatus) {
       // dispatch(getBasketRequest('', productRemoveObj.basket, basketType));
       displayToast('SUCCESS', '1 item removed from cart.');
       fitContainer();
       setActionStatus(false);
-      navigate(restaurant ? '/menu/' + restaurant.slug : '/');
+      navigate(restaurant?.slug  ? '/menu/' + restaurant.slug : '/');
     }
   }, [productRemoveObj]);
 
@@ -283,16 +282,13 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
 
   useEffect(() => {
     if (
-      basketObj &&
-      basketObj.basket &&
-      basketObj.basket.products &&
-      basketObj.basket.products.length
+      basketObj?.basket?.products?.length
     ) {
       const utensils = basketObj.basket.products.filter(
         (obj: any) => obj.productId === utensilsReducer.utensilsProductId,
       );
 
-      if (utensils.length) {
+      if (utensils?.length) {
         setUtensils(true);
       } else {
         setUtensils(false);
@@ -304,10 +300,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
 
   useEffect(() => {
     if (
-      basketObj &&
-      basketObj.basket &&
-      basketObj.basket.products &&
-      basketObj.basket.products.length
+      basketObj?.basket?.products.length
     ) {
       let array = basketObj.basket.products;
       const utensilsIndex = array.findIndex(
@@ -331,7 +324,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
       displayToast('SUCCESS', 'Duplicate item added to cart.');
       fitContainer();
       setActionStatus(false);
-      navigate(restaurant ? '/menu/' + restaurant.slug : '/');
+      navigate(restaurant?.slug ? '/menu/' + restaurant.slug : '/');
     }
   }, [productAddObj]);
 
@@ -382,7 +375,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   const checkItemIsUpsells = (id: number) => {
     let aval = false;
 
-    if (upsellsProductKeys && upsellsProductKeys.length) {
+    if (upsellsProductKeys?.length) {
       aval = upsellsProductKeys.includes(id);
     }
     return aval;
@@ -391,7 +384,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   const checkItemIsSalsaUpsells = (id: number) => {
     let aval = false;
 
-    if (upsellsProductKeys && upsellsProductKeys.length) {
+    if (upsellsProductKeys?.length) {
       aval = upsellsProductKeys.includes(id);
     }
     return aval;
@@ -462,15 +455,12 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
     } else {
       console.log('e.target.checked 2', e.target.checked);
       if (
-        basketObj &&
-        basketObj.basket &&
-        basketObj.basket.products &&
-        basketObj.basket.products.length
+        basketObj?.basket?.products?.length
       ) {
         const utensilsAllProducts = basketObj.basket.products.filter(
           (obj: any) => obj.productId === utensilsReducer.utensilsProductId,
         );
-        if (utensilsAllProducts && utensilsAllProducts.length) {
+        if (utensilsAllProducts?.length) {
           setUtensilsDisabled(true);
           dispatch(
             removeUtensilsRequest(
@@ -508,6 +498,8 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
       navigate('/checkout');
     }, 1000);
   };
+
+  
 
   return (
     <>
@@ -559,10 +551,9 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
               />
             </Button>
           </Grid>
-          {((basketObj &&
-            basketObj.basket &&
-            basketObj.basket.products.length == 0) ||
-            (basketObj && basketObj.basket == null)) && (
+          {((
+            basketObj?.basket?.products?.length == 0) ||
+            (basketObj.basket == null)) && (
             <Grid
               id="cart-main-conatiner"
               item
@@ -633,9 +624,8 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
               </Button>
             </Grid>
           )}
-          {basketObj &&
-            basketObj.basket &&
-            basketObj.basket.products.length > 0 && (
+          {
+            basketObj?.basket?.products?.length > 0 && (
               <Grid item xs={12} sx={{ padding: '0 20px 0 0' }}>
                 <Typography
                   variant="h6"
@@ -647,7 +637,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                 </Typography>
               </Grid>
             )}
-          {products && products.length > 0 && (
+          {products && products?.length > 0 && (
             <Grid
               item
               xs={12}
@@ -669,7 +659,8 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         sx={{
                           fontSize: '14px',
                           color: 'secondary.main',
-                          fontFamily: "'Poppins-Medium' !important",
+                          fontFamily: "'Libre Franklin' !important",
+                          textTransform: "uppercase",
                         }}
                       >
                         {item.productId !== utensilsReducer.utensilsProductId
@@ -679,7 +670,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                           : item.name.toString()}
                       </Typography>
                     </Grid>
-                    <Grid item xs={3} sx={{ textAlign: 'right' }}>
+                    <Grid item xs={3} sx={{ textAlign: 'right', }}>
                       <Typography
                         variant="caption"
                         title={'$' + item.totalcost.toFixed(2)}
@@ -687,7 +678,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                           textAlign: 'right',
                           fontSize: '14px',
                           fontWeight: '700',
-                          fontFamily: 'Poppins-Bold !important',
+                          fontFamily: "'Libre Franklin' !important",
                           color: 'secondary.main',
                         }}
                       >
@@ -708,6 +699,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                           paddingBottom: '0px',
                           paddingTop: '10px',
                           display: 'block',
+                          fontFamily: "'Libre Franklin' !important",
                         }}
                       >
                         {getOptions(item.choices)}
@@ -751,9 +743,8 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                             <li>
                               {!checkItemIsUpsells(item.productId) && (
                                 <Grid item xs={3}>
-                                  {(productRemoveObj &&
-                                    productRemoveObj.loading) ||
-                                  (productAddObj && productAddObj.loading) ? (
+                                  {( productRemoveObj?.loading) ||
+                                  ( productAddObj?.loading) ? (
                                     <Button
                                       key={Math.random() + 'disable-edit'}
                                       onClick={() => false}
@@ -793,8 +784,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                               )}
                             </li>
                             <li>
-                              {productAddObj &&
-                              productAddObj.loading &&
+                              {productAddObj?.loading &&
                               clickAction == item.id + '-add' ? (
                                 <Button
                                   key={Math.random() + 'disable-duplicate'}
@@ -841,22 +831,19 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                   <Divider sx={{ borderColor: '#224c65' }} />
                 </Grid>
               )}
-              {utensilsReducer.utensilsProductId &&
-                basketObj &&
-                basketObj.basket &&
-                basketObj.basket.deliverymode !== DeliveryModeEnum.dinein && (
+              {utensilsReducer?.utensilsProductId &&
+                basketObj?.basket?.deliverymode !== DeliveryModeEnum.dinein && (
                   <Grid item xs={12}>
                     <Typography
                       variant="body2"
                       className="body-text"
                       // title="I agree to the  Rubios terms and conditions and to receiving marketing communications from Rubios."
-                      sx={{ width: '100%', color: '#224c65' }}
+                      sx={{ width: '100%', color: '#224c65',fontFamily: "'Libre Franklin' !important", }}
                     >
                       <Checkbox
                         checked={utensils}
                         disabled={
-                          utensilsReducer &&
-                          utensilsReducer.loading &&
+                          utensilsReducer?.loading &&
                           utensilsDisabled
                         }
                         onChange={(e) => {
@@ -867,7 +854,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         }}
                         sx={{
                           paddingLeft: 0,
-                          fontFamily: 'Poppins-Medium !important',
+                          fontFamily: "'grit_sansbold' !important",
                         }}
                       />
                       Add utensils to my order.
@@ -875,9 +862,8 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                   </Grid>
                 )}
 
-              {basketObj &&
-                basketObj.basket &&
-                basketObj.basket.deliverymode !== DeliveryModeEnum.dinein && (
+              {
+                basketObj?.basket?.deliverymode !== DeliveryModeEnum.dinein && (
                   <Grid item xs={12} sx={{ padding: '20px 0px' }}>
                     <Divider sx={{ borderColor: '#224c65' }} />
                   </Grid>
@@ -887,9 +873,8 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                 className={'upsells'}
                 style={{ display: 'flex', flexDirection: 'column' }}
               >
-                {basketObj &&
-                  basketObj.basket &&
-                  basketObj.basket.products.length > 0 &&
+                {
+                  basketObj?.basket?.products?.length > 0 &&
                   Object.keys(UPSELLS_TYPES).map(
                     (type: string, index: number) => {
                       return (
@@ -1186,9 +1171,8 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
               {/*      );*/}
               {/*    },*/}
               {/*  )}*/}
-              {basketObj &&
-                basketObj.basket &&
-                basketObj.basket.products.length > 0 && (
+              {
+                basketObj?.basket?.products?.length > 0 && (
                   <Grid item xs={12} textAlign="center" padding="10px 0">
                     <Button
                       variant="contained"
@@ -1204,26 +1188,25 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         width: '100%',
                         borderRadius: 0,
                         padding: '30px',
-                        fontFamily: "'Poppins-Medium', sans-serif !important;",
-                        fontSize: '15px',
+                        fontFamily: "'sunbornsans_one'!important",
+                        fontSize: '10pt',
                       }}
                     >
                       Add Another Menu Item
                     </Button>
                   </Grid>
                 )}
-              {basketObj &&
-                basketObj.basket &&
-                basketObj.basket.products.length > 0 && (
+              {basketObj?.basket?.products?.length > 0 && (
                   <Grid item xs={12} padding="20px 0px 20px 0px">
                     <Grid container spacing={0}>
                       <Grid
                         item
                         xs={9}
                         sx={{
-                          fontFamily: 'Poppins-Bold !important',
+                          fontFamily: "'Libre Franklin' !important",
                           color: 'secondary.main',
                           fontSize: '14px',
+                          fontWeight: "bold",
                           paddingBottom: '2px',
                         }}
                         title="Sub Total"
@@ -1234,28 +1217,25 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         item
                         xs={3}
                         sx={{
-                          fontFamily: 'Poppins-Bold !important',
+                          fontFamily: "'Libre Franklin' !important",
                           color: 'secondary.main',
                           fontSize: '14px',
                           textAlign: 'right',
+                          fontWeight: "bold",
                           paddingBottom: '2px',
                         }}
                         title={
                           '$' +
-                          (basketObj &&
-                            basketObj.basket &&
-                            basketObj.basket.subtotal.toFixed(2))
+                          (
+                            basketObj?.basket?.subtotal?.toFixed(2))
                         }
                       >
                         $
-                        {basketObj &&
-                          basketObj.basket &&
-                          basketObj.basket.subtotal.toFixed(2)}
+                        {
+                          basketObj?.basket?.subtotal?.toFixed(2)}
                       </Grid>
-                      {basketObj &&
-                      basketObj.basket &&
-                      basketObj.basket.discounts &&
-                      basketObj.basket.discounts.length > 0
+                      {
+                      basketObj?.basket?.discounts?.length > 0
                         ? basketObj.basket.discounts.map((discount: any) => {
                             return (
                               <>
@@ -1266,7 +1246,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                     color: 'secondary.main',
                                     fontSize: '14px',
                                     paddingBottom: '2px',
-                                    fontFamily: 'Poppins-Regular',
+                                    fontFamily: "'Libre Franklin' !important",
                                   }}
                                 >
                                   {discount.type === 'Coupon'
@@ -1282,7 +1262,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                     fontSize: '14px',
                                     textAlign: 'right',
                                     paddingBottom: '2px',
-                                    fontFamily: 'Poppins-Regular',
+                                    fontFamily: "'Libre Franklin' !important",
                                   }}
                                 >
                                   -$
@@ -1294,9 +1274,8 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                           })
                         : null}
 
-                      {basketObj.basket &&
-                      basketObj.basket.tip &&
-                      basketObj.basket.tip > 0 ? (
+                      {
+                      basketObj?.basket?.tip > 0 ? (
                         <>
                           <Grid
                             item
@@ -1305,7 +1284,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                               color: 'secondary.main',
                               fontSize: '14px',
                               paddingBottom: '2px',
-                              fontFamily: 'Poppins-Regular',
+                              fontFamily: "'Libre Franklin' !important",
                             }}
                             title="TIP"
                           >
@@ -1319,10 +1298,10 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                               fontSize: '14px',
                               textAlign: 'right',
                               paddingBottom: '2px',
-                              fontFamily: 'Poppins-Regular',
+                              fontFamily: "'Libre Franklin' !important",
                             }}
                           >
-                            +${basketObj.basket && basketObj.basket.tip}
+                            +${basketObj.basket.tip}
                           </Grid>
                         </>
                       ) : null}
@@ -1334,22 +1313,18 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                           color: 'secondary.main',
                           fontSize: '14px',
                           paddingBottom: '2px',
-                          fontFamily: 'Poppins-Regular',
+                          fontFamily: "'Libre Franklin' !important",
                           display: 'flex',
                         }}
                         // title="ESTIMATED TAX AND FEES"
                       >
                         <div>
-                          {basketObj &&
-                          basketObj.basket &&
-                          basketObj.basket.deliverymode !==
-                            DeliveryModeEnum.pickup &&
-                          basketObj.basket.deliverymode !==
-                            DeliveryModeEnum.curbside ? (
+                          { 
+                          basketObj?.basket?.totalfees > 0 ? (
                             <>
                             <Typography sx={{
                           fontSize: '14px',
-                          fontFamily: 'Poppins-Regular !important', cursor: 'pointer'}} onClick={() => {
+                          fontFamily: "'Libre Franklin' !important",cursor: 'pointer'}} onClick={() => {
                                     setShowMore(!showMore);
                                   }}>
                               ESTIMATED TAX AND FEES
@@ -1382,9 +1357,9 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                               )}
                              </Typography>
                             </>
-                          ) : (
+                           ) : (
                             'ESTIMATED TAXES'
-                          )}
+                          )} 
                         </div>
                       </Grid>
                       {!showMore &&
@@ -1396,7 +1371,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                           fontSize: '14px',
                           textAlign: 'right',
                           paddingBottom: '2px',
-                          fontFamily: 'Poppins-Regular',
+                          fontFamily: "'Libre Franklin' !important",
                         }}
                         title={'$' + calculateTaxAndFee(basketObj.basket)}
                       >
@@ -1413,10 +1388,9 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                       <Typography
                                         sx={{
                                           lineHeight: '1.0',
-                                          fontFamily:
-                                            'Poppins-Regular',
+                                          fontFamily: "'Libre Franklin' !important",
                                             fontSize: "14px !important",
-                                            color: '#214F66',
+                                            color: '#062C43 !important',
                                             marginLeft: "22px !important"
                                         }}
                                       >
@@ -1432,18 +1406,15 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                         sx={{
                                           lineHeight: '1.0',
                                           textAlign: 'right',
-                                          fontFamily:
-                                            'Poppins-Regular',
-                                            color: '#214F66',
+                                          fontFamily: "'Libre Franklin' !important",
+                                            color: '#062C43 !important',
                                             
                                             fontSize: "14px !important",
                                         }}
 
                                         title={ '$' +
-                                          (basketObj &&
-                                            basketObj.basket &&
-                                            basketObj.basket.taxes &&
-                                            basketObj.basket.taxes
+                                          (
+                                            basketObj?.basket?.taxes
                                               .reduce(
                                                 (sum: number, tax: any) =>
                                                   sum + tax.tax,
@@ -1452,10 +1423,8 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                               .toFixed(2))}
                                       >
                                         $
-                                        {basketObj &&
-                                          basketObj.basket &&
-                                          basketObj.basket.taxes &&
-                                          basketObj.basket.taxes
+                                        {
+                                          basketObj?.basket?.taxes
                                             .reduce(
                                               (sum: number, tax: any) =>
                                                 sum + tax.tax,
@@ -1468,15 +1437,18 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                       <Typography
                                         sx={{
                                           lineHeight: '1.0',
-                                          fontFamily:
-                                            'Poppins-Regular',
+                                          fontFamily: "'Libre Franklin' !important",
                                             fontSize: "14px !important",
                                             color: '#214F66',
                                             marginBottom: "3px",
                                             marginLeft: "22px !important"
                                         }}
                                       >
-                                        SERVICE FEE:
+                                        {
+                                          basketObj?.basket?.fees?.length && 
+                                          basketObj.basket.fees.filter((fee: any) => fee.description === 'UCSD Living Wage Surcharge').length > 0 ? 
+                                          'UCSD Living Wage Surcharge:' : 'SERVICE FEE:'
+                                        }
                                       </Typography>
                                     </Grid>
                                     <Grid item xs={3}>
@@ -1484,25 +1456,14 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                         sx={{
                                           lineHeight: '1.0',
                                           textAlign: 'right',
-                                          fontFamily:
-                                            'Poppins-Regular',
+                                          fontFamily: "'Libre Franklin' !important",
                                             fontSize: "14px !important",
                                             color: '#214F66',
                                         }}
-                                        title={'$' + (basketObj &&
-                                          basketObj.basket &&
-                                          basketObj.basket.totalfees.toFixed(
-                                            2,
-                                          ))
-                                          }
+                                        title={'$' + orderFees(basketObj?.basket)}
                                       >
                                         $
-                                        {(basketObj &&
-                                          basketObj.basket &&
-                                          basketObj.basket.totalfees.toFixed(
-                                            2,
-                                          )) ||
-                                          0}
+                                        {orderFees(basketObj?.basket)}
                                       </Typography>
                                     </Grid>
                                   </Grid>
@@ -1561,10 +1522,8 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                       {/*  </>*/}
                       {/*) : null}*/}
 
-                      {basketObj &&
-                      basketObj.basket &&
-                      basketObj.basket.customerhandoffcharge &&
-                      basketObj.basket.customerhandoffcharge > 0 ? (
+                      {
+                      basketObj?.basket?.customerhandoffcharge > 0 ? (
                         <>
                           <Grid
                             item
@@ -1572,7 +1531,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                             sx={{
                               color: 'secondary.main',
                               fontSize: '14px',
-                              fontFamily: 'Poppins-Regular',
+                              fontFamily: "'Libre Franklin' !important",
                             }}
                             title="DELIVERY FEE"
                           >
@@ -1585,21 +1544,17 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                               color: 'secondary.main',
                               fontSize: '14px',
                               textAlign: 'right',
-                              fontFamily: 'Poppins-Regular',
+                              fontFamily: "'Libre Franklin' !important",
                             }}
                             title={
                               '$' +
-                              (basketObj &&
-                                basketObj.basket &&
-                                basketObj.basket.customerhandoffcharge.toFixed(
+                              (basketObj?.basket?.customerhandoffcharge?.toFixed(
                                   2,
                                 ))
                             }
                           >
                             $
-                            {basketObj &&
-                              basketObj.basket &&
-                              basketObj.basket.customerhandoffcharge.toFixed(2)}
+                            { basketObj?.basket?.customerhandoffcharge?.toFixed(2)}
                           </Grid>
                         </>
                       ) : null}
@@ -1611,9 +1566,10 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         item
                         xs={9}
                         sx={{
-                          fontFamily: 'Poppins-Bold !important',
+                          fontFamily: "'Libre Franklin' !important",
                           color: 'secondary.main',
                           fontSize: '15px',
+                          fontWeight: "bold",
                         }}
                         title="Total"
                       >
@@ -1623,22 +1579,19 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         item
                         xs={3}
                         sx={{
-                          fontFamily: 'Poppins-Bold !important',
+                          fontFamily: "'Libre Franklin' !important",
                           color: 'secondary.main',
                           fontSize: '15px',
+                          fontWeight: "bold",
                           textAlign: 'right',
                         }}
                         title={
                           '$' +
-                          (basketObj &&
-                            basketObj.basket &&
-                            basketObj.basket.total.toFixed(2))
+                          (basketObj?.basket?.total?.toFixed(2))
                         }
                       >
                         $
-                        {basketObj &&
-                          basketObj.basket &&
-                          basketObj.basket.total.toFixed(2)}
+                        {basketObj?.basket?.total?.toFixed(2)}
                       </Grid>
                     </Grid>
                   </Grid>
@@ -1648,9 +1601,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
         </Grid>
         <Grid container spacing={0}>
           <Grid item xs={12}>
-            {basketObj &&
-            basketObj.basket &&
-            basketObj.basket.products.length > 0 ? (
+            {basketObj?.basket?.products?.length > 0 ? (
               <Button
                 variant="contained"
                 id="proceedCheckout"
@@ -1667,7 +1618,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                   borderRadius: 0,
                   padding: '30px 10px',
                   fontSize: '16px',
-                  fontFamily: "'Poppins-Medium', sans-serif !important;",
+                  fontFamily: "'sunbornsans_one'!important",
                 }}
                 title="Checkout"
                 aria-label="Checkout"
@@ -1686,7 +1637,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                   borderRadius: 0,
                   padding: '30px 10px',
                   fontSize: '16px',
-                  fontFamily: "'Poppins-Medium', sans-serif !important;",
+                  fontFamily: "'sunbornsans_one'!important",
                 }}
                 title="Checkout"
                 aria-label="Checkout Button  disabled"

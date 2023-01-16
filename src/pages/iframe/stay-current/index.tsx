@@ -67,7 +67,7 @@ const StayCurrentIframe = () => {
   return (
     <div className="stay-connect-bg">
       <div>
-      <div style={{ width: '50%' }}>
+      <div style={{ width: '100%' }}>
         <h2 aria-label="stay current">Stay Current</h2>
       </div>
       <div className="stay-connect-actions">
@@ -98,9 +98,9 @@ const StayCurrentIframe = () => {
                   submitEmail();
                 }
               }}
-              placeholder="Enter Your Email"
+              placeholder="Enter your email"
               autoComplete="off"
-              aria-label="Enter Your Email"
+              aria-label="Enter your email"
             />
             <a
               role="button"

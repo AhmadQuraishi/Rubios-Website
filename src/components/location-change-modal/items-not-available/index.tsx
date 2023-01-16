@@ -24,10 +24,10 @@ export const ItemsNotAvailableComponent = ({ items }: any) => {
             sx={{
               lineHeight: '1.1 !important',
               textAlign: 'center',
-              color: '#214F66',
+              color: '#062C43 !important',
               fontSize: {xs: "32px !important", lg: '27px !important', md: '27px !important', sm:'27px !important'},
               fontWeight: '900',
-              fontFamily: 'Poppins-Bold, sans-serif !important',
+              fontFamily: "'sunbornsans_one' !important",
               alignItems: 'center',
             }}
           >
@@ -39,7 +39,7 @@ export const ItemsNotAvailableComponent = ({ items }: any) => {
               textAlign: 'center',
               marginTop: "-3px",
               fontSize: {xs: "15px !important", lg: '14px !important', md: '14px !important', sm:'14px !important'},
-              fontFamily: 'Poppins-Regular, sans-serif !important',
+              fontFamily: "'Libre Franklin' !important",
             }}
           >
             If you switch locations, the following{' '}
@@ -53,10 +53,10 @@ export const ItemsNotAvailableComponent = ({ items }: any) => {
                   key={index}
                   sx={{
                     textAlign: 'center',
-                    color: '#214F66',
+                    color: '#062C43 !important',
                     fontSize: '14px !important',
                     fontWeight: '600',
-                    fontFamily: 'Poppins-Regular, sans-serif !important',
+                    fontFamily: "'Libre Franklin' !important",
                   }}
                 >
                   {productName}

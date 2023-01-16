@@ -12,7 +12,7 @@
 }
 .forgot-wrapper .login-content h1 {
   margin: 0px 0px 23px 0px;
-  font-size: 30px !important;
+  font-size: 15pt !important;
 }
 .forgot-wrapper .login-content .left-col {
   border-right: none;
@@ -51,7 +51,7 @@
   display: block;
 }
 .login-content .label.bold {
-  font-family: 'Poppins-Bold', sans-serif !important;
+  font-family: 'sunbornsans_one' !important;
   font-size: 15px !important;
   margin-top: 0px;
   text-align: center;
@@ -63,7 +63,7 @@
 .login-content .caption-grey {
   font-size: 12px;
   text-decoration: none;
-  font-family: 'Poppins-Regular' !important;
+  font-family: 'Libre Franklin' !important;
   margin-left: 5px;
 }
 
@@ -91,10 +91,15 @@
     float: right;
   }
 }
-
+@media screen and (max-width: 600px) {
+.forgot-wrapper .login-content h1 {
+  margin: 0px 0px 23px 0px;
+  font-size: 11pt !important;
+}
+}
 @media screen and (max-width: 468px) {
   .forgot-wrapper {
-    margin: 15px !important;
+    margin: 15px 15px  !important;
   }
   .login-content {
     padding: 30px;

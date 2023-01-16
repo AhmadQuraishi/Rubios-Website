@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     textTransform: 'uppercase',
     fontSize: '25px !important',
     fontWeight: '700',
-    fontFamily: 'Poppins-Bold !important',
+    fontFamily: "'sunbornsans_one' !important",
     padding: '0px 0px 0px 0px',
     lineHeight: '1.0 !important',
   },
@@ -75,7 +75,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   smallLink: {
     color: '#0075BF !important',
     fontSize: '11px !important',
-    fontFamily: "'Poppins-Bold' !important",
+    fontFamily: "'sunbornsans_one' !important",
     textDecoration: 'underline',
     display: 'inline',
     cursor: 'pointer',
@@ -84,7 +84,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   disabledLink: {
     color: '#ccc !important',
     fontSize: '11px !important',
-    fontFamily: 'Poppins-Bold !important',
+    fontFamily: "'sunbornsans_one' !important",
     display: 'inline',
     cursor: 'default',
     textDecoration: 'underline',
@@ -102,7 +102,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     letterSpacing: 'normal !important',
   },
   emptyCart: {
-    fontFamily: 'Poppins-Regular, sans-serif !Important',
+    fontFamily: "'Libre Franklin' !important",
     fontSize: '16px !important',
     color: '#525252',
     fontWeight: 'bold',
@@ -256,7 +256,7 @@ const Upsells = ({ showCart, upsellsType }: any) => {
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    fontFamily: 'Poppins-Medium !important',
+                    fontFamily: "'Libre Franklin' !important",
                     minHeight: 35,
                     fontSize: '12px !important',
                     paddingRight: 30,

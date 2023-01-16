@@ -13,8 +13,8 @@ import Page from '../../components/page-title';
 
 const useStyles = makeStyles((theme: Theme) => ({
   heading: {
-    fontFamily: 'Poppins-Bold !important',
-    color: theme.palette.secondary.main,
+    fontFamily: "'sunbornsans_one' !important",
+    color: '#0075BF',
     fontSize: '25px !important',
     textTransform: 'uppercase',
     paddingBottom: '30px',
@@ -22,8 +22,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   link: {
     textAlign: 'right',
     '& a': {
-      fontFamily: 'Poppins-Medium !important',
-      color: '#6AC0BD',
+      fontFamily: "'grit_sansbold' !important",
+      color: '#0075BF',
       fontSize: '13px',
       textTransform: 'uppercase',
       paddingBottom: '30px',

@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingBottom: '5px',
     textTransform: 'uppercase',
     [theme.breakpoints.down('sm')]: {
-      fontSize: '25px !important',
+      fontSize: '22px !important',
     },
   },
 }));
@@ -110,7 +110,7 @@ const PersonalInfo = () => {
       backgroundColor: state.isSelected ? 'lightgray' : '',
       marginTop: '0px',
       border: '0px',
-      fontFamily: 'Poppins-Regular, sans-serif !important',
+      fontFamily: "'Libre Franklin' !important",
     }),
     menu: (base: any) => ({
       ...base,
@@ -135,7 +135,7 @@ const PersonalInfo = () => {
       border: 'none',
       cursor: 'pointer',
       boxShadow: '0px 0px 6px lightgray',
-      fontFamily: 'Poppins-Regular, sans-serif !important',
+      fontFamily: "'Libre Franklin' !important",
     }),
     singleValue: (provided: any, state: any) => {
       const opacity = state.isDisabled ? 0.5 : 1;
@@ -334,7 +334,7 @@ const PersonalInfo = () => {
                         type="text"
                         name="email"
                         sx={{ width: '100%' }}
-                        value={values.email}
+                        value={values.email ? values.email : null}
                         onChange={handleChange}
                         error={Boolean(touched && errors.email)}
                         helperText={errors.email}

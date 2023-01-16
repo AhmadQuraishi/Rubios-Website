@@ -1,9 +1,9 @@
 .list-wrapper {
-  padding: 0px;
+    padding: 0px;
 }
 .location-sidebar .MuiOutlinedInput-input,
 .location-sidebar .MuiInputLabel {
-  font-family: 'Poppins-Regular', sans-serif !important;
+  font-family: 'Libre Franklin' !important;
   font-size: 16px;
 }
 .MuiInputLabel.Mui-focused {
@@ -52,7 +52,7 @@
 }
 
 .location-sidebar .name span {
-  font-family: 'Poppins-Bold', sans-serif !important;
+  font-family: 'sunbornsans_one' !important;
   color: #414141;
   font-size: 18px;
   padding: 0px;
@@ -90,7 +90,7 @@
   font-weight: 500;
   text-decoration: underline;
   color: #0075BF;
-  font-family: Poppins-Medium !important;
+  font-family: 'grit_sansbold' !important;
   font-size: 14px !important;
   padding-bottom: 10px;
 }
@@ -138,7 +138,7 @@
 .autocomplete-combo .prg {
   padding: 6px 10px;
   border-bottom: 1px dotted #ddd;
-  font-family: 'Poppins-Medium';
+  font-family: "'grit_sansbold' !important";
   font-size: 12px;
   display: block;
   color: #000;

@@ -39,7 +39,7 @@ const RegisterConfirmation = ({ id }: any) => {
       backgroundColor: state.isSelected ? 'lightgray' : '',
       border: '0px',
       width: 'inherit',
-      fontFamily: 'Poppins-Regular, sans-serif !important',
+      fontFamily: "'Libre Franklin' !important",
     }),
     menu: (base: any, state: any) => ({
       ...base,
@@ -55,7 +55,7 @@ const RegisterConfirmation = ({ id }: any) => {
 
     placeholder: (base: any, state: any) => ({
       ...base,
-      color: state.isFocused ? '#214F66' : 'rgba(0,0,0,0.6)',
+      color: state.isFocused ? '#062C43' : 'rgba(0,0,0,0.6)',
       padding: state.isFocused
         ? '0px 0px 35px 6px !important'
         : '0px 30px 0px 0px !important',
@@ -63,8 +63,8 @@ const RegisterConfirmation = ({ id }: any) => {
       //fontWeight: state.isFocused ? '800' : '400',
       transition: ' 0.1s ease',
       fontFamily: state.isFocused
-        ? "'Poppins-bold', sans-serif !important"
-        : "'Roboto','Helvetica','Arial',sans-serif",
+        ? "'sunbornsans_one' !important"
+        : "'sunbornsans_one' !important",
       transform: state.selectProps.isFocused,
     }),
     dropdownIndicator: (base: any, state: any) => ({
@@ -85,7 +85,7 @@ const RegisterConfirmation = ({ id }: any) => {
       cursor: 'pointer',
       cursorColor: 'black',
       boxShadow: 'none',
-      fontFamily: 'Poppins-Regular, sans-serif !important',
+      fontFamily: "'Libre Franklin' !important",
     }),
     singleValue: (provided: any, state: any) => {
       const opacity = state.isDisabled ? 0.5 : 1;
@@ -284,7 +284,7 @@ const RegisterConfirmation = ({ id }: any) => {
                     name="email"
                     autoComplete="email"
                     sx={{ width: '100%' }}
-                    value={values.email}
+                    value={values.email ? values.email : null}
                     onChange={handleChange('email')}
                     onBlur={handleBlur('email')}
                     error={Boolean(touched.email && errors.email)}
@@ -437,7 +437,7 @@ const RegisterConfirmation = ({ id }: any) => {
                   lg={12}
                   sx={{
                     backgroundColor: 'transparent',
-                    fontFamily: 'Poppins-Regular, sans-serif !Important',
+                    fontFamily: "'Libre Franklin' !important",
                   }}
                   className="check-with-text"
                 >
@@ -449,7 +449,7 @@ const RegisterConfirmation = ({ id }: any) => {
                       width: '100%',
                       fill: 'white',
                       color: 'white',
-                      fontFamily: 'Poppins-Regular, sans-serif !Important',
+                      fontFamily: "'Libre Franklin' !important",
                     }}
                   >
                     <Checkbox

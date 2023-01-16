@@ -17,11 +17,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   heading: {
     paddingBottom: '5px',
     [theme.breakpoints.down('sm')]: {
-      fontSize: '25px !important',
+      fontSize: '22px !important',
     },
   },
   tabspanel: {
-    fontFamily: 'Poppins-Medium !important',
+    fontFamily: "'grit_sansbold' !important",
     fontSize: '14px !important',
     color: theme.palette.secondary.main + ' !important',
     paddingLeft: '0px !important',
@@ -80,12 +80,16 @@ const AccountHistory = () => {
             variant="h1"
             className={classes.heading}
             title="Account History"
+            sx={{fontFamily: "'grit_sansbold' !important"}}
           >
             ACCOUNT HISTORY
           </Typography>
           <Box>
             <Tabs
               value={value}
+              scrollButtons
+              variant="scrollable"
+              allowScrollButtonsMobile
               onChange={handleChange}
               aria-label="Account History Tabs"
               TabIndicatorProps={{

@@ -26,10 +26,9 @@
 
 .credit-cards-panel .card-panel .panel h6 {
   font-size: 16px !important;
-  font-family: 'Poppins-Medium', sans-serif !important;
+  font-family: 'Libre Franklin' !important;
   font-weight: 500;
 }
-
 .credit-cards-panel .card-panel .order-Link {
   display: flex;
   padding-bottom: 0px;
@@ -41,14 +40,15 @@
 }
 .credit-cards-panel .card-panel .order-Link a,
 .credit-cards-panel .card-panel .order-Link button {
-  font-size: 15px;
+  font-size: 13px;
   display: block;
   color: #b9b9b9;
-  font-family: 'Poppins-Medium', sans-serif !important;
+  font-family: 'Libre Franklin' !important;
   height: auto;
   padding: 0;
+  letter-spacing: 0.2px !important;
   padding-left: 15px;
-  font-weight: 600;
+  font-weight: bold;
  }
 
 .credit-cards-panel .card-panel .order-Link button.default {

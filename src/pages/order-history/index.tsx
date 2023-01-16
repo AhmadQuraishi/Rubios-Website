@@ -22,11 +22,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   heading: {
     paddingBottom: '5px',
     [theme.breakpoints.down('sm')]: {
-      fontSize: '25px !important',
+      fontSize: '22px !important',
     },
   },
   tabspanel: {
-    fontFamily: 'Poppins-Medium !important',
+    fontFamily: "'grit_sansbold' !important",
     fontSize: '14px !important',
     color: theme.palette.secondary.main + ' !important',
     paddingLeft: '0px !important',
@@ -52,6 +52,7 @@ const OrdersHistory = () => {
             aria-label="your orders"
             variant="h1"
             title="your orders"
+            sx={{fontFamily: "'grit_sansbold' !important"}}
           >
             YOUR ORDERS
           </Typography>

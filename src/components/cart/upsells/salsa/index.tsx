@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     textTransform: 'uppercase',
     fontSize: '25px !important',
     fontWeight: '700',
-    fontFamily: 'Poppins-Bold !important',
+    fontFamily: "'sunbornsans_one' !important",
     padding: '10px 0px 18px 0px',
   },
 }));
@@ -429,8 +429,8 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                           className={classes.cartTitle}
                           sx={{
                             display: 'inline',
-                            fontFamily: 'Poppins-Medium !important',
-
+                            fontFamily: "'Libre Franklin' !important",
+                            fontWeight: "bold",
                             fontSize: {
                               lg: '12px !important',
                               xs: '14px !important',
@@ -452,7 +452,7 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                               sx={{
                                 paddingTop: '5px',
                                 fontSize: '14px',
-                                fontFamily: 'Poppins-Bold',
+                                fontFamily: "'sunbornsans_one' !important",
                                 color: '#0075BF',
                                 display: 'flex',
                                 alignItems: 'center',
@@ -634,7 +634,7 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                     borderRadius: 0,
                     padding: '30px 10px',
                     fontSize: '16px',
-                    fontFamily: "'Poppins-Medium', sans-serif !important;",
+                    fontFamily: "'grit_sansbold' !important",
                   }}
                   title="Checkout"
                   aria-label="Checkout"

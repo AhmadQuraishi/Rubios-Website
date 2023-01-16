@@ -19,12 +19,12 @@ const useStyles = makeStyles((theme: Theme) => ({
   heading: {
     paddingBottom: '5px',
     [theme.breakpoints.down('sm')]: {
-      fontSize: '25px !important',
+      fontSize: '22px !important',
     },
   },
 
   tabspanel: {
-    fontFamily: 'Poppins-Medium !important',
+    fontFamily: "'grit_sansbold' !important",
     fontSize: '14px !important',
     color: theme.palette.secondary.main + ' !important',
     paddingLeft: '0px !important',
@@ -64,7 +64,7 @@ const PaymentInformation = () => {
     <Page title={'Payment Information'} className="">
       <Grid container className={classes.root}>
         <Grid item xs={12}>
-          <Typography variant="h1" className={classes.heading}>
+          <Typography variant="h1" className={classes.heading} sx={{fontFamily: "'grit_sansbold' !important"}}>
             PAYMENT INFORMATION
           </Typography>
           <Tabs

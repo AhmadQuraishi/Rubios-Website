@@ -993,6 +993,8 @@ const Checkout = () => {
                             <Typography
                               variant="h3"
                               className="label"
+                              sx={{    fontSize: '11pt!important',
+                                fontFamily: "'sunbornsans_one'!important",letterSpacing:"0.03562em"}}
                               title="WHO'S IS PICKING UP?"
                             >
                               WHO'S PICKING UP?
@@ -1001,7 +1003,7 @@ const Checkout = () => {
                           <Grid item xs={12}>
                             <Typography
                               variant="h1"
-                              style={{ marginBottom: '0px' }}
+                              sx={{ fontSize: '29px !important', marginBottom: '0px',color: "#062C43", fontFamily: "'grit_sansbold' !important",letterSpacing:"0.03562em" }}
                               title="PICK UP INFO"
                             >
                               PICK UP INFO
@@ -1016,6 +1018,8 @@ const Checkout = () => {
                               variant="h3"
                               className="label"
                               title="WHO'S IS PICKING UP?"
+                              sx={{    fontSize: '11pt!important',
+                                fontFamily: "'sunbornsans_one'!important", letterSpacing:"0.03562em"}}
                             >
                               WHO'S PICKING UP?
                             </Typography>
@@ -1023,7 +1027,7 @@ const Checkout = () => {
                           <Grid item xs={12}>
                             <Typography
                               variant="h1"
-                              style={{ marginBottom: '0px' }}
+                              sx={{fontSize: '29px !important', marginBottom: '0px', fontFamily: "'grit_sansbold' !important",letterSpacing:"0.03562em"}}
                               title="CURBSIDE PICK INFO"
                             >
                               CURBSIDE PICK UP
@@ -1037,6 +1041,7 @@ const Checkout = () => {
                             <Typography
                               variant="caption"
                               className="label"
+                              sx={{fontSize: "11pt !important",fontFamily: "'sunbornsans_one'!important",letterSpacing:"0.03562em"}}
                               title="WHO'S IS PICKING UP?"
                             >
                               WHERE TO DELIVER
@@ -1045,7 +1050,7 @@ const Checkout = () => {
                           <Grid item xs={12}>
                             <Typography
                               variant="h1"
-                              style={{ marginBottom: '0px' }}
+                              sx={{fontSize: '29px !important', marginBottom: '0px', fontFamily: "'grit_sansbold' !important", color: "#062c43",letterSpacing:"0.03562em" }}
                               title="DELIVERY INFO"
                             >
                               DELIVERY INFO
@@ -1059,6 +1064,8 @@ const Checkout = () => {
                             <Typography
                               variant="caption"
                               className="label"
+                              sx={{    fontSize: '11pt!important',
+                                fontFamily: "'sunbornsans_one'!important",letterSpacing:"0.03562em"}}
                               title="WHO'S IS PICKING UP?"
                             >
                               WHO's ORDERING?
@@ -1067,8 +1074,9 @@ const Checkout = () => {
                           <Grid item xs={12}>
                             <Typography
                               variant="h1"
-                              style={{ marginBottom: '0px' }}
+                              sx={{fontSize: '29px !important', marginBottom: '0px', fontFamily: "'grit_sansbold' !important",letterSpacing:"0.03562em" }}
                               title="DELIVERY INFO"
+                              style={{    fontSize: '11pt!important',fontFamily: "'sunbornsans_one'!important"}}
                             >
                               DINE IN INFO
                             </Typography>
@@ -1230,6 +1238,7 @@ const Checkout = () => {
                     id={'place-order-button'}
                     variant="contained"
                     title="PLACE ORDER"
+                    sx={{fontFamily: "'sunbornsans_one'!important",fontSize: "11pt !important",}}
                   >
                     PLACE ORDER
                   </Button>

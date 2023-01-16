@@ -231,6 +231,7 @@ const OrderTime = ({ orderType }: any) => {
           <Grid item xs={12}>
             <Typography
               variant="h3"
+              sx={{fontSize: "11pt !important",fontFamily: "'sunbornsans_one'!important",letterSpacing:"0.03562em"}}
               title={
                 orderType === DeliveryModeEnum.dinein
                   ? 'DATE'
@@ -272,8 +273,9 @@ const OrderTime = ({ orderType }: any) => {
                 className="caption-grey"
                 style={{
                   marginTop: -10,
-                  color: '#0075BF',
+                  color: '#58595b',
                   border: 'none',
+                  fontFamily: "'Libre Franklin' !important",
                   background: 'transparent',
                   cursor: 'pointer',
                 }}
@@ -338,12 +340,14 @@ const OrderTime = ({ orderType }: any) => {
                   <ToggleButtonGroup
                     value={selectedTime}
                     exclusive
+                    sx={{fontFamily: "Poppins-Bold !important"}}
                     onChange={(event) => onTimeSlotSelect(event)}
                     className="selected-btn-group"
                   >
                     {/* <Grid container spacing={2}> */}
                     {timeSlots.length !== 0 && hideRemoveAsap() && (
                       <ToggleButton
+                      sx={{backgroundColor: "#062C43",fontFamily: "Poppins-Bold !important"}}
                         key={`button-${basketObj.basket?.earliestreadytime}`}
                         value={basketObj.basket?.earliestreadytime}
                         className="selected-btn"
@@ -362,7 +366,7 @@ const OrderTime = ({ orderType }: any) => {
                               display: 'block',
                               textTransform: 'none',
                               letterSpacing: 1,
-                              fontFamily: 'Poppins-Regular',
+                              fontFamily: "'Libre Franklin' !important",
                             }}
                           >
                             Est{' '}
@@ -381,6 +385,8 @@ const OrderTime = ({ orderType }: any) => {
                           key={`button-${time}`}
                           value={time}
                           className="selected-btn"
+                          sx={{fontFamily: 'Poppins-Bold !important',}}
+                          style={{backgroundColor: "#062C43", fontSize: "16px"}}
                           selected={selectedTime === time ? true : false}
                         >
                           {/* {index === 0 ? */}
@@ -418,6 +424,7 @@ const OrderTime = ({ orderType }: any) => {
                           ? 'select-custom-css'
                           : '',
                     }}
+                    sx={{fontFamily: "'grit_sansbold' !important" }}
                     style={{ textAlign: 'center' }}
                     shrink={
                       selectShrink || timeSlots.slice(4).includes(selectedTime)

@@ -1431,7 +1431,7 @@ const Product = () => {
                                               ).toFixed(2)}`}
                                               style={{
                                                 fontSize: '11px',
-                                                fontFamily: 'Poppins-Bold',
+                                                fontFamily: "'sunbornsans_one' !important",
                                                 color: '#0075BF',
                                               }}
                                             >
@@ -1446,7 +1446,7 @@ const Product = () => {
                                               <span
                                                 style={{
                                                   fontSize: '16px',
-                                                  fontFamily: 'Poppins-Regular',
+                                                  fontFamily: "'Libre Franklin' !important",
                                                   color: '#AAA',
                                                   marginTop: '-2%',
                                                 }}
@@ -1469,7 +1469,7 @@ const Product = () => {
                                             <span
                                               style={{
                                                 fontSize: '11px',
-                                                fontFamily: 'Poppins-Bold',
+                                                fontFamily: "'sunbornsans_one' !important",
                                                 color: '#0075BF',
                                               }}
                                             >
@@ -1483,7 +1483,7 @@ const Product = () => {
                                               <span
                                                 style={{
                                                   fontSize: '16px',
-                                                  fontFamily: 'Poppins-Regular',
+                                                  fontFamily: "'Libre Franklin' !important",
                                                   color: '#AAA',
                                                   marginTop: '-2%',
                                                 }}
@@ -1495,7 +1495,7 @@ const Product = () => {
                                             <span
                                               style={{
                                                 fontSize: '11px',
-                                                fontFamily: 'Poppins-Bold',
+                                                fontFamily: "'sunbornsans_one' !important",
                                                 color: '#0075BF',
                                               }}
                                             >
@@ -1676,6 +1676,7 @@ const Product = () => {
                       data-test-button="addToCart"
                       title="ADD TO BAG"
                       className="add-to-bag"
+                      sx={{    letterSpacing: "0px !important"}}
                       variant="contained"
                       disabled
                     >
@@ -1694,6 +1695,7 @@ const Product = () => {
                       data-product-name={`${productDetails?.name || ''}`}
                       data-product-id={`${productDetails?.chainproductid || ''}`}
                       data-product-price={`${totalCost?.toFixed(2)}`}
+                      sx={{    letterSpacing: "0px !important"}}
                       disabled={checkDisable()}
                       onClick={() => {
                         addProductToBag();

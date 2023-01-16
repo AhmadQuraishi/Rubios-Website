@@ -168,7 +168,7 @@ const DeliveryForm = ({
                 title="Email"
                 type="text"
                 name="email"
-                value={values.email}
+                value={values.email ? values.email : null}
                 onChange={handleChange}
                 error={Boolean(touched.email && errors.email)}
                 helperText={errors.email}
@@ -225,8 +225,11 @@ const DeliveryForm = ({
                   <Typography
                     variant="body1"
                     className="label"
+                    fontFamily= {"'sunbornsans_one'!important"}
+                    fontSize={"11pt !important"}
                     style={{
                       paddingTop: '10px',
+                      
                     }}
                   >
                     Your delivery Address
@@ -235,8 +238,8 @@ const DeliveryForm = ({
                     variant="body1"
                     style={{
                       fontSize: '14px',
-                      fontFamily: 'Poppins-Medium',
-                      color: '#333',
+                      fontFamily: "'grit_sansbold' !important",
+                      color: '#58595b',
                       paddingTop: '5px',
                     }}
                   >
