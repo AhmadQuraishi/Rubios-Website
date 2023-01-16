@@ -30,6 +30,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'block',
     width: '100%',
   },
+  superscript: {
+    fontSize: '0.7em',
+    verticalAlign: 'super',
+    fontWeight: 600,
+    color: theme.palette.text.secondary,
+},
   title: {
     color: "#0075BF",
     padding: '20px 0 10px 0',
@@ -94,7 +100,6 @@ const ProductListingCarousel = (props: any) => {
       partialVisibilityGutter: 50,
     },
   };
-
   // @ts-ignore
   // const CustomRightArrow = ({ onClick, ...rest }) => {
   //   const {
@@ -274,11 +279,10 @@ const ProductListingCarousel = (props: any) => {
                     <CardContent sx={{ padding: '0' }}>
                       <Typography
                         variant="h2"
-                        title={item.name}
+                        title={item?.name || ''}
                         className={classes.title}
-                      >
-                        {item.name.includes("®") ? item.name.replace(<sup>R</sup>) : item.name}
-                                    {/* {item.name.replace("R superscript", <span style={{verticalAlign: 'super'}}>R</span>)} */}
+                        dangerouslySetInnerHTML={{__html: item?.name?.includes("®") ? item.name.replace('®', '<sup>®</sup>') : item.name}}
+                      > 
                       </Typography>
                       <Typography
                         variant="caption"

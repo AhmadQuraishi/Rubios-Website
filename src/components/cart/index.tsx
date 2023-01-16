@@ -660,7 +660,6 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                           fontSize: '14px',
                           color: 'secondary.main',
                           fontFamily: "'Libre Franklin' !important",
-                          textTransform: "uppercase",
                         }}
                       >
                         {item.productId !== utensilsReducer.utensilsProductId
@@ -1357,9 +1356,11 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                               )}
                              </Typography>
                             </>
-                           ) : (
-                            'ESTIMATED TAXES'
-                          )} 
+                          ) : (
+                            <Typography sx={{fontSize: '14px',fontFamily: "Libre Franklin !important"}}>
+                          ESTIMATED TAXES
+                          </Typography>
+                          )}
                         </div>
                       </Grid>
                       {!showMore &&
