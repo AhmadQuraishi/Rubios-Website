@@ -580,7 +580,7 @@ const PersonalInfo = () => {
                         <CardContent>
                           <Typography
                             variant="body2"
-                            className="body-text"
+                            className="body-text-keep"
                             title="Keep up to date on rewards, exclusive offers and new product
                       launches."
                             sx={{ width: '100%' }}
