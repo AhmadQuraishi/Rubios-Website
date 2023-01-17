@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
   },
   tabspanel: {
-    fontFamily: "'grit_sansbold' !important",
+    fontFamily: "'GritSans-Bold' !important",
     fontSize: '14px !important',
     color: theme.palette.secondary.main + ' !important',
   },
@@ -36,7 +36,7 @@ const Profile = () => {
             aria-label="edit profile"
             variant="h1"
             title="Edit Profile"
-            sx={{fontFamily: "'grit_sansbold' !important"}}
+            sx={{fontFamily: "'GritSans-Bold' !important"}}
           >
             EDIT PROFILE
           </Typography>

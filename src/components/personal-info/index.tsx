@@ -110,7 +110,7 @@ const PersonalInfo = () => {
       backgroundColor: state.isSelected ? 'lightgray' : '',
       marginTop: '0px',
       border: '0px',
-      fontFamily: "'Libre Franklin' !important",
+      fontFamily: "'Librefranklin-Regular' !important",
     }),
     menu: (base: any) => ({
       ...base,
@@ -135,7 +135,7 @@ const PersonalInfo = () => {
       border: 'none',
       cursor: 'pointer',
       boxShadow: '0px 0px 6px lightgray',
-      fontFamily: "'Libre Franklin' !important",
+      fontFamily: "'Librefranklin-Regular' !important",
     }),
     singleValue: (provided: any, state: any) => {
       const opacity = state.isDisabled ? 0.5 : 1;
@@ -581,8 +581,7 @@ const PersonalInfo = () => {
                           <Typography
                             variant="body2"
                             className="body-text-keep"
-                            title="Keep up to date on rewards, exclusive offers and new product
-                      launches."
+                            title="Keep up to date on rewards, exclusive offers and new product launches."
                             sx={{ width: '100%' }}
                           >
                             Keep up to date on rewards, exclusive offers and new
@@ -598,7 +597,7 @@ const PersonalInfo = () => {
                                 name="emailnotification"
                               />
                               <Typography
-                              sx={{fontFamily: "Libre Franklin !important"}}
+                              sx={{fontFamily: "Librefranklin-Regular !important"}}
                                 variant="caption"
                                 title="Email Notification"
                               >
@@ -613,7 +612,7 @@ const PersonalInfo = () => {
                                 name="pushnotification"
                               />
                               <Typography
-                              sx={{fontFamily: "Libre Franklin !important"}}
+                              sx={{fontFamily: "Librefranklin-Regular !important"}}
                                 variant="caption"
                                 title="Push Notification"
                               >

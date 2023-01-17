@@ -59,7 +59,7 @@ const ListHours = (props: any) => {
               sx={{
                 fontSize: '13px',
                 fontWeight: '500',
-                fontFamily: "'grit_sansbold' !important",
+                fontFamily: "'GritSans-Bold' !important",
                 color: '#062C43 !important',
                 display: 'inline',
               }}
@@ -100,7 +100,7 @@ const ListHours = (props: any) => {
                 <ListItem
                   sx={{
                     padding: '0 0 0 0',
-                    fontFamily: "'grit_sansbold' !important",
+                    fontFamily: "'GritSans-Bold' !important",
                   }}
                   title={(item.weekday && item.weekday.toUpperCase()) || ''}
                 >
@@ -114,7 +114,7 @@ const ListHours = (props: any) => {
                   padding: '2px 0 0 0',
                   fontSize: '12px',
                   fontWeight: '500',
-                  fontFamily: "'grit_sansbold' !important",
+                  fontFamily: "'GritSans-Bold' !important",
                 }}
                 role="presentation"
               >

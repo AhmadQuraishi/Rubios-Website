@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: '20px 0 10px 0',
     fontSize: '18px !important',
     fontWeight: '600 !important',
-    fontFamily: "'Libre Franklin' !important",
+    fontFamily: "'Librefranklin-Regular' !important",
     letterSpacing: '0.00938em !important',
     
   },
@@ -31,19 +31,19 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: theme.palette.secondary.main,
     fontSize: '14px',
     lineHeight: '7px',
-    fontFamily: "'grit_sansbold' !important",
+    fontFamily: "'GritSans-Bold' !important",
     letterSpacing: 0,
   },
   cal: {
     paddingTop: '10px',
-    fontFamily: "'sunbornsans_one' !important",
+    fontFamily: "'Sunborn-Sansone' !important",
     fontSize: '18px',
     fontWeight: 600,
     color: theme.palette.primary.main,
   },
   price: {
     paddingTop: '10px',
-    fontFamily: "'sunbornsans_one' !important",
+    fontFamily: "'Sunborn-Sansone' !important",
     fontSize: '18px',
     fontWeight: 600,
     color: theme.palette.secondary.main,
@@ -140,7 +140,7 @@ const ProductListing = (props: any) => {
                       variant="h2"
                       title={'FEATURED'}
                       className="product-label"
-                      sx={{fontFamily: "'sunbornsans_one' !important"}}
+                      sx={{fontFamily: "'Sunborn-Sansone' !important"}}
                     >
                       FEATURED
                     </Typography>

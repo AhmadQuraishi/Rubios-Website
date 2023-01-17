@@ -45,7 +45,7 @@
   margin: 14px 0px 15px 0px;
 }
 .login-content .label.bold {
-  font-family: 'sunbornsans_one' !important;
+  font-family: 'Sunborn-Sansone' !important;
   font-size: 15px !important;
   margin-top: 0px;
   text-align: center;
@@ -57,7 +57,7 @@
 .login-content .caption-grey {
   font-size: 12px;
   text-decoration: none;
-  font-family: 'Libre Franklin' !important;
+  font-family: 'Librefranklin-Regular' !important;
   margin-left: 5px;
 }
 
