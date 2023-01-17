@@ -325,6 +325,7 @@ const RewardNew = () => {
                           <Grid style={{ paddingBottom: 10 }} item xs={12}>
                             <Typography
                               variant="h3"
+                              sx={{fontFamily:"'Librefranklin-Bold' !important"}}
                               className={`bold-title dd${
                                 points >= key ? '' : ' disable'
                               }`}
