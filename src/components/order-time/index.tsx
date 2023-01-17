@@ -390,7 +390,7 @@ const OrderTime = ({ orderType }: any) => {
                         >
                           {/* {index === 0 ? */}
                           {/* <h3>ASAP <span style={{fontSize: '10px', display: 'block', textTransform: 'none'}}>Est {handleTime(basketObj.basket?.earliestreadytime)} mins</span></h3> :  */}
-                          {moment(time, 'YYYYMMDD HH:mm').format('hh:mm A')}
+                          {moment(time, 'YYYYMMDD HH:mm').format('h:mm A')}
                         </ToggleButton>
                         // </Grid>
                       );
@@ -456,7 +456,7 @@ const OrderTime = ({ orderType }: any) => {
                     {timeSlots.slice(4).map((time, index) => {
                       return (
                         <option key={`menu-${time}`} value={time}>
-                          {moment(time, 'YYYYMMDD HH:mm').format('hh:mm A')}
+                          {moment(time, 'YYYYMMDD HH:mm').format('h:mm A')}
                         </option>
                       );
                     })}

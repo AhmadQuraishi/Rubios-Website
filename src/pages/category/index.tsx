@@ -633,7 +633,7 @@ const CategoryList = () => {
             <Divider sx={{ borderColor: '#224c65' }} />
           </Grid>
           <Typography
-            sx={{ fontSize: '13px', color: '#062C43', fontStyle: 'italic' }}
+            sx={{ fontSize: '13px', color: '#062C43', fontStyle: 'italic', }}
             variant="caption"
             title="Due to potential cross-contact when preparing menu items, it is not possible to guarantee your meal is completely free of any particular allergen or ingredient. Impossible™ meat, fish, tortillas, veggies, toasted cheese and shellfish are cooked on the same grill."
           >

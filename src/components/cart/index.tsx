@@ -1202,7 +1202,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         item
                         xs={9}
                         sx={{
-                          fontFamily: "'Librefranklin-Regular' !important",
+                          fontFamily: "'Librefranklin-Bold' !important",
                           color: 'secondary.main',
                           fontSize: '14px',
                           fontWeight: "bold",
@@ -1216,7 +1216,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         item
                         xs={3}
                         sx={{
-                          fontFamily: "'Librefranklin-Regular' !important",
+                          fontFamily: "'Librefranklin-Bold' !important",
                           color: 'secondary.main',
                           fontSize: '14px',
                           textAlign: 'right',
@@ -1440,7 +1440,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                           lineHeight: '1.0',
                                           fontFamily: "'Librefranklin-Regular' !important",
                                             fontSize: "14px !important",
-                                            color: '#214F66',
+                                            color: '#062C43',
                                             marginBottom: "3px",
                                             marginLeft: "22px !important"
                                         }}
@@ -1459,7 +1459,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                           textAlign: 'right',
                                           fontFamily: "'Librefranklin-Regular' !important",
                                             fontSize: "14px !important",
-                                            color: '#214F66',
+                                            color: '#062C43',
                                         }}
                                         title={'$' + orderFees(basketObj?.basket)}
                                       >
@@ -1567,10 +1567,9 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         item
                         xs={9}
                         sx={{
-                          fontFamily: "'Librefranklin-Regular' !important",
+                          fontFamily: "'Librefranklin-Bold' !important",
                           color: 'secondary.main',
                           fontSize: '15px',
-                          fontWeight: "bold",
                         }}
                         title="Total"
                       >
@@ -1580,7 +1579,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         item
                         xs={3}
                         sx={{
-                          fontFamily: "'Librefranklin-Regular' !important",
+                          fontFamily: "'Librefranklin-Bold' !important",
                           color: 'secondary.main',
                           fontSize: '15px',
                           fontWeight: "bold",

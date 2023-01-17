@@ -109,7 +109,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
             <li>
               <Grid container>
                 <Grid item xs={9} sm={9} md={9} lg={9}>
-                  <Typography variant="h6" title="SUB TOTAL" sx={{ fontFamily: 'Librefranklin-Regular !important', }}>
+                  <Typography  title="SUB TOTAL" sx={{ fontFamily: 'Librefranklin-Bold !important',  fontSize: "16px !important",color: "#58595b",}}>
                     SUB TOTAL
                   </Typography>
                   <br />
@@ -117,9 +117,9 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                 <Grid item xs={3} sm={3} md={3} lg={3}>
                   <Typography
                     align={'right'}
-                    variant="h6"
+                    
                     title={basket && basket.subtotal.toFixed(2)}
-                    sx={{ fontFamily: "'Librefranklin-Regular' !important", fontWeight: 'bold !important' }}
+                    sx={{ fontFamily: "'Librefranklin-Bold' !important", fontWeight: 'bold !important',  fontSize: "16px !important",color: "#58595b",}}
                   >
                     ${basket && basket.subtotal.toFixed(2)}
                   </Typography>
@@ -347,7 +347,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
             <li>
               <Grid container>
                 <Grid item xs={9} sm={9} md={9} lg={9}>
-                  <Typography variant="h6" title="Total" sx={{ fontFamily: 'Librefranklin-Regular !important', fontWeight: 'bold !important' }}>
+                  <Typography  title="Total" sx={{ fontFamily: 'Librefranklin-Bold !important', fontSize: "16px !important",color: "#58595b", fontWeight: 'bold !important' }}>
                     TOTAL
                   </Typography>
                 </Grid>
@@ -356,7 +356,7 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                     align={'right'}
                     variant="h6"
                     title={basket && basket.total.toFixed(2)}
-                    sx={{ fontFamily: "'Librefranklin-Regular' !important", fontWeight: 'bold !important' }}
+                    sx={{ fontFamily: "'Librefranklin-Bold' !important", fontSize: "16px !important",color: "#58595b", fontWeight: 'bold !important' }}
                   >
                     ${basket && basket.total.toFixed(2)}
                   </Typography>

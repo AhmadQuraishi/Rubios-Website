@@ -612,7 +612,7 @@ const PersonalInfo = () => {
                                 name="pushnotification"
                               />
                               <Typography
-                              sx={{fontFamily: "Libre-Franklin-Light !important"}}
+                              sx={{fontFamily: "Librefranklin-Regular !important"}}
                                 variant="caption"
                                 title="Push Notification"
                               >
