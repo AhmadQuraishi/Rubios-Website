@@ -3,7 +3,7 @@
   border-radius: 0px;
   border: 1px solid #c6c6c6;
   box-shadow: 0px 4px 5px 0px rgb(0 0 0 / 20%);
-  font-family: 'Librefranklin-Light' !important;
+  font-family: 'Librefranklin-Regular' !important;
   text-align: center;
   width: 100%;
   max-width: 400px;
@@ -14,7 +14,7 @@
 }
 .body-text-bold-reward {
   font-size: 16px !important;
-  font-family: 'Librefranklin-Light' !important;
+  font-family: 'Librefranklin-Regular' !important;
   color: #414141;
   padding-top: 8px;
   padding-bottom: 20px;
@@ -22,7 +22,7 @@
 
 .body-text-bold-redeem {
   font-size: 16px !important;
-  font-family: 'Librefranklin-Light' !important;
+  font-family: 'Librefranklin-Regular' !important;
   color: #414141;
   padding-bottom: 20px;
 }
@@ -71,7 +71,7 @@
   border-radius: 0px;
   border: 1px solid #c6c6c6;
   box-shadow: 0px 4px 5px 0px rgb(0 0 0 / 20%);
-  font-family: 'Librefranklin-Light' !important;
+  font-family: 'Librefranklin-Regular' !important;
   text-align: center;
   color: #2b4b62;
   padding: 10px;
@@ -139,16 +139,16 @@
   padding-top: 2px;
   margin-bottom: 2px;
   color: #333;
-  font-family: 'Librefranklin-Light' !important;
+  font-family: 'Librefranklin-Bold' !important;
   text-transform: uppercase;
 }
 #reward-points-container .reward-point-merge-panel .button {
   margin: 0;
   line-height: 20px;
   text-transform: uppercase;
-  font-family: 'libre_franklinlight' !important;
+  font-family: 'Librefranklin-Bold' !important;
   color: #0075bf;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: bold;
   cursor: pointer;
 }
@@ -168,7 +168,7 @@
 }
 #reward-points-container .message-panel {
   padding: 0px 0 5px 0;
-  font-family: 'Librefranklin-Light' !important;
+  font-family: 'Librefranklin-Regular' !important;
   font-size: 15px;
   color: #333;
 }

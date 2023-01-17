@@ -8,7 +8,7 @@ label.time-picker:focus-within {
   height: 44px !important;
   text-align: center !important;
   text-align-last: center !important;
-  font-family: 'Librefranklin-Light' !important;
+  font-family: 'Librefranklin-Regular' !important;
   font-size: 15px;
   height: 50px;
   box-shadow: 0px 0px 0px rgb(0 0 0 / 20%) !important;
@@ -22,7 +22,7 @@ label.time-picker:focus-within {
 }
 
 .font-change{
-  font-family: "Librefranklin-Light" !important;
+  font-family: "Librefranklin-Regular" !important;
 }
 .native-select .MuiNativeSelect-select {
   color: #fff;

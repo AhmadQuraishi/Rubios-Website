@@ -624,7 +624,7 @@ export const OrderTypeDialog = (props: any) => {
                             style={{
                               padding: '10px 0px',
                               color: '#000000',
-                              fontFamily: '"Librefranklin-Light" !important',
+                              fontFamily: '"Librefranklin-Regular" !important',
                             }}
                             textAlign={'center'}
                             variant={'body1'}

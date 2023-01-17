@@ -39,7 +39,7 @@
   width: 100%;
   text-align: center;
   color: white;
-  font-family: 'Librefranklin-Light' !important;
+  font-family: 'Librefranklin-Regular' !important;
 }
 .order .right-col .MuiSelect-icon {
   color: white;
@@ -47,14 +47,14 @@
 .order .right-col #select-more-times.Mui-focused,
 .order .right-col #select-more-times.MuiFormLabel-filled {
   width: auto;
-  font-family: 'Librefranklin-Light' !important;
+  font-family: 'Librefranklin-Regular' !important;
   padding: 14px 14px 14px 0px;
   color: white !important;
   font-size: 12px;
 }
 .size span {
   font-size: 11px !important;
-  font-family: 'Librefranklin-Light' !important;
+  font-family: 'Librefranklin-Regular' !important;
 }
 .order .add-order {
   text-align: center;

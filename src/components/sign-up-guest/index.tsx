@@ -229,7 +229,7 @@ const SignUpGuest = ({ guestSignupCheckout, signupFormRef, birthDay, setBirthDay
                       <Typography
                         variant="body2"
                         sx={{ width: '100%', paddingTop: '4px',fontSize: '11px !important',
-                        fontFamily: "'Librefranklin-Light' !important" }}
+                        fontFamily: "'Librefranklin-Regular' !important" }}
                       >
                         I accept the{' '}
                         <Link

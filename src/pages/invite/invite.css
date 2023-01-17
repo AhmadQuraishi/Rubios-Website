@@ -6,7 +6,7 @@
   color: black !important;
   justify-content: left !important;
   padding-left: 20px !important;
-  font-family: 'Librefranklin-Light' !important;
+  font-family: 'Librefranklin-Regular' !important;
   font-weight: bold;
 }
 .copy-text {
@@ -16,7 +16,7 @@
 .body-text
 {
   font-size: 15px;
-  font-family: 'Librefranklin-Light' !important;
+  font-family: 'Librefranklin-Regular' !important;
   color: #414141;
   padding-top: 8px;
 }

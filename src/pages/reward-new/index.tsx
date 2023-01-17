@@ -256,7 +256,7 @@ const RewardNew = () => {
                                   }
                                   className="button"
                                 >
-                                  REDEEM IN RESTURANT
+                                  REDEEM IN RESTAURANT
                                 </Typography>
                               </Grid>
 
@@ -281,7 +281,7 @@ const RewardNew = () => {
                                   }
                                   className="button"
                                 >
-                                  REDEEM IN RESTURANT
+                                  REDEEM IN RESTAURANT
                                 </p>
                               </Grid>
                             </Grid>
@@ -435,7 +435,7 @@ const RewardNew = () => {
                                                 points >= key ? '' : ' disable'
                                               }`}
                                             >
-                                              REDEEM IN RESTURANT
+                                              REDEEM IN RESTAURANT
                                             </Typography>
                                           </Grid>
                                           <Grid
@@ -461,7 +461,7 @@ const RewardNew = () => {
                                                 points >= key ? '' : ' disable'
                                               }`}
                                             >
-                                              REDEEM IN RESTURANT
+                                              REDEEM IN RESTAURANT
                                             </p>
                                           </Grid>
                                         </Grid>
