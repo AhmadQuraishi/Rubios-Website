@@ -69,7 +69,7 @@ const CheckIn = () => {
           </Typography>
           <Typography
             variant="body2"
-            sx={{  fontFamily: "'Librefranklin-Light' !important",color: "#414141", paddingTop: "8px"}}
+            sx={{  fontFamily: "'Librefranklin-Regular' !important",color: "#414141", paddingTop: "8px"}}
             title="To check in at the restaurant, scan the QR code below at the register."
           >
             To check in at the restaurant, scan the QR code below at the
@@ -77,7 +77,7 @@ const CheckIn = () => {
           </Typography>
           <Typography
             variant="body2"
-            sx={{  fontFamily: "'Librefranklin-Light' !important",color: "#414141", paddingTop: "8px"}}
+            sx={{  fontFamily: "'Librefranklin-Regular' !important",color: "#414141", paddingTop: "8px"}}
             title="If you order online, you are automatically checked in."
           >
             If you order online, you are automatically checked in.
@@ -126,7 +126,7 @@ const CheckIn = () => {
                     <Grid container>
                       <Typography
                         variant="body2"
-                        sx={{  fontFamily: "'Librefranklin-Light' !important",color: "#414141", paddingTop: "8px"}}
+                        sx={{  fontFamily: "'Librefranklin-Regular' !important",color: "#414141", paddingTop: "8px"}}
                         title="If you did not check in at the restaurant, you may enter the Rubio’s Rewards barcode number located at the bottom of your receipt."
                       >
                         If you did not check in at the restaurant, you may enter
@@ -136,7 +136,7 @@ const CheckIn = () => {
 
                       <Typography
                         variant="body2"
-                        sx={{  fontFamily: "'Librefranklin-Light' !important",color: "#414141", paddingTop: "8px"}}
+                        sx={{  fontFamily: "'Librefranklin-Regular' !important",color: "#414141", paddingTop: "8px"}}
                         title="Receipt codes must be scanned or manually entered within 48 hours of purchase."
                       >
                         Receipt codes must be scanned or manually entered within
@@ -194,7 +194,7 @@ const CheckIn = () => {
                     <Grid item xs={12}>
                       <Typography
                         variant="body2"
-                        sx={{  fontFamily: "'Librefranklin-Light' !important",color: "#414141", paddingTop: "8px"}}
+                        sx={{  fontFamily: "'Librefranklin-Regular' !important",color: "#414141", paddingTop: "8px"}}
                         title="Please enter the 12 or 13 digit numeric barcode at the bottom of your receipt."
                       >
                         Please enter the 12 or 13 digit numeric barcode at the
@@ -202,7 +202,7 @@ const CheckIn = () => {
                       </Typography>
                       <Typography
                         variant="body2"
-                        sx={{  fontFamily: "'Librefranklin-Light' !important",color: "#414141", paddingTop: "8px"}}
+                        sx={{  fontFamily: "'Librefranklin-Regular' !important",color: "#414141", paddingTop: "8px"}}
                         title="Please ensure that you enter any leading zeroes that may appear in the barcode. e.g. 0600101234124"
                       >
                         Please ensure that you enter any leading zeroes that may

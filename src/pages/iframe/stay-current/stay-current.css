@@ -26,7 +26,7 @@
   /* padding-bottom: 15px; */
 }
 .stay-connect-bg p {
-  font-family: 'Librefranklin-Light' !important;
+  font-family: 'Librefranklin-Regular' !important;
   margin: 0;
   color: #58595b;
   display: block;
@@ -50,7 +50,7 @@
   transition: all 0.2s ease;
   border: 1px solid;
   border-radius: 5px;
-  font-family: 'Librefranklin-Light' !important;
+  font-family: 'Librefranklin-Regular' !important;
   color: #395775;
 }
 .stay-connect-bg .button-right {
@@ -100,7 +100,7 @@
     padding: 0px;
   }
   .stay-connect-bg p {
-    font-family: 'Librefranklin-Light' !important;
+    font-family: 'Librefranklin-Regular' !important;
     margin: 0;
     color: #58595b;
     display: block;

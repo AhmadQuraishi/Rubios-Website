@@ -45,13 +45,42 @@
 
 @font-face {
   font-family: 'Librefranklin-Light';
-  src: url('assets/fonts/LibreFranklin-Light.otf') format('otf');
+  src: url('assets/fonts/LibreFranklin-Light.otf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+@font-face {
+  font-family: 'Librefranklin-Bold';
+  src: url('assets/fonts/LibreFranklin-Bold.otf') format('truetype');
   font-weight: normal;
   font-style: normal;
 
 }
 
 
+@font-face {
+  font-family: 'Librefranklin-Regular';
+  src: url('assets/fonts/LibreFranklin-Regular.otf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+@font-face {
+  font-family: 'Librefranklin-Italic';
+  src: url('assets/fonts/LibreFranklin-Italic.otf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Librefranklin-Black';
+  src: url('assets/fonts/LibreFranklin-Black.otf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 
 
 .phone-field .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input  {
@@ -62,10 +91,10 @@
 }
 
 .libre-franklinlight {
-  font-family: 'Librefranklin-Light' !important;
+  font-family: 'Librefranklin-Regular' !important;
 }
 .libre-franklin {
-  font-family: 'Librefranklin-Light' !important;
+  font-family: 'Librefranklin-Regular' !important;
 }
 .sunbornsans-one {
       font-family: 'Sunborn-Sansone' !important;
@@ -187,10 +216,10 @@ button {
 /****** Toast Styling  ******/
 
 .Toastify__toast-theme--light {
-    font-family: 'libre_franklinlight' !important;
+    font-family: 'Librefranklin-Regular' !important;
 }
 .Toastify__toast-body {
-  font-family: 'libre_franklinlight' !important;
+  font-family: 'Librefranklin-Regular' !important;
 }
 
 @media only screen and (max-width: 480px) {
@@ -273,7 +302,7 @@ button {
 .MuiFormControl-root .MuiSelect-select {
   color: #000;
   border-radius: 0;
-  font-family: 'Librefranklin-Light' !important;
+  font-family: 'Librefranklin-Regular' !important;
   caret-color: black !important;
   padding: 16px 20px !important;
 }
@@ -399,11 +428,11 @@ font-family: 'Sunborn-Sansone' !important;
 }
 
 .css-1wc848c-MuiFormHelperText-root.Mui-error {
-  font-family: 'Librefranklin-Light';
+  font-family: 'Librefranklin-Regular';
   color: #d32f2f;
 }
 .css-1wc848c-MuiFormHelperText-root.Mui-error {
-  font-family: 'Librefranklin-Light';
+  font-family: 'Librefranklin-Regular';
   color: #E61F00 !important;
 }
 @media screen and (max-width: 468px) {
@@ -428,13 +457,13 @@ font-family: 'Sunborn-Sansone' !important;
 
 .taxes .text-info-title {
   line-height: 1.0;
-  font-family: 'Librefranklin-Light' !important;
+  font-family: 'Librefranklin-Regular' !important;
 }
 
 .taxes .text-info-desc {
   line-height: 1.0;
   text-align: right;
-  font-family: 'Librefranklin-Light' !important;
+  font-family: 'Librefranklin-Regular' !important;
 }
 
 .product-label {
@@ -470,7 +499,7 @@ font-family: 'Sunborn-Sansone' !important;
   padding: 10px;
   text-decoration: none;
   color: #ffffff;
-  font-family: 'Librefranklin-Light' !important;
+  font-family: 'Librefranklin-Regular' !important;
 }
 
 @media screen and (min-width: 600px) {
@@ -488,10 +517,10 @@ font-family: 'Sunborn-Sansone' !important;
   font-family: 'Sunborn-Sansone' !important;
 }
 .css-ahj2mt-MuiTypography-root {
-  font-family: 'Librefranklin-Light' !important;
+  font-family: 'Librefranklin-Regular' !important;
 }
 .css-e784if-MuiTypography-root {
-  font-family: 'Librefranklin-Light' !important;
+  font-family: 'Librefranklin-Regular' !important;
 }
 
 .css-vnnh45-MuiTypography-root  {
@@ -503,18 +532,18 @@ font-family: 'Sunborn-Sansone' !important;
 }
 
 .css-1m0s4ei-MuiInputBase-root-MuiOutlinedInput-root {
-  font-family: 'Librefranklin-Light' !important;
+  font-family: 'Librefranklin-Regular' !important;
 
 }
 
 .css-4mkbcn-MuiInputBase-root-MuiOutlinedInput-root {
-  font-family: 'Librefranklin-Light' !important;
+  font-family: 'Librefranklin-Regular' !important;
 }
 
 .css-q2wzpm-MuiTypography-root {
-  font-family: 'Librefranklin-Light' !important;
+  font-family: 'Librefranklin-Regular' !important;
 }
 
 .css-1je76wn-MuiFormLabel-root-MuiInputLabel-root {
-  font-family: 'Librefranklin-Light' !important;
+  font-family: 'Librefranklin-Regular' !important;
 }

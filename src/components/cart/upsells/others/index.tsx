@@ -336,7 +336,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
                           sx={{
                             paddingTop: '5px',
                             fontSize: '14px',
-                            fontFamily: "'Librefranklin-Light' !important",
+                            fontFamily: "'Librefranklin-Regular' !important",
                             color: '#0075BF',
                             display: 'flex',
                             alignItems: 'center',

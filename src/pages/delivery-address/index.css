@@ -18,14 +18,14 @@
 .delivery-address-container .card-panel .card-content p {
   padding: 0;
   font-size: 15px;
-  font-family: 'Librefranklin-Light' !important;
+  font-family: 'Librefranklin-Regular' !important;
   display: block;
   color: #414141;
   padding-bottom: 2px;
 }
 
 .delivery-address-container .card-panel .card-content p b {
-  font-family: 'Librefranklin-Light' !important;
+  font-family: 'Librefranklin-Regular' !important;
   font-weight: bold;
 }
 

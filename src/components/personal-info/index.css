@@ -20,7 +20,7 @@
 .profile-section .date {
   width: 100% !important;
   text-align: left;
-  font-family: 'Librefranklin-Light' !important;
+  font-family: 'Librefranklin-Regular' !important;
   color: black !important;
   letter-spacing: 0px !important;
   font-size: 16px !important;
@@ -39,13 +39,13 @@
 }
 .body-text {
   font-size: 15px;
-  font-family: 'Librefranklin-Light' !important;
+  font-family: 'Librefranklin-Regular' !important;
   color: #414141;
   padding-top: 8px;
 }
 .body-text-keep {
   font-size: 15px;
-  font-family: 'Librefranklin-Light' !important;
+  font-family: 'Librefranklin-Regular' !important;
   color: #414141;
   padding-top: 8px;
 }

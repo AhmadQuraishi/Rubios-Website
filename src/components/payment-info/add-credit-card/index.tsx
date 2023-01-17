@@ -27,7 +27,7 @@ const styleObject = {
     fontSize: '5rem',
     '::placeholder': {
       color: '#000',
-      fontFamily: "'Librefranklin-Light' !important",
+      fontFamily: "'Librefranklin-Regular' !important",
     },
   },
 };

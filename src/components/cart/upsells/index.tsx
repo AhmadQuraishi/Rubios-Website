@@ -102,7 +102,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     letterSpacing: 'normal !important',
   },
   emptyCart: {
-    fontFamily: "'Librefranklin-Light' !important",
+    fontFamily: "'Librefranklin-Regular' !important",
     fontSize: '16px !important',
     color: '#525252',
     fontWeight: 'bold',
@@ -256,7 +256,7 @@ const Upsells = ({ showCart, upsellsType }: any) => {
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    fontFamily: "'Librefranklin-Light' !important",
+                    fontFamily: "'Librefranklin-Regular' !important",
                     minHeight: 35,
                     fontSize: '12px !important',
                     paddingRight: 30,

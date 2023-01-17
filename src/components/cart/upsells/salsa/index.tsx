@@ -427,7 +427,7 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                           className={classes.cartTitle}
                           sx={{
                             display: 'inline',
-                            fontFamily: "'Librefranklin-Light' !important",
+                            fontFamily: "'Librefranklin-Regular' !important",
                             fontWeight: "bold",
                             fontSize: {
                               lg: '12px !important',
@@ -450,7 +450,7 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                               sx={{
                                 paddingTop: '5px',
                                 fontSize: '14px',
-                                fontFamily: "'Librefranklin-Light' !important",
+                                fontFamily: "'Librefranklin-Regular' !important",
                                 color: '#0075BF',
                                 display: 'flex',
                                 alignItems: 'center',
