@@ -29,6 +29,7 @@ import { setBasketDeliveryAddressSuccess } from '../../redux/actions/basket/chec
 import { displayToast } from '../../helpers/toast';
 import './order-type.css';
 import { isLoginUser } from '../../helpers/auth';
+import { DeliveryModeEnum } from '../../types/olo-api/olo-api.enums';
 // import usePlacesAutocomplete, {
 //   getGeocode,
 //   getLatLng,
@@ -182,17 +183,26 @@ export const OrderTypeDialog = (props: any) => {
     setActionPerform(true);
     setNewDeliveryAddress(formData);
     if (changeOrderType !== 'dispatch') {
-      try {
-        const body = {
-          deliverymode: changeOrderType,
-        };
-        const response = await setBasketDeliveryMode(
-          basketObj?.basket?.id,
-          body,
-        );
-        basketSuccess(response);
-      } catch (error: any) {
-        basketError(error);
+      if(basketObj?.basket){
+        try {
+          const body = {
+            deliverymode: changeOrderType,
+          };
+          const response = await setBasketDeliveryMode(
+            basketObj?.basket?.id,
+            body,
+          );
+          basketSuccess(response);
+        } catch (error: any) {
+          basketError(error);
+        }
+      } else {
+        dispatch(setRestaurantInfoOrderType(changeOrderType));
+        setButtonDisabled(false);
+        setShowLocationChangeModal(false);
+        setActionPerform(false);
+        handleClose();
+        displayToast('SUCCESS', 'Order updated!');
       }
     } else if (formData.address) {
       const address =
@@ -315,6 +325,10 @@ export const OrderTypeDialog = (props: any) => {
             changeOrderType || '',
           ),
         );
+        if(changeOrderType === DeliveryModeEnum.dispatch && 
+          newDeliveryAddress?.address ){
+            dispatch(setDeliveryAddress(newDeliveryAddress?.address));
+        }
         setButtonDisabled(false);
         setActionPerform(false);
         handleClose();
@@ -595,7 +609,7 @@ export const OrderTypeDialog = (props: any) => {
                             //   changeOrderType('dispatch');
                             // }}
                             sx={{
-                              fontFamily: "'sunbornsans_one' !important",
+                              fontFamily: "'Sunborn-Sansone' !important",
                               fontSize: '15px',
                               height: '50px',
                               width: {lg:"310px !important", md: "310px !important", xs: "250px !important", sm: "310px !important"},
@@ -624,7 +638,7 @@ export const OrderTypeDialog = (props: any) => {
                             style={{
                               padding: '10px 0px',
                               color: '#000000',
-                              fontFamily: '"Libre Franklin" !important',
+                              fontFamily: '"Librefranklin-Regular" !important',
                             }}
                             textAlign={'center'}
                             variant={'body1'}

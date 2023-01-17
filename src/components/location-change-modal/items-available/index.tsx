@@ -26,7 +26,7 @@ export const ItemsAvailableComponent = ({ restaurant }: any) => {
               fontSize: '32px',
               fontWeight: '900',
               ttextAlign: 'center',
-              fontFamily: "'sunbornsans_one' !important",
+              fontFamily: "'Sunborn-Sansone' !important",
             }}
           >
             LOCATION CHANGED TO

@@ -135,7 +135,7 @@ const RewardNew = () => {
             variant="h1"
             className={classes.heading}
             title="My Rewards"
-            sx={{fontFamily: "'grit_sansbold' !important"}}
+            sx={{fontFamily: "'GritSans-Bold' !important"}}
 
           >
             My Rewards
@@ -256,7 +256,7 @@ const RewardNew = () => {
                                   }
                                   className="button"
                                 >
-                                  REDEEM IN RESTURANT
+                                  REDEEM IN RESTAURANT
                                 </Typography>
                               </Grid>
 
@@ -281,7 +281,7 @@ const RewardNew = () => {
                                   }
                                   className="button"
                                 >
-                                  REDEEM IN RESTURANT
+                                  REDEEM IN RESTAURANT
                                 </p>
                               </Grid>
                             </Grid>
@@ -435,7 +435,7 @@ const RewardNew = () => {
                                                 points >= key ? '' : ' disable'
                                               }`}
                                             >
-                                              REDEEM IN RESTURANT
+                                              REDEEM IN RESTAURANT
                                             </Typography>
                                           </Grid>
                                           <Grid
@@ -461,7 +461,7 @@ const RewardNew = () => {
                                                 points >= key ? '' : ' disable'
                                               }`}
                                             >
-                                              REDEEM IN RESTURANT
+                                              REDEEM IN RESTAURANT
                                             </p>
                                           </Grid>
                                         </Grid>

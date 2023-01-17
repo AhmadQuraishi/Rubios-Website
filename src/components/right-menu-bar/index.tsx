@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: '5px 0px',
     '& span': {
       fontSize: '13px !important',
-      fontFamily: "'grit_sansbold' !important",
+      fontFamily: "'GritSans-Bold' !important",
     },
   },
 }));

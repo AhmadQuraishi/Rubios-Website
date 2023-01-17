@@ -35,7 +35,7 @@ import { isLoginUser } from '../../helpers/auth';
 import "./index.css";
 const useStyles = makeStyles((theme: Theme) => ({
   heading: {
-    fontFamily: "'sunbornsans_one'!important",
+    fontFamily: "'Sunborn-Sansone'!important",
     color: "#0075BF !important",
     fontSize: '25px !important',
     textTransform: 'uppercase',
@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   link: {
     textAlign: 'right',
     '& a': {
-      fontFamily: "'grit_sansbold' !important",
+      fontFamily: "'GritSans-Bold' !important",
       color: '#0069aa',
       fontSize: '13px',
       textTransform: 'uppercase',
@@ -425,7 +425,7 @@ const CategoryList = () => {
                 sx={{
                   fontSize: '16px',
                   fontWeight: '700',
-                  fontFamily: "'sunbornsans_one' !important",
+                  fontFamily: "'Sunborn-Sansone' !important",
                   textTransform: 'uppercase',
                 }}
               >
@@ -444,7 +444,7 @@ const CategoryList = () => {
                       borderRadius: 0,
                       padding: '30px 10px',
                       fontSize: '16px',
-                      fontFamily: "'grit_sansbold' !important",
+                      fontFamily: "'GritSans-Bold' !important",
                       marginBottom: '10px',
                     }}
                     title="Checkout"
@@ -465,7 +465,7 @@ const CategoryList = () => {
                     borderRadius: 0,
                     padding: '30px 10px',
                     fontSize: '16px',
-                    fontFamily: "'grit_sansbold' !important",
+                    fontFamily: "'GritSans-Bold' !important",
                     marginBottom: '10px',
                   }}
                   title="Checkout"
@@ -485,7 +485,7 @@ const CategoryList = () => {
                     borderRadius: 0,
                     padding: '30px 10px',
                     fontSize: '16px',
-                    fontFamily: "'grit_sansbold' !important",
+                    fontFamily: "'GritSans-Bold' !important",
 
                   }}
                   title="Checkout"
@@ -528,7 +528,7 @@ const CategoryList = () => {
                 variant="scrollable"
                 //scrollButtons
                 allowScrollButtonsMobile
-                sx={{ fontFamily: "'sunbornsans_one' !important", }}
+                sx={{ fontFamily: "'Sunborn-Sansone' !important", }}
                 role="region"
                 aria-label="Food Menu"
               >
@@ -541,7 +541,7 @@ const CategoryList = () => {
                     title={item.name}
                     
                     sx={{
-                      fontFamily: "'sunbornsans_one' !important",
+                      fontFamily: "'Sunborn-Sansone' !important",
                       padding: '10px 0px',
                       marginRight: '20px',
                       fontSize:"15px",
@@ -633,7 +633,7 @@ const CategoryList = () => {
             <Divider sx={{ borderColor: '#224c65' }} />
           </Grid>
           <Typography
-            sx={{ fontSize: '13px', color: '#062C43', fontStyle: 'italic' }}
+            sx={{ fontSize: '13px', color: '#062C43', fontStyle: 'italic', }}
             variant="caption"
             title="Due to potential cross-contact when preparing menu items, it is not possible to guarantee your meal is completely free of any particular allergen or ingredient. Impossible™ meat, fish, tortillas, veggies, toasted cheese and shellfish are cooked on the same grill."
           >

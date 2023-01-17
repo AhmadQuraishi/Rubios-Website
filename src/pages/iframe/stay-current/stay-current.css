@@ -14,7 +14,7 @@
 
 }
 .stay-connect-bg h2 {
-  font-family: 'grit_sansbold' !important;
+  font-family: 'GritSans-Bold' !important;
   font-weight: 700;
   margin: 0;
   font-size: 28.91pt;
@@ -26,7 +26,7 @@
   /* padding-bottom: 15px; */
 }
 .stay-connect-bg p {
-  font-family: 'Libre Franklin' !important;
+  font-family: 'Librefranklin-Regular' !important;
   margin: 0;
   color: #58595b;
   display: block;
@@ -50,7 +50,7 @@
   transition: all 0.2s ease;
   border: 1px solid;
   border-radius: 5px;
-  font-family: 'Libre Franklin' !important;
+  font-family: 'Librefranklin-Regular' !important;
   color: #395775;
 }
 .stay-connect-bg .button-right {
@@ -58,7 +58,7 @@
   background: #0a6fb8;
   padding-top: 16px;
   padding-bottom: 15px;
-  font-family: 'sunbornsans_one' !important;
+  font-family: 'Sunborn-Sansone' !important;
   font-weight: 700;
   width: 80px;
 
@@ -70,7 +70,7 @@
 }
 .stay-connect-bg .msg-status {
   display: flex;
-  font-family: 'grit_sansbold' !important;
+  font-family: 'GritSans-Bold' !important;
   font-size: 12px;
   padding: 5px 0;
   visibility: hidden;
@@ -100,7 +100,7 @@
     padding: 0px;
   }
   .stay-connect-bg p {
-    font-family: 'Libre Franklin' !important;
+    font-family: 'Librefranklin-Regular' !important;
     margin: 0;
     color: #58595b;
     display: block;
@@ -109,7 +109,7 @@
     font-weight: 500;
   }
   .stay-connect-bg h2 {
-    font-family: 'grit_sansbold' !important;
+    font-family: 'GritSans-Bold' !important;
     font-weight: 700;
     margin: 0;
     font-size: 20.91pt;

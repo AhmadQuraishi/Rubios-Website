@@ -88,7 +88,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     textTransform: 'uppercase',
     fontSize: '25px !important',
     fontWeight: '700',
-    fontFamily: "'sunbornsans_one' !important",
+    fontFamily: "'Sunborn-Sansone' !important",
     padding: '10px 0px 18px 0px',
   },
   crossIcon: {
@@ -105,7 +105,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   smallLink: {
     color: '#0075BF !important',
     fontSize: '11px !important',
-    fontFamily: "'sunbornsans_one' !important",
+    fontFamily: "'Sunborn-Sansone' !important",
     textDecoration: 'underline !important',
     display: 'inline',
     cursor: 'pointer',
@@ -115,7 +115,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   disabledLink: {
     color: '#ccc !important',
     fontSize: '11px !important',
-    fontFamily: "'sunbornsans_one' !important",
+    fontFamily: "'Sunborn-Sansone' !important",
     display: 'inline',
     cursor: 'default',
     textDecoration: 'underline',
@@ -135,7 +135,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginTop: '-5px !important',
   },
   emptyCart: {
-    fontFamily: "'Libre Franklin' !important",
+    fontFamily: "'Librefranklin-Regular' !important",
     fontSize: '16px !important',
     color: '#525252',
     fontWeight: 'bold',
@@ -147,7 +147,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     border: '1px solid #2b4b62',
     textAlign: 'center',
     display: 'inline-flex',
-    fontFamily: "'grit_sansbold' !important",
+    fontFamily: "'GritSans-Bold' !important",
     fontSize: 14,
     marginLeft: 5,
     justifyContent: 'center',
@@ -659,7 +659,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         sx={{
                           fontSize: '14px',
                           color: 'secondary.main',
-                          fontFamily: "'Libre Franklin' !important",
+                          fontFamily: "'Librefranklin-Regular' !important",
                         }}
                       >
                         {item.productId !== utensilsReducer.utensilsProductId
@@ -677,7 +677,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                           textAlign: 'right',
                           fontSize: '14px',
                           fontWeight: '700',
-                          fontFamily: "'Libre Franklin' !important",
+                          fontFamily: "'Librefranklin-Regular' !important",
                           color: 'secondary.main',
                         }}
                       >
@@ -698,7 +698,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                           paddingBottom: '0px',
                           paddingTop: '10px',
                           display: 'block',
-                          fontFamily: "'Libre Franklin' !important",
+                          fontFamily: "'Librefranklin-Regular' !important",
                         }}
                       >
                         {getOptions(item.choices)}
@@ -837,7 +837,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                       variant="body2"
                       className="body-text"
                       // title="I agree to the  Rubios terms and conditions and to receiving marketing communications from Rubios."
-                      sx={{ width: '100%', color: '#224c65',fontFamily: "'Libre Franklin' !important", }}
+                      sx={{ width: '100%', color: '#224c65',fontFamily: "'Librefranklin-Regular' !important", }}
                     >
                       <Checkbox
                         checked={utensils}
@@ -853,7 +853,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         }}
                         sx={{
                           paddingLeft: 0,
-                          fontFamily: "'grit_sansbold' !important",
+                          fontFamily: "'GritSans-Bold' !important",
                         }}
                       />
                       Add utensils to my order.
@@ -1187,7 +1187,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         width: '100%',
                         borderRadius: 0,
                         padding: '30px',
-                        fontFamily: "'sunbornsans_one'!important",
+                        fontFamily: "'Sunborn-Sansone'!important",
                         fontSize: '10pt',
                       }}
                     >
@@ -1202,7 +1202,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         item
                         xs={9}
                         sx={{
-                          fontFamily: "'Libre Franklin' !important",
+                          fontFamily: "'Librefranklin-Bold' !important",
                           color: 'secondary.main',
                           fontSize: '14px',
                           fontWeight: "bold",
@@ -1216,7 +1216,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         item
                         xs={3}
                         sx={{
-                          fontFamily: "'Libre Franklin' !important",
+                          fontFamily: "'Librefranklin-Bold' !important",
                           color: 'secondary.main',
                           fontSize: '14px',
                           textAlign: 'right',
@@ -1245,7 +1245,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                     color: 'secondary.main',
                                     fontSize: '14px',
                                     paddingBottom: '2px',
-                                    fontFamily: "'Libre Franklin' !important",
+                                    fontFamily: "'Librefranklin-Regular' !important",
                                   }}
                                 >
                                   {discount.type === 'Coupon'
@@ -1261,7 +1261,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                     fontSize: '14px',
                                     textAlign: 'right',
                                     paddingBottom: '2px',
-                                    fontFamily: "'Libre Franklin' !important",
+                                    fontFamily: "'Librefranklin-Regular' !important",
                                   }}
                                 >
                                   -$
@@ -1283,7 +1283,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                               color: 'secondary.main',
                               fontSize: '14px',
                               paddingBottom: '2px',
-                              fontFamily: "'Libre Franklin' !important",
+                              fontFamily: "'Librefranklin-Regular' !important",
                             }}
                             title="TIP"
                           >
@@ -1297,7 +1297,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                               fontSize: '14px',
                               textAlign: 'right',
                               paddingBottom: '2px',
-                              fontFamily: "'Libre Franklin' !important",
+                              fontFamily: "'Librefranklin-Regular' !important",
                             }}
                           >
                             +${basketObj.basket.tip}
@@ -1312,7 +1312,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                           color: 'secondary.main',
                           fontSize: '14px',
                           paddingBottom: '2px',
-                          fontFamily: "'Libre Franklin' !important",
+                          fontFamily: "'Librefranklin-Regular' !important",
                           display: 'flex',
                         }}
                         // title="ESTIMATED TAX AND FEES"
@@ -1323,7 +1323,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                             <>
                             <Typography sx={{
                           fontSize: '14px',
-                          fontFamily: "'Libre Franklin' !important",cursor: 'pointer'}} onClick={() => {
+                          fontFamily: "'Librefranklin-Regular' !important",cursor: 'pointer'}} onClick={() => {
                                     setShowMore(!showMore);
                                   }}>
                               ESTIMATED TAX AND FEES
@@ -1357,7 +1357,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                              </Typography>
                             </>
                           ) : (
-                            <Typography sx={{fontSize: '14px',fontFamily: "Libre Franklin !important"}}>
+                            <Typography sx={{fontSize: '14px',fontFamily: "Librefranklin-Regular !important"}}>
                           ESTIMATED TAXES
                           </Typography>
                           )}
@@ -1372,7 +1372,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                           fontSize: '14px',
                           textAlign: 'right',
                           paddingBottom: '2px',
-                          fontFamily: "'Libre Franklin' !important",
+                          fontFamily: "'Librefranklin-Regular' !important",
                         }}
                         title={'$' + calculateTaxAndFee(basketObj.basket)}
                       >
@@ -1389,7 +1389,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                       <Typography
                                         sx={{
                                           lineHeight: '1.0',
-                                          fontFamily: "'Libre Franklin' !important",
+                                          fontFamily: "'Librefranklin-Regular' !important",
                                             fontSize: "14px !important",
                                             color: '#062C43 !important',
                                             marginLeft: "22px !important"
@@ -1407,7 +1407,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                         sx={{
                                           lineHeight: '1.0',
                                           textAlign: 'right',
-                                          fontFamily: "'Libre Franklin' !important",
+                                          fontFamily: "'Librefranklin-Regular' !important",
                                             color: '#062C43 !important',
                                             
                                             fontSize: "14px !important",
@@ -1438,9 +1438,9 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                       <Typography
                                         sx={{
                                           lineHeight: '1.0',
-                                          fontFamily: "'Libre Franklin' !important",
+                                          fontFamily: "'Librefranklin-Regular' !important",
                                             fontSize: "14px !important",
-                                            color: '#214F66',
+                                            color: '#062C43',
                                             marginBottom: "3px",
                                             marginLeft: "22px !important"
                                         }}
@@ -1457,9 +1457,9 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                         sx={{
                                           lineHeight: '1.0',
                                           textAlign: 'right',
-                                          fontFamily: "'Libre Franklin' !important",
+                                          fontFamily: "'Librefranklin-Regular' !important",
                                             fontSize: "14px !important",
-                                            color: '#214F66',
+                                            color: '#062C43',
                                         }}
                                         title={'$' + orderFees(basketObj?.basket)}
                                       >
@@ -1532,7 +1532,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                             sx={{
                               color: 'secondary.main',
                               fontSize: '14px',
-                              fontFamily: "'Libre Franklin' !important",
+                              fontFamily: "'Librefranklin-Regular' !important",
                             }}
                             title="DELIVERY FEE"
                           >
@@ -1545,7 +1545,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                               color: 'secondary.main',
                               fontSize: '14px',
                               textAlign: 'right',
-                              fontFamily: "'Libre Franklin' !important",
+                              fontFamily: "'Librefranklin-Regular' !important",
                             }}
                             title={
                               '$' +
@@ -1567,10 +1567,9 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         item
                         xs={9}
                         sx={{
-                          fontFamily: "'Libre Franklin' !important",
+                          fontFamily: "'Librefranklin-Bold' !important",
                           color: 'secondary.main',
                           fontSize: '15px',
-                          fontWeight: "bold",
                         }}
                         title="Total"
                       >
@@ -1580,7 +1579,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         item
                         xs={3}
                         sx={{
-                          fontFamily: "'Libre Franklin' !important",
+                          fontFamily: "'Librefranklin-Bold' !important",
                           color: 'secondary.main',
                           fontSize: '15px',
                           fontWeight: "bold",
@@ -1619,7 +1618,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                   borderRadius: 0,
                   padding: '30px 10px',
                   fontSize: '16px',
-                  fontFamily: "'sunbornsans_one'!important",
+                  fontFamily: "'Sunborn-Sansone'!important",
                 }}
                 title="Checkout"
                 aria-label="Checkout"
@@ -1638,7 +1637,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                   borderRadius: 0,
                   padding: '30px 10px',
                   fontSize: '16px',
-                  fontFamily: "'sunbornsans_one'!important",
+                  fontFamily: "'Sunborn-Sansone'!important",
                 }}
                 title="Checkout"
                 aria-label="Checkout Button  disabled"
