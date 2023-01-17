@@ -76,6 +76,7 @@ export const OrderTypeDialog = (props: any) => {
   // const [alignment, setAlignment] = React.useState('web');
   const [actionPerform, setActionPerform] = useState(false);
   const basketObj = useSelector((state: any) => state.basketReducer);
+  const deliveryAddressReducer = useSelector((state: any) => state.deliveryAddressReducer);
   // const [LatLng, setLatLng] = useState<any>(null);
   const [showLocationChangeModal, setShowLocationChangeModal] = useState(false);
   // const [selectedAddress, setSelectedAddress] = useState<any>();
@@ -213,6 +214,7 @@ export const OrderTypeDialog = (props: any) => {
         handleClose();
         displayToast('SUCCESS', 'Order updated!');
       }
+      dispatch(setDeliveryAddress(null));
     } else if (formData.address) {
       const address =
         formData?.address?.address1 +
@@ -458,10 +460,10 @@ export const OrderTypeDialog = (props: any) => {
         <Formik
           initialValues={{
             orderType: basketObj?.basket?.deliverymode || orderType || 'pickup',
-            address1: basketObj?.basket?.deliveryaddress?.streetaddress || '',
-            address2: basketObj?.basket?.deliveryaddress?.building || '',
-            city: basketObj?.basket?.deliveryaddress?.city || '',
-            zip: basketObj?.basket?.deliveryaddress?.zipcode || '',
+            address1: basketObj?.basket?.deliveryaddress?.streetaddress || deliveryAddressReducer?.address?.address1 || '',
+            address2: basketObj?.basket?.deliveryaddress?.building || deliveryAddressReducer?.address?.address2 || '',
+            city: basketObj?.basket?.deliveryaddress?.city || deliveryAddressReducer?.address?.city || '',
+            zip: basketObj?.basket?.deliveryaddress?.zipcode || deliveryAddressReducer?.address?.zip || '',
             isdefault: basketObj?.basket?.deliveryaddress?.isdefault || false,
           }}
           validationSchema={Yup.object({
