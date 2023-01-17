@@ -178,6 +178,15 @@ export const OrderTypeDialog = (props: any) => {
     }
     handleClose();
   };
+
+  const navigateCheckout = () => {
+    if (type === 'RECENT_ORDER') {
+      navigate('/checkout');
+    } else if (type === 'WELCOME') {
+      navigate('/checkout');
+    } else {
+    }
+  }
   const handleOrderUpdate = async (formData: any) => {
     setButtonDisabled(true);
     setActionPerform(true);
@@ -290,12 +299,7 @@ export const OrderTypeDialog = (props: any) => {
             handleClose();
             setActionPerform(false);
             displayToast('SUCCESS', 'Order updated!');
-            if (type === 'RECENT_ORDER') {
-              navigate('/checkout');
-            } else if ('WELCOME') {
-              navigate('/checkout');
-            } else {
-            }
+            navigateCheckout();
             // basketSuccess(response);
           } catch (error: any) {
             displayToast(
@@ -347,12 +351,7 @@ export const OrderTypeDialog = (props: any) => {
     setActionPerform(false);
     handleClose();
     displayToast('SUCCESS', 'Order updated!');
-    if (type === 'RECENT_ORDER') {
-      navigate('/checkout');
-    } else if ('WELCOME') {
-      navigate('/checkout');
-    } else {
-    }
+    navigateCheckout();
   };
   const basketError = (error: any) => {
     // resetBasketRequest();
@@ -400,12 +399,7 @@ export const OrderTypeDialog = (props: any) => {
           // debugger;
           // navigate('/');
           displayToast('SUCCESS', 'Location changed to ' + newRestaurant.name);
-          if (type === 'RECENT_ORDER') {
-            navigate('/checkout');
-          } else if ('WELCOME') {
-            navigate('/checkout');
-          } else {
-          }
+          navigateCheckout();
           // debugger;
         } catch (error: any) {
           console.log('working 5');
@@ -431,12 +425,7 @@ export const OrderTypeDialog = (props: any) => {
     setButtonDisabled(false);
     setActionPerform(false);
     setOpenModal(false);
-    if (type === 'RECENT_ORDER') {
-      navigate('/checkout');
-    } else if ('WELCOME') {
-      navigate('/checkout');
-    } else {
-    }
+    navigateCheckout();
   };
 
   return (
