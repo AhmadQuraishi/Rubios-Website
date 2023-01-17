@@ -62,7 +62,7 @@ const Invite = () => {
         variant="h1"
         className={classes.heading}
         title="Give $5, Get $5"
-        sx={{fontFamily: "'grit_sansbold' !important"}}
+        sx={{fontFamily: "'GritSans-Bold' !important"}}
       >
         GIVE $5 , GET $5
       </Typography>
@@ -72,7 +72,7 @@ const Invite = () => {
             <Typography
               variant="body2"
               className="body-text"
-              style={{fontFamily: "'Libre Franklin' !important"}}
+              style={{fontFamily: "'Librefranklin-Light' !important"}}
               title="Earn $5 off when your friends use the invite code below to Sign Up
               for Rubio's Rewards and make their first purchase."
             >

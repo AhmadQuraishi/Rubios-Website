@@ -297,7 +297,7 @@ const AddGiftCard = forwardRef((props, _ref) => {
                     type="submit"
                     className="link default"
                     disabled={buttonDisabled}
-                    style={{fontFamily: "'sunbornsans_one'!important",}}
+                    style={{fontFamily: "'Sunborn_Sansone'!important",}}
                     // autoFocus
                   >
                     Add Gift Card
@@ -318,7 +318,7 @@ const AddGiftCard = forwardRef((props, _ref) => {
               aria-label="ADD GIFT CARD"
               className="label"
               id={'add-gift-card'}
-              sx={{fontFamily: "'sunbornsans_one'!important",fontSize: "11pt !important",}}
+              sx={{fontFamily: "'Sunborn_Sansone'!important",fontSize: "11pt !important",}}
             >
               ADD Gift CARD
             </Button>

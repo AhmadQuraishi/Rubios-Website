@@ -46,7 +46,7 @@
   font-size: 18px !important;
   text-transform: capitalize;
   text-align: left;
-  font-family: 'grit_sansbold' !important;
+  font-family: 'GritSans-Bold' !important;
   color: #2b4b62;
   display: flex;
   padding-bottom: 5px;
@@ -88,7 +88,7 @@
   line-height: 20px;
   letter-spacing: 2px;
   text-transform: uppercase;
-  font-family: 'sunbornsans_one' !important;
+  font-family: 'Sunborn_Sansone' !important;
   color: #0075bf;
   font-size: 15px;
   font-weight: 600;
@@ -98,7 +98,7 @@
 .choose-reward .choose-btn .points {
   font-size: 12px !important;
   color: #333;
-  font-family: 'grit_sansbold' !important;
+  font-family: 'GritSans-Bold' !important;
   display: block;
 }
 
@@ -162,7 +162,7 @@
   border-radius: 0px;
   border: 1px solid #c6c6c6;
   box-shadow: 0px 4px 5px 0px rgb(0 0 0 / 20%);
-  font-family: 'Libre Franklin' !important;
+  font-family: 'Librefranklin-Light' !important;
   text-align: center;
   width: 100%;
   max-width: 460px;
@@ -180,14 +180,14 @@
   margin: 20px 0 25px 0;
 }
 #reward-points-container .bold-title {
-  font-family: 'Libre Franklin' !important;
+  font-family: 'Librefranklin-Light' !important;
   font-size: 30px;
   text-transform: uppercase;
   font-weight: bold;
 }
 
 #reward-points-container .small-heading {
-  font-family: 'grit_sansbold' !important;
+  font-family: 'GritSans-Bold' !important;
   font-size: 25px;
   text-transform: uppercase;
   color: #2b4b62;
@@ -202,7 +202,7 @@
   border: 1px solid #2b4b62;
   text-align: center;
   display: inline-block;
-  font-family: 'grit_sansbold' !important;
+  font-family: 'GritSans-Bold' !important;
   font-size: 14px;
   margin-left: 5px;
   display: flex;
@@ -213,7 +213,7 @@
   border-radius: 0px;
   border: 1px solid #c6c6c6;
   box-shadow: 0px 4px 5px 0px rgb(0 0 0 / 20%);
-  font-family: 'Libre Franklin' !important;
+  font-family: 'Librefranklin-Light' !important;
   text-align: center;
   color: #2b4b62;
   padding: 10px;
@@ -241,7 +241,7 @@
   display: block;
   font-size: 40px;
   font-weight: bold;
-  font-family: 'grit_sansbold' !important;
+  font-family: 'GritSans-Bold' !important;
   text-align: center;
   margin-top: -5px;
   -ms-transform: scaleX(-1) rotate(-35deg);
@@ -303,7 +303,7 @@
   .expire {
   font-size: 11px;
   color: #062C43;
-  font-family: 'sunbornsans_one' !important;
+  font-family: 'Sunborn_Sansone' !important;
   display: block;
   padding: 3px 0px 5px 0px;
 }
@@ -347,25 +347,25 @@
 }
 #reward-points-container .message-panel {
   padding: 0px 0 5px 0;
-  font-family: 'Libre Franklin' !important;
+  font-family: 'Librefranklin-Light' !important;
   font-size: 15px;
   color: #333;
 }
 #reward-points-container .message-panel h3 {
   font-size: 25px;
   color: #2b4b62;
-  font-family: 'grit_sansbold' !important;
+  font-family: 'GritSans-Bold' !important;
   line-height: 32px;
 }
 #reward-points-container .message-panel .low-head {
   font-size: 18px;
-  font-family: 'sunbornsans_one' !important;
+  font-family: 'Sunborn_Sansone' !important;
   text-transform: uppercase;
   color: #2b4b62;
   margin: 15px 0px 5px 0;
 }
 #reward-points-container .message-panel .back-link {
-  font-family: 'grit_sansbold' !important;
+  font-family: 'GritSans-Bold' !important;
   letter-spacing: 2px;
   margin-top: 30px;
   color: #2b4b62;
@@ -449,7 +449,7 @@
     .expire {
     font-size: 11px;
     color: #062C43;
-    font-family: 'sunbornsans_one' !important;
+    font-family: 'Sunborn_Sansone' !important;
     display: block;
     padding: 3px 0px 0px 0px;
   }
@@ -475,7 +475,7 @@
     display: block;
     font-size: 25px;
     font-weight: bold;
-    font-family: 'grit_sansbold' !important;
+    font-family: 'GritSans-Bold' !important;
     text-align: center;
     margin-top: -2px;
     transform: scaleX(-1) rotate(-35deg);

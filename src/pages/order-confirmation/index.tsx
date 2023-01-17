@@ -149,7 +149,7 @@ const OrderConfirmation = () => {
                         variant="body1"
                         className="white"
                         sx={{
-                          fontFamily: "'sunbornsans_one' !important",
+                          fontFamily: "'Sunborn_Sansone' !important",
                           fontSize: '36px !important',
                           lineHeight: '1.2',
                           letterSpacing: '-0.00833em',

@@ -72,12 +72,12 @@
 }
 
 .welcome-content .order-action .caption-grey {
-  font-family: 'sunbornsans_one' !important;
+  font-family: 'Sunborn_Sansone' !important;
   color: #a4a4a4;
 }
 
 .welcome-content .order-action .button {
-  font-family: 'sunbornsans_one' !important;
+  font-family: 'Sunborn_Sansone' !important;
   font-size: 13px !important;
 }
 
@@ -130,7 +130,7 @@
 .welcome-content .caption-grey {
   font-size: 12px;
   text-decoration: none;
-  font-family: 'Libre Franklin' !important;
+  font-family: 'Librefranklin-Light' !important;
   margin-left: 5px;
 }
 

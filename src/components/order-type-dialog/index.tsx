@@ -595,7 +595,7 @@ export const OrderTypeDialog = (props: any) => {
                             //   changeOrderType('dispatch');
                             // }}
                             sx={{
-                              fontFamily: "'sunbornsans_one' !important",
+                              fontFamily: "'Sunborn_Sansone' !important",
                               fontSize: '15px',
                               height: '50px',
                               width: {lg:"310px !important", md: "310px !important", xs: "250px !important", sm: "310px !important"},
@@ -624,7 +624,7 @@ export const OrderTypeDialog = (props: any) => {
                             style={{
                               padding: '10px 0px',
                               color: '#000000',
-                              fontFamily: '"Libre Franklin" !important',
+                              fontFamily: '"Librefranklin-Light" !important',
                             }}
                             textAlign={'center'}
                             variant={'body1'}

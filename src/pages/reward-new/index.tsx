@@ -135,7 +135,7 @@ const RewardNew = () => {
             variant="h1"
             className={classes.heading}
             title="My Rewards"
-            sx={{fontFamily: "'grit_sansbold' !important"}}
+            sx={{fontFamily: "'GritSans-Bold' !important"}}
 
           >
             My Rewards

@@ -322,7 +322,7 @@ const Welcome = () => {
                                       order.products.length > 3 ? (
                                         <Typography
                                           variant="h6"
-                                          sx={{fontFamily: "'Libre Franklin' !important"}}
+                                          sx={{fontFamily: "'Librefranklin-Light' !important"}}
                                           title={product.name}
                                           key={product.name + product.quantity}
                                         >
@@ -333,7 +333,7 @@ const Welcome = () => {
                                         <Typography
                                           variant="h6"
                                           title={product.name}
-                                          sx={{fontFamily: "'Libre Franklin' !important"}}
+                                          sx={{fontFamily: "'Librefranklin-Light' !important"}}
                                           key={product.name + product.quantity}
                                         >
                                           {product.quantity}x {product.name}
@@ -462,14 +462,14 @@ const Welcome = () => {
 
                           <Typography
                             variant="h6"
-                            sx={{    fontFamily: "'Libre Franklin' !important"}}
+                            sx={{    fontFamily: "'Librefranklin-Light' !important"}}
                             title={`${favRestaurant.streetaddress}, ${favRestaurant.zip}`}
                           >
                             {favRestaurant.streetaddress}, {favRestaurant.zip}
                           </Typography>
                           <Typography
                             variant="h6"
-                            sx={{    fontFamily: "'Libre Franklin' !important"}}
+                            sx={{    fontFamily: "'Librefranklin-Light' !important"}}
                             title={`${favRestaurant.city}, ${favRestaurant.state}`}
                           >
                             {favRestaurant.city}, {favRestaurant.state}

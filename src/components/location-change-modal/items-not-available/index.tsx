@@ -27,7 +27,7 @@ export const ItemsNotAvailableComponent = ({ items }: any) => {
               color: '#062C43 !important',
               fontSize: {xs: "32px !important", lg: '27px !important', md: '27px !important', sm:'27px !important'},
               fontWeight: '900',
-              fontFamily: "'sunbornsans_one' !important",
+              fontFamily: "'Sunborn_Sansone' !important",
               alignItems: 'center',
             }}
           >
@@ -39,7 +39,7 @@ export const ItemsNotAvailableComponent = ({ items }: any) => {
               textAlign: 'center',
               marginTop: "-3px",
               fontSize: {xs: "15px !important", lg: '14px !important', md: '14px !important', sm:'14px !important'},
-              fontFamily: "'Libre Franklin' !important",
+              fontFamily: "'Librefranklin-Light' !important",
             }}
           >
             If you switch locations, the following{' '}
@@ -56,7 +56,7 @@ export const ItemsNotAvailableComponent = ({ items }: any) => {
                     color: '#062C43 !important',
                     fontSize: '14px !important',
                     fontWeight: '600',
-                    fontFamily: "'Libre Franklin' !important",
+                    fontFamily: "'Librefranklin-Light' !important",
                   }}
                 >
                   {productName}

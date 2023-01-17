@@ -51,7 +51,7 @@
 .upsells .content-panel {
   padding: 10px 20px 10px 0px;
   cursor: pointer;
-  font-family: 'Libre Franklin' !important;
+  font-family: 'Librefranklin-Light' !important;
   color: #2b4b62;
   /* max-width: 354px; */
   /*min-height: 170px;*/
@@ -102,7 +102,7 @@
   display: block;
   font-size: 40px;
   font-weight: bold;
-  font-family: 'grit_sansbold' !important;
+  font-family: 'GritSans-Bold' !important;
   text-align: center;
   margin-top: -5px;
   -ms-transform: scaleX(-1) rotate(-35deg); /* IE 9 */

@@ -10,14 +10,14 @@
 }
 .order-history-card .card-panel .order-date {
   font-size: 12px;
-  font-family: "'grit_sansbold' !important";
+  font-family: "'GritSans-Bold' !important";
   display: block;
   margin-bottom: -2px;
 }
 
 .order-history-card .card-panel .order-name {
   font-size: 20px;
-  font-family: 'Libre Franklin' !important;
+  font-family: 'Librefranklin-Light' !important;
   display: block;
   color: #414141;
   font-weight: bold;
@@ -29,7 +29,7 @@
 
 .order-history-card .card-panel .order-detail {
   font-size: 15px;
-  font-family: 'grit_sansbold' !important;
+  font-family: 'GritSans-Bold' !important;
   display: block;
   color: #414141;
   padding-bottom: 8px;

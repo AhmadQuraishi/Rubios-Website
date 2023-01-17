@@ -122,7 +122,7 @@ const CategoryList = () => {
                 <Typography
                   variant="h1"
                   title="GO AHEAD, SURF the MENU."
-                  sx={{ marginBottom: '20px',fontFamily: "'sunbornsans_one' !important", }}
+                  sx={{ marginBottom: '20px',fontFamily: "'Sunborn_Sansone' !important", }}
                 >
                   GO AHEAD, SURF the MENU.
                 </Typography>
@@ -135,7 +135,7 @@ const CategoryList = () => {
                     paddingTop: '10px',
                     display: 'block',
                     textAlign: 'right',
-                    fontFamily: "'grit_sansbold' !important",
+                    fontFamily: "'GritSans-Bold' !important",
                   }}
                 >
                   <Link
@@ -168,7 +168,7 @@ const CategoryList = () => {
               variant="scrollable"
               scrollButtons
               allowScrollButtonsMobile
-              sx={{  fontFamily: "'grit_sansbold' !important"}}
+              sx={{  fontFamily: "'GritSans-Bold' !important"}}
               role="region"
               aria-label="Food Menu"
             >
@@ -181,7 +181,7 @@ const CategoryList = () => {
 
                   sx={{
                     color: "#0075BF !important",
-                    fontFamily: "'sunbornsans_one' !important",
+                    fontFamily: "'Sunborn_Sansone' !important",
                     minWidth: 'auto',
                     padding: '12px 0px',
                     margin: '0px 16px',

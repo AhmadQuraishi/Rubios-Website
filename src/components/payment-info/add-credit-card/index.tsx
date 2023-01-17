@@ -27,7 +27,7 @@ const styleObject = {
     fontSize: '5rem',
     '::placeholder': {
       color: '#000',
-      fontFamily: "'Libre Franklin' !important",
+      fontFamily: "'Librefranklin-Light' !important",
     },
   },
 };
@@ -303,7 +303,7 @@ const AddCreditCard = () => {
                 className="link default"
                 onClick={handleCreditCardSubmit}
                 disabled={buttonDisabled}
-                sx={{fontFamily: "'sunbornsans_one'!important",fontSize: "11pt !important",}}
+                sx={{fontFamily: "'Sunborn_Sansone'!important",fontSize: "11pt !important",}}
               >
                 Add Credit Card
               </Button>
@@ -318,7 +318,7 @@ const AddCreditCard = () => {
               onClick={handleCloseAddCreditCard}
               title="ADD CREDIT CARD"
               className="label"
-              sx={{fontFamily: "'sunbornsans_one'!important",fontSize: "11pt !important",}}
+              sx={{fontFamily: "'Sunborn_Sansone'!important",fontSize: "11pt !important",}}
             >
               ADD Credit CARD
             </Button>

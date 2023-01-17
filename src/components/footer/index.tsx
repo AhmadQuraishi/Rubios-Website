@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   links: {
     textTransform: 'uppercase',
     fontSize: '11px',
-    fontFamily: "'sunbornsans_one' !important",
+    fontFamily: "'Sunborn_Sansone' !important",
     textDecoration: 'none',
     color: '#fff',
     letterSpacing: "1.00938px",
@@ -169,7 +169,7 @@ const Footer = () => {
                   fontSize: '11px',
                   color: '#fff',
                   textTransform: 'uppercase',
-                  fontFamily: "'sunbornsans_one'!important",
+                  fontFamily: "'Sunborn_Sansone'!important",
                   letterSpacing: "1.00938px",
                   paddingTop: { xs: '40px', md: '30px', lg: '60px' },
                 }}
@@ -314,7 +314,7 @@ const Footer = () => {
                   fontSize: '11px',
                   color: '#fff',
                   textTransform: 'uppercase',
-                  fontFamily: "'sunbornsans_one'!important",
+                  fontFamily: "'Sunborn_Sansone'!important",
                   letterSpacing: '1.00938px',
                   paddingTop: { xs: '40px', md: '30px', lg: '60px' },
                 }}

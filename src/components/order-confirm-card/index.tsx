@@ -29,7 +29,7 @@ const pickupTime = (order: any) => {
       <Typography
         variant="h2"
         className="label"
-        sx={{fontSize: "11pt !important",fontFamily: "'sunbornsans_one'!important"}}
+        sx={{fontSize: "11pt !important",fontFamily: "'Sunborn_Sansone'!important"}}
         title={
           order && order.deliverymode === DeliveryModeEnum.dispatch
             ? 'DELIVERY TIME'
@@ -44,7 +44,7 @@ const pickupTime = (order: any) => {
         variant="body1"
         title="6:10 PM"
         sx={{
-          fontFamily: "'grit_sansbold'!important",
+          fontFamily: "'GritSans-Bold'!important",
           color: '#062C43 !important',
           fontSize: '22px !important',
           lineHeight: '1.2',
@@ -116,14 +116,14 @@ const vehicleInfo = (order: any) => {
 const pickupAddress = (restaurant: any, order: any) => {
   return (
     <>
-      <Typography variant="h2" className="label" sx={{fontFamily: "'sunbornsans_one' !important"}}>
+      <Typography variant="h2" className="label" sx={{fontFamily: "'Sunborn_Sansone' !important"}}>
         {order && order.deliverymode ? locationTitle(order.deliverymode) : ''}
       </Typography>
       <Typography
         variant="body1"
         sx={{
           textTransform: 'uppercase',
-          fontFamily: "'grit_sansbold'!important",
+          fontFamily: "'GritSans-Bold'!important",
           color: '#062C43 !important',
           fontSize: '22px !important',
           lineHeight: '1.2',
@@ -155,7 +155,7 @@ const deliveryAddress = (order: any) => {
       <Typography
         sx={{
           textTransform: 'uppercase',
-          fontFamily: "'grit_sansbold'!important",
+          fontFamily: "'GritSans-Bold'!important",
           color: '#062C43 !important',
           fontSize: '22px !important',
           lineHeight: '1.2',
@@ -220,7 +220,7 @@ const OrderConfirmedCard = ({
                   title="ORDER CONFIRMED"
                   sx={{
                     color: '#0075BF',
-                    fontFamily: "'sunbornsans_one'!important",
+                    fontFamily: "'Sunborn_Sansone'!important",
                     fontSize: { xs: '14px !important' },
                     fontWeight: 400,
                     textTransform: 'uppercase',
@@ -241,7 +241,7 @@ const OrderConfirmedCard = ({
                     letterSpacing: '-0.00833em',
                     color: '#062C43 !important',
                     fontSize: '22px !important',
-                    fontFamily: "'grit_sansbold' !important",
+                    fontFamily: "'GritSans-Bold' !important",
                   }}
                 >
                   {order && order.deliverymode === DeliveryModeEnum.dinein

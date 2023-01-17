@@ -13,7 +13,7 @@ import Page from '../../components/page-title';
 
 const useStyles = makeStyles((theme: Theme) => ({
   heading: {
-    fontFamily: "'sunbornsans_one' !important",
+    fontFamily: "'Sunborn_Sansone' !important",
     color: '#0075BF',
     fontSize: '25px !important',
     textTransform: 'uppercase',
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   link: {
     textAlign: 'right',
     '& a': {
-      fontFamily: "'grit_sansbold' !important",
+      fontFamily: "'GritSans-Bold' !important",
       color: '#0075BF',
       fontSize: '13px',
       textTransform: 'uppercase',

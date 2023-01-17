@@ -121,7 +121,7 @@ const RegisterForm = () => {
       backgroundColor: state.isSelected ? 'lightgray' : '',
       marginTop: '0px',
       border: '0px',
-      fontFamily: "'Libre Franklin' !important"
+      fontFamily: "'Librefranklin-Light' !important"
     }),
     menu: (base: any) => ({
       ...base,
@@ -146,7 +146,7 @@ const RegisterForm = () => {
       border: 'none',
       cursor: 'pointer',
       boxShadow: '0px 0px 6px lightgray',
-      fontFamily: "'Libre Franklin' !important",
+      fontFamily: "'Librefranklin-Light' !important",
     }),
     placeholder: (base: any, state: any) => ({
       ...base,
@@ -159,8 +159,8 @@ const RegisterForm = () => {
       transition: ' 0.1s ease',
       letterSpacing: '0.25008px',
       fontFamily: state.isFocused
-        ? "'sunbornsans_one' !important"
-        : "'sunbornsans_one' !important",
+        ? "'Sunborn_Sansone' !important"
+        : "'Sunborn_Sansone' !important",
       transform: state.selectProps.isFocused,
     }),
     singleValue: (provided: any, state: any) => {

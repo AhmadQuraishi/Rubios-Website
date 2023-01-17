@@ -39,7 +39,7 @@
   width: 100%;
   text-align: center;
   color: white;
-  font-family: 'Libre Franklin' !important;
+  font-family: 'Librefranklin-Light' !important;
 }
 .order .right-col .MuiSelect-icon {
   color: white;
@@ -47,14 +47,14 @@
 .order .right-col #select-more-times.Mui-focused,
 .order .right-col #select-more-times.MuiFormLabel-filled {
   width: auto;
-  font-family: 'Libre Franklin' !important;
+  font-family: 'Librefranklin-Light' !important;
   padding: 14px 14px 14px 0px;
   color: white !important;
   font-size: 12px;
 }
 .size span {
   font-size: 11px !important;
-  font-family: 'Libre Franklin' !important;
+  font-family: 'Librefranklin-Light' !important;
 }
 .order .add-order {
   text-align: center;
@@ -69,7 +69,7 @@
 }
 
 .checkout-wrapper h2 {
-  font-family: 'grit_sansbold' !important;
+  font-family: 'GritSans-Bold' !important;
   color: #062C43;
   font-size: 29px !important;
  letter-spacing:0.03562em;
@@ -101,7 +101,7 @@
 }
 @media screen and (max-width: 468px) {
   .checkout-wrapper h2 {
-    font-family: 'grit_sansbold' !important;
+    font-family: 'GritSans-Bold' !important;
     color: #062C43;
     font-size: 27px !important;
    letter-spacing:0.03562em;
