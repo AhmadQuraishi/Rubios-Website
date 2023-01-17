@@ -225,7 +225,7 @@ const DeliveryForm = ({
                   <Typography
                     variant="body1"
                     className="label"
-                    fontFamily= {"'sunbornsans_one'!important"}
+                    fontFamily= {"'Sunborn-Sansone'!important"}
                     fontSize={"11pt !important"}
                     style={{
                       paddingTop: '10px',
@@ -238,7 +238,7 @@ const DeliveryForm = ({
                     variant="body1"
                     style={{
                       fontSize: '14px',
-                      fontFamily: "'grit_sansbold' !important",
+                      fontFamily: "'GritSans-Bold' !important",
                       color: '#58595b',
                       paddingTop: '5px',
                     }}

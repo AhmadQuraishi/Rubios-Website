@@ -348,7 +348,7 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                       lg={5}
                     >
                       {account.billingmethod === 'creditcard' && (
-                        <Typography variant="h6" sx={{  fontFamily: "'Libre Franklin' !important"}}>
+                        <Typography variant="h6" sx={{  fontFamily: "'Librefranklin-Regular' !important"}}>
                           {account.cardlastfour
                             ? `x-${account.cardlastfour}`
                             : 'Credit Card'}
@@ -396,7 +396,7 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                     >
                       <Typography
                         variant="h6"
-                        fontFamily= "'Libre Franklin' !important"
+                        fontFamily= "'Librefranklin-Regular' !important"
                       >
                         AMOUNT
                       </Typography>
@@ -499,7 +499,7 @@ const SplitPayment = forwardRef((props: any, _ref) => {
 
       <Grid container spacing={2}>
         <Grid item xs={12} sm={12} md={12} lg={12}>
-          <Typography align={'center'} variant="h6" sx={{fontFamily: "'Libre Franklin' !important"}}>
+          <Typography align={'center'} variant="h6" sx={{fontFamily: "'Librefranklin-Regular' !important"}}>
             Remaining Amount: $ {remainingAmount(basket, billingSchemes)}
           </Typography>
         </Grid>

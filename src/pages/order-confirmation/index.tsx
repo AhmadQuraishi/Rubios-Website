@@ -142,14 +142,14 @@ const OrderConfirmation = () => {
                       lg={12}
                       className="earn-reward"
                     >
-                      <Typography variant="h2" className="label white">
+                      <Typography variant="h2" sx={{  fontFamily: "'Sunborn-Sansone' !important"}} className="label white">
                         {isLoginUser() ? 'YOUR REWARDS' : 'EARN REWARDS'}
                       </Typography>
                       <Typography
                         variant="body1"
                         className="white"
                         sx={{
-                          fontFamily: "'sunbornsans_one' !important",
+                          fontFamily: "'GritSans-Bold' !important",
                           fontSize: '36px !important',
                           lineHeight: '1.2',
                           letterSpacing: '-0.00833em',
@@ -163,6 +163,7 @@ const OrderConfirmation = () => {
                       <Typography
                         variant="h6"
                         className="white"
+                        sx={{fontFamily: "'Librefranklin-Regular' !important"}}
                         title={composeDescriptionText()}
                       >
                         {composeDescriptionText()}

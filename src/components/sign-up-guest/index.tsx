@@ -229,7 +229,7 @@ const SignUpGuest = ({ guestSignupCheckout, signupFormRef, birthDay, setBirthDay
                       <Typography
                         variant="body2"
                         sx={{ width: '100%', paddingTop: '4px',fontSize: '11px !important',
-                        fontFamily: "'Libre Franklin' !important" }}
+                        fontFamily: "'Librefranklin-Regular' !important" }}
                       >
                         I accept the{' '}
                         <Link
@@ -306,7 +306,7 @@ const SignUpGuest = ({ guestSignupCheckout, signupFormRef, birthDay, setBirthDay
                         <Link
                           onClick={() => navigate('/login')}
                           underline="hover"
-                          sx={{ color: '#062C43',  fontFamily: "'grit_sansbold' !important",cursor: 'pointer', textDecoration: 'underline', }}
+                          sx={{ color: '#062C43',  fontFamily: "'GritSans-Bold' !important",cursor: 'pointer', textDecoration: 'underline', }}
                         >
                           Log In
                         </Link>

@@ -33,12 +33,11 @@
 .sign-up-section .body-text-fav-error {
   color: #E61F00 !important;
   font-size: 14px !important;
-  font-family: 'Libre Franklin' !important;
   padding-top: 8px;
 }
 .sign-up-section .fav-error-message {
   padding: 0;
-  font-family: 'sunbornsans_one' !important;
+  font-family: 'Sunborn-Sansone' !important;
   font-weight: 400;
   font-size: 0.75rem;
   line-height: 1.66;

@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
   },
   tabspanel: {
-    fontFamily: "'grit_sansbold' !important",
+    fontFamily: "'GritSans-Bold' !important",
     fontSize: '14px !important',
     color: theme.palette.secondary.main + ' !important',
     paddingLeft: '0px !important',
@@ -52,7 +52,7 @@ const OrdersHistory = () => {
             aria-label="your orders"
             variant="h1"
             title="your orders"
-            sx={{fontFamily: "'grit_sansbold' !important"}}
+            sx={{fontFamily: "'GritSans-Bold' !important"}}
           >
             YOUR ORDERS
           </Typography>

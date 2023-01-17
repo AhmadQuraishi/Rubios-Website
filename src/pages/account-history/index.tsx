@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
   },
   tabspanel: {
-    fontFamily: "'grit_sansbold' !important",
+    fontFamily: "'GritSans-Bold' !important",
     fontSize: '14px !important',
     color: theme.palette.secondary.main + ' !important',
     paddingLeft: '0px !important',
@@ -80,7 +80,7 @@ const AccountHistory = () => {
             variant="h1"
             className={classes.heading}
             title="Account History"
-            sx={{fontFamily: "'grit_sansbold' !important"}}
+            sx={{fontFamily: "'GritSans-Bold' !important"}}
           >
             ACCOUNT HISTORY
           </Typography>

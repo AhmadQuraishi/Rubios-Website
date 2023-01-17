@@ -1431,7 +1431,7 @@ const Product = () => {
                                               ).toFixed(2)}`}
                                               style={{
                                                 fontSize: '11px',
-                                                fontFamily: "'sunbornsans_one' !important",
+                                                fontFamily: "'Sunborn-Sansone' !important",
                                                 color: '#0075BF',
                                               }}
                                             >
@@ -1446,7 +1446,7 @@ const Product = () => {
                                               <span
                                                 style={{
                                                   fontSize: '16px',
-                                                  fontFamily: "'Libre Franklin' !important",
+                                                  fontFamily: "'Librefranklin-Regular' !important",
                                                   color: '#AAA',
                                                   marginTop: '-2%',
                                                 }}
@@ -1469,7 +1469,7 @@ const Product = () => {
                                             <span
                                               style={{
                                                 fontSize: '11px',
-                                                fontFamily: "'sunbornsans_one' !important",
+                                                fontFamily: "'Sunborn-Sansone' !important",
                                                 color: '#0075BF',
                                               }}
                                             >
@@ -1483,7 +1483,7 @@ const Product = () => {
                                               <span
                                                 style={{
                                                   fontSize: '16px',
-                                                  fontFamily: "'Libre Franklin' !important",
+                                                  fontFamily: "'Librefranklin-Regular' !important",
                                                   color: '#AAA',
                                                   marginTop: '-2%',
                                                 }}
@@ -1495,7 +1495,7 @@ const Product = () => {
                                             <span
                                               style={{
                                                 fontSize: '11px',
-                                                fontFamily: "'sunbornsans_one' !important",
+                                                fontFamily: "'Sunborn-Sansone' !important",
                                                 color: '#0075BF',
                                               }}
                                             >
