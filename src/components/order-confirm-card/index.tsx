@@ -29,7 +29,7 @@ const pickupTime = (order: any) => {
       <Typography
         variant="h2"
         className="label"
-        sx={{fontSize: "11pt !important",fontFamily: "'Sunborn_Sansone'!important"}}
+        sx={{fontSize: "11pt !important",fontFamily: "'Sunborn-Sansone'!important"}}
         title={
           order && order.deliverymode === DeliveryModeEnum.dispatch
             ? 'DELIVERY TIME'
@@ -116,7 +116,7 @@ const vehicleInfo = (order: any) => {
 const pickupAddress = (restaurant: any, order: any) => {
   return (
     <>
-      <Typography variant="h2" className="label" sx={{fontFamily: "'Sunborn_Sansone' !important"}}>
+      <Typography variant="h2" className="label" sx={{fontFamily: "'Sunborn-Sansone' !important"}}>
         {order && order.deliverymode ? locationTitle(order.deliverymode) : ''}
       </Typography>
       <Typography
@@ -220,7 +220,7 @@ const OrderConfirmedCard = ({
                   title="ORDER CONFIRMED"
                   sx={{
                     color: '#0075BF',
-                    fontFamily: "'Sunborn_Sansone'!important",
+                    fontFamily: "'Sunborn-Sansone'!important",
                     fontSize: { xs: '14px !important' },
                     fontWeight: 400,
                     textTransform: 'uppercase',

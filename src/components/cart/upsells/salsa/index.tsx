@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     textTransform: 'uppercase',
     fontSize: '25px !important',
     fontWeight: '700',
-    fontFamily: "'Sunborn_Sansone' !important",
+    fontFamily: "'Sunborn-Sansone' !important",
     padding: '10px 0px 18px 0px',
   },
 }));

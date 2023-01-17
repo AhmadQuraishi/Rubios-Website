@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     textTransform: 'uppercase',
     fontSize: '25px !important',
     fontWeight: '700',
-    fontFamily: "'Sunborn_Sansone' !important",
+    fontFamily: "'Sunborn-Sansone' !important",
     padding: '0px 0px 0px 0px',
     lineHeight: '1.0 !important',
   },
@@ -75,7 +75,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   smallLink: {
     color: '#0075BF !important',
     fontSize: '11px !important',
-    fontFamily: "'Sunborn_Sansone' !important",
+    fontFamily: "'Sunborn-Sansone' !important",
     textDecoration: 'underline',
     display: 'inline',
     cursor: 'pointer',
@@ -84,7 +84,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   disabledLink: {
     color: '#ccc !important',
     fontSize: '11px !important',
-    fontFamily: "'Sunborn_Sansone' !important",
+    fontFamily: "'Sunborn-Sansone' !important",
     display: 'inline',
     cursor: 'default',
     textDecoration: 'underline',

@@ -275,7 +275,7 @@ const StoreInfoBar = () => {
                   color="#fff"
                   textTransform="uppercase"
                   lineHeight={1.3}
-                  fontFamily= "'Sunborn_Sansone' !important"
+                  fontFamily= "'Sunborn-Sansone' !important"
                   sx={{
                     fontSize: {
                       xs: '30px !important',

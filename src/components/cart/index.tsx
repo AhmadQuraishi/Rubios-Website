@@ -88,7 +88,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     textTransform: 'uppercase',
     fontSize: '25px !important',
     fontWeight: '700',
-    fontFamily: "'Sunborn_Sansone' !important",
+    fontFamily: "'Sunborn-Sansone' !important",
     padding: '10px 0px 18px 0px',
   },
   crossIcon: {
@@ -105,7 +105,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   smallLink: {
     color: '#0075BF !important',
     fontSize: '11px !important',
-    fontFamily: "'Sunborn_Sansone' !important",
+    fontFamily: "'Sunborn-Sansone' !important",
     textDecoration: 'underline !important',
     display: 'inline',
     cursor: 'pointer',
@@ -115,7 +115,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   disabledLink: {
     color: '#ccc !important',
     fontSize: '11px !important',
-    fontFamily: "'Sunborn_Sansone' !important",
+    fontFamily: "'Sunborn-Sansone' !important",
     display: 'inline',
     cursor: 'default',
     textDecoration: 'underline',
@@ -1187,7 +1187,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         width: '100%',
                         borderRadius: 0,
                         padding: '30px',
-                        fontFamily: "'Sunborn_Sansone'!important",
+                        fontFamily: "'Sunborn-Sansone'!important",
                         fontSize: '10pt',
                       }}
                     >
@@ -1619,7 +1619,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                   borderRadius: 0,
                   padding: '30px 10px',
                   fontSize: '16px',
-                  fontFamily: "'Sunborn_Sansone'!important",
+                  fontFamily: "'Sunborn-Sansone'!important",
                 }}
                 title="Checkout"
                 aria-label="Checkout"
@@ -1638,7 +1638,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                   borderRadius: 0,
                   padding: '30px 10px',
                   fontSize: '16px',
-                  fontFamily: "'Sunborn_Sansone'!important",
+                  fontFamily: "'Sunborn-Sansone'!important",
                 }}
                 title="Checkout"
                 aria-label="Checkout Button  disabled"

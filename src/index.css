@@ -34,7 +34,8 @@
 
 @font-face {
   font-family: 'Sunborn-Sansone';
-  src: url('assets/fonts/sunborn-sansone-webfont.ttf') format('truetype');
+  src: url('assets/fonts/sunborn-sansone-webfont.woff2') format('woff2'),
+  url('assets/fonts/sunborn-sansone-webfont.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 
@@ -67,21 +68,21 @@
   font-family: 'Librefranklin-Light' !important;
 }
 .sunbornsans-one {
-      font-family: 'Sunborn_Sansone' !important;
+      font-family: 'Sunborn-Sansone' !important;
 }
 h1 {
-  font-family: 'Sunborn_Sansone' !important;
+  font-family: 'Sunborn-Sansone' !important;
   color:  #062C43;
   font-size: 25px !important;
 }
 
 h5 {
-  font-family: 'Sunborn_Sansone' !important;
+  font-family: 'Sunborn-Sansone' !important;
   color: #414141;
 }
 
 h6 {
-  font-family: 'Sunborn_Sansone' !important;
+  font-family: 'Sunborn-Sansone' !important;
   font-size: 16px !important;
   color: #525252;
 }
@@ -107,7 +108,7 @@ h6 {
 
 .custom-btn,
 button {
-  font-family: 'Sunborn_Sansone'!important;
+  font-family: 'Sunborn-Sansone'!important;
   font-size: 15px;
   height: 50px;
   box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.2) !important;
@@ -224,7 +225,7 @@ button {
 .MuiTextField-root .MuiInputLabel-root.MuiFormLabel-filled,
 .MuiTextField-root .MuiInputLabel-root.MuiFormLabel-filled.Mui-focused,
 .MuiTextField-root .MuiInputLabel-root.Mui-error {
-  font-family: 'Sunborn_Sansone' !important;
+  font-family: 'Sunborn-Sansone' !important;
   padding: 20px 0px 0px 9px;
   color:  #062C43;
   font-size: 10px;
@@ -252,7 +253,7 @@ button {
 .MuiFormControl-root .MuiInputLabel-root.Mui-focused,
 .MuiFormControl-root .MuiInputLabel-root.MuiFormLabel-filled,
 .MuiFormControl-root .MuiInputLabel-root.MuiFormLabel-filled.Mui-focused {
-  font-family: 'Sunborn_Sansone' !important;
+  font-family: 'Sunborn-Sansone' !important;
   padding: 20px 0px 0px 9px;
   color: #062C43;
   font-size: 10px;
@@ -302,7 +303,7 @@ fieldset {
   display: inline-block !important;
   text-align: center;
   font-size: 12px !important;
-  font-family: 'Sunborn_Sansone' !important;
+  font-family: 'Sunborn-Sansone' !important;
   padding: 8px 0px !important;
   letter-spacing: 1.5px !important;
 }
@@ -327,10 +328,10 @@ fieldset {
 
 .mobile-field .MuiInputLabel-root.Mui-focused,
 .mobile-field .MuiInputLabel-root.Mui-focused.Mui-error {
-  font-family: 'Sunborn_Sansone' !important;
+  font-family: 'Sunborn-Sansone' !important;
   padding: 20px 0px 0px 9px !important;
   font-size: 10px !important;
-font-family: 'Sunborn_Sansone' !important;
+font-family: 'Sunborn-Sansone' !important;
   font-weight: 400;
   font-size: 1rem;
   line-height: 1.4375em;
@@ -361,14 +362,14 @@ font-family: 'Sunborn_Sansone' !important;
 }
 
 .mobile-field .MuiInputLabel-root.MuiFormLabel-filled.Mui-focused {
-  font-family: 'Sunborn_Sansone' !important;
+  font-family: 'Sunborn-Sansone' !important;
   padding: 20px 0px 0px 9px !important;
   color: #062C43 !important;
   font-size: 10px !important;
 }
 
 .mobile-field-label {
-  font-family: 'Sunborn_Sansone' !important;
+  font-family: 'Sunborn-Sansone' !important;
   padding: 20px 0px 0px 9px !important;
   color: #062C43 !important;
   font-size: 10px !important;
@@ -484,7 +485,7 @@ font-family: 'Sunborn_Sansone' !important;
   }
 }
 .css-bdhsul-MuiTypography-root-MuiDialogTitle-root {
-  font-family: 'Sunborn_Sansone' !important;
+  font-family: 'Sunborn-Sansone' !important;
 }
 .css-ahj2mt-MuiTypography-root {
   font-family: 'Librefranklin-Light' !important;

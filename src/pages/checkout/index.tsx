@@ -1007,7 +1007,7 @@ const Checkout = () => {
                               variant="h3"
                               className="label"
                               sx={{    fontSize: '11pt!important',
-                                fontFamily: "'Sunborn_Sansone'!important",letterSpacing:"0.03562em"}}
+                                fontFamily: "'Sunborn-Sansone'!important",letterSpacing:"0.03562em"}}
                               title="WHO'S IS PICKING UP?"
                             >
                               WHO'S PICKING UP?
@@ -1032,7 +1032,7 @@ const Checkout = () => {
                               className="label"
                               title="WHO'S IS PICKING UP?"
                               sx={{    fontSize: '11pt!important',
-                                fontFamily: "'Sunborn_Sansone'!important", letterSpacing:"0.03562em"}}
+                                fontFamily: "'Sunborn-Sansone'!important", letterSpacing:"0.03562em"}}
                             >
                               WHO'S PICKING UP?
                             </Typography>
@@ -1054,7 +1054,7 @@ const Checkout = () => {
                             <Typography
                               variant="caption"
                               className="label"
-                              sx={{fontSize: "11pt !important",fontFamily: "'Sunborn_Sansone'!important",letterSpacing:"0.03562em"}}
+                              sx={{fontSize: "11pt !important",fontFamily: "'Sunborn-Sansone'!important",letterSpacing:"0.03562em"}}
                               title="WHO'S IS PICKING UP?"
                             >
                               WHERE TO DELIVER
@@ -1078,7 +1078,7 @@ const Checkout = () => {
                               variant="caption"
                               className="label"
                               sx={{    fontSize: '11pt!important',
-                                fontFamily: "'Sunborn_Sansone'!important",letterSpacing:"0.03562em"}}
+                                fontFamily: "'Sunborn-Sansone'!important",letterSpacing:"0.03562em"}}
                               title="WHO'S IS PICKING UP?"
                             >
                               WHO's ORDERING?
@@ -1089,7 +1089,7 @@ const Checkout = () => {
                               variant="h1"
                               sx={{fontSize: '29px !important', marginBottom: '0px', fontFamily: "'GritSans-Bold' !important",letterSpacing:"0.03562em" }}
                               title="DELIVERY INFO"
-                              style={{    fontSize: '11pt!important',fontFamily: "'Sunborn_Sansone'!important"}}
+                              style={{    fontSize: '11pt!important',fontFamily: "'Sunborn-Sansone'!important"}}
                             >
                               DINE IN INFO
                             </Typography>
@@ -1251,7 +1251,7 @@ const Checkout = () => {
                     id={'place-order-button'}
                     variant="contained"
                     title="PLACE ORDER"
-                    sx={{fontFamily: "'Sunborn_Sansone'!important",fontSize: "11pt !important",}}
+                    sx={{fontFamily: "'Sunborn-Sansone'!important",fontSize: "11pt !important",}}
                   >
                     PLACE ORDER
                   </Button>

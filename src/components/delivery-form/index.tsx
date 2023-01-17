@@ -225,7 +225,7 @@ const DeliveryForm = ({
                   <Typography
                     variant="body1"
                     className="label"
-                    fontFamily= {"'Sunborn_Sansone'!important"}
+                    fontFamily= {"'Sunborn-Sansone'!important"}
                     fontSize={"11pt !important"}
                     style={{
                       paddingTop: '10px',

@@ -88,7 +88,7 @@
   line-height: 20px;
   letter-spacing: 2px;
   text-transform: uppercase;
-  font-family: 'Sunborn_Sansone' !important;
+  font-family: 'Sunborn-Sansone' !important;
   color: #0075bf;
   font-size: 15px;
   font-weight: 600;
@@ -303,7 +303,7 @@
   .expire {
   font-size: 11px;
   color: #062C43;
-  font-family: 'Sunborn_Sansone' !important;
+  font-family: 'Sunborn-Sansone' !important;
   display: block;
   padding: 3px 0px 5px 0px;
 }
@@ -359,7 +359,7 @@
 }
 #reward-points-container .message-panel .low-head {
   font-size: 18px;
-  font-family: 'Sunborn_Sansone' !important;
+  font-family: 'Sunborn-Sansone' !important;
   text-transform: uppercase;
   color: #2b4b62;
   margin: 15px 0px 5px 0;
@@ -449,7 +449,7 @@
     .expire {
     font-size: 11px;
     color: #062C43;
-    font-family: 'Sunborn_Sansone' !important;
+    font-family: 'Sunborn-Sansone' !important;
     display: block;
     padding: 3px 0px 0px 0px;
   }

@@ -35,7 +35,7 @@ import { isLoginUser } from '../../helpers/auth';
 import "./index.css";
 const useStyles = makeStyles((theme: Theme) => ({
   heading: {
-    fontFamily: "'Sunborn_Sansone'!important",
+    fontFamily: "'Sunborn-Sansone'!important",
     color: "#0075BF !important",
     fontSize: '25px !important',
     textTransform: 'uppercase',
@@ -425,7 +425,7 @@ const CategoryList = () => {
                 sx={{
                   fontSize: '16px',
                   fontWeight: '700',
-                  fontFamily: "'Sunborn_Sansone' !important",
+                  fontFamily: "'Sunborn-Sansone' !important",
                   textTransform: 'uppercase',
                 }}
               >
@@ -528,7 +528,7 @@ const CategoryList = () => {
                 variant="scrollable"
                 //scrollButtons
                 allowScrollButtonsMobile
-                sx={{ fontFamily: "'Sunborn_Sansone' !important", }}
+                sx={{ fontFamily: "'Sunborn-Sansone' !important", }}
                 role="region"
                 aria-label="Food Menu"
               >
@@ -541,7 +541,7 @@ const CategoryList = () => {
                     title={item.name}
                     
                     sx={{
-                      fontFamily: "'Sunborn_Sansone' !important",
+                      fontFamily: "'Sunborn-Sansone' !important",
                       padding: '10px 0px',
                       marginRight: '20px',
                       fontSize:"15px",

@@ -122,7 +122,7 @@ const CategoryList = () => {
                 <Typography
                   variant="h1"
                   title="GO AHEAD, SURF the MENU."
-                  sx={{ marginBottom: '20px',fontFamily: "'Sunborn_Sansone' !important", }}
+                  sx={{ marginBottom: '20px',fontFamily: "'Sunborn-Sansone' !important", }}
                 >
                   GO AHEAD, SURF the MENU.
                 </Typography>
@@ -181,7 +181,7 @@ const CategoryList = () => {
 
                   sx={{
                     color: "#0075BF !important",
-                    fontFamily: "'Sunborn_Sansone' !important",
+                    fontFamily: "'Sunborn-Sansone' !important",
                     minWidth: 'auto',
                     padding: '12px 0px',
                     margin: '0px 16px',

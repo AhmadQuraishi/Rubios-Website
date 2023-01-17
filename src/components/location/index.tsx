@@ -559,7 +559,7 @@ const LocationCard = (props: any) => {
               <Typography
                 variant="h2"
                 sx={{
-                  fontFamily: "'Sunborn_Sansone' !important",
+                  fontFamily: "'Sunborn-Sansone' !important",
                   color: '#062C43 !important',
                   fontSize: '36px !important',
                   textTransform: 'uppercase',

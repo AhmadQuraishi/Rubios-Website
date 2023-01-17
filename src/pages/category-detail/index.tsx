@@ -13,7 +13,7 @@ import Page from '../../components/page-title';
 
 const useStyles = makeStyles((theme: Theme) => ({
   heading: {
-    fontFamily: "'Sunborn_Sansone' !important",
+    fontFamily: "'Sunborn-Sansone' !important",
     color: '#0075BF',
     fontSize: '25px !important',
     textTransform: 'uppercase',

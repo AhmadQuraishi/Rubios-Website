@@ -36,14 +36,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   cal: {
     paddingTop: '10px',
-    fontFamily: "'Sunborn_Sansone' !important",
+    fontFamily: "'Sunborn-Sansone' !important",
     fontSize: '18px',
     fontWeight: 600,
     color: theme.palette.primary.main,
   },
   price: {
     paddingTop: '10px',
-    fontFamily: "'Sunborn_Sansone' !important",
+    fontFamily: "'Sunborn-Sansone' !important",
     fontSize: '18px',
     fontWeight: 600,
     color: theme.palette.secondary.main,
@@ -140,7 +140,7 @@ const ProductListing = (props: any) => {
                       variant="h2"
                       title={'FEATURED'}
                       className="product-label"
-                      sx={{fontFamily: "'Sunborn_Sansone' !important"}}
+                      sx={{fontFamily: "'Sunborn-Sansone' !important"}}
                     >
                       FEATURED
                     </Typography>

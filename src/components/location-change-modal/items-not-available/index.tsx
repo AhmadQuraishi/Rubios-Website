@@ -27,7 +27,7 @@ export const ItemsNotAvailableComponent = ({ items }: any) => {
               color: '#062C43 !important',
               fontSize: {xs: "32px !important", lg: '27px !important', md: '27px !important', sm:'27px !important'},
               fontWeight: '900',
-              fontFamily: "'Sunborn_Sansone' !important",
+              fontFamily: "'Sunborn-Sansone' !important",
               alignItems: 'center',
             }}
           >

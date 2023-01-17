@@ -595,7 +595,7 @@ export const OrderTypeDialog = (props: any) => {
                             //   changeOrderType('dispatch');
                             // }}
                             sx={{
-                              fontFamily: "'Sunborn_Sansone' !important",
+                              fontFamily: "'Sunborn-Sansone' !important",
                               fontSize: '15px',
                               height: '50px',
                               width: {lg:"310px !important", md: "310px !important", xs: "250px !important", sm: "310px !important"},

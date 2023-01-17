@@ -231,7 +231,7 @@ const OrderTime = ({ orderType }: any) => {
           <Grid item xs={12}>
             <Typography
               variant="h3"
-              sx={{fontSize: "11pt !important",fontFamily: "'Sunborn_Sansone'!important",letterSpacing:"0.03562em"}}
+              sx={{fontSize: "11pt !important",fontFamily: "'Sunborn-Sansone'!important",letterSpacing:"0.03562em"}}
               title={
                 orderType === DeliveryModeEnum.dinein
                   ? 'DATE'

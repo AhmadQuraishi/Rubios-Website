@@ -63,8 +63,8 @@ const RegisterConfirmation = ({ id }: any) => {
       //fontWeight: state.isFocused ? '800' : '400',
       transition: ' 0.1s ease',
       fontFamily: state.isFocused
-        ? "'Sunborn_Sansone' !important"
-        : "'Sunborn_Sansone' !important",
+        ? "'Sunborn-Sansone' !important"
+        : "'Sunborn-Sansone' !important",
       transform: state.selectProps.isFocused,
     }),
     dropdownIndicator: (base: any, state: any) => ({

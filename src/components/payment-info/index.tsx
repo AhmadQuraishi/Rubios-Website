@@ -342,7 +342,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                         aria-label="Change Payment Method"
                         onClick={() => setDisplaySavedCards(true)}
                         id={'add-credit-card'}
-                        sx={{fontFamily: "'Sunborn_Sansone'!important",}}
+                        sx={{fontFamily: "'Sunborn-Sansone'!important",}}
                       >
                         Change Payment Method
                       </Button>
@@ -357,7 +357,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                   onClick={() => handleHideShow()}
                   tabIndex={!hideShow ? 0 : -1}
                   id={'add-credit-card'}
-                  sx={{fontFamily: "'Sunborn_Sansone'!important",}}
+                  sx={{fontFamily: "'Sunborn-Sansone'!important",}}
                 >
                   Add Credit card
                 </Button>

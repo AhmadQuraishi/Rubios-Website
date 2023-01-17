@@ -1431,7 +1431,7 @@ const Product = () => {
                                               ).toFixed(2)}`}
                                               style={{
                                                 fontSize: '11px',
-                                                fontFamily: "'Sunborn_Sansone' !important",
+                                                fontFamily: "'Sunborn-Sansone' !important",
                                                 color: '#0075BF',
                                               }}
                                             >
@@ -1469,7 +1469,7 @@ const Product = () => {
                                             <span
                                               style={{
                                                 fontSize: '11px',
-                                                fontFamily: "'Sunborn_Sansone' !important",
+                                                fontFamily: "'Sunborn-Sansone' !important",
                                                 color: '#0075BF',
                                               }}
                                             >
@@ -1495,7 +1495,7 @@ const Product = () => {
                                             <span
                                               style={{
                                                 fontSize: '11px',
-                                                fontFamily: "'Sunborn_Sansone' !important",
+                                                fontFamily: "'Sunborn-Sansone' !important",
                                                 color: '#0075BF',
                                               }}
                                             >

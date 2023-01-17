@@ -159,8 +159,8 @@ const RegisterForm = () => {
       transition: ' 0.1s ease',
       letterSpacing: '0.25008px',
       fontFamily: state.isFocused
-        ? "'Sunborn_Sansone' !important"
-        : "'Sunborn_Sansone' !important",
+        ? "'Sunborn-Sansone' !important"
+        : "'Sunborn-Sansone' !important",
       transform: state.selectProps.isFocused,
     }),
     singleValue: (provided: any, state: any) => {

@@ -150,7 +150,7 @@ input[type=number] {
 .add-credit-card-button {
   border-radius: 0 !important;
   letter-spacing: 2.25px !important;
-  font-family: "'Sunborn_Sansone'!important";
+  font-family: "'Sunborn-Sansone'!important";
   position: relative;
   background-color: transparent;
   outline: 0;
@@ -210,7 +210,7 @@ input[type=number] {
 .modal-header .heading {
   color: rgba(0, 0, 0, 0.87);
   margin: 0;
-  font-family: 'Sunborn_Sansone' !important;
+  font-family: 'Sunborn-Sansone' !important;
   font-weight: 500;
   font-size: 1.25rem !important;
   line-height: 1.6;
@@ -220,7 +220,7 @@ input[type=number] {
 }
 
 .mobile-field-label {
-  font-family: 'Sunborn_Sansone' !important;
+  font-family: 'Sunborn-Sansone' !important;
   padding: 20px 0px 0px 9px !important;
   color: #062C43 !important;
   font-size: 10px !important;
