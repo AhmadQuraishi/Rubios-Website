@@ -61,7 +61,10 @@ const vehicleInfo = (order: any) => {
   return (
     <>
       <Grid xs={12} sm={6} md={6} lg={12} className="adjust-space">
-        <Typography variant="h2" className="label" title="VEHICLE INFO">
+        <Typography 
+          variant="h2"
+          className="label"
+          sx={{fontSize: "11pt !important",fontFamily: "'Sunborn-Sansone'!important"}} title="VEHICLE INFO">
           {order.deliverymode === DeliveryModeEnum.curbside
             ? 'VEHICLE INFO'
             : 'DINE IN INFO'}
