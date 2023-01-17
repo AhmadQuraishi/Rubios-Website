@@ -1,8 +1,8 @@
 import { deliveryAddressTypes as Type } from '../../../types/location/delivery-address';
 
 const initialState = {
-  loading: null,
-  address: false,
+  loading: false,
+  address: null,
   error: {},
 };
 
