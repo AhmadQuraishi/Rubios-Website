@@ -208,7 +208,7 @@ const Welcome = () => {
   };
   const reoderHandler = (vendorid: number) => {
     dispatch(getResturantInfoRequest(vendorid));
-    dispatch(getUpsellsRequest(basketObj?.basket?.id, vendorid));
+    // dispatch(getUpsellsRequest(basketObj?.basket?.id, vendorid));
     setIsReoder(true);
     setIsRestaurant(true);
   };
