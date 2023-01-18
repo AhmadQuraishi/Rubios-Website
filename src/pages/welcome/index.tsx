@@ -160,23 +160,23 @@ const Welcome = () => {
     }
   }, [restaurant, orderType]);
 
-  const navigateAfterSuccess = () => {
-    setOpenOrder(false);
-    if (isReoder) {
-      navigate('/checkout');
-    }
-    if (isEdit) {
-      navigate(restaurant ? '/menu/' + restaurant.slug : '/');
-      // handleCart();
-    }
-    displayToast(
-      'SUCCESS',
-      'The items from your recent order have been added to your cart.',
-    );
-    setIsEdit(false);
-    setIsReoder(false);
-    setIsbasket(false);
-  };
+  // const navigateAfterSuccess = () => {
+  //   setOpenOrder(false);
+  //   if (isReoder) {
+  //     navigate('/checkout');
+  //   }
+  //   if (isEdit) {
+  //     navigate(restaurant ? '/menu/' + restaurant.slug : '/');
+  //     // handleCart();
+  //   }
+  //   displayToast(
+  //     'SUCCESS',
+  //     'The items from your recent order have been added to your cart.',
+  //   );
+  //   setIsEdit(false);
+  //   setIsReoder(false);
+  //   setIsbasket(false);
+  // };
   useEffect(() => {
     if (
       basketObj &&
@@ -185,8 +185,8 @@ const Welcome = () => {
       basketObj.basket.products.length > 0 &&
       isbasket
     ) {
-      navigateAfterSuccess();
-      // setOpenOrder(true);
+      // navigateAfterSuccess();
+      setOpenOrder(true);
       return;
     } else if (error && error.message) {
       setIsEdit(false);
