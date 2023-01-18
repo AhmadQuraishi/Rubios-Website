@@ -4,26 +4,24 @@ import {userTypes} from "../../../../types/user";
 const INITIAL_STATE = {
   loading: false,
   upsells: null,
+  vendorId: null,
   error: {},
 };
 
 const getUpsellsReducer = (state = INITIAL_STATE, action: any) => {
   switch (action.type) {
     case basketActionsTypes.GET_UPSELLS_REQUEST:
-    case basketActionsTypes.SET_BASKET_REQUEST:
-    case basketActionsTypes.CREATE_BASKET_FROM_PREV:
-    case basketActionsTypes.CREATE_BASKET_FROM_FAV_ORDER_REQUEST:
-    case basketActionsTypes.SUBMIT_BASKET_SINGLE_PAYMENT_SUCCESS:
-      return { ...state, loading: true, upsells: null, error: {} };
+      return { ...state, loading: true, upsells: null, error: {}, vendorId: null };
     case basketActionsTypes.GET_UPSELLS_REQUEST_SUCCESS:
       return {
         ...state,
         loading: false,
-        upsells: action.payload,
+        upsells: action.payload.data,
+        vendorId: action.payload.vendorId,
         error: {},
       };
     case basketActionsTypes.GET_UPSELLS_REQUEST_FAILURE:
-      return { ...state, loading: false, error: action.error };
+      return { ...state, loading: false, error: action.error, vendorId: null, upsells: null };
     case userTypes.USER_LOGOUT:
       return {
         ...INITIAL_STATE,
