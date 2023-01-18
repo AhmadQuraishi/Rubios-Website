@@ -348,7 +348,7 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                       lg={5}
                     >
                       {account.billingmethod === 'creditcard' && (
-                        <Typography variant="h6" sx={{  fontFamily: "'Librefranklin-Regular' !important"}}>
+                        <Typography variant="h6" sx={{fontFamily: "'Librefranklin-Regular' !important"}}>
                           {account.cardlastfour
                             ? `x-${account.cardlastfour}`
                             : 'Credit Card'}
@@ -356,7 +356,7 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                       )}
                       {account.billingmethod === 'storedvalue' && (
                         <>
-                          <Typography variant="h6">
+                          <Typography variant="h6" sx={{fontFamily: "'Librefranklin-Regular' !important"}}>
                             {account.billingfields
                               ? `Gift Card x${giftCardLastFourDigits(account)}`
                               : account.cardlastfour
@@ -616,7 +616,7 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                           lg={5}
                         >
                           {account.billingmethod === 'creditcard' && (
-                            <Typography variant="h6">
+                            <Typography variant="h6" sx={{fontFamily: "'Librefranklin-Regular' !important"}}>
                               {account.cardlastfour
                                 ? `x-${account.cardlastfour}`
                                 : 'Credit Card'}
@@ -624,7 +624,7 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                           )}
                           {account.billingmethod === 'storedvalue' && (
                             <>
-                              <Typography variant="h6">
+                              <Typography variant="h6" sx={{fontFamily: "'Librefranklin-Regular' !important"}}>
                                 {account.billingfields
                                   ? `Gift Card x${giftCardLastFourDigits(
                                       account,

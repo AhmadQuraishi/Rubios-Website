@@ -354,9 +354,8 @@ const OrderDetails = ({ basket, tipPercentage, page }: any) => {
                 <Grid item xs={3} sm={3} md={3} lg={3}>
                   <Typography
                     align={'right'}
-                    variant="h6"
                     title={basket && basket.total.toFixed(2)}
-                    sx={{ fontFamily: "'Librefranklin-Bold' !important", fontSize: "16px !important",color: "#58595b", fontWeight: 'bold !important' }}
+                    sx={{ fontFamily: 'Librefranklin-Bold !important', fontSize: "16px !important",color: "#58595b", fontWeight: 'bold !important' }}
                   >
                     ${basket && basket.total.toFixed(2)}
                   </Typography>
