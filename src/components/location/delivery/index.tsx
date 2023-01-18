@@ -304,7 +304,7 @@ const DeliveryAddresses = (props: any) => {
           ) : (
             <>
               <Grid item xs={12}>
-                <Typography className={'delivery-heading-text'} variant="body2">
+                <Typography className={'delivery-heading-text'} variant="body2" sx={{fontFamily: "'GritSans-Bold' !important"}}>
                   DELIVERY ADDRESSES
                 </Typography>
                 <Typography

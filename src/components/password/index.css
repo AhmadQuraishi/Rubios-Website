@@ -22,7 +22,7 @@
   text-align: left;
 }
 .bday-text {
-  font-family: 'Poppins-Bold';
+  font-family: 'Sunborn-Sansone' !important;
   padding-right: 10px;
 }
 .birthday-button span {
@@ -30,7 +30,7 @@
 }
 .body-text {
   font-size: 15px;
-  font-family: 'Poppins-Medium', sans-serif !important;
+  font-family: 'Librefranklin-Regular' !important;
   color: #414141;
   padding-top: 8px;
 }

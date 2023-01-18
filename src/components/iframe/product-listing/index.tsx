@@ -19,30 +19,31 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: '100%',
   },
   title: {
-    color: theme.palette.secondary.main,
+    color: "#474747 !important",
     padding: '20px 0 10px 0',
     fontSize: '18px !important',
     fontWeight: '600 !important',
-    fontFamily: 'Poppins-Medium !important',
+    fontFamily: "'Librefranklin-Regular' !important",
     letterSpacing: '0.00938em !important',
+    
   },
   content: {
     color: theme.palette.secondary.main,
     fontSize: '14px',
     lineHeight: '7px',
-    fontFamily: 'Poppins-Medium !important',
+    fontFamily: "'GritSans-Bold' !important",
     letterSpacing: 0,
   },
   cal: {
     paddingTop: '10px',
-    fontFamily: 'Poppins-Bold !important',
+    fontFamily: "'Sunborn-Sansone' !important",
     fontSize: '18px',
     fontWeight: 600,
     color: theme.palette.primary.main,
   },
   price: {
     paddingTop: '10px',
-    fontFamily: 'Poppins-Bold !important',
+    fontFamily: "'Sunborn-Sansone' !important",
     fontSize: '18px',
     fontWeight: 600,
     color: theme.palette.secondary.main,
@@ -107,7 +108,8 @@ const ProductListing = (props: any) => {
               <div key={index} style={{ padding: 10 }}>
                 <Card
                   elevation={0}
-                  style={{ borderRadius: 0 }}
+                  style={{ borderRadius: 0}}
+                  sx={{backgroundColor: "transparent !important"}}
                   role="group"
                   aria-label={item.name}
                 >
@@ -138,6 +140,7 @@ const ProductListing = (props: any) => {
                       variant="h2"
                       title={'FEATURED'}
                       className="product-label"
+                      sx={{fontFamily: "'Sunborn-Sansone' !important"}}
                     >
                       FEATURED
                     </Typography>
@@ -151,6 +154,7 @@ const ProductListing = (props: any) => {
                       title={item.name}
                       className={classes.title}
                       sx={{
+                        
                         height: {
                           lg: '35px',
                           md: '50px',
@@ -172,7 +176,7 @@ const ProductListing = (props: any) => {
                         window.parent.location.href = `${process.env.REACT_APP_ORDERING_URL}`;
                       }}
                     >
-                      ORDER NOW
+                      ORDER
                     </Button>
                   </CardContent>
                 </Card>

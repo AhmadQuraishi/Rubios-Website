@@ -18,15 +18,15 @@
 .delivery-address-container .card-panel .card-content p {
   padding: 0;
   font-size: 15px;
-  font-family: 'Poppins-Medium', sans-serif !important;
+  font-family: 'Librefranklin-Regular' !important;
   display: block;
   color: #414141;
   padding-bottom: 2px;
 }
 
 .delivery-address-container .card-panel .card-content p b {
-  font-family: 'Poppins-Bold', sans-serif !important;
-  font-weight: 700;
+  font-family: 'Librefranklin-Regular' !important;
+  font-weight: bold;
 }
 
 .delivery-address-container a {
@@ -40,10 +40,10 @@
 
 .delivery-address-container .card-panel .small-button-panel .link {
   padding-left: 20px;
-  font-family: 'Poppins-Medium', sans-serif !important;
+  font-family: 'Librefranklin-Bold' !important;
   color: #b9b9b9;
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: bold;
   cursor: pointer;
 }
 

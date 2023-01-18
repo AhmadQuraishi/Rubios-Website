@@ -32,24 +32,26 @@ import { facebookSendEvent } from '../../redux/actions/facebook-conversion';
 import { facebookConversionTypes } from '../../redux/types/facebook-conversion';
 import { resetBasketRequest } from '../../redux/actions/basket';
 import { isLoginUser } from '../../helpers/auth';
-
+import "./index.css";
 const useStyles = makeStyles((theme: Theme) => ({
   heading: {
-    fontFamily: 'Poppins-Bold !important',
-    color: theme.palette.secondary.main,
+    fontFamily: "'Sunborn-Sansone'!important",
+    color: "#0075BF !important",
     fontSize: '25px !important',
     textTransform: 'uppercase',
     paddingBottom: '30px',
+    letterSpacing: '0.04833em !important',
   },
+  
   link: {
     textAlign: 'right',
     '& a': {
-      fontFamily: 'Poppins-Medium !important',
+      fontFamily: "'GritSans-Bold' !important",
       color: '#0069aa',
       fontSize: '13px',
       textTransform: 'uppercase',
       textDecoration: 'none',
-      paddingTop: '10px',
+      // paddingTop: '10px',
       display: 'block',
     },
   },
@@ -370,7 +372,7 @@ const CategoryList = () => {
     );
   };
   return (
-    <Page title={'Menu'} className="">
+    <Page title={'Menu'} description={'Satisfy your cravings for Baja-inspired, Mexican flavors.'} className="">
       <div style={{ minHeight: '500px' }}>
         <Typography variant="h1" className="sr-only">
           Main Menu
@@ -423,7 +425,7 @@ const CategoryList = () => {
                 sx={{
                   fontSize: '16px',
                   fontWeight: '700',
-                  fontFamily: 'Poppins-Bold',
+                  fontFamily: "'Sunborn-Sansone' !important",
                   textTransform: 'uppercase',
                 }}
               >
@@ -442,7 +444,7 @@ const CategoryList = () => {
                       borderRadius: 0,
                       padding: '30px 10px',
                       fontSize: '16px',
-                      fontFamily: "'Poppins-Medium', sans-serif !important;",
+                      fontFamily: "'GritSans-Bold' !important",
                       marginBottom: '10px',
                     }}
                     title="Checkout"
@@ -463,7 +465,7 @@ const CategoryList = () => {
                     borderRadius: 0,
                     padding: '30px 10px',
                     fontSize: '16px',
-                    fontFamily: "'Poppins-Medium', sans-serif !important;",
+                    fontFamily: "'GritSans-Bold' !important",
                     marginBottom: '10px',
                   }}
                   title="Checkout"
@@ -483,7 +485,8 @@ const CategoryList = () => {
                     borderRadius: 0,
                     padding: '30px 10px',
                     fontSize: '16px',
-                    fontFamily: "'Poppins-Medium', sans-serif !important;",
+                    fontFamily: "'GritSans-Bold' !important",
+
                   }}
                   title="Checkout"
                   onClick={() => changeRestaurant('delivery')}
@@ -507,6 +510,7 @@ const CategoryList = () => {
                 width: '100%',
                 background: '#FFF',
                 zIndex: '1099',
+                
                 padding: {
                   xs: '20px 5px 10px 20px',
                   sm: '20px 30px 5px 40px',
@@ -519,12 +523,12 @@ const CategoryList = () => {
               <Tabs
                 value={value}
                 onChange={handleChange}
-                textColor="secondary"
-                indicatorColor="primary"
+                // textColor="secondary"
+                // indicatorColor="primary"
                 variant="scrollable"
-                scrollButtons
+                //scrollButtons
                 allowScrollButtonsMobile
-                sx={{ fontFamily: 'Poppins-Medium !important' }}
+                sx={{ fontFamily: "'Sunborn-Sansone' !important", }}
                 role="region"
                 aria-label="Food Menu"
               >
@@ -535,11 +539,14 @@ const CategoryList = () => {
                     value={`${index}`}
                     label={item.name}
                     title={item.name}
-                    color="secondary.main"
+                    
                     sx={{
-                      fontFamily: 'Poppins-Medium !important',
+                      fontFamily: "'Sunborn-Sansone' !important",
                       padding: '10px 0px',
                       marginRight: '20px',
+                      fontSize:"15px",
+                      color: "#2B2929 !important" 
+                      
                     }}
                     tabIndex={0}
                     role="tab"
@@ -567,26 +574,30 @@ const CategoryList = () => {
                 position: 'relative',
               }}
             >
-              <Grid item xs={12}>
+              <Grid item xs={12} >
                 <div
                   id={'#panel-' + index}
                   style={{ position: 'absolute', top: '-120px' }}
                 ></div>
-                <Grid container>
+                <Grid container sx={{alignItems: "center"}}>
                   <Grid item xs={item.products.length > 4 ? 8 : 12}>
                     <Typography
                       variant="h2"
-                      className={classes.heading}
+                      className={`${classes.heading} rubios-menu-category`}
                       title={item.name}
                     >
                       {item.name}
                     </Typography>
                   </Grid>
                   {item.products.length > 4 && (
-                    <Grid item xs={4}>
+                    <Grid item xs={4} sx={{padding: "0px 0px 35px 0px"}}>
                       <Typography className={classes.link}>
-                        <Link to={`/category/${item.id}`} title="view all">
-                          view all →
+                        <Link to={`/category/${item.id}`} title="view all" style={{color: "#062C43"}}>
+                          view all <span style={{fontSize:"17px"}}><img
+                        // style={{ width: '75%', display: 'block' }}
+                        src={require('../../assets/imgs/arrow2.png')}
+                        alt="Login Icon"
+                      /></span>
                         </Link>
                       </Typography>
                     </Grid>
@@ -622,7 +633,7 @@ const CategoryList = () => {
             <Divider sx={{ borderColor: '#224c65' }} />
           </Grid>
           <Typography
-            sx={{ fontSize: '13px', color: '#214F66', fontStyle: 'italic' }}
+            sx={{ fontSize: '13px', color: '#062C43', fontStyle: 'italic', }}
             variant="caption"
             title="Due to potential cross-contact when preparing menu items, it is not possible to guarantee your meal is completely free of any particular allergen or ingredient. Impossible™ meat, fish, tortillas, veggies, toasted cheese and shellfish are cooked on the same grill."
           >

@@ -15,7 +15,7 @@
 }
 .order-history-card .card-panel .order-date {
   font-size: 11px;
-  font-family: 'Poppins-Medium', sans-serif !important;
+  font-family: 'Librefranklin-Regular' !important;
   display: block;
   margin-bottom: -2px;
 }
@@ -25,15 +25,16 @@
 }
 .order-history-card .card-panel .order-name {
   font-size: 20px;
-  font-family: 'Poppins-Medium', sans-serif !important;
+  font-family: 'Librefranklin-Regular' !important;
   display: block;
   color: #414141;
+  font-weight: bold;
   padding-bottom: 8px;
 }
 
 .order-history-card .card-panel .order-detail {
   font-size: 15px;
-  font-family: 'Poppins-Medium', sans-serif !important;
+  font-family: 'Librefranklin-Regular' !important;
   display: block;
   color: #414141;
   padding-bottom: 8px;
@@ -44,12 +45,13 @@
 }
 
 .order-history-card .card-panel .order-Link {
-  font-size: 15px;
-  font-family: 'Poppins-Bold', sans-serif !important;
+  font-size: 13px;
+  font-family: 'Librefranklin-Bold' !important;
   display: block;
   color: #2e75bf;
   padding-bottom: 0px;
   text-align: right;
+  font-weight: bold !important;
   text-transform: uppercase;
   position: absolute;
   bottom: 15px;

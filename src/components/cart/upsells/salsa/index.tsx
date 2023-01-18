@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     textTransform: 'uppercase',
     fontSize: '25px !important',
     fontWeight: '700',
-    fontFamily: 'Poppins-Bold !important',
+    fontFamily: "'Sunborn-Sansone' !important",
     padding: '10px 0px 18px 0px',
   },
 }));
@@ -36,19 +36,17 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
       let upsellsCategory: any = upsells.find(
         (obj: any) => obj.type === upsellsType,
       );
-      if (upsellsCategory && upsellsCategory.products) {
-        prod = upsellsCategory.products;
-      }
-
-      if (prod && prod.length) {
+      
+      if (upsellsCategory?.products?.length > 0) {
         const options: any = {};
-        prod = prod.map((obj: any) => {
+        prod = upsellsCategory.products.map((obj: any) => {
           const updatedProd = {
             ...obj,
             quantity: 0,
           };
           if (updatedProd?.options?.length > 0) {
-            if (updatedProd?.mandatory === false) {
+            if (updatedProd?.mandatory === false 
+              && updatedProd?.options?.findIndex((opt: any) => opt.id ===  55555555555) === -1) {
               const newOption = {
                 adjustsparentcalories: false,
                 adjustsparentprice: false,
@@ -79,7 +77,10 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
               updatedProd.options.unshift(newOption);
             }
 
-            options[`${updatedProd.id}`] = `${updatedProd.options[0].id}`;
+            options[`${updatedProd.id}`] = {
+              optionId: `${updatedProd.options[0].id}`,
+              cost: updatedProd.options[0].cost
+            } ;
           }
           return updatedProd;
         });
@@ -99,12 +100,12 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
         if (product.quantity > 0) {
           let choices: any = [];
           if (
-            optionSelected[product.id] &&
-            optionSelected[product.id] !== '55555555555'
+            optionSelected[product.id]?.optionId &&
+            optionSelected[product.id].optionId !== '55555555555'
           ) {
             choices = [
               {
-                choiceid: optionSelected[product.id],
+                choiceid: optionSelected[product.id].optionId,
               },
             ];
           }
@@ -239,8 +240,12 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
     fitContainer();
   };
 
-  const optionChange = (e: any, id: any) => {
-    setOptionSelected({ ...optionSelected, [id]: e.target.value });
+  const optionChange = (e: any, product: any) => {
+    const filterOpt = product?.options?.filter((opt: any) => opt.id === parseInt(e.target.value));
+    setOptionSelected({ ...optionSelected, [product.id]: {
+      optionId: e.target.value,
+      cost: filterOpt?.length && filterOpt[0]?.cost || 0,
+    }  });
   };
 
   const fitContainer = () => {
@@ -313,7 +318,7 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
           if (document.activeElement === firstFocusableElement) {
             // add focus for the last focusable element
             lastFocusableElement &&
-            (lastFocusableElement as HTMLElement)?.focus();
+              (lastFocusableElement as HTMLElement)?.focus();
             e.preventDefault();
           }
         } else {
@@ -321,7 +326,7 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
           if (document.activeElement === lastFocusableElement) {
             // if focused has reached to last focusable element then focus first focusable element after pressing tab
             firstFocusableElement &&
-            (firstFocusableElement as HTMLElement)?.focus(); // add focus for the first focusable element
+              (firstFocusableElement as HTMLElement)?.focus(); // add focus for the first focusable element
             e.preventDefault();
           }
         }
@@ -429,8 +434,8 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                           className={classes.cartTitle}
                           sx={{
                             display: 'inline',
-                            fontFamily: 'Poppins-Medium !important',
-
+                            fontFamily: "'Librefranklin-Regular' !important",
+                            fontWeight: "bold",
                             fontSize: {
                               lg: '12px !important',
                               xs: '14px !important',
@@ -444,7 +449,7 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                                 ? obj.name.slice(0, 30) + '...'
                                 : obj.name)
                           }
-                          {obj.cost > 0 && (
+                          {(obj.cost > 0 || optionSelected[obj.id]?.cost > 0) && (
                             <Grid
                               item
                               xs={12}
@@ -452,7 +457,7 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                               sx={{
                                 paddingTop: '5px',
                                 fontSize: '14px',
-                                fontFamily: 'Poppins-Bold',
+                                fontFamily: "'Librefranklin-Regular' !important",
                                 color: '#0075BF',
                                 display: 'flex',
                                 alignItems: 'center',
@@ -461,7 +466,7 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                               }}
                             >
                               +$
-                              {parseFloat(obj.cost).toFixed(2)}
+                              {parseFloat(obj?.cost > 0 && obj.cost || optionSelected[obj.id]?.cost).toFixed(2)}
                             </Grid>
                           )}
                           <>
@@ -480,11 +485,11 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                                 parent-select-option-id={obj.chainproductid}
                                 onClick={(e) => e.stopPropagation()}
                                 value={
-                                  (optionSelected && optionSelected[obj.id]) ||
+                                  (optionSelected[obj.id]?.optionId) ||
                                   ''
                                 }
                                 data-select-id={obj.chainproductid || '0'}
-                                onChange={(e) => optionChange(e, obj.id)}
+                                onChange={(e) => optionChange(e, obj)}
                               >
                                 {obj.options.map(
                                   (option: any, index: number) => (
@@ -634,7 +639,7 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                     borderRadius: 0,
                     padding: '30px 10px',
                     fontSize: '16px',
-                    fontFamily: "'Poppins-Medium', sans-serif !important;",
+                    fontFamily: "'GritSans-Bold' !important",
                   }}
                   title="Checkout"
                   aria-label="Checkout"

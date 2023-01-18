@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingBottom: '5px',
     textTransform: 'uppercase',
     [theme.breakpoints.down('sm')]: {
-      fontSize: '25px !important',
+      fontSize: '22px !important',
     },
   },
 }));
@@ -110,7 +110,7 @@ const PersonalInfo = () => {
       backgroundColor: state.isSelected ? 'lightgray' : '',
       marginTop: '0px',
       border: '0px',
-      fontFamily: 'Poppins-Regular, sans-serif !important',
+      fontFamily: "'Librefranklin-Regular' !important",
     }),
     menu: (base: any) => ({
       ...base,
@@ -135,7 +135,7 @@ const PersonalInfo = () => {
       border: 'none',
       cursor: 'pointer',
       boxShadow: '0px 0px 6px lightgray',
-      fontFamily: 'Poppins-Regular, sans-serif !important',
+      fontFamily: "'Librefranklin-Regular' !important",
     }),
     singleValue: (provided: any, state: any) => {
       const opacity = state.isDisabled ? 0.5 : 1;
@@ -334,7 +334,7 @@ const PersonalInfo = () => {
                         type="text"
                         name="email"
                         sx={{ width: '100%' }}
-                        value={values.email}
+                        value={values.email ? values.email : null}
                         onChange={handleChange}
                         error={Boolean(touched && errors.email)}
                         helperText={errors.email}
@@ -580,9 +580,8 @@ const PersonalInfo = () => {
                         <CardContent>
                           <Typography
                             variant="body2"
-                            className="body-text"
-                            title="Keep up to date on rewards, exclusive offers and new product
-                      launches."
+                            className="body-text-keep"
+                            title="Keep up to date on rewards, exclusive offers and new product launches."
                             sx={{ width: '100%' }}
                           >
                             Keep up to date on rewards, exclusive offers and new
@@ -598,6 +597,7 @@ const PersonalInfo = () => {
                                 name="emailnotification"
                               />
                               <Typography
+                              sx={{fontFamily: "Librefranklin-Regular !important"}}
                                 variant="caption"
                                 title="Email Notification"
                               >
@@ -612,6 +612,7 @@ const PersonalInfo = () => {
                                 name="pushnotification"
                               />
                               <Typography
+                              sx={{fontFamily: "Librefranklin-Regular !important"}}
                                 variant="caption"
                                 title="Push Notification"
                               >

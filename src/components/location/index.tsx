@@ -443,7 +443,7 @@ const LocationCard = (props: any) => {
           }
         } else {
           dispatch(
-            basketTransferRequest(basketObj?.basket?.id, restaurantObj.id),
+            basketTransferRequest(basketObj?.basket?.id, restaurantObj.id, basketObj?.basket?.deliverymode),
           );
           setNewRestaurant(restaurantObj);
           setActionPerform(true);
@@ -559,8 +559,8 @@ const LocationCard = (props: any) => {
               <Typography
                 variant="h2"
                 sx={{
-                  fontFamily: 'Poppins-Bold !important',
-                  color: '#214F66',
+                  fontFamily: "'Sunborn-Sansone' !important",
+                  color: '#062C43 !important',
                   fontSize: '36px !important',
                   textTransform: 'uppercase',
                 }}
@@ -581,7 +581,7 @@ const LocationCard = (props: any) => {
                     <Typography
                       variant="h2"
                       sx={{
-                        fontFamily: 'Poppins-Medium !important',
+                        fontFamily: "'GritSans-Bold' !important",
                         color: '#000000',
                         fontSize: '12px !important',
                       }}
@@ -623,7 +623,7 @@ const LocationCard = (props: any) => {
                   //   setSearchText('');
                   //   changeOrderType('pickup');
                   // }}
-                  className="selected-btn"
+                  className="selected-btn rubios-order-mode"
                   aria-current={alignment === 'Pick up'}
                   aria-label="PickUp, Activating this element will cause results to load below "
                 >
@@ -636,7 +636,7 @@ const LocationCard = (props: any) => {
                   //   setSearchText('');
                   //   changeOrderType('curbside');
                   // }}
-                  className="selected-btn"
+                  className="selected-btn rubios-order-mode"
                   aria-current={alignment === 'Curbside'}
                   aria-label=" Curbside, Activating this element will cause results to load below "
                 >
@@ -650,7 +650,7 @@ const LocationCard = (props: any) => {
                   //   setShowAllRestaurants(false);
                   //   changeOrderType('dispatch');
                   // }}
-                  className="selected-btn"
+                  className="selected-btn rubios-order-mode"
                   aria-current={alignment === 'Delivery'}
                   aria-label=" Delivery, Enter your address below to get nearby restaurants"
                 >
@@ -670,7 +670,7 @@ const LocationCard = (props: any) => {
                     autoComplete="false"
                     value={value}
                     type="text"
-                    onChange={(e) => {
+                    onChange={(e: any) => {
                       setRestaurantNotFound(false);
                       if (e.target.value === '') {
                         setValue('');
@@ -702,7 +702,7 @@ const LocationCard = (props: any) => {
                   value={searchText || ''}
                   autoComplete="false"
                   type="search"
-                  onChange={(e) => handleChange(e)}
+                  onChange={(e: any) => handleChange(e)}
                   sx={{ fontSize: '14px', paddingRight: '0px' }}
                   onKeyPress={(e: any) => {
                     if (e.key === 'Enter') {
@@ -891,6 +891,7 @@ const LocationCard = (props: any) => {
               )}
               <Grid container spacing={1}>
                 {orderType &&
+                  orderType !== 'dispatch' &&
                   !showAllRestaurants &&
                   !addCustomAddressCheck() &&
                   filteredRestaurants?.map(

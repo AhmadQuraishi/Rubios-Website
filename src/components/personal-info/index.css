@@ -20,17 +20,17 @@
 .profile-section .date {
   width: 100% !important;
   text-align: left;
-  font-family: 'Poppins Regular', sans-serif !important;
+  font-family: 'Librefranklin-Regular' !important;
   color: black !important;
   letter-spacing: 0px !important;
   font-size: 16px !important;
 }
 .bday-text {
-  font-family: 'Poppins-Bold';
+  font-family: 'Sunborn-Sansone' !important;
   position: absolute;
   top: 5px;
   font-size: 7.5px !important;
-  color: #214F66;
+  color: #062C43;
   line-height: 1.4375em !important;
   letter-spacing: 0.00938em !important;
 }
@@ -39,18 +39,23 @@
 }
 .body-text {
   font-size: 15px;
-  font-family: 'Poppins-Medium', sans-serif !important;
+  font-family: 'Librefranklin-Regular' !important;
   color: #414141;
   padding-top: 8px;
 }
-
+.body-text-keep {
+  font-size: 15px;
+  font-family: 'Librefranklin-Regular' !important;
+  color: #414141;
+  padding-top: 8px;
+}
 #fav-location {
   white-space: normal;
 }
 
 .fav-Profile-error-message {
   padding: 0;
-  font-family: "Roboto","Helvetica","Arial",sans-serif;
+  font-family: 'Sunborn-Sansone' !important;
   font-weight: 400;
   font-size: 0.75rem;
   line-height: 1.66;

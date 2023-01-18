@@ -69,6 +69,7 @@ const Checkout = () => {
   const signupFormRef = React.useRef<any>(null);
 
   const [runOnce, setRunOnce] = React.useState<boolean>(true);
+  const [callOnce, setCallOnce] = React.useState<boolean>(true);
   const [showIframeOnce, setShowIframeOnce] = React.useState<boolean>(true);
   const [removeCreditCardOnce, setRemoveCreditCardOnce] =
     React.useState<boolean>(true);
@@ -108,6 +109,8 @@ const Checkout = () => {
     (state: any) => state.userReducer,
   );
   const { singleLocation } = useSelector((state: any) => state.locationReducer);
+
+
 
   useEffect(() => {
     const LoadExternalScript = () => {
@@ -385,6 +388,8 @@ const Checkout = () => {
   //     setDefaultDeliveryAddress(defaultAddress);
   //   }
   // }, [userDeliveryAddresses]);
+
+
 
   React.useEffect(() => {
     if (basketObj.basket) {
@@ -958,6 +963,14 @@ const Checkout = () => {
 
     dispatch(userRegister(signUpObj, 'REGISTER_CHECKOUT', basket?.id));
   };
+  React.useEffect(() => {
+    console.log(callOnce,"callOnce");
+  if (basketObj?.basket?.products?.length == 0 && callOnce) {
+    navigate(restaurant ? '/menu/' + restaurant.slug : '/');
+    // displayToast('SUCCESS', 'Please add new items in a bag to proceed');
+    setCallOnce(!callOnce);
+
+}}, [basketObj.basket]);
 
   return (
     <Page title={'Checkout'} className="">
@@ -993,6 +1006,8 @@ const Checkout = () => {
                             <Typography
                               variant="h3"
                               className="label"
+                              sx={{    fontSize: '11pt!important',
+                                fontFamily: "'Sunborn-Sansone'!important",letterSpacing:"0.03562em"}}
                               title="WHO'S IS PICKING UP?"
                             >
                               WHO'S PICKING UP?
@@ -1001,7 +1016,7 @@ const Checkout = () => {
                           <Grid item xs={12}>
                             <Typography
                               variant="h1"
-                              style={{ marginBottom: '0px' }}
+                              sx={{ fontSize: '29px !important', marginBottom: '0px',color: "#062C43", fontFamily: "'GritSans-Bold' !important",letterSpacing:"0.03562em" }}
                               title="PICK UP INFO"
                             >
                               PICK UP INFO
@@ -1016,6 +1031,8 @@ const Checkout = () => {
                               variant="h3"
                               className="label"
                               title="WHO'S IS PICKING UP?"
+                              sx={{    fontSize: '11pt!important',
+                                fontFamily: "'Sunborn-Sansone'!important", letterSpacing:"0.03562em"}}
                             >
                               WHO'S PICKING UP?
                             </Typography>
@@ -1023,7 +1040,7 @@ const Checkout = () => {
                           <Grid item xs={12}>
                             <Typography
                               variant="h1"
-                              style={{ marginBottom: '0px' }}
+                              sx={{fontSize: '29px !important', marginBottom: '0px', fontFamily: "'GritSans-Bold' !important",letterSpacing:"0.03562em"}}
                               title="CURBSIDE PICK INFO"
                             >
                               CURBSIDE PICK UP
@@ -1037,6 +1054,7 @@ const Checkout = () => {
                             <Typography
                               variant="caption"
                               className="label"
+                              sx={{fontSize: "11pt !important",fontFamily: "'Sunborn-Sansone'!important",letterSpacing:"0.03562em"}}
                               title="WHO'S IS PICKING UP?"
                             >
                               WHERE TO DELIVER
@@ -1045,7 +1063,7 @@ const Checkout = () => {
                           <Grid item xs={12}>
                             <Typography
                               variant="h1"
-                              style={{ marginBottom: '0px' }}
+                              sx={{fontSize: '29px !important', marginBottom: '0px', fontFamily: "'GritSans-Bold' !important", color: "#062c43",letterSpacing:"0.03562em" }}
                               title="DELIVERY INFO"
                             >
                               DELIVERY INFO
@@ -1059,6 +1077,8 @@ const Checkout = () => {
                             <Typography
                               variant="caption"
                               className="label"
+                              sx={{    fontSize: '11pt!important',
+                                fontFamily: "'Sunborn-Sansone'!important",letterSpacing:"0.03562em"}}
                               title="WHO'S IS PICKING UP?"
                             >
                               WHO's ORDERING?
@@ -1067,8 +1087,9 @@ const Checkout = () => {
                           <Grid item xs={12}>
                             <Typography
                               variant="h1"
-                              style={{ marginBottom: '0px' }}
+                              sx={{fontSize: '29px !important', marginBottom: '0px', fontFamily: "'GritSans-Bold' !important",letterSpacing:"0.03562em" }}
                               title="DELIVERY INFO"
+                              style={{    fontSize: '11pt!important',fontFamily: "'Sunborn-Sansone'!important"}}
                             >
                               DINE IN INFO
                             </Typography>
@@ -1230,6 +1251,7 @@ const Checkout = () => {
                     id={'place-order-button'}
                     variant="contained"
                     title="PLACE ORDER"
+                    sx={{fontFamily: "'Sunborn-Sansone'!important",fontSize: "11pt !important",}}
                   >
                     PLACE ORDER
                   </Button>

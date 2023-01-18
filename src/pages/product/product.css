@@ -5,9 +5,9 @@
 }
 
 legend.heading-ui, h2.heading-ui {
-  font-size: 24px;
-  font-family: 'Poppins-Bold', sans-serif !important;
-  color: #214f66;
+  font-size: 18px;
+  font-family: 'GritSans-Bold' !important;
+  color: #0075BF;
   text-transform: uppercase;
 }
 
@@ -18,32 +18,35 @@ margin-bottom: 20px;
 }
 
 .product-detail h2.heading {
-  font-family: 'Poppins-Medium', sans-serif !important;
+  font-family: 'GritSans-Bold' !important;
   padding-bottom: 15px;
-  font-size: 32px;
-  color: #214f66;
+  font-size: 25px;
+  color: #0075BF;
   margin-top: 14px;
+  text-transform: uppercase;
 }
 
 .product-detail .label.bold {
-  font-family: 'Poppins-Bold', sans-serif !important;
-  font-size: 18px !important;
+  font-family: 'Librefranklin-Regular' !important;
+  font-size: 16px !important;
   text-transform: capitalize !important;
   line-height: 1.2;
+  font-weight: bold;
 }
 
 .product-detail .desc {
   margin-bottom: 25px;
-  color: #214f66;
-  font-family: 'Poppins-Regular', sans-serif !important;
+  color: #062C43;
+  font-family: 'Librefranklin-Regular' !important;
   font-size: 16px !important;
   white-space: pre-line;
 }
 
 .product-detail .price {
-  font-family: 'Poppins-Bold', SansSerif !important;
+  font-family: 'Librefranklin-Regular' !important;
   margin-bottom: 25px;
-  color: #214f66;
+  color: #0075BF;
+  font-weight: bold;
   font-size: 16px !important;
 }
 
@@ -56,7 +59,7 @@ margin-bottom: 20px;
 }
 
 .product-detail .single-product .custom-btn {
-  font-family: 'Poppins-Bold', sans-serif !important;
+  font-family: 'Sunborn-Sansone' !important;
   float: right;
   font-size: 13px;
   color: #1781c4;
@@ -86,7 +89,7 @@ input[type='check']:checked+label {
   text-transform: uppercase;
   color: #0069aa;
   font-weight: 500;
-  font-family: 'Poppins-Medium', sans-serif !important;
+  font-family: 'GritSans-Bold' !important;
   font-size: 18px;
   padding-bottom: 10px;
 }
@@ -130,7 +133,7 @@ input[type='check']:checked+label {
 }
 
 .product-detail .quantity button {
-  font-family: 'Poppins-Regular' !important;
+  font-family: 'Librefranklin-Regular' !important;
   font-size: 30px;
   color: #414141;
 }
@@ -240,7 +243,7 @@ input[type='check']:checked+label {
   width: 100%;
   box-sizing: border-box;
   border-radius: 10px;
-  font-family: 'Poppins-Medium';
+  font-family: 'Librefranklin-Regular' !important;
   font-size: 12px;
   color: #2b4b62;
 }
@@ -358,7 +361,7 @@ input[type='check']:checked+label {
   }
   .product-detail .add-to-bag {
     width: 300px;
-    font-size: 13px;
+    font-size: 12px;
   }
 
   .quantity-label {
@@ -389,7 +392,7 @@ input[type='check']:checked+label {
     border-top: none;
     border-bottom: none;
     font-size: 15px;
-    font-family: 'Poppins-Regular', sans-serif !important;
+    font-family: 'Librefranklin-Regular' !important;
     font-weight: bold;
 }
   .quantity-label {
@@ -447,10 +450,11 @@ input[type='check']:checked+label {
 .product-detail .menu-items .content-panel {
   padding: 10px 20px 10px 0px;
   cursor: pointer;
-  font-family: 'Poppins-Medium', sans-serif !important;
+  font-family: 'Librefranklin-Regular' !important;
   color: #2b4b62;
   /* max-width: 354px; */
   min-height: 140px;
+  font-weight: bold;
   font-size: 18px;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -506,7 +510,7 @@ input[type='check']:checked+label {
   display: block;
   font-size: 40px;
   font-weight: bold;
-  font-family: 'Poppins-Medium';
+  font-family: 'GritSans-Bold' !important;
   text-align: center;
   margin-top: -5px;
   -ms-transform: scaleX(-1) rotate(-35deg);
@@ -574,6 +578,6 @@ input[type='check']:checked+label {
   border-top: none;
   border-bottom: none;
   font-size: 15px;
-  font-family: 'Poppins-Regular', sans-serif !important;
+  font-family: 'Librefranklin-Regular' !important;
   font-weight: bold;
 }

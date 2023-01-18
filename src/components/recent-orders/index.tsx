@@ -33,6 +33,7 @@ const RecentOrders = () => {
   const [open, setOpen] = useState(false);
   const [favOrder, setFavOrder] = useState<any>(null);
   const [openOrder, setOpenOrder] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   // const [idtoFav, setId] = useState('');
   // const [items, setItems] = useState([]);
@@ -182,10 +183,13 @@ const RecentOrders = () => {
 
   return (
     <Fragment>
-      {/*<OrderTypeDialog*/}
-      {/*  openModal={openOrder}*/}
-      {/*  setOpenModal={navigateAfterSuccess}*/}
-      {/*/>*/}
+      <OrderTypeDialog
+        type={'RECENT_ORDER'}
+        openModal={openOrder}
+        setOpenModal={(value: any) => {
+          setOpenOrder(value);
+        }}
+      />
       {(loading || clickAction) && <OrderListSkeletonUI />}
       {recentorders && recentorders.length === 0 && !loading && (
         <Typography variant="h6" className="no-orders">

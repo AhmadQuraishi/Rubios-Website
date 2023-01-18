@@ -6,6 +6,8 @@
   color: black !important;
   justify-content: left !important;
   padding-left: 20px !important;
+  font-family: 'Librefranklin-Regular' !important;
+  font-weight: bold;
 }
 .copy-text {
   text-transform: initial;
@@ -14,7 +16,7 @@
 .body-text
 {
   font-size: 15px;
-  font-family: 'Poppins-Medium', sans-serif !important;
+  font-family: 'Librefranklin-Regular' !important;
   color: #414141;
   padding-top: 8px;
 }

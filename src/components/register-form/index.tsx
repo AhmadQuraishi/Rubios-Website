@@ -121,7 +121,7 @@ const RegisterForm = () => {
       backgroundColor: state.isSelected ? 'lightgray' : '',
       marginTop: '0px',
       border: '0px',
-      fontFamily: 'Poppins-Regular, sans-serif !important',
+      fontFamily: "'Librefranklin-Regular' !important"
     }),
     menu: (base: any) => ({
       ...base,
@@ -146,11 +146,11 @@ const RegisterForm = () => {
       border: 'none',
       cursor: 'pointer',
       boxShadow: '0px 0px 6px lightgray',
-      fontFamily: 'Poppins-Regular, sans-serif !important',
+      fontFamily: "'Librefranklin-Regular' !important",
     }),
     placeholder: (base: any, state: any) => ({
       ...base,
-      color: state.isFocused ? '#214F66' : 'rgba(0,0,0,0.6)',
+      color: state.isFocused ? '#062C43' : 'rgba(0,0,0,0.6)',
       padding: state.isFocused
         ? '0px 0px 35px 6px !important'
         : '0px 30px 0px 0px !important',
@@ -159,8 +159,8 @@ const RegisterForm = () => {
       transition: ' 0.1s ease',
       letterSpacing: '0.25008px',
       fontFamily: state.isFocused
-        ? "'Poppins-Bold', sans-serif !important"
-        : "'Roboto','Helvetica','Arial',sans-serif",
+        ? "'Sunborn-Sansone' !important"
+        : "'Sunborn-Sansone' !important",
       transform: state.selectProps.isFocused,
     }),
     singleValue: (provided: any, state: any) => {
@@ -371,7 +371,7 @@ const RegisterForm = () => {
                     name="email"
                     autoComplete="off"
                     sx={{ width: '100%' }}
-                    value={values.email}
+                    value={values.email ? values.email : null}
                     onChange={handleChange('email')}
                     onBlur={handleBlur('email')}
                     error={Boolean(touched.email && errors.email)}

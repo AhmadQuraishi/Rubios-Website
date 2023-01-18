@@ -23,13 +23,17 @@ const DeliveryForm = ({
   setShowSignUpGuest,
 }: any) => {
   const [open, setOpen] = useState(false);
+  const [hideIt, setHideIt] = useState(false);
   const { providerToken } = useSelector((state: any) => state.providerReducer);
 
   interface CustomProps {
     onChange: (event: { target: { name: string; value: string } }) => void;
     name: string;
   }
-
+  const handleClick = () => {
+    setOpen(true);
+    setHideIt(!hideIt);
+  }
   const NumberFormatCustom = forwardRef<HTMLElement, CustomProps>(
     function NumberFormatCustom(props, ref) {
       const { onChange, ...other } = props;
@@ -52,7 +56,7 @@ const DeliveryForm = ({
 
   return (
     <>
-      <OrderTypeDialog openModal={open} setOpenModal={setOpen} />
+      <OrderTypeDialog openModal={open} setOpenModal={setOpen} hideIt={true}  />
       <Formik
         innerRef={deliveryFormRef}
         enableReinitialize={true}
@@ -164,7 +168,7 @@ const DeliveryForm = ({
                 title="Email"
                 type="text"
                 name="email"
-                value={values.email}
+                value={values.email ? values.email : null}
                 onChange={handleChange}
                 error={Boolean(touched.email && errors.email)}
                 helperText={errors.email}
@@ -221,8 +225,11 @@ const DeliveryForm = ({
                   <Typography
                     variant="body1"
                     className="label"
+                    fontFamily= {"'Sunborn-Sansone'!important"}
+                    fontSize={"11pt !important"}
                     style={{
                       paddingTop: '10px',
+                      
                     }}
                   >
                     Your delivery Address
@@ -231,8 +238,8 @@ const DeliveryForm = ({
                     variant="body1"
                     style={{
                       fontSize: '14px',
-                      fontFamily: 'Poppins-Medium',
-                      color: '#333',
+                      fontFamily: "'GritSans-Bold' !important",
+                      color: '#58595b',
                       paddingTop: '5px',
                     }}
                   >
@@ -243,15 +250,17 @@ const DeliveryForm = ({
                     {basket?.deliveryaddress?.city},&nbsp;
                     {basket?.deliveryaddress?.zipcode}
                   </Typography>
-                  {/*<Typography*/}
-                  {/*  variant="body1"*/}
-                  {/*  className="label"*/}
-                  {/*  sx={{ cursor: 'pointer', display: 'inline' }}*/}
-                  {/*  aria-label={'Edit Address'}*/}
-                  {/*  onClick={() => setOpen(true)}*/}
-                  {/*>*/}
-                  {/*  Edit*/}
-                  {/*</Typography>*/}
+                  <Typography
+                    variant="body1"
+                    className="label"
+                    sx={{ cursor: 'pointer', display: 'inline' }}
+                    aria-label={'Edit Address'}
+                    onClick={() =>{
+                       handleClick()
+                      }}
+                  >
+                    Edit
+                  </Typography>
                 </Grid>
               </Grid>
             </Grid>

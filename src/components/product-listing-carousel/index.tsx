@@ -30,34 +30,41 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'block',
     width: '100%',
   },
+  superscript: {
+    fontSize: '0.7em',
+    verticalAlign: 'super',
+    fontWeight: 600,
+    color: theme.palette.text.secondary,
+},
   title: {
-    color: theme.palette.secondary.main,
+    color: "#0075BF",
     padding: '20px 0 10px 0',
-    fontSize: '18px !important',
+    fontSize: '16px !important',
     fontWeight: '600 !important',
-    fontFamily: 'Poppins-Medium !important',
+    fontFamily: "'GritSans-Bold' !important",
     letterSpacing: '0.00938em !important',
+    textTransform: 'uppercase',
   },
   content: {
     color: theme.palette.secondary.main,
-    fontSize: '14px',
+    fontSize: '13px !important',
     lineHeight: '7px',
-    fontFamily: 'Poppins-Medium !important',
+    fontFamily: "'Librefranklin-Regular' !important",
     letterSpacing: 0,
   },
   cal: {
     paddingTop: '10px',
-    fontFamily: 'Poppins-Regular !important',
+    fontFamily: "'Librefranklin-Regular' !important",
     fontSize: '14px',
-    fontWeight: 600,
-    color: '#0075BF',
+    color: theme.palette.primary.main,
+    fontWeight: "bold",
   },
   price: {
     paddingTop: '10px',
-    fontFamily: 'Poppins-Regular !important',
+    fontFamily: "'Librefranklin-Regular' !important",
     fontSize: '14px',
-    fontWeight: 600,
-    color: theme.palette.secondary.main,
+    color: '#0075BF',
+    fontWeight: "bold",
   },
 }));
 
@@ -93,7 +100,6 @@ const ProductListingCarousel = (props: any) => {
       partialVisibilityGutter: 50,
     },
   };
-
   // @ts-ignore
   // const CustomRightArrow = ({ onClick, ...rest }) => {
   //   const {
@@ -184,7 +190,7 @@ const ProductListingCarousel = (props: any) => {
 
   return (
     <Fragment>
-      {/*<Grid container spacing={3}>*/}
+      {/* <Grid container spacing={3}> */}
       <Carousel
         swipeable={true}
         draggable={false}
@@ -273,50 +279,65 @@ const ProductListingCarousel = (props: any) => {
                     <CardContent sx={{ padding: '0' }}>
                       <Typography
                         variant="h2"
-                        title={item.name}
+                        title={item?.name || ''}
                         className={classes.title}
-                      >
-                        {item.name}
+                        dangerouslySetInnerHTML={{__html: item?.name?.includes("®") ? item.name.replace('®', '<sup>®</sup>') : item.name}}
+                      > 
                       </Typography>
                       <Typography
                         variant="caption"
                         title={item.description}
                         className={classes.content + ' fix-span'}
+                        
                       >
-                        {item.description}
+                        {item.description }
                       </Typography>
-                      <Grid container spacing={0}>
+                      <Grid container spacing={0} >
+                      {item.cost > 0 && (
+                          <Grid
+                            item
+                            //xs={3}
+                            title={`$${parseFloat(item.cost).toFixed(2)}`}
+                            className={classes.price}
+                            sx={{display: "flex", flexDirection: 'column'}}
+                          >
+                            ${parseFloat(item.cost).toFixed(2)}
+
+                          </Grid>
+                          
+                        )}
+                        {(item.basecalories > 0 || item.maxcalories > 0) &&  item.cost > 0 && (
+                          <Grid
+                          item
+                          >
+                            
+                           <Typography className="vertical-line" style={{marginTop:"11px", marginLeft: "10px", marginRight: "10px"}}>
+
+                            </Typography>
+                          </Grid>
+                        )}
                         {(item.basecalories > 0 || item.maxcalories > 0) && (
                           <Grid
                             item
-                            xs={6}
                             title={`${
                               item.caloriesseparator
                                 ? item.basecalories +
                                   item.caloriesseparator +
                                   item.maxcalories
                                 : item.basecalories
-                            } cal`}
+                            } CAL`}
                             className={classes.cal}
                           >
+
                             {item.caloriesseparator
                               ? item.basecalories +
                                 item.caloriesseparator +
                                 item.maxcalories
                               : item.basecalories}{' '}
-                            cal
+                            CAL
                           </Grid>
                         )}
-                        {item.cost > 0 && (
-                          <Grid
-                            item
-                            xs={6}
-                            title={`$${parseFloat(item.cost).toFixed(2)}`}
-                            className={classes.price}
-                          >
-                            ${parseFloat(item.cost).toFixed(2)}
-                          </Grid>
-                        )}
+                        
                       </Grid>
                     </CardContent>
                   </Card>
@@ -324,7 +345,7 @@ const ProductListingCarousel = (props: any) => {
               </div>
             ),
         )}
-        {/*</Grid>*/}
+        {/* </Grid> */}
       </Carousel>
     </Fragment>
   );

@@ -18,7 +18,6 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import DialogBox from '../dialog-box';
 import { updateUser } from '../../redux/actions/user';
 import { getSingleLocation } from '../../redux/actions/location';
 import './index.css';
@@ -30,7 +29,12 @@ const useStyle = makeStyles({
   heading: {
     fontSize: '13px !important',
     color: '#fff',
-    fontFamily: 'Poppins-Medium !important',
+    fontFamily: "'GritSans-Bold' !important"
+  },
+  heading1: {
+    fontSize: '13px !important',
+    color: '#fff',
+    fontFamily:"'Librefranklin-Regular' !important",
   },
 });
 
@@ -58,7 +62,7 @@ const StoreInfoBar = () => {
   const dispatch = useDispatch();
 
   const getTimeFormat = (date: string) => {
-    return moment(date, 'YYYYMMDD HH:mm').format('h:mm A');
+    return moment(date, 'YYYYMMDD HH:mm').format('h:mm a');
   };
 
   useEffect(() => {
@@ -162,17 +166,25 @@ const StoreInfoBar = () => {
     if (type === 'dinein') return 'Dine In At';
     if (type === 'pickup' || type === 'curbside') return 'Pick Up From';
   };
-  const getEstTimeFormat = (date: string) => {
-    return moment(date, 'YYYYMMDD HH:mm').format('dddd h:mm A');
+  const getEstTimeFormat = (date: string, data2: string) => {
+    return moment(date, 'YYYYMMDD HH:mm').add(data2, 'minutes').format('dddd h:mm A');
+    // moment(startTime, 'HH:mm:ss').add(durationInMinutes, 'minutes').format('HH:mm');
+    
   };
-
   const EstimatedTime = () => {
     const type = basketObj?.basket?.deliverymode || orderType || '';
     const time = basketObj?.basket;
+    // const 
     if (type === 'dispatch') {
-      return getEstTimeFormat(time.earliestreadytime);
+    if (time?.timemode === 'asap') {
+      return getEstTimeFormat(time.earliestreadytime,time.leadtimeestimateminutes);
     }
-  };
+    else if (time?.timewanted)
+     {
+      return getEstTimeFormat(time.timewanted,time.leadtimeestimateminutes);
+    }
+  }
+  }
   return (
     <>
       {restaurantInfo && (
@@ -180,7 +192,7 @@ const StoreInfoBar = () => {
           container
           spacing={0}
           sx={{
-            backgroundColor: theme.palette.secondary.main,
+            backgroundColor: "#062C43",
             padding: { xs: '30px 20px', sm: '35px 40px', lg: '20px 100px' },
           }}
         >
@@ -217,54 +229,54 @@ const StoreInfoBar = () => {
                   >
                     {orderSelectedType()}
                   </Typography>
-
-                  {/*{window?.location?.href*/}
-                  {/*  ?.toLocaleLowerCase()*/}
-                  {/*  ?.indexOf('/checkout') !== -1 && (*/}
-                  {/*  <>*/}
-                  {/*    <Typography*/}
-                  {/*      variant="body2"*/}
-                  {/*      color="#fff"*/}
-                  {/*      fontSize={11}*/}
-                  {/*      sx={{*/}
-                  {/*        marginLeft: '5px',*/}
-                  {/*        display: {*/}
-                  {/*          xs: 'block',*/}
-                  {/*          sm: 'none',*/}
-                  {/*          md: 'none',*/}
-                  {/*          lg: 'none',*/}
-                  {/*        },*/}
-                  {/*      }}*/}
-                  {/*    >*/}
-                  {/*      <p*/}
-                  {/*        style={{*/}
-                  {/*          cursor: 'pointer',*/}
-                  {/*          textDecorationLine: 'underline',*/}
-                  {/*        }}*/}
-                  {/*        role={'button'}*/}
-                  {/*        aria-label={'Change Order Type'}*/}
-                  {/*        tabIndex={0}*/}
-                  {/*        onKeyPress={(e: any) => {*/}
-                  {/*          if (e.key === 'Enter') {*/}
-                  {/*            setOpenOrder(true);*/}
-                  {/*          }*/}
-                  {/*        }}*/}
-                  {/*        onClick={() => setOpenOrder(true)}*/}
-                  {/*      >*/}
-                  {/*        Change Order Type*/}
-                  {/*      </p>*/}
-                  {/*      {'\n'}*/}
-                  {/*    </Typography>*/}
-                  {/*  </>*/}
-                  {/*)}*/}
+                  {/* {window?.location?.href
+                    ?.toLocaleLowerCase()
+                    ?.indexOf('/checkout') !== -1 && ( */}
+                    <>
+                      <Typography
+                        //variant="body2"
+                        color="#fff"
+                        fontSize={11}
+                        className={classes.heading1}
+                        variant="h2"
+                        sx={{
+                          marginLeft: '5px',
+                          display: {
+                            xs: 'block',
+                            sm: 'none',
+                            md: 'none',
+                            lg: 'none',
+                          },
+                        }}
+                      >
+                        <p
+                          style={{
+                            cursor: 'pointer',
+                            textDecorationLine: 'underline',
+                          }}
+                          role={'button'}
+                          aria-label={'Change Order Type'}
+                          tabIndex={0}
+                          onKeyPress={(e: any) => {
+                            if (e.key === 'Enter') {
+                              setOpenOrder(true);
+                            }
+                          }}
+                          onClick={() => setOpenOrder(true)}
+                        >
+                          Change Order Type
+                        </p>
+                        {'\n'}
+                      </Typography>
+                    </>
+                        {/* )} */}
                 </Grid>
                 <Typography
                   variant="h2"
                   color="#fff"
                   textTransform="uppercase"
-                  fontWeight={700}
                   lineHeight={1.3}
-                  fontFamily="Poppins-Bold !important"
+                  fontFamily= "'Sunborn-Sansone' !important"
                   sx={{
                     fontSize: {
                       xs: '30px !important',
@@ -276,27 +288,28 @@ const StoreInfoBar = () => {
                 >
                   {restaurantInfo.name}
                 </Typography>
-                {/*{window?.location?.href*/}
-                {/*    ?.toLocaleLowerCase()*/}
-                {/*    ?.indexOf('/checkout') !== -1 &&*/}
-                {/*  EstimatedTime() && (*/}
-                {/*    <>*/}
-                {/*      <Typography*/}
-                {/*        className={classes.heading}*/}
-                {/*        variant="h2"*/}
-                {/*        textTransform="uppercase"*/}
-                {/*        title="Pick Up From"*/}
-                {/*      >*/}
-                {/*        Estimated Delivery Time: {EstimatedTime()}*/}
-                {/*      </Typography>*/}
-                {/*    </>*/}
-                {/*  )}*/}
+                {window?.location?.href
+                  ?.toLocaleLowerCase()
+                  ?.indexOf('/checkout') !== -1 &&
+                  EstimatedTime() && (
+                    <>
+                      <Typography
+                        className={classes.heading}
+                        variant="h2"
+                        textTransform="uppercase"
+                        title="Pick Up From"
+                      >
+                        Estimated Delivery Time: {EstimatedTime()}
+                      </Typography>
+                    </>
+                  )}
               </Grid>
               {isMobile && (
                 <Grid>
                   &nbsp;
                   <Typography
-                    variant="body2"
+                    className={classes.heading1}
+                    variant="h2"
                     color="#fff"
                     fontSize={11}
                     sx={{
@@ -313,6 +326,7 @@ const StoreInfoBar = () => {
                       style={{
                         cursor: 'pointer',
                         textDecorationLine: 'underline',
+                        
                       }}
                       role={'button'}
                       aria-label={'Change location'}
@@ -349,11 +363,11 @@ const StoreInfoBar = () => {
                   >
                     <Typography
                       variant="h5"
+                      className={classes.heading1}
                       sx={{
                         fontSize: '13px',
-                        fontWeight: '500',
-                        fontFamily: 'Poppins-Medium !important',
                         color: '#fff',
+
                         display: 'inline',
                       }}
                     >
@@ -386,7 +400,7 @@ const StoreInfoBar = () => {
                     }}
                   >
                     <Typography
-                      className={classes.heading}
+                      className={classes.heading1}
                       variant="h2"
                       textTransform="uppercase"
                       title="Address"
@@ -428,49 +442,51 @@ const StoreInfoBar = () => {
                         <p>{restaurantInfo.distance.toFixed(2)} Miles Away</p>
                       )}
                     </Typography>
-                    {/*{window?.location?.href*/}
-                    {/*  ?.toLocaleLowerCase()*/}
-                    {/*  ?.indexOf('/checkout') !== -1 && (*/}
-                    {/*  <>*/}
-                    {/*    <Typography*/}
-                    {/*      variant="body2"*/}
-                    {/*      color="#fff"*/}
-                    {/*      fontSize={11}*/}
-                    {/*      sx={{*/}
-                    {/*        marginBottom: '5px',*/}
-                    {/*        display: {*/}
-                    {/*          xs: 'none',*/}
-                    {/*          sm: 'block',*/}
-                    {/*          md: 'block',*/}
-                    {/*          lg: 'block',*/}
-                    {/*        },*/}
-                    {/*      }}*/}
-                    {/*    >*/}
-                    {/*      <p*/}
-                    {/*        style={{*/}
-                    {/*          cursor: 'pointer',*/}
-                    {/*          textDecorationLine: 'underline',*/}
-                    {/*          fontSize: '13px',*/}
-                    {/*        }}*/}
-                    {/*        role={'button'}*/}
-                    {/*        aria-label={'Change Order Type'}*/}
-                    {/*        tabIndex={0}*/}
-                    {/*        onKeyPress={(e: any) => {*/}
-                    {/*          if (e.key === 'Enter') {*/}
-                    {/*            setOpenOrder(true);*/}
-                    {/*          }*/}
-                    {/*        }}*/}
-                    {/*        onClick={() => setOpenOrder(true)}*/}
-                    {/*      >*/}
-                    {/*        Change Order Type*/}
-                    {/*      </p>*/}
-                    {/*    </Typography>*/}
-                    {/*  </>*/}
-                    {/*)}*/}
+                    {/* {window?.location?.href
+                    ?.toLocaleLowerCase()
+                    ?.indexOf('/checkout') !== -1 && (
+                      <> */}
+                        <Typography
+                          color="#fff"
+                          fontSize={11}
+                          className={classes.heading1}
+                          variant="h2"
+                          sx={{
+                            marginBottom: '5px',
+                            display: {
+                              xs: 'none',
+                              sm: 'block',
+                              md: 'block',
+                              lg: 'block',
+                            },
+                          }}
+                        >
+                          <p
+                            style={{
+                              cursor: 'pointer',
+                              textDecorationLine: 'underline',
+                              fontSize: '13px',
+                            }}
+                            role={'button'}
+                            aria-label={'Change Order Type'}
+                            tabIndex={0}
+                            onKeyPress={(e: any) => {
+                              if (e.key === 'Enter') {
+                                setOpenOrder(true);
+                              }
+                            }}
+                            onClick={() => setOpenOrder(true)}
+                          >
+                            Change Order Type
+                          </p>
+                        </Typography>
+                      {/* </>
+                    )} */}
                     <Typography
-                      variant="body2"
                       color="#fff"
                       fontSize={11}
+                      className={classes.heading1}
+                      variant="h2"
                       sx={{
                         display: {
                           marginBottom: 3,
@@ -502,9 +518,9 @@ const StoreInfoBar = () => {
                     </Typography>
                     {isLoginUser() && (
                       <Typography
-                        variant="body2"
                         color="#fff"
-                        fontSize={11}
+                        className={classes.heading1}
+                        variant="h2"
                         sx={{
                           display: {
                             xs: 'inline',
@@ -574,7 +590,7 @@ const StoreInfoBar = () => {
                     }}
                   >
                     <Typography
-                      className={classes.heading}
+                      className={classes.heading1}
                       variant="h2"
                       textTransform="uppercase"
                       title="Hours"
@@ -605,7 +621,7 @@ const StoreInfoBar = () => {
                               sx={{
                                 padding: '2px 0 0 0',
                                 fontSize: '12px',
-                                fontWeight: '600',
+                                //fontWeight: '600',
                                 color: 'background.paper',
                               }}
                               role="presentation"
@@ -613,7 +629,7 @@ const StoreInfoBar = () => {
                               <ListItem
                                 sx={{
                                   padding: '0 0 0 0',
-                                  fontFamily: "'Poppins-Medium' !important",
+                                  fontFamily:"'Librefranklin-Regular' !important",
                                 }}
                                 title={
                                   (item.weekday &&
@@ -633,7 +649,7 @@ const StoreInfoBar = () => {
                                 fontSize: '12px',
                                 fontWeight: '500',
                                 color: 'background.paper',
-                                fontFamily: "'Poppins-Medium' !important",
+                                fontFamily:"'Librefranklin-Regular' !important",
                               }}
                               role="presentation"
                             >
@@ -691,7 +707,7 @@ const StoreInfoBar = () => {
                                   <ListItem
                                     sx={{
                                       padding: '0 0 0 0',
-                                      fontFamily: "'Poppins-Medium' !important",
+                                      fontFamily:"'Librefranklin-Regular' !important",
                                     }}
                                     title={
                                       (item.weekday &&
@@ -712,7 +728,7 @@ const StoreInfoBar = () => {
                                     fontSize: '12px',
                                     fontWeight: '500',
                                     color: 'background.paper',
-                                    fontFamily: "'Poppins-Medium' !important",
+                                    fontFamily:"'Librefranklin-Regular' !important",
                                   }}
                                   role="presentation"
                                 >
@@ -769,10 +785,10 @@ const StoreInfoBar = () => {
                       >
                         <Typography
                           variant="h5"
+                          className={classes.heading1}
                           sx={{
                             fontSize: '13px',
                             fontWeight: '500',
-                            fontFamily: 'Poppins-Medium !important',
                             color: '#fff',
                             // display: 'inline',
                             display: {
@@ -846,8 +862,7 @@ const StoreInfoBar = () => {
                                       <ListItem
                                         sx={{
                                           padding: '0 0 0 0',
-                                          fontFamily:
-                                            "'Poppins-Medium' !important",
+                                          fontFamily:"'Librefranklin-Regular' !important",
                                         }}
                                         title={
                                           (item.weekday &&
@@ -868,8 +883,7 @@ const StoreInfoBar = () => {
                                         fontSize: '12px',
                                         fontWeight: '500',
                                         color: 'background.paper',
-                                        fontFamily:
-                                          "'Poppins-Medium' !important",
+                                        fontFamily:"'Librefranklin-Regular' !important",
                                       }}
                                       role="presentation"
                                     >
@@ -896,7 +910,7 @@ const StoreInfoBar = () => {
                                 </Grid>
                               ))}
                           <Typography
-                            className={classes.heading}
+                            className={classes.heading1}
                             variant="h2"
                             textTransform="uppercase"
                             title="Address"
@@ -918,7 +932,7 @@ const StoreInfoBar = () => {
                             component="div"
                             textTransform="uppercase"
                             fontSize={11}
-                            paddingTop="8px"
+                            fontFamily={"'Librefranklin-Regular' !important"}                            paddingTop="8px"
                             title={`${restaurantInfo.streetaddress}, ${restaurantInfo.city}, ${restaurantInfo.state}`}
                             sx={{
                               display: {

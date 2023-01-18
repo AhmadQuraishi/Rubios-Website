@@ -29,6 +29,7 @@ const pickupTime = (order: any) => {
       <Typography
         variant="h2"
         className="label"
+        sx={{fontSize: "11pt !important",fontFamily: "'Sunborn-Sansone'!important"}}
         title={
           order && order.deliverymode === DeliveryModeEnum.dispatch
             ? 'DELIVERY TIME'
@@ -43,9 +44,9 @@ const pickupTime = (order: any) => {
         variant="body1"
         title="6:10 PM"
         sx={{
-          fontFamily: 'Poppins-Bold !important',
-          color: '#214F66',
-          fontSize: '36px !important',
+          fontFamily: "'GritSans-Bold'!important",
+          color: '#062C43 !important',
+          fontSize: '22px !important',
           lineHeight: '1.2',
           letterSpacing: '-0.00833em',
         }}
@@ -60,7 +61,10 @@ const vehicleInfo = (order: any) => {
   return (
     <>
       <Grid xs={12} sm={6} md={6} lg={12} className="adjust-space">
-        <Typography variant="h2" className="label" title="VEHICLE INFO">
+        <Typography 
+          variant="h2"
+          className="label"
+          sx={{fontSize: "11pt !important",fontFamily: "'Sunborn-Sansone'!important"}} title="VEHICLE INFO">
           {order.deliverymode === DeliveryModeEnum.curbside
             ? 'VEHICLE INFO'
             : 'DINE IN INFO'}
@@ -115,16 +119,16 @@ const vehicleInfo = (order: any) => {
 const pickupAddress = (restaurant: any, order: any) => {
   return (
     <>
-      <Typography variant="h2" className="label">
+      <Typography variant="h2" className="label" sx={{fontFamily: "'Sunborn-Sansone' !important"}}>
         {order && order.deliverymode ? locationTitle(order.deliverymode) : ''}
       </Typography>
       <Typography
         variant="body1"
         sx={{
           textTransform: 'uppercase',
-          fontFamily: 'Poppins-Bold !important',
-          color: '#214F66',
-          fontSize: '36px !important',
+          fontFamily: "'GritSans-Bold'!important",
+          color: '#062C43 !important',
+          fontSize: '22px !important',
           lineHeight: '1.2',
           letterSpacing: '-0.00833em',
         }}
@@ -154,9 +158,9 @@ const deliveryAddress = (order: any) => {
       <Typography
         sx={{
           textTransform: 'uppercase',
-          fontFamily: 'Poppins-Bold !important',
-          color: '#214F66',
-          fontSize: '36px !important',
+          fontFamily: "'GritSans-Bold'!important",
+          color: '#062C43 !important',
+          fontSize: '22px !important',
           lineHeight: '1.2',
           letterSpacing: '-0.00833em',
         }}
@@ -219,7 +223,7 @@ const OrderConfirmedCard = ({
                   title="ORDER CONFIRMED"
                   sx={{
                     color: '#0075BF',
-                    fontFamily: 'Poppins-Medium !important',
+                    fontFamily: "'Sunborn-Sansone'!important",
                     fontSize: { xs: '14px !important' },
                     fontWeight: 400,
                     textTransform: 'uppercase',
@@ -229,6 +233,7 @@ const OrderConfirmedCard = ({
                 </Typography>
                 <Typography
                   variant="body1"
+                  
                   title={
                     order && order.deliverymode === DeliveryModeEnum.dinein
                       ? 'We’ll bring your food right to you shortly.'
@@ -237,9 +242,9 @@ const OrderConfirmedCard = ({
                   sx={{
                     lineHeight: '1.2',
                     letterSpacing: '-0.00833em',
-                    fontFamily: 'Poppins-Bold !important',
-                    color: '#214F66',
-                    fontSize: '36px !important',
+                    color: '#062C43 !important',
+                    fontSize: '22px !important',
+                    fontFamily: "'GritSans-Bold' !important",
                   }}
                 >
                   {order && order.deliverymode === DeliveryModeEnum.dinein

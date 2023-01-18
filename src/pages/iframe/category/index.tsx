@@ -30,7 +30,7 @@ function TabPanel(props: TabPanelProps) {
       {...other}
     >
       {value === index && (
-        <Box style={{ paddingBottom: 0 }} p={3}>
+        <Box style={{ paddingBottom: 0, }} p={3}>
           <Typography>{children}</Typography>
         </Box>
       )}
@@ -91,6 +91,7 @@ const CategoryList = () => {
     <Grid
       sx={{
         minHeight: 'auto',
+        backgroundColor: 'transparent',
         padding: {
           xs: '0px 15px',
           sm: '0px 15px',
@@ -105,7 +106,7 @@ const CategoryList = () => {
           <Box
             sx={{
               width: '100%',
-              background: '#FFF',
+              background: 'transparent',
               zIndex: '1099',
               padding: {
                 xs: '0px 5px 10px 5px',
@@ -120,10 +121,10 @@ const CategoryList = () => {
               <Grid item xs={8}>
                 <Typography
                   variant="h1"
-                  title="WHAT ARE YOU CRAVING?"
-                  sx={{ marginBottom: '20px' }}
+                  title="GO AHEAD, SURF the MENU."
+                  sx={{ marginBottom: '20px',fontFamily: "'Sunborn-Sansone' !important", }}
                 >
-                  WHAT ARE YOU CRAVING?
+                  GO AHEAD, SURF the MENU.
                 </Typography>
               </Grid>
               <Grid item xs={4}>
@@ -134,6 +135,7 @@ const CategoryList = () => {
                     paddingTop: '10px',
                     display: 'block',
                     textAlign: 'right',
+                    fontFamily: "'GritSans-Bold' !important",
                   }}
                 >
                   <Link
@@ -144,12 +146,16 @@ const CategoryList = () => {
                     title="View All"
                     style={{
                       textDecoration: 'none',
-                      color: '#0075BF',
+                      color: "#062C43",
                       textTransform: 'uppercase',
-                      fontWeight: 'Bold',
+                      marginBottom: "10px",
                     }}
                   >
-                    view all →
+                    view all <span style={{fontSize:"17px"}}><img
+                        // style={{ width: '75%', display: 'block' }}
+                        src={require('../../../assets/imgs/arrow2.png')}
+                        alt="Login Icon"
+                      /></span>
                   </Link>
                 </Typography>
               </Grid>
@@ -162,7 +168,7 @@ const CategoryList = () => {
               variant="scrollable"
               scrollButtons
               allowScrollButtonsMobile
-              sx={{ fontFamily: 'Poppins-Medium !important' }}
+              sx={{  fontFamily: "'GritSans-Bold' !important"}}
               role="region"
               aria-label="Food Menu"
             >
@@ -172,12 +178,15 @@ const CategoryList = () => {
                   value={index}
                   label={fromatProductName(item.name)}
                   title={fromatProductName(item.name)}
-                  color="secondary.main"
+
                   sx={{
-                    fontFamily: 'Poppins-Medium !important',
+                    color: "#0075BF !important",
+                    fontFamily: "'Sunborn-Sansone' !important",
                     minWidth: 'auto',
                     padding: '12px 0px',
                     margin: '0px 16px',
+                    letterSpacing: '0.5px !important',
+                    fontSize: "13.57pt !important",
                   }}
                   role="link"
                   className="tabs-btn"

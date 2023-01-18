@@ -338,10 +338,6 @@ const Product = () => {
 
   const [optionsSelectionArray, setOptionsSelectionArray] = useState<any>([]);
 
-  useEffect(() => {
-    console.log(optionsSelectionArray);
-  }, [optionsSelectionArray]);
-
   let ptotalCost = 0;
 
   const prepareProductOptionsArray = (
@@ -512,14 +508,12 @@ const Product = () => {
     optionsDDL: any = null,
     optionsDDLSelectedID: any = null,
   ) => {
-    console.log('optionId', optionId);
-    console.log('parnetOptionID', parnetOptionID);
-    console.log('optionsDDL', optionsDDL);
-    console.log('optionsDDLSelectedID', optionsDDLSelectedID);
     setSelectionExecute(false);
     setTimeout(() => {
       setSelectionExecute(false);
     }, 200);
+    let optionPrice = optionsCost;
+    let totalPrice = totalCost || 0;
     optionsSelectionArray.map((item: any) => {
       if (item.id === parnetOptionID) {
         if (item.mandatory) {
@@ -631,8 +625,10 @@ const Product = () => {
                 x.selectedOptions = x.defaultOption ? [x.defaultOption] : [];
               });
             }
-            setOptionsCost(optionsCost - mainOptionCost);
-            setTotalCost((totalCost || 0) - mainOptionCost * count);
+            optionPrice -= mainOptionCost;
+            totalPrice = totalPrice - mainOptionCost * count;
+            // setOptionsCost(optionsCost - mainOptionCost);
+            // setTotalCost((totalCost || 0) - mainOptionCost * count);
           } else {
             const optionX = item.options.find(
               (option: any) => option.optionID == item.selectedOptions[0],
@@ -746,9 +742,11 @@ const Product = () => {
               (option: any) => option.optionID == optionId,
             );
             if (option) {
-              setOptionsCost(optionsCost - mainOptionCost + option.option.cost);
               const prc = option.option.cost * count;
-              setTotalCost((totalCost || 0) - mainOptionCost + prc);
+              optionPrice = optionPrice - mainOptionCost + option.option.cost;
+              totalPrice = totalPrice - mainOptionCost + prc;
+              // setOptionsCost(optionsCost - mainOptionCost + option.option.cost);
+              // setTotalCost((totalCost || 0) - mainOptionCost + prc);
             }
             elems = optionsSelectionArray.filter(
               (x: any) => x.parentOptionID == optionId,
@@ -790,14 +788,19 @@ const Product = () => {
                 (option: any) => option.optionID == optionId,
               );
               if (option) {
-                setOptionsCost(
-                  optionsCost -
-                    ((optionDDLE ? optionDDLE.cost : 0) + option.option.cost),
-                );
                 const prc =
                   ((optionDDLE ? optionDDLE.cost : 0) + option.option.cost) *
                   count;
-                setTotalCost((totalCost || 0) - prc);
+                optionPrice =
+                  optionPrice -
+                  ((optionDDLE ? optionDDLE.cost : 0) + option.option.cost);
+                // setOptionsCost(
+                //   optionsCost -
+                //     ((optionDDLE ? optionDDLE.cost : 0) + option.option.cost),
+                // );
+
+                totalPrice -= prc;
+                // setTotalCost((totalCost || 0) - prc);
               }
               //item.selected = !(item.selectedOptions.length == 0);
               let elems = optionsSelectionArray.filter(
@@ -842,11 +845,13 @@ const Product = () => {
                 optionsCost +
                 (optionDDLE ? optionDDLE.cost : 0) +
                 option.option.cost;
-              setOptionsCost(cc);
+              optionPrice = cc;
+              // setOptionsCost(cc);
               const opc =
                 ((optionDDLE ? optionDDLE.cost : 0) + option.option.cost) *
                 count;
-              setTotalCost((totalCost || 0) + opc);
+              totalPrice += opc;
+              // setTotalCost((totalCost || 0) + opc);
             }
             let elems = optionsSelectionArray.filter(
               (x: any) => x.parentOptionID == optionId,
@@ -876,7 +881,8 @@ const Product = () => {
         }
       }
     });
-    console.log(optionsSelectionArray);
+    setOptionsCost(optionPrice);
+    setTotalCost(totalPrice);
     setOptionsSelectionArray((optionsSelectionArray: any) => [
       ...optionsSelectionArray,
     ]);
@@ -1049,7 +1055,6 @@ const Product = () => {
   return (
     <Page title={'Product Detail'} className="">
       <div style={{ minHeight: '500px' }}>
-        {console.log('productOptions', productOptions)}
         <Typography variant="h1" className="sr-only">
           Product details
         </Typography>
@@ -1073,8 +1078,8 @@ const Product = () => {
                     variant="h2"
                     className="heading"
                     title={productDetails.name}
+                    dangerouslySetInnerHTML={{__html: productDetails?.name?.includes("®") ? productDetails?.name?.replace('®', '<sup>®</sup>') : productDetails.name}}
                   >
-                    {productDetails.name}
                   </Typography>
                   <Typography
                     variant="body1"
@@ -1426,7 +1431,7 @@ const Product = () => {
                                               ).toFixed(2)}`}
                                               style={{
                                                 fontSize: '11px',
-                                                fontFamily: 'Poppins-Bold',
+                                                fontFamily: "'Sunborn-Sansone' !important",
                                                 color: '#0075BF',
                                               }}
                                             >
@@ -1441,7 +1446,7 @@ const Product = () => {
                                               <span
                                                 style={{
                                                   fontSize: '16px',
-                                                  fontFamily: 'Poppins-Regular',
+                                                  fontFamily: "'Librefranklin-Regular' !important",
                                                   color: '#AAA',
                                                   marginTop: '-2%',
                                                 }}
@@ -1464,7 +1469,7 @@ const Product = () => {
                                             <span
                                               style={{
                                                 fontSize: '11px',
-                                                fontFamily: 'Poppins-Bold',
+                                                fontFamily: "'Sunborn-Sansone' !important",
                                                 color: '#0075BF',
                                               }}
                                             >
@@ -1478,7 +1483,7 @@ const Product = () => {
                                               <span
                                                 style={{
                                                   fontSize: '16px',
-                                                  fontFamily: 'Poppins-Regular',
+                                                  fontFamily: "'Librefranklin-Regular' !important",
                                                   color: '#AAA',
                                                   marginTop: '-2%',
                                                 }}
@@ -1490,7 +1495,7 @@ const Product = () => {
                                             <span
                                               style={{
                                                 fontSize: '11px',
-                                                fontFamily: 'Poppins-Bold',
+                                                fontFamily: "'Sunborn-Sansone' !important",
                                                 color: '#0075BF',
                                               }}
                                             >
@@ -1671,6 +1676,7 @@ const Product = () => {
                       data-test-button="addToCart"
                       title="ADD TO BAG"
                       className="add-to-bag"
+                      sx={{    letterSpacing: "0px !important"}}
                       variant="contained"
                       disabled
                     >
@@ -1686,6 +1692,10 @@ const Product = () => {
                       title="ADD TO BAG"
                       className="add-to-bag"
                       variant="contained"
+                      data-product-name={`${productDetails?.name || ''}`}
+                      data-product-id={`${productDetails?.chainproductid || ''}`}
+                      data-product-price={`${totalCost?.toFixed(2)}`}
+                      sx={{    letterSpacing: "0px !important"}}
                       disabled={checkDisable()}
                       onClick={() => {
                         addProductToBag();

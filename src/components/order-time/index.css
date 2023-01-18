@@ -8,7 +8,7 @@ label.time-picker:focus-within {
   height: 44px !important;
   text-align: center !important;
   text-align-last: center !important;
-  font-family: 'Poppins-Bold', sans-serif !important;
+  font-family: 'Librefranklin-Regular' !important;
   font-size: 15px;
   height: 50px;
   box-shadow: 0px 0px 0px rgb(0 0 0 / 20%) !important;
@@ -19,6 +19,10 @@ label.time-picker:focus-within {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.font-change{
+  font-family: "Librefranklin-Regular" !important;
 }
 .native-select .MuiNativeSelect-select {
   color: #fff;
@@ -47,7 +51,7 @@ label.time-picker:focus-within {
 }
 .MuiButtonBase-root.MuiPickersDay-root:focus,
 .MuiButtonBase-root.MuiPickersDay-root:hover {
-  background-color: #214F66;
+  background-color: '#062C43';
   color: #fff;
 }
 .MuiButtonBase-root.MuiPickersDay-root:focus.Mui-selected {

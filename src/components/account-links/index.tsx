@@ -19,12 +19,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: '5px 5px',
     '& span': {
       fontSize: '13px !important',
-      fontFamily: 'Poppins-Medium !important',
+      fontFamily: "'GritSans-Bold' !important",
     },
   },
   selected: {
     backgroundColor: '#f5f5f5',
-    color: '#214f66',
+  color: "#062C43 !important",
   },
 }));
 const AccountLinks = (props: any) => {

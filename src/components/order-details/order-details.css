@@ -4,7 +4,7 @@
   -webkit-border-radius: 30px;
   -moz-border-radius: 30px;
   border-radius: 30px;
-  margin: 50px auto 50px auto !important;
+  margin: 50px auto !important;
 }
 
 .order-details-checkout {
@@ -15,12 +15,13 @@
   margin: 0px auto 0px auto !important;
 }
 .order-details h6 {
-  font-family: 'Poppins-Bold', sans-serif !Important;
+  font-family: 'Librefranklin-Regular'!important;
   font-size: 16px !important;
-  color: #285169;
+  color: #58595b;
+  font-weight: bold;
 }
 .order-details h6.n-bold {
-  font-family: 'Poppins-Regular' !important;
+  /* font-family: 'Poppins-Regular' !important; */
 }
 .order-details hr {
   background: #285169;
@@ -33,7 +34,7 @@
   height: 18px;
   border: 1px solid #2b4b62;
   text-align: center;
-  font-family: 'Poppins-Medium', sans-serif !important;
+  font-family: 'GritSans-Bold' !important;
   font-size: 14px;
   margin-left: 5px;
   display: inline-flex;

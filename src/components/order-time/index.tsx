@@ -231,6 +231,7 @@ const OrderTime = ({ orderType }: any) => {
           <Grid item xs={12}>
             <Typography
               variant="h3"
+              sx={{fontSize: "11pt !important",fontFamily: "'Sunborn-Sansone'!important",letterSpacing:"0.03562em"}}
               title={
                 orderType === DeliveryModeEnum.dinein
                   ? 'DATE'
@@ -269,10 +270,10 @@ const OrderTime = ({ orderType }: any) => {
                 aria-expanded={open}
                 aria-controls="date-picker"
                 title="Change Order Time"
-                className="caption-grey"
+                className="caption-grey font-change"
                 style={{
                   marginTop: -10,
-                  color: '#0075BF',
+                  color: '#58595b',
                   border: 'none',
                   background: 'transparent',
                   cursor: 'pointer',
@@ -338,12 +339,14 @@ const OrderTime = ({ orderType }: any) => {
                   <ToggleButtonGroup
                     value={selectedTime}
                     exclusive
+                    sx={{fontFamily: "Librefranklin-Regular !important"}}
                     onChange={(event) => onTimeSlotSelect(event)}
                     className="selected-btn-group"
                   >
                     {/* <Grid container spacing={2}> */}
                     {timeSlots.length !== 0 && hideRemoveAsap() && (
                       <ToggleButton
+                      sx={{backgroundColor: "#062C43",fontFamily: "Librefranklin-Regular !important"}}
                         key={`button-${basketObj.basket?.earliestreadytime}`}
                         value={basketObj.basket?.earliestreadytime}
                         className="selected-btn"
@@ -362,7 +365,7 @@ const OrderTime = ({ orderType }: any) => {
                               display: 'block',
                               textTransform: 'none',
                               letterSpacing: 1,
-                              fontFamily: 'Poppins-Regular',
+                              fontFamily: "'Librefranklin-Regular' !important",
                             }}
                           >
                             Est{' '}
@@ -381,11 +384,13 @@ const OrderTime = ({ orderType }: any) => {
                           key={`button-${time}`}
                           value={time}
                           className="selected-btn"
+                          sx={{fontFamily: 'Librefranklin-Regular !important',}}
+                          style={{backgroundColor: "#062C43", fontSize: "16px"}}
                           selected={selectedTime === time ? true : false}
                         >
                           {/* {index === 0 ? */}
                           {/* <h3>ASAP <span style={{fontSize: '10px', display: 'block', textTransform: 'none'}}>Est {handleTime(basketObj.basket?.earliestreadytime)} mins</span></h3> :  */}
-                          {moment(time, 'YYYYMMDD HH:mm').format('hh:mm A')}
+                          {moment(time, 'YYYYMMDD HH:mm').format('h:mm A')}
                         </ToggleButton>
                         // </Grid>
                       );
@@ -418,6 +423,7 @@ const OrderTime = ({ orderType }: any) => {
                           ? 'select-custom-css'
                           : '',
                     }}
+                    sx={{fontFamily: "'Librefranklin-Regular' !important" }}
                     style={{ textAlign: 'center' }}
                     shrink={
                       selectShrink || timeSlots.slice(4).includes(selectedTime)
@@ -429,6 +435,7 @@ const OrderTime = ({ orderType }: any) => {
                   <NativeSelect
                     id="select-label"
                     className={`native-select`}
+                    sx={{fontFamily: "Librefranklin-Regular !important"}}
                     aria-label="select more time"
                     value={
                       timeSlots.slice(4).includes(selectedTime)
@@ -449,7 +456,7 @@ const OrderTime = ({ orderType }: any) => {
                     {timeSlots.slice(4).map((time, index) => {
                       return (
                         <option key={`menu-${time}`} value={time}>
-                          {moment(time, 'YYYYMMDD HH:mm').format('hh:mm A')}
+                          {moment(time, 'YYYYMMDD HH:mm').format('h:mm A')}
                         </option>
                       );
                     })}

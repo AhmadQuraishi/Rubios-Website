@@ -26,8 +26,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   heading: {
     paddingBottom: '5px',
     textTransform: 'uppercase',
+    
     [theme.breakpoints.down('sm')]: {
-      fontSize: '25px !important',
+      fontSize: '22px !important',
     },
   },
 }));
@@ -134,6 +135,8 @@ const RewardNew = () => {
             variant="h1"
             className={classes.heading}
             title="My Rewards"
+            sx={{fontFamily: "'GritSans-Bold' !important"}}
+
           >
             My Rewards
           </Typography>
@@ -253,7 +256,7 @@ const RewardNew = () => {
                                   }
                                   className="button"
                                 >
-                                  REDEEM IN RESTURANT
+                                  REDEEM IN RESTAURANT
                                 </Typography>
                               </Grid>
 
@@ -278,7 +281,7 @@ const RewardNew = () => {
                                   }
                                   className="button"
                                 >
-                                  REDEEM IN RESTURANT
+                                  REDEEM IN RESTAURANT
                                 </p>
                               </Grid>
                             </Grid>
@@ -432,7 +435,7 @@ const RewardNew = () => {
                                                 points >= key ? '' : ' disable'
                                               }`}
                                             >
-                                              REDEEM IN RESTURANT
+                                              REDEEM IN RESTAURANT
                                             </Typography>
                                           </Grid>
                                           <Grid
@@ -458,7 +461,7 @@ const RewardNew = () => {
                                                 points >= key ? '' : ' disable'
                                               }`}
                                             >
-                                              REDEEM IN RESTURANT
+                                              REDEEM IN RESTAURANT
                                             </p>
                                           </Grid>
                                         </Grid>

@@ -4,10 +4,21 @@ import {
   basketTransferSuccess,
   basketTransferFailure,
 } from '../../../actions/basket/transfer';
-import { basketTransfer } from '../../../../services/basket';
+import { basketTransfer, setBasketDeliveryMode } from '../../../../services/basket';
+import { DeliveryModeEnum } from '../../../../types/olo-api/olo-api.enums';
 
 function* asyncBasketTransferSaga(action: any): any {
   try {
+    if(action?.deliveryMode === DeliveryModeEnum.dispatch){
+      const modeResponse = yield call(
+        setBasketDeliveryMode,
+        action.basketId,
+        {
+          deliverymode: DeliveryModeEnum.pickup
+        }
+      );
+
+    }
     const response = yield call(
       basketTransfer,
       action.basketId,

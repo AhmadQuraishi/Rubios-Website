@@ -9,7 +9,7 @@ import SalsaSkeletonUI from '../../../salsa-skeleton-ui';
 
 const UpsellsOthers = ({ upsellsType }: any) => {
   const [products, setProducts] = useState<any>();
-  const [optionSelected, setOptionSelected] = useState('');
+  const [optionSelected, setOptionSelected] = useState<any>(null);
   const [quantity, setQuantity] = useState(0);
   const [buttonDisabled, setButtonDisabled] = useState(false);
 
@@ -105,7 +105,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
         };
 
         if (upsellsType === UPSELLS_TYPES.DRINK) {
-          request.options = `${optionSelected},`;
+          request.options = `${optionSelected?.optionId},`;
         }
         setButtonDisabled(true);
         // dispatch(addProductRequest(basketObj.basket.id, request));
@@ -125,7 +125,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
         newObj.selected = false;
       }
       if (newObj.selected && upsellsType === UPSELLS_TYPES.DRINK) {
-        setOptionSelected(obj.options[0].id);
+        setOptionSelected({optionId: obj.options[0]?.id, cost: obj.options[0]?.cost });
       }
       return newObj;
     });
@@ -172,9 +172,9 @@ const UpsellsOthers = ({ upsellsType }: any) => {
   useEffect(() => {
     // const focusableElements =
     //   'button, [href], input, ul , li ,  select, textarea, [tabindex]:not([tabindex="-1"])';
-    const modal = document.querySelector('#cart-box-upsells'); // select the modal by it's id
+    const modal = document.querySelector('#cart-box-others'); // select the modal by it's id
     if (modal) {
-      const focusableContent = modal.querySelectorAll('[tabindex="0"]');
+      const focusableContent = modal.querySelectorAll('[tabindex="1"]');
       const firstFocusableElement = focusableContent[0]; // get first element to be focused inside modal
 
       const lastFocusableElement =
@@ -210,9 +210,10 @@ const UpsellsOthers = ({ upsellsType }: any) => {
     }
   }, []);
 
-  const optionChange = (e: any) => {
+  const optionChange = (e: any, product: any) => {
+    const filterOpt = product?.options?.filter((opt: any) => opt.id === parseInt(e.target.value));
     console.log(e.target.value);
-    setOptionSelected(e.target.value);
+    setOptionSelected({optionId: filterOpt[0]?.id, cost: filterOpt[0]?.cost });
   };
 
   const updateQuantity = (type: string) => {
@@ -233,6 +234,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
           products.length > 0 &&
           products.map((itemChild: any, index1: number) => (
             <Grid
+            id="cart-box-others"
               key={Math.random() + index1}
               option-id={itemChild.id}
               onClick={() => updateSelection(itemChild.id, itemChild.selected)}
@@ -319,7 +321,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
                         // alt={option.name}
                         // title={option.name}
                       />
-                      <div className="check-mark">
+                      <div className="check-mark"  tabIndex={1}>
                         <div aria-hidden="true" className="checkmark">
                           L
                         </div>
@@ -327,7 +329,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
                     </Grid>
                     <Grid item xs={6} lg={6} className="name-panel">
                       {itemChild.name}
-                      {itemChild.cost > 0 && (
+                      {(itemChild?.cost > 0 || optionSelected?.cost > 0) && (
                         <Grid
                           item
                           xs={12}
@@ -335,7 +337,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
                           sx={{
                             paddingTop: '5px',
                             fontSize: '14px',
-                            fontFamily: 'Poppins-Bold',
+                            fontFamily: "'Librefranklin-Regular' !important",
                             color: '#0075BF',
                             display: 'flex',
                             alignItems: 'center',
@@ -344,7 +346,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
                           }}
                         >
                           +$
-                          {parseFloat(itemChild.cost).toFixed(2)}
+                          {parseFloat(itemChild?.cost > 0 && itemChild?.cost || optionSelected?.cost || 0 ).toFixed(2)}
                         </Grid>
                       )}
                       <>
@@ -352,12 +354,17 @@ const UpsellsOthers = ({ upsellsType }: any) => {
                           itemChild.options &&
                           itemChild.options.length > 0 && (
                             <select
+                            autoFocus
+                            id="cart-box-others"
                               className="ss-panl"
                               parent-select-option-id={itemChild.chainproductid}
                               onClick={(e) => e.stopPropagation()}
-                              value={optionSelected}
+                              value={
+                                (optionSelected?.optionId) ||
+                                ''
+                              }
                               data-select-id={itemChild.chainproductid || '0'}
-                              onChange={(e) => optionChange(e)}
+                              onChange={(e) => optionChange(e, itemChild)}
                             >
                               {itemChild.options.map(
                                 (option: any, index: number) => (
@@ -387,7 +394,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
             </Grid>
           ))}
       </div>
-      <Grid container spacing={0} sx={{paddingTop: "20px"}}>
+      <Grid container spacing={0} sx={{paddingTop: "20px"}} id="cart-box-others">
         <Grid
           item
           xs={12}
@@ -478,7 +485,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
                     borderRadius: 0,
                     padding: '30px 10px',
                     fontSize: '16px',
-                    fontFamily: "'Poppins-Medium', sans-serif !important;",
+                    fontFamily: "'GritSans-Bold' !important",
                   }}
                   title="Checkout"
                   aria-label="Checkout"

@@ -20,7 +20,6 @@ import { isLoginUser } from '../../helpers/auth';
 const useStyle = makeStyles(() => ({
   root: {
     minHeight: '100vh',
-    backgroundColor: '#73aac7',
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
     justifyContent: 'center',
@@ -117,9 +116,9 @@ const OrderConfirmation = () => {
   };
 
   return (
-    <Page title={'Order Confirmation'} className="">
+    <Page title={'Order Confirmation'} className="order-bg">
       <Fragment>
-        <Grid container component="main" className={classes.root}>
+        <Grid container component="main" className={classes.root }>
           <Grid item xs={12} sm={12} md={12} lg={12}>
             <Grid container className="order-confirmation">
               <Grid item xs={12} sm={12} md={12} lg={6}>
@@ -143,14 +142,14 @@ const OrderConfirmation = () => {
                       lg={12}
                       className="earn-reward"
                     >
-                      <Typography variant="h2" className="label white">
+                      <Typography variant="h2" sx={{  fontFamily: "'Sunborn-Sansone' !important"}} className="label white">
                         {isLoginUser() ? 'YOUR REWARDS' : 'EARN REWARDS'}
                       </Typography>
                       <Typography
                         variant="body1"
                         className="white"
                         sx={{
-                          fontFamily: 'Poppins-Bold !important',
+                          fontFamily: "'GritSans-Bold' !important",
                           fontSize: '36px !important',
                           lineHeight: '1.2',
                           letterSpacing: '-0.00833em',
@@ -164,6 +163,7 @@ const OrderConfirmation = () => {
                       <Typography
                         variant="h6"
                         className="white"
+                        sx={{fontFamily: "'Librefranklin-Regular' !important"}}
                         title={composeDescriptionText()}
                       >
                         {composeDescriptionText()}
@@ -193,9 +193,9 @@ const OrderConfirmation = () => {
                           'TRUE' && (
                           <Typography
                             variant="h6"
+                            sx={{paddingBottom: '10px', fontFamily: "'Librefranklin-Regular' !important"}}
                             className="white hours-text"
                             title="Please allow up to 24 hours for points to show up in your account."
-                            sx={{ paddingBottom: '10px' }}
                           >
                             Please allow up to 24 hours for points to show up in
                             your account.

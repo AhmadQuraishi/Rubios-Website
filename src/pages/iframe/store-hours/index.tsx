@@ -11,7 +11,8 @@ const useStyle = makeStyles({
   heading: {
     fontSize: '13px !important',
     color: '#000',
-    fontFamily: 'Poppins-Medium !important',
+    fontFamily: "'GritSans-Bold' !important"
+
   },
 });
 
@@ -100,7 +101,7 @@ const StoreHoursIframe = () => {
                     <ListItem
                       sx={{
                         padding: '0 0 0 0',
-                        fontFamily: "'Poppins-Medium' !important",
+                        fontFamily: "'GritSans-Bold' !important",
                       }}
                       title={item.weekday && item.weekday.toUpperCase() || ""}
                     >
@@ -115,7 +116,7 @@ const StoreHoursIframe = () => {
                       fontSize: '12px',
                       fontWeight: '500',
                       color: '#000',
-                      fontFamily: "'Poppins-Medium' !important",
+                      fontFamily: "'GritSans-Bold' !important",
                     }}
                     role="presentation"
                   >

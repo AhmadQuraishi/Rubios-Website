@@ -5,7 +5,7 @@ import './login2.css';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import LoginForm from '../../components/login-form';
-import bgImage from '../../assets/imgs/login-bg.png';
+import bgImage from '../../assets/imgs/20221027_RCG_Brand_5tacos_0501-login.jpg';
 import ReactFacebookLogin from 'react-facebook-login';
 import { facebookUserLogin } from '../../redux/actions/user';
 import { displayToast } from '../../helpers/toast';

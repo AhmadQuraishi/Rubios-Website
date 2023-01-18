@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
   },
   tabspanel: {
-    fontFamily: 'Poppins-Medium !important',
+    fontFamily: "'GritSans-Bold' !important",
     fontSize: '14px !important',
     color: theme.palette.secondary.main + ' !important',
     paddingLeft: '0px !important',

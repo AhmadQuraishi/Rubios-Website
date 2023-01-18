@@ -11,44 +11,46 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
-  padding: 30px 50px 30px 50px;
+
 }
 .stay-connect-bg h2 {
-  font-family: 'Poppins-Bold' !important;
+  font-family: 'GritSans-Bold' !important;
   font-weight: 700;
   margin: 0;
-  font-size: 35px;
+  font-size: 28.91pt;
   text-transform: uppercase;
-  color: #2b4b62;
+  color: #196DB6;
   display: block;
-  line-height: 38px;
-  padding-bottom: 15px;
+  line-height: 44pt;
+  letter-spacing: 2.5px;
+  /* padding-bottom: 15px; */
 }
 .stay-connect-bg p {
-  font-family: 'Poppins-Regular' !important;
+  font-family: 'Librefranklin-Regular' !important;
   margin: 0;
-  font-size: 35px;
-  color: #414141;
+  color: #58595b;
   display: block;
-  line-height: 22px;
+  line-height: 25px;
   font-size: 16px;
+  font-weight: 400;
 }
 .stay-connect-actions {
   display: flex;
   padding-bottom: 20px;
 }
 .stay-connect-actions .panel-cc {
-  width: 50%;
+  width: 100;
 }
 .stay-connect-bg input {
   width: 100%;
-  line-height: 18px !important;
+  line-height: 58px !important;
   font-size: 15px;
   padding: 0 1em;
   outline: 0;
   transition: all 0.2s ease;
-  border: 0;
-  font-family: 'Poppins-Regular' !important;
+  border: 1px solid;
+  border-radius: 5px;
+  font-family: 'Librefranklin-Regular' !important;
   color: #395775;
 }
 .stay-connect-bg .button-right {
@@ -56,18 +58,19 @@
   background: #0a6fb8;
   padding-top: 16px;
   padding-bottom: 15px;
-  font-family: 'Poppins-Bold' !important;
+  font-family: 'Sunborn-Sansone' !important;
   font-weight: 700;
   width: 80px;
+
+
 }
 .stay-connect-bg .email-action-panel {
   display: flex;
   padding-top: 0px;
-  padding-right: 20px;
 }
 .stay-connect-bg .msg-status {
   display: flex;
-  font-family: 'Poppins-Medium' !important;
+  font-family: 'GritSans-Bold' !important;
   font-size: 12px;
   padding: 5px 0;
   visibility: hidden;
@@ -82,9 +85,49 @@
   color: rgb(3, 129, 3);
   visibility: visible;
 }
-@media screen and (max-width: 640px) {
+@media screen and (max-width: 1024px) {
   .stay-connect-bg {
-    padding: 40px 25px 20px 25px;
+    padding: 0px;
+  }
+
+}
+
+.panel-sxc {
+  align-self: flex-end !important;
+}
+@media screen and (max-width: 775px) {
+  .stay-connect-bg {
+    padding: 0px;
+  }
+  .stay-connect-bg p {
+    font-family: 'Librefranklin-Regular' !important;
+    margin: 0;
+    color: #58595b;
+    display: block;
+    line-height: 25pt;
+    font-size: 14pt;
+    font-weight: 500;
+  }
+  .stay-connect-bg h2 {
+    font-family: 'GritSans-Bold' !important;
+    font-weight: 700;
+    margin: 0;
+    font-size: 20.91pt;
+    text-transform: uppercase;
+    color: #196DB6;
+    display: block;
+    line-height: 44pt;
+    letter-spacing: 2.5px;
+    /* padding-bottom: 15px; */
+  }
+ .panel-sxc {
+    align-self: center !important;
+  }
+
+}
+@media screen and (max-width: 600px) {
+  .stay-connect-bg {
+    padding: 0px;
   }
   .stay-connect-actions {
     flex-direction: column;
@@ -93,7 +136,24 @@
     width: 100%;
   }
   .stay-connect-bg .email-action-panel {
-    padding-top: 40px;
+    padding-top: 10px;
+  }
+  .stay-connect-bg h2 {
+    padding-bottom: 5px;
+  }
+}
+@media screen and (max-width: 460px) {
+  .stay-connect-bg {
+    padding: 0px;
+  }
+  .stay-connect-actions {
+    flex-direction: column;
+  }
+  .stay-connect-actions .panel-cc {
+    width: 100%;
+  }
+  .stay-connect-bg .email-action-panel {
+    padding-top: 10px;
   }
   .stay-connect-bg h2 {
     padding-bottom: 5px;

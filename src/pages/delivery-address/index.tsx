@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   heading: {
     paddingBottom: '25px',
     [theme.breakpoints.down('sm')]: {
-      fontSize: '25px !important',
+      fontSize: '22px !important',
     },
   },
 }));
@@ -85,7 +85,7 @@ const DeliveryAddress = () => {
           <Typography variant="h1" className={classes.heading}>
             DELIVERY ADDRESSES
           </Typography>
-          <Typography variant="h6" title="" sx={{ marginBottom: '20px' }}>
+          <Typography variant="h6" title="" sx={{ marginBottom: '20px',fontFamily: "'Librefranklin-Regular' !important" }}>
             To add or update your delivery addresses, select “delivery” when
             placing an order and enter the updated delivery address during
             checkout.

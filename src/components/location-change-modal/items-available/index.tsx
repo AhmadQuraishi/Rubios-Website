@@ -22,11 +22,11 @@ export const ItemsAvailableComponent = ({ restaurant }: any) => {
             sx={{
               lineHeight: '1.1 !important',
               textAlign: 'center',
-              color: '#214F66',
+              color: '#062C43 !important',
               fontSize: '32px',
               fontWeight: '900',
               ttextAlign: 'center',
-              fontFamily: 'Poppins-Bold, sans-serif !important',
+              fontFamily: "'Sunborn-Sansone' !important",
             }}
           >
             LOCATION CHANGED TO

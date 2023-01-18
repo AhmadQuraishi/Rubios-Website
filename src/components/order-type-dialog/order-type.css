@@ -1,5 +1,5 @@
 .selected-toggle-btn.MuiToggleButton-standard {
-    background: #214F66;
+    background: #062C43;
     color: white;
     border: none;
     width: 100%;
@@ -14,7 +14,7 @@
   }
   
   .selected-toggle-btn.MuiToggleButton-standard:hover {
-    background: #214F66;
+    background: '#062C43',
   }
   
   .selected-toggle-btn.Mui-selected {

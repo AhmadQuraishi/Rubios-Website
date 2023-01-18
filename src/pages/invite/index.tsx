@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   heading: {
     paddingBottom: '5px',
     [theme.breakpoints.down('sm')]: {
-      fontSize: '25px !important',
+      fontSize: '22px !important',
     },
   },
 }));
@@ -62,6 +62,7 @@ const Invite = () => {
         variant="h1"
         className={classes.heading}
         title="Give $5, Get $5"
+        sx={{fontFamily: "'GritSans-Bold' !important"}}
       >
         GIVE $5 , GET $5
       </Typography>
@@ -71,6 +72,7 @@ const Invite = () => {
             <Typography
               variant="body2"
               className="body-text"
+              style={{fontFamily: "'Librefranklin-Regular' !important"}}
               title="Earn $5 off when your friends use the invite code below to Sign Up
               for Rubio's Rewards and make their first purchase."
             >

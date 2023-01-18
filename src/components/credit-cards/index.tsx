@@ -52,7 +52,7 @@ const CreditCards = ({ billingAccounts, loading }: any) => {
         />
         <Grid item xs={12}>
           <br/>
-          <Typography variant="h6" title="To add a credit card to your account, place an order and enter the credit card information during checkout.">
+          <Typography variant="h6" sx={{  fontFamily: "'Librefranklin-Regular' !important"}} title="To add a credit card to your account, place an order and enter the credit card information during checkout.">
             To add a credit card to your account, place an order and enter the credit card information during checkout.
           </Typography>
         </Grid>
@@ -86,7 +86,7 @@ const CreditCards = ({ billingAccounts, loading }: any) => {
                             >
                               {cardData.isdefault ? (
                                 <Fragment>
-                                  <b>DEFAULT</b> {cardData.accounttype}
+                                  <b >DEFAULT</b> {cardData.accounttype}
                                 </Fragment>
                               ) : (
                                 `${cardData.accounttype}`
