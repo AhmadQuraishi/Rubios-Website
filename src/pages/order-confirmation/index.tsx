@@ -193,9 +193,9 @@ const OrderConfirmation = () => {
                           'TRUE' && (
                           <Typography
                             variant="h6"
+                            sx={{paddingBottom: '10px', fontFamily: "'Librefranklin-Regular' !important"}}
                             className="white hours-text"
                             title="Please allow up to 24 hours for points to show up in your account."
-                            sx={{ paddingBottom: '10px' }}
                           >
                             Please allow up to 24 hours for points to show up in
                             your account.
