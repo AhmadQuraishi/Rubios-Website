@@ -187,10 +187,12 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
 
 
   useEffect(() => {
-    if(upsellsVendorId && upsellsVendorId !== restaurant?.id){
+    if(!upsellsVendorId && restaurant?.id){
+        dispatch(getUpsellsRequest(restaurant?.id))
+    } else if(upsellsVendorId && upsellsVendorId !== restaurant?.id){
         dispatch(getUpsellsRequest(restaurant?.id))
     } else if(!upsells && restaurant?.id){
-      dispatch(getUpsellsRequest(restaurant?.id))
+        dispatch(getUpsellsRequest(restaurant?.id))
     }
 
   }, [])
