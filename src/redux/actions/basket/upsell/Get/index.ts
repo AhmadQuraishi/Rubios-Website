@@ -1,10 +1,9 @@
 import { basketActionsTypes } from '../../../../types/basket';
 import { displayToast } from '../../../../../helpers/toast';
 
-export function getUpsellsRequest(basketid: string, vendorid: number) {
+export function getUpsellsRequest(vendorid: number) {
   return {
     type: basketActionsTypes.GET_UPSELLS_REQUEST,
-    basketid,
     vendorid,
   };
 }
