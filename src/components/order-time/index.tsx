@@ -12,8 +12,8 @@ import {
 } from '@mui/material';
 import moment from 'moment';
 import './index.css';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import AdapterMoment from '@mui/lab/AdapterMoment';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import {AdapterMoment} from '@mui/x-date-pickers/AdapterMoment';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   deleteBasketTimeWanted,
@@ -29,7 +29,7 @@ import { CalendarTypeEnum, HoursListing } from '../../helpers/hoursListing';
 import { useNavigate } from 'react-router-dom';
 import { ResponseBasket } from '../../types/olo-api';
 import { DeliveryModeEnum } from '../../types/olo-api/olo-api.enums';
-import { MobileDatePicker } from '@mui/lab';
+import { MobileDatePicker } from '@mui/x-date-pickers';
 
 const OrderTime = ({ orderType }: any) => {
   const dispatch = useDispatch();

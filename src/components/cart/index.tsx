@@ -41,6 +41,7 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { facebookSendEvent } from '../../redux/actions/facebook-conversion';
 import { facebookConversionTypes } from '../../redux/types/facebook-conversion';
 import { isLoginUser } from '../../helpers/auth';
+import { getUpsellsRequest } from '../../redux/actions/basket/upsell/Get';
 
 const useStyles = makeStyles((theme: Theme) => ({
   dimPanel: {
@@ -177,12 +178,22 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   );
   const basketObj = useSelector((state: any) => state.basketReducer);
   const addUpsellsObj = useSelector((state: any) => state.addUpsellReducer);
-  const { upsells } = useSelector((state: any) => state.getUpsellsReducer);
+  const { upsells, vendorId: upsellsVendorId } = useSelector((state: any) => state.getUpsellsReducer);
   const { providerToken } = useSelector((state: any) => state.providerReducer);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [basketType, setBasketType] = useState();
+
+
+  useEffect(() => {
+    if(upsellsVendorId && upsellsVendorId !== restaurant?.id){
+        dispatch(getUpsellsRequest(restaurant?.id))
+    } else if(!upsells && restaurant?.id){
+      dispatch(getUpsellsRequest(restaurant?.id))
+    }
+
+  }, [])
 
   useEffect(() => {
     console.log('upsells', upsells);
