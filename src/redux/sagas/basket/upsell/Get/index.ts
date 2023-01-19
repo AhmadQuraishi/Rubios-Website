@@ -8,12 +8,11 @@ import { getUpSells } from '../../../../../services/basket';
 
 function* asyncGetUpsellsRequest(action: any): any {
   try {
-    if (action.basketid == '') {
-      yield put(getUpsellsRequestSuccess(null));
-    } else {
       const response = yield call(getUpSells, action.vendorid);
-      yield put(getUpsellsRequestSuccess(response));
-    }
+      yield put(getUpsellsRequestSuccess({
+        data: response,
+        vendorId: action.vendorid
+      }));
   } catch (error) {
     yield put(getUpsellsRequestFailure(error));
   }
