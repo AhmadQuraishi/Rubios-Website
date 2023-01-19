@@ -77,7 +77,10 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
               updatedProd.options.unshift(newOption);
             }
 
-            options[`${updatedProd.id}`] = `${updatedProd.options[0].id}`;
+            options[`${updatedProd.id}`] = {
+              optionId: `${updatedProd.options[0].id}`,
+              cost: updatedProd.options[0].cost
+            } ;
           }
           return updatedProd;
         });
@@ -97,12 +100,12 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
         if (product.quantity > 0) {
           let choices: any = [];
           if (
-            optionSelected[product.id] &&
-            optionSelected[product.id] !== '55555555555'
+            optionSelected[product.id]?.optionId &&
+            optionSelected[product.id].optionId !== '55555555555'
           ) {
             choices = [
               {
-                choiceid: optionSelected[product.id],
+                choiceid: optionSelected[product.id].optionId,
               },
             ];
           }
@@ -237,8 +240,12 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
     fitContainer();
   };
 
-  const optionChange = (e: any, id: any) => {
-    setOptionSelected({ ...optionSelected, [id]: e.target.value });
+  const optionChange = (e: any, product: any) => {
+    const filterOpt = product?.options?.filter((opt: any) => opt.id === parseInt(e.target.value));
+    setOptionSelected({ ...optionSelected, [product.id]: {
+      optionId: e.target.value,
+      cost: filterOpt?.length && filterOpt[0]?.cost || 0,
+    }  });
   };
 
   const fitContainer = () => {
@@ -442,7 +449,7 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                                 ? obj.name.slice(0, 30) + '...'
                                 : obj.name)
                           }
-                          {obj.cost > 0 && (
+                          {(obj.cost > 0 || optionSelected[obj.id]?.cost > 0) && (
                             <Grid
                               item
                               xs={12}
@@ -459,7 +466,7 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                               }}
                             >
                               +$
-                              {parseFloat(obj.cost).toFixed(2)}
+                              {parseFloat(obj?.cost > 0 && obj.cost || optionSelected[obj.id]?.cost).toFixed(2)}
                             </Grid>
                           )}
                           <>
@@ -478,11 +485,11 @@ const Salsa = ({ upsellsType, setErrorMsg }: any) => {
                                 parent-select-option-id={obj.chainproductid}
                                 onClick={(e) => e.stopPropagation()}
                                 value={
-                                  (optionSelected && optionSelected[obj.id]) ||
+                                  (optionSelected[obj.id]?.optionId) ||
                                   ''
                                 }
                                 data-select-id={obj.chainproductid || '0'}
-                                onChange={(e) => optionChange(e, obj.id)}
+                                onChange={(e) => optionChange(e, obj)}
                               >
                                 {obj.options.map(
                                   (option: any, index: number) => (

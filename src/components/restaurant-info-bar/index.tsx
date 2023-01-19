@@ -229,9 +229,9 @@ const StoreInfoBar = () => {
                   >
                     {orderSelectedType()}
                   </Typography>
-                  {window?.location?.href
+                  {/* {window?.location?.href
                     ?.toLocaleLowerCase()
-                    ?.indexOf('/checkout') !== -1 && (
+                    ?.indexOf('/checkout') !== -1 && ( */}
                     <>
                       <Typography
                         //variant="body2"
@@ -269,7 +269,7 @@ const StoreInfoBar = () => {
                         {'\n'}
                       </Typography>
                     </>
-                        )}
+                        {/* )} */}
                 </Grid>
                 <Typography
                   variant="h2"
@@ -442,10 +442,10 @@ const StoreInfoBar = () => {
                         <p>{restaurantInfo.distance.toFixed(2)} Miles Away</p>
                       )}
                     </Typography>
-                    {window?.location?.href
+                    {/* {window?.location?.href
                     ?.toLocaleLowerCase()
                     ?.indexOf('/checkout') !== -1 && (
-                      <>
+                      <> */}
                         <Typography
                           color="#fff"
                           fontSize={11}
@@ -480,8 +480,8 @@ const StoreInfoBar = () => {
                             Change Order Type
                           </p>
                         </Typography>
-                      </>
-                    )}
+                      {/* </>
+                    )} */}
                     <Typography
                       color="#fff"
                       fontSize={11}

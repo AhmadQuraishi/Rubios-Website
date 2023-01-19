@@ -965,7 +965,7 @@ const Checkout = () => {
   };
   React.useEffect(() => {
     console.log(callOnce,"callOnce");
-  if (basketObj.basket.products.length == 0 && callOnce) {
+  if (basketObj?.basket?.products?.length == 0 && callOnce) {
     navigate(restaurant ? '/menu/' + restaurant.slug : '/');
     // displayToast('SUCCESS', 'Please add new items in a bag to proceed');
     setCallOnce(!callOnce);
