@@ -163,9 +163,10 @@ const ProductListing = (props: any) => {
                         },
                       }}
                     >
-                      {item?.name?.length > 48
+                      {/* {item?.name?.length > 48
                         ? item?.name?.slice(0, 50) + '...'
-                        : item?.name}
+                        : item?.name} */}
+                        {item.name}
                     </Typography>
                     <Button
                       className="custom-btn cta2-btn"

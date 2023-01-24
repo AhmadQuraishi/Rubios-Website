@@ -86,6 +86,7 @@ const ForgotPassword = () => {
                 </Typography>
                 <Typography
                   variant="h1"
+                  sx={{fontFamily: "'Librefranklin-Bold' !important"}}
                   title="Enter the email address associated with your account."
                 >
                   Enter the email address associated with your account.

@@ -68,11 +68,29 @@ overflow:unset;
   object-fit: cover;
 }
 .carousel-container .react-multiple-carousel__arrow--right {
-top: 24%
+  top: 40%
 }
 .carousel-container .react-multiple-carousel__arrow--left {
-  top: 24%
+  top: 40%
 }
+@media screen and (max-width: 1200px) {
+  .carousel-container .react-multiple-carousel__arrow--right {
+    top: 40%
+  }
+  .carousel-container .react-multiple-carousel__arrow--left {
+    top: 40%
+  }
+}
+
+@media screen and (max-width: 1100px) {
+  .carousel-container .react-multiple-carousel__arrow--right {
+    top: 38%
+  }
+  .carousel-container .react-multiple-carousel__arrow--left {
+    top: 37%
+  }
+}
+
 /*@media screen and (max-width: 464px) {*/
 /*.carousel-mobile-show-next-slide {*/
 /*  width: 80vw !important;*/
