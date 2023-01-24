@@ -50,12 +50,28 @@
   object-fit: cover;
 }
 .carousel-container .react-multiple-carousel__arrow--right {
-  top: 29%
+  top: 51%
 }
 .carousel-container .react-multiple-carousel__arrow--left {
-  top: 29%
+  top: 51%
+}
+@media screen and (max-width: 1200px) {
+  .carousel-container .react-multiple-carousel__arrow--right {
+    top: 48%
+  }
+  .carousel-container .react-multiple-carousel__arrow--left {
+    top: 48%
+  }
 }
 
+@media screen and (max-width: 1100px) {
+  .carousel-container .react-multiple-carousel__arrow--right {
+    top: 46%
+  }
+  .carousel-container .react-multiple-carousel__arrow--left {
+    top: 46%
+  }
+}
 @media (max-width: 464px) {
   .react-multi-carousel-track > li:only-child {
     transform: translate3d(-50px, 0px, 0px) !important;
