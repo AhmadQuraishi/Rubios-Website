@@ -312,7 +312,7 @@
   .content-panel
   .content-panel-desc
   .points {
-  font-size: 10px;
+  font-size: 12px;
   padding-top: 2px;
   margin-bottom: 2px;
   color: #333;
@@ -326,7 +326,7 @@
   text-transform: uppercase;
   font-family: 'Librefranklin-Bold' !important;
   color: #0075bf;
-  font-size: 11px;
+  font-size: 15px;
   font-weight: bold;
   letter-spacing: 0.0138em !important;
   cursor: pointer;
