@@ -156,7 +156,7 @@ const ProductListing = (props: any) => {
                       sx={{
                         
                         height: {
-                          lg: '35px',
+                          lg: '50px',
                           md: '50px',
                           sm: '45px',
                           xs: '50px',
