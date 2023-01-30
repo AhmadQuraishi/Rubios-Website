@@ -38,7 +38,7 @@
   margin: 20px 0 25px 0;
 }
 #reward-points-container .bold-title {
-  font-family: 'GritSans-Bold' !important;
+  font-family: 'Librefranklin-Bold' !important;
   font-size: 30px;
   text-transform: uppercase;
   font-weight: bold;
@@ -135,7 +135,7 @@
   .content-panel
   .content-panel-desc
   .points {
-  font-size: 10px;
+  font-size: 12px;
   padding-top: 2px;
   margin-bottom: 2px;
   color: #333;

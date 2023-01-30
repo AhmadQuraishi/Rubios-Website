@@ -295,19 +295,19 @@ const Product = () => {
       dispatch(addProductRequest(dummyBasketObj.basket.id || '', request));
     }
 
-    if (
-      dummyBasketObj &&
-      dummyBasketObj.basket &&
-      dummyBasketObj.basket.id &&
-      upsellsObj.upsells == null
-    ) {
-      // dispatch(
-      //   getUpsellsRequest(
-      //     dummyBasketObj.basket.id,
-      //     dummyBasketObj.basket.vendorid,
-      //   ),
-      // );
-    }
+    // if (
+    //   dummyBasketObj &&
+    //   dummyBasketObj.basket &&
+    //   dummyBasketObj.basket.id &&
+    //   upsellsObj.upsells == null
+    // ) {
+    //   dispatch(
+    //     getUpsellsRequest(
+    //       dummyBasketObj.basket.id,
+    //       dummyBasketObj.basket.vendorid,
+    //     ),
+    //   );
+    // }
   }, [dummyBasketObj.basket]);
 
   useEffect(() => {

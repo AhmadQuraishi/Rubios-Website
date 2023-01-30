@@ -86,9 +86,10 @@ const ForgotPassword = () => {
                 </Typography>
                 <Typography
                   variant="h1"
+                  sx={{fontFamily: "'Librefranklin-Regular' !important"}}
                   title="Enter the email address associated with your account."
                 >
-                  Enter the email address associated with your account.
+                  Enter email address associated with your account.
                 </Typography>
                 <ForgotForm />
               </Grid>
