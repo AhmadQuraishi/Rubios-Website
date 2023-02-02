@@ -476,7 +476,7 @@ const Footer = () => {
                     </li>
                     <li>
                       <a
-                        href="#"
+                        href="javascript:Optanon.ToggleInfoDisplay()"
                         className={classes.smallLinks}
                         title="Cookies"
                         aria-label="Cookies"
