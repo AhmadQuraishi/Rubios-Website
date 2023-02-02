@@ -435,8 +435,7 @@ const Footer = () => {
                   <ul style={{ listStyle: 'none', display: 'flex' }}>
                     <li>
                       <a
-                        // href="javascript:Optanon.ToggleInfoDisplay()"
-                        href="#"
+                        href="javascript:Optanon.ToggleInfoDisplay()"
                         className={classes.smallLinks}
                         title="Do Not Sell My Personal Infomation"
                         aria-label="Do Not Sell My Personal Infomation"
