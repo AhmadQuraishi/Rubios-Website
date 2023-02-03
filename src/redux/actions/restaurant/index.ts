@@ -9,6 +9,12 @@ export function getResturantInfoRequest(id: number) {
   };
 }
 
+export function resetRestaurantRequest() {
+  return {
+    type: restaurantActionsTypes.RESTAURANT_RESET_REQUEST,
+  };
+}
+
 export function getResturantInfoRequestSuccess(data: ResponseRestaurant) {
   return {
     type: restaurantActionsTypes.GET_RESTAURANT_INFO_SUCCESS,

@@ -13,22 +13,31 @@ import { useDispatch, useSelector } from 'react-redux';
 import NavigateApp from './components/navigate-app';
 import { generateDeviceId } from './helpers/common';
 import { updateDeviceUniqueId } from './redux/actions/auth';
+import { ResponseRestaurant } from './types/olo-api';
+import { ResponseBasket } from './types/olo-api';
 import moment from 'moment';
 // import {testingRedemption, testingRewards} from "./services/reward";
 // import {generateCCSFToken} from "./services/basket";
 import TagManager from 'react-gtm-module';
-import { resetBasketRequest } from './redux/actions/basket';
+import { resetRestaurantRequest} from './redux/actions/restaurant';
+import {resetBasketRequest} from './redux/actions/basket'
 import {isLoginUser} from './helpers/auth'
+import { CacheDialog } from './components/cache-dialog';
 
 function App(props: any) {
   const location = useLocation();
   const [isAccountSection, setIsAccountSection] = useState(false);
   const [hideLoginPanel, setHideLoginPanel] = useState(true);
   const [hideLoginedPanel, setHideLoginedPanel] = useState(false);
+  const [reset, setReset] = useState<ResponseBasket>();
+  const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const { deviceId } = useSelector((state: any) => state.authReducer);
-  const { basket, createdTime } = useSelector(
+  const { basket} = useSelector(
     (state: any) => state.basketReducer,
+  );
+  const { restaurant, orderType, createdTime  } = useSelector(
+    (state: any) => state.restaurantInfoReducer,
   );
 
   const navigate = useNavigate();
@@ -66,18 +75,45 @@ function App(props: any) {
     }
   }, []);
 
-  useEffect(() => {
-    if (createdTime && basket) {
-      const basketCreatedTime: any = moment.unix(createdTime);
+  const clearOrderCacheAfter30Minutes = () => {
+    console.log("working1");
+    if (restaurant && createdTime){
+      console.log("working2");
+      const restaurantCreatedTime: any = moment.unix(createdTime);
       const currentTime = moment();
-      if (basketCreatedTime.isValid()) {
-        const minutes = currentTime.diff(basketCreatedTime, 'minutes');
-        if (minutes > 30) {
+      if (restaurantCreatedTime.isValid()) {
+        console.log("working3");
+        const minutes = currentTime.diff(restaurantCreatedTime, 'minutes');
+        if (minutes > 1) {
+          console.log("working4");
+          dispatch(resetRestaurantRequest());
           dispatch(resetBasketRequest());
+          setOpen(true);
         }
-      }
     }
-  }, [basket]);
+  }
+  }
+  useEffect(() => {
+    setInterval(() => {
+      clearOrderCacheAfter30Minutes();
+      console.log("working");
+    }, 10)
+    
+}, []);
+  
+  // useEffect(() => {
+  //   if (createdTime && basket) {
+  //     const basketCreatedTime: any = moment.unix(createdTime);
+  //     const currentTime = moment();
+  //     if (basketCreatedTime.isValid()) {
+  //       const minutes = currentTime.diff(basketCreatedTime, 'minutes');
+  //       if (minutes > 30) {
+  //         dispatch(resetBasketRequest());
+  //       }
+  //     }
+  //   }
+  // }, [basket]);
+
 
   useEffect(() => {
     const tagManagerArgs: any = {
@@ -188,6 +224,8 @@ function App(props: any) {
   // }, []);
 
   return (
+    <div>
+    <CacheDialog openModal={open} setOpenModal={setOpen}  />
     <div id="wapper">
       {/*<div*/}
       {/*  id="onetrust-consent-sdk"*/}
@@ -243,6 +281,7 @@ function App(props: any) {
         )}
       </main>
       <Footer />
+    </div>
     </div>
   );
 }

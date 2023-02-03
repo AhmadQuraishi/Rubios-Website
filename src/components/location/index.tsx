@@ -12,10 +12,11 @@ import {
 import React, { useEffect, useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import './location.css';
-import { ResponseRestaurant } from '../../types/olo-api';
+import { ResponseRestaurant,ResponseBasket } from '../../types/olo-api';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import StoreInfo from './info';
+import { getBasketRequest } from '../../redux/actions/basket';
 import { displayToast } from '../../helpers/toast';
 import { LocationChangeModal } from '../location-change-modal';
 import usePlacesAutocomplete, {
@@ -94,6 +95,8 @@ const LocationCard = (props: any) => {
   const [showLocationChangeModal, setShowLocationChangeModal] = useState(false);
   const [newRestaurant, setNewRestaurant] = useState<any>(null);
   const [showAllRestaurants, setShowAllRestaurants] = useState(false);
+  const dummyBasketObj = useSelector((state: any) => state.createBasketReducer);
+  const [basket, setBasket] = useState<ResponseBasket>();
   // const [updatebasket] = useState(false);
   const [alignment, setAlignment] = React.useState('web');
 
@@ -459,6 +462,19 @@ const LocationCard = (props: any) => {
     triggerFacebookEventOnLocationChange();
     navigate('/menu/' + restaurantObj.slug);
   };
+
+  
+  useEffect(() => {
+    if (!dummyBasketObj.basket) {
+      dispatch(getBasketRequest('', dummyBasketObj.basket));
+    }
+  }, [dummyBasketObj.basket]);
+  
+  // useEffect(() => {
+  //   if (basketObj.basket) {
+  //     setBasket(basketObj.basket);
+  //   }
+  // }, [basketObj.basket]);
   const triggerFacebookEventOnLocationChange = () => {
     let userObj: any = null;
     if (isLoginUser()) {
@@ -808,7 +824,7 @@ const LocationCard = (props: any) => {
                 </Typography>
               )}
 
-              {!showAllRestaurants &&
+              {dummyBasketObj.loading  || !showAllRestaurants &&
                 orderType &&
                 orderType === 'dispatch' &&
                 filteredRestaurants.length > 0 &&
