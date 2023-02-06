@@ -36,7 +36,7 @@ function App(props: any) {
   const { basket} = useSelector(
     (state: any) => state.basketReducer,
   );
-  const { restaurant, orderType, createdTime  } = useSelector(
+  const { restaurant, orderType, sessionTime  } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
 
@@ -74,36 +74,43 @@ function App(props: any) {
       }
     }
   }, []);
-
+  console.log("WW",sessionTime);
   const clearOrderCacheAfter30Minutes = () => {
-    console.log("working1");
-    if (restaurant && createdTime){
-      console.log("working2");
-      const restaurantCreatedTime: any = moment.unix(createdTime);
+    console.log("working1",sessionTime);
+    if (restaurant && sessionTime){
+      const restaurantSessionTime: any = moment.unix(sessionTime);
+      console.log("working2", restaurantSessionTime);
       const currentTime = moment();
-      if (restaurantCreatedTime.isValid()) {
-        console.log("working3");
-        const minutes = currentTime.diff(restaurantCreatedTime, 'minutes');
-        if (minutes > 1) {
-          console.log("working4");
+      console.log("working3", currentTime);
+      if (restaurantSessionTime.isValid()) {
+        console.log("working3", restaurantSessionTime);
+        const minutes = currentTime.diff(restaurantSessionTime, 'minutes');
+        console.log(minutes, "minutes")
+        if (minutes > 2) {
+          console.log("working4", minutes);
           dispatch(resetRestaurantRequest());
           dispatch(resetBasketRequest());
           setOpen(true);
         }
+        
     }
+    else {
+      setOpen(false)
+    }
+   
   }
   }
   useEffect(() => {
     setInterval(() => {
       clearOrderCacheAfter30Minutes();
       console.log("working");
-    }, 10)
+    }, 5000)
     
 }, []);
   
   // useEffect(() => {
-  //   if (createdTime && basket) {
-  //     const basketCreatedTime: any = moment.unix(createdTime);
+  //   if (sessionTime && basket) {
+  //     const basketCreatedTime: any = moment.unix(sessionTime);
   //     const currentTime = moment();
   //     if (basketCreatedTime.isValid()) {
   //       const minutes = currentTime.diff(basketCreatedTime, 'minutes');

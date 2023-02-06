@@ -7,7 +7,7 @@ const INITIAL_STATE = {
   restaurant: null,
   orderType: '',
   error: {},
-  createdTime: null,
+  sessionTime: null,
 };
 
 const restaurantInfoReducer = (state = INITIAL_STATE, action: any) => {
@@ -20,7 +20,7 @@ const restaurantInfoReducer = (state = INITIAL_STATE, action: any) => {
         loading: false,
         restaurant: action.payload,
         error: {},
-        createdTime: moment().unix(),
+        sessionTime: moment().unix(),
       };
     case restaurantActionsTypes.GET_RESTAURANT_INFO_FAILURE:
       return { ...state, loading: false, error: action.error };
@@ -39,7 +39,7 @@ const restaurantInfoReducer = (state = INITIAL_STATE, action: any) => {
         restaurant: action.payload,
         orderType: action.orderType,
         error: {},
-        createdTime: moment().unix(),
+        sessionTime: moment().unix(),
       };
     case restaurantActionsTypes.SET_RESTAURANT_INFO_FAILURE:
       return { ...state, loading: false, error: action.error };
