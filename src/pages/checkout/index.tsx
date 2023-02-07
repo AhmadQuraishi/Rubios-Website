@@ -40,7 +40,7 @@ import {
   updatePaymentCardsAmount,
 } from '../../helpers/checkout';
 import {
-  getAllBillingAccounts,
+  getAllBillingAccounts, userLogout,
   // getUserDeliveryAddresses,
 } from '../../redux/actions/user';
 import PickupForm from '../../components/pickup-form/index';
@@ -58,6 +58,7 @@ import { facebookConversionTypes } from '../../redux/types/facebook-conversion';
 import SignUpGuest from '../../components/sign-up-guest';
 import { userRegister } from '../../redux/actions/user';
 import CheckoutSkeletonUI from '../../components/checkout-skeleton-ui';
+import { getAuthRequest } from '../../redux/actions/auth';
 
 const Checkout = () => {
   const dispatch = useDispatch();
@@ -95,6 +96,9 @@ const Checkout = () => {
   const { guestUser } = useSelector((state: any) => state.guestReducer);
   const { rewards: qualifyingRewards, loading: loadingRewards } = useSelector(
     (state: any) => state.getRewardForCheckoutReducer,
+  );
+  const { sessionTime  } = useSelector(
+    (state: any) => state.restaurantInfoReducer,
   );
   const { data: rewardsRedemptionsData, loading: loadingRedemptions } =
     useSelector((state: any) => state.rewardReducerNew);
@@ -416,6 +420,25 @@ const Checkout = () => {
       setValidate(basketObj.validate);
     }
   }, [basketObj.validate]);
+
+//   let intervalId: any;
+//   const clearCacheAuthenticate = () => {
+//     if (billingSchemes && sessionTime) {
+//       const paymentCreatedTime: any = moment.unix(sessionTime);
+//       const currentTime = moment();
+//       if (paymentCreatedTime.isValid()) {
+//         const minutes = currentTime.diff(paymentCreatedTime, 'minutes');
+//         if (minutes > 0) {
+//           // dispatch(userLogout());
+//           // navigate("/login");
+//         }
+//       }
+//     }
+//   }
+
+//   intervalId = setInterval(function() {
+//   clearCacheAuthenticate()
+// }, 5000)
 
   const createDefaultGiftCards = (defaultGiftCards: any) => {
     let array = [];

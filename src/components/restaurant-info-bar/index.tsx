@@ -255,7 +255,7 @@ const StoreInfoBar = () => {
                             textDecorationLine: 'underline',
                           }}
                           role={'button'}
-                          aria-label={'Change Order Type'}
+                          title="Change Order Type"
                           tabIndex={0}
                           onKeyPress={(e: any) => {
                             if (e.key === 'Enter') {
@@ -329,8 +329,8 @@ const StoreInfoBar = () => {
                         
                       }}
                       role={'button'}
-                      aria-label={'Change location'}
-                      tabIndex={1}
+                      title="Change Location"
+                      tabIndex={0}
                       // onKeyPress={(e: any) => {
                       //   if (e.key === 'Enter') {
                       //     handleClickOpen();
@@ -468,7 +468,7 @@ const StoreInfoBar = () => {
                               fontSize: '13px',
                             }}
                             role={'button'}
-                            aria-label={'Change Order Type'}
+                            title="Change Order Type"
                             tabIndex={0}
                             onKeyPress={(e: any) => {
                               if (e.key === 'Enter') {
@@ -504,8 +504,8 @@ const StoreInfoBar = () => {
                           fontSize: '13px',
                         }}
                         role={'button'}
-                        aria-label={'Change location'}
                         tabIndex={0}
+                        title="Change Location"
                         // onKeyPress={(e: any) => {
                         //   if (e.key === 'Enter') {
                         //     handleClickOpen();
@@ -539,7 +539,8 @@ const StoreInfoBar = () => {
                           }}
                           className={'add-favourite'}
                           role={'button'}
-                          aria-label={'Add to Favorites'}
+                          title={checkFavorite() ? 'Favourite' : 'Add to Favourite'}
+                          aria-label={checkFavorite() ? 'Favourite' : 'Add to Favourite'}
                           tabIndex={0}
                           onKeyPress={(e: any) => {
                             if (e.key === 'Enter') {
@@ -775,12 +776,12 @@ const StoreInfoBar = () => {
                         }}
                         role={'button'}
                         tabIndex={0}
+                        title={`${showMore ? 'Hide' : 'View'} Details`}
                         onKeyPress={(e: any) => {
                           if (e.key === 'Enter') {
                             setShowMore(!showMore);
                           }
                         }}
-                        aria-label={`${showMore ? 'Hide' : 'View'} Details`}
                         xs={12}
                       >
                         <Typography

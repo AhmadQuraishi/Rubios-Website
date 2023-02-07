@@ -19,7 +19,7 @@ import moment from 'moment';
 // import {testingRedemption, testingRewards} from "./services/reward";
 // import {generateCCSFToken} from "./services/basket";
 import TagManager from 'react-gtm-module';
-import { resetRestaurantRequest} from './redux/actions/restaurant';
+import {resetRestaurantRequest,updateSessionRequest} from './redux/actions/restaurant';
 import {resetBasketRequest} from './redux/actions/basket'
 import {isLoginUser} from './helpers/auth'
 import { CacheDialog } from './components/cache-dialog';
@@ -29,7 +29,6 @@ function App(props: any) {
   const [isAccountSection, setIsAccountSection] = useState(false);
   const [hideLoginPanel, setHideLoginPanel] = useState(true);
   const [hideLoginedPanel, setHideLoginedPanel] = useState(false);
-  const [reset, setReset] = useState<ResponseBasket>();
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const { deviceId } = useSelector((state: any) => state.authReducer);
@@ -74,39 +73,47 @@ function App(props: any) {
       }
     }
   }, []);
-  console.log("WW",sessionTime);
+
+  useEffect (() => {
+    if (basket?.products?.length > 0){
+              dispatch(updateSessionRequest());
+            }
+            // debugger;
+  }, [basket])
+  let intervalId: any;
+
   const clearOrderCacheAfter30Minutes = () => {
     console.log("working1",sessionTime);
     if (restaurant && sessionTime){
       const restaurantSessionTime: any = moment.unix(sessionTime);
       console.log("working2", restaurantSessionTime);
       const currentTime = moment();
-      console.log("working3", currentTime);
       if (restaurantSessionTime.isValid()) {
         console.log("working3", restaurantSessionTime);
         const minutes = currentTime.diff(restaurantSessionTime, 'minutes');
         console.log(minutes, "minutes")
-        if (minutes > 2) {
-          console.log("working4", minutes);
+        if (minutes > 30) {
           dispatch(resetRestaurantRequest());
           dispatch(resetBasketRequest());
           setOpen(true);
-        }
-        
+          clearInterval(intervalId);
+
+        }     
     }
-    else {
-      setOpen(false)
-    }
-   
   }
-  }
-  useEffect(() => {
-    setInterval(() => {
-      clearOrderCacheAfter30Minutes();
-      console.log("working");
-    }, 5000)
+}
+intervalId = setInterval(function() {
+  clearOrderCacheAfter30Minutes()
+},5 * 60 * 1000) 
+
+
+//   useEffect(() => {
+//     setInterval(() => {
+//       clearOrderCacheAfter30Minutes();
+//       console.log("working");
+//     }, 5000)
     
-}, []);
+// }, []);
   
   // useEffect(() => {
   //   if (sessionTime && basket) {
@@ -232,7 +239,7 @@ function App(props: any) {
 
   return (
     <div>
-    <CacheDialog openModal={open} setOpenModal={setOpen}  />
+    <CacheDialog open={open} setOpen={setOpen} />
     <div id="wapper">
       {/*<div*/}
       {/*  id="onetrust-consent-sdk"*/}

@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 
 import './payment-info.css';
+import { useNavigate } from 'react-router-dom';
 import SplitPayment from './split-payment';
 import AddGiftCard from './add-gift-card';
 // import AddCreditCard from './add-credit-card';
@@ -52,6 +53,7 @@ const NumberFormatCustom = forwardRef<HTMLElement, CustomProps>(
 );
 
 const PaymentInfo = forwardRef((props: any, _ref) => {
+  const navigate = useNavigate();
   const { ccsfObj, basketAccessToken } = props;
   const dispatch = useDispatch();
   const theme = useTheme();
@@ -61,6 +63,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
   const [zipCode, setZipCode] = React.useState<any>();
   const [cardExpiry, setCardExpiry] = React.useState<any>();
   const [billingSchemes, setBillingSchemes] = React.useState<any>([]);
+  const [sessionTime,  setSessionTime] = React.useState<any>();
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
   const [basket, setBasket] = React.useState<ResponseBasket>();
   const [allowedCards, setAllowedCards] = React.useState<any>();
@@ -71,6 +74,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
   React.useEffect(() => {
     setBillingSchemes(basketObj.payment.billingSchemes);
   }, [basketObj.payment.billingSchemes]);
+
 
   React.useEffect(() => {
     if (basketObj.basket) {
@@ -97,6 +101,8 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
   const handleHideShow = () => {
     setHideShow(!hideShow);
   };
+
+
 
   React.useEffect(() => {
     if (hideShow) {

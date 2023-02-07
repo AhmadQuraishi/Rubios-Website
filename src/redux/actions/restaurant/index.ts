@@ -15,6 +15,12 @@ export function resetRestaurantRequest() {
   };
 }
 
+export function updateSessionRequest() {
+  return {
+    type: restaurantActionsTypes.SET_RESTAURANT_SESSION_REQUEST,
+  };
+}
+
 export function getResturantInfoRequestSuccess(data: ResponseRestaurant) {
   return {
     type: restaurantActionsTypes.GET_RESTAURANT_INFO_SUCCESS,

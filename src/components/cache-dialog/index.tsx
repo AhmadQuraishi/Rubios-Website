@@ -12,32 +12,25 @@ import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import { Theme } from '@mui/material';
 export const CacheDialog = (props: any)  =>{
-    const {
-        type,
-        openModal,
-        setOpenModal,
-      } = props;
-    const theme = useTheme();
+  const {
+    open,
+    setOpen,
+  } = props;
+  const theme = useTheme();
   const navigate = useNavigate();
   const fullScreen = useMediaQuery(theme.breakpoints.down(480));
 
   const handleClose = () => {
-    setOpenModal(false);
+    setOpen(false);
     navigate('/location');
-  };
-  const backdropClose = (event: any, reason: any) => {
-    if (reason && reason === 'backdropClick') {
-      return;
-    }
-    handleClose();
-  };
+  }
 
   return (
     <div>
       <Dialog
         fullScreen={fullScreen}
-        open={openModal}
-        onClose={backdropClose}
+        open={open}
+        // onBackdropClick={() => setOpen(true)}
         PaperProps={{
           sx: {
             marginTop: { xs: '155px !important', sm: '0px !important', lg: '0px !important', md: '0px !important' },
@@ -66,7 +59,7 @@ export const CacheDialog = (props: any)  =>{
           </DialogContentText>
         </DialogContent>
         <DialogActions sx={{marginBottom : '20px', display: "flex", justifyContent:"center"}}>
-          <Button  variant="contained" onClick={() => handleClose()} >Ok</Button>
+          <Button  variant="contained" onClick={handleClose} >Ok</Button>
         </DialogActions>
         </Grid>
       </Dialog>

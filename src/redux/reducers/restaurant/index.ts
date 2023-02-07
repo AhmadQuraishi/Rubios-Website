@@ -32,6 +32,8 @@ const restaurantInfoReducer = (state = INITIAL_STATE, action: any) => {
         orderType: '',
         error: {},
       };
+
+       
     case restaurantActionsTypes.SET_RESTAURANT_INFO_SUCCESS:
       return {
         ...state,
@@ -39,6 +41,12 @@ const restaurantInfoReducer = (state = INITIAL_STATE, action: any) => {
         restaurant: action.payload,
         orderType: action.orderType,
         error: {},
+        sessionTime: moment().unix(),
+      };
+
+    case restaurantActionsTypes.SET_RESTAURANT_SESSION_REQUEST:
+      return {
+        ...state,
         sessionTime: moment().unix(),
       };
     case restaurantActionsTypes.SET_RESTAURANT_INFO_FAILURE:
