@@ -19,7 +19,7 @@ import moment from 'moment';
 // import {testingRedemption, testingRewards} from "./services/reward";
 // import {generateCCSFToken} from "./services/basket";
 import TagManager from 'react-gtm-module';
-import {resetRestaurantRequest,updateSessionRequest} from './redux/actions/restaurant';
+import {resetRestaurantRequest,updateSessionNull,updateSessionRequest} from './redux/actions/restaurant';
 import {resetBasketRequest} from './redux/actions/basket'
 import {isLoginUser} from './helpers/auth'
 import { CacheDialog } from './components/cache-dialog';
@@ -76,7 +76,8 @@ function App(props: any) {
 
   useEffect (() => {
     if (basket?.products?.length > 0){
-              dispatch(updateSessionRequest());
+              dispatch(updateSessionNull(sessionTime));
+              dispatch(updateSessionRequest(sessionTime));
             }
             // debugger;
   }, [basket])
@@ -104,7 +105,7 @@ function App(props: any) {
 }
 intervalId = setInterval(function() {
   clearOrderCacheAfter30Minutes()
-},5 * 60 * 1000) 
+},1 * 30 * 1000) 
 
 
 //   useEffect(() => {
