@@ -79,7 +79,6 @@ function App(props: any) {
               dispatch(updateSessionNull(sessionTime));
               dispatch(updateSessionRequest(sessionTime));
             }
-            // debugger;
   }, [basket])
   let intervalId: any;
 
@@ -105,7 +104,7 @@ function App(props: any) {
 }
 intervalId = setInterval(function() {
   clearOrderCacheAfter30Minutes()
-},1 * 30 * 1000) 
+},2 * 60 * 1000) 
 
 
 //   useEffect(() => {
