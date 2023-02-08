@@ -104,7 +104,7 @@ function App(props: any) {
 }
 intervalId = setInterval(function() {
   clearOrderCacheAfter30Minutes()
-},2 * 60 * 1000) 
+},5 * 10 * 1000) 
 
 
 //   useEffect(() => {
