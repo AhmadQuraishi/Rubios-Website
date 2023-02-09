@@ -8,7 +8,6 @@
   <script>
     $(document).ready(function(){
       let checkoutFrame;
-
       function postResponseToClient(data) {
         if (typeof window.ReactNativeWebView !== "undefined") {
           window.ReactNativeWebView.postMessage(JSON.stringify(data));
@@ -25,13 +24,11 @@
           cvvElement: "cvv-info-div",
         });
         checkoutFrame.initialize({
-//           brandAccessId: "WX9GUJ9L6T2wwj2mPw_OGB9HM9ThJNPL",
-//           basketGuid: "547a1fc8-695f-456c-a87d-dd0f83301ff8",
           brandAccessId: brandAccessId,
           basketGuid: basketId,
           styles: {
-            cardNumber: "font-size: 16px; height: 40px;padding-top: 5px;border-top-width: 0px;border-right-width: 0px;border-bottom-width: 0px;border-left-width: 0px; width: 100%",
-            cvv: "font-size: 14px; height: 50px;padding-top: 5px;border-top-width: 0px;border-right-width: 0px;border-bottom-width: 0px;border-left-width: 0px; width: 100%"
+            cardNumber: "font-size: 14px; height: 25px;padding-top: 5px;border-width: 0px; width: 100%; margin-top: 10px; ",
+            cvv:  "font-size: 14px; height: 25px;padding-top: 5px;border-width: 0px; width: 100%;  margin-top: 10px; ",
           },
         });
         checkoutFrame.on("focus", function (evt) {
@@ -84,17 +81,36 @@
     #submitButton{
         display: none;
     }
+    .fieldContainer{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding-left: 5px;
+        border-radius: 5px;
+        border: 1px solid #dbdbdb;
+        margin-top: -10px;
+    }
+    .inputLabel{
+        font-size: 14px;
+    }
 </style>
 <body>
-<div style="display: contents">
-  <p style="font-size: 14px">Card Number</p>
-  <Grid>
-    <div class="credit-card-info-div" style="height: 40px;"></div>
-  </Grid>
+<div style="display: contents;">
+  <p class="inputLabel">Card Number</p>
+  <div class="fieldContainer">
+    <div class="credit-card-info-div" style="height: 50px;"></div>
+    <img src="card-icon.png" height="35" width="47">
+  </div>
 </div>
-<p style="font-size: 14px;">CVV</p>
-<div class="cvv-info-div" style="height: 30px;"></div>
-<div style="margin-top: 100px;">
+<div style="display: contents">
+  <p class="inputLabel">CVV</p>
+  <div class="fieldContainer">
+    <div class="cvv-info-div" style="height: 50px;"></div>
+    <img src="ccv-icon.png" height="35" width="47">
+  </div>
+</div>
+<div>
   <button id="submitButton" type="button" title="Submit">Submit</button>
   <input id="payload" type="text">
   <input id="basketId" type="text">
