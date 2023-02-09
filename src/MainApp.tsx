@@ -83,7 +83,8 @@ function App(props: any) {
   let intervalId: any;
 
   const clearOrderCacheAfter30Minutes = () => {
-    console.log("working1",sessionTime);
+    console.log('sessionTime', sessionTime)
+    console.log("working1", moment.unix(sessionTime).format('h:mm:ss A'));
     if (restaurant && sessionTime){
       const restaurantSessionTime: any = moment.unix(sessionTime);
       console.log("working2", restaurantSessionTime);
@@ -96,15 +97,18 @@ function App(props: any) {
           dispatch(resetRestaurantRequest());
           dispatch(resetBasketRequest());
           setOpen(true);
-          clearInterval(intervalId);
 
         }     
     }
   }
 }
-intervalId = setInterval(function() {
-  clearOrderCacheAfter30Minutes()
-},5 * 10 * 1000) 
+useEffect(() => {
+  intervalId = setInterval(function() {
+    clearOrderCacheAfter30Minutes()
+  }, 5 * 60 * 1000) 
+  return () => clearInterval(intervalId);
+
+}, [window.location.href]) 
 
 
 //   useEffect(() => {
@@ -239,7 +243,12 @@ intervalId = setInterval(function() {
 
   return (
     <div>
-    <CacheDialog open={open} setOpen={setOpen} />
+      {
+        open && (
+            <CacheDialog open={open} setOpen={setOpen} />
+        )
+      }
+    
     <div id="wapper">
       {/*<div*/}
       {/*  id="onetrust-consent-sdk"*/}
