@@ -8,7 +8,7 @@
   <script>
     $(document).ready(function(){
       let checkoutFrame;
-​
+
       function postResponseToClient(data) {
         if (typeof window.ReactNativeWebView !== "undefined") {
           window.ReactNativeWebView.postMessage(JSON.stringify(data));
@@ -16,7 +16,7 @@
           window.postMessage(JSON.stringify(data));
         }
       }
-​
+
       setTimeout(() => {
         const brandAccessId = document.getElementById('brandAccessId').value;
         const basketId = document.getElementById('basketId').value;
@@ -37,7 +37,7 @@
         checkoutFrame.on("focus", function (evt) {
           console.log(evt);
         });
-​
+
         checkoutFrame.on("error", function (errors) {
           postResponseToClient({type: 'error', data: errors});
           errors.forEach(error => {
@@ -46,22 +46,22 @@
             console.log(error.description);
           });
         });
-​
+
         checkoutFrame.on("success", function (order) {
           console.log(order);
           alert('Success', order.id)
           postResponseToClient({type: 'success', data: order});
         });
-​
+
         checkoutFrame.on('ready', function (evt) {
           console.log('ready', evt);
         });
-​
+
         checkoutFrame.on('complete', function (evt) {
           console.log('complete', evt);
         });
       }, 3000)
-​
+
       document.getElementById("submitButton").onclick = function() {
         const value  = document.getElementById('payload').value
         const jsonParse = JSON.parse(value);
