@@ -38,7 +38,6 @@
         checkoutFrame.on("error", function (errors) {
           postResponseToClient({type: 'error', data: errors});
           errors.forEach(error => {
-            alert(error.description)
             console.log(error.code);
             console.log(error.description);
           });
@@ -46,7 +45,6 @@
 
         checkoutFrame.on("success", function (order) {
           console.log(order);
-          alert('Success', order.id)
           postResponseToClient({type: 'success', data: order});
         });
 
