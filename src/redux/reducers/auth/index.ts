@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { authActionsTypes as Type } from '../../types/auth';
 import { userTypes } from '../../types/user';
 
@@ -7,6 +8,7 @@ const INITIAL_STATE = {
   error: {},
   iframeRedirect: false,
   deviceId: null,
+  sessionTime: null,
 };
 
 const authReducer = (state = INITIAL_STATE, action: any) => {
@@ -14,7 +16,7 @@ const authReducer = (state = INITIAL_STATE, action: any) => {
     case Type.GET_AUTHTOKEN_REQUEST:
       return { ...state, loading: true };
     case Type.GET_AUTHTOKEN_SUCCESS:
-      return { ...state, loading: false, authToken: action.payload };
+      return { ...state, loading: false, authToken: action.payload, sessionTime: Date.now() };
     case Type.GET_AUTHTOKEN_FAILURE:
       return {
         ...state,
