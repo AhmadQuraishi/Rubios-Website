@@ -106,7 +106,7 @@ const LoginAuthDialog= (props: any)  =>{
   return (
     <div>
       <Dialog open={open} style={{marginRight: "20px", marginLeft:"20px"}} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title" style={{textAlign: "center"}}>Login Authentication Required</DialogTitle>
+        <DialogTitle id="form-dialog-title" style={{textAlign: "center"}}>Authentication Required</DialogTitle>
         {providerToken?.fb_uid ? (
     <div style={{padding: "20px", alignItems: "center", display: "flex", justifyContent: "center" }}>
     <ReactFacebookLogin
