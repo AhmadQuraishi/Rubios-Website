@@ -40,7 +40,7 @@ import {
   updatePaymentCardsAmount,
 } from '../../helpers/checkout';
 import {
-  getAllBillingAccounts, userLogout,
+  getAllBillingAccounts, userLogin, userLogout,
   // getUserDeliveryAddresses,
 } from '../../redux/actions/user';
 import PickupForm from '../../components/pickup-form/index';
@@ -59,6 +59,7 @@ import SignUpGuest from '../../components/sign-up-guest';
 import { userRegister } from '../../redux/actions/user';
 import CheckoutSkeletonUI from '../../components/checkout-skeleton-ui';
 import { getAuthRequest } from '../../redux/actions/auth';
+import LoginAuthDialog from '../../components/login-authentication-dialog';
 
 const Checkout = () => {
   const dispatch = useDispatch();
@@ -81,6 +82,7 @@ const Checkout = () => {
   const [tipPercentage, setTipPercentage] = React.useState<any>(null);
   const [basketAccessToken, setBasketAccessToken] = React.useState<any>('');
   const [basket, setBasket] = React.useState<ResponseBasket>();
+  const [open,setOpen] = useState(false);
   const [billingSchemes, setBillingSchemes] = React.useState<any>([]);
   const [rewards, setRewards] = React.useState<any>([]);
   const [locationId, setLocationId] = useState(null);
@@ -91,20 +93,18 @@ const Checkout = () => {
   const [ccsfObj, setccsfObj] = React.useState<any>();
 
   const basketObj = useSelector((state: any) => state.basketReducer);
-  const { authToken } = useSelector((state: any) => state.authReducer);
+
   const { providerToken } = useSelector((state: any) => state.providerReducer);
   const { guestUser } = useSelector((state: any) => state.guestReducer);
   const { rewards: qualifyingRewards, loading: loadingRewards } = useSelector(
     (state: any) => state.getRewardForCheckoutReducer,
-  );
-  const { sessionTime  } = useSelector(
-    (state: any) => state.restaurantInfoReducer,
   );
   const { data: rewardsRedemptionsData, loading: loadingRedemptions } =
     useSelector((state: any) => state.rewardReducerNew);
   const { restaurant, orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
+  const { authToken,sessionLoginTime } = useSelector((state: any) => state.authReducer);
   const isDesktop = useMediaQuery(theme.breakpoints.up('sm'));
   // const { userDeliveryAddresses } = useSelector(
   //   (state: any) => state.userReducer,
@@ -421,24 +421,20 @@ const Checkout = () => {
     }
   }, [basketObj.validate]);
 
-//   let intervalId: any;
-//   const clearCacheAuthenticate = () => {
-//     if (billingSchemes && sessionTime) {
-//       const paymentCreatedTime: any = moment.unix(sessionTime);
-//       const currentTime = moment();
-//       if (paymentCreatedTime.isValid()) {
-//         const minutes = currentTime.diff(paymentCreatedTime, 'minutes');
-//         if (minutes > 0) {
-//           // dispatch(userLogout());
-//           // navigate("/login");
-//         }
-//       }
-//     }
-//   }
-
-//   intervalId = setInterval(function() {
-//   clearCacheAuthenticate()
-// }, 5000)
+  const clearCacheAuthenticate = () => {
+    if (isLoginUser()){
+    if (sessionLoginTime) {
+      const LoginCreatedTime: any = moment.unix(sessionLoginTime);
+      const currentTime = moment();
+      if (LoginCreatedTime.isValid()) {
+        const minutes = currentTime.diff(LoginCreatedTime, 'minutes');
+        if (minutes > 30) {
+          setOpen(true);
+        }
+      }
+    }
+  }
+  }
 
   const createDefaultGiftCards = (defaultGiftCards: any) => {
     let array = [];
@@ -996,6 +992,13 @@ const Checkout = () => {
 }}, [basketObj.basket]);
 
   return (
+    <div>
+            {
+        open && (
+            <LoginAuthDialog open={open} setOpen={setOpen} />
+        )
+      }
+
     <Page title={'Checkout'} className="">
       <Typography variant="h1" className="sr-only">
         Checkout
@@ -1249,8 +1252,10 @@ const Checkout = () => {
               <br />
               <br />
               <PaymentInfo
+              clearCacheAuthenticate={clearCacheAuthenticate}
                 ref={paymentInfoRef}
                 ccsfObj={ccsfObj}
+                
                 basketAccessToken={basketAccessToken}
               />
 
@@ -1285,6 +1290,7 @@ const Checkout = () => {
         </Grid>
       </Box>
     </Page>
+    </div>
   );
 };
 

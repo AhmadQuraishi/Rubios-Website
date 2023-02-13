@@ -33,6 +33,7 @@ interface CustomProps {
 }
 
 const NumberFormatCustom = forwardRef<HTMLElement, CustomProps>(
+  
   function NumberFormatCustom(props, ref) {
     const { onChange, ...other } = props;
 
@@ -53,6 +54,9 @@ const NumberFormatCustom = forwardRef<HTMLElement, CustomProps>(
 );
 
 const PaymentInfo = forwardRef((props: any, _ref) => {
+  const {
+    clearCacheAuthenticate
+  } = props;
   const navigate = useNavigate();
   const { ccsfObj, basketAccessToken } = props;
   const dispatch = useDispatch();
@@ -64,6 +68,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
   const [cardExpiry, setCardExpiry] = React.useState<any>();
   const [billingSchemes, setBillingSchemes] = React.useState<any>([]);
   const [sessionTime,  setSessionTime] = React.useState<any>();
+  const [cache,setCache] = React.useState(true);
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
   const [basket, setBasket] = React.useState<ResponseBasket>();
   const [allowedCards, setAllowedCards] = React.useState<any>();
@@ -99,6 +104,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
   }, [basketObj.payment.allowedCards]);
 
   const handleHideShow = () => {
+    clearCacheAuthenticate()
     setHideShow(!hideShow);
   };
 
@@ -360,7 +366,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                   className={'add-credit-card-button'}
                   title="Add Credit card"
                   aria-label="Add Credit card"
-                  onClick={() => handleHideShow()}
+                  onClick={ () => handleHideShow()}
                   tabIndex={!hideShow ? 0 : -1}
                   id={'add-credit-card'}
                   sx={{fontFamily: "'Sunborn-Sansone'!important",}}

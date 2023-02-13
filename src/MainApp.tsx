@@ -23,6 +23,7 @@ import {resetRestaurantRequest,updateSessionNull,updateSessionRequest} from './r
 import {resetBasketRequest} from './redux/actions/basket'
 import {isLoginUser} from './helpers/auth'
 import { CacheDialog } from './components/cache-dialog';
+import LoginAuthDialog from './components/login-authentication-dialog';
 
 function App(props: any) {
   const location = useLocation();
@@ -38,6 +39,7 @@ function App(props: any) {
   const { restaurant, orderType, sessionTime  } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
+  const { authToken,sessionLoginTime } = useSelector((state: any) => state.authReducer);
 
   const navigate = useNavigate();
 
@@ -105,10 +107,11 @@ function App(props: any) {
 useEffect(() => {
   intervalId = setInterval(function() {
     clearOrderCacheAfter30Minutes()
-  }, 5 * 60 * 1000) 
+  }, 2 * 60 * 1000) 
   return () => clearInterval(intervalId);
 
 }, [window.location.href]) 
+
 
 
 //   useEffect(() => {

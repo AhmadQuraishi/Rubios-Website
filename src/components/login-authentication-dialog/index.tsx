@@ -94,7 +94,7 @@ const LoginAuthDialog= (props: any)  =>{
 
   return (
     <div>
-        {isLoginUser() ? (
+        {!handleCallBackfacebook ? (
       <Dialog open={open} style={{marginRight: "20px", marginLeft:"20px"}} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title" style={{textAlign: "center"}}>Login Authentication Required</DialogTitle>
         <div className={classes.root}>
@@ -172,14 +172,14 @@ const LoginAuthDialog= (props: any)  =>{
                       helperText={touched.password && errors.password}
                       inputProps={inputProps}
                     />
-                    <Link
+                    {/* <Link
                       className="forgot-pass"
                       title="forgot-password"
                       to="/forgot-password"
                       style={{ cursor: 'pointer' }}
                     >
                       Forgot Password?
-                    </Link>
+                    </Link> */}
                   </Grid>
                   <Grid
                     item
@@ -202,8 +202,7 @@ const LoginAuthDialog= (props: any)  =>{
                     >
                       <Button
                         type="submit"
-                        disabled={(loadingProvider || loadingAuth) && buttonDisabled}
-                        onClick={handleClose}
+                        disabled={(loadingProvider || loadingAuth) && buttonDisabled && setOpen(false)}
                         aria-label="sign in"
                         name="submit"
                         title="sign in"
