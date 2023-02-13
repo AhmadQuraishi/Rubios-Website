@@ -82,7 +82,6 @@ const Checkout = () => {
   const [tipPercentage, setTipPercentage] = React.useState<any>(null);
   const [basketAccessToken, setBasketAccessToken] = React.useState<any>('');
   const [basket, setBasket] = React.useState<ResponseBasket>();
-  const [open,setOpen] = useState(false);
   const [billingSchemes, setBillingSchemes] = React.useState<any>([]);
   const [rewards, setRewards] = React.useState<any>([]);
   const [locationId, setLocationId] = useState(null);
@@ -104,7 +103,7 @@ const Checkout = () => {
   const { restaurant, orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
-  const { authToken,sessionLoginTime } = useSelector((state: any) => state.authReducer);
+  const { authToken } = useSelector((state: any) => state.authReducer);
   const isDesktop = useMediaQuery(theme.breakpoints.up('sm'));
   // const { userDeliveryAddresses } = useSelector(
   //   (state: any) => state.userReducer,
@@ -421,20 +420,7 @@ const Checkout = () => {
     }
   }, [basketObj.validate]);
 
-  const clearCacheAuthenticate = () => {
-    if (isLoginUser()){
-    if (sessionLoginTime) {
-      const LoginCreatedTime: any = moment.unix(sessionLoginTime);
-      const currentTime = moment();
-      if (LoginCreatedTime.isValid()) {
-        const minutes = currentTime.diff(LoginCreatedTime, 'minutes');
-        if (minutes > 2) {
-          setOpen(true);
-        }
-      }
-    }
-  }
-  }
+  
 
   const createDefaultGiftCards = (defaultGiftCards: any) => {
     let array = [];
@@ -993,12 +979,6 @@ const Checkout = () => {
 
   return (
     <div>
-            {
-        open && (
-            <LoginAuthDialog open={open} setOpen={setOpen} />
-        )
-      }
-
     <Page title={'Checkout'} className="">
       <Typography variant="h1" className="sr-only">
         Checkout
@@ -1252,10 +1232,8 @@ const Checkout = () => {
               <br />
               <br />
               <PaymentInfo
-              clearCacheAuthenticate={clearCacheAuthenticate}
                 ref={paymentInfoRef}
                 ccsfObj={ccsfObj}
-                
                 basketAccessToken={basketAccessToken}
               />
 

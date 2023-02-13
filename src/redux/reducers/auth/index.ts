@@ -2,7 +2,11 @@ import moment from 'moment';
 import { authActionsTypes as Type } from '../../types/auth';
 import { userTypes } from '../../types/user';
 
-const INITIAL_STATE = {
+const generateSessionTime = () => {
+  return moment().unix()
+}
+
+const INITIAL_STATE: any = {
   loading: false,
   authToken: null,
   error: {},
@@ -10,20 +14,13 @@ const INITIAL_STATE = {
   deviceId: null,
   sessionLoginTime: null,
 };
-let timestamp : any;
-
-if (timestamp) {
-  timestamp = moment().unix();
-} else {
-  timestamp = moment().unix();
-}
 
 const authReducer = (state = INITIAL_STATE, action: any) => {
   switch (action.type) {
     case Type.GET_AUTHTOKEN_REQUEST:
       return { ...state, loading: true };
     case Type.GET_AUTHTOKEN_SUCCESS:
-      return { ...state, loading: false, authToken: action.payload, sessionLoginTime: timestamp, };
+      return { ...state, loading: false, authToken: action.payload, sessionLoginTime: generateSessionTime() };
     case Type.GET_AUTHTOKEN_FAILURE:
       return {
         ...state,

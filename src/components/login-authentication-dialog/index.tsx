@@ -23,13 +23,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   };
 const LoginAuthDialog= (props: any)  =>{
     const {
-      open,
-      setOpen,
+      openAuthenticationModal,
+      setOpenAuthenticationModal
     } = props;
     const classes = useStyles();
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [buttonDisabled, setButtonDisabled] = React.useState(false);
+    const [open, setOpen] = React.useState(openAuthenticationModal);
 
     const { loading: loadingProvider } = useSelector(
       (state: any) => state.providerReducer,
@@ -38,6 +39,15 @@ const LoginAuthDialog= (props: any)  =>{
       (state: any) => state.authReducer,
     );
     const { basket } = useSelector((state: any) => state.basketReducer);
+
+
+    React.useEffect(() => {
+
+      if(buttonDisabled && (!loadingAuth && !loadingProvider)){
+        handleClose()
+      }
+
+    }, [loadingAuth, loadingProvider])
   
     const forgotPassword = () => {
       navigate('/forgot-password');
@@ -45,12 +55,13 @@ const LoginAuthDialog= (props: any)  =>{
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  // const handleClickOpen = () => {
+  //   setOpen(true);
+  // };
 
   const handleClose = () => {
     setOpen(false);
+    setOpenAuthenticationModal(false)
   };
   const handleCallBackfacebook = (response: any) => {
     console.log(response);
@@ -87,14 +98,14 @@ const LoginAuthDialog= (props: any)  =>{
     }
   };
 
-  const handleLogin = () => {
-    console.log(`Email: ${email} Password: ${password}`);
-    setOpen(false);
-  };
+  // const handleLogin = () => {
+  //   console.log(`Email: ${email} Password: ${password}`);
+  //   setOpen(false);
+  // };
 
   return (
     <div>
-        {!handleCallBackfacebook ? (
+        {/* {!handleCallBackfacebook ? ( */}
       <Dialog open={open} style={{marginRight: "20px", marginLeft:"20px"}} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title" style={{textAlign: "center"}}>Login Authentication Required</DialogTitle>
         <div className={classes.root}>
@@ -202,7 +213,7 @@ const LoginAuthDialog= (props: any)  =>{
                     >
                       <Button
                         type="submit"
-                        disabled={(loadingProvider || loadingAuth) && buttonDisabled && setOpen(false)}
+                        disabled={(loadingProvider || loadingAuth) && buttonDisabled}
                         aria-label="sign in"
                         name="submit"
                         title="sign in"
@@ -219,9 +230,10 @@ const LoginAuthDialog= (props: any)  =>{
         </Formik>
       </Grid>
     </div>
-      </Dialog> ) :
-      (
-      <Dialog open={open} style={{marginRight: "20px", marginLeft:"20px"}} onClose={handleClose} aria-labelledby="form-dialog-title">
+      </Dialog> 
+      {/* ) :
+      ( */}
+      {/* <Dialog open={open} style={{marginRight: "20px", marginLeft:"20px"}} onClose={handleClose} aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title" style={{textAlign: "center"}}>Login Authentication Required</DialogTitle>
                 <div style={{padding: "20px", alignItems: "center", display: "flex", justifyContent: "center" }}>
                     <ReactFacebookLogin
@@ -233,8 +245,8 @@ const LoginAuthDialog= (props: any)  =>{
                       cssClass="fb-button"
                     />
                     </div>
-      </Dialog>
-      )}
+      </Dialog> */}
+      {/* )} */}
     </div>
   );
 };

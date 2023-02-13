@@ -26,6 +26,8 @@ import { ResponseBasket } from '../../types/olo-api';
 import { IMaskInput } from 'react-imask';
 import moment from 'moment';
 import { isLoginUser } from '../../helpers/auth';
+import LoginAuthDialog from '../login-authentication-dialog';
+
 
 interface CustomProps {
   onChange: (event: { target: { name: string; value: string } }) => void;
@@ -54,9 +56,6 @@ const NumberFormatCustom = forwardRef<HTMLElement, CustomProps>(
 );
 
 const PaymentInfo = forwardRef((props: any, _ref) => {
-  const {
-    clearCacheAuthenticate
-  } = props;
   const navigate = useNavigate();
   const { ccsfObj, basketAccessToken } = props;
   const dispatch = useDispatch();
@@ -67,6 +66,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
   const [zipCode, setZipCode] = React.useState<any>();
   const [cardExpiry, setCardExpiry] = React.useState<any>();
   const [billingSchemes, setBillingSchemes] = React.useState<any>([]);
+  const [openAuthenticationModal, setOpenAuthenticationModal] = React.useState<any>(false);
   const [sessionTime,  setSessionTime] = React.useState<any>();
   const [cache,setCache] = React.useState(true);
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
@@ -75,10 +75,14 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
   const [displaySavedCards, setDisplaySavedCards] =
     React.useState<boolean>(false);
   const basketObj = useSelector((state: any) => state.basketReducer);
+  const { sessionLoginTime } = useSelector((state: any) => state.authReducer);
+
 
   React.useEffect(() => {
     setBillingSchemes(basketObj.payment.billingSchemes);
   }, [basketObj.payment.billingSchemes]);
+
+
 
 
   React.useEffect(() => {
@@ -104,7 +108,19 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
   }, [basketObj.payment.allowedCards]);
 
   const handleHideShow = () => {
-    clearCacheAuthenticate()
+    if (isLoginUser() && sessionLoginTime){
+        const LoginCreatedTime: any = moment.unix(sessionLoginTime);
+        const currentTime = moment();
+        if (LoginCreatedTime.isValid()) {
+          const minutes = currentTime.diff(LoginCreatedTime, 'minutes');
+          console.log('munutes', minutes)
+          if (minutes > 1) {
+            setOpenAuthenticationModal(true);
+            return;
+          }
+        }
+    }
+    debugger;
     setHideShow(!hideShow);
   };
 
@@ -215,7 +231,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
       );
     }
     setButtonDisabled(false);
-    handleHideShow();
+    setHideShow(!hideShow);
     moveFocusBackToScreen();
     // if (ccsfObj) {
     //   ccsfObj.registerError((errors: any) => {
@@ -309,6 +325,12 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
   };
 
   return (
+    <>
+    {
+      openAuthenticationModal && (
+          <LoginAuthDialog openAuthenticationModal={openAuthenticationModal} setOpenAuthenticationModal={setOpenAuthenticationModal} />
+      )
+    }
     <Grid container>
       {/*column for space*/}
       <Grid item xs={0} sm={0} md={2} lg={2} />
@@ -586,6 +608,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
       {/*column for space*/}
       <Grid item xs={0} sm={0} md={2} lg={2} />
     </Grid>
+    </>
   );
 });
 
