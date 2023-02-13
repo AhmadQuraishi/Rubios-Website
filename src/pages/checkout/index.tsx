@@ -428,7 +428,7 @@ const Checkout = () => {
       const currentTime = moment();
       if (LoginCreatedTime.isValid()) {
         const minutes = currentTime.diff(LoginCreatedTime, 'minutes');
-        if (minutes > 30) {
+        if (minutes > 2) {
           setOpen(true);
         }
       }

@@ -219,7 +219,8 @@ const LoginAuthDialog= (props: any)  =>{
         </Formik>
       </Grid>
     </div>
-      </Dialog> ) : (
+      </Dialog> ) :
+      (
       <Dialog open={open} style={{marginRight: "20px", marginLeft:"20px"}} onClose={handleClose} aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title" style={{textAlign: "center"}}>Login Authentication Required</DialogTitle>
                 <div style={{padding: "20px", alignItems: "center", display: "flex", justifyContent: "center" }}>

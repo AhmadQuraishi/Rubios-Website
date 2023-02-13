@@ -603,7 +603,7 @@ const CategoryList = () => {
                       </Typography>
                     </Grid>
                   )}
-                  {item.name === "DRINKS"  &&(
+                  {/* {item.name === "DRINKS"  &&(
                     <Grid item xs={4} sx={{padding: "0px 0px 35px 0px"}}>
                       <Typography className={classes.link}>
                         <Link to={`/category/${item.id}`} title="view all" style={{color: "#062C43"}}>
@@ -615,7 +615,7 @@ const CategoryList = () => {
                         </Link>
                       </Typography>
                     </Grid>
-                  )}
+                  )} */}
                 </Grid>
               </Grid>
               <Grid item xs={12} sx={{ paddingBottom: '20px' }} role="list">
