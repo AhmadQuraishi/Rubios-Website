@@ -114,7 +114,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
         if (LoginCreatedTime.isValid()) {
           const minutes = currentTime.diff(LoginCreatedTime, 'minutes');
           console.log('munutes', minutes)
-          if (minutes > 1) {
+          if (minutes > 30) {
             setOpenAuthenticationModal(true);
             return;
           }
