@@ -83,7 +83,8 @@ function App(props: any) {
             }
   }, [basket])
   let intervalId: any;
-
+ 
+  
   const clearOrderCacheAfter30Minutes = () => {
     console.log('sessionTime', sessionTime)
     console.log("working1", moment.unix(sessionTime).format('h:mm:ss A'));
