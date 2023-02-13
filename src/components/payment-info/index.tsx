@@ -136,6 +136,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
     }
   }, [hideShow]);
 
+  
   const handleZipCodeChange = (event: any) => {
     let newValue = event.target.value.trim();
     newValue = newValue.replace(/[^0-9]/gi, '');

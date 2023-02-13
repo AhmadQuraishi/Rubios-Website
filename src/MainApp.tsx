@@ -84,6 +84,18 @@ function App(props: any) {
   }, [basket])
   let intervalId: any;
  
+  useEffect (() => {
+    if (restaurant && !sessionTime){
+        const currentTime = moment();
+        dispatch(updateSessionRequest(currentTime));
+            }
+  }, [])
+  useEffect (() => {
+    if (authToken && !sessionLoginTime){
+        const currentTime = moment();
+        dispatch(updateSessionRequest(currentTime));
+            }
+  }, [])
   
   const clearOrderCacheAfter30Minutes = () => {
     console.log('sessionTime', sessionTime)

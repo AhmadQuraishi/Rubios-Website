@@ -32,10 +32,10 @@ const LoginAuthDialog= (props: any)  =>{
     const [buttonDisabled, setButtonDisabled] = React.useState(false);
     const [open, setOpen] = React.useState(openAuthenticationModal);
 
-    const { loading: loadingProvider } = useSelector(
+    const {providerToken,loading: loadingProvider } = useSelector(
       (state: any) => state.providerReducer,
     );
-    const { loading: loadingAuth } = useSelector(
+    const { authToken ,loading: loadingAuth } = useSelector(
       (state: any) => state.authReducer,
     );
     const { basket } = useSelector((state: any) => state.basketReducer);
@@ -55,9 +55,6 @@ const LoginAuthDialog= (props: any)  =>{
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  // const handleClickOpen = () => {
-  //   setOpen(true);
-  // };
 
   const handleClose = () => {
     setOpen(false);
@@ -87,6 +84,7 @@ const LoginAuthDialog= (props: any)  =>{
         };
 
         dispatch(facebookUserLogin(obj));
+        
       } else {
         displayToast(
           'ERROR',
@@ -97,22 +95,35 @@ const LoginAuthDialog= (props: any)  =>{
       console.log(e);
     }
   };
+  function handleFacebook() {
+    throw new Error('Function not implemented.');
+  }
 
   // const handleLogin = () => {
   //   console.log(`Email: ${email} Password: ${password}`);
   //   setOpen(false);
   // };
-
   return (
     <div>
-        {/* {!handleCallBackfacebook ? ( */}
       <Dialog open={open} style={{marginRight: "20px", marginLeft:"20px"}} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title" style={{textAlign: "center"}}>Login Authentication Required</DialogTitle>
-        <div className={classes.root}>
+        {providerToken?.fb_uid ? (
+    <div style={{padding: "20px", alignItems: "center", display: "flex", justifyContent: "center" }}>
+    <ReactFacebookLogin
+      appId={process.env.REACT_APP_FACEBOOK_APP_ID || ''}
+      fields="name,email,picture"
+      scope="public_profile,email"
+      callback={handleCallBackfacebook}
+      textButton="SIGN IN WITH FACEBOOK"
+      cssClass="fb-button"
+    />
+    </div>
+    ): (
+      <div className={classes.root}>
       <Grid container columns={16}>
         <Formik
           initialValues={{
-            email: '',
+            email: providerToken?.email ? providerToken?.email : '',
             password: '',
           }}
           validationSchema={Yup.object({
@@ -131,7 +142,7 @@ const LoginAuthDialog= (props: any)  =>{
           })}
           onSubmit={async (values) => {
             const obj = {
-              email: values.email,
+              email: providerToken?.email ? providerToken?.email : '',
               password: values.password,
             };
 
@@ -155,17 +166,20 @@ const LoginAuthDialog= (props: any)  =>{
                     <TextField
                       label="Email Address*"
                       title="Email"
+                      disabled={isLoginUser()}
                       type="text"
                       name="email"
                       className="form-field"
                       sx={{ width: '100%' }}
                       value={values.email ? values.email : null}
-                      onChange={handleChange}
+                      onChange={handleChange}        
+                      onBlur={handleBlur}
                       error={Boolean(touched && errors.email)}
                       helperText={errors.email}
                       inputProps={inputProps}
                     />
                   </Grid>
+
 
                   <Grid item xs={16} sm={16} md={16} lg={16}>
                     <TextField
@@ -230,23 +244,9 @@ const LoginAuthDialog= (props: any)  =>{
         </Formik>
       </Grid>
     </div>
+
+                    )}
       </Dialog> 
-      {/* ) :
-      ( */}
-      {/* <Dialog open={open} style={{marginRight: "20px", marginLeft:"20px"}} onClose={handleClose} aria-labelledby="form-dialog-title">
-                <DialogTitle id="form-dialog-title" style={{textAlign: "center"}}>Login Authentication Required</DialogTitle>
-                <div style={{padding: "20px", alignItems: "center", display: "flex", justifyContent: "center" }}>
-                    <ReactFacebookLogin
-                      appId={process.env.REACT_APP_FACEBOOK_APP_ID || ''}
-                      fields="name,email,picture"
-                      scope="public_profile,email"
-                      callback={handleCallBackfacebook}
-                      textButton="SIGN IN WITH FACEBOOK"
-                      cssClass="fb-button"
-                    />
-                    </div>
-      </Dialog> */}
-      {/* )} */}
     </div>
   );
 };
