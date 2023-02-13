@@ -120,7 +120,6 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
           }
         }
     }
-    debugger;
     setHideShow(!hideShow);
   };
 
@@ -600,7 +599,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
 
               {/*<AddCreditCard />*/}
               {/*<AddCreditCardCopy />*/}
-              <AddGiftCard />
+              <AddGiftCard/>
             </Grid>
           </Grid>
         </Grid>
