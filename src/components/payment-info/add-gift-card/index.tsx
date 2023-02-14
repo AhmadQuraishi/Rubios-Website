@@ -39,9 +39,7 @@ const AddGiftCard = forwardRef((props, _ref) => {
   const [billingSchemes, setBillingSchemes] = React.useState<any>([]);
   const [pinCheck, setPinCheck] = React.useState<any>(false);
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
-  const [openAuthenticationModal, setOpenAuthenticationModal] = React.useState<any>(false);
   const [openAddGiftCard, setOpenAddGiftCard] = React.useState<boolean>(false);
-  const { sessionLoginTime } = useSelector((state: any) => state.authReducer);
   React.useEffect(() => {
     if (basketObj.basket) {
       setBasket(basketObj.basket);
@@ -89,18 +87,6 @@ const AddGiftCard = forwardRef((props, _ref) => {
   // };
 
   const handleCloseAddGiftCard = () => {
-    if (isLoginUser() && sessionLoginTime){
-        const LoginCreatedTime: any = moment.unix(sessionLoginTime);
-        const currentTime = moment();
-        if (LoginCreatedTime.isValid()) {
-          const minutes = currentTime.diff(LoginCreatedTime, 'minutes');
-          console.log('munutes', minutes)
-          if (minutes > 0) {
-            setOpenAuthenticationModal(true);
-            return;
-          }
-        }
-    }
     setPinCheck(false);
     setOpenAddGiftCard(!openAddGiftCard);
   };
@@ -224,11 +210,6 @@ const AddGiftCard = forwardRef((props, _ref) => {
 
   return (
     <>
-    {
-      openAuthenticationModal && (
-          <LoginAuthDialog openAuthenticationModal={openAuthenticationModal} setOpenAuthenticationModal={setOpenAuthenticationModal} />
-      )
-    }
       <Dialog
         open={openAddGiftCard}
         onClose={handleCloseAddGiftCard}
