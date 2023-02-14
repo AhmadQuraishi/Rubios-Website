@@ -86,7 +86,7 @@ const ProductListing = (props: any) => {
                       {item.imagefilename ? (
                         <img
                           className={classes.img}
-                          alt=""
+                          alt={item.name }
                           src={
                             imgPath +
                             changeImageSize(
@@ -102,7 +102,7 @@ const ProductListing = (props: any) => {
                       ) : (
                         <img
                           className={classes.img}
-                          alt=""
+                          alt={item.name }
                           src={require('../../assets/imgs/default_img.png')}
                           title={item.name}
                         />

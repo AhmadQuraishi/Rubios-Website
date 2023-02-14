@@ -40,7 +40,7 @@ import {
   updatePaymentCardsAmount,
 } from '../../helpers/checkout';
 import {
-  getAllBillingAccounts,
+  getAllBillingAccounts, userLogin, userLogout,
   // getUserDeliveryAddresses,
 } from '../../redux/actions/user';
 import PickupForm from '../../components/pickup-form/index';
@@ -58,6 +58,8 @@ import { facebookConversionTypes } from '../../redux/types/facebook-conversion';
 import SignUpGuest from '../../components/sign-up-guest';
 import { userRegister } from '../../redux/actions/user';
 import CheckoutSkeletonUI from '../../components/checkout-skeleton-ui';
+import { getAuthRequest } from '../../redux/actions/auth';
+import LoginAuthDialog from '../../components/login-authentication-dialog';
 
 const Checkout = () => {
   const dispatch = useDispatch();
@@ -90,7 +92,7 @@ const Checkout = () => {
   const [ccsfObj, setccsfObj] = React.useState<any>();
 
   const basketObj = useSelector((state: any) => state.basketReducer);
-  const { authToken } = useSelector((state: any) => state.authReducer);
+
   const { providerToken } = useSelector((state: any) => state.providerReducer);
   const { guestUser } = useSelector((state: any) => state.guestReducer);
   const { rewards: qualifyingRewards, loading: loadingRewards } = useSelector(
@@ -101,6 +103,7 @@ const Checkout = () => {
   const { restaurant, orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
+  const { authToken } = useSelector((state: any) => state.authReducer);
   const isDesktop = useMediaQuery(theme.breakpoints.up('sm'));
   // const { userDeliveryAddresses } = useSelector(
   //   (state: any) => state.userReducer,
@@ -416,6 +419,8 @@ const Checkout = () => {
       setValidate(basketObj.validate);
     }
   }, [basketObj.validate]);
+
+  
 
   const createDefaultGiftCards = (defaultGiftCards: any) => {
     let array = [];
@@ -973,6 +978,7 @@ const Checkout = () => {
 }}, [basketObj.basket]);
 
   return (
+    <div>
     <Page title={'Checkout'} className="">
       <Typography variant="h1" className="sr-only">
         Checkout
@@ -1262,6 +1268,7 @@ const Checkout = () => {
         </Grid>
       </Box>
     </Page>
+    </div>
   );
 };
 
