@@ -140,7 +140,7 @@ const StoreInfo = (props: any) => {
       }}
       key={index}
     >
-      <a href="#" style={{ color: '#000', textDecoration: 'none' }}>
+      <a style={{ color: '#000', textDecoration: 'none' }}>
         <Typography
           variant="h5"
           sx={{
