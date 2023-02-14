@@ -60,6 +60,14 @@ const LoginAuthDialog= (props: any)  =>{
     setOpen(false);
     setOpenAuthenticationModal(false)
   };
+
+  const backdropClose = (event: any, reason: any) => {
+    if (reason && reason === 'backdropClick') {
+      return;
+    }
+    handleClose();
+  };
+
   const handleCallBackfacebook = (response: any) => {
     console.log(response);
     try {
@@ -105,7 +113,7 @@ const LoginAuthDialog= (props: any)  =>{
   // };
   return (
     <div>
-      <Dialog open={open} style={{marginRight: "20px", marginLeft:"20px"}} onClose={handleClose} aria-labelledby="form-dialog-title">
+      <Dialog onClose={backdropClose} open={open} style={{marginRight: "20px", marginLeft:"20px"}} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title" style={{textAlign: "center"}}>Authentication Required</DialogTitle>
         {providerToken?.fb_uid ? (
     <div style={{padding: "20px", alignItems: "center", display: "flex", justifyContent: "center" }}>
@@ -190,12 +198,12 @@ const LoginAuthDialog= (props: any)  =>{
                       name="password"
                       className="form-field"
                       sx={{ width: '100%' }}
+                      autoComplete="off"
                       value={values.password ? values.password : null}
                       onChange={handleChange('password')}
                       onBlur={handleBlur('password')}
                       error={Boolean(touched.password && errors.password)}
                       helperText={touched.password && errors.password}
-                      inputProps={inputProps}
                     />
                     {/* <Link
                       className="forgot-pass"
