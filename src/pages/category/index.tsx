@@ -580,7 +580,7 @@ const CategoryList = () => {
                   style={{ position: 'absolute', top: '-120px' }}
                 ></div>
                 <Grid container sx={{alignItems: "center"}}>
-                  <Grid item xs={item.products.length > 4 ? 8 : 12}>
+                  <Grid item xs={item.products.length > 4 ? 8 : 8}>
                     <Typography
                       variant="h2"
                       className={`${classes.heading} rubios-menu-category`}
@@ -589,7 +589,8 @@ const CategoryList = () => {
                       {item.name}
                     </Typography>
                   </Grid>
-                  {item.products.length > 4 && (
+
+                  {item.products.length > 4  &&(
                     <Grid item xs={4} sx={{padding: "0px 0px 35px 0px"}}>
                       <Typography className={classes.link}>
                         <Link to={`/category/${item.id}`} title="view all" style={{color: "#062C43"}}>
@@ -602,6 +603,19 @@ const CategoryList = () => {
                       </Typography>
                     </Grid>
                   )}
+                  {/* {item.name === "DRINKS"  &&(
+                    <Grid item xs={4} sx={{padding: "0px 0px 35px 0px"}}>
+                      <Typography className={classes.link}>
+                        <Link to={`/category/${item.id}`} title="view all" style={{color: "#062C43"}}>
+                          view all <span style={{fontSize:"17px"}}><img
+                        // style={{ width: '75%', display: 'block' }}
+                        src={require('../../assets/imgs/arrow2.png')}
+                        alt="Login Icon"
+                      /></span>
+                        </Link>
+                      </Typography>
+                    </Grid>
+                  )} */}
                 </Grid>
               </Grid>
               <Grid item xs={12} sx={{ paddingBottom: '20px' }} role="list">

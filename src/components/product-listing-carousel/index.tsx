@@ -246,7 +246,7 @@ const ProductListingCarousel = (props: any) => {
                     {item.imagefilename ? (
                       <img
                         className={classes.img}
-                        alt=""
+                        alt={item.name }
                         src={
                           imgPath +
                           changeImageSize(
@@ -262,7 +262,7 @@ const ProductListingCarousel = (props: any) => {
                     ) : (
                       <img
                         className={classes.img}
-                        alt=""
+                        alt={item.name }
                         src={require('../../assets/imgs/default_img.png')}
                         title={item.name}
                       />

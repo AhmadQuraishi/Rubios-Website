@@ -260,7 +260,9 @@ const Footer = () => {
                   <a
                     href={'https://www.instagram.com/rubioscoastalgrill/'}
                     target={'_blank'}
+                    aria-label="Visit our Instagram page."
                     rel="noreferrer"
+                    
                   >
                     <img
                       src={instaIcon}
@@ -271,6 +273,7 @@ const Footer = () => {
                 </Grid>
                 <Grid item xs={2} sx={{paddingLeft: "0px !important",paddingTop: "5px !important",marginRight: "10px !important"}}>
                   <a
+                  aria-label="Visit our Facebook page."
                     href={'https://www.facebook.com/rubios/'}
                     target={'_blank'}
                     rel="noreferrer"
@@ -281,6 +284,7 @@ const Footer = () => {
 
                 <Grid item xs={2} sx={{paddingLeft: "0px !important",paddingTop: "5px !important",marginRight: "10px !important"}}>
                   <a
+                  aria-label="Visit our Twitter page."
                     href={'https://twitter.com/RubiosTweets'}
                     target={'_blank'}
                     rel="noreferrer"
@@ -295,6 +299,7 @@ const Footer = () => {
                 </Grid>
                 <Grid item xs={2} style={{ marginRight: '10px' }}>
                   <a
+                  aria-label="Visit our Tiktok page."
                     href={'https://www.tiktok.com/@officialrubios'}
                     target={'_blank'}
                     rel="noreferrer"
@@ -329,7 +334,7 @@ const Footer = () => {
                 sx={{ padding: '0px 0 0 0' }}
               >
                 <Grid item xs={6} sx={{marginTop: "12px !important"}}>
-                  <Button sx={{ padding: 0 }}>
+                  {/* <Button sx={{ padding: 0 }}> */}
                     <a
                       href={process.env.REACT_APP_IOS_DOWNLOAD_LINK}
                       target="_blank"
@@ -341,10 +346,10 @@ const Footer = () => {
                         alt="Click Here To Download Our From Apple Store"
                       />
                     </a>
-                  </Button>
+                  {/* </Button> */}
                 </Grid>
                 <Grid item xs={6} sx={{marginTop: "12px !important"}}>
-                  <Button sx={{ padding: 0 }}>
+                  {/* <Button sx={{ padding: 0 }}> */}
                     <a
                       href={process.env.REACT_APP_GOOGLE_DOWNLOAD_LINK}
                       target="_blank"
@@ -356,7 +361,7 @@ const Footer = () => {
                         alt="Click Here To Download Our From Google App Store"
                       />
                     </a>
-                  </Button>
+                  {/* </Button> */}
                 </Grid>
               </Grid>
             </Grid>
