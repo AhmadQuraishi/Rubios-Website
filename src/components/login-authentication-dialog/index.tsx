@@ -24,7 +24,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 const LoginAuthDialog= (props: any)  =>{
     const {
       openAuthenticationModal,
-      setOpenAuthenticationModal
+      setOpenAuthenticationModal,
+      // handleCreditCardSubmitDialog,
     } = props;
     const classes = useStyles();
     const dispatch = useDispatch();
@@ -44,7 +45,7 @@ const LoginAuthDialog= (props: any)  =>{
     React.useEffect(() => {
 
       if(buttonDisabled && (!loadingAuth && !loadingProvider)){
-        handleClose()
+        handleClose();
       }
 
     }, [loadingAuth, loadingProvider])

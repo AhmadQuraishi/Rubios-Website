@@ -1,6 +1,7 @@
 import React, { forwardRef } from 'react';
 import {
   Button,
+  CircularProgress,
   Grid,
   TextField,
   Typography,
@@ -35,7 +36,7 @@ interface CustomProps {
 }
 
 const NumberFormatCustom = forwardRef<HTMLElement, CustomProps>(
-  
+
   function NumberFormatCustom(props, ref) {
     const { onChange, ...other } = props;
 
@@ -65,10 +66,11 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
   const [editCreditCard, setEditCreditCard] = React.useState<boolean>(false);
   const [zipCode, setZipCode] = React.useState<any>();
   const [cardExpiry, setCardExpiry] = React.useState<any>();
+  const [loading, setLoading] = React.useState<any>(false);
   const [billingSchemes, setBillingSchemes] = React.useState<any>([]);
   const [openAuthenticationModal, setOpenAuthenticationModal] = React.useState<any>(false);
-  const [sessionTime,  setSessionTime] = React.useState<any>();
-  const [cache,setCache] = React.useState(true);
+  const [sessionTime, setSessionTime] = React.useState<any>();
+  const [cache, setCache] = React.useState(true);
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
   const [basket, setBasket] = React.useState<ResponseBasket>();
   const [allowedCards, setAllowedCards] = React.useState<any>();
@@ -97,6 +99,15 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
     }
   }, [hideShow]);
 
+  
+  React.useEffect(() => {
+  loading && 
+    <div className="loading-spinner">
+      <CircularProgress />
+    </div>
+  }, [billingSchemes?.length <1]);
+
+
   React.useEffect(() => {
     if (
       basketObj.payment.allowedCards &&
@@ -108,17 +119,17 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
   }, [basketObj.payment.allowedCards]);
 
   const handleHideShow = () => {
-    if (isLoginUser() && sessionLoginTime){
-        const LoginCreatedTime: any = moment.unix(sessionLoginTime);
-        const currentTime = moment();
-        if (LoginCreatedTime.isValid()) {
-          const minutes = currentTime.diff(LoginCreatedTime, 'minutes');
-          console.log('munutes', minutes)
-          if (minutes > 30) {
-            setOpenAuthenticationModal(true);
-            return;
-          }
+    if (isLoginUser() && sessionLoginTime) {
+      const LoginCreatedTime: any = moment.unix(sessionLoginTime);
+      const currentTime = moment();
+      if (LoginCreatedTime.isValid()) {
+        const minutes = currentTime.diff(LoginCreatedTime, 'minutes');
+        console.log('munutes', minutes)
+        if (minutes > 30) {
+          setOpenAuthenticationModal(true);
+          return;
         }
+      }
     }
     setHideShow(!hideShow);
   };
@@ -135,7 +146,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
     }
   }, [hideShow]);
 
-  
+
   const handleZipCodeChange = (event: any) => {
     let newValue = event.target.value.trim();
     newValue = newValue.replace(/[^0-9]/gi, '');
@@ -161,7 +172,76 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
 
     setCardExpiry(newValue);
   };
+  const handleSingleCreditCardSubmit = async () => {
+    setLoading(true);
+    if (!zipCode || zipCode === '') {
+      displayToast('ERROR', 'Zip Code is required');
+      setLoading(false);
+      return;
+    }
 
+    if (!cardExpiry || cardExpiry === '') {
+      displayToast('ERROR', 'Card Expiry is required');
+      setLoading(false);
+      return;
+    } else if (cardExpiry.length !== 5) {
+      displayToast('ERROR', 'Please enter valid date.');
+      setLoading(false);
+      return;
+    } else {
+      const currentDate: any = moment(new Date());
+      const expiryDate: any = moment(cardExpiry, 'MM/YY');
+
+      if (!expiryDate.isValid()) {
+        displayToast('ERROR', 'Please enter valid date.');
+        setLoading(false);
+        return;
+      }
+
+      if (!expiryDate.isAfter(currentDate)) {
+        displayToast('ERROR', 'Please enter future date.');
+        setLoading(false);
+        return;
+      }
+    }
+
+    let billingSchemesNewArray = billingSchemes;
+    billingSchemesNewArray = billingSchemes.filter(
+      (account: any) =>
+        !(account.billingmethod === 'creditcard' && !account.billingaccountid),
+    );
+    billingSchemesNewArray = billingSchemesNewArray.map((element: any) => {
+      if (element.billingmethod === 'creditcard') {
+        return {
+          ...element,
+          selected: false,
+        };
+      }
+      return element;
+    });
+    const obj = {
+      exp_year: moment(cardExpiry, 'MM/YYYY').year(),
+      exp_month: moment(cardExpiry, 'MM/YYYY').month() + 1,
+      postal_code: zipCode,
+    };
+    let cardObj: any = getCreditCardObj(obj, billingSchemes);
+
+    Array.prototype.push.apply(billingSchemesNewArray, cardObj);
+
+    billingSchemesNewArray = updatePaymentCardsAmount(
+      billingSchemesNewArray,
+      basket,
+    );
+
+    dispatch(updateBasketBillingSchemes(billingSchemesNewArray));
+    if (!isMobile) {
+      displayToast(
+        'SUCCESS',
+        `Credit Card 'Added'}`,
+      );
+    }
+    setLoading(false);
+  };
   const handleCreditCardSubmit = async () => {
     setButtonDisabled(true);
     if (!zipCode || zipCode === '') {
@@ -274,6 +354,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
     return (
       basket &&
       //billingSchemeStats.selectedCreditCard === 0 &&
+      billingSchemes?.length > 0 &&
       allowedCards &&
       allowedCards.length &&
       allowedCards.filter((element: any) => {
@@ -311,6 +392,13 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
     });
   }, []);
 
+  React.useEffect(() => {
+    if(billingSchemes?.length < 1){
+      setLoading(true);
+      handleSingleCreditCardSubmit();
+    }
+  },[billingSchemes?.length < 1]);
+
   const moveFocusBackToScreen = () => {
     const addCardElement = document.getElementById('add-credit-card');
     const addGiftCardElement = document.getElementById('add-gift-card');
@@ -326,288 +414,421 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
 
   return (
     <>
-    {
-      openAuthenticationModal && (
+      {
+        openAuthenticationModal && (
           <LoginAuthDialog openAuthenticationModal={openAuthenticationModal} setOpenAuthenticationModal={setOpenAuthenticationModal} />
-      )
-    }
-    <Grid container>
-      {/*column for space*/}
-      <Grid item xs={0} sm={0} md={2} lg={2} />
+        )
+      }
+      <Grid container>
+        {/*column for space*/}
+        <Grid item xs={0} sm={0} md={2} lg={2} />
 
-      <Grid item style={{ paddingBottom: 30 }} xs={12} sm={12} md={8} lg={8}>
-        <Typography variant="h2" title="PAYMENT INFO">
-          PAYMENT INFO
-        </Typography>
-        <br />
-        <Grid container spacing={2} className="payment-form">
-          <SplitPayment
-            setHideShow={(value: boolean) => HandleEditCreditCard(value)}
-            displaySavedCards={displaySavedCards}
-          />
-          <Grid container>
-            <Grid item xs={12} sm={12} md={12} lg={12} className="add-gift">
-              {!displaySavedCards &&
-                basket &&
-                isLoginUser() &&
-                billingSchemes &&
-                billingSchemes?.length > 0 &&
-                billingSchemes?.filter(
-                  (account: any) => account.savedCard && !account.selected,
-                ).length > 0 &&
-                allowedCards &&
-                allowedCards.length &&
-                allowedCards.filter((element: any) => {
-                  return element.type === 'creditcard';
-                }).length > 0 && (
-                  <Grid container spacing={2}>
-                    <Grid
-                      item
-                      padding={0}
-                      textAlign={'center'}
-                      xs={12}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                    >
-                      <Button
-                        className={'add-credit-card-button'}
-                        title="Change Payment Method"
-                        aria-label="Change Payment Method"
-                        onClick={() => setDisplaySavedCards(true)}
-                        id={'add-credit-card'}
-                        sx={{fontFamily: "'Sunborn-Sansone'!important",}}
-                      >
-                        Change Payment Method
-                      </Button>
-                    </Grid>
-                  </Grid>
-                )}
-              {displayAddCreditCard() && (
-                <Button
-                  className={'add-credit-card-button'}
-                  title="Add Credit card"
-                  aria-label="Add Credit card"
-                  onClick={ () => handleHideShow()}
-                  tabIndex={!hideShow ? 0 : -1}
-                  id={'add-credit-card'}
-                  sx={{fontFamily: "'Sunborn-Sansone'!important",}}
-                >
-                  Add Credit card
-                </Button>
-              )}
-
-              <div
-                id="myModal"
-                role={'dialog'}
-                tabIndex={-1}
-                aria-modal={'true'}
-                aria-label={
-                  editCreditCard ? 'Edit Credit card' : 'Add Credit card'
-                }
-                aria-labelledby="add-credit-card-dialog"
-                aria-hidden={!hideShow}
-                className={`modal ${hideShow ? 'show' : 'hide'}`}
-              >
-                {/*<div className="modal-content">*/}
-                {/*  <span  className="close">&times;</span>*/}
-                {/*  <p>Some text in the Modal..</p>*/}
-                {/*</div>*/}
-                <div className="modal-content">
-                  <div className="modal-header">
-                    {/*<span onClick={() => handleHideShow()} className="close">*/}
-                    {/*  &times;*/}
-                    {/*</span>*/}
-                    <h2
-                      tabIndex={0}
-                      style={{ outline: 'none' }}
-                      id="add-credit-card-dialog"
-                      className={'heading first-focusable-element'}
-                    >
-                      {editCreditCard ? 'Edit Credit card' : 'Add Credit card'}
-                    </h2>
-                  </div>
-                  <div className="modal-body">
-                    <Grid container className="payment-form" spacing={2}>
+        <Grid item style={{ paddingBottom: 30 }} xs={12} sm={12} md={8} lg={8}>
+          <Typography variant="h2" title="PAYMENT INFO">
+            PAYMENT INFO
+          </Typography>
+          <br />
+          <Grid container spacing={2} className="payment-form">
+            <SplitPayment
+              setHideShow={(value: boolean) => HandleEditCreditCard(value)}
+              displaySavedCards={displaySavedCards}
+            />
+            <Grid container>
+              <Grid item xs={12} sm={12} md={12} lg={12} className="add-gift">
+                {!displaySavedCards &&
+                  basket &&
+                  isLoginUser() &&
+                  billingSchemes &&
+                  billingSchemes?.length > 0 &&
+                  billingSchemes?.filter(
+                    (account: any) => account.savedCard && !account.selected,
+                  ).length > 0 &&
+                  allowedCards &&
+                  allowedCards.length &&
+                  allowedCards.filter((element: any) => {
+                    return element.type === 'creditcard';
+                  }).length > 0 && (
+                    <Grid container spacing={2}>
                       <Grid
                         item
+                        padding={0}
+                        textAlign={'center'}
                         xs={12}
                         sm={12}
                         md={12}
                         lg={12}
-                        className="payment-form image-field align"
                       >
-                        <Grid container spacing={2}>
-                          <Grid
-                            item
-                            xs={12}
-                            sm={6}
-                            md={6}
-                            lg={6}
-                            textAlign={'left'}
-                            className="payment-form image-field align"
-                          >
-                            {/*<div*/}
-                            {/*  tabIndex={0}*/}
-                            {/*  className="card-fields"*/}
-                            {/*  data-olo-pay-card-number*/}
-                            {/*/>*/}
-                            <label
-                              className="add-credit-card-label"
-                              htmlFor="cardnumber"
-                            >
-                              Card Number
-                            </label>
-                            <div className="card-fields">
-                              <div
-                                style={{ display: 'contents' }}
-                                className="credit-card-info-div"
-                              ></div>
-                            </div>
-                            <div>
-                              <img
-                                alt=""
-                                src={require('../../assets/imgs/card-icon.png')}
-                              />
-                            </div>
-                          </Grid>
-                          <Grid
-                            textAlign={'left'}
-                            item
-                            xs={12}
-                            sm={6}
-                            md={6}
-                            lg={6}
-                          >
-                            {/*<div className="card-fields" data-olo-pay-card-cvc />*/}
-                            <label
-                              className="add-credit-card-label"
-                              htmlFor="cvv"
-                            >
-                              CVV
-                            </label>
-                            <div className="card-fields">
-                              <div
-                                style={{ display: 'contents' }}
-                                className="cvv-info-div"
-                              ></div>
-                            </div>
-                            <div>
-                              <img
-                                alt=""
-                                src={require('../../assets/imgs/ccv-icon.png')}
-                              />
-                            </div>
-                          </Grid>
-                        </Grid>
+                        <Button
+                          className={'add-credit-card-button'}
+                          title="Change Payment Method"
+                          aria-label="Change Payment Method"
+                          onClick={() => setDisplaySavedCards(true)}
+                          id={'add-credit-card'}
+                          sx={{ fontFamily: "'Sunborn-Sansone'!important", }}
+                        >
+                          Change Payment Method
+                        </Button>
                       </Grid>
-                      <Grid item xs={12} sm={12} md={12} lg={12}>
-                        <Grid container spacing={2}>
-                          <Grid
-                            item
-                            xs={12}
-                            sm={6}
-                            md={6}
-                            lg={6}
-                            textAlign={'left'}
-                            className="payment-form image-field align"
+                    </Grid>
+                  )}
+                {displayAddCreditCard() && (
+                  <Button
+                    className={'add-credit-card-button'}
+                    title="Add Credit card"
+                    aria-label="Add Credit card"
+                    onClick={() => handleHideShow()}
+                    tabIndex={!hideShow ? 0 : -1}
+                    id={'add-credit-card'}
+                    sx={{ fontFamily: "'Sunborn-Sansone'!important", }}
+                  >
+                    Add Credit card
+                  </Button>
+                )}
+                {billingSchemes?.length < 1 &&
+                  <Grid container className="payment-form" spacing={2}>
+                    <Grid
+                      item
+                      xs={12}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      className="payment-form image-field align"
+                    >
+                      <Grid container spacing={2}>
+                        <Grid
+                          item
+                          xs={12}
+                          sm={6}
+                          md={6}
+                          lg={6}
+                          textAlign={'left'}
+                          className="payment-form image-field align"
+                        >
+                          {/*<div*/}
+                          {/*  tabIndex={0}*/}
+                          {/*  className="card-fields"*/}
+                          {/*  data-olo-pay-card-number*/}
+                          {/*/>*/}
+                          <label
+                            className="add-credit-card-label"
+                            htmlFor="cardnumber"
                           >
-                            <label
-                              className="add-credit-card-label"
-                              htmlFor="card-expiry"
-                            >
-                              Card Expiry MM/YY
-                            </label>
-                            <TextField
-                              className="zipcode"
-                              aria-label="Card Expiry"
-                              // placeholder="Card Expiry MM/YY"
-                              value={cardExpiry}
-                              onChange={handleCardExpiryChange}
-                              name="phone"
-                              InputProps={{
-                                inputComponent: NumberFormatCustom as any,
-                              }}
-                              id="card-expiry"
+                            Card Number
+                          </label>
+                          <div className="card-fields">
+                            <div
+                              style={{ display: 'contents' }}
+                              className="credit-card-info-div"
+                            ></div>
+                          </div>
+                          <div>
+                            <img
+                              alt=""
+                              src={require('../../assets/imgs/card-icon.png')}
                             />
-                          </Grid>
-                          <Grid
-                            textAlign={'left'}
-                            item
-                            xs={12}
-                            sm={6}
-                            md={6}
-                            lg={6}
+                          </div>
+                        </Grid>
+                        <Grid
+                          textAlign={'left'}
+                          item
+                          xs={12}
+                          sm={6}
+                          md={6}
+                          lg={6}
+                        >
+                          {/*<div className="card-fields" data-olo-pay-card-cvc />*/}
+                          <label
+                            className="add-credit-card-label"
+                            htmlFor="cvv"
                           >
-                            <label
-                              className="add-credit-card-label"
-                              htmlFor="card-zipcode"
-                            >
-                              Zip Code
-                            </label>
-                            <TextField
-                              className="zipcode"
-                              aria-label="Zip Code"
-                              // placeholder="Zip Code"
-                              type="number"
-                              name="zipcode"
-                              inputProps={{ shrink: false }}
-                              value={zipCode}
-                              onChange={handleZipCodeChange}
-                              id="card-zipcode"
+                            CVV
+                          </label>
+                          <div className="card-fields">
+                            <div
+                              style={{ display: 'contents' }}
+                              className="cvv-info-div"
+                            ></div>
+                          </div>
+                          <div>
+                            <img
+                              alt=""
+                              src={require('../../assets/imgs/ccv-icon.png')}
                             />
-                          </Grid>
+                          </div>
                         </Grid>
                       </Grid>
                     </Grid>
-                  </div>
-                  <div className="modal-footer">
-                    <Button
-                      aria-label="Cancel"
-                      title="Cancel"
-                      className="link"
-                      onClick={() => {
-                        moveFocusBackToScreen();
-                        handleHideShow();
-                      }}
-                    >
-                      Cancel{' '}
-                    </Button>
-                    <Button
-                      aria-label={
-                        editCreditCard
+                    <Grid item xs={12} sm={12} md={12} lg={12}>
+                      <Grid container spacing={2}>
+                        <Grid
+                          item
+                          xs={12}
+                          sm={6}
+                          md={6}
+                          lg={6}
+                          textAlign={'left'}
+                          className="payment-form image-field align"
+                        >
+                          <label
+                            className="add-credit-card-label"
+                            htmlFor="card-expiry"
+                          >
+                            Card Expiry MM/YY
+                          </label>
+                          <TextField
+                            className="zipcode"
+                            aria-label="Card Expiry"
+                            // placeholder="Card Expiry MM/YY"
+                            value={cardExpiry}
+                            onChange={handleCardExpiryChange}
+                            name="phone"
+                            InputProps={{
+                              inputComponent: NumberFormatCustom as any,
+                            }}
+                            id="card-expiry"
+                          />
+                        </Grid>
+                        <Grid
+                          textAlign={'left'}
+                          item
+                          xs={12}
+                          sm={6}
+                          md={6}
+                          lg={6}
+                        >
+                          <label
+                            className="add-credit-card-label"
+                            htmlFor="card-zipcode"
+                          >
+                            Zip Code
+                          </label>
+                          <TextField
+                            className="zipcode"
+                            aria-label="Zip Code"
+                            // placeholder="Zip Code"
+                            type="number"
+                            name="zipcode"
+                            inputProps={{ shrink: false }}
+                            value={zipCode}
+                            onChange={handleZipCodeChange}
+                            id="card-zipcode"
+                          />
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                }
+                <div
+                  id="myModal"
+                  role={'dialog'}
+                  tabIndex={-1}
+                  aria-modal={'true'}
+                  aria-label={
+                    editCreditCard ? 'Edit Credit card' : 'Add Credit card'
+                  }
+                  aria-labelledby="add-credit-card-dialog"
+                  aria-hidden={!hideShow}
+                  className={`modal ${hideShow ? 'show' : 'hide'}`}
+                >
+                  {/*<div className="modal-content">*/}
+                  {/*  <span  className="close">&times;</span>*/}
+                  {/*  <p>Some text in the Modal..</p>*/}
+                  {/*</div>*/}
+                  <div className="modal-content">
+                    <div className="modal-header">
+                      {/*<span onClick={() => handleHideShow()} className="close">*/}
+                      {/*  &times;*/}
+                      {/*</span>*/}
+                      <h2
+                        tabIndex={0}
+                        style={{ outline: 'none' }}
+                        id="add-credit-card-dialog"
+                        className={'heading first-focusable-element'}
+                      >
+                        {editCreditCard ? 'Edit Credit card' : 'Add Credit card'}
+                      </h2>
+                    </div>
+                    <div className="modal-body">
+                      <Grid container className="payment-form" spacing={2}>
+                        <Grid
+                          item
+                          xs={12}
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          className="payment-form image-field align"
+                        >
+                          <Grid container spacing={2}>
+                            <Grid
+                              item
+                              xs={12}
+                              sm={6}
+                              md={6}
+                              lg={6}
+                              textAlign={'left'}
+                              className="payment-form image-field align"
+                            >
+                              {/*<div*/}
+                              {/*  tabIndex={0}*/}
+                              {/*  className="card-fields"*/}
+                              {/*  data-olo-pay-card-number*/}
+                              {/*/>*/}
+                              <label
+                                className="add-credit-card-label"
+                                htmlFor="cardnumber"
+                              >
+                                Card Number
+                              </label>
+                              <div className="card-fields">
+                                <div
+                                  style={{ display: 'contents' }}
+                                  className="credit-card-info-div"
+                                ></div>
+                              </div>
+                              <div>
+                                <img
+                                  alt=""
+                                  src={require('../../assets/imgs/card-icon.png')}
+                                />
+                              </div>
+                            </Grid>
+                            <Grid
+                              textAlign={'left'}
+                              item
+                              xs={12}
+                              sm={6}
+                              md={6}
+                              lg={6}
+                            >
+                              {/*<div className="card-fields" data-olo-pay-card-cvc />*/}
+                              <label
+                                className="add-credit-card-label"
+                                htmlFor="cvv"
+                              >
+                                CVV
+                              </label>
+                              <div className="card-fields">
+                                <div
+                                  style={{ display: 'contents' }}
+                                  className="cvv-info-div"
+                                ></div>
+                              </div>
+                              <div>
+                                <img
+                                  alt=""
+                                  src={require('../../assets/imgs/ccv-icon.png')}
+                                />
+                              </div>
+                            </Grid>
+                          </Grid>
+                        </Grid>
+                        <Grid item xs={12} sm={12} md={12} lg={12}>
+                          <Grid container spacing={2}>
+                            <Grid
+                              item
+                              xs={12}
+                              sm={6}
+                              md={6}
+                              lg={6}
+                              textAlign={'left'}
+                              className="payment-form image-field align"
+                            >
+                              <label
+                                className="add-credit-card-label"
+                                htmlFor="card-expiry"
+                              >
+                                Card Expiry MM/YY
+                              </label>
+                              <TextField
+                                className="zipcode"
+                                aria-label="Card Expiry"
+                                // placeholder="Card Expiry MM/YY"
+                                value={cardExpiry}
+                                onChange={handleCardExpiryChange}
+                                name="phone"
+                                InputProps={{
+                                  inputComponent: NumberFormatCustom as any,
+                                }}
+                                id="card-expiry"
+                              />
+                            </Grid>
+                            <Grid
+                              textAlign={'left'}
+                              item
+                              xs={12}
+                              sm={6}
+                              md={6}
+                              lg={6}
+                            >
+                              <label
+                                className="add-credit-card-label"
+                                htmlFor="card-zipcode"
+                              >
+                                Zip Code
+                              </label>
+                              <TextField
+                                className="zipcode"
+                                aria-label="Zip Code"
+                                // placeholder="Zip Code"
+                                type="number"
+                                name="zipcode"
+                                inputProps={{ shrink: false }}
+                                value={zipCode}
+                                onChange={handleZipCodeChange}
+                                id="card-zipcode"
+                              />
+                            </Grid>
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                    </div>
+                    <div className="modal-footer">
+                      <Button
+                        aria-label="Cancel"
+                        title="Cancel"
+                        className="link"
+                        onClick={() => {
+                          moveFocusBackToScreen();
+                          handleHideShow();
+                        }}
+                      >
+                        Cancel{' '}
+                      </Button>
+                      <Button
+                        aria-label={
+                          editCreditCard
+                            ? 'Update Credit card'
+                            : 'Add Credit card'
+                        }
+                        title={
+                          editCreditCard
+                            ? 'Update Credit card'
+                            : 'Add Credit card'
+                        }
+                        type="submit"
+                        className="link default last-focusable-element"
+                        onClick={handleCreditCardSubmit}
+                        autoFocus
+                      >
+                        {editCreditCard
                           ? 'Update Credit card'
-                          : 'Add Credit card'
-                      }
-                      title={
-                        editCreditCard
-                          ? 'Update Credit card'
-                          : 'Add Credit card'
-                      }
-                      type="submit"
-                      className="link default last-focusable-element"
-                      onClick={handleCreditCardSubmit}
-                      autoFocus
-                    >
-                      {editCreditCard
-                        ? 'Update Credit card'
-                        : 'Add Credit card'}
-                    </Button>
+                          : 'Add Credit card'}
+                      </Button>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/*<AddCreditCard />*/}
-              {/*<AddCreditCardCopy />*/}
-              <AddGiftCard/>
+                {/*<AddCreditCard />*/}
+                {/*<AddCreditCardCopy />*/}
+                <AddGiftCard />
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
-      </Grid>
 
-      {/*column for space*/}
-      <Grid item xs={0} sm={0} md={2} lg={2} />
-    </Grid>
+        {/*column for space*/}
+        <Grid item xs={0} sm={0} md={2} lg={2} />
+      </Grid>
     </>
   );
 });
