@@ -99,13 +99,13 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
     }
   }, [hideShow]);
 
-  
+
   React.useEffect(() => {
-  loading && 
-    <div className="loading-spinner">
-      <CircularProgress />
-    </div>
-  }, [billingSchemes?.length <1]);
+    loading &&
+      <div className="loading-spinner">
+        <CircularProgress />
+      </div>
+  }, [billingSchemes?.length < 1]);
 
 
   React.useEffect(() => {
@@ -237,7 +237,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
     if (!isMobile) {
       displayToast(
         'SUCCESS',
-        `Credit Card 'Added'}`,
+        `Credit Card Added`,
       );
     }
     setLoading(false);
@@ -391,13 +391,6 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
       }
     });
   }, []);
-
-  React.useEffect(() => {
-    if(billingSchemes?.length < 1){
-      setLoading(true);
-      handleSingleCreditCardSubmit();
-    }
-  },[billingSchemes?.length < 1]);
 
   const moveFocusBackToScreen = () => {
     const addCardElement = document.getElementById('add-credit-card');
@@ -613,6 +606,26 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                             onChange={handleZipCodeChange}
                             id="card-zipcode"
                           />
+                        </Grid>
+                        <Grid
+                          textAlign={'center'}
+                          item
+                          xs={12}
+                          sm={12}
+                          md={12}
+                          lg={12}
+                        >
+                          <Button
+                            className={'add-credit-card-button'}
+                            title="Add Credit card"
+                            aria-label="Add Credit card"
+                            onClick={handleSingleCreditCardSubmit}
+                            tabIndex={!hideShow ? 0 : -1}
+                            id={'add-credit-card'}
+                            sx={{ fontFamily: "'Sunborn-Sansone'!important", }}
+                          >
+                            Add Credit card
+                          </Button>
                         </Grid>
                       </Grid>
                     </Grid>
