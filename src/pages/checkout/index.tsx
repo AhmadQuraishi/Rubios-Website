@@ -233,7 +233,7 @@ const Checkout = () => {
           }
         },
       );
-      billingArray = updatePaymentCardsAmount(billingArray, basket);
+      billingArray = updatePaymentCardsAmount(billingArray, basketObj?.basket);
       dispatch(updateBasketBillingSchemes(billingArray));
       setRemoveCreditCardOnce(false);
     }
@@ -356,7 +356,10 @@ const Checkout = () => {
         }
       }
       if (billingArray.length) {
-        billingArray = updatePaymentCardsAmount(billingArray, basket);
+        billingArray = updatePaymentCardsAmount(
+          billingArray,
+          basketObj?.basket,
+        );
         console.log('billingArray', billingArray);
         dispatch(updateBasketBillingSchemes(billingArray));
       }
