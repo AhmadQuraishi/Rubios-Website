@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { FC,forwardRef } from 'react';
 import {
   Button,
   Grid,
@@ -29,8 +29,12 @@ import {
 import { isLoginUser } from '../../../helpers/auth';
 import moment from 'moment';
 import LoginAuthDialog from '../../login-authentication-dialog';
+interface AddGiftCardProps {
+  AuthenticationHandler: () => boolean;
+}
 
-const AddGiftCard = forwardRef((props, _ref) => {
+const AddGiftCard: FC<AddGiftCardProps> = forwardRef((props, _ref) => {
+  const { AuthenticationHandler } = props;
   const dispatch = useDispatch();
   const theme = useTheme();
   const basketObj = useSelector((state: any) => state.basketReducer);
@@ -87,8 +91,12 @@ const AddGiftCard = forwardRef((props, _ref) => {
   // };
 
   const handleCloseAddGiftCard = () => {
-    setPinCheck(false);
-    setOpenAddGiftCard(!openAddGiftCard);
+    const authenticationSuccessful = AuthenticationHandler();
+    if (authenticationSuccessful) {
+      setPinCheck(false);
+      setOpenAddGiftCard(!openAddGiftCard);
+    }
+
   };
 
 
@@ -337,3 +345,4 @@ const AddGiftCard = forwardRef((props, _ref) => {
 });
 
 export default AddGiftCard;
+

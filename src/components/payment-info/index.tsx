@@ -100,12 +100,12 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
   }, [hideShow]);
 
 
-  React.useEffect(() => {
-    loading &&
-      <div className="loading-spinner">
-        <CircularProgress />
-      </div>
-  }, [billingSchemes?.length < 1]);
+  // React.useEffect(() => {
+  //   loading &&
+  //     <div className="loading-spinner">
+  //       <CircularProgress />
+  //     </div>
+  // }, [billingSchemes?.length < 1]);
 
 
   React.useEffect(() => {
@@ -118,23 +118,28 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
     }
   }, [basketObj.payment.allowedCards]);
 
-  const handleHideShow = () => {
+  const AuthenticationHandler = () => {
     if (isLoginUser() && sessionLoginTime) {
       const LoginCreatedTime: any = moment.unix(sessionLoginTime);
       const currentTime = moment();
       if (LoginCreatedTime.isValid()) {
         const minutes = currentTime.diff(LoginCreatedTime, 'minutes');
         console.log('munutes', minutes)
-        if (minutes > 30) {
+        if (minutes > 0) {
           setOpenAuthenticationModal(true);
-          return;
+          return false;
         }
       }
     }
-    setHideShow(!hideShow);
+    return true;
   };
 
-
+  const creditCardHideShow = () => {
+    let authenticationSuccessful = AuthenticationHandler();
+    if (authenticationSuccessful ) {
+      setHideShow(!hideShow);
+    }
+  };
 
   React.useEffect(() => {
     if (hideShow) {
@@ -354,7 +359,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
     return (
       basket &&
       //billingSchemeStats.selectedCreditCard === 0 &&
-      billingSchemes?.length > 0 &&
+      // billingSchemes?.length > 0 &&
       allowedCards &&
       allowedCards.length &&
       allowedCards.filter((element: any) => {
@@ -469,7 +474,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                     className={'add-credit-card-button'}
                     title="Add Credit card"
                     aria-label="Add Credit card"
-                    onClick={() => handleHideShow()}
+                    onClick={() => creditCardHideShow()}
                     tabIndex={!hideShow ? 0 : -1}
                     id={'add-credit-card'}
                     sx={{ fontFamily: "'Sunborn-Sansone'!important", }}
@@ -477,7 +482,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                     Add Credit card
                   </Button>
                 )}
-                {billingSchemes?.length < 1 &&
+                {/* {billingSchemes?.length < 1 &&
                   <Grid container className="payment-form" spacing={2}>
                     <Grid
                       item
@@ -501,7 +506,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                           {/*  tabIndex={0}*/}
                           {/*  className="card-fields"*/}
                           {/*  data-olo-pay-card-number*/}
-                          {/*/>*/}
+                          {/*/>
                           <label
                             className="add-credit-card-label"
                             htmlFor="cardnumber"
@@ -529,7 +534,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                           md={6}
                           lg={6}
                         >
-                          {/*<div className="card-fields" data-olo-pay-card-cvc />*/}
+                          {/*<div className="card-fields" data-olo-pay-card-cvc />
                           <label
                             className="add-credit-card-label"
                             htmlFor="cvv"
@@ -630,7 +635,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                       </Grid>
                     </Grid>
                   </Grid>
-                }
+                } */}
                 <div
                   id="myModal"
                   role={'dialog'}
@@ -802,7 +807,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                         className="link"
                         onClick={() => {
                           moveFocusBackToScreen();
-                          handleHideShow();
+                          creditCardHideShow();
                         }}
                       >
                         Cancel{' '}
@@ -833,7 +838,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
 
                 {/*<AddCreditCard />*/}
                 {/*<AddCreditCardCopy />*/}
-                <AddGiftCard />
+                <AddGiftCard AuthenticationHandler={AuthenticationHandler}/>
               </Grid>
             </Grid>
           </Grid>
