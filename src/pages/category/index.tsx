@@ -454,7 +454,7 @@ const CategoryList = () => {
                   </Button>
                 )}
               </>
-              {restaurantSelected.supportscurbside && (
+              {/* {restaurantSelected.supportscurbside && (
                 <Button
                   variant="contained"
                   sx={{
@@ -473,7 +473,7 @@ const CategoryList = () => {
                 >
                   Curbside
                 </Button>
-              )}
+              )} */}
               {restaurantSelected.supportsdispatch && (
                 <Button
                   variant="contained"

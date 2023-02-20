@@ -558,7 +558,7 @@ export const OrderTypeDialog = (props: any) => {
                             PickUp
                           </ToggleButton>
                         )}
-                        {restaurantSupportedHanOffMode('curbside') && !hideIt &&(
+                        {/* {restaurantSupportedHanOffMode('curbside') && !hideIt &&(
                           <ToggleButton
                             role="radio"
                             value={'curbside'}
@@ -573,7 +573,7 @@ export const OrderTypeDialog = (props: any) => {
                           >
                             Curbside
                           </ToggleButton>
-                        )}
+                        )} */}
                         {restaurantSupportedHanOffMode('dinein') && !hideIt &&(
                           <ToggleButton
                             role="radio"
