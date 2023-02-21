@@ -507,7 +507,7 @@ const Welcome = () => {
                               </li>
                             )}
 
-                            {favRestaurant.supportscurbside === true && (
+                            {/* {favRestaurant.supportscurbside === true && (
                               <li>
                                 <Button
                                   aria-label="curbside button"
@@ -519,7 +519,7 @@ const Welcome = () => {
                                   CURBSIDE
                                 </Button>
                               </li>
-                            )}
+                            )} */}
                             {favRestaurant.supportsdinein === true && (
                               <li>
                                 <Button
