@@ -629,7 +629,7 @@ const LocationCard = (props: any) => {
                 >
                   PickUp
                 </ToggleButton>
-                <ToggleButton
+                {/* <ToggleButton
                   role="radio"
                   value="Curbside"
                   // onClick={() => {
@@ -641,7 +641,7 @@ const LocationCard = (props: any) => {
                   aria-label=" Curbside, Activating this element will cause results to load below "
                 >
                   Curbside
-                </ToggleButton>
+                </ToggleButton> */}
                 <ToggleButton
                   value="Delivery"
                   role="radio"
