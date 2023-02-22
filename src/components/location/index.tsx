@@ -68,6 +68,7 @@ const LocationCard = (props: any) => {
     actionTypes,
     setAction,
     orderType,
+    setZoom,
     changeOrderType,
     setLatLng,
     setActionPerform,
