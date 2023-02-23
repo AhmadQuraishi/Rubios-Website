@@ -824,13 +824,12 @@ const LocationCard = (props: any) => {
                   </Link>
                 </Typography>
               )}
-
+                {orderType === 'dispatch' &&
+                filteredRestaurants.length > 0 && filteredRestaurants[0]&& setZoom(10)}
               {dummyBasketObj.loading  || !showAllRestaurants &&
                 orderType &&
                 orderType === 'dispatch' &&
                 filteredRestaurants.length > 0 &&
-                (filteredRestaurants[0] &&
-                  setZoom(10)) &&
                 !addCustomAddressCheck() && (
                   // <Typography className="label">
                   //   <p style={{ paddingTop: '5px' }}>SELECT LOCATION BELOW</p>
