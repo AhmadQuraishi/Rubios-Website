@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CCSF-live</title>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1" name="viewport">
+  <script crossorigin src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+  <script src="https://static.olocdn.net/web-client/checkout-web-client/2.5.0/checkout.js"></script>
+  <script>
+    $(document).ready(function(){
+      let checkoutFrame;
+      function postResponseToClient(data) {
+        if (typeof window.ReactNativeWebView !== "undefined") {
+          window.ReactNativeWebView.postMessage(JSON.stringify(data));
+        } else {
+          window.postMessage(JSON.stringify(data));
+        }
+      }
+
+      setTimeout(() => {
+        const brandAccessId = document.getElementById('brandAccessId').value;
+        const basketId = document.getElementById('basketId').value;
+        checkoutFrame = new Olo.CheckoutFrame({
+          cardElement: "credit-card-info-div",
+          cvvElement: "cvv-info-div",
+        });
+        checkoutFrame.initialize({
+          brandAccessId: brandAccessId,
+          basketGuid: basketId,
+          styles: {
+            cardNumber: "font-size: 14px; height: 25px;padding-top: 5px;border-width: 0px; width: 100%; margin-top: 10px; ",
+            cvv:  "font-size: 14px; height: 25px;padding-top: 5px;border-width: 0px; width: 100%;  margin-top: 10px; ",
+          },
+        });
+        checkoutFrame.on("focus", function (evt) {
+          console.log(evt);
+        });
+
+        checkoutFrame.on("error", function (errors) {
+          postResponseToClient({type: 'error', data: errors});
+          errors.forEach(error => {
+            alert(error.description)
+            console.log(error.code);
+            console.log(error.description);
+          });
+        });
+
+        checkoutFrame.on("success", function (order) {
+          console.log(order);
+          alert('Success', order.id)
+          postResponseToClient({type: 'success', data: order});
+        });
+
+        checkoutFrame.on('ready', function (evt) {
+          console.log('ready', evt);
+        });
+
+        checkoutFrame.on('complete', function (evt) {
+          console.log('complete', evt);
+        });
+      }, 3000)
+
+      document.getElementById("submitButton").onclick = function() {
+        const value  = document.getElementById('payload').value
+        const jsonParse = JSON.parse(value);
+        checkoutFrame.submit(jsonParse);
+        return false;
+      };
+    });
+  </script>
+</head>
+<style>
+    #payload {
+        display: none;
+    }
+    #basketId {
+        display: none;
+    }
+    #brandAccessId {
+        display: none;
+    }
+    #submitButton{
+        display: none;
+    }
+    .fieldContainer{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding-left: 5px;
+        border-radius: 5px;
+        border: 1px solid #dbdbdb;
+        margin-top: -10px;
+    }
+    .inputLabel{
+        font-size: 14px;
+    }
+</style>
+<body>
+<div style="display: contents;">
+  <p class="inputLabel">Card Number</p>
+  <div class="fieldContainer">
+    <div class="credit-card-info-div" style="height: 50px;"></div>
+    <img src="./card-icon.png" height="35" width="47">
+  </div>
+</div>
+<div style="display: contents">
+  <p class="inputLabel">CVV</p>
+  <div class="fieldContainer">
+    <div class="cvv-info-div" style="height: 50px;"></div>
+    <img src="./ccv-icon.png" height="35" width="47">
+  </div>
+</div>
+<div>
+  <button id="submitButton" type="button" title="Submit">Submit</button>
+  <input id="payload" type="text">
+  <input id="basketId" type="text">
+  <input id="brandAccessId" type="text">
+</div>
+</body>
+</html>

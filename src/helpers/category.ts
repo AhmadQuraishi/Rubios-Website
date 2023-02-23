@@ -11,6 +11,7 @@ export const HOME_PAGE_CATEGORIES = [
   'SIDES & EXTRAS',
   'DESSERTS',
   'TACOS A LA CARTE',
+  '4 UNDER $10',
 ];
 
 export const CATERING_CATEGORIES = [
