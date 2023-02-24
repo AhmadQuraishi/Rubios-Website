@@ -36,6 +36,8 @@ import {
   formatCustomFields,
   // formatDeliveryAddress,
   generateSubmitBasketPayload,
+  getBillingSchemesStats,
+  getCreditCardObj,
   getUniqueId,
   updatePaymentCardsAmount,
 } from '../../helpers/checkout';
@@ -87,6 +89,12 @@ const Checkout = () => {
   const [locationId, setLocationId] = useState(null);
   const [validate, setValidate] =
     React.useState<ResponseBasketValidation | null>(null);
+  const [editCreditCard, setEditCreditCard] = React.useState<boolean>(false);
+  const [hideShow, setHideShow] = React.useState<boolean>(false);
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const [zipCode, setZipCode] = React.useState<any>();
+  const [allowedCards, setAllowedCards] = React.useState<any>();
+  const [cardExpiry, setCardExpiry] = React.useState<any>();
   // const [defaultDeliveryAddress, setDefaultDeliveryAddress] =
   //   React.useState<any>(null);
   const [ccsfObj, setccsfObj] = React.useState<any>();
@@ -209,7 +217,19 @@ const Checkout = () => {
       setBasketAccessToken(response.accesstoken);
     }
   };
-
+  const displayAddCreditCard = () => {
+    const billingSchemeStats = getBillingSchemesStats(billingSchemes);
+    return (
+      basket &&
+      //billingSchemeStats.selectedCreditCard === 0 &&
+      billingSchemes?.length > 0 &&
+      allowedCards &&
+      allowedCards.length &&
+      allowedCards.filter((element: any) => {
+        return element.type === 'creditcard';
+      }).length > 0
+    );
+  };
   useEffect(() => {
     getBasketAccessToken();
   }, [authToken]);
@@ -238,7 +258,18 @@ const Checkout = () => {
       setRemoveCreditCardOnce(false);
     }
   }, []);
-
+  const moveFocusBackToScreen = () => {
+    const addCardElement = document.getElementById('add-credit-card');
+    const addGiftCardElement = document.getElementById('add-gift-card');
+    const placeOrderElement = document.getElementById('place-order-button');
+    if (addCardElement && displayAddCreditCard()) {
+      addCardElement.focus();
+    } else if (addGiftCardElement) {
+      addGiftCardElement.focus();
+    } else if (placeOrderElement) {
+      placeOrderElement.focus();
+    }
+  };
   React.useEffect(() => {
     if (basket && runOnce) {
       let selectedTime = moment().format('YYYYMMDD');
@@ -262,6 +293,112 @@ const Checkout = () => {
     }
   }, [basket]);
 
+  const handleCreditCardSubmit = async () => {
+    setButtonDisabled(true);
+    if (!zipCode || zipCode === '') {
+      displayToast('ERROR', 'Zip Code is required');
+      setButtonDisabled(false);
+      return;
+    }
+
+    if (!cardExpiry || cardExpiry === '') {
+      displayToast('ERROR', 'Card Expiry is required');
+      setButtonDisabled(false);
+      return;
+    } else if (cardExpiry.length !== 5) {
+      displayToast('ERROR', 'Please enter valid date.');
+      setButtonDisabled(false);
+      return;
+    } else {
+      const currentDate: any = moment(new Date());
+      const expiryDate: any = moment(cardExpiry, 'MM/YY');
+
+      if (!expiryDate.isValid()) {
+        displayToast('ERROR', 'Please enter valid date.');
+        setButtonDisabled(false);
+        return;
+      }
+
+      if (!expiryDate.isAfter(currentDate)) {
+        displayToast('ERROR', 'Please enter future date.');
+        setButtonDisabled(false);
+        return;
+      }
+    }
+
+    let billingSchemesNewArray = billingSchemes;
+    billingSchemesNewArray = billingSchemes.filter(
+      (account: any) =>
+        !(account.billingmethod === 'creditcard' && !account.billingaccountid),
+    );
+    billingSchemesNewArray = billingSchemesNewArray.map((element: any) => {
+      if (element.billingmethod === 'creditcard') {
+        return {
+          ...element,
+          selected: false,
+        };
+      }
+      return element;
+    });
+    const obj = {
+      exp_year: moment(cardExpiry, 'MM/YYYY').year(),
+      exp_month: moment(cardExpiry, 'MM/YYYY').month() + 1,
+      postal_code: zipCode,
+    };
+    let cardObj: any = getCreditCardObj(obj, billingSchemes);
+
+    Array.prototype.push.apply(billingSchemesNewArray, cardObj);
+
+    billingSchemesNewArray = updatePaymentCardsAmount(
+      billingSchemesNewArray,
+      basket,
+    );
+
+    dispatch(updateBasketBillingSchemes(billingSchemesNewArray));
+    if (!isMobile) {
+      displayToast(
+        'SUCCESS',
+        `Credit Card ${editCreditCard ? 'Updated' : 'Added'}`,
+      );
+    }
+    setButtonDisabled(false);
+    setHideShow(!hideShow);
+    moveFocusBackToScreen();
+    // if (ccsfObj) {
+    //   ccsfObj.registerError((errors: any) => {
+    //     console.log('ccsf error 2', errors);
+    //
+    //     errors.forEach((error: any) => {
+    //       console.log(error.code);
+    //       console.log(error.description);
+    //       if (
+    //         error.description &&
+    //         error.description ===
+    //           'The sum of your selected payment methods must equal the order total.'
+    //       ) {
+    //
+    //       } else {
+    //         displayToast('ERROR', error.description);
+    //       }
+    //     });
+    //   });
+    // ccsfObj.submit({
+    //   id: basket && basket.id,
+    //   accessToken: basketAccessToken,
+    //   billingaccounts: [
+    //     {
+    //       billingmethod: 'creditcard',
+    //       // amount: 31.25,
+    //       // tipportion: 0,
+    //       expiryyear: monthYear[1],
+    //       expirymonth: monthYear[0],
+    //       zip: zipCode,
+    //       saveonfile: true,
+    //     },
+    //   ],
+    // });
+    // }
+  };
   React.useEffect(() => {
     setBillingSchemes(basketObj.payment.billingSchemes);
   }, [basketObj.payment.billingSchemes]);
@@ -420,7 +557,7 @@ const Checkout = () => {
     }
   }, [basketObj.validate]);
 
-  
+
 
   const createDefaultGiftCards = (defaultGiftCards: any) => {
     let array = [];
@@ -969,225 +1106,178 @@ const Checkout = () => {
     dispatch(userRegister(signUpObj, 'REGISTER_CHECKOUT', basket?.id));
   };
   React.useEffect(() => {
-    console.log(callOnce,"callOnce");
-  if (basketObj?.basket?.products?.length == 0 && callOnce) {
-    navigate(restaurant ? '/menu/' + restaurant.slug : '/');
-    // displayToast('SUCCESS', 'Please add new items in a bag to proceed');
-    setCallOnce(!callOnce);
+    console.log(callOnce, "callOnce");
+    if (basketObj?.basket?.products?.length == 0 && callOnce) {
+      navigate(restaurant ? '/menu/' + restaurant.slug : '/');
+      // displayToast('SUCCESS', 'Please add new items in a bag to proceed');
+      setCallOnce(!callOnce);
 
-}}, [basketObj.basket]);
+    }
+  }, [basketObj.basket]);
 
   return (
     <div>
-    <Page title={'Checkout'} className="">
-      <Typography variant="h1" className="sr-only">
-        Checkout
-      </Typography>
-      <StoreInfoBar />
-      <Box
-        className={`checkout-wrapper ${
-          buttonDisabled || basketObj?.orderSubmit ? 'disable-pointer' : ''
-        }`}
-      >
-        <Grid container>
-          <Grid item xs={12} sm={12} md={12} lg={12}>
-            <Card className="order">
-              <Grid container>
+      <Page title={'Checkout'} className="">
+        <Typography variant="h1" className="sr-only">
+          Checkout
+        </Typography>
+        <StoreInfoBar />
+        <Box
+          className={`checkout-wrapper ${buttonDisabled || basketObj?.orderSubmit ? 'disable-pointer' : ''
+            }`}
+        >
+          <Grid container>
+            <Grid item xs={12} sm={12} md={12} lg={12}>
+              <Card className="order">
                 <Grid container>
-                  <Grid
-                    style={{ border: 'none' }}
-                    item
-                    xs={12}
-                    sm={6}
-                    md={6}
-                    lg={6}
-                    className="left-col"
-                  >
-                    <Grid container>
-                      {basket &&
-                      (basket.deliverymode === '' ||
-                        basket.deliverymode === DeliveryModeEnum.pickup) ? (
-                        <>
-                          <Grid item xs={12}>
-                            <Typography
-                              variant="h3"
-                              className="label"
-                              sx={{    fontSize: '11pt!important',
-                                fontFamily: "'Sunborn-Sansone'!important",letterSpacing:"0.03562em"}}
-                              title="WHO'S IS PICKING UP?"
-                            >
-                              WHO'S PICKING UP?
-                            </Typography>
-                          </Grid>
-                          <Grid item xs={12}>
-                            <Typography
-                              variant="h1"
-                              sx={{ fontSize: '29px !important', marginBottom: '0px',color: "#062C43", fontFamily: "'GritSans-Bold' !important",letterSpacing:"0.03562em" }}
-                              title="PICK UP INFO"
-                            >
-                              PICK UP INFO
-                            </Typography>
-                          </Grid>
-                        </>
-                      ) : basket &&
-                        basket.deliverymode === DeliveryModeEnum.curbside ? (
-                        <>
-                          <Grid item xs={12}>
-                            <Typography
-                              variant="h3"
-                              className="label"
-                              title="WHO'S IS PICKING UP?"
-                              sx={{    fontSize: '11pt!important',
-                                fontFamily: "'Sunborn-Sansone'!important", letterSpacing:"0.03562em"}}
-                            >
-                              WHO'S PICKING UP?
-                            </Typography>
-                          </Grid>
-                          <Grid item xs={12}>
-                            <Typography
-                              variant="h1"
-                              sx={{fontSize: '29px !important', marginBottom: '0px', fontFamily: "'GritSans-Bold' !important",letterSpacing:"0.03562em"}}
-                              title="CURBSIDE PICK INFO"
-                            >
-                              CURBSIDE PICK UP
-                            </Typography>
-                          </Grid>
-                        </>
-                      ) : basket &&
-                        basket.deliverymode === DeliveryModeEnum.dispatch ? (
-                        <>
-                          <Grid item xs={12}>
-                            <Typography
-                              variant="caption"
-                              className="label"
-                              sx={{fontSize: "11pt !important",fontFamily: "'Sunborn-Sansone'!important",letterSpacing:"0.03562em"}}
-                              title="WHO'S IS PICKING UP?"
-                            >
-                              WHERE TO DELIVER
-                            </Typography>
-                          </Grid>
-                          <Grid item xs={12}>
-                            <Typography
-                              variant="h1"
-                              sx={{fontSize: '29px !important', marginBottom: '0px', fontFamily: "'GritSans-Bold' !important", color: "#062c43",letterSpacing:"0.03562em" }}
-                              title="DELIVERY INFO"
-                            >
-                              DELIVERY INFO
-                            </Typography>
-                          </Grid>
-                        </>
-                      ) : basket &&
-                        basket.deliverymode === DeliveryModeEnum.dinein ? (
-                        <>
-                          <Grid item xs={12}>
-                            <Typography
-                              variant="caption"
-                              className="label"
-                              sx={{    fontSize: '11pt!important',
-                                fontFamily: "'Sunborn-Sansone'!important",letterSpacing:"0.03562em"}}
-                              title="WHO'S IS PICKING UP?"
-                            >
-                              WHO's ORDERING?
-                            </Typography>
-                          </Grid>
-                          <Grid item xs={12}>
-                            <Typography
-                              variant="h1"
-                              sx={{fontSize: '29px !important', marginBottom: '0px', fontFamily: "'GritSans-Bold' !important",letterSpacing:"0.03562em" }}
-                              title="DELIVERY INFO"
-                              style={{    fontSize: '11pt!important',fontFamily: "'Sunborn-Sansone'!important"}}
-                            >
-                              DINE IN INFO
-                            </Typography>
-                          </Grid>
-                        </>
-                      ) : null}
-                      {basket &&
-                      (basket.deliverymode === '' ||
-                        basket.deliverymode === DeliveryModeEnum.pickup ||
-                        basket.deliverymode === DeliveryModeEnum.curbside ||
-                        basket.deliverymode === DeliveryModeEnum.dinein) ? (
-                        <PickupForm
-                          // setShowSignUpGuest={setShowSignUpGuest}
-                          // showSignUpGuest={!showSignUpGuest}
-                          basket={basket}
-                          pickupFormRef={pickupFormRef}
-                          orderType={basket.deliverymode}
-                        />
-                      ) : null}
-                      {basket &&
-                      basket.deliverymode === DeliveryModeEnum.dispatch ? (
-                        <DeliveryForm
-                          basket={basket}
-                          // setShowSignUpGuest={setShowSignUpGuest}
-                          // showSignUpGuest={!showSignUpGuest}
-                          // defaultAddress={defaultDeliveryAddress}
-                          deliveryFormRef={deliveryFormRef}
-                        />
-                      ) : null}
+                  <Grid container>
+                    <Grid
+                      style={{ border: 'none' }}
+                      item
+                      xs={12}
+                      sm={6}
+                      md={6}
+                      lg={6}
+                      className="left-col"
+                    >
+                      <Grid container>
+                        {basket &&
+                          (basket.deliverymode === '' ||
+                            basket.deliverymode === DeliveryModeEnum.pickup) ? (
+                          <>
+                            <Grid item xs={12}>
+                              <Typography
+                                variant="h3"
+                                className="label"
+                                sx={{
+                                  fontSize: '11pt!important',
+                                  fontFamily: "'Sunborn-Sansone'!important", letterSpacing: "0.03562em"
+                                }}
+                                title="WHO'S IS PICKING UP?"
+                              >
+                                WHO'S PICKING UP?
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={12}>
+                              <Typography
+                                variant="h1"
+                                sx={{ fontSize: '29px !important', marginBottom: '0px', color: "#062C43", fontFamily: "'GritSans-Bold' !important", letterSpacing: "0.03562em" }}
+                                title="PICK UP INFO"
+                              >
+                                PICK UP INFO
+                              </Typography>
+                            </Grid>
+                          </>
+                        ) : basket &&
+                          basket.deliverymode === DeliveryModeEnum.curbside ? (
+                          <>
+                            <Grid item xs={12}>
+                              <Typography
+                                variant="h3"
+                                className="label"
+                                title="WHO'S IS PICKING UP?"
+                                sx={{
+                                  fontSize: '11pt!important',
+                                  fontFamily: "'Sunborn-Sansone'!important", letterSpacing: "0.03562em"
+                                }}
+                              >
+                                WHO'S PICKING UP?
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={12}>
+                              <Typography
+                                variant="h1"
+                                sx={{ fontSize: '29px !important', marginBottom: '0px', fontFamily: "'GritSans-Bold' !important", letterSpacing: "0.03562em" }}
+                                title="CURBSIDE PICK INFO"
+                              >
+                                CURBSIDE PICK UP
+                              </Typography>
+                            </Grid>
+                          </>
+                        ) : basket &&
+                          basket.deliverymode === DeliveryModeEnum.dispatch ? (
+                          <>
+                            <Grid item xs={12}>
+                              <Typography
+                                variant="caption"
+                                className="label"
+                                sx={{ fontSize: "11pt !important", fontFamily: "'Sunborn-Sansone'!important", letterSpacing: "0.03562em" }}
+                                title="WHO'S IS PICKING UP?"
+                              >
+                                WHERE TO DELIVER
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={12}>
+                              <Typography
+                                variant="h1"
+                                sx={{ fontSize: '29px !important', marginBottom: '0px', fontFamily: "'GritSans-Bold' !important", color: "#062c43", letterSpacing: "0.03562em" }}
+                                title="DELIVERY INFO"
+                              >
+                                DELIVERY INFO
+                              </Typography>
+                            </Grid>
+                          </>
+                        ) : basket &&
+                          basket.deliverymode === DeliveryModeEnum.dinein ? (
+                          <>
+                            <Grid item xs={12}>
+                              <Typography
+                                variant="caption"
+                                className="label"
+                                sx={{
+                                  fontSize: '11pt!important',
+                                  fontFamily: "'Sunborn-Sansone'!important", letterSpacing: "0.03562em"
+                                }}
+                                title="WHO'S IS PICKING UP?"
+                              >
+                                WHO's ORDERING?
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={12}>
+                              <Typography
+                                variant="h1"
+                                sx={{ fontSize: '29px !important', marginBottom: '0px', fontFamily: "'GritSans-Bold' !important", letterSpacing: "0.03562em" }}
+                                title="DELIVERY INFO"
+                                style={{ fontSize: '11pt!important', fontFamily: "'Sunborn-Sansone'!important" }}
+                              >
+                                DINE IN INFO
+                              </Typography>
+                            </Grid>
+                          </>
+                        ) : null}
+                        {basket &&
+                          (basket.deliverymode === '' ||
+                            basket.deliverymode === DeliveryModeEnum.pickup ||
+                            basket.deliverymode === DeliveryModeEnum.curbside ||
+                            basket.deliverymode === DeliveryModeEnum.dinein) ? (
+                          <PickupForm
+                            // setShowSignUpGuest={setShowSignUpGuest}
+                            // showSignUpGuest={!showSignUpGuest}
+                            basket={basket}
+                            pickupFormRef={pickupFormRef}
+                            orderType={basket.deliverymode}
+                          />
+                        ) : null}
+                        {basket &&
+                          basket.deliverymode === DeliveryModeEnum.dispatch ? (
+                          <DeliveryForm
+                            basket={basket}
+                            // setShowSignUpGuest={setShowSignUpGuest}
+                            // showSignUpGuest={!showSignUpGuest}
+                            // defaultAddress={defaultDeliveryAddress}
+                            deliveryFormRef={deliveryFormRef}
+                          />
+                        ) : null}
+                      </Grid>
                     </Grid>
+                    {isDesktop && (
+                      <OrderTime
+                        orderType={(basket?.deliverymode) || ''}
+                      />
+                    )}
                   </Grid>
-                  {isDesktop && (
-                    <OrderTime
-                      orderType={(basket?.deliverymode) || ''}
-                    />
-                  )}
                 </Grid>
-              </Grid>
-              {!isLoginUser() && (
-                <>
-                  <br />
-                  <br />
-                  <Divider />
-                  <br />
-                  <br />
-                  <br />
-                  <SignUpGuest
-                    birthDay={birthDay}
-                    setBirthDay={setBirthDay}
-                    //guestSignupCheckout={guestSignupCheckout}
-                    signupFormRef={signupFormRef}
-                  />
-                </>
-              )}
-              <Grid
-                sx={{
-                  display: {
-                    xs: 'block',
-                    sm: 'none',
-                    md: 'none',
-                    lg: 'none',
-                  },
-                }}
-              >
-                <br />
-                <br />
-              </Grid>
-              <Grid
-                sx={{
-                  display: {
-                    xs: 'block',
-                    sm: 'none',
-                    md: 'none',
-                    lg: 'none',
-                  },
-                }}
-              >
-                <Divider />
-                <br />
-                <br />
-                <br />
-                <OrderTime orderType={(basket?.deliverymode) || ''} />
-              </Grid>
-
-              {isLoginUser() &&
-                rewards?.length === 0 &&
-                (loadingRewards || loadingRedemptions) && (
-                  <CheckoutSkeletonUI />
-                )}
-
-              {isLoginUser() &&
-                rewards.length > 0 && (
+                {!isLoginUser() && (
                   <>
                     <br />
                     <br />
@@ -1195,79 +1285,158 @@ const Checkout = () => {
                     <br />
                     <br />
                     <br />
-
-                    <Rewards rewardsList={rewards} />
+                    <SignUpGuest
+                      birthDay={birthDay}
+                      setBirthDay={setBirthDay}
+                      //guestSignupCheckout={guestSignupCheckout}
+                      signupFormRef={signupFormRef}
+                    />
                   </>
                 )}
-
-              <br />
-              <Divider />
-              <br />
-              <br />
-              <br />
-
-              <Tip
-                basket={basket}
-                loading={basketObj?.loading}
-                updateOrderDetailTipPercent={setTipPercentage}
-              />
-              <br />
-              <br />
-              <br />
-              <Divider />
-              <br />
-              <br />
-              <br />
-              {/*second section*/}
-              <OrderDetails
-                basket={basket}
-                tipPercentage={tipPercentage}
-                page="checkout"
-              />
-              <br />
-              <br />
-              <br />
-              <Divider />
-              <br />
-              <br />
-              <br />
-              <PaymentInfo
-                ref={paymentInfoRef}
-                ccsfObj={ccsfObj}
-                basketAccessToken={basketAccessToken}
-              />
-
-              <Divider />
-              <br />
-              <br />
-              <br />
-
-              {/*second section ends here*/}
-              <Grid container className="add-order">
-                <Grid item xs={12} sm={12} md={4} lg={4}>
-                  <Button
-                    disabled={
-                      (buttonDisabled ||
-                        basketObj?.loading ||
-                        basketObj?.orderSubmit ||
-                        totalPaymentCardAmount()) &&
-                      ccsfObj
-                    }
-                    onClick={placeOrder}
-                    id={'place-order-button'}
-                    variant="contained"
-                    title="PLACE ORDER"
-                    sx={{fontFamily: "'Sunborn-Sansone'!important",fontSize: "11pt !important",}}
-                  >
-                    PLACE ORDER
-                  </Button>
+                <Grid
+                  sx={{
+                    display: {
+                      xs: 'block',
+                      sm: 'none',
+                      md: 'none',
+                      lg: 'none',
+                    },
+                  }}
+                >
+                  <br />
+                  <br />
                 </Grid>
-              </Grid>
-            </Card>
+                <Grid
+                  sx={{
+                    display: {
+                      xs: 'block',
+                      sm: 'none',
+                      md: 'none',
+                      lg: 'none',
+                    },
+                  }}
+                >
+                  <Divider />
+                  <br />
+                  <br />
+                  <br />
+                  <OrderTime orderType={(basket?.deliverymode) || ''} />
+                </Grid>
+
+                {isLoginUser() &&
+                  rewards?.length === 0 &&
+                  (loadingRewards || loadingRedemptions) && (
+                    <CheckoutSkeletonUI />
+                  )}
+
+                {isLoginUser() &&
+                  rewards.length > 0 && (
+                    <>
+                      <br />
+                      <br />
+                      <Divider />
+                      <br />
+                      <br />
+                      <br />
+
+                      <Rewards rewardsList={rewards} />
+                    </>
+                  )}
+
+                <br />
+                <Divider />
+                <br />
+                <br />
+                <br />
+
+                <Tip
+                  basket={basket}
+                  loading={basketObj?.loading}
+                  updateOrderDetailTipPercent={setTipPercentage}
+                />
+                <br />
+                <br />
+                <br />
+                <Divider />
+                <br />
+                <br />
+                <br />
+                {/*second section*/}
+                <OrderDetails
+                  basket={basket}
+                  tipPercentage={tipPercentage}
+                  page="checkout"
+                />
+                <br />
+                <br />
+                <br />
+                <Divider />
+                <br />
+                <br />
+                <br />
+                <PaymentInfo
+                zipCode={zipCode}
+                hideShow={hideShow}
+                setHideShow={setHideShow}
+                setZipCode = {setZipCode}
+                cardExpiry={cardExpiry}
+                setCardExpiry = {setCardExpiry}
+                  handleCreditCardSubmit={handleCreditCardSubmit}
+                  ref={paymentInfoRef}
+                  ccsfObj={ccsfObj}
+                  basketAccessToken={basketAccessToken}
+                />
+
+                <Divider />
+                <br />
+                <br />
+                <br />
+
+                {/*second section ends here*/}
+                {billingSchemes.length < 1 ? (
+                  <Grid container className="add-order">
+                    <Grid item xs={12} sm={12} md={4} lg={4}>
+                      <Button
+                        aria-label={
+                          'Add Credit card'
+                        }
+                        type="submit"
+                        className="link default last-focusable-element"
+                        onClick={handleCreditCardSubmit}
+                        autoFocus
+                        variant="contained"
+                        sx={{ fontFamily: "'Sunborn-Sansone'!important", fontSize: "11pt !important", }}
+                      >
+                      Add Credit card
+                      </Button>
+                    </Grid>
+                  </Grid>) : (
+                  <Grid container className="add-order">
+                    <Grid item xs={12} sm={12} md={4} lg={4}>
+                      <Button
+                        disabled={
+                          (buttonDisabled ||
+                            basketObj?.loading ||
+                            basketObj?.orderSubmit ||
+                            totalPaymentCardAmount()) &&
+                          ccsfObj
+                        }
+                        onClick={placeOrder}
+                        id={'place-order-button'}
+                        variant="contained"
+                        title="PLACE ORDER"
+                        sx={{ fontFamily: "'Sunborn-Sansone'!important", fontSize: "11pt !important", }}
+                      >
+                        PLACE ORDER
+                      </Button>
+                    </Grid>
+                  </Grid>
+                )}
+              </Card>
+            </Grid>
           </Grid>
-        </Grid>
-      </Box>
-    </Page>
+        </Box>
+      </Page>
     </div>
   );
 };
