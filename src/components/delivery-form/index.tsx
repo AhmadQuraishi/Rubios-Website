@@ -16,6 +16,7 @@ import { IMaskInput } from 'react-imask';
 import { OrderTypeDialog } from '../order-type-dialog';
 import { isLoginUser } from '../../helpers/auth';
 import { setBasketDeliveryAddressSuccess } from '../../redux/actions/basket/checkout';
+import './index.css';
 
 const DeliveryForm = ({
   basket,
@@ -78,7 +79,7 @@ const DeliveryForm = ({
     const newInstruction = event.target.value;
     setSpecialInstruction(newInstruction);
   };
-  
+  const maxLength = 100;
   return (
     <>
       <OrderTypeDialog openModal={open} setOpenModal={setOpen} hideIt={true} />
@@ -295,9 +296,15 @@ const DeliveryForm = ({
                     multiline
                     value={specialInstruction}
                     onChange={handleInsturctionChange}
+                    inputProps={{ maxLength: maxLength }}
+                    helperText={`${specialInstruction.length} / ${maxLength} characters`}
                   />
+                  {/* <Typography variant="caption">
+                  {remainingChars} characters remaining
+                  </Typography> */}
+
                   {(contactValues.contactLess === true && specialInstruction?.length > 0) || (contactValues.contactLess === false && specialInstruction?.length) > 0 ? " " : (
-                  <FormGroup>
+                  <FormGroup sx={{marginTop:"-23px !important"}}>
                     <FormControlLabel
                       control={
                         <Checkbox
