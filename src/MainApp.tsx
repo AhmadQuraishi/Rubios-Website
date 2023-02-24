@@ -108,7 +108,7 @@ function App(props: any) {
         console.log("working3", restaurantSessionTime);
         const minutes = currentTime.diff(restaurantSessionTime, 'minutes');
         console.log(minutes, "minutes")
-        if (minutes > 30) {
+        if (minutes > 180) {
           dispatch(resetRestaurantRequest());
           dispatch(resetBasketRequest());
           setOpen(true);

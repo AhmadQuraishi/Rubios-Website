@@ -8,13 +8,14 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useSelector } from 'react-redux';
-import { Formik } from 'formik';
+import { useDispatch,useSelector } from 'react-redux';
+import { Formik, useFormikContext } from 'formik';
 import * as Yup from 'yup';
 import { forwardRef } from 'react';
 import { IMaskInput } from 'react-imask';
 import { OrderTypeDialog } from '../order-type-dialog';
 import { isLoginUser } from '../../helpers/auth';
+import { setBasketDeliveryAddressSuccess } from '../../redux/actions/basket/checkout';
 
 const DeliveryForm = ({
   basket,
@@ -24,8 +25,8 @@ const DeliveryForm = ({
 }: any) => {
   const [open, setOpen] = useState(false);
   const [hideIt, setHideIt] = useState(false);
+  const dispatch = useDispatch();
   const { providerToken } = useSelector((state: any) => state.providerReducer);
-
   interface CustomProps {
     onChange: (event: { target: { name: string; value: string } }) => void;
     name: string;
@@ -34,6 +35,12 @@ const DeliveryForm = ({
     setOpen(true);
     setHideIt(!hideIt);
   }
+  const [specialInstruction, setSpecialInstruction] = useState('');
+
+  const [contactValues, setContactValues] = useState({
+    contactLess: false,
+  });
+
   const NumberFormatCustom = forwardRef<HTMLElement, CustomProps>(
     function NumberFormatCustom(props, ref) {
       const { onChange, ...other } = props;
@@ -53,10 +60,28 @@ const DeliveryForm = ({
       );
     },
   );
+  const handleCheckChange = (event : any) => {
+    setContactValues({ ...contactValues, [event.target.name]: event.target.checked });
+    if (event.target.name === 'contactLess') {
+      if (event.target.checked) {
+        setSpecialInstruction('I want contactless delivery');
+        if (specialInstruction.length < 1) {
+        setContactValues({contactLess : false});
+        }
+      } else {
+        setSpecialInstruction('');
+      }
+    }
+  };
 
+  const handleInsturctionChange = (event: any) => {
+    const newInstruction = event.target.value;
+    setSpecialInstruction(newInstruction);
+  };
+  
   return (
     <>
-      <OrderTypeDialog openModal={open} setOpenModal={setOpen} hideIt={true}  />
+      <OrderTypeDialog openModal={open} setOpenModal={setOpen} hideIt={true} />
       <Formik
         innerRef={deliveryFormRef}
         enableReinitialize={true}
@@ -66,6 +91,7 @@ const DeliveryForm = ({
           phone: providerToken?.phone ? providerToken?.phone : '',
           email: providerToken?.email ? providerToken?.email : '',
           emailNotification: true,
+          // contactLess: false,
         }}
         validationSchema={Yup.object({
           firstName: Yup.string()
@@ -87,8 +113,9 @@ const DeliveryForm = ({
             .min(14, 'Enter valid number')
             .required('Phone is required'),
           emailNotification: Yup.bool().optional(),
+          // contactLess: Yup.bool().optional(),
         })}
-        onSubmit={(values, actions) => {}}
+        onSubmit={(values, actions) => { }}
       >
         {({
           errors,
@@ -174,7 +201,7 @@ const DeliveryForm = ({
                 helperText={errors.email}
               />
             </Grid>
-                       {!isLoginUser() && (
+            {!isLoginUser() && (
               <Grid item xs={12} sm={12} md={12} lg={12}>
                 <FormGroup>
                   <FormControlLabel
@@ -211,7 +238,7 @@ const DeliveryForm = ({
                   </Link>
                 </Typography> */}
               </Grid>
-            )} 
+            )}
             <Grid
               item
               xs={12}
@@ -225,11 +252,11 @@ const DeliveryForm = ({
                   <Typography
                     variant="body1"
                     className="label"
-                    fontFamily= {"'Sunborn-Sansone'!important"}
+                    fontFamily={"'Sunborn-Sansone'!important"}
                     fontSize={"11pt !important"}
                     style={{
                       paddingTop: '10px',
-                      
+
                     }}
                   >
                     Your delivery Address
@@ -255,46 +282,37 @@ const DeliveryForm = ({
                     className="label"
                     sx={{ cursor: 'pointer', display: 'inline' }}
                     aria-label={'Edit Address'}
-                    onClick={() =>{
-                       handleClick()
-                      }}
+                    onClick={() => {
+                      handleClick()
+                    }}
                   >
                     Edit
                   </Typography>
-                  <Typography
-                    variant="body1"
-                    className="label"
-                    aria-label={'Delivery Instructions - Optional'}
-                    style={{
-                      paddingTop: '10px',
-                      
-                    }}
-                  >
-                    Delivery Instructions - Optional
-                  </Typography>
-                  <TextField
-                  id="outlined-multiline-static"
-                  // label = "Delivery Instructions"
-                  multiline
-                  rows={4}
-                  // defaultValue="Default Value"
-                  />
 
-                  <FormGroup>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={values.emailNotification}
-                        onChange={handleChange}
-                      />
-                    }
-                    label="I want contactless delivery"
-                    aria-required="true"
-                    title="I want contactless delivery"
-                    name="emailNotification"
-                    className="size"
+                  <TextField
+                    label="Delivery Instructions - Optional"
+                    name="specialInstruction"
+                    multiline
+                    value={specialInstruction}
+                    onChange={handleInsturctionChange}
                   />
-                </FormGroup>
+                  {(contactValues.contactLess === true && specialInstruction?.length > 0) || (contactValues.contactLess === false && specialInstruction?.length) > 0 ? " " : (
+                  <FormGroup>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={contactValues.contactLess}
+                          onChange={handleCheckChange}
+                        />
+                      }
+                      label="I want contactless delivery"
+                      aria-required="true"
+                      title="I want contactless delivery"
+                      name="contactLess"
+                      className="size"
+                    />
+                  </FormGroup>
+                  )}
                 </Grid>
               </Grid>
             </Grid>
