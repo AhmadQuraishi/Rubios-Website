@@ -28,7 +28,7 @@ import { IMaskInput } from 'react-imask';
 import moment from 'moment';
 import { isLoginUser } from '../../helpers/auth';
 import LoginAuthDialog from '../login-authentication-dialog';
-
+import CreditCardAdd from './credit-card-dialog';
 
 interface CustomProps {
   onChange: (event: { target: { name: string; value: string } }) => void;
@@ -36,7 +36,6 @@ interface CustomProps {
 }
 
 const NumberFormatCustom = forwardRef<HTMLElement, CustomProps>(
-
   function NumberFormatCustom(props, ref) {
     const { onChange, ...other } = props;
 
@@ -58,17 +57,25 @@ const NumberFormatCustom = forwardRef<HTMLElement, CustomProps>(
 
 const PaymentInfo = forwardRef((props: any, _ref) => {
   const navigate = useNavigate();
-  const { ccsfObj, basketAccessToken } = props;
+  const {
+    ccsfObj,
+    basketAccessToken,
+    handleCreditCardSubmit,
+    hideShow,
+    setHideShow,
+    zipCode,
+    setZipCode,
+    cardExpiry,
+    setCardExpiry,
+  } = props;
   const dispatch = useDispatch();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const [hideShow, setHideShow] = React.useState<boolean>(false);
   const [editCreditCard, setEditCreditCard] = React.useState<boolean>(false);
-  const [zipCode, setZipCode] = React.useState<any>();
-  const [cardExpiry, setCardExpiry] = React.useState<any>();
   const [loading, setLoading] = React.useState<any>(false);
   const [billingSchemes, setBillingSchemes] = React.useState<any>([]);
-  const [openAuthenticationModal, setOpenAuthenticationModal] = React.useState<any>(false);
+  const [openAuthenticationModal, setOpenAuthenticationModal] =
+    React.useState<any>(false);
   const [sessionTime, setSessionTime] = React.useState<any>();
   const [cache, setCache] = React.useState(true);
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
@@ -79,13 +86,9 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
   const basketObj = useSelector((state: any) => state.basketReducer);
   const { sessionLoginTime } = useSelector((state: any) => state.authReducer);
 
-
   React.useEffect(() => {
     setBillingSchemes(basketObj.payment.billingSchemes);
   }, [basketObj.payment.billingSchemes]);
-
-
-
 
   React.useEffect(() => {
     if (basketObj.basket) {
@@ -99,14 +102,12 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
     }
   }, [hideShow]);
 
-
   // React.useEffect(() => {
   //   loading &&
   //     <div className="loading-spinner">
   //       <CircularProgress />
   //     </div>
   // }, [billingSchemes?.length < 1]);
-
 
   React.useEffect(() => {
     if (
@@ -124,7 +125,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
       const currentTime = moment();
       if (LoginCreatedTime.isValid()) {
         const minutes = currentTime.diff(LoginCreatedTime, 'minutes');
-        console.log('munutes', minutes)
+        console.log('munutes', minutes);
         if (minutes > 30) {
           setOpenAuthenticationModal(true);
           return false;
@@ -136,7 +137,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
 
   const creditCardHideShow = () => {
     let authenticationSuccessful = AuthenticationHandler();
-    if (authenticationSuccessful ) {
+    if (authenticationSuccessful) {
       setHideShow(!hideShow);
     }
   };
@@ -150,7 +151,6 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
       firstFocusableElement.focus();
     }
   }, [hideShow]);
-
 
   const handleZipCodeChange = (event: any) => {
     let newValue = event.target.value.trim();
@@ -177,189 +177,119 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
 
     setCardExpiry(newValue);
   };
-  const handleSingleCreditCardSubmit = async () => {
-    setLoading(true);
-    if (!zipCode || zipCode === '') {
-      displayToast('ERROR', 'Zip Code is required');
-      setLoading(false);
-      return;
-    }
+  // const handleCreditCardSubmit = async () => {
+  //   setButtonDisabled(true);
+  //   if (!zipCode || zipCode === '') {
+  //     displayToast('ERROR', 'Zip Code is required');
+  //     setButtonDisabled(false);
+  //     return;
+  //   }
 
-    if (!cardExpiry || cardExpiry === '') {
-      displayToast('ERROR', 'Card Expiry is required');
-      setLoading(false);
-      return;
-    } else if (cardExpiry.length !== 5) {
-      displayToast('ERROR', 'Please enter valid date.');
-      setLoading(false);
-      return;
-    } else {
-      const currentDate: any = moment(new Date());
-      const expiryDate: any = moment(cardExpiry, 'MM/YY');
+  //   if (!cardExpiry || cardExpiry === '') {
+  //     displayToast('ERROR', 'Card Expiry is required');
+  //     setButtonDisabled(false);
+  //     return;
+  //   } else if (cardExpiry.length !== 5) {
+  //     displayToast('ERROR', 'Please enter valid date.');
+  //     setButtonDisabled(false);
+  //     return;
+  //   } else {
+  //     const currentDate: any = moment(new Date());
+  //     const expiryDate: any = moment(cardExpiry, 'MM/YY');
 
-      if (!expiryDate.isValid()) {
-        displayToast('ERROR', 'Please enter valid date.');
-        setLoading(false);
-        return;
-      }
+  //     if (!expiryDate.isValid()) {
+  //       displayToast('ERROR', 'Please enter valid date.');
+  //       setButtonDisabled(false);
+  //       return;
+  //     }
 
-      if (!expiryDate.isAfter(currentDate)) {
-        displayToast('ERROR', 'Please enter future date.');
-        setLoading(false);
-        return;
-      }
-    }
+  //     if (!expiryDate.isAfter(currentDate)) {
+  //       displayToast('ERROR', 'Please enter future date.');
+  //       setButtonDisabled(false);
+  //       return;
+  //     }
+  //   }
 
-    let billingSchemesNewArray = billingSchemes;
-    billingSchemesNewArray = billingSchemes.filter(
-      (account: any) =>
-        !(account.billingmethod === 'creditcard' && !account.billingaccountid),
-    );
-    billingSchemesNewArray = billingSchemesNewArray.map((element: any) => {
-      if (element.billingmethod === 'creditcard') {
-        return {
-          ...element,
-          selected: false,
-        };
-      }
-      return element;
-    });
-    const obj = {
-      exp_year: moment(cardExpiry, 'MM/YYYY').year(),
-      exp_month: moment(cardExpiry, 'MM/YYYY').month() + 1,
-      postal_code: zipCode,
-    };
-    let cardObj: any = getCreditCardObj(obj, billingSchemes);
+  //   let billingSchemesNewArray = billingSchemes;
+  //   billingSchemesNewArray = billingSchemes.filter(
+  //     (account: any) =>
+  //       !(account.billingmethod === 'creditcard' && !account.billingaccountid),
+  //   );
+  //   billingSchemesNewArray = billingSchemesNewArray.map((element: any) => {
+  //     if (element.billingmethod === 'creditcard') {
+  //       return {
+  //         ...element,
+  //         selected: false,
+  //       };
+  //     }
+  //     return element;
+  //   });
+  //   const obj = {
+  //     exp_year: moment(cardExpiry, 'MM/YYYY').year(),
+  //     exp_month: moment(cardExpiry, 'MM/YYYY').month() + 1,
+  //     postal_code: zipCode,
+  //   };
+  //   let cardObj: any = getCreditCardObj(obj, billingSchemes);
 
-    Array.prototype.push.apply(billingSchemesNewArray, cardObj);
+  //   Array.prototype.push.apply(billingSchemesNewArray, cardObj);
 
-    billingSchemesNewArray = updatePaymentCardsAmount(
-      billingSchemesNewArray,
-      basket,
-    );
+  //   billingSchemesNewArray = updatePaymentCardsAmount(
+  //     billingSchemesNewArray,
+  //     basket,
+  //   );
 
-    dispatch(updateBasketBillingSchemes(billingSchemesNewArray));
-    if (!isMobile) {
-      displayToast(
-        'SUCCESS',
-        `Credit Card Added`,
-      );
-    }
-    setLoading(false);
-  };
-  const handleCreditCardSubmit = async () => {
-    setButtonDisabled(true);
-    if (!zipCode || zipCode === '') {
-      displayToast('ERROR', 'Zip Code is required');
-      setButtonDisabled(false);
-      return;
-    }
-
-    if (!cardExpiry || cardExpiry === '') {
-      displayToast('ERROR', 'Card Expiry is required');
-      setButtonDisabled(false);
-      return;
-    } else if (cardExpiry.length !== 5) {
-      displayToast('ERROR', 'Please enter valid date.');
-      setButtonDisabled(false);
-      return;
-    } else {
-      const currentDate: any = moment(new Date());
-      const expiryDate: any = moment(cardExpiry, 'MM/YY');
-
-      if (!expiryDate.isValid()) {
-        displayToast('ERROR', 'Please enter valid date.');
-        setButtonDisabled(false);
-        return;
-      }
-
-      if (!expiryDate.isAfter(currentDate)) {
-        displayToast('ERROR', 'Please enter future date.');
-        setButtonDisabled(false);
-        return;
-      }
-    }
-
-    let billingSchemesNewArray = billingSchemes;
-    billingSchemesNewArray = billingSchemes.filter(
-      (account: any) =>
-        !(account.billingmethod === 'creditcard' && !account.billingaccountid),
-    );
-    billingSchemesNewArray = billingSchemesNewArray.map((element: any) => {
-      if (element.billingmethod === 'creditcard') {
-        return {
-          ...element,
-          selected: false,
-        };
-      }
-      return element;
-    });
-    const obj = {
-      exp_year: moment(cardExpiry, 'MM/YYYY').year(),
-      exp_month: moment(cardExpiry, 'MM/YYYY').month() + 1,
-      postal_code: zipCode,
-    };
-    let cardObj: any = getCreditCardObj(obj, billingSchemes);
-
-    Array.prototype.push.apply(billingSchemesNewArray, cardObj);
-
-    billingSchemesNewArray = updatePaymentCardsAmount(
-      billingSchemesNewArray,
-      basket,
-    );
-
-    dispatch(updateBasketBillingSchemes(billingSchemesNewArray));
-    if (!isMobile) {
-      displayToast(
-        'SUCCESS',
-        `Credit Card ${editCreditCard ? 'Updated' : 'Added'}`,
-      );
-    }
-    setButtonDisabled(false);
-    setHideShow(!hideShow);
-    moveFocusBackToScreen();
-    // if (ccsfObj) {
-    //   ccsfObj.registerError((errors: any) => {
-    //     console.log('ccsf error 2', errors);
-    //
-    //     errors.forEach((error: any) => {
-    //       console.log(error.code);
-    //       console.log(error.description);
-    //       if (
-    //         error.description &&
-    //         error.description ===
-    //           'The sum of your selected payment methods must equal the order total.'
-    //       ) {
-    //
-    //       } else {
-    //         displayToast('ERROR', error.description);
-    //       }
-    //     });
-    //   });
-    // ccsfObj.submit({
-    //   id: basket && basket.id,
-    //   accessToken: basketAccessToken,
-    //   billingaccounts: [
-    //     {
-    //       billingmethod: 'creditcard',
-    //       // amount: 31.25,
-    //       // tipportion: 0,
-    //       expiryyear: monthYear[1],
-    //       expirymonth: monthYear[0],
-    //       zip: zipCode,
-    //       saveonfile: true,
-    //     },
-    //   ],
-    // });
-    // }
-  };
+  //   dispatch(updateBasketBillingSchemes(billingSchemesNewArray));
+  //   if (!isMobile) {
+  //     displayToast(
+  //       'SUCCESS',
+  //       `Credit Card ${editCreditCard ? 'Updated' : 'Added'}`,
+  //     );
+  //   }
+  //   setButtonDisabled(false);
+  //   setHideShow(!hideShow);
+  //   moveFocusBackToScreen();
+  //   // if (ccsfObj) {
+  //   //   ccsfObj.registerError((errors: any) => {
+  //   //     console.log('ccsf error 2', errors);
+  //   //
+  //   //     errors.forEach((error: any) => {
+  //   //       console.log(error.code);
+  //   //       console.log(error.description);
+  //   //       if (
+  //   //         error.description &&
+  //   //         error.description ===
+  //   //           'The sum of your selected payment methods must equal the order total.'
+  //   //       ) {
+  //   //
+  //   //       } else {
+  //   //         displayToast('ERROR', error.description);
+  //   //       }
+  //   //     });
+  //   //   });
+  //   // ccsfObj.submit({
+  //   //   id: basket && basket.id,
+  //   //   accessToken: basketAccessToken,
+  //   //   billingaccounts: [
+  //   //     {
+  //   //       billingmethod: 'creditcard',
+  //   //       // amount: 31.25,
+  //   //       // tipportion: 0,
+  //   //       expiryyear: monthYear[1],
+  //   //       expirymonth: monthYear[0],
+  //   //       zip: zipCode,
+  //   //       saveonfile: true,
+  //   //     },
+  //   //   ],
+  //   // });
+  //   // }
+  // };
 
   const displayAddCreditCard = () => {
     const billingSchemeStats = getBillingSchemesStats(billingSchemes);
     return (
       basket &&
       //billingSchemeStats.selectedCreditCard === 0 &&
-      // billingSchemes?.length > 0 &&
+      billingSchemes?.length > 0 &&
       allowedCards &&
       allowedCards.length &&
       allowedCards.filter((element: any) => {
@@ -412,11 +342,12 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
 
   return (
     <>
-      {
-        openAuthenticationModal && (
-          <LoginAuthDialog openAuthenticationModal={openAuthenticationModal} setOpenAuthenticationModal={setOpenAuthenticationModal} />
-        )
-      }
+      {openAuthenticationModal && (
+        <LoginAuthDialog
+          openAuthenticationModal={openAuthenticationModal}
+          setOpenAuthenticationModal={setOpenAuthenticationModal}
+        />
+      )}
       <Grid container>
         {/*column for space*/}
         <Grid item xs={0} sm={0} md={2} lg={2} />
@@ -462,7 +393,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                           aria-label="Change Payment Method"
                           onClick={() => setDisplaySavedCards(true)}
                           id={'add-credit-card'}
-                          sx={{ fontFamily: "'Sunborn-Sansone'!important", }}
+                          sx={{ fontFamily: "'Sunborn-Sansone'!important" }}
                         >
                           Change Payment Method
                         </Button>
@@ -477,165 +408,19 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                     onClick={() => creditCardHideShow()}
                     tabIndex={!hideShow ? 0 : -1}
                     id={'add-credit-card'}
-                    sx={{ fontFamily: "'Sunborn-Sansone'!important", }}
+                    sx={{ fontFamily: "'Sunborn-Sansone'!important" }}
                   >
                     Add Credit card
                   </Button>
                 )}
-                {/* {billingSchemes?.length < 1 &&
-                  <Grid container className="payment-form" spacing={2}>
-                    <Grid
-                      item
-                      xs={12}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      className="payment-form image-field align"
-                    >
-                      <Grid container spacing={2}>
-                        <Grid
-                          item
-                          xs={12}
-                          sm={6}
-                          md={6}
-                          lg={6}
-                          textAlign={'left'}
-                          className="payment-form image-field align"
-                        >
-                          {/*<div*/}
-                          {/*  tabIndex={0}*/}
-                          {/*  className="card-fields"*/}
-                          {/*  data-olo-pay-card-number*/}
-                          {/*/>
-                          <label
-                            className="add-credit-card-label"
-                            htmlFor="cardnumber"
-                          >
-                            Card Number
-                          </label>
-                          <div className="card-fields">
-                            <div
-                              style={{ display: 'contents' }}
-                              className="credit-card-info-div"
-                            ></div>
-                          </div>
-                          <div>
-                            <img
-                              alt=""
-                              src={require('../../assets/imgs/card-icon.png')}
-                            />
-                          </div>
-                        </Grid>
-                        <Grid
-                          textAlign={'left'}
-                          item
-                          xs={12}
-                          sm={6}
-                          md={6}
-                          lg={6}
-                        >
-                          {/*<div className="card-fields" data-olo-pay-card-cvc />
-                          <label
-                            className="add-credit-card-label"
-                            htmlFor="cvv"
-                          >
-                            CVV
-                          </label>
-                          <div className="card-fields">
-                            <div
-                              style={{ display: 'contents' }}
-                              className="cvv-info-div"
-                            ></div>
-                          </div>
-                          <div>
-                            <img
-                              alt=""
-                              src={require('../../assets/imgs/ccv-icon.png')}
-                            />
-                          </div>
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                    <Grid item xs={12} sm={12} md={12} lg={12}>
-                      <Grid container spacing={2}>
-                        <Grid
-                          item
-                          xs={12}
-                          sm={6}
-                          md={6}
-                          lg={6}
-                          textAlign={'left'}
-                          className="payment-form image-field align"
-                        >
-                          <label
-                            className="add-credit-card-label"
-                            htmlFor="card-expiry"
-                          >
-                            Card Expiry MM/YY
-                          </label>
-                          <TextField
-                            className="zipcode"
-                            aria-label="Card Expiry"
-                            // placeholder="Card Expiry MM/YY"
-                            value={cardExpiry}
-                            onChange={handleCardExpiryChange}
-                            name="phone"
-                            InputProps={{
-                              inputComponent: NumberFormatCustom as any,
-                            }}
-                            id="card-expiry"
-                          />
-                        </Grid>
-                        <Grid
-                          textAlign={'left'}
-                          item
-                          xs={12}
-                          sm={6}
-                          md={6}
-                          lg={6}
-                        >
-                          <label
-                            className="add-credit-card-label"
-                            htmlFor="card-zipcode"
-                          >
-                            Zip Code
-                          </label>
-                          <TextField
-                            className="zipcode"
-                            aria-label="Zip Code"
-                            // placeholder="Zip Code"
-                            type="number"
-                            name="zipcode"
-                            inputProps={{ shrink: false }}
-                            value={zipCode}
-                            onChange={handleZipCodeChange}
-                            id="card-zipcode"
-                          />
-                        </Grid>
-                        <Grid
-                          textAlign={'center'}
-                          item
-                          xs={12}
-                          sm={12}
-                          md={12}
-                          lg={12}
-                        >
-                          <Button
-                            className={'add-credit-card-button'}
-                            title="Add Credit card"
-                            aria-label="Add Credit card"
-                            onClick={handleSingleCreditCardSubmit}
-                            tabIndex={!hideShow ? 0 : -1}
-                            id={'add-credit-card'}
-                            sx={{ fontFamily: "'Sunborn-Sansone'!important", }}
-                          >
-                            Add Credit card
-                          </Button>
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                } */}
+                {billingSchemes?.length < 1 && (
+                  <CreditCardAdd
+                    cardExpiry={cardExpiry}
+                    zipCode={zipCode}
+                    handleZipCodeChange={handleZipCodeChange}
+                    handleCardExpiryChange={handleCardExpiryChange}
+                  />
+                )}
                 <div
                   id="myModal"
                   role={'dialog'}
@@ -663,142 +448,18 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                         id="add-credit-card-dialog"
                         className={'heading first-focusable-element'}
                       >
-                        {editCreditCard ? 'Edit Credit card' : 'Add Credit card'}
+                        {editCreditCard
+                          ? 'Edit Credit card'
+                          : 'Add Credit card'}
                       </h2>
                     </div>
                     <div className="modal-body">
-                      <Grid container className="payment-form" spacing={2}>
-                        <Grid
-                          item
-                          xs={12}
-                          sm={12}
-                          md={12}
-                          lg={12}
-                          className="payment-form image-field align"
-                        >
-                          <Grid container spacing={2}>
-                            <Grid
-                              item
-                              xs={12}
-                              sm={6}
-                              md={6}
-                              lg={6}
-                              textAlign={'left'}
-                              className="payment-form image-field align"
-                            >
-                              {/*<div*/}
-                              {/*  tabIndex={0}*/}
-                              {/*  className="card-fields"*/}
-                              {/*  data-olo-pay-card-number*/}
-                              {/*/>*/}
-                              <label
-                                className="add-credit-card-label"
-                                htmlFor="cardnumber"
-                              >
-                                Card Number
-                              </label>
-                              <div className="card-fields">
-                                <div
-                                  style={{ display: 'contents' }}
-                                  className="credit-card-info-div"
-                                ></div>
-                              </div>
-                              <div>
-                                <img
-                                  alt=""
-                                  src={require('../../assets/imgs/card-icon.png')}
-                                />
-                              </div>
-                            </Grid>
-                            <Grid
-                              textAlign={'left'}
-                              item
-                              xs={12}
-                              sm={6}
-                              md={6}
-                              lg={6}
-                            >
-                              {/*<div className="card-fields" data-olo-pay-card-cvc />*/}
-                              <label
-                                className="add-credit-card-label"
-                                htmlFor="cvv"
-                              >
-                                CVV
-                              </label>
-                              <div className="card-fields">
-                                <div
-                                  style={{ display: 'contents' }}
-                                  className="cvv-info-div"
-                                ></div>
-                              </div>
-                              <div>
-                                <img
-                                  alt=""
-                                  src={require('../../assets/imgs/ccv-icon.png')}
-                                />
-                              </div>
-                            </Grid>
-                          </Grid>
-                        </Grid>
-                        <Grid item xs={12} sm={12} md={12} lg={12}>
-                          <Grid container spacing={2}>
-                            <Grid
-                              item
-                              xs={12}
-                              sm={6}
-                              md={6}
-                              lg={6}
-                              textAlign={'left'}
-                              className="payment-form image-field align"
-                            >
-                              <label
-                                className="add-credit-card-label"
-                                htmlFor="card-expiry"
-                              >
-                                Card Expiry MM/YY
-                              </label>
-                              <TextField
-                                className="zipcode"
-                                aria-label="Card Expiry"
-                                // placeholder="Card Expiry MM/YY"
-                                value={cardExpiry}
-                                onChange={handleCardExpiryChange}
-                                name="phone"
-                                InputProps={{
-                                  inputComponent: NumberFormatCustom as any,
-                                }}
-                                id="card-expiry"
-                              />
-                            </Grid>
-                            <Grid
-                              textAlign={'left'}
-                              item
-                              xs={12}
-                              sm={6}
-                              md={6}
-                              lg={6}
-                            >
-                              <label
-                                className="add-credit-card-label"
-                                htmlFor="card-zipcode"
-                              >
-                                Zip Code
-                              </label>
-                              <TextField
-                                className="zipcode"
-                                aria-label="Zip Code"
-                                // placeholder="Zip Code"
-                                type="number"
-                                name="zipcode"
-                                inputProps={{ shrink: false }}
-                                value={zipCode}
-                                onChange={handleZipCodeChange}
-                                id="card-zipcode"
-                              />
-                            </Grid>
-                          </Grid>
-                        </Grid>
-                      </Grid>
+                      <CreditCardAdd
+                        cardExpiry={cardExpiry}
+                        zipCode={zipCode}
+                        handleZipCodeChange={handleZipCodeChange}
+                        handleCardExpiryChange={handleCardExpiryChange}
+                      />
                     </div>
                     <div className="modal-footer">
                       <Button
@@ -838,7 +499,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
 
                 {/*<AddCreditCard />*/}
                 {/*<AddCreditCardCopy />*/}
-                <AddGiftCard AuthenticationHandler={AuthenticationHandler}/>
+                <AddGiftCard AuthenticationHandler={AuthenticationHandler} />
               </Grid>
             </Grid>
           </Grid>
