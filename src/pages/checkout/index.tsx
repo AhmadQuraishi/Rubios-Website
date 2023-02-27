@@ -71,7 +71,7 @@ const Checkout = () => {
   const deliveryFormRef = React.useRef<any>(null);
   const paymentInfoRef = React.useRef<any>();
   const signupFormRef = React.useRef<any>(null);
-
+  const [openAuthenticationModal, setOpenAuthenticationModal] = React.useState<any>(false);
   const [runOnce, setRunOnce] = React.useState<boolean>(true);
   const [callOnce, setCallOnce] = React.useState<boolean>(true);
   const [showIframeOnce, setShowIframeOnce] = React.useState<boolean>(true);
@@ -111,7 +111,7 @@ const Checkout = () => {
   const { restaurant, orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
-  const { authToken } = useSelector((state: any) => state.authReducer);
+  const { authToken,sessionLoginTime } = useSelector((state: any) => state.authReducer);
   const isDesktop = useMediaQuery(theme.breakpoints.up('sm'));
   // const { userDeliveryAddresses } = useSelector(
   //   (state: any) => state.userReducer,
@@ -292,6 +292,20 @@ const Checkout = () => {
       setRunOnce(false);
     }
   }, [basket]);
+
+  const AuthenticationHandler = () => {
+    if (isLoginUser() && sessionLoginTime) {
+      const LoginCreatedTime: any = moment.unix(sessionLoginTime);
+      const currentTime = moment();
+      if (LoginCreatedTime.isValid()) {
+        const minutes = currentTime.diff(LoginCreatedTime, 'minutes');
+        console.log('munutes', minutes)
+        if (minutes > 1) {
+          setOpenAuthenticationModal(true);
+        }
+      }
+    }
+  }
 
   const handleCreditCardSubmit = async () => {
     setButtonDisabled(true);
@@ -719,6 +733,7 @@ const Checkout = () => {
 
   const placeOrder = async () => {
     setButtonDisabled(true);
+    AuthenticationHandler();
     let customFields = [];
     // let deliveryAddress = null;
     let deliverymode = {
@@ -1117,6 +1132,11 @@ const Checkout = () => {
 
   return (
     <div>
+            {
+        openAuthenticationModal && (
+          <LoginAuthDialog openAuthenticationModal={openAuthenticationModal} setOpenAuthenticationModal={setOpenAuthenticationModal} />
+        )
+      }
       <Page title={'Checkout'} className="">
         <Typography variant="h1" className="sr-only">
           Checkout
@@ -1381,6 +1401,7 @@ const Checkout = () => {
                 setZipCode = {setZipCode}
                 cardExpiry={cardExpiry}
                 setCardExpiry = {setCardExpiry}
+                displayAddCreditCard= {displayAddCreditCard}
                   handleCreditCardSubmit={handleCreditCardSubmit}
                   ref={paymentInfoRef}
                   ccsfObj={ccsfObj}
