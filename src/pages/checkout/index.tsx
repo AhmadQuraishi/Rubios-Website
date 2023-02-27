@@ -362,7 +362,7 @@ const Checkout = () => {
       );
     }
     setButtonDisabled(false);
-    setHideShow(!hideShow);
+    // setHideShow(!hideShow);
     moveFocusBackToScreen();
     // if (ccsfObj) {
     //   ccsfObj.registerError((errors: any) => {
