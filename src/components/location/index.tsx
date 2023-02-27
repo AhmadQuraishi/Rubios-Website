@@ -12,7 +12,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import './location.css';
-import { ResponseRestaurant,ResponseBasket } from '../../types/olo-api';
+import { ResponseRestaurant, ResponseBasket } from '../../types/olo-api';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import StoreInfo from './info';
@@ -120,10 +120,10 @@ const LocationCard = (props: any) => {
         newAlignment === 'Pick up'
           ? 'pickup'
           : newAlignment === 'Curbside'
-          ? 'curbside'
-          : newAlignment === 'Delivery'
-          ? 'dispatch'
-          : 'web';
+            ? 'curbside'
+            : newAlignment === 'Delivery'
+              ? 'dispatch'
+              : 'web';
       setSearchText('');
       changeOrderType(orderT);
       if (orderT === 'dispatch') {
@@ -147,6 +147,13 @@ const LocationCard = (props: any) => {
   useEffect(() => {
     dispatch(getUserDeliveryAddresses());
   }, []);
+
+  useEffect(() => {
+    if (orderType === 'dispatch' &&
+      filteredRestaurants.length > 0 && filteredRestaurants[0]) {
+      setZoom(10);
+    }
+  }, [addCustomAddressCheck])
 
   // useEffect(() => {
   //   if (updatebasket) {
@@ -172,10 +179,10 @@ const LocationCard = (props: any) => {
         orderType === 'pickup'
           ? 'Pick up'
           : orderType === 'curbside'
-          ? 'Curbside'
-          : orderType === 'dispatch'
-          ? 'Delivery'
-          : 'web';
+            ? 'Curbside'
+            : orderType === 'dispatch'
+              ? 'Delivery'
+              : 'web';
       console.log('orderT', orderT);
       setAlignment(orderT);
     }
@@ -815,8 +822,7 @@ const LocationCard = (props: any) => {
                   </Link>
                 </Typography>
               )}
-                {orderType === 'dispatch' &&
-                filteredRestaurants.length > 0 && filteredRestaurants[0]&& setZoom(10)}
+
               {!showAllRestaurants &&
                 orderType &&
                 orderType === 'dispatch' &&
@@ -881,8 +887,8 @@ const LocationCard = (props: any) => {
                 minHeight: '350px',
                 display:
                   orderType &&
-                  orderType === 'dispatch' &&
-                  addCustomAddressCheck()
+                    orderType === 'dispatch' &&
+                    addCustomAddressCheck()
                     ? 'none'
                     : 'block',
               }}
