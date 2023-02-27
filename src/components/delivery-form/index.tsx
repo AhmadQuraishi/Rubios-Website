@@ -261,7 +261,7 @@ const DeliveryForm = ({
                   >
                     Edit
                   </Typography>
-                  <Typography
+                  {/* <Typography
                     variant="body1"
                     className="label"
                     aria-label={'Delivery Instructions - Optional'}
@@ -294,7 +294,7 @@ const DeliveryForm = ({
                     name="emailNotification"
                     className="size"
                   />
-                </FormGroup>
+                </FormGroup> */}
                 </Grid>
               </Grid>
             </Grid>
