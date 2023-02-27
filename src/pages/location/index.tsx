@@ -83,7 +83,7 @@ const Location = () => {
       });
       dispatch(getResturantListRequest());
         setOrderType('pickup');
-        
+
     }
   }, []);
 
@@ -483,7 +483,6 @@ const Location = () => {
             setLatLng={setLatLng}
             setActionPerform={setActionPerform}
             zoom={zoom}
-            setZoom={setZoom}
             deliveryAddressString={deliveryAddressString}
             setDeliveryAddressString={setDeliveryAddressString}
             allRestaurants={restaurants?.restaurants || []}
