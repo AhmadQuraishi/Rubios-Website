@@ -28,7 +28,6 @@ import {
 } from '../../../helpers/checkout';
 import { isLoginUser } from '../../../helpers/auth';
 import moment from 'moment';
-import LoginAuthDialog from '../../login-authentication-dialog';
 
 const AddGiftCard = forwardRef((props, _ref) => {
   const dispatch = useDispatch();
@@ -89,18 +88,6 @@ const AddGiftCard = forwardRef((props, _ref) => {
   // };
 
   const handleCloseAddGiftCard = () => {
-    if (isLoginUser() && sessionLoginTime){
-        const LoginCreatedTime: any = moment.unix(sessionLoginTime);
-        const currentTime = moment();
-        if (LoginCreatedTime.isValid()) {
-          const minutes = currentTime.diff(LoginCreatedTime, 'minutes');
-          console.log('munutes', minutes)
-          if (minutes > 0) {
-            setOpenAuthenticationModal(true);
-            return;
-          }
-        }
-    }
     setPinCheck(false);
     setOpenAddGiftCard(!openAddGiftCard);
   };
@@ -224,11 +211,6 @@ const AddGiftCard = forwardRef((props, _ref) => {
 
   return (
     <>
-    {
-      openAuthenticationModal && (
-          <LoginAuthDialog openAuthenticationModal={openAuthenticationModal} setOpenAuthenticationModal={setOpenAuthenticationModal} />
-      )
-    }
       <Dialog
         open={openAddGiftCard}
         onClose={handleCloseAddGiftCard}

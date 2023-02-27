@@ -302,10 +302,14 @@ const Checkout = () => {
         console.log('munutes', minutes)
         if (minutes > 1) {
           setOpenAuthenticationModal(true);
+          return false
         }
       }
     }
+    return true
   }
+
+
 
   const handleCreditCardSubmit = async () => {
     setButtonDisabled(true);
@@ -733,7 +737,6 @@ const Checkout = () => {
 
   const placeOrder = async () => {
     setButtonDisabled(true);
-    AuthenticationHandler();
     let customFields = [];
     // let deliveryAddress = null;
     let deliverymode = {
@@ -906,6 +909,13 @@ const Checkout = () => {
     }
   };
 
+  const placingOrder = () => {
+    let authenticationSuccessful = AuthenticationHandler();
+    if (authenticationSuccessful ) {
+     placeOrder();
+    }
+  };
+  
   const totalPaymentCardAmount = () => {
     if (billingSchemes && basket) {
       let totalAmount = billingSchemes.reduce((sum: any, account: any) => {
@@ -1442,7 +1452,7 @@ const Checkout = () => {
                             totalPaymentCardAmount()) &&
                           ccsfObj
                         }
-                        onClick={placeOrder}
+                        onClick={placingOrder}
                         id={'place-order-button'}
                         variant="contained"
                         title="PLACE ORDER"
