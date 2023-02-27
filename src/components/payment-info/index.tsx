@@ -27,7 +27,6 @@ import { ResponseBasket } from '../../types/olo-api';
 import { IMaskInput } from 'react-imask';
 import moment from 'moment';
 import { isLoginUser } from '../../helpers/auth';
-import LoginAuthDialog from '../login-authentication-dialog';
 import CreditCardAdd from './credit-card-dialog';
 
 interface CustomProps {
@@ -58,14 +57,13 @@ const NumberFormatCustom = forwardRef<HTMLElement, CustomProps>(
 
 const PaymentInfo = forwardRef((props: any, _ref) => {
   const navigate = useNavigate();
-  const { ccsfObj, basketAccessToken,handleCreditCardSubmit,hideShow,setHideShow, zipCode, setZipCode, cardExpiry,setCardExpiry} = props;
+  const { ccsfObj, basketAccessToken,displayAddCreditCard,handleCreditCardSubmit,hideShow,setHideShow, zipCode, setZipCode, cardExpiry,setCardExpiry} = props;
   const dispatch = useDispatch();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [editCreditCard, setEditCreditCard] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState<any>(false);
   const [billingSchemes, setBillingSchemes] = React.useState<any>([]);
-  const [openAuthenticationModal, setOpenAuthenticationModal] = React.useState<any>(false);
   const [sessionTime, setSessionTime] = React.useState<any>();
   const [cache, setCache] = React.useState(true);
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
@@ -74,7 +72,6 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
   const [displaySavedCards, setDisplaySavedCards] =
     React.useState<boolean>(false);
   const basketObj = useSelector((state: any) => state.basketReducer);
-  const { sessionLoginTime } = useSelector((state: any) => state.authReducer);
 
 
   React.useEffect(() => {
@@ -115,29 +112,9 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
     }
   }, [basketObj.payment.allowedCards]);
 
-  const AuthenticationHandler = () => {
-    if (isLoginUser() && sessionLoginTime) {
-      const LoginCreatedTime: any = moment.unix(sessionLoginTime);
-      const currentTime = moment();
-      if (LoginCreatedTime.isValid()) {
-        const minutes = currentTime.diff(LoginCreatedTime, 'minutes');
-        console.log('munutes', minutes)
-        if (minutes > 30) {
-          setOpenAuthenticationModal(true);
-          return false;
-        }
-      }
-    }
-    return true;
+  const handleHideShow = () => {
+    setHideShow(!hideShow);
   };
-
-  const creditCardHideShow = () => {
-    let authenticationSuccessful = AuthenticationHandler();
-    if (authenticationSuccessful ) {
-      setHideShow(!hideShow);
-    }
-  };
-
   React.useEffect(() => {
     if (hideShow) {
       let dialog: any = document.querySelector('[role="dialog"]');
@@ -281,19 +258,6 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
   //   // }
   // };
 
-  const displayAddCreditCard = () => {
-    const billingSchemeStats = getBillingSchemesStats(billingSchemes);
-    return (
-      basket &&
-      //billingSchemeStats.selectedCreditCard === 0 &&
-      billingSchemes?.length > 0 &&
-      allowedCards &&
-      allowedCards.length &&
-      allowedCards.filter((element: any) => {
-        return element.type === 'creditcard';
-      }).length > 0
-    );
-  };
 
   const HandleEditCreditCard = (value: boolean) => {
     setHideShow(value);
@@ -339,11 +303,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
 
   return (
     <>
-      {
-        openAuthenticationModal && (
-          <LoginAuthDialog openAuthenticationModal={openAuthenticationModal} setOpenAuthenticationModal={setOpenAuthenticationModal} />
-        )
-      }
+
       <Grid container>
         {/*column for space*/}
         <Grid item xs={0} sm={0} md={2} lg={2} />
@@ -401,7 +361,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                     className={'add-credit-card-button'}
                     title="Add Credit card"
                     aria-label="Add Credit card"
-                    onClick={() => creditCardHideShow()}
+                    onClick={() => handleHideShow()}
                     tabIndex={!hideShow ? 0 : -1}
                     id={'add-credit-card'}
                     sx={{ fontFamily: "'Sunborn-Sansone'!important", }}
@@ -452,7 +412,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                         className="link"
                         onClick={() => {
                           moveFocusBackToScreen();
-                          creditCardHideShow();
+                          handleHideShow();
                         }}
                       >
                         Cancel{' '}
@@ -483,7 +443,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
 
                 {/*<AddCreditCard />*/}
                 {/*<AddCreditCardCopy />*/}
-                <AddGiftCard AuthenticationHandler={AuthenticationHandler}/>
+                <AddGiftCard />
               </Grid>
             </Grid>
           </Grid>

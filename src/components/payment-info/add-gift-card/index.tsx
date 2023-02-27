@@ -1,4 +1,4 @@
-import React, { FC,forwardRef } from 'react';
+import React, { forwardRef } from 'react';
 import {
   Button,
   Grid,
@@ -28,13 +28,8 @@ import {
 } from '../../../helpers/checkout';
 import { isLoginUser } from '../../../helpers/auth';
 import moment from 'moment';
-import LoginAuthDialog from '../../login-authentication-dialog';
-interface AddGiftCardProps {
-  AuthenticationHandler: () => boolean;
-}
 
-const AddGiftCard: FC<AddGiftCardProps> = forwardRef((props, _ref) => {
-  const { AuthenticationHandler } = props;
+const AddGiftCard = forwardRef((props, _ref) => {
   const dispatch = useDispatch();
   const theme = useTheme();
   const basketObj = useSelector((state: any) => state.basketReducer);
@@ -43,7 +38,9 @@ const AddGiftCard: FC<AddGiftCardProps> = forwardRef((props, _ref) => {
   const [billingSchemes, setBillingSchemes] = React.useState<any>([]);
   const [pinCheck, setPinCheck] = React.useState<any>(false);
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
+  const [openAuthenticationModal, setOpenAuthenticationModal] = React.useState<any>(false);
   const [openAddGiftCard, setOpenAddGiftCard] = React.useState<boolean>(false);
+  const { sessionLoginTime } = useSelector((state: any) => state.authReducer);
   React.useEffect(() => {
     if (basketObj.basket) {
       setBasket(basketObj.basket);
@@ -91,12 +88,8 @@ const AddGiftCard: FC<AddGiftCardProps> = forwardRef((props, _ref) => {
   // };
 
   const handleCloseAddGiftCard = () => {
-    const authenticationSuccessful = AuthenticationHandler();
-    if (authenticationSuccessful) {
-      setPinCheck(false);
-      setOpenAddGiftCard(!openAddGiftCard);
-    }
-
+    setPinCheck(false);
+    setOpenAddGiftCard(!openAddGiftCard);
   };
 
 
