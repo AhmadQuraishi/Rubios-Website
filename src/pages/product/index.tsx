@@ -31,6 +31,7 @@ import { facebookSendEvent } from '../../redux/actions/facebook-conversion';
 import { facebookConversionTypes } from '../../redux/types/facebook-conversion';
 import { convertMetaDataToOptions } from '../../helpers/product';
 import { isLoginUser } from '../../helpers/auth';
+import { handleCart } from '../../components/header';
 
 const Product = () => {
   const { id, edit } = useParams();
@@ -1679,6 +1680,7 @@ const Product = () => {
                       sx={{    letterSpacing: "0px !important"}}
                       variant="contained"
                       disabled
+                      
                     >
                       {edit ? 'UPDATE BAG' : 'ADD TO BAG'}
                       <span style={{ position: 'absolute', right: '15px' }}>
@@ -1699,6 +1701,7 @@ const Product = () => {
                       disabled={checkDisable()}
                       onClick={() => {
                         addProductToBag();
+                        handleCart();
                       }}
                     >
                       {edit ? 'UPDATE BAG' : 'ADD TO BAG'}

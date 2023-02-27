@@ -67,6 +67,7 @@ const LocationCard = (props: any) => {
     actionTypes,
     setAction,
     orderType,
+    setZoom,
     changeOrderType,
     setLatLng,
     setActionPerform,
@@ -808,6 +809,9 @@ const LocationCard = (props: any) => {
                 </Typography>
               )}
 
+              {!showAllRestaurants &&
+                orderType === 'dispatch' &&
+                filteredRestaurants.length > 0 && filteredRestaurants[0]&& setZoom(10)}
               {!showAllRestaurants &&
                 orderType &&
                 orderType === 'dispatch' &&

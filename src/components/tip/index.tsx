@@ -60,6 +60,11 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
       if (basket.tip) {
         setTipCustomAmount(basket.tip.toFixed(2));
       }
+      else {
+        const defaultTipAmount = ((15 * basket.subtotal) / 100).toFixed(2);
+        setTipCustomAmount(defaultTipAmount);
+        updateTipAmountCall(defaultTipAmount);
+      }
     }
   }, [basket]);
 

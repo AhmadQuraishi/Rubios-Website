@@ -261,6 +261,40 @@ const DeliveryForm = ({
                   >
                     Edit
                   </Typography>
+                  {/* <Typography
+                    variant="body1"
+                    className="label"
+                    aria-label={'Delivery Instructions - Optional'}
+                    style={{
+                      paddingTop: '10px',
+                      
+                    }}
+                  >
+                    Delivery Instructions - Optional
+                  </Typography>
+                  <TextField
+                  id="outlined-multiline-static"
+                  // label = "Delivery Instructions"
+                  multiline
+                  rows={4}
+                  // defaultValue="Default Value"
+                  />
+
+                  <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={values.emailNotification}
+                        onChange={handleChange}
+                      />
+                    }
+                    label="I want contactless delivery"
+                    aria-required="true"
+                    title="I want contactless delivery"
+                    name="emailNotification"
+                    className="size"
+                  />
+                </FormGroup> */}
                 </Grid>
               </Grid>
             </Grid>

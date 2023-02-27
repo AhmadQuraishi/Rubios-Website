@@ -30,7 +30,7 @@ function App(props: any) {
   const [isAccountSection, setIsAccountSection] = useState(false);
   const [hideLoginPanel, setHideLoginPanel] = useState(true);
   const [hideLoginedPanel, setHideLoginedPanel] = useState(false);
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const { deviceId } = useSelector((state: any) => state.authReducer);
   const { basket} = useSelector(
@@ -108,11 +108,11 @@ function App(props: any) {
         console.log("working3", restaurantSessionTime);
         const minutes = currentTime.diff(restaurantSessionTime, 'minutes');
         console.log(minutes, "minutes")
-        if (minutes > 30) {
+        if (minutes > 180) {
           dispatch(resetRestaurantRequest());
           dispatch(resetBasketRequest());
-          setOpen(true);
-
+          // setOpen(true);
+          navigate('/location');
         }     
     }
   }
@@ -120,7 +120,7 @@ function App(props: any) {
 useEffect(() => {
   intervalId = setInterval(function() {
     clearOrderCacheAfter30Minutes()
-  }, 2 * 60 * 1000) 
+  },  30 * 1000) 
   return () => clearInterval(intervalId);
 
 }, [window.location.href]) 
@@ -259,11 +259,11 @@ useEffect(() => {
 
   return (
     <div>
-      {
+      {/* {
         open && (
             <CacheDialog open={open} setOpen={setOpen} />
         )
-      }
+      } */}
     
     <div id="wapper">
       {/*<div*/}

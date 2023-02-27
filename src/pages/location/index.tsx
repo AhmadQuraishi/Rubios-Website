@@ -82,6 +82,8 @@ const Location = () => {
         lng: -122.214,
       });
       dispatch(getResturantListRequest());
+        setOrderType('pickup');
+        
     }
   }, []);
 
@@ -476,6 +478,7 @@ const Location = () => {
             actionTypes={actionTypes}
             setAction={setAction}
             orderType={orderType}
+            setZoom={setZoom}
             changeOrderType={changeOrderType}
             setLatLng={setLatLng}
             setActionPerform={setActionPerform}
