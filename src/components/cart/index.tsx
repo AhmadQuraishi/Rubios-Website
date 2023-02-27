@@ -185,7 +185,6 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   const navigate = useNavigate();
   const [basketType, setBasketType] = useState();
 
-
   useEffect(() => {
     if(upsellsVendorId && upsellsVendorId !== restaurant?.id){
         dispatch(getUpsellsRequest(restaurant?.id))
