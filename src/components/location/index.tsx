@@ -96,7 +96,6 @@ const LocationCard = (props: any) => {
   const [showLocationChangeModal, setShowLocationChangeModal] = useState(false);
   const [newRestaurant, setNewRestaurant] = useState<any>(null);
   const [showAllRestaurants, setShowAllRestaurants] = useState(false);
-  const dummyBasketObj = useSelector((state: any) => state.createBasketReducer);
   const [basket, setBasket] = useState<ResponseBasket>();
   // const [updatebasket] = useState(false);
   const [alignment, setAlignment] = React.useState('web');
@@ -463,14 +462,6 @@ const LocationCard = (props: any) => {
     triggerFacebookEventOnLocationChange();
     navigate('/menu/' + restaurantObj.slug);
   };
-
-  
-  useEffect(() => {
-    if (!dummyBasketObj.basket) {
-      dispatch(getBasketRequest('', dummyBasketObj.basket));
-    }
-  }, [dummyBasketObj.basket]);
-  
   // useEffect(() => {
   //   if (basketObj.basket) {
   //     setBasket(basketObj.basket);
@@ -826,7 +817,7 @@ const LocationCard = (props: any) => {
               )}
                 {orderType === 'dispatch' &&
                 filteredRestaurants.length > 0 && filteredRestaurants[0]&& setZoom(10)}
-              {dummyBasketObj.loading  || !showAllRestaurants &&
+              {!showAllRestaurants &&
                 orderType &&
                 orderType === 'dispatch' &&
                 filteredRestaurants.length > 0 &&
