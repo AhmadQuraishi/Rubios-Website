@@ -2,7 +2,7 @@ import './one-trust.css';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Header from './components/header';
 import Footer from './components/footer';
-import { Fragment, useEffect, useLayoutEffect, useState } from 'react';
+import { Fragment, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import AppRoutes from './routes';
 import { Grid } from '@mui/material';
 import LeftMenuBar from './components/left-menu-bar';
@@ -40,7 +40,7 @@ function App(props: any) {
     (state: any) => state.restaurantInfoReducer,
   );
   const { authToken,sessionLoginTime } = useSelector((state: any) => state.authReducer);
-
+  const productCount = useMemo(() => basket?.products?.length || 0, [basket]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -75,13 +75,14 @@ function App(props: any) {
       }
     }
   }, []);
+  
+  useEffect(() => {
+    if (productCount > 0) {
+      dispatch(updateSessionNull(sessionTime));
+      dispatch(updateSessionRequest(sessionTime));
+    }
+  }, [productCount]);
 
-  useEffect (() => {
-    if (basket?.products?.length > 0){
-              dispatch(updateSessionNull(sessionTime));
-              dispatch(updateSessionRequest(sessionTime));
-            }
-  }, [basket])
   let intervalId: any;
  
   useEffect (() => {
@@ -90,6 +91,7 @@ function App(props: any) {
         dispatch(updateSessionRequest(currentTime));
             }
   }, [])
+
   useEffect (() => {
     if (authToken && !sessionLoginTime){
         const currentTime = moment();
@@ -108,11 +110,12 @@ function App(props: any) {
         console.log("working3", restaurantSessionTime);
         const minutes = currentTime.diff(restaurantSessionTime, 'minutes');
         console.log(minutes, "minutes")
-        if (minutes > 180) {
+        if (minutes > 5) {
           dispatch(resetRestaurantRequest());
           dispatch(resetBasketRequest());
           // setOpen(true);
           navigate('/location');
+          dispatch(updateSessionNull(sessionTime));
         }     
     }
   }
