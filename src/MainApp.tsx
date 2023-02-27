@@ -108,7 +108,7 @@ function App(props: any) {
         console.log("working3", restaurantSessionTime);
         const minutes = currentTime.diff(restaurantSessionTime, 'minutes');
         console.log(minutes, "minutes")
-        if (minutes > 179) {
+        if (minutes > 180) {
           dispatch(resetRestaurantRequest());
           dispatch(resetBasketRequest());
           // setOpen(true);
@@ -120,7 +120,7 @@ function App(props: any) {
 useEffect(() => {
   intervalId = setInterval(function() {
     clearOrderCacheAfter30Minutes()
-  }, 180 * 60 * 1000) 
+  },  30 * 1000) 
   return () => clearInterval(intervalId);
 
 }, [window.location.href]) 
