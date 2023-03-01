@@ -78,6 +78,7 @@ const LocationCard = (props: any) => {
     setFilteredRestaurants,
     filteredRestaurants,
     loading,
+    setOrderType,
     addCustomAddressCheck,
     currentLocation,
     setRestaurantNotFound,
@@ -167,6 +168,15 @@ const LocationCard = (props: any) => {
   };
 
   useEffect(() => {
+    if(!selectedOrderType || selectedOrderType && (selectedOrderType === '' || selectedOrderType === 'pickup') ){
+      setOrderType('pickup');
+    } else if(selectedOrderType === 'dispatch'){
+      setOrderType('dispatch');
+      dispatch(setDeliveryAddress(deliveryAddressString));
+    } 
+  }, [selectedOrderType]);
+
+  useEffect(() => {
     if (!isDesktop) {
       setShowAllRestaurants(false);
     }
@@ -213,6 +223,19 @@ const LocationCard = (props: any) => {
         setActionPerform(false);
       });
   };
+
+  let updatedAddress: any = {
+    building: deliveryAddressString?.address2 || '',
+    streetaddress: "1132521351355235"|| '',
+    city: deliveryAddressString?.city || '',
+    zipcode: deliveryAddressString?.zip || '',
+    isdefault: deliveryAddressString?.isdefault || false,
+    specialinstructions: "End of the Street where it lies.",
+    
+  };
+  useEffect (() => {
+  setBasketDeliveryAddress("493929841", updatedAddress );
+}, [])
   const getSearchResults = () => {
     setAction(actionTypes.LOCAL_SEARCH);
     let availableRestaurants = [];

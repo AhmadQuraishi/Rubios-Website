@@ -75,6 +75,10 @@ const Location = () => {
     (state: any) => state.userReducer,
   );
 
+  const { restaurant: selectedRestaurant, orderType: selectedOrderType } =
+  useSelector((state: any) => state.restaurantInfoReducer);
+
+  
   useEffect(() => {
     if (!orderType) {
       setMapCenter({
@@ -82,7 +86,6 @@ const Location = () => {
         lng: -122.214,
       });
       dispatch(getResturantListRequest());
-        setOrderType('pickup');
         
     }
   }, []);
@@ -479,6 +482,7 @@ const Location = () => {
             setAction={setAction}
             orderType={orderType}
             setZoom={setZoom}
+            setOrderType={setOrderType}
             changeOrderType={changeOrderType}
             setLatLng={setLatLng}
             setActionPerform={setActionPerform}
