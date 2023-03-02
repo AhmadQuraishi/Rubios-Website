@@ -8,16 +8,17 @@ import {
   ToggleButton,
 } from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import FormControl from '@mui/material/FormControl';
 import './tip.css';
 import {
   updateBasketTipAmount,
   updateBasketCouponCode,
   removeBasketCouponCode,
+  setTipFalse,
 } from '../../redux/actions/basket/checkout';
 
-const getPercentageSelected = (basket: any) => {
+const getPercentageSelected: any = (basket: any) => {
   let tipPercentArray: any = [];
   let selectedValue = null;
   const percentages = [10, 15, 20];
@@ -37,7 +38,7 @@ const getPercentageSelected = (basket: any) => {
 
 const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
   const dispatch = useDispatch();
-
+  const { defaultTip } = useSelector((state: any) => state.basketReducer);
   const [tipPercentage, setTipPercentage] = React.useState(0);
   const [tipCustomAmount, setTipCustomAmount] = React.useState<any>(null);
   const [couponCode, setCouponCode] = React.useState('');
@@ -45,28 +46,44 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
   const [tipLoading, setTipLoading] = React.useState(true);
   const [couponLoading, setCouponLoading] = React.useState(true);
 
+
+  const setDefaultBasketTip: any = () => {
+    const defaultTipAmount = ((15 * basket.subtotal) / 100).toFixed(2);
+    setTipCustomAmount(defaultTipAmount);
+    setTipPercentage(15);
+    updateTipAmountCall(defaultTipAmount);
+  }
+
+
+  // First time set 15% tip selected and default tip true
+  // 
+
   useEffect(() => {
     if (basket) {
-      if (basket.tip && basket.tip !== 0 && runOnce) {
-        const selectedValue = getPercentageSelected(basket);
-        if (selectedValue) {
-          setTipPercentage(selectedValue);
+      if (runOnce) {
+        if (defaultTip) {
+          setDefaultBasketTip();
+          setRunOnce(false);
+        } else if (basket?.tip > 0) {
+          setTipCustomAmount(basket.tip.toFixed(2));
+          const selectedValue = getPercentageSelected(basket);
+          if (selectedValue) {
+            setTipPercentage(selectedValue);
+          }
+          setRunOnce(false);
         }
-        setRunOnce(false);
-      }
-      if (basket.coupon && basket.coupon.couponcode) {
-        setCouponCode(basket.coupon.couponcode);
-      }
-      if (basket.tip) {
-        setTipCustomAmount(basket.tip.toFixed(2));
-      }
-      else {
-        const defaultTipAmount = ((15 * basket.subtotal) / 100).toFixed(2);
-        setTipCustomAmount(defaultTipAmount);
-        updateTipAmountCall(defaultTipAmount);
       }
     }
+    if (basket?.coupon?.couponcode) {
+      setCouponCode(basket.coupon.couponcode);
+    }
   }, [basket]);
+
+  // useEffect(() => {
+  //   if (!(tipPercentage === 15)) {
+  //     dispatch(setTipFalse())
+  //   }
+  // }, [tipPercentage]);
 
   useEffect(() => {
     if (!loading) {
@@ -106,6 +123,7 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
     setTipPercentage(value);
     let totalPerc = ((value * basket.subtotal) / 100).toFixed(2);
     setTipCustomAmount(totalPerc);
+    dispatch(setTipFalse())
     updateTipAmountCall(totalPerc);
   };
 
@@ -123,6 +141,7 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
   const IconTip = () => (
     <Button
       onClick={() => {
+        dispatch(setTipFalse())
         updateTipAmountCall(tipCustomAmount);
         setTipPercentage(0);
       }}
@@ -143,7 +162,7 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
     <Button
       onClick={() => updateCouponCodeCall(couponCode)}
       style={{
-        
+
         fontSize:
           basket && basket.coupon && basket.coupon.couponcode
             ? '8px'
@@ -185,7 +204,7 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
                       selected={tipPercentage === 10}
                       value={10}
                       className="selected-btn"
-                      sx={{backgroundColor: "#062C43 !important"}}
+                      sx={{ backgroundColor: "#062C43 !important" }}
                     >
                       10%
                     </ToggleButton>
@@ -195,7 +214,7 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
                       selected={tipPercentage === 15}
                       value={15}
                       className="selected-btn"
-                      sx={{backgroundColor: "#062C43 !important"}}
+                      sx={{ backgroundColor: "#062C43 !important" }}
                     >
                       15%
                     </ToggleButton>
@@ -205,7 +224,7 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
                       selected={tipPercentage === 20}
                       value={20}
                       className="selected-btn"
-                      sx={{backgroundColor: "#062C43 !important"}}
+                      sx={{ backgroundColor: "#062C43 !important" }}
                     >
                       20%
                     </ToggleButton>

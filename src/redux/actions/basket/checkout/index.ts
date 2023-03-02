@@ -130,6 +130,13 @@ export function updateBasketTipAmountSuccess(data: ResponseBasket) {
   };
 }
 
+export function setTipFalse() {
+  return {
+    type: basketActionsTypes.SET_TIP_FALSE,
+  };
+}
+
+
 export function updateBasketTipAmountFailure(error: any) {
   displayToast(
     'ERROR',

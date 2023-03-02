@@ -167,13 +167,14 @@ const LocationCard = (props: any) => {
     setSearchText(e.target.value);
   };
 
-  useEffect(() => {
-    if(!selectedOrderType || selectedOrderType && (selectedOrderType === '' || selectedOrderType === 'pickup') ){
-      setOrderType('pickup');
-    } else if(selectedOrderType === 'dispatch' ){
-      setOrderType('dispatch');
-    }
-  }, [selectedOrderType]);
+  // useEffect(() => {
+  //   if(!orderType || orderType && (orderType === '' || orderType === 'pickup') ){
+  //     setOrderType('pickup');
+  //   } else if(selectedOrderType === 'dispatch' ){
+  //     setOrderType('dispatch');
+      
+  //   }
+  // }, [selectedOrderType]);
 
   useEffect(() => {
     if (!isDesktop) {

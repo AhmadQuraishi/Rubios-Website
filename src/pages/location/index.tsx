@@ -74,6 +74,8 @@ const Location = () => {
   const { userDeliveryAddresses } = useSelector(
     (state: any) => state.userReducer,
   );
+  const { orderType: selectedOrderType } =
+  useSelector((state: any) => state.restaurantInfoReducer);
 
   
   useEffect(() => {
@@ -85,6 +87,15 @@ const Location = () => {
       dispatch(getResturantListRequest());
         
     }
+  }, []);
+
+  useEffect(() => {
+    if(!selectedOrderType || selectedOrderType && (selectedOrderType === '' || selectedOrderType === 'pickup') ){
+      changeOrderType('pickup')
+    } else if(selectedOrderType === 'dispatch' ){
+      changeOrderType('dispatch')
+    }
+    debugger;
   }, []);
 
   const changeOrderType = (orderType: string) => {
