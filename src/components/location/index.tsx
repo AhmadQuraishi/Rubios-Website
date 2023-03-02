@@ -170,10 +170,9 @@ const LocationCard = (props: any) => {
   useEffect(() => {
     if(!selectedOrderType || selectedOrderType && (selectedOrderType === '' || selectedOrderType === 'pickup') ){
       setOrderType('pickup');
-    } else if(selectedOrderType === 'dispatch'){
+    } else if(selectedOrderType === 'dispatch' ){
       setOrderType('dispatch');
-      dispatch(setDeliveryAddress(deliveryAddressString));
-    } 
+    }
   }, [selectedOrderType]);
 
   useEffect(() => {

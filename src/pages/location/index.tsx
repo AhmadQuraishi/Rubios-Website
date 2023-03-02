@@ -75,9 +75,6 @@ const Location = () => {
     (state: any) => state.userReducer,
   );
 
-  const { restaurant: selectedRestaurant, orderType: selectedOrderType } =
-  useSelector((state: any) => state.restaurantInfoReducer);
-
   
   useEffect(() => {
     if (!orderType) {
@@ -462,7 +459,7 @@ const Location = () => {
           role="region"
           aria-label="map"
         >
-          {orderType && loadDynamicMap && (
+          {orderType === 'dispatch' && loadDynamicMap && (
             <div>
               <GoogleMapComponent
                 zoom={zoom}
