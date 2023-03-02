@@ -178,7 +178,7 @@ const CategoryList = () => {
           // } else {
           displayToast('SUCCESS', 'Location changed to ' + objRestaurant.name);
           // }
-          navigate('/menu/' + objRestaurant.slug);
+          // navigate('/menu/' + objRestaurant.slug);
           dispatch(getCategoriesRequest(objRestaurant.id));
         } else {
           displayToast(
