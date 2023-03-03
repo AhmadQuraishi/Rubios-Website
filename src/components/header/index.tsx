@@ -1,3 +1,4 @@
+
 import {
   AppBar,
   Toolbar,
@@ -12,7 +13,7 @@ import {
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import React,{ useEffect,useState } from 'react';
 import logo from '../../assets/imgs/header-logo.png';
 import cartIcon from '../../assets/imgs/cart-icon.svg';
 import cartIconMobile from '../../assets/imgs/cart-icon-mobile.svg';
@@ -23,6 +24,7 @@ import { useSelector } from 'react-redux';
 import RightMenuBar from '../right-menu-bar';
 import { isLoginUser } from '../../helpers/auth';
 import './index.css';
+import { useLocation } from 'react-router-dom';
 const useStyles = makeStyles((theme: Theme) => ({
   navBar: {
     backgroundColor: '#fff !important',
@@ -160,6 +162,30 @@ const Header = (props: any) => {
   );
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const navigate = useNavigate();
+  //  let { cart } = useParams();
+  const useQuery = () => new URLSearchParams(useLocation().search);
+
+let query = useQuery();
+   
+useEffect(()=>{
+  console.log()
+if(query.get("cart")){
+  setShowCart(true);
+  const timerId = setTimeout(() => {
+    const url = new URL(window.location.href);
+    url.searchParams.delete('cart');
+    window.history.pushState(null, '', url.toString());
+  }, 1000);
+
+  return () => {
+    clearTimeout(timerId);
+  };
+}
+else {
+  setShowCart(false);
+}
+},[query.get("cart")])
+
 
   const handleShowCart = () => {
     setShowAccountMenu(false);

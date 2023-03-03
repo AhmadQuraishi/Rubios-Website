@@ -82,8 +82,6 @@ const Location = () => {
         lng: -122.214,
       });
       dispatch(getResturantListRequest());
-        setOrderType('pickup');
-
     }
   }, []);
 
@@ -110,6 +108,7 @@ const Location = () => {
       });
       setZoom(7);
     }
+    // debugger;
   };
 
   const generateStaticMap = (markersStatic: any) => {
@@ -459,7 +458,7 @@ const Location = () => {
           role="region"
           aria-label="map"
         >
-          {orderType && loadDynamicMap && (
+          {orderType === 'dispatch' && loadDynamicMap && (
             <div>
               <GoogleMapComponent
                 zoom={zoom}
@@ -479,6 +478,7 @@ const Location = () => {
             setAction={setAction}
             orderType={orderType}
             setZoom={setZoom}
+            setOrderType={setOrderType}
             changeOrderType={changeOrderType}
             setLatLng={setLatLng}
             setActionPerform={setActionPerform}

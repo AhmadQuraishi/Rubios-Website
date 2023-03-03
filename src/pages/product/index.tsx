@@ -323,7 +323,7 @@ const Product = () => {
       setActionStatus(false);
       // displayToast('SUCCESS', '1 item added to cart.');
       // dispatch(getBasketRequest('', productAddObj.basket, basketType));
-      navigate('/menu/' + restaurant.slug);
+      navigate(`/menu/${restaurant.slug}?cart=true`);
     }
   }, [productAddObj]);
 
@@ -333,7 +333,7 @@ const Product = () => {
       setActionStatus(false);
       displayToast('SUCCESS', '1 item updated in cart.');
       // dispatch(getBasketRequest('', productUpdateObj.basket, basketType));
-      navigate('/menu/' + restaurant.slug);
+      navigate(`/menu/${restaurant.slug}?cart=true`);
     }
   }, [productUpdateObj]);
 
@@ -1701,7 +1701,7 @@ const Product = () => {
                       disabled={checkDisable()}
                       onClick={() => {
                         addProductToBag();
-                        handleCart();
+                        // handleCart();
                       }}
                     >
                       {edit ? 'UPDATE BAG' : 'ADD TO BAG'}

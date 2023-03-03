@@ -28,7 +28,7 @@ const INITIAL_STATE = {
   basketType: 'New',
   orderSubmit: false,
   error: null,
-
+  defaultTip: true,
 };
 
 const basketReducer = (state = INITIAL_STATE, action: any) => {
@@ -103,6 +103,11 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
         basketType: action.basketType || 'New',
         error: null,
       };
+    case basketActionsTypes.SET_TIP_FALSE:
+      return {
+        ...state,
+        defaultTip: false,
+      }
     case basketActionsTypes.GET_BASKET_FAILURE:
     case basketActionsTypes.UPDATE_BASKET_TIME_WANTED_FAILURE:
     case basketActionsTypes.DELETE_BASKET_TIME_WANTED_FAILURE:

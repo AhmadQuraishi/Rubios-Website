@@ -1,3 +1,11 @@
-.phone-field {
+/* .phone-field {
     letter-spacing: -1.1px !important;
+} */
+
+.css-1wc848c-MuiFormHelperText-root {
+    margin-right: 0px !important;
+    margin-bottom: 0;
+    margin-left: 0px !important;
+    display: flex;
+    justify-content: end;
 }
