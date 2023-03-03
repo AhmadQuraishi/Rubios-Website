@@ -185,7 +185,6 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   const navigate = useNavigate();
   const [basketType, setBasketType] = useState();
 
-
   useEffect(() => {
     if(upsellsVendorId && upsellsVendorId !== restaurant?.id){
         dispatch(getUpsellsRequest(restaurant?.id))
@@ -280,7 +279,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
       displayToast('SUCCESS', '1 item removed from cart.');
       fitContainer();
       setActionStatus(false);
-      navigate(restaurant?.slug  ? '/menu/' + restaurant.slug : '/');
+      navigate(`/menu/${restaurant.slug}?cart=true`);
     }
   }, [productRemoveObj]);
 
@@ -335,7 +334,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
       displayToast('SUCCESS', 'Duplicate item added to cart.');
       fitContainer();
       setActionStatus(false);
-      navigate(restaurant?.slug ? '/menu/' + restaurant.slug : '/');
+      navigate(`/menu/${restaurant.slug}?cart=true`);
     }
   }, [productAddObj]);
 
