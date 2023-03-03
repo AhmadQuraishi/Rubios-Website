@@ -123,7 +123,6 @@ export function updateBasketTipAmount(
 }
 
 export function updateBasketTipAmountSuccess(data: ResponseBasket) {
-  displayToast('SUCCESS', 'Order Tip updated.');
   return {
     type: basketActionsTypes.UPDATE_BASKET_TIP_AMOUNT_SUCCESS,
     payload: data,

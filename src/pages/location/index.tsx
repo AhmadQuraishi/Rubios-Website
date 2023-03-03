@@ -394,6 +394,7 @@ const Location = () => {
       });
   };
 
+
   const fitMapView = () => {
     const locationCardView = document.getElementById('location-card-view');
     const googleMapLocation = document.getElementById('google-map-location');
@@ -424,7 +425,11 @@ const Location = () => {
     },
     false,
   );
-
+  useEffect (() => {
+    if(fitMapView){
+      fitMapView();
+    }
+  },[fitMapView()])
   return (
     <Page
       title={'Location'}
@@ -458,7 +463,7 @@ const Location = () => {
           role="region"
           aria-label="map"
         >
-          {orderType === 'dispatch' && loadDynamicMap && (
+          {orderType && loadDynamicMap && (
             <div>
               <GoogleMapComponent
                 zoom={zoom}

@@ -17,6 +17,7 @@ import {
   removeBasketCouponCode,
   setTipFalse,
 } from '../../redux/actions/basket/checkout';
+import { displayToast } from '../../helpers/toast';
 
 const getPercentageSelected: any = (basket: any) => {
   let tipPercentArray: any = [];
@@ -124,7 +125,8 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
     setTipPercentage(value);
     let totalPerc = ((value * basket.subtotal) / 100).toFixed(2);
     setTipCustomAmount(totalPerc);
-    dispatch(setTipFalse())
+    dispatch(setTipFalse());
+    displayToast('SUCCESS', 'Order Tip updated.');
     updateTipAmountCall(totalPerc);
   };
 
