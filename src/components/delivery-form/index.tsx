@@ -308,7 +308,7 @@ const DeliveryForm = ({
                     value={specialInstruction}
                     onChange={handleInsturctionChange}
                     inputProps={{ maxLength: maxLength }}
-                    helperText={`${specialInstruction.length} / ${maxLength} characters`}
+                    helperText={`${specialInstruction?.length} / ${maxLength} characters`}
                   />
                   {/* <Typography variant="caption">
                   {remainingChars} characters remaining
