@@ -458,7 +458,7 @@ const Location = () => {
           role="region"
           aria-label="map"
         >
-          {orderType === 'dispatch' && loadDynamicMap && (
+          {orderType && loadDynamicMap && (
             <div>
               <GoogleMapComponent
                 zoom={zoom}
