@@ -12,11 +12,10 @@ import {
 import React, { useEffect, useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import './location.css';
-import { ResponseRestaurant, ResponseBasket } from '../../types/olo-api';
+import { ResponseRestaurant } from '../../types/olo-api';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import StoreInfo from './info';
-import { getBasketRequest } from '../../redux/actions/basket';
 import { displayToast } from '../../helpers/toast';
 import { LocationChangeModal } from '../location-change-modal';
 import usePlacesAutocomplete, {
@@ -97,7 +96,6 @@ const LocationCard = (props: any) => {
   const [showLocationChangeModal, setShowLocationChangeModal] = useState(false);
   const [newRestaurant, setNewRestaurant] = useState<any>(null);
   const [showAllRestaurants, setShowAllRestaurants] = useState(false);
-  const [basket, setBasket] = useState<ResponseBasket>();
   // const [updatebasket] = useState(false);
   const [alignment, setAlignment] = React.useState('web');
 
@@ -106,9 +104,9 @@ const LocationCard = (props: any) => {
   }, []);
 
   useEffect(() => {
-    if(!selectedOrderType || selectedOrderType && (selectedOrderType === '' || selectedOrderType === 'pickup') ){
+    if (!selectedOrderType || selectedOrderType && (selectedOrderType === '' || selectedOrderType === 'pickup')) {
       onServiceSelect('Pick up');
-    } else if(selectedOrderType === 'dispatch'){
+    } else if (selectedOrderType === 'dispatch') {
       onServiceSelect('Delivery');
     }
     // debugger;
@@ -180,7 +178,7 @@ const LocationCard = (props: any) => {
   //     setOrderType('pickup');
   //   } else if(selectedOrderType === 'dispatch' ){
   //     setOrderType('dispatch');
-      
+
   //   }
   // }, [selectedOrderType]);
 
@@ -488,11 +486,6 @@ const LocationCard = (props: any) => {
     triggerFacebookEventOnLocationChange();
     navigate('/menu/' + restaurantObj.slug);
   };
-  // useEffect(() => {
-  //   if (basketObj.basket) {
-  //     setBasket(basketObj.basket);
-  //   }
-  // }, [basketObj.basket]);
   const triggerFacebookEventOnLocationChange = () => {
     let userObj: any = null;
     if (isLoginUser()) {
@@ -544,7 +537,7 @@ const LocationCard = (props: any) => {
   );
 
   useEffect(() => {
-   
+
     if (showAllRestaurants) {
       fitViewAllRestaurant();
     }
@@ -664,7 +657,7 @@ const LocationCard = (props: any) => {
                 >
                   PickUp
                 </ToggleButton>
-                <ToggleButton
+                {/* <ToggleButton
                   role="radio"
                   value="Curbside"
                   // onClick={() => {
@@ -676,7 +669,7 @@ const LocationCard = (props: any) => {
                   aria-label=" Curbside, Activating this element will cause results to load below "
                 >
                   Curbside
-                </ToggleButton>
+                </ToggleButton> */}
                 <ToggleButton
                   value="Delivery"
                   role="radio"
@@ -842,9 +835,6 @@ const LocationCard = (props: any) => {
                   </Link>
                 </Typography>
               )}
-
-    
-
               {!showAllRestaurants &&
                 orderType &&
                 orderType === 'dispatch' &&
@@ -953,4 +943,4 @@ const LocationCard = (props: any) => {
   );
 };
 
-export default LocationCard;
+export default LocationCard;  

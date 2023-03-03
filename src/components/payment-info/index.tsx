@@ -35,7 +35,6 @@ interface CustomProps {
 }
 
 const NumberFormatCustom = forwardRef<HTMLElement, CustomProps>(
-
   function NumberFormatCustom(props, ref) {
     const { onChange, ...other } = props;
 
@@ -57,7 +56,7 @@ const NumberFormatCustom = forwardRef<HTMLElement, CustomProps>(
 
 const PaymentInfo = forwardRef((props: any, _ref) => {
   const navigate = useNavigate();
-  const { ccsfObj, basketAccessToken,displayAddCreditCard,handleCreditCardSubmit,hideShow,setHideShow, zipCode, setZipCode, cardExpiry,setCardExpiry} = props;
+  const { ccsfObj, basketAccessToken, displayAddCreditCard, handleCreditCardSubmit, hideShow, setHideShow, zipCode, setZipCode, cardExpiry, setCardExpiry } = props;
   const dispatch = useDispatch();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -73,13 +72,9 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
     React.useState<boolean>(false);
   const basketObj = useSelector((state: any) => state.basketReducer);
 
-
   React.useEffect(() => {
     setBillingSchemes(basketObj.payment.billingSchemes);
   }, [basketObj.payment.billingSchemes]);
-
-
-
 
   React.useEffect(() => {
     if (basketObj.basket) {
@@ -93,14 +88,12 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
     }
   }, [hideShow]);
 
-
   // React.useEffect(() => {
   //   loading &&
   //     <div className="loading-spinner">
   //       <CircularProgress />
   //     </div>
   // }, [billingSchemes?.length < 1]);
-
 
   React.useEffect(() => {
     if (
@@ -124,7 +117,6 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
       firstFocusableElement.focus();
     }
   }, [hideShow]);
-
 
   const handleZipCodeChange = (event: any) => {
     let newValue = event.target.value.trim();
@@ -303,7 +295,6 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
 
   return (
     <>
-
       <Grid container>
         {/*column for space*/}
         <Grid item xs={0} sm={0} md={2} lg={2} />
@@ -349,7 +340,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                           aria-label="Change Payment Method"
                           onClick={() => setDisplaySavedCards(true)}
                           id={'add-credit-card'}
-                          sx={{ fontFamily: "'Sunborn-Sansone'!important", }}
+                          sx={{ fontFamily: "'Sunborn-Sansone'!important" }}
                         >
                           Change Payment Method
                         </Button>
@@ -364,14 +355,19 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                     onClick={() => handleHideShow()}
                     tabIndex={!hideShow ? 0 : -1}
                     id={'add-credit-card'}
-                    sx={{ fontFamily: "'Sunborn-Sansone'!important", }}
+                    sx={{ fontFamily: "'Sunborn-Sansone'!important" }}
                   >
                     Add Credit card
                   </Button>
                 )}
-                {billingSchemes?.length < 1 &&
-                  <CreditCardAdd cardExpiry={cardExpiry} zipCode={zipCode} handleZipCodeChange={handleZipCodeChange} handleCardExpiryChange={handleCardExpiryChange} />
-                }
+                {billingSchemes?.length < 1 && (
+                  <CreditCardAdd
+                    cardExpiry={cardExpiry}
+                    zipCode={zipCode}
+                    handleZipCodeChange={handleZipCodeChange}
+                    handleCardExpiryChange={handleCardExpiryChange}
+                  />
+                )}
                 <div
                   id="myModal"
                   role={'dialog'}
@@ -399,11 +395,18 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                         id="add-credit-card-dialog"
                         className={'heading first-focusable-element'}
                       >
-                        {editCreditCard ? 'Edit Credit card' : 'Add Credit card'}
+                        {editCreditCard
+                          ? 'Edit Credit card'
+                          : 'Add Credit card'}
                       </h2>
                     </div>
                     <div className="modal-body">
-                    <CreditCardAdd cardExpiry={cardExpiry} zipCode={zipCode} handleZipCodeChange={handleZipCodeChange} handleCardExpiryChange={handleCardExpiryChange} />
+                      <CreditCardAdd
+                        cardExpiry={cardExpiry}
+                        zipCode={zipCode}
+                        handleZipCodeChange={handleZipCodeChange}
+                        handleCardExpiryChange={handleCardExpiryChange}
+                      />
                     </div>
                     <div className="modal-footer">
                       <Button
@@ -430,7 +433,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                         }
                         type="submit"
                         className="link default last-focusable-element"
-                        onClick={() => {handleCreditCardSubmit(); handleHideShow();}}
+                        onClick={() => { handleCreditCardSubmit(); handleHideShow(); }}
                         autoFocus
                       >
                         {editCreditCard

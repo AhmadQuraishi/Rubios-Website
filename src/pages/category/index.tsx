@@ -71,7 +71,7 @@ const CategoryList = () => {
   const classes = useStyles();
   const theme = useTheme();
   const query = new URLSearchParams(useLocation().search);
-  const handoff = query.get('handoff') || '';
+  const handoff: any = query.get('handoff') || '';
   const [getResutarnts, setGetResutrants] = useState(false);
   const [getDineInResutarnts, setGetDineInResutarnts] = useState('');
   const [restaurantSelected, setRestaurantSelected] = useState<any>();
@@ -105,7 +105,11 @@ const CategoryList = () => {
       }
     } else {
       // @ts-ignore
-      if (handoff && Object.values(DeliveryModeEnum).includes(handoff)) {
+      if (
+        handoff &&
+        handoff !== DeliveryModeEnum.curbside &&
+        Object.values(DeliveryModeEnum).includes(handoff)
+      ) {
         setGetDineInResutarnts(handoff);
         setGetResutrants(true);
         dispatch(getResturantListRequest());
@@ -174,7 +178,7 @@ const CategoryList = () => {
           // } else {
           displayToast('SUCCESS', 'Location changed to ' + objRestaurant.name);
           // }
-          navigate('/menu/' + objRestaurant.slug);
+          // navigate('/menu/' + objRestaurant.slug);
           dispatch(getCategoriesRequest(objRestaurant.id));
         } else {
           displayToast(
@@ -454,7 +458,7 @@ const CategoryList = () => {
                   </Button>
                 )}
               </>
-              {restaurantSelected.supportscurbside && (
+              {/* {restaurantSelected.supportscurbside && (
                 <Button
                   variant="contained"
                   sx={{
@@ -473,7 +477,7 @@ const CategoryList = () => {
                 >
                   Curbside
                 </Button>
-              )}
+              )} */}
               {restaurantSelected.supportsdispatch && (
                 <Button
                   variant="contained"

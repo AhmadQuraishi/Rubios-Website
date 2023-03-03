@@ -74,10 +74,7 @@ const Location = () => {
   const { userDeliveryAddresses } = useSelector(
     (state: any) => state.userReducer,
   );
-  const { orderType: selectedOrderType } =
-  useSelector((state: any) => state.restaurantInfoReducer);
 
-  
   useEffect(() => {
     if (!orderType) {
       setMapCenter({
@@ -485,6 +482,7 @@ const Location = () => {
             changeOrderType={changeOrderType}
             setLatLng={setLatLng}
             setActionPerform={setActionPerform}
+            zoom={zoom}
             deliveryAddressString={deliveryAddressString}
             setDeliveryAddressString={setDeliveryAddressString}
             allRestaurants={restaurants?.restaurants || []}
