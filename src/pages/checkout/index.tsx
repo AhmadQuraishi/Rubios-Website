@@ -219,19 +219,7 @@ const Checkout = () => {
       setBasketAccessToken(response.accesstoken);
     }
   };
-  const displayAddCreditCard = () => {
-    const billingSchemeStats = getBillingSchemesStats(billingSchemes);
-    return (
-      basket &&
-      //billingSchemeStats.selectedCreditCard === 0 &&
-      billingSchemes?.length > 0 &&
-      allowedCards &&
-      allowedCards.length &&
-      allowedCards.filter((element: any) => {
-        return element.type === 'creditcard';
-      }).length > 0
-    );
-  };
+
   useEffect(() => {
     getBasketAccessToken();
   }, [authToken]);
@@ -260,18 +248,6 @@ const Checkout = () => {
       setRemoveCreditCardOnce(false);
     }
   }, []);
-  const moveFocusBackToScreen = () => {
-    const addCardElement = document.getElementById('add-credit-card');
-    const addGiftCardElement = document.getElementById('add-gift-card');
-    const placeOrderElement = document.getElementById('place-order-button');
-    if (addCardElement && displayAddCreditCard()) {
-      addCardElement.focus();
-    } else if (addGiftCardElement) {
-      addGiftCardElement.focus();
-    } else if (placeOrderElement) {
-      placeOrderElement.focus();
-    }
-  };
   React.useEffect(() => {
     if (basket && runOnce) {
       let selectedTime = moment().format('YYYYMMDD');
@@ -314,112 +290,6 @@ const Checkout = () => {
 
 
 
-  const handleCreditCardSubmit = async () => {
-    setButtonDisabled(true);
-    if (!zipCode || zipCode === '') {
-      displayToast('ERROR', 'Zip Code is required');
-      setButtonDisabled(false);
-      return;
-    }
-
-    if (!cardExpiry || cardExpiry === '') {
-      displayToast('ERROR', 'Card Expiry is required');
-      setButtonDisabled(false);
-      return;
-    } else if (cardExpiry.length !== 5) {
-      displayToast('ERROR', 'Please enter valid date.');
-      setButtonDisabled(false);
-      return;
-    } else {
-      const currentDate: any = moment(new Date());
-      const expiryDate: any = moment(cardExpiry, 'MM/YY');
-
-      if (!expiryDate.isValid()) {
-        displayToast('ERROR', 'Please enter valid date.');
-        setButtonDisabled(false);
-        return;
-      }
-
-      if (!expiryDate.isAfter(currentDate)) {
-        displayToast('ERROR', 'Please enter future date.');
-        setButtonDisabled(false);
-        return;
-      }
-    }
-
-    let billingSchemesNewArray = billingSchemes;
-    billingSchemesNewArray = billingSchemes.filter(
-      (account: any) =>
-        !(account.billingmethod === 'creditcard' && !account.billingaccountid),
-    );
-    billingSchemesNewArray = billingSchemesNewArray.map((element: any) => {
-      if (element.billingmethod === 'creditcard') {
-        return {
-          ...element,
-          selected: false,
-        };
-      }
-      return element;
-    });
-    const obj = {
-      exp_year: moment(cardExpiry, 'MM/YYYY').year(),
-      exp_month: moment(cardExpiry, 'MM/YYYY').month() + 1,
-      postal_code: zipCode,
-    };
-    let cardObj: any = getCreditCardObj(obj, billingSchemes);
-
-    Array.prototype.push.apply(billingSchemesNewArray, cardObj);
-
-    billingSchemesNewArray = updatePaymentCardsAmount(
-      billingSchemesNewArray,
-      basket,
-    );
-
-    dispatch(updateBasketBillingSchemes(billingSchemesNewArray));
-    if (!isMobile) {
-      displayToast(
-        'SUCCESS',
-        `Credit Card ${editCreditCard ? 'Updated' : 'Added'}`,
-      );
-    }
-    setButtonDisabled(false);
-    // setHideShow(!hideShow);
-    moveFocusBackToScreen();
-    // if (ccsfObj) {
-    //   ccsfObj.registerError((errors: any) => {
-    //     console.log('ccsf error 2', errors);
-    //
-    //     errors.forEach((error: any) => {
-    //       console.log(error.code);
-    //       console.log(error.description);
-    //       if (
-    //         error.description &&
-    //         error.description ===
-    //           'The sum of your selected payment methods must equal the order total.'
-    //       ) {
-    //
-    //       } else {
-    //         displayToast('ERROR', error.description);
-    //       }
-    //     });
-    //   });
-    // ccsfObj.submit({
-    //   id: basket && basket.id,
-    //   accessToken: basketAccessToken,
-    //   billingaccounts: [
-    //     {
-    //       billingmethod: 'creditcard',
-    //       // amount: 31.25,
-    //       // tipportion: 0,
-    //       expiryyear: monthYear[1],
-    //       expirymonth: monthYear[0],
-    //       zip: zipCode,
-    //       saveonfile: true,
-    //     },
-    //   ],
-    // });
-    // }
-  };
   React.useEffect(() => {
     setBillingSchemes(basketObj.payment.billingSchemes);
   }, [basketObj.payment.billingSchemes]);
@@ -1442,8 +1312,6 @@ const Checkout = () => {
                   setZipCode={setZipCode}
                   cardExpiry={cardExpiry}
                   setCardExpiry={setCardExpiry}
-                  displayAddCreditCard={displayAddCreditCard}
-                  handleCreditCardSubmit={handleCreditCardSubmit}
                   ref={paymentInfoRef}
                   ccsfObj={ccsfObj}
                   basketAccessToken={basketAccessToken}
