@@ -1455,7 +1455,7 @@ const Checkout = () => {
                 <br />
 
                 {/*second section ends here*/}
-                {billingSchemes.length < 1 ? (
+                {/* {billingSchemes.length < 1 ? (
                   <Grid container className="add-order">
                     <Grid item xs={12} sm={12} md={4} lg={4}>
                       <Button
@@ -1471,7 +1471,7 @@ const Checkout = () => {
                         Add Credit card
                       </Button>
                     </Grid>
-                  </Grid>) : (
+                  </Grid>) : ( */}
                   <Grid container className="add-order">
                     <Grid item xs={12} sm={12} md={4} lg={4}>
                       <Button
@@ -1492,7 +1492,7 @@ const Checkout = () => {
                       </Button>
                     </Grid>
                   </Grid>
-                )}
+                {/* )} */}
               </Card>
             </Grid>
           </Grid>
