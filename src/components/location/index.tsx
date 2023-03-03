@@ -106,13 +106,21 @@ const LocationCard = (props: any) => {
   }, []);
 
   useEffect(() => {
+    if(!selectedOrderType || selectedOrderType && (selectedOrderType === '' || selectedOrderType === 'pickup') ){
+      onServiceSelect('Pick up');
+    } else if(selectedOrderType === 'dispatch'){
+      onServiceSelect('Delivery');
+    }
+    // debugger;
+  }, []);
+
+  useEffect(() => {
     if (isMapLoaded) {
       init();
     }
   }, [isMapLoaded]);
 
   const onServiceSelect = (
-    event: React.MouseEvent<HTMLElement>,
     newAlignment: string,
   ) => {
     if (newAlignment) {
@@ -224,18 +232,6 @@ const LocationCard = (props: any) => {
       });
   };
 
-  let updatedAddress: any = {
-    building: deliveryAddressString?.address2 || '',
-    streetaddress: "1132521351355235"|| '',
-    city: deliveryAddressString?.city || '',
-    zipcode: deliveryAddressString?.zip || '',
-    isdefault: deliveryAddressString?.isdefault || false,
-    specialinstructions: "End of the Street where it lies.",
-    
-  };
-  useEffect (() => {
-  setBasketDeliveryAddress("493929841", updatedAddress );
-}, [])
   const getSearchResults = () => {
     setAction(actionTypes.LOCAL_SEARCH);
     let availableRestaurants = [];
@@ -548,6 +544,7 @@ const LocationCard = (props: any) => {
   );
 
   useEffect(() => {
+   
     if (showAllRestaurants) {
       fitViewAllRestaurant();
     }
@@ -652,7 +649,7 @@ const LocationCard = (props: any) => {
               <ToggleButtonGroup
                 value={alignment}
                 exclusive
-                onChange={onServiceSelect}
+                onChange={(event, alignment) => onServiceSelect(alignment)}
               >
                 <ToggleButton
                   role="radio"
@@ -845,6 +842,8 @@ const LocationCard = (props: any) => {
                   </Link>
                 </Typography>
               )}
+
+    
 
               {!showAllRestaurants &&
                 orderType &&

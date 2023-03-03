@@ -221,7 +221,7 @@ const DeliveryAddresses = (props: any) => {
         <DeliveryAddressSkeltonUI />
       ) : (
         <>
-          {filteredRestaurants && filteredRestaurants.length > 0 ? (
+          {filteredRestaurants && filteredRestaurants.length > 0 && editDeliveryAddress?.address1 !== '' ? (
             <>
               <Grid sx={{ paddingBottom: '150px' }} item xs={12}>
                 <Typography className={'delivery-heading-text'} variant="body2">

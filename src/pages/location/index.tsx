@@ -85,17 +85,7 @@ const Location = () => {
         lng: -122.214,
       });
       dispatch(getResturantListRequest());
-        
     }
-  }, []);
-
-  useEffect(() => {
-    if(!selectedOrderType || selectedOrderType && (selectedOrderType === '' || selectedOrderType === 'pickup') ){
-      changeOrderType('pickup')
-    } else if(selectedOrderType === 'dispatch' ){
-      changeOrderType('dispatch')
-    }
-    debugger;
   }, []);
 
   const changeOrderType = (orderType: string) => {
@@ -121,6 +111,7 @@ const Location = () => {
       });
       setZoom(7);
     }
+    // debugger;
   };
 
   const generateStaticMap = (markersStatic: any) => {
