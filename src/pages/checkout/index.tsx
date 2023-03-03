@@ -25,6 +25,7 @@ import {
   getBasketAllowedCardsRequest,
   getSingleRestaurantCalendar,
   removeBasketOrderSubmit,
+  setBasketDeliveryAddressSuccess,
   submitBasketSinglePaymentFailure,
   submitBasketSinglePaymentSuccess,
   updateBasketBillingSchemes,
@@ -50,7 +51,7 @@ import DeliveryForm from '../../components/delivery-form/index';
 import { getRewardsForCheckoutRequest } from '../../redux/actions/reward/checkout';
 import Page from '../../components/page-title';
 import { CreditCardCCSF } from '../../helpers/creditCard';
-import { generateCCSFToken } from '../../services/basket';
+import { generateCCSFToken, setBasketDeliveryAddress, setBasketDeliveryMode } from '../../services/basket';
 import { updateGuestUserInfo } from '../../redux/actions/order';
 import { navigateAppAction } from '../../redux/actions/navigate-app';
 import { getRewardsNew } from '../../redux/actions/reward';
@@ -73,6 +74,7 @@ const Checkout = () => {
   const signupFormRef = React.useRef<any>(null);
   const [openAuthenticationModal, setOpenAuthenticationModal] = React.useState<any>(false);
   const [runOnce, setRunOnce] = React.useState<boolean>(true);
+  const [specialInstruction, setSpecialInstruction] = useState('');
   const [callOnce, setCallOnce] = React.useState<boolean>(true);
   const [showIframeOnce, setShowIframeOnce] = React.useState<boolean>(true);
   const [removeCreditCardOnce, setRemoveCreditCardOnce] =
@@ -111,7 +113,7 @@ const Checkout = () => {
   const { restaurant, orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
-  const { authToken,sessionLoginTime } = useSelector((state: any) => state.authReducer);
+  const { authToken, sessionLoginTime } = useSelector((state: any) => state.authReducer);
   const isDesktop = useMediaQuery(theme.breakpoints.up('sm'));
   // const { userDeliveryAddresses } = useSelector(
   //   (state: any) => state.userReducer,
@@ -294,7 +296,7 @@ const Checkout = () => {
   }, [basket]);
 
   const AuthenticationHandler = () => {
-    
+
     if (isLoginUser() && sessionLoginTime) {
       const LoginCreatedTime: any = moment.unix(sessionLoginTime);
       const currentTime = moment();
@@ -763,6 +765,32 @@ const Checkout = () => {
       }
       formDataValue = formData;
     }
+    if ((basket?.deliverymode === DeliveryModeEnum.dispatch) &&
+      basket?.deliveryaddress?.specialinstructions?.toLowerCase() !== specialInstruction?.toLowerCase()) {
+      try {
+        let updatedAddress: any = {
+          building: basket?.deliveryaddress?.building || '',
+          streetaddress: basket?.deliveryaddress?.streetaddress || '',
+          city: basket?.deliveryaddress?.city || '',
+          zipcode: basket?.deliveryaddress?.zipcode || '',
+          isdefault: basket?.deliveryaddress?.isdefault || false,
+          specialinstructions: specialInstruction,
+        };
+        const response: any = await setBasketDeliveryAddress(
+          basket?.id,
+          updatedAddress,
+        );
+        dispatch(setBasketDeliveryAddressSuccess(response));
+      }
+      catch (error: any) {
+        displayToast(
+          'ERROR',
+          error?.response?.data?.message
+            ? error.response.data.message
+            : 'ERROR! Please Try again later',
+        );
+      }
+    }
 
     // if (
     //   basket &&
@@ -782,7 +810,7 @@ const Checkout = () => {
     //   formDataValue = formData;
     // }
 
-    if (basket && basket.deliverymode === DeliveryModeEnum.dispatch) {
+    if (basket?.deliverymode === DeliveryModeEnum.dispatch) {
       const { isValidForm, formData } = validateDeliveryForm();
       if (!isValidForm) {
         displayToast('ERROR', 'Delivery fields are required.');
@@ -850,8 +878,8 @@ const Checkout = () => {
 
     if (
       basket &&
-      (basket.deliverymode === DeliveryModeEnum.curbside ||
-        basket.deliverymode === DeliveryModeEnum.dinein)
+      (basket?.deliverymode === DeliveryModeEnum.curbside ||
+        basket?.deliverymode === DeliveryModeEnum.dinein)
     ) {
       customFields = formatCustomFields(restaurant.customfields, formDataValue);
     }
@@ -888,7 +916,7 @@ const Checkout = () => {
         dispatch(updateGuestUserInfo(userInfo));
       }
 
-      ccsfObj.registerError((errors: any) => {
+      ccsfObj?.registerError((errors: any) => {
         console.log('ccsf error 3', errors);
         errors.forEach((error: any) => {
           displayToast('ERROR', error.description);
@@ -899,7 +927,7 @@ const Checkout = () => {
 
       dispatch(
         validateBasket(
-          basket?.id,
+          basket?.id || '',
           basketPayload,
           user,
           customFields,
@@ -910,13 +938,13 @@ const Checkout = () => {
     }
   };
 
-  const placingOrder = () => {
+  const authenticationPlace = () => {
     let authenticationSuccessful = AuthenticationHandler();
     if (authenticationSuccessful) {
-     placeOrder();
+      placeOrder();
     }
   };
-  
+
   const totalPaymentCardAmount = () => {
     if (billingSchemes && basket) {
       let totalAmount = billingSchemes.reduce((sum: any, account: any) => {
@@ -1014,7 +1042,7 @@ const Checkout = () => {
     //     alert('hi 2');
     setTimeout(() => {
       // @ts-ignore
-      if (Olo && Olo.CheckoutFrame && showIframeOnce) {
+      if (Olo && Olo?.CheckoutFrame && showIframeOnce) {
         console.log('ccsf working');
         const ccsfObj = new CreditCardCCSF();
         setccsfObj(ccsfObj);
@@ -1143,7 +1171,7 @@ const Checkout = () => {
 
   return (
     <div>
-            {
+      {
         openAuthenticationModal && (
           <LoginAuthDialog openAuthenticationModal={openAuthenticationModal} setOpenAuthenticationModal={setOpenAuthenticationModal} />
         )
@@ -1293,9 +1321,8 @@ const Checkout = () => {
                           basket.deliverymode === DeliveryModeEnum.dispatch ? (
                           <DeliveryForm
                             basket={basket}
-                            // setShowSignUpGuest={setShowSignUpGuest}
-                            // showSignUpGuest={!showSignUpGuest}
-                            // defaultAddress={defaultDeliveryAddress}
+                            specialInstruction={specialInstruction}
+                            setSpecialInstruction={setSpecialInstruction}
                             deliveryFormRef={deliveryFormRef}
                           />
                         ) : null}
@@ -1406,13 +1433,13 @@ const Checkout = () => {
                 <br />
                 <br />
                 <PaymentInfo
-                zipCode={zipCode}
-                hideShow={hideShow}
-                setHideShow={setHideShow}
-                setZipCode = {setZipCode}
-                cardExpiry={cardExpiry}
-                setCardExpiry = {setCardExpiry}
-                displayAddCreditCard= {displayAddCreditCard}
+                  zipCode={zipCode}
+                  hideShow={hideShow}
+                  setHideShow={setHideShow}
+                  setZipCode={setZipCode}
+                  cardExpiry={cardExpiry}
+                  setCardExpiry={setCardExpiry}
+                  displayAddCreditCard={displayAddCreditCard}
                   handleCreditCardSubmit={handleCreditCardSubmit}
                   ref={paymentInfoRef}
                   ccsfObj={ccsfObj}
@@ -1439,7 +1466,7 @@ const Checkout = () => {
                         variant="contained"
                         sx={{ fontFamily: "'Sunborn-Sansone'!important", fontSize: "11pt !important", }}
                       >
-                      Add Credit card
+                        Add Credit card
                       </Button>
                     </Grid>
                   </Grid>) : (
@@ -1453,7 +1480,7 @@ const Checkout = () => {
                             totalPaymentCardAmount()) &&
                           ccsfObj
                         }
-                        onClick={placingOrder}
+                        onClick={authenticationPlace}
                         id={'place-order-button'}
                         variant="contained"
                         title="PLACE ORDER"

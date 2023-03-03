@@ -45,7 +45,8 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
   const [runOnce, setRunOnce] = React.useState(true);
   const [tipLoading, setTipLoading] = React.useState(true);
   const [couponLoading, setCouponLoading] = React.useState(true);
-
+  const { orderType: selectedOrderType } =
+    useSelector((state: any) => state.restaurantInfoReducer);
 
   const setDefaultBasketTip: any = () => {
     const defaultTipAmount = ((15 * basket.subtotal) / 100).toFixed(2);
@@ -61,7 +62,7 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
   useEffect(() => {
     if (basket) {
       if (runOnce) {
-        if (defaultTip) {
+        if (defaultTip && basket?.allowstip) {
           setDefaultBasketTip();
           setRunOnce(false);
         } else if (basket?.tip > 0) {

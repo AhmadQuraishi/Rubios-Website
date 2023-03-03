@@ -22,10 +22,13 @@ const DeliveryForm = ({
   basket,
   deliveryFormRef,
   showSignUpGuest,
+  specialInstruction,
+  setSpecialInstruction,
   setShowSignUpGuest,
 }: any) => {
   const [open, setOpen] = useState(false);
   const [hideIt, setHideIt] = useState(false);
+  const [specialInstructionRunOnce, setSpecialInstructionRunOnce] = useState(true);
   const dispatch = useDispatch();
   const { providerToken } = useSelector((state: any) => state.providerReducer);
   interface CustomProps {
@@ -36,7 +39,7 @@ const DeliveryForm = ({
     setOpen(true);
     setHideIt(!hideIt);
   }
-  const [specialInstruction, setSpecialInstruction] = useState('');
+
 
   const [contactValues, setContactValues] = useState({
     contactLess: false,
@@ -79,7 +82,15 @@ const DeliveryForm = ({
     const newInstruction = event.target.value;
     setSpecialInstruction(newInstruction);
   };
-  const maxLength = 100;
+
+  React.useEffect(() => {
+      if (basket?.deliveryaddress?.specialinstructions !== '' && specialInstructionRunOnce){
+          setSpecialInstruction(basket?.deliveryaddress?.specialinstructions);
+          setSpecialInstructionRunOnce(false)
+      }
+  },[basket])
+
+  const maxLength = 120;
   return (
     <>
       <OrderTypeDialog openModal={open} setOpenModal={setOpen} hideIt={true} />
@@ -289,7 +300,7 @@ const DeliveryForm = ({
                   >
                     Edit
                   </Typography>
-
+                  <Grid item xs={12} style={{marginTop: "38px"}}>
                   <TextField
                     label="Delivery Instructions - Optional"
                     name="specialInstruction"
@@ -320,6 +331,7 @@ const DeliveryForm = ({
                     />
                   </FormGroup>
                   )}
+                </Grid>
                 </Grid>
               </Grid>
             </Grid>

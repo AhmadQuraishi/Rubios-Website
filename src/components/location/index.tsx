@@ -849,7 +849,7 @@ const LocationCard = (props: any) => {
                 orderType &&
                 orderType === 'dispatch' &&
                 filteredRestaurants.length > 0 &&
-                !addCustomAddressCheck() && (
+                !addCustomAddressCheck() && deliveryAddressString?.address1 && (
                   // <Typography className="label">
                   //   <p style={{ paddingTop: '5px' }}>SELECT LOCATION BELOW</p>
                   // </Typography>

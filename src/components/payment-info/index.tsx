@@ -430,7 +430,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                         }
                         type="submit"
                         className="link default last-focusable-element"
-                        onClick={handleCreditCardSubmit}
+                        onClick={() => {handleCreditCardSubmit(); handleHideShow();}}
                         autoFocus
                       >
                         {editCreditCard
