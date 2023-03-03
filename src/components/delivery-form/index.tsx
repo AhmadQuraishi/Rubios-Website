@@ -308,14 +308,13 @@ const DeliveryForm = ({
                     value={specialInstruction}
                     onChange={handleInsturctionChange}
                     inputProps={{ maxLength: maxLength }}
-                    helperText={`${specialInstruction?.length} / ${maxLength} characters`}
                   />
                   {/* <Typography variant="caption">
                   {remainingChars} characters remaining
                   </Typography> */}
 
                   {(contactValues.contactLess === true && specialInstruction?.length > 0) || (contactValues.contactLess === false && specialInstruction?.length) > 0 ? " " : (
-                  <FormGroup sx={{marginTop:"-23px !important"}}>
+                  <FormGroup>
                     <FormControlLabel
                       control={
                         <Checkbox

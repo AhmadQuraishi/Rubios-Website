@@ -1349,7 +1349,7 @@ const Checkout = () => {
                     <SignUpGuest
                       birthDay={birthDay}
                       setBirthDay={setBirthDay}
-                      //guestSignupCheckout={guestSignupCheckout}
+                      guestSignupCheckout={guestSignupCheckout}
                       signupFormRef={signupFormRef}
                     />
                   </>
@@ -1465,7 +1465,6 @@ const Checkout = () => {
                         type="submit"
                         className="link default last-focusable-element"
                         onClick={handleCreditCardSubmit}
-                        autoFocus
                         variant="contained"
                         sx={{ fontFamily: "'Sunborn-Sansone'!important", fontSize: "11pt !important", }}
                       >
