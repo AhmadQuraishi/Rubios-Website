@@ -108,6 +108,7 @@ const Location = () => {
       });
       setZoom(7);
     }
+    // debugger;
   };
 
   const generateStaticMap = (markersStatic: any) => {
@@ -457,7 +458,7 @@ const Location = () => {
           role="region"
           aria-label="map"
         >
-          {orderType && loadDynamicMap && (
+          {orderType === 'dispatch' && loadDynamicMap && (
             <div>
               <GoogleMapComponent
                 zoom={zoom}
@@ -476,11 +477,12 @@ const Location = () => {
             actionTypes={actionTypes}
             setAction={setAction}
             orderType={orderType}
+            setZoom={setZoom}
+            setOrderType={setOrderType}
             changeOrderType={changeOrderType}
             setLatLng={setLatLng}
             setActionPerform={setActionPerform}
             zoom={zoom}
-            setZoom={setZoom}
             deliveryAddressString={deliveryAddressString}
             setDeliveryAddressString={setDeliveryAddressString}
             allRestaurants={restaurants?.restaurants || []}

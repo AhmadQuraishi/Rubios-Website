@@ -22,7 +22,7 @@ export const CacheDialog = (props: any)  =>{
 
   const handleClose = () => {
     setOpen(false);
-    navigate('/location');
+
   }
 
   return (
