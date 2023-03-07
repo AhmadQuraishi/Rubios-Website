@@ -36,7 +36,7 @@ import "./index.css";
 const useStyles = makeStyles((theme: Theme) => ({
   heading: {
     fontFamily: "'Sunborn-Sansone'!important",
-    color: "#0075BF !important",
+    color: "#224c65 !important",
     fontSize: '25px !important',
     textTransform: 'uppercase',
     paddingBottom: '30px',
@@ -549,7 +549,7 @@ const CategoryList = () => {
                       padding: '10px 0px',
                       marginRight: '20px',
                       fontSize:"15px",
-                      color: "#2B2929 !important" 
+                      color: "#224c65 !important" 
                       
                     }}
                     tabIndex={0}
