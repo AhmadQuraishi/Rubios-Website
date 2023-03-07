@@ -79,6 +79,7 @@ const Checkout = () => {
   const [showIframeOnce, setShowIframeOnce] = React.useState<boolean>(true);
   const [removeCreditCardOnce, setRemoveCreditCardOnce] =
     React.useState<boolean>(true);
+  const [isContactless, setIsContactless] = React.useState(false);
   const [birthDay, setBirthDay] = useState<Date | undefined>();
   //const [showSignUpGuest, setShowSignUpGuest] = React.useState<boolean>(true);
   const [defaultCard, setDefaultCard] = React.useState<boolean>(true);
@@ -271,6 +272,10 @@ const Checkout = () => {
     }
   }, [basket]);
 
+  const handleCheckChange = (event: any) => {
+    const checked = event.target.checked;
+    setIsContactless(checked);
+  };
   const AuthenticationHandler = () => {
 
     if (isLoginUser() && sessionLoginTime) {
@@ -639,6 +644,7 @@ const Checkout = () => {
       formDataValue = formData;
     }
     if ((basket?.deliverymode === DeliveryModeEnum.dispatch) &&
+    (specialInstruction !== '' || isContactless) &&
       basket?.deliveryaddress?.specialinstructions?.toLowerCase() !== specialInstruction?.toLowerCase()) {
       try {
         let updatedAddress: any = {
@@ -647,7 +653,7 @@ const Checkout = () => {
           city: basket?.deliveryaddress?.city || '',
           zipcode: basket?.deliveryaddress?.zipcode || '',
           isdefault: basket?.deliveryaddress?.isdefault || false,
-          specialinstructions: specialInstruction,
+          specialinstructions: specialInstruction ? specialInstruction !== '' && specialInstruction : isContactless && "I want contactless delivery",
         };
         const response: any = await setBasketDeliveryAddress(
           basket?.id,
@@ -1196,6 +1202,10 @@ const Checkout = () => {
                             basket={basket}
                             specialInstruction={specialInstruction}
                             setSpecialInstruction={setSpecialInstruction}
+                            isContactless = {isContactless}
+                            setIsContactless = {setIsContactless}
+                            handleCheckChange = {handleCheckChange}
+
                             deliveryFormRef={deliveryFormRef}
                           />
                         ) : null}
