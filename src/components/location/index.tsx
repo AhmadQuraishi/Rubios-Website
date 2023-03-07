@@ -102,13 +102,21 @@ const LocationCard = (props: any) => {
   }, []);
 
   useEffect(() => {
+    if (!selectedOrderType || selectedOrderType && (selectedOrderType === '' || selectedOrderType === 'pickup')) {
+      onServiceSelect('Pick up');
+    } else if (selectedOrderType === 'dispatch') {
+      onServiceSelect('Delivery');
+    }
+    // debugger;
+  }, []);
+
+  useEffect(() => {
     if (isMapLoaded) {
       init();
     }
   }, [isMapLoaded]);
 
   const onServiceSelect = (
-    event: React.MouseEvent<HTMLElement>,
     newAlignment: string,
   ) => {
     if (newAlignment) {
@@ -614,7 +622,7 @@ const LocationCard = (props: any) => {
               <ToggleButtonGroup
                 value={alignment}
                 exclusive
-                onChange={onServiceSelect}
+                onChange={(event, alignment) => onServiceSelect(alignment)}
               >
                 <ToggleButton
                   role="radio"
@@ -812,7 +820,7 @@ const LocationCard = (props: any) => {
                 orderType &&
                 orderType === 'dispatch' &&
                 filteredRestaurants.length > 0 &&
-                !addCustomAddressCheck() && (
+                !addCustomAddressCheck() && deliveryAddressString?.address1 && (
                   // <Typography className="label">
                   //   <p style={{ paddingTop: '5px' }}>SELECT LOCATION BELOW</p>
                   // </Typography>
