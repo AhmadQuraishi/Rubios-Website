@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import React,{ useEffect,useState } from 'react';
 import logo from '../../assets/imgs/header-logo.png';
 import cartIcon from '../../assets/imgs/cart-icon.svg';
 import cartIconMobile from '../../assets/imgs/cart-icon-mobile.svg';
@@ -23,6 +23,7 @@ import { useSelector } from 'react-redux';
 import RightMenuBar from '../right-menu-bar';
 import { isLoginUser } from '../../helpers/auth';
 import './index.css';
+import { useLocation } from 'react-router-dom';
 const useStyles = makeStyles((theme: Theme) => ({
   navBar: {
     backgroundColor: '#fff !important',
@@ -119,6 +120,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     textAlign: 'center',
     '&:hover': {
       color: '#0073BD',
+
+      // color: theme.palette.success.main,
     },
     transition: 'color 0.5s ease',
   },
@@ -144,10 +147,13 @@ const Header = (props: any) => {
   } = props;
   const classes = useStyles();
   const theme = useTheme();
+  const [openDrawer, setOpenDrawer] = useState(false);
+  // const [open, setOpen] = useState(false);
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [showCart, setShowCart] = useState(false);
   const [showUpsells, setShowUpsells] = useState(false);
   const [upsellsType, setUpsellsType] = useState('');
+  // const [state, setState] = useState(false);
   const basketObj = useSelector((state: any) => state.basketReducer);
   const { providerToken } = useSelector((state: any) => state.providerReducer);
   const { restaurant } = useSelector(
@@ -155,13 +161,47 @@ const Header = (props: any) => {
   );
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const navigate = useNavigate();
+  //  let { cart } = useParams();
+  const useQuery = () => new URLSearchParams(useLocation().search);
+
+  let query = useQuery();
+
+  useEffect(()=>{
+    console.log()
+    if(query.get("cart")){
+      setShowCart(true);
+      const timerId = setTimeout(() => {
+        const url = new URL(window.location.href);
+        url.searchParams.delete('cart');
+        window.history.pushState(null, '', url.toString());
+      }, 1000);
+
+      return () => {
+        clearTimeout(timerId);
+      };
+    }
+    else {
+      setShowCart(false);
+    }
+  },[query.get("cart")])
+
 
   const handleShowCart = () => {
     setShowAccountMenu(false);
     if (fromEditOrder) {
+      // setShowCart(true);
+      //document.body.style.overflow = 'hidden';
+      // setState(!state);
       fromEditOrder = false;
       setShowCart(false);
+      //document.body.style.overflow = 'auto';
     } else {
+      // if (!showCart) {
+      // document.body.style.overflow = 'hidden';
+      // } else {
+      // document.body.style.overflow = 'auto';
+      // }
+      // setOpen(!showCart);
       setShowCart(!showCart);
     }
     if (showCart) {
@@ -171,6 +211,7 @@ const Header = (props: any) => {
   };
 
   const handleUpsells = (type: string) => {
+    console.log('type', type);
     if (type === '') {
       setShowUpsells(false);
     } else {
@@ -189,6 +230,7 @@ const Header = (props: any) => {
         >
           <Typography variant="body1" className={classes.logo}>
             <span
+              // to="/location"
               className={classes.logoImg}
             >
               <a href={process.env.REACT_APP_RUBIOS_HOME_PAGE}>
@@ -216,7 +258,7 @@ const Header = (props: any) => {
                   to={restaurant ? '/menu/' + restaurant.slug : '/'}
                   className={
                     window.location.pathname === '/login' ||
-                      window.location.pathname === '/register'
+                    window.location.pathname === '/register'
                       ? classes.menuItemLink
                       : classes.menuLink
                   }
@@ -371,58 +413,58 @@ const Header = (props: any) => {
                       fontFamily: "'Sunborn-Sansone'!important",
                     }}
                   >
-                      {basketObj.basket &&
-                        basketObj.basket.products.length > 0 &&
-                        getBasketCount(basketObj.basket)}
+                    {basketObj.basket &&
+                      basketObj.basket.products.length > 0 &&
+                      getBasketCount(basketObj.basket)}
                   </div>
                 </div>
               )}
             </>
           ) : (
             <>
-            <Grid  sx={{display: "flex", justifyContent: "space-evenly"}}>
+              <Grid  sx={{display: "flex", justifyContent: "space-evenly"}}>
 
-              {restaurant && (
-                <Grid sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginRight: "50px",
-                  marginLeft: "50px",
-                  //width: { padding: "0px !important", margin: "0px !important"
-                  //, lg: "106.5px", md: "106.5px", sm: '106.5px' 
-                //}
-                }}>
-                  <Link
+                {restaurant && (
+                  <Grid sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginRight: "50px",
+                    marginLeft: "50px",
+                    //width: { padding: "0px !important", margin: "0px !important"
+                    //, lg: "106.5px", md: "106.5px", sm: '106.5px'
+                    //}
+                  }}>
+                    <Link
 
-                    to={restaurant ? '/menu/' + restaurant.slug : '/'}
-                    className={classes.menuLinkview}
-                    title="View Menu"
-                    onClick={() => setShowAccountMenu(false)}
-                  >
-                    View Menu
-                  </Link>
-                </Grid>
-              )}
-              {
+                      to={restaurant ? '/menu/' + restaurant.slug : '/'}
+                      className={classes.menuLinkview}
+                      title="View Menu"
+                      onClick={() => setShowAccountMenu(false)}
+                    >
+                      View Menu
+                    </Link>
+                  </Grid>
+                )}
+                {
                   restaurant && (!hideLoginPanel || !hideLoginedPanel && isLoginUser() && providerToken?.first_name) &&(
-                    <Grid 
+                    <Grid
                     >
                       <Typography className="v-line" sx={{ marginTop: { sm: "10px", lg: "15px", md: "11px" } }}>
-      
+
                       </Typography>
                     </Grid>
                   )
                 }
-             
-              {isLoginUser() && providerToken?.first_name
-                ? !hideLoginedPanel && (
+
+                {isLoginUser() && providerToken?.first_name
+                  ? !hideLoginedPanel && (
                   <Grid
                     container
                     sx={{
                       marginRight: "50px",
                       marginLeft: "50px",                     // width: { sm: '170px', md: '200px' },
-                     // marginLeft: '15px',
+                      // marginLeft: '15px',
                       alignItems: 'center',
                       cursor: 'pointer',
                     }}
@@ -463,7 +505,7 @@ const Header = (props: any) => {
                           textAlign: 'center',
                           textTransform: 'uppercase',
                           fontSize: '11pt',
-                          
+
                           color: "#0073BD",
                         }}
                       >
@@ -495,7 +537,7 @@ const Header = (props: any) => {
                     </Grid>
                   </Grid>
                 )
-                : !hideLoginPanel && (
+                  : !hideLoginPanel && (
                   <Grid
                     container
                     sx={{
@@ -553,8 +595,8 @@ const Header = (props: any) => {
                     </Grid>
                   </Grid>
                 )}
-                
-            </Grid>
+
+              </Grid>
               {!removeCart && (
                 <Button
                   component="div"

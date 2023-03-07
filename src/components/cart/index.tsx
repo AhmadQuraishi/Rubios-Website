@@ -282,7 +282,9 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
       displayToast('SUCCESS', '1 item removed from cart.');
       fitContainer();
       setActionStatus(false);
-      navigate(restaurant?.slug  ? '/menu/' + restaurant.slug : '/');
+      navigate(
+        restaurant?.slug ? '/menu/' + restaurant.slug + '?cart=true' : '/',
+      );
     }
   }, [productRemoveObj]);
 
@@ -337,7 +339,9 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
       displayToast('SUCCESS', 'Duplicate item added to cart.');
       fitContainer();
       setActionStatus(false);
-      navigate(restaurant?.slug ? '/menu/' + restaurant.slug : '/');
+      navigate(
+        restaurant?.slug ? '/menu/' + restaurant.slug + '?cart=true' : '/',
+      );
     }
   }, [productAddObj]);
 
@@ -512,7 +516,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
     }, 1000);
   };
 
-  
+
 
   return (
     <>
@@ -1331,7 +1335,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         // title="ESTIMATED TAX AND FEES"
                       >
                         <div>
-                          { 
+                          {
                           basketObj?.basket?.totalfees > 0 ? (
                             <>
                             <Typography sx={{
@@ -1396,7 +1400,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                     container
                                     className={'taxes'}
                                     spacing={1}
-                                    
+
                                   >
                                     <Grid item xs={9}>
                                       <Typography
@@ -1422,7 +1426,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                           textAlign: 'right',
                                           fontFamily: "'Librefranklin-Regular' !important",
                                             color: '#062C43 !important',
-                                            
+
                                             fontSize: "14px !important",
                                         }}
 
@@ -1459,8 +1463,8 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                         }}
                                       >
                                         {
-                                          basketObj?.basket?.fees?.length && 
-                                          basketObj.basket.fees.filter((fee: any) => fee.description === 'UCSD Living Wage Surcharge').length > 0 ? 
+                                          basketObj?.basket?.fees?.length &&
+                                          basketObj.basket.fees.filter((fee: any) => fee.description === 'UCSD Living Wage Surcharge').length > 0 ?
                                           'UCSD Living Wage Surcharge:' : 'SERVICE FEE:'
                                         }
                                       </Typography>

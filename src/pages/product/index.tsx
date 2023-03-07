@@ -322,7 +322,7 @@ const Product = () => {
       setActionStatus(false);
       // displayToast('SUCCESS', '1 item added to cart.');
       // dispatch(getBasketRequest('', productAddObj.basket, basketType));
-      navigate('/menu/' + restaurant.slug);
+      navigate(`/menu/${restaurant.slug}?cart=true`);
     }
   }, [productAddObj]);
 
@@ -332,7 +332,7 @@ const Product = () => {
       setActionStatus(false);
       displayToast('SUCCESS', '1 item updated in cart.');
       // dispatch(getBasketRequest('', productUpdateObj.basket, basketType));
-      navigate('/menu/' + restaurant.slug);
+      navigate(`/menu/${restaurant.slug}?cart=true`);
     }
   }, [productUpdateObj]);
 
@@ -360,7 +360,7 @@ const Product = () => {
         if (
           (itemMain.description &&
             itemMain.description.toLowerCase().indexOf('remove or modify') !==
-              -1) ||
+            -1) ||
           option.customDropDown
         ) {
           optionsArray.push({
@@ -405,8 +405,8 @@ const Product = () => {
         editOptions.length > 0
           ? editOptions
           : defaultOptionID
-          ? [defaultOptionID]
-          : [];
+            ? [defaultOptionID]
+            : [];
 
       setOptionsSelectionArray((optionsSelectionArray: any) => [
         ...optionsSelectionArray,
@@ -443,7 +443,7 @@ const Product = () => {
                 selectedOptions,
                 (isParentSelected &&
                   parentDefaultOptionID.includes(parentID)) ||
-                  parentID == null,
+                parentID == null,
               )
             );
           }
@@ -1098,22 +1098,22 @@ const Product = () => {
                           aria-label={`${
                             productDetails.caloriesseparator
                               ? productDetails.basecalories +
-                                productDetails.caloriesseparator +
-                                productDetails.maxcalories
+                              productDetails.caloriesseparator +
+                              productDetails.maxcalories
                               : productDetails.basecalories
                           } Cal`}
                           title={`${
                             productDetails.caloriesseparator
                               ? productDetails.basecalories +
-                                productDetails.caloriesseparator +
-                                productDetails.maxcalories
+                              productDetails.caloriesseparator +
+                              productDetails.maxcalories
                               : productDetails.basecalories
                           } Cal`}
                         >
                           {productDetails.caloriesseparator
                             ? productDetails.basecalories +
-                              productDetails.caloriesseparator +
-                              productDetails.maxcalories
+                            productDetails.caloriesseparator +
+                            productDetails.maxcalories
                             : productDetails.basecalories}{' '}
                           Cal
                         </Typography>
@@ -1394,14 +1394,14 @@ const Product = () => {
                                           productImageURL={
                                             productDetails &&
                                             ((categories &&
-                                              categories.imagepath) ||
+                                                categories.imagepath) ||
                                               '') +
-                                              changeImageSize(
-                                                productDetails.imagefilename ||
-                                                  '',
-                                                productDetails.images || '',
-                                                'desktop-menu',
-                                              )
+                                            changeImageSize(
+                                              productDetails.imagefilename ||
+                                              '',
+                                              productDetails.images || '',
+                                              'desktop-menu',
+                                            )
                                           }
                                           index={index1}
                                           className="item-image"
@@ -1554,19 +1554,19 @@ const Product = () => {
                                                         onClick={() => {
                                                           setTotalCost(
                                                             ((productDetails?.cost ||
-                                                              0) +
+                                                                0) +
                                                               option.cost) *
-                                                              count,
+                                                            count,
                                                           );
                                                         }}
                                                       >
                                                         {option.name +
                                                           (option.cost > 0
                                                             ? ' (+$' +
-                                                              option.cost.toFixed(
-                                                                2,
-                                                              ) +
-                                                              ')'
+                                                            option.cost.toFixed(
+                                                              2,
+                                                            ) +
+                                                            ')'
                                                             : '')}
                                                       </option>
                                                     ),
@@ -1628,7 +1628,7 @@ const Product = () => {
                             setCount(Math.max(count - 1, 1));
                             setTotalCost(
                               ((productDetails?.cost || 0) + optionsCost) *
-                                Math.max(count - 1, 1),
+                              Math.max(count - 1, 1),
                             );
                           }}
                         >
@@ -1656,7 +1656,7 @@ const Product = () => {
                             setCount(count + 1);
                             setTotalCost(
                               ((productDetails?.cost || 0) + optionsCost) *
-                                (count + 1),
+                              (count + 1),
                             );
                           }}
                         >
