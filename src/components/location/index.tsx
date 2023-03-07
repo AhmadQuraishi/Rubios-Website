@@ -158,9 +158,16 @@ const LocationCard = (props: any) => {
   useEffect(() => {
     if (orderType === 'dispatch' &&
       filteredRestaurants.length > 0 && filteredRestaurants[0]) {
-      setZoom(10);
+      setZoom(12);
     }
   }, [addCustomAddressCheck])
+  
+  useEffect(() => {
+    if (orderType === 'pickup' &&
+      filteredRestaurants.length > 0 && filteredRestaurants[0]) {
+      setZoom(12);
+    }
+  }, [filteredRestaurants])
 
   // useEffect(() => {
   //   if (updatebasket) {

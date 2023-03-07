@@ -69,9 +69,6 @@ const DeliveryForm = ({
     if (event.target.name === 'contactLess') {
       if (event.target.checked) {
         setSpecialInstruction('I want contactless delivery');
-        if (specialInstruction.length < 1) {
-        setContactValues({contactLess : false});
-        }
       } else {
         setSpecialInstruction('');
       }
@@ -313,7 +310,7 @@ const DeliveryForm = ({
                   {remainingChars} characters remaining
                   </Typography> */}
 
-                  {(contactValues.contactLess === true && specialInstruction?.length > 0) || (contactValues.contactLess === false && specialInstruction?.length) > 0 ? " " : (
+                  {(
                   <FormGroup>
                     <FormControlLabel
                       control={
