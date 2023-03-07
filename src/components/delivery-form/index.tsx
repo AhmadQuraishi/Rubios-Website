@@ -72,7 +72,7 @@ const DeliveryForm = ({
 
   React.useEffect(() => {
       if (basket?.deliveryaddress?.specialinstructions !== '' && specialInstructionRunOnce){
-          if (basket?.deliveryaddress?.specialinstructions?.toLowerCase() === 'I want contactless delivery'){
+          if (basket?.deliveryaddress?.specialinstructions === 'I want contactless delivery'){
             setSpecialInstruction('');
             setIsContactless(true);
           }
