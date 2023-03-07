@@ -211,6 +211,7 @@ const StoreInfoBar = () => {
           />
           <Grid item xs={12}>
             <Grid container spacing={0} margin="auto">
+              { !isMobile ? (
               <Grid
                 item
                 xs={12}
@@ -232,7 +233,7 @@ const StoreInfoBar = () => {
                   {/* {window?.location?.href
                     ?.toLocaleLowerCase()
                     ?.indexOf('/checkout') !== -1 && ( */}
-                    <>
+                    {/* <>
                       <Typography
                         //variant="body2"
                         color="#fff"
@@ -242,7 +243,7 @@ const StoreInfoBar = () => {
                         sx={{
                           marginLeft: '5px',
                           display: {
-                            xs: 'block',
+                            xs: 'none',
                             sm: 'none',
                             md: 'none',
                             lg: 'none',
@@ -268,7 +269,7 @@ const StoreInfoBar = () => {
                         </p>
                         {'\n'}
                       </Typography>
-                    </>
+                    </> */}
                         {/* )} */}
                 </Grid>
                 <Typography
@@ -276,10 +277,13 @@ const StoreInfoBar = () => {
                   color="#fff"
                   textTransform="uppercase"
                   lineHeight={1.3}
-                  fontFamily= "'Sunborn-Sansone' !important"
                   sx={{
+                    fontFamily: {
+                    xs: "'Librefranklin-Regular' !important",
+                    sm:"'Sunborn-Sansone' !important",
+                    },
                     fontSize: {
-                      xs: '30px !important',
+                      xs: '13px !important',
                       sm: '35px !important',
                       lg: '40px !important',
                     },
@@ -296,6 +300,14 @@ const StoreInfoBar = () => {
                       <Typography
                         className={classes.heading}
                         variant="h2"
+                        sx={{
+                        display: {
+                          xs: 'none',
+                          sm: 'flex',
+                          md: 'flex',
+                          lg: 'flex',
+                        },
+                        }}
                         textTransform="uppercase"
                         title="Pick Up From"
                       >
@@ -303,8 +315,51 @@ const StoreInfoBar = () => {
                       </Typography>
                     </>
                   )}
-              </Grid>
-              {isMobile && (
+              </Grid> 
+                    ) : (
+                      <Grid
+                item
+                xs={12}
+                sm={6}
+                sx={{
+                  paddingRight: { xs: '0px', sm: '15px' },
+                  paddingBottom: { xs: '0px', sm: '0px' },
+                }}
+              >
+                <Grid onClick={() => {navigate('/location')}} sx={{ display: 'flex', flexDirection: 'row',alignItems: 'baseline',justifyContent: 'center', border: "1px solid #fff", borderRadius: "20px", }}>
+                  <Typography
+                    className={classes.heading}
+                    variant="h2"
+                    sx={{margin: "5px 0px 5px 0px", padding: '5px'}}
+                    textTransform="uppercase"
+                    title="Pick Up From"
+                  >
+                    {orderSelectedType()}
+                  </Typography>
+
+                <Typography
+                  variant="h2"
+                  color="#fff"
+                  lineHeight={1.3}
+                  sx={{
+                    marginLeft : '10px',
+                    fontFamily: {
+                    xs: "'Librefranklin-Regular' !important",
+                    },
+                    fontSize: {
+                      xs: '13px !important',
+                      sm: '35px !important',
+                      lg: '40px !important',
+                    },
+                  }}
+                  title={restaurantInfo.name}
+                >
+                  {restaurantInfo.name}
+                </Typography>
+                </Grid>
+              </Grid> 
+                    )}
+              {/* {isMobile && (
                 <Grid>
                   &nbsp;
                   <Typography
@@ -315,7 +370,7 @@ const StoreInfoBar = () => {
                     sx={{
                       marginTop: '-12px',
                       display: {
-                        xs: 'flex',
+                        xs: 'none',
                         sm: 'none',
                         md: 'none',
                         lg: 'none',
@@ -380,7 +435,7 @@ const StoreInfoBar = () => {
                     )}
                   </Grid>
                 </Grid>
-              )}
+              )} */}
               {showHideFunc() && (
                 <>
                   <Grid
