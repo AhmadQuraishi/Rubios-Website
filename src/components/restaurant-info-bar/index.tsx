@@ -330,7 +330,7 @@ const StoreInfoBar = () => {
                   <Typography
                     className={classes.heading}
                     variant="h2"
-                    sx={{margin: "5px 0px 5px 0px", padding: '5px'}}
+                    sx={{margin: "5px 0px 5px 0px", padding: '5px',}}
                     textTransform="uppercase"
                     title="Pick Up From"
                   >
@@ -343,6 +343,10 @@ const StoreInfoBar = () => {
                   lineHeight={1.3}
                   sx={{
                     marginLeft : '10px',
+                    maxWidth: { sm: 'auto', lg: 'auto' },
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
                     fontFamily: {
                     xs: "'Librefranklin-Regular' !important",
                     },
