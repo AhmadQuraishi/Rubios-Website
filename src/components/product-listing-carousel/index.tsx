@@ -231,7 +231,7 @@ const ProductListingCarousel = (props: any) => {
                 id="foodmenuproduct"
                 scroll-id={'#panel-' + index}
                 key={index}
-                style={{ padding: 10 }}
+                style={{ padding: 10, height: "96%" }}
               >
                 <Link
                   onClick={() => {
@@ -240,7 +240,7 @@ const ProductListingCarousel = (props: any) => {
                   to={`/product/${item.id}`}
                   style={{ textDecoration: 'none' }}
                 >
-                  <Card sx={{ maxWidth: 345 }}>
+                  <Card sx={{ maxWidth: 345, height: "100%" }}>
                   {item.imagefilename ? (
                       <img
                         className={classes.img}

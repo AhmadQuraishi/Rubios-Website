@@ -232,7 +232,7 @@ const StoreInfoBar = () => {
           container
           spacing={0}
           sx={{
-            backgroundColor: "#062C43",
+            backgroundColor: "#122b41",
             padding: { xs: '30px 20px', sm: '35px 40px', lg: '20px 100px' },
           }}
         >
