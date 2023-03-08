@@ -36,7 +36,7 @@ import "./index.css";
 const useStyles = makeStyles((theme: Theme) => ({
   heading: {
     fontFamily: "'Sunborn-Sansone'!important",
-    color: "#0075BF !important",
+    // color: "#0075BF !important",
     fontSize: '25px !important',
     textTransform: 'uppercase',
     paddingBottom: '30px',
@@ -549,7 +549,7 @@ const CategoryList = () => {
                       padding: '10px 0px',
                       marginRight: '20px',
                       fontSize:"15px",
-                      color: "#2B2929 !important" 
+                      color: {xs: "#062c43", sm:"#224c65 !important"} 
                       
                     }}
                     tabIndex={0}
@@ -584,9 +584,12 @@ const CategoryList = () => {
                   style={{ position: 'absolute', top: '-120px' }}
                 ></div>
                 <Grid container sx={{alignItems: "center"}}>
-                  <Grid item xs={item.products.length > 4 ? 8 : 8}>
+                  <Grid item xs={12} sm={item.products.length > 4 ? 8 : 8}>
                     <Typography
                       variant="h2"
+                      sx={{color: { xs: '#062c43 ', sm: '#224c65'},
+                          display: {xs: 'flex', },
+                          justifyContent: {xs: 'center', sm: 'left'}}}
                       className={`${classes.heading} rubios-menu-category`}
                       title={item.name}
                     >
@@ -595,7 +598,7 @@ const CategoryList = () => {
                   </Grid>
 
                   {item.products.length > 4  &&(
-                    <Grid item xs={4} sx={{padding: "0px 0px 35px 0px"}}>
+                    <Grid item xs={4} sx={{padding: "0px 0px 35px 0px", display: {xs: 'none', sm: 'block'}}}>
                       <Typography className={classes.link}>
                         <Link to={`/category/${item.id}`} title="view all" style={{color: "#062C43"}}>
                           view all <span style={{fontSize:"17px"}}><img

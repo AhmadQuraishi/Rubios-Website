@@ -287,6 +287,7 @@ const ProductListingCarousel = (props: any) => {
                       <Typography
                         variant="caption"
                         title={item.description}
+                        sx={{display: {xs: 'none !important', sm:'flex'}}}
                         className={classes.content + ' fix-span'}
                         
                       >
@@ -299,7 +300,7 @@ const ProductListingCarousel = (props: any) => {
                             //xs={3}
                             title={`$${parseFloat(item.cost).toFixed(2)}`}
                             className={classes.price}
-                            sx={{display: "flex", flexDirection: 'column'}}
+                            sx={{display: {xs: 'none', sm:'flex'}, flexDirection: 'column'}}
                           >
                             ${parseFloat(item.cost).toFixed(2)}
 
@@ -309,6 +310,7 @@ const ProductListingCarousel = (props: any) => {
                         {(item.basecalories > 0 || item.maxcalories > 0) &&  item.cost > 0 && (
                           <Grid
                           item
+                          sx={{display: {xs: 'none', sm:'flex'}}}
                           >
                             
                            <Typography className="vertical-line" style={{marginTop:"11px", marginLeft: "10px", marginRight: "10px"}}>
@@ -327,6 +329,7 @@ const ProductListingCarousel = (props: any) => {
                                 : item.basecalories
                             } CAL`}
                             className={classes.cal}
+                            sx={{display: {xs: 'none', sm:'flex'}}}
                           >
 
                             {item.caloriesseparator

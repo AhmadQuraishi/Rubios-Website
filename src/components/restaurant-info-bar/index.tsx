@@ -343,7 +343,7 @@ const StoreInfoBar = () => {
                   lineHeight={1.3}
                   sx={{
                     marginLeft : '10px',
-                    maxWidth: { sm: 'auto', lg: 'auto' },
+                    maxWidth: { xs: '155px' },
                     whiteSpace: 'nowrap',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
