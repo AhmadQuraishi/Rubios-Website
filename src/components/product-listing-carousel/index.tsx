@@ -420,6 +420,7 @@ const ProductListingCarousel = (props: any) => {
                             variant="h2"
                             title={item?.name || ''}
                             className={classes.title}
+                            sx={{padding: "0px !important"}}
                             dangerouslySetInnerHTML={{ __html: item?.name?.includes("®") ? item.name.replace('®', '<sup>®</sup>') : item.name }}
                           >
                           </Typography>

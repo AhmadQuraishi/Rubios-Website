@@ -85,7 +85,7 @@ const CategoryList = () => {
   const [restaurantSelected, setRestaurantSelected] = useState<any>();
   const [value, setValue] = useState('0');
   const { store } = useParams();
-  const [showMore, setShowMore] = useState(false);
+  const [showAll, setShowAll] = useState<ShowAll>({});
   const [categoriesWithProducts, setCategoriesWithProducts] =
     useState<ResponseMenu>();
     const myRef: RefObject<HTMLElement> = useRef(null);
@@ -107,22 +107,34 @@ const CategoryList = () => {
 
   const [prevScrollPos, setPrevScrollPos] = useState(0);
 
-  const handleViewClick = () => {
-    if (showMore) {
-      // scroll back to the previous position and hide the extra content
-      window.scrollTo({ top: prevScrollPos, behavior: 'smooth' });
-      setShowMore(false);
-    } else {
-      // store the current scroll position and show the extra content
-      setPrevScrollPos(window.pageYOffset);
-      setShowMore(true);
-  
-      // scroll to the grid element
-      if (myRef.current) {
-        myRef.current.scrollIntoView({ behavior: 'smooth' });
-      }
+  // const handleViewClick = () => {
+  //   if (showMore) {
+  //     window.scrollTo({ top: prevScrollPos, behavior: 'smooth' });
+  //     setShowMore(false);
+  //   } else {
+  //     setPrevScrollPos(window.pageYOffset);
+  //     setShowMore(true);
+  //     if (myRef.current) {
+  //       myRef.current.scrollIntoView({ behavior: 'smooth' });
+  //     }
+  //   }
+  // };
+
+  const handleViewMore = (categoryIndex : any) => {
+    if (showAll[categoryIndex]){
+      // window.scrollTo({ top: prevScrollPos, behavior: 'smooth' });
+    setShowAll({ ...showAll, [categoryIndex]: false });
+    } else{
+      // setPrevScrollPos(window.pageYOffset);
+      setShowAll({ ...showAll, [categoryIndex]: true });
+      // if (myRef.current) {
+      // myRef.current.scrollIntoView({ behavior: 'smooth' });
+      // }
     }
   };
+  type ShowAll = {
+    [categoryIndex: number]: boolean;
+  }
   useEffect(() => {
     if (window.location.href.toLowerCase().indexOf('selection=1') != -1) {
       setGetResutrants(true);
@@ -659,7 +671,7 @@ const CategoryList = () => {
                 <ProductListingCarousel
                   orderType={orderType}
                   index={Math.random()}
-                  productList={showMore ? item.products : item.products.slice(0,4)}
+                  productList={showAll[item.id] ? item.products : item.products.slice(0,4)}
                   categoryID={item.id}
                   categoryName={item.name}
                   imgPath={
@@ -668,14 +680,13 @@ const CategoryList = () => {
                   shownItemsCount={4}
                 />
               </Grid>
-              {item.products.length > 4 && (
-
+              {item.products.length > 4
+                &&
                 <Grid
                   sx={{marginTop: '4px',display: {xs: 'block',sm: 'none',md: 'none',lg: 'none',},}}
-                  onClick={() => {
-                    handleViewClick()
-                  }}
+                    onClick={() => handleViewMore(item.id)}
                   item
+                  key={item.id}
                   style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -684,11 +695,11 @@ const CategoryList = () => {
                   }}
                   role={'button'}
                   tabIndex={0}
-                  title={`${showMore ? 'Hide' : 'View'} Details`}
+                  // title={`${showAll[index] ? 'Hide' : 'View'} Details`}
                   
                   onKeyPress={(e: any) => {
                     if (e.key === 'Enter') {
-                      handleViewClick()
+                      handleViewMore(item.id)
                     }
                   }}
                   xs={12}
@@ -696,6 +707,7 @@ const CategoryList = () => {
                   <Typography
                     variant="h2"
                     className={classes.link2}
+                    key={item.id}
                     sx={{
                       fontSize: '18px !important',
                       color: '#062c43',
@@ -708,9 +720,9 @@ const CategoryList = () => {
                       },
                     }}
                   >
-                    VIEW {showMore ? 'LESS' : 'MORE'}
+                    VIEW {showAll[item.id] ? 'LESS' : 'MORE'}
                   </Typography>
-                  {showMore ? (
+                  {showAll ? (
                     <ExpandLessIcon
                       sx={{
                         marginLeft: '10px',
@@ -738,7 +750,7 @@ const CategoryList = () => {
                     />
                   )}
                 </Grid>
-                )}
+              }
             </Grid>
           ))}
         <Grid
