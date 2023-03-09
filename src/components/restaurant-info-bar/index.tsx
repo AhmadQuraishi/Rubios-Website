@@ -215,7 +215,7 @@ const StoreInfoBar = () => {
           {process.env.REACT_APP_PROMO_MESSAGE}
 
           </Grid>
-          <Grid        sx={{marginLeft: {xs: '10px'}}}   xs={1} sm={0.2}>
+          <Grid        sx={{cursor: 'pointer',marginLeft: {xs: '10px'}}}   xs={1} sm={0.2}>
           <img
                 src={crossIcon}
                 title="Close Cart"
