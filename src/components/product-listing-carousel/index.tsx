@@ -6,6 +6,9 @@ import {
   Theme,
   useMediaQuery,
   useTheme,
+  CardMedia,
+  Button,
+  CardActions,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Link } from 'react-router-dom';
@@ -26,7 +29,7 @@ import { isLoginUser } from '../../helpers/auth';
 
 const useStyles = makeStyles((theme: Theme) => ({
   img: {
-    borderRadius: '10px',
+    // borderRadius: '10px',
     display: 'block',
     width: '100%',
   },
@@ -38,7 +41,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 },
   title: {
     color: "#0075BF",
-    padding: '20px 0 10px 0',
+    padding: '0px 0 12px 0',
     fontSize: '16px !important',
     fontWeight: '600 !important',
     fontFamily: "'GritSans-Bold' !important",
@@ -46,7 +49,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     textTransform: 'uppercase',
   },
   content: {
-    color: theme.palette.secondary.main,
+    color: "#224c65",
     fontSize: '13px !important',
     lineHeight: '7px',
     fontFamily: "'Librefranklin-Regular' !important",
@@ -56,14 +59,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingTop: '10px',
     fontFamily: "'Librefranklin-Regular' !important",
     fontSize: '14px',
-    color: theme.palette.primary.main,
+    color: "#224c65",
     fontWeight: "bold",
   },
   price: {
     paddingTop: '10px',
     fontFamily: "'Librefranklin-Regular' !important",
     fontSize: '14px',
-    color: '#0075BF',
+    color: "#224c65",
     fontWeight: "bold",
   },
 }));
@@ -189,168 +192,249 @@ const ProductListingCarousel = (props: any) => {
   };
 
   return (
-    <Fragment>
-      {/* <Grid container spacing={3}> */}
-      <Carousel
-        swipeable={true}
-        draggable={false}
-        responsive={responsive}
-        // ssr={true} // means to render carousel on server-side.
-        // infinite={false}
-        // autoPlay={props.deviceType !== 'mobile' ? false : true}
-        additionalTransfrom={0}
-        autoPlay={false}
-        autoPlaySpeed={99999}
-        keyBoardControl={true}
-        partialVisible={true}
-        // customTransition="all .5"
-        transitionDuration={500}
-        containerClass="carousel-container"
-        removeArrowOnDeviceType={['tablet', 'mobile']}
-        deviceType={props.deviceType}
-        dotListClass="custom-dot-list-style"
-        itemClass="carousel-item-padding-40-px carousel-mobile-show-next-slide"
+    <>
+    {!isMobile ? (
+      <Fragment>
+        {/* <Grid container spacing={3}> */}
+        <Carousel
+          draggable={false}
+          responsive={responsive}
+          // ssr={true} // means to render carousel on server-side.
+          // infinite={false}
+          // autoPlay={props.deviceType !== 'mobile' ? false : true}
+          additionalTransfrom={0}
+          autoPlay={false}
+          autoPlaySpeed={99999}
+          keyBoardControl={true}
+          partialVisible={true}
+          // customTransition="all .5"
+          transitionDuration={500}
+          containerClass="carousel-container"
+          removeArrowOnDeviceType={['tablet', 'mobile']}
+          deviceType={props.deviceType}
+          dotListClass="custom-dot-list-style"
+          itemClass="carousel-item-padding-40-px carousel-mobile-show-next-slide"
         // customRightArrow={<CustomRightArrow onClick={undefined} />}
         // customLeftArrow={<CustomLeftArrow onClick={undefined} />}
-      >
-        {products.map(
-          (item: any, index: number) =>
-            checkProductAvailability(item, orderType) && (
-              // <Grid
-              //   scroll-id={'#panel-' + index}
-              //   key={index}
-              //   item
-              //   xs={12}
-              //   sm={6}
-              //   md={3}
-              // >
-              <div
-                id="foodmenuproduct"
-                scroll-id={'#panel-' + index}
-                key={index}
-                style={{ padding: 10 }}
-              >
-                <Link
-                  onClick={() => {
-                    triggerFacebookEventOnViewContentProduct();
-                  }}
-                  to={`/product/${item.id}`}
-                  style={{ textDecoration: 'none' }}
+        >
+          {products.map(
+            (item: any, index: number) =>
+              checkProductAvailability(item, orderType) && (
+                // <Grid
+                //   scroll-id={'#panel-' + index}
+                //   key={index}
+                //   item
+                //   xs={12}
+                //   sm={6}
+                //   md={3}
+                // >
+                <div
+                  id="foodmenuproduct"
+                  scroll-id={'#panel-' + index}
+                  key={index}
+                  style={{ padding: 10, height: "96%" }}
                 >
-                  <Card
-                    elevation={0}
+                  <Link
+                    onClick={() => {
+                      triggerFacebookEventOnViewContentProduct();
+                    }}
+                    to={`/product/${item.id}`}
+                    style={{ textDecoration: 'none' }}
+                  >
+                    <Card elevation={0}
                     style={{ borderRadius: 0 }}
                     role="group"
-                    aria-label={item.name}
-                  >
-                    {item.imagefilename ? (
-                      <img
-                        className={classes.img}
-                        alt={item.name }
-                        src={
-                          imgPath +
-                          changeImageSize(
-                            item.imagefilename,
-                            item.images,
-                            process.env.REACT_APP_NODE_ENV === 'production'
-                              ? 'marketplace-product'
-                              : 'desktop-menu',
-                          )
-                        }
-                        title={item.name}
-                      />
-                    ) : (
-                      <img
-                        className={classes.img}
-                        alt={item.name }
-                        src={require('../../assets/imgs/default_img.png')}
-                        title={item.name}
-                      />
-                    )}
-                    {checkFeaturedProduct(item, categoryName) && (
-                      <Typography
-                        variant="h2"
-                        title={'FEATURED'}
-                        className="product-label"
-                      >
-                        FEATURED
-                      </Typography>
-                    )}
-                    <CardContent sx={{ padding: '0' }}>
-                      <Typography
-                        variant="h2"
-                        title={item?.name || ''}
-                        className={classes.title}
-                        dangerouslySetInnerHTML={{__html: item?.name?.includes("®") ? item.name.replace('®', '<sup>®</sup>') : item.name}}
-                      > 
-                      </Typography>
-                      <Typography
-                        variant="caption"
-                        title={item.description}
-                        sx={{display: {xs: 'none !important', sm:'flex'}}}
-                        className={classes.content + ' fix-span'}
-                        
-                      >
-                        {item.description }
-                      </Typography>
-                      <Grid container spacing={0} >
-                      {item.cost > 0 && (
-                          <Grid
-                            item
-                            //xs={3}
-                            title={`$${parseFloat(item.cost).toFixed(2)}`}
-                            className={classes.price}
-                            sx={{display: {xs: 'none', sm:'flex'}, flexDirection: 'column'}}
-                          >
-                            ${parseFloat(item.cost).toFixed(2)}
+                    aria-label={item.name}>
+                      {item.imagefilename ? (
+                        <img
+                          className={classes.img}
+                          alt={item.name}
+                          src={
+                            imgPath +
+                            changeImageSize(
+                              item.imagefilename,
+                              item.images,
+                              process.env.REACT_APP_NODE_ENV === 'production'
+                                ? 'marketplace-product'
+                                : 'desktop-menu',
+                            )
+                          }
+                          title={item.name}
+                        />
+                      ) : (
+                        <img
+                          className={classes.img}
+                          alt={item.name}
+                          src={require('../../assets/imgs/default_img.png')}
+                          title={item.name}
+                        />
+                      )}
+                      {checkFeaturedProduct(item, categoryName) && (
+                        <Typography
+                          variant="h2"
+                          title={'FEATURED'}
+                          className="product-label"
+                        >
+                          FEATURED
+                        </Typography>
+                      )}
+                      <CardContent>
+                        <Typography
+                          variant="h2"
+                          title={item?.name || ''}
+                          className={classes.title}
+                          dangerouslySetInnerHTML={{ __html: item?.name?.includes("®") ? item.name.replace('®', '<sup>®</sup>') : item.name }}
+                        >
+                        </Typography>
+                        <Typography
+                          variant="caption"
+                          title={item.description}
+                          className={classes.content + ' fix-span'}
 
-                          </Grid>
-                          
-                        )}
-                        {(item.basecalories > 0 || item.maxcalories > 0) &&  item.cost > 0 && (
-                          <Grid
-                          item
-                          sx={{display: {xs: 'none', sm:'flex'}}}
-                          >
-                            
-                           <Typography className="vertical-line" style={{marginTop:"11px", marginLeft: "10px", marginRight: "10px"}}>
+                        >
+                          {item.description}
+                        </Typography>
+                        <Grid container spacing={0} sx={{ marginTop: "12px" }}>
+                          {item.cost > 0 && (
+                            <Grid
+                              item
+                              //xs={3}
+                              title={`$${parseFloat(item.cost).toFixed(2)}`}
+                              className={classes.price}
+                              sx={{ display: "flex", flexDirection: 'column' }}
+                            >
+                              ${parseFloat(item.cost).toFixed(2)}
 
-                            </Typography>
-                          </Grid>
-                        )}
-                        {(item.basecalories > 0 || item.maxcalories > 0) && (
-                          <Grid
-                            item
-                            title={`${
-                              item.caloriesseparator
+                            </Grid>
+
+                          )}
+                          {(item.basecalories > 0 || item.maxcalories > 0) && item.cost > 0 && (
+                            <Grid
+                              item
+                            >
+
+                              <Typography className="vertical-line" style={{ marginTop: "11px", marginLeft: "10px", marginRight: "10px" }}>
+
+                              </Typography>
+                            </Grid>
+                          )}
+                          {(item.basecalories > 0 || item.maxcalories > 0) && (
+                            <Grid
+                              item
+                              title={`${item.caloriesseparator
                                 ? item.basecalories +
-                                  item.caloriesseparator +
-                                  item.maxcalories
-                                : item.basecalories
-                            } CAL`}
-                            className={classes.cal}
-                            sx={{display: {xs: 'none', sm:'flex'}}}
-                          >
-
-                            {item.caloriesseparator
-                              ? item.basecalories +
                                 item.caloriesseparator +
                                 item.maxcalories
-                              : item.basecalories}{' '}
-                            CAL
-                          </Grid>
+                                : item.basecalories
+                                } CAL`}
+                              className={classes.cal}
+                            >
+
+                              {item.caloriesseparator
+                                ? item.basecalories +
+                                item.caloriesseparator +
+                                item.maxcalories
+                                : item.basecalories}{' '}
+                              CAL
+                            </Grid>
+                          )}
+
+                        </Grid>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                </div>
+              ),
+          )}
+
+        </Carousel>
+      </Fragment>
+    ) : (
+      <Fragment>
+        {/* <Grid container spacing={3}> */}
+        <Grid
+          container
+          spacing={2}
+        >
+          {products.map(
+            (item: any, index: number) =>
+              checkProductAvailability(item, orderType) && (
+                <Grid
+                  scroll-id={'#panel-' + index}
+                  key={index}
+                  item
+                  xs={6}
+                >
+                {/* <div
+                  id="foodmenuproduct"
+                  scroll-id={'#panel-' + index}
+                  key={index}
+                  style={{ padding: 10, height: "96%" }}
+                > */}
+                  <Link
+                    onClick={() => {
+                      triggerFacebookEventOnViewContentProduct();
+                    }}
+                    to={`/product/${item.id}`}
+                    style={{ textDecoration: 'none' }}
+                  >
+                    {/* <Grid item xs={5}> */}
+                      <Card
+                    role="group"
+                    aria-label={item.name} sx={{height: "100%"}}>
+                        {item.imagefilename ? (
+                          <img
+                            className={classes.img}
+                            alt={item.name}
+                            src={
+                              imgPath +
+                              changeImageSize(
+                                item.imagefilename,
+                                item.images,
+                                process.env.REACT_APP_NODE_ENV === 'production'
+                                  ? 'marketplace-product'
+                                  : 'desktop-menu',
+                              )
+                            }
+                            title={item.name}
+                          />
+                        ) : (
+                          <img
+                            className={classes.img}
+                            alt={item.name}
+                            src={require('../../assets/imgs/default_img.png')}
+                            title={item.name}
+                          />
                         )}
-                        
-                      </Grid>
-                    </CardContent>
-                  </Card>
-                </Link>
-              </div>
-            ),
-        )}
-        {/* </Grid> */}
-      </Carousel>
-    </Fragment>
+                        {checkFeaturedProduct(item, categoryName) && (
+                          <Typography
+                            variant="h2"
+                            title={'FEATURED'}
+                            className="product-label"
+                          >
+                            FEATURED
+                          </Typography>
+                        )}
+                        <CardContent>
+                          <Typography
+                            variant="h2"
+                            title={item?.name || ''}
+                            className={classes.title}
+                            dangerouslySetInnerHTML={{ __html: item?.name?.includes("®") ? item.name.replace('®', '<sup>®</sup>') : item.name }}
+                          >
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    
+                  </Link>
+                  </Grid>
+              ),
+          )}
+
+        </Grid>
+      </Fragment>
+    )}
+  </>
   );
 };
 export default ProductListingCarousel;

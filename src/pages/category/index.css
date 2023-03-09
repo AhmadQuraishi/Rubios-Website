@@ -1,3 +1,8 @@
 .css-176wgj0-MuiButtonBase-root-MuiTab-root.Mui-selected {
     color: #062c43;
 }
+
+.MuiTabs-indicator.css-1uov2sb-MuiTabs-indicator {
+    background-color: #2b4b62;
+    height: 4px;
+}
