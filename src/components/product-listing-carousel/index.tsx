@@ -241,8 +241,7 @@ const ProductListingCarousel = (props: any) => {
                     to={`/product/${item.id}`}
                     style={{ textDecoration: 'none' }}
                   >
-                    <Card elevation={0}
-                    style={{ borderRadius: 0 }}
+                    <Card
                     role="group"
                     aria-label={item.name}>
                       {item.imagefilename ? (
