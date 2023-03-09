@@ -23,8 +23,10 @@ import { getSingleLocation } from '../../redux/actions/location';
 import './index.css';
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
+import crossIcon from '../../assets/imgs/close.png';
 import { OrderTypeDialog } from '../order-type-dialog';
 import { isLoginUser } from '../../helpers/auth';
+import { promotionalMsg } from '../../redux/actions/restaurant';
 const useStyle = makeStyles({
   heading: {
     fontSize: '13px !important',
@@ -48,8 +50,9 @@ const StoreInfoBar = () => {
   const [showMore, setShowMore] = useState(false);
   const [open, setOpen] = useState(false);
   const [openOrder, setOpenOrder] = useState(false);
+  const [showPromo, setShowPromo] = useState(true);
   const [locationId, setLocationId] = useState(null);
-  const { restaurant, orderType } = useSelector(
+  const { promotionMsg, restaurant, orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
   const { calendar } = useSelector(
@@ -169,8 +172,13 @@ const StoreInfoBar = () => {
   const getEstTimeFormat = (date: string, data2: string) => {
     return moment(date, 'YYYYMMDD HH:mm').add(data2, 'minutes').format('dddd h:mm A');
     // moment(startTime, 'HH:mm:ss').add(durationInMinutes, 'minutes').format('HH:mm');
-    
   };
+
+  const promoMessage = () => {
+    setShowPromo(!showPromo);
+    dispatch(promotionalMsg());
+  }
+
   const EstimatedTime = () => {
     const type = basketObj?.basket?.deliverymode || orderType || '';
     const time = basketObj?.basket;
@@ -187,13 +195,45 @@ const StoreInfoBar = () => {
   }
   return (
     <>
+    { !(process.env.REACT_APP_PROMOTIONAL_MESSAGE === '') && promotionMsg && showPromo &&
+     <Grid           sx={{
+      backgroundColor: "#f8cd58",
+      display: 'flex', flexDirection: "row",
+      padding: { xs: '20px 20px', sm: '35px 40px', lg: '20px 100px' },
+    }}>
+      <Grid
+          xs={11}
+          sm={11.8}
+          container
+          spacing={0}
+          sx={{
+            fontFamily:"'Librefranklin-Bold' !important",
+            color: {xs:"#062C43",sm : "#224c65"},
+          }}
+
+        >
+          {process.env.REACT_APP_PROMO_MESSAGE}
+
+          </Grid>
+          <Grid        sx={{marginLeft: {xs: '10px'}}}   xs={1} sm={0.2}>
+          <img
+                src={crossIcon}
+                title="Close Cart"
+                height="20px"
+                onClick={promoMessage}
+                width="20px"
+                alt="Close Cart"
+              />
+          </Grid>
+    </Grid>}
       {restaurantInfo && (
+
         <Grid
           container
           spacing={0}
           sx={{
             backgroundColor: "#062C43",
-            padding: { xs: '30px 20px', sm: '35px 40px', lg: '20px 100px' },
+            padding: { xs: '15px 20px', sm: '35px 40px', lg: '20px 100px' },
           }}
         >
           {/* <DialogBox
@@ -211,6 +251,7 @@ const StoreInfoBar = () => {
           />
           <Grid item xs={12}>
             <Grid container spacing={0} margin="auto">
+              { !isMobile ? (
               <Grid
                 item
                 xs={12}
@@ -232,7 +273,7 @@ const StoreInfoBar = () => {
                   {/* {window?.location?.href
                     ?.toLocaleLowerCase()
                     ?.indexOf('/checkout') !== -1 && ( */}
-                    <>
+                    {/* <>
                       <Typography
                         //variant="body2"
                         color="#fff"
@@ -242,7 +283,7 @@ const StoreInfoBar = () => {
                         sx={{
                           marginLeft: '5px',
                           display: {
-                            xs: 'block',
+                            xs: 'none',
                             sm: 'none',
                             md: 'none',
                             lg: 'none',
@@ -268,7 +309,7 @@ const StoreInfoBar = () => {
                         </p>
                         {'\n'}
                       </Typography>
-                    </>
+                    </> */}
                         {/* )} */}
                 </Grid>
                 <Typography
@@ -276,10 +317,13 @@ const StoreInfoBar = () => {
                   color="#fff"
                   textTransform="uppercase"
                   lineHeight={1.3}
-                  fontFamily= "'Sunborn-Sansone' !important"
                   sx={{
+                    fontFamily: {
+                    xs: "'Librefranklin-Regular' !important",
+                    sm:"'Sunborn-Sansone' !important",
+                    },
                     fontSize: {
-                      xs: '30px !important',
+                      xs: '13px !important',
                       sm: '35px !important',
                       lg: '40px !important',
                     },
@@ -296,6 +340,14 @@ const StoreInfoBar = () => {
                       <Typography
                         className={classes.heading}
                         variant="h2"
+                        sx={{
+                        display: {
+                          xs: 'none',
+                          sm: 'flex',
+                          md: 'flex',
+                          lg: 'flex',
+                        },
+                        }}
                         textTransform="uppercase"
                         title="Pick Up From"
                       >
@@ -303,8 +355,56 @@ const StoreInfoBar = () => {
                       </Typography>
                     </>
                   )}
-              </Grid>
-              {isMobile && (
+              </Grid> 
+                    ) : (
+                      <Grid
+                item
+                xs={12}
+                sm={6}
+                sx={{
+                  paddingRight: { xs: '0px', sm: '15px' },
+                  paddingBottom: { xs: '0px', sm: '0px' },
+                }}
+              >
+                <Grid onClick={() => {navigate('/location')}} sx={{ display: 'flex', flexDirection: 'row',alignItems: 'baseline',justifyContent: 'center', border: "1px solid #fff", borderRadius: "20px", }}>
+                  <Typography
+                    className={classes.heading}
+                    variant="h2"
+                    sx={{margin: "5px 0px 5px 0px", padding: '5px',}}
+                    textTransform="uppercase"
+                    title="Pick Up From"
+                  >
+                    {orderSelectedType()}
+                  </Typography>
+
+                <Typography
+                  variant="h2"
+                  color="#fff"
+                  lineHeight={1.3}
+                  sx={{
+                    marginLeft : '10px',
+                    maxWidth: { xs: '155px' },
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    padding: '0px 15px',
+                    fontFamily: {
+                    xs: "'Librefranklin-Regular' !important",
+                    },
+                    fontSize: {
+                      xs: '13px !important',
+                      sm: '35px !important',
+                      lg: '40px !important',
+                    },
+                  }}
+                  title={restaurantInfo.name}
+                >
+                  {restaurantInfo.name}
+                </Typography>
+                </Grid>
+              </Grid> 
+                    )}
+              {/* {isMobile && (
                 <Grid>
                   &nbsp;
                   <Typography
@@ -315,7 +415,7 @@ const StoreInfoBar = () => {
                     sx={{
                       marginTop: '-12px',
                       display: {
-                        xs: 'flex',
+                        xs: 'none',
                         sm: 'none',
                         md: 'none',
                         lg: 'none',
@@ -380,7 +480,7 @@ const StoreInfoBar = () => {
                     )}
                   </Grid>
                 </Grid>
-              )}
+              )} */}
               {showHideFunc() && (
                 <>
                   <Grid

@@ -842,13 +842,23 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
               )}
               {utensilsReducer?.utensilsProductId &&
                 basketObj?.basket?.deliverymode !== DeliveryModeEnum.dinein && (
-                  <Grid item xs={12}>
+                  <Grid item xs={12} sx={{display: 'flex', alignItems: 'center'}}>
+                    <img
+                      className="item-image"
+                      style={{height: "45px"}}
+                      src={require(`../../assets/imgs/utensils.png`)}
+                      // alt={option.name}
+                      // title={option.name}
+                                      />
                     <Typography
                       variant="body2"
                       className="body-text"
                       // title="I agree to the  Rubios terms and conditions and to receiving marketing communications from Rubios."
-                      sx={{ width: '100%', color: '#224c65',fontFamily: "'Librefranklin-Regular' !important", }}
+                      sx={{ paddingLeft: "10px", width: '100%', color: '#224c65',fontFamily: "'Librefranklin-Regular' !important", }}
                     >
+
+                      Include Utensils
+                      </Typography>
                       <Checkbox
                         checked={utensils}
                         disabled={
@@ -859,15 +869,14 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                           addRemoveUtensils(e);
                         }}
                         inputProps={{
-                          'aria-label': ' Add utensils to my order.',
+                          'aria-label': ' Include Utensils',
                         }}
                         sx={{
                           paddingLeft: 0,
                           fontFamily: "'GritSans-Bold' !important",
                         }}
                       />
-                      Add utensils to my order.
-                    </Typography>
+                    
                   </Grid>
                 )}
 
