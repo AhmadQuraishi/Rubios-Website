@@ -387,6 +387,7 @@ const StoreInfoBar = () => {
                     whiteSpace: 'nowrap',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
+                    padding: '0px 15px',
                     fontFamily: {
                     xs: "'Librefranklin-Regular' !important",
                     },
