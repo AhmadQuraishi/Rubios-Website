@@ -24,7 +24,7 @@ export function updateSessionRequest(sessionTime: any) {
 
 export function updateSessionNull(sessionTime: any) {
   return {
-    type: restaurantActionsTypes.SET_NULL_SESSION_REQUEST,
+    type: restaurantActionsTypes.SET_SESSION_REQUEST,
     sessionTime
   };
 }
@@ -34,6 +34,11 @@ export function getResturantInfoRequestSuccess(data: ResponseRestaurant) {
     type: restaurantActionsTypes.GET_RESTAURANT_INFO_SUCCESS,
     payload: data,
   };
+}
+export function promotionalMsg() {
+  return {
+    type: restaurantActionsTypes.SET_PROMOTIONAL_MSG,
+  }
 }
 
 export function getResturantInfoRequestFailure(error: any) {
