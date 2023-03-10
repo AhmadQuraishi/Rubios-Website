@@ -147,7 +147,103 @@ const Checkout = () => {
       setLocationId(singleLocation?.data[0]?.location_id);
     }
   }, [singleLocation]);
+  const displayAddCreditCard = () => {
+    const billingSchemeStats = getBillingSchemesStats(billingSchemes);
+    return (
+      basket &&
+      //billingSchemeStats.selectedCreditCard === 0 &&
+      billingSchemes?.length > 0 &&
+      allowedCards &&
+      allowedCards.length &&
+      allowedCards.filter((element: any) => {
+        return element.type === 'creditcard';
+      }).length > 0
+    );
+  };
+  const moveFocusBackToScreen = () => {
+    const addCardElement = document.getElementById('add-credit-card');
+    const addGiftCardElement = document.getElementById('add-gift-card');
+    const placeOrderElement = document.getElementById('place-order-button');
+    if (addCardElement && displayAddCreditCard()) {
+      addCardElement.focus();
+    } else if (addGiftCardElement) {
+      addGiftCardElement.focus();
+    } else if (placeOrderElement) {
+      placeOrderElement.focus();
+    }
+  };
+  const handleCreditCardSubmit = async () => {
+    setButtonDisabled(true);
+    if (!zipCode || zipCode === '') {
+      displayToast('ERROR', 'Zip Code is required');
+      setButtonDisabled(false);
+      return;
+    }
 
+    if (!cardExpiry || cardExpiry === '') {
+      displayToast('ERROR', 'Card Expiry is required');
+      setButtonDisabled(false);
+      return;
+    } else if (cardExpiry.length !== 5) {
+      displayToast('ERROR', 'Please enter valid date.');
+      setButtonDisabled(false);
+      return;
+    } else {
+      const currentDate: any = moment(new Date());
+      const expiryDate: any = moment(cardExpiry, 'MM/YY');
+
+      if (!expiryDate.isValid()) {
+        displayToast('ERROR', 'Please enter valid date.');
+        setButtonDisabled(false);
+        return;
+      }
+
+      if (!expiryDate.isAfter(currentDate)) {
+        displayToast('ERROR', 'Please enter future date.');
+        setButtonDisabled(false);
+        return;
+      }
+    }
+
+    let billingSchemesNewArray = billingSchemes;
+    billingSchemesNewArray = billingSchemes.filter(
+      (account: any) =>
+        !(account.billingmethod === 'creditcard' && !account.billingaccountid),
+    );
+    billingSchemesNewArray = billingSchemesNewArray.map((element: any) => {
+      if (element.billingmethod === 'creditcard') {
+        return {
+          ...element,
+          selected: false,
+        };
+      }
+      return element;
+    });
+    const obj = {
+      exp_year: moment(cardExpiry, 'MM/YYYY').year(),
+      exp_month: moment(cardExpiry, 'MM/YYYY').month() + 1,
+      postal_code: zipCode,
+    };
+    let cardObj: any = getCreditCardObj(obj, billingSchemes);
+
+    Array.prototype.push.apply(billingSchemesNewArray, cardObj);
+
+    billingSchemesNewArray = updatePaymentCardsAmount(
+      billingSchemesNewArray,
+      basket,
+    );
+
+    dispatch(updateBasketBillingSchemes(billingSchemesNewArray));
+    if (!isMobile) {
+      displayToast(
+        'SUCCESS',
+        `Credit Card ${editCreditCard ? 'Updated' : 'Added'}`,
+      );
+    }
+    setButtonDisabled(false);
+    setHideShow(!hideShow);
+    moveFocusBackToScreen();
+  };
   useEffect(() => {
     if (qualifyingRewards && qualifyingRewards.length) {
       if (
@@ -1311,6 +1407,9 @@ const Checkout = () => {
                   setHideShow={setHideShow}
                   setZipCode={setZipCode}
                   cardExpiry={cardExpiry}
+                  moveFocusBackToScreen={moveFocusBackToScreen}
+                  displayAddCreditCard={displayAddCreditCard}
+                  handleCreditCardSubmit={handleCreditCardSubmit}
                   setCardExpiry={setCardExpiry}
                   ref={paymentInfoRef}
                   ccsfObj={ccsfObj}
