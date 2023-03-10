@@ -23,7 +23,7 @@ import { getSingleLocation } from '../../redux/actions/location';
 import './index.css';
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
-import crossIcon from '../../assets/imgs/close.png';
+import crossIcon from '../../assets/imgs/cross_square_icon.png';
 import { OrderTypeDialog } from '../order-type-dialog';
 import { isLoginUser } from '../../helpers/auth';
 import { promotionalMsg } from '../../redux/actions/restaurant';
