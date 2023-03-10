@@ -243,7 +243,7 @@ const ProductListingCarousel = (props: any) => {
                   >
                     <Card
                     role="group"
-                    aria-label={item.name}>
+                    aria-label={item.name} sx={{height: "100%"}}>
                       {item.imagefilename ? (
                         <img
                           className={classes.img}
