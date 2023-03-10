@@ -24,6 +24,9 @@ const DeliveryForm = ({
   showSignUpGuest,
   specialInstruction,
   setSpecialInstruction,
+  isContactless,
+  setIsContactless,
+  handleCheckChange,
   setShowSignUpGuest,
 }: any) => {
   const [open, setOpen] = useState(false);
@@ -40,10 +43,6 @@ const DeliveryForm = ({
     setHideIt(!hideIt);
   }
 
-
-  const [contactValues, setContactValues] = useState({
-    contactLess: false,
-  });
 
   const NumberFormatCustom = forwardRef<HTMLElement, CustomProps>(
     function NumberFormatCustom(props, ref) {
@@ -64,16 +63,7 @@ const DeliveryForm = ({
       );
     },
   );
-  const handleCheckChange = (event : any) => {
-    setContactValues({ ...contactValues, [event.target.name]: event.target.checked });
-    if (event.target.name === 'contactLess') {
-      if (event.target.checked) {
-        setSpecialInstruction('I want contactless delivery');
-      } else {
-        setSpecialInstruction('');
-      }
-    }
-  };
+
 
   const handleInsturctionChange = (event: any) => {
     const newInstruction = event.target.value;
@@ -82,7 +72,13 @@ const DeliveryForm = ({
 
   React.useEffect(() => {
       if (basket?.deliveryaddress?.specialinstructions !== '' && specialInstructionRunOnce){
-          setSpecialInstruction(basket?.deliveryaddress?.specialinstructions);
+          if (basket?.deliveryaddress?.specialinstructions === 'I want contactless delivery'){
+            setSpecialInstruction('');
+            setIsContactless(true);
+          }
+          else {
+            setSpecialInstruction(basket?.deliveryaddress?.specialinstructions);
+          }
           setSpecialInstructionRunOnce(false)
       }
   },[basket])
@@ -315,7 +311,7 @@ const DeliveryForm = ({
                     <FormControlLabel
                       control={
                         <Checkbox
-                          checked={contactValues.contactLess}
+                          checked={isContactless}
                           onChange={handleCheckChange}
                         />
                       }
