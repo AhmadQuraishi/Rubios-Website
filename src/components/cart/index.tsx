@@ -845,7 +845,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                   <Grid item xs={12} sx={{display: 'flex', alignItems: 'center'}}>
                     <img
                       className="item-image"
-                      style={{height: "45px"}}
+                      style={{height: "35px"}}
                       src={require(`../../assets/imgs/utensils.png`)}
                       // alt={option.name}
                       // title={option.name}
