@@ -1,46 +1,56 @@
 import React, { forwardRef, useImperativeHandle } from 'react';
-import {
-  Grid,
-  TextField,
-  useTheme,
-} from '@mui/material';
+import { Grid, TextField, useTheme } from '@mui/material';
 import { IMaskInput } from 'react-imask';
 
 interface CustomProps {
-    onChange: (event: { target: { name: string; value: string } }) => void;
-    name: string;
-  }
-
+  onChange: (event: { target: { name: string; value: string } }) => void;
+  name: string;
+}
 
 const NumberFormatCustom = forwardRef<HTMLElement, CustomProps>(
+  function NumberFormatCustom(props, ref) {
+    const { onChange, ...other } = props;
 
-    function NumberFormatCustom(props, ref) {
-      const { onChange, ...other } = props;
-  
-      return (
-        <IMaskInput
-          {...other}
-          mask="00/00"
-          definitions={{
-            '#': /[1-9]/,
-          }}
-          onAccept={(value: any) =>
-            onChange({ target: { name: props.name, value } })
-          }
-          overwrite
-        />
-      );
-    },
-  );
+    return (
+      <IMaskInput
+        {...other}
+        mask="00/00"
+        definitions={{
+          '#': /[1-9]/,
+        }}
+        onAccept={(value: any) =>
+          onChange({ target: { name: props.name, value } })
+        }
+        overwrite
+      />
+    );
+  },
+);
 
-const CreditCardAdd = (props : any) => {
-    const { handleZipCodeChange,handleCardExpiryChange, cardExpiry, zipCode} = props;
+const CreditCardAdd = (props: any) => {
+  const {
+    cardOnScreen,
+    diplayOnScreenCreditCardForm,
+    handleZipCodeChange,
+    handleCardExpiryChange,
+    cardExpiry,
+    zipCode,
+    cardNumberClass,
+    cardCVVClass,
+  } = props;
   const theme = useTheme();
-
 
   return (
     <>
-      <Grid container className="payment-form" spacing={2}>
+      <Grid
+        style={{
+          display:
+            cardOnScreen && !diplayOnScreenCreditCardForm() ? 'none' : 'block',
+        }}
+        container
+        className="payment-form"
+        spacing={2}
+      >
         <Grid
           item
           xs={12}
@@ -64,16 +74,13 @@ const CreditCardAdd = (props : any) => {
               {/*  className="card-fields"*/}
               {/*  data-olo-pay-card-number*/}
               {/*/>*/}
-              <label
-                className="add-credit-card-label"
-                htmlFor="cardnumber"
-              >
+              <label className="add-credit-card-label" htmlFor="cardnumber">
                 Card Number
               </label>
               <div className="card-fields">
                 <div
                   style={{ display: 'contents' }}
-                  className="credit-card-info-div"
+                  className={cardNumberClass}
                 ></div>
               </div>
               <div>
@@ -83,25 +90,15 @@ const CreditCardAdd = (props : any) => {
                 />
               </div>
             </Grid>
-            <Grid
-              textAlign={'left'}
-              item
-              xs={12}
-              sm={6}
-              md={6}
-              lg={6}
-            >
+            <Grid textAlign={'left'} item xs={12} sm={6} md={6} lg={6}>
               {/*<div className="card-fields" data-olo-pay-card-cvc />*/}
-              <label
-                className="add-credit-card-label"
-                htmlFor="cvv"
-              >
+              <label className="add-credit-card-label" htmlFor="cvv">
                 CVV
               </label>
               <div className="card-fields">
                 <div
                   style={{ display: 'contents' }}
-                  className="cvv-info-div"
+                  className={cardCVVClass}
                 ></div>
               </div>
               <div>
@@ -124,10 +121,7 @@ const CreditCardAdd = (props : any) => {
               textAlign={'left'}
               className="payment-form image-field align"
             >
-              <label
-                className="add-credit-card-label"
-                htmlFor="card-expiry"
-              >
+              <label className="add-credit-card-label" htmlFor="card-expiry">
                 Card Expiry MM/YY
               </label>
               <TextField
@@ -143,18 +137,8 @@ const CreditCardAdd = (props : any) => {
                 id="card-expiry"
               />
             </Grid>
-            <Grid
-              textAlign={'left'}
-              item
-              xs={12}
-              sm={6}
-              md={6}
-              lg={6}
-            >
-              <label
-                className="add-credit-card-label"
-                htmlFor="card-zipcode"
-              >
+            <Grid textAlign={'left'} item xs={12} sm={6} md={6} lg={6}>
+              <label className="add-credit-card-label" htmlFor="card-zipcode">
                 Zip Code
               </label>
               <TextField
@@ -176,5 +160,4 @@ const CreditCardAdd = (props : any) => {
   );
 };
 
-export default CreditCardAdd
-;
+export default CreditCardAdd;

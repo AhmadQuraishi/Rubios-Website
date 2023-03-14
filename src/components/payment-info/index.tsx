@@ -56,7 +56,17 @@ const NumberFormatCustom = forwardRef<HTMLElement, CustomProps>(
 
 const PaymentInfo = forwardRef((props: any, _ref) => {
   const navigate = useNavigate();
-  const { ccsfObj, basketAccessToken, hideShow, setHideShow, zipCode, setZipCode, cardExpiry, setCardExpiry } = props;
+  const {
+    ccsfObj,
+    basketAccessToken,
+    hideShow,
+    setHideShow,
+    zipCode,
+    setZipCode,
+    cardExpiry,
+    setCardExpiry,
+    diplayOnScreenCreditCardForm
+  } = props;
   const dispatch = useDispatch();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -108,8 +118,6 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
   const handleHideShow = () => {
     setHideShow(!hideShow);
   };
-
-
 
   React.useEffect(() => {
     if (hideShow) {
@@ -284,6 +292,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
           <Grid container spacing={2} className="payment-form">
             <SplitPayment
               setHideShow={(value: boolean) => HandleEditCreditCard(value)}
+              diplayOnScreenCreditCardForm={diplayOnScreenCreditCardForm}
               displaySavedCards={displaySavedCards}
             />
             <Grid container>
@@ -337,14 +346,16 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                     Add Credit card
                   </Button>
                 )}
-                {billingSchemes?.length === 0 && (
                   <CreditCardAdd
+                    cardOnScreen={true}
+                    diplayOnScreenCreditCardForm={diplayOnScreenCreditCardForm}
                     cardExpiry={cardExpiry}
                     zipCode={zipCode}
                     handleZipCodeChange={handleZipCodeChange}
                     handleCardExpiryChange={handleCardExpiryChange}
+                    cardNumberClass={'credit-card-info-div'}
+                    cardCVVClass={'cvv-info-div'}
                   />
-                )}
                 <div
                   id="myModal"
                   role={'dialog'}
@@ -379,10 +390,14 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                     </div>
                     <div className="modal-body">
                       <CreditCardAdd
+                        cardOnScreen={false}
+                        diplayOnScreenCreditCardForm={diplayOnScreenCreditCardForm}
                         cardExpiry={cardExpiry}
                         zipCode={zipCode}
                         handleZipCodeChange={handleZipCodeChange}
                         handleCardExpiryChange={handleCardExpiryChange}
+                        cardNumberClass={'credit-card-info-div-2'}
+                        cardCVVClass={'cvv-info-div-2'}
                       />
                     </div>
                     <div className="modal-footer">
@@ -410,7 +425,10 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                         }
                         type="submit"
                         className="link default last-focusable-element"
-                        onClick={() => { handleCreditCardSubmit(); handleHideShow(); }}
+                        onClick={() => {
+                          handleCreditCardSubmit();
+                          handleHideShow();
+                        }}
                         autoFocus
                       >
                         {editCreditCard
