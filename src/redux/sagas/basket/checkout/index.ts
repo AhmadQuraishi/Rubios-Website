@@ -190,10 +190,11 @@ function* asyncValidateBasket(action: any): any {
     const basketResponse = yield call(getBasket, action.basketId);
     yield put(getBasketRequestSuccess(basketResponse));
     if (action.basketPayload) {
-      yield put({
-        type: basketActionsTypes.SUBMIT_BASKET_SINGLE_PAYMENT,
-        action,
-      });
+      action.submitOrder(action.basketPayload);
+      // yield put({
+      //   type: basketActionsTypes.SUBMIT_BASKET_SINGLE_PAYMENT,
+      //   action,
+      // });
     }
   } catch (error: any) {
     yield put({

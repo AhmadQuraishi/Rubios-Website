@@ -1,10 +1,7 @@
 export class CreditCardCCSF {
-  constructor() {
+  constructor(elements) {
     // eslint-disable-next-line no-undef
-    this.checkoutFrame = new Olo.CheckoutFrame({
-      cardElement: 'credit-card-info-div',
-      cvvElement: 'cvv-info-div',
-    });
+    this.checkoutFrame = new Olo.CheckoutFrame(elements);
   }
   initialize(basketId, brandAccessId) {
     this.checkoutFrame.initialize({

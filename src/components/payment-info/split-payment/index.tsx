@@ -29,7 +29,7 @@ import {
 import DialogBox from '../../dialog-box';
 
 const SplitPayment = forwardRef((props: any, _ref) => {
-  const { setHideShow, displaySavedCards } = props;
+  const { setHideShow, displaySavedCards, diplayOnScreenCreditCardForm } = props;
   const dispatch = useDispatch();
   const theme = useTheme();
   const basketObj = useSelector((state: any) => state.basketReducer);
@@ -262,7 +262,7 @@ const SplitPayment = forwardRef((props: any, _ref) => {
         message={'Do You Really Want To Remove This Card?'}
         handleDeleteFunction={() => removeSingleBasketBillingSchemes()}
       />
-      {billingSchemes &&
+      {!diplayOnScreenCreditCardForm() && billingSchemes &&
         billingSchemes.length > 0 &&
         billingSchemes
           .filter((account: any) => account.selected)
