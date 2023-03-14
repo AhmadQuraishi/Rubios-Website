@@ -16,9 +16,8 @@ import { navigateAppAction } from '../../navigate-app';
 import { setRecentOrders } from '../../../../helpers/setRecentOrders';
 
 const breakpoints = {
-  XS: 540
+  XS: 540,
 };
-
 
 export function getSingleRestaurantCalendar(
   id: number,
@@ -135,7 +134,6 @@ export function setTipFalse() {
   };
 }
 
-
 export function updateBasketTipAmountFailure(error: any) {
   displayToast(
     'ERROR',
@@ -182,10 +180,7 @@ export function updateBasketCouponCodeFailure(error: any) {
   } else {
     msg = 'ERROR! Please Try again later';
   }
-  displayToast(
-    'ERROR',
-    msg,
-  );
+  displayToast('ERROR', msg);
   return {
     type: basketActionsTypes.UPDATE_BASKET_COUPON_CODE_FAILURE,
     error: error,
@@ -228,7 +223,9 @@ export function validateBasket(
   customFields: any,
   deliverymode: RequestSetDeliveryMode | null,
   ccsfObj: any,
+  submitOrder: any,
 ) {
+  console.log("validate Basket", {basketId,basketPayload,userData,customFields, deliverymode,ccsfObj})
   return {
     type: basketActionsTypes.VALIDETE_BASKET,
     basketId,
@@ -237,6 +234,7 @@ export function validateBasket(
     customFields,
     deliverymode,
     ccsfObj,
+    submitOrder,
   };
 }
 

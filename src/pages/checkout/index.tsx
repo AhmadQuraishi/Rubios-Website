@@ -43,7 +43,9 @@ import {
   updatePaymentCardsAmount,
 } from '../../helpers/checkout';
 import {
-  getAllBillingAccounts, userLogin, userLogout,
+  getAllBillingAccounts,
+  userLogin,
+  userLogout,
   // getUserDeliveryAddresses,
 } from '../../redux/actions/user';
 import PickupForm from '../../components/pickup-form/index';
@@ -51,7 +53,11 @@ import DeliveryForm from '../../components/delivery-form/index';
 import { getRewardsForCheckoutRequest } from '../../redux/actions/reward/checkout';
 import Page from '../../components/page-title';
 import { CreditCardCCSF } from '../../helpers/creditCard';
-import { generateCCSFToken, setBasketDeliveryAddress, setBasketDeliveryMode } from '../../services/basket';
+import {
+  generateCCSFToken,
+  setBasketDeliveryAddress,
+  setBasketDeliveryMode,
+} from '../../services/basket';
 import { updateGuestUserInfo } from '../../redux/actions/order';
 import { navigateAppAction } from '../../redux/actions/navigate-app';
 import { getRewardsNew } from '../../redux/actions/reward';
@@ -64,6 +70,8 @@ import CheckoutSkeletonUI from '../../components/checkout-skeleton-ui';
 import { getAuthRequest } from '../../redux/actions/auth';
 import LoginAuthDialog from '../../components/login-authentication-dialog';
 
+let ccsfObj: any;
+let ccsfObj2: any;
 const Checkout = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -72,7 +80,8 @@ const Checkout = () => {
   const deliveryFormRef = React.useRef<any>(null);
   const paymentInfoRef = React.useRef<any>();
   const signupFormRef = React.useRef<any>(null);
-  const [openAuthenticationModal, setOpenAuthenticationModal] = React.useState<any>(false);
+  const [openAuthenticationModal, setOpenAuthenticationModal] =
+    React.useState<any>(false);
   const [runOnce, setRunOnce] = React.useState<boolean>(true);
   const [specialInstruction, setSpecialInstruction] = useState('');
   const [callOnce, setCallOnce] = React.useState<boolean>(true);
@@ -99,7 +108,7 @@ const Checkout = () => {
   const [cardExpiry, setCardExpiry] = React.useState<any>();
   // const [defaultDeliveryAddress, setDefaultDeliveryAddress] =
   //   React.useState<any>(null);
-  const [ccsfObj, setccsfObj] = React.useState<any>();
+  // const [ccsfObj, setccsfObj] = React.useState<any>();
 
   const basketObj = useSelector((state: any) => state.basketReducer);
 
@@ -113,7 +122,9 @@ const Checkout = () => {
   const { restaurant, orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
-  const { authToken, sessionLoginTime } = useSelector((state: any) => state.authReducer);
+  const { authToken, sessionLoginTime } = useSelector(
+    (state: any) => state.authReducer,
+  );
   const isDesktop = useMediaQuery(theme.breakpoints.up('sm'));
   // const { userDeliveryAddresses } = useSelector(
   //   (state: any) => state.userReducer,
@@ -122,8 +133,6 @@ const Checkout = () => {
     (state: any) => state.userReducer,
   );
   const { singleLocation } = useSelector((state: any) => state.locationReducer);
-
-
 
   useEffect(() => {
     const LoadExternalScript = () => {
@@ -263,7 +272,7 @@ const Checkout = () => {
           selectedTime,
         ),
       );
-      dispatch(validateBasket(basket.id, null, null, [], null, null));
+      dispatch(validateBasket(basket.id, null, null, [], null, null, null));
       dispatch(getBasketAllowedCardsRequest(basket.id));
       dispatch(getAllBillingAccounts());
       dispatch(removeBasketOrderSubmit());
@@ -272,23 +281,20 @@ const Checkout = () => {
   }, [basket]);
 
   const AuthenticationHandler = () => {
-
     if (isLoginUser() && sessionLoginTime) {
       const LoginCreatedTime: any = moment.unix(sessionLoginTime);
       const currentTime = moment();
       if (LoginCreatedTime.isValid()) {
         const minutes = currentTime.diff(LoginCreatedTime, 'minutes');
-        console.log('munutes', minutes)
+        console.log('munutes', minutes);
         if (minutes > 30) {
           setOpenAuthenticationModal(true);
-          return false
+          return false;
         }
       }
     }
-    return true
-  }
-
-
+    return true;
+  };
 
   React.useEffect(() => {
     setBillingSchemes(basketObj.payment.billingSchemes);
@@ -423,8 +429,6 @@ const Checkout = () => {
   //   }
   // }, [userDeliveryAddresses]);
 
-
-
   React.useEffect(() => {
     if (basketObj.basket) {
       setBasket(basketObj.basket);
@@ -450,8 +454,6 @@ const Checkout = () => {
       setValidate(basketObj.validate);
     }
   }, [basketObj.validate]);
-
-
 
   const createDefaultGiftCards = (defaultGiftCards: any) => {
     let array = [];
@@ -614,10 +616,10 @@ const Checkout = () => {
   const placeOrder = async () => {
     setButtonDisabled(true);
     let customFields = [];
-    // let deliveryAddress = null;
     let deliverymode = {
       deliverymode: (basket && basket.deliverymode) || '',
     };
+        console.log(ccsfObj,"ccsfObj registerError");
     let formDataValue;
     if (
       basket &&
@@ -638,8 +640,12 @@ const Checkout = () => {
       }
       formDataValue = formData;
     }
-    if ((basket?.deliverymode === DeliveryModeEnum.dispatch) &&
-      basket?.deliveryaddress?.specialinstructions?.toLowerCase() !== specialInstruction?.toLowerCase()) {
+    console.log(ccsfObj, 'ccsfObj registerError');
+    if (
+      basket?.deliverymode === DeliveryModeEnum.dispatch &&
+      basket?.deliveryaddress?.specialinstructions?.toLowerCase() !==
+        specialInstruction?.toLowerCase()
+    ) {
       try {
         let updatedAddress: any = {
           building: basket?.deliveryaddress?.building || '',
@@ -654,8 +660,7 @@ const Checkout = () => {
           updatedAddress,
         );
         dispatch(setBasketDeliveryAddressSuccess(response));
-      }
-      catch (error: any) {
+      } catch (error: any) {
         displayToast(
           'ERROR',
           error?.response?.data?.message
@@ -664,24 +669,58 @@ const Checkout = () => {
         );
       }
     }
+    console.log(ccsfObj, 'ccsfObj registerError');
+    if (!defaultCard && billingSchemes && billingSchemes.length === 0) {
+      if (!zipCode || zipCode === '') {
+        displayToast('ERROR', 'Zip Code is required');
+        setButtonDisabled(false);
+        return;
+      }
 
-    // if (
-    //   basket &&
-    //   basket.deliverymode === DeliveryModeEnum.dispatch &&
-    //   (basket.deliverymode === '' ||
-    //     basket.deliverymode === DeliveryModeEnum.pickup ||
-    //     basket.deliverymode === DeliveryModeEnum.curbside ||
-    //     basket.deliverymode === DeliveryModeEnum.dinein)
-    // ) {
-    //   const { isValidForm, formData } = validateGuestSignUpForm();
-    //   if (!isValidForm) {
-    //     displayToast('ERROR', `Sign Up fields are required.`);
-    //     scrollToTop();
-    //     setButtonDisabled(false);
-    //     return;
-    //   }
-    //   formDataValue = formData;
-    // }
+      if (!cardExpiry || cardExpiry === '') {
+        displayToast('ERROR', 'Card Expiry is required');
+        setButtonDisabled(false);
+        return;
+      } else if (cardExpiry.length !== 5) {
+        displayToast('ERROR', 'Please enter valid date.');
+        setButtonDisabled(false);
+        return;
+      } else {
+        const currentDate: any = moment(new Date());
+        const expiryDate: any = moment(cardExpiry, 'MM/YY');
+
+        if (!expiryDate.isValid()) {
+          displayToast('ERROR', 'Please enter valid date.');
+          setButtonDisabled(false);
+          return;
+        }
+
+        if (!expiryDate.isAfter(currentDate)) {
+          displayToast('ERROR', 'Please enter future date.');
+          setButtonDisabled(false);
+          return;
+        }
+      }
+      let billingSchemesNewArray = billingSchemes;
+      const obj = {
+        exp_year: moment(cardExpiry, 'MM/YYYY').year(),
+        exp_month: moment(cardExpiry, 'MM/YYYY').month() + 1,
+        postal_code: zipCode,
+      };
+      let cardObj: any = getCreditCardObj(obj, billingSchemes);
+
+      Array.prototype.push.apply(billingSchemes, cardObj);
+
+      billingSchemesNewArray = updatePaymentCardsAmount(billingSchemes, basket);
+
+      dispatch(updateBasketBillingSchemes(billingSchemesNewArray));
+      if (!isMobile) {
+        displayToast(
+          'SUCCESS',
+          `Credit Card ${editCreditCard ? 'Updated' : 'Added'}`,
+        );
+      }
+    }
 
     if (basket?.deliverymode === DeliveryModeEnum.dispatch) {
       const { isValidForm, formData } = validateDeliveryForm();
@@ -694,44 +733,10 @@ const Checkout = () => {
       formDataValue = formData;
     }
 
-    if (billingSchemes && billingSchemes.length === 0) {
-      displayToast('ERROR', 'Payment method is required');
-      setButtonDisabled(false);
-      return;
-    }
-
-    // if (basket && billingSchemes && billingSchemes.length) {
-    //   const giftCardAmount = getGiftCardAmount();
-    //   if (giftCardAmount > basket.subtotal) {
-    //     displayToast(
-    //       'ERROR',
-    //       'Gift Card amount must be less than order subtotal.',
-    //     );
-    //     setButtonDisabled(false);
-    //     return;
-    //   }
-    // }
-
-    // if (billingSchemes.length) {
-    //   const tip = (basket && basket.tip) || 0;
-    //   const creditCardTotal = billingSchemes.reduce(
-    //     (sum: any, account: any) => {
-    //       if (account.billingmethod === 'creditcardtoken' && account.selected) {
-    //         sum = sum + account.amount;
-    //       }
-    //       return sum;
-    //     },
-    //     0,
-    //   );
-    //
-    //   if (creditCardTotal < tip) {
-    //     displayToast(
-    //       'ERROR',
-    //       'Credit Card amount must be greater than Tip amount.',
-    //     );
-    //     setButtonDisabled(false);
-    //     return;
-    //   }
+    // if (billingSchemes && billingSchemes.length === 0) {
+    //   displayToast('ERROR', 'Payment method is required');
+    //   setButtonDisabled(false);
+    //   return;
     // }
 
     console.log('formDataValue', formDataValue);
@@ -739,7 +744,7 @@ const Checkout = () => {
     if (formDataValue.phone) {
       formDataValue.phone = formDataValue.phone.replace(/\D/g, '');
     }
-
+    console.log(ccsfObj, 'ccsfObj registerError');
     const basketPayload = generateSubmitBasketPayload(
       formDataValue,
       billingSchemes,
@@ -757,14 +762,7 @@ const Checkout = () => {
       customFields = formatCustomFields(restaurant.customfields, formDataValue);
     }
 
-    // if (basket && basket.deliverymode === DeliveryModeEnum.dispatch) {
-    //   deliveryAddress = formatDeliveryAddress(
-    //     formDataValue,
-    //     defaultDeliveryAddress,
-    //   );
-    //   console.log('deliveryAddress', deliveryAddress);
-    // }
-
+    console.log(ccsfObj, 'ccsfObj registerError');
     if (basket) {
       setButtonDisabled(false);
       let user: any = null;
@@ -788,7 +786,7 @@ const Checkout = () => {
         console.log('userInfo', userInfo);
         dispatch(updateGuestUserInfo(userInfo));
       }
-
+      console.log(ccsfObj, 'ccsfObj registerError');
       ccsfObj?.registerError((errors: any) => {
         console.log('ccsf error 3', errors);
         errors.forEach((error: any) => {
@@ -797,7 +795,6 @@ const Checkout = () => {
         setButtonDisabled(false);
         dispatch(submitBasketSinglePaymentFailure(errors));
       });
-
       dispatch(
         validateBasket(
           basket?.id || '',
@@ -806,6 +803,7 @@ const Checkout = () => {
           customFields,
           deliverymode,
           ccsfObj,
+          (value: any) => submitOrder(value),
         ),
       );
     }
@@ -899,6 +897,64 @@ const Checkout = () => {
     );
   };
 
+
+  const CCSFInitialization = (element: any) => {
+
+    const localObj = new CreditCardCCSF(element);
+    console.log('ccsf working', ccsfObj);
+    // setccsfObj(ccsfObj);
+    localObj.initialize(
+      basketObj && basketObj.basket && basketObj.basket.id
+        ? basketObj.basket.id
+        : '',
+      process.env.REACT_APP_BRAND_ACCESS_ID,
+    );
+    localObj.registerError((error: any) => {
+      console.log('ccsf error 1', error);
+      setButtonDisabled(false);
+      dispatch(submitBasketSinglePaymentFailure(error));
+    });
+    localObj.registerSuccess((order: any) => {
+      console.log('ccsf Success', order);
+
+      fireEventAfterPlacingOrder(order);
+
+      // let userInfo: any = {};
+      //
+      // if (guestUser) {
+      //   userInfo = {
+      //     ...guestUser,
+      //   };
+      // }
+      //
+      // userInfo['id'] = order.id;
+      // console.log('userInfo', userInfo)
+      // dispatch(updateGuestUserInfo(userInfo));
+      const basketId =
+        basketObj && basketObj.basket && basketObj.basket.id
+          ? basketObj.basket.id
+          : '';
+      if (basketId !== '') {
+        dispatch(submitBasketSinglePaymentSuccess(order, basketId));
+      }
+      dispatch(navigateAppAction(`/order-confirmation/${order.id}`));
+    });
+    localObj.registerFocus((evt: any) => {
+      console.log('ccsf focus', evt);
+    });
+
+    localObj.registerComplete((evt: any) => {
+      console.log('ccsf complete', evt);
+    });
+
+    localObj.registerReady((evt: any) => {
+      console.log('ccsf ready', evt);
+    });
+    setShowIframeOnce(false);
+
+    return localObj;
+  }
+
   React.useEffect(() => {
     // @ts-ignore
     // console.log('openAddCreditCard', openAddCreditCard);
@@ -913,60 +969,18 @@ const Checkout = () => {
     //   // When window loaded ( external resources are loaded too- `css`,`src`, etc...)
     //   if (event.target.readyState === 'complete') {
     //     alert('hi 2');
-    setTimeout(() => {
+    setTimeout(async () => {
       // @ts-ignore
       if (Olo && Olo?.CheckoutFrame && showIframeOnce) {
-        console.log('ccsf working');
-        const ccsfObj = new CreditCardCCSF();
-        setccsfObj(ccsfObj);
-        ccsfObj.initialize(
-          basketObj && basketObj.basket && basketObj.basket.id
-            ? basketObj.basket.id
-            : '',
-          process.env.REACT_APP_BRAND_ACCESS_ID,
-        );
-        ccsfObj.registerError((error: any) => {
-          console.log('ccsf error 1', error);
-          setButtonDisabled(false);
-          dispatch(submitBasketSinglePaymentFailure(error));
-        });
-        ccsfObj.registerSuccess((order: any) => {
-          console.log('ccsf Success', order);
+        ccsfObj = await CCSFInitialization({
+          cardElement: 'credit-card-info-div',
+          cvvElement: 'cvv-info-div',
+        })
 
-          fireEventAfterPlacingOrder(order);
-
-          // let userInfo: any = {};
-          //
-          // if (guestUser) {
-          //   userInfo = {
-          //     ...guestUser,
-          //   };
-          // }
-          //
-          // userInfo['id'] = order.id;
-          // console.log('userInfo', userInfo)
-          // dispatch(updateGuestUserInfo(userInfo));
-          const basketId =
-            basketObj && basketObj.basket && basketObj.basket.id
-              ? basketObj.basket.id
-              : '';
-          if (basketId !== '') {
-            dispatch(submitBasketSinglePaymentSuccess(order, basketId));
-          }
-          dispatch(navigateAppAction(`/order-confirmation/${order.id}`));
-        });
-        ccsfObj.registerFocus((evt: any) => {
-          console.log('ccsf focus', evt);
-        });
-
-        ccsfObj.registerComplete((evt: any) => {
-          console.log('ccsf complete', evt);
-        });
-
-        ccsfObj.registerReady((evt: any) => {
-          console.log('ccsf ready', evt);
-        });
-        setShowIframeOnce(false);
+        ccsfObj2 = CCSFInitialization({
+          cardElement: 'credit-card-info-div-2',
+          cvvElement: 'cvv-info-div-2',
+        })
       }
     }, 3000);
     // @ts-ignore
@@ -974,6 +988,35 @@ const Checkout = () => {
     // });
     // }
   }, []);
+
+  const submitOrder = (payload: any) => {
+    console.log('payload', payload);
+    console.log('ccsfObj', ccsfObj);
+
+    if(diplayOnScreenCreditCardForm()){
+      ccsfObj.submit(payload);
+    } else {
+      ccsfObj2.submit(payload);
+    }
+
+  };
+
+  const diplayOnScreenCreditCardForm = () => {
+    if (
+      userBillingAccounts?.billingaccounts?.length === 0 ||
+      billingSchemes?.length === 0
+    ) {
+      return true;
+    } else if (
+      billingSchemes.length === 1 &&
+      billingSchemes[0]?.billingmethod === 'creditcard' &&
+      !billingSchemes[0]?.billingaccountid
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   const guestSignupCheckout = () => {
     let formDataValue;
@@ -1033,30 +1076,31 @@ const Checkout = () => {
     dispatch(userRegister(signUpObj, 'REGISTER_CHECKOUT', basket?.id));
   };
   React.useEffect(() => {
-    console.log(callOnce, "callOnce");
+    console.log(callOnce, 'callOnce');
     if (basketObj?.basket?.products?.length == 0 && callOnce) {
       navigate(restaurant ? '/menu/' + restaurant.slug : '/');
       // displayToast('SUCCESS', 'Please add new items in a bag to proceed');
       setCallOnce(!callOnce);
-
     }
   }, [basketObj.basket]);
 
   return (
     <div>
-      {
-        openAuthenticationModal && (
-          <LoginAuthDialog openAuthenticationModal={openAuthenticationModal} setOpenAuthenticationModal={setOpenAuthenticationModal} />
-        )
-      }
+      {openAuthenticationModal && (
+        <LoginAuthDialog
+          openAuthenticationModal={openAuthenticationModal}
+          setOpenAuthenticationModal={setOpenAuthenticationModal}
+        />
+      )}
       <Page title={'Checkout'} className="">
         <Typography variant="h1" className="sr-only">
           Checkout
         </Typography>
         <StoreInfoBar />
         <Box
-          className={`checkout-wrapper ${buttonDisabled || basketObj?.orderSubmit ? 'disable-pointer' : ''
-            }`}
+          className={`checkout-wrapper ${
+            buttonDisabled || basketObj?.orderSubmit ? 'disable-pointer' : ''
+          }`}
         >
           <Grid container>
             <Grid item xs={12} sm={12} md={12} lg={12}>
@@ -1074,8 +1118,8 @@ const Checkout = () => {
                     >
                       <Grid container>
                         {basket &&
-                          (basket.deliverymode === '' ||
-                            basket.deliverymode === DeliveryModeEnum.pickup) ? (
+                        (basket.deliverymode === '' ||
+                          basket.deliverymode === DeliveryModeEnum.pickup) ? (
                           <>
                             <Grid item xs={12}>
                               <Typography
@@ -1083,7 +1127,8 @@ const Checkout = () => {
                                 className="label"
                                 sx={{
                                   fontSize: '11pt!important',
-                                  fontFamily: "'Sunborn-Sansone'!important", letterSpacing: "0.03562em"
+                                  fontFamily: "'Sunborn-Sansone'!important",
+                                  letterSpacing: '0.03562em',
                                 }}
                                 title="WHO'S IS PICKING UP?"
                               >
@@ -1093,7 +1138,13 @@ const Checkout = () => {
                             <Grid item xs={12}>
                               <Typography
                                 variant="h1"
-                                sx={{ fontSize: '29px !important', marginBottom: '0px', color: "#062C43", fontFamily: "'GritSans-Bold' !important", letterSpacing: "0.03562em" }}
+                                sx={{
+                                  fontSize: '29px !important',
+                                  marginBottom: '0px',
+                                  color: '#062C43',
+                                  fontFamily: "'GritSans-Bold' !important",
+                                  letterSpacing: '0.03562em',
+                                }}
                                 title="PICK UP INFO"
                               >
                                 PICK UP INFO
@@ -1110,7 +1161,8 @@ const Checkout = () => {
                                 title="WHO'S IS PICKING UP?"
                                 sx={{
                                   fontSize: '11pt!important',
-                                  fontFamily: "'Sunborn-Sansone'!important", letterSpacing: "0.03562em"
+                                  fontFamily: "'Sunborn-Sansone'!important",
+                                  letterSpacing: '0.03562em',
                                 }}
                               >
                                 WHO'S PICKING UP?
@@ -1119,7 +1171,12 @@ const Checkout = () => {
                             <Grid item xs={12}>
                               <Typography
                                 variant="h1"
-                                sx={{ fontSize: '29px !important', marginBottom: '0px', fontFamily: "'GritSans-Bold' !important", letterSpacing: "0.03562em" }}
+                                sx={{
+                                  fontSize: '29px !important',
+                                  marginBottom: '0px',
+                                  fontFamily: "'GritSans-Bold' !important",
+                                  letterSpacing: '0.03562em',
+                                }}
                                 title="CURBSIDE PICK INFO"
                               >
                                 CURBSIDE PICK UP
@@ -1133,7 +1190,11 @@ const Checkout = () => {
                               <Typography
                                 variant="caption"
                                 className="label"
-                                sx={{ fontSize: "11pt !important", fontFamily: "'Sunborn-Sansone'!important", letterSpacing: "0.03562em" }}
+                                sx={{
+                                  fontSize: '11pt !important',
+                                  fontFamily: "'Sunborn-Sansone'!important",
+                                  letterSpacing: '0.03562em',
+                                }}
                                 title="WHO'S IS PICKING UP?"
                               >
                                 WHERE TO DELIVER
@@ -1142,7 +1203,13 @@ const Checkout = () => {
                             <Grid item xs={12}>
                               <Typography
                                 variant="h1"
-                                sx={{ fontSize: '29px !important', marginBottom: '0px', fontFamily: "'GritSans-Bold' !important", color: "#062c43", letterSpacing: "0.03562em" }}
+                                sx={{
+                                  fontSize: '29px !important',
+                                  marginBottom: '0px',
+                                  fontFamily: "'GritSans-Bold' !important",
+                                  color: '#062c43',
+                                  letterSpacing: '0.03562em',
+                                }}
                                 title="DELIVERY INFO"
                               >
                                 DELIVERY INFO
@@ -1158,7 +1225,8 @@ const Checkout = () => {
                                 className="label"
                                 sx={{
                                   fontSize: '11pt!important',
-                                  fontFamily: "'Sunborn-Sansone'!important", letterSpacing: "0.03562em"
+                                  fontFamily: "'Sunborn-Sansone'!important",
+                                  letterSpacing: '0.03562em',
                                 }}
                                 title="WHO'S IS PICKING UP?"
                               >
@@ -1168,9 +1236,17 @@ const Checkout = () => {
                             <Grid item xs={12}>
                               <Typography
                                 variant="h1"
-                                sx={{ fontSize: '29px !important', marginBottom: '0px', fontFamily: "'GritSans-Bold' !important", letterSpacing: "0.03562em" }}
+                                sx={{
+                                  fontSize: '29px !important',
+                                  marginBottom: '0px',
+                                  fontFamily: "'GritSans-Bold' !important",
+                                  letterSpacing: '0.03562em',
+                                }}
                                 title="DELIVERY INFO"
-                                style={{ fontSize: '11pt!important', fontFamily: "'Sunborn-Sansone'!important" }}
+                                style={{
+                                  fontSize: '11pt!important',
+                                  fontFamily: "'Sunborn-Sansone'!important",
+                                }}
                               >
                                 DINE IN INFO
                               </Typography>
@@ -1178,10 +1254,10 @@ const Checkout = () => {
                           </>
                         ) : null}
                         {basket &&
-                          (basket.deliverymode === '' ||
-                            basket.deliverymode === DeliveryModeEnum.pickup ||
-                            basket.deliverymode === DeliveryModeEnum.curbside ||
-                            basket.deliverymode === DeliveryModeEnum.dinein) ? (
+                        (basket.deliverymode === '' ||
+                          basket.deliverymode === DeliveryModeEnum.pickup ||
+                          basket.deliverymode === DeliveryModeEnum.curbside ||
+                          basket.deliverymode === DeliveryModeEnum.dinein) ? (
                           <PickupForm
                             // setShowSignUpGuest={setShowSignUpGuest}
                             // showSignUpGuest={!showSignUpGuest}
@@ -1191,7 +1267,7 @@ const Checkout = () => {
                           />
                         ) : null}
                         {basket &&
-                          basket.deliverymode === DeliveryModeEnum.dispatch ? (
+                        basket.deliverymode === DeliveryModeEnum.dispatch ? (
                           <DeliveryForm
                             basket={basket}
                             specialInstruction={specialInstruction}
@@ -1202,9 +1278,7 @@ const Checkout = () => {
                       </Grid>
                     </Grid>
                     {isDesktop && (
-                      <OrderTime
-                        orderType={(basket?.deliverymode) || ''}
-                      />
+                      <OrderTime orderType={basket?.deliverymode || ''} />
                     )}
                   </Grid>
                 </Grid>
@@ -1251,7 +1325,7 @@ const Checkout = () => {
                   <br />
                   <br />
                   <br />
-                  <OrderTime orderType={(basket?.deliverymode) || ''} />
+                  <OrderTime orderType={basket?.deliverymode || ''} />
                 </Grid>
 
                 {isLoginUser() &&
@@ -1260,19 +1334,18 @@ const Checkout = () => {
                     <CheckoutSkeletonUI />
                   )}
 
-                {isLoginUser() &&
-                  rewards.length > 0 && (
-                    <>
-                      <br />
-                      <br />
-                      <Divider />
-                      <br />
-                      <br />
-                      <br />
+                {isLoginUser() && rewards.length > 0 && (
+                  <>
+                    <br />
+                    <br />
+                    <Divider />
+                    <br />
+                    <br />
+                    <br />
 
-                      <Rewards rewardsList={rewards} />
-                    </>
-                  )}
+                    <Rewards rewardsList={rewards} />
+                  </>
+                )}
 
                 <br />
                 <Divider />
@@ -1306,6 +1379,7 @@ const Checkout = () => {
                 <br />
                 <br />
                 <PaymentInfo
+                  diplayOnScreenCreditCardForm={diplayOnScreenCreditCardForm}
                   zipCode={zipCode}
                   hideShow={hideShow}
                   setHideShow={setHideShow}
@@ -1340,26 +1414,30 @@ const Checkout = () => {
                       </Button>
                     </Grid>
                   </Grid>) : ( */}
-                  <Grid container className="add-order">
-                    <Grid item xs={12} sm={12} md={4} lg={4}>
-                      <Button
-                        disabled={
-                          (buttonDisabled ||
-                            basketObj?.loading ||
-                            basketObj?.orderSubmit ||
-                            totalPaymentCardAmount()) &&
-                          ccsfObj
-                        }
-                        onClick={authenticationPlace}
-                        id={'place-order-button'}
-                        variant="contained"
-                        title="PLACE ORDER"
-                        sx={{ fontFamily: "'Sunborn-Sansone'!important", fontSize: "11pt !important", }}
-                      >
-                        PLACE ORDER
-                      </Button>
-                    </Grid>
+                <Grid container className="add-order">
+                  <Grid item xs={12} sm={12} md={4} lg={4}>
+                    <Button
+                      disabled={
+                        (buttonDisabled ||
+                          basketObj?.loading ||
+                          basketObj?.orderSubmit ||
+                          (billingSchemes.length > 0 &&
+                            totalPaymentCardAmount())) &&
+                        ccsfObj
+                      }
+                      onClick={authenticationPlace}
+                      id={'place-order-button'}
+                      variant="contained"
+                      title="PLACE ORDER"
+                      sx={{
+                        fontFamily: "'Sunborn-Sansone'!important",
+                        fontSize: '11pt !important',
+                      }}
+                    >
+                      PLACE ORDER
+                    </Button>
                   </Grid>
+                </Grid>
                 {/* )} */}
               </Card>
             </Grid>
