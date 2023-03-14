@@ -147,103 +147,7 @@ const Checkout = () => {
       setLocationId(singleLocation?.data[0]?.location_id);
     }
   }, [singleLocation]);
-  const displayAddCreditCard = () => {
-    const billingSchemeStats = getBillingSchemesStats(billingSchemes);
-    return (
-      basket &&
-      //billingSchemeStats.selectedCreditCard === 0 &&
-      billingSchemes?.length > 0 &&
-      allowedCards &&
-      allowedCards.length &&
-      allowedCards.filter((element: any) => {
-        return element.type === 'creditcard';
-      }).length > 0
-    );
-  };
-  const moveFocusBackToScreen = () => {
-    const addCardElement = document.getElementById('add-credit-card');
-    const addGiftCardElement = document.getElementById('add-gift-card');
-    const placeOrderElement = document.getElementById('place-order-button');
-    if (addCardElement && displayAddCreditCard()) {
-      addCardElement.focus();
-    } else if (addGiftCardElement) {
-      addGiftCardElement.focus();
-    } else if (placeOrderElement) {
-      placeOrderElement.focus();
-    }
-  };
-  const handleCreditCardSubmit = async () => {
-    setButtonDisabled(true);
-    if (!zipCode || zipCode === '') {
-      displayToast('ERROR', 'Zip Code is required');
-      setButtonDisabled(false);
-      return;
-    }
 
-    if (!cardExpiry || cardExpiry === '') {
-      displayToast('ERROR', 'Card Expiry is required');
-      setButtonDisabled(false);
-      return;
-    } else if (cardExpiry.length !== 5) {
-      displayToast('ERROR', 'Please enter valid date.');
-      setButtonDisabled(false);
-      return;
-    } else {
-      const currentDate: any = moment(new Date());
-      const expiryDate: any = moment(cardExpiry, 'MM/YY');
-
-      if (!expiryDate.isValid()) {
-        displayToast('ERROR', 'Please enter valid date.');
-        setButtonDisabled(false);
-        return;
-      }
-
-      if (!expiryDate.isAfter(currentDate)) {
-        displayToast('ERROR', 'Please enter future date.');
-        setButtonDisabled(false);
-        return;
-      }
-    }
-
-    let billingSchemesNewArray = billingSchemes;
-    billingSchemesNewArray = billingSchemes.filter(
-      (account: any) =>
-        !(account.billingmethod === 'creditcard' && !account.billingaccountid),
-    );
-    billingSchemesNewArray = billingSchemesNewArray.map((element: any) => {
-      if (element.billingmethod === 'creditcard') {
-        return {
-          ...element,
-          selected: false,
-        };
-      }
-      return element;
-    });
-    const obj = {
-      exp_year: moment(cardExpiry, 'MM/YYYY').year(),
-      exp_month: moment(cardExpiry, 'MM/YYYY').month() + 1,
-      postal_code: zipCode,
-    };
-    let cardObj: any = getCreditCardObj(obj, billingSchemes);
-
-    Array.prototype.push.apply(billingSchemesNewArray, cardObj);
-
-    billingSchemesNewArray = updatePaymentCardsAmount(
-      billingSchemesNewArray,
-      basket,
-    );
-
-    dispatch(updateBasketBillingSchemes(billingSchemesNewArray));
-    if (!isMobile) {
-      displayToast(
-        'SUCCESS',
-        `Credit Card ${editCreditCard ? 'Updated' : 'Added'}`,
-      );
-    }
-    setButtonDisabled(false);
-    setHideShow(!hideShow);
-    moveFocusBackToScreen();
-  };
   useEffect(() => {
     if (qualifyingRewards && qualifyingRewards.length) {
       if (
@@ -710,10 +614,10 @@ const Checkout = () => {
   const placeOrder = async () => {
     setButtonDisabled(true);
     let customFields = [];
-    // let deliveryAddress = null;
     let deliverymode = {
       deliverymode: (basket && basket.deliverymode) || '',
     };
+        console.log(ccsfObj,"ccsfObj registerError");
     let formDataValue;
     if (
       basket &&
@@ -734,6 +638,7 @@ const Checkout = () => {
       }
       formDataValue = formData;
     }
+    console.log(ccsfObj,"ccsfObj registerError");
     if ((basket?.deliverymode === DeliveryModeEnum.dispatch) &&
       basket?.deliveryaddress?.specialinstructions?.toLowerCase() !== specialInstruction?.toLowerCase()) {
       try {
@@ -760,551 +665,600 @@ const Checkout = () => {
         );
       }
     }
-
-    // if (
-    //   basket &&
-    //   basket.deliverymode === DeliveryModeEnum.dispatch &&
-    //   (basket.deliverymode === '' ||
-    //     basket.deliverymode === DeliveryModeEnum.pickup ||
-    //     basket.deliverymode === DeliveryModeEnum.curbside ||
-    //     basket.deliverymode === DeliveryModeEnum.dinein)
-    // ) {
-    //   const { isValidForm, formData } = validateGuestSignUpForm();
-    //   if (!isValidForm) {
-    //     displayToast('ERROR', `Sign Up fields are required.`);
-    //     scrollToTop();
-    //     setButtonDisabled(false);
-    //     return;
-    //   }
-    //   formDataValue = formData;
-    // }
-
-    if (basket?.deliverymode === DeliveryModeEnum.dispatch) {
-      const { isValidForm, formData } = validateDeliveryForm();
-      if (!isValidForm) {
-        displayToast('ERROR', 'Delivery fields are required.');
-        scrollToTop();
+    console.log(ccsfObj,"ccsfObj registerError");
+    if (!defaultCard  && billingSchemes && billingSchemes.length === 0) {
+      if (!zipCode || zipCode === '') {
+        displayToast('ERROR', 'Zip Code is required');
         setButtonDisabled(false);
         return;
       }
-      formDataValue = formData;
-    }
 
-    if (billingSchemes && billingSchemes.length === 0) {
-      displayToast('ERROR', 'Payment method is required');
-      setButtonDisabled(false);
-      return;
-    }
+      if (!cardExpiry || cardExpiry === '') {
+        displayToast('ERROR', 'Card Expiry is required');
+        setButtonDisabled(false);
+        return;
+      } else if (cardExpiry.length !== 5) {
+        displayToast('ERROR', 'Please enter valid date.');
+        setButtonDisabled(false);
+        return;
+      } else {
+        const currentDate: any = moment(new Date());
+        const expiryDate: any = moment(cardExpiry, 'MM/YY');
 
-    // if (basket && billingSchemes && billingSchemes.length) {
-    //   const giftCardAmount = getGiftCardAmount();
-    //   if (giftCardAmount > basket.subtotal) {
-    //     displayToast(
-    //       'ERROR',
-    //       'Gift Card amount must be less than order subtotal.',
-    //     );
-    //     setButtonDisabled(false);
-    //     return;
-    //   }
-    // }
+        if (!expiryDate.isValid()) {
+          displayToast('ERROR', 'Please enter valid date.');
+          setButtonDisabled(false);
+          return;
+        }
 
-    // if (billingSchemes.length) {
-    //   const tip = (basket && basket.tip) || 0;
-    //   const creditCardTotal = billingSchemes.reduce(
-    //     (sum: any, account: any) => {
-    //       if (account.billingmethod === 'creditcardtoken' && account.selected) {
-    //         sum = sum + account.amount;
-    //       }
-    //       return sum;
-    //     },
-    //     0,
-    //   );
-    //
-    //   if (creditCardTotal < tip) {
-    //     displayToast(
-    //       'ERROR',
-    //       'Credit Card amount must be greater than Tip amount.',
-    //     );
-    //     setButtonDisabled(false);
-    //     return;
-    //   }
-    // }
+        if (!expiryDate.isAfter(currentDate)) {
+          displayToast('ERROR', 'Please enter future date.');
+          setButtonDisabled(false);
+          return;
+        }
+      }
+    let billingSchemesNewArray = billingSchemes;
+    const obj = {
+      exp_year: moment(cardExpiry, 'MM/YYYY').year(),
+      exp_month: moment(cardExpiry, 'MM/YYYY').month() + 1,
+      postal_code: zipCode,
+    };
+    let cardObj: any = getCreditCardObj(obj, billingSchemes);
 
-    console.log('formDataValue', formDataValue);
+    Array.prototype.push.apply(billingSchemes, cardObj);
 
-    if (formDataValue.phone) {
-      formDataValue.phone = formDataValue.phone.replace(/\D/g, '');
-    }
-
-    const basketPayload = generateSubmitBasketPayload(
-      formDataValue,
+    billingSchemesNewArray = updatePaymentCardsAmount(
       billingSchemes,
-      basket?.deliverymode,
-      authToken?.authtoken,
       basket,
-      basketAccessToken,
     );
 
-    if (
-      basket &&
-      (basket?.deliverymode === DeliveryModeEnum.curbside ||
-        basket?.deliverymode === DeliveryModeEnum.dinein)
-    ) {
-      customFields = formatCustomFields(restaurant.customfields, formDataValue);
-    }
-
-    // if (basket && basket.deliverymode === DeliveryModeEnum.dispatch) {
-    //   deliveryAddress = formatDeliveryAddress(
-    //     formDataValue,
-    //     defaultDeliveryAddress,
-    //   );
-    //   console.log('deliveryAddress', deliveryAddress);
-    // }
-
-    if (basket) {
-      setButtonDisabled(false);
-      let user: any = null;
-      if (isLoginUser()) {
-        user = {
-          email: providerToken.email,
-          first_name: providerToken?.first_name,
-          last_name: providerToken?.last_name,
-          favourite_locations: providerToken?.favourite_locations,
-          marketing_email_subscription: formDataValue.emailNotification,
-          phone: formDataValue.phone,
-        };
-      }
-      console.log('basketPayload', basketPayload);
-
-      if (basketPayload.receivinguser) {
-        const userInfo = {
-          ...basketPayload.receivinguser,
-          marketing_email_subscription: formDataValue.emailNotification,
-        };
-        console.log('userInfo', userInfo);
-        dispatch(updateGuestUserInfo(userInfo));
-      }
-
-      ccsfObj?.registerError((errors: any) => {
-        console.log('ccsf error 3', errors);
-        errors.forEach((error: any) => {
-          displayToast('ERROR', error.description);
-        });
-        setButtonDisabled(false);
-        dispatch(submitBasketSinglePaymentFailure(errors));
-      });
-
-      dispatch(
-        validateBasket(
-          basket?.id || '',
-          basketPayload,
-          user,
-          customFields,
-          deliverymode,
-          ccsfObj,
-        ),
+    dispatch(updateBasketBillingSchemes(billingSchemesNewArray));
+    if (!isMobile) {
+      displayToast(
+        'SUCCESS',
+        `Credit Card ${editCreditCard ? 'Updated' : 'Added'}`,
       );
     }
-  };
-
-  const authenticationPlace = () => {
-    let authenticationSuccessful = AuthenticationHandler();
-    if (authenticationSuccessful) {
-      placeOrder();
     }
-  };
+    
 
-  const totalPaymentCardAmount = () => {
-    if (billingSchemes && basket) {
-      let totalAmount = billingSchemes.reduce((sum: any, account: any) => {
-        if (account.selected) {
-          sum = sum + account.amount;
-        }
-        return sum;
-      }, 0);
-      totalAmount = totalAmount.toFixed(2);
-      totalAmount = parseFloat(totalAmount);
-      return totalAmount !== basket.total;
-    } else {
-      return true;
-    }
-  };
-
-  const fireEventAfterPlacingOrder = (order: any) => {
-    let userObj: any = null;
-    let products = [];
-    let totalTax = 0;
-
-    if (order && order.products && order.products.length) {
-      products = order.products.map((prod: any) => {
-        return {
-          ...prod,
-          sku: '',
-        };
-      });
-    }
-
-    if (order.taxes && order.taxes.length) {
-      totalTax = order.taxes.reduce((sum: any, tax: any) => {
-        // if (tax.label === 'Estimated Tax') {
-        sum = sum + tax.tax;
-        // }
-        return sum;
-      }, 0);
-    }
-
-    const tagManagerArgs: any = {
-      dataLayer: {
-        event: 'trackTrans',
-        transactionRevenue: order.total,
-        transactionProducts: products,
-        transactionId: order.id,
-        transactionTax: totalTax,
-        transactionAffiliation: order.deliverymode,
-        transactionStoreReference: order.vendorextref,
-      },
-    };
-
-    TagManager.dataLayer(tagManagerArgs);
-    if (providerToken) {
-      userObj = {
-        first_name: providerToken.first_name || '',
-        last_name: providerToken.last_name || '',
-        email: providerToken.email || '',
-        phone: providerToken.phone || '',
-      };
-    } else {
-      if (guestUser) {
-        userObj = {
-          first_name: guestUser.firstname || '',
-          last_name: guestUser.lastname || '',
-          email: guestUser.emailaddress || '',
-          phone: guestUser.contactnumber || '',
-        };
-      }
-    }
-    dispatch(
-      facebookSendEvent(
-        facebookConversionTypes.FACEBOOK_PURCHASE_EVENT,
-        userObj,
-        {
-          value: order.total,
-          currency: 'USD',
-        },
-      ),
-    );
-  };
-
-  React.useEffect(() => {
-    // @ts-ignore
-    // console.log('openAddCreditCard', openAddCreditCard);
-    // if (openAddCreditCard) {
-    // console.log('openAddCreditCard working');
-    // document.addEventListener('readystatechange', (event: any) => {
-    //   // When HTML/DOM elements are ready:
-    //   if (event.target.readyState === 'interactive') {
-    //     //does same as:  ..addEventListener("DOMContentLoaded"..
-    //     alert('hi 1');
-    //   }
-    //   // When window loaded ( external resources are loaded too- `css`,`src`, etc...)
-    //   if (event.target.readyState === 'complete') {
-    //     alert('hi 2');
-    setTimeout(() => {
-      // @ts-ignore
-      if (Olo && Olo?.CheckoutFrame && showIframeOnce) {
-        console.log('ccsf working');
-        const ccsfObj = new CreditCardCCSF();
-        setccsfObj(ccsfObj);
-        ccsfObj.initialize(
-          basketObj && basketObj.basket && basketObj.basket.id
-            ? basketObj.basket.id
-            : '',
-          process.env.REACT_APP_BRAND_ACCESS_ID,
-        );
-        ccsfObj.registerError((error: any) => {
-          console.log('ccsf error 1', error);
-          setButtonDisabled(false);
-          dispatch(submitBasketSinglePaymentFailure(error));
-        });
-        ccsfObj.registerSuccess((order: any) => {
-          console.log('ccsf Success', order);
-
-          fireEventAfterPlacingOrder(order);
-
-          // let userInfo: any = {};
-          //
-          // if (guestUser) {
-          //   userInfo = {
-          //     ...guestUser,
-          //   };
-          // }
-          //
-          // userInfo['id'] = order.id;
-          // console.log('userInfo', userInfo)
-          // dispatch(updateGuestUserInfo(userInfo));
-          const basketId =
-            basketObj && basketObj.basket && basketObj.basket.id
-              ? basketObj.basket.id
-              : '';
-          if (basketId !== '') {
-            dispatch(submitBasketSinglePaymentSuccess(order, basketId));
-          }
-          dispatch(navigateAppAction(`/order-confirmation/${order.id}`));
-        });
-        ccsfObj.registerFocus((evt: any) => {
-          console.log('ccsf focus', evt);
-        });
-
-        ccsfObj.registerComplete((evt: any) => {
-          console.log('ccsf complete', evt);
-        });
-
-        ccsfObj.registerReady((evt: any) => {
-          console.log('ccsf ready', evt);
-        });
-        setShowIframeOnce(false);
-      }
-    }, 3000);
-    // @ts-ignore
-    //   }
-    // });
-    // }
-  }, []);
-
-  const guestSignupCheckout = () => {
-    let formDataValue;
-    if (
-      basket?.deliverymode === '' ||
-      basket?.deliverymode === DeliveryModeEnum.pickup ||
-      basket?.deliverymode === DeliveryModeEnum.curbside ||
-      basket?.deliverymode === DeliveryModeEnum.dinein
-    ) {
-      const { isValidForm, formData } = validatePickupForm('GUEST_SIGNUP');
-      if (!isValidForm) {
-        displayToast(
-          'ERROR',
-          `${formatOrderType(basket?.deliverymode)} fields are required.`,
-        );
-        scrollToTop();
-        setButtonDisabled(false);
-        return;
-      }
-      formDataValue = formData;
-    }
-    if (basket?.deliverymode === DeliveryModeEnum.dispatch) {
-      const { isValidForm, formData } = validateDeliveryForm();
-      if (!isValidForm) {
-        displayToast('ERROR', 'Delivery fields are required.');
-        scrollToTop();
-        setButtonDisabled(false);
-        return;
-      }
-      formDataValue = formData;
-    }
-    const { isValidForm: isValidFormSignup, formData: formDataSignup } =
-      validateGuestSignUpForm();
-    if (!isValidFormSignup) {
-      displayToast('ERROR', ` Signup fields are required.`);
+  if (basket?.deliverymode === DeliveryModeEnum.dispatch) {
+    const { isValidForm, formData } = validateDeliveryForm();
+    if (!isValidForm) {
+      displayToast('ERROR', 'Delivery fields are required.');
+      scrollToTop();
+      setButtonDisabled(false);
       return;
     }
-    const signUpObj: any = {
-      first_name: formDataValue?.firstName,
-      last_name: formDataValue?.lastName,
-      email: formDataValue?.email,
-      phone: formDataValue?.phone?.replace(/\D/g, '') || '',
-      password: formDataSignup?.password,
-      password_confirmation: formDataSignup?.password_confirmation,
-      fav_location_id: locationId || '345077',
-      terms_and_conditions: formDataSignup?.termsAndConditions,
-      marketing_email_subscription: formDataSignup?.emailNotification,
-    };
-    console.log('birthDay', birthDay);
-    if (birthDay) {
-      console.log('birthdayssss', birthDay);
-      signUpObj.birthday = moment(birthDay).format('YYYY-MM-DD');
-      console.log('birthdaysschgtvdy', signUpObj.birthday);
+    formDataValue = formData;
+  }
+
+  // if (billingSchemes && billingSchemes.length === 0) {
+  //   displayToast('ERROR', 'Payment method is required');
+  //   setButtonDisabled(false);
+  //   return;
+  // }
+
+  console.log('formDataValue', formDataValue);
+
+  if (formDataValue.phone) {
+    formDataValue.phone = formDataValue.phone.replace(/\D/g, '');
+  }
+  console.log(ccsfObj,"ccsfObj registerError");
+  const basketPayload = generateSubmitBasketPayload(
+    formDataValue,
+    billingSchemes,
+    basket?.deliverymode,
+    authToken?.authtoken,
+    basket,
+    basketAccessToken,
+  );
+
+  if (
+    basket &&
+    (basket?.deliverymode === DeliveryModeEnum.curbside ||
+      basket?.deliverymode === DeliveryModeEnum.dinein)
+  ) {
+    customFields = formatCustomFields(restaurant.customfields, formDataValue);
+  }
+
+  console.log(ccsfObj,"ccsfObj registerError");
+  if (basket) {
+    setButtonDisabled(false);
+    let user: any = null;
+    if (isLoginUser()) {
+      user = {
+        email: providerToken.email,
+        first_name: providerToken?.first_name,
+        last_name: providerToken?.last_name,
+        favourite_locations: providerToken?.favourite_locations,
+        marketing_email_subscription: formDataValue.emailNotification,
+        phone: formDataValue.phone,
+      };
     }
-    console.log('signUpObj', signUpObj);
+    console.log('basketPayload', basketPayload);
 
-    dispatch(userRegister(signUpObj, 'REGISTER_CHECKOUT', basket?.id));
-  };
-  React.useEffect(() => {
-    console.log(callOnce, "callOnce");
-    if (basketObj?.basket?.products?.length == 0 && callOnce) {
-      navigate(restaurant ? '/menu/' + restaurant.slug : '/');
-      // displayToast('SUCCESS', 'Please add new items in a bag to proceed');
-      setCallOnce(!callOnce);
-
+    if (basketPayload.receivinguser) {
+      const userInfo = {
+        ...basketPayload.receivinguser,
+        marketing_email_subscription: formDataValue.emailNotification,
+      };
+      console.log('userInfo', userInfo);
+      dispatch(updateGuestUserInfo(userInfo));
     }
-  }, [basketObj.basket]);
+    console.log(ccsfObj,"ccsfObj registerError");
+    ccsfObj?.registerError((errors: any) => {
+      console.log('ccsf error 3', errors);
+      errors.forEach((error: any) => {
+        displayToast('ERROR', error.description);
+      });
+      setButtonDisabled(false);
+      dispatch(submitBasketSinglePaymentFailure(errors));  
+    });
+    dispatch(
+      validateBasket(
+        basket?.id || '',
+        basketPayload,
+        user,
+        customFields,
+        deliverymode,
+        ccsfObj,
+      ),
+    );
+  }
+};
 
-  return (
-    <div>
-      {
-        openAuthenticationModal && (
-          <LoginAuthDialog openAuthenticationModal={openAuthenticationModal} setOpenAuthenticationModal={setOpenAuthenticationModal} />
-        )
+const authenticationPlace = () => {
+  let authenticationSuccessful = AuthenticationHandler();
+  if (authenticationSuccessful) {
+    placeOrder();
+  }
+};
+
+const totalPaymentCardAmount = () => {
+  if (billingSchemes && basket) {
+    let totalAmount = billingSchemes.reduce((sum: any, account: any) => {
+      if (account.selected) {
+        sum = sum + account.amount;
       }
-      <Page title={'Checkout'} className="">
-        <Typography variant="h1" className="sr-only">
-          Checkout
-        </Typography>
-        <StoreInfoBar />
-        <Box
-          className={`checkout-wrapper ${buttonDisabled || basketObj?.orderSubmit ? 'disable-pointer' : ''
-            }`}
-        >
-          <Grid container>
-            <Grid item xs={12} sm={12} md={12} lg={12}>
-              <Card className="order">
+      return sum;
+    }, 0);
+    totalAmount = totalAmount.toFixed(2);
+    totalAmount = parseFloat(totalAmount);
+    return totalAmount !== basket.total;
+  } else {
+    return true;
+  }
+};
+
+const fireEventAfterPlacingOrder = (order: any) => {
+  let userObj: any = null;
+  let products = [];
+  let totalTax = 0;
+
+  if (order && order.products && order.products.length) {
+    products = order.products.map((prod: any) => {
+      return {
+        ...prod,
+        sku: '',
+      };
+    });
+  }
+
+  if (order.taxes && order.taxes.length) {
+    totalTax = order.taxes.reduce((sum: any, tax: any) => {
+      // if (tax.label === 'Estimated Tax') {
+      sum = sum + tax.tax;
+      // }
+      return sum;
+    }, 0);
+  }
+
+  const tagManagerArgs: any = {
+    dataLayer: {
+      event: 'trackTrans',
+      transactionRevenue: order.total,
+      transactionProducts: products,
+      transactionId: order.id,
+      transactionTax: totalTax,
+      transactionAffiliation: order.deliverymode,
+      transactionStoreReference: order.vendorextref,
+    },
+  };
+
+  TagManager.dataLayer(tagManagerArgs);
+  if (providerToken) {
+    userObj = {
+      first_name: providerToken.first_name || '',
+      last_name: providerToken.last_name || '',
+      email: providerToken.email || '',
+      phone: providerToken.phone || '',
+    };
+  } else {
+    if (guestUser) {
+      userObj = {
+        first_name: guestUser.firstname || '',
+        last_name: guestUser.lastname || '',
+        email: guestUser.emailaddress || '',
+        phone: guestUser.contactnumber || '',
+      };
+    }
+  }
+  dispatch(
+    facebookSendEvent(
+      facebookConversionTypes.FACEBOOK_PURCHASE_EVENT,
+      userObj,
+      {
+        value: order.total,
+        currency: 'USD',
+      },
+    ),
+  );
+};
+
+React.useEffect(() => {
+  // @ts-ignore
+  // console.log('openAddCreditCard', openAddCreditCard);
+  // if (openAddCreditCard) {
+  // console.log('openAddCreditCard working');
+  // document.addEventListener('readystatechange', (event: any) => {
+  //   // When HTML/DOM elements are ready:
+  //   if (event.target.readyState === 'interactive') {
+  //     //does same as:  ..addEventListener("DOMContentLoaded"..
+  //     alert('hi 1');
+  //   }
+  //   // When window loaded ( external resources are loaded too- `css`,`src`, etc...)
+  //   if (event.target.readyState === 'complete') {
+  //     alert('hi 2');
+  setTimeout(() => {
+    // @ts-ignore
+    if (Olo && Olo?.CheckoutFrame && showIframeOnce) {
+      console.log('ccsf working');
+      const ccsfObj = new CreditCardCCSF();
+      setccsfObj(ccsfObj);
+      ccsfObj.initialize(
+        basketObj && basketObj.basket && basketObj.basket.id
+          ? basketObj.basket.id
+          : '',
+        process.env.REACT_APP_BRAND_ACCESS_ID,
+      );
+      ccsfObj.registerError((error: any) => {
+        console.log('ccsf error 1', error);
+        setButtonDisabled(false);
+        dispatch(submitBasketSinglePaymentFailure(error));
+      });
+      ccsfObj.registerSuccess((order: any) => {
+        console.log('ccsf Success', order);
+
+        fireEventAfterPlacingOrder(order);
+
+        // let userInfo: any = {};
+        //
+        // if (guestUser) {
+        //   userInfo = {
+        //     ...guestUser,
+        //   };
+        // }
+        //
+        // userInfo['id'] = order.id;
+        // console.log('userInfo', userInfo)
+        // dispatch(updateGuestUserInfo(userInfo));
+        const basketId =
+          basketObj && basketObj.basket && basketObj.basket.id
+            ? basketObj.basket.id
+            : '';
+        if (basketId !== '') {
+          dispatch(submitBasketSinglePaymentSuccess(order, basketId));
+        }
+        dispatch(navigateAppAction(`/order-confirmation/${order.id}`));
+      });
+      ccsfObj.registerFocus((evt: any) => {
+        console.log('ccsf focus', evt);
+      });
+
+      ccsfObj.registerComplete((evt: any) => {
+        console.log('ccsf complete', evt);
+      });
+
+      ccsfObj.registerReady((evt: any) => {
+        console.log('ccsf ready', evt);
+      });
+      setShowIframeOnce(false);
+    }
+  }, 3000);
+  // @ts-ignore
+  //   }
+  // });
+  // }
+}, []);
+
+const guestSignupCheckout = () => {
+  let formDataValue;
+  if (
+    basket?.deliverymode === '' ||
+    basket?.deliverymode === DeliveryModeEnum.pickup ||
+    basket?.deliverymode === DeliveryModeEnum.curbside ||
+    basket?.deliverymode === DeliveryModeEnum.dinein
+  ) {
+    const { isValidForm, formData } = validatePickupForm('GUEST_SIGNUP');
+    if (!isValidForm) {
+      displayToast(
+        'ERROR',
+        `${formatOrderType(basket?.deliverymode)} fields are required.`,
+      );
+      scrollToTop();
+      setButtonDisabled(false);
+      return;
+    }
+    formDataValue = formData;
+  }
+  if (basket?.deliverymode === DeliveryModeEnum.dispatch) {
+    const { isValidForm, formData } = validateDeliveryForm();
+    if (!isValidForm) {
+      displayToast('ERROR', 'Delivery fields are required.');
+      scrollToTop();
+      setButtonDisabled(false);
+      return;
+    }
+    formDataValue = formData;
+  }
+  const { isValidForm: isValidFormSignup, formData: formDataSignup } =
+    validateGuestSignUpForm();
+  if (!isValidFormSignup) {
+    displayToast('ERROR', ` Signup fields are required.`);
+    return;
+  }
+  const signUpObj: any = {
+    first_name: formDataValue?.firstName,
+    last_name: formDataValue?.lastName,
+    email: formDataValue?.email,
+    phone: formDataValue?.phone?.replace(/\D/g, '') || '',
+    password: formDataSignup?.password,
+    password_confirmation: formDataSignup?.password_confirmation,
+    fav_location_id: locationId || '345077',
+    terms_and_conditions: formDataSignup?.termsAndConditions,
+    marketing_email_subscription: formDataSignup?.emailNotification,
+  };
+  console.log('birthDay', birthDay);
+  if (birthDay) {
+    console.log('birthdayssss', birthDay);
+    signUpObj.birthday = moment(birthDay).format('YYYY-MM-DD');
+    console.log('birthdaysschgtvdy', signUpObj.birthday);
+  }
+  console.log('signUpObj', signUpObj);
+
+  dispatch(userRegister(signUpObj, 'REGISTER_CHECKOUT', basket?.id));
+};
+React.useEffect(() => {
+  console.log(callOnce, "callOnce");
+  if (basketObj?.basket?.products?.length == 0 && callOnce) {
+    navigate(restaurant ? '/menu/' + restaurant.slug : '/');
+    // displayToast('SUCCESS', 'Please add new items in a bag to proceed');
+    setCallOnce(!callOnce);
+
+  }
+}, [basketObj.basket]);
+
+return (
+  <div>
+    {
+      openAuthenticationModal && (
+        <LoginAuthDialog openAuthenticationModal={openAuthenticationModal} setOpenAuthenticationModal={setOpenAuthenticationModal} />
+      )
+    }
+    <Page title={'Checkout'} className="">
+      <Typography variant="h1" className="sr-only">
+        Checkout
+      </Typography>
+      <StoreInfoBar />
+      <Box
+        className={`checkout-wrapper ${buttonDisabled || basketObj?.orderSubmit ? 'disable-pointer' : ''
+          }`}
+      >
+        <Grid container>
+          <Grid item xs={12} sm={12} md={12} lg={12}>
+            <Card className="order">
+              <Grid container>
                 <Grid container>
-                  <Grid container>
-                    <Grid
-                      style={{ border: 'none' }}
-                      item
-                      xs={12}
-                      sm={6}
-                      md={6}
-                      lg={6}
-                      className="left-col"
-                    >
-                      <Grid container>
-                        {basket &&
-                          (basket.deliverymode === '' ||
-                            basket.deliverymode === DeliveryModeEnum.pickup) ? (
-                          <>
-                            <Grid item xs={12}>
-                              <Typography
-                                variant="h3"
-                                className="label"
-                                sx={{
-                                  fontSize: '11pt!important',
-                                  fontFamily: "'Sunborn-Sansone'!important", letterSpacing: "0.03562em"
-                                }}
-                                title="WHO'S IS PICKING UP?"
-                              >
-                                WHO'S PICKING UP?
-                              </Typography>
-                            </Grid>
-                            <Grid item xs={12}>
-                              <Typography
-                                variant="h1"
-                                sx={{ fontSize: '29px !important', marginBottom: '0px', color: "#062C43", fontFamily: "'GritSans-Bold' !important", letterSpacing: "0.03562em" }}
-                                title="PICK UP INFO"
-                              >
-                                PICK UP INFO
-                              </Typography>
-                            </Grid>
-                          </>
-                        ) : basket &&
-                          basket.deliverymode === DeliveryModeEnum.curbside ? (
-                          <>
-                            <Grid item xs={12}>
-                              <Typography
-                                variant="h3"
-                                className="label"
-                                title="WHO'S IS PICKING UP?"
-                                sx={{
-                                  fontSize: '11pt!important',
-                                  fontFamily: "'Sunborn-Sansone'!important", letterSpacing: "0.03562em"
-                                }}
-                              >
-                                WHO'S PICKING UP?
-                              </Typography>
-                            </Grid>
-                            <Grid item xs={12}>
-                              <Typography
-                                variant="h1"
-                                sx={{ fontSize: '29px !important', marginBottom: '0px', fontFamily: "'GritSans-Bold' !important", letterSpacing: "0.03562em" }}
-                                title="CURBSIDE PICK INFO"
-                              >
-                                CURBSIDE PICK UP
-                              </Typography>
-                            </Grid>
-                          </>
-                        ) : basket &&
-                          basket.deliverymode === DeliveryModeEnum.dispatch ? (
-                          <>
-                            <Grid item xs={12}>
-                              <Typography
-                                variant="caption"
-                                className="label"
-                                sx={{ fontSize: "11pt !important", fontFamily: "'Sunborn-Sansone'!important", letterSpacing: "0.03562em" }}
-                                title="WHO'S IS PICKING UP?"
-                              >
-                                WHERE TO DELIVER
-                              </Typography>
-                            </Grid>
-                            <Grid item xs={12}>
-                              <Typography
-                                variant="h1"
-                                sx={{ fontSize: '29px !important', marginBottom: '0px', fontFamily: "'GritSans-Bold' !important", color: "#062c43", letterSpacing: "0.03562em" }}
-                                title="DELIVERY INFO"
-                              >
-                                DELIVERY INFO
-                              </Typography>
-                            </Grid>
-                          </>
-                        ) : basket &&
-                          basket.deliverymode === DeliveryModeEnum.dinein ? (
-                          <>
-                            <Grid item xs={12}>
-                              <Typography
-                                variant="caption"
-                                className="label"
-                                sx={{
-                                  fontSize: '11pt!important',
-                                  fontFamily: "'Sunborn-Sansone'!important", letterSpacing: "0.03562em"
-                                }}
-                                title="WHO'S IS PICKING UP?"
-                              >
-                                WHO's ORDERING?
-                              </Typography>
-                            </Grid>
-                            <Grid item xs={12}>
-                              <Typography
-                                variant="h1"
-                                sx={{ fontSize: '29px !important', marginBottom: '0px', fontFamily: "'GritSans-Bold' !important", letterSpacing: "0.03562em" }}
-                                title="DELIVERY INFO"
-                                style={{ fontSize: '11pt!important', fontFamily: "'Sunborn-Sansone'!important" }}
-                              >
-                                DINE IN INFO
-                              </Typography>
-                            </Grid>
-                          </>
-                        ) : null}
-                        {basket &&
-                          (basket.deliverymode === '' ||
-                            basket.deliverymode === DeliveryModeEnum.pickup ||
-                            basket.deliverymode === DeliveryModeEnum.curbside ||
-                            basket.deliverymode === DeliveryModeEnum.dinein) ? (
-                          <PickupForm
-                            // setShowSignUpGuest={setShowSignUpGuest}
-                            // showSignUpGuest={!showSignUpGuest}
-                            basket={basket}
-                            pickupFormRef={pickupFormRef}
-                            orderType={basket.deliverymode}
-                          />
-                        ) : null}
-                        {basket &&
-                          basket.deliverymode === DeliveryModeEnum.dispatch ? (
-                          <DeliveryForm
-                            basket={basket}
-                            specialInstruction={specialInstruction}
-                            setSpecialInstruction={setSpecialInstruction}
-                            deliveryFormRef={deliveryFormRef}
-                          />
-                        ) : null}
-                      </Grid>
+                  <Grid
+                    style={{ border: 'none' }}
+                    item
+                    xs={12}
+                    sm={6}
+                    md={6}
+                    lg={6}
+                    className="left-col"
+                  >
+                    <Grid container>
+                      {basket &&
+                        (basket.deliverymode === '' ||
+                          basket.deliverymode === DeliveryModeEnum.pickup) ? (
+                        <>
+                          <Grid item xs={12}>
+                            <Typography
+                              variant="h3"
+                              className="label"
+                              sx={{
+                                fontSize: '11pt!important',
+                                fontFamily: "'Sunborn-Sansone'!important", letterSpacing: "0.03562em"
+                              }}
+                              title="WHO'S IS PICKING UP?"
+                            >
+                              WHO'S PICKING UP?
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={12}>
+                            <Typography
+                              variant="h1"
+                              sx={{ fontSize: '29px !important', marginBottom: '0px', color: "#062C43", fontFamily: "'GritSans-Bold' !important", letterSpacing: "0.03562em" }}
+                              title="PICK UP INFO"
+                            >
+                              PICK UP INFO
+                            </Typography>
+                          </Grid>
+                        </>
+                      ) : basket &&
+                        basket.deliverymode === DeliveryModeEnum.curbside ? (
+                        <>
+                          <Grid item xs={12}>
+                            <Typography
+                              variant="h3"
+                              className="label"
+                              title="WHO'S IS PICKING UP?"
+                              sx={{
+                                fontSize: '11pt!important',
+                                fontFamily: "'Sunborn-Sansone'!important", letterSpacing: "0.03562em"
+                              }}
+                            >
+                              WHO'S PICKING UP?
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={12}>
+                            <Typography
+                              variant="h1"
+                              sx={{ fontSize: '29px !important', marginBottom: '0px', fontFamily: "'GritSans-Bold' !important", letterSpacing: "0.03562em" }}
+                              title="CURBSIDE PICK INFO"
+                            >
+                              CURBSIDE PICK UP
+                            </Typography>
+                          </Grid>
+                        </>
+                      ) : basket &&
+                        basket.deliverymode === DeliveryModeEnum.dispatch ? (
+                        <>
+                          <Grid item xs={12}>
+                            <Typography
+                              variant="caption"
+                              className="label"
+                              sx={{ fontSize: "11pt !important", fontFamily: "'Sunborn-Sansone'!important", letterSpacing: "0.03562em" }}
+                              title="WHO'S IS PICKING UP?"
+                            >
+                              WHERE TO DELIVER
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={12}>
+                            <Typography
+                              variant="h1"
+                              sx={{ fontSize: '29px !important', marginBottom: '0px', fontFamily: "'GritSans-Bold' !important", color: "#062c43", letterSpacing: "0.03562em" }}
+                              title="DELIVERY INFO"
+                            >
+                              DELIVERY INFO
+                            </Typography>
+                          </Grid>
+                        </>
+                      ) : basket &&
+                        basket.deliverymode === DeliveryModeEnum.dinein ? (
+                        <>
+                          <Grid item xs={12}>
+                            <Typography
+                              variant="caption"
+                              className="label"
+                              sx={{
+                                fontSize: '11pt!important',
+                                fontFamily: "'Sunborn-Sansone'!important", letterSpacing: "0.03562em"
+                              }}
+                              title="WHO'S IS PICKING UP?"
+                            >
+                              WHO's ORDERING?
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={12}>
+                            <Typography
+                              variant="h1"
+                              sx={{ fontSize: '29px !important', marginBottom: '0px', fontFamily: "'GritSans-Bold' !important", letterSpacing: "0.03562em" }}
+                              title="DELIVERY INFO"
+                              style={{ fontSize: '11pt!important', fontFamily: "'Sunborn-Sansone'!important" }}
+                            >
+                              DINE IN INFO
+                            </Typography>
+                          </Grid>
+                        </>
+                      ) : null}
+                      {basket &&
+                        (basket.deliverymode === '' ||
+                          basket.deliverymode === DeliveryModeEnum.pickup ||
+                          basket.deliverymode === DeliveryModeEnum.curbside ||
+                          basket.deliverymode === DeliveryModeEnum.dinein) ? (
+                        <PickupForm
+                          // setShowSignUpGuest={setShowSignUpGuest}
+                          // showSignUpGuest={!showSignUpGuest}
+                          basket={basket}
+                          pickupFormRef={pickupFormRef}
+                          orderType={basket.deliverymode}
+                        />
+                      ) : null}
+                      {basket &&
+                        basket.deliverymode === DeliveryModeEnum.dispatch ? (
+                        <DeliveryForm
+                          basket={basket}
+                          specialInstruction={specialInstruction}
+                          setSpecialInstruction={setSpecialInstruction}
+                          deliveryFormRef={deliveryFormRef}
+                        />
+                      ) : null}
                     </Grid>
-                    {isDesktop && (
-                      <OrderTime
-                        orderType={(basket?.deliverymode) || ''}
-                      />
-                    )}
                   </Grid>
+                  {isDesktop && (
+                    <OrderTime
+                      orderType={(basket?.deliverymode) || ''}
+                    />
+                  )}
                 </Grid>
-                {!isLoginUser() && (
+              </Grid>
+              {!isLoginUser() && (
+                <>
+                  <br />
+                  <br />
+                  <Divider />
+                  <br />
+                  <br />
+                  <br />
+                  <SignUpGuest
+                    birthDay={birthDay}
+                    setBirthDay={setBirthDay}
+                    guestSignupCheckout={guestSignupCheckout}
+                    signupFormRef={signupFormRef}
+                  />
+                </>
+              )}
+              <Grid
+                sx={{
+                  display: {
+                    xs: 'block',
+                    sm: 'none',
+                    md: 'none',
+                    lg: 'none',
+                  },
+                }}
+              >
+                <br />
+                <br />
+              </Grid>
+              <Grid
+                sx={{
+                  display: {
+                    xs: 'block',
+                    sm: 'none',
+                    md: 'none',
+                    lg: 'none',
+                  },
+                }}
+              >
+                <Divider />
+                <br />
+                <br />
+                <br />
+                <OrderTime orderType={(basket?.deliverymode) || ''} />
+              </Grid>
+
+              {isLoginUser() &&
+                rewards?.length === 0 &&
+                (loadingRewards || loadingRedemptions) && (
+                  <CheckoutSkeletonUI />
+                )}
+
+              {isLoginUser() &&
+                rewards.length > 0 && (
                   <>
                     <br />
                     <br />
@@ -1312,117 +1266,61 @@ const Checkout = () => {
                     <br />
                     <br />
                     <br />
-                    <SignUpGuest
-                      birthDay={birthDay}
-                      setBirthDay={setBirthDay}
-                      guestSignupCheckout={guestSignupCheckout}
-                      signupFormRef={signupFormRef}
-                    />
+
+                    <Rewards rewardsList={rewards} />
                   </>
                 )}
-                <Grid
-                  sx={{
-                    display: {
-                      xs: 'block',
-                      sm: 'none',
-                      md: 'none',
-                      lg: 'none',
-                    },
-                  }}
-                >
-                  <br />
-                  <br />
-                </Grid>
-                <Grid
-                  sx={{
-                    display: {
-                      xs: 'block',
-                      sm: 'none',
-                      md: 'none',
-                      lg: 'none',
-                    },
-                  }}
-                >
-                  <Divider />
-                  <br />
-                  <br />
-                  <br />
-                  <OrderTime orderType={(basket?.deliverymode) || ''} />
-                </Grid>
 
-                {isLoginUser() &&
-                  rewards?.length === 0 &&
-                  (loadingRewards || loadingRedemptions) && (
-                    <CheckoutSkeletonUI />
-                  )}
+              <br />
+              <Divider />
+              <br />
+              <br />
+              <br />
 
-                {isLoginUser() &&
-                  rewards.length > 0 && (
-                    <>
-                      <br />
-                      <br />
-                      <Divider />
-                      <br />
-                      <br />
-                      <br />
+              <Tip
+                basket={basket}
+                loading={basketObj?.loading}
+                updateOrderDetailTipPercent={setTipPercentage}
+              />
+              <br />
+              <br />
+              <br />
+              <Divider />
+              <br />
+              <br />
+              <br />
+              {/*second section*/}
+              <OrderDetails
+                basket={basket}
+                tipPercentage={tipPercentage}
+                page="checkout"
+              />
+              <br />
+              <br />
+              <br />
+              <Divider />
+              <br />
+              <br />
+              <br />
+              <PaymentInfo
+                zipCode={zipCode}
+                hideShow={hideShow}
+                setHideShow={setHideShow}
+                setZipCode={setZipCode}
+                cardExpiry={cardExpiry}
+                setCardExpiry={setCardExpiry}
+                ref={paymentInfoRef}
+                ccsfObj={ccsfObj}
+                basketAccessToken={basketAccessToken}
+              />
 
-                      <Rewards rewardsList={rewards} />
-                    </>
-                  )}
+              <Divider />
+              <br />
+              <br />
+              <br />
 
-                <br />
-                <Divider />
-                <br />
-                <br />
-                <br />
-
-                <Tip
-                  basket={basket}
-                  loading={basketObj?.loading}
-                  updateOrderDetailTipPercent={setTipPercentage}
-                />
-                <br />
-                <br />
-                <br />
-                <Divider />
-                <br />
-                <br />
-                <br />
-                {/*second section*/}
-                <OrderDetails
-                  basket={basket}
-                  tipPercentage={tipPercentage}
-                  page="checkout"
-                />
-                <br />
-                <br />
-                <br />
-                <Divider />
-                <br />
-                <br />
-                <br />
-                <PaymentInfo
-                  zipCode={zipCode}
-                  hideShow={hideShow}
-                  setHideShow={setHideShow}
-                  setZipCode={setZipCode}
-                  cardExpiry={cardExpiry}
-                  moveFocusBackToScreen={moveFocusBackToScreen}
-                  displayAddCreditCard={displayAddCreditCard}
-                  handleCreditCardSubmit={handleCreditCardSubmit}
-                  setCardExpiry={setCardExpiry}
-                  ref={paymentInfoRef}
-                  ccsfObj={ccsfObj}
-                  basketAccessToken={basketAccessToken}
-                />
-
-                <Divider />
-                <br />
-                <br />
-                <br />
-
-                {/*second section ends here*/}
-                {/* {billingSchemes.length < 1 ? (
+              {/*second section ends here*/}
+              {/* {billingSchemes.length < 1 ? (
                   <Grid container className="add-order">
                     <Grid item xs={12} sm={12} md={4} lg={4}>
                       <Button
@@ -1439,34 +1337,35 @@ const Checkout = () => {
                       </Button>
                     </Grid>
                   </Grid>) : ( */}
-                  <Grid container className="add-order">
-                    <Grid item xs={12} sm={12} md={4} lg={4}>
-                      <Button
-                        disabled={
-                          (buttonDisabled ||
-                            basketObj?.loading ||
-                            basketObj?.orderSubmit ||
-                            totalPaymentCardAmount()) &&
-                          ccsfObj
-                        }
-                        onClick={authenticationPlace}
-                        id={'place-order-button'}
-                        variant="contained"
-                        title="PLACE ORDER"
-                        sx={{ fontFamily: "'Sunborn-Sansone'!important", fontSize: "11pt !important", }}
-                      >
-                        PLACE ORDER
-                      </Button>
-                    </Grid>
-                  </Grid>
-                {/* )} */}
-              </Card>
-            </Grid>
+              <Grid container className="add-order">
+                <Grid item xs={12} sm={12} md={4} lg={4}>
+                  <Button
+                    disabled={
+                      (buttonDisabled ||
+                        basketObj?.loading ||
+                        basketObj?.orderSubmit
+                        || (billingSchemes.length > 0 && totalPaymentCardAmount()))
+                       &&
+                      ccsfObj
+                    }
+                    onClick={authenticationPlace}
+                    id={'place-order-button'}
+                    variant="contained"
+                    title="PLACE ORDER"
+                    sx={{ fontFamily: "'Sunborn-Sansone'!important", fontSize: "11pt !important", }}
+                  >
+                    PLACE ORDER
+                  </Button>
+                </Grid>
+              </Grid>
+              {/* )} */}
+            </Card>
           </Grid>
-        </Box>
-      </Page>
-    </div>
-  );
+        </Grid>
+      </Box>
+    </Page>
+  </div>
+);
 };
 
 export default Checkout;

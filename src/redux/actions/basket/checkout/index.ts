@@ -229,6 +229,7 @@ export function validateBasket(
   deliverymode: RequestSetDeliveryMode | null,
   ccsfObj: any,
 ) {
+  console.log("validate Basket", {basketId,basketPayload,userData,customFields, deliverymode,ccsfObj})
   return {
     type: basketActionsTypes.VALIDETE_BASKET,
     basketId,
