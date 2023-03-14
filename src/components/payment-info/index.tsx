@@ -56,7 +56,17 @@ const NumberFormatCustom = forwardRef<HTMLElement, CustomProps>(
 
 const PaymentInfo = forwardRef((props: any, _ref) => {
   const navigate = useNavigate();
-  const { ccsfObj, basketAccessToken, hideShow, setHideShow, zipCode, setZipCode, cardExpiry, setCardExpiry } = props;
+  const {
+    ccsfObj,
+    basketAccessToken,
+    hideShow,
+    setHideShow,
+    zipCode,
+    setZipCode,
+    cardExpiry,
+    setCardExpiry,
+    diplayOnScreenCreditCardForm
+  } = props;
   const dispatch = useDispatch();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -108,32 +118,6 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
   const handleHideShow = () => {
     setHideShow(!hideShow);
   };
-  const moveFocusBackToScreen = () => {
-    const addCardElement = document.getElementById('add-credit-card');
-    const addGiftCardElement = document.getElementById('add-gift-card');
-    const placeOrderElement = document.getElementById('place-order-button');
-    if (addCardElement && displayAddCreditCard()) {
-      addCardElement.focus();
-    } else if (addGiftCardElement) {
-      addGiftCardElement.focus();
-    } else if (placeOrderElement) {
-      placeOrderElement.focus();
-    }
-  };
-
-  const displayAddCreditCard = () => {
-    const billingSchemeStats = getBillingSchemesStats(billingSchemes);
-    return (
-      basket &&
-      //billingSchemeStats.selectedCreditCard === 0 &&
-      // billingSchemes?.length > 0 &&
-      allowedCards &&
-      allowedCards.length &&
-      allowedCards.filter((element: any) => {
-        return element.type === 'creditcard';
-      }).length > 0
-    );
-  };
 
   React.useEffect(() => {
     if (hideShow) {
@@ -164,11 +148,28 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
     //
     // setZipCode(newValue);
   };
-
-  const handleCardExpiryChange = (event: any) => {
-    let newValue = event.target.value.trim();
-
-    setCardExpiry(newValue);
+  const displayAddCreditCard = () => {
+    return (
+      basket &&
+      billingSchemes?.length > 0 &&
+      allowedCards &&
+      allowedCards.length &&
+      allowedCards.filter((element: any) => {
+        return element.type === 'creditcard';
+      }).length > 0
+    );
+  };
+  const moveFocusBackToScreen = () => {
+    const addCardElement = document.getElementById('add-credit-card');
+    const addGiftCardElement = document.getElementById('add-gift-card');
+    const placeOrderElement = document.getElementById('place-order-button');
+    if (addCardElement && displayAddCreditCard()) {
+      addCardElement.focus();
+    } else if (addGiftCardElement) {
+      addGiftCardElement.focus();
+    } else if (placeOrderElement) {
+      placeOrderElement.focus();
+    }
   };
   const handleCreditCardSubmit = async () => {
     setButtonDisabled(true);
@@ -241,42 +242,12 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
     setButtonDisabled(false);
     setHideShow(!hideShow);
     moveFocusBackToScreen();
-    // if (ccsfObj) {
-    //   ccsfObj.registerError((errors: any) => {
-    //     console.log('ccsf error 2', errors);
-    //
-    //     errors.forEach((error: any) => {
-    //       console.log(error.code);
-    //       console.log(error.description);
-    //       if (
-    //         error.description &&
-    //         error.description ===
-    //           'The sum of your selected payment methods must equal the order total.'
-    //       ) {
-    //
-    //       } else {
-    //         displayToast('ERROR', error.description);
-    //       }
-    //     });
-    //   });
-    // ccsfObj.submit({
-    //   id: basket && basket.id,
-    //   accessToken: basketAccessToken,
-    //   billingaccounts: [
-    //     {
-    //       billingmethod: 'creditcard',
-    //       // amount: 31.25,
-    //       // tipportion: 0,
-    //       expiryyear: monthYear[1],
-    //       expirymonth: monthYear[0],
-    //       zip: zipCode,
-    //       saveonfile: true,
-    //     },
-    //   ],
-    // });
-    // }
   };
+  const handleCardExpiryChange = (event: any) => {
+    let newValue = event.target.value.trim();
 
+    setCardExpiry(newValue);
+  };
 
   const HandleEditCreditCard = (value: boolean) => {
     setHideShow(value);
@@ -321,6 +292,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
           <Grid container spacing={2} className="payment-form">
             <SplitPayment
               setHideShow={(value: boolean) => HandleEditCreditCard(value)}
+              diplayOnScreenCreditCardForm={diplayOnScreenCreditCardForm}
               displaySavedCards={displaySavedCards}
             />
             <Grid container>
@@ -374,14 +346,16 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                     Add Credit card
                   </Button>
                 )}
-                {/* {billingSchemes?.length < 1 && (
                   <CreditCardAdd
+                    cardOnScreen={true}
+                    diplayOnScreenCreditCardForm={diplayOnScreenCreditCardForm}
                     cardExpiry={cardExpiry}
                     zipCode={zipCode}
                     handleZipCodeChange={handleZipCodeChange}
                     handleCardExpiryChange={handleCardExpiryChange}
+                    cardNumberClass={'credit-card-info-div'}
+                    cardCVVClass={'cvv-info-div'}
                   />
-                )} */}
                 <div
                   id="myModal"
                   role={'dialog'}
@@ -416,10 +390,14 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                     </div>
                     <div className="modal-body">
                       <CreditCardAdd
+                        cardOnScreen={false}
+                        diplayOnScreenCreditCardForm={diplayOnScreenCreditCardForm}
                         cardExpiry={cardExpiry}
                         zipCode={zipCode}
                         handleZipCodeChange={handleZipCodeChange}
                         handleCardExpiryChange={handleCardExpiryChange}
+                        cardNumberClass={'credit-card-info-div-2'}
+                        cardCVVClass={'cvv-info-div-2'}
                       />
                     </div>
                     <div className="modal-footer">
@@ -447,7 +425,10 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                         }
                         type="submit"
                         className="link default last-focusable-element"
-                        onClick={() => { handleCreditCardSubmit(); handleHideShow(); }}
+                        onClick={() => {
+                          handleCreditCardSubmit();
+                          handleHideShow();
+                        }}
                         autoFocus
                       >
                         {editCreditCard

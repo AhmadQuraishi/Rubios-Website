@@ -722,7 +722,7 @@ const CategoryList = () => {
                   >
                     VIEW {showAll[item.id] ? 'LESS' : 'MORE'}
                   </Typography>
-                  {showAll ? (
+                  {showAll[item.id] ? (
                     <ExpandLessIcon
                       sx={{
                         marginLeft: '10px',
