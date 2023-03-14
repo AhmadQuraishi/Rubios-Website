@@ -334,7 +334,7 @@ const SignUpGuest = ({ guestSignupCheckout, signupFormRef, birthDay, setBirthDay
                     >
                       <Typography
                         title="Already a Rewards member?"
-                        sx={{color: '#122a41',fontSize: "1.1rem",fontFamily: "'Sunborn-Sansone' !important",width: '100%',display: 'flex', justifyContent: 'center', marginTop: "10px",marginBottom: "10px" }}
+                        sx={{color: '#122a41',fontSize: "1.1rem",fontFamily: "'Sunborn-Sansone' !important",width: '100%',display: 'flex', justifyContent: 'center', marginTop: "30px",marginBottom: "16px" }}
                       >
                         Already a Rewards member?{' '}
                       </Typography>
