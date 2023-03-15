@@ -45,8 +45,6 @@
         });
 
         checkoutFrame.on("success", function (order) {
-          console.log(order);
-          alert('Success', order.id)
           postResponseToClient({type: 'success', data: order});
         });
 
