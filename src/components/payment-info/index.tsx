@@ -150,6 +150,9 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
   };
   const displayAddCreditCard = () => {
     return (
+      !(billingSchemes.length === 1 &&
+      billingSchemes[0]?.billingmethod === 'creditcard' &&
+      !billingSchemes[0]?.billingaccountid) &&
       basket &&
       billingSchemes?.length > 0 &&
       allowedCards &&
