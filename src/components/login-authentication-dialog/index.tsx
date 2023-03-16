@@ -25,6 +25,7 @@ const LoginAuthDialog= (props: any)  =>{
     const {
       openAuthenticationModal,
       setOpenAuthenticationModal,
+      placeOrder
       // handleCreditCardSubmitDialog,
     } = props;
     const classes = useStyles();
@@ -60,6 +61,7 @@ const LoginAuthDialog= (props: any)  =>{
   const handleClose = () => {
     setOpen(false);
     setOpenAuthenticationModal(false)
+    placeOrder();
   };
 
   const backdropClose = (event: any, reason: any) => {
