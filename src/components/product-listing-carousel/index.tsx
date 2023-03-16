@@ -42,7 +42,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   title: {
     color: "#0075BF",
     padding: '0px 0 12px 0',
-    fontSize: '16px !important',
     fontWeight: '600 !important',
     fontFamily: "'GritSans-Bold' !important",
     letterSpacing: '0.00938em !important',
@@ -281,6 +280,7 @@ const ProductListingCarousel = (props: any) => {
                         <Typography
                           variant="h2"
                           title={item?.name || ''}
+                          sx={{fontSize: '16px !important',}}
                           className={classes.title}
                           dangerouslySetInnerHTML={{ __html: item?.name?.includes("®") ? item.name.replace('®', '<sup>®</sup>') : item.name }}
                         >
@@ -419,7 +419,7 @@ const ProductListingCarousel = (props: any) => {
                             variant="h2"
                             title={item?.name || ''}
                             className={classes.title}
-                            sx={{padding: "0px !important"}}
+                            sx={{padding: "0px !important",fontSize: '14px !important',}}
                             dangerouslySetInnerHTML={{ __html: item?.name?.includes("®") ? item.name.replace('®', '<sup>®</sup>') : item.name }}
                           >
                           </Typography>

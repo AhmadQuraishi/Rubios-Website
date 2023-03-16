@@ -374,6 +374,7 @@ export function getGiftCardObj(
       balance: balanceResponse.balance,
       amount: 0,
       tipportion: 0.0,
+      saveOnFile: true,
       billingschemeid: billingSchemeId,
       billingfields: [
         {
