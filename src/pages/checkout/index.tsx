@@ -714,12 +714,12 @@ const Checkout = () => {
       billingSchemesNewArray = updatePaymentCardsAmount(billingSchemes, basket);
 
       dispatch(updateBasketBillingSchemes(billingSchemesNewArray));
-      if (!isMobile) {
-        displayToast(
-          'SUCCESS',
-          `Credit Card ${editCreditCard ? 'Updated' : 'Added'}`,
-        );
-      }
+      // if (!isMobile) {
+      //   displayToast(
+      //     'SUCCESS',
+      //     `Credit Card ${editCreditCard ? 'Updated' : 'Added'}`,
+      //   );
+      // }
     }
 
     if (basket?.deliverymode === DeliveryModeEnum.dispatch) {
