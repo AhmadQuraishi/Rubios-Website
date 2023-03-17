@@ -120,17 +120,22 @@ const CategoryList = () => {
   //   }
   // };
 
-  const handleViewMore = (categoryIndex : any) => {
-    if (showAll[categoryIndex]){
-      // window.scrollTo({ top: prevScrollPos, behavior: 'smooth' });
-    setShowAll({ ...showAll, [categoryIndex]: false });
-    } else{
-      // setPrevScrollPos(window.pageYOffset);
+  const handleViewMore = (categoryIndex: any) => {
+    if (showAll[categoryIndex]) {
+      // window.scrollTo({ top: 0, behavior: 'smooth' });
+      setShowAll({ ...showAll, [categoryIndex]: false });
+      const categoryElement = document.getElementById(`cat-${categoryIndex}`);
+      console.log("categoryIndex Element ",categoryIndex)
+      console.log("category Element ",categoryElement)
+      if (categoryElement) {
+        categoryElement.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      // Expand the category
       setShowAll({ ...showAll, [categoryIndex]: true });
-      // if (myRef.current) {
-      // myRef.current.scrollIntoView({ behavior: 'smooth' });
-      // }
+
     }
+    // debugger;
   };
   type ShowAll = {
     [categoryIndex: number]: boolean;
@@ -571,7 +576,8 @@ const CategoryList = () => {
                 // indicatorColor="primary"
                 variant="scrollable"
                 //scrollButtons
-                // allowScrollButtonsMobile
+                allowScrollButtonsMobile
+                
                 sx={{ fontFamily: "'Sunborn-Sansone' !important", }}
                 role="region"
                 aria-label="Food Menu"
@@ -625,6 +631,7 @@ const CategoryList = () => {
                 ></div>
                 <Grid container sx={{ alignItems: "center" }}>
                   <Grid item xs={12} sm={item.products.length > 4 ? 8 : 8}>
+                  <div id ={`cat-${item.id}`}> </div>
                     <Typography
                       variant="h2"
                       sx={{
@@ -682,7 +689,13 @@ const CategoryList = () => {
               </Grid>
               {item.products.length > 4
                 &&
+                <a  
+                id={`view-${item.id}`}
+                >
+
                 <Grid
+                
+              
                   sx={{marginTop: '4px',display: {xs: 'block',sm: 'none',md: 'none',lg: 'none',},}}
                     onClick={() => handleViewMore(item.id)}
                   item
@@ -750,6 +763,7 @@ const CategoryList = () => {
                     />
                   )}
                 </Grid>
+                </a>
               }
             </Grid>
           ))}
