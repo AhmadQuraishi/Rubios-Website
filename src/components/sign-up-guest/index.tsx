@@ -5,6 +5,7 @@ import {
   Checkbox,
   TextField,
   Button,
+  Divider,
 } from '@mui/material';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -17,14 +18,14 @@ import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
 const SignUpGuest = ({ guestSignupCheckout, signupFormRef, birthDay, setBirthDay }: any) => {
   const navigate = useNavigate();
-    const { locations } = useSelector((state: any) => state.locationReducer);
+  const { locations } = useSelector((state: any) => state.locationReducer);
   const [termsAndConditions, setTermsAndconditions] = useState(false);
   const { loading: loadingProvider } = useSelector(
     (state: any) => state.providerReducer,
   );
   const { loading: loadingAuth } = useSelector(
     (state: any) => state.authReducer,
-  ); 
+  );
   React.useEffect(() => {
     const monthField = document.getElementsByClassName(
       'react-date-inputs__month',
@@ -89,7 +90,7 @@ const SignUpGuest = ({ guestSignupCheckout, signupFormRef, birthDay, setBirthDay
                 sm: 'center',
                 xs: 'left',
               },
-              marginTop: "10px",marginBottom: '5px'
+              marginTop: "10px", marginBottom: '5px'
             }}
             variant="h6"
           >
@@ -115,20 +116,20 @@ const SignUpGuest = ({ guestSignupCheckout, signupFormRef, birthDay, setBirthDay
                 .max(16, 'Must be at most 16 characters')
                 .oneOf([Yup.ref('password'), null], 'Passwords must match')
                 .required('required'),
-                termsAndConditions: Yup.boolean().required(),
+              termsAndConditions: Yup.boolean().required(),
             })}
             onSubmit={async (values) => {
             }}
           >
             {({
-              errors,
-              handleBlur,
-              handleChange,
-              handleSubmit,
-              touched,
-              values,
-              dirty,
-            }) => (
+                errors,
+                handleBlur,
+                handleChange,
+                handleSubmit,
+                touched,
+                values,
+                dirty,
+              }) => (
               <form onSubmit={handleSubmit} autoComplete="off">
                 <Grid item xs={12} md={12} lg={12}>
                   <Grid
@@ -157,7 +158,7 @@ const SignUpGuest = ({ guestSignupCheckout, signupFormRef, birthDay, setBirthDay
                       variant="body2"
                       className="body-text-signup"
                       title="Password must be at least 8 characters."
-                      sx={{ width: '100%',marginBottom: '10px', }}
+                      sx={{ width: '100%', marginBottom: '10px', }}
                     >
                       Password must be at least 8 characters.
                     </Typography>
@@ -176,13 +177,13 @@ const SignUpGuest = ({ guestSignupCheckout, signupFormRef, birthDay, setBirthDay
                         name="password_confirmation"
                         autoComplete="off"
                         type="password"
-                        sx={{ width: '100%',marginBottom: "10px", }}
+                        sx={{ width: '100%', marginBottom: "10px", }}
                         value={values.password_confirmation}
                         onChange={handleChange('password_confirmation')}
                         onBlur={handleBlur('password_confirmation')}
                         error={Boolean(
                           touched.password_confirmation &&
-                            errors.password_confirmation,
+                          errors.password_confirmation,
                         )}
                         helperText={
                           touched.password_confirmation &&
@@ -217,10 +218,10 @@ const SignUpGuest = ({ guestSignupCheckout, signupFormRef, birthDay, setBirthDay
                       sx={{ margin: 'auto' }}
                     >
                       <Checkbox
-                           checked={values.termsAndConditions}
-                           id="termsAndConditions"
-                           onChange={handleChange('termsAndConditions')}
-                        sx={{ padding: '0px !important', float: 'left', marginRight: "5px"}}
+                        checked={values.termsAndConditions}
+                        id="termsAndConditions"
+                        onChange={handleChange('termsAndConditions')}
+                        sx={{ padding: '0px !important', float: 'left', marginRight: "5px" }}
                         name="termsAndConditions"
                         inputProps={{
                           'aria-labelledby': 'chkTermandCondition',
@@ -228,8 +229,10 @@ const SignUpGuest = ({ guestSignupCheckout, signupFormRef, birthDay, setBirthDay
                       />{' '}
                       <Typography
                         variant="body2"
-                        sx={{ width: '100%', paddingTop: '4px',fontSize: '11px !important',
-                        fontFamily: "'Librefranklin-Regular' !important" }}
+                        sx={{
+                          width: '100%', paddingTop: '4px', fontSize: '11px !important',
+                          fontFamily: "'Librefranklin-Regular' !important"
+                        }}
                       >
                         I accept the{' '}
                         <Link
@@ -289,29 +292,7 @@ const SignUpGuest = ({ guestSignupCheckout, signupFormRef, birthDay, setBirthDay
                         Send me emails with special Offers and Updates.
                       </Typography>
                     </Grid> */}
-                    <Grid
-                      item
-                      xs={12}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      sx={{ display: 'flex', justifyContent: 'center',marginTop: "10px", }}
-                    >
-                      <Typography
-                        className="body-text-signup"
-                        title="Already a Rewards member?"
-                        sx={{ width: '100%', }}
-                      >
-                        Already a Rewards member?{' '}
-                        <Link
-                          onClick={() => navigate('/login')}
-                          underline="hover"
-                          sx={{ color: '#062C43',  fontFamily: "'GritSans-Bold' !important",cursor: 'pointer', textDecoration: 'underline', }}
-                        >
-                          Log In
-                        </Link>
-                      </Typography>
-                    </Grid>
+
                     <br />
                     <Grid
                       item
@@ -337,6 +318,49 @@ const SignUpGuest = ({ guestSignupCheckout, signupFormRef, birthDay, setBirthDay
                         >
                           Sign Up
                         </Button>
+                      </Grid>
+                    </Grid>
+
+                    <Grid item xs={12} sx={{ padding: '15px 0px 0px 0px' }}>
+                      <Divider sx={{borderColor: '#122a41' }} style={{borderTopWidth: "1px"}} />
+                    </Grid>
+                    <Grid
+                      // item
+                      // xs={12}
+                      // sm={12}
+                      // md={12}
+                      // lg={12}
+                      // sx={{ display: 'flex', justifyContent: 'center', marginTop: "10px", }}
+                    >
+                      <Typography
+                        title="Already a Rewards member?"
+                        sx={{color: '#122a41',fontSize: "1.1rem",fontFamily: "'Sunborn-Sansone' !important",width: '100%',display: 'flex', justifyContent: 'center', marginTop: "30px",marginBottom: "16px" }}
+                      >
+                        Already a Rewards member?{' '}
+                      </Typography>
+                      <Grid
+                        item
+                        sx={{ display: 'flex', justifyContent: 'center' }}
+                      >
+                        <Grid
+                          item
+                          xs={12}
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          sx={{ margin: 'auto' }}
+                        >
+                          <Button
+                            type="submit"
+                            aria-label="Sign in"
+                            name="signin"
+                            title="signin"
+                            sx={{color: '#122a41',fontSize: "1.1rem",fontFamily: "'Sunborn-Sansone' !important", width: '100%', height: '70px', border: '3px solid #122a41' }}
+                            onClick={() => navigate('/login')}
+                          >
+                            Sign In
+                          </Button>
+                        </Grid>
                       </Grid>
                     </Grid>
                   </Grid>
