@@ -571,7 +571,7 @@ const CategoryList = () => {
                 // indicatorColor="primary"
                 variant="scrollable"
                 //scrollButtons
-                allowScrollButtonsMobile
+                // allowScrollButtonsMobile
                 sx={{ fontFamily: "'Sunborn-Sansone' !important", }}
                 role="region"
                 aria-label="Food Menu"
