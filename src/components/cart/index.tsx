@@ -846,7 +846,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                     <img
                       className="item-image"
                       style={{height: "35px"}}
-                      src={require(`../../assets/imgs/utensils.png`)}
+                      src={require(`../../assets/imgs/untensils.png`)}
                       // alt={option.name}
                       // title={option.name}
                                       />
