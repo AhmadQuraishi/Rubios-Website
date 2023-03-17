@@ -690,6 +690,7 @@ const CategoryList = () => {
               {item.products.length > 4
                 &&
                 <a  
+                style={{display: "contents"}}
                 id={`view-${item.id}`}
                 >
 
