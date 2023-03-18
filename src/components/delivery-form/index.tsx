@@ -282,6 +282,8 @@ const DeliveryForm = ({
                     {basket?.deliveryaddress?.city},&nbsp;
                     {basket?.deliveryaddress?.zipcode}
                   </Typography>
+
+                  
                   <Typography
                     variant="body1"
                     className="label"
@@ -293,19 +295,8 @@ const DeliveryForm = ({
                   >
                     Edit
                   </Typography>
-                  <Grid item xs={12} style={{marginTop: "38px"}}>
-                  <TextField
-                    label="Delivery Instructions - Optional"
-                    name="specialInstruction"
-                    multiline
-                    value={specialInstruction}
-                    onChange={handleInsturctionChange}
-                    inputProps={{ maxLength: maxLength }}
-                  />
-                  {/* <Typography variant="caption">
-                  {remainingChars} characters remaining
-                  </Typography> */}
-
+                  <Grid item xs={12} style={{marginTop: "20px"}}>
+                    
                   {(
                   <FormGroup>
                     <FormControlLabel
@@ -323,6 +314,18 @@ const DeliveryForm = ({
                     />
                   </FormGroup>
                   )}
+                  <TextField
+                    label="Delivery Instructions - Optional"
+                    name="specialInstruction"
+                    multiline
+                    value={specialInstruction}
+                    onChange={handleInsturctionChange}
+                    inputProps={{ maxLength: maxLength }}
+                  />
+                  <Typography variant="caption" sx={{fontFamily: "'Librefranklin-Regular' !important"}}>
+                  (Limit of 120 characters)
+                  </Typography>
+
                 </Grid>
                 </Grid>
               </Grid>
