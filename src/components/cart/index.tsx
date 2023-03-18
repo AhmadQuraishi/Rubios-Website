@@ -186,9 +186,9 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   const [basketType, setBasketType] = useState();
 
   useEffect(() => {
-    if(upsellsVendorId && upsellsVendorId !== restaurant?.id){
-        dispatch(getUpsellsRequest(restaurant?.id))
-    } else if(!upsells && restaurant?.id){
+    if (upsellsVendorId && upsellsVendorId !== restaurant?.id) {
+      dispatch(getUpsellsRequest(restaurant?.id))
+    } else if (!upsells && restaurant?.id) {
       dispatch(getUpsellsRequest(restaurant?.id))
     }
 
@@ -509,7 +509,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
     }, 1000);
   };
 
-  
+
 
   return (
     <>
@@ -564,76 +564,76 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
           {((
             basketObj?.basket?.products?.length == 0) ||
             (basketObj.basket == null)) && (
-            <Grid
-              id="cart-main-conatiner"
-              item
-              xs={12}
-              style={{
-                height: '220px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: 'column',
-                paddingRight: '25px',
-              }}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 512 512"
-                aria-label="Cart"
-                role="img"
-                style={{ width: '70px', marginBottom: '10px' }}
-              >
-                <path
-                  fill="none"
-                  stroke="#000"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="40"
-                  fill-rule="evenodd"
-                  d="M80,176a16,16,0,0,0-16,16V408c0,30.24,25.76,56,56,56H392c30.24,0,56-24.51,56-54.75V192a16,16,0,0,0-16-16Z"
-                />
-                <path
-                  fill="none"
-                  stroke="#000"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="40"
-                  fill-rule="evenodd"
-                  d="M160,176V144a96,96,0,0,1,96-96h0a96,96,0,0,1,96,96v32"
-                />
-              </svg>
-              {/*<svg*/}
-              {/*xmlns="http://www.w3.org/2000/svg"*/}
-              {/*viewBox="0 0 24 24"*/}
-              {/*aria-label="Cart"*/}
-              {/*role="img"*/}
-              {/*style={{ width: '60px', marginBottom: '10px' }}*/}
-              {/*>*/}
-              {/*<path fill="none" d="M0 0h24v24H0V0z"></path>*/}
-              {/*<path d="M15.55 13c.75 0 1.41-.41 1.75-1.03l3.58-6.49A.996.996 0 0020.01 4H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7l1.1-2h7.45zM6.16 6h12.15l-2.76 5H8.53L6.16 6zM7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"></path>*/}
-              {/*</svg>*/}
-              <p className={classes.emptyCart}>Your Bag Is Currently Empty</p>
-              <br />
-              <Button
-                variant="contained"
-                title="Add Another Menu Item"
-                sx={{ width: '100%', marginBottom: '15px' }}
-                onClick={() => {
-                  showCart();
-                  return false;
+              <Grid
+                id="cart-main-conatiner"
+                item
+                xs={12}
+                style={{
+                  height: '220px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexDirection: 'column',
+                  paddingRight: '25px',
                 }}
-                onKeyUp={(e) => {
-                  if (e.keyCode === 13) {
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 512 512"
+                  aria-label="Cart"
+                  role="img"
+                  style={{ width: '70px', marginBottom: '10px' }}
+                >
+                  <path
+                    fill="none"
+                    stroke="#000"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="40"
+                    fill-rule="evenodd"
+                    d="M80,176a16,16,0,0,0-16,16V408c0,30.24,25.76,56,56,56H392c30.24,0,56-24.51,56-54.75V192a16,16,0,0,0-16-16Z"
+                  />
+                  <path
+                    fill="none"
+                    stroke="#000"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="40"
+                    fill-rule="evenodd"
+                    d="M160,176V144a96,96,0,0,1,96-96h0a96,96,0,0,1,96,96v32"
+                  />
+                </svg>
+                {/*<svg*/}
+                {/*xmlns="http://www.w3.org/2000/svg"*/}
+                {/*viewBox="0 0 24 24"*/}
+                {/*aria-label="Cart"*/}
+                {/*role="img"*/}
+                {/*style={{ width: '60px', marginBottom: '10px' }}*/}
+                {/*>*/}
+                {/*<path fill="none" d="M0 0h24v24H0V0z"></path>*/}
+                {/*<path d="M15.55 13c.75 0 1.41-.41 1.75-1.03l3.58-6.49A.996.996 0 0020.01 4H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7l1.1-2h7.45zM6.16 6h12.15l-2.76 5H8.53L6.16 6zM7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"></path>*/}
+                {/*</svg>*/}
+                <p className={classes.emptyCart}>Your Bag Is Currently Empty</p>
+                <br />
+                <Button
+                  variant="contained"
+                  title="Add Another Menu Item"
+                  sx={{ width: '100%', marginBottom: '15px' }}
+                  onClick={() => {
                     showCart();
                     return false;
-                  }
-                }}
-              >
-                Start Your Order
-              </Button>
-            </Grid>
-          )}
+                  }}
+                  onKeyUp={(e) => {
+                    if (e.keyCode === 13) {
+                      showCart();
+                      return false;
+                    }
+                  }}
+                >
+                  Start Your Order
+                </Button>
+              </Grid>
+            )}
           {
             basketObj?.basket?.products?.length > 0 && (
               <Grid item xs={12} sx={{ padding: '0 20px 0 0' }}>
@@ -674,8 +674,8 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                       >
                         {item.productId !== utensilsReducer.utensilsProductId
                           ? item.quantity.toString() +
-                            ' x ' +
-                            item.name.toString()
+                          ' x ' +
+                          item.name.toString()
                           : item.name.toString()}
                       </Typography>
                     </Grid>
@@ -720,8 +720,8 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                           <ul className={`btnslist ${classes.btnsList}`}>
                             <li>
                               {productRemoveObj &&
-                              productRemoveObj.loading &&
-                              clickAction == item.id + '-remove' ? (
+                                productRemoveObj.loading &&
+                                clickAction == item.id + '-remove' ? (
                                 <Button
                                   key={Math.random() + 'disable-remove'}
                                   title="Remove"
@@ -752,8 +752,8 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                             <li>
                               {!checkItemIsUpsells(item.productId) && (
                                 <Grid item xs={3}>
-                                  {( productRemoveObj?.loading) ||
-                                  ( productAddObj?.loading) ? (
+                                  {(productRemoveObj?.loading) ||
+                                    (productAddObj?.loading) ? (
                                     <Button
                                       key={Math.random() + 'disable-edit'}
                                       onClick={() => false}
@@ -769,14 +769,12 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                       onClick={() => {
                                         showCart();
                                         navigate(
-                                          `product/${item.productId}/${
-                                            item.id
-                                          }${
-                                            window.location.href
-                                              .toLowerCase()
-                                              .indexOf('product') == -1
-                                              ? '?edit=true'
-                                              : ''
+                                          `product/${item.productId}/${item.id
+                                          }${window.location.href
+                                            .toLowerCase()
+                                            .indexOf('product') == -1
+                                            ? '?edit=true'
+                                            : ''
                                           }`,
                                         );
                                       }}
@@ -794,7 +792,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                             </li>
                             <li>
                               {productAddObj?.loading &&
-                              clickAction == item.id + '-add' ? (
+                                clickAction == item.id + '-add' ? (
                                 <Button
                                   key={Math.random() + 'disable-duplicate'}
                                   onClick={() => false}
@@ -842,41 +840,41 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
               )}
               {utensilsReducer?.utensilsProductId &&
                 basketObj?.basket?.deliverymode !== DeliveryModeEnum.dinein && (
-                  <Grid item xs={12} sx={{display: 'flex', alignItems: 'center'}}>
+                  <Grid item xs={12} sx={{ display: 'flex', alignItems: 'center' }}>
                     <img
                       className="item-image"
-                      style={{height: "35px"}}
+                      style={{ height: "35px" }}
                       src={require(`../../assets/imgs/untensils.png`)}
-                      // alt={option.name}
-                      // title={option.name}
-                                      />
+                    // alt={option.name}
+                    // title={option.name}
+                    />
                     <Typography
                       variant="body2"
                       className="body-text"
                       // title="I agree to the  Rubios terms and conditions and to receiving marketing communications from Rubios."
-                      sx={{ paddingLeft: "10px", width: '100%', color: '#224c65',fontFamily: "'Librefranklin-Regular' !important", }}
+                      sx={{ paddingLeft: "10px", width: '100%', color: '#224c65', fontFamily: "'Librefranklin-Regular' !important", }}
                     >
 
                       Include Utensils
-                      </Typography>
-                      <Checkbox
-                        checked={utensils}
-                        disabled={
-                          utensilsReducer?.loading &&
-                          utensilsDisabled
-                        }
-                        onChange={(e) => {
-                          addRemoveUtensils(e);
-                        }}
-                        inputProps={{
-                          'aria-label': ' Include Utensils',
-                        }}
-                        sx={{
-                          paddingLeft: 0,
-                          fontFamily: "'GritSans-Bold' !important",
-                        }}
-                      />
-                    
+                    </Typography>
+                    <Checkbox
+                      checked={utensils}
+                      disabled={
+                        utensilsReducer?.loading &&
+                        utensilsDisabled
+                      }
+                      onChange={(e) => {
+                        addRemoveUtensils(e);
+                      }}
+                      inputProps={{
+                        'aria-label': ' Include Utensils',
+                      }}
+                      sx={{
+                        paddingLeft: 0,
+                        fontFamily: "'GritSans-Bold' !important",
+                      }}
+                    />
+
                   </Grid>
                 )}
 
@@ -946,21 +944,21 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                               tabIndex={0}
                               htmlFor={`${index}`}
                               style={{ width: '100%' }}
-                              // onKeyUp={(e) => {
-                              //   if (e.keyCode === 13)
-                              //     showChildOptions(
-                              //       itemChild.option.id,
-                              //       itemMain.id,
-                              //       itemChild.dropDownValues,
-                              //       itemChild.selectedValue,
-                              //     );
-                              // }}
+                            // onKeyUp={(e) => {
+                            //   if (e.keyCode === 13)
+                            //     showChildOptions(
+                            //       itemChild.option.id,
+                            //       itemMain.id,
+                            //       itemChild.dropDownValues,
+                            //       itemChild.selectedValue,
+                            //     );
+                            // }}
                             >
                               <Card
                                 className="card-panel card-item"
                                 title={type}
-                                // is-mandatory={itemMain.mandatory.toString()}
-                                // parent-option-id={itemMain.parentOptionID}
+                              // is-mandatory={itemMain.mandatory.toString()}
+                              // parent-option-id={itemMain.parentOptionID}
                               >
                                 <Grid
                                   container
@@ -988,8 +986,8 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                       <img
                                         className="item-image"
                                         src={require(`../../assets/imgs/${type}.jpg`)}
-                                        // alt={option.name}
-                                        // title={option.name}
+                                      // alt={option.name}
+                                      // title={option.name}
                                       />
                                       <div className="check-mark">
                                         <div
@@ -1193,106 +1191,97 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                 basketObj?.basket?.products?.length > 0 && (
                   <Grid item xs={12} textAlign="center" padding="10px 0">
                     <Button
-                      variant="contained"
+                      // variant="contained"
                       title="Add Another Menu Item"
                       onClick={() => {
                         showCart();
                         navigate(restaurant ? '/menu/' + restaurant.slug : '/');
                       }}
-                      sx={{
-                        textTransform: 'uppercase',
-                        backgroundColor: 'secondary.main',
-                        margin: 'auto',
-                        width: '100%',
-                        borderRadius: 0,
-                        padding: '30px',
-                        fontFamily: "'Sunborn-Sansone'!important",
-                        fontSize: '10pt',
-                      }}
+                      sx={{ letterSpacing: "0.25px !important",textTransform: 'uppercase', color: '#122a41', fontSize: "1.1rem", fontFamily: "'Sunborn-Sansone' !important", width: '100%', height: '70px', border: '3px solid #122a41', }}
                     >
                       Add Another Menu Item
                     </Button>
                   </Grid>
                 )}
               {basketObj?.basket?.products?.length > 0 && (
-                  <Grid item xs={12} padding="20px 0px 20px 0px">
-                    <Grid container spacing={0}>
-                      <Grid
-                        item
-                        xs={9}
-                        sx={{
-                          fontFamily: "'Librefranklin-Bold' !important",
-                          color: 'secondary.main',
-                          fontSize: '14px',
-                          fontWeight: "bold",
-                          paddingBottom: '2px',
-                        }}
-                        title="Sub Total"
-                      >
-                        SUB TOTAL
-                      </Grid>
-                      <Grid
-                        item
-                        xs={3}
-                        sx={{
-                          fontFamily: "'Librefranklin-Bold' !important",
-                          color: 'secondary.main',
-                          fontSize: '14px',
-                          textAlign: 'right',
-                          fontWeight: "bold",
-                          paddingBottom: '2px',
-                        }}
-                        title={
-                          '$' +
-                          (
-                            basketObj?.basket?.subtotal?.toFixed(2))
-                        }
-                      >
-                        $
-                        {
-                          basketObj?.basket?.subtotal?.toFixed(2)}
-                      </Grid>
+                <Grid item xs={12} padding="20px 0px 20px 0px">
+                  <Grid container spacing={0}>
+                    <Grid
+                      item
+                      xs={9}
+                      sx={{
+                        fontFamily: "'Librefranklin-Bold' !important",
+                        color: 'secondary.main',
+                        fontSize: '14px',
+                        fontWeight: "bold",
+                        paddingBottom: '2px',
+                      }}
+                      title="Sub Total"
+                    >
+                      SUB TOTAL
+                    </Grid>
+                    <Grid
+                      item
+                      xs={3}
+                      sx={{
+                        fontFamily: "'Librefranklin-Bold' !important",
+                        color: 'secondary.main',
+                        fontSize: '14px',
+                        textAlign: 'right',
+                        fontWeight: "bold",
+                        paddingBottom: '2px',
+                      }}
+                      title={
+                        '$' +
+                        (
+                          basketObj?.basket?.subtotal?.toFixed(2))
+                      }
+                    >
+                      $
                       {
+                        basketObj?.basket?.subtotal?.toFixed(2)}
+                    </Grid>
+                    {
                       basketObj?.basket?.discounts?.length > 0
                         ? basketObj.basket.discounts.map((discount: any) => {
-                            return (
-                              <>
-                                <Grid
-                                  item
-                                  xs={9}
-                                  sx={{
-                                    color: 'secondary.main',
-                                    fontSize: '14px',
-                                    paddingBottom: '2px',
-                                    fontFamily: "'Librefranklin-Regular' !important",
-                                  }}
-                                >
-                                  {discount.type === 'Coupon'
-                                    ? 'Coupon Code: '
-                                    : 'REWARD: '}
-                                  {discount.description}
-                                </Grid>
-                                <Grid
-                                  item
-                                  xs={3}
-                                  sx={{
-                                    color: 'secondary.main',
-                                    fontSize: '14px',
-                                    textAlign: 'right',
-                                    paddingBottom: '2px',
-                                    fontFamily: "'Librefranklin-Regular' !important",
-                                  }}
-                                >
-                                  -$
-                                  {discount.amount &&
-                                    discount.amount.toFixed(2)}
-                                </Grid>
-                              </>
-                            );
-                          })
+                          return (
+                            <>
+                              <Grid
+                                item
+                                xs={9}
+                                sx={{
+                                  color: 'secondary.main',
+                                  fontSize: '14px',
+                                  paddingBottom: '2px',
+                                  fontFamily: "'Librefranklin-Regular' !important",
+                                }}
+                              >
+                                {discount.type === 'Coupon'
+                                  ? 'Coupon Code: '
+                                  : 'REWARD: '}
+                                {discount.description}
+                              </Grid>
+                              <Grid
+                                item
+                                xs={3}
+                                sx={{
+                                  color: 'secondary.main',
+                                  fontSize: '14px',
+                                  textAlign: 'right',
+                                  paddingBottom: '2px',
+                                  fontFamily: "'Librefranklin-Regular' !important",
+                                }}
+                              >
+                                -$
+                                {discount.amount &&
+                                  discount.amount.toFixed(2)}
+                              </Grid>
+                            </>
+                          );
+                        })
                         : null}
 
-                      {
+                    {
                       basketObj?.basket?.tip > 0 ? (
                         <>
                           <Grid
@@ -1324,65 +1313,66 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         </>
                       ) : null}
 
-                      <Grid
-                        item
-                        xs={9}
-                        sx={{
-                          color: 'secondary.main',
-                          fontSize: '14px',
-                          paddingBottom: '2px',
-                          fontFamily: "'Librefranklin-Regular' !important",
-                          display: 'flex',
-                        }}
-                        // title="ESTIMATED TAX AND FEES"
-                      >
-                        <div>
-                          { 
+                    <Grid
+                      item
+                      xs={9}
+                      sx={{
+                        color: 'secondary.main',
+                        fontSize: '14px',
+                        paddingBottom: '2px',
+                        fontFamily: "'Librefranklin-Regular' !important",
+                        display: 'flex',
+                      }}
+                    // title="ESTIMATED TAX AND FEES"
+                    >
+                      <div>
+                        {
                           basketObj?.basket?.totalfees > 0 ? (
                             <>
-                            <Typography sx={{
-                          fontSize: '14px',
-                          fontFamily: "'Librefranklin-Regular' !important",cursor: 'pointer'}} onClick={() => {
-                                    setShowMore(!showMore);
-                                  }}>
-                              ESTIMATED TAX AND FEES
-                              {showMore ? (
-                                <ExpandLessIcon
-                                  aira-label="Expand Less"
-                                  onClick={() => {
-                                    setShowMore(!showMore);
-                                  }}
-                                  // className={classes.helpicon}
-                                  style={{
-                                    cursor: 'pointer',
-                                    verticalAlign: 'bottom',
-                                    color: 'secondary.main',
-                                  }}
-                                />
-                              ) : (
-                                <ExpandMoreIcon
-                                  aira-label="Expand Less"
-                                  onClick={() => {
-                                    setShowMore(!showMore);
-                                  }}
-                                  // className={classes.helpicon}
-                                  style={{
-                                    cursor: 'pointer',
-                                    verticalAlign: 'bottom',
-                                    color: 'secondary.main',
-                                  }}
-                                />
-                              )}
-                             </Typography>
+                              <Typography sx={{
+                                fontSize: '14px',
+                                fontFamily: "'Librefranklin-Regular' !important", cursor: 'pointer'
+                              }} onClick={() => {
+                                setShowMore(!showMore);
+                              }}>
+                                ESTIMATED TAX AND FEES
+                                {showMore ? (
+                                  <ExpandLessIcon
+                                    aira-label="Expand Less"
+                                    onClick={() => {
+                                      setShowMore(!showMore);
+                                    }}
+                                    // className={classes.helpicon}
+                                    style={{
+                                      cursor: 'pointer',
+                                      verticalAlign: 'bottom',
+                                      color: 'secondary.main',
+                                    }}
+                                  />
+                                ) : (
+                                  <ExpandMoreIcon
+                                    aira-label="Expand Less"
+                                    onClick={() => {
+                                      setShowMore(!showMore);
+                                    }}
+                                    // className={classes.helpicon}
+                                    style={{
+                                      cursor: 'pointer',
+                                      verticalAlign: 'bottom',
+                                      color: 'secondary.main',
+                                    }}
+                                  />
+                                )}
+                              </Typography>
                             </>
                           ) : (
-                            <Typography sx={{fontSize: '14px',fontFamily: "Librefranklin-Regular !important"}}>
-                          ESTIMATED TAXES
-                          </Typography>
+                            <Typography sx={{ fontSize: '14px', fontFamily: "Librefranklin-Regular !important" }}>
+                              ESTIMATED TAXES
+                            </Typography>
                           )}
-                        </div>
-                      </Grid>
-                      {!showMore &&
+                      </div>
+                    </Grid>
+                    {!showMore &&
                       <Grid
                         item
                         xs={3}
@@ -1397,152 +1387,152 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                       >
                         ${calculateTaxAndFee(basketObj.basket)}
                       </Grid>
-}                      {showMore ? (
-                                  <Grid
-                                    container
-                                    className={'taxes'}
-                                    spacing={1}
-                                    
-                                  >
-                                    <Grid item xs={9}>
-                                      <Typography
-                                        sx={{
-                                          lineHeight: '1.0',
-                                          fontFamily: "'Librefranklin-Regular' !important",
-                                            fontSize: "14px !important",
-                                            color: '#062C43 !important',
-                                            marginLeft: "22px !important"
-                                        }}
-                                      >
-                                        SALES TAX:
-                                      </Typography>
-                                    </Grid>
-                                    <Grid
-                                      item
-                                      xs={3}
-                                      justifyContent={'flex-end'}
-                                    >
-                                      <Typography
-                                        sx={{
-                                          lineHeight: '1.0',
-                                          textAlign: 'right',
-                                          fontFamily: "'Librefranklin-Regular' !important",
-                                            color: '#062C43 !important',
-                                            
-                                            fontSize: "14px !important",
-                                        }}
+                    }                      {showMore ? (
+                      <Grid
+                        container
+                        className={'taxes'}
+                        spacing={1}
 
-                                        title={ '$' +
-                                          (
-                                            basketObj?.basket?.taxes
-                                              .reduce(
-                                                (sum: number, tax: any) =>
-                                                  sum + tax.tax,
-                                                0,
-                                              )
-                                              .toFixed(2))}
-                                      >
-                                        $
-                                        {
-                                          basketObj?.basket?.taxes
-                                            .reduce(
-                                              (sum: number, tax: any) =>
-                                                sum + tax.tax,
-                                              0,
-                                            )
-                                            .toFixed(2)}
-                                      </Typography>
-                                    </Grid>
-                                    <Grid item xs={9}>
-                                      <Typography
-                                        sx={{
-                                          lineHeight: '1.0',
-                                          fontFamily: "'Librefranklin-Regular' !important",
-                                            fontSize: "14px !important",
-                                            color: '#062C43',
-                                            marginBottom: "3px",
-                                            marginLeft: "22px !important"
-                                        }}
-                                      >
-                                        {
-                                          basketObj?.basket?.fees?.length && 
-                                          basketObj.basket.fees.filter((fee: any) => fee.description === 'UCSD Living Wage Surcharge').length > 0 ? 
-                                          'UCSD Living Wage Surcharge:' : 'SERVICE FEE:'
-                                        }
-                                      </Typography>
-                                    </Grid>
-                                    <Grid item xs={3}>
-                                      <Typography
-                                        sx={{
-                                          lineHeight: '1.0',
-                                          textAlign: 'right',
-                                          fontFamily: "'Librefranklin-Regular' !important",
-                                            fontSize: "14px !important",
-                                            color: '#062C43',
-                                        }}
-                                        title={'$' + orderFees(basketObj?.basket)}
-                                      >
-                                        $
-                                        {orderFees(basketObj?.basket)}
-                                      </Typography>
-                                    </Grid>
-                                  </Grid>
-                              ) : (
-                                /* <DialogActions>
-                                  <Button
-                                    aria-label="OK"
-                                    title="OK"
-                                    className="link default"
-                                    onClick={handleClose}
-                                  >
-                                    OK
-                                  </Button>
-                                </DialogActions> */
+                      >
+                        <Grid item xs={9}>
+                          <Typography
+                            sx={{
+                              lineHeight: '1.0',
+                              fontFamily: "'Librefranklin-Regular' !important",
+                              fontSize: "14px !important",
+                              color: '#062C43 !important',
+                              marginLeft: "22px !important"
+                            }}
+                          >
+                            SALES TAX:
+                          </Typography>
+                        </Grid>
+                        <Grid
+                          item
+                          xs={3}
+                          justifyContent={'flex-end'}
+                        >
+                          <Typography
+                            sx={{
+                              lineHeight: '1.0',
+                              textAlign: 'right',
+                              fontFamily: "'Librefranklin-Regular' !important",
+                              color: '#062C43 !important',
 
-                                ''
-                              )}
-                      {/*{basketObj &&*/}
-                      {/*basketObj.basket &&*/}
-                      {/*basketObj.basket.totalfees &&*/}
-                      {/*basketObj.basket.totalfees > 0 ? (*/}
-                      {/*  <>*/}
-                      {/*    <Grid*/}
-                      {/*      item*/}
-                      {/*      xs={9}*/}
-                      {/*      sx={{*/}
-                      {/*        color: 'secondary.main',*/}
-                      {/*        fontSize: '14px',*/}
-                      {/*        fontFamily: 'Poppins-Regular',*/}
-                      {/*      }}*/}
-                      {/*      title="SERVICE FEE"*/}
-                      {/*    >*/}
-                      {/*      SERVICE FEE*/}
-                      {/*    </Grid>*/}
-                      {/*    <Grid*/}
-                      {/*      item*/}
-                      {/*      xs={3}*/}
-                      {/*      sx={{*/}
-                      {/*        color: 'secondary.main',*/}
-                      {/*        fontSize: '14px',*/}
-                      {/*        textAlign: 'right',*/}
-                      {/*        fontFamily: 'Poppins-Regular',*/}
-                      {/*      }}*/}
-                      {/*      title={*/}
-                      {/*        '$' +*/}
-                      {/*        (basketObj &&*/}
-                      {/*          basketObj.basket &&*/}
-                      {/*          basketObj.basket.totalfees.toFixed(2))*/}
-                      {/*      }*/}
-                      {/*    >*/}
-                      {/*      $*/}
-                      {/*      {basketObj &&*/}
-                      {/*        basketObj.basket &&*/}
-                      {/*        basketObj.basket.totalfees.toFixed(2)}*/}
-                      {/*    </Grid>*/}
-                      {/*  </>*/}
-                      {/*) : null}*/}
+                              fontSize: "14px !important",
+                            }}
 
-                      {
+                            title={'$' +
+                              (
+                                basketObj?.basket?.taxes
+                                  .reduce(
+                                    (sum: number, tax: any) =>
+                                      sum + tax.tax,
+                                    0,
+                                  )
+                                  .toFixed(2))}
+                          >
+                            $
+                            {
+                              basketObj?.basket?.taxes
+                                .reduce(
+                                  (sum: number, tax: any) =>
+                                    sum + tax.tax,
+                                  0,
+                                )
+                                .toFixed(2)}
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={9}>
+                          <Typography
+                            sx={{
+                              lineHeight: '1.0',
+                              fontFamily: "'Librefranklin-Regular' !important",
+                              fontSize: "14px !important",
+                              color: '#062C43',
+                              marginBottom: "3px",
+                              marginLeft: "22px !important"
+                            }}
+                          >
+                            {
+                              basketObj?.basket?.fees?.length &&
+                                basketObj.basket.fees.filter((fee: any) => fee.description === 'UCSD Living Wage Surcharge').length > 0 ?
+                                'UCSD Living Wage Surcharge:' : 'SERVICE FEE:'
+                            }
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={3}>
+                          <Typography
+                            sx={{
+                              lineHeight: '1.0',
+                              textAlign: 'right',
+                              fontFamily: "'Librefranklin-Regular' !important",
+                              fontSize: "14px !important",
+                              color: '#062C43',
+                            }}
+                            title={'$' + orderFees(basketObj?.basket)}
+                          >
+                            $
+                            {orderFees(basketObj?.basket)}
+                          </Typography>
+                        </Grid>
+                      </Grid>
+                    ) : (
+                      /* <DialogActions>
+                        <Button
+                          aria-label="OK"
+                          title="OK"
+                          className="link default"
+                          onClick={handleClose}
+                        >
+                          OK
+                        </Button>
+                      </DialogActions> */
+
+                      ''
+                    )}
+                    {/*{basketObj &&*/}
+                    {/*basketObj.basket &&*/}
+                    {/*basketObj.basket.totalfees &&*/}
+                    {/*basketObj.basket.totalfees > 0 ? (*/}
+                    {/*  <>*/}
+                    {/*    <Grid*/}
+                    {/*      item*/}
+                    {/*      xs={9}*/}
+                    {/*      sx={{*/}
+                    {/*        color: 'secondary.main',*/}
+                    {/*        fontSize: '14px',*/}
+                    {/*        fontFamily: 'Poppins-Regular',*/}
+                    {/*      }}*/}
+                    {/*      title="SERVICE FEE"*/}
+                    {/*    >*/}
+                    {/*      SERVICE FEE*/}
+                    {/*    </Grid>*/}
+                    {/*    <Grid*/}
+                    {/*      item*/}
+                    {/*      xs={3}*/}
+                    {/*      sx={{*/}
+                    {/*        color: 'secondary.main',*/}
+                    {/*        fontSize: '14px',*/}
+                    {/*        textAlign: 'right',*/}
+                    {/*        fontFamily: 'Poppins-Regular',*/}
+                    {/*      }}*/}
+                    {/*      title={*/}
+                    {/*        '$' +*/}
+                    {/*        (basketObj &&*/}
+                    {/*          basketObj.basket &&*/}
+                    {/*          basketObj.basket.totalfees.toFixed(2))*/}
+                    {/*      }*/}
+                    {/*    >*/}
+                    {/*      $*/}
+                    {/*      {basketObj &&*/}
+                    {/*        basketObj.basket &&*/}
+                    {/*        basketObj.basket.totalfees.toFixed(2)}*/}
+                    {/*    </Grid>*/}
+                    {/*  </>*/}
+                    {/*) : null}*/}
+
+                    {
                       basketObj?.basket?.customerhandoffcharge > 0 ? (
                         <>
                           <Grid
@@ -1569,53 +1559,80 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                             title={
                               '$' +
                               (basketObj?.basket?.customerhandoffcharge?.toFixed(
-                                  2,
-                                ))
+                                2,
+                              ))
                             }
                           >
                             $
-                            { basketObj?.basket?.customerhandoffcharge?.toFixed(2)}
+                            {basketObj?.basket?.customerhandoffcharge?.toFixed(2)}
                           </Grid>
                         </>
                       ) : null}
 
-                      <Grid item xs={12} sx={{ padding: '20px 0px' }}>
-                        <Divider sx={{ borderColor: '#224c65' }} />
-                      </Grid>
-                      <Grid
-                        item
-                        xs={9}
-                        sx={{
-                          fontFamily: "'Librefranklin-Bold' !important",
-                          color: 'secondary.main',
-                          fontSize: '15px',
-                        }}
-                        title="Total"
-                      >
-                        TOTAL
-                      </Grid>
-                      <Grid
-                        item
-                        xs={3}
-                        sx={{
-                          fontFamily: "'Librefranklin-Bold' !important",
-                          color: 'secondary.main',
-                          fontSize: '15px',
-                          fontWeight: "bold",
-                          textAlign: 'right',
-                        }}
-                        title={
-                          '$' +
-                          (basketObj?.basket?.total?.toFixed(2))
-                        }
-                      >
-                        $
-                        {basketObj?.basket?.total?.toFixed(2)}
-                      </Grid>
+                    <Grid item xs={12} sx={{ padding: '20px 0px' }}>
+                      <Divider sx={{ borderColor: '#224c65' }} />
+                    </Grid>
+                    <Grid
+                      item
+                      xs={9}
+                      sx={{
+                        fontFamily: "'Librefranklin-Bold' !important",
+                        color: 'secondary.main',
+                        fontSize: '15px',
+                      }}
+                      title="Total"
+                    >
+                      TOTAL
+                    </Grid>
+                    <Grid
+                      item
+                      xs={3}
+                      sx={{
+                        fontFamily: "'Librefranklin-Bold' !important",
+                        color: 'secondary.main',
+                        fontSize: '15px',
+                        fontWeight: "bold",
+                        textAlign: 'right',
+                      }}
+                      title={
+                        '$' +
+                        (basketObj?.basket?.total?.toFixed(2))
+                      }
+                    >
+                      $
+                      {basketObj?.basket?.total?.toFixed(2)}
                     </Grid>
                   </Grid>
-                )}
+                </Grid>
+              )}
+              {!isLoginUser() &&
+                <Grid
+                  item
+                  sx={{ display: 'flex', justifyContent: 'center', marginBottom: "20px" }}
+                >
+                  <Grid
+                    item
+                    xs={12}
+                    sm={12}
+                    md={12}
+                    lg={12}
+                    sx={{ margin: 'auto' }}
+                  >
+                    <Button
+                      type="submit"
+                      aria-label="Sign in"
+                      name="signin"
+                      title="signin"
+                      sx={{ textTransform: "uppercase", color: '#122a41', fontSize: "1.1rem", fontFamily: "'Sunborn-Sansone' !important", width: '100%', height: '70px', border: '3px solid #122a41',letterSpacing: "0.25px !important" }}
+                      onClick={() => navigate('/login')}
+                    >
+                      Sign In To Use Rewards 
+                    </Button>
+                  </Grid>
+                </Grid>
+              }
             </Grid>
+
           )}
         </Grid>
         <Grid container spacing={0}>
