@@ -24,14 +24,12 @@ const GoogleMapComponent = ({
   const loadMap = useCallback((map: any) => {
     mapRef.current = map;
   }, []);
-
   useEffect(() => {
     if (mapRef?.current && window.google) {
       console.log('mapRef', mapRef.current);
       console.log('markerRef', markerRef);
 
       const map = mapRef?.current;
-
       if (map && markers.length > 0) {
         const bounds = new window.google.maps.LatLngBounds();
         markers.forEach((marker: any, index: any) => {
@@ -40,8 +38,7 @@ const GoogleMapComponent = ({
         map.fitBounds(bounds);
       }
     }
-    // debugger;
-  }, [mapRef.current, window.google, filteredRestaurants]);
+  }, [markers,mapRef.current, window.google, filteredRestaurants]);
 
   useEffect(() => {
     if (isLoaded) {
@@ -69,7 +66,7 @@ const GoogleMapComponent = ({
         overflow: 'hidden',
       }}
       id={'google-map-location'}
-      // zoom={10}
+      zoom={zoom}
       center={mapCenter}
       options={{
         streetViewControl: false,

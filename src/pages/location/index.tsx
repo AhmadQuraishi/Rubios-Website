@@ -292,10 +292,10 @@ const Location = () => {
         const rest = getOrderTypeRestaurants(restaurants.restaurants, null);
         setFilteredRestaurants(rest);
         populateMarkersOnMap(rest);
-        // setMapCenter({
-        //   lat: restaurants.restaurants[0].latitude,
-        //   lng: restaurants.restaurants[0].longitude,
-        // });
+        setMapCenter({
+          lat: restaurants.restaurants[0].latitude,
+          lng: restaurants.restaurants[0].longitude,
+        });
         setZoom(7);
       }
     }
