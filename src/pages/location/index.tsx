@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Marker } from '@react-google-maps/api';
 import LocationCard from '../../components/location';
 import { useDispatch, useSelector } from 'react-redux';
@@ -50,6 +50,7 @@ const actionTypes: any = {
 const Location = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const markerRef: any = useRef([]);
 
   const [mapCenter, setMapCenter] = useState<any>();
   const [zoom, setZoom] = useState<number>(7);
@@ -102,10 +103,10 @@ const Location = () => {
     ) {
       const rest = getOrderTypeRestaurants(restaurants.restaurants, orderType);
       setFilteredRestaurants(rest);
-      setMapCenter({
-        lat: restaurants.restaurants[0].latitude,
-        lng: restaurants.restaurants[0].longitude,
-      });
+      // setMapCenter({
+      //   lat: restaurants.restaurants[0].latitude,
+      //   lng: restaurants.restaurants[0].longitude,
+      // });
       setZoom(7);
     }
     // debugger;
@@ -138,10 +139,10 @@ const Location = () => {
       }
 
       if (mapCenter === undefined) {
-        setMapCenter({
-          lat: item.latitude,
-          lng: item.longitude,
-        });
+        // setMapCenter({
+        //   lat: item.latitude,
+        //   lng: item.longitude,
+        // });
       }
       let latLong = {
         lat: item.latitude,
@@ -149,7 +150,11 @@ const Location = () => {
       };
       setMarkers((markers) => [
         ...markers,
-        <Marker key={Math.random() + index} position={latLong} />,
+        <Marker
+          key={Math.random() + index}
+          position={latLong}
+          onLoad={(ref) => (markerRef.current[index] = ref)}
+        />,
       ]);
     });
     if (!loadDynamicMap) {
@@ -287,10 +292,10 @@ const Location = () => {
         const rest = getOrderTypeRestaurants(restaurants.restaurants, null);
         setFilteredRestaurants(rest);
         populateMarkersOnMap(rest);
-        setMapCenter({
-          lat: restaurants.restaurants[0].latitude,
-          lng: restaurants.restaurants[0].longitude,
-        });
+        // setMapCenter({
+        //   lat: restaurants.restaurants[0].latitude,
+        //   lng: restaurants.restaurants[0].longitude,
+        // });
         setZoom(7);
       }
     }
@@ -312,10 +317,10 @@ const Location = () => {
         );
         setFilteredRestaurants(rest);
         populateMarkersOnMap(rest);
-        setMapCenter({
-          lat: nearbyRestaurants.restaurants[0].latitude,
-          lng: nearbyRestaurants.restaurants[0].longitude,
-        });
+        // setMapCenter({
+        //   lat: nearbyRestaurants.restaurants[0].latitude,
+        //   lng: nearbyRestaurants.restaurants[0].longitude,
+        // });
         setZoom(7);
         setActionPerform(false);
         setRestaurantNotFound(false);
@@ -394,7 +399,6 @@ const Location = () => {
       });
   };
 
-
   const fitMapView = () => {
     const locationCardView = document.getElementById('location-card-view');
     const googleMapLocation = document.getElementById('google-map-location');
@@ -425,11 +429,11 @@ const Location = () => {
     },
     false,
   );
-  useEffect (() => {
-    if(fitMapView){
+  useEffect(() => {
+    if (fitMapView) {
       fitMapView();
     }
-  },[fitMapView()])
+  }, [fitMapView()]);
   return (
     <Page
       title={'Location'}
@@ -475,6 +479,8 @@ const Location = () => {
                 action={action}
                 actionTypes={actionTypes}
                 currentLocation={currentLocation}
+                markerRef={markerRef}
+                filteredRestaurants={filteredRestaurants}
               />
             </div>
           )}
