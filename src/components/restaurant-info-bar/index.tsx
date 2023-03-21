@@ -173,16 +173,20 @@ const StoreInfoBar = () => {
     return moment(date, 'YYYYMMDD HH:mm').add(data2, 'minutes').format('dddd h:mm A');
     // moment(startTime, 'HH:mm:ss').add(durationInMinutes, 'minutes').format('HH:mm');
   };
+  
+  const hasDisplayedDialog = sessionStorage.getItem('hasDisplayedDialog');
   useEffect(() => {
-    const hasDisplayedDialog = sessionStorage.getItem('hasDisplayedDialog') || '';
     if (!hasDisplayedDialog) {
       setShowPromo(true);
     }
+    else {
+      setShowPromo(false);
+    }
   }, []);
+
   const handlePromotionClose = () => {
     sessionStorage.setItem('hasDisplayedDialog', true.toString());
     setShowPromo(false);
-    sessionStorage.removeItem('hasDisplayedDialog');
   };
 
   const EstimatedTime = () => {
@@ -201,7 +205,7 @@ const StoreInfoBar = () => {
   }
   return (
     <>
-    { !(process.env.REACT_APP_PROMOTIONAL_MESSAGE === '') && showPromo &&
+    { !(process.env.REACT_APP_PROMOTIONAL_MESSAGE === '') && !hasDisplayedDialog &&  showPromo &&
      <Grid           sx={{
       backgroundColor: "#f8cd58",
       display: 'flex', flexDirection: "row",
