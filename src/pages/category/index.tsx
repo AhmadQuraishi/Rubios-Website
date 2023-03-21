@@ -17,7 +17,7 @@ import {
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { RefObject, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategoriesRequest } from '../../redux/actions/category';
 import { Category, ResponseMenu } from '../../types/olo-api';
@@ -33,10 +33,13 @@ import { facebookConversionTypes } from '../../redux/types/facebook-conversion';
 import { resetBasketRequest } from '../../redux/actions/basket';
 import { isLoginUser } from '../../helpers/auth';
 import "./index.css";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+
 const useStyles = makeStyles((theme: Theme) => ({
   heading: {
     fontFamily: "'Sunborn-Sansone'!important",
-    color: "#224c65 !important",
+    // color: "#0075BF !important",
     fontSize: '25px !important',
     textTransform: 'uppercase',
     paddingBottom: '30px',
@@ -54,6 +57,11 @@ const useStyles = makeStyles((theme: Theme) => ({
       // paddingTop: '10px',
       display: 'block',
     },
+  },
+  link2: {
+    fontSize: '13px !important',
+    color: '#062c43',
+    fontFamily:"'Sunborn-Sansone' !important",
   },
 }));
 
@@ -77,9 +85,11 @@ const CategoryList = () => {
   const [restaurantSelected, setRestaurantSelected] = useState<any>();
   const [value, setValue] = useState('0');
   const { store } = useParams();
-
+  const [showAll, setShowAll] = useState<ShowAll>({});
   const [categoriesWithProducts, setCategoriesWithProducts] =
     useState<ResponseMenu>();
+  const myRef: RefObject<HTMLElement> = useRef(null);
+
   const { categories, loading, error } = useSelector(
     (state: any) => state.categoryReducer,
   );
@@ -95,6 +105,41 @@ const CategoryList = () => {
   const navigate = useNavigate();
   const body = document;
 
+  const [prevScrollPos, setPrevScrollPos] = useState(0);
+
+  // const handleViewClick = () => {
+  //   if (showMore) {
+  //     window.scrollTo({ top: prevScrollPos, behavior: 'smooth' });
+  //     setShowMore(false);
+  //   } else {
+  //     setPrevScrollPos(window.pageYOffset);
+  //     setShowMore(true);
+  //     if (myRef.current) {
+  //       myRef.current.scrollIntoView({ behavior: 'smooth' });
+  //     }
+  //   }
+  // };
+
+  const handleViewMore = (categoryIndex: any) => {
+    if (showAll[categoryIndex]) {
+      // window.scrollTo({ top: 0, behavior: 'smooth' });
+      setShowAll({ ...showAll, [categoryIndex]: false });
+      const categoryElement = document.getElementById(`cat-${categoryIndex}`);
+      console.log("categoryIndex Element ",categoryIndex)
+      console.log("category Element ",categoryElement)
+      if (categoryElement) {
+        categoryElement.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      // Expand the category
+      setShowAll({ ...showAll, [categoryIndex]: true });
+
+    }
+    // debugger;
+  };
+  type ShowAll = {
+    [categoryIndex: number]: boolean;
+  }
   useEffect(() => {
     if (window.location.href.toLowerCase().indexOf('selection=1') != -1) {
       setGetResutrants(true);
@@ -237,7 +282,7 @@ const CategoryList = () => {
           arrowButtons[1].setAttribute('role', 'tab');
           arrowButtons[1].setAttribute('tabindex', '0');
           arrowButtons[1].setAttribute('aria-label', 'next');
-        } catch (e) {}
+        } catch (e) { }
 
         filterCategories.map((item: any, index: number) => {
           const elem: HTMLElement = document.getElementById(
@@ -531,7 +576,8 @@ const CategoryList = () => {
                 // indicatorColor="primary"
                 variant="scrollable"
                 //scrollButtons
-                allowScrollButtonsMobile
+                // allowScrollButtonsMobile
+
                 sx={{ fontFamily: "'Sunborn-Sansone' !important", }}
                 role="region"
                 aria-label="Food Menu"
@@ -548,7 +594,7 @@ const CategoryList = () => {
                       fontFamily: "'Sunborn-Sansone' !important",
                       padding: '10px 0px',
                       marginRight: '20px',
-                      fontSize:"15px",
+                      fontSize: "15px",
                       color: "#224c65 !important"
 
                     }}
@@ -583,10 +629,16 @@ const CategoryList = () => {
                   id={'#panel-' + index}
                   style={{ position: 'absolute', top: '-120px' }}
                 ></div>
-                <Grid container sx={{alignItems: "center"}}>
-                  <Grid item xs={item.products.length > 4 ? 8 : 8}>
+                <Grid container sx={{ alignItems: "center" }}>
+                  <Grid item xs={12} sm={item.products.length > 4 ? 8 : 8}>
+                    <div id ={`cat-${item.id}`}> </div>
                     <Typography
                       variant="h2"
+                      sx={{
+                        color: { xs: '#062c43 ', sm: '#224c65' },
+                        display: { xs: 'flex', },
+                        justifyContent: { xs: 'center', sm: 'left' }
+                      }}
                       className={`${classes.heading} rubios-menu-category`}
                       title={item.name}
                     >
@@ -594,11 +646,11 @@ const CategoryList = () => {
                     </Typography>
                   </Grid>
 
-                  {item.products.length > 4  &&(
-                    <Grid item xs={4} sx={{padding: "0px 0px 35px 0px"}}>
+                  {item.products.length > 4 && (
+                    <Grid item xs={4} sx={{ padding: "0px 0px 35px 0px", display: { xs: 'none', sm: 'block' } }}>
                       <Typography className={classes.link}>
-                        <Link to={`/category/${item.id}`} title="view all" style={{color: "#062C43"}}>
-                          view all <span style={{fontSize:"17px"}}><img
+                        <Link to={`/category/${item.id}`} title="view all" style={{ color: "#062C43" }}>
+                          view all <span style={{ fontSize: "17px" }}><img
                           // style={{ width: '75%', display: 'block' }}
                           src={require('../../assets/imgs/arrow2.png')}
                           alt="Login Icon"
@@ -626,7 +678,7 @@ const CategoryList = () => {
                 <ProductListingCarousel
                   orderType={orderType}
                   index={Math.random()}
-                  productList={item.products}
+                  productList={showAll[item.id] ? item.products : item.products.slice(0,4)}
                   categoryID={item.id}
                   categoryName={item.name}
                   imgPath={
@@ -635,6 +687,85 @@ const CategoryList = () => {
                   shownItemsCount={4}
                 />
               </Grid>
+              {item.products.length > 4
+                &&
+                <a
+                  style={{display: "contents"}}
+                  id={`view-${item.id}`}
+                >
+
+                  <Grid
+
+
+                    sx={{marginTop: '4px',display: {xs: 'block',sm: 'none',md: 'none',lg: 'none',},}}
+                    onClick={() => handleViewMore(item.id)}
+                    item
+                    key={item.id}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      cursor: 'pointer',
+                      justifyContent: 'center',
+                    }}
+                    role={'button'}
+                    tabIndex={0}
+                    // title={`${showAll[index] ? 'Hide' : 'View'} Details`}
+
+                    onKeyPress={(e: any) => {
+                      if (e.key === 'Enter') {
+                        handleViewMore(item.id)
+                      }
+                    }}
+                    xs={12}
+                  >
+                    <Typography
+                      variant="h2"
+                      className={classes.link2}
+                      key={item.id}
+                      sx={{
+                        fontSize: '18px !important',
+                        color: '#062c43',
+                        // display: 'inline',
+                        display: {
+                          xs: 'block',
+                          sm: 'none',
+                          md: 'none',
+                          lg: 'none',
+                        },
+                      }}
+                    >
+                      VIEW {showAll[item.id] ? 'LESS' : 'MORE'}
+                    </Typography>
+                    {showAll[item.id] ? (
+                      <ExpandLessIcon
+                        sx={{
+                          marginLeft: '10px',
+                          display: {
+                            xs: 'block',
+                            sm: 'none',
+                            md: 'none',
+                            lg: 'none',
+                          },
+                        }}
+                        style={{ color: '#0075bf', }}
+                      />
+                    ) : (
+                      <ExpandMoreIcon
+                        sx={{
+                          marginLeft: '10px',
+                          display: {
+                            xs: 'block',
+                            sm: 'none',
+                            md: 'none',
+                            lg: 'none',
+                          },
+                        }}
+                        style={{ color: '#0075bf' }}
+                      />
+                    )}
+                  </Grid>
+                </a>
+              }
             </Grid>
           ))}
         <Grid

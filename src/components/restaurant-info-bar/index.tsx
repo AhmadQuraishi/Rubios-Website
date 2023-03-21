@@ -48,8 +48,9 @@ const StoreInfoBar = () => {
   const [showMore, setShowMore] = useState(false);
   const [open, setOpen] = useState(false);
   const [openOrder, setOpenOrder] = useState(false);
+  const [showPromo, setShowPromo] = useState(true);
   const [locationId, setLocationId] = useState(null);
-  const { restaurant, orderType } = useSelector(
+  const { promotionMsg, restaurant, orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
   const { calendar } = useSelector(
@@ -169,21 +170,20 @@ const StoreInfoBar = () => {
   const getEstTimeFormat = (date: string, data2: string) => {
     return moment(date, 'YYYYMMDD HH:mm').add(data2, 'minutes').format('dddd h:mm A');
     // moment(startTime, 'HH:mm:ss').add(durationInMinutes, 'minutes').format('HH:mm');
-    
+
   };
   const EstimatedTime = () => {
     const type = basketObj?.basket?.deliverymode || orderType || '';
     const time = basketObj?.basket;
-    // const 
     if (type === 'dispatch') {
-    if (time?.timemode === 'asap') {
-      return getEstTimeFormat(time.earliestreadytime,time.leadtimeestimateminutes);
+      if (time?.timemode === 'asap') {
+        return getEstTimeFormat(time.earliestreadytime,time.leadtimeestimateminutes);
+      }
+      else if (time?.timewanted)
+      {
+        return getEstTimeFormat(time.timewanted,time.leadtimeestimateminutes);
+      }
     }
-    else if (time?.timewanted)
-     {
-      return getEstTimeFormat(time.timewanted,time.leadtimeestimateminutes);
-    }
-  }
   }
   return (
     <>
@@ -193,7 +193,7 @@ const StoreInfoBar = () => {
           spacing={0}
           sx={{
             backgroundColor: "#062C43",
-            padding: { xs: '30px 20px', sm: '35px 40px', lg: '20px 100px' },
+            padding: { xs: '15px 20px', sm: '35px 40px', lg: '20px 100px' },
           }}
         >
           {/* <DialogBox
@@ -211,28 +211,29 @@ const StoreInfoBar = () => {
           />
           <Grid item xs={12}>
             <Grid container spacing={0} margin="auto">
-              <Grid
-                item
-                xs={12}
-                sm={6}
-                sx={{
-                  paddingRight: { xs: '0px', sm: '15px' },
-                  paddingBottom: { xs: '0px', sm: '0px' },
-                }}
-              >
-                <Grid sx={{ display: 'flex', flexDirection: 'inherit' }}>
-                  <Typography
-                    className={classes.heading}
-                    variant="h2"
-                    textTransform="uppercase"
-                    title="Pick Up From"
-                  >
-                    {orderSelectedType()}
-                  </Typography>
-                  {/* {window?.location?.href
+              { !isMobile ? (
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  sx={{
+                    paddingRight: { xs: '0px', sm: '15px' },
+                    paddingBottom: { xs: '0px', sm: '0px' },
+                  }}
+                >
+                  <Grid sx={{ display: 'flex', flexDirection: 'inherit' }}>
+                    <Typography
+                      className={classes.heading}
+                      variant="h2"
+                      textTransform="uppercase"
+                      title="Pick Up From"
+                    >
+                      {orderSelectedType()}
+                    </Typography>
+                    {/* {window?.location?.href
                     ?.toLocaleLowerCase()
                     ?.indexOf('/checkout') !== -1 && ( */}
-                    <>
+                    {/* <>
                       <Typography
                         //variant="body2"
                         color="#fff"
@@ -242,7 +243,7 @@ const StoreInfoBar = () => {
                         sx={{
                           marginLeft: '5px',
                           display: {
-                            xs: 'block',
+                            xs: 'none',
                             sm: 'none',
                             md: 'none',
                             lg: 'none',
@@ -255,7 +256,7 @@ const StoreInfoBar = () => {
                             textDecorationLine: 'underline',
                           }}
                           role={'button'}
-                          aria-label={'Change Order Type'}
+                          title="Change Order Type"
                           tabIndex={0}
                           onKeyPress={(e: any) => {
                             if (e.key === 'Enter') {
@@ -268,43 +269,102 @@ const StoreInfoBar = () => {
                         </p>
                         {'\n'}
                       </Typography>
-                    </>
-                        {/* )} */}
+                    </> */}
+                    {/* )} */}
+                  </Grid>
+                  <Typography
+                    variant="h2"
+                    color="#fff"
+                    textTransform="uppercase"
+                    lineHeight={1.3}
+                    sx={{
+                      fontFamily: {
+                        xs: "'Librefranklin-Regular' !important",
+                        sm:"'Sunborn-Sansone' !important",
+                      },
+                      fontSize: {
+                        xs: '13px !important',
+                        sm: '35px !important',
+                        lg: '40px !important',
+                      },
+                    }}
+                    title={restaurantInfo.name}
+                  >
+                    {restaurantInfo.name}
+                  </Typography>
+                  {window?.location?.href
+                      ?.toLocaleLowerCase()
+                      ?.indexOf('/checkout') !== -1 &&
+                    EstimatedTime() && (
+                      <>
+                        <Typography
+                          className={classes.heading}
+                          variant="h2"
+                          sx={{
+                            display: {
+                              xs: 'none',
+                              sm: 'flex',
+                              md: 'flex',
+                              lg: 'flex',
+                            },
+                          }}
+                          textTransform="uppercase"
+                          title="Pick Up From"
+                        >
+                          Estimated Delivery Time: {EstimatedTime()}
+                        </Typography>
+                      </>
+                    )}
                 </Grid>
-                <Typography
-                  variant="h2"
-                  color="#fff"
-                  textTransform="uppercase"
-                  lineHeight={1.3}
-                  fontFamily= "'Sunborn-Sansone' !important"
+              ) : (
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
                   sx={{
-                    fontSize: {
-                      xs: '30px !important',
-                      sm: '35px !important',
-                      lg: '40px !important',
-                    },
+                    paddingRight: { xs: '0px', sm: '15px' },
+                    paddingBottom: { xs: '0px', sm: '0px' },
                   }}
-                  title={restaurantInfo.name}
                 >
-                  {restaurantInfo.name}
-                </Typography>
-                {window?.location?.href
-                  ?.toLocaleLowerCase()
-                  ?.indexOf('/checkout') !== -1 &&
-                  EstimatedTime() && (
-                    <>
-                      <Typography
-                        className={classes.heading}
-                        variant="h2"
-                        textTransform="uppercase"
-                        title="Pick Up From"
-                      >
-                        Estimated Delivery Time: {EstimatedTime()}
-                      </Typography>
-                    </>
-                  )}
-              </Grid>
-              {isMobile && (
+                  <Grid onClick={() => {navigate('/location')}} sx={{ display: 'flex', flexDirection: 'row',alignItems: 'baseline',justifyContent: 'center', border: "1px solid #fff", borderRadius: "20px", }}>
+                    <Typography
+                      className={classes.heading}
+                      variant="h2"
+                      sx={{margin: "5px 0px 5px 0px", padding: '5px',}}
+                      textTransform="uppercase"
+                      title="Pick Up From"
+                    >
+                      {orderSelectedType()}
+                    </Typography>
+
+                    <Typography
+                      variant="h2"
+                      color="#fff"
+                      lineHeight={1.3}
+                      sx={{
+                        marginLeft : '10px',
+                        maxWidth: { xs: '155px' },
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        padding: '0px 15px',
+                        fontFamily: {
+                          xs: "'Librefranklin-Regular' !important",
+                        },
+                        fontSize: {
+                          xs: '13px !important',
+                          sm: '35px !important',
+                          lg: '40px !important',
+                        },
+                      }}
+                      title={restaurantInfo.name}
+                    >
+                      {restaurantInfo.name}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              )}
+              {/* {isMobile && (
                 <Grid>
                   &nbsp;
                   <Typography
@@ -315,7 +375,7 @@ const StoreInfoBar = () => {
                     sx={{
                       marginTop: '-12px',
                       display: {
-                        xs: 'flex',
+                        xs: 'none',
                         sm: 'none',
                         md: 'none',
                         lg: 'none',
@@ -326,11 +386,11 @@ const StoreInfoBar = () => {
                       style={{
                         cursor: 'pointer',
                         textDecorationLine: 'underline',
-                        
+
                       }}
                       role={'button'}
-                      aria-label={'Change location'}
-                      tabIndex={1}
+                      title="Change Location"
+                      tabIndex={0}
                       // onKeyPress={(e: any) => {
                       //   if (e.key === 'Enter') {
                       //     handleClickOpen();
@@ -380,7 +440,7 @@ const StoreInfoBar = () => {
                     )}
                   </Grid>
                 </Grid>
-              )}
+              )} */}
               {showHideFunc() && (
                 <>
                   <Grid
@@ -446,41 +506,41 @@ const StoreInfoBar = () => {
                     ?.toLocaleLowerCase()
                     ?.indexOf('/checkout') !== -1 && (
                       <> */}
-                        <Typography
-                          color="#fff"
-                          fontSize={11}
-                          className={classes.heading1}
-                          variant="h2"
-                          sx={{
-                            marginBottom: '5px',
-                            display: {
-                              xs: 'none',
-                              sm: 'block',
-                              md: 'block',
-                              lg: 'block',
-                            },
-                          }}
-                        >
-                          <p
-                            style={{
-                              cursor: 'pointer',
-                              textDecorationLine: 'underline',
-                              fontSize: '13px',
-                            }}
-                            role={'button'}
-                            aria-label={'Change Order Type'}
-                            tabIndex={0}
-                            onKeyPress={(e: any) => {
-                              if (e.key === 'Enter') {
-                                setOpenOrder(true);
-                              }
-                            }}
-                            onClick={() => setOpenOrder(true)}
-                          >
-                            Change Order Type
-                          </p>
-                        </Typography>
-                      {/* </>
+                    <Typography
+                      color="#fff"
+                      fontSize={11}
+                      className={classes.heading1}
+                      variant="h2"
+                      sx={{
+                        marginBottom: '5px',
+                        display: {
+                          xs: 'none',
+                          sm: 'block',
+                          md: 'block',
+                          lg: 'block',
+                        },
+                      }}
+                    >
+                      <p
+                        style={{
+                          cursor: 'pointer',
+                          textDecorationLine: 'underline',
+                          fontSize: '13px',
+                        }}
+                        role={'button'}
+                        title="Change Order Type"
+                        tabIndex={0}
+                        onKeyPress={(e: any) => {
+                          if (e.key === 'Enter') {
+                            setOpenOrder(true);
+                          }
+                        }}
+                        onClick={() => setOpenOrder(true)}
+                      >
+                        Change Order Type
+                      </p>
+                    </Typography>
+                    {/* </>
                     )} */}
                     <Typography
                       color="#fff"
@@ -504,8 +564,8 @@ const StoreInfoBar = () => {
                           fontSize: '13px',
                         }}
                         role={'button'}
-                        aria-label={'Change location'}
                         tabIndex={0}
+                        title="Change Location"
                         // onKeyPress={(e: any) => {
                         //   if (e.key === 'Enter') {
                         //     handleClickOpen();
@@ -539,7 +599,8 @@ const StoreInfoBar = () => {
                           }}
                           className={'add-favourite'}
                           role={'button'}
-                          aria-label={'Add to Favorites'}
+                          title={checkFavorite() ? 'Favourite' : 'Add to Favourite'}
+                          aria-label={checkFavorite() ? 'Favourite' : 'Add to Favourite'}
                           tabIndex={0}
                           onKeyPress={(e: any) => {
                             if (e.key === 'Enter') {
@@ -775,12 +836,12 @@ const StoreInfoBar = () => {
                         }}
                         role={'button'}
                         tabIndex={0}
+                        title={`${showMore ? 'Hide' : 'View'} Details`}
                         onKeyPress={(e: any) => {
                           if (e.key === 'Enter') {
                             setShowMore(!showMore);
                           }
                         }}
-                        aria-label={`${showMore ? 'Hide' : 'View'} Details`}
                         xs={12}
                       >
                         <Typography
