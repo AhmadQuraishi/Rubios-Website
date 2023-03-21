@@ -52,7 +52,7 @@ const StoreInfoBar = () => {
   const [openOrder, setOpenOrder] = useState(false);
   const [showPromo, setShowPromo] = useState(true);
   const [locationId, setLocationId] = useState(null);
-  const { promotionMsg, restaurant, orderType } = useSelector(
+  const {restaurant, orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
   const { calendar } = useSelector(
@@ -173,11 +173,17 @@ const StoreInfoBar = () => {
     return moment(date, 'YYYYMMDD HH:mm').add(data2, 'minutes').format('dddd h:mm A');
     // moment(startTime, 'HH:mm:ss').add(durationInMinutes, 'minutes').format('HH:mm');
   };
-
-  const promoMessage = () => {
-    setShowPromo(!showPromo);
-    dispatch(promotionalMsg());
-  }
+  useEffect(() => {
+    const hasDisplayedDialog = sessionStorage.getItem('hasDisplayedDialog') || '';
+    if (!hasDisplayedDialog) {
+      setShowPromo(true);
+    }
+  }, []);
+  const handlePromotionClose = () => {
+    sessionStorage.setItem('hasDisplayedDialog', true.toString());
+    setShowPromo(false);
+    sessionStorage.removeItem('hasDisplayedDialog');
+  };
 
   const EstimatedTime = () => {
     const type = basketObj?.basket?.deliverymode || orderType || '';
@@ -195,7 +201,7 @@ const StoreInfoBar = () => {
   }
   return (
     <>
-    { !(process.env.REACT_APP_PROMOTIONAL_MESSAGE === '') && promotionMsg && showPromo &&
+    { !(process.env.REACT_APP_PROMOTIONAL_MESSAGE === '') && showPromo &&
      <Grid           sx={{
       backgroundColor: "#f8cd58",
       display: 'flex', flexDirection: "row",
@@ -220,7 +226,7 @@ const StoreInfoBar = () => {
                 src={crossIcon}
                 title="Close Cart"
                 height="20px"
-                onClick={promoMessage}
+                onClick={handlePromotionClose}
                 width="20px"
                 alt="Close Cart"
               />
