@@ -29,7 +29,8 @@ import {
 import DialogBox from '../../dialog-box';
 
 const SplitPayment = forwardRef((props: any, _ref) => {
-  const { setHideShow, displaySavedCards, diplayOnScreenCreditCardForm } = props;
+  const { setHideShow, displaySavedCards, diplayOnScreenCreditCardForm } =
+    props;
   const dispatch = useDispatch();
   const theme = useTheme();
   const basketObj = useSelector((state: any) => state.basketReducer);
@@ -154,32 +155,32 @@ const SplitPayment = forwardRef((props: any, _ref) => {
 
   const removeSingleBasketBillingSchemes = () => {
     if (removeData) {
-      const selected = billingSchemes.filter(
-        (element: any) => element.selected,
+      const accountIndex = billingSchemes.findIndex(
+        (element: any) => element.localId === removeData.localId,
       );
 
-      console.log('selected', selected);
+      let updatedBillingSchemes = [];
 
-      // if (selected && selected.length === 1) {
-      //   if (selected[0].localId === removeData.localId) {
-      //     displayToast(
-      //       'ERROR',
-      //       'Minimum 1 payment method is required to make a payment',
-      //     );
-      //     handleClosePopup();
-      //     return;
-      //   }
-      // }
-      let updatedBillingSchemes = billingSchemes.map((element: any) => {
-        if (element.localId === removeData.localId) {
-          return {
-            ...element,
-            selected: false,
-          };
-        } else {
-          return element;
-        }
-      });
+      if (
+        accountIndex !== -1 &&
+        billingSchemes[accountIndex].billingmethod === 'creditcard' &&
+        !billingSchemes[accountIndex].billingaccountid
+      ) {
+        updatedBillingSchemes = billingSchemes.filter(
+          (element: any) => element.localId !== removeData.localId,
+        );
+      } else {
+        updatedBillingSchemes = billingSchemes.map((element: any) => {
+          if (element.localId === removeData.localId) {
+            return {
+              ...element,
+              selected: false,
+            };
+          } else {
+            return element;
+          }
+        });
+      }
 
       updatedBillingSchemes = updatePaymentCardsAmount(
         updatedBillingSchemes,
@@ -262,7 +263,8 @@ const SplitPayment = forwardRef((props: any, _ref) => {
         message={'Do You Really Want To Remove This Card?'}
         handleDeleteFunction={() => removeSingleBasketBillingSchemes()}
       />
-      {!diplayOnScreenCreditCardForm() && billingSchemes &&
+      {!diplayOnScreenCreditCardForm() &&
+        billingSchemes &&
         billingSchemes.length > 0 &&
         billingSchemes
           .filter((account: any) => account.selected)
@@ -348,7 +350,12 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                       lg={5}
                     >
                       {account.billingmethod === 'creditcard' && (
-                        <Typography variant="h6" sx={{fontFamily: "'Librefranklin-Regular' !important"}}>
+                        <Typography
+                          variant="h6"
+                          sx={{
+                            fontFamily: "'Librefranklin-Regular' !important",
+                          }}
+                        >
                           {account.cardlastfour
                             ? `x-${account.cardlastfour}`
                             : 'Credit Card'}
@@ -356,7 +363,12 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                       )}
                       {account.billingmethod === 'storedvalue' && (
                         <>
-                          <Typography variant="h6" sx={{fontFamily: "'Librefranklin-Regular' !important"}}>
+                          <Typography
+                            variant="h6"
+                            sx={{
+                              fontFamily: "'Librefranklin-Regular' !important",
+                            }}
+                          >
                             {account.billingfields
                               ? `Gift Card x${giftCardLastFourDigits(account)}`
                               : account.cardlastfour
@@ -396,7 +408,7 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                     >
                       <Typography
                         variant="h6"
-                        fontFamily= "'Librefranklin-Regular' !important"
+                        fontFamily="'Librefranklin-Regular' !important"
                       >
                         AMOUNT
                       </Typography>
@@ -499,7 +511,11 @@ const SplitPayment = forwardRef((props: any, _ref) => {
 
       <Grid container spacing={2}>
         <Grid item xs={12} sm={12} md={12} lg={12}>
-          <Typography align={'center'} variant="h6" sx={{fontFamily: "'Librefranklin-Regular' !important"}}>
+          <Typography
+            align={'center'}
+            variant="h6"
+            sx={{ fontFamily: "'Librefranklin-Regular' !important" }}
+          >
             Remaining Amount: $ {remainingAmount(basket, billingSchemes)}
           </Typography>
         </Grid>
@@ -616,7 +632,13 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                           lg={5}
                         >
                           {account.billingmethod === 'creditcard' && (
-                            <Typography variant="h6" sx={{fontFamily: "'Librefranklin-Regular' !important"}}>
+                            <Typography
+                              variant="h6"
+                              sx={{
+                                fontFamily:
+                                  "'Librefranklin-Regular' !important",
+                              }}
+                            >
                               {account.cardlastfour
                                 ? `x-${account.cardlastfour}`
                                 : 'Credit Card'}
@@ -624,7 +646,13 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                           )}
                           {account.billingmethod === 'storedvalue' && (
                             <>
-                              <Typography variant="h6" sx={{fontFamily: "'Librefranklin-Regular' !important"}}>
+                              <Typography
+                                variant="h6"
+                                sx={{
+                                  fontFamily:
+                                    "'Librefranklin-Regular' !important",
+                                }}
+                              >
                                 {account.billingfields
                                   ? `Gift Card x${giftCardLastFourDigits(
                                       account,
