@@ -619,7 +619,7 @@ const Checkout = () => {
     let deliverymode = {
       deliverymode: (basket && basket.deliverymode) || '',
     };
-        console.log(ccsfObj,"ccsfObj registerError");
+    console.log(ccsfObj, 'ccsfObj registerError');
     let formDataValue;
     if (
       basket &&
@@ -897,9 +897,7 @@ const Checkout = () => {
     );
   };
 
-
   const CCSFInitialization = (element: any) => {
-
     const localObj = new CreditCardCCSF(element);
     console.log('ccsf working', ccsfObj);
     // setccsfObj(ccsfObj);
@@ -953,7 +951,7 @@ const Checkout = () => {
     setShowIframeOnce(false);
 
     return localObj;
-  }
+  };
 
   React.useEffect(() => {
     // @ts-ignore
@@ -975,12 +973,12 @@ const Checkout = () => {
         ccsfObj = await CCSFInitialization({
           cardElement: 'credit-card-info-div',
           cvvElement: 'cvv-info-div',
-        })
+        });
 
         ccsfObj2 = CCSFInitialization({
           cardElement: 'credit-card-info-div-2',
           cvvElement: 'cvv-info-div-2',
-        })
+        });
       }
     }, 3000);
     // @ts-ignore
@@ -993,22 +991,22 @@ const Checkout = () => {
     console.log('payload', payload);
     console.log('ccsfObj', ccsfObj);
 
-    if(diplayOnScreenCreditCardForm()){
+    if (diplayOnScreenCreditCardForm()) {
       ccsfObj.submit(payload);
     } else {
       ccsfObj2.submit(payload);
     }
-
   };
 
   const diplayOnScreenCreditCardForm = () => {
     if (
-      userBillingAccounts?.billingaccounts?.length === 0 ||
+      (!userBillingAccounts ||
+        userBillingAccounts?.billingaccounts?.length === 0) &&
       billingSchemes?.length === 0
     ) {
       return true;
     } else if (
-      billingSchemes.length === 1 &&
+      billingSchemes?.length === 1 &&
       billingSchemes[0]?.billingmethod === 'creditcard' &&
       !billingSchemes[0]?.billingaccountid
     ) {
