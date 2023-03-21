@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useEffect } from 'react';
 import {
   Button,
   CircularProgress,
@@ -65,7 +65,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
     setZipCode,
     cardExpiry,
     setCardExpiry,
-    diplayOnScreenCreditCardForm
+    diplayOnScreenCreditCardForm,
   } = props;
   const dispatch = useDispatch();
   const theme = useTheme();
@@ -150,13 +150,14 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
   };
   const displayAddCreditCard = () => {
     return (
-      !(billingSchemes.length === 1 &&
-      billingSchemes[0]?.billingmethod === 'creditcard' &&
-      !billingSchemes[0]?.billingaccountid) &&
       basket &&
       billingSchemes?.length > 0 &&
-      allowedCards &&
-      allowedCards.length &&
+      billingSchemes.filter((element: any) => {
+        return (
+          element.billingmethod === 'creditcard' && !element.billingaccountid
+        );
+      }).length === 0 &&
+      allowedCards?.length > 0 &&
       allowedCards.filter((element: any) => {
         return element.type === 'creditcard';
       }).length > 0
@@ -349,16 +350,16 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                     Add Credit card
                   </Button>
                 )}
-                  <CreditCardAdd
-                    cardOnScreen={true}
-                    diplayOnScreenCreditCardForm={diplayOnScreenCreditCardForm}
-                    cardExpiry={cardExpiry}
-                    zipCode={zipCode}
-                    handleZipCodeChange={handleZipCodeChange}
-                    handleCardExpiryChange={handleCardExpiryChange}
-                    cardNumberClass={'credit-card-info-div'}
-                    cardCVVClass={'cvv-info-div'}
-                  />
+                <CreditCardAdd
+                  cardOnScreen={true}
+                  diplayOnScreenCreditCardForm={diplayOnScreenCreditCardForm}
+                  cardExpiry={cardExpiry}
+                  zipCode={zipCode}
+                  handleZipCodeChange={handleZipCodeChange}
+                  handleCardExpiryChange={handleCardExpiryChange}
+                  cardNumberClass={'credit-card-info-div'}
+                  cardCVVClass={'cvv-info-div'}
+                />
                 <div
                   id="myModal"
                   role={'dialog'}
@@ -394,7 +395,9 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                     <div className="modal-body">
                       <CreditCardAdd
                         cardOnScreen={false}
-                        diplayOnScreenCreditCardForm={diplayOnScreenCreditCardForm}
+                        diplayOnScreenCreditCardForm={
+                          diplayOnScreenCreditCardForm
+                        }
                         cardExpiry={cardExpiry}
                         zipCode={zipCode}
                         handleZipCodeChange={handleZipCodeChange}
