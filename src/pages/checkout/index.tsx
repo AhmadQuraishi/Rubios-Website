@@ -135,22 +135,22 @@ const Checkout = () => {
   );
   const { singleLocation } = useSelector((state: any) => state.locationReducer);
 
-  useEffect(() => {
-    const LoadExternalScript = () => {
-      const externalScript = document.createElement('script');
-      // externalScript.onerror = loadError;
-      // externalScript.id = 'external';
-      // externalScript.async = true;
-      // externalScript.type = 'text/javascript';
-      // externalScript.setAttribute('crossorigin', 'anonymous');
-      document.body.appendChild(externalScript);
-      externalScript.src =
-        process.env.REACT_APP_NODE_ENV === 'production'
-          ? `https://static.olocdn.net/web-client/checkout-web-client/2.5.0/checkout.js`
-          : 'https://olocdnsandbox.s3.amazonaws.com/web-client/checkout-web-client/2.5.0/checkout.js';
-    };
-    LoadExternalScript();
-  }, []);
+  // useEffect(() => {
+  //   const LoadExternalScript = () => {
+  //     const externalScript = document.createElement('script');
+  //     // externalScript.onerror = loadError;
+  //     // externalScript.id = 'external';
+  //     // externalScript.async = true;
+  //     // externalScript.type = 'text/javascript';
+  //     // externalScript.setAttribute('crossorigin', 'anonymous');
+  //     document.body.appendChild(externalScript);
+  //     externalScript.src =
+  //       process.env.REACT_APP_NODE_ENV === 'production'
+  //         ? `https://static.olocdn.net/web-client/checkout-web-client/2.5.0/checkout.js`
+  //         : 'https://olocdnsandbox.s3.amazonaws.com/web-client/checkout-web-client/2.5.0/checkout.js';
+  //   };
+  //   LoadExternalScript();
+  // }, []);
 
   useEffect(() => {
     if (singleLocation?.data?.length) {
@@ -985,7 +985,7 @@ const Checkout = () => {
           cvvElement: 'cvv-info-div-2',
         });
       }
-    }, 3000);
+    }, 1000);
     // @ts-ignore
     //   }
     // });
