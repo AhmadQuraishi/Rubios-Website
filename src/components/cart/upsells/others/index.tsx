@@ -245,7 +245,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
               xs={12}
               // sm={6}
               // md={6}
-              lg={products.length === 1 ? 12  : 6}
+              lg={products?.length === 1 ? 12  : 6}
               sx={{ position: 'relative' }}
             >
               <input
