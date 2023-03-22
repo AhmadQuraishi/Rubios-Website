@@ -113,6 +113,7 @@ function App(props: any) {
         if (minutes > 100) {
           dispatch(resetRestaurantRequest());
           dispatch(resetBasketRequest());
+          sessionStorage.removeItem('hasDisplayedDialog');
           // setOpen(true);
           navigate('/location');
           dispatch(updateSessionNull(sessionTime));
