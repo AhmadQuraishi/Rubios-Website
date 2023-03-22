@@ -122,9 +122,10 @@ function App(props: any) {
   }
 }
 useEffect(() => {
+  clearOrderCacheAfter30Minutes();
   intervalId = setInterval(function() {
     clearOrderCacheAfter30Minutes()
-  },  2000) 
+  },  30 * 1000) 
   return () => clearInterval(intervalId);
 
 }, [window.location.href]) 
