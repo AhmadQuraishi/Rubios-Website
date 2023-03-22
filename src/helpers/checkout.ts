@@ -232,6 +232,47 @@ const calculateMinutesDiff = (minutes: number): number => {
   }
 };
 
+
+export function generateNextAvailableTimeSlotsDelivery(
+  openingTime: string,
+  closingTime: string,
+  isOpenAllDay: Boolean,
+  leadestimatedminutes: number,
+) {
+  let timeSlots = [];
+  console.log(leadestimatedminutes,'leadestimatedminutes');
+  let currentTime = moment().add(leadestimatedminutes, 'minutes');
+  let startTime;
+
+  let openAt = moment(openingTime, 'YYYYMMDD HH:mm');
+  let closeAt = moment(closingTime, 'YYYYMMDD HH:mm');
+
+  let minutes = currentTime.minutes();
+  minutes = calculateMinutesDiff(minutes);
+
+  // if (isOpenAllDay) {
+  //   openAt.startOf('day');
+  //   closeAt.endOf('day');
+  // }
+
+  if (currentTime.isAfter(closeAt)) {
+    return [];
+  } else if (currentTime.isBetween(openAt, closeAt)) {
+    startTime = currentTime.add(minutes, 'minute');
+  } else if (currentTime.isBefore(openAt)) {
+    startTime = openAt.add(15, 'm');
+  }
+
+  let count = 0;
+  const maxAllowed = 100;
+  while (closeAt.diff(startTime, 'seconds') > 0 && count <= maxAllowed) {
+    timeSlots.push(moment(startTime).format('YYYYMMDD HH:mm'));
+    startTime  &&  startTime.add(15, 'm');
+    count++;
+  }
+
+  return timeSlots;
+}
 export function generateNextAvailableTimeSlots(
   openingTime: string,
   closingTime: string,
@@ -264,7 +305,7 @@ export function generateNextAvailableTimeSlots(
   const maxAllowed = 100;
   while (closeAt.diff(startTime, 'seconds') > 0 && count <= maxAllowed) {
     timeSlots.push(moment(startTime).format('YYYYMMDD HH:mm'));
-    startTime && startTime.add('m', 15);
+    startTime  &&  startTime.add(15, 'm');
     count++;
   }
 
