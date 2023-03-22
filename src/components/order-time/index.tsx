@@ -23,7 +23,6 @@ import {
 import {
   createTimeWantedPayload,
   generateNextAvailableTimeSlots,
-  generateNextAvailableTimeSlotsDelivery,
   GetRestaurantHoursRange,
 } from '../../helpers/checkout';
 import { CalendarTypeEnum, HoursListing } from '../../helpers/hoursListing';
@@ -93,14 +92,14 @@ const OrderTime = ({ orderType }: any) => {
     return minutes && minutes > 0 ? minutes : 0;
   };
 
-  console.log("time.earliestreadytime",time.earliestreadytime);
+  console.log("time.earliestreadytime",time?.earliestreadytime);
   React.useEffect(() => {
     if (restaurantHours && restaurantHours.length && orderType === 'dispatch') {
-      const slots = generateNextAvailableTimeSlotsDelivery(
+      const slots = generateNextAvailableTimeSlots(
         restaurantHours[0].start,
         restaurantHours[0].end,
         restaurantHours[0].isOpenAllDay,
-        handleEstTime(time.earliestreadytime,time.leadtimeestimateminutes),
+        handleEstTime(time?.earliestreadytime,time?.leadtimeestimateminutes),
       );
       if (!slots.length) {
         setNotAvailableSlots(true);
@@ -114,6 +113,7 @@ const OrderTime = ({ orderType }: any) => {
         restaurantHours[0].start,
         restaurantHours[0].end,
         restaurantHours[0].isOpenAllDay,
+        time?.leadtimeestimateminutes
       );
       if (!slots.length) {
         setNotAvailableSlots(true);
