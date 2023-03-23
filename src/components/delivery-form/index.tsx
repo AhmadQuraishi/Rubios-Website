@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Checkbox,
   FormGroup,
@@ -69,21 +69,35 @@ const DeliveryForm = ({
     const newInstruction = event.target.value;
     setSpecialInstruction(newInstruction);
   };
+  //         if (){
+  //           setSpecialInstruction('');
+  //           setIsContactless(true);
+  //         }
+  //         else {
+  // React.useEffect(() => {
+  //     if (basket?.deliveryaddress?.specialinstructions !== '' && isContactless && specialInstructionRunOnce){
+  //           setIsContactless(true);
+  //           if (isContactless && basket?.deliveryaddress?.specialinstructions === 'I want contactless delivery') {
+  //             setSpecialInstruction('');
+  //           setIsContactless(true);
+  //           }
+  //           setSpecialInstruction(basket?.deliveryaddress?.specialinstructions);
+  //         }
+  //         setSpecialInstructionRunOnce(false)
+  // },[basket])
 
   React.useEffect(() => {
+    debugger;
       if (basket?.deliveryaddress?.specialinstructions !== '' && specialInstructionRunOnce){
-          if (basket?.deliveryaddress?.specialinstructions === 'I want contactless delivery'){
-            setSpecialInstruction('');
-            setIsContactless(true);
+            setSpecialInstruction(specialInstruction);
           }
-          else {
-            setSpecialInstruction(basket?.deliveryaddress?.specialinstructions);
-          }
+          else if ( basket?.deliveryaddress?.specialinstructions === 'I want contactless delivery' )
           setSpecialInstructionRunOnce(false)
-      }
   },[basket])
+  const  maxLength = 120;
+  const maxLengthContactLess = 100
 
-  const maxLength = 120;
+    
   return (
     <>
       <OrderTypeDialog openModal={open} setOpenModal={setOpen} hideIt={true} />
@@ -320,10 +334,10 @@ const DeliveryForm = ({
                     multiline
                     value={specialInstruction}
                     onChange={handleInsturctionChange}
-                    inputProps={{ maxLength: maxLength }}
+                    inputProps={{  maxLength:  isContactless ? maxLengthContactLess : maxLength }}
                   />
                   <Typography variant="caption" sx={{fontFamily: "'Librefranklin-Regular' !important"}}>
-                  (Limit of 120 characters)
+                  (Limit of {maxLength} characters)
                   </Typography>
 
                 </Grid>

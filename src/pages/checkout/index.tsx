@@ -658,7 +658,7 @@ const Checkout = () => {
           city: basket?.deliveryaddress?.city || '',
           zipcode: basket?.deliveryaddress?.zipcode || '',
           isdefault: basket?.deliveryaddress?.isdefault || false,
-          specialinstructions: specialInstruction ? specialInstruction !== '' && specialInstruction : isContactless && "I want contactless delivery",
+          specialinstructions :  (isContactless && specialInstruction !== '' && "I want contactless delivery," + specialInstruction)||(specialInstruction !== '' && specialInstruction) || (isContactless && "I want contactless delivery") || null,
         };
         const response: any = await setBasketDeliveryAddress(
           basket?.id,
