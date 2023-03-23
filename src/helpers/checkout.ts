@@ -249,7 +249,7 @@ export function generateNextAvailableTimeSlots(
     // debugger;
     }
     else {
-      debugger;
+      // debugger;
       currentTime = moment();
     }
   let startTime;

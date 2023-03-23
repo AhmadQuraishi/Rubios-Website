@@ -111,7 +111,7 @@ const OrderTime = ({ orderType }: any) => {
       }
       setTimeSlots(slots);
     }
-  }, [restaurantHours]);
+  }, [restaurantHours, basket]);
 
   const onTimeSlotSelect = (event: any) => {
     const selectedValue = event.target.value;
