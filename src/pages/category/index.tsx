@@ -85,6 +85,7 @@ const CategoryList = () => {
   const [restaurantSelected, setRestaurantSelected] = useState<any>();
   const [value, setValue] = useState('0');
   const { store } = useParams();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [showAll, setShowAll] = useState<ShowAll>({});
   const [categoriesWithProducts, setCategoriesWithProducts] =
     useState<ResponseMenu>();
@@ -678,7 +679,7 @@ const CategoryList = () => {
                 <ProductListingCarousel
                   orderType={orderType}
                   index={Math.random()}
-                  productList={showAll[item.id] ? item.products : item.products.slice(0,4)}
+                  productList = {isMobile ? (showAll[item.id] ? item.products : item.products.slice(0,4)) : item.products}
                   categoryID={item.id}
                   categoryName={item.name}
                   imgPath={
