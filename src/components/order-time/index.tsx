@@ -82,13 +82,13 @@ const OrderTime = ({ orderType }: any) => {
   //   }
   // }, [selectedDate]);
   const time = basketObj?.basket;
-  
+
   const handleEstTime = (time: any, time2 : any) => {
     let localTime = moment(new Date());
     let earlyReadyTime = moment(time, 'YYYYMMDD HH:mm');
 
     const minute = earlyReadyTime.diff(localTime , 'minutes');
-    const minutes = minute + time2;
+    const minutes = minute;
     return minutes && minutes > 0 ? minutes : 0;
     console.log(minutes,'minutesminutesminutesminutes');
   };

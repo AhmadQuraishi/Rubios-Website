@@ -170,10 +170,10 @@ const StoreInfoBar = () => {
     if (type === 'pickup' || type === 'curbside') return 'Pick Up From';
   };
   const getEstTimeFormat = (date: string, data2: string) => {
-    return moment(date, 'YYYYMMDD HH:mm').add(data2, 'minutes').format('dddd h:mm A');
+    return moment(date, 'YYYYMMDD HH:mm').format('dddd h:mm A');
     // moment(startTime, 'HH:mm:ss').add(durationInMinutes, 'minutes').format('HH:mm');
   };
-  
+
   const hasDisplayedDialog = sessionStorage.getItem('hasDisplayedDialog');
 
   useEffect(() => {
@@ -193,7 +193,7 @@ const StoreInfoBar = () => {
   const EstimatedTime = () => {
     const type = basketObj?.basket?.deliverymode || orderType || '';
     const time = basketObj?.basket;
-    // const 
+    // const
     if (type === 'dispatch') {
     if (time?.timemode === 'asap') {
       return getEstTimeFormat(time.earliestreadytime,time.leadtimeestimateminutes);
@@ -366,7 +366,7 @@ const StoreInfoBar = () => {
                       </Typography>
                     </>
                   )}
-              </Grid> 
+              </Grid>
                     ) : (
                       <Grid
                 item
@@ -413,7 +413,7 @@ const StoreInfoBar = () => {
                   {restaurantInfo.name}
                 </Typography>
                 </Grid>
-              </Grid> 
+              </Grid>
                     )}
               {/* {isMobile && (
                 <Grid>
@@ -437,7 +437,7 @@ const StoreInfoBar = () => {
                       style={{
                         cursor: 'pointer',
                         textDecorationLine: 'underline',
-                        
+
                       }}
                       role={'button'}
                       title="Change Location"
