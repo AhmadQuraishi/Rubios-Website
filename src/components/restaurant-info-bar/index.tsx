@@ -168,7 +168,7 @@ const StoreInfoBar = () => {
     if (type === 'pickup' || type === 'curbside') return 'Pick Up From';
   };
   const getEstTimeFormat = (date: string, data2: string) => {
-    return moment(date, 'YYYYMMDD HH:mm').add(data2, 'minutes').format('dddd h:mm A');
+    return moment(date, 'YYYYMMDD HH:mm').format('dddd h:mm A');
     // moment(startTime, 'HH:mm:ss').add(durationInMinutes, 'minutes').format('HH:mm');
 
   };
