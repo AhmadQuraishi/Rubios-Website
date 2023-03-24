@@ -87,13 +87,27 @@ const DeliveryForm = ({
   // },[basket])
 
   React.useEffect(() => {
-    debugger;
-      if (basket?.deliveryaddress?.specialinstructions !== '' && specialInstructionRunOnce){
-            setSpecialInstruction(specialInstruction);
+    // debugger;
+      if (basket?.deliveryaddress?.specialinstructions !== ''){
+        if (basket?.deliveryaddress?.specialinstructions?.includes("I want contactless delivery,")) {
+            setSpecialInstruction(basket?.deliveryaddress?.specialinstructions.split("I want contactless delivery,").join("").trim());
+            setIsContactless(true);
           }
-          else if ( basket?.deliveryaddress?.specialinstructions === 'I want contactless delivery' )
-          setSpecialInstructionRunOnce(false)
+        else {
+          setSpecialInstruction(basket?.deliveryaddress?.specialinstructions);
+        }
+      }
+        else {
+          setSpecialInstruction('');
+        }
+      
+      if ( basket?.deliveryaddress?.specialinstructions === 'I want contactless delivery' ) {
+            setIsContactless(true)
+            setSpecialInstruction('');
+          }
+          // debugger;
   },[basket])
+
   const  maxLength = 120;
   const maxLengthContactLess = 100
 
