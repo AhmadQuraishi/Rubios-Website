@@ -236,9 +236,22 @@ export function generateNextAvailableTimeSlots(
   openingTime: string,
   closingTime: string,
   isOpenAllDay: Boolean,
+  leadestimatedminutes: number,
+  timeMode : string,
+  orderType : string,
+  
 ) {
   let timeSlots = [];
   let currentTime = moment();
+  if (orderType === 'dispatch' && timeMode === 'asap') {
+    currentTime = moment().add(leadestimatedminutes, 'minutes');
+    console.log(leadestimatedminutes,'leadestimatedminutes');
+    // debugger;
+    }
+    else {
+      // debugger;
+      currentTime = moment();
+    }
   let startTime;
 
   let openAt = moment(openingTime, 'YYYYMMDD HH:mm');
@@ -264,7 +277,7 @@ export function generateNextAvailableTimeSlots(
   const maxAllowed = 100;
   while (closeAt.diff(startTime, 'seconds') > 0 && count <= maxAllowed) {
     timeSlots.push(moment(startTime).format('YYYYMMDD HH:mm'));
-    startTime && startTime.add('m', 15);
+    startTime  &&  startTime.add(15, 'm');
     count++;
   }
 

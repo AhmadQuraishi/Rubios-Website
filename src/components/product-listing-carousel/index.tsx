@@ -196,6 +196,7 @@ const ProductListingCarousel = (props: any) => {
       <Fragment>
         {/* <Grid container spacing={3}> */}
         <Carousel
+          swipeable = {true}
           draggable={false}
           responsive={responsive}
           // ssr={true} // means to render carousel on server-side.
