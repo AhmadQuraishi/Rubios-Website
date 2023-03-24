@@ -237,14 +237,19 @@ export function generateNextAvailableTimeSlots(
   closingTime: string,
   isOpenAllDay: Boolean,
   leadestimatedminutes: number,
+  timeMode : string,
+  orderType : string,
+  
 ) {
   let timeSlots = [];
   let currentTime = moment();
-  if (leadestimatedminutes) {
+  if (orderType === 'dispatch' && timeMode === 'asap') {
     currentTime = moment().add(leadestimatedminutes, 'minutes');
     console.log(leadestimatedminutes,'leadestimatedminutes');
+    // debugger;
     }
     else {
+      // debugger;
       currentTime = moment();
     }
   let startTime;

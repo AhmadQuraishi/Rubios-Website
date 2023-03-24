@@ -90,16 +90,19 @@ const OrderTime = ({ orderType }: any) => {
     const minute = earlyReadyTime.diff(localTime , 'minutes');
     const minutes = minute + time2;
     return minutes && minutes > 0 ? minutes : 0;
+    console.log(minutes,'minutesminutesminutesminutes');
   };
 
   console.log("time.earliestreadytime",time?.earliestreadytime);
   React.useEffect(() => {
-    if (restaurantHours && restaurantHours.length && orderType === 'dispatch') {
+    if (restaurantHours && restaurantHours.length) {
       const slots = generateNextAvailableTimeSlots(
         restaurantHours[0].start,
         restaurantHours[0].end,
         restaurantHours[0].isOpenAllDay,
         handleEstTime(time?.earliestreadytime,time?.leadtimeestimateminutes),
+        time?.timemode,
+        orderType,
       );
       if (!slots.length) {
         setNotAvailableSlots(true);
@@ -108,21 +111,7 @@ const OrderTime = ({ orderType }: any) => {
       }
       setTimeSlots(slots);
     }
-    else if (restaurantHours && restaurantHours.length && orderType === 'pickup'){
-      const slots = generateNextAvailableTimeSlots(
-        restaurantHours[0].start,
-        restaurantHours[0].end,
-        restaurantHours[0].isOpenAllDay,
-        time?.leadtimeestimateminutes
-      );
-      if (!slots.length) {
-        setNotAvailableSlots(true);
-      } else {
-        setNotAvailableSlots(false);
-      }
-      setTimeSlots(slots);
-    }
-  }, [restaurantHours]);
+  }, [restaurantHours, basket]);
 
   const onTimeSlotSelect = (event: any) => {
     const selectedValue = event.target.value;
