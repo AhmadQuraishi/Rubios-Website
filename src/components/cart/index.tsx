@@ -1624,7 +1624,10 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                       name="signin"
                       title="signin"
                       sx={{ textTransform: "uppercase", color: '#122a41', fontSize: "1.1rem", fontFamily: "'Sunborn-Sansone' !important", width: '100%', height: '70px', border: '3px solid #122a41',letterSpacing: "0.25px !important" }}
-                      onClick={() => navigate('/login')}
+                      onClick={() => { 
+                        showCart();
+                        navigate('/login');
+                      }}
                     >
                       Sign In To Use Rewards 
                     </Button>

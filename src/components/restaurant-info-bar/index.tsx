@@ -26,7 +26,7 @@ import moment from 'moment';
 import crossIcon from '../../assets/imgs/cross_square_icon.png';
 import { OrderTypeDialog } from '../order-type-dialog';
 import { isLoginUser } from '../../helpers/auth';
-import { promotionalMsg } from '../../redux/actions/restaurant';
+import { promotionalMsg, updateSessionNull } from '../../redux/actions/restaurant';
 const useStyle = makeStyles({
   heading: {
     fontSize: '13px !important',
@@ -52,7 +52,7 @@ const StoreInfoBar = () => {
   const [openOrder, setOpenOrder] = useState(false);
   const [showPromo, setShowPromo] = useState(true);
   const [locationId, setLocationId] = useState(null);
-  const {restaurant, orderType } = useSelector(
+  const {restaurant, sessionTime, orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
   const { calendar } = useSelector(
@@ -175,14 +175,15 @@ const StoreInfoBar = () => {
   };
   
   const hasDisplayedDialog = sessionStorage.getItem('hasDisplayedDialog');
+
   useEffect(() => {
     if (!hasDisplayedDialog) {
-      setShowPromo(true);
-    }
+          setShowPromo(true);
+        }
     else {
       setShowPromo(false);
     }
-  }, []);
+  }, [hasDisplayedDialog]);
 
   const handlePromotionClose = () => {
     sessionStorage.setItem('hasDisplayedDialog', true.toString());
@@ -205,7 +206,7 @@ const StoreInfoBar = () => {
   }
   return (
     <>
-    { !(process.env.REACT_APP_PROMOTIONAL_MESSAGE === '') && !hasDisplayedDialog &&  showPromo &&
+    { !(process.env.REACT_APP_PROMOTIONAL_MESSAGE === '') && !hasDisplayedDialog  &&  showPromo &&
      <Grid           sx={{
       backgroundColor: "#f8cd58",
       display: 'flex', flexDirection: "row",

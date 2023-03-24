@@ -245,7 +245,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
               xs={12}
               // sm={6}
               // md={6}
-              lg={6}
+              lg={products?.length === 1 ? 12  : 6}
               sx={{ position: 'relative' }}
             >
               <input
@@ -307,7 +307,7 @@ const UpsellsOthers = ({ upsellsType }: any) => {
                         style={{
                           // display: 'block',
                           // margin: 'auto',
-                          width: '100%',
+                          // width: {'auto'},
                         }}
                         src={
                           ((categories && categories.imagepath) || '') +

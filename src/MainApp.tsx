@@ -113,6 +113,7 @@ function App(props: any) {
         if (minutes > 1) {
           dispatch(resetRestaurantRequest());
           dispatch(resetBasketRequest());
+          sessionStorage.removeItem('hasDisplayedDialog');
           // setOpen(true);
           navigate('/location');
           dispatch(updateSessionNull(sessionTime));
@@ -121,9 +122,10 @@ function App(props: any) {
   }
 }
 useEffect(() => {
+  clearOrderCacheAfter30Minutes();
   intervalId = setInterval(function() {
     clearOrderCacheAfter30Minutes()
-  },  2000) 
+  },  30 * 1000) 
   return () => clearInterval(intervalId);
 
 }, [window.location.href]) 
