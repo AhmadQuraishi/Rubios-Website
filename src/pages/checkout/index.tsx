@@ -29,6 +29,7 @@ import {
   submitBasketSinglePaymentFailure,
   submitBasketSinglePaymentSuccess,
   updateBasketBillingSchemes,
+  updateDuplicateAddress,
   validateBasket,
 } from '../../redux/actions/basket/checkout';
 import { displayToast } from '../../helpers/toast';
@@ -44,6 +45,7 @@ import {
 } from '../../helpers/checkout';
 import {
   getAllBillingAccounts,
+  getUserDeliveryAddresses,
   userLogin,
   userLogout,
   // getUserDeliveryAddresses,
@@ -69,6 +71,8 @@ import { userRegister } from '../../redux/actions/user';
 import CheckoutSkeletonUI from '../../components/checkout-skeleton-ui';
 import { getAuthRequest } from '../../redux/actions/auth';
 import LoginAuthDialog from '../../components/login-authentication-dialog';
+import { requestDelUserDelAddress } from '../../services/user';
+import userReducer from '../../redux/reducers/user';
 
 let ccsfObj: any;
 let ccsfObj2: any;
@@ -112,7 +116,7 @@ const Checkout = () => {
   // const [ccsfObj, setccsfObj] = React.useState<any>();
 
   const basketObj = useSelector((state: any) => state.basketReducer);
-
+  const { duplicateAddress } = useSelector((state: any) => state.basketReducer);
   const { providerToken } = useSelector((state: any) => state.providerReducer);
   const { guestUser } = useSelector((state: any) => state.guestReducer);
   const { rewards: qualifyingRewards, loading: loadingRewards } = useSelector(
@@ -130,11 +134,15 @@ const Checkout = () => {
   // const { userDeliveryAddresses } = useSelector(
   //   (state: any) => state.userReducer,
   // );
-  const { userBillingAccounts, loading: billingAccountsLoading } = useSelector(
+  const { userDeliveryAddresses, userBillingAccounts, loading: billingAccountsLoading } = useSelector(
     (state: any) => state.userReducer,
   );
   const { singleLocation } = useSelector((state: any) => state.locationReducer);
 
+  // useEffect(() => {
+  //   dispatch(getUserDeliveryAddresses());
+  // }, []);
+  
   useEffect(() => {
     const LoadExternalScript = () => {
       const externalScript = document.createElement('script');
@@ -258,6 +266,14 @@ const Checkout = () => {
       setRemoveCreditCardOnce(false);
     }
   }, []);
+
+  function removePreviousAddresses(addressIds : any) {
+    for (let i = 0; i < addressIds; i++) {
+      dispatch(requestDelUserDelAddress(addressIds));
+    }
+    debugger;
+  }
+
   React.useEffect(() => {
     if (basket && runOnce) {
       let selectedTime = moment().format('YYYYMMDD');
@@ -282,6 +298,7 @@ const Checkout = () => {
   }, [basket]);
 
   const handleCheckChange = (event: any) => {
+
     const checked = event.target.checked;
     setIsContactless(checked);
   };
@@ -619,12 +636,14 @@ const Checkout = () => {
   };
 
   const placeOrder = async () => {
+    // removePreviousAddresses(duplicateAddress);
+
     setButtonDisabled(true);
     let customFields = [];
     let deliverymode = {
       deliverymode: (basket && basket.deliverymode) || '',
     };
-        console.log(ccsfObj,"ccsfObj registerError");
+    console.log(ccsfObj, 'ccsfObj registerError');
     let formDataValue;
     if (
       basket &&
@@ -658,7 +677,13 @@ const Checkout = () => {
           city: basket?.deliveryaddress?.city || '',
           zipcode: basket?.deliveryaddress?.zipcode || '',
           isdefault: basket?.deliveryaddress?.isdefault || false,
-          specialinstructions :  (isContactless && specialInstruction !== '' && "I want contactless delivery," + specialInstruction)||(specialInstruction !== '' && specialInstruction) || (isContactless && "I want contactless delivery") || null,
+          specialinstructions:
+            (isContactless &&
+              specialInstruction !== '' &&
+              'I want contactless delivery,' + specialInstruction) ||
+            (specialInstruction !== '' && specialInstruction) ||
+            (isContactless && 'I want contactless delivery') ||
+            null,
         };
         const response: any = await setBasketDeliveryAddress(
           basket?.id,
@@ -800,6 +825,21 @@ const Checkout = () => {
         setButtonDisabled(false);
         dispatch(submitBasketSinglePaymentFailure(errors));
       });
+
+      // if (basket?.deliverymode === DeliveryModeEnum.dispatch && userDeliveryAddresses?.deliveryaddresses){
+      //   const uniqueAddressIds = new Set();
+      //   userDeliveryAddresses?.deliveryaddresses.forEach((address: any) => {
+      //     uniqueAddressIds.add(address.id);
+      //   });
+      //   duplicateAddress = Array.from(uniqueAddressIds);
+      // }
+      // if (duplicateAddress.length > 0 && basket?.deliveryaddress?.id) {
+      //   const newArray = duplicateAddress.filter((id : any) => id !== basket.deliveryaddress?.id)
+      //   // dispatch(updateDuplicateAddress(newArray));
+      //   Array.from(newArray);
+      // }
+      debugger;
+
       dispatch(
         validateBasket(
           basket?.id || '',
@@ -902,9 +942,7 @@ const Checkout = () => {
     );
   };
 
-
   const CCSFInitialization = (element: any) => {
-
     const localObj = new CreditCardCCSF(element);
     console.log('ccsf working', ccsfObj);
     // setccsfObj(ccsfObj);
@@ -958,7 +996,7 @@ const Checkout = () => {
     setShowIframeOnce(false);
 
     return localObj;
-  }
+  };
 
   React.useEffect(() => {
     // @ts-ignore
@@ -980,12 +1018,12 @@ const Checkout = () => {
         ccsfObj = await CCSFInitialization({
           cardElement: 'credit-card-info-div',
           cvvElement: 'cvv-info-div',
-        })
+        });
 
         ccsfObj2 = CCSFInitialization({
           cardElement: 'credit-card-info-div-2',
           cvvElement: 'cvv-info-div-2',
-        })
+        });
       }
     }, 3000);
     // @ts-ignore
@@ -998,12 +1036,11 @@ const Checkout = () => {
     console.log('payload', payload);
     console.log('ccsfObj', ccsfObj);
 
-    if(diplayOnScreenCreditCardForm()){
+    if (diplayOnScreenCreditCardForm()) {
       ccsfObj.submit(payload);
     } else {
       ccsfObj2.submit(payload);
     }
-
   };
 
   const diplayOnScreenCreditCardForm = () => {
@@ -1093,7 +1130,7 @@ const Checkout = () => {
     <div>
       {openAuthenticationModal && (
         <LoginAuthDialog
-        placeOrder = {placeOrder}
+          placeOrder={placeOrder}
           openAuthenticationModal={openAuthenticationModal}
           setOpenAuthenticationModal={setOpenAuthenticationModal}
         />
@@ -1278,10 +1315,9 @@ const Checkout = () => {
                             basket={basket}
                             specialInstruction={specialInstruction}
                             setSpecialInstruction={setSpecialInstruction}
-                            isContactless = {isContactless}
-                            setIsContactless = {setIsContactless}
-                            handleCheckChange = {handleCheckChange}
-
+                            isContactless={isContactless}
+                            setIsContactless={setIsContactless}
+                            handleCheckChange={handleCheckChange}
                             deliveryFormRef={deliveryFormRef}
                           />
                         ) : null}
