@@ -29,6 +29,7 @@ import {
   submitBasketSinglePaymentFailure,
   submitBasketSinglePaymentSuccess,
   updateBasketBillingSchemes,
+  updateDuplicateAddress,
   validateBasket,
 } from '../../redux/actions/basket/checkout';
 import { displayToast } from '../../helpers/toast';
@@ -44,6 +45,7 @@ import {
 } from '../../helpers/checkout';
 import {
   getAllBillingAccounts,
+  getUserDeliveryAddresses,
   userLogin,
   userLogout,
   // getUserDeliveryAddresses,
@@ -69,6 +71,8 @@ import { userRegister } from '../../redux/actions/user';
 import CheckoutSkeletonUI from '../../components/checkout-skeleton-ui';
 import { getAuthRequest } from '../../redux/actions/auth';
 import LoginAuthDialog from '../../components/login-authentication-dialog';
+import { requestDelUserDelAddress } from '../../services/user';
+import userReducer from '../../redux/reducers/user';
 
 let ccsfObj: any;
 let ccsfObj2: any;
@@ -112,7 +116,7 @@ const Checkout = () => {
   // const [ccsfObj, setccsfObj] = React.useState<any>();
 
   const basketObj = useSelector((state: any) => state.basketReducer);
-
+  const { duplicateAddress } = useSelector((state: any) => state.basketReducer);
   const { providerToken } = useSelector((state: any) => state.providerReducer);
   const { guestUser } = useSelector((state: any) => state.guestReducer);
   const { rewards: qualifyingRewards, loading: loadingRewards } = useSelector(
@@ -130,7 +134,7 @@ const Checkout = () => {
   // const { userDeliveryAddresses } = useSelector(
   //   (state: any) => state.userReducer,
   // );
-  const { userBillingAccounts, loading: billingAccountsLoading } = useSelector(
+  const { userDeliveryAddresses, userBillingAccounts, loading: billingAccountsLoading } = useSelector(
     (state: any) => state.userReducer,
   );
   const { singleLocation } = useSelector((state: any) => state.locationReducer);
@@ -258,6 +262,16 @@ const Checkout = () => {
       setRemoveCreditCardOnce(false);
     }
   }, []);
+  
+  const removePreviousAddresses = (addressIds : any) => {
+    const arrayLength = addressIds?.length;
+    console.log(arrayLength,'arrayLength');
+    for (let i = 0; i < arrayLength; i++) {
+      requestDelUserDelAddress(addressIds[i]);
+    }
+    // debugger;
+  }
+
   React.useEffect(() => {
     if (basket && runOnce) {
       let selectedTime = moment().format('YYYYMMDD');
@@ -282,6 +296,7 @@ const Checkout = () => {
   }, [basket]);
 
   const handleCheckChange = (event: any) => {
+
     const checked = event.target.checked;
     setIsContactless(checked);
   };
@@ -619,6 +634,8 @@ const Checkout = () => {
   };
 
   const placeOrder = async () => {
+    // removePreviousAddresses(duplicateAddress);
+
     setButtonDisabled(true);
     let customFields = [];
     let deliverymode = {
@@ -645,6 +662,22 @@ const Checkout = () => {
       }
       formDataValue = formData;
     }
+    // debugger;
+    if (duplicateAddress?.length > 0) {
+      let newFilteredDuplicateAddress;
+      if (basket?.deliveryaddress?.id) {
+        newFilteredDuplicateAddress = duplicateAddress.filter((id : any) => id !== basket?.deliveryaddress?.id)
+      }
+      else{
+        newFilteredDuplicateAddress = duplicateAddress;
+        console.log(newFilteredDuplicateAddress,'newFilteredDuplicateAddress');
+      }
+      if (newFilteredDuplicateAddress?.length > 0) {
+        console.log(newFilteredDuplicateAddress,'newFilteredDuplicateAddres423323232s');
+        removePreviousAddresses(newFilteredDuplicateAddress);
+      }
+    }
+    debugger;
     console.log(ccsfObj, 'ccsfObj registerError');
     if (
       basket?.deliverymode === DeliveryModeEnum.dispatch &&
@@ -658,9 +691,13 @@ const Checkout = () => {
           city: basket?.deliveryaddress?.city || '',
           zipcode: basket?.deliveryaddress?.zipcode || '',
           isdefault: basket?.deliveryaddress?.isdefault || false,
-          specialinstructions: specialInstruction
-            ? specialInstruction !== '' && specialInstruction
-            : isContactless && 'I want contactless delivery',
+          specialinstructions:
+            (isContactless &&
+              specialInstruction !== '' &&
+              'I want contactless delivery,' + specialInstruction) ||
+            (specialInstruction !== '' && specialInstruction) ||
+            (isContactless && 'I want contactless delivery') ||
+            null,
         };
         const response: any = await setBasketDeliveryAddress(
           basket?.id,

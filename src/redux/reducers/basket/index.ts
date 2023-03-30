@@ -29,6 +29,7 @@ const INITIAL_STATE = {
   orderSubmit: false,
   error: null,
   defaultTip: true,
+  duplicateAddress: [],
 };
 
 const basketReducer = (state = INITIAL_STATE, action: any) => {
@@ -108,7 +109,13 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
       return {
         ...state,
         defaultTip: false,
-      }
+      };
+      
+    case basketActionsTypes.UPDATE_DUPLICATE_ADDRESS: 
+    return {
+      ...state,
+      duplicateAddress : action.payload,
+    }
     case basketActionsTypes.GET_BASKET_FAILURE:
     case basketActionsTypes.UPDATE_BASKET_TIME_WANTED_FAILURE:
     case basketActionsTypes.DELETE_BASKET_TIME_WANTED_FAILURE:

@@ -24,6 +24,8 @@ import {resetBasketRequest} from './redux/actions/basket'
 import {isLoginUser} from './helpers/auth'
 import { CacheDialog } from './components/cache-dialog';
 import LoginAuthDialog from './components/login-authentication-dialog';
+import { updateDuplicateAddress } from './redux/actions/basket/checkout';
+import { removePreviousAddresses } from './helpers/checkout';
 
 function App(props: any) {
   const location = useLocation();
@@ -36,6 +38,7 @@ function App(props: any) {
   const { basket} = useSelector(
     (state: any) => state.basketReducer,
   );
+  const { duplicateAddress } = useSelector((state: any) => state.basketReducer);
   const { restaurant, orderType, sessionTime  } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
@@ -46,6 +49,15 @@ function App(props: any) {
   useEffect(() => {
     console.log('isLoginUser', isLoginUser())
   }, [])
+  
+  useEffect(() => {
+    if (Array.isArray(duplicateAddress) && basket?.deliveryaddress?.id && !duplicateAddress.includes(basket?.deliveryaddress?.id)) {
+      const updatedDuplicateAddress = [...duplicateAddress, basket.deliveryaddress.id];
+      dispatch(updateDuplicateAddress(updatedDuplicateAddress));
+      console.log(updatedDuplicateAddress,'updatedDuplicateAddress');
+    }
+    // debugger;
+  }, [basket?.deliveryaddress?.id]);
 
   const updateDeviceId = () => {
     const newDeviceId = generateDeviceId();
@@ -115,6 +127,7 @@ function App(props: any) {
           dispatch(resetBasketRequest());
           sessionStorage.removeItem('hasDisplayedDialog');
           // setOpen(true);
+          removePreviousAddresses(duplicateAddress, null);
           navigate('/location');
           dispatch(updateSessionNull(sessionTime));
         }     

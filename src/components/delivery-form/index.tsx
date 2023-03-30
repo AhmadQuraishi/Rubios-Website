@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Checkbox,
   FormGroup,
@@ -8,7 +8,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useDispatch,useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Formik, useFormikContext } from 'formik';
 import * as Yup from 'yup';
 import { forwardRef } from 'react';
@@ -18,6 +18,8 @@ import { isLoginUser } from '../../helpers/auth';
 import { setBasketDeliveryAddressSuccess } from '../../redux/actions/basket/checkout';
 import './index.css';
 
+const maxLength = 120;
+const maxLengthContactLess = 100;
 const DeliveryForm = ({
   basket,
   deliveryFormRef,
@@ -31,8 +33,10 @@ const DeliveryForm = ({
 }: any) => {
   const [open, setOpen] = useState(false);
   const [hideIt, setHideIt] = useState(false);
-  const [specialInstructionRunOnce, setSpecialInstructionRunOnce] = useState(true);
+  const [specialInstructionRunOnce, setSpecialInstructionRunOnce] =
+    useState(true);
   const dispatch = useDispatch();
+
   const { providerToken } = useSelector((state: any) => state.providerReducer);
   interface CustomProps {
     onChange: (event: { target: { name: string; value: string } }) => void;
@@ -41,8 +45,7 @@ const DeliveryForm = ({
   const handleClick = () => {
     setOpen(true);
     setHideIt(!hideIt);
-  }
-
+  };
 
   const NumberFormatCustom = forwardRef<HTMLElement, CustomProps>(
     function NumberFormatCustom(props, ref) {
@@ -64,26 +67,80 @@ const DeliveryForm = ({
     },
   );
 
-
   const handleInsturctionChange = (event: any) => {
     const newInstruction = event.target.value;
     setSpecialInstruction(newInstruction);
   };
+  //         if (){
+  //           setSpecialInstruction('');
+  //           setIsContactless(true);
+  //         }
+  //         else {
+  // React.useEffect(() => {
+  //     if (basket?.deliveryaddress?.specialinstructions !== '' && isContactless && specialInstructionRunOnce){
+  //           setIsContactless(true);
+  //           if (isContactless && basket?.deliveryaddress?.specialinstructions === 'I want contactless delivery') {
+  //             setSpecialInstruction('');
+  //           setIsContactless(true);
+  //           }
+  //           setSpecialInstruction(basket?.deliveryaddress?.specialinstructions);
+  //         }
+  //         setSpecialInstructionRunOnce(false)
+  // },[basket])
+
+  // React.useEffect(() => {
+  //   // debugger;
+  //     if (basket?.deliveryaddress?.specialinstructions !== ''){
+  //       if (basket?.deliveryaddress?.specialinstructions?.includes("I want contactless delivery,")) {
+  //         const includesArray = basket?.deliveryaddress?.specialinstructions?.includes("I want contactless delivery,");
+  //           // setSpecialInstruction(includesArray.replace("I want contactless delivery,", ""));
+  //           setIsContactless(true);
+
+  //         }
+  //       else {
+  //         setSpecialInstruction(basket?.deliveryaddress?.specialinstructions);
+  //       }
+  //     }
+  //       else {
+  //         setSpecialInstruction('');
+  //       }
+
+  //     if ( basket?.deliveryaddress?.specialinstructions === 'I want contactless delivery' ) {
+  //           setIsContactless(true)
+  //           setSpecialInstruction('');
+  //         }
+  //         // debugger;
+  // },[basket])
 
   React.useEffect(() => {
-      if (basket?.deliveryaddress?.specialinstructions !== '' && specialInstructionRunOnce){
-          if (basket?.deliveryaddress?.specialinstructions === 'I want contactless delivery'){
-            setSpecialInstruction('');
-            setIsContactless(true);
-          }
-          else {
-            setSpecialInstruction(basket?.deliveryaddress?.specialinstructions);
-          }
-          setSpecialInstructionRunOnce(false)
+    // debugger;
+    if (
+      specialInstructionRunOnce &&
+      basket?.deliveryaddress?.specialinstructions
+    ) {
+      let specialInstruction = basket?.deliveryaddress?.specialinstructions;
+      let contactLess = false;
+      if (specialInstruction !== '') {
+        const includeContactLess = specialInstruction.includes(
+          'I want contactless delivery,',
+          '',
+        );
+        if (includeContactLess) {
+          specialInstruction = specialInstruction.replace(
+            'I want contactless delivery,',
+            '',
+          );
+          contactLess = true;
+        }
+        // }
       }
-  },[basket])
-
-  const maxLength = 120;
+      setSpecialInstruction(specialInstruction);
+      setIsContactless(contactLess);
+      setSpecialInstructionRunOnce(false);
+      debugger;
+    }
+  }, [basket]);
+  
   return (
     <>
       <OrderTypeDialog openModal={open} setOpenModal={setOpen} hideIt={true} />
@@ -120,7 +177,7 @@ const DeliveryForm = ({
           emailNotification: Yup.bool().optional(),
           // contactLess: Yup.bool().optional(),
         })}
-        onSubmit={(values, actions) => { }}
+        onSubmit={(values, actions) => {}}
       >
         {({
           errors,
@@ -258,10 +315,9 @@ const DeliveryForm = ({
                     variant="body1"
                     className="label"
                     fontFamily={"'Sunborn-Sansone'!important"}
-                    fontSize={"11pt !important"}
+                    fontSize={'11pt !important'}
                     style={{
                       paddingTop: '10px',
-
                     }}
                   >
                     Your delivery Address
@@ -283,50 +339,54 @@ const DeliveryForm = ({
                     {basket?.deliveryaddress?.zipcode}
                   </Typography>
 
-                  
                   <Typography
                     variant="body1"
                     className="label"
                     sx={{ cursor: 'pointer', display: 'inline' }}
                     aria-label={'Edit Address'}
                     onClick={() => {
-                      handleClick()
+                      handleClick();
                     }}
                   >
                     Edit
                   </Typography>
-                  <Grid item xs={12} style={{marginTop: "20px"}}>
-                    
-                  {(
-                  <FormGroup>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          checked={isContactless}
-                          onChange={handleCheckChange}
+                  <Grid item xs={12} style={{ marginTop: '20px' }}>
+                    {
+                      <FormGroup>
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              checked={isContactless}
+                              onChange={handleCheckChange}
+                            />
+                          }
+                          label="I want contactless delivery"
+                          aria-required="true"
+                          title="I want contactless delivery"
+                          name="contactLess"
+                          className="size"
                         />
-                      }
-                      label="I want contactless delivery"
-                      aria-required="true"
-                      title="I want contactless delivery"
-                      name="contactLess"
-                      className="size"
+                      </FormGroup>
+                    }
+                    <TextField
+                      label="Delivery Instructions - Optional"
+                      name="specialInstruction"
+                      multiline
+                      value={specialInstruction}
+                      onChange={handleInsturctionChange}
+                      inputProps={{
+                        maxLength: isContactless
+                          ? maxLengthContactLess
+                          : maxLength,
+                      }}
                     />
-                  </FormGroup>
-                  )}
-                  <TextField
-                    label="Delivery Instructions - Optional"
-                    name="specialInstruction"
-                    multiline
-                    value={specialInstruction}
-                    onChange={handleInsturctionChange}
-                    inputProps={{ maxLength: maxLength }}
-                  />
-                  <Typography variant="caption" sx={{fontFamily: "'Librefranklin-Regular' !important"}}>
-                  (Limit of 120 characters)
-                  </Typography>
-
-                </Grid>
+                    <Typography
+                      variant="caption"
+                      sx={{ fontFamily: "'Librefranklin-Regular' !important" }}
+                    >
+                      (Limit of {maxLength} characters)
+                    </Typography>
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>
