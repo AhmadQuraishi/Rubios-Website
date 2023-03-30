@@ -139,9 +139,9 @@ const Checkout = () => {
   );
   const { singleLocation } = useSelector((state: any) => state.locationReducer);
 
-  // useEffect(() => {
-  //   dispatch(getUserDeliveryAddresses());
-  // }, []);
+  useEffect(() => {
+    dispatch(getUserDeliveryAddresses());
+  }, [basket]);
   
   useEffect(() => {
     const LoadExternalScript = () => {
@@ -266,12 +266,14 @@ const Checkout = () => {
       setRemoveCreditCardOnce(false);
     }
   }, []);
-
-  function removePreviousAddresses(addressIds : any) {
-    for (let i = 0; i < addressIds; i++) {
-      dispatch(requestDelUserDelAddress(addressIds));
+  
+  const removePreviousAddresses = (addressIds : any) => {
+    const arrayLength = addressIds?.length;
+    console.log(arrayLength,'arrayLength');
+    for (let i = 0; i < arrayLength; i++) {
+      requestDelUserDelAddress(addressIds[i]);
     }
-    debugger;
+    // debugger;
   }
 
   React.useEffect(() => {
@@ -664,6 +666,22 @@ const Checkout = () => {
       }
       formDataValue = formData;
     }
+    // debugger;
+    if (duplicateAddress?.length > 0) {
+      let newFilteredDuplicateAddress;
+      if (basket?.deliveryaddress?.id) {
+        newFilteredDuplicateAddress = duplicateAddress.filter((id : any) => id !== basket?.deliveryaddress?.id)
+      }
+      else{
+        newFilteredDuplicateAddress = duplicateAddress;
+        console.log(newFilteredDuplicateAddress,'newFilteredDuplicateAddress');
+      }
+      if (newFilteredDuplicateAddress?.length > 0) {
+        console.log(newFilteredDuplicateAddress,'newFilteredDuplicateAddres423323232s');
+        removePreviousAddresses(newFilteredDuplicateAddress);
+      }
+    }
+    debugger;
     console.log(ccsfObj, 'ccsfObj registerError');
     if (
       basket?.deliverymode === DeliveryModeEnum.dispatch &&
@@ -825,20 +843,8 @@ const Checkout = () => {
         setButtonDisabled(false);
         dispatch(submitBasketSinglePaymentFailure(errors));
       });
-
-      // if (basket?.deliverymode === DeliveryModeEnum.dispatch && userDeliveryAddresses?.deliveryaddresses){
-      //   const uniqueAddressIds = new Set();
-      //   userDeliveryAddresses?.deliveryaddresses.forEach((address: any) => {
-      //     uniqueAddressIds.add(address.id);
-      //   });
-      //   duplicateAddress = Array.from(uniqueAddressIds);
-      // }
-      // if (duplicateAddress.length > 0 && basket?.deliveryaddress?.id) {
-      //   const newArray = duplicateAddress.filter((id : any) => id !== basket.deliveryaddress?.id)
-      //   // dispatch(updateDuplicateAddress(newArray));
-      //   Array.from(newArray);
-      // }
-      debugger;
+      
+      // debugger;
 
       dispatch(
         validateBasket(

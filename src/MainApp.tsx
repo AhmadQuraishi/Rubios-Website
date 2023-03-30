@@ -25,6 +25,7 @@ import {isLoginUser} from './helpers/auth'
 import { CacheDialog } from './components/cache-dialog';
 import LoginAuthDialog from './components/login-authentication-dialog';
 import { updateDuplicateAddress } from './redux/actions/basket/checkout';
+import { removePreviousAddresses } from './helpers/checkout';
 
 function App(props: any) {
   const location = useLocation();
@@ -55,6 +56,7 @@ function App(props: any) {
       dispatch(updateDuplicateAddress(updatedDuplicateAddress));
       console.log(updatedDuplicateAddress,'updatedDuplicateAddress');
     }
+    // debugger;
   }, [basket?.deliveryaddress?.id]);
 
   const updateDeviceId = () => {
@@ -120,10 +122,11 @@ function App(props: any) {
         console.log("working3", restaurantSessionTime);
         const minutes = currentTime.diff(restaurantSessionTime, 'minutes');
         console.log(minutes, "minutes")
-        if (minutes > 100) {
+        if (minutes > 1) {
           dispatch(resetRestaurantRequest());
           dispatch(resetBasketRequest());
           // setOpen(true);
+          removePreviousAddresses(duplicateAddress, null);
           navigate('/location');
           dispatch(updateSessionNull(sessionTime));
         }     

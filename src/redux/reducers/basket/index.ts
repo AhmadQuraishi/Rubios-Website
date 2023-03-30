@@ -103,7 +103,6 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
         basket: action.payload,
         basketType: action.basketType || 'New',
         error: null,
-        duplicateAddress : []
       };
     case basketActionsTypes.SET_TIP_FALSE:
       return {

@@ -13,8 +13,9 @@ import {
 } from '../types/olo-api/olo-api.enums';
 import { CalendarTypeEnum, HoursListing } from './hoursListing';
 import moment from 'moment';
-import {generateCCSFToken} from "../services/basket";
+import { generateCCSFToken } from '../services/basket';
 import { isLoginUser } from './auth';
+import { requestDelUserDelAddress } from '../services/user';
 
 const cardTypes: any = {
   amex: 'Amex',
@@ -23,13 +24,36 @@ const cardTypes: any = {
   mastercard: 'Mastercard',
 };
 
+export function removePreviousAddresses(addressIds: any, basket: any) {
+  // Remove duplicate addresses from the database
+  if (addressIds?.length > 0) {
+    let newFilteredDuplicateAddress;
+    if (basket) {
+      newFilteredDuplicateAddress = addressIds.filter(
+        (id: any) => id !== basket?.deliveryaddress?.id,
+      );
+    } else {
+      newFilteredDuplicateAddress = addressIds;
+      console.log(newFilteredDuplicateAddress, 'newFilteredDuplicateAddress');
+    }
+    if (newFilteredDuplicateAddress?.length > 0) {
+      console.log(newFilteredDuplicateAddress, 'newFilteredDuplicateAddress');
+      const arrayLength = newFilteredDuplicateAddress?.length;
+      console.log(arrayLength, 'arrayLength');
+      for (let i = 0; i < arrayLength - 1; i++) {
+        requestDelUserDelAddress(addressIds[i]);
+      }
+    }
+  }
+  debugger;
+}
 export function generateSubmitBasketPayload(
   formData: any,
   billingSchemes: any,
   deliverymode: string,
   authtoken: string,
   basket: any,
-  basketAccessToken: any
+  basketAccessToken: any,
 ): RequestBasketSubmit {
   const billingSchemeStats = getBillingSchemesStats(billingSchemes);
 
