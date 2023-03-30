@@ -658,7 +658,9 @@ const Checkout = () => {
           city: basket?.deliveryaddress?.city || '',
           zipcode: basket?.deliveryaddress?.zipcode || '',
           isdefault: basket?.deliveryaddress?.isdefault || false,
-          specialinstructions: specialInstruction ? specialInstruction !== '' && specialInstruction : isContactless && "I want contactless delivery",
+          specialinstructions: specialInstruction
+            ? specialInstruction !== '' && specialInstruction
+            : isContactless && 'I want contactless delivery',
         };
         const response: any = await setBasketDeliveryAddress(
           basket?.id,
@@ -791,15 +793,7 @@ const Checkout = () => {
         console.log('userInfo', userInfo);
         dispatch(updateGuestUserInfo(userInfo));
       }
-      console.log(ccsfObj, 'ccsfObj registerError');
-      ccsfObj?.registerError((errors: any) => {
-        console.log('ccsf error 3', errors);
-        errors.forEach((error: any) => {
-          displayToast('ERROR', error.description);
-        });
-        setButtonDisabled(false);
-        dispatch(submitBasketSinglePaymentFailure(errors));
-      });
+
       dispatch(
         validateBasket(
           basket?.id || '',
@@ -912,47 +906,47 @@ const Checkout = () => {
         : '',
       process.env.REACT_APP_BRAND_ACCESS_ID,
     );
-    localObj.registerError((error: any) => {
-      console.log('ccsf error 1', error);
-      setButtonDisabled(false);
-      dispatch(submitBasketSinglePaymentFailure(error));
-    });
-    localObj.registerSuccess((order: any) => {
-      console.log('ccsf Success', order);
+    // localObj.registerError((error: any) => {
+    //   console.log('ccsf error 1', error);
+    //   setButtonDisabled(false);
+    //   dispatch(submitBasketSinglePaymentFailure(error));
+    // });
+    // localObj.registerSuccess((order: any) => {
+    //   console.log('ccsf Success', order);
 
-      fireEventAfterPlacingOrder(order);
+    //   fireEventAfterPlacingOrder(order);
 
-      // let userInfo: any = {};
-      //
-      // if (guestUser) {
-      //   userInfo = {
-      //     ...guestUser,
-      //   };
-      // }
-      //
-      // userInfo['id'] = order.id;
-      // console.log('userInfo', userInfo)
-      // dispatch(updateGuestUserInfo(userInfo));
-      const basketId =
-        basketObj && basketObj.basket && basketObj.basket.id
-          ? basketObj.basket.id
-          : '';
-      if (basketId !== '') {
-        dispatch(submitBasketSinglePaymentSuccess(order, basketId));
-      }
-      dispatch(navigateAppAction(`/order-confirmation/${order.id}`));
-    });
-    localObj.registerFocus((evt: any) => {
-      console.log('ccsf focus', evt);
-    });
-
-    localObj.registerComplete((evt: any) => {
-      console.log('ccsf complete', evt);
-    });
-
-    localObj.registerReady((evt: any) => {
-      console.log('ccsf ready', evt);
-    });
+    //   // let userInfo: any = {};
+    //   //
+    //   // if (guestUser) {
+    //   //   userInfo = {
+    //   //     ...guestUser,
+    //   //   };
+    //   // }
+    //   //
+    //   // userInfo['id'] = order.id;
+    //   // console.log('userInfo', userInfo)
+    //   // dispatch(updateGuestUserInfo(userInfo));
+    //   const basketId =
+    //     basketObj && basketObj.basket && basketObj.basket.id
+    //       ? basketObj.basket.id
+    //       : '';
+    //   if (basketId !== '') {
+    //     dispatch(submitBasketSinglePaymentSuccess(order, basketId));
+    //   }
+    //   dispatch(navigateAppAction(`/order-confirmation/${order.id}`));
+    // });
+    // localObj.registerFocus((evt: any) => {
+    //   console.log('ccsf focus', evt);
+    // });
+    //
+    // localObj.registerComplete((evt: any) => {
+    //   console.log('ccsf complete', evt);
+    // });
+    //
+    // localObj.registerReady((evt: any) => {
+    //   console.log('ccsf ready', evt);
+    // });
     setShowIframeOnce(false);
 
     return localObj;
@@ -992,14 +986,36 @@ const Checkout = () => {
     // }
   }, []);
 
-  const submitOrder = (payload: any) => {
-    console.log('payload', payload);
-    console.log('ccsfObj', ccsfObj);
+  const handleCCSFRegisterError = (errors: any[]) => {
+    console.log('ccsf error 3', errors);
+    errors.forEach((error: any) => {
+      displayToast('ERROR', error.description);
+    });
+    setButtonDisabled(false);
+    dispatch(submitBasketSinglePaymentFailure(errors));
+  };
 
+  const handleCCSFRegisterSuccess = (order: any) => {
+    fireEventAfterPlacingOrder(order);
+    const basketId =
+      basketObj && basketObj.basket && basketObj.basket.id
+        ? basketObj.basket.id
+        : '';
+    if (basketId !== '') {
+      dispatch(submitBasketSinglePaymentSuccess(order, basketId));
+    }
+    dispatch(navigateAppAction(`/order-confirmation/${order.id}`));
+  };
+
+  const submitOrder = (payload: any) => {
     if (diplayOnScreenCreditCardForm()) {
-      ccsfObj.submit(payload);
+      ccsfObj?.registerError(handleCCSFRegisterError);
+      ccsfObj?.registerSuccess(handleCCSFRegisterSuccess);
+      ccsfObj?.submit(payload);
     } else {
-      ccsfObj2.submit(payload);
+      ccsfObj2?.registerError(handleCCSFRegisterError);
+      ccsfObj2?.registerSuccess(handleCCSFRegisterSuccess);
+      ccsfObj2?.submit(payload);
     }
   };
 
@@ -1091,7 +1107,7 @@ const Checkout = () => {
     <div>
       {openAuthenticationModal && (
         <LoginAuthDialog
-        placeOrder = {placeOrder}
+          placeOrder={placeOrder}
           openAuthenticationModal={openAuthenticationModal}
           setOpenAuthenticationModal={setOpenAuthenticationModal}
         />
@@ -1276,10 +1292,9 @@ const Checkout = () => {
                             basket={basket}
                             specialInstruction={specialInstruction}
                             setSpecialInstruction={setSpecialInstruction}
-                            isContactless = {isContactless}
-                            setIsContactless = {setIsContactless}
-                            handleCheckChange = {handleCheckChange}
-
+                            isContactless={isContactless}
+                            setIsContactless={setIsContactless}
+                            handleCheckChange={handleCheckChange}
                             deliveryFormRef={deliveryFormRef}
                           />
                         ) : null}
@@ -1432,7 +1447,7 @@ const Checkout = () => {
                           basketObj?.orderSubmit ||
                           (billingSchemes.length > 0 &&
                             totalPaymentCardAmount())) &&
-                        ccsfObj
+                        (ccsfObj || ccsfObj2)
                       }
                       onClick={authenticationPlace}
                       id={'place-order-button'}

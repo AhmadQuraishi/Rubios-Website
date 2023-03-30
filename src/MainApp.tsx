@@ -110,7 +110,7 @@ function App(props: any) {
         console.log("working3", restaurantSessionTime);
         const minutes = currentTime.diff(restaurantSessionTime, 'minutes');
         console.log(minutes, "minutes")
-        if (minutes > 1) {
+        if (minutes > 10) {
           dispatch(resetRestaurantRequest());
           dispatch(resetBasketRequest());
           sessionStorage.removeItem('hasDisplayedDialog');
