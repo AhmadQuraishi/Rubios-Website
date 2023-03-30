@@ -793,15 +793,6 @@ const Checkout = () => {
         console.log('userInfo', userInfo);
         dispatch(updateGuestUserInfo(userInfo));
       }
-      console.log(ccsfObj, 'ccsfObj registerError');
-      // ccsfObj?.registerError((errors: any) => {
-      //   console.log('ccsf error 3', errors);
-      //   errors.forEach((error: any) => {
-      //     displayToast('ERROR', error.description);
-      //   });
-      //   setButtonDisabled(false);
-      //   dispatch(submitBasketSinglePaymentFailure(errors));
-      // });
 
       dispatch(
         validateBasket(

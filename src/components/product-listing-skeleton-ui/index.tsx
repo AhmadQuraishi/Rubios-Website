@@ -5,7 +5,7 @@ const ProductListingSkeletonUI = () => {
     <Grid
       container
       sx={{
-        padding: { xs: '30px 20px', md: '40px 30px', lg: '30px 40px 0px 40px' },
+        padding: { xs: '30px 20px', md: '40px 30px', lg: '30px 100px' },
       }}
       spacing={3}
     >
