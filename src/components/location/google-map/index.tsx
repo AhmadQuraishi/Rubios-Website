@@ -36,9 +36,13 @@ const GoogleMapComponent = ({
           bounds.extend(markerRef.current[index].getPosition());
         });
         map.fitBounds(bounds);
+
+        if (markers.length === 1) {
+          map.setZoom(13);
+        }
       }
     }
-  }, [markers,mapRef.current, window.google, filteredRestaurants]);
+  }, [markers, mapRef.current, window.google, filteredRestaurants]);
 
   useEffect(() => {
     if (isLoaded) {
@@ -66,7 +70,6 @@ const GoogleMapComponent = ({
         overflow: 'hidden',
       }}
       id={'google-map-location'}
-      zoom={zoom}
       center={mapCenter}
       options={{
         streetViewControl: false,
