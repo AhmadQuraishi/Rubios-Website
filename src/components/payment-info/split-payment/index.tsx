@@ -9,6 +9,10 @@ import {
   InputAdornment,
   useTheme,
   Button,
+  FormControl,
+  Select,
+  MenuItem,
+  Divider,
   // useMediaQuery,
 } from '@mui/material';
 
@@ -21,22 +25,63 @@ import { ResponseBasket } from '../../../types/olo-api';
 import { useDispatch, useSelector } from 'react-redux';
 import { displayToast } from '../../../helpers/toast';
 import { updateBasketBillingSchemes } from '../../../redux/actions/basket/checkout';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import {
   getBillingSchemesStats,
   updatePaymentCardsAmount,
   remainingAmount,
 } from '../../../helpers/checkout';
 import DialogBox from '../../dialog-box';
+import './index.css';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+  menu: {
+    display: 'flex',
+  },
+}));
 
 const SplitPayment = forwardRef((props: any, _ref) => {
-  const { setHideShow, displaySavedCards, diplayOnScreenCreditCardForm } = props;
+  const { setHideShow, displaySavedCards, diplayOnScreenCreditCardForm } =
+    props;
   const dispatch = useDispatch();
   const theme = useTheme();
+  const classes = useStyles();
   const basketObj = useSelector((state: any) => state.basketReducer);
   const [basket, setBasket] = React.useState<ResponseBasket>();
   const [billingSchemes, setBillingSchemes] = React.useState<any>([]);
   const [openPopup, setOpenPopup] = React.useState<boolean>(false);
   const [removeData, setRemoveData] = React.useState<any>(null);
+  const [open, setOpen] = React.useState(false);
+  const [openGift, setOpenGift] = React.useState(false);
+  const [selectedAccount, setSelectedAccount] = React.useState<any>(null);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleCloseGift = () => {
+    setOpenGift(false);
+  };
+
+  const handleOpenGift = () => {
+    setOpenGift(true);
+  };
+
+  const optionChange = (e: any) => {
+    const selectedId = parseInt(e.target.value);
+    const filterOpt = billingSchemes?.find((account: any) => account.id === selectedId);
+    setSelectedAccount(filterOpt);
+  };
 
   React.useEffect(() => {
     if (basketObj.basket) {
@@ -262,13 +307,20 @@ const SplitPayment = forwardRef((props: any, _ref) => {
         message={'Do You Really Want To Remove This Card?'}
         handleDeleteFunction={() => removeSingleBasketBillingSchemes()}
       />
-      {!diplayOnScreenCreditCardForm() && billingSchemes &&
+      {!diplayOnScreenCreditCardForm() &&
+        billingSchemes &&
         billingSchemes.length > 0 &&
         billingSchemes
-          .filter((account: any) => account.selected)
+          .filter(
+            (account: any) =>
+              account.selected,
+          )
           .map((account: any, index: any) => {
             return (
+              
               <Grid key={account.localId} container spacing={1}>
+                {account.billingmethod === 'creditcard' && !account.billingaccountid &&( 
+                  <>
                 <Grid
                   item
                   xs={12}
@@ -353,27 +405,6 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                             ? `x-${account.cardlastfour}`
                             : 'Credit Card'}
                         </Typography>
-                      )}
-                      {account.billingmethod === 'storedvalue' && (
-                        <>
-                          <Typography variant="h6" sx={{fontFamily: "'Librefranklin-Regular' !important"}}>
-                            {account.billingfields
-                              ? `Gift Card x${giftCardLastFourDigits(account)}`
-                              : account.cardlastfour
-                              ? `Gift Card x${account.cardlastfour}`
-                              : ''}
-                          </Typography>
-                          <Typography
-                            style={{
-                              color: '#0069aa',
-                              fontWeight: '600',
-                              fontSize: 13,
-                            }}
-                            variant="h4"
-                          >
-                            BALANCE ${account.balance ? account.balance : 0}
-                          </Typography>
-                        </>
                       )}
                     </Grid>
                     <Grid
@@ -493,13 +524,504 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                   </Typography> */}
                   {/*)}*/}
                 </Grid>
+                </> )}
+                {account.billingmethod === 'creditcard' && account.billingaccountid && ( 
+                  <>
+                <Grid
+                  item
+                  xs={12}
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  className="card-details"
+                >
+
+                  <Grid
+                    item
+                    xs={1}
+                    sm={1}
+                    md={1}
+                    lg={1}
+                    sx={{ marginRight: '5px' }}
+                  >
+                    <FormGroup>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            name={`${account.localId}`}
+                            checked={account.selected}
+                            onChange={(e) =>
+                              handleCheckBox(
+                                e,
+                                account.localId,
+                                account.billingmethod,
+                              )
+                            }
+                            onKeyPress={(e: any) => {
+                              if (e.key === 'Enter') {
+                                handleCheckBox(
+                                  e,
+                                  account.localId,
+                                  account.billingmethod,
+                                );
+                              }
+                            }}
+                          />
+                        }
+                        label=""
+                        className="size"
+                      />
+                    </FormGroup>
+                  </Grid>
+                  
+                  {/* <Grid container className="payment-bar"> */}
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      width: '100%',
+                      maxHeight: 282,
+                      overflow: 'auto',
+                      marginTop: 3,
+                      boxShadow:
+                        '0px 2px 4px -1px rgb(0 0 0 / 6%), 0px 4px 5px 0px rgb(0 0 0 / 6%), 0px 1px 10px 0px rgb(0 0 0 / 6%)',
+                    }}
+                  >
+                    <FormControl className={classes.formControl}>
+                      {/* <InputLabel>{label}</InputLabel> */}
+                      <Select
+                        open={open}
+                        onClose={handleClose}
+                        onOpen={handleOpen}
+                        value={account.selected}
+                        onChange={(e) => optionChange(e)}
+                        // IconComponent={() => open ?  <KeyboardArrowUpIcon onClick={() => {handleOpen()}} style={{marginRight: '20px',color: 'blue'}} /> : <KeyboardArrowDownIcon onClick={() => {handleClose()}}  style={{marginRight: '20px',color: 'blue'}}/>}
+                      >
+                        <Grid
+                          item
+                          xs={12}
+                          sx={{
+                            marginRight: { sm: '50px' },
+                            marginLeft: { sm: '26px' },
+                            padding: { sm: '0px', xs: '0px 0px 15px' },
+                          }}
+                        >
+                          <Divider sx={{ borderColor: '#224c65' }} />
+                        </Grid>
+                        <MenuItem
+                          sx={{
+                            color: '#224c65',
+                            fontFamily: "'Sunborn-Sansone' !important",
+                          }}
+                        >
+                          Add Credit Card
+                        </MenuItem>
+                        {billingSchemes &&
+                          billingSchemes.length > 0 &&
+                          billingSchemes
+                            .filter(
+                              (account: any) =>
+                                account.savedCard &&
+                                account.billingmethod === 'creditcard'
+                            )
+                            .map((account: any) => (
+                              <MenuItem
+                                className="menu"
+                                key={account.localId}
+                                value={account.selected}
+                                selected={account.selected}
+                              >
+                                <Grid
+                                  item
+                                  style={{ display: 'flex' }}
+                                  alignItems="center"
+                                  xs={1.5}
+                                  sm={1}
+                                >
+                                  {getCardImage(account)}
+                                </Grid>
+                                <Grid
+                                  item
+                                  style={{
+                                    display: 'flex',
+                                    flexDirection:
+                                      account.billingmethod === 'storedvalue'
+                                        ? 'column'
+                                        : 'inherit',
+                                    alignItems:
+                                      account.billingmethod === 'storedvalue'
+                                        ? 'flex-start'
+                                        : 'center',
+                                  }}
+                                  sx={{
+                                    paddingLeft: { sm: '5px', xs: '22px' },
+                                  }}
+                                  alignItems="center"
+                                  justifyContent="flex-start"
+                                  xs={5.5}
+                                  sm={5}
+                                  md={5}
+                                  lg={5}
+                                >
+                                  {account.billingmethod === 'creditcard' && (
+                                    <Typography
+                                      variant="h6"
+                                      sx={{
+                                        fontFamily:
+                                          "'Librefranklin-Regular' !important",
+                                        color: '#224c65',
+                                      }}
+                                    >
+                                      {account.cardlastfour
+                                        ? `x-${account.cardlastfour}`
+                                        : 'Credit Card'}
+                                    </Typography>
+                                  )}
+                                  
+                                </Grid>
+                    {open && account.selected && (
+                   <Grid
+                      style={{ display: 'flex',justifyContent: 'right' }}
+                      alignItems="center"
+                      item
+                      xs={3.5}
+                      sm={3}
+                      md={4}
+                      lg={3}
+                    >
+                            <Typography sx={{color: '#224c65',fontFamily:"'Librefranklin-Regular' !important",}}>
+                            ${account.amount.toFixed(2) || 0}
+                            </Typography>
+                    </Grid>
+
+                     )}
+                              </MenuItem>
+                            ))}
+                      </Select>
+                    </FormControl>
+                  </div>
+                  {/* </Grid> */}
+                </Grid>
+                <Grid
+                  item
+                  style={{
+                    paddingTop: 5,
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    zIndex: 1,
+                  }}
+                  xs={12}
+                  sm={12}
+                  md={12}
+                  lg={12}
+                >
+
+                  {/* <Typography
+                    onClick={() => {
+                      setOpenPopup(true);
+                      setRemoveData({
+                        localId: account.localId,
+                        billingmethod: account.billingmethod,
+                      });
+                    }}
+                    onKeyPress={(e: any) => {
+                      if (e.key === 'Enter') {
+                        setOpenPopup(true);
+                        setRemoveData({
+                          localId: account.localId,
+                          billingmethod: account.billingmethod,
+                        });
+                      }
+                    }}
+                    style={{ cursor: 'pointer', display: 'inline-block' }}
+                    align={'right'}
+                    variant="h6"
+                    aria-label={'Remove Card'}
+                    tabIndex={0}
+                  >
+                    REMOVE
+                  </Typography> */}
+                  {/*)}*/}
+                </Grid>
+                </>
+            )}
+            
+            {account.billingmethod === 'storedvalue' && (
+                  <>
+                <Grid
+                  item
+                  xs={12}
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  className="card-details"
+                >
+                  <Grid
+                    item
+                    xs={1}
+                    sm={1}
+                    md={1}
+                    lg={1}
+                    sx={{ marginRight: '5px' }}
+                  >
+                    <FormGroup>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            name={`${account.localId}`}
+                            checked={account.selected}
+                            onChange={(e) =>
+                              handleCheckBox(
+                                e,
+                                account.localId,
+                                account.billingmethod,
+                              )
+                            }
+                            onKeyPress={(e: any) => {
+                              if (e.key === 'Enter') {
+                                handleCheckBox(
+                                  e,
+                                  account.localId,
+                                  account.billingmethod,
+                                );
+                              }
+                            }}
+                          />
+                        }
+                        label=""
+                        className="size"
+                      />
+                    </FormGroup>
+                  </Grid>
+                  {/* <Grid container className="payment-bar"> */}
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      width: '100%',
+                      maxHeight: 282,
+                      overflow: 'auto',
+                      marginTop: 3,
+                      boxShadow:
+                        '0px 2px 4px -1px rgb(0 0 0 / 6%), 0px 4px 5px 0px rgb(0 0 0 / 6%), 0px 1px 10px 0px rgb(0 0 0 / 6%)',
+                    }}
+                  >
+                    <FormControl className={classes.formControl}>
+                      {/* <InputLabel>{label}</InputLabel> */}
+                      <Select
+                        open={openGift}
+                        onClose={handleCloseGift}
+                        onOpen={handleOpenGift}
+                        value={account.selected}
+                        
+                        // onChange={(event: any) => {
+                        //   const newSelectedOption = event.target.value;
+                        //   setAccount((prevAccount: any) => ({
+                        //     ...prevAccount,
+                        //     selected: newSelectedOption,
+                        //   }));
+                        // }}
+                        // IconComponent={() => open ?  <KeyboardArrowUpIcon onClick={() => {handleOpen()}} style={{marginRight: '20px',color: 'blue'}} /> : <KeyboardArrowDownIcon onClick={() => {handleClose()}}  style={{marginRight: '20px',color: 'blue'}}/>}
+                      >
+                        <Grid
+                          item
+                          xs={12}
+                          sx={{
+                            marginRight: { sm: '50px' },
+                            marginLeft: { sm: '26px' },
+                            padding: { sm: '0px', xs: '0px 0px 15px' },
+                          }}
+                        >
+                          <Divider sx={{ borderColor: '#224c65' }} />
+                        </Grid>
+                        <MenuItem sx={{
+                            color: '#224c65',
+                            fontFamily: "'Sunborn-Sansone' !important",
+                          }}> Add Gift Card</MenuItem>
+                        {billingSchemes &&
+                          billingSchemes.length > 0 &&
+                          billingSchemes
+                            .filter(
+                              (account: any) =>
+                                account.savedCard &&
+                                account.billingmethod === 'storedvalue',
+                                account !== account.selected,
+                            )
+                            .map((account: any) => (
+                              <MenuItem
+                                className="menu"
+                                key={account.localId}
+                                value={account.selected}
+                              >
+                                <Grid
+                                  item
+                                  style={{ display: 'flex' }}
+                                  alignItems="center"
+                                  xs={1.5}
+                                  sm={1}
+                                >
+                                  {getCardImage(account)}
+                                </Grid>
+                                {account.billingmethod === 'storedvalue' && (
+                                  <Grid
+                                    item
+                                    style={{
+                                      display: 'flex',
+                                      flexDirection:
+                                        account.billingmethod === 'storedvalue'
+                                          ? 'inherit'
+                                          : 'inherit',
+                                      alignItems:
+                                        account.billingmethod === 'storedvalue'
+                                          ? 'center'
+                                          : 'center',
+                                    }}
+                                    sx={{
+                                      paddingLeft: { sm: '5px', xs: '22px' },
+                                    }}
+                                    alignItems="center"
+                                    justifyContent="space-between"
+                                    xs={5.5}
+                                    sm={5.5}
+                                    md={5.5}
+                                    lg={5.5}
+                                  >
+                                    <>
+                                      <Typography
+                                        variant="h6"
+                                        sx={{
+                                          fontFamily:
+                                            "'Librefranklin-Regular' !important",
+                                        }}
+                                      >
+                                        {account.billingfields
+                                          ? `x${giftCardLastFourDigits(
+                                              account,
+                                            )}`
+                                          : account.cardlastfour
+                                          ? `x${account.cardlastfour}`
+                                          : ''}
+                                      </Typography>
+                                      {openGift && !account.selected && (
+                                        <Typography
+                                          style={{
+                                            color: '#0069aa',
+                                            fontWeight: '600',
+                                            fontSize: 13,
+                                            marginRight: '20px',
+                                          }}
+                                          variant="h4"
+                                        >
+                                          Remaining Balance: $
+                                          {account.balance
+                                            ? account.balance
+                                            : 0}
+                                        </Typography>
+                                      )}
+                                    </>
+                                  </Grid>
+                                )}
+                                {/* <Grid
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        padding: {
+                          xs: '0px 15px 0px 0px',
+                          sm: '0px 15px 0px 0px',
+                          md: '0px',
+                          lg: '0px',
+                        },
+                      }}
+                      alignItems="center"
+                      item
+                      xs={1.5}
+                      sm={2}
+                      md={1.5}
+                      lg={2}
+                    > */}
+                                {/* <Typography
+                        variant="h6"
+                        fontFamily= "'Librefranklin-Regular' !important"
+                      >
+                        AMOUNT
+                      </Typography>
+                  </Grid> */}
+                                {/* {openGift && account.selected && (
+                    <Grid
+                      style={{ display: 'flex' }}
+                      alignItems="center"
+                      item
+                      xs={3.5}
+                      sm={3}
+                      md={4}
+                      lg={3}
+                    >
+                        <TextField
+                        type="number"
+                        onChange={(e) =>
+                          handleAmountChanges(e, account.localId)
+                        }
+                        disabled={true}
+                        value={account.amount.toFixed(2) || 0}
+                        inputProps={{ shrink: false }}
+                        variant="standard"
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">$</InputAdornment>
+                          ),
+                          disableUnderline: true,
+                        }}
+                      />
+                    </Grid>
+                      )} */}
+                      {openGift && account.selected && (
+                   <Grid
+                      style={{ display: 'flex', justifyContent: 'right' }}
+                      alignItems="center"
+                      item
+                      xs={3.5}
+                      sm={3}
+                      md={4}
+                      lg={3}
+                    >
+                            <Typography sx={{color: '#224c65',fontFamily:"'Librefranklin-Regular' !important",}}>
+                            ${account.amount.toFixed(2) || 0}
+                            </Typography>
+                    </Grid>
+
+                     )}
+                              </MenuItem>
+                            ))}
+                      </Select>
+                    </FormControl>
+                  </div>
+                  {/* </Grid> */}
+                </Grid>
+                <Grid
+                  item
+                  style={{
+                    paddingTop: 5,
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    zIndex: 1,
+                  }}
+                  xs={12}
+                  sm={12}
+                  md={12}
+                  lg={12}
+                ></Grid>
+                </>
+                )}
               </Grid>
             );
           })}
-
       <Grid container spacing={2}>
         <Grid item xs={12} sm={12} md={12} lg={12}>
-          <Typography align={'center'} variant="h6" sx={{fontFamily: "'Librefranklin-Regular' !important"}}>
+          <Typography
+            align={'center'}
+            variant="h6"
+            sx={{ fontFamily: "'Librefranklin-Regular' !important" }}
+          >
             Remaining Amount: $ {remainingAmount(basket, billingSchemes)}
           </Typography>
         </Grid>
@@ -616,7 +1138,13 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                           lg={5}
                         >
                           {account.billingmethod === 'creditcard' && (
-                            <Typography variant="h6" sx={{fontFamily: "'Librefranklin-Regular' !important"}}>
+                            <Typography
+                              variant="h6"
+                              sx={{
+                                fontFamily:
+                                  "'Librefranklin-Regular' !important",
+                              }}
+                            >
                               {account.cardlastfour
                                 ? `x-${account.cardlastfour}`
                                 : 'Credit Card'}
@@ -624,7 +1152,13 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                           )}
                           {account.billingmethod === 'storedvalue' && (
                             <>
-                              <Typography variant="h6" sx={{fontFamily: "'Librefranklin-Regular' !important"}}>
+                              <Typography
+                                variant="h6"
+                                sx={{
+                                  fontFamily:
+                                    "'Librefranklin-Regular' !important",
+                                }}
+                              >
                                 {account.billingfields
                                   ? `Gift Card x${giftCardLastFourDigits(
                                       account,
