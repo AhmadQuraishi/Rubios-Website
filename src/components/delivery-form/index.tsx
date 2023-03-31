@@ -137,7 +137,7 @@ const DeliveryForm = ({
       setSpecialInstruction(specialInstruction);
       setIsContactless(contactLess);
       setSpecialInstructionRunOnce(false);
-      debugger;
+      // debugger;
     }
   }, [basket]);
   
