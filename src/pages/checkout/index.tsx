@@ -372,6 +372,7 @@ const Checkout = () => {
                   basketObj.payment.allowedCards.data.billingschemes[
                     creditCardIndex
                   ].id,
+                alwaysVisible: false,
               };
               billingArray.push(cardObj);
             }
@@ -492,6 +493,7 @@ const Checkout = () => {
         cardlastfour: defaultGiftCards[i].cardsuffix,
         billingaccountid: defaultGiftCards[i].accountidstring,
         billingschemeid: defaultGiftCards[i].id,
+        alwaysVisible: false,
       };
       array.push(gitfCardObj);
     }
