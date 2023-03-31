@@ -217,6 +217,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
         return {
           ...element,
           selected: false,
+          alwaysVisible: false,
         };
       }
       return element;
@@ -300,7 +301,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
             />
             <Grid container>
               <Grid item xs={12} sm={12} md={12} lg={12} className="add-gift">
-                {!displaySavedCards &&
+                {/* {!displaySavedCards &&
                   basket &&
                   isLoginUser() &&
                   billingSchemes &&
@@ -335,7 +336,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                         </Button>
                       </Grid>
                     </Grid>
-                  )}
+                  )} */}
                 {displayAddCreditCard() && (
                   <Button
                     className={'add-credit-card-button'}
