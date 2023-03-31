@@ -67,7 +67,6 @@ const LocationCard = (props: any) => {
     actionTypes,
     setAction,
     orderType,
-    setZoom,
     changeOrderType,
     setLatLng,
     setActionPerform,
@@ -77,7 +76,6 @@ const LocationCard = (props: any) => {
     setFilteredRestaurants,
     filteredRestaurants,
     loading,
-    setOrderType,
     addCustomAddressCheck,
     currentLocation,
     setRestaurantNotFound,
@@ -104,7 +102,11 @@ const LocationCard = (props: any) => {
   }, []);
 
   useEffect(() => {
-    if (!selectedOrderType || selectedOrderType && (selectedOrderType === '' || selectedOrderType === 'pickup')) {
+    if (
+      !selectedOrderType ||
+      (selectedOrderType &&
+        (selectedOrderType === '' || selectedOrderType === 'pickup'))
+    ) {
       onServiceSelect('Pick up');
     } else if (selectedOrderType === 'dispatch') {
       onServiceSelect('Delivery');
@@ -118,19 +120,17 @@ const LocationCard = (props: any) => {
     }
   }, [isMapLoaded]);
 
-  const onServiceSelect = (
-    newAlignment: string,
-  ) => {
+  const onServiceSelect = (newAlignment: string) => {
     if (newAlignment) {
       setAlignment(newAlignment);
       const orderT =
         newAlignment === 'Pick up'
           ? 'pickup'
           : newAlignment === 'Curbside'
-            ? 'curbside'
-            : newAlignment === 'Delivery'
-              ? 'dispatch'
-              : 'web';
+          ? 'curbside'
+          : newAlignment === 'Delivery'
+          ? 'dispatch'
+          : 'web';
       setSearchText('');
       changeOrderType(orderT);
       if (orderT === 'dispatch') {
@@ -195,10 +195,10 @@ const LocationCard = (props: any) => {
         orderType === 'pickup'
           ? 'Pick up'
           : orderType === 'curbside'
-            ? 'Curbside'
-            : orderType === 'dispatch'
-              ? 'Delivery'
-              : 'web';
+          ? 'Curbside'
+          : orderType === 'dispatch'
+          ? 'Delivery'
+          : 'web';
       console.log('orderT', orderT);
       setAlignment(orderT);
     }
@@ -470,7 +470,11 @@ const LocationCard = (props: any) => {
           }
         } else {
           dispatch(
-            basketTransferRequest(basketObj?.basket?.id, restaurantObj.id, basketObj?.basket?.deliverymode),
+            basketTransferRequest(
+              basketObj?.basket?.id,
+              restaurantObj.id,
+              basketObj?.basket?.deliverymode,
+            ),
           );
           setNewRestaurant(restaurantObj);
           setActionPerform(true);
@@ -537,7 +541,6 @@ const LocationCard = (props: any) => {
   );
 
   useEffect(() => {
-
     if (showAllRestaurants) {
       fitViewAllRestaurant();
     }
@@ -839,7 +842,8 @@ const LocationCard = (props: any) => {
                 orderType &&
                 orderType === 'dispatch' &&
                 filteredRestaurants.length > 0 &&
-                !addCustomAddressCheck() && deliveryAddressString?.address1 && (
+                !addCustomAddressCheck() &&
+                deliveryAddressString?.address1 && (
                   // <Typography className="label">
                   //   <p style={{ paddingTop: '5px' }}>SELECT LOCATION BELOW</p>
                   // </Typography>
@@ -899,8 +903,8 @@ const LocationCard = (props: any) => {
                 minHeight: '350px',
                 display:
                   orderType &&
-                    orderType === 'dispatch' &&
-                    addCustomAddressCheck()
+                  orderType === 'dispatch' &&
+                  addCustomAddressCheck()
                     ? 'none'
                     : 'block',
               }}
@@ -943,4 +947,4 @@ const LocationCard = (props: any) => {
   );
 };
 
-export default LocationCard;  
+export default LocationCard;
