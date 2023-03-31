@@ -102,7 +102,11 @@ const LocationCard = (props: any) => {
   }, []);
 
   useEffect(() => {
-    if (!selectedOrderType || selectedOrderType && (selectedOrderType === '' || selectedOrderType === 'pickup')) {
+    if (
+      !selectedOrderType ||
+      (selectedOrderType &&
+        (selectedOrderType === '' || selectedOrderType === 'pickup'))
+    ) {
       onServiceSelect('Pick up');
     } else if (selectedOrderType === 'dispatch') {
       onServiceSelect('Delivery');
@@ -116,9 +120,7 @@ const LocationCard = (props: any) => {
     }
   }, [isMapLoaded]);
 
-  const onServiceSelect = (
-    newAlignment: string,
-  ) => {
+  const onServiceSelect = (newAlignment: string) => {
     if (newAlignment) {
       setAlignment(newAlignment);
       const orderT =
@@ -211,6 +213,7 @@ const LocationCard = (props: any) => {
         setActionPerform(false);
       });
   };
+
   const getSearchResults = () => {
     setAction(actionTypes.LOCAL_SEARCH);
     let availableRestaurants = [];
@@ -451,7 +454,11 @@ const LocationCard = (props: any) => {
           }
         } else {
           dispatch(
-            basketTransferRequest(basketObj?.basket?.id, restaurantObj.id, basketObj?.basket?.deliverymode),
+            basketTransferRequest(
+              basketObj?.basket?.id,
+              restaurantObj.id,
+              basketObj?.basket?.deliverymode,
+            ),
           );
           setNewRestaurant(restaurantObj);
           setActionPerform(true);
@@ -815,12 +822,12 @@ const LocationCard = (props: any) => {
                   </Link>
                 </Typography>
               )}
-
               {!showAllRestaurants &&
                 orderType &&
                 orderType === 'dispatch' &&
                 filteredRestaurants.length > 0 &&
-                !addCustomAddressCheck() && deliveryAddressString?.address1 && (
+                !addCustomAddressCheck() &&
+                deliveryAddressString?.address1 && (
                   // <Typography className="label">
                   //   <p style={{ paddingTop: '5px' }}>SELECT LOCATION BELOW</p>
                   // </Typography>
