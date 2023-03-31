@@ -26,19 +26,20 @@ import moment from 'moment';
 import crossIcon from '../../assets/imgs/cross_square_icon.png';
 import { OrderTypeDialog } from '../order-type-dialog';
 import { isLoginUser } from '../../helpers/auth';
-import { promotionalMsg, updateSessionNull } from '../../redux/actions/restaurant';
 const useStyle = makeStyles({
   heading: {
     fontSize: '13px !important',
     color: '#fff',
-    fontFamily: "'GritSans-Bold' !important"
+    fontFamily: "'GritSans-Bold' !important",
   },
   heading1: {
     fontSize: '13px !important',
     color: '#fff',
-    fontFamily:"'Librefranklin-Regular' !important",
+    fontFamily: "'Librefranklin-Regular' !important",
   },
 });
+
+const { REACT_APP_PROMO_MESSAGE } = process.env;
 
 const StoreInfoBar = () => {
   const theme = useTheme();
@@ -50,9 +51,9 @@ const StoreInfoBar = () => {
   const [showMore, setShowMore] = useState(false);
   const [open, setOpen] = useState(false);
   const [openOrder, setOpenOrder] = useState(false);
-  const [showPromo, setShowPromo] = useState(true);
+  const [showPromo, setShowPromo] = useState(false);
   const [locationId, setLocationId] = useState(null);
-  const {restaurant, sessionTime, orderType } = useSelector(
+  const { restaurant, orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
   const { calendar } = useSelector(
@@ -170,80 +171,89 @@ const StoreInfoBar = () => {
     if (type === 'pickup' || type === 'curbside') return 'Pick Up From';
   };
   const getEstTimeFormat = (date: string, data2: string) => {
-    return moment(date, 'YYYYMMDD HH:mm').add(data2, 'minutes').format('dddd h:mm A');
+    return moment(date, 'YYYYMMDD HH:mm').format('dddd h:mm A');
     // moment(startTime, 'HH:mm:ss').add(durationInMinutes, 'minutes').format('HH:mm');
   };
-  
-  const hasDisplayedDialog = sessionStorage.getItem('hasDisplayedDialog');
+
+  const hidePromotionalMsg: any = sessionStorage.getItem('hidePromotionalMsg');
 
   useEffect(() => {
-    if (!hasDisplayedDialog) {
-          setShowPromo(true);
-        }
-    else {
+    if (hidePromotionalMsg && hidePromotionalMsg === 'true') {
       setShowPromo(false);
+    } else {
+      setShowPromo(true);
     }
-  }, [hasDisplayedDialog]);
+  }, [hidePromotionalMsg]);
 
   const handlePromotionClose = () => {
-    sessionStorage.setItem('hasDisplayedDialog', true.toString());
+    sessionStorage.setItem('hidePromotionalMsg', 'true');
     setShowPromo(false);
   };
 
   const EstimatedTime = () => {
     const type = basketObj?.basket?.deliverymode || orderType || '';
     const time = basketObj?.basket;
-    // const 
     if (type === 'dispatch') {
-    if (time?.timemode === 'asap') {
-      return getEstTimeFormat(time.earliestreadytime,time.leadtimeestimateminutes);
+      if (time?.timemode === 'asap') {
+        return getEstTimeFormat(
+          time.earliestreadytime,
+          time.leadtimeestimateminutes,
+        );
+      } else if (time?.timewanted) {
+        return getEstTimeFormat(time.timewanted, time.leadtimeestimateminutes);
+      }
     }
-    else if (time?.timewanted)
-     {
-      return getEstTimeFormat(time.timewanted,time.leadtimeestimateminutes);
-    }
-  }
-  }
+  };
   return (
     <>
-    { !(process.env.REACT_APP_PROMOTIONAL_MESSAGE === '') && !hasDisplayedDialog  &&  showPromo &&
-     <Grid           sx={{
-      backgroundColor: "#f8cd58",
-      display: 'flex', flexDirection: "row",
-      padding: { xs: '20px 20px', sm: '35px 40px', lg: '20px 100px' },
-    }}>
-      <Grid
-          xs={11}
-          sm={11.8}
-          container
-          spacing={0}
+      {REACT_APP_PROMO_MESSAGE !== '' && showPromo && (
+        <Grid
           sx={{
-            fontFamily:"'Librefranklin-Bold' !important",
-            color: {xs:"#062C43",sm : "#224c65"},
+            backgroundColor: '#f8cd58',
+            display: 'flex',
+            flexDirection: 'row',
+            padding: { xs: '20px 20px', sm: '35px 40px', lg: '20px 100px' },
           }}
-
         >
-          {process.env.REACT_APP_PROMO_MESSAGE}
-
+          <Grid
+            xs={11}
+            sm={11.8}
+            container
+            spacing={0}
+            sx={{
+              fontFamily: "'Librefranklin-Bold' !important",
+              color: { xs: '#062C43', sm: '#224c65' },
+              alignItems: 'center',
+            }}
+          >
+            {REACT_APP_PROMO_MESSAGE}
           </Grid>
-          <Grid        sx={{cursor: 'pointer',marginLeft: {xs: '10px'}}}   xs={1} sm={0.2}>
-          <img
-                src={crossIcon}
-                title="Close Cart"
-                height="20px"
-                onClick={handlePromotionClose}
-                width="20px"
-                alt="Close Cart"
-              />
+          <Grid
+            sx={{
+              cursor: 'pointer',
+              marginLeft: { xs: '10px' },
+              display: 'flex',
+            }}
+            xs={1}
+            sm={0.2}
+          >
+            <img
+              src={crossIcon}
+              title="Close Cart"
+              height="20px"
+              onClick={handlePromotionClose}
+              width="20px"
+              alt="Close Cart"
+            />
           </Grid>
-    </Grid>}
+        </Grid>
+      )}
       {restaurantInfo && (
-
         <Grid
           container
           spacing={0}
           sx={{
-            backgroundColor: "#062C43",
+            backgroundColor: '#062C43',
             padding: { xs: '15px 20px', sm: '35px 40px', lg: '20px 100px' },
           }}
         >
@@ -262,26 +272,26 @@ const StoreInfoBar = () => {
           />
           <Grid item xs={12}>
             <Grid container spacing={0} margin="auto">
-              { !isMobile ? (
-              <Grid
-                item
-                xs={12}
-                sm={6}
-                sx={{
-                  paddingRight: { xs: '0px', sm: '15px' },
-                  paddingBottom: { xs: '0px', sm: '0px' },
-                }}
-              >
-                <Grid sx={{ display: 'flex', flexDirection: 'inherit' }}>
-                  <Typography
-                    className={classes.heading}
-                    variant="h2"
-                    textTransform="uppercase"
-                    title="Pick Up From"
-                  >
-                    {orderSelectedType()}
-                  </Typography>
-                  {/* {window?.location?.href
+              {!isMobile ? (
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  sx={{
+                    paddingRight: { xs: '0px', sm: '15px' },
+                    paddingBottom: { xs: '0px', sm: '0px' },
+                  }}
+                >
+                  <Grid sx={{ display: 'flex', flexDirection: 'inherit' }}>
+                    <Typography
+                      className={classes.heading}
+                      variant="h2"
+                      textTransform="uppercase"
+                      title="Pick Up From"
+                    >
+                      {orderSelectedType()}
+                    </Typography>
+                    {/* {window?.location?.href
                     ?.toLocaleLowerCase()
                     ?.indexOf('/checkout') !== -1 && ( */}
                     {/* <>
@@ -321,100 +331,112 @@ const StoreInfoBar = () => {
                         {'\n'}
                       </Typography>
                     </> */}
-                        {/* )} */}
-                </Grid>
-                <Typography
-                  variant="h2"
-                  color="#fff"
-                  textTransform="uppercase"
-                  lineHeight={1.3}
-                  sx={{
-                    fontFamily: {
-                    xs: "'Librefranklin-Regular' !important",
-                    sm:"'Sunborn-Sansone' !important",
-                    },
-                    fontSize: {
-                      xs: '13px !important',
-                      sm: '35px !important',
-                      lg: '40px !important',
-                    },
-                  }}
-                  title={restaurantInfo.name}
-                >
-                  {restaurantInfo.name}
-                </Typography>
-                {window?.location?.href
-                  ?.toLocaleLowerCase()
-                  ?.indexOf('/checkout') !== -1 &&
-                  EstimatedTime() && (
-                    <>
-                      <Typography
-                        className={classes.heading}
-                        variant="h2"
-                        sx={{
-                        display: {
-                          xs: 'none',
-                          sm: 'flex',
-                          md: 'flex',
-                          lg: 'flex',
-                        },
-                        }}
-                        textTransform="uppercase"
-                        title="Pick Up From"
-                      >
-                        Estimated Delivery Time: {EstimatedTime()}
-                      </Typography>
-                    </>
-                  )}
-              </Grid> 
-                    ) : (
-                      <Grid
-                item
-                xs={12}
-                sm={6}
-                sx={{
-                  paddingRight: { xs: '0px', sm: '15px' },
-                  paddingBottom: { xs: '0px', sm: '0px' },
-                }}
-              >
-                <Grid onClick={() => {navigate('/location')}} sx={{ display: 'flex', flexDirection: 'row',alignItems: 'baseline',justifyContent: 'center', border: "1px solid #fff", borderRadius: "20px", }}>
+                    {/* )} */}
+                  </Grid>
                   <Typography
-                    className={classes.heading}
                     variant="h2"
-                    sx={{margin: "5px 0px 5px 0px", padding: '5px',}}
+                    color="#fff"
                     textTransform="uppercase"
-                    title="Pick Up From"
+                    lineHeight={1.3}
+                    sx={{
+                      fontFamily: {
+                        xs: "'Librefranklin-Regular' !important",
+                        sm: "'Sunborn-Sansone' !important",
+                      },
+                      fontSize: {
+                        xs: '13px !important',
+                        sm: '35px !important',
+                        lg: '40px !important',
+                      },
+                    }}
+                    title={restaurantInfo.name}
                   >
-                    {orderSelectedType()}
+                    {restaurantInfo.name}
                   </Typography>
-
-                <Typography
-                  variant="h2"
-                  color="#fff"
-                  lineHeight={1.3}
-                  sx={{
-                    marginLeft : '10px',
-                    maxWidth: { xs: '155px' },
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    padding: '0px 15px',
-                    fontFamily: {
-                    xs: "'Librefranklin-Regular' !important",
-                    },
-                    fontSize: {
-                      xs: '13px !important',
-                      sm: '35px !important',
-                      lg: '40px !important',
-                    },
-                  }}
-                  title={restaurantInfo.name}
-                >
-                  {restaurantInfo.name}
-                </Typography>
-                </Grid>
-              </Grid> 
+                  {window?.location?.href
+                    ?.toLocaleLowerCase()
+                    ?.indexOf('/checkout') !== -1 &&
+                    EstimatedTime() && (
+                      <>
+                        <Typography
+                          className={classes.heading}
+                          variant="h2"
+                          sx={{
+                            display: {
+                              xs: 'none',
+                              sm: 'flex',
+                              md: 'flex',
+                              lg: 'flex',
+                            },
+                          }}
+                          textTransform="uppercase"
+                          title="Pick Up From"
+                        >
+                          Estimated Delivery Time: {EstimatedTime()}
+                        </Typography>
+                      </>
                     )}
+                </Grid>
+              ) : (
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  sx={{
+                    paddingRight: { xs: '0px', sm: '15px' },
+                    paddingBottom: { xs: '0px', sm: '0px' },
+                  }}
+                >
+                  <Grid
+                    onClick={() => {
+                      navigate('/location');
+                    }}
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'baseline',
+                      justifyContent: 'center',
+                      border: '1px solid #fff',
+                      borderRadius: '20px',
+                    }}
+                  >
+                    <Typography
+                      className={classes.heading}
+                      variant="h2"
+                      sx={{ margin: '5px 0px 5px 0px', padding: '5px' }}
+                      textTransform="uppercase"
+                      title="Pick Up From"
+                    >
+                      {orderSelectedType()}
+                    </Typography>
+
+                    <Typography
+                      variant="h2"
+                      color="#fff"
+                      lineHeight={1.3}
+                      sx={{
+                        marginLeft: '10px',
+                        maxWidth: { xs: '155px' },
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        padding: '0px 15px',
+                        fontFamily: {
+                          xs: "'Librefranklin-Regular' !important",
+                        },
+                        fontSize: {
+                          xs: '13px !important',
+                          sm: '35px !important',
+                          lg: '40px !important',
+                        },
+                      }}
+                      title={restaurantInfo.name}
+                    >
+                      {restaurantInfo.name}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              )}
               {/* {isMobile && (
                 <Grid>
                   &nbsp;
@@ -437,7 +459,7 @@ const StoreInfoBar = () => {
                       style={{
                         cursor: 'pointer',
                         textDecorationLine: 'underline',
-                        
+
                       }}
                       role={'button'}
                       title="Change Location"
@@ -557,41 +579,41 @@ const StoreInfoBar = () => {
                     ?.toLocaleLowerCase()
                     ?.indexOf('/checkout') !== -1 && (
                       <> */}
-                        <Typography
-                          color="#fff"
-                          fontSize={11}
-                          className={classes.heading1}
-                          variant="h2"
-                          sx={{
-                            marginBottom: '5px',
-                            display: {
-                              xs: 'none',
-                              sm: 'block',
-                              md: 'block',
-                              lg: 'block',
-                            },
-                          }}
-                        >
-                          <p
-                            style={{
-                              cursor: 'pointer',
-                              textDecorationLine: 'underline',
-                              fontSize: '13px',
-                            }}
-                            role={'button'}
-                            title="Change Order Type"
-                            tabIndex={0}
-                            onKeyPress={(e: any) => {
-                              if (e.key === 'Enter') {
-                                setOpenOrder(true);
-                              }
-                            }}
-                            onClick={() => setOpenOrder(true)}
-                          >
-                            Change Order Type
-                          </p>
-                        </Typography>
-                      {/* </>
+                    <Typography
+                      color="#fff"
+                      fontSize={11}
+                      className={classes.heading1}
+                      variant="h2"
+                      sx={{
+                        marginBottom: '5px',
+                        display: {
+                          xs: 'none',
+                          sm: 'block',
+                          md: 'block',
+                          lg: 'block',
+                        },
+                      }}
+                    >
+                      <p
+                        style={{
+                          cursor: 'pointer',
+                          textDecorationLine: 'underline',
+                          fontSize: '13px',
+                        }}
+                        role={'button'}
+                        title="Change Order Type"
+                        tabIndex={0}
+                        onKeyPress={(e: any) => {
+                          if (e.key === 'Enter') {
+                            setOpenOrder(true);
+                          }
+                        }}
+                        onClick={() => setOpenOrder(true)}
+                      >
+                        Change Order Type
+                      </p>
+                    </Typography>
+                    {/* </>
                     )} */}
                     <Typography
                       color="#fff"
@@ -650,8 +672,12 @@ const StoreInfoBar = () => {
                           }}
                           className={'add-favourite'}
                           role={'button'}
-                          title={checkFavorite() ? 'Favourite' : 'Add to Favourite'}
-                          aria-label={checkFavorite() ? 'Favourite' : 'Add to Favourite'}
+                          title={
+                            checkFavorite() ? 'Favourite' : 'Add to Favourite'
+                          }
+                          aria-label={
+                            checkFavorite() ? 'Favourite' : 'Add to Favourite'
+                          }
                           tabIndex={0}
                           onKeyPress={(e: any) => {
                             if (e.key === 'Enter') {
@@ -741,7 +767,8 @@ const StoreInfoBar = () => {
                               <ListItem
                                 sx={{
                                   padding: '0 0 0 0',
-                                  fontFamily:"'Librefranklin-Regular' !important",
+                                  fontFamily:
+                                    "'Librefranklin-Regular' !important",
                                 }}
                                 title={
                                   (item.weekday &&
@@ -761,7 +788,8 @@ const StoreInfoBar = () => {
                                 fontSize: '12px',
                                 fontWeight: '500',
                                 color: 'background.paper',
-                                fontFamily:"'Librefranklin-Regular' !important",
+                                fontFamily:
+                                  "'Librefranklin-Regular' !important",
                               }}
                               role="presentation"
                             >
@@ -819,7 +847,8 @@ const StoreInfoBar = () => {
                                   <ListItem
                                     sx={{
                                       padding: '0 0 0 0',
-                                      fontFamily:"'Librefranklin-Regular' !important",
+                                      fontFamily:
+                                        "'Librefranklin-Regular' !important",
                                     }}
                                     title={
                                       (item.weekday &&
@@ -840,7 +869,8 @@ const StoreInfoBar = () => {
                                     fontSize: '12px',
                                     fontWeight: '500',
                                     color: 'background.paper',
-                                    fontFamily:"'Librefranklin-Regular' !important",
+                                    fontFamily:
+                                      "'Librefranklin-Regular' !important",
                                   }}
                                   role="presentation"
                                 >
@@ -974,7 +1004,8 @@ const StoreInfoBar = () => {
                                       <ListItem
                                         sx={{
                                           padding: '0 0 0 0',
-                                          fontFamily:"'Librefranklin-Regular' !important",
+                                          fontFamily:
+                                            "'Librefranklin-Regular' !important",
                                         }}
                                         title={
                                           (item.weekday &&
@@ -995,7 +1026,8 @@ const StoreInfoBar = () => {
                                         fontSize: '12px',
                                         fontWeight: '500',
                                         color: 'background.paper',
-                                        fontFamily:"'Librefranklin-Regular' !important",
+                                        fontFamily:
+                                          "'Librefranklin-Regular' !important",
                                       }}
                                       role="presentation"
                                     >
@@ -1044,7 +1076,8 @@ const StoreInfoBar = () => {
                             component="div"
                             textTransform="uppercase"
                             fontSize={11}
-                            fontFamily={"'Librefranklin-Regular' !important"}                            paddingTop="8px"
+                            fontFamily={"'Librefranklin-Regular' !important"}
+                            paddingTop="8px"
                             title={`${restaurantInfo.streetaddress}, ${restaurantInfo.city}, ${restaurantInfo.state}`}
                             sx={{
                               display: {
