@@ -681,7 +681,6 @@ const Checkout = () => {
         removePreviousAddresses(newFilteredDuplicateAddress);
       }
     }
-    debugger;
     console.log(ccsfObj, 'ccsfObj registerError');
     if (
       basket?.deliverymode === DeliveryModeEnum.dispatch &&

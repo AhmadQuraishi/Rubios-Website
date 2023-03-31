@@ -113,34 +113,31 @@ const DeliveryForm = ({
   // },[basket])
 
   React.useEffect(() => {
-    // debugger;
-    if (
-      specialInstructionRunOnce &&
-      basket?.deliveryaddress?.specialinstructions
-    ) {
+    if (specialInstructionRunOnce && basket?.deliveryaddress?.specialinstructions) {
       let specialInstruction = basket?.deliveryaddress?.specialinstructions;
       let contactLess = false;
+  
       if (specialInstruction !== '') {
-        const includeContactLess = specialInstruction.includes(
-          'I want contactless delivery,',
-          '',
-        );
+        const includeContactLess = specialInstruction.includes('I want contactless delivery');
         if (includeContactLess) {
-          specialInstruction = specialInstruction.replace(
-            'I want contactless delivery,',
-            '',
-          );
+          specialInstruction = specialInstruction.replace('I want contactless delivery,', '');
           contactLess = true;
         }
-        // }
       }
+  
+      if (specialInstruction.includes('I want contactless delivery') && contactLess) {
+        contactLess = true;
+        specialInstruction = '';
+      }
+
       setSpecialInstruction(specialInstruction);
       setIsContactless(contactLess);
       setSpecialInstructionRunOnce(false);
-      // debugger;
+      console.log(basket?.deliveryaddress?.specialinstructions,'specialInstruction');
     }
+    
+    // debugger;
   }, [basket]);
-  
   return (
     <>
       <OrderTypeDialog openModal={open} setOpenModal={setOpen} hideIt={true} />
