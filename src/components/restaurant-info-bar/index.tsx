@@ -23,20 +23,23 @@ import { getSingleLocation } from '../../redux/actions/location';
 import './index.css';
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
+import crossIcon from '../../assets/imgs/cross_square_icon.png';
 import { OrderTypeDialog } from '../order-type-dialog';
 import { isLoginUser } from '../../helpers/auth';
 const useStyle = makeStyles({
   heading: {
     fontSize: '13px !important',
     color: '#fff',
-    fontFamily: "'GritSans-Bold' !important"
+    fontFamily: "'GritSans-Bold' !important",
   },
   heading1: {
     fontSize: '13px !important',
     color: '#fff',
-    fontFamily:"'Librefranklin-Regular' !important",
+    fontFamily: "'Librefranklin-Regular' !important",
   },
 });
+
+const { REACT_APP_PROMO_MESSAGE } = process.env;
 
 const StoreInfoBar = () => {
   const theme = useTheme();
@@ -48,9 +51,9 @@ const StoreInfoBar = () => {
   const [showMore, setShowMore] = useState(false);
   const [open, setOpen] = useState(false);
   const [openOrder, setOpenOrder] = useState(false);
-  const [showPromo, setShowPromo] = useState(true);
+  const [showPromo, setShowPromo] = useState(false);
   const [locationId, setLocationId] = useState(null);
-  const { promotionMsg, restaurant, orderType } = useSelector(
+  const { restaurant, orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
   const { calendar } = useSelector(
@@ -170,29 +173,87 @@ const StoreInfoBar = () => {
   const getEstTimeFormat = (date: string, data2: string) => {
     return moment(date, 'YYYYMMDD HH:mm').format('dddd h:mm A');
     // moment(startTime, 'HH:mm:ss').add(durationInMinutes, 'minutes').format('HH:mm');
-
   };
+
+  const hidePromotionalMsg: any = sessionStorage.getItem('hidePromotionalMsg');
+
+  useEffect(() => {
+    if (hidePromotionalMsg && hidePromotionalMsg === 'true') {
+      setShowPromo(false);
+    } else {
+      setShowPromo(true);
+    }
+  }, [hidePromotionalMsg]);
+
+  const handlePromotionClose = () => {
+    sessionStorage.setItem('hidePromotionalMsg', 'true');
+    setShowPromo(false);
+  };
+
   const EstimatedTime = () => {
     const type = basketObj?.basket?.deliverymode || orderType || '';
     const time = basketObj?.basket;
     if (type === 'dispatch') {
       if (time?.timemode === 'asap') {
-        return getEstTimeFormat(time.earliestreadytime,time.leadtimeestimateminutes);
-      }
-      else if (time?.timewanted)
-      {
-        return getEstTimeFormat(time.timewanted,time.leadtimeestimateminutes);
+        return getEstTimeFormat(
+          time.earliestreadytime,
+          time.leadtimeestimateminutes,
+        );
+      } else if (time?.timewanted) {
+        return getEstTimeFormat(time.timewanted, time.leadtimeestimateminutes);
       }
     }
-  }
+  };
   return (
     <>
+      {REACT_APP_PROMO_MESSAGE !== '' && showPromo && (
+        <Grid
+          sx={{
+            backgroundColor: '#f8cd58',
+            display: 'flex',
+            flexDirection: 'row',
+            padding: { xs: '20px 20px', sm: '35px 40px', lg: '20px 100px' },
+          }}
+        >
+          <Grid
+            xs={11}
+            sm={11.8}
+            container
+            spacing={0}
+            sx={{
+              fontFamily: "'Librefranklin-Bold' !important",
+              color: { xs: '#062C43', sm: '#224c65' },
+              alignItems: 'center',
+            }}
+          >
+            {REACT_APP_PROMO_MESSAGE}
+          </Grid>
+          <Grid
+            sx={{
+              cursor: 'pointer',
+              marginLeft: { xs: '10px' },
+              display: 'flex',
+            }}
+            xs={1}
+            sm={0.2}
+          >
+            <img
+              src={crossIcon}
+              title="Close Cart"
+              height="20px"
+              onClick={handlePromotionClose}
+              width="20px"
+              alt="Close Cart"
+            />
+          </Grid>
+        </Grid>
+      )}
       {restaurantInfo && (
         <Grid
           container
           spacing={0}
           sx={{
-            backgroundColor: "#062C43",
+            backgroundColor: '#062C43',
             padding: { xs: '15px 20px', sm: '35px 40px', lg: '20px 100px' },
           }}
         >
@@ -211,7 +272,7 @@ const StoreInfoBar = () => {
           />
           <Grid item xs={12}>
             <Grid container spacing={0} margin="auto">
-              { !isMobile ? (
+              {!isMobile ? (
                 <Grid
                   item
                   xs={12}
@@ -280,7 +341,7 @@ const StoreInfoBar = () => {
                     sx={{
                       fontFamily: {
                         xs: "'Librefranklin-Regular' !important",
-                        sm:"'Sunborn-Sansone' !important",
+                        sm: "'Sunborn-Sansone' !important",
                       },
                       fontSize: {
                         xs: '13px !important',
@@ -293,8 +354,8 @@ const StoreInfoBar = () => {
                     {restaurantInfo.name}
                   </Typography>
                   {window?.location?.href
-                      ?.toLocaleLowerCase()
-                      ?.indexOf('/checkout') !== -1 &&
+                    ?.toLocaleLowerCase()
+                    ?.indexOf('/checkout') !== -1 &&
                     EstimatedTime() && (
                       <>
                         <Typography
@@ -326,11 +387,23 @@ const StoreInfoBar = () => {
                     paddingBottom: { xs: '0px', sm: '0px' },
                   }}
                 >
-                  <Grid onClick={() => {navigate('/location')}} sx={{ display: 'flex', flexDirection: 'row',alignItems: 'baseline',justifyContent: 'center', border: "1px solid #fff", borderRadius: "20px", }}>
+                  <Grid
+                    onClick={() => {
+                      navigate('/location');
+                    }}
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'baseline',
+                      justifyContent: 'center',
+                      border: '1px solid #fff',
+                      borderRadius: '20px',
+                    }}
+                  >
                     <Typography
                       className={classes.heading}
                       variant="h2"
-                      sx={{margin: "5px 0px 5px 0px", padding: '5px',}}
+                      sx={{ margin: '5px 0px 5px 0px', padding: '5px' }}
                       textTransform="uppercase"
                       title="Pick Up From"
                     >
@@ -342,7 +415,7 @@ const StoreInfoBar = () => {
                       color="#fff"
                       lineHeight={1.3}
                       sx={{
-                        marginLeft : '10px',
+                        marginLeft: '10px',
                         maxWidth: { xs: '155px' },
                         whiteSpace: 'nowrap',
                         overflow: 'hidden',
@@ -599,8 +672,12 @@ const StoreInfoBar = () => {
                           }}
                           className={'add-favourite'}
                           role={'button'}
-                          title={checkFavorite() ? 'Favourite' : 'Add to Favourite'}
-                          aria-label={checkFavorite() ? 'Favourite' : 'Add to Favourite'}
+                          title={
+                            checkFavorite() ? 'Favourite' : 'Add to Favourite'
+                          }
+                          aria-label={
+                            checkFavorite() ? 'Favourite' : 'Add to Favourite'
+                          }
                           tabIndex={0}
                           onKeyPress={(e: any) => {
                             if (e.key === 'Enter') {
@@ -690,7 +767,8 @@ const StoreInfoBar = () => {
                               <ListItem
                                 sx={{
                                   padding: '0 0 0 0',
-                                  fontFamily:"'Librefranklin-Regular' !important",
+                                  fontFamily:
+                                    "'Librefranklin-Regular' !important",
                                 }}
                                 title={
                                   (item.weekday &&
@@ -710,7 +788,8 @@ const StoreInfoBar = () => {
                                 fontSize: '12px',
                                 fontWeight: '500',
                                 color: 'background.paper',
-                                fontFamily:"'Librefranklin-Regular' !important",
+                                fontFamily:
+                                  "'Librefranklin-Regular' !important",
                               }}
                               role="presentation"
                             >
@@ -722,15 +801,15 @@ const StoreInfoBar = () => {
                                   item.isOpenAllDay
                                     ? 'Open 24 hours'
                                     : getTimeFormat(item.start) +
-                                    ' - ' +
-                                    getTimeFormat(item.end)
+                                      ' - ' +
+                                      getTimeFormat(item.end)
                                 }
                               >
                                 {item.isOpenAllDay
                                   ? 'Open 24 hours'
                                   : getTimeFormat(item.start) +
-                                  ' - ' +
-                                  getTimeFormat(item.end)}
+                                    ' - ' +
+                                    getTimeFormat(item.end)}
                               </ListItem>
                             </List>
                           </Grid>
@@ -768,7 +847,8 @@ const StoreInfoBar = () => {
                                   <ListItem
                                     sx={{
                                       padding: '0 0 0 0',
-                                      fontFamily:"'Librefranklin-Regular' !important",
+                                      fontFamily:
+                                        "'Librefranklin-Regular' !important",
                                     }}
                                     title={
                                       (item.weekday &&
@@ -777,7 +857,7 @@ const StoreInfoBar = () => {
                                     }
                                   >
                                     {(item.weekday &&
-                                        item.weekday.toUpperCase()) ||
+                                      item.weekday.toUpperCase()) ||
                                       ''}
                                   </ListItem>
                                 </List>
@@ -789,7 +869,8 @@ const StoreInfoBar = () => {
                                     fontSize: '12px',
                                     fontWeight: '500',
                                     color: 'background.paper',
-                                    fontFamily:"'Librefranklin-Regular' !important",
+                                    fontFamily:
+                                      "'Librefranklin-Regular' !important",
                                   }}
                                   role="presentation"
                                 >
@@ -801,15 +882,15 @@ const StoreInfoBar = () => {
                                       item.isOpenAllDay
                                         ? 'Open 24 hours'
                                         : getTimeFormat(item.start) +
-                                        ' - ' +
-                                        getTimeFormat(item.end)
+                                          ' - ' +
+                                          getTimeFormat(item.end)
                                     }
                                   >
                                     {item.isOpenAllDay
                                       ? 'Open 24 hours'
                                       : getTimeFormat(item.start) +
-                                      ' - ' +
-                                      getTimeFormat(item.end)}
+                                        ' - ' +
+                                        getTimeFormat(item.end)}
                                   </ListItem>
                                 </List>
                               </Grid>
@@ -923,7 +1004,8 @@ const StoreInfoBar = () => {
                                       <ListItem
                                         sx={{
                                           padding: '0 0 0 0',
-                                          fontFamily:"'Librefranklin-Regular' !important",
+                                          fontFamily:
+                                            "'Librefranklin-Regular' !important",
                                         }}
                                         title={
                                           (item.weekday &&
@@ -932,7 +1014,7 @@ const StoreInfoBar = () => {
                                         }
                                       >
                                         {(item.weekday &&
-                                            item.weekday.toUpperCase()) ||
+                                          item.weekday.toUpperCase()) ||
                                           ''}
                                       </ListItem>
                                     </List>
@@ -944,7 +1026,8 @@ const StoreInfoBar = () => {
                                         fontSize: '12px',
                                         fontWeight: '500',
                                         color: 'background.paper',
-                                        fontFamily:"'Librefranklin-Regular' !important",
+                                        fontFamily:
+                                          "'Librefranklin-Regular' !important",
                                       }}
                                       role="presentation"
                                     >
@@ -956,15 +1039,15 @@ const StoreInfoBar = () => {
                                           item.isOpenAllDay
                                             ? 'Open 24 hours'
                                             : getTimeFormat(item.start) +
-                                            ' - ' +
-                                            getTimeFormat(item.end)
+                                              ' - ' +
+                                              getTimeFormat(item.end)
                                         }
                                       >
                                         {item.isOpenAllDay
                                           ? 'Open 24 hours'
                                           : getTimeFormat(item.start) +
-                                          ' - ' +
-                                          getTimeFormat(item.end)}
+                                            ' - ' +
+                                            getTimeFormat(item.end)}
                                       </ListItem>
                                     </List>
                                   </Grid>
@@ -993,7 +1076,8 @@ const StoreInfoBar = () => {
                             component="div"
                             textTransform="uppercase"
                             fontSize={11}
-                            fontFamily={"'Librefranklin-Regular' !important"}                            paddingTop="8px"
+                            fontFamily={"'Librefranklin-Regular' !important"}
+                            paddingTop="8px"
                             title={`${restaurantInfo.streetaddress}, ${restaurantInfo.city}, ${restaurantInfo.state}`}
                             sx={{
                               display: {
