@@ -430,10 +430,8 @@ const Location = () => {
     false,
   );
   useEffect(() => {
-    if (fitMapView) {
-      fitMapView();
-    }
-  }, [fitMapView()]);
+    fitMapView();
+  }, [fitMapView]);
   return (
     <Page
       title={'Location'}
@@ -488,12 +486,9 @@ const Location = () => {
             actionTypes={actionTypes}
             setAction={setAction}
             orderType={orderType}
-            setZoom={setZoom}
-            setOrderType={setOrderType}
             changeOrderType={changeOrderType}
             setLatLng={setLatLng}
             setActionPerform={setActionPerform}
-            zoom={zoom}
             deliveryAddressString={deliveryAddressString}
             setDeliveryAddressString={setDeliveryAddressString}
             allRestaurants={restaurants?.restaurants || []}

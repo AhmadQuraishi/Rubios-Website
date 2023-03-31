@@ -38,7 +38,8 @@ const AddGiftCard = forwardRef((props, _ref) => {
   const [billingSchemes, setBillingSchemes] = React.useState<any>([]);
   const [pinCheck, setPinCheck] = React.useState<any>(false);
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
-  const [openAuthenticationModal, setOpenAuthenticationModal] = React.useState<any>(false);
+  const [openAuthenticationModal, setOpenAuthenticationModal] =
+    React.useState<any>(false);
   const [openAddGiftCard, setOpenAddGiftCard] = React.useState<boolean>(false);
   const { sessionLoginTime } = useSelector((state: any) => state.authReducer);
   React.useEffect(() => {
@@ -92,7 +93,6 @@ const AddGiftCard = forwardRef((props, _ref) => {
     setOpenAddGiftCard(!openAddGiftCard);
   };
 
-
   const handleGiftCardSubmit = async (values: any) => {
     setButtonDisabled(true);
     const body: any = {
@@ -134,6 +134,18 @@ const AddGiftCard = forwardRef((props, _ref) => {
                 );
 
                 Array.prototype.push.apply(billingSchemesNewArray, cardObj);
+
+                billingSchemesNewArray = billingSchemesNewArray.map(
+                  (element: any) => {
+                    if (element.billingmethod === 'storedvalue') {
+                      return {
+                        ...element,
+                        alwaysVisible: false,
+                      };
+                    }
+                    return element;
+                  },
+                );
 
                 billingSchemesNewArray = updatePaymentCardsAmount(
                   billingSchemesNewArray,
@@ -305,7 +317,7 @@ const AddGiftCard = forwardRef((props, _ref) => {
                     type="submit"
                     className="link default"
                     disabled={buttonDisabled}
-                    style={{fontFamily: "'Sunborn-Sansone'!important",}}
+                    style={{ fontFamily: "'Sunborn-Sansone'!important" }}
                     // autoFocus
                   >
                     Add Gift Card
@@ -326,7 +338,10 @@ const AddGiftCard = forwardRef((props, _ref) => {
               aria-label="ADD GIFT CARD"
               className="label"
               id={'add-gift-card'}
-              sx={{fontFamily: "'Sunborn-Sansone'!important",fontSize: "11pt !important",}}
+              sx={{
+                fontFamily: "'Sunborn-Sansone'!important",
+                fontSize: '11pt !important',
+              }}
             >
               ADD Gift CARD
             </Button>

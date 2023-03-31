@@ -45,7 +45,7 @@ export function removePreviousAddresses(addressIds: any, basket: any) {
       }
     }
   }
-  debugger;
+  // debugger;
 }
 export function generateSubmitBasketPayload(
   formData: any,
@@ -111,6 +111,7 @@ export function generateSubmitBasketPayload(
         delete obj.selected;
         delete obj.localId;
         delete obj.balance;
+        delete obj.alwaysVisible;
         billingaccounts.push(obj);
       }
     });
@@ -384,6 +385,7 @@ export function getCreditCardObj(cardDetails: any, billingSchemes: any) {
       // cardlastfour: cardDetails.card.last4,
       zip: cardDetails.postal_code,
       saveonfile: true,
+      alwaysVisible: false,
     },
   ];
 
@@ -419,6 +421,7 @@ export function getGiftCardObj(
           value: body.cardnumber,
         },
       ],
+      alwaysVisible: false,
     },
   ];
 
