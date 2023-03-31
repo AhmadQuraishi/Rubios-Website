@@ -332,8 +332,6 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                       alignItems="center"
                       xs={1.5}
                       sm={1}
-                      md={1.5}
-                      lg={1.5}
                     >
                       {getCardImage(account)}
                     </Grid>
@@ -354,9 +352,9 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                       alignItems="center"
                       justifyContent="flex-start"
                       xs={5.5}
-                      sm={5}
-                      md={5}
-                      lg={5}
+                      sm={5.5}
+                      md={5.5}
+                      lg={5.5}
                     >
                       {account.billingmethod === 'creditcard' && (
                         <Typography
@@ -405,7 +403,7 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                       }}
                       alignItems="center"
                       item
-                      xs={3.5}
+                      xs={2.5}
                       sm={3}
                       md={4}
                       lg={3}
@@ -432,7 +430,7 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                       }}
                       alignItems="center"
                       item
-                      xs={1.5}
+                      xs={2.5}
                       sm={2}
                     >
                       {billingSchemes &&
@@ -445,12 +443,12 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                             {showDropdown === account.localId ? (
                               <KeyboardArrowUpIcon
                                 onClick={() => setShowDropdown(null)}
-                                sx={{ color: '#3273b8', fontSize: '2.3em' }}
+                                sx={{ cursor:'pointer', color: '#3273b8', fontSize: '2.3em' }}
                               />
                             ) : (
                               <KeyboardArrowDownIcon
                                 onClick={() => setShowDropdown(account.localId)}
-                                sx={{ color: '#3273b8', fontSize: '2.3em' }}
+                                sx={{ cursor:'pointer',color: '#3273b8', fontSize: '2.3em' }}
                               />
                             )}
                           </>
@@ -498,7 +496,8 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                             xs={12}
                             sx={{
                               textAlign: 'center',
-                              margin: '-11px 5px 10px 65px',
+                              cursor : 'pointer', 
+                              margin: {sm:'-11px 5px 10px 65px',xs: '-11px 0px 10px 38px'},
                               display: 'flex',
                               flexDirection: 'column',
                               boxShadow:
@@ -559,8 +558,6 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                                 alignItems="center"
                                 xs={1.5}
                                 sm={1}
-                                md={1.5}
-                                lg={1.5}
                               >
                                 {getCardImage(acc)}
                               </Grid>
@@ -581,9 +578,9 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                                 alignItems="center"
                                 justifyContent="flex-start"
                                 xs={5.5}
-                                sm={5}
-                                md={5}
-                                lg={5}
+                                sm={5.5}
+                                md={5.5}
+                                lg={5.5}
                               >
                                 {acc.billingmethod === 'creditcard' && (
                                   <Typography
@@ -616,7 +613,7 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                                         ? `Gift Card x${acc.cardlastfour}`
                                         : ''}
                                     </Typography>
-                                    {/* <Typography
+                                    <Typography
                             style={{
                               color: '#0069aa',
                               fontWeight: '600',
@@ -624,8 +621,8 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                             }}
                             variant="h4"
                           >
-                            BALANCE ${account.balance ? account.balance : 0}
-                          </Typography> */}
+                            Remaining Balance ${account.balance ? account.balance : 0}
+                          </Typography>
                                   </>
                                 )}
                               </Grid>
