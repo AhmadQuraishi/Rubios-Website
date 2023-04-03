@@ -70,12 +70,12 @@ import { getProviderRequestSuccess } from '../../actions/provider';
 import { navigateAppAction } from '../../actions/navigate-app';
 import { basketActionsTypes } from '../../types/basket';
 import { Navigate, useNavigate } from 'react-router-dom';
-import {markOrderFav} from "../../../helpers/setRecentOrders";
+import { markOrderFav } from '../../../helpers/setRecentOrders';
+import { resetBasketPaymentMethods } from '../../actions/basket';
 
 const breakpoints = {
-  XS: 540
+  XS: 540,
 };
-
 
 //profile
 function* userProfileHandler(): any {
@@ -113,7 +113,7 @@ function* deleleteFavOrderHandler(action: any): any {
     const favOrders = yield call(requestUserFavoriteOrders);
     yield put(getUserFavoritetOrdersSuccess(favOrders));
     yield put(deleteFavOrderSuccess());
-    markOrderFav('', action.favid, false)
+    markOrderFav('', action.favid, false);
   } catch (error) {
     yield put(deleteFavOrderFailure(error));
   }
@@ -155,7 +155,7 @@ function* updateUserHandler(action: any): any {
     if (action.profileCheck) {
       const response = yield call(requestUpdateProfile, action.payload);
       yield put(updateProfileSuccess(response));
-        displayToast('SUCCESS', 'profile updated successfully');
+      displayToast('SUCCESS', 'profile updated successfully');
     } else {
       const response = yield call(requestUpdateUser, action.payload);
       yield put(updateUserSuccess(response));
@@ -171,7 +171,7 @@ function* changePasswordHandler(action: any): any {
   try {
     const response = yield call(requestChangePassword, action.payload);
     yield put(changePasswordSuccess(response));
-      displayToast('SUCCESS', 'password updated successfully');
+    displayToast('SUCCESS', 'password updated successfully');
   } catch (error) {
     yield put(changePasswordFailure(error));
     displayToast('ERROR', 'Password need to be new and unused');
@@ -268,6 +268,9 @@ function* userLoginHandler(action: any): any {
   try {
     const response = yield call(requestUserLogin, action.data);
     yield put(userLoginSuccess(response));
+    if (action?.loginType === 'LOGIN_MAIN') {
+      yield put(resetBasketPaymentMethods());
+    }
     yield put({
       type: authActionsTypes.GET_AUTHTOKEN_REQUEST,
       successMsg: 'Login Success',

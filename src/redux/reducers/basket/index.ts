@@ -243,23 +243,23 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
           billingSchemes: action.payload,
         },
       };
-    // case authActionsTypes.GET_AUTHTOKEN_SUCCESS:
-    //   return {
-    //     ...state,
-    //     payment: {
-    //       allowedCards: {
-    //         loading: false,
-    //         data: null,
-    //         error: null,
-    //       },
-    //       defaultCards: {
-    //         loading: false,
-    //         data: null,
-    //         error: null,
-    //       },
-    //       billingSchemes: [],
-    //     },
-    //   };
+    case basketActionsTypes.RESET_BASKET_PAYMENT_METHODS:
+      return {
+        ...state,
+        payment: {
+          allowedCards: {
+            loading: false,
+            data: null,
+            error: null,
+          },
+          defaultCards: {
+            loading: false,
+            data: null,
+            error: null,
+          },
+          billingSchemes: [],
+        },
+      };
     case userTypes.USER_LOGOUT:
       return {
         ...INITIAL_STATE,
