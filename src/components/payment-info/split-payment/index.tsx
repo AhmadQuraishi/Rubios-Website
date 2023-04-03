@@ -42,7 +42,7 @@ const SplitPayment = forwardRef((props: any, _ref) => {
   const [openPopup, setOpenPopup] = React.useState<boolean>(false);
   const [removeData, setRemoveData] = React.useState<any>(null);
   const [showDropdown, setShowDropdown] = React.useState(null);
-  const [showGrid, setShowGrid] = React.useState(false);
+  // const [showGrid, setShowGrid] = React.useState(false);
   const gridRef = useRef<HTMLDivElement>(null);
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   React.useEffect(() => {
@@ -51,31 +51,29 @@ const SplitPayment = forwardRef((props: any, _ref) => {
     }
   }, [basketObj.basket]);
 
-  React.useEffect(() => {
-    const handleOutsideClick = (event : any) => {
-      if (gridRef.current && !gridRef.current.contains(event.target)) {
-        setShowGrid(false);
-        setShowDropdown(null);
-      }
-    };
+  // React.useEffect(() => {
+  //   const handleOutsideClick = (event: any) => {
+  //     if (gridRef.current && !gridRef.current.contains(event.target)) {
+  //       setShowGrid(false);
+  //       setShowDropdown(null);
+  //     }
+  //   };
 
-    document.addEventListener('mousedown', handleOutsideClick);
+  //   document.addEventListener('mousedown', handleOutsideClick);
 
-    return () => {
-      document.removeEventListener('mousedown', handleOutsideClick);
-    };
-  }, [showGrid]);
-  
+  //   return () => {
+  //     document.removeEventListener('mousedown', handleOutsideClick);
+  //   };
+  // }, [showGrid]);
 
   React.useEffect(() => {
     if (basketObj.payment && basketObj.payment.billingSchemes) {
       setBillingSchemes(basketObj.payment.billingSchemes);
     }
   }, [basketObj.payment]);
-  React.useEffect(() => {
-      console.log('showGrid',showGrid);
-  }, [showGrid]);
-
+  // React.useEffect(() => {
+  //   console.log('showGrid', showGrid);
+  // }, [showGrid]);
 
   const handleCheckBox = (e: any, localId: any, billingmethod: string) => {
     const billingSchemeStats = getBillingSchemesStats(billingSchemes);
@@ -159,11 +157,24 @@ const SplitPayment = forwardRef((props: any, _ref) => {
     if (accountIndex !== -1) {
       let updatedBillingSchemes: any = billingSchemes;
       if (e.target.checked) {
-        updatedBillingSchemes[accountIndex].selected = e.target.checked;
+        updatedBillingSchemes[accountIndex].selected = true;
+        updatedBillingSchemes[accountIndex].alwaysVisible = false;
         updatedBillingSchemes = updatePaymentCardsAmount(
           updatedBillingSchemes,
           basket,
         );
+        updatedBillingSchemes = updatedBillingSchemes.map((element: any) => {
+          let obj = {
+            ...element,
+          };
+          if (
+            updatedBillingSchemes[accountIndex].billingmethod ===
+            element.billingmethod
+          ) {
+            obj.alwaysVisible = false;
+          }
+          return obj;
+        });
         dispatch(updateBasketBillingSchemes(updatedBillingSchemes));
       } else {
         setOpenPopup(true);
@@ -195,11 +206,14 @@ const SplitPayment = forwardRef((props: any, _ref) => {
       //   }
       // }
       let updatedBillingSchemes = billingSchemes.map((element: any) => {
+        let obj = {
+          ...element,
+        };
+        if (element.billingmethod === removeData.billingmethod) {
+          obj.alwaysVisible = false;
+        }
         if (element.localId === removeData.localId) {
-          const obj = {
-            ...element,
-            selected: false,
-          };
+          obj.selected = false;
           if (
             (element.billingmethod === 'creditcard' &&
               billingSchemeStats.selectedCreditCard === 1) ||
@@ -210,7 +224,7 @@ const SplitPayment = forwardRef((props: any, _ref) => {
           }
           return obj;
         } else {
-          return element;
+          return obj;
         }
       });
 
@@ -302,8 +316,7 @@ const SplitPayment = forwardRef((props: any, _ref) => {
           .filter((account: any) => account.selected || account.alwaysVisible)
           .map((account: any, index: any) => {
             return (
-              <Grid 
-              ref={gridRef} key={account.localId} container spacing={1}>
+              <Grid ref={gridRef} key={account.localId} container spacing={1}>
                 <Grid
                   item
                   xs={12}
@@ -372,13 +385,12 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                             ? 'flex-start'
                             : 'center',
                         paddingLeft: 5,
-                        justifyContent: 
-                        account.billingmethod === 'storedvalue'
-                        ?"center"
-                        : "flex-start"
+                        justifyContent:
+                          account.billingmethod === 'storedvalue'
+                            ? 'center'
+                            : 'flex-start',
                       }}
                       alignItems="center"
-
                       xs={5.5}
                       sm={5.5}
                       md={5.5}
@@ -441,7 +453,10 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                       <Typography
                         sx={{
                           color: '#224c65',
-                          fontSize: {sm:'16px !important',xs: '12px !important'},
+                          fontSize: {
+                            sm: '16px !important',
+                            xs: '12px !important',
+                          },
                           fontFamily: "'Librefranklin-Regular' !important",
                         }}
                       >
@@ -468,23 +483,31 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                         billingSchemes?.filter(
                           (acc: any) =>
                             acc.billingmethod === account.billingmethod &&
-                            !acc.selected,
+                            !acc.selected &&
+                            !acc.alwaysVisible,
                         ).length > 0 && (
                           <>
-                            { showGrid && showDropdown === account.localId ? (
+                            {showDropdown === account.localId ? (
                               <KeyboardArrowUpIcon
-                              onClick={() => {
-                                setShowDropdown(null);
-                              }}
-                                sx={{ cursor:'pointer', color: '#3273b8', fontSize: '2.3em' }}
+                                onClick={() => {
+                                  setShowDropdown(null);
+                                }}
+                                sx={{
+                                  cursor: 'pointer',
+                                  color: '#3273b8',
+                                  fontSize: '2.3em',
+                                }}
                               />
                             ) : (
                               <KeyboardArrowDownIcon
-                              onClick={() => {
-                                setShowDropdown(account.localId);
-                                setShowGrid(true);
-                              }}
-                                sx={{ cursor:'pointer',color: '#3273b8', fontSize: '2.3em' }}
+                                onClick={() => {
+                                  setShowDropdown(account.localId);
+                                }}
+                                sx={{
+                                  cursor: 'pointer',
+                                  color: '#3273b8',
+                                  fontSize: '2.3em',
+                                }}
                               />
                             )}
                           </>
@@ -517,13 +540,14 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                     </Grid> */}
                   </Grid>
                 </Grid>
-                {showGrid && showDropdown === account.localId &&
+                {showDropdown === account.localId &&
                   billingSchemes &&
                   billingSchemes
                     ?.filter(
                       (acc: any) =>
                         acc.billingmethod === account.billingmethod &&
-                        !acc.selected,
+                        !acc.selected &&
+                        !acc.alwaysVisible,
                     )
                     .map((acc: any, index: any) => {
                       return (
@@ -532,8 +556,11 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                             xs={12}
                             sx={{
                               textAlign: 'center',
-                              cursor : 'pointer', 
-                              margin: {sm:'-11px 5px 10px 65px',xs: '-11px 0px 10px 38px'},
+                              cursor: 'pointer',
+                              margin: {
+                                sm: '-11px 5px 10px 65px',
+                                xs: '-11px 0px 10px 38px',
+                              },
                               display: 'flex',
                               flexDirection: 'column',
                               boxShadow:
@@ -600,7 +627,10 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                               </Grid>
                               <Grid
                                 item
-                                sx={{paddingLeft: {sm :"5px", xs: "15px"},fontSize: {sm:'16px',xs: '12px'}}}
+                                sx={{
+                                  paddingLeft: { sm: '5px', xs: '15px' },
+                                  fontSize: { sm: '16px', xs: '12px' },
+                                }}
                                 style={{
                                   display: 'flex',
                                   flexDirection:
@@ -621,7 +651,10 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                                     variant="h6"
                                     sx={{
                                       color: '#224c65',
-                                      fontSize: {sm:'16px !important',xs: '12px !important'},
+                                      fontSize: {
+                                        sm: '16px !important',
+                                        xs: '12px !important',
+                                      },
                                       fontFamily:
                                         "'Librefranklin-Regular' !important",
                                     }}
@@ -638,7 +671,10 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                                       sx={{
                                         color: '#224c65',
                                         // marginTop: '16px',/
-                                        fontSize: {sm:'16px !important',xs: '12px !important'},
+                                        fontSize: {
+                                          sm: '16px !important',
+                                          xs: '12px !important',
+                                        },
                                         fontFamily:
                                           "'Librefranklin-Regular' !important",
                                       }}
@@ -652,16 +688,24 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                                         : ''}
                                     </Typography>
                                     <Typography
-                            style={{
-                              color: '#224c65',
-                              fontWeight: '400',
-                              
-                            }}
-                            sx={{paddingRight: {sm:'10px',xs: '30px' },fontFamily: "'Librefranklin-Regular'!important", fontSize: {sm:'16px',xs: '12px'},}}
-                            variant="h4"
-                          >
-                            {!isMobile && 'Remaining'} Balance: ${account.balance ? account.balance : 0}
-                          </Typography>
+                                      style={{
+                                        color: '#224c65',
+                                        fontWeight: '400',
+                                      }}
+                                      sx={{
+                                        paddingRight: {
+                                          sm: '10px',
+                                          xs: '30px',
+                                        },
+                                        fontFamily:
+                                          "'Librefranklin-Regular'!important",
+                                        fontSize: { sm: '16px', xs: '12px' },
+                                      }}
+                                      variant="h4"
+                                    >
+                                      {!isMobile && 'Remaining'} Balance: $
+                                      {account.balance ? account.balance : 0}
+                                    </Typography>
                                   </>
                                 )}
                               </Grid>
@@ -684,30 +728,31 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                   lg={12}
                 >
                   {/*{billingSchemes && billingSchemes.length !== 1 && (*/}
-                  {!(showDropdown === account.localId) && account.billingmethod === 'creditcard' &&
-                    !account.billingaccountid ? (
-                      <Typography
-                        onClick={() => {
+                  {!(showDropdown === account.localId) &&
+                  account.billingmethod === 'creditcard' &&
+                  !account.billingaccountid ? (
+                    <Typography
+                      onClick={() => {
+                        setHideShow(true);
+                      }}
+                      onKeyPress={(e: any) => {
+                        if (e.key === 'Enter') {
                           setHideShow(true);
-                        }}
-                        onKeyPress={(e: any) => {
-                          if (e.key === 'Enter') {
-                            setHideShow(true);
-                          }
-                        }}
-                        aria-label={'Edit Card'}
-                        tabIndex={0}
-                        style={{
-                          cursor: 'pointer',
-                          display: 'inline-block',
-                          paddingRight: 10,
-                        }}
-                        align={'right'}
-                        variant="h6"
-                      >
-                        EDIT
-                      </Typography>
-                    ) : (null)}
+                        }
+                      }}
+                      aria-label={'Edit Card'}
+                      tabIndex={0}
+                      style={{
+                        cursor: 'pointer',
+                        display: 'inline-block',
+                        paddingRight: 10,
+                      }}
+                      align={'right'}
+                      variant="h6"
+                    >
+                      EDIT
+                    </Typography>
+                  ) : null}
 
                   {/* <Typography
                     onClick={() => {
@@ -740,7 +785,7 @@ const SplitPayment = forwardRef((props: any, _ref) => {
             );
           })}
 
-      <Grid container spacing={2} >
+      <Grid container spacing={2}>
         <Grid item xs={12} sm={12} md={12} lg={12}>
           <Typography
             align={'center'}

@@ -379,11 +379,12 @@ export function updateUserContactOptionsFailure(error: any) {
   };
 }
 
-export function userLogin(data: any, basketID: string = '') {
+export function userLogin(data: any, basketID: string = '', loginType: string ) {
   return {
     type: Type.USER_LOGIN_REQUEST,
     data,
     basketID,
+    loginType,
   };
 }
 
