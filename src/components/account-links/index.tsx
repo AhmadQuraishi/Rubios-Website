@@ -35,7 +35,7 @@ const AccountLinks = (props: any) => {
   const { duplicateAddress } = useSelector((state: any) => state.basketReducer);
   const logout = () => {
     dispatch(userLogout());
-    removePreviousAddresses(duplicateAddress, null);
+    // removePreviousAddresses(duplicateAddress, null);
     if (closeDrawer) {
       closeDrawer(false);
     }
