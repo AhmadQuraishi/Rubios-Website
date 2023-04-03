@@ -57,8 +57,6 @@ const NumberFormatCustom = forwardRef<HTMLElement, CustomProps>(
 const PaymentInfo = forwardRef((props: any, _ref) => {
   const navigate = useNavigate();
   const {
-    ccsfObj,
-    basketAccessToken,
     hideShow,
     setHideShow,
     zipCode,
