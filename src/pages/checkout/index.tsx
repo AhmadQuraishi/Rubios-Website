@@ -241,12 +241,7 @@ const Checkout = () => {
   }, [authToken]);
 
   React.useEffect(() => {
-    if (
-      basketObj &&
-      basketObj.payment.billingSchemes &&
-      basketObj.payment.billingSchemes.length &&
-      removeCreditCardOnce
-    ) {
+    if (basketObj?.payment?.billingSchemes?.length && removeCreditCardOnce) {
       let billingArray = basketObj.payment.billingSchemes.filter(
         (account: any) => {
           if (
@@ -259,6 +254,19 @@ const Checkout = () => {
           }
         },
       );
+      if (
+        basketObj.payment.billingSchemes.filter(
+          (element: any) =>
+            element.billingmethod === 'creditcard' && element.selected,
+        ).length === 0
+      ) {
+        const findCard = billingArray.findIndex(
+          (elem: any) => elem.billingmethod === 'creditcard',
+        );
+        if (findCard !== -1) {
+          billingArray[findCard].selected = true;
+        }
+      }
       billingArray = updatePaymentCardsAmount(billingArray, basketObj?.basket);
       dispatch(updateBasketBillingSchemes(billingArray));
       setRemoveCreditCardOnce(false);
