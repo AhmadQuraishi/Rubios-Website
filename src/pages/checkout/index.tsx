@@ -134,9 +134,11 @@ const Checkout = () => {
   // const { userDeliveryAddresses } = useSelector(
   //   (state: any) => state.userReducer,
   // );
-  const { userDeliveryAddresses, userBillingAccounts, loading: billingAccountsLoading } = useSelector(
-    (state: any) => state.userReducer,
-  );
+  const {
+    userDeliveryAddresses,
+    userBillingAccounts,
+    loading: billingAccountsLoading,
+  } = useSelector((state: any) => state.userReducer);
   const { singleLocation } = useSelector((state: any) => state.locationReducer);
 
   // useEffect(() => {
@@ -262,15 +264,15 @@ const Checkout = () => {
       setRemoveCreditCardOnce(false);
     }
   }, []);
-  
-  const removePreviousAddresses = (addressIds : any) => {
+
+  const removePreviousAddresses = (addressIds: any) => {
     const arrayLength = addressIds?.length;
-    console.log(arrayLength,'arrayLength');
+    console.log(arrayLength, 'arrayLength');
     for (let i = 0; i < arrayLength; i++) {
       requestDelUserDelAddress(addressIds[i]);
     }
     // debugger;
-  }
+  };
 
   React.useEffect(() => {
     if (basket && runOnce) {
@@ -296,7 +298,6 @@ const Checkout = () => {
   }, [basket]);
 
   const handleCheckChange = (event: any) => {
-
     const checked = event.target.checked;
     setIsContactless(checked);
   };
@@ -325,13 +326,8 @@ const Checkout = () => {
       defaultCard &&
       !basketObj?.loading &&
       // validate &&
-      basket &&
-      basketObj.payment.allowedCards.data &&
-      basketObj.payment.allowedCards.data.billingschemes &&
-      basketObj.payment.allowedCards.data.billingschemes.length &&
-      basketObj.payment &&
-      basketObj.payment.billingSchemes &&
-      basketObj.payment.billingSchemes.length === 0 &&
+      basketObj?.payment?.allowedCards?.data?.billingschemes?.length &&
+      basketObj?.payment?.billingSchemes?.length === 0 &&
       !billingAccountsLoading
     ) {
       const creditCardIndex =
@@ -668,14 +664,18 @@ const Checkout = () => {
     if (duplicateAddress?.length > 0) {
       let newFilteredDuplicateAddress;
       if (basket?.deliveryaddress?.id) {
-        newFilteredDuplicateAddress = duplicateAddress.filter((id : any) => id !== basket?.deliveryaddress?.id)
-      }
-      else{
+        newFilteredDuplicateAddress = duplicateAddress.filter(
+          (id: any) => id !== basket?.deliveryaddress?.id,
+        );
+      } else {
         newFilteredDuplicateAddress = duplicateAddress;
-        console.log(newFilteredDuplicateAddress,'newFilteredDuplicateAddress');
+        console.log(newFilteredDuplicateAddress, 'newFilteredDuplicateAddress');
       }
       if (newFilteredDuplicateAddress?.length > 0) {
-        console.log(newFilteredDuplicateAddress,'newFilteredDuplicateAddres423323232s');
+        console.log(
+          newFilteredDuplicateAddress,
+          'newFilteredDuplicateAddres423323232s',
+        );
         removePreviousAddresses(newFilteredDuplicateAddress);
       }
     }

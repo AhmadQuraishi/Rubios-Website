@@ -19,7 +19,7 @@ import { setBasketDeliveryAddressSuccess } from '../../redux/actions/basket/chec
 import './index.css';
 
 const maxLength = 120;
-const maxLengthContactLess = 100;
+const maxLengthContactLess = 93;
 const DeliveryForm = ({
   basket,
   deliveryFormRef,

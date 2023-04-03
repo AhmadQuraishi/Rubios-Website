@@ -37,3 +37,9 @@ export function getBasketRequestFailure(error: any) {
     error: error,
   };
 }
+
+export function resetBasketPaymentMethods() {
+  return {
+    type: basketActionsTypes.RESET_BASKET_PAYMENT_METHODS,
+  };
+}
