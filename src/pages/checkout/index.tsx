@@ -339,95 +339,69 @@ const Checkout = () => {
       // validate &&
       basketObj?.payment?.allowedCards?.data?.billingschemes?.length &&
       basketObj?.payment?.billingSchemes?.length === 0 &&
-      !billingAccountsLoading
+      !billingAccountsLoading &&
+      userBillingAccounts?.billingaccounts
     ) {
-      const creditCardIndex =
-        basketObj.payment.allowedCards.data.billingschemes.findIndex(
+      const allowedCreditCard =
+        basketObj.payment.allowedCards.data.billingschemes.find(
           (schemes: any) => schemes.type === 'creditcard',
         );
-      const giftCardIndex =
-        basketObj.payment.allowedCards.data.billingschemes.findIndex(
+      const allowedGiftCardIndex =
+        basketObj.payment.allowedCards.data.billingschemes.find(
           (schemes: any) => schemes.type === 'giftcard',
         );
       let billingArray: any = [];
-      if (creditCardIndex !== -1 && userBillingAccounts) {
-        if (
-          userBillingAccounts.billingaccounts &&
-          userBillingAccounts.billingaccounts.length
-        ) {
-          // const defaultCardIndex =
-          //   userBillingAccounts.billingaccounts.findIndex(
-          //     (card: any) => card.isdefault,
-          //   );
-          // if (defaultCardIndex !== -1) {
-          //   const defaultCard =
-          //     userBillingAccounts.billingaccounts[defaultCardIndex];
+      if (allowedCreditCard && userBillingAccounts?.billingaccounts?.length) {
+        userBillingAccounts.billingaccounts.forEach((card: any) => {
+          if (card?.accounttype === 'creditcard') {
+            let cardObj: any = {
+              localId: getUniqueId(),
+              selected: card.isdefault,
+              savedCard: true,
+              billingmethod: 'creditcard',
+              amount: 0,
+              tipportion: 0.0,
+              cardtype: card.cardtype,
+              cardlastfour: card.cardsuffix,
+              billingaccountid: card.accountidstring,
+              billingschemeid: allowedCreditCard.id,
+              alwaysVisible: false,
+            };
+            billingArray.push(cardObj);
+          }
+        });
 
-          userBillingAccounts.billingaccounts.forEach((card: any) => {
-            if (card?.accounttype === 'creditcard') {
-              let cardObj: any = {
-                localId: getUniqueId(),
-                selected: card.isdefault,
-                savedCard: true,
-                billingmethod: 'creditcard',
-                amount: 0,
-                tipportion: 0.0,
-                cardtype: card.cardtype,
-                cardlastfour: card.cardsuffix,
-                billingaccountid: card.accountidstring,
-                billingschemeid:
-                  basketObj.payment.allowedCards.data.billingschemes[
-                    creditCardIndex
-                  ].id,
-                alwaysVisible: false,
-              };
-              billingArray.push(cardObj);
-            }
-          });
-
-          // }
-        }
+        // }
       }
-      if (giftCardIndex !== -1) {
-        if (
-          basketObj.payment.allowedCards.data.billingschemes[giftCardIndex]
-            .accounts &&
-          basketObj.payment.allowedCards.data.billingschemes[giftCardIndex]
-            .accounts.length
-        ) {
-          let defaultGiftCards =
-            basketObj.payment.allowedCards.data.billingschemes[giftCardIndex]
-              .accounts;
+      if (allowedGiftCardIndex?.accounts?.length) {
+        let defaultGiftCards = allowedGiftCardIndex?.accounts;
 
-          defaultGiftCards = defaultGiftCards
-            .map((card: any, index: any) => {
-              return {
-                ...card,
-                balance: (card.balance && card.balance.balance) || 0,
-              };
-            })
-            .filter((card: any) => card.balance > 0)
-            .sort((a: any, b: any) =>
-              a.balance > b.balance ? 1 : b.balance > a.balance ? -1 : 0,
-            );
-          console.log('defaultGiftCards', defaultGiftCards);
-          let giftCardArray: any = createDefaultGiftCards(defaultGiftCards);
-          console.log('giftCardArray', giftCardArray);
+        defaultGiftCards = defaultGiftCards
+          .map((card: any, index: any) => {
+            return {
+              ...card,
+              balance: (card.balance && card.balance.balance) || 0,
+            };
+          })
+          .filter((card: any) => card.balance > 0)
+          .sort((a: any, b: any) =>
+            a.balance > b.balance ? 1 : b.balance > a.balance ? -1 : 0,
+          );
+        let giftCardArray: any = createDefaultGiftCards(defaultGiftCards);
 
-          Array.prototype.push.apply(billingArray, giftCardArray);
-        }
+        Array.prototype.push.apply(billingArray, giftCardArray);
       }
-      if (billingArray.length) {
+
+      if (billingArray?.length) {
         billingArray = updatePaymentCardsAmount(
           billingArray,
           basketObj?.basket,
         );
-        console.log('billingArray', billingArray);
         dispatch(updateBasketBillingSchemes(billingArray));
       }
       setDefaultCard(false);
     }
-  }, [basketObj.payment.allowedCards, validate, userBillingAccounts]);
+  }, [basketObj, validate, userBillingAccounts, billingAccountsLoading]);
 
   React.useEffect(() => {
     if (isLoginUser()) {
