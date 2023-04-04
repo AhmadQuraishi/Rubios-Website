@@ -276,7 +276,7 @@ const Checkout = () => {
   const removePreviousAddresses = (addressIds: any) => {
     const arrayLength = addressIds?.length;
     console.log(arrayLength, 'arrayLength');
-    for (let i = 0; i < arrayLength; i++) {
+    for (let i = 0; i < arrayLength - 1; i++) {
       requestDelUserDelAddress(addressIds[i]);
     }
     // debugger;
@@ -614,7 +614,6 @@ const Checkout = () => {
   };
 
   const placeOrder = async () => {
-    // removePreviousAddresses(duplicateAddress);
 
     setButtonDisabled(true);
     let customFields = [];
