@@ -127,7 +127,7 @@ function App(props: any) {
           dispatch(resetBasketRequest());
           sessionStorage.removeItem('hasDisplayedDialog');
           // setOpen(true);
-          removePreviousAddresses(duplicateAddress, null);
+          // removePreviousAddresses(duplicateAddress, null);
           navigate('/location');
           dispatch(updateSessionNull(sessionTime));
         }     

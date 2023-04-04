@@ -64,7 +64,7 @@ const LoginForm = () => {
 
             console.log('obj', obj);
             setButtonDisabled(true)
-            dispatch(userLogin(obj, basket ? basket.id : ''));
+            dispatch(userLogin(obj, basket ? basket.id : '', 'LOGIN_MAIN'));
           }}
         >
           {({

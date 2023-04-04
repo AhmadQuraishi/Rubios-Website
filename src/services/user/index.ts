@@ -197,7 +197,7 @@ export const requestSetUserDefDelAddress = (
 export const requestDelUserDelAddress = (addressid: number) => {
   try {
     const url = process.env.REACT_APP_OLO_API || '';
-    const authtoken = store.getState().authReducer.authToken.authtoken;
+    const authtoken = store?.getState()?.authReducer?.authToken?.authtoken;
     return axiosInstance
       .delete(url + `/users/${authtoken}/userdeliveryaddresses/${addressid}`)
       .then((response) => response.data)
