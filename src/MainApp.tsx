@@ -110,8 +110,10 @@ function App(props: any) {
         dispatch(updateSessionRequest(currentTime));
             }
   }, [])
-  
+
+
   const clearOrderCacheAfter30Minutes = () => {
+    const timeLimit: any = process.env.REACT_APP_RESTAURANT_SESSION_TIME;
     console.log('sessionTime', sessionTime)
     console.log("working1", moment.unix(sessionTime).format('h:mm:ss A'));
     if (restaurant && sessionTime){
@@ -122,7 +124,7 @@ function App(props: any) {
         console.log("working3", restaurantSessionTime);
         const minutes = currentTime.diff(restaurantSessionTime, 'minutes');
         console.log(minutes, "minutes")
-        if (minutes > 1) {
+        if (timeLimit !== undefined && minutes > timeLimit) {
           dispatch(resetRestaurantRequest());
           dispatch(resetBasketRequest());
           sessionStorage.removeItem('hasDisplayedDialog');
