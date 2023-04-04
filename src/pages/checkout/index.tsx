@@ -311,7 +311,8 @@ const Checkout = () => {
   };
   const AuthenticationHandler = () => {
     const LoginSessionTime: any = process.env.REACT_APP_LOGIN_SESSION_TIME;
-    console.log('timelimit for session',LoginSessionTime)
+    const timeLimit: number = LoginSessionTime ? parseInt(LoginSessionTime) : 0;
+    console.log('timelimit for session',timeLimit)
     if (isLoginUser() && sessionLoginTime) {
       const LoginCreatedTime: any = moment.unix(sessionLoginTime);
       const currentTime = moment();
@@ -319,7 +320,7 @@ const Checkout = () => {
         const minutes = currentTime.diff(LoginCreatedTime, 'minutes');
         console.log('munutes', minutes);
         console.log('timelimit for session',LoginSessionTime)
-        if (LoginSessionTime !== undefined && minutes > LoginSessionTime) {
+        if ( minutes > timeLimit) {
           setOpenAuthenticationModal(true);
           return false;
         }
