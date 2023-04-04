@@ -13,8 +13,6 @@ function* asyncAuthItemRequest(action: any): any {
   const basket = yield select(state => state.basketReducer);
   console.log(restaurant,'restaurant');
 
-
-  debugger;
   try {
     const response = yield call(getAuthToken, action.basketID);
     yield put(getAuthRequestSuccess(action.successMsg, response.data));
