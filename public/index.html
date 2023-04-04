@@ -68,25 +68,25 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+     <script>
+     
+      // if(pathName.indexOf('/checkout') !== -1) {
+        // Added olo payment script
+        const externalScript = document.createElement('script');
+        document.body.appendChild(externalScript);
+        externalScript.src =
+          '%REACT_APP_NODE_ENV%' === 'production'
+            ? `https://static.olocdn.net/web-client/checkout-web-client/2.5.0/checkout.js`
+            : 'https://olocdnsandbox.s3.amazonaws.com/web-client/checkout-web-client/2.5.0/checkout.js';
+      // }
+      const pathName = window?.location?.href?.toLocaleLowerCase() || '';
+      if(pathName.indexOf('/iframe') !== -1){
+        // removed loading logo for iframe
+        document.getElementById('main-site-loading-logo').style.display = 'none';
+      }
+    </script>
   </body>
 </html>
-
-<script>
-  const pathName = window?.location?.href?.toLocaleLowerCase() || '';
-  if(pathName.indexOf('/checkout') !== -1) {
-    // Added olo payment script
-    const externalScript = document.createElement('script');
-    document.body.appendChild(externalScript);
-    externalScript.src =
-      '%REACT_APP_NODE_ENV%' === 'production'
-        ? `https://static.olocdn.net/web-client/checkout-web-client/2.5.0/checkout.js`
-        : 'https://olocdnsandbox.s3.amazonaws.com/web-client/checkout-web-client/2.5.0/checkout.js';
-  }
-  if(pathName.indexOf('/iframe') !== -1){
-    // removed loading logo for iframe
-    document.getElementById('main-site-loading-logo').style.display = 'none';
-  }
-</script>
 
 
 
