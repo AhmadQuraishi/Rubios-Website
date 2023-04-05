@@ -392,9 +392,9 @@ const StoreInfoBar = () => {
                           lg: '40px !important',
                         },
                       }}
-                      title={restaurantInfo.name}
+                      title={restaurantInfo.name.slice(0, -6)}
                     >
-                      {restaurantInfo.name}
+                      {restaurantInfo.name.slice(0, -6)}
                     </Typography>
                   </Grid>
                 </Grid>
