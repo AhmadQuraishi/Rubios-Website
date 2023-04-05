@@ -121,20 +121,20 @@ const CategoryList = () => {
   //   }
   // };
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const categoryElements = filterCategories.map((category : any, index : any) =>
-        document.getElementById(`cat-panel-${index}`)
-      );
-      const activeCategoryIndex = categoryElements.findIndex((el: any) =>
-        el.getBoundingClientRect().top >= 0
-      );
-      setValue(`${activeCategoryIndex}`);
-    };
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     const categoryElements = filterCategories.map((category : any, index : any) =>
+  //       document.getElementById(`cat-panel-${index}`)
+  //     );
+  //     const activeCategoryIndex = categoryElements.findIndex((el: any) =>
+  //       el.getBoundingClientRect().top >= 0
+  //     );
+  //     setValue(`${activeCategoryIndex}`);
+  //   };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [filterCategories]);
+  //   window.addEventListener('scroll', handleScroll);
+  //   return () => window.removeEventListener('scroll', handleScroll);
+  // }, [filterCategories]);
 
 
   const handleViewMore = (categoryIndex: any) => {

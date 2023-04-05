@@ -170,10 +170,7 @@ const StoreInfoBar = () => {
     if (type === 'dinein') return 'Dine In At';
     if (type === 'pickup' || type === 'curbside') return 'Pick Up From';
   };
-  const getEstTimeFormat = (date: string, data2: string) => {
-    return moment(date, 'YYYYMMDD HH:mm').format('dddd h:mm A');
-    // moment(startTime, 'HH:mm:ss').add(durationInMinutes, 'minutes').format('HH:mm');
-  };
+
 
   const hidePromotionalMsg: any = sessionStorage.getItem('hidePromotionalMsg');
 
@@ -190,20 +187,7 @@ const StoreInfoBar = () => {
     setShowPromo(false);
   };
 
-  const EstimatedTime = () => {
-    const type = basketObj?.basket?.deliverymode || orderType || '';
-    const time = basketObj?.basket;
-    if (type === 'dispatch') {
-      if (time?.timemode === 'asap') {
-        return getEstTimeFormat(
-          time.earliestreadytime,
-          time.leadtimeestimateminutes,
-        );
-      } else if (time?.timewanted) {
-        return getEstTimeFormat(time.timewanted, time.leadtimeestimateminutes);
-      }
-    }
-  };
+
   return (
     <>
       {REACT_APP_PROMO_MESSAGE !== '' && showPromo && (
@@ -349,33 +333,11 @@ const StoreInfoBar = () => {
                         lg: '40px !important',
                       },
                     }}
-                    title={restaurantInfo.name}
+                    title={restaurantInfo.name.slice(0, -6)}
+                    
                   >
-                    {restaurantInfo.name}
+                    {restaurantInfo.name.slice(0, -6)}
                   </Typography>
-                  {window?.location?.href
-                    ?.toLocaleLowerCase()
-                    ?.indexOf('/checkout') !== -1 &&
-                    EstimatedTime() && (
-                      <>
-                        <Typography
-                          className={classes.heading}
-                          variant="h2"
-                          sx={{
-                            display: {
-                              xs: 'none',
-                              sm: 'flex',
-                              md: 'flex',
-                              lg: 'flex',
-                            },
-                          }}
-                          textTransform="uppercase"
-                          title="Pick Up From"
-                        >
-                          Estimated Delivery Time: {EstimatedTime()}
-                        </Typography>
-                      </>
-                    )}
                 </Grid>
               ) : (
                 <Grid
