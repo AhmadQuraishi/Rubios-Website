@@ -71,47 +71,6 @@ const DeliveryForm = ({
     const newInstruction = event.target.value;
     setSpecialInstruction(newInstruction);
   };
-  //         if (){
-  //           setSpecialInstruction('');
-  //           setIsContactless(true);
-  //         }
-  //         else {
-  // React.useEffect(() => {
-  //     if (basket?.deliveryaddress?.specialinstructions !== '' && isContactless && specialInstructionRunOnce){
-  //           setIsContactless(true);
-  //           if (isContactless && basket?.deliveryaddress?.specialinstructions === 'I want contactless delivery') {
-  //             setSpecialInstruction('');
-  //           setIsContactless(true);
-  //           }
-  //           setSpecialInstruction(basket?.deliveryaddress?.specialinstructions);
-  //         }
-  //         setSpecialInstructionRunOnce(false)
-  // },[basket])
-
-  // React.useEffect(() => {
-  //   // debugger;
-  //     if (basket?.deliveryaddress?.specialinstructions !== ''){
-  //       if (basket?.deliveryaddress?.specialinstructions?.includes("I want contactless delivery,")) {
-  //         const includesArray = basket?.deliveryaddress?.specialinstructions?.includes("I want contactless delivery,");
-  //           // setSpecialInstruction(includesArray.replace("I want contactless delivery,", ""));
-  //           setIsContactless(true);
-
-  //         }
-  //       else {
-  //         setSpecialInstruction(basket?.deliveryaddress?.specialinstructions);
-  //       }
-  //     }
-  //       else {
-  //         setSpecialInstruction('');
-  //       }
-
-  //     if ( basket?.deliveryaddress?.specialinstructions === 'I want contactless delivery' ) {
-  //           setIsContactless(true)
-  //           setSpecialInstruction('');
-  //         }
-  //         // debugger;
-  // },[basket])
-
   React.useEffect(() => {
     if (specialInstructionRunOnce && basket?.deliveryaddress?.specialinstructions) {
       let specialInstruction = basket?.deliveryaddress?.specialinstructions;
@@ -120,7 +79,7 @@ const DeliveryForm = ({
       if (specialInstruction !== '') {
         const includeContactLess = specialInstruction.includes('I want contactless delivery');
         if (includeContactLess) {
-          specialInstruction = specialInstruction.replace('I want contactless delivery,', '');
+          specialInstruction = specialInstruction.replace('I want contactless delivery. ', '');
           contactLess = true;
         }
       }

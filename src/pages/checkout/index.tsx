@@ -680,7 +680,7 @@ const Checkout = () => {
           specialinstructions:
             (isContactless &&
               specialInstruction !== '' &&
-              'I want contactless delivery,' + specialInstruction) ||
+              'I want contactless delivery. ' + specialInstruction) ||
             (specialInstruction !== '' && specialInstruction) ||
             (isContactless && 'I want contactless delivery') ||
             null,
