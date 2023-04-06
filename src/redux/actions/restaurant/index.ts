@@ -9,6 +9,19 @@ export function getResturantInfoRequest(id: number) {
   };
 }
 
+export function resetRestaurantRequest() {
+  return {
+    type: restaurantActionsTypes.RESTAURANT_RESET_REQUEST,
+  };
+}
+
+export function updateRestaurantSessionRequest(sessionTime: any) {
+  return {
+    type: restaurantActionsTypes.SET_RESTAURANT_SESSION_REQUEST,
+    payload: sessionTime
+  };
+}
+
 export function getResturantInfoRequestSuccess(data: ResponseRestaurant) {
   return {
     type: restaurantActionsTypes.GET_RESTAURANT_INFO_SUCCESS,

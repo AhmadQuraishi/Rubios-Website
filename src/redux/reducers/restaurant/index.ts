@@ -1,11 +1,13 @@
+import { Restaurant } from '@mui/icons-material';
 import { restaurantActionsTypes } from '../../types/restaurant';
 import { userTypes } from '../../types/user';
-
+import moment from 'moment';
 const INITIAL_STATE = {
   loading: false,
   restaurant: null,
   orderType: '',
   error: {},
+  sessionTime: null,
 };
 
 const restaurantInfoReducer = (state = INITIAL_STATE, action: any) => {
@@ -18,8 +20,9 @@ const restaurantInfoReducer = (state = INITIAL_STATE, action: any) => {
         loading: false,
         restaurant: action.payload,
         error: {},
+        sessionTime: moment().unix(),
       };
-    case restaurantActionsTypes.GET_RESTAURANT_INFO_FAILURE:
+    case restaurantActionsTypes.GET_RESTAURANT_INFO_FAILURE: 
       return { ...state, loading: false, error: action.error };
     case restaurantActionsTypes.SET_RESTAURANT_INFO_REQUEST:
       return {
@@ -36,11 +39,18 @@ const restaurantInfoReducer = (state = INITIAL_STATE, action: any) => {
         restaurant: action.payload,
         orderType: action.orderType,
         error: {},
+        sessionTime: moment().unix(),
+      };
+    case restaurantActionsTypes.SET_RESTAURANT_SESSION_REQUEST:
+      return {
+        ...state,
+        sessionTime: action.payload,
       };
     case restaurantActionsTypes.SET_RESTAURANT_INFO_FAILURE:
       return { ...state, loading: false, error: action.error };
     case restaurantActionsTypes.SET_RESTAURANT_INFO_ORDER_TYPE:
       return { ...state, orderType: action.orderType };
+    case restaurantActionsTypes.RESTAURANT_RESET_REQUEST:    
     case userTypes.USER_LOGOUT:
       return {
         ...INITIAL_STATE,

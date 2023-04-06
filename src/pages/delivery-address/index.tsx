@@ -78,6 +78,12 @@ const DeliveryAddress = () => {
   return (
     <Page title={'Delivery Address'} className="">
       <Fragment>
+        <DialogBox
+          open={open}
+          handleClose={handleClose}
+          message={'Do You Really Want To Delete This Delivery Address?'}
+          handleDeleteFunction={() => deleteAddressHandler()}
+        />
         <Grid
           container
           className={`${classes.root} delivery-address-container`}
@@ -85,7 +91,14 @@ const DeliveryAddress = () => {
           <Typography variant="h1" className={classes.heading}>
             DELIVERY ADDRESSES
           </Typography>
-          <Typography variant="h6" title="" sx={{ marginBottom: '20px',fontFamily: "'Librefranklin-Regular' !important" }}>
+          <Typography
+            variant="h6"
+            title=""
+            sx={{
+              marginBottom: '20px',
+              fontFamily: "'Librefranklin-Regular' !important",
+            }}
+          >
             To add or update your delivery addresses, select “delivery” when
             placing an order and enter the updated delivery address during
             checkout.
@@ -155,14 +168,6 @@ const DeliveryAddress = () => {
                             </Typography>
                           )}
                         </Grid>
-                        <DialogBox
-                          open={open}
-                          handleClose={handleClose}
-                          message={
-                            'Do You Really Want To Delete This Delivery Address?'
-                          }
-                          handleDeleteFunction={() => deleteAddressHandler()}
-                        />
                       </Grid>
                     </CardContent>
                   </Card>
@@ -234,14 +239,7 @@ const DeliveryAddress = () => {
                             </Typography>
                           )}
                         </Grid>
-                        <DialogBox
-                          open={open}
-                          handleClose={handleClose}
-                          message={
-                            'Do You Really Want To Delete This Delivery Address?'
-                          }
-                          handleDeleteFunction={() => deleteAddressHandler()}
-                        />
+                        
                       </Grid>
                     </CardContent>
                   </Card>

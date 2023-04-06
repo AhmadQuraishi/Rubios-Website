@@ -18,9 +18,16 @@ import moment from 'moment';
 // import {generateCCSFToken} from "./services/basket";
 import TagManager from 'react-gtm-module';
 import { resetBasketRequest } from './redux/actions/basket';
-import {isLoginUser} from './helpers/auth'
+import { isLoginUser } from './helpers/auth';
+import {
+  resetRestaurantRequest,
+  updateRestaurantSessionRequest,
+} from './redux/actions/restaurant';
+
+const { REACT_APP_RESTAURANT_SESSION_TIME } = process.env;
 
 function App(props: any) {
+  let intervalId: any;
   const location = useLocation();
   const [isAccountSection, setIsAccountSection] = useState(false);
   const [hideLoginPanel, setHideLoginPanel] = useState(true);
@@ -30,12 +37,11 @@ function App(props: any) {
   const { basket, createdTime } = useSelector(
     (state: any) => state.basketReducer,
   );
+  const { restaurant, sessionTime: restaurantSessionTime } = useSelector(
+    (state: any) => state.restaurantInfoReducer,
+  );
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    console.log('isLoginUser', isLoginUser())
-  }, [])
 
   const updateDeviceId = () => {
     const newDeviceId = generateDeviceId();
@@ -66,18 +72,41 @@ function App(props: any) {
     }
   }, []);
 
-  useEffect(() => {
-    if (createdTime && basket) {
-      const basketCreatedTime: any = moment.unix(createdTime);
+  const clearOrderCacheAfterTimeout = () => {
+    const timeLimit: number = REACT_APP_RESTAURANT_SESSION_TIME
+      ? parseInt(REACT_APP_RESTAURANT_SESSION_TIME)
+      : 0;
+    if (restaurant && restaurantSessionTime) {
+      const restaurantSessionTimeMoment: any = moment.unix(
+        restaurantSessionTime,
+      );
       const currentTime = moment();
-      if (basketCreatedTime.isValid()) {
-        const minutes = currentTime.diff(basketCreatedTime, 'minutes');
-        if (minutes > 30) {
+      if (restaurantSessionTimeMoment.isValid()) {
+        const minutes = currentTime.diff(
+          restaurantSessionTimeMoment,
+          'minutes',
+        );
+        if (minutes > timeLimit) {
+          dispatch(resetRestaurantRequest());
           dispatch(resetBasketRequest());
+          sessionStorage.removeItem('hidePromotionalMsg');
+          // setOpen(true);
+          // if (authToken) {
+          //   removePreviousAddresses(duplicateAddress, null);
+          // }
+          navigate('/location');
+          dispatch(updateRestaurantSessionRequest(null));
         }
       }
     }
-  }, [basket]);
+  };
+  useEffect(() => {
+    clearOrderCacheAfterTimeout();
+    intervalId = setInterval(function () {
+      clearOrderCacheAfterTimeout();
+    }, 30 * 1000);
+    return () => clearInterval(intervalId);
+  }, [window.location.href]);
 
   useEffect(() => {
     const tagManagerArgs: any = {
@@ -164,9 +193,7 @@ function App(props: any) {
   useEffect(() => {
     if (window.location.pathname === '/') {
       if (basket) {
-      } else if (
-        isLoginUser()
-      ) {
+      } else if (isLoginUser()) {
         navigate('/welcome');
       }
     }
@@ -195,7 +222,9 @@ function App(props: any) {
       {/*  style={{ fontFamily: 'Poppins-Regular' }}*/}
       {/*></div>*/}
       <NavigateApp />
-      <a href="#main" className="skip-link">Skip to Main Content</a>
+      <a href="#main" className="skip-link">
+        Skip to Main Content
+      </a>
       <Header
         style={{ margin: '0 !important', padding: '0 !important' }}
         removeCartForLocation={
@@ -214,7 +243,7 @@ function App(props: any) {
             .indexOf('/order-confirmation') !== -1
         }
       />
-      <main id={'main'} >
+      <main id={'main'}>
         <ToastContainer hideProgressBar />
         {isAccountSection ? (
           <Fragment>
