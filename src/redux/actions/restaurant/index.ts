@@ -15,17 +15,10 @@ export function resetRestaurantRequest() {
   };
 }
 
-export function updateSessionRequest(sessionTime: any) {
+export function updateRestaurantSessionRequest(sessionTime: any) {
   return {
     type: restaurantActionsTypes.SET_RESTAURANT_SESSION_REQUEST,
-    sessionTime
-  };
-}
-
-export function updateSessionNull(sessionTime: any) {
-  return {
-    type: restaurantActionsTypes.SET_SESSION_REQUEST,
-    sessionTime
+    payload: sessionTime
   };
 }
 
