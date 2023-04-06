@@ -19,13 +19,18 @@ import moment from 'moment';
 // import {testingRedemption, testingRewards} from "./services/reward";
 // import {generateCCSFToken} from "./services/basket";
 import TagManager from 'react-gtm-module';
-import {resetRestaurantRequest,updateSessionNull,updateSessionRequest} from './redux/actions/restaurant';
-import {resetBasketRequest} from './redux/actions/basket'
-import {isLoginUser} from './helpers/auth'
+import {
+  resetRestaurantRequest,
+  updateRestaurantSessionRequest,
+} from './redux/actions/restaurant';
+import { resetBasketRequest } from './redux/actions/basket';
+import { isLoginUser } from './helpers/auth';
 import { CacheDialog } from './components/cache-dialog';
 import LoginAuthDialog from './components/login-authentication-dialog';
 import { updateDuplicateAddress } from './redux/actions/basket/checkout';
 import { removePreviousAddresses } from './helpers/checkout';
+
+const { REACT_APP_RESTAURANT_SESSION_TIME } = process.env;
 
 function App(props: any) {
   const location = useLocation();
@@ -35,26 +40,35 @@ function App(props: any) {
   // const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const { deviceId } = useSelector((state: any) => state.authReducer);
-  const { basket} = useSelector(
-    (state: any) => state.basketReducer,
-  );
+  const { basket } = useSelector((state: any) => state.basketReducer);
   const { duplicateAddress } = useSelector((state: any) => state.basketReducer);
-  const { restaurant, orderType, sessionTime  } = useSelector(
-    (state: any) => state.restaurantInfoReducer,
+  const {
+    restaurant,
+    orderType,
+    sessionTime: restaurantSessionTime,
+  } = useSelector((state: any) => state.restaurantInfoReducer);
+  const { authToken, sessionLoginTime } = useSelector(
+    (state: any) => state.authReducer,
   );
-  const { authToken,sessionLoginTime } = useSelector((state: any) => state.authReducer);
   const productCount = useMemo(() => basket?.products?.length || 0, [basket]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log('isLoginUser', isLoginUser())
-  }, [])
-  
+    console.log('isLoginUser', isLoginUser());
+  }, []);
+
   useEffect(() => {
-    if (Array.isArray(duplicateAddress) && basket?.deliveryaddress?.id && !duplicateAddress.includes(basket?.deliveryaddress?.id)) {
-      const updatedDuplicateAddress = [...duplicateAddress, basket.deliveryaddress.id];
+    if (
+      Array.isArray(duplicateAddress) &&
+      basket?.deliveryaddress?.id &&
+      !duplicateAddress.includes(basket?.deliveryaddress?.id)
+    ) {
+      const updatedDuplicateAddress = [
+        ...duplicateAddress,
+        basket.deliveryaddress.id,
+      ];
       dispatch(updateDuplicateAddress(updatedDuplicateAddress));
-      console.log(updatedDuplicateAddress,'updatedDuplicateAddress');
+      console.log(updatedDuplicateAddress, 'updatedDuplicateAddress');
     }
     // debugger;
   }, [basket?.deliveryaddress?.id]);
@@ -87,79 +101,75 @@ function App(props: any) {
       }
     }
   }, []);
-  
-  useEffect(() => {
-    if (productCount > 0) {
-      dispatch(updateSessionNull(sessionTime));
-      dispatch(updateSessionRequest(sessionTime));
-    }
-  }, [productCount]);
+
+  // useEffect(() => {
+  //   if (productCount > 0) {
+  //     const currentTime = moment();
+  //     dispatch(updateSessionNull(sessionTime));
+  //     dispatch(updateRestaurantSessionRequest(sessionTime));
+  //   }
+  // }, [productCount]);
 
   let intervalId: any;
- 
-  useEffect (() => {
-    if (restaurant && !sessionTime){
-        const currentTime = moment();
-        dispatch(updateSessionRequest(currentTime));
-            }
-  }, [])
 
-  useEffect (() => {
-    if (authToken && !sessionLoginTime){
-        const currentTime = moment();
-        dispatch(updateSessionRequest(currentTime));
-            }
-  }, [])
+  useEffect(() => {
+    if (restaurant && !restaurantSessionTime) {
+      const currentTime = moment().unix();
+      dispatch(updateRestaurantSessionRequest(currentTime));
+    }
+  }, []);
 
+  // useEffect(() => {
+  //   if (authToken && !sessionLoginTime) {
+  //     const currentTime = moment();
+  //     dispatch(updateSessionRequest(currentTime));
+  //   }
+  // }, []);
 
-  const clearOrderCacheAfter30Minutes = () => {
-
-    const timeLimit: any = process.env.REACT_APP_RESTAURANT_SESSION_TIME;
-    const timeLimitNumber: number = timeLimit ? parseInt(timeLimit) : 0;
-    console.log(timeLimitNumber,'timeLimit')
-    console.log('sessionTime', sessionTime)
-    console.log("working1", moment.unix(sessionTime).format('h:mm:ss A'));
-    if (restaurant && sessionTime){
-      const restaurantSessionTime: any = moment.unix(sessionTime);
-      console.log("working2", restaurantSessionTime);
+  const clearOrderCacheAfterTimeout = () => {
+    const timeLimit: number = REACT_APP_RESTAURANT_SESSION_TIME
+      ? parseInt(REACT_APP_RESTAURANT_SESSION_TIME)
+      : 0;
+    if (restaurant && restaurantSessionTime) {
+      const restaurantSessionTimeMoment: any = moment.unix(
+        restaurantSessionTime,
+      );
       const currentTime = moment();
-      if (restaurantSessionTime.isValid()) {
-        console.log("working3", restaurantSessionTime);
-        const minutes = currentTime.diff(restaurantSessionTime, 'minutes');
-        console.log(minutes, "minutes")
-        if (minutes > timeLimitNumber) {
+      if (restaurantSessionTimeMoment.isValid()) {
+        const minutes = currentTime.diff(
+          restaurantSessionTimeMoment,
+          'minutes',
+        );
+        if (minutes > timeLimit) {
           dispatch(resetRestaurantRequest());
           dispatch(resetBasketRequest());
-          sessionStorage.removeItem('hasDisplayedDialog');
+          sessionStorage.removeItem('hidePromotionalMsg');
           // setOpen(true);
           if (authToken) {
-          removePreviousAddresses(duplicateAddress, null);
+            removePreviousAddresses(duplicateAddress, null);
           }
           navigate('/location');
-          dispatch(updateSessionNull(sessionTime));
-        }     
+          dispatch(updateRestaurantSessionRequest(null));
+        }
+      }
     }
-  }
-}
-useEffect(() => {
-  clearOrderCacheAfter30Minutes();
-  intervalId = setInterval(function() {
-    clearOrderCacheAfter30Minutes()
-  },  30 * 1000) 
-  return () => clearInterval(intervalId);
+  };
+  useEffect(() => {
+    clearOrderCacheAfterTimeout();
+    intervalId = setInterval(function () {
+      clearOrderCacheAfterTimeout();
+    }, 30 * 1000);
+    return () => clearInterval(intervalId);
+  }, [window.location.href]);
 
-}, [window.location.href]) 
+  //   useEffect(() => {
+  //     setInterval(() => {
+  //       clearOrderCacheAfterTimeout();
+  //       console.log("working");
+  //     }, 5000)
 
+  // }, []);
 
-
-//   useEffect(() => {
-//     setInterval(() => {
-//       clearOrderCacheAfter30Minutes();
-//       console.log("working");
-//     }, 5000)
-    
-// }, []);
-  
   // useEffect(() => {
   //   if (sessionTime && basket) {
   //     const basketCreatedTime: any = moment.unix(sessionTime);
@@ -172,7 +182,6 @@ useEffect(() => {
   //     }
   //   }
   // }, [basket]);
-
 
   useEffect(() => {
     const tagManagerArgs: any = {
@@ -258,9 +267,7 @@ useEffect(() => {
   useEffect(() => {
     if (window.location.pathname === '/') {
       if (basket) {
-      } else if (
-        isLoginUser()
-      ) {
+      } else if (isLoginUser()) {
         navigate('/welcome');
       }
     }
@@ -289,63 +296,66 @@ useEffect(() => {
             <CacheDialog open={open} setOpen={setOpen} />
         )
       } */}
-    
-    <div id="wapper">
-      {/*<div*/}
-      {/*  id="onetrust-consent-sdk"*/}
-      {/*  style={{ fontFamily: 'Poppins-Regular' }}*/}
-      {/*></div>*/}
-      <NavigateApp />
-      <a href="#main" className="skip-link">Skip to Main Content</a>
-      <Header
-        style={{ margin: '0 !important', padding: '0 !important' }}
-        removeCartForLocation={
-          window.location.href.toLocaleLowerCase().indexOf('/location') != -1
-        }
-        hideLoginPanel={hideLoginPanel}
-        hideLoginedPanel={hideLoginedPanel}
-        showUserName={isAccountSection}
-        removeCart={
-          isAccountSection ||
-          window.location.href.toLocaleLowerCase().indexOf('/checkout') !==
-            -1 ||
-          window.location.href.toLocaleLowerCase().indexOf('/welcome') !== -1 ||
-          window.location.href
-            .toLocaleLowerCase()
-            .indexOf('/order-confirmation') !== -1
-        }
-      />
-      <main id={'main'} >
-        <ToastContainer hideProgressBar />
-        {isAccountSection ? (
-          <Fragment>
-            <Grid container spacing={0}>
-              <Grid
-                item
-                xs={0}
-                sm={3.5}
-                lg={2.5}
-                sx={{ display: { xs: 'none', sm: 'grid' } }}
-              >
-                <LeftMenuBar />
+
+      <div id="wapper">
+        {/*<div*/}
+        {/*  id="onetrust-consent-sdk"*/}
+        {/*  style={{ fontFamily: 'Poppins-Regular' }}*/}
+        {/*></div>*/}
+        <NavigateApp />
+        <a href="#main" className="skip-link">
+          Skip to Main Content
+        </a>
+        <Header
+          style={{ margin: '0 !important', padding: '0 !important' }}
+          removeCartForLocation={
+            window.location.href.toLocaleLowerCase().indexOf('/location') != -1
+          }
+          hideLoginPanel={hideLoginPanel}
+          hideLoginedPanel={hideLoginedPanel}
+          showUserName={isAccountSection}
+          removeCart={
+            isAccountSection ||
+            window.location.href.toLocaleLowerCase().indexOf('/checkout') !==
+              -1 ||
+            window.location.href.toLocaleLowerCase().indexOf('/welcome') !==
+              -1 ||
+            window.location.href
+              .toLocaleLowerCase()
+              .indexOf('/order-confirmation') !== -1
+          }
+        />
+        <main id={'main'}>
+          <ToastContainer hideProgressBar />
+          {isAccountSection ? (
+            <Fragment>
+              <Grid container spacing={0}>
+                <Grid
+                  item
+                  xs={0}
+                  sm={3.5}
+                  lg={2.5}
+                  sx={{ display: { xs: 'none', sm: 'grid' } }}
+                >
+                  <LeftMenuBar />
+                </Grid>
+                <Grid
+                  item
+                  xs={12}
+                  sm={8.5}
+                  lg={9}
+                  sx={{ padding: { xs: '30px 20px 10px', sm: '30px 40px' } }}
+                >
+                  <AppRoutes />
+                </Grid>
               </Grid>
-              <Grid
-                item
-                xs={12}
-                sm={8.5}
-                lg={9}
-                sx={{ padding: { xs: '30px 20px 10px', sm: '30px 40px' } }}
-              >
-                <AppRoutes />
-              </Grid>
-            </Grid>
-          </Fragment>
-        ) : (
-          <AppRoutes />
-        )}
-      </main>
-      <Footer />
-    </div>
+            </Fragment>
+          ) : (
+            <AppRoutes />
+          )}
+        </main>
+        <Footer />
+      </div>
     </div>
   );
 }

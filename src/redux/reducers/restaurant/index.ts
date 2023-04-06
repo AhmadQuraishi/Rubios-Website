@@ -57,12 +57,7 @@ const restaurantInfoReducer = (state = INITIAL_STATE, action: any) => {
     case restaurantActionsTypes.SET_RESTAURANT_SESSION_REQUEST:
       return {
         ...state,
-        sessionTime: moment().unix(),
-      };
-      case restaurantActionsTypes.SET_SESSION_REQUEST:
-      return {
-        ...state,
-        sessionTime: null,
+        sessionTime: action.payload,
       };
     case restaurantActionsTypes.SET_RESTAURANT_INFO_FAILURE:
       return { ...state, loading: false, error: action.error };
