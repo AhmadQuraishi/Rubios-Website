@@ -134,7 +134,19 @@ export function setTipFalse() {
     type: basketActionsTypes.SET_TIP_FALSE,
   };
 }
+export function updateDuplicateAddress(duplicateAddress : string[]) {
+  return {
+    type: basketActionsTypes.UPDATE_DUPLICATE_ADDRESS,
+    payload: duplicateAddress,
+  }
+}
 
+export function updateNavigationLink(signInNavigation : any) {
+  return {
+    type: basketActionsTypes.NAVIGATION_URL,
+    payload: signInNavigation,
+  }
+}
 
 export function updateBasketTipAmountFailure(error: any) {
   displayToast(
