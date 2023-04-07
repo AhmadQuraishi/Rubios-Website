@@ -260,7 +260,7 @@ const giftCardLastFourDigits = (account: any) => {
       account.billingfields[0].value) ||
     '';
   if (giftCardNumber !== '') {
-    return giftCardNumber.toString().slice(-3);
+    return giftCardNumber.toString().slice(-4);
   } else {
     return '';
   }
