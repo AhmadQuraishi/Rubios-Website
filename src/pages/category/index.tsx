@@ -35,6 +35,7 @@ import { isLoginUser } from '../../helpers/auth';
 import "./index.css";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import { updateNavigationLink } from '../../redux/actions/basket/checkout';
 
 const useStyles = makeStyles((theme: Theme) => ({
   heading: {
@@ -78,6 +79,9 @@ const CategoryList = () => {
   };
   const classes = useStyles();
   const theme = useTheme();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const body = document;
   const query = new URLSearchParams(useLocation().search);
   const handoff: any = query.get('handoff') || '';
   const [getResutarnts, setGetResutrants] = useState(false);
@@ -90,7 +94,7 @@ const CategoryList = () => {
   const [categoriesWithProducts, setCategoriesWithProducts] =
     useState<ResponseMenu>();
     const myRef: RefObject<HTMLElement> = useRef(null);
-    
+
   const { categories, loading, error } = useSelector(
     (state: any) => state.categoryReducer,
   );
@@ -102,11 +106,8 @@ const CategoryList = () => {
   );
   const { providerToken } = useSelector((state: any) => state.providerReducer);
   const basketObj = useSelector((state: any) => state.basketReducer);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const body = document;
+
   const [filterCategories, setFilterCategories] = useState<any[]>([]);
-  const [prevScrollPos, setPrevScrollPos] = useState(0);
 
   // const handleViewClick = () => {
   //   if (showMore) {
@@ -187,6 +188,12 @@ const CategoryList = () => {
       }
     }
     window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    const { pathname, search } = window.location;
+    const url = `${pathname}${search}`;
+    dispatch(updateNavigationLink(url));
   }, []);
 
   const checkRestaurantHandOffAvailability = (
