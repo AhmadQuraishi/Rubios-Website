@@ -44,9 +44,8 @@ const OrderTime = ({ orderType }: any) => {
   const [notAvailableSlots, setNotAvailableSlots] = useState(false);
   const [selectShrink, setSelectShrink] = useState(false);
   const [asapTime, setAsapTime] = useState(false);
-
   const basketObj = useSelector((state: any) => state.basketReducer);
-
+  const time = basketObj?.basket;
   React.useEffect(() => {
     if (basketObj.basket) {
       if (basketObj.basket?.timewanted) {
@@ -58,7 +57,10 @@ const OrderTime = ({ orderType }: any) => {
       navigate('/location');
     }
   }, [basketObj.basket]);
-
+  const getEstTimeFormat = (date: string, data2: string) => {
+    return moment(date, 'YYYYMMDD HH:mm').format('h:mmA');
+    // moment(startTime, 'HH:mm:ss').add(durationInMinutes, 'minutes').format('HH:mm');
+  };
   React.useEffect(() => {
     if (basketObj.calendar && basketObj.calendar.data) {
       setRestaurantHours(
@@ -81,8 +83,23 @@ const OrderTime = ({ orderType }: any) => {
   //     );
   //   }
   // }, [selectedDate]);
-  const time = basketObj?.basket;
+  const EstimatedTime = () => {
+    const type = basketObj?.basket?.deliverymode || orderType || '';
+    const time = basketObj?.basket;
+    if (type === 'dispatch') {
+      if (time?.timemode === 'asap') {
+        return getEstTimeFormat(
+          time.earliestreadytime,
+          time.leadtimeestimateminutes,
+        );
+      } else if (time?.timewanted) {
+        return getEstTimeFormat(time.timewanted, time.leadtimeestimateminutes);
+      }
+    }
+  };
 
+  
+  
   const handleEstTime = (time: any, time2 : any) => {
     let localTime = moment(new Date());
     let earlyReadyTime = moment(time, 'YYYYMMDD HH:mm');
@@ -300,6 +317,49 @@ const OrderTime = ({ orderType }: any) => {
               >
                 (change)
               </button>
+              {window?.location?.href
+                    ?.toLocaleLowerCase()
+                    ?.indexOf('/checkout') !== -1 &&
+                    EstimatedTime() && (
+                      <>
+                        <Typography
+                          // className={classes.heading}
+                          sx={{
+                            fontFamily:"'Sunborn-Sansone'!important",
+                            color: '#0075BF',
+                            display: {
+                              xs: 'flex',
+                              sm: 'flex',
+                            },
+                          }}
+                          textTransform="uppercase"
+                          title="Pick Up From"
+                        >
+                          Estimated Delivery Time: 
+                        </Typography>
+
+                        <Typography
+                          // className={classes.heading}
+                          
+                          sx={{
+                            marginBottom: {sm:"8px",xs:'0px'},
+                            marginTop: {sm:"-10px",xs:'0px'},
+                            fontSize: '29px',
+                            fontFamily: "'GritSans-Bold' !important",
+                            color: '#122b40',
+                            letterSpacing:'0.03562em',
+                            display: {
+                              xs: 'flex',
+                              sm: 'flex',
+                            },
+                          }}
+                          textTransform="uppercase"
+                          title="Pick Up From"
+                        >
+                        {EstimatedTime()}
+                        </Typography>
+                      </>
+                    )}
               <div id="date-picker" aria-labelledby="date-picker-title">
                 <LocalizationProvider dateAdapter={AdapterMoment}>
                   <MobileDatePicker

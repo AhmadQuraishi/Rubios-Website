@@ -105,7 +105,7 @@ const CategoryList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const body = document;
-
+  const [filterCategories, setFilterCategories] = useState<any[]>([]);
   const [prevScrollPos, setPrevScrollPos] = useState(0);
 
   // const handleViewClick = () => {
@@ -120,6 +120,22 @@ const CategoryList = () => {
   //     }
   //   }
   // };
+
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     const categoryElements = filterCategories.map((category : any, index : any) =>
+  //       document.getElementById(`cat-panel-${index}`)
+  //     );
+  //     const activeCategoryIndex = categoryElements.findIndex((el: any) =>
+  //       el.getBoundingClientRect().top >= 0
+  //     );
+  //     setValue(`${activeCategoryIndex}`);
+  //   };
+ 
+  //   window.addEventListener('scroll', handleScroll);
+  //   return () => window.removeEventListener('scroll', handleScroll);
+  // }, [filterCategories]);
+
 
   const handleViewMore = (categoryIndex: any) => {
     if (showAll[categoryIndex]) {
@@ -245,7 +261,7 @@ const CategoryList = () => {
     }
   }, [objResturantsList]);
 
-  const [filterCategories, setFilterCategories] = useState<any[]>([]);
+
 
   useEffect(() => {
     setFilterCategories([]);
