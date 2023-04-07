@@ -424,7 +424,7 @@ return (
                             ? `Gift Card x${account.cardlastfour}`
                             : ''}
                         </Typography>
-                        {/* <Typography
+                        <Typography
                           style={{
                             color: '#0069aa',
                             fontWeight: '600',
@@ -433,7 +433,7 @@ return (
                           variant="h4"
                         >
                           BALANCE ${account.balance ? account.balance : 0}
-                        </Typography> */}
+                        </Typography>
                       </>
                     )}
                   </Grid>
