@@ -131,7 +131,7 @@ const CategoryList = () => {
   //     );
   //     setValue(`${activeCategoryIndex}`);
   //   };
-
+ 
   //   window.addEventListener('scroll', handleScroll);
   //   return () => window.removeEventListener('scroll', handleScroll);
   // }, [filterCategories]);
