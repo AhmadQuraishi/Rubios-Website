@@ -333,10 +333,10 @@ const StoreInfoBar = () => {
                         lg: '40px !important',
                       },
                     }}
-                    title={restaurantInfo.name.slice(0, -6)}
+                    title={restaurantInfo.name.replace(/\s-\s#\d+/, '')}
                     
                   >
-                    {restaurantInfo.name.slice(0, -6)}
+                    {restaurantInfo.name.replace(/\s-\s#\d+/, '')}
                   </Typography>
                 </Grid>
               ) : (
@@ -392,9 +392,9 @@ const StoreInfoBar = () => {
                           lg: '40px !important',
                         },
                       }}
-                      title={restaurantInfo.name.slice(0, -6)}
+                      title={restaurantInfo.name.replace(/\s-\s#\d+/, '')}
                     >
-                      {restaurantInfo.name.slice(0, -6)}
+                      {restaurantInfo.name.replace(/\s-\s#\d+/, '')}
                     </Typography>
                   </Grid>
                 </Grid>
