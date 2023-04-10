@@ -437,13 +437,13 @@ const Checkout = () => {
   // }, [userDeliveryAddresses]);
 
   React.useEffect(() => {
-    if (basketObj.basket) {
+    if (basketObj?.basket) {
       setBasket(basketObj.basket);
       if (
         billingSchemes &&
-        billingSchemes.length &&
-        !basketObj?.orderSubmit &&
-        !basketObj.error
+        billingSchemes.length
+        // !basketObj?.orderSubmit &&
+        // !basketObj.error
       ) {
         const updatedBillingScheme = updatePaymentCardsAmount(
           billingSchemes,
@@ -502,9 +502,11 @@ const Checkout = () => {
     };
     console.log('pickupFormRef.current', pickupFormRef.current);
     if (!pickupFormRef.current) {
-    } else if (!pickupFormRef.current.dirty) {
-      pickupFormRef.current.submitForm();
-    } else if (Object.keys(pickupFormRef.current.errors).length > 0) {
+    }
+    // else if (!pickupFormRef.current.dirty) {
+    //   pickupFormRef.current.submitForm();
+    // }
+    else if (Object.keys(pickupFormRef.current.errors).length > 0) {
       console.log('pickupFormRef.current.errors', pickupFormRef.current.errors);
       if (
         type === 'GUEST_SIGNUP' &&
@@ -525,6 +527,7 @@ const Checkout = () => {
           data.formData = pickupFormRef.current.values;
         }
       }
+      pickupFormRef.current.submitForm();
     } else {
       data.isValidForm = true;
       data.formData = pickupFormRef.current.values;
