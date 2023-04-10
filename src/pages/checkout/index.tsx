@@ -30,6 +30,7 @@ import {
   submitBasketSinglePaymentSuccess,
   updateBasketBillingSchemes,
   updateDuplicateAddress,
+  updateNavigationLink,
   validateBasket,
 } from '../../redux/actions/basket/checkout';
 import { displayToast } from '../../helpers/toast';
@@ -114,7 +115,6 @@ const Checkout = () => {
   // const [defaultDeliveryAddress, setDefaultDeliveryAddress] =
   //   React.useState<any>(null);
   // const [ccsfObj, setccsfObj] = React.useState<any>();
-
   const basketObj = useSelector((state: any) => state.basketReducer);
   const { duplicateAddress } = useSelector((state: any) => state.basketReducer);
   const { providerToken } = useSelector((state: any) => state.providerReducer);
@@ -281,7 +281,11 @@ const Checkout = () => {
     }
     // debugger;
   };
-
+  React.useEffect(() => {
+    const { pathname, search } = window.location;
+    const url = `${pathname}${search}`;
+    dispatch(updateNavigationLink(url));
+  }, []);
   React.useEffect(() => {
     if (basket && runOnce) {
       let selectedTime = moment().format('YYYYMMDD');
@@ -618,7 +622,6 @@ const Checkout = () => {
   };
 
   const placeOrder = async () => {
-
     setButtonDisabled(true);
     let customFields = [];
     let deliverymode = {

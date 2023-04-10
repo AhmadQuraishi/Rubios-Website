@@ -335,7 +335,7 @@ const OrderTime = ({ orderType }: any) => {
                           textTransform="uppercase"
                           title="Pick Up From"
                         >
-                          Estimated Delivery Time: 
+                          Estimated Delivery Time
                         </Typography>
 
                         <Typography

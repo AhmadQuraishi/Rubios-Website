@@ -25,19 +25,18 @@ function* asyncAuthItemRequest(action: any): any {
       yield put(navigateAppAction('/welcome?new_user=true'));
     }
     else if (
-      basket?.basket?.tip === 0 &&
+      basket?.signInNavigation?.includes('menu') &&
       action?.basketID !== "" &&
       action?.registerType &&
-      (action.registerType === 'REGISTER_MAIN' ||
-        action.registerType === 'REGISTER_CONFIRMATION')
+      (action.registerType === 'REGISTER_MAIN')
     ) {
       yield put(navigateAppAction(`/menu/${restaurant.restaurant.slug}?cart=true`));
     }
-    else if (basket?.basket?.tip > 0 &&
+    else if (
+      basket?.signInNavigation?.includes('checkout') &&
       action?.basketID !== "" &&
       action?.registerType &&
-      (action.registerType === 'REGISTER_MAIN' ||
-        action.registerType === 'REGISTER_CONFIRMATION')
+      (action.registerType === 'REGISTER_MAIN')
       ) {
         yield put(navigateAppAction(`/checkout`));
       }
