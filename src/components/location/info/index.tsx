@@ -69,7 +69,7 @@ const StoreInfo = (props: any) => {
             paddingBottom: '5px',
           }}
         >
-          {item.name}
+          {item.name.replace(/\s-\s#\d+/, '')}
         </Typography>
         <Typography variant="body2">
           {item.streetaddress}, <br /> {item.city}, {item.state}, {item.zip}
@@ -149,7 +149,7 @@ const StoreInfo = (props: any) => {
             paddingBottom: '5px',
           }}
         >
-          {item.name}
+          {item.name.replace(/\s-\s#\d+/, '')}
         </Typography>
         <Typography variant="body2">
           {item.streetaddress}, <br /> {item.city}, {item.state}, {item.zip}

@@ -29,7 +29,10 @@ const pickupTime = (order: any) => {
       <Typography
         variant="h2"
         className="label"
-        sx={{fontSize: "11pt !important",fontFamily: "'Sunborn-Sansone'!important"}}
+        sx={{
+          fontSize: '11pt !important',
+          fontFamily: "'Sunborn-Sansone'!important",
+        }}
         title={
           order && order.deliverymode === DeliveryModeEnum.dispatch
             ? 'DELIVERY TIME'
@@ -61,10 +64,15 @@ const vehicleInfo = (order: any) => {
   return (
     <>
       <Grid xs={12} sm={6} md={6} lg={12} className="adjust-space">
-        <Typography 
+        <Typography
           variant="h2"
           className="label"
-          sx={{fontSize: "11pt !important",fontFamily: "'Sunborn-Sansone'!important"}} title="VEHICLE INFO">
+          sx={{
+            fontSize: '11pt !important',
+            fontFamily: "'Sunborn-Sansone'!important",
+          }}
+          title="VEHICLE INFO"
+        >
           {order.deliverymode === DeliveryModeEnum.curbside
             ? 'VEHICLE INFO'
             : 'DINE IN INFO'}
@@ -119,7 +127,11 @@ const vehicleInfo = (order: any) => {
 const pickupAddress = (restaurant: any, order: any) => {
   return (
     <>
-      <Typography variant="h2" className="label" sx={{fontFamily: "'Sunborn-Sansone' !important"}}>
+      <Typography
+        variant="h2"
+        className="label"
+        sx={{ fontFamily: "'Sunborn-Sansone' !important" }}
+      >
         {order && order.deliverymode ? locationTitle(order.deliverymode) : ''}
       </Typography>
       <Typography
@@ -200,7 +212,6 @@ const OrderConfirmedCard = ({
   const { providerToken } = useSelector((state: any) => state.providerReducer);
   const [restaurant, setRestaurant] =
     useState<ResponseOrderStatus>(restaurantObj);
-
   useEffect(() => {
     setOrder(orderObj);
   }, [orderObj]);
@@ -233,7 +244,6 @@ const OrderConfirmedCard = ({
                 </Typography>
                 <Typography
                   variant="body1"
-                  
                   title={
                     order && order.deliverymode === DeliveryModeEnum.dinein
                       ? 'We’ll bring your food right to you shortly.'
@@ -262,6 +272,39 @@ const OrderConfirmedCard = ({
                   : pickupAddress(restaurant, order)}
                 <br />
                 <br />
+                {orderObj?.deliveryaddress?.specialinstructions !== '' && order && order.deliverymode === DeliveryModeEnum.dispatch  && 
+                  <>
+                <Typography
+                  variant="h2"
+                  className="label"
+                  title={
+                    order && order.deliverymode === DeliveryModeEnum.dispatch
+                      ? 'Contactless Delivery'
+                      : ''
+                  }
+                >
+                  {order && order.deliverymode === DeliveryModeEnum.dispatch
+                    ? 'Contactless Delivery'
+                    : ''}
+                </Typography>
+                <Typography
+                  variant="body1"
+                  title={orderObj?.deliveryaddress?.specialinstructions}
+                  sx={{
+                    fontFamily: "'Sunborn-Sansone' !important",
+                    color: '#525252 !important',
+                    fontSize: '16px !important',
+                    lineHeight: '1.6',
+                    letterSpacing: '0.0075em',
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  {orderObj?.deliveryaddress?.specialinstructions}
+                </Typography>
+                <br />
+                <br />
+                </>
+                }
                 {/*<br />*/}
               </Grid>
               {order &&
@@ -269,7 +312,6 @@ const OrderConfirmedCard = ({
                 order.deliverymode === DeliveryModeEnum.dinein)
                 ? vehicleInfo(order)
                 : ''}
-
               <Grid xs={12} sm={6} md={6} lg={12} className="adjust-space">
                 {order &&
                 order.readytime &&
