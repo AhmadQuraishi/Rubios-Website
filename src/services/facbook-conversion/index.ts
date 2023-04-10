@@ -109,7 +109,7 @@ export const requestFacebookConversion = async (
       body['custom_data'] = customData;
     }
 
-    const url = `${process.env.REACT_APP_FACEBOOK_CONVERSION_API}`;
+    const url = `${process.env.REACT_APP_OLO_PROXY_URL}/facebook/conversion-api`;
     return axios
       .post(url, body)
       .then((response) => {
