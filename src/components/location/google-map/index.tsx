@@ -70,6 +70,7 @@ const GoogleMapComponent = ({
         overflow: 'hidden',
       }}
       id={'google-map-location'}
+      zoom={7}
       center={mapCenter}
       options={{
         streetViewControl: false,
