@@ -72,7 +72,9 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
   const [loading, setLoading] = React.useState<any>(false);
   const [billingSchemes, setBillingSchemes] = React.useState<any>([]);
   const [sessionTime, setSessionTime] = React.useState<any>();
+  const [openAddGiftCard, setOpenAddGiftCard] = React.useState<boolean>(false);
   const [cache, setCache] = React.useState(true);
+  const [pinCheck, setPinCheck] = React.useState<any>(false);
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
   const [basket, setBasket] = React.useState<ResponseBasket>();
   const [allowedCards, setAllowedCards] = React.useState<any>();
@@ -96,6 +98,10 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
     }
   }, [hideShow]);
 
+  const handleCloseAddGiftCard = () => {
+    setPinCheck(false);
+    setOpenAddGiftCard(!openAddGiftCard);
+  };
   // React.useEffect(() => {
   //   loading &&
   //     <div className="loading-spinner">
@@ -297,6 +303,8 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
               setHideShow={(value: boolean) => HandleEditCreditCard(value)}
               diplayOnScreenCreditCardForm={diplayOnScreenCreditCardForm}
               displaySavedCards={displaySavedCards}
+              handleHideShow ={handleHideShow}
+              handleCloseAddGiftCard={handleCloseAddGiftCard}
             />
             <Grid container>
               <Grid item xs={12} sm={12} md={12} lg={12} className="add-gift">
@@ -336,7 +344,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                       </Grid>
                     </Grid>
                   )} */}
-                {displayAddCreditCard() && (
+                {!(billingSchemes.filter((account: any) => account.savedCard && !account.selected).length > 1) && displayAddCreditCard() && (
                   <Button
                     className={'add-credit-card-button'}
                     title="Add Credit card"
@@ -446,7 +454,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
 
                 {/*<AddCreditCard />*/}
                 {/*<AddCreditCardCopy />*/}
-                <AddGiftCard />
+                <AddGiftCard pinCheck={pinCheck} setPinCheck={setPinCheck} setOpenAddGiftCard={setOpenAddGiftCard} openAddGiftCard ={openAddGiftCard} handleCloseAddGiftCard={handleCloseAddGiftCard} />
               </Grid>
             </Grid>
           </Grid>
@@ -459,4 +467,4 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
   );
 });
 
-export default PaymentInfo;
+export default PaymentInfo;    

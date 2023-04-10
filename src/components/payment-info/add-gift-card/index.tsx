@@ -1,3 +1,6 @@
+                               
+
+
 import React, { forwardRef } from 'react';
 import {
   Button,
@@ -29,18 +32,26 @@ import {
 import { isLoginUser } from '../../../helpers/auth';
 import moment from 'moment';
 
-const AddGiftCard = forwardRef((props, _ref) => {
+const AddGiftCard = forwardRef((props : any, _ref) => {
+  const {
+    pinCheck,
+    setPinCheck,
+    openAddGiftCard,
+    setOpenAddGiftCard,
+    handleCloseAddGiftCard,
+    displaySavedCards,
+  } = props;
   const dispatch = useDispatch();
   const theme = useTheme();
   const basketObj = useSelector((state: any) => state.basketReducer);
   const [basket, setBasket] = React.useState<ResponseBasket>();
   const [allowedCards, setAllowedCards] = React.useState<any>();
   const [billingSchemes, setBillingSchemes] = React.useState<any>([]);
-  const [pinCheck, setPinCheck] = React.useState<any>(false);
+  // const [pinCheck, setPinCheck] = React.useState<any>(false);
   const [buttonDisabled, setButtonDisabled] = React.useState<boolean>(false);
   const [openAuthenticationModal, setOpenAuthenticationModal] =
     React.useState<any>(false);
-  const [openAddGiftCard, setOpenAddGiftCard] = React.useState<boolean>(false);
+  // const [openAddGiftCard, setOpenAddGiftCard] = React.useState<boolean>(false);
   const { sessionLoginTime } = useSelector((state: any) => state.authReducer);
   React.useEffect(() => {
     if (basketObj.basket) {
@@ -87,11 +98,6 @@ const AddGiftCard = forwardRef((props, _ref) => {
   //   setPinCheck(false);
   //   setOpenAddGiftCard(!openAddGiftCard);
   // };
-
-  const handleCloseAddGiftCard = () => {
-    setPinCheck(false);
-    setOpenAddGiftCard(!openAddGiftCard);
-  };
 
   const handleGiftCardSubmit = async (values: any) => {
     setButtonDisabled(true);
@@ -329,7 +335,7 @@ const AddGiftCard = forwardRef((props, _ref) => {
         </DialogContent>
       </Dialog>
 
-      {displayAddGiftCard() && (
+      {!(billingSchemes.filter((account: any) => account.savedCard && !account.selected).length > 1) && displayAddGiftCard() &&  (
         <Grid container>
           <Grid item xs={12} sm={12} md={12} lg={12}>
             <Button
