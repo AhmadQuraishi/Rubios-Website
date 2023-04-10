@@ -311,14 +311,11 @@ const Checkout = () => {
   };
   const AuthenticationHandler = () => {
     const LoginSessionTime: any = process.env.REACT_APP_LOGIN_SESSION_TIME;
-    console.log('timelimit for session',LoginSessionTime)
     if (isLoginUser() && sessionLoginTime) {
       const LoginCreatedTime: any = moment.unix(sessionLoginTime);
       const currentTime = moment();
       if (LoginCreatedTime.isValid()) {
         const minutes = currentTime.diff(LoginCreatedTime, 'minutes');
-        console.log('munutes', minutes);
-        console.log('timelimit for session',LoginSessionTime)
         if (LoginSessionTime !== undefined && minutes > LoginSessionTime) {
           setOpenAuthenticationModal(true);
           return false;
@@ -617,7 +614,6 @@ const Checkout = () => {
   };
 
   const placeOrder = async () => {
-
     setButtonDisabled(true);
     let customFields = [];
     let deliverymode = {
