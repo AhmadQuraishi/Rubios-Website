@@ -139,6 +139,14 @@ export function updateDuplicateAddress(duplicateAddress : string[]) {
     payload: duplicateAddress,
   }
 }
+
+export function updateNavigationLink(signInNavigation : any) {
+  return {
+    type: basketActionsTypes.NAVIGATION_URL,
+    payload: signInNavigation,
+  }
+}
+
 export function updateBasketTipAmountFailure(error: any) {
   displayToast(
     'ERROR',
