@@ -20,6 +20,7 @@ import { staticMapUrl } from 'static-google-map';
 import GoogleMapComponent from '../../components/location/google-map';
 import { isLoginUser } from '../../helpers/auth';
 import DeliveryAddressConfirmDialog from '../../components/dialogs/delivery-address-confirm';
+import { googleMapDigitalSignature } from '../../services/google';
 
 const useStyles = makeStyles((theme: Theme) => ({
   dummyBg: {
@@ -112,7 +113,11 @@ const Location = () => {
     // debugger;
   };
 
-  const generateStaticMap = (markersStatic: any) => {
+  const generateStaticMap = async (markersStatic: any) => {
+    if (restaurantLoading) {
+      return;
+    }
+
     const url = staticMapUrl({
       key: process.env.REACT_APP_GOOGLE_API_KEY?.toString(),
       scale: 2,
@@ -123,7 +128,14 @@ const Location = () => {
       zoom: 5,
       markerGroups: markersStatic,
     });
-    setStaticMapImageUrl(url);
+
+
+    const response = await googleMapDigitalSignature(url);
+    if (response?.path) {
+      setStaticMapImageUrl(response.path);
+    } else {
+      setStaticMapImageUrl(url);
+    }
   };
 
   const populateMarkersOnMap = (restaurants: any) => {
@@ -291,7 +303,7 @@ const Location = () => {
       } else {
         const rest = getOrderTypeRestaurants(restaurants.restaurants, null);
         setFilteredRestaurants(rest);
-        populateMarkersOnMap(rest);
+        // populateMarkersOnMap(rest);
         setMapCenter({
           lat: restaurants.restaurants[0].latitude,
           lng: restaurants.restaurants[0].longitude,
@@ -316,7 +328,7 @@ const Location = () => {
           orderType,
         );
         setFilteredRestaurants(rest);
-        populateMarkersOnMap(rest);
+        // populateMarkersOnMap(rest);
         // setMapCenter({
         //   lat: nearbyRestaurants.restaurants[0].latitude,
         //   lng: nearbyRestaurants.restaurants[0].longitude,
