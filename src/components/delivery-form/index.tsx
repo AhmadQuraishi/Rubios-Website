@@ -120,7 +120,7 @@ const DeliveryForm = ({
       if (specialInstruction !== '') {
         const includeContactLess = specialInstruction.includes('I want contactless delivery');
         if (includeContactLess) {
-          specialInstruction = specialInstruction.replace('I want contactless delivery,', '');
+          specialInstruction = specialInstruction.replace('I want contactless delivery. ', '');
           contactLess = true;
         }
       }
