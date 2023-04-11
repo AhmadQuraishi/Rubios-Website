@@ -240,7 +240,7 @@ const CategoryList = () => {
           //     ' and basket is empty',
           // );
           // } else {
-          displayToast('SUCCESS', 'Location changed to ' + objRestaurant.name);
+          displayToast('SUCCESS', 'Location changed to ' + objRestaurant.name.replace(/\s-\s#\d+/, ''));
           // }
           // navigate('/menu/' + objRestaurant.slug);
           dispatch(getCategoriesRequest(objRestaurant.id));
@@ -410,11 +410,11 @@ const CategoryList = () => {
       displayToast(
         'SUCCESS',
         'Location changed to ' +
-        restaurantSelected.name +
+        restaurantSelected.name.replace(/\s-\s#\d+/, '') +
         ' and basket is empty',
       );
     } else {
-      displayToast('SUCCESS', 'Location changed to ' + restaurantSelected.name);
+      displayToast('SUCCESS', 'Location changed to ' + restaurantSelected.name.replace(/\s-\s#\d+/, ''));
     }
     setOpen(false);
     navigate('/menu/' + restaurantSelected.slug);
