@@ -51,7 +51,7 @@ export const ItemsAvailableComponent = ({ restaurant }: any) => {
               paddingBottom: '5px',
             }}
           >
-            {restaurant?.name}
+            {restaurant?.name.replace(/\s-\s#\d+/, '')}
           </Typography>
           <Typography variant="body2" sx={{ textAlign: 'center', }}>
             {restaurant?.streetaddress}, <br /> {restaurant?.city},{' '}
