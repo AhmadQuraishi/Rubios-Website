@@ -340,7 +340,7 @@ const LocationCard = (props: any) => {
           dispatch(setBasketDeliveryAddressSuccess(response));
           dispatch(setResturantInfoRequest(newRestaurant, orderType || ''));
           navigate('/menu/' + newRestaurant.slug);
-          displayToast('SUCCESS', 'Location changed to ' + newRestaurant.name);
+          displayToast('SUCCESS', 'Location changed to ' + newRestaurant.name.replace(/\s-\s#\d+/, ''));
         } catch (error: any) {
           setActionPerform(false);
           displayToast(
@@ -365,7 +365,7 @@ const LocationCard = (props: any) => {
           dispatch(setBasketDeliveryAddressSuccess(response));
           dispatch(setResturantInfoRequest(newRestaurant, orderType || ''));
           navigate('/menu/' + newRestaurant.slug);
-          displayToast('SUCCESS', 'Location changed to ' + newRestaurant.name);
+          displayToast('SUCCESS', 'Location changed to ' + newRestaurant.name.replace(/\s-\s#\d+/, ''));
         } catch (error: any) {
           setActionPerform(false);
           displayToast(
@@ -381,7 +381,7 @@ const LocationCard = (props: any) => {
       dispatch(getBasketRequestSuccess(newBasket?.basket));
       dispatch(setResturantInfoRequest(newRestaurant, orderType || ''));
       navigate('/menu/' + newRestaurant?.slug);
-      displayToast('SUCCESS', 'Location changed to ' + newRestaurant.name);
+      displayToast('SUCCESS', 'Location changed to ' + newRestaurant.name.replace(/\s-\s#\d+/, ''));
     }
   };
 
