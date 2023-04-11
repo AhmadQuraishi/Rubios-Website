@@ -255,7 +255,7 @@ const Checkout = () => {
         },
       );
       if (
-        basketObj.payment.billingSchemes.filter(
+        billingArray.filter(
           (element: any) =>
             element.billingmethod === 'creditcard' && element.selected,
         ).length === 0
