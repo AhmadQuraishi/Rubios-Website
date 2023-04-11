@@ -317,6 +317,31 @@ const OrderTime = ({ orderType }: any) => {
               >
                 (change)
               </button>
+              <div id="date-picker" aria-labelledby="date-picker-title">
+                <LocalizationProvider dateAdapter={AdapterMoment}>
+                  <MobileDatePicker
+                    label="Order Date"
+                    DialogProps={{
+                      TransitionProps: { role: 'dialog', 'aria-modal': 'true' },
+                    }}
+                    minDate={moment()}
+                    maxDate={moment().add('days', 7)}
+                    inputFormat="MM/DD/yyyy"
+                    value={selectedDate}
+                    views={['day']}
+                    className="order-date"
+                    onChange={(e: any) => handleDateChange(e)}
+                    renderInput={(params: any) => (
+                      <TextField
+                        id="dateTime_check"
+                        className="order-date"
+                        style={{ display: open ? 'block' : 'none' }}
+                        {...params}
+                      />
+                    )}
+                  />
+                </LocalizationProvider>
+              </div>
               {window?.location?.href
                     ?.toLocaleLowerCase()
                     ?.indexOf('/checkout') !== -1 &&
@@ -360,31 +385,6 @@ const OrderTime = ({ orderType }: any) => {
                         </Typography>
                       </>
                     )}
-              <div id="date-picker" aria-labelledby="date-picker-title">
-                <LocalizationProvider dateAdapter={AdapterMoment}>
-                  <MobileDatePicker
-                    label="Order Date"
-                    DialogProps={{
-                      TransitionProps: { role: 'dialog', 'aria-modal': 'true' },
-                    }}
-                    minDate={moment()}
-                    maxDate={moment().add('days', 7)}
-                    inputFormat="MM/DD/yyyy"
-                    value={selectedDate}
-                    views={['day']}
-                    className="order-date"
-                    onChange={(e: any) => handleDateChange(e)}
-                    renderInput={(params: any) => (
-                      <TextField
-                        id="dateTime_check"
-                        className="order-date"
-                        style={{ display: open ? 'block' : 'none' }}
-                        {...params}
-                      />
-                    )}
-                  />
-                </LocalizationProvider>
-              </div>
             </Grid>
             <Grid item xs={12} className="time-slot-wrapper">
               <Grid container>

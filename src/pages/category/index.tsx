@@ -139,6 +139,7 @@ const CategoryList = () => {
 
 
   const handleViewMore = (categoryIndex: any) => {
+    // debugger;
     if (showAll[categoryIndex]) {
       // window.scrollTo({ top: 0, behavior: 'smooth' });
       setShowAll({ ...showAll, [categoryIndex]: false });
@@ -155,6 +156,7 @@ const CategoryList = () => {
     }
     // debugger;
   };
+
   type ShowAll = {
     [categoryIndex: number]: boolean;
   }
