@@ -37,7 +37,8 @@ const SplitPayment = forwardRef((props: any, _ref) => {
     setHideShow,
     displaySavedCards,
     diplayOnScreenCreditCardForm,
-    handleCloseAddGiftCard
+    handleCloseAddGiftCard,
+    allowedCards,
   } = props;
   const dispatch = useDispatch();
   const theme = useTheme();
@@ -77,7 +78,7 @@ const SplitPayment = forwardRef((props: any, _ref) => {
   React.useEffect(() => {
     console.log('isVisible', isVisible);
   }, [isVisible]);
-
+  
   const handleCheckBox = (e: any, localId: any, billingmethod: string) => {
     const billingSchemeStats = getBillingSchemesStats(billingSchemes);
     const totalCardsSelected =
@@ -304,6 +305,26 @@ const SplitPayment = forwardRef((props: any, _ref) => {
     );
   };
 
+  const displayAddGiftCard = () => {
+    const billingSchemeStats = getBillingSchemesStats(billingSchemes);
+    return (
+      basket &&
+      billingSchemeStats.giftCard < 4 &&
+      allowedCards &&
+      allowedCards.length &&
+      allowedCards.filter((element: any) => {
+        return element.type === 'giftcard';
+      }).length > 0
+    );
+  };
+  const displayCreditCardButton = () => {
+    return (
+      billingSchemes.filter((element: any) => {
+        return element.billingmethod === 'creditcard' && 
+        !element.billingaccountid
+    }).length === 0
+    );
+  }
   return (
     <>
       <DialogBox
@@ -371,7 +392,7 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                       />
                     </FormGroup>
                   </Grid>
-                  <Grid container className="payment-bar">
+                  <Grid container className="payment-bar" sx={{paddingLeft : {sm: '10px',xs: '5px'}}}>
                     <Grid
                       item
                       style={{ display: 'flex' }}
@@ -393,16 +414,17 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                           account.billingmethod === 'storedvalue'
                             ? 'flex-start'
                             : 'center',
-                        paddingLeft: 5,
                         justifyContent:
                           account.billingmethod === 'storedvalue'
                             ? 'center'
                             : 'flex-start',
                       }}
+                      sx={{
+                        paddingLeft: {md:'20px',sm: '0px', lg:'5px',xs: '0px'},}}
                       alignItems="center"
-                      xs={5.5}
-                      sm={5.5}
-                      md={5.5}
+                      xs={4.7}
+                      sm={5}
+                      md={5}
                       lg={5.5}
                     >
                       {account.billingmethod === 'creditcard' && (
@@ -448,36 +470,60 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                       )}
                     </Grid>
                     <Grid
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'right',
-                      }}
-                      alignItems="center"
-                      item
-                      xs={2.5}
-                      sm={3}
-                      md={4}
-                      lg={3}
-                    >
-                      <Typography
-                        sx={{
-                          color: '#224c65',
-                          fontSize: {
-                            sm: '16px !important',
-                            xs: '12px !important',
-                          },
-                          fontFamily: "'Librefranklin-Regular' !important",
-                        }}
-                      >
-                        ${account.amount.toFixed(2) || 0}
-                      </Typography>
-                    </Grid>
-                    <Grid
                       sx={{
                         display: 'flex',
                         justifyContent: 'flex-end',
                         padding: {
-                          xs: '0px 15px 0px 0px',
+                          xs: '0px 0px 0px 0px',
+                          sm: '0px 15px 0px 0px',
+                          md: '0px',
+                          lg: '0px',
+                        },
+                      }}
+                      alignItems="center"
+                      item
+                      xs={1}
+                      sm={1.5}
+                      md={1.5}
+                      lg={1}
+                    >
+                      <Typography
+                        variant="h6"
+                        fontFamily= "'Librefranklin-Regular' !important"
+                      >
+                        AMOUNT
+                      </Typography>
+                    </Grid>
+                    <Grid
+                      style={{ display: 'flex' }}
+                      alignItems="center"
+                      item
+                      xs={3.5}
+                      sm={3}
+                      md={3}
+                      lg={2.5}
+                    >
+                      <TextField
+                        type="number"
+                        onChange={(e) =>
+                          handleAmountChanges(e, account.localId)
+                        }
+                        disabled={true}
+                        value={account.amount.toFixed(2) || 0}
+                        inputProps={{ shrink: false }}
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">$</InputAdornment>
+                          ),
+                        }}
+                      />
+                    </Grid>
+                    <Grid
+                      sx={{
+                        display: 'flex',
+                        justifyContent: {sm:'flex-end',md: 'center', xs: 'flex-end', lg: 'flex-end'},
+                        padding: {
+                          xs: '0px 0px 0px 5px',
                           sm: '5px 15px 0px 0px',
                           md: '0px',
                           lg: '0px',
@@ -485,8 +531,10 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                       }}
                       alignItems="center"
                       item
-                      xs={2.5}
-                      sm={2}
+                      xs={1.3}
+                      sm={1}
+                      md={1.5}
+                      lg={1.5}
                     >
                       {billingSchemes &&
                         billingSchemes?.filter(
@@ -572,7 +620,9 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                               textAlign: 'center',
                               cursor: 'pointer',
                               margin: {
-                                sm: '-11px 5px 10px 65px',
+                                sm: '-11px 0px 10px 68px',
+                                lg: '-11px 5px 10px 65px',
+                                md: '-11px 5px 10px 50px',
                                 xs: '-11px 0px 10px 38px',
                               },
                               display: 'flex',
@@ -585,8 +635,8 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                               <>
                                 <Grid
                                   sx={{
-                                    marginLeft: '12px',
-                                    marginRight: '55px',
+                                    marginLeft: {sm:'12px',xs : '0px'},
+                                    marginRight: {sm:'55px',xs: '0px'}
                                   }}
                                 >
                                   <Divider
@@ -601,8 +651,8 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                                   item
                                   xs={12}
                                 >
-                                 {acc.billingmethod === 'creditcard'
-                                  ? 
+                                 {displayCreditCardButton()
+                                  &&
                                   <Button
                                     // className={'add-credit-card-button'}
                                     title="Add Credit card"
@@ -615,7 +665,7 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                                       paddingTop: '13px',
                                       marginBottom: '-6px',
                                       height: '40px !important',
-                                      marginLeft: '3px',
+                                      marginLeft: {xs:'-3px',sm: '3px'},
                                       fontSize : '16px !important',
                                       color: '#224c65',
                                       letterSpacing: '0.75px !important',
@@ -624,7 +674,8 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                                   >
                                     Add Credit card
                                   </Button>
-                                   : 
+                                  }
+                                   {acc.billingmethod === 'storedvalue' && displayAddGiftCard() &&
                                    <Button
                                    onClick={handleCloseAddGiftCard}
                                    title="ADD GIFT CARD"
@@ -642,9 +693,9 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                                     letterSpacing: '0.75px !important',
                                     fontFamily: "'Sunborn-Sansone' !important",
                                   }}
-                                 >
+                                  >
                                    ADD Gift CARD
-                                 </Button>
+                                  </Button>
                                   }
                                 </Grid>
                               </>
@@ -664,6 +715,7 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                               }
                               container
                               className="payment-bar2"
+                              sx={{paddingLeft: {sm:'10px', xs: '5px'}}}
                             >
                               <Grid
                                 item
@@ -677,8 +729,10 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                               <Grid
                                 item
                                 sx={{
-                                  paddingLeft: { sm: '5px', xs: '15px' },
+                                  // paddingLeft: { sm: '5px', xs: '15px' },
+                                  paddingLeft: {md:'20px',sm: '5px', lg:'5px',xs: '15px'},
                                   fontSize: { sm: '16px', xs: '12px' },
+                                  marginTop: '2px',
                                 }}
                                 style={{
                                   display: 'flex',
@@ -691,6 +745,7 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                                       ? 'center'
                                       : 'center',
                                 }}
+                            
                                 justifyContent="space-between"
                                 xs={10.5}
                                 sm={8.5}

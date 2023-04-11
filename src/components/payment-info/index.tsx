@@ -161,6 +161,12 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
           element.billingmethod === 'creditcard' && !element.billingaccountid
         );
       }).length === 0 &&
+      !(billingSchemes?.filter(
+        (account: any) =>
+        account.billingmethod === 'creditcard' &&
+          !account.selected &&
+          !account.alwaysVisible,
+      ).length > 0) &&
       allowedCards?.length > 0 &&
       allowedCards.filter((element: any) => {
         return element.type === 'creditcard';
@@ -305,6 +311,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
               displaySavedCards={displaySavedCards}
               handleHideShow ={handleHideShow}
               handleCloseAddGiftCard={handleCloseAddGiftCard}
+              allowedCards={allowedCards}
             />
             <Grid container>
               <Grid item xs={12} sm={12} md={12} lg={12} className="add-gift">
@@ -344,7 +351,7 @@ const PaymentInfo = forwardRef((props: any, _ref) => {
                       </Grid>
                     </Grid>
                   )} */}
-                {!(billingSchemes.filter((account: any) => account.savedCard && !account.selected).length > 1) && displayAddCreditCard() && (
+                {displayAddCreditCard() && (
                   <Button
                     className={'add-credit-card-button'}
                     title="Add Credit card"

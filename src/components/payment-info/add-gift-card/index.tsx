@@ -219,6 +219,12 @@ const AddGiftCard = forwardRef((props : any, _ref) => {
     return (
       basket &&
       billingSchemeStats.giftCard < 4 &&
+        !(billingSchemes?.filter(
+          (account: any) =>
+          account.billingmethod === 'storedvalue' &&
+            !account.selected &&
+            !account.alwaysVisible,
+        ).length > 0) &&
       allowedCards &&
       allowedCards.length &&
       allowedCards.filter((element: any) => {
@@ -335,7 +341,7 @@ const AddGiftCard = forwardRef((props : any, _ref) => {
         </DialogContent>
       </Dialog>
 
-      {!(billingSchemes.filter((account: any) => account.savedCard && !account.selected).length > 1) && displayAddGiftCard() &&  (
+      {displayAddGiftCard() &&  (
         <Grid container>
           <Grid item xs={12} sm={12} md={12} lg={12}>
             <Button
