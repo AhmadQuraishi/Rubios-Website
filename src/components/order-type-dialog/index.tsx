@@ -124,7 +124,7 @@ export const OrderTypeDialog = (props: any) => {
           newBasketError?.response?.data?.message ||
             'ERROR! Please Try again later',
         );
-        displayToast('SUCCESS', 'Location changed to ' + newRestaurant.name);
+        displayToast('SUCCESS', 'Location changed to ' + newRestaurant.name.replace(/\s-\s#\d+/, ''));
         dispatch(resetBasketRequest());
         dispatch(setResturantInfoRequest(newRestaurant, orderType || ''));
         dispatch(setDeliveryAddress(newDeliveryAddress.address));
@@ -400,7 +400,7 @@ export const OrderTypeDialog = (props: any) => {
           handleClose();
           // debugger;
           // navigate('/');
-          displayToast('SUCCESS', 'Location changed to ' + newRestaurant.name);
+          displayToast('SUCCESS', 'Location changed to ' + newRestaurant.name.replace(/\s-\s#\d+/, ''));
           navigateCheckout();
           // debugger;
         } catch (error: any) {

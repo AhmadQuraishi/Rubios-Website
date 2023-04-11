@@ -651,7 +651,7 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                                   item
                                   xs={12}
                                 >
-                                 {displayCreditCardButton()
+                                 {acc.billingmethod === 'creditcard' && displayCreditCardButton()
                                   &&
                                   <Button
                                     // className={'add-credit-card-button'}
