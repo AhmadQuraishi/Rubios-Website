@@ -133,7 +133,7 @@ export function setTipFalse() {
     type: basketActionsTypes.SET_TIP_FALSE,
   };
 }
-export function updateDuplicateAddress(duplicateAddress : string[]) {
+export function updateDuplicateAddress(duplicateAddress: string[]) {
   return {
     type: basketActionsTypes.UPDATE_DUPLICATE_ADDRESS,
     payload: duplicateAddress,
