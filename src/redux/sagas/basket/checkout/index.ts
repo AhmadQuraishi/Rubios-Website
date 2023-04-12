@@ -74,6 +74,10 @@ function* asyncUpdateBasketTimeWanted(action: any): any {
       action.data,
     );
     yield put(updateBasketTimeWantedSuccess(response));
+    const validateResponse = yield call(validateBasket, action.basketId);
+    yield put(validateBasketSuccess(validateResponse));
+    const basketResponse = yield call(getBasket, action.basketId);
+    yield put(getBasketRequestSuccess(basketResponse));
   } catch (error) {
     yield put(updateBasketTimeWantedFailure(error));
   }
@@ -83,6 +87,10 @@ function* asyncDeleteBasketTimeWanted(action: any): any {
   try {
     const response = yield call(deleteTimeWantedBasket, action.basketId);
     yield put(deleteBasketTimeWantedSuccess(response));
+    const validateResponse = yield call(validateBasket, action.basketId);
+    yield put(validateBasketSuccess(validateResponse));
+    const basketResponse = yield call(getBasket, action.basketId);
+    yield put(getBasketRequestSuccess(basketResponse));
   } catch (error) {
     yield put(deleteBasketTimeWantedFailure(error));
   }
@@ -96,6 +104,10 @@ function* asyncUpdateBasketTipAmount(action: any): any {
       action.data,
     );
     yield put(updateBasketTipAmountSuccess(response));
+    const validateResponse = yield call(validateBasket, action.basketId);
+    yield put(validateBasketSuccess(validateResponse));
+    const basketResponse = yield call(getBasket, action.basketId);
+    yield put(getBasketRequestSuccess(basketResponse));
   } catch (error) {
     yield put(updateBasketTipAmountFailure(error));
   }
@@ -109,6 +121,10 @@ function* asyncUpdateBasketCouponCode(action: any): any {
       action.data,
     );
     yield put(updateBasketCouponCodeSuccess(response));
+    const validateResponse = yield call(validateBasket, action.basketId);
+    yield put(validateBasketSuccess(validateResponse));
+    const basketResponse = yield call(getBasket, action.basketId);
+    yield put(getBasketRequestSuccess(basketResponse));
   } catch (error) {
     yield put(updateBasketCouponCodeFailure(error));
   }
@@ -118,6 +134,10 @@ function* asyncRemoveBasketCouponCode(action: any): any {
   try {
     const response = yield call(removeCouponBasket, action.basketId);
     yield put(removeBasketCouponCodeSuccess(response));
+    const validateResponse = yield call(validateBasket, action.basketId);
+    yield put(validateBasketSuccess(validateResponse));
+    const basketResponse = yield call(getBasket, action.basketId);
+    yield put(getBasketRequestSuccess(basketResponse));
   } catch (error) {
     yield put(removeBasketCouponCodeFailure(error));
   }
