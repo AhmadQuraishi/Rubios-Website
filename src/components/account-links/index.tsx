@@ -9,7 +9,6 @@ import {
 import { makeStyles } from '@mui/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { removePreviousAddresses } from '../../helpers/checkout';
 import { userLogout } from '../../redux/actions/user';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -32,15 +31,8 @@ const AccountLinks = (props: any) => {
   const { closeDrawer } = props;
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { duplicateAddress } = useSelector((state: any) => state.basketReducer);
-  const { authToken } = useSelector(
-    (state: any) => state.authReducer,
-  );
   const logout = () => {
     dispatch(userLogout());
-    if (authToken) {
-    removePreviousAddresses(duplicateAddress, null);
-    }
     if (closeDrawer) {
       closeDrawer(false);
     }

@@ -16,6 +16,8 @@ import moment from 'moment';
 import { generateCCSFToken } from '../services/basket';
 import { isLoginUser } from './auth';
 import { requestDelUserDelAddress } from '../services/user';
+import { store } from '../redux/store';
+import { updateDuplicateAddress } from '../redux/actions/basket/checkout';
 
 const cardTypes: any = {
   amex: 'Amex',
@@ -24,28 +26,24 @@ const cardTypes: any = {
   mastercard: 'Mastercard',
 };
 
-export function removePreviousAddresses(addressIds: any, basket: any) {
-  // Remove duplicate addresses from the database
-  if (addressIds?.length > 0) {
-    let newFilteredDuplicateAddress;
-    if (basket) {
-      newFilteredDuplicateAddress = addressIds.filter(
-        (id: any) => id !== basket?.deliveryaddress?.id,
+export function removePreviousAddresses(basketAddresses: any, basket: any) {
+  if (basketAddresses?.duplicated?.length > 0) {
+    const filterSavedAddress = basketAddresses?.duplicated.filter(
+      (addressId: any) =>
+        // !basketAddresses.saved.includes(addressId) &&
+        basket?.deliveryaddress?.id !== addressId,
+    );
+    console.log('filterSavedAddress', filterSavedAddress);
+    if (filterSavedAddress?.length > 0) {
+      filterSavedAddress.forEach((id: any) => {
+        requestDelUserDelAddress(id);
+      });
+      const remainingAddress = basketAddresses?.duplicated.filter(
+        (addressId: any) => !filterSavedAddress.includes(addressId),
       );
-    } else {
-      newFilteredDuplicateAddress = addressIds;
-      console.log(newFilteredDuplicateAddress, 'newFilteredDuplicateAddress');
-    }
-    if (newFilteredDuplicateAddress?.length > 0) {
-      console.log(newFilteredDuplicateAddress, 'newFilteredDuplicateAddress');
-      const arrayLength = newFilteredDuplicateAddress?.length;
-      console.log(arrayLength, 'arrayLength');
-      for (let i = 0; i < arrayLength - 1; i++) {
-        requestDelUserDelAddress(addressIds[i]);
-      }
+      store.dispatch(updateDuplicateAddress(remainingAddress));
     }
   }
-  // debugger;
 }
 export function generateSubmitBasketPayload(
   formData: any,
@@ -262,21 +260,19 @@ export function generateNextAvailableTimeSlots(
   closingTime: string,
   isOpenAllDay: Boolean,
   leadestimatedminutes: number,
-  timeMode : string,
-  orderType : string,
-  
+  timeMode: string,
+  orderType: string,
 ) {
   let timeSlots = [];
   let currentTime = moment();
   if (orderType === 'dispatch' && timeMode === 'asap') {
     currentTime = moment().add(leadestimatedminutes, 'minutes');
-    console.log(leadestimatedminutes,'leadestimatedminutes');
+    console.log(leadestimatedminutes, 'leadestimatedminutes');
     // debugger;
-    }
-    else {
-      // debugger;
-      currentTime = moment();
-    }
+  } else {
+    // debugger;
+    currentTime = moment();
+  }
   let startTime;
 
   let openAt = moment(openingTime, 'YYYYMMDD HH:mm');
@@ -302,7 +298,7 @@ export function generateNextAvailableTimeSlots(
   const maxAllowed = 100;
   while (closeAt.diff(startTime, 'seconds') > 0 && count <= maxAllowed) {
     timeSlots.push(moment(startTime).format('YYYYMMDD HH:mm'));
-    startTime  &&  startTime.add(15, 'm');
+    startTime && startTime.add(15, 'm');
     count++;
   }
 

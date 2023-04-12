@@ -26,7 +26,6 @@ import {
 import { resetBasketRequest } from './redux/actions/basket';
 import { isLoginUser } from './helpers/auth';
 import { CacheDialog } from './components/cache-dialog';
-import LoginAuthDialog from './components/login-authentication-dialog';
 import { updateDuplicateAddress } from './redux/actions/basket/checkout';
 import { removePreviousAddresses } from './helpers/checkout';
 
@@ -41,12 +40,13 @@ function App(props: any) {
   const dispatch = useDispatch();
   const { deviceId } = useSelector((state: any) => state.authReducer);
   const { basket } = useSelector((state: any) => state.basketReducer);
-  const { duplicateAddress } = useSelector((state: any) => state.basketReducer);
-  const {
-    restaurant,
-    orderType,
-    sessionTime: restaurantSessionTime,
-  } = useSelector((state: any) => state.restaurantInfoReducer);
+  const { addresses: basketAddresses } = useSelector(
+    (state: any) => state.basketReducer,
+  );
+  const { restaurant, orderType,     sessionTime: restaurantSessionTime,
+  } = useSelector(
+    (state: any) => state.restaurantInfoReducer,
+  );
   const { authToken, sessionLoginTime } = useSelector(
     (state: any) => state.authReducer,
   );
@@ -59,19 +59,19 @@ function App(props: any) {
 
   useEffect(() => {
     if (
-      Array.isArray(duplicateAddress) &&
+      basketAddresses?.duplicated &&
+      Array.isArray(basketAddresses?.duplicated) &&
       basket?.deliveryaddress?.id &&
-      !duplicateAddress.includes(basket?.deliveryaddress?.id)
+      !basketAddresses?.duplicated.includes(basket?.deliveryaddress?.id)
     ) {
       const updatedDuplicateAddress = [
-        ...duplicateAddress,
+        ...basketAddresses?.duplicated,
         basket.deliveryaddress.id,
       ];
+      console.log('updatedDuplicateAddress', updatedDuplicateAddress);
       dispatch(updateDuplicateAddress(updatedDuplicateAddress));
-      console.log(updatedDuplicateAddress, 'updatedDuplicateAddress');
     }
-    // debugger;
-  }, [basket?.deliveryaddress?.id]);
+  }, [basket]);
 
   const updateDeviceId = () => {
     const newDeviceId = generateDeviceId();
@@ -145,9 +145,6 @@ function App(props: any) {
           dispatch(resetBasketRequest());
           sessionStorage.removeItem('hidePromotionalMsg');
           // setOpen(true);
-          if (authToken) {
-            removePreviousAddresses(duplicateAddress, null);
-          }
           navigate('/location');
           dispatch(updateRestaurantSessionRequest(null));
         }
