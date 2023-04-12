@@ -21,14 +21,15 @@ import moment from 'moment';
 import TagManager from 'react-gtm-module';
 import {
   resetRestaurantRequest,
-  updateSessionNull,
-  updateSessionRequest,
+  updateRestaurantSessionRequest,
 } from './redux/actions/restaurant';
 import { resetBasketRequest } from './redux/actions/basket';
 import { isLoginUser } from './helpers/auth';
 import { CacheDialog } from './components/cache-dialog';
 import { updateDuplicateAddress } from './redux/actions/basket/checkout';
 import { removePreviousAddresses } from './helpers/checkout';
+
+const { REACT_APP_RESTAURANT_SESSION_TIME } = process.env;
 
 function App(props: any) {
   const location = useLocation();
@@ -42,7 +43,8 @@ function App(props: any) {
   const { addresses: basketAddresses } = useSelector(
     (state: any) => state.basketReducer,
   );
-  const { restaurant, orderType, sessionTime } = useSelector(
+  const { restaurant, orderType,     sessionTime: restaurantSessionTime,
+  } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
   const { authToken, sessionLoginTime } = useSelector(
@@ -100,70 +102,66 @@ function App(props: any) {
     }
   }, []);
 
-  useEffect(() => {
-    if (productCount > 0) {
-      dispatch(updateSessionNull(sessionTime));
-      dispatch(updateSessionRequest(sessionTime));
-    }
-  }, [productCount]);
+  // useEffect(() => {
+  //   if (productCount > 0) {
+  //     const currentTime = moment();
+  //     dispatch(updateSessionNull(sessionTime));
+  //     dispatch(updateRestaurantSessionRequest(sessionTime));
+  //   }
+  // }, [productCount]);
 
   let intervalId: any;
 
   useEffect(() => {
-    if (restaurant && !sessionTime) {
-      const currentTime = moment();
-      dispatch(updateSessionRequest(currentTime));
+    if (restaurant && !restaurantSessionTime) {
+      const currentTime = moment().unix();
+      dispatch(updateRestaurantSessionRequest(currentTime));
     }
   }, []);
 
-  useEffect(() => {
-    if (authToken && !sessionLoginTime) {
-      const currentTime = moment();
-      dispatch(updateSessionRequest(currentTime));
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (authToken && !sessionLoginTime) {
+  //     const currentTime = moment();
+  //     dispatch(updateSessionRequest(currentTime));
+  //   }
+  // }, []);
 
-  useEffect(() => {
-    if (basketAddresses?.duplicated?.length > 0) {
-      removePreviousAddresses(basketAddresses, basket);
-    }
-  }, [basketAddresses]);
-
-  const clearOrderCacheAfter30Minutes = () => {
-    const timeLimit: any = process.env.REACT_APP_RESTAURANT_SESSION_TIME;
-    console.log('sessionTime', sessionTime);
-    console.log('working1', moment.unix(sessionTime).format('h:mm:ss A'));
-    if (restaurant && sessionTime) {
-      const restaurantSessionTime: any = moment.unix(sessionTime);
-      console.log('working2', restaurantSessionTime);
+  const clearOrderCacheAfterTimeout = () => {
+    const timeLimit: number = REACT_APP_RESTAURANT_SESSION_TIME
+      ? parseInt(REACT_APP_RESTAURANT_SESSION_TIME)
+      : 0;
+    if (restaurant && restaurantSessionTime) {
+      const restaurantSessionTimeMoment: any = moment.unix(
+        restaurantSessionTime,
+      );
       const currentTime = moment();
-      if (restaurantSessionTime.isValid()) {
-        console.log('working3', restaurantSessionTime);
-        const minutes = currentTime.diff(restaurantSessionTime, 'minutes');
-        console.log(minutes, 'minutes');
-        if (timeLimit !== undefined && minutes > timeLimit) {
+      if (restaurantSessionTimeMoment.isValid()) {
+        const minutes = currentTime.diff(
+          restaurantSessionTimeMoment,
+          'minutes',
+        );
+        if (minutes > timeLimit) {
           dispatch(resetRestaurantRequest());
           dispatch(resetBasketRequest());
-          sessionStorage.removeItem('hasDisplayedDialog');
+          sessionStorage.removeItem('hidePromotionalMsg');
           // setOpen(true);
-
           navigate('/location');
-          dispatch(updateSessionNull(sessionTime));
+          dispatch(updateRestaurantSessionRequest(null));
         }
       }
     }
   };
   useEffect(() => {
-    clearOrderCacheAfter30Minutes();
+    clearOrderCacheAfterTimeout();
     intervalId = setInterval(function () {
-      clearOrderCacheAfter30Minutes();
+      clearOrderCacheAfterTimeout();
     }, 30 * 1000);
     return () => clearInterval(intervalId);
   }, [window.location.href]);
 
   //   useEffect(() => {
   //     setInterval(() => {
-  //       clearOrderCacheAfter30Minutes();
+  //       clearOrderCacheAfterTimeout();
   //       console.log("working");
   //     }, 5000)
 
