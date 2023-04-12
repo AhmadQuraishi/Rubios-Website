@@ -29,7 +29,6 @@ import {
   submitBasketSinglePaymentFailure,
   submitBasketSinglePaymentSuccess,
   updateBasketBillingSchemes,
-  updateDuplicateAddress,
   updateNavigationLink,
   validateBasket,
 } from '../../redux/actions/basket/checkout';
@@ -116,7 +115,6 @@ const Checkout = () => {
   //   React.useState<any>(null);
   // const [ccsfObj, setccsfObj] = React.useState<any>();
   const basketObj = useSelector((state: any) => state.basketReducer);
-  const { duplicateAddress } = useSelector((state: any) => state.basketReducer);
   const { providerToken } = useSelector((state: any) => state.providerReducer);
   const { guestUser } = useSelector((state: any) => state.guestReducer);
   const { rewards: qualifyingRewards, loading: loadingRewards } = useSelector(
@@ -272,15 +270,7 @@ const Checkout = () => {
       setRemoveCreditCardOnce(false);
     }
   }, []);
-
-  const removePreviousAddresses = (addressIds: any) => {
-    const arrayLength = addressIds?.length;
-    console.log(arrayLength, 'arrayLength');
-    for (let i = 0; i < arrayLength - 1; i++) {
-      requestDelUserDelAddress(addressIds[i]);
-    }
-    // debugger;
-  };
+  
   React.useEffect(() => {
     const { pathname, search } = window.location;
     const url = `${pathname}${search}`;
@@ -651,26 +641,6 @@ const Checkout = () => {
       }
       formDataValue = formData;
     }
-    // debugger;
-    if (duplicateAddress?.length > 0) {
-      let newFilteredDuplicateAddress;
-      if (basket?.deliveryaddress?.id) {
-        newFilteredDuplicateAddress = duplicateAddress.filter(
-          (id: any) => id !== basket?.deliveryaddress?.id,
-        );
-      } else {
-        newFilteredDuplicateAddress = duplicateAddress;
-        console.log(newFilteredDuplicateAddress, 'newFilteredDuplicateAddress');
-      }
-      if (newFilteredDuplicateAddress?.length > 0) {
-        console.log(
-          newFilteredDuplicateAddress,
-          'newFilteredDuplicateAddres423323232s',
-        );
-        removePreviousAddresses(newFilteredDuplicateAddress);
-      }
-    }
-    console.log(ccsfObj, 'ccsfObj registerError');
     if (
       basket?.deliverymode === DeliveryModeEnum.dispatch &&
       basket?.deliveryaddress?.specialinstructions?.toLowerCase() !==

@@ -29,8 +29,11 @@ const INITIAL_STATE = {
   orderSubmit: false,
   error: null,
   defaultTip: true,
-  duplicateAddress: [],
-  signInNavigation : '',
+  addresses: {
+    saved: [],
+    duplicated: [],
+  },
+  signInNavigation: '',
 };
 
 const basketReducer = (state = INITIAL_STATE, action: any) => {
@@ -56,7 +59,10 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
           },
           billingSchemes: [],
         },
-        
+        addresses: {
+          saved: [],
+          duplicated: [],
+        },
       };
     case basketActionsTypes.VALIDETE_BASKET:
     case basketActionsTypes.SUBMIT_BASKET_SINGLE_PAYMENT:
@@ -110,14 +116,33 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
         ...state,
         defaultTip: false,
       };
-      
-    case basketActionsTypes.UPDATE_DUPLICATE_ADDRESS: 
-    return {
-      ...state,
-      duplicateAddress : action.payload,
-    };
+
+    case basketActionsTypes.UPDATE_DUPLICATE_ADDRESS:
+      return {
+        ...state,
+        addresses: {
+          saved: state.addresses.saved,
+          duplicated: action.payload,
+        },
+      };
+    case basketActionsTypes.GET_USER_DELIVERY_ADDRESSES_FOR_BASKET_SUCCESS:
+      return {
+        ...state,
+        addresses: {
+          saved: action.payload,
+          duplicated: state.addresses.duplicated,
+        },
+      };
+    case basketActionsTypes.GET_USER_DELIVERY_ADDRESSES_FOR_BASKET_FAILURE:
+      return {
+        ...state,
+        addresses: {
+          saved: [],
+          duplicated: state.addresses.duplicated,
+        },
+      };
     case basketActionsTypes.NAVIGATION_URL:
-      return { 
+      return {
         ...state,
         signInNavigation: action.payload,
       };
@@ -158,17 +183,17 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
           error: null,
         },
       };
-    case basketActionsTypes.GET_BASKET_FAILURE:
-    case basketActionsTypes.CREATE_BASKET_FROM_PREV_FAILURE:
-      return {
-        ...state,
-        loading: false,
-        calendar: {
-          loading: false,
-          error: {},
-        },
-        validate: null,
-      };
+    // case basketActionsTypes.GET_BASKET_FAILURE:
+    // case basketActionsTypes.CREATE_BASKET_FROM_PREV_FAILURE:
+    //   return {
+    //     ...state,
+    //     loading: false,
+    //     calendar: {
+    //       loading: false,
+    //       error: {},
+    //     },
+    //     validate: null,
+    //   };
     case basketActionsTypes.SUBMIT_BASKET_SINGLE_PAYMENT_SUCCESS:
     case basketActionsTypes.RESET_BASKET_REQUEST:
       return {
@@ -194,6 +219,10 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
             error: null,
           },
           billingSchemes: [],
+        },
+        addresses: {
+          saved: [],
+          duplicated: [],
         },
         orderSubmit: false,
         error: null,
