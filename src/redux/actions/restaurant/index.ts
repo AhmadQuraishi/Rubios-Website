@@ -28,12 +28,6 @@ export function getResturantInfoRequestSuccess(data: ResponseRestaurant) {
     payload: data,
   };
 }
-export function promotionalMsg() {
-  return {
-    type: restaurantActionsTypes.SET_PROMOTIONAL_MSG,
-  }
-}
-
 export function getResturantInfoRequestFailure(error: any) {
   displayToast(
     'ERROR',
