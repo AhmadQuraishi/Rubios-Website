@@ -43,10 +43,11 @@ function App(props: any) {
   const { addresses: basketAddresses } = useSelector(
     (state: any) => state.basketReducer,
   );
-  const { restaurant, orderType,     sessionTime: restaurantSessionTime,
-  } = useSelector(
-    (state: any) => state.restaurantInfoReducer,
-  );
+  const {
+    restaurant,
+    orderType,
+    sessionTime: restaurantSessionTime,
+  } = useSelector((state: any) => state.restaurantInfoReducer);
   const { authToken, sessionLoginTime } = useSelector(
     (state: any) => state.authReducer,
   );
@@ -54,8 +55,10 @@ function App(props: any) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log('isLoginUser', isLoginUser());
-  }, []);
+    if (basketAddresses?.duplicated?.length) {
+      removePreviousAddresses(basketAddresses, basket);
+    }
+  }, [basket]);
 
   useEffect(() => {
     if (
