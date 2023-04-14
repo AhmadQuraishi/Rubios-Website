@@ -8,7 +8,6 @@ const INITIAL_STATE = {
   orderType: '',
   error: {},
   sessionTime: null,
-  promotionMsg: true,
 };
 
 const restaurantInfoReducer = (state = INITIAL_STATE, action: any) => {
@@ -22,14 +21,8 @@ const restaurantInfoReducer = (state = INITIAL_STATE, action: any) => {
         restaurant: action.payload,
         error: {},
         sessionTime: moment().unix(),
-        promotionMsg: true,
 
       };
-      case restaurantActionsTypes.SET_PROMOTIONAL_MSG: 
-      return {
-        ...state,
-        promotionMsg: false,
-      }
     case restaurantActionsTypes.GET_RESTAURANT_INFO_FAILURE: 
       return { ...state, loading: false, error: action.error };
     case restaurantActionsTypes.SET_RESTAURANT_INFO_REQUEST:
@@ -39,7 +32,6 @@ const restaurantInfoReducer = (state = INITIAL_STATE, action: any) => {
         restaurant: null,
         orderType: '',
         error: {},
-        promotionMsg: true,
       };
 
        
@@ -51,7 +43,6 @@ const restaurantInfoReducer = (state = INITIAL_STATE, action: any) => {
         orderType: action.orderType,
         error: {},
         sessionTime: moment().unix(),
-        promotionMsg: true,
       };
 
     case restaurantActionsTypes.SET_RESTAURANT_SESSION_REQUEST:
