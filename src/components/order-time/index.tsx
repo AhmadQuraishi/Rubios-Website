@@ -57,9 +57,8 @@ const OrderTime = ({ orderType }: any) => {
       navigate('/location');
     }
   }, [basketObj.basket]);
-  const getEstTimeFormat = (date: string, data2: string) => {
+  const getEstTimeFormat = (date: string) => {
     return moment(date, 'YYYYMMDD HH:mm').format('h:mmA');
-    // moment(startTime, 'HH:mm:ss').add(durationInMinutes, 'minutes').format('HH:mm');
   };
   React.useEffect(() => {
     if (basketObj.calendar && basketObj.calendar.data) {
@@ -86,15 +85,10 @@ const OrderTime = ({ orderType }: any) => {
   const EstimatedTime = () => {
     const type = basketObj?.basket?.deliverymode || orderType || '';
     const time = basketObj?.basket;
-    if (type === 'dispatch') {
-      if (time?.timemode === 'asap') {
+    if (type === 'dispatch' && time?.timemode === 'asap') {
         return getEstTimeFormat(
           time.earliestreadytime,
-          time.leadtimeestimateminutes,
         );
-      } else if (time?.timewanted) {
-        return getEstTimeFormat(time.timewanted, time.leadtimeestimateminutes);
-      }
     }
   };
 
@@ -345,7 +339,7 @@ const OrderTime = ({ orderType }: any) => {
               {window?.location?.href
                     ?.toLocaleLowerCase()
                     ?.indexOf('/checkout') !== -1 &&
-                    EstimatedTime() && basketObj?.basket?.timemode === 'asap' && (
+                    EstimatedTime() && (
                       <>
                         <Typography
                           // className={classes.heading}
