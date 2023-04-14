@@ -28,9 +28,9 @@ export function getBasketRequestSuccess(
   data: ResponseBasket,
   basketType: string = 'New',
 ) {
-  if (store.getState().authReducer?.authToken?.authtoken) {
-    store.dispatch(getUserDeliveryAddressesForBasket());
-  }
+  // if (store.getState().authReducer?.authToken?.authtoken) {
+  //   store.dispatch(getUserDeliveryAddressesForBasket());
+  // }
   return {
     type: basketActionsTypes.GET_BASKET_SUCCESS,
     payload: data,
