@@ -345,7 +345,7 @@ const OrderTime = ({ orderType }: any) => {
               {window?.location?.href
                     ?.toLocaleLowerCase()
                     ?.indexOf('/checkout') !== -1 &&
-                    EstimatedTime() && (
+                    EstimatedTime() && basketObj?.basket?.timemode === 'asap' && (
                       <>
                         <Typography
                           // className={classes.heading}
