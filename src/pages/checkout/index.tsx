@@ -270,7 +270,7 @@ const Checkout = () => {
       setRemoveCreditCardOnce(false);
     }
   }, []);
-  
+
   React.useEffect(() => {
     const { pathname, search } = window.location;
     const url = `${pathname}${search}`;
@@ -306,15 +306,15 @@ const Checkout = () => {
   const AuthenticationHandler = () => {
     const LoginSessionTime: any = process.env.REACT_APP_LOGIN_SESSION_TIME;
     const timeLimit: number = LoginSessionTime ? parseInt(LoginSessionTime) : 0;
-    console.log('timelimit for session',timeLimit)
+    console.log('timelimit for session', timeLimit);
     if (isLoginUser() && sessionLoginTime) {
       const LoginCreatedTime: any = moment.unix(sessionLoginTime);
       const currentTime = moment();
       if (LoginCreatedTime.isValid()) {
         const minutes = currentTime.diff(LoginCreatedTime, 'minutes');
         console.log('munutes', minutes);
-        console.log('timelimit for session',LoginSessionTime)
-        if ( minutes > timeLimit) {
+        console.log('timelimit for session', LoginSessionTime);
+        if (minutes > timeLimit) {
           setOpenAuthenticationModal(true);
           return false;
         }
@@ -335,7 +335,7 @@ const Checkout = () => {
       basketObj?.payment?.allowedCards?.data?.billingschemes?.length &&
       basketObj?.payment?.billingSchemes?.length === 0 &&
       !billingAccountsLoading &&
-      userBillingAccounts?.billingaccounts
+      (!authToken?.authtoken || userBillingAccounts?.billingaccounts)
     ) {
       const allowedCreditCard =
         basketObj.payment.allowedCards.data.billingschemes.find(
@@ -486,80 +486,96 @@ const Checkout = () => {
   };
 
   const validatePickupForm = (type: string): any => {
-    let data = {
-      isValidForm: false,
-      formData: null,
-    };
-    console.log('pickupFormRef.current', pickupFormRef.current);
-    if (!pickupFormRef.current) {
-    }
-    // else if (!pickupFormRef.current.dirty) {
-    //   pickupFormRef.current.submitForm();
-    // }
-    else if (Object.keys(pickupFormRef.current.errors).length > 0) {
-      console.log('pickupFormRef.current.errors', pickupFormRef.current.errors);
-      if (
-        type === 'GUEST_SIGNUP' &&
-        (basket?.deliverymode === 'curbside' ||
-          basket?.deliverymode === 'dinein')
-      ) {
-        let checkGuest = false;
-        Object.keys(pickupFormRef.current.errors).forEach((field) => {
-          const text =
-            basket?.deliverymode === 'curbside' ? 'vehicle' : 'table';
-          if (!field.startsWith(text)) {
-            checkGuest = true;
-          }
-        });
+    pickupFormRef.current.submitForm();
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        let data = {
+          isValidForm: false,
+          formData: null,
+        };
+        console.log('pickupFormRef.current', pickupFormRef.current);
 
-        if (!checkGuest) {
+        if (!pickupFormRef.current) {
+        } else if (Object.keys(pickupFormRef.current.errors).length > 0) {
+          console.log(
+            'pickupFormRef.current.errors',
+            pickupFormRef.current.errors,
+          );
+          if (
+            type === 'GUEST_SIGNUP' &&
+            (basket?.deliverymode === 'curbside' ||
+              basket?.deliverymode === 'dinein')
+          ) {
+            let checkGuest = false;
+            Object.keys(pickupFormRef.current.errors).forEach((field) => {
+              const text =
+                basket?.deliverymode === 'curbside' ? 'vehicle' : 'table';
+              if (!field.startsWith(text)) {
+                checkGuest = true;
+              }
+            });
+
+            if (!checkGuest) {
+              data.isValidForm = true;
+              data.formData = pickupFormRef.current.values;
+            }
+          }
+          pickupFormRef.current.submitForm();
+        } else {
           data.isValidForm = true;
           data.formData = pickupFormRef.current.values;
         }
-      }
-      pickupFormRef.current.submitForm();
-    } else {
-      data.isValidForm = true;
-      data.formData = pickupFormRef.current.values;
-    }
 
-    return data;
+        resolve(data);
+      }, 100);
+    });
   };
 
   const validateGuestSignUpForm = (): any => {
-    let data = {
-      isValidForm: false,
-      formData: null,
-    };
-    console.log('signupFormRef.current', signupFormRef.current);
-    if (!signupFormRef.current) {
-    } else if (!signupFormRef.current.dirty) {
-      signupFormRef.current.submitForm();
-    } else if (Object.keys(signupFormRef.current.errors).length > 0) {
-    } else {
-      data.isValidForm = true;
-      data.formData = signupFormRef.current.values;
-    }
+    signupFormRef.current.submitForm();
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        let data = {
+          isValidForm: false,
+          formData: null,
+        };
+        console.log('signupFormRef.current', signupFormRef.current);
+        if (!signupFormRef.current) {
+        }
+        //  else if (!signupFormRef.current.dirty) {
+        //   signupFormRef.current.submitForm();
+        // }
+        else if (Object.keys(signupFormRef.current.errors).length > 0) {
+          signupFormRef.current.submitForm();
+        } else {
+          data.isValidForm = true;
+          data.formData = signupFormRef.current.values;
+        }
 
-    return data;
+        resolve(data);
+      }, 100);
+    });
   };
 
   const validateDeliveryForm = (): any => {
-    let data = {
-      isValidForm: false,
-      formData: null,
-    };
+    deliveryFormRef.current.submitForm();
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        let data = {
+          isValidForm: false,
+          formData: null,
+        };
 
-    if (!deliveryFormRef.current) {
-    } else if (!deliveryFormRef.current.dirty) {
-      deliveryFormRef.current.submitForm();
-    } else if (Object.keys(deliveryFormRef.current.errors).length > 0) {
-    } else {
-      data.isValidForm = true;
-      data.formData = deliveryFormRef.current.values;
-    }
-
-    return data;
+        if (!deliveryFormRef.current) {
+        } else if (Object.keys(deliveryFormRef.current.errors).length > 0) {
+          deliveryFormRef.current.submitForm();
+        } else {
+          data.isValidForm = true;
+          data.formData = deliveryFormRef.current.values;
+        }
+        resolve(data);
+      }, 100);
+    });
   };
 
   // const validatePaymentForm = async () => {
@@ -629,12 +645,21 @@ const Checkout = () => {
         basket.deliverymode === DeliveryModeEnum.curbside ||
         basket.deliverymode === DeliveryModeEnum.dinein)
     ) {
-      const { isValidForm, formData } = validatePickupForm('PLACE_ORDER');
+      const { isValidForm, formData } = await validatePickupForm('PLACE_ORDER');
       if (!isValidForm) {
         displayToast(
           'ERROR',
           `${formatOrderType(basket?.deliverymode)} fields are required.`,
         );
+        scrollToTop();
+        setButtonDisabled(false);
+        return;
+      }
+      formDataValue = formData;
+    } else if (basket?.deliverymode === DeliveryModeEnum.dispatch) {
+      const { isValidForm, formData } = await validateDeliveryForm();
+      if (!isValidForm) {
+        displayToast('ERROR', 'Delivery fields are required.');
         scrollToTop();
         setButtonDisabled(false);
         return;
@@ -728,16 +753,7 @@ const Checkout = () => {
       // }
     }
 
-    if (basket?.deliverymode === DeliveryModeEnum.dispatch) {
-      const { isValidForm, formData } = validateDeliveryForm();
-      if (!isValidForm) {
-        displayToast('ERROR', 'Delivery fields are required.');
-        scrollToTop();
-        setButtonDisabled(false);
-        return;
-      }
-      formDataValue = formData;
-    }
+    
 
     // if (billingSchemes && billingSchemes.length === 0) {
     //   displayToast('ERROR', 'Payment method is required');
@@ -1036,7 +1052,7 @@ const Checkout = () => {
     }
   };
 
-  const guestSignupCheckout = () => {
+  const guestSignupCheckout = async () => {
     let formDataValue;
     if (
       basket?.deliverymode === '' ||
@@ -1044,7 +1060,9 @@ const Checkout = () => {
       basket?.deliverymode === DeliveryModeEnum.curbside ||
       basket?.deliverymode === DeliveryModeEnum.dinein
     ) {
-      const { isValidForm, formData } = validatePickupForm('GUEST_SIGNUP');
+      const { isValidForm, formData } = await validatePickupForm(
+        'GUEST_SIGNUP',
+      );
       if (!isValidForm) {
         displayToast(
           'ERROR',
@@ -1057,7 +1075,7 @@ const Checkout = () => {
       formDataValue = formData;
     }
     if (basket?.deliverymode === DeliveryModeEnum.dispatch) {
-      const { isValidForm, formData } = validateDeliveryForm();
+      const { isValidForm, formData } = await validateDeliveryForm();
       if (!isValidForm) {
         displayToast('ERROR', 'Delivery fields are required.');
         scrollToTop();
@@ -1067,7 +1085,7 @@ const Checkout = () => {
       formDataValue = formData;
     }
     const { isValidForm: isValidFormSignup, formData: formDataSignup } =
-      validateGuestSignUpForm();
+      await validateGuestSignUpForm();
     if (!isValidFormSignup) {
       displayToast('ERROR', ` Signup fields are required.`);
       return;
