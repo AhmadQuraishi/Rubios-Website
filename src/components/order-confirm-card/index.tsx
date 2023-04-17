@@ -219,7 +219,7 @@ const OrderConfirmedCard = ({
   useEffect(() => {
     setRestaurant(restaurantObj);
   }, [restaurantObj]);
-
+  
   return (
     <>
       <Card style={{ backgroundColor: 'white' }} className="order-info">
@@ -272,18 +272,18 @@ const OrderConfirmedCard = ({
                   : pickupAddress(restaurant, order)}
                 <br />
                 <br />
-                {orderObj?.deliveryaddress?.specialinstructions !== '' && order && order.deliverymode === DeliveryModeEnum.dispatch  && 
+                {orderObj?.deliveryaddress?.specialinstructions && order && order.deliverymode === DeliveryModeEnum.dispatch  && 
                   <>
                 <Typography
                   variant="h2"
                   className="label"
                   title={
-                    order && order.deliverymode === DeliveryModeEnum.dispatch
+                    orderObj?.deliveryaddress?.specialinstructions && order && order.deliverymode === DeliveryModeEnum.dispatch
                       ? 'Contactless Delivery'
                       : ''
                   }
                 >
-                  {order && order.deliverymode === DeliveryModeEnum.dispatch
+                  {orderObj?.deliveryaddress?.specialinstructions && order && order.deliverymode === DeliveryModeEnum.dispatch
                     ? 'Contactless Delivery'
                     : ''}
                 </Typography>
