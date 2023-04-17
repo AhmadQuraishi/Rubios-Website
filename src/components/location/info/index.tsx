@@ -2,6 +2,7 @@ import { Button, Grid, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import ListHours from '../listHours';
+import { removeNumberFromRestaurantName } from '../../../helpers/location';
 
 const StoreInfo = (props: any) => {
   const {
@@ -69,7 +70,7 @@ const StoreInfo = (props: any) => {
             paddingBottom: '5px',
           }}
         >
-          {item.name.replace(/\s-\s#\d+/, '')}
+          {removeNumberFromRestaurantName(item.name)}
         </Typography>
         <Typography variant="body2">
           {item.streetaddress}, <br /> {item.city}, {item.state}, {item.zip}
@@ -149,7 +150,7 @@ const StoreInfo = (props: any) => {
             paddingBottom: '5px',
           }}
         >
-          {item.name.replace(/\s-\s#\d+/, '')}
+          {removeNumberFromRestaurantName(item.name)}
         </Typography>
         <Typography variant="body2">
           {item.streetaddress}, <br /> {item.city}, {item.state}, {item.zip}

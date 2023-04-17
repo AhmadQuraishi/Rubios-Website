@@ -85,14 +85,12 @@ const OrderTime = ({ orderType }: any) => {
   const EstimatedTime = () => {
     const type = basketObj?.basket?.deliverymode || orderType || '';
     const time = basketObj?.basket;
-    if (type === 'dispatch' && time?.timemode === 'asap') {
-        return getEstTimeFormat(
-          time.earliestreadytime,
-        );
+    const isToday = moment().isSame(selectedDate, 'day');
+  
+    if (type === 'dispatch' && time?.timemode === 'asap' && isToday) {
+      return getEstTimeFormat(time.earliestreadytime);
     }
   };
-
-  
   
   const handleEstTime = (time: any, time2 : any) => {
     let localTime = moment(new Date());
