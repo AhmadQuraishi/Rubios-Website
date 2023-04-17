@@ -274,7 +274,7 @@ const Footer = () => {
                 <Grid item xs={2} sx={{paddingLeft: "0px !important",paddingTop: "5px !important",marginRight: "10px !important"}}>
                   <a
                   aria-label="Visit our Facebook page."
-                    href={'https://www.facebook.com/rubios/'}
+                    href={'https://www.facebook.com/rubioscoastalgrill'}
                     target={'_blank'}
                     rel="noreferrer"
                   >
