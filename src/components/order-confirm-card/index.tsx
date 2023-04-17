@@ -289,7 +289,7 @@ const OrderConfirmedCard = ({
                 </Typography>
                 <Typography
                   variant="body1"
-                  title={orderObj?.deliveryaddress?.specialinstructions}
+                  title=                  {orderObj?.deliveryaddress?.specialinstructions?.replace('I want contactless delivery.', '')}
                   sx={{
                     fontFamily: "'Sunborn-Sansone' !important",
                     color: '#525252 !important',
@@ -299,7 +299,7 @@ const OrderConfirmedCard = ({
                     textTransform: 'uppercase',
                   }}
                 >
-                  {orderObj?.deliveryaddress?.specialinstructions}
+                  {orderObj?.deliveryaddress?.specialinstructions?.replace('I want contactless delivery.', '')}
                 </Typography>
                 <br />
                 <br />
