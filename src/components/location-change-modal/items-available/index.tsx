@@ -1,5 +1,6 @@
 import React from 'react';
 import { Grid, Typography } from '@mui/material';
+import { removeNumberFromRestaurantName } from '../../../helpers/location';
 
 export const ItemsAvailableComponent = ({ restaurant }: any) => {
   return (
@@ -51,7 +52,7 @@ export const ItemsAvailableComponent = ({ restaurant }: any) => {
               paddingBottom: '5px',
             }}
           >
-            {restaurant?.name}
+            {removeNumberFromRestaurantName(restaurant?.name)}
           </Typography>
           <Typography variant="body2" sx={{ textAlign: 'center', }}>
             {restaurant?.streetaddress}, <br /> {restaurant?.city},{' '}

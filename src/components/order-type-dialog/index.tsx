@@ -53,6 +53,7 @@ import {
   // basketTransferReset,
 } from '../../redux/actions/basket/transfer';
 import { setDeliveryAddress } from '../../redux/actions/location/delivery-address';
+import { removeNumberFromRestaurantName } from '../../helpers/location';
 
 Geocode.setApiKey(`${process.env.REACT_APP_GOOGLE_API_KEY}`);
 Geocode.setLanguage('en');
@@ -124,7 +125,7 @@ export const OrderTypeDialog = (props: any) => {
           newBasketError?.response?.data?.message ||
             'ERROR! Please Try again later',
         );
-        displayToast('SUCCESS', 'Location changed to ' + newRestaurant.name);
+        displayToast('SUCCESS', 'Location changed to ' + removeNumberFromRestaurantName(newRestaurant?.name));
         dispatch(resetBasketRequest());
         dispatch(setResturantInfoRequest(newRestaurant, orderType || ''));
         dispatch(setDeliveryAddress(newDeliveryAddress.address));
@@ -400,7 +401,7 @@ export const OrderTypeDialog = (props: any) => {
           handleClose();
           // debugger;
           // navigate('/');
-          displayToast('SUCCESS', 'Location changed to ' + newRestaurant.name);
+          displayToast('SUCCESS', 'Location changed to ' + removeNumberFromRestaurantName(newRestaurant?.name));
           navigateCheckout();
           // debugger;
         } catch (error: any) {

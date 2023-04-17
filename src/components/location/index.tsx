@@ -31,7 +31,7 @@ import { setDeliveryAddress } from '../../redux/actions/location/delivery-addres
 import { setResturantInfoRequest } from '../../redux/actions/restaurant';
 import { facebookSendEvent } from '../../redux/actions/facebook-conversion';
 import { facebookConversionTypes } from '../../redux/types/facebook-conversion';
-import { getOrderTypeRestaurants } from '../../helpers/location';
+import { getOrderTypeRestaurants, removeNumberFromRestaurantName } from '../../helpers/location';
 import {
   basketTransferRequest,
   basketTransferReset,
@@ -324,7 +324,7 @@ const LocationCard = (props: any) => {
           dispatch(setBasketDeliveryAddressSuccess(response));
           dispatch(setResturantInfoRequest(newRestaurant, orderType || ''));
           navigate('/menu/' + newRestaurant.slug);
-          displayToast('SUCCESS', 'Location changed to ' + newRestaurant.name);
+          displayToast('SUCCESS', 'Location changed to ' + removeNumberFromRestaurantName(newRestaurant?.name));
         } catch (error: any) {
           setActionPerform(false);
           displayToast(
@@ -349,7 +349,7 @@ const LocationCard = (props: any) => {
           dispatch(setBasketDeliveryAddressSuccess(response));
           dispatch(setResturantInfoRequest(newRestaurant, orderType || ''));
           navigate('/menu/' + newRestaurant.slug);
-          displayToast('SUCCESS', 'Location changed to ' + newRestaurant.name);
+          displayToast('SUCCESS', 'Location changed to ' + removeNumberFromRestaurantName(newRestaurant?.name));
         } catch (error: any) {
           setActionPerform(false);
           displayToast(
@@ -365,7 +365,7 @@ const LocationCard = (props: any) => {
       dispatch(getBasketRequestSuccess(newBasket?.basket));
       dispatch(setResturantInfoRequest(newRestaurant, orderType || ''));
       navigate('/menu/' + newRestaurant?.slug);
-      displayToast('SUCCESS', 'Location changed to ' + newRestaurant.name);
+      displayToast('SUCCESS', 'Location changed to ' + removeNumberFromRestaurantName(newRestaurant?.name));
     }
   };
 
