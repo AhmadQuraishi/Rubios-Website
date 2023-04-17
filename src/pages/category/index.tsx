@@ -36,6 +36,7 @@ import "./index.css";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { updateNavigationLink } from '../../redux/actions/basket/checkout';
+import { removeNumberFromRestaurantName } from '../../helpers/location';
 
 const useStyles = makeStyles((theme: Theme) => ({
   heading: {
@@ -155,7 +156,6 @@ const CategoryList = () => {
       setShowAll({ ...showAll, [categoryIndex]: true });
 
     }
-    debugger;
   };
 
   type ShowAll = {
@@ -248,7 +248,7 @@ const CategoryList = () => {
           //     ' and basket is empty',
           // );
           // } else {
-          displayToast('SUCCESS', 'Location changed to ' + objRestaurant.name.replace(/\s-\s#\d+/, ''));
+          displayToast('SUCCESS', 'Location changed to ' + removeNumberFromRestaurantName(objRestaurant?.name));
           // }
           // navigate('/menu/' + objRestaurant.slug);
           dispatch(getCategoriesRequest(objRestaurant.id));
@@ -418,11 +418,11 @@ const CategoryList = () => {
       displayToast(
         'SUCCESS',
         'Location changed to ' +
-        restaurantSelected.name.replace(/\s-\s#\d+/, '') +
+        removeNumberFromRestaurantName(restaurantSelected.name) +
         ' and basket is empty',
       );
     } else {
-      displayToast('SUCCESS', 'Location changed to ' + restaurantSelected.name.replace(/\s-\s#\d+/, ''));
+      displayToast('SUCCESS', 'Location changed to ' + removeNumberFromRestaurantName(restaurantSelected?.name));
     }
     setOpen(false);
     navigate('/menu/' + restaurantSelected.slug);
