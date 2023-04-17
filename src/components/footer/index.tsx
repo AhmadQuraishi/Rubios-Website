@@ -274,7 +274,7 @@ const Footer = () => {
                 <Grid item xs={2} sx={{paddingLeft: "0px !important",paddingTop: "5px !important",marginRight: "10px !important"}}>
                   <a
                   aria-label="Visit our Facebook page."
-                    href={'https://www.facebook.com/rubios/'}
+                    href={'https://www.facebook.com/rubioscoastalgrill'}
                     target={'_blank'}
                     rel="noreferrer"
                   >
@@ -378,9 +378,9 @@ const Footer = () => {
             component="p"
             color="#fff"
             fontSize={9}
-            title="Copyright 2023 Rubios's Restaurants, Inc. All Rights reserved."
+            title="Copyright© 2023 Rubios's Restaurants, Inc. All Rights reserved."
           >
-            Copyright 2023 Rubios's Restaurants, Inc. All Rights reserved.
+            Copyright<span>{'\u00A9'}</span> 2023 Rubios's Restaurants, Inc. All Rights reserved.
           </Typography>
         </Grid>
         <Grid
@@ -411,9 +411,9 @@ const Footer = () => {
                 variant="caption"
                 color="#fff"
                 fontSize={9}
-                title="Copyright 2023 Rubios's Restaurants, Inc. All Rights reserved."
+                title="Copyright© 2023 Rubios's Restaurants, Inc. All Rights reserved."
               >
-                Copyright 2023 Rubios's Restaurants, Inc. All Rights reserved.
+                Copyright<span>{'\u00A9'}</span> 2023 Rubios's Restaurants, Inc. All Rights reserved.
               </Typography>
             </Grid>
             <Grid
