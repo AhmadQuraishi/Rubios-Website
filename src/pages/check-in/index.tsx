@@ -43,9 +43,9 @@ const NumberFormatCustom = forwardRef<HTMLElement, CustomProps>(
       <IMaskInput
         {...other}
         mask="00-000-000-0000-0"
-        definitions={{
-          '#': /[1-9]/,
-        }}
+        // definitions={{
+        //   '#': /[1-9]/,
+        // }}
         onAccept={(value: any) =>
           onChange({ target: { name: props.name, value } })
         }
