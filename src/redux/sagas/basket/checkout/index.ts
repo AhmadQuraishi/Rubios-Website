@@ -74,10 +74,10 @@ function* asyncUpdateBasketTimeWanted(action: any): any {
       action.data,
     );
     yield put(updateBasketTimeWantedSuccess(response));
-    const validateResponse = yield call(validateBasket, action.basketId);
-    yield put(validateBasketSuccess(validateResponse));
-    const basketResponse = yield call(getBasket, action.basketId);
-    yield put(getBasketRequestSuccess(basketResponse));
+    yield put({
+      type: basketActionsTypes.VALIDATE_AND_GET_BASKET_REQUEST,
+      action,
+    });
   } catch (error) {
     yield put(updateBasketTimeWantedFailure(error));
   }
@@ -87,10 +87,10 @@ function* asyncDeleteBasketTimeWanted(action: any): any {
   try {
     const response = yield call(deleteTimeWantedBasket, action.basketId);
     yield put(deleteBasketTimeWantedSuccess(response));
-    const validateResponse = yield call(validateBasket, action.basketId);
-    yield put(validateBasketSuccess(validateResponse));
-    const basketResponse = yield call(getBasket, action.basketId);
-    yield put(getBasketRequestSuccess(basketResponse));
+    yield put({
+      type: basketActionsTypes.VALIDATE_AND_GET_BASKET_REQUEST,
+      action,
+    });
   } catch (error) {
     yield put(deleteBasketTimeWantedFailure(error));
   }
@@ -104,10 +104,10 @@ function* asyncUpdateBasketTipAmount(action: any): any {
       action.data,
     );
     yield put(updateBasketTipAmountSuccess(response));
-    const validateResponse = yield call(validateBasket, action.basketId);
-    yield put(validateBasketSuccess(validateResponse));
-    const basketResponse = yield call(getBasket, action.basketId);
-    yield put(getBasketRequestSuccess(basketResponse));
+    yield put({
+      type: basketActionsTypes.VALIDATE_AND_GET_BASKET_REQUEST,
+      action,
+    });
   } catch (error) {
     yield put(updateBasketTipAmountFailure(error));
   }
@@ -121,10 +121,10 @@ function* asyncUpdateBasketCouponCode(action: any): any {
       action.data,
     );
     yield put(updateBasketCouponCodeSuccess(response));
-    const validateResponse = yield call(validateBasket, action.basketId);
-    yield put(validateBasketSuccess(validateResponse));
-    const basketResponse = yield call(getBasket, action.basketId);
-    yield put(getBasketRequestSuccess(basketResponse));
+    yield put({
+      type: basketActionsTypes.VALIDATE_AND_GET_BASKET_REQUEST,
+      action,
+    });
   } catch (error) {
     yield put(updateBasketCouponCodeFailure(error));
   }
@@ -134,10 +134,10 @@ function* asyncRemoveBasketCouponCode(action: any): any {
   try {
     const response = yield call(removeCouponBasket, action.basketId);
     yield put(removeBasketCouponCodeSuccess(response));
-    const validateResponse = yield call(validateBasket, action.basketId);
-    yield put(validateBasketSuccess(validateResponse));
-    const basketResponse = yield call(getBasket, action.basketId);
-    yield put(getBasketRequestSuccess(basketResponse));
+    yield put({
+      type: basketActionsTypes.VALIDATE_AND_GET_BASKET_REQUEST,
+      action,
+    });
   } catch (error) {
     yield put(removeBasketCouponCodeFailure(error));
   }
@@ -236,7 +236,7 @@ function* asyncSubmitBasketSinglePayment(action: any): any {
     //   action.action.basketId,
     //   action.action.basketPayload,
     // );
-    console.log('action.action.basketPayload', action.action.basketPayload)
+    console.log('action.action.basketPayload', action.action.basketPayload);
     action.action.ccsfObj.submit(action.action.basketPayload);
 
     // action.action.ccsfObj.registerSuccess();
@@ -266,6 +266,15 @@ function* asyncGetBasketAllowedCardsRequest(action: any): any {
   } catch (error) {
     yield put(getBasketAllowedCardsRequestFailure(error));
   }
+}
+
+function* asyncValidateAndGetBasketRequest(action: any): any {
+  try {
+    const validateResponse = yield call(validateBasket, action.action.basketId);
+    yield put(validateBasketSuccess(validateResponse));
+    const basketResponse = yield call(getBasket, action.action.basketId);
+    yield put(getBasketRequestSuccess(basketResponse));
+  } catch (error) {}
 }
 
 export function* checkoutSaga() {
@@ -309,5 +318,9 @@ export function* checkoutSaga() {
   yield takeEvery(
     basketActionsTypes.GET_BASKET_ALLOWED_CARDS_REQUEST,
     asyncGetBasketAllowedCardsRequest,
+  );
+  yield takeEvery(
+    basketActionsTypes.VALIDATE_AND_GET_BASKET_REQUEST,
+    asyncValidateAndGetBasketRequest,
   );
 }
