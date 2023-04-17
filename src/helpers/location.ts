@@ -1,3 +1,4 @@
+import { ResponseRestaurant } from '../types/olo-api/ResponseRestaurant';
 import { US_STATES } from './usStates';
 
 export function removeTestingStores(restaurants: any) {
@@ -53,4 +54,7 @@ export function addStateFullNameRestaurant(data: any) {
   } else {
     return data;
   }
+}
+export function removeNumberFromRestaurantName(restaurantName: string) {
+  return restaurantName.replace(/\s-\s#\d+/, '');
 }

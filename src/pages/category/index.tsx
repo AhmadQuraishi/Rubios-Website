@@ -36,6 +36,7 @@ import "./index.css";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { updateNavigationLink } from '../../redux/actions/basket/checkout';
+import { removeNumberFromRestaurantName } from '../../helpers/location';
 
 const useStyles = makeStyles((theme: Theme) => ({
   heading: {
@@ -128,15 +129,16 @@ const CategoryList = () => {
   //       document.getElementById(`cat-panel-${index}`)
   //     );
   //     const activeCategoryIndex = categoryElements.findIndex((el: any) =>
-  //       el.getBoundingClientRect().top >= 0
+  //      el && el.getBoundingClientRect().top >= 0
   //     );
+  //     // console.log(activeCategoryIndex,'activeCategoryIndex');
+  //     // console.log(categoryElements,'categoryElements');
   //     setValue(`${activeCategoryIndex}`);
   //   };
  
   //   window.addEventListener('scroll', handleScroll);
   //   return () => window.removeEventListener('scroll', handleScroll);
   // }, [filterCategories]);
-
 
   const handleViewMore = (categoryIndex: any) => {
     // debugger;
@@ -154,7 +156,6 @@ const CategoryList = () => {
       setShowAll({ ...showAll, [categoryIndex]: true });
 
     }
-    // debugger;
   };
 
   type ShowAll = {
@@ -247,7 +248,7 @@ const CategoryList = () => {
           //     ' and basket is empty',
           // );
           // } else {
-          displayToast('SUCCESS', 'Location changed to ' + objRestaurant.name.replace(/\s-\s#\d+/, ''));
+          displayToast('SUCCESS', 'Location changed to ' + removeNumberFromRestaurantName(objRestaurant?.name));
           // }
           // navigate('/menu/' + objRestaurant.slug);
           dispatch(getCategoriesRequest(objRestaurant.id));
@@ -417,11 +418,11 @@ const CategoryList = () => {
       displayToast(
         'SUCCESS',
         'Location changed to ' +
-        restaurantSelected.name.replace(/\s-\s#\d+/, '') +
+        removeNumberFromRestaurantName(restaurantSelected.name) +
         ' and basket is empty',
       );
     } else {
-      displayToast('SUCCESS', 'Location changed to ' + restaurantSelected.name.replace(/\s-\s#\d+/, ''));
+      displayToast('SUCCESS', 'Location changed to ' + removeNumberFromRestaurantName(restaurantSelected?.name));
     }
     setOpen(false);
     navigate('/menu/' + restaurantSelected.slug);
@@ -650,14 +651,17 @@ const CategoryList = () => {
                 position: 'relative',
               }}
             >
-              <Grid item xs={12} >
+              <Grid item xs={12}>
                 <div
                   id={'#panel-' + index}
                   style={{ position: 'absolute', top: '-120px' }}
                 ></div>
+                <div id ={`cat-${item.id}`} 
+                style={{ position: 'absolute', top: '-120px' }}
+                ></div>
                 <Grid container sx={{ alignItems: "center" }}>
                   <Grid item xs={12} sm={item.products.length > 4 ? 8 : 8}>
-                  <div id ={`cat-${item.id}`}> </div>
+
                     <Typography
                       variant="h2"
                       sx={{

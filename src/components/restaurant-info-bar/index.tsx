@@ -26,6 +26,7 @@ import moment from 'moment';
 import crossIcon from '../../assets/imgs/cross_square_icon.png';
 import { OrderTypeDialog } from '../order-type-dialog';
 import { isLoginUser } from '../../helpers/auth';
+import { removeNumberFromRestaurantName } from '../../helpers/location';
 const useStyle = makeStyles({
   heading: {
     fontSize: '13px !important',
@@ -333,10 +334,10 @@ const StoreInfoBar = () => {
                         lg: '40px !important',
                       },
                     }}
-                    title={restaurantInfo.name.replace(/\s-\s#\d+/, '')}
+                    title={removeNumberFromRestaurantName(restaurantInfo?.name)}
                     
                   >
-                    {restaurantInfo.name.replace(/\s-\s#\d+/, '')}
+                    {removeNumberFromRestaurantName(restaurantInfo?.name)}
                   </Typography>
                 </Grid>
               ) : (
@@ -392,9 +393,9 @@ const StoreInfoBar = () => {
                           lg: '40px !important',
                         },
                       }}
-                      title={restaurantInfo.name.replace(/\s-\s#\d+/, '')}
+                      title={removeNumberFromRestaurantName(restaurantInfo?.name)}
                     >
-                      {restaurantInfo.name.replace(/\s-\s#\d+/, '')}
+                      {removeNumberFromRestaurantName(restaurantInfo?.name)}
                     </Typography>
                   </Grid>
                 </Grid>
