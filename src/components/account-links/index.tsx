@@ -9,6 +9,7 @@ import {
 import { makeStyles } from '@mui/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import { removePreviousAddresses } from '../../helpers/checkout';
 import { userLogout } from '../../redux/actions/user';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -24,21 +25,31 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   selected: {
     backgroundColor: '#f5f5f5',
-  color: "#062C43 !important",
+    color: '#062C43 !important',
   },
 }));
 const AccountLinks = (props: any) => {
   const { closeDrawer } = props;
   const classes = useStyles();
   const dispatch = useDispatch();
+  const { basket } = useSelector((state: any) => state.basketReducer);
+  const { addresses: basketAddresses } = useSelector(
+    (state: any) => state.basketReducer,
+  );
+  const { address: deliveryAddress } = useSelector(
+    (state: any) => state.deliveryAddressReducer,
+  );
   const logout = () => {
-    dispatch(userLogout());
-    if (closeDrawer) {
-      closeDrawer(false);
-    }
+    removePreviousAddresses(basketAddresses, deliveryAddress, basket, true);
     setTimeout(() => {
-      window.location.href = '/login';
-    }, 500);
+      dispatch(userLogout());
+      if (closeDrawer) {
+        closeDrawer(false);
+      }
+      setTimeout(() => {
+        window.location.href = '/login';
+      }, 500);
+    }, 100);
   };
 
   const checkSelectedLink = (page: string) => {

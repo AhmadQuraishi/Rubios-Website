@@ -17,7 +17,7 @@ import {
   Checkbox,
 } from '@mui/material';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getGeocode, getLatLng } from 'use-places-autocomplete';
 import { getAddress } from '../../../helpers/common';
 import { getNearByResturantListRequest } from '../../../redux/actions/restaurant/list';
@@ -56,6 +56,10 @@ const DeliveryAddresses = (props: any) => {
     zip: '',
     isdefault: false,
   });
+
+  const { addresses: basketAddresses } = useSelector(
+    (state: any) => state.basketReducer,
+  );
 
   const handleClickOpen = () => {
     console.log('working');
@@ -221,7 +225,9 @@ const DeliveryAddresses = (props: any) => {
         <DeliveryAddressSkeltonUI />
       ) : (
         <>
-          {filteredRestaurants && filteredRestaurants.length > 0 && editDeliveryAddress?.address1 !== '' ? (
+          {filteredRestaurants &&
+          filteredRestaurants.length > 0 &&
+          editDeliveryAddress?.address1 !== '' ? (
             <>
               <Grid sx={{ paddingBottom: '150px' }} item xs={12}>
                 <Typography className={'delivery-heading-text'} variant="body2">
@@ -304,7 +310,11 @@ const DeliveryAddresses = (props: any) => {
           ) : (
             <>
               <Grid item xs={12}>
-                <Typography className={'delivery-heading-text'} variant="body2" sx={{fontFamily: "'GritSans-Bold' !important"}}>
+                <Typography
+                  className={'delivery-heading-text'}
+                  variant="body2"
+                  sx={{ fontFamily: "'GritSans-Bold' !important" }}
+                >
                   DELIVERY ADDRESSES
                 </Typography>
                 <Typography
@@ -326,97 +336,101 @@ const DeliveryAddresses = (props: any) => {
               >
                 {!loading &&
                   deliveryAddressList.map((address: any, index: number) => (
-                    <Card
-                      key={index + address.id}
-                      style={{
-                        padding: '15px 0px',
-                        width: '100%',
-                        borderRadius: 'inherit',
-                        boxShadow: 'none',
-                        background: address.isdefault ? '#f2f6fb' : 'none',
-                      }}
-                    >
-                      <CardContent
-                        style={{
-                          padding: 0,
-                        }}
-                      >
-                        <Typography
-                          // style={{ cursor: 'pointer' }}
-                          className="delivery-address-text"
-                          // onClick={() => {
-                          // setAddDeliveryAddress({
-                          //   address1: address.streetaddress || '',
-                          //   address2: '',
-                          //   city: address.city || '',
-                          //   zip: address.zipcode || '',
-                          // });
-                          // setEditDeliveryAddress({
-                          //   address1: address.streetaddress || '',
-                          //   address2: '',
-                          //   city: address.city || '',
-                          //   zip: address.zipcode || '',
-                          // });
-                          //setSelectedAddressId(address.id);
-                          // setTimeout(() => {
-                          //handleLCloseConfirm(
-                          //   {
-                          //     address1: address.streetaddress || '',
-                          //     address2: address.building || '',
-                          //     city: address.city || '',
-                          //     zip: address.zipcode || '',
-                          //     isdefault: address.isdefault,
-                          //   },
-                          //   address.id,
-                          // );
-                          // }, 500);
-                          // }}
-                          //variant="body2"
-                        >
-                          {address.streetaddress}, {address.city},{' '}
-                          {address.zipcode}
-                        </Typography>
-                        <Typography
-                          style={{ cursor: 'pointer' }}
-                          className={'delivery-heading-edit'}
-                          onClick={() => {
-                            setSelectedAddressId(address.id);
-                            handleLCloseConfirm(
-                              {
-                                address1: address.streetaddress || '',
-                                address2: address.building || '',
-                                city: address.city || '',
-                                zip: address.zipcode || '',
-                                isdefault: address.isdefault,
-                              },
-                              address.id,
-                            );
+                    <>
+                      {!basketAddresses?.duplicated?.includes(address.id) ? (
+                        <Card
+                          key={index + address.id}
+                          style={{
+                            padding: '15px 0px',
+                            width: '100%',
+                            borderRadius: 'inherit',
+                            boxShadow: 'none',
+                            background: address.isdefault ? '#f2f6fb' : 'none',
                           }}
-                          variant="body2"
                         >
-                          SELECT
-                        </Typography>
-                        <Typography
-                          className={'delivery-heading-edit'}
-                          style={{ cursor: 'pointer', marginLeft: '20px' }}
-                          onClick={() => {
-                            setAddDeliveryAddress({
-                              address1: address.streetaddress || '',
-                              address2: address.building || '',
-                              city: address.city || '',
-                              zip: address.zipcode || '',
-                              isdefault: address.isdefault,
-                            });
-                            setEdit(true);
-                            setSelectedAddressId(address.id);
-                            handleClickOpen();
-                          }}
-                          variant="body2"
-                        >
-                          EDIT
-                        </Typography>
-                      </CardContent>
-                    </Card>
+                          <CardContent
+                            style={{
+                              padding: 0,
+                            }}
+                          >
+                            <Typography
+                              // style={{ cursor: 'pointer' }}
+                              className="delivery-address-text"
+                              // onClick={() => {
+                              // setAddDeliveryAddress({
+                              //   address1: address.streetaddress || '',
+                              //   address2: '',
+                              //   city: address.city || '',
+                              //   zip: address.zipcode || '',
+                              // });
+                              // setEditDeliveryAddress({
+                              //   address1: address.streetaddress || '',
+                              //   address2: '',
+                              //   city: address.city || '',
+                              //   zip: address.zipcode || '',
+                              // });
+                              //setSelectedAddressId(address.id);
+                              // setTimeout(() => {
+                              //handleLCloseConfirm(
+                              //   {
+                              //     address1: address.streetaddress || '',
+                              //     address2: address.building || '',
+                              //     city: address.city || '',
+                              //     zip: address.zipcode || '',
+                              //     isdefault: address.isdefault,
+                              //   },
+                              //   address.id,
+                              // );
+                              // }, 500);
+                              // }}
+                              //variant="body2"
+                            >
+                              {address.streetaddress}, {address.city},{' '}
+                              {address.zipcode}
+                            </Typography>
+                            <Typography
+                              style={{ cursor: 'pointer' }}
+                              className={'delivery-heading-edit'}
+                              onClick={() => {
+                                setSelectedAddressId(address.id);
+                                handleLCloseConfirm(
+                                  {
+                                    address1: address.streetaddress || '',
+                                    address2: address.building || '',
+                                    city: address.city || '',
+                                    zip: address.zipcode || '',
+                                    isdefault: address.isdefault,
+                                  },
+                                  address.id,
+                                );
+                              }}
+                              variant="body2"
+                            >
+                              SELECT
+                            </Typography>
+                            <Typography
+                              className={'delivery-heading-edit'}
+                              style={{ cursor: 'pointer', marginLeft: '20px' }}
+                              onClick={() => {
+                                setAddDeliveryAddress({
+                                  address1: address.streetaddress || '',
+                                  address2: address.building || '',
+                                  city: address.city || '',
+                                  zip: address.zipcode || '',
+                                  isdefault: address.isdefault,
+                                });
+                                setEdit(true);
+                                setSelectedAddressId(address.id);
+                                handleClickOpen();
+                              }}
+                              variant="body2"
+                            >
+                              EDIT
+                            </Typography>
+                          </CardContent>
+                        </Card>
+                      ) : null}
+                    </>
                   ))}
               </Grid>
               <Grid item xs={12}>

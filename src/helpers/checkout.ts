@@ -26,13 +26,26 @@ const cardTypes: any = {
   mastercard: 'Mastercard',
 };
 
-export function removePreviousAddresses(basketAddresses: any, basket: any) {
+export function removePreviousAddresses(
+  basketAddresses: any,
+  deliveryAddress: any,
+  basket: any,
+  removeAll = false,
+) {
   if (basketAddresses?.duplicated?.length > 0) {
-    const filterSavedAddress = basketAddresses?.duplicated.filter(
-      (addressId: any) =>
-        // !basketAddresses.saved.includes(addressId) &&
-        basket?.deliveryaddress?.id !== addressId,
-    );
+    let filterSavedAddress: number[] = [];
+
+    if (!removeAll) {
+      filterSavedAddress = basketAddresses?.duplicated?.filter(
+        (addressId: any) =>
+          // !basketAddresses.saved.includes(addressId) &&
+          basket?.deliveryaddress?.id !== addressId &&
+          deliveryAddress?.id !== addressId,
+      );
+    } else {
+      filterSavedAddress = basketAddresses?.duplicated;
+    }
+
     console.log('filterSavedAddress', filterSavedAddress);
     if (filterSavedAddress?.length > 0) {
       filterSavedAddress.forEach((id: any) => {

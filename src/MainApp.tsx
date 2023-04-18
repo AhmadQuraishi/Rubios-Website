@@ -43,6 +43,9 @@ function App(props: any) {
   const { addresses: basketAddresses } = useSelector(
     (state: any) => state.basketReducer,
   );
+  const { address: deliveryAddress } = useSelector(
+    (state: any) => state.deliveryAddressReducer,
+  );
   const {
     restaurant,
     orderType,
@@ -56,7 +59,7 @@ function App(props: any) {
 
   useEffect(() => {
     if (basketAddresses?.duplicated?.length) {
-      removePreviousAddresses(basketAddresses, basket);
+      removePreviousAddresses(basketAddresses, deliveryAddress, basket, false);
     }
   }, [basket]);
 
@@ -65,7 +68,8 @@ function App(props: any) {
       basketAddresses?.duplicated &&
       Array.isArray(basketAddresses?.duplicated) &&
       basket?.deliveryaddress?.id &&
-      !basketAddresses?.duplicated.includes(basket?.deliveryaddress?.id)
+      !basketAddresses?.duplicated.includes(basket?.deliveryaddress?.id) &&
+      deliveryAddress?.id !== basket?.deliveryaddress?.id
     ) {
       const updatedDuplicateAddress = [
         ...basketAddresses?.duplicated,
@@ -144,6 +148,12 @@ function App(props: any) {
           'minutes',
         );
         if (minutes > timeLimit) {
+          removePreviousAddresses(
+            basketAddresses,
+            deliveryAddress,
+            basket,
+            true,
+          );
           dispatch(resetRestaurantRequest());
           dispatch(resetBasketRequest());
           sessionStorage.removeItem('hidePromotionalMsg');
