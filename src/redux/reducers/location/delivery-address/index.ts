@@ -1,4 +1,5 @@
 import { deliveryAddressTypes as Type } from '../../../types/location/delivery-address';
+import { userTypes } from '../../../types/user';
 
 const initialState = {
   loading: false,
@@ -20,6 +21,10 @@ const deliveryAddressReducer = (state = initialState, action: any) => {
       };
     case Type.SET_DELIVERY_ADDRESS_FAILURE:
       return { ...state, loading: false, error: action.error };
+    case userTypes.USER_LOGOUT:
+      return {
+        ...initialState,
+      };
     default:
       return state;
   }
