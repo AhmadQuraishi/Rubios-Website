@@ -368,7 +368,7 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                         control={
                           <Checkbox
                             name={`${account.localId}`}
-                            checked={account.selected}
+                            checked={account.selected && account.billingmethod === 'storedvalue' || account.selected && account.amount !== 0 && account.billingmethod === 'creditcard'}
                             onChange={(e) =>
                               handleCheckBox(
                                 e,
@@ -464,7 +464,7 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                             }}
                             variant="h4"
                           >
-                            BALANCE ${account.balance ? account.balance : 0}
+                            BALANCE ${account.balance ? account.balance.toFixed(2) : 0}
                           </Typography>
                         </>
                       )}
@@ -494,6 +494,7 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                         AMOUNT
                       </Typography>
                     </Grid>
+                    {account.billingmethod === 'storedvalue' && (
                     <Grid
                       style={{ display: 'flex' }}
                       alignItems="center"
@@ -518,6 +519,33 @@ const SplitPayment = forwardRef((props: any, _ref) => {
                         }}
                       />
                     </Grid>
+                    )}
+                    {account.billingmethod === 'creditcard' && (
+                    <Grid
+                      style={{ display: 'flex' }}
+                      alignItems="center"
+                      item
+                      xs={3.5}
+                      sm={3}
+                      md={3}
+                      lg={2.5}
+                    >
+                      <TextField
+                        type="number"
+                        onChange={(e) =>
+                          handleAmountChanges(e, account.localId)
+                        }
+                        disabled={true}
+                        value={account.amount.toFixed(2) || 0}
+                        inputProps={{ shrink: false }}
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">$</InputAdornment>
+                          ),
+                        }}
+                      />
+                    </Grid>
+                    )}
                     <Grid
                       sx={{
                         display: 'flex',
