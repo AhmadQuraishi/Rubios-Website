@@ -333,6 +333,9 @@ const LocationCard = (props: any) => {
           zipcode: deliveryAddressString?.zip || '',
           isdefault: deliveryAddressString?.isdefault || false,
         };
+        if (deliveryAddressString?.id) {
+          updatedAddress.id = deliveryAddressString.id;
+        }
         try {
           setActionPerform(true);
           const response: any = await setBasketDeliveryAddress(
