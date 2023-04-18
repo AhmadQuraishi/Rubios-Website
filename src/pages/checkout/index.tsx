@@ -630,6 +630,17 @@ const Checkout = () => {
     return updatedString;
   };
 
+  const composeSpecialInstructions = () => {
+    return (
+      (isContactless &&
+        specialInstruction !== '' &&
+        'I want contactless delivery. ' + specialInstruction) ||
+      (specialInstruction !== '' && specialInstruction) ||
+      (isContactless && 'I want contactless delivery') ||
+      null
+    );
+  };
+
   const placeOrder = async () => {
     setButtonDisabled(true);
     let customFields = [];
@@ -666,38 +677,34 @@ const Checkout = () => {
       }
       formDataValue = formData;
     }
-    if (
-      basket?.deliverymode === DeliveryModeEnum.dispatch &&
-      basket?.deliveryaddress?.specialinstructions?.toLowerCase() !==
-        specialInstruction?.toLowerCase()
-    ) {
-      try {
-        let updatedAddress: any = {
-          building: basket?.deliveryaddress?.building || '',
-          streetaddress: basket?.deliveryaddress?.streetaddress || '',
-          city: basket?.deliveryaddress?.city || '',
-          zipcode: basket?.deliveryaddress?.zipcode || '',
-          isdefault: basket?.deliveryaddress?.isdefault || false,
-          specialinstructions:
-            (isContactless &&
-              specialInstruction !== '' &&
-              'I want contactless delivery. ' + specialInstruction) ||
-            (specialInstruction !== '' && specialInstruction) ||
-            (isContactless && 'I want contactless delivery') ||
-            null,
-        };
-        const response: any = await setBasketDeliveryAddress(
-          basket?.id,
-          updatedAddress,
-        );
-        dispatch(setBasketDeliveryAddressSuccess(response));
-      } catch (error: any) {
-        displayToast(
-          'ERROR',
-          error?.response?.data?.message
-            ? error.response.data.message
-            : 'ERROR! Please Try again later',
-        );
+
+    if (basket?.deliverymode === DeliveryModeEnum.dispatch) {
+      const currentSpecialInstructions =
+        basket?.deliveryaddress?.specialinstructions?.toLowerCase() || null;
+      const newSpecialInstructions = composeSpecialInstructions();
+      if (currentSpecialInstructions !== newSpecialInstructions) {
+        try {
+          let updatedAddress: any = {
+            building: basket?.deliveryaddress?.building || '',
+            streetaddress: basket?.deliveryaddress?.streetaddress || '',
+            city: basket?.deliveryaddress?.city || '',
+            zipcode: basket?.deliveryaddress?.zipcode || '',
+            isdefault: basket?.deliveryaddress?.isdefault || false,
+            specialinstructions: composeSpecialInstructions(),
+          };
+          const response: any = await setBasketDeliveryAddress(
+            basket?.id,
+            updatedAddress,
+          );
+          dispatch(setBasketDeliveryAddressSuccess(response));
+        } catch (error: any) {
+          displayToast(
+            'ERROR',
+            error?.response?.data?.message
+              ? error.response.data.message
+              : 'ERROR! Please Try again later',
+          );
+        }
       }
     }
     console.log(ccsfObj, 'ccsfObj registerError');
@@ -752,8 +759,6 @@ const Checkout = () => {
       //   );
       // }
     }
-
-    
 
     // if (billingSchemes && billingSchemes.length === 0) {
     //   displayToast('ERROR', 'Payment method is required');
