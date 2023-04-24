@@ -238,6 +238,31 @@ const Checkout = () => {
     getBasketAccessToken();
   }, [authToken]);
 
+  useEffect(() => {
+    const billingSchemeStats = getBillingSchemesStats(billingSchemes);
+    if (billingSchemeStats.selectedCreditCard === 1 && billingSchemeStats.selectedGiftCard > 0){
+          let billingArray : any = basketObj.payment.billingSchemes
+          .map(
+            (account: any) => {
+              if (
+                account.billingmethod === 'creditcard' &&
+                account.amount === 0 && account.selected
+              ) {
+                return {
+                  ...account,
+
+               selected : false,
+               alwaysVisible : true,
+              };
+            }
+            return account;
+          }
+          );
+          billingArray = updatePaymentCardsAmount(billingArray, basketObj?.basket);
+          dispatch(updateBasketBillingSchemes(billingArray));
+        }
+  }, [billingSchemes.length > 0]);
+
   React.useEffect(() => {
     if (basketObj?.payment?.billingSchemes?.length && removeCreditCardOnce) {
       let billingArray = basketObj.payment.billingSchemes.filter(
@@ -314,7 +339,7 @@ const Checkout = () => {
         const minutes = currentTime.diff(LoginCreatedTime, 'minutes');
         console.log('munutes', minutes);
         console.log('timelimit for session', LoginSessionTime);
-        if (minutes > timeLimit) {
+        if (minutes > 0) {
           setOpenAuthenticationModal(true);
           return false;
         }
