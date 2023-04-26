@@ -275,9 +275,7 @@ const RegisterForm = () => {
               )
               .email('Invalid email address')
               .required('Email is required'),
-              phone: Yup.string()
-              .min(14, 'Enter valid number')
-              .required('Phone Number is required'),
+            phone: Yup.string().min(14, 'Enter valid number'),
             password: Yup.string()
               .min(8, 'Must be at least 8 characters')
               .max(16, 'Must be at most 16 characters')
@@ -391,12 +389,11 @@ const RegisterForm = () => {
                   <Grid item xs={12}>
                     <TextField
                       aria-label="mobile phone "
-                      placeholder="Mobile Phone *"
+                      placeholder="Mobile Phone"
                       title="Mobile Phone"
                       value={values.phone}
-                      onBlur={handleBlur('phone')}
                       sx={{ width: '100%' }}
-                      onChange={handleChange('phone')}
+                      onChange={handleChange}
                       className="mobile-field text-fields-background"
                       autoComplete="on"
                       name="phone"
@@ -410,9 +407,17 @@ const RegisterForm = () => {
                       InputProps={{
                         inputComponent: NumberFormatCustom as any,
                       }}
-                      error={Boolean(touched.phone && errors.phone)}
-                      helperText={touched.phone && errors.phone}
+                      error={Boolean(touched && errors.phone)}
+                      helperText={errors.phone}
                     />
+                                      <Typography
+                    variant="body2"
+                    className="body-text"
+                    title="You can earn Rubio’s Rewards points by providing this phone number to the cashier when placing in-restaurant orders."
+                    sx={{ width: '100%' }}
+                  >
+                    You can earn Rubio’s Rewards points by providing this phone number to the cashier when placing in-restaurant orders.
+                  </Typography>
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
