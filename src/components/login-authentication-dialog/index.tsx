@@ -12,7 +12,7 @@ import ReactFacebookLogin from 'react-facebook-login';
 import { facebookUserLogin } from '../../redux/actions/user';
 import { displayToast } from '../../helpers/toast';
 import { isLoginUser } from '../../helpers/auth';
-
+import './index.css';
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
       boxSizing: 'border-box',
@@ -117,7 +117,7 @@ const LoginAuthDialog= (props: any)  =>{
   return (
     <div>
       <Dialog onClose={backdropClose} open={open} style={{marginRight: "20px", marginLeft:"20px"}} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title" style={{textAlign: "center"}}>Authentication Required</DialogTitle>
+        <DialogTitle id="form-dialog-title" style={{textAlign: "center"}}>For security purposes, please enter your password</DialogTitle>
         {providerToken?.fb_uid ? (
     <div style={{padding: "20px", alignItems: "center", display: "flex", justifyContent: "center" }}>
     <ReactFacebookLogin
