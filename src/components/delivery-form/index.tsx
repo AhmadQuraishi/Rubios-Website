@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Checkbox,
   FormGroup,
@@ -8,24 +8,35 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useSelector } from 'react-redux';
-import { Formik } from 'formik';
+import { useDispatch, useSelector } from 'react-redux';
+import { Formik, useFormikContext } from 'formik';
 import * as Yup from 'yup';
 import { forwardRef } from 'react';
 import { IMaskInput } from 'react-imask';
 import { OrderTypeDialog } from '../order-type-dialog';
 import { isLoginUser } from '../../helpers/auth';
+import { setBasketDeliveryAddressSuccess } from '../../redux/actions/basket/checkout';
+import './index.css';
 
+const maxLength = 120;
+const maxLengthContactLess = 93;
 const DeliveryForm = ({
   basket,
   deliveryFormRef,
   showSignUpGuest,
+  specialInstruction,
+  setSpecialInstruction,
+  isContactless,
+  setIsContactless,
+  handleCheckChange,
   setShowSignUpGuest,
 }: any) => {
   const [open, setOpen] = useState(false);
   const [hideIt, setHideIt] = useState(false);
-  const { providerToken } = useSelector((state: any) => state.providerReducer);
+  const [specialInstructionRunOnce, setSpecialInstructionRunOnce] =
+    useState(true);
 
+  const { providerToken } = useSelector((state: any) => state.providerReducer);
   interface CustomProps {
     onChange: (event: { target: { name: string; value: string } }) => void;
     name: string;
@@ -33,7 +44,8 @@ const DeliveryForm = ({
   const handleClick = () => {
     setOpen(true);
     setHideIt(!hideIt);
-  }
+  };
+
   const NumberFormatCustom = forwardRef<HTMLElement, CustomProps>(
     function NumberFormatCustom(props, ref) {
       const { onChange, ...other } = props;
@@ -54,9 +66,39 @@ const DeliveryForm = ({
     },
   );
 
+  const handleInsturctionChange = (event: any) => {
+    const newInstruction = event.target.value;
+    setSpecialInstruction(newInstruction);
+  };
+  React.useEffect(() => {
+    if (specialInstructionRunOnce && basket?.deliveryaddress?.specialinstructions) {
+      let specialInstruction = basket?.deliveryaddress?.specialinstructions;
+      let contactLess = false;
+  
+      if (specialInstruction !== '') {
+        const includeContactLess = specialInstruction.includes('I want contactless delivery');
+        if (includeContactLess) {
+          specialInstruction = specialInstruction.replace('I want contactless delivery. ', '');
+          contactLess = true;
+        }
+      }
+  
+      if (specialInstruction.includes('I want contactless delivery') && contactLess) {
+        contactLess = true;
+        specialInstruction = '';
+      }
+
+      setSpecialInstruction(specialInstruction);
+      setIsContactless(contactLess);
+      setSpecialInstructionRunOnce(false);
+      console.log(basket?.deliveryaddress?.specialinstructions,'specialInstruction');
+    }
+    
+    // debugger;
+  }, [basket]);
   return (
     <>
-      <OrderTypeDialog openModal={open} setOpenModal={setOpen} hideIt={true}  />
+      <OrderTypeDialog openModal={open} setOpenModal={setOpen} hideIt={true} />
       <Formik
         innerRef={deliveryFormRef}
         enableReinitialize={true}
@@ -174,7 +216,7 @@ const DeliveryForm = ({
                 helperText={errors.email}
               />
             </Grid>
-                       {!isLoginUser() && (
+            {!isLoginUser() && (
               <Grid item xs={12} sm={12} md={12} lg={12}>
                 <FormGroup>
                   <FormControlLabel
@@ -225,11 +267,11 @@ const DeliveryForm = ({
                   <Typography
                     variant="body1"
                     className="label"
-                    fontFamily= {"'Sunborn-Sansone'!important"}
-                    fontSize={"11pt !important"}
+                    fontFamily={"'Sunborn-Sansone'!important"}
+                    fontSize={'11pt !important'}
                     style={{
                       paddingTop: '10px',
-                      
+
                     }}
                   >
                     Your delivery Address
@@ -255,12 +297,49 @@ const DeliveryForm = ({
                     className="label"
                     sx={{ cursor: 'pointer', display: 'inline' }}
                     aria-label={'Edit Address'}
-                    onClick={() =>{
-                       handleClick()
-                      }}
+                    onClick={() => {
+                      handleClick();
+                    }}
                   >
                     Edit
                   </Typography>
+                  <Grid item xs={12} style={{ marginTop: '20px' }}>
+                    {
+                      <FormGroup>
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              checked={isContactless}
+                              onChange={handleCheckChange}
+                            />
+                          }
+                          label="I want contactless delivery"
+                          aria-required="true"
+                          title="I want contactless delivery"
+                          name="contactLess"
+                          className="size"
+                        />
+                      </FormGroup>
+                    }
+                    <TextField
+                      label="Delivery Instructions - Optional"
+                      name="specialInstruction"
+                      multiline
+                      value={specialInstruction}
+                      onChange={handleInsturctionChange}
+                      inputProps={{
+                        maxLength: isContactless
+                          ? maxLengthContactLess
+                          : maxLength,
+                      }}
+                    />
+                    <Typography
+                      variant="caption"
+                      sx={{ fontFamily: "'Librefranklin-Regular' !important" }}
+                    >
+                      (Limit of {maxLength} characters)
+                    </Typography>
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>

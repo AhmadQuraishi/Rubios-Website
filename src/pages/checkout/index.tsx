@@ -25,6 +25,7 @@ import {
   getBasketAllowedCardsRequest,
   getSingleRestaurantCalendar,
   removeBasketOrderSubmit,
+  setBasketDeliveryAddressSuccess,
   submitBasketSinglePaymentFailure,
   submitBasketSinglePaymentSuccess,
   updateBasketBillingSchemes,
@@ -48,7 +49,10 @@ import DeliveryForm from '../../components/delivery-form/index';
 import { getRewardsForCheckoutRequest } from '../../redux/actions/reward/checkout';
 import Page from '../../components/page-title';
 import { CreditCardCCSF } from '../../helpers/creditCard';
-import { generateCCSFToken } from '../../services/basket';
+import {
+  generateCCSFToken,
+  setBasketDeliveryAddress,
+} from '../../services/basket';
 import { updateGuestUserInfo } from '../../redux/actions/order';
 import { navigateAppAction } from '../../redux/actions/navigate-app';
 import { getRewardsNew } from '../../redux/actions/reward';
@@ -82,6 +86,8 @@ const Checkout = () => {
   const [basket, setBasket] = React.useState<ResponseBasket>();
   const [billingSchemes, setBillingSchemes] = React.useState<any>([]);
   const [rewards, setRewards] = React.useState<any>([]);
+  const [isContactless, setIsContactless] = React.useState(false);
+  const [specialInstruction, setSpecialInstruction] = useState('');
   const [locationId, setLocationId] = useState(null);
   const [validate, setValidate] =
     React.useState<ResponseBasketValidation | null>(null);
@@ -262,6 +268,12 @@ const Checkout = () => {
   React.useEffect(() => {
     setBillingSchemes(basketObj.payment.billingSchemes);
   }, [basketObj.payment.billingSchemes]);
+
+  
+  const handleCheckChange = (event: any) => {
+    const checked = event.target.checked;
+    setIsContactless(checked);
+  };
 
   React.useEffect(() => {
     if (
@@ -566,6 +578,16 @@ const Checkout = () => {
   //     return 0;
   //   }
   // };
+  const composeSpecialInstructions = () => {
+    return (
+      (isContactless &&
+        specialInstruction !== '' &&
+        'I want contactless delivery. ' + specialInstruction) ||
+      (specialInstruction !== '' && specialInstruction) ||
+      (isContactless && 'I want contactless delivery') ||
+      null
+    );
+  };
 
   const formatOrderType = (orderType: string) => {
     let updatedString =
@@ -634,7 +656,36 @@ const Checkout = () => {
       }
       formDataValue = formData;
     }
-
+    if (basket?.deliverymode === DeliveryModeEnum.dispatch) {
+      const currentSpecialInstructions =
+        basket?.deliveryaddress?.specialinstructions?.toLowerCase() || null;
+      const newSpecialInstructions = composeSpecialInstructions();
+      if (currentSpecialInstructions !== newSpecialInstructions) {
+        try {
+          let updatedAddress: any = {
+            building: basket?.deliveryaddress?.building || '',
+            streetaddress: basket?.deliveryaddress?.streetaddress || '',
+            city: basket?.deliveryaddress?.city || '',
+            zipcode: basket?.deliveryaddress?.zipcode || '',
+            isdefault: basket?.deliveryaddress?.isdefault || false,
+            specialinstructions: composeSpecialInstructions(),
+          };
+          const response: any = await setBasketDeliveryAddress(
+            basket?.id,
+            updatedAddress,
+          );
+          dispatch(setBasketDeliveryAddressSuccess(response));
+        } catch (error: any) {
+          displayToast(
+            'ERROR',
+            error?.response?.data?.message
+              ? error.response.data.message
+              : 'ERROR! Please Try again later',
+          );
+        }
+      }
+    }
+    
     if (billingSchemes && billingSchemes.length === 0) {
       displayToast('ERROR', 'Payment method is required');
       setButtonDisabled(false);
@@ -1116,9 +1167,11 @@ const Checkout = () => {
                       basket.deliverymode === DeliveryModeEnum.dispatch ? (
                         <DeliveryForm
                           basket={basket}
-                          // setShowSignUpGuest={setShowSignUpGuest}
-                          // showSignUpGuest={!showSignUpGuest}
-                          // defaultAddress={defaultDeliveryAddress}
+                          specialInstruction={specialInstruction}
+                          setSpecialInstruction={setSpecialInstruction}
+                          isContactless={isContactless}
+                          setIsContactless={setIsContactless}
+                          handleCheckChange={handleCheckChange}
                           deliveryFormRef={deliveryFormRef}
                         />
                       ) : null}
