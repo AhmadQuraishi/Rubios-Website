@@ -544,10 +544,10 @@ font-family: 'Sunborn-Sansone' !important;
   font-family: 'Librefranklin-Regular' !important;
 }
 
-.css-1sqnrkk-MuiInputBase-input-MuiOutlinedInput-input {
-  margin: 16px 10px 16px 20px !important;
-}
-
 .css-1je76wn-MuiFormLabel-root-MuiInputLabel-root {
   font-family: 'Librefranklin-Regular' !important;
+}
+
+.css-u36398 {
+  margin: 16px 10px 16px 20px !important;
 }
