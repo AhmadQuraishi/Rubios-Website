@@ -5,6 +5,7 @@ const INITIAL_STATE = {
   loading: false,
   providerToken: null,
   error: {},
+  authenticate: false,
 };
 
 const providerReducer = (state = INITIAL_STATE, action: any) => {
@@ -17,11 +18,13 @@ const providerReducer = (state = INITIAL_STATE, action: any) => {
     case Type.GET_PROVIDER_SUCCESS:
     case userTypes.USER_LOGIN_SUCCESS:
     case userTypes.USER_REGISTER_SUCCESS:
-      return { ...state, loading: false, providerToken: action.payload };
+      return { ...state, loading: false, providerToken: action.payload, authenticate: true };
+    case userTypes.USER_AUTHENTICATION_REQUEST:
+    return { ...state, authenticate: false }; 
     case Type.GET_PROVIDER_FAILURE:
     case userTypes.USER_LOGIN_FAILURE:
     case userTypes.USER_REGISTER_FAILURE:
-      return { ...state, loading: false, error: action.error };
+      return { ...state, loading: false, error: action.error,  authenticate: false };
     case userTypes.USER_LOGOUT:
       return {
         ...INITIAL_STATE,

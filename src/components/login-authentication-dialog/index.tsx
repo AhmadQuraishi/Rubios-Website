@@ -34,7 +34,7 @@ const LoginAuthDialog= (props: any)  =>{
     const [buttonDisabled, setButtonDisabled] = React.useState(false);
     const [open, setOpen] = React.useState(openAuthenticationModal);
 
-    const {providerToken,loading: loadingProvider } = useSelector(
+    const {providerToken,loading: loadingProvider, authenticate } = useSelector(
       (state: any) => state.providerReducer,
     );
     const { authToken ,loading: loadingAuth } = useSelector(
@@ -60,8 +60,14 @@ const LoginAuthDialog= (props: any)  =>{
 
   const handleClose = () => {
     setOpen(false);
-    setOpenAuthenticationModal(false)
-    placeOrder();
+    setOpenAuthenticationModal(false);
+    if (authenticate) {
+      placeOrder();
+    }
+    else {
+      setOpen(true);
+      setOpenAuthenticationModal(true);
+    }
   };
 
   const backdropClose = (event: any, reason: any) => {
@@ -263,3 +269,7 @@ const LoginAuthDialog= (props: any)  =>{
 };
 
 export default LoginAuthDialog;
+
+function dispatch(arg0: any) {
+  throw new Error('Function not implemented.');
+}

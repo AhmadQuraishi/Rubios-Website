@@ -46,6 +46,7 @@ import {
 import {
   getAllBillingAccounts,
   getUserDeliveryAddresses,
+  updateAuthenticateRequest,
   userLogin,
   userLogout,
   // getUserDeliveryAddresses,
@@ -328,7 +329,9 @@ const Checkout = () => {
     const checked = event.target.checked;
     setIsContactless(checked);
   };
+
   const AuthenticationHandler = () => {
+    dispatch(updateAuthenticateRequest(false));
     const LoginSessionTime: any = process.env.REACT_APP_LOGIN_SESSION_TIME;
     const timeLimit: number = LoginSessionTime ? parseInt(LoginSessionTime) : 0;
     console.log('timelimit for session', timeLimit);
@@ -337,9 +340,9 @@ const Checkout = () => {
       const currentTime = moment();
       if (LoginCreatedTime.isValid()) {
         const minutes = currentTime.diff(LoginCreatedTime, 'minutes');
-        console.log('munutes', minutes);
-        console.log('timelimit for session', LoginSessionTime);
-        if (minutes > 0) {
+        console.log('minutes', minutes);
+        // console.log('timelimit for session', LoginSessionTime);
+        if (minutes > timeLimit) {
           setOpenAuthenticationModal(true);
           return false;
         }
