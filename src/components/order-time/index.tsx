@@ -92,7 +92,7 @@ const OrderTime = ({ orderType }: any) => {
     }
   };
   
-  const handleEstTime = (time: any, time2 : any) => {
+  const handleLeadandEstTime = (time: any, time2 : any) => {
     let localTime = moment(new Date());
     let earlyReadyTime = moment(time, 'YYYYMMDD HH:mm');
 
@@ -102,6 +102,7 @@ const OrderTime = ({ orderType }: any) => {
     console.log(minutes,'minutesminutesminutesminutes');
   };
 
+
   console.log("time.earliestreadytime",time?.earliestreadytime);
   React.useEffect(() => {
     if (restaurantHours && restaurantHours.length) {
@@ -109,7 +110,8 @@ const OrderTime = ({ orderType }: any) => {
         restaurantHours[0].start,
         restaurantHours[0].end,
         restaurantHours[0].isOpenAllDay,
-        handleEstTime(time?.earliestreadytime,time?.leadtimeestimateminutes),
+        handleLeadandEstTime(time?.earliestreadytime,time?.leadtimeestimateminutes),
+        time?.leadtimeestimateminutes,
         time?.timemode,
         orderType,
       );
@@ -120,6 +122,7 @@ const OrderTime = ({ orderType }: any) => {
       }
       setTimeSlots(slots);
     }
+    // debugger;
   }, [restaurantHours, basket]);
 
   const onTimeSlotSelect = (event: any) => {
@@ -160,7 +163,7 @@ const OrderTime = ({ orderType }: any) => {
     //   }
     // }
   };
-
+  
   const handleDateChange = (e: any) => {
     try {
       if (timer) clearInterval(timer);

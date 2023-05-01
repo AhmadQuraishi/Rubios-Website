@@ -273,6 +273,7 @@ export function generateNextAvailableTimeSlots(
   closingTime: string,
   isOpenAllDay: Boolean,
   leadestimatedminutes: number,
+  leadTime : number,
   timeMode: string,
   orderType: string,
 ) {
@@ -304,9 +305,9 @@ export function generateNextAvailableTimeSlots(
   } else if (currentTime.isBetween(openAt, closeAt)) {
     startTime = currentTime.add(minutes, 'minute');
   } else if (currentTime.isBefore(openAt)) {
-    startTime = openAt.add(15, 'm');
+    let roundedMinutes = Math.ceil(openAt.minutes() / 15) * 15;
+    startTime = moment(openAt).add(leadTime, 'minutes').minutes(roundedMinutes).seconds(0).add(15, 'minutes');
   }
-
   let count = 0;
   const maxAllowed = 100;
   while (closeAt.diff(startTime, 'seconds') > 0 && count <= maxAllowed) {
