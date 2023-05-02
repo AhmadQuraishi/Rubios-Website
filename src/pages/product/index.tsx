@@ -1,4 +1,4 @@
-import { Grid, Typography, Card, Button, useMediaQuery } from '@mui/material';
+import { Grid, Typography, Card, Button, useMediaQuery, Switch, styled } from '@mui/material';
 import './product.css';
 import * as React from 'react';
 import ProductOptionsSkeletonUI from '../../components/product-options-skeleton-ui';
@@ -32,6 +32,68 @@ import { facebookConversionTypes } from '../../redux/types/facebook-conversion';
 import { convertMetaDataToOptions } from '../../helpers/product';
 import { isLoginUser } from '../../helpers/auth';
 import { handleCart } from '../../components/header';
+import { AnyNsRecord } from 'dns';
+import ToggleOnIcon from '@mui/icons-material/ToggleOn';
+import ToggleOffIcon from '@mui/icons-material/ToggleOff';
+
+import { SwitchProps } from '@mui/material/Switch';
+
+const ToggleSwitch = styled((props: SwitchProps) => (
+  <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
+))(({ theme }) => ({
+  width: 60,
+  height: 26,
+  padding: 0,
+  '& .MuiSwitch-switchBase': {
+    padding: 11, // Adjusted padding value
+    margin: -9,
+    transitionDuration: '300ms',
+    '&.Mui-checked': {
+      transform: 'translateX(33px)',
+      color: '#fff',
+      '& + .MuiSwitch-track': {
+        backgroundColor: theme.palette.mode === 'dark' ? '#3170b7' : '#3170b7',
+        opacity: 1,
+        border: 0,
+      },
+      '&.Mui-disabled + .MuiSwitch-track': {
+        opacity: 0.5,
+      },
+    },
+    '&.Mui-focusVisible .MuiSwitch-thumb': {
+      color: '#33cf4d',
+      border: '6px solid #fff',
+    },
+    '&.Mui-disabled .MuiSwitch-thumb': {
+      color:
+        theme.palette.mode === 'light'
+          ? theme.palette.grey[100]
+          : theme.palette.grey[600],
+    },
+    '&.Mui-disabled + .MuiSwitch-track': {
+      opacity: theme.palette.mode === 'light' ? 0.7 : 0.3,
+    },
+  },
+  '& .MuiSwitch-thumb': {
+    boxSizing: 'border-box',
+    width: 22,
+    height: 22,
+  },
+  '& .MuiSwitch-track': {
+    borderRadius: 26 / 2,
+    backgroundColor: theme.palette.mode === 'dark' ? '#3170b7' : '#3170b7',
+    opacity: 1,
+    transition: theme.transitions.create(['background-color'], {
+      duration: 500,
+    }),
+  },
+}));
+
+
+
+
+
+
 
 const Product = () => {
   const { id, edit } = useParams();
@@ -348,6 +410,9 @@ const Product = () => {
     isParentSelected: any = false,
   ) => {
     options.map((itemMain: any, index0: number) => {
+  if (itemMain.description && itemMain.description.toLowerCase().indexOf('as is or customize') !== -1) {
+    itemMain.mandatory = false;
+  }
       let defaultOptionID: any = null;
       if (itemMain.options) {
         const item = itemMain.options.find(
@@ -361,7 +426,7 @@ const Product = () => {
         if (
           (itemMain.description &&
             itemMain.description.toLowerCase().indexOf('remove or modify') !==
-              -1) ||
+            -1) ||
           option.customDropDown
         ) {
           optionsArray.push({
@@ -406,8 +471,8 @@ const Product = () => {
         editOptions.length > 0
           ? editOptions
           : defaultOptionID
-          ? [defaultOptionID]
-          : [];
+            ? [defaultOptionID]
+            : [];
 
       setOptionsSelectionArray((optionsSelectionArray: any) => [
         ...optionsSelectionArray,
@@ -423,7 +488,7 @@ const Product = () => {
           cost: itemMain.cost || 0,
           selected:
             (isParentSelected && parentDefaultOptionID.includes(parentID)) ||
-            parentID == null
+              parentID == null
               ? true
               : false,
         },
@@ -444,7 +509,7 @@ const Product = () => {
                 selectedOptions,
                 (isParentSelected &&
                   parentDefaultOptionID.includes(parentID)) ||
-                  parentID == null,
+                parentID == null,
               )
             );
           }
@@ -502,7 +567,7 @@ const Product = () => {
   };
 
   const [selectionExecute, setSelectionExecute] = useState(false);
-
+  
   const showChildOptions = (
     optionId: number,
     parnetOptionID: number,
@@ -1079,7 +1144,7 @@ const Product = () => {
                     variant="h2"
                     className="heading"
                     title={productDetails.name}
-                    dangerouslySetInnerHTML={{__html: productDetails?.name?.includes("®") ? productDetails?.name?.replace('®', '<sup>®</sup>') : productDetails.name}}
+                    dangerouslySetInnerHTML={{ __html: productDetails?.name?.includes("®") ? productDetails?.name?.replace('®', '<sup>®</sup>') : productDetails.name }}
                   >
                   </Typography>
                   <Typography
@@ -1092,34 +1157,32 @@ const Product = () => {
                   <Grid container>
                     {(parseInt(productDetails.basecalories || '0') > 0 ||
                       parseInt(productDetails.maxcalories || '0') > 0) && (
-                      <Grid item xs={4.5} sx={{ marginRight: '15px' }}>
-                        <Typography
-                          variant="caption"
-                          className="label bold"
-                          aria-label={`${
-                            productDetails.caloriesseparator
+                        <Grid item xs={4.5} sx={{ marginRight: '15px' }}>
+                          <Typography
+                            variant="caption"
+                            className="label bold"
+                            aria-label={`${productDetails.caloriesseparator
                               ? productDetails.basecalories +
-                                productDetails.caloriesseparator +
-                                productDetails.maxcalories
-                              : productDetails.basecalories
-                          } Cal`}
-                          title={`${
-                            productDetails.caloriesseparator
-                              ? productDetails.basecalories +
-                                productDetails.caloriesseparator +
-                                productDetails.maxcalories
-                              : productDetails.basecalories
-                          } Cal`}
-                        >
-                          {productDetails.caloriesseparator
-                            ? productDetails.basecalories +
                               productDetails.caloriesseparator +
                               productDetails.maxcalories
-                            : productDetails.basecalories}{' '}
-                          Cal
-                        </Typography>
-                      </Grid>
-                    )}
+                              : productDetails.basecalories
+                              } Cal`}
+                            title={`${productDetails.caloriesseparator
+                              ? productDetails.basecalories +
+                              productDetails.caloriesseparator +
+                              productDetails.maxcalories
+                              : productDetails.basecalories
+                              } Cal`}
+                          >
+                            {productDetails.caloriesseparator
+                              ? productDetails.basecalories +
+                              productDetails.caloriesseparator +
+                              productDetails.maxcalories
+                              : productDetails.basecalories}{' '}
+                            Cal
+                          </Typography>
+                        </Grid>
+                      )}
                     {productDetails.cost > 0 && (
                       <Grid item xs={6}>
                         <Typography
@@ -1189,17 +1252,16 @@ const Product = () => {
                         boxShadow: 'none',
                         display:
                           itemMain.id == itemMain.parentOptionID ||
-                          selectedParentOption(itemMain.parentOptionID)
+                            selectedParentOption(itemMain.parentOptionID)
                             ? 'flex'
                             : 'none',
                       }}
                     >
                       <legend
-                        className={`heading-ui ${
-                          itemMain.parentOptionID == itemMain.id ? 'h2' : 'h3'
-                        }`}
+                        className={`heading-ui ${itemMain.parentOptionID == itemMain.id ? 'h2' : 'h3'
+                          }`}
                       >
-                        {itemMain.name}
+                        {itemMain?.name?.replace('As is or Customize?', '')}
                         {IsItemSelected(itemMain.id) && (
                           <span
                             role="alert"
@@ -1220,7 +1282,7 @@ const Product = () => {
                         sx={{
                           display:
                             itemMain.id == itemMain.parentOptionID ||
-                            selectedParentOption(itemMain.parentOptionID)
+                              selectedParentOption(itemMain.parentOptionID)
                               ? 'flex'
                               : 'none',
                         }}
@@ -1232,117 +1294,156 @@ const Product = () => {
                           (itemMain.options.length < 0 && (
                             <ProductOptionsSkeletonUI />
                           ))}
-                        {itemMain.options &&
-                          itemMain.options.map(
+                        {itemMain?.options &&
+                          itemMain?.options.filter((item: any) => (item.option.name === 'As is' || item.option.name === 'Customize'))
+                          .map(
                             (itemChild: any, index1: number) => (
-                              <Grid
-                                key={Math.random() + index1}
-                                option-id={itemChild.option.id}
-                                className={
-                                  checkOptionSelected(
-                                    itemChild.option.id,
-                                    itemMain.id,
-                                  ) == true
-                                    ? 'content-panel selected'
-                                    : 'content-panel'
-                                }
-                                item
-                                xs={6}
-                                sm={3}
-                                md={3}
-                                lg={4}
-                                sx={{ position: 'relative' }}
-                              >
-                                {itemMain.mandatory ? (
-                                  <input
-                                    aria-invalid={
-                                      IsItemSelected(itemMain.id) && index1 == 0
-                                        ? 'true'
-                                        : 'false'
-                                    }
-                                    aria-describedby={
-                                      index1 == 0
-                                        ? `required-label-${index0}`
-                                        : ''
-                                    }
-                                    checked={checkOptionSelected(
-                                      itemChild.option.id,
-                                      itemMain.id,
-                                    )}
-                                    style={{
-                                      opacity: 0,
-                                      position: 'absolute',
-                                      zIndex: 1000,
-                                    }}
-                                    type="radio"
-                                    id={itemChild.option.id}
-                                    value={itemChild.option.name}
-                                    onChange={() => {
-                                      showChildOptions(
-                                        itemChild.option.id,
-                                        itemMain.id,
-                                        itemChild.dropDownValues,
-                                        itemChild.selectedValue,
-                                      );
-                                    }}
-                                  />
-                                ) : (
-                                  <input
-                                    aria-invalid={
-                                      IsItemSelected(itemMain.id) && index1 == 0
-                                        ? 'true'
-                                        : 'false'
-                                    }
-                                    aria-describedby={
-                                      index1 == 0
-                                        ? `required-label-${index0}`
-                                        : ''
-                                    }
-                                    checked={checkOptionSelected(
-                                      itemChild.option.id,
-                                      itemMain.id,
-                                    )}
-                                    style={{
-                                      opacity: 0,
-                                      position: 'absolute',
-                                      zIndex: 1000,
-                                    }}
-                                    type="checkbox"
-                                    id={itemChild.option.id}
-                                    value={itemChild.option.name}
-                                    onChange={() => {
-                                      showChildOptions(
-                                        itemChild.option.id,
-                                        itemMain.id,
-                                        itemChild.dropDownValues,
-                                        itemChild.selectedValue,
-                                      );
-                                    }}
-                                  />
-                                )}
-                                <label
-                                  htmlFor={itemChild.option.id}
-                                  onClick={() => {
+                              <>
+                                  {itemChild?.option.name === 'As is' || itemChild?.option.name === 'Customize'  &&
+
+                                  <div style={{display: 'flex',marginBottom: '20px'}}>
+                                  <Typography sx={{fontWeight: 'bold',display: 'flex',alignItems: 'center',justifyContent: 'center',fontSize: '15px',fontFamily: 'Librefranklin-Regular !important',textTransform: 'uppercase',color: itemChild.option.name === 'Customize' && checkOptionSelected(itemChild.option.id, itemMain.id) ? '#98b7db' : '#3170b7' }}>
+                                    As is
+                                  </Typography>
+                                  <ToggleSwitch
+                                  sx={{marginLeft: '10px', marginRight: '10px'}}
+                                  id={itemChild.option.id}
+                                  value={itemChild.option.name}
+                                  checked={checkOptionSelected(
+                                  itemChild.option.id,
+                                  itemMain.id,
+                                  )}
+                                  onChange={() => {
                                     showChildOptions(
+                                          itemChild.option.id,
+                                          itemMain.id,
+                                          itemChild.dropDownValues,
+                                          itemChild.selectedValue,
+                                        );
+                                      } }
+                                    /> 
+                                   <Typography sx={{fontWeight: 'bold',display: 'flex',alignItems: 'center',justifyContent: 'center',fontSize: '15px',fontFamily: 'Librefranklin-Regular !important',textTransform: 'uppercase',color: itemChild.option.name === 'Customize' && checkOptionSelected(itemChild.option.id, itemMain.id) ? '#3170b7' : '#98b7db'}}>
+                                    Customize
+                                  </Typography>
+                                  </div>
+                                }
+                                
+                            </>
+                          ),
+                        )}
+                        
+                        {itemMain?.options &&
+                          itemMain?.options.filter((item: any) => !(item.option.name === 'As is' || item.option.name === 'Customize'))
+                          .map(
+                            (itemChild: any, index1: number) => (
+                              <>
+                                <Grid
+                                  key={Math.random() + index1}
+                                  option-id={itemChild.option.id}
+                                  className={
+                                    checkOptionSelected(
                                       itemChild.option.id,
                                       itemMain.id,
-                                      itemChild.dropDownValues,
-                                      itemChild.selectedValue,
-                                    );
-                                  }}
-                                  onKeyUp={(e) => {
-                                    if (e.keyCode === 13)
+                                    ) == true
+                                      ? 'content-panel selected'
+                                      : 'content-panel'
+                                  }
+                                  item
+                                  xs={6}
+                                  sm={3}
+                                  md={3}
+                                  lg={4}
+                                  sx={{ position: 'relative' }}
+                                >
+                                  {itemMain.mandatory ? (
+                                    <input
+                                      aria-invalid={
+                                        IsItemSelected(itemMain.id) && index1 == 0
+                                          ? 'true'
+                                          : 'false'
+                                      }
+                                      aria-describedby={
+                                        index1 == 0
+                                          ? `required-label-${index0}`
+                                          : ''
+                                      }
+                                      checked={checkOptionSelected(
+                                        itemChild.option.id,
+                                        itemMain.id,
+                                      )}
+                                      style={{
+                                        opacity: 0,
+                                        position: 'absolute',
+                                        zIndex: 1000,
+                                      }}
+                                      type="radio"
+                                      id={itemChild.option.id}
+                                      value={itemChild.option.name}
+                                      onChange={() => {
+                                        showChildOptions(
+                                          itemChild.option.id,
+                                          itemMain.id,
+                                          itemChild.dropDownValues,
+                                          itemChild.selectedValue,
+                                        );
+                                      }}
+                                    />
+                                  ) : (
+                                    <input
+                                      aria-invalid={
+                                        IsItemSelected(itemMain.id) && index1 == 0
+                                          ? 'true'
+                                          : 'false'
+                                      }
+                                      aria-describedby={
+                                        index1 == 0
+                                          ? `required-label-${index0}`
+                                          : ''
+                                      }
+                                      checked={checkOptionSelected(
+                                        itemChild.option.id,
+                                        itemMain.id,
+                                      )}
+                                      style={{
+                                        opacity: 0,
+                                        position: 'absolute',
+                                        zIndex: 1000,
+                                      }}
+                                      type="checkbox"
+                                      id={itemChild.option.id}
+                                      value={itemChild.option.name}
+                                      onChange={() => {
+                                        showChildOptions(
+                                          itemChild.option.id,
+                                          itemMain.id,
+                                          itemChild.dropDownValues,
+                                          itemChild.selectedValue,
+                                        );
+                                      }}
+                                    />
+                                  )}
+                                  <label
+                                    htmlFor={itemChild.option.id}
+                                    onClick={() => {
                                       showChildOptions(
                                         itemChild.option.id,
                                         itemMain.id,
                                         itemChild.dropDownValues,
                                         itemChild.selectedValue,
                                       );
-                                  }}
-                                >
-                                  <Card
-                                    className={`card-panel ${
-                                      noWordpressImageFound(
+                                    }}
+                                    onKeyUp={(e) => {
+                                      if (e.keyCode === 13)
+                                        showChildOptions(
+                                          itemChild.option.id,
+                                          itemMain.id,
+                                          itemChild.dropDownValues,
+                                          itemChild.selectedValue,
+                                        );
+                                    }}
+                                  >
+                                    <Card
+                                      className={`card-panel ${noWordpressImageFound(
                                         optionImages,
                                         itemChild.option.chainoptionid,
                                         itemChild.option.name,
@@ -1350,238 +1451,226 @@ const Product = () => {
                                       )
                                         ? 'no-image-class'
                                         : ''
-                                    }`}
-                                    title={itemChild.option.name}
-                                    is-mandatory={itemMain.mandatory.toString()}
-                                    parent-option-id={itemMain.parentOptionID}
-                                  >
-                                    <div className="check-mark">
-                                      <div
-                                        aria-hidden="true"
-                                        className="checkmark"
-                                      >
-                                        L
-                                      </div>
-                                    </div>
-                                    <Grid
-                                      container
-                                      spacing={1}
-                                      style={{ width: '100%' }}
-                                      className="name-img-panel"
-                                      sx={{ padding: '0', marginTop: '0' }}
+                                        }`}
+                                      title={itemChild.option.name}
+                                      is-mandatory={itemMain.mandatory.toString()}
+                                      parent-option-id={itemMain.parentOptionID}
                                     >
+                                      <div className="check-mark">
+                                        <div
+                                          aria-hidden="true"
+                                          className="checkmark"
+                                        >
+                                          L
+                                        </div>
+                                      </div>
                                       <Grid
-                                        item
-                                        xs={12}
-                                        lg={5}
-                                        sx={{
-                                          width: '120px',
-                                          maxWidth: { lg: '120px', xs: 'auto' },
-                                          height: '120px',
-                                          display: 'flex',
-                                          alignItems: 'center',
-                                          padding: '0px',
-                                          paddingLeft: {
-                                            xs: '0px !important',
-                                            // lg: '15px !important',
-                                          },
-                                          paddingTop: {
-                                            xs: '0px !important',
-                                            lg: '0px !important',
-                                          },
-                                        }}
+                                        container
+                                        spacing={1}
+                                        style={{ width: '100%' }}
+                                        className="name-img-panel"
+                                        sx={{ padding: '0', marginTop: '0' }}
                                       >
-                                        <ItemImage
-                                          productImageURL={
-                                            productDetails &&
-                                            ((categories &&
-                                              categories.imagepath) ||
-                                              '') +
+                                        <Grid
+                                          item
+                                          xs={12}
+                                          lg={5}
+                                          sx={{
+                                            width: '120px',
+                                            maxWidth: { lg: '120px', xs: 'auto' },
+                                            height: '120px',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            padding: '0px',
+                                            paddingLeft: {
+                                              xs: '0px !important',
+                                            },
+                                            paddingTop: {
+                                              xs: '0px !important',
+                                              lg: '0px !important',
+                                            },
+                                          }}
+                                        >
+                                          <ItemImage
+                                            productImageURL={
+                                              productDetails &&
+                                              ((categories &&
+                                                categories.imagepath) ||
+                                                '') +
                                               changeImageSize(
                                                 productDetails.imagefilename ||
-                                                  '',
+                                                '',
                                                 productDetails.images || '',
                                                 'desktop-menu',
                                               )
-                                          }
-                                          index={index1}
-                                          className="item-image"
-                                          name={itemChild.option.name}
-                                          id={itemChild.option.chainoptionid}
-                                          optionImages={optionImages}
-                                          isdefault={itemChild.option.isdefault}
-                                        />
-                                      </Grid>
-                                      <Grid
-                                        item
-                                        xs={12}
-                                        lg={7}
-                                        // style={{textAlign: 'center'}}
-                                        className="name-panel"
-                                      >
-                                        {itemChild.option.name}
-                                        <div
-                                          className={'options-cals-price'}
-                                          style={{ display: 'flex' }}
+                                            }
+                                            index={index1}
+                                            className="item-image"
+                                            name={itemChild.option.name}
+                                            id={itemChild.option.chainoptionid}
+                                            optionImages={optionImages}
+                                            isdefault={itemChild.option.isdefault}
+                                          />
+                                        </Grid>
+                                        <Grid
+                                          item
+                                          xs={12}
+                                          lg={7}
+                                          className="name-panel"
                                         >
-                                          {itemChild.option.cost > 0 && (
-                                            <span
-                                              className={'value'}
-                                              title={`$${parseFloat(
-                                                itemChild.option.cost,
-                                              ).toFixed(2)}`}
-                                              style={{
-                                                fontSize: '11px',
-                                                fontFamily: "'Sunborn-Sansone' !important",
-                                                color: '#0075BF',
-                                              }}
-                                            >
-                                              +$
-                                              {parseFloat(
-                                                itemChild.option.cost,
-                                              ).toFixed(2)}
-                                            </span>
-                                          )}
-                                          {itemChild.option.cost > 0 &&
-                                            itemChild.option.basecalories && (
+
+                                          {itemChild.option.name}
+                                          <div
+                                            className={'options-cals-price'}
+                                            style={{ display: 'flex' }}
+                                          >
+                                            {itemChild.option.cost > 0 && (
                                               <span
+                                                className={'value'}
+                                                title={`$${parseFloat(
+                                                  itemChild.option.cost,
+                                                ).toFixed(2)}`}
                                                 style={{
-                                                  fontSize: '16px',
-                                                  fontFamily: "'Librefranklin-Regular' !important",
-                                                  color: '#AAA',
-                                                  marginTop: '-2%',
+                                                  fontSize: '11px',
+                                                  fontFamily: "'Sunborn-Sansone' !important",
+                                                  color: '#0075BF',
                                                 }}
                                               >
-                                                &nbsp;|&nbsp;
+                                                +$
+                                                {parseFloat(
+                                                  itemChild.option.cost,
+                                                ).toFixed(2)}
                                               </span>
                                             )}
-                                          {/*<Grid*/}
-                                          {/*  item*/}
-                                          {/*  xs={12}*/}
-                                          {/*  lg={9}*/}
-                                          {/*  sx={{*/}
-                                          {/*    fontSize: '11px',*/}
-                                          {/*    color: '#0075EF',*/}
-                                          {/*    fontFamily: 'Poppins-Bold !important',*/}
-                                          {/*  }}*/}
-                                          {/*>*/}
-                                          {/*<Grid container>*/}
-                                          {itemChild.option.basecalories && (
-                                            <span
-                                              style={{
-                                                fontSize: '11px',
-                                                fontFamily: "'Sunborn-Sansone' !important",
-                                                color: '#0075BF',
-                                              }}
-                                            >
-                                              +{' '}
-                                              {itemChild.option.basecalories +
-                                                ' Cals'}
-                                            </span>
-                                          )}
-                                          {itemChild.option.maxcalories &&
-                                            itemChild.option.basecalories && (
-                                              <span
-                                                style={{
-                                                  fontSize: '16px',
-                                                  fontFamily: "'Librefranklin-Regular' !important",
-                                                  color: '#AAA',
-                                                  marginTop: '-2%',
-                                                }}
-                                              >
-                                                &nbsp;|&nbsp;
-                                              </span>
-                                            )}
-                                          {itemChild.option.maxcalories && (
-                                            <span
-                                              style={{
-                                                fontSize: '11px',
-                                                fontFamily: "'Sunborn-Sansone' !important",
-                                                color: '#0075BF',
-                                              }}
-                                            >
-                                              +
-                                              {itemChild.option.maxcalories +
-                                                ' Cals'}
-                                            </span>
-                                          )}
-                                          {/*</Grid>*/}
-                                          {/*</Grid>*/}
-                                        </div>
-                                        {itemChild.dropDownValues && (
-                                          <>
-                                            {checkOptionSelected(
-                                              itemChild.option.id,
-                                              itemMain.id,
-                                            ) == true && (
-                                              <div
-                                                style={{ position: 'relative' }}
-                                              >
-                                                <select
-                                                  className="ss-panl"
-                                                  parent-select-option-id={
-                                                    itemChild.id
-                                                  }
-                                                  onClick={(e) =>
-                                                    e.stopPropagation()
-                                                  }
-                                                  value={
-                                                    itemChild.selectedValue ||
-                                                    '0'
-                                                  }
-                                                  data-select-id={
-                                                    itemChild.selectedValue ||
-                                                    '0'
-                                                  }
-                                                  onChange={(e) =>
-                                                    dropDownValue(
-                                                      itemChild.option.id,
-                                                      e.target.value,
-                                                      itemChild.dropDownValues,
-                                                      e.target,
-                                                    )
-                                                  }
+                                            {itemChild.option.cost > 0 &&
+                                              itemChild.option.basecalories && (
+                                                <span
+                                                  style={{
+                                                    fontSize: '16px',
+                                                    fontFamily: "'Librefranklin-Regular' !important",
+                                                    color: '#AAA',
+                                                    marginTop: '-2%',
+                                                  }}
                                                 >
-                                                  {itemChild.dropDownValues.map(
-                                                    (
-                                                      option: any,
-                                                      index: number,
-                                                    ) => (
-                                                      <option
-                                                        key={
-                                                          Math.random() + index
-                                                        }
-                                                        value={option.id}
-                                                        onClick={() => {
-                                                          setTotalCost(
-                                                            ((productDetails?.cost ||
-                                                              0) +
-                                                              option.cost) *
-                                                              count,
-                                                          );
-                                                        }}
-                                                      >
-                                                        {option.name +
-                                                          (option.cost > 0
-                                                            ? ' (+$' +
-                                                              option.cost.toFixed(
-                                                                2,
-                                                              ) +
-                                                              ')'
-                                                            : '')}
-                                                      </option>
-                                                    ),
-                                                  )}
-                                                </select>
-                                              </div>
+                                                  &nbsp;|&nbsp;
+                                                </span>
+                                              )}
+                                            {itemChild.option.basecalories && (
+                                              <span
+                                                style={{
+                                                  fontSize: '11px',
+                                                  fontFamily: "'Sunborn-Sansone' !important",
+                                                  color: '#0075BF',
+                                                }}
+                                              >
+                                                +{' '}
+                                                {itemChild.option.basecalories +
+                                                  ' Cals'}
+                                              </span>
                                             )}
-                                          </>
-                                        )}
+                                            {itemChild.option.maxcalories &&
+                                              itemChild.option.basecalories && (
+                                                <span
+                                                  style={{
+                                                    fontSize: '16px',
+                                                    fontFamily: "'Librefranklin-Regular' !important",
+                                                    color: '#AAA',
+                                                    marginTop: '-2%',
+                                                  }}
+                                                >
+                                                  &nbsp;|&nbsp;
+                                                </span>
+                                              )}
+                                            {itemChild.option.maxcalories && (
+                                              <span
+                                                style={{
+                                                  fontSize: '11px',
+                                                  fontFamily: "'Sunborn-Sansone' !important",
+                                                  color: '#0075BF',
+                                                }}
+                                              >
+                                                +
+                                                {itemChild.option.maxcalories +
+                                                  ' Cals'}
+                                              </span>
+                                            )}
+                                          </div>
+                                          {itemChild.dropDownValues && (
+                                            <>
+                                              {checkOptionSelected(
+                                                itemChild.option.id,
+                                                itemMain.id,
+                                              ) == true && (
+                                                  <div
+                                                    style={{ position: 'relative' }}
+                                                  >
+                                                    <select
+                                                      className="ss-panl"
+                                                      parent-select-option-id={
+                                                        itemChild.id
+                                                      }
+                                                      onClick={(e) =>
+                                                        e.stopPropagation()
+                                                      }
+                                                      value={
+                                                        itemChild.selectedValue ||
+                                                        '0'
+                                                      }
+                                                      data-select-id={
+                                                        itemChild.selectedValue ||
+                                                        '0'
+                                                      }
+                                                      onChange={(e) =>
+                                                        dropDownValue(
+                                                          itemChild.option.id,
+                                                          e.target.value,
+                                                          itemChild.dropDownValues,
+                                                          e.target,
+                                                        )
+                                                      }
+                                                    >
+                                                      {itemChild.dropDownValues.map(
+                                                        (
+                                                          option: any,
+                                                          index: number,
+                                                        ) => (
+                                                          <option
+                                                            key={
+                                                              Math.random() + index
+                                                            }
+                                                            value={option.id}
+                                                            onClick={() => {
+                                                              setTotalCost(
+                                                                ((productDetails?.cost ||
+                                                                  0) +
+                                                                  option.cost) *
+                                                                count,
+                                                              );
+                                                            }}
+                                                          >
+                                                            {option.name +
+                                                              (option.cost > 0
+                                                                ? ' (+$' +
+                                                                option.cost.toFixed(
+                                                                  2,
+                                                                ) +
+                                                                ')'
+                                                                : '')}
+                                                          </option>
+                                                        ),
+                                                      )}
+                                                    </select>
+                                                  </div>
+                                                )}
+                                            </>
+                                          )}
+                                        </Grid>
                                       </Grid>
-                                    </Grid>
-                                  </Card>
-                                </label>
-                              </Grid>
+                                    </Card>
+                                  </label>
+                                </Grid>
+
+                              </>
                             ),
                           )}
                       </Grid>
@@ -1591,7 +1680,7 @@ const Product = () => {
               <Grid container className="action-panel">
                 <Grid item xs={12} className="content-panel">
                   {productDetails &&
-                  productDetails.id !== utensilsReducer.utensilsProductId ? (
+                    productDetails.id !== utensilsReducer.utensilsProductId ? (
                     <div
                       style={{ display: 'flex', alignItems: 'center' }}
                       className="button-panel-sx"
@@ -1629,7 +1718,7 @@ const Product = () => {
                             setCount(Math.max(count - 1, 1));
                             setTotalCost(
                               ((productDetails?.cost || 0) + optionsCost) *
-                                Math.max(count - 1, 1),
+                              Math.max(count - 1, 1),
                             );
                           }}
                         >
@@ -1640,7 +1729,7 @@ const Product = () => {
                           value={count}
                           readOnly
                           id="quantityfield"
-                          onChange={() => {}}
+                          onChange={() => { }}
                           className="input-quantity"
                           title="quantity"
                         />
@@ -1657,7 +1746,7 @@ const Product = () => {
                             setCount(count + 1);
                             setTotalCost(
                               ((productDetails?.cost || 0) + optionsCost) *
-                                (count + 1),
+                              (count + 1),
                             );
                           }}
                         >
@@ -1668,19 +1757,19 @@ const Product = () => {
                     </div>
                   ) : null}
                   {productAddObj.loading ||
-                  basketObj.loading ||
-                  dummyBasketObj.loading ||
-                  productUpdateObj.loading ||
-                  !validateOptionsSelection() ? (
+                    basketObj.loading ||
+                    dummyBasketObj.loading ||
+                    productUpdateObj.loading ||
+                    !validateOptionsSelection() ? (
                     <Button
                       id="AddProductToBasket"
                       data-test-button="addToCart"
                       title="ADD TO BAG"
                       className="add-to-bag"
-                      sx={{    letterSpacing: "0px !important"}}
+                      sx={{ letterSpacing: "0px !important" }}
                       variant="contained"
                       disabled
-                      
+
                     >
                       {edit ? 'UPDATE BAG' : 'ADD TO BAG'}
                       <span style={{ position: 'absolute', right: '15px' }}>
@@ -1697,7 +1786,7 @@ const Product = () => {
                       data-product-name={`${productDetails?.name || ''}`}
                       data-product-id={`${productDetails?.chainproductid || ''}`}
                       data-product-price={`${totalCost?.toFixed(2)}`}
-                      sx={{    letterSpacing: "0px !important"}}
+                      sx={{ letterSpacing: "0px !important" }}
                       disabled={checkDisable()}
                       onClick={() => {
                         addProductToBag();
