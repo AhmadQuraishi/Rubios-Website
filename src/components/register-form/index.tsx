@@ -270,7 +270,7 @@ const RegisterForm = () => {
             )
             .email('Invalid email address')
             .required('Email is required'),
-          phone: Yup.string().min(14, 'Enter valid number'),
+          phone: Yup.string().min(14, 'Enter valid number').required('required'),
           password: Yup.string()
             .min(8, 'Must be at least 8 characters')
             .max(16, 'Must be at most 16 characters')
@@ -382,11 +382,12 @@ const RegisterForm = () => {
                   <TextField
                     className="mobile-field"
                     aria-label="mobile phone "
-                    label="Mobile Phone"
+                    label="Mobile Phone *"
                     title="Mobile Phone"
                     value={values.phone}
                     sx={{ width: '100%' }}
-                    onChange={handleChange}
+                    onChange={handleChange('phone')}
+                    onBlur={handleBlur('phone')}
                     autoComplete="off"
                     name="phone"
                     id="formatted-numberformat-input"
@@ -399,10 +400,10 @@ const RegisterForm = () => {
                     InputProps={{
                       inputComponent: NumberFormatCustom as any,
                     }}
-                    error={Boolean(touched && errors.phone)}
-                    helperText={errors.phone}
+                    error={Boolean(touched.phone && errors.phone)}
+                    helperText={touched.phone && errors.phone}
                   />
-                                    <Typography
+                  <Typography
                     variant="body2"
                     className="body-text"
                     title="You can earn Rubio’s Rewards points by providing this phone number to the cashier when placing in-restaurant orders."
