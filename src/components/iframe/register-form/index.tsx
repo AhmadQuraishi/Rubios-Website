@@ -275,7 +275,7 @@ const RegisterForm = () => {
               )
               .email('Invalid email address')
               .required('Email is required'),
-            phone: Yup.string().min(14, 'Enter valid number'),
+            phone: Yup.string().min(14, 'Enter valid number').required('required'),
             password: Yup.string()
               .min(8, 'Must be at least 8 characters')
               .max(16, 'Must be at most 16 characters')
@@ -389,11 +389,11 @@ const RegisterForm = () => {
                   <Grid item xs={12}>
                     <TextField
                       aria-label="mobile phone "
-                      placeholder="Mobile Phone"
+                      placeholder="Mobile Phone *"
                       title="Mobile Phone"
                       value={values.phone}
                       sx={{ width: '100%' }}
-                      onChange={handleChange}
+                      onChange={handleChange('phone')}
                       className="mobile-field text-fields-background"
                       autoComplete="on"
                       name="phone"
@@ -404,11 +404,12 @@ const RegisterForm = () => {
                           root: values.phone !== '' ? 'mobile-field-label' : '',
                         },
                       }}
+                      onBlur={handleBlur('phone')}
                       InputProps={{
                         inputComponent: NumberFormatCustom as any,
                       }}
-                      error={Boolean(touched && errors.phone)}
-                      helperText={errors.phone}
+                      error={Boolean(touched.phone && errors.phone)}
+                      helperText={touched.phone && errors.phone}
                     />
                                       <Typography
                     variant="body2"
