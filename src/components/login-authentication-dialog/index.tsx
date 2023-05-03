@@ -123,7 +123,7 @@ const LoginAuthDialog= (props: any)  =>{
   return (
     <div>
       <Dialog onClose={backdropClose} open={open} style={{marginRight: "20px", marginLeft:"20px"}} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title" style={{textAlign: "center"}}>For security purposes, please enter your password</DialogTitle>
+        <DialogTitle id="form-dialog-title" sx={{fontFamily: "'Librefranklin-Bold' !important"}} style={{textAlign: "center"}}>For security purposes, please enter your password</DialogTitle>
         {providerToken?.fb_uid ? (
     <div style={{padding: "20px", alignItems: "center", display: "flex", justifyContent: "center" }}>
     <ReactFacebookLogin
