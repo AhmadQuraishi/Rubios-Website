@@ -214,7 +214,7 @@ const PersonalInfo = () => {
                 .email('Invalid email address')
                 .required('Email is required'),
 
-              phone: Yup.string().min(14, 'Enter valid number'),
+              phone: Yup.string().min(14, 'Enter valid number').required('Phone is required'),
               currentpassword: Yup.string()
                 .min(8, 'Must be at least 8 characters')
                 .max(16, 'Must be at most 16 characters'),
