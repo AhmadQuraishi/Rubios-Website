@@ -123,22 +123,31 @@ const CategoryList = () => {
   //   }
   // };
 
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     const categoryElements = filterCategories.map((category : any, index : any) =>
-  //       document.getElementById(`cat-panel-${index}`)
-  //     );
-  //     const activeCategoryIndex = categoryElements.findIndex((el: any) =>
-  //      el && el.getBoundingClientRect().top >= 0
-  //     );
-  //     // console.log(activeCategoryIndex,'activeCategoryIndex');
-  //     // console.log(categoryElements,'categoryElements');
-  //     setValue(`${activeCategoryIndex}`);
-  //   };
+  
+  useEffect(() => {
+    const handleScroll = () => {
+      const categoryElements = filterCategories.map((category : any, index : any) =>
+        document.getElementById(`cat-panel-${index}`)
+      );
+      const activeCategoryIndex = categoryElements.findIndex((el: any) =>
+       el && el.getBoundingClientRect().top >= 0
+      );
+      // console.log(activeCategoryIndex,'activeCategoryIndex');
+      // console.log(categoryElements,'categoryElements');
+
+      if (showAll){
+        setTimeout(() => {
+          setValue(`${activeCategoryIndex}`);
+        }, 400);
+      }
+      else {
+        setValue(`${activeCategoryIndex}`);
+      }
+    };
  
-  //   window.addEventListener('scroll', handleScroll);
-  //   return () => window.removeEventListener('scroll', handleScroll);
-  // }, [filterCategories]);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [filterCategories]);
 
   const handleViewMore = (categoryIndex: any) => {
     // debugger;
