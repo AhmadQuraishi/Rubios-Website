@@ -305,10 +305,10 @@ const ProductListingCarousel = (props: any) => {
                         {checkFeaturedProduct(item) && (
                           <Typography
                             variant="h2"
-                            title={'FEATURED'}
+                            title={checkFeaturedProduct(item, categoryName)}
                             className="product-label"
                           >
-                            FEATURED
+                            {checkFeaturedProduct(item, categoryName)}
                           </Typography>
                         )}
                         <CardContent>
@@ -446,13 +446,13 @@ const ProductListingCarousel = (props: any) => {
                               title={item.name}
                             />
                           )}
-                          {checkFeaturedProduct(item) && (
+                          {checkFeaturedProduct(item, categoryName) && (
                             <Typography
                               variant="h2"
-                              // title={checkFeaturedProduct(item)}
-                              className="product-label-Mobile"
+                              title={checkFeaturedProduct(item, categoryName)}
+                              className="product-label"
                             >
-                              {checkFeaturedProduct(item)}
+                              {checkFeaturedProduct(item, categoryName)}
                             </Typography>
                           )}
                         </div>

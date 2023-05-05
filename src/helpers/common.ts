@@ -144,13 +144,44 @@ export function isEmpty(val: any) {
   return val === undefined || val == null || val === '';
 }
 
-export function checkFeaturedProduct(item: Product) {
-  let checkFeatured = false;
+// export function checkFeaturedProduct(item: any, categoryName: string) {
+//   let checkFeatured = false;
+//   if (
+//     categoryName &&
+//     (categoryName === 'TACO PLATES' || categoryName === 'SEASONAL MENU')
+//   ) {
+//     return checkFeatured;
+//   }
+//   if (item.metadata && item.metadata.length) {
+//     const result = item.metadata.find((meta: any) => meta.key === 'featureLabel');
+//     if (result && result.value === 'true') {
+//       checkFeatured = true;
+//     }
+//   }
+//   return checkFeatured;
+// }
+export function checkFeaturedProduct(item: any, categoryName: string) {
+  let featureLabel = '';
   if (
-    item.categoryInfo?.name === 'FEATURED ITEMS' || item.categoryInfo?.name === 'SEASONAL MENU'
+    categoryName &&
+    (categoryName === 'FEATURED ITEM' || categoryName === 'SEASONAL MENU')
   ) {
-    return checkFeatured;
+    return featureLabel;
   }
+  // debugger;
+  if (item.metadata && item.metadata.length) {
+    const result = item.metadata.find((meta: any) => meta.key === 'featureLabel');
+    if (result && result.value) {
+      featureLabel = result.value;
+      // debugger;
+    }
+  }
+  return featureLabel;
+}
+
+
+export function checkFeaturedsProduct(item: any) {
+  let checkFeatured = false;
   if (item.metadata && item.metadata.length) {
     const result = item.metadata.find((meta: any) => meta.key === 'featured');
     if (result && result.value === 'true') {
@@ -159,7 +190,6 @@ export function checkFeaturedProduct(item: Product) {
   }
   return checkFeatured;
 }
-
 export function orderFees (basket: any)  {
   let fees = 0;
   if(basket?.fees?.length){
