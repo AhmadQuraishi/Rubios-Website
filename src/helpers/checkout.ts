@@ -273,7 +273,7 @@ export function generateNextAvailableTimeSlots(
   closingTime: string,
   isOpenAllDay: Boolean,
   leadestimatedminutes: number,
-  leadTime : number,
+  leadTime: number,
   timeMode: string,
   orderType: string,
 ) {
@@ -304,10 +304,14 @@ export function generateNextAvailableTimeSlots(
     return [];
   } else if (currentTime.isBetween(openAt, closeAt)) {
     startTime = currentTime.add(minutes, 'minute');
-  } else if (currentTime.isBefore(openAt)) {
+  }
+   else if (currentTime.isBefore(openAt) && !currentTime.isBetween(openAt, closeAt)) {
     let roundedMinutes = Math.ceil(openAt.minutes() / 15) * 15;
     startTime = moment(openAt).add(leadTime, 'minutes').minutes(roundedMinutes).seconds(0).add(15, 'minutes');
+    // startTime = openAt.add(15, 'm').add(leadTime, 'minutes');
   }
+  
+
   let count = 0;
   const maxAllowed = 100;
   while (closeAt.diff(startTime, 'seconds') > 0 && count <= maxAllowed) {
@@ -316,7 +320,9 @@ export function generateNextAvailableTimeSlots(
     count++;
   }
 
+  // debugger;
   return timeSlots;
+
 }
 
 export function createTimeWantedPayload(time: string) {

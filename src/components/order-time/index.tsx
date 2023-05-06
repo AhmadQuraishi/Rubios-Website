@@ -13,7 +13,7 @@ import {
 import moment from 'moment';
 import './index.css';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import {AdapterMoment} from '@mui/x-date-pickers/AdapterMoment';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   deleteBasketTimeWanted,
@@ -86,31 +86,30 @@ const OrderTime = ({ orderType }: any) => {
     const type = basketObj?.basket?.deliverymode || orderType || '';
     const time = basketObj?.basket;
     const isToday = moment().isSame(selectedDate, 'day');
-  
+
     if (type === 'dispatch' && time?.timemode === 'asap' && isToday) {
       return getEstTimeFormat(time.earliestreadytime);
     }
   };
-  
-  const handleLeadandEstTime = (time: any, time2 : any) => {
+
+  const handleEstTime = (time: any, time2: any) => {
     let localTime = moment(new Date());
     let earlyReadyTime = moment(time, 'YYYYMMDD HH:mm');
 
-    const minute = earlyReadyTime.diff(localTime , 'minutes');
+    const minute = earlyReadyTime.diff(localTime, 'minutes');
     const minutes = minute;
     return minutes && minutes > 0 ? minutes : 0;
-    console.log(minutes,'minutesminutesminutesminutes');
+    console.log(minutes, 'minutesminutesminutesminutes');
   };
 
-
-  console.log("time.earliestreadytime",time?.earliestreadytime);
+  console.log('time.earliestreadytime', time?.earliestreadytime);
   React.useEffect(() => {
     if (restaurantHours && restaurantHours.length) {
       const slots = generateNextAvailableTimeSlots(
         restaurantHours[0].start,
         restaurantHours[0].end,
         restaurantHours[0].isOpenAllDay,
-        handleLeadandEstTime(time?.earliestreadytime,time?.leadtimeestimateminutes),
+        handleEstTime(time?.earliestreadytime, time?.leadtimeestimateminutes),
         time?.leadtimeestimateminutes,
         time?.timemode,
         orderType,
@@ -163,7 +162,7 @@ const OrderTime = ({ orderType }: any) => {
     //   }
     // }
   };
-  
+
   const handleDateChange = (e: any) => {
     try {
       if (timer) clearInterval(timer);
@@ -230,7 +229,6 @@ const OrderTime = ({ orderType }: any) => {
     });
   };
 
-
   const handleTime = (time: any) => {
     let localTime = moment(new Date());
     let earlyReadyTime = moment(time, 'YYYYMMDD HH:mm');
@@ -259,7 +257,11 @@ const OrderTime = ({ orderType }: any) => {
           <Grid item xs={12}>
             <Typography
               variant="h3"
-              sx={{fontSize: "11pt !important",fontFamily: "'Sunborn-Sansone'!important",letterSpacing:"0.03562em"}}
+              sx={{
+                fontSize: '11pt !important',
+                fontFamily: "'Sunborn-Sansone'!important",
+                letterSpacing: '0.03562em',
+              }}
               title={
                 orderType === DeliveryModeEnum.dinein
                   ? 'DATE'
@@ -338,48 +340,48 @@ const OrderTime = ({ orderType }: any) => {
                 </LocalizationProvider>
               </div>
               {window?.location?.href
-                    ?.toLocaleLowerCase()
-                    ?.indexOf('/checkout') !== -1 &&
-                    EstimatedTime() && (
-                      <>
-                        <Typography
-                          // className={classes.heading}
-                          sx={{
-                            fontFamily:"'Sunborn-Sansone'!important",
-                            color: '#0075BF',
-                            display: {
-                              xs: 'flex',
-                              sm: 'flex',
-                            },
-                          }}
-                          textTransform="uppercase"
-                          title="Pick Up From"
-                        >
-                          Estimated Delivery Time
-                        </Typography>
+                ?.toLocaleLowerCase()
+                ?.indexOf('/checkout') !== -1 &&
+                EstimatedTime() && (
+                  <>
+                    <Typography
+                      // className={classes.heading}
+                      sx={{
+                        fontFamily: "'Sunborn-Sansone'!important",
+                        color: '#0075BF',
+                        display: {
+                          xs: 'flex',
+                          sm: 'flex',
+                        },
+                      }}
+                      textTransform="uppercase"
+                      title="Pick Up From"
+                    >
+                      Estimated Delivery Time
+                    </Typography>
 
-                        <Typography
-                          // className={classes.heading}
-                          
-                          sx={{
-                            marginBottom: {sm:"8px",xs:'0px'},
-                            marginTop: {sm:"-10px",xs:'0px'},
-                            fontSize: '29px',
-                            fontFamily: "'GritSans-Bold' !important",
-                            color: '#122b40',
-                            letterSpacing:'0.03562em',
-                            display: {
-                              xs: 'flex',
-                              sm: 'flex',
-                            },
-                          }}
-                          textTransform="uppercase"
-                          title="Pick Up From"
-                        >
-                        {EstimatedTime()}
-                        </Typography>
-                      </>
-                    )}
+                    <Typography
+                      // className={classes.heading}
+
+                      sx={{
+                        marginBottom: { sm: '8px', xs: '0px' },
+                        marginTop: { sm: '-10px', xs: '0px' },
+                        fontSize: '29px',
+                        fontFamily: "'GritSans-Bold' !important",
+                        color: '#122b40',
+                        letterSpacing: '0.03562em',
+                        display: {
+                          xs: 'flex',
+                          sm: 'flex',
+                        },
+                      }}
+                      textTransform="uppercase"
+                      title="Pick Up From"
+                    >
+                      {EstimatedTime()}
+                    </Typography>
+                  </>
+                )}
             </Grid>
             <Grid item xs={12} className="time-slot-wrapper">
               <Grid container>
@@ -410,14 +412,17 @@ const OrderTime = ({ orderType }: any) => {
                   <ToggleButtonGroup
                     value={selectedTime}
                     exclusive
-                    sx={{fontFamily: "Librefranklin-Regular !important"}}
+                    sx={{ fontFamily: 'Librefranklin-Regular !important' }}
                     onChange={(event) => onTimeSlotSelect(event)}
                     className="selected-btn-group"
                   >
                     {/* <Grid container spacing={2}> */}
                     {timeSlots.length !== 0 && hideRemoveAsap() && (
                       <ToggleButton
-                      sx={{backgroundColor: "#062C43",fontFamily: "Librefranklin-Regular !important"}}
+                        sx={{
+                          backgroundColor: '#062C43',
+                          fontFamily: 'Librefranklin-Regular !important',
+                        }}
                         key={`button-${basketObj.basket?.earliestreadytime}`}
                         value={basketObj.basket?.earliestreadytime}
                         className="selected-btn"
@@ -455,8 +460,13 @@ const OrderTime = ({ orderType }: any) => {
                           key={`button-${time}`}
                           value={time}
                           className="selected-btn"
-                          sx={{fontFamily: 'Librefranklin-Regular !important',}}
-                          style={{backgroundColor: "#062C43", fontSize: "16px"}}
+                          sx={{
+                            fontFamily: 'Librefranklin-Regular !important',
+                          }}
+                          style={{
+                            backgroundColor: '#062C43',
+                            fontSize: '16px',
+                          }}
                           selected={selectedTime === time ? true : false}
                         >
                           {/* {index === 0 ? */}
@@ -494,7 +504,7 @@ const OrderTime = ({ orderType }: any) => {
                           ? 'select-custom-css'
                           : '',
                     }}
-                    sx={{fontFamily: "'Librefranklin-Regular' !important" }}
+                    sx={{ fontFamily: "'Librefranklin-Regular' !important" }}
                     style={{ textAlign: 'center' }}
                     shrink={
                       selectShrink || timeSlots.slice(4).includes(selectedTime)
@@ -506,7 +516,7 @@ const OrderTime = ({ orderType }: any) => {
                   <NativeSelect
                     id="select-label"
                     className={`native-select`}
-                    sx={{fontFamily: "Librefranklin-Regular !important"}}
+                    sx={{ fontFamily: 'Librefranklin-Regular !important' }}
                     aria-label="select more time"
                     value={
                       timeSlots.slice(4).includes(selectedTime)
