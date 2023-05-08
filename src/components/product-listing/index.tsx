@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontWeight: '600 !important',
     fontFamily: "'GritSans-Bold' !important",
     letterSpacing: '0.00938em !important',
-    textTransform: "uppercase",
+    textTransform: 'uppercase',
   },
   content: {
     color: theme.palette.secondary.main,
@@ -37,14 +37,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontFamily: "'Librefranklin-Regular' !important",
     fontSize: '14px',
     color: theme.palette.primary.main,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   price: {
     paddingTop: '10px',
     fontFamily: "'Librefranklin-Regular' !important",
     fontSize: '14px',
     color: '#0075BF',
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
 }));
 
@@ -86,7 +86,7 @@ const ProductListing = (props: any) => {
                       {item.imagefilename ? (
                         <img
                           className={classes.img}
-                          alt={item.name }
+                          alt={item.name}
                           src={
                             imgPath +
                             changeImageSize(
@@ -102,7 +102,7 @@ const ProductListing = (props: any) => {
                       ) : (
                         <img
                           className={classes.img}
-                          alt={item.name }
+                          alt={item.name}
                           src={require('../../assets/imgs/default_img.png')}
                           title={item.name}
                         />
@@ -114,7 +114,7 @@ const ProductListing = (props: any) => {
                           className="product-label"
                           style={{ left: 0, top: 10 }}
                         >
-                          FEATURED
+                          {checkFeaturedProduct(item, categoryName)}
                         </Typography>
                       )}
                       <CardContent sx={{ padding: '0' }}>
@@ -122,9 +122,12 @@ const ProductListing = (props: any) => {
                           variant="h2"
                           title={item.name}
                           className={classes.title}
-                          dangerouslySetInnerHTML={{__html: item?.name?.includes("®") ? item.name.replace('®', '<sup>®</sup>') : item.name}}
-                        >
-                        </Typography>
+                          dangerouslySetInnerHTML={{
+                            __html: item?.name?.includes('®')
+                              ? item.name.replace('®', '<sup>®</sup>')
+                              : item.name,
+                          }}
+                        ></Typography>
                         <Typography
                           variant="caption"
                           title={item.description}
@@ -133,52 +136,51 @@ const ProductListing = (props: any) => {
                           {item.description}
                         </Typography>
                         <Grid container spacing={0} xs={12}>
-                      {item.cost > 0 && (
-                          <Grid
-                            item
-                            //xs={3}
-                            title={`$${parseFloat(item.cost).toFixed(2)}`}
-                            className={classes.price}
-                            sx={{display: "flex", flexDirection: 'column'}}
-                          >
-                            ${parseFloat(item.cost).toFixed(2)}
-
-                          </Grid>
-                          
-                        )}
-                        {(item.basecalories > 0 || item.maxcalories > 0) &&  item.cost > 0 && (
-                          <Grid
-                          item
-                          >
-                            
-                           <Typography className="vertical-line" style={{marginTop:"10px", marginLeft: "10px", marginRight: "10px"}}>
-
-                            </Typography>
-                          </Grid>
-                        )}
-                        {(item.basecalories > 0 || item.maxcalories > 0) && (
-                          <Grid
-                            item
-                            title={`${
-                              item.caloriesseparator
+                          {item.cost > 0 && (
+                            <Grid
+                              item
+                              //xs={3}
+                              title={`$${parseFloat(item.cost).toFixed(2)}`}
+                              className={classes.price}
+                              sx={{ display: 'flex', flexDirection: 'column' }}
+                            >
+                              ${parseFloat(item.cost).toFixed(2)}
+                            </Grid>
+                          )}
+                          {(item.basecalories > 0 || item.maxcalories > 0) &&
+                            item.cost > 0 && (
+                              <Grid item>
+                                <Typography
+                                  className="vertical-line"
+                                  style={{
+                                    marginTop: '10px',
+                                    marginLeft: '10px',
+                                    marginRight: '10px',
+                                  }}
+                                ></Typography>
+                              </Grid>
+                            )}
+                          {(item.basecalories > 0 || item.maxcalories > 0) && (
+                            <Grid
+                              item
+                              title={`${
+                                item.caloriesseparator
+                                  ? item.basecalories +
+                                    item.caloriesseparator +
+                                    item.maxcalories
+                                  : item.basecalories
+                              } CAL`}
+                              className={classes.cal}
+                            >
+                              {item.caloriesseparator
                                 ? item.basecalories +
                                   item.caloriesseparator +
                                   item.maxcalories
-                                : item.basecalories
-                            } CAL`}
-                            className={classes.cal}
-                          >
-
-                            {item.caloriesseparator
-                              ? item.basecalories +
-                                item.caloriesseparator +
-                                item.maxcalories
-                              : item.basecalories}{' '}
-                            CAL
-                          </Grid>
-                        )}
-                        
-                      </Grid>
+                                : item.basecalories}{' '}
+                              CAL
+                            </Grid>
+                          )}
+                        </Grid>
                       </CardContent>
                     </Card>
                   </Link>

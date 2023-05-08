@@ -414,14 +414,14 @@ const ProductListingCarousel = (props: any) => {
                             />
                           )}
                           {checkFeaturedProduct(item, categoryName) && (
-                          <Typography
-                            title={'FEATURED'}
-                            variant="subtitle1"
-                            className='product-label-Mobile'
-                          >
-                            FEATURED
-                          </Typography>
-                        )}
+                            <Typography
+                              variant="h2"
+                              title={checkFeaturedProduct(item, categoryName)}
+                              className="product-label-Mobile"
+                            >
+                              {checkFeaturedProduct(item, categoryName)}
+                            </Typography>
+                          )}
                         </div>
                         <CardContent>
                           <Typography

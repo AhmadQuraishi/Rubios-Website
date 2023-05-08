@@ -19,13 +19,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: '100%',
   },
   title: {
-    color: "#474747 !important",
+    color: '#474747 !important',
     padding: '20px 0 10px 0',
     fontSize: '18px !important',
     fontWeight: '600 !important',
     fontFamily: "'Librefranklin-Regular' !important",
     letterSpacing: '0.00938em !important',
-    
   },
   content: {
     color: theme.palette.secondary.main,
@@ -108,8 +107,8 @@ const ProductListing = (props: any) => {
               <div key={index} style={{ padding: 10 }}>
                 <Card
                   elevation={0}
-                  style={{ borderRadius: 0}}
-                  sx={{backgroundColor: "transparent !important"}}
+                  style={{ borderRadius: 0 }}
+                  sx={{ backgroundColor: 'transparent !important' }}
                   role="group"
                   aria-label={item.name}
                 >
@@ -140,9 +139,9 @@ const ProductListing = (props: any) => {
                       variant="h2"
                       title={'FEATURED'}
                       className="product-label"
-                      sx={{fontFamily: "'Sunborn-Sansone' !important"}}
+                      sx={{ fontFamily: "'Sunborn-Sansone' !important" }}
                     >
-                      FEATURED
+                      {checkFeaturedProduct(item, categoryName)}
                     </Typography>
                   )}
                   <CardContent
@@ -154,7 +153,6 @@ const ProductListing = (props: any) => {
                       title={item.name}
                       className={classes.title}
                       sx={{
-                        
                         height: {
                           lg: '50px',
                           md: '50px',
@@ -166,7 +164,7 @@ const ProductListing = (props: any) => {
                       {/* {item?.name?.length > 48
                         ? item?.name?.slice(0, 50) + '...'
                         : item?.name} */}
-                        {item.name}
+                      {item.name}
                     </Typography>
                     <Button
                       className="custom-btn cta2-btn"

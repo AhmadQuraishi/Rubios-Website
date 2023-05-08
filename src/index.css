@@ -481,22 +481,29 @@ font-family: 'Sunborn-Sansone' !important;
   font-size: 12px !important;
   font-family: 'Sunborn-Sansone'!important;
   letter-spacing: 0.7px !important;
+  White-Space: nowrap;
+  Overflow: hidden;
+  Text-overflow: ellipsis;
 }   
 
 .product-label-Mobile {
-  margin: 10px !important;
-  font-weight: 400;
-  line-height: 1.75;
-  letter-spacing: 0.00938em;
-  color: white;
   position: absolute;
-  left: 0;
-  right: 0;
-  padding: 8px 8px 8px 8px;
-  top: 0px;
-  width: fit-content;
+  color: #ffffff;
+  top: 20px;
+  margin-left: 10px !important;
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 7px;
   background: #0075BF;
-  text-align: left;
+  /* border: 2px solid #0075BF;
+  border-radius: 80px; */
+  width: 75%;
+  font-size: 12px !important;
+  font-family: 'Sunborn-Sansone'!important;
+  letter-spacing: 0.7px !important;
+  White-Space: nowrap;
+  Overflow: hidden;
+  Text-overflow: ellipsis;
 }
 .skip-link {
   position: absolute;
