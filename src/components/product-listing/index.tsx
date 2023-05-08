@@ -114,7 +114,7 @@ const ProductListing = (props: any) => {
                           className="product-label"
                           style={{ left: 0, top: 10 }}
                         >
-                          {checkFeaturedProduct(item)}
+                          {checkFeaturedProduct(item, categoryName)}
                         </Typography>
                       )}
                       <CardContent sx={{ padding: '0' }}>

@@ -141,7 +141,7 @@ const ProductListing = (props: any) => {
                       className="product-label"
                       sx={{ fontFamily: "'Sunborn-Sansone' !important" }}
                     >
-                      {checkFeaturedProduct(item)}
+                      {checkFeaturedProduct(item, categoryName)}
                     </Typography>
                   )}
                   <CardContent

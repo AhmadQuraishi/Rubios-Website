@@ -450,7 +450,7 @@ const ProductListingCarousel = (props: any) => {
                             <Typography
                               variant="h2"
                               title={checkFeaturedProduct(item, categoryName)}
-                              className="product-label"
+                              className="product-label-Mobile"
                             >
                               {checkFeaturedProduct(item, categoryName)}
                             </Typography>
