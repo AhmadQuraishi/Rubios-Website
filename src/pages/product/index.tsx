@@ -31,7 +31,9 @@ import { facebookSendEvent } from '../../redux/actions/facebook-conversion';
 import { facebookConversionTypes } from '../../redux/types/facebook-conversion';
 import { convertMetaDataToOptions } from '../../helpers/product';
 import { isLoginUser } from '../../helpers/auth';
-import { handleCart } from '../../components/header';
+
+import { SwitchProps } from '@mui/material/Switch';
+import ProductToggle from './product-toggle/productToggle';
 
 const Product = () => {
   const { id, edit } = useParams();
@@ -58,14 +60,14 @@ const Product = () => {
   const { restaurant, orderType } = useSelector(
     (state: any) => state.restaurantInfoReducer,
   );
-
+  // const [toggle, setToggle] = useState('As is' || null);
   const objDeliveryAddress = useSelector(
     (state: any) => state.deliveryAddressReducer,
   );
 
   const [basketType, setBasketType] = useState();
   const [count, setCount] = React.useState(1);
-
+  const [toggle, setToggle] = useState('As is');
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -117,7 +119,6 @@ const Product = () => {
       setCountWithEdit();
     }
   }, [productDetails]);
-
   const setCountWithEdit = () => {
     if (edit && productDetails) {
       const product = basketObj.basket.products.find(
@@ -1232,40 +1233,33 @@ const Product = () => {
                           (itemMain.options.length < 0 && (
                             <ProductOptionsSkeletonUI />
                           ))}
-                        {itemMain.options &&
-                          itemMain.options.map(
-                            (itemChild: any, index1: number) => (
-                              <Grid
-                                key={Math.random() + index1}
-                                option-id={itemChild.option.id}
-                                className={
-                                  checkOptionSelected(
-                                    itemChild.option.id,
-                                    itemMain.id,
-                                  ) == true
-                                    ? 'content-panel selected'
-                                    : 'content-panel'
-                                }
-                                item
-                                xs={6}
-                                sm={3}
-                                md={3}
-                                lg={4}
-                                sx={{ position: 'relative' }}
-                              >
-                                {itemMain.mandatory ? (
-                                  <input
-                                    aria-invalid={
-                                      IsItemSelected(itemMain.id) && index1 == 0
-                                        ? 'true'
-                                        : 'false'
-                                    }
-                                    aria-describedby={
-                                      index1 == 0
-                                        ? `required-label-${index0}`
-                                        : ''
-                                    }
-                                    checked={checkOptionSelected(
+
+                        {itemMain.name === 'As is or Customize?' ? (
+                          // asIs &&
+                          // customize &&
+                          <ProductToggle
+                            toggle={toggle}
+                            setToggle={setToggle}
+                            showChildOptions={showChildOptions}
+                            main={itemMain}
+                          />
+                        ) : null}
+                        {itemMain?.options &&
+                          itemMain?.options
+                            .filter(
+                              (item: any) =>
+                                !(
+                                  item.option.name === 'As is' ||
+                                  item.option.name === 'Customize'
+                                ),
+                            )
+                            .map((itemChild: any, index1: number) => (
+                              <>
+                                <Grid
+                                  key={Math.random() + index1}
+                                  option-id={itemChild.option.id}
+                                  className={
+                                    checkOptionSelected(
                                       itemChild.option.id,
                                       itemMain.id,
                                     )}
