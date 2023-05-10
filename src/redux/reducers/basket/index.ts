@@ -112,12 +112,7 @@ const basketReducer = (state = INITIAL_STATE, action: any) => {
         ...state,
         defaultTip: false,
       };
-      
-    case basketActionsTypes.UPDATE_DUPLICATE_ADDRESS: 
-    return {
-      ...state,
-      duplicateAddress : action.payload,
-    };
+
     case basketActionsTypes.NAVIGATION_URL:
       return { 
         ...state,

@@ -1,4 +1,4 @@
-import { takeEvery, put, call } from 'redux-saga/effects';
+import { takeEvery,select, put, call } from 'redux-saga/effects';
 import { authActionsTypes } from '../../types/auth';
 import { getAuthToken } from '../../../services/auth';
 import {
@@ -8,10 +8,16 @@ import {
 import { navigateAppAction } from '../../actions/navigate-app';
 
 function* asyncAuthItemRequest(action: any): any {
+  // const restaurant = action.restaurant;
+  const restaurant = yield select(state => state.restaurantInfoReducer);
+  const basket = yield select(state => state.basketReducer);
+  console.log(restaurant,'restaurant');
+
   try {
     const response = yield call(getAuthToken, action.basketID);
     yield put(getAuthRequestSuccess(action.successMsg, response.data));
     if (
+      action.basketID === "" &&
       action?.registerType &&
       (action.registerType === 'REGISTER_MAIN' ||
         action.registerType === 'REGISTER_CONFIRMATION')
