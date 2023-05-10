@@ -40,11 +40,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: theme.palette.text.secondary,
   },
   imageContainer: {
-    position: "relative",
+    position: 'relative',
     // display: "inline-block",
   },
   title: {
-    color: "#0075BF",
+    color: '#0075BF',
     padding: '0px 0 12px 0',
     fontWeight: '600 !important',
     fontFamily: "'GritSans-Bold' !important",
@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     textTransform: 'uppercase',
   },
   content: {
-    color: "#224c65",
+    color: '#224c65',
     fontSize: '13px !important',
     lineHeight: '7px',
     fontFamily: "'Librefranklin-Regular' !important",
@@ -62,15 +62,15 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingTop: '10px',
     fontFamily: "'Librefranklin-Regular' !important",
     fontSize: '14px',
-    color: "#224c65",
-    fontWeight: "bold",
+    color: '#224c65',
+    fontWeight: 'bold',
   },
   price: {
     paddingTop: '10px',
     fontFamily: "'Librefranklin-Regular' !important",
     fontSize: '14px',
-    color: "#224c65",
-    fontWeight: "bold",
+    color: '#224c65',
+    fontWeight: 'bold',
   },
 }));
 
@@ -218,8 +218,8 @@ const ProductListingCarousel = (props: any) => {
             deviceType={props.deviceType}
             dotListClass="custom-dot-list-style"
             itemClass="carousel-item-padding-40-px carousel-mobile-show-next-slide"
-          // customRightArrow={<CustomRightArrow onClick={undefined} />}
-          // customLeftArrow={<CustomLeftArrow onClick={undefined} />}
+            // customRightArrow={<CustomRightArrow onClick={undefined} />}
+            // customLeftArrow={<CustomLeftArrow onClick={undefined} />}
           >
             {products.map(
               (item: any, index: number) =>
@@ -236,7 +236,7 @@ const ProductListingCarousel = (props: any) => {
                     id="foodmenuproduct"
                     scroll-id={'#panel-' + index}
                     key={index}
-                    style={{ padding: 10, height: "96%" }}
+                    style={{ padding: 10, height: '96%' }}
                   >
                     <Link
                       onClick={() => {
@@ -247,7 +247,9 @@ const ProductListingCarousel = (props: any) => {
                     >
                       <Card
                         role="group"
-                        aria-label={item.name} sx={{ height: "100%" }}>
+                        aria-label={item.name}
+                        sx={{ height: '100%' }}
+                      >
                         {item.imagefilename ? (
                           <img
                             className={classes.img}
@@ -285,64 +287,74 @@ const ProductListingCarousel = (props: any) => {
                           <Typography
                             variant="h2"
                             title={item?.name || ''}
-                            sx={{ fontSize: '16px !important', }}
+                            sx={{ fontSize: '16px !important' }}
                             className={classes.title}
-                            dangerouslySetInnerHTML={{ __html: item?.name?.includes("®") ? item.name.replace('®', '<sup>®</sup>') : item.name }}
-                          >
-                          </Typography>
+                            dangerouslySetInnerHTML={{
+                              __html: item?.name?.includes('®')
+                                ? item.name.replace('®', '<sup>®</sup>')
+                                : item.name,
+                            }}
+                          ></Typography>
                           <Typography
                             variant="caption"
                             title={item.description}
                             className={classes.content + ' fix-span'}
-
                           >
                             {item.description}
                           </Typography>
-                          <Grid container spacing={0} sx={{ marginTop: "12px" }}>
+                          <Grid
+                            container
+                            spacing={0}
+                            sx={{ marginTop: '12px' }}
+                          >
                             {item.cost > 0 && (
                               <Grid
                                 item
                                 //xs={3}
                                 title={`$${parseFloat(item.cost).toFixed(2)}`}
                                 className={classes.price}
-                                sx={{ display: "flex", flexDirection: 'column' }}
+                                sx={{
+                                  display: 'flex',
+                                  flexDirection: 'column',
+                                }}
                               >
                                 ${parseFloat(item.cost).toFixed(2)}
-
-                              </Grid>
-
-                            )}
-                            {(item.basecalories > 0 || item.maxcalories > 0) && item.cost > 0 && (
-                              <Grid
-                                item
-                              >
-
-                                <Typography className="vertical-line" style={{ marginTop: "11px", marginLeft: "10px", marginRight: "10px" }}>
-
-                                </Typography>
                               </Grid>
                             )}
-                            {(item.basecalories > 0 || item.maxcalories > 0) && (
+                            {(item.basecalories > 0 || item.maxcalories > 0) &&
+                              item.cost > 0 && (
+                                <Grid item>
+                                  <Typography
+                                    className="vertical-line"
+                                    style={{
+                                      marginTop: '11px',
+                                      marginLeft: '10px',
+                                      marginRight: '10px',
+                                    }}
+                                  ></Typography>
+                                </Grid>
+                              )}
+                            {(item.basecalories > 0 ||
+                              item.maxcalories > 0) && (
                               <Grid
                                 item
-                                title={`${item.caloriesseparator
-                                  ? item.basecalories +
-                                  item.caloriesseparator +
-                                  item.maxcalories
-                                  : item.basecalories
-                                  } CAL`}
+                                title={`${
+                                  item.caloriesseparator
+                                    ? item.basecalories +
+                                      item.caloriesseparator +
+                                      item.maxcalories
+                                    : item.basecalories
+                                } CAL`}
                                 className={classes.cal}
                               >
-
                                 {item.caloriesseparator
                                   ? item.basecalories +
-                                  item.caloriesseparator +
-                                  item.maxcalories
+                                    item.caloriesseparator +
+                                    item.maxcalories
                                   : item.basecalories}{' '}
                                 CAL
                               </Grid>
                             )}
-
                           </Grid>
                         </CardContent>
                       </Card>
@@ -350,25 +362,16 @@ const ProductListingCarousel = (props: any) => {
                   </div>
                 ),
             )}
-
           </Carousel>
         </Fragment>
       ) : (
         <Fragment>
           {/* <Grid container spacing={3}> */}
-          <Grid
-            container
-            spacing={2}
-          >
+          <Grid container spacing={2}>
             {products.map(
               (item: any, index: number) =>
                 checkProductAvailability(item, orderType) && (
-                  <Grid
-                    scroll-id={'#panel-' + index}
-                    key={index}
-                    item
-                    xs={6}
-                  >
+                  <Grid scroll-id={'#panel-' + index} key={index} item xs={6}>
                     {/* <div
                   id="foodmenuproduct"
                   scroll-id={'#panel-' + index}
@@ -386,7 +389,7 @@ const ProductListingCarousel = (props: any) => {
                       <Card
                         role="group"
                         aria-label={item.name}
-                        sx={{ height: "100%" }}
+                        sx={{ height: '100%' }}
                       >
                         <div className={classes.imageContainer}>
                           {item.imagefilename ? (
@@ -398,9 +401,10 @@ const ProductListingCarousel = (props: any) => {
                                 changeImageSize(
                                   item.imagefilename,
                                   item.images,
-                                  process.env.REACT_APP_NODE_ENV === "production"
-                                    ? "marketplace-product"
-                                    : "desktop-menu"
+                                  process.env.REACT_APP_NODE_ENV ===
+                                    'production'
+                                    ? 'marketplace-product'
+                                    : 'desktop-menu',
                                 )
                               }
                               title={item.name}
@@ -409,14 +413,14 @@ const ProductListingCarousel = (props: any) => {
                             <img
                               className={classes.img}
                               alt={item.name}
-                              src={require("../../assets/imgs/default_img.png")}
+                              src={require('../../assets/imgs/default_img.png')}
                               title={item.name}
                             />
                           )}
                           {checkFeaturedProduct(item, categoryName) && (
                             <Typography
                               variant="h2"
-                              title={checkFeaturedProduct(item, categoryName)}
+                              // title={checkFeaturedProduct(item, categoryName)}
                               className="product-label-Mobile"
                             >
                               {checkFeaturedProduct(item, categoryName)}
@@ -426,23 +430,24 @@ const ProductListingCarousel = (props: any) => {
                         <CardContent>
                           <Typography
                             variant="h2"
-                            title={item?.name || ""}
+                            title={item?.name || ''}
                             className={classes.title}
-                            sx={{ padding: "0px !important", fontSize: "14px !important" }}
+                            sx={{
+                              padding: '0px !important',
+                              fontSize: '14px !important',
+                            }}
                             dangerouslySetInnerHTML={{
-                              __html: item?.name?.includes("®")
-                                ? item.name.replace("®", "<sup>®</sup>")
+                              __html: item?.name?.includes('®')
+                                ? item.name.replace('®', '<sup>®</sup>')
                                 : item.name,
                             }}
                           ></Typography>
                         </CardContent>
                       </Card>
-
                     </Link>
                   </Grid>
                 ),
             )}
-
           </Grid>
         </Fragment>
       )}
