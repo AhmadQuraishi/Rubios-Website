@@ -36,6 +36,7 @@ import "./index.css";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { removeNumberFromRestaurantName } from '../../helpers/location';
+import { updateNavigationLink } from '../../redux/actions/basket/checkout';
 
 const useStyles = makeStyles((theme: Theme) => ({
   heading: {
@@ -121,6 +122,12 @@ const CategoryList = () => {
   //     }
   //   }
   // };
+
+  useEffect(() => {
+    const { pathname, search } = window.location;
+    const url = `${pathname}${search}`;
+    dispatch(updateNavigationLink(url));
+  }, []);
 
   const handleViewMore = (categoryIndex: any) => {
     if (showAll[categoryIndex]) {

@@ -29,6 +29,7 @@ import {
   submitBasketSinglePaymentFailure,
   submitBasketSinglePaymentSuccess,
   updateBasketBillingSchemes,
+  updateNavigationLink,
   validateBasket,
 } from '../../redux/actions/basket/checkout';
 import { displayToast } from '../../helpers/toast';
@@ -886,6 +887,12 @@ const Checkout = () => {
       ),
     );
   };
+
+  React.useEffect(() => {
+    const { pathname, search } = window.location;
+    const url = `${pathname}${search}`;
+    dispatch(updateNavigationLink(url));
+  }, []);
 
   React.useEffect(() => {
     // @ts-ignore
