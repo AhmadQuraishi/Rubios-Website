@@ -605,15 +605,6 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
               {/*</svg>*/}
               <p className={classes.emptyCart}>Your Bag Is Currently Empty</p>
               <br />
-              <Button
-                variant="contained"
-                title="Add Another Menu Item"
-                sx={{ width: '100%', marginBottom: '15px' }}
-                onClick={() => {
-                  showCart();
-                  return false;
-                }}
-              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 512 512"
@@ -660,7 +651,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                     showCart();
                     return false;
                   }
-                }}
+                }
               >
                 Start Your Order
               </Button>
