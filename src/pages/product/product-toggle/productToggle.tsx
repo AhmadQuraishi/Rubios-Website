@@ -77,7 +77,7 @@ const ProductToggle = (props: any) => {
             fontSize: '15px',
             fontFamily: 'Librefranklin-Regular !important',
             textTransform: 'uppercase',
-            //  color: itemChild.option.name === 'Customize' && checkOptionSelected(itemChild.option.id, itemMain.id) ? '#98b7db' : '#3170b7'
+            color: toggle === 'Customize' ? '#98b7db' : '#3170b7',
           }}
         >
           As is
@@ -122,7 +122,7 @@ const ProductToggle = (props: any) => {
             fontSize: '15px',
             fontFamily: 'Librefranklin-Regular !important',
             textTransform: 'uppercase',
-            //  color: itemChild.option.name === 'Customize' && checkOptionSelected(itemChild.option.id, itemMain.id) ? '#3170b7' : '#98b7db'
+            color: toggle === 'Customize' ? '#3170b7' : '#98b7db',
           }}
         >
           Customize
