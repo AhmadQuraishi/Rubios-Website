@@ -605,53 +605,20 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
               {/*</svg>*/}
               <p className={classes.emptyCart}>Your Bag Is Currently Empty</p>
               <br />
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 512 512"
-                  aria-label="Cart"
-                  role="img"
-                  style={{ width: '70px', marginBottom: '10px' }}
-                >
-                  <path
-                    fill="none"
-                    stroke="#000"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="40"
-                    fill-rule="evenodd"
-                    d="M80,176a16,16,0,0,0-16,16V408c0,30.24,25.76,56,56,56H392c30.24,0,56-24.51,56-54.75V192a16,16,0,0,0-16-16Z"
-                  />
-                  <path
-                    fill="none"
-                    stroke="#000"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="40"
-                    fill-rule="evenodd"
-                    d="M160,176V144a96,96,0,0,1,96-96h0a96,96,0,0,1,96,96v32"
-                  />
-                </svg>
-                {/*<svg*/}
-                {/*xmlns="http://www.w3.org/2000/svg"*/}
-                {/*viewBox="0 0 24 24"*/}
-                {/*aria-label="Cart"*/}
-                {/*role="img"*/}
-                {/*style={{ width: '60px', marginBottom: '10px' }}*/}
-                {/*>*/}
-                {/*<path fill="none" d="M0 0h24v24H0V0z"></path>*/}
-                {/*<path d="M15.55 13c.75 0 1.41-.41 1.75-1.03l3.58-6.49A.996.996 0 0020.01 4H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7l1.1-2h7.45zM6.16 6h12.15l-2.76 5H8.53L6.16 6zM7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"></path>*/}
-                {/*</svg>*/}
-                <p className={classes.emptyCart}>Your Bag Is Currently Empty</p>
-                <br />
-                <Button
-                  variant="contained"
-                  title="Add Another Menu Item"
-                  sx={{ width: '100%', marginBottom: '15px' }}
-                  onClick={() => {
+              <Button
+                variant="contained"
+                title="Add Another Menu Item"
+                sx={{ width: '100%', marginBottom: '15px' }}
+                onClick={() => {
+                  showCart();
+                  return false;
+                }}
+                onKeyUp={(e) => {
+                  if (e.keyCode === 13) {
                     showCart();
                     return false;
                   }
-                }
+                }}
               >
                 Start Your Order
               </Button>
@@ -696,8 +663,8 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                       >
                         {item.productId !== utensilsReducer.utensilsProductId
                           ? item.quantity.toString() +
-                          ' x ' +
-                          item.name.toString()
+                            ' x ' +
+                            item.name.toString()
                           : item.name.toString()}
                       </Typography>
                     </Grid>
@@ -742,8 +709,8 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                           <ul className={`btnslist ${classes.btnsList}`}>
                             <li>
                               {productRemoveObj &&
-                                productRemoveObj.loading &&
-                                clickAction == item.id + '-remove' ? (
+                              productRemoveObj.loading &&
+                              clickAction == item.id + '-remove' ? (
                                 <Button
                                   key={Math.random() + 'disable-remove'}
                                   title="Remove"
@@ -791,12 +758,14 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                       onClick={() => {
                                         showCart();
                                         navigate(
-                                          `product/${item.productId}/${item.id
-                                          }${window.location.href
-                                            .toLowerCase()
-                                            .indexOf('product') == -1
-                                            ? '?edit=true'
-                                            : ''
+                                          `product/${item.productId}/${
+                                            item.id
+                                          }${
+                                            window.location.href
+                                              .toLowerCase()
+                                              .indexOf('product') == -1
+                                              ? '?edit=true'
+                                              : ''
                                           }`,
                                         );
                                       }}
@@ -814,7 +783,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                             </li>
                             <li>
                               {productAddObj?.loading &&
-                                clickAction == item.id + '-add' ? (
+                              clickAction == item.id + '-add' ? (
                                 <Button
                                   key={Math.random() + 'disable-duplicate'}
                                   onClick={() => false}
@@ -967,21 +936,21 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                               tabIndex={0}
                               htmlFor={`${index}`}
                               style={{ width: '100%' }}
-                            // onKeyUp={(e) => {
-                            //   if (e.keyCode === 13)
-                            //     showChildOptions(
-                            //       itemChild.option.id,
-                            //       itemMain.id,
-                            //       itemChild.dropDownValues,
-                            //       itemChild.selectedValue,
-                            //     );
-                            // }}
+                              // onKeyUp={(e) => {
+                              //   if (e.keyCode === 13)
+                              //     showChildOptions(
+                              //       itemChild.option.id,
+                              //       itemMain.id,
+                              //       itemChild.dropDownValues,
+                              //       itemChild.selectedValue,
+                              //     );
+                              // }}
                             >
                               <Card
                                 className="card-panel card-item"
                                 title={type}
-                              // is-mandatory={itemMain.mandatory.toString()}
-                              // parent-option-id={itemMain.parentOptionID}
+                                // is-mandatory={itemMain.mandatory.toString()}
+                                // parent-option-id={itemMain.parentOptionID}
                               >
                                 <Grid
                                   container
@@ -1009,8 +978,8 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                       <img
                                         className="item-image"
                                         src={require(`../../assets/imgs/${type}.jpg`)}
-                                      // alt={option.name}
-                                      // title={option.name}
+                                        // alt={option.name}
+                                        // title={option.name}
                                       />
                                       <div className="check-mark">
                                         <div
@@ -1618,10 +1587,14 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                   </Grid>
                 </Grid>
               )}
-              {!isLoginUser() &&
+              {!isLoginUser() && (
                 <Grid
                   item
-                  sx={{ display: 'flex', justifyContent: 'center', marginBottom: "20px" }}
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    marginBottom: '20px',
+                  }}
                 >
                   <Grid
                     item
@@ -1636,19 +1609,27 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                       aria-label="Sign in"
                       name="signin"
                       title="signin"
-                      sx={{ textTransform: "uppercase", color: '#122a41', fontSize: "1.1rem", fontFamily: "'Sunborn-Sansone' !important", width: '100%', height: '70px', border: '3px solid #122a41',letterSpacing: "0.25px !important" }}
-                      onClick={() => { 
+                      sx={{
+                        textTransform: 'uppercase',
+                        color: '#122a41',
+                        fontSize: '1.1rem',
+                        fontFamily: "'Sunborn-Sansone' !important",
+                        width: '100%',
+                        height: '70px',
+                        border: '3px solid #122a41',
+                        letterSpacing: '0.25px !important',
+                      }}
+                      onClick={() => {
                         showCart();
                         navigate('/login');
                       }}
                     >
-                      Sign In To Use Rewards 
+                      Sign In To Use Rewards
                     </Button>
                   </Grid>
                 </Grid>
-              }
+              )}
             </Grid>
-
           )}
         </Grid>
         <Grid container spacing={0}>
