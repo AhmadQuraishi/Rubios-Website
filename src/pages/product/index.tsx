@@ -33,6 +33,7 @@ import { convertMetaDataToOptions } from '../../helpers/product';
 import { isLoginUser } from '../../helpers/auth';
 
 import { SwitchProps } from '@mui/material/Switch';
+import TagManager from 'react-gtm-module';
 import ProductToggle from './product-toggle/productToggle';
 
 const Product = () => {
@@ -104,6 +105,7 @@ const Product = () => {
           });
           if (product) {
             setProductDetails(product);
+            fireProductViewEvent(product);
           }
         });
       }
@@ -150,6 +152,56 @@ const Product = () => {
       getTotalCost();
     }
   }, [options]);
+
+  const fireProductViewEvent = (product: ProductInfo) => {
+
+    const tagManagerArgs: any = {
+      dataLayer: {
+        event: 'eec.detail',
+        ecommerce: {
+          detail: {
+            actionField: {
+              list: 'view_item'
+            }
+          },
+          products: [{
+            id: product.id,
+            name: product.name,
+            category: product.categoryInfo?.name,
+          }]
+        }
+      },
+    };
+
+    TagManager.dataLayer(tagManagerArgs);
+    // TODO: Remove console logs
+    console.log("ZZ logs product view", tagManagerArgs);
+  }
+
+  const fireAddToBagEvent = () => {
+    const tagManagerArgs: any = {
+      dataLayer: {
+        event: 'eec.add',
+        ecommerce: {
+          add: {
+            actionField: {
+              list: productDetails?.categoryInfo?.name
+            }
+          },
+          products: [{
+            id: productDetails?.id,
+            name: productDetails?.name,
+            category: productDetails?.categoryInfo?.name,
+            quantity: count
+          }]
+        }
+      },
+    };
+
+    // TODO: Remove console logs
+    console.log("ZZ logs add product", tagManagerArgs);
+    TagManager.dataLayer(tagManagerArgs);
+  }
 
   const [optionImages, setOptionImages] = useState([]);
 
@@ -249,7 +301,10 @@ const Product = () => {
         // }
         dispatch(addProductRequest(basket?.id || '', request));
       }
+
+      fireAddToBagEvent();
     }
+
     let userData: any = null;
 
     if (isLoginUser()) {

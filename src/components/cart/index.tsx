@@ -42,6 +42,11 @@ import { facebookSendEvent } from '../../redux/actions/facebook-conversion';
 import { facebookConversionTypes } from '../../redux/types/facebook-conversion';
 import { isLoginUser } from '../../helpers/auth';
 import { getUpsellsRequest } from '../../redux/actions/basket/upsell/Get';
+import TagManager from 'react-gtm-module';
+import categoryReducer from '../../redux/reducers/category';
+import { Product } from '../../types/olo-api';
+import { getCategoriesRequest } from '../../redux/actions/category';
+import { number } from 'yup';
 
 const useStyles = makeStyles((theme: Theme) => ({
   dimPanel: {
@@ -186,14 +191,19 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [basketType, setBasketType] = useState();
+  const { categories } = useSelector(
+    (state: any) => state.categoryReducer,
+  );
 
   useEffect(() => {
+    
     if (upsellsVendorId && upsellsVendorId !== restaurant?.id) {
       dispatch(getUpsellsRequest(restaurant?.id));
     } else if (!upsells && restaurant?.id) {
       dispatch(getUpsellsRequest(restaurant?.id));
     }
-  }, []);
+    dispatch(getCategoriesRequest(restaurant.id));
+  }, [])
 
   useEffect(() => {
     console.log('upsells', upsells);
@@ -306,7 +316,10 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   }, [basketObj]);
 
   useEffect(() => {
-    if (basketObj?.basket?.products.length) {
+    if (
+      basketObj?.basket?.products.length && categories
+    ) {
+      fireViewCartEvent(1);
       let array = basketObj.basket.products;
       const utensilsIndex = array.findIndex(
         (obj: any) => obj.productId === utensilsReducer.utensilsProductId,
@@ -321,7 +334,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
     setTimeout(() => {
       fitContainer();
     }, 500);
-  }, [basketObj]);
+  }, [basketObj, categories]);
 
   useEffect(() => {
     if (productAddObj && productAddObj.basket && actionStatus) {
@@ -479,6 +492,42 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const fireViewCartEvent = (step: number) => {
+    const productCategoryMap = categories.categories.reduce((map: any, category: any) => {
+      for (const product of category.products) {
+        map[product.id] = { id: category.id, name: category.name };
+      }
+      return map;
+    }, {})
+
+    const productItems = basketObj?.basket?.products
+    
+    if (productItems?.length) {
+      const tagManagerArgs: any = {
+        dataLayer: {
+          event: 'eec.checkout',
+          ecommerce: {
+            checkout: {
+              actionField: {
+                step: number
+              }
+            },
+            products: productItems.map((pItem: any) => ({
+              id: pItem.productId,
+              name: pItem.name,
+              category: productCategoryMap[pItem.productId]?.name,
+              quantity: pItem.quantity,
+            }))
+          }
+        },
+      };
+      
+      console.log("ZZ logs ecommerce event", tagManagerArgs);
+      TagManager.dataLayer(tagManagerArgs);
+    }
+    
+  }
 
   const triggerFacebookEventOnCheckout = () => {
     let userObj: any = null;

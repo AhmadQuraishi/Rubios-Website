@@ -71,7 +71,7 @@ const responsive = {
 
 const ProductListing = (props: any) => {
   const classes = useStyles();
-  const { productList, imgPath, categoryName } = props;
+  const { productList, imgPath } = props;
   let products: [Product] = productList;
 
   const checkProductAvailability = (item: any) => {
@@ -135,14 +135,14 @@ const ProductListing = (props: any) => {
                       title={item.name}
                     />
                   )}
-                  {checkFeaturedProduct(item, categoryName) && (
+                  {checkFeaturedProduct(item) && (
                     <Typography
                       variant="h2"
                       title={'FEATURED'}
                       className="product-label"
                       sx={{fontFamily: "'Sunborn-Sansone' !important"}}
                     >
-                      FEATURED
+                      {checkFeaturedProduct(item)}
                     </Typography>
                   )}
                   <CardContent

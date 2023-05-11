@@ -688,7 +688,6 @@ const CategoryList = () => {
                   index={Math.random()}
                   productList = {isMobile ? (showAll[item.id] ? item.products : item.products.slice(0,4)) : item.products}
                   categoryID={item.id}
-                  categoryName={item.name}
                   imgPath={
                     categoriesWithProducts && categoriesWithProducts?.imagepath
                   }

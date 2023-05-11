@@ -40,7 +40,6 @@ const UpsellsOthers = ({ upsellsType }: any) => {
         });
       }
 
-      setProducts(prod);
     }
     // let products: any = [];
     //

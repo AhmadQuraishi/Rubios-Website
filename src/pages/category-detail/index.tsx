@@ -99,6 +99,41 @@ const CategoryDetail = () => {
 
   return (
     <Page title={'Menu Detail'} className="">
+    {(selectedCategory?.name === 'DRINKS') ? (
+
+      <div style={{ minHeight: '500px' }}>
+        <StoreInfoBar />
+        {loading === true && selectedCategory === undefined && (
+          <ProductListingSkeletonUI />
+        )}
+        {selectedCategory?.name && (
+          <Grid
+            container
+            spacing={0}
+            sx={{ padding: { xs: '20px', md: '30px 80px 0px 80px' } }}
+          >
+            <Grid item xs={12} md={6}>
+              <Typography
+                className={classes.heading}
+                title={selectedCategory.name}
+              >
+                {selectedCategory.name}
+              </Typography>
+            </Grid>
+            <Grid item xs={12} sx={{ paddingBottom: '20px' }}>
+              <ProductListing
+                productList={selectedCategory.products}
+                categoryID={id}
+                imgPath={(categories && categories.imagepath) || ''}
+                orderType={orderType}
+              />
+            </Grid>
+          </Grid>
+        )}
+        <div style={{ paddingBottom: '30px' }}></div>
+      </div>
+
+    ) : (
       <div style={{ minHeight: '500px' }}>
         <StoreInfoBar />
         {loading === true && selectedCategory === undefined && (
@@ -122,7 +157,6 @@ const CategoryDetail = () => {
               <ProductListing
                 productList={selectedCategory.products}
                 categoryID={id}
-                categoryName={selectedCategory.name}
                 imgPath={(categories && categories.imagepath) || ''}
                 orderType={orderType}
               />
@@ -131,6 +165,7 @@ const CategoryDetail = () => {
         )}
         <div style={{ paddingBottom: '30px' }}></div>
       </div>
+    )}
     </Page>
   );
 };
