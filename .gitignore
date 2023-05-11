@@ -22,3 +22,4 @@ template
 .idea
 ./proxy_servers
 ./deployment-scripts
+.vscode/launch.json

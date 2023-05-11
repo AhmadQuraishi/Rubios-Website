@@ -10,6 +10,7 @@ import {
   Button,
   CardActions,
 } from '@mui/material';
+import TagManager from 'react-gtm-module';
 import { makeStyles } from '@mui/styles';
 import { Link } from 'react-router-dom';
 import { Fragment } from 'react';
@@ -77,7 +78,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const ProductListingCarousel = (props: any) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { productList, shownItemsCount, imgPath, orderType, categoryName } =
+  const { productList, shownItemsCount, imgPath, orderType } =
     props;
   let products: [Product] = productList;
   const theme = useTheme();
@@ -175,6 +176,32 @@ const ProductListingCarousel = (props: any) => {
   //     </p>
   //   );
   // }
+
+  const fireClickProductEvent = (product: Product) => {
+    const tagManagerArgs: any = {
+      dataLayer: {
+        event: 'eec.impressionClick',
+        ecommerce: {
+          click: {
+            actionField: {
+              list: product.categoryInfo?.name
+            }
+          },
+          products: [{
+            id: product.id,
+            name: product.name,
+            category: product.categoryInfo?.name
+          }]
+        }
+      },
+    };
+
+    // TODO: Remove console logs
+    console.log("ZZ logs Click", tagManagerArgs);
+    
+    TagManager.dataLayer(tagManagerArgs);
+  }
+
   const triggerFacebookEventOnViewContentProduct = () => {
     let userObj: any = null;
     if (isLoginUser()) {
@@ -241,6 +268,7 @@ const ProductListingCarousel = (props: any) => {
                     <Link
                       onClick={() => {
                         triggerFacebookEventOnViewContentProduct();
+                        fireClickProductEvent(item);
                       }}
                       to={`/product/${item.id}`}
                       style={{ textDecoration: 'none' }}
@@ -274,7 +302,7 @@ const ProductListingCarousel = (props: any) => {
                             title={item.name}
                           />
                         )}
-                        {checkFeaturedProduct(item, categoryName) && (
+                        {checkFeaturedProduct(item) && (
                           <Typography
                             variant="h2"
                             title={'FEATURED'}
@@ -381,6 +409,7 @@ const ProductListingCarousel = (props: any) => {
                     <Link
                       onClick={() => {
                         triggerFacebookEventOnViewContentProduct();
+                        fireClickProductEvent(item);
                       }}
                       to={`/product/${item.id}`}
                       style={{ textDecoration: 'none' }}
@@ -417,13 +446,13 @@ const ProductListingCarousel = (props: any) => {
                               title={item.name}
                             />
                           )}
-                          {checkFeaturedProduct(item, categoryName) && (
+                          {checkFeaturedProduct(item) && (
                             <Typography
                               variant="h2"
-                              // title={checkFeaturedProduct(item, categoryName)}
+                              // title={checkFeaturedProduct(item)}
                               className="product-label-Mobile"
                             >
-                              {checkFeaturedProduct(item, categoryName)}
+                              {checkFeaturedProduct(item)}
                             </Typography>
                           )}
                         </div>

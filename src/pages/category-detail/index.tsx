@@ -125,7 +125,6 @@ const CategoryDetail = () => {
               <ProductListing
                 productList={selectedCategory.products}
                 categoryID={id}
-                categoryName={selectedCategory.name}
                 imgPath={(categories && categories.imagepath) || ''}
                 orderType={orderType}
               />
@@ -159,7 +158,6 @@ const CategoryDetail = () => {
               <ProductListing
                 productList={selectedCategory.products}
                 categoryID={id}
-                categoryName={selectedCategory.name}
                 imgPath={(categories && categories.imagepath) || ''}
                 orderType={orderType}
               />

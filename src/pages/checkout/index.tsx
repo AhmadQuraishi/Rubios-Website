@@ -914,7 +914,24 @@ const Checkout = () => {
       },
     };
 
+    // Fire ecommerce event after a successful payment submission
+    const tagManagerEcommerceArgs: any = {
+      dataLayer: {
+        event: 'eec.checkout',
+        ecommerce: {
+          checkout: {
+            actionField: {
+              step: 3
+            }
+          }
+        }
+      },
+    };
+
+    console.log("ZZ logs payment successfully submitted", tagManagerEcommerceArgs);
+    TagManager.dataLayer(tagManagerEcommerceArgs);
     TagManager.dataLayer(tagManagerArgs);
+
     if (providerToken) {
       userObj = {
         first_name: providerToken.first_name || '',
