@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { Product } from '../types/olo-api';
 
 export function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
@@ -143,11 +144,10 @@ export function isEmpty(val: any) {
   return val === undefined || val == null || val === '';
 }
 
-export function checkFeaturedProduct(item: any, categoryName: string) {
+export function checkFeaturedProduct(item: Product) {
   let checkFeatured = false;
   if (
-    categoryName &&
-    (categoryName === 'FEATURED ITEMS' || categoryName === 'SEASONAL MENU')
+    item.categoryInfo?.name === 'FEATURED ITEMS' || item.categoryInfo?.name === 'SEASONAL MENU'
   ) {
     return checkFeatured;
   }
