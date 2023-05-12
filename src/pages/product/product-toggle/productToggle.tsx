@@ -62,9 +62,21 @@ const ProductToggle = (props: any) => {
     setAsIs(main?.options[0]);
     setCustomize(main?.options[1]);
   }, [main]);
-  //   console.log(toggle);
-  //   console.log(asIs, 'asIs');
-  //   console.log(customize, 'customize');
+  console.log(toggle);
+  console.log(asIs, 'asIs');
+  console.log(customize, 'customize');
+  // debugger;
+  const checkOptionSelected = (
+    optionId: number,
+    parnetOptionID: number,
+  ): boolean => {
+    let isSelected = false;
+    if (main.id === parnetOptionID) {
+      isSelected = main.selectedOptions.includes(optionId);
+    }
+    // debugger;
+    return isSelected;
+  };
   return (
     <>
       <div style={{ display: 'flex', marginBottom: '20px' }}>
@@ -77,7 +89,9 @@ const ProductToggle = (props: any) => {
             fontSize: '15px',
             fontFamily: 'Librefranklin-Regular !important',
             textTransform: 'uppercase',
-            color: toggle === 'Customize' ? '#98b7db' : '#3170b7',
+            color: checkOptionSelected(customize?.option?.id, main?.id)
+              ? '#98b7db'
+              : '#3170b7',
           }}
         >
           As is
@@ -85,17 +99,16 @@ const ProductToggle = (props: any) => {
         <ToggleSwitch
           sx={{ marginLeft: '10px', marginRight: '10px' }}
           // id={asIs?.option?.id}
-          value={toggle}
-          checked={toggle === 'As is' ? false : true}
-          // checked={
-          //   checkOptionSelected(asIs?.option?.id, main.id)
-          //   // toggle === 'As is'
-          //   //   ? checkOptionSelected(asIs?.option?.id, main.id)
-          //   //   : checkOptionSelected(customize?.option?.id, main.id)
-          // }
+          // value={main.selectedOptions}
+          // checked={toggle === 'As is' ? false : true}
+          checked={
+            toggle === checkOptionSelected(asIs?.option?.id, main?.id)
+              ? checkOptionSelected(asIs?.option?.id, main.id)
+              : checkOptionSelected(customize?.option?.id, main?.id)
+          }
           onChange={() => {
-            if (toggle === 'As is') {
-              setToggle('Customize');
+            if (checkOptionSelected(asIs?.option?.id, main?.id)) {
+              // setToggle(checkOptionSelected(customize?.option?.id, main.id));
               showChildOptions(
                 customize?.option?.id,
                 main?.id,
@@ -103,7 +116,7 @@ const ProductToggle = (props: any) => {
                 customize?.selectedValue,
               );
             } else {
-              setToggle('As is');
+              // setToggle(checkOptionSelected(asIs?.option?.id, main.id));
               showChildOptions(
                 asIs?.option?.id,
                 main?.id,
@@ -122,7 +135,9 @@ const ProductToggle = (props: any) => {
             fontSize: '15px',
             fontFamily: 'Librefranklin-Regular !important',
             textTransform: 'uppercase',
-            color: toggle === 'Customize' ? '#3170b7' : '#98b7db',
+            color: checkOptionSelected(customize?.option?.id, main?.id)
+              ? '#3170b7'
+              : '#98b7db',
           }}
         >
           Customize

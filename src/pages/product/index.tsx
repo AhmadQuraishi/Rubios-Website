@@ -67,7 +67,7 @@ const Product = () => {
 
   const [basketType, setBasketType] = useState();
   const [count, setCount] = React.useState(1);
-  const [toggle, setToggle] = useState('As is');
+  const [toggle, setToggle] = useState();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -136,7 +136,7 @@ const Product = () => {
   useEffect(() => {
     if (edit) {
       setCatRequest(true);
-      dispatch(getCategoriesRequest(restaurant.id));
+      dispatch(getCategoriesRequest(restaurant?.id));
     }
   }, [edit]);
 
@@ -296,7 +296,7 @@ const Product = () => {
       setActionStatus(true);
       dispatch(addProductRequest(dummyBasketObj.basket.id || '', request));
     }
-
+    // debugger;
     // if (
     //   dummyBasketObj &&
     //   dummyBasketObj.basket &&
@@ -354,8 +354,31 @@ const Product = () => {
         const item = itemMain.options.find(
           (item: any) => item.isdefault == true,
         );
+        console.log(item, 'item');
         defaultOptionID = (item && item.id) || null;
       }
+      // console.log(defaultOptionID, 'defaultOptionID');
+      // debugger;
+      // if (itemMain?.options) {
+      //   defaultOptionsID = itemMain.options
+      //     .filter((it: any) => it.isdefault)
+      //     .map((item: any) => item.id || null);
+      // }
+
+      // if (itemMain?.options) {
+      //   defaultOptionID = itemMain.options
+      //     .filter((it: any) => it.isdefault)
+      //     .map((item: any) => item.id || null);
+      // if (defaultOptionsID.length > 1) {
+      //   defaultOptionID = defaultOptionsID.map(
+      //     (item: any) => item.id || null,
+      //   );
+      // } else {
+      //   defaultOptionID = defaultOptionsID[0];
+      // }
+      // }
+
+      // console.log(defaultOptionID[0], 'defaultOptionID');
       let editOptions: any[] = [];
       let optionsArray: any[] = [];
       itemMain.options.map((option: any) => {
@@ -402,7 +425,10 @@ const Product = () => {
           );
         }
       });
-
+      // let defaultOptions: any = null;
+      // console.log(defaultOptionID[0], 'defaultOptionID[0]');
+      // if ()
+      // debugger;
       let selectedOptions: any[] =
         editOptions.length > 0
           ? editOptions
@@ -429,6 +455,7 @@ const Product = () => {
               : false,
         },
       ]);
+      console.log(parentDefaultOptionID, 'parentDefaultOptionID');
       if (
         itemMain.description &&
         itemMain.description.toLowerCase().indexOf('remove or modify') == -1
@@ -833,6 +860,7 @@ const Product = () => {
           } else {
             item.selectedOptions.push(optionId);
             item.selected = true;
+            // debugger;
             const option = item.options.find(
               (option: any) => option.optionID == optionId,
             );
@@ -899,6 +927,7 @@ const Product = () => {
       if (item.id === parnetOptionID) {
         isSelected = item.selectedOptions.includes(optionId);
       }
+      // debugger;
     });
     return isSelected;
   };
@@ -912,7 +941,6 @@ const Product = () => {
     });
     return isSelected;
   };
-
   const IsItemSelected = (parentOptionID: number) => {
     let isOptionsRequired = false;
     optionsSelectionArray.map((item: any) => {
