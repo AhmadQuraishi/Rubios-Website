@@ -78,7 +78,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const ProductListingCarousel = (props: any) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { productList, shownItemsCount, imgPath, orderType } =
+  const { productList, shownItemsCount, imgPath, orderType, categoryName } =
     props;
   let products: [Product] = productList;
   const theme = useTheme();
@@ -184,23 +184,25 @@ const ProductListingCarousel = (props: any) => {
         ecommerce: {
           click: {
             actionField: {
-              list: product.categoryInfo?.name
-            }
+              list: product.categoryInfo?.name,
+            },
           },
-          products: [{
-            id: product.id,
-            name: product.name,
-            category: product.categoryInfo?.name
-          }]
-        }
+          products: [
+            {
+              id: product.id,
+              name: product.name,
+              category: product.categoryInfo?.name,
+            },
+          ],
+        },
       },
     };
 
     // TODO: Remove console logs
-    console.log("ZZ logs Click", tagManagerArgs);
-    
+    console.log('ZZ logs Click', tagManagerArgs);
+
     TagManager.dataLayer(tagManagerArgs);
-  }
+  };
 
   const triggerFacebookEventOnViewContentProduct = () => {
     let userObj: any = null;
@@ -302,7 +304,7 @@ const ProductListingCarousel = (props: any) => {
                             title={item.name}
                           />
                         )}
-                        {checkFeaturedProduct(item) && (
+                        {checkFeaturedProduct(item, categoryName) && (
                           <Typography
                             variant="h2"
                             title={checkFeaturedProduct(item, categoryName)}

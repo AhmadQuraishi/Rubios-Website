@@ -70,7 +70,7 @@ const responsive = {
 
 const ProductListing = (props: any) => {
   const classes = useStyles();
-  const { productList, imgPath } = props;
+  const { productList, imgPath, categoryName } = props;
   let products: [Product] = productList;
 
   const checkProductAvailability = (item: any) => {
@@ -134,7 +134,7 @@ const ProductListing = (props: any) => {
                       title={item.name}
                     />
                   )}
-                  {checkFeaturedProduct(item) && (
+                  {checkFeaturedProduct(item, categoryName) && (
                     <Typography
                       variant="h2"
                       title={'FEATURED'}
