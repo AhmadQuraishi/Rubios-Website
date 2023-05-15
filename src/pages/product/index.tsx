@@ -76,7 +76,7 @@ const Product = () => {
   const [optionsSelectionArray, setOptionsSelectionArray] = useState<any>([]);
   const [basketType, setBasketType] = useState();
   const [count, setCount] = React.useState(1);
-  const [toggle, setToggle] = useState();
+  // const [toggle, setToggle] = useState();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -131,7 +131,7 @@ const Product = () => {
   }, [productDetails]);
   const setCountWithEdit = () => {
     if (edit && productDetails) {
-      const product = basketObj.basket.products.find(
+      const product = basketObj?.basket?.products?.find(
         (item: any) => item.id == edit,
       );
       if (product) {
@@ -988,7 +988,169 @@ const Product = () => {
       ...optionsSelectionArray,
     ]);
   };
-
+  const showChildToggleOptions = (optionId: number, parnetOptionID: number) => {
+    setSelectionExecute(false);
+    setTimeout(() => {
+      setSelectionExecute(false);
+    }, 200);
+    let optionPrice = optionsCost;
+    let totalPrice = totalCost || 0;
+    optionsSelectionArray.map((item: any) => {
+      if (item.id === parnetOptionID) {
+        if (item.mandatory) {
+          if (!item.selectedOptions.includes(optionId)) {
+            const optionX = item.options.find(
+              (option: any) => option.optionID == item.selectedOptions[0],
+            );
+            let mainOptionCost = 0;
+            if (optionX) {
+              mainOptionCost = optionX.option.cost;
+            }
+            let elems = optionsSelectionArray.filter(
+              (x: any) => x.parentOptionID == item.selectedOptions[0],
+            );
+            if (elems) {
+              elems.map((x: any) => {
+                x.selected = false;
+                x.selectedOptions.map((mainChild: any) => {
+                  let elemSelected = optionsSelectionArray.filter(
+                    (i: any) => i.parentOptionID == mainChild,
+                  );
+                  let elemChildSelected = x.options.find(
+                    (i: any) => i.optionID == mainChild,
+                  );
+                  if (elemChildSelected) {
+                    mainOptionCost =
+                      mainOptionCost + elemChildSelected.option.cost;
+                    if (
+                      elemChildSelected.dropDownValues &&
+                      elemChildSelected.selectedValue
+                    ) {
+                      let ddl_op = elemChildSelected.dropDownValues.find(
+                        (i: any) => i.id == elemChildSelected.selectedValue,
+                      );
+                      if (ddl_op) {
+                        mainOptionCost = mainOptionCost + ddl_op.cost;
+                      }
+                    }
+                  }
+                  if (elemSelected && elemSelected.length > 0) {
+                    elemSelected.map((ss: any) => {
+                      ss.selected = false;
+                      if (ss.selectedOptions.length > 0) {
+                        let xelemChildSelected = optionsSelectionArray.filter(
+                          (i: any) => i.parentOptionID == ss.selectedOptions[0],
+                        );
+                        if (xelemChildSelected.length > 0) {
+                          xelemChildSelected.map((xc: any) => {
+                            xc.selected = false;
+                            xc.selectedOptions.map((child: any) => {
+                              let elemChildSelected = xc.options.find(
+                                (i: any) => i.optionID == child,
+                              );
+                              if (
+                                elemChildSelected &&
+                                xelemChildSelected.selected
+                              ) {
+                                mainOptionCost =
+                                  mainOptionCost +
+                                  elemChildSelected.option.cost;
+                                if (elemChildSelected.selectedValue) {
+                                  const ddlSelected =
+                                    elemChildSelected.dropDownValues.find(
+                                      (i: any) =>
+                                        i.id == elemChildSelected.selectedValue,
+                                    );
+                                  if (ddlSelected) {
+                                    mainOptionCost =
+                                      mainOptionCost + ddlSelected.cost;
+                                  }
+                                  elemChildSelected.selectedValue =
+                                    elemChildSelected.dropDownValues[0].id;
+                                }
+                              }
+                            });
+                          });
+                        } else {
+                          ss.selectedOptions.map((child: any) => {
+                            xelemChildSelected = ss.options.find(
+                              (i: any) => i.optionID == child,
+                            );
+                            if (xelemChildSelected) {
+                              mainOptionCost =
+                                mainOptionCost + xelemChildSelected.option.cost;
+                              if (xelemChildSelected.selectedValue) {
+                                const ddlSelected =
+                                  xelemChildSelected.dropDownValues.find(
+                                    (i: any) =>
+                                      i.id == xelemChildSelected.selectedValue,
+                                  );
+                                if (ddlSelected) {
+                                  mainOptionCost =
+                                    mainOptionCost + ddlSelected.cost;
+                                }
+                                xelemChildSelected.selectedValue =
+                                  xelemChildSelected.dropDownValues[0].id;
+                              }
+                            }
+                          });
+                        }
+                      }
+                      ss.selectedOptions = ss.defaultOption
+                        ? [ss.defaultOption]
+                        : [];
+                    });
+                  }
+                });
+                x.selectedOptions = x.defaultOption ? [x.defaultOption] : [];
+              });
+            }
+            item.selectedOptions = [optionId];
+            item.selected = true;
+            const option = item.options.find(
+              (option: any) => option.optionID == optionId,
+            );
+            if (option) {
+              const prc = option.option.cost * count;
+              optionPrice = optionPrice - mainOptionCost + option.option.cost;
+              totalPrice = totalPrice - mainOptionCost + prc;
+              // setOptionsCost(optionsCost - mainOptionCost + option.option.cost);
+              // setTotalCost((totalCost || 0) - mainOptionCost + prc);
+            }
+            elems = optionsSelectionArray.filter(
+              (x: any) => x.parentOptionID == optionId,
+            );
+            if (elems) {
+              elems.map((x: any) => {
+                x.selected = true;
+                let elemSelected = optionsSelectionArray.filter(
+                  (i: any) => i.parentOptionID == x.selectedOptions[0],
+                );
+                if (elemSelected && elemSelected.length > 0) {
+                  elemSelected.map((ss: any) => {
+                    ss.selected = true;
+                    if (ss.selectedOptions.length > 0) {
+                      let elemSelectedx = optionsSelectionArray.find(
+                        (i: any) => i.parentOptionID == ss.selectedOptions[0],
+                      );
+                      if (elemSelectedx) {
+                        elemSelectedx.selected = true;
+                      }
+                    }
+                  });
+                }
+              });
+            }
+          }
+        }
+      }
+    });
+    setOptionsCost(optionPrice);
+    setTotalCost(totalPrice);
+    setOptionsSelectionArray((optionsSelectionArray: any) => [
+      ...optionsSelectionArray,
+    ]);
+  };
   const checkOptionSelected = (
     optionId: number,
     parnetOptionID: number,
@@ -1339,9 +1501,9 @@ const Product = () => {
                           // asIs &&
                           // customize &&
                           <ProductToggle
-                            toggle={toggle}
-                            setToggle={setToggle}
-                            showChildOptions={showChildOptions}
+                            // toggle={toggle}
+                            // setToggle={setToggle}
+                            showChildToggleOptions={showChildToggleOptions}
                             main={itemMain}
                           />
                         ) : null}

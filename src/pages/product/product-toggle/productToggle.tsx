@@ -53,10 +53,10 @@ const ToggleSwitch = styled((props: SwitchProps) => (
 }));
 
 const ProductToggle = (props: any) => {
-  const { toggle, setToggle, showChildOptions, main } = props;
+  const { showChildToggleOptions, main } = props;
   const [asIs, setAsIs] = useState<any>(null);
   const [customize, setCustomize] = useState<any>(null);
-  //   const [toggle, setToggle] = useState('As is');
+  const [toggle, setToggle] = useState(null);
 
   useEffect(() => {
     setAsIs(main?.options[0]);
@@ -74,9 +74,10 @@ const ProductToggle = (props: any) => {
     if (main.id === parnetOptionID) {
       isSelected = main.selectedOptions.includes(optionId);
     }
-    // debugger;
+    debugger;
     return isSelected;
   };
+
   return (
     <>
       <div style={{ display: 'flex', marginBottom: '20px' }}>
@@ -89,7 +90,7 @@ const ProductToggle = (props: any) => {
             fontSize: '15px',
             fontFamily: 'Librefranklin-Regular !important',
             textTransform: 'uppercase',
-            color: checkOptionSelected(customize?.option?.id, main?.id)
+            color: checkOptionSelected(main?.options[1]?.option?.id, main?.id)
               ? '#98b7db'
               : '#3170b7',
           }}
@@ -102,27 +103,17 @@ const ProductToggle = (props: any) => {
           // value={main.selectedOptions}
           // checked={toggle === 'As is' ? false : true}
           checked={
-            toggle === checkOptionSelected(asIs?.option?.id, main?.id)
-              ? checkOptionSelected(asIs?.option?.id, main.id)
-              : checkOptionSelected(customize?.option?.id, main?.id)
+            checkOptionSelected(main.selectedOptions, main?.id)
+              ? checkOptionSelected(main?.options[0]?.option?.id, main.id)
+              : checkOptionSelected(main?.options[1]?.option?.id, main?.id)
           }
           onChange={() => {
-            if (checkOptionSelected(asIs?.option?.id, main?.id)) {
+            if (checkOptionSelected(main?.options[0]?.option?.id, main?.id)) {
               // setToggle(checkOptionSelected(customize?.option?.id, main.id));
-              showChildOptions(
-                customize?.option?.id,
-                main?.id,
-                customize?.dropDownValues,
-                customize?.selectedValue,
-              );
+              showChildToggleOptions(main?.options[1]?.option?.id, main?.id);
             } else {
               // setToggle(checkOptionSelected(asIs?.option?.id, main.id));
-              showChildOptions(
-                asIs?.option?.id,
-                main?.id,
-                asIs?.dropDownValues,
-                asIs?.selectedValue,
-              );
+              showChildToggleOptions(main?.options[0]?.option?.id, main?.id);
             }
           }}
         />
@@ -135,7 +126,7 @@ const ProductToggle = (props: any) => {
             fontSize: '15px',
             fontFamily: 'Librefranklin-Regular !important',
             textTransform: 'uppercase',
-            color: checkOptionSelected(customize?.option?.id, main?.id)
+            color: checkOptionSelected(main?.options[1]?.option?.id, main?.id)
               ? '#3170b7'
               : '#98b7db',
           }}
