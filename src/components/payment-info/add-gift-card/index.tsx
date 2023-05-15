@@ -95,17 +95,22 @@ const AddGiftCard = forwardRef((props: any, _ref) => {
   //   setPinCheck(false);
   //   setOpenAddGiftCard(!openAddGiftCard);
   // };
-  const checkExistingGiftCard = (billingSchemes: any[], cardNumber: string) => {
-    return billingSchemes.find((billingScheme) => {
-      if (
-        billingScheme.billingmethod === 'storedvalue' &&
-        billingScheme.billingfields[0].value === cardNumber
-      ) {
-        return billingScheme;
-      }
-      return null;
-    });
-  };
+  // console.log(billingSchemes, 'billingSchemes');
+  // const checkExistingGiftCard = (billingSchemes: any[], cardNumber: string) => {
+  //   console.log(billingSchemes, 'billingSchemes');
+  //   return billingSchemes?.find((billingScheme: any) => {
+  //     debugger;
+  //     if (
+  //       billingScheme?.billingmethod === 'storedvalue' &&
+  //       billingScheme?.billingfields[0]?.value === cardNumber
+  //     ) {
+  //       debugger;
+  //       return billingScheme;
+  //     }
+  //     debugger;
+  //     return null;
+  //   });
+  // };
   const handleGiftCardSubmit = async (values: any) => {
     setButtonDisabled(true);
     const body: any = {
@@ -118,72 +123,72 @@ const AddGiftCard = forwardRef((props: any, _ref) => {
       const giftCardIndex = allowedCards.findIndex((element: any) => {
         return element.type === 'giftcard';
       });
-      if (checkExistingGiftCard(billingSchemes, values.giftCardNumber)) {
-        displayToast('ERROR', 'Gift Card already exists');
-        setButtonDisabled(false);
-      } else {
-        if (giftCardIndex !== -1) {
-          try {
-            const billingSchemeId = allowedCards[giftCardIndex].id;
-            const pinResponse = await verifyGiftCardPinRequirement(
+      // if (checkExistingGiftCard(billingSchemes, values.giftCardNumber)) {
+      //   displayToast('ERROR', 'Gift Card already exists');
+      //   setButtonDisabled(false);
+      // } else {
+      if (giftCardIndex !== -1) {
+        try {
+          const billingSchemeId = allowedCards[giftCardIndex].id;
+          const pinResponse = await verifyGiftCardPinRequirement(
+            billingSchemeId,
+            body,
+          );
+          if (pinResponse && pinResponse.ispinrequired && !pinCheck) {
+            displayToast('SUCCESS', 'Please add gift card pin.');
+            setButtonDisabled(false);
+            setPinCheck(true);
+          } else {
+            const balanceResponse = await getGiftCardBalance(
+              basket.id,
               billingSchemeId,
               body,
             );
-            if (pinResponse && pinResponse.ispinrequired && !pinCheck) {
-              displayToast('SUCCESS', 'Please add gift card pin.');
-              setButtonDisabled(false);
-              setPinCheck(true);
-            } else {
-              const balanceResponse = await getGiftCardBalance(
-                basket.id,
-                billingSchemeId,
-                body,
-              );
-              if (balanceResponse) {
-                if (balanceResponse.success) {
-                  let billingSchemesNewArray = billingSchemes;
-                  let cardObj: any = getGiftCardObj(
-                    balanceResponse,
-                    billingSchemeId,
-                    body,
-                    billingSchemesNewArray,
-                  );
+            if (balanceResponse) {
+              if (balanceResponse.success) {
+                let billingSchemesNewArray = billingSchemes;
+                let cardObj: any = getGiftCardObj(
+                  balanceResponse,
+                  billingSchemeId,
+                  body,
+                  billingSchemesNewArray,
+                );
 
-                  Array.prototype.push.apply(billingSchemesNewArray, cardObj);
+                Array.prototype.push.apply(billingSchemesNewArray, cardObj);
 
-                  billingSchemesNewArray = billingSchemesNewArray.map(
-                    (element: any) => {
-                      if (element.billingmethod === 'storedvalue') {
-                        return {
-                          ...element,
-                          alwaysVisible: false,
-                        };
-                      }
-                      return element;
-                    },
-                  );
+                billingSchemesNewArray = billingSchemesNewArray.map(
+                  (element: any) => {
+                    if (element.billingmethod === 'storedvalue') {
+                      return {
+                        ...element,
+                        alwaysVisible: false,
+                      };
+                    }
+                    return element;
+                  },
+                );
 
-                  billingSchemesNewArray = updatePaymentCardsAmount(
-                    billingSchemesNewArray,
-                    basket,
-                  );
-                  dispatch(updateBasketBillingSchemes(billingSchemesNewArray));
-                  displayToast('SUCCESS', 'Gift Card Added');
-                  handleCloseAddGiftCard();
-                  setButtonDisabled(false);
-                } else {
-                  displayToast('ERROR', `${balanceResponse.message}`);
-                  setButtonDisabled(false);
-                }
+                billingSchemesNewArray = updatePaymentCardsAmount(
+                  billingSchemesNewArray,
+                  basket,
+                );
+                dispatch(updateBasketBillingSchemes(billingSchemesNewArray));
+                displayToast('SUCCESS', 'Gift Card Added');
+                handleCloseAddGiftCard();
+                setButtonDisabled(false);
+              } else {
+                displayToast('ERROR', `${balanceResponse.message}`);
+                setButtonDisabled(false);
               }
-              setButtonDisabled(false);
             }
-          } catch (e) {
             setButtonDisabled(false);
           }
+        } catch (e) {
+          setButtonDisabled(false);
         }
       }
     }
+    // }
   };
 
   const limitGiftCardNumber = (e: any, giftCardnumber: any) => {
