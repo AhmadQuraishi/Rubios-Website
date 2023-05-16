@@ -196,11 +196,11 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   useEffect(() => {
     // debugger;
     if (runOnce && basketObj?.basket?.products.length > 0 && categories) {
-      console.log(1, '1');
       fireViewCartEvent(1);
       setRunOnce(false);
     }
   }, [basketObj?.basket?.products.length > 0 && categories]);
+
   useEffect(() => {
     if (upsellsVendorId && upsellsVendorId !== restaurant?.id) {
       dispatch(getUpsellsRequest(restaurant?.id));
@@ -322,7 +322,6 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
 
   useEffect(() => {
     if (basketObj?.basket?.products.length) {
-      // fireViewCartEvent(1);
       let array = basketObj.basket.products;
       const utensilsIndex = array.findIndex(
         (obj: any) => obj.productId === utensilsReducer.utensilsProductId,
@@ -496,7 +495,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
     setOpen(false);
   };
 
-  const fireViewCartEvent = (step: number) => {
+  const fireViewCartEvent = (stepValue: number) => {
     const productCategoryMap = categories.categories.reduce(
       (map: any, category: any) => {
         for (const product of category.products) {
@@ -510,14 +509,18 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
     const productItems = basketObj?.basket?.products;
 
     if (productItems?.length) {
+      let actionMap: { step: number, list?: String } = {step: stepValue}
+      
+      if (stepValue == 1) {
+        actionMap.list = 'CART';
+      }
+
       const tagManagerArgs: any = {
         dataLayer: {
           event: 'eec.checkout',
           ecommerce: {
             checkout: {
-              actionField: {
-                step: number,
-              },
+              actionField: actionMap,
             },
             products: productItems.map((pItem: any) => ({
               id: pItem.productId,
@@ -529,7 +532,6 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
         },
       };
 
-      console.log('ZZ logs ecommerce event', tagManagerArgs);
       TagManager.dataLayer(tagManagerArgs);
     }
   };
@@ -1695,6 +1697,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                 onClick={() => {
                   showCart();
                   triggerFacebookEventOnCheckout();
+                  fireViewCartEvent(2);
                   return false;
                 }}
                 sx={{
