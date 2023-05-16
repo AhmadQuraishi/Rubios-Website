@@ -173,6 +173,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   const [upsellsProductKeys, setUpsellsProductKeys] = useState<any[]>();
   const [products, setProducts] = useState<any[]>();
   const [showMore, setShowMore] = useState(false);
+  const [runOnce, setRunOnce] = React.useState(true);
   const productRemoveObj = useSelector(
     (state: any) => state.removeProductReducer,
   );
@@ -192,7 +193,14 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   const navigate = useNavigate();
   const [basketType, setBasketType] = useState();
   const { categories } = useSelector((state: any) => state.categoryReducer);
-
+  useEffect(() => {
+    // debugger;
+    if (runOnce && basketObj?.basket?.products.length > 0 && categories) {
+      console.log(1, '1');
+      fireViewCartEvent(1);
+      setRunOnce(false);
+    }
+  }, [basketObj?.basket?.products.length > 0 && categories]);
   useEffect(() => {
     if (upsellsVendorId && upsellsVendorId !== restaurant?.id) {
       dispatch(getUpsellsRequest(restaurant?.id));
@@ -330,12 +338,6 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
       fitContainer();
     }, 500);
   }, [basketObj]);
-
-  useEffect(() => {
-    if (basketObj?.basket?.products.length && categories) {
-      fireViewCartEvent(1);
-    }
-  }, [basketObj, categories]);
 
   useEffect(() => {
     if (productAddObj && productAddObj.basket && actionStatus) {
