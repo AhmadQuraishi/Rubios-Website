@@ -65,7 +65,6 @@ const ProductToggle = (props: any) => {
   console.log(toggle);
   console.log(asIs, 'asIs');
   console.log(customize, 'customize');
-  // debugger;
   const checkOptionSelected = (
     optionId: number,
     parnetOptionID: number,
@@ -74,7 +73,6 @@ const ProductToggle = (props: any) => {
     if (main.id === parnetOptionID) {
       isSelected = main.selectedOptions.includes(optionId);
     }
-    debugger;
     return isSelected;
   };
 
