@@ -191,19 +191,16 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [basketType, setBasketType] = useState();
-  const { categories } = useSelector(
-    (state: any) => state.categoryReducer,
-  );
+  const { categories } = useSelector((state: any) => state.categoryReducer);
 
   useEffect(() => {
-    
     if (upsellsVendorId && upsellsVendorId !== restaurant?.id) {
       dispatch(getUpsellsRequest(restaurant?.id));
     } else if (!upsells && restaurant?.id) {
       dispatch(getUpsellsRequest(restaurant?.id));
     }
     dispatch(getCategoriesRequest(restaurant.id));
-  }, [])
+  }, []);
 
   useEffect(() => {
     console.log('upsells', upsells);
@@ -316,10 +313,8 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   }, [basketObj]);
 
   useEffect(() => {
-    if (
-      basketObj?.basket?.products.length && categories
-    ) {
-      fireViewCartEvent(1);
+    if (basketObj?.basket?.products.length) {
+      // fireViewCartEvent(1);
       let array = basketObj.basket.products;
       const utensilsIndex = array.findIndex(
         (obj: any) => obj.productId === utensilsReducer.utensilsProductId,
@@ -334,6 +329,12 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
     setTimeout(() => {
       fitContainer();
     }, 500);
+  }, [basketObj]);
+
+  useEffect(() => {
+    if (basketObj?.basket?.products.length && categories) {
+      fireViewCartEvent(1);
+    }
   }, [basketObj, categories]);
 
   useEffect(() => {
@@ -494,15 +495,18 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   };
 
   const fireViewCartEvent = (step: number) => {
-    const productCategoryMap = categories.categories.reduce((map: any, category: any) => {
-      for (const product of category.products) {
-        map[product.id] = { id: category.id, name: category.name };
-      }
-      return map;
-    }, {})
+    const productCategoryMap = categories.categories.reduce(
+      (map: any, category: any) => {
+        for (const product of category.products) {
+          map[product.id] = { id: category.id, name: category.name };
+        }
+        return map;
+      },
+      {},
+    );
 
-    const productItems = basketObj?.basket?.products
-    
+    const productItems = basketObj?.basket?.products;
+
     if (productItems?.length) {
       const tagManagerArgs: any = {
         dataLayer: {
@@ -510,24 +514,23 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
           ecommerce: {
             checkout: {
               actionField: {
-                step: number
-              }
+                step: number,
+              },
             },
             products: productItems.map((pItem: any) => ({
               id: pItem.productId,
               name: pItem.name,
               category: productCategoryMap[pItem.productId]?.name,
               quantity: pItem.quantity,
-            }))
-          }
+            })),
+          },
         },
       };
-      
-      console.log("ZZ logs ecommerce event", tagManagerArgs);
+
+      console.log('ZZ logs ecommerce event', tagManagerArgs);
       TagManager.dataLayer(tagManagerArgs);
     }
-    
-  }
+  };
 
   const triggerFacebookEventOnCheckout = () => {
     let userObj: any = null;
@@ -1231,21 +1234,21 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
               {basketObj?.basket?.products?.length > 0 && (
                 <Grid item xs={12} textAlign="center" padding="10px 0">
                   <Button
-                    variant="contained"
+                    // variant="contained"
                     title="Add Another Menu Item"
                     onClick={() => {
                       showCart();
                       navigate(restaurant ? '/menu/' + restaurant.slug : '/');
                     }}
                     sx={{
+                      letterSpacing: '0.25px !important',
                       textTransform: 'uppercase',
-                      backgroundColor: 'secondary.main',
-                      margin: 'auto',
+                      color: '#122a41',
+                      fontSize: '1.1rem',
+                      fontFamily: "'Sunborn-Sansone' !important",
                       width: '100%',
-                      borderRadius: 0,
-                      padding: '30px',
-                      fontFamily: "'Sunborn-Sansone'!important",
-                      fontSize: '10pt',
+                      height: '70px',
+                      border: '3px solid #122a41',
                     }}
                   >
                     Add Another Menu Item
