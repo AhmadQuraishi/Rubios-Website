@@ -173,6 +173,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   const [upsellsProductKeys, setUpsellsProductKeys] = useState<any[]>();
   const [products, setProducts] = useState<any[]>();
   const [showMore, setShowMore] = useState(false);
+  const [runOnce, setRunOnce] = React.useState(true);
   const productRemoveObj = useSelector(
     (state: any) => state.removeProductReducer,
   );
@@ -192,6 +193,13 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   const navigate = useNavigate();
   const [basketType, setBasketType] = useState();
   const { categories } = useSelector((state: any) => state.categoryReducer);
+  useEffect(() => {
+    // debugger;
+    if (runOnce && basketObj?.basket?.products.length > 0 && categories) {
+      fireViewCartEvent(1);
+      setRunOnce(false);
+    }
+  }, [basketObj?.basket?.products.length > 0 && categories]);
 
   useEffect(() => {
     if (upsellsVendorId && upsellsVendorId !== restaurant?.id) {
@@ -314,7 +322,6 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
 
   useEffect(() => {
     if (basketObj?.basket?.products.length) {
-      // fireViewCartEvent(1);
       let array = basketObj.basket.products;
       const utensilsIndex = array.findIndex(
         (obj: any) => obj.productId === utensilsReducer.utensilsProductId,
@@ -330,12 +337,6 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
       fitContainer();
     }, 500);
   }, [basketObj]);
-
-  useEffect(() => {
-    if (basketObj?.basket?.products.length && categories) {
-      fireViewCartEvent(1);
-    }
-  }, [basketObj, categories]);
 
   useEffect(() => {
     if (productAddObj && productAddObj.basket && actionStatus) {
@@ -514,7 +515,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
           ecommerce: {
             checkout: {
               actionField: {
-                step: number,
+                step: step,
               },
             },
             products: productItems.map((pItem: any) => ({
@@ -527,7 +528,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
         },
       };
 
-      console.log('ZZ logs ecommerce event', tagManagerArgs);
+      console.log('Commerce Events: ', step , tagManagerArgs);
       TagManager.dataLayer(tagManagerArgs);
     }
   };
@@ -1693,6 +1694,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                 onClick={() => {
                   showCart();
                   triggerFacebookEventOnCheckout();
+                  fireViewCartEvent(2);
                   return false;
                 }}
                 sx={{

@@ -199,8 +199,8 @@ const ProductListingCarousel = (props: any) => {
     };
 
     // TODO: Remove console logs
-    console.log('ZZ logs Click', tagManagerArgs);
-
+    console.log("Commerce Events: Click", tagManagerArgs);
+    
     TagManager.dataLayer(tagManagerArgs);
   };
 

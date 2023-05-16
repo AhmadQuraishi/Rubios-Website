@@ -183,7 +183,7 @@ const Product = () => {
 
     TagManager.dataLayer(tagManagerArgs);
     // TODO: Remove console logs
-    console.log("ZZ logs product view", tagManagerArgs);
+    console.log("Commerce Events:  product view", tagManagerArgs);
   }
 
   const fireAddToBagEvent = () => {
@@ -207,7 +207,7 @@ const Product = () => {
     };
 
     // TODO: Remove console logs
-    console.log("ZZ logs add product", tagManagerArgs);
+    console.log("Commerce Events: add product", tagManagerArgs);
     TagManager.dataLayer(tagManagerArgs);
   }
 
@@ -310,9 +310,9 @@ const Product = () => {
         dispatch(addProductRequest(basket?.id || '', request));
       }
 
-      fireAddToBagEvent();
     }
-
+    fireAddToBagEvent();
+    
     let userData: any = null;
 
     if (isLoginUser()) {
@@ -330,7 +330,7 @@ const Product = () => {
         userData,
         null,
       ),
-    );
+    );    
   };
 
   useEffect(() => {
@@ -1985,7 +1985,7 @@ const Product = () => {
                       disabled={checkDisable()}
                       onClick={() => {
                         addProductToBag();
-                        // handleCart();
+                        
                       }}
                     >
                       {edit ? 'UPDATE BAG' : 'ADD TO BAG'}
