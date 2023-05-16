@@ -200,7 +200,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
       setRunOnce(false);
     }
   }, [basketObj?.basket?.products.length > 0 && categories]);
-  
+
   useEffect(() => {
     if (upsellsVendorId && upsellsVendorId !== restaurant?.id) {
       dispatch(getUpsellsRequest(restaurant?.id));
@@ -322,7 +322,6 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
 
   useEffect(() => {
     if (basketObj?.basket?.products.length) {
-      // fireViewCartEvent(1);
       let array = basketObj.basket.products;
       const utensilsIndex = array.findIndex(
         (obj: any) => obj.productId === utensilsReducer.utensilsProductId,
@@ -338,12 +337,6 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
       fitContainer();
     }, 500);
   }, [basketObj]);
-
-  useEffect(() => {
-    if (basketObj?.basket?.products.length && categories) {
-      fireViewCartEvent(1);
-    }
-  }, [basketObj?.basket?.products.length, categories]);
 
   useEffect(() => {
     if (productAddObj && productAddObj.basket && actionStatus) {
