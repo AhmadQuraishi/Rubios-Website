@@ -340,6 +340,12 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   }, [basketObj]);
 
   useEffect(() => {
+    if (basketObj?.basket?.products.length && categories) {
+      fireViewCartEvent(1);
+    }
+  }, [basketObj?.basket?.products.length, categories]);
+
+  useEffect(() => {
     if (productAddObj && productAddObj.basket && actionStatus) {
       // dispatch(getBasketRequest('', productAddObj.basket, basketType));
       displayToast('SUCCESS', 'Duplicate item added to cart.');
@@ -516,7 +522,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
           ecommerce: {
             checkout: {
               actionField: {
-                step: number,
+                step: step,
               },
             },
             products: productItems.map((pItem: any) => ({
@@ -529,7 +535,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
         },
       };
 
-      console.log('ZZ logs ecommerce event', tagManagerArgs);
+      console.log('Commerce Events: ', step , tagManagerArgs);
       TagManager.dataLayer(tagManagerArgs);
     }
   };
@@ -1695,6 +1701,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                 onClick={() => {
                   showCart();
                   triggerFacebookEventOnCheckout();
+                  fireViewCartEvent(2);
                   return false;
                 }}
                 sx={{

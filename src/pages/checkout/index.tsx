@@ -928,7 +928,7 @@ const Checkout = () => {
       },
     };
 
-    console.log("ZZ logs payment successfully submitted", tagManagerEcommerceArgs);
+    console.log("Commerce Events:  payment successfully submitted", tagManagerEcommerceArgs);
     TagManager.dataLayer(tagManagerEcommerceArgs);
     TagManager.dataLayer(tagManagerArgs);
 
