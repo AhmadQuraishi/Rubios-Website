@@ -136,7 +136,11 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
     setTipCustomAmount(newValue.trim());
     setTipPercentage(0);
   };
-
+  const blurTipCustomAmountChange = (event: any) => {
+    dispatch(setTipFalse());
+    updateTipAmountCall(tipCustomAmount);
+    setTipPercentage(0);
+  };
   const handleCouponCodeChange = (event: any) => {
     setCouponCode(event.target.value.trim());
   };
@@ -241,6 +245,7 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
                     value={tipCustomAmount || ''}
                     type="text"
                     onChange={handleTipCustomAmountChange}
+                    onBlur={blurTipCustomAmountChange}
                     InputLabelProps={{
                       // shrink: tipCustomAmount === '' ? false : true,
                       classes: {
