@@ -24,7 +24,7 @@ import { UPSELLS_TYPES } from '../../helpers/upsells';
 import {
   calculateTaxAndFee,
   capitalizeFirstLetter,
-  orderFees
+  orderFees,
 } from '../../helpers/common';
 // import { Category, Product as ProductInfo } from '../../types/olo-api';
 import {
@@ -183,25 +183,24 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   );
   const basketObj = useSelector((state: any) => state.basketReducer);
   const addUpsellsObj = useSelector((state: any) => state.addUpsellReducer);
-  const { upsells, vendorId: upsellsVendorId } = useSelector((state: any) => state.getUpsellsReducer);
+  const { upsells, vendorId: upsellsVendorId } = useSelector(
+    (state: any) => state.getUpsellsReducer,
+  );
   const { providerToken } = useSelector((state: any) => state.providerReducer);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [basketType, setBasketType] = useState();
-  const { categories } = useSelector(
-    (state: any) => state.categoryReducer,
-  );
+  const { categories } = useSelector((state: any) => state.categoryReducer);
 
   useEffect(() => {
-    
     if (upsellsVendorId && upsellsVendorId !== restaurant?.id) {
-      dispatch(getUpsellsRequest(restaurant?.id))
+      dispatch(getUpsellsRequest(restaurant?.id));
     } else if (!upsells && restaurant?.id) {
-      dispatch(getUpsellsRequest(restaurant?.id))
+      dispatch(getUpsellsRequest(restaurant?.id));
     }
     dispatch(getCategoriesRequest(restaurant.id));
-  }, [])
+  }, []);
 
   useEffect(() => {
     console.log('upsells', upsells);
@@ -228,9 +227,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
     console.log('elem', elem);
     console.log('cartBox', cartBox);
     if (elem && cartBox) {
-      if (
-        basketObj?.basket?.products?.length > 0
-      ) {
+      if (basketObj?.basket?.products?.length > 0) {
         elem.style.height = cartBox?.clientHeight - 172 + 'px';
       } else {
         elem.style.height = cartBox?.clientHeight - 100 + 'px';
@@ -258,7 +255,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   useEffect(() => {
     window.scrollTo(0, 0);
     fitContainer();
-    setBasketType((basketObj?.basketType) || '');
+    setBasketType(basketObj?.basketType || '');
   }, []);
 
   // const updateUpsells = (upsells: any) => {
@@ -300,9 +297,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   // }, [basketObj]);
 
   useEffect(() => {
-    if (
-      basketObj?.basket?.products?.length
-    ) {
+    if (basketObj?.basket?.products?.length) {
       const utensils = basketObj.basket.products.filter(
         (obj: any) => obj.productId === utensilsReducer.utensilsProductId,
       );
@@ -318,10 +313,8 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   }, [basketObj]);
 
   useEffect(() => {
-    if (
-      basketObj?.basket?.products.length && categories
-    ) {
-      fireViewCartEvent(1);
+    if (basketObj?.basket?.products.length) {
+      // fireViewCartEvent(1);
       let array = basketObj.basket.products;
       const utensilsIndex = array.findIndex(
         (obj: any) => obj.productId === utensilsReducer.utensilsProductId,
@@ -336,6 +329,12 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
     setTimeout(() => {
       fitContainer();
     }, 500);
+  }, [basketObj]);
+
+  useEffect(() => {
+    if (basketObj?.basket?.products.length && categories) {
+      fireViewCartEvent(1);
+    }
   }, [basketObj, categories]);
 
   useEffect(() => {
@@ -474,9 +473,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
       dispatch(addUtensilsRequest(basketObj.basket.id, request));
     } else {
       console.log('e.target.checked 2', e.target.checked);
-      if (
-        basketObj?.basket?.products?.length
-      ) {
+      if (basketObj?.basket?.products?.length) {
         const utensilsAllProducts = basketObj.basket.products.filter(
           (obj: any) => obj.productId === utensilsReducer.utensilsProductId,
         );
@@ -498,15 +495,18 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   };
 
   const fireViewCartEvent = (step: number) => {
-    const productCategoryMap = categories.categories.reduce((map: any, category: any) => {
-      for (const product of category.products) {
-        map[product.id] = { id: category.id, name: category.name };
-      }
-      return map;
-    }, {})
+    const productCategoryMap = categories.categories.reduce(
+      (map: any, category: any) => {
+        for (const product of category.products) {
+          map[product.id] = { id: category.id, name: category.name };
+        }
+        return map;
+      },
+      {},
+    );
 
-    const productItems = basketObj?.basket?.products
-    
+    const productItems = basketObj?.basket?.products;
+
     if (productItems?.length) {
       const tagManagerArgs: any = {
         dataLayer: {
@@ -514,24 +514,23 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
           ecommerce: {
             checkout: {
               actionField: {
-                step: number
-              }
+                step: number,
+              },
             },
             products: productItems.map((pItem: any) => ({
               id: pItem.productId,
               name: pItem.name,
               category: productCategoryMap[pItem.productId]?.name,
               quantity: pItem.quantity,
-            }))
-          }
+            })),
+          },
         },
       };
-      
-      console.log("ZZ logs ecommerce event", tagManagerArgs);
+
+      console.log('ZZ logs ecommerce event', tagManagerArgs);
       TagManager.dataLayer(tagManagerArgs);
     }
-    
-  }
+  };
 
   const triggerFacebookEventOnCheckout = () => {
     let userObj: any = null;
@@ -554,8 +553,6 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
       navigate('/checkout');
     }, 1000);
   };
-
-
 
   return (
     <>
@@ -607,92 +604,90 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
               />
             </Button>
           </Grid>
-          {((
-            basketObj?.basket?.products?.length == 0) ||
-            (basketObj.basket == null)) && (
-              <Grid
-                id="cart-main-conatiner"
-                item
-                xs={12}
-                style={{
-                  height: '220px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexDirection: 'column',
-                  paddingRight: '25px',
-                }}
+          {(basketObj?.basket?.products?.length == 0 ||
+            basketObj.basket == null) && (
+            <Grid
+              id="cart-main-conatiner"
+              item
+              xs={12}
+              style={{
+                height: '220px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'column',
+                paddingRight: '25px',
+              }}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 512 512"
+                aria-label="Cart"
+                role="img"
+                style={{ width: '70px', marginBottom: '10px' }}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 512 512"
-                  aria-label="Cart"
-                  role="img"
-                  style={{ width: '70px', marginBottom: '10px' }}
-                >
-                  <path
-                    fill="none"
-                    stroke="#000"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="40"
-                    fill-rule="evenodd"
-                    d="M80,176a16,16,0,0,0-16,16V408c0,30.24,25.76,56,56,56H392c30.24,0,56-24.51,56-54.75V192a16,16,0,0,0-16-16Z"
-                  />
-                  <path
-                    fill="none"
-                    stroke="#000"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="40"
-                    fill-rule="evenodd"
-                    d="M160,176V144a96,96,0,0,1,96-96h0a96,96,0,0,1,96,96v32"
-                  />
-                </svg>
-                {/*<svg*/}
-                {/*xmlns="http://www.w3.org/2000/svg"*/}
-                {/*viewBox="0 0 24 24"*/}
-                {/*aria-label="Cart"*/}
-                {/*role="img"*/}
-                {/*style={{ width: '60px', marginBottom: '10px' }}*/}
-                {/*>*/}
-                {/*<path fill="none" d="M0 0h24v24H0V0z"></path>*/}
-                {/*<path d="M15.55 13c.75 0 1.41-.41 1.75-1.03l3.58-6.49A.996.996 0 0020.01 4H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7l1.1-2h7.45zM6.16 6h12.15l-2.76 5H8.53L6.16 6zM7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"></path>*/}
-                {/*</svg>*/}
-                <p className={classes.emptyCart}>Your Bag Is Currently Empty</p>
-                <br />
-                <Button
-                  variant="contained"
-                  title="Add Another Menu Item"
-                  sx={{ width: '100%', marginBottom: '15px' }}
-                  onClick={() => {
+                <path
+                  fill="none"
+                  stroke="#000"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="40"
+                  fill-rule="evenodd"
+                  d="M80,176a16,16,0,0,0-16,16V408c0,30.24,25.76,56,56,56H392c30.24,0,56-24.51,56-54.75V192a16,16,0,0,0-16-16Z"
+                />
+                <path
+                  fill="none"
+                  stroke="#000"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="40"
+                  fill-rule="evenodd"
+                  d="M160,176V144a96,96,0,0,1,96-96h0a96,96,0,0,1,96,96v32"
+                />
+              </svg>
+              {/*<svg*/}
+              {/*xmlns="http://www.w3.org/2000/svg"*/}
+              {/*viewBox="0 0 24 24"*/}
+              {/*aria-label="Cart"*/}
+              {/*role="img"*/}
+              {/*style={{ width: '60px', marginBottom: '10px' }}*/}
+              {/*>*/}
+              {/*<path fill="none" d="M0 0h24v24H0V0z"></path>*/}
+              {/*<path d="M15.55 13c.75 0 1.41-.41 1.75-1.03l3.58-6.49A.996.996 0 0020.01 4H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7l1.1-2h7.45zM6.16 6h12.15l-2.76 5H8.53L6.16 6zM7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"></path>*/}
+              {/*</svg>*/}
+              <p className={classes.emptyCart}>Your Bag Is Currently Empty</p>
+              <br />
+              <Button
+                variant="contained"
+                title="Add Another Menu Item"
+                sx={{ width: '100%', marginBottom: '15px' }}
+                onClick={() => {
+                  showCart();
+                  return false;
+                }}
+                onKeyUp={(e) => {
+                  if (e.keyCode === 13) {
                     showCart();
                     return false;
-                  }}
-                  onKeyUp={(e) => {
-                    if (e.keyCode === 13) {
-                      showCart();
-                      return false;
-                    }
-                  }}
-                >
-                  Start Your Order
-                </Button>
-              </Grid>
-            )}
-          {
-            basketObj?.basket?.products?.length > 0 && (
-              <Grid item xs={12} sx={{ padding: '0 20px 0 0' }}>
-                <Typography
-                  variant="h6"
-                  component="h6"
-                  className={classes.cartTitle}
-                  title="Your Order"
-                >
-                  Your Order
-                </Typography>
-              </Grid>
-            )}
+                  }
+                }}
+              >
+                Start Your Order
+              </Button>
+            </Grid>
+          )}
+          {basketObj?.basket?.products?.length > 0 && (
+            <Grid item xs={12} sx={{ padding: '0 20px 0 0' }}>
+              <Typography
+                variant="h6"
+                component="h6"
+                className={classes.cartTitle}
+                title="Your Order"
+              >
+                Your Order
+              </Typography>
+            </Grid>
+          )}
           {products && products?.length > 0 && (
             <Grid
               item
@@ -720,12 +715,12 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                       >
                         {item.productId !== utensilsReducer.utensilsProductId
                           ? item.quantity.toString() +
-                          ' x ' +
-                          item.name.toString()
+                            ' x ' +
+                            item.name.toString()
                           : item.name.toString()}
                       </Typography>
                     </Grid>
-                    <Grid item xs={3} sx={{ textAlign: 'right', }}>
+                    <Grid item xs={3} sx={{ textAlign: 'right' }}>
                       <Typography
                         variant="caption"
                         title={'$' + item.totalcost.toFixed(2)}
@@ -766,8 +761,8 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                           <ul className={`btnslist ${classes.btnsList}`}>
                             <li>
                               {productRemoveObj &&
-                                productRemoveObj.loading &&
-                                clickAction == item.id + '-remove' ? (
+                              productRemoveObj.loading &&
+                              clickAction == item.id + '-remove' ? (
                                 <Button
                                   key={Math.random() + 'disable-remove'}
                                   title="Remove"
@@ -798,8 +793,8 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                             <li>
                               {!checkItemIsUpsells(item.productId) && (
                                 <Grid item xs={3}>
-                                  {(productRemoveObj?.loading) ||
-                                    (productAddObj?.loading) ? (
+                                  {productRemoveObj?.loading ||
+                                  productAddObj?.loading ? (
                                     <Button
                                       key={Math.random() + 'disable-edit'}
                                       onClick={() => false}
@@ -815,12 +810,14 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                       onClick={() => {
                                         showCart();
                                         navigate(
-                                          `product/${item.productId}/${item.id
-                                          }${window.location.href
-                                            .toLowerCase()
-                                            .indexOf('product') == -1
-                                            ? '?edit=true'
-                                            : ''
+                                          `product/${item.productId}/${
+                                            item.id
+                                          }${
+                                            window.location.href
+                                              .toLowerCase()
+                                              .indexOf('product') == -1
+                                              ? '?edit=true'
+                                              : ''
                                           }`,
                                         );
                                       }}
@@ -838,7 +835,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                             </li>
                             <li>
                               {productAddObj?.loading &&
-                                clickAction == item.id + '-add' ? (
+                              clickAction == item.id + '-add' ? (
                                 <Button
                                   key={Math.random() + 'disable-duplicate'}
                                   onClick={() => false}
@@ -886,29 +883,34 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
               )}
               {utensilsReducer?.utensilsProductId &&
                 basketObj?.basket?.deliverymode !== DeliveryModeEnum.dinein && (
-                  <Grid item xs={12} sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Grid
+                    item
+                    xs={12}
+                    sx={{ display: 'flex', alignItems: 'center' }}
+                  >
                     <img
                       className="item-image"
-                      style={{ height: "35px" }}
+                      style={{ height: '35px' }}
                       src={require(`../../assets/imgs/untensils.png`)}
-                    // alt={option.name}
-                    // title={option.name}
+                      // alt={option.name}
+                      // title={option.name}
                     />
                     <Typography
                       variant="body2"
                       className="body-text"
                       // title="I agree to the  Rubios terms and conditions and to receiving marketing communications from Rubios."
-                      sx={{ paddingLeft: "10px", width: '100%', color: '#224c65', fontFamily: "'Librefranklin-Regular' !important", }}
+                      sx={{
+                        paddingLeft: '10px',
+                        width: '100%',
+                        color: '#224c65',
+                        fontFamily: "'Librefranklin-Regular' !important",
+                      }}
                     >
-
                       Include Utensils
                     </Typography>
                     <Checkbox
                       checked={utensils}
-                      disabled={
-                        utensilsReducer?.loading &&
-                        utensilsDisabled
-                      }
+                      disabled={utensilsReducer?.loading && utensilsDisabled}
                       onChange={(e) => {
                         addRemoveUtensils(e);
                       }}
@@ -920,23 +922,20 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         fontFamily: "'GritSans-Bold' !important",
                       }}
                     />
-
                   </Grid>
                 )}
 
-              {
-                basketObj?.basket?.deliverymode !== DeliveryModeEnum.dinein && (
-                  <Grid item xs={12} sx={{ padding: '20px 0px' }}>
-                    <Divider sx={{ borderColor: '#224c65' }} />
-                  </Grid>
-                )}
+              {basketObj?.basket?.deliverymode !== DeliveryModeEnum.dinein && (
+                <Grid item xs={12} sx={{ padding: '20px 0px' }}>
+                  <Divider sx={{ borderColor: '#224c65' }} />
+                </Grid>
+              )}
 
               <div
                 className={'upsells'}
                 style={{ display: 'flex', flexDirection: 'column' }}
               >
-                {
-                  basketObj?.basket?.products?.length > 0 &&
+                {basketObj?.basket?.products?.length > 0 &&
                   Object.keys(UPSELLS_TYPES).map(
                     (type: string, index: number) => {
                       return (
@@ -961,8 +960,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                             key={Math.random() + index}
                             option-id={index}
                             onClick={() => handleUpsells(type)}
-                            onKeyPress={() => handleUpsells(type)
-                            }
+                            onKeyPress={() => handleUpsells(type)}
                             className={
                               upsellsType === type
                                 ? 'content-panel selected'
@@ -990,21 +988,21 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                               tabIndex={0}
                               htmlFor={`${index}`}
                               style={{ width: '100%' }}
-                            // onKeyUp={(e) => {
-                            //   if (e.keyCode === 13)
-                            //     showChildOptions(
-                            //       itemChild.option.id,
-                            //       itemMain.id,
-                            //       itemChild.dropDownValues,
-                            //       itemChild.selectedValue,
-                            //     );
-                            // }}
+                              // onKeyUp={(e) => {
+                              //   if (e.keyCode === 13)
+                              //     showChildOptions(
+                              //       itemChild.option.id,
+                              //       itemMain.id,
+                              //       itemChild.dropDownValues,
+                              //       itemChild.selectedValue,
+                              //     );
+                              // }}
                             >
                               <Card
                                 className="card-panel card-item"
                                 title={type}
-                              // is-mandatory={itemMain.mandatory.toString()}
-                              // parent-option-id={itemMain.parentOptionID}
+                                // is-mandatory={itemMain.mandatory.toString()}
+                                // parent-option-id={itemMain.parentOptionID}
                               >
                                 <Grid
                                   container
@@ -1032,8 +1030,8 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                       <img
                                         className="item-image"
                                         src={require(`../../assets/imgs/${type}.jpg`)}
-                                      // alt={option.name}
-                                      // title={option.name}
+                                        // alt={option.name}
+                                        // title={option.name}
                                       />
                                       <div className="check-mark">
                                         <div
@@ -1233,22 +1231,30 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
               {/*      );*/}
               {/*    },*/}
               {/*  )}*/}
-              {
-                basketObj?.basket?.products?.length > 0 && (
-                  <Grid item xs={12} textAlign="center" padding="10px 0">
-                    <Button
-                      // variant="contained"
-                      title="Add Another Menu Item"
-                      onClick={() => {
-                        showCart();
-                        navigate(restaurant ? '/menu/' + restaurant.slug : '/');
-                      }}
-                      sx={{ letterSpacing: "0.25px !important",textTransform: 'uppercase', color: '#122a41', fontSize: "1.1rem", fontFamily: "'Sunborn-Sansone' !important", width: '100%', height: '70px', border: '3px solid #122a41', }}
-                    >
-                      Add Another Menu Item
-                    </Button>
-                  </Grid>
-                )}
+              {basketObj?.basket?.products?.length > 0 && (
+                <Grid item xs={12} textAlign="center" padding="10px 0">
+                  <Button
+                    // variant="contained"
+                    title="Add Another Menu Item"
+                    onClick={() => {
+                      showCart();
+                      navigate(restaurant ? '/menu/' + restaurant.slug : '/');
+                    }}
+                    sx={{
+                      letterSpacing: '0.25px !important',
+                      textTransform: 'uppercase',
+                      color: '#122a41',
+                      fontSize: '1.1rem',
+                      fontFamily: "'Sunborn-Sansone' !important",
+                      width: '100%',
+                      height: '70px',
+                      border: '3px solid #122a41',
+                    }}
+                  >
+                    Add Another Menu Item
+                  </Button>
+                </Grid>
+              )}
               {basketObj?.basket?.products?.length > 0 && (
                 <Grid item xs={12} padding="20px 0px 20px 0px">
                   <Grid container spacing={0}>
@@ -1259,7 +1265,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         fontFamily: "'Librefranklin-Bold' !important",
                         color: 'secondary.main',
                         fontSize: '14px',
-                        fontWeight: "bold",
+                        fontWeight: 'bold',
                         paddingBottom: '2px',
                       }}
                       title="Sub Total"
@@ -1274,22 +1280,15 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         color: 'secondary.main',
                         fontSize: '14px',
                         textAlign: 'right',
-                        fontWeight: "bold",
+                        fontWeight: 'bold',
                         paddingBottom: '2px',
                       }}
-                      title={
-                        '$' +
-                        (
-                          basketObj?.basket?.subtotal?.toFixed(2))
-                      }
+                      title={'$' + basketObj?.basket?.subtotal?.toFixed(2)}
                     >
-                      $
-                      {
-                        basketObj?.basket?.subtotal?.toFixed(2)}
+                      ${basketObj?.basket?.subtotal?.toFixed(2)}
                     </Grid>
-                    {
-                      basketObj?.basket?.discounts?.length > 0
-                        ? basketObj.basket.discounts.map((discount: any) => {
+                    {basketObj?.basket?.discounts?.length > 0
+                      ? basketObj.basket.discounts.map((discount: any) => {
                           return (
                             <>
                               <Grid
@@ -1299,7 +1298,8 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                   color: 'secondary.main',
                                   fontSize: '14px',
                                   paddingBottom: '2px',
-                                  fontFamily: "'Librefranklin-Regular' !important",
+                                  fontFamily:
+                                    "'Librefranklin-Regular' !important",
                                 }}
                               >
                                 {discount.type === 'Coupon'
@@ -1315,50 +1315,47 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                   fontSize: '14px',
                                   textAlign: 'right',
                                   paddingBottom: '2px',
-                                  fontFamily: "'Librefranklin-Regular' !important",
+                                  fontFamily:
+                                    "'Librefranklin-Regular' !important",
                                 }}
                               >
                                 -$
-                                {discount.amount &&
-                                  discount.amount.toFixed(2)}
+                                {discount.amount && discount.amount.toFixed(2)}
                               </Grid>
                             </>
                           );
                         })
-                        : null}
-
-                    {
-                      basketObj?.basket?.tip > 0 ? (
-                        <>
-                          <Grid
-                            item
-                            xs={9}
-                            sx={{
-                              color: 'secondary.main',
-                              fontSize: '14px',
-                              paddingBottom: '2px',
-                              fontFamily: "'Librefranklin-Regular' !important",
-                            }}
-                            title="TIP"
-                          >
-                            TIP
-                          </Grid>
-                          <Grid
-                            item
-                            xs={3}
-                            sx={{
-                              color: 'secondary.main',
-                              fontSize: '14px',
-                              textAlign: 'right',
-                              paddingBottom: '2px',
-                              fontFamily: "'Librefranklin-Regular' !important",
-                            }}
-                          >
-                            +${basketObj.basket.tip}
-                          </Grid>
-                        </>
-                      ) : null}
-
+                      : null}
+                    {basketObj?.basket?.tip > 0 ? (
+                      <>
+                        <Grid
+                          item
+                          xs={9}
+                          sx={{
+                            color: 'secondary.main',
+                            fontSize: '14px',
+                            paddingBottom: '2px',
+                            fontFamily: "'Librefranklin-Regular' !important",
+                          }}
+                          title="TIP"
+                        >
+                          TIP
+                        </Grid>
+                        <Grid
+                          item
+                          xs={3}
+                          sx={{
+                            color: 'secondary.main',
+                            fontSize: '14px',
+                            textAlign: 'right',
+                            paddingBottom: '2px',
+                            fontFamily: "'Librefranklin-Regular' !important",
+                          }}
+                        >
+                          +${basketObj.basket.tip}
+                        </Grid>
+                      </>
+                    ) : null}
                     <Grid
                       item
                       xs={9}
@@ -1369,56 +1366,65 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         fontFamily: "'Librefranklin-Regular' !important",
                         display: 'flex',
                       }}
-                    // title="ESTIMATED TAX AND FEES"
+                      // title="ESTIMATED TAX AND FEES"
                     >
                       <div>
-                        {
-                          basketObj?.basket?.totalfees > 0 ? (
-                            <>
-                              <Typography sx={{
+                        {basketObj?.basket?.totalfees > 0 ? (
+                          <>
+                            <Typography
+                              sx={{
                                 fontSize: '14px',
-                                fontFamily: "'Librefranklin-Regular' !important", cursor: 'pointer'
-                              }} onClick={() => {
+                                fontFamily:
+                                  "'Librefranklin-Regular' !important",
+                                cursor: 'pointer',
+                              }}
+                              onClick={() => {
                                 setShowMore(!showMore);
-                              }}>
-                                ESTIMATED TAX AND FEES
-                                {showMore ? (
-                                  <ExpandLessIcon
-                                    aira-label="Expand Less"
-                                    onClick={() => {
-                                      setShowMore(!showMore);
-                                    }}
-                                    // className={classes.helpicon}
-                                    style={{
-                                      cursor: 'pointer',
-                                      verticalAlign: 'bottom',
-                                      color: 'secondary.main',
-                                    }}
-                                  />
-                                ) : (
-                                  <ExpandMoreIcon
-                                    aira-label="Expand Less"
-                                    onClick={() => {
-                                      setShowMore(!showMore);
-                                    }}
-                                    // className={classes.helpicon}
-                                    style={{
-                                      cursor: 'pointer',
-                                      verticalAlign: 'bottom',
-                                      color: 'secondary.main',
-                                    }}
-                                  />
-                                )}
-                              </Typography>
-                            </>
-                          ) : (
-                            <Typography sx={{ fontSize: '14px', fontFamily: "Librefranklin-Regular !important" }}>
-                              ESTIMATED TAXES
+                              }}
+                            >
+                              ESTIMATED TAX AND FEES
+                              {showMore ? (
+                                <ExpandLessIcon
+                                  aira-label="Expand Less"
+                                  onClick={() => {
+                                    setShowMore(!showMore);
+                                  }}
+                                  // className={classes.helpicon}
+                                  style={{
+                                    cursor: 'pointer',
+                                    verticalAlign: 'bottom',
+                                    color: 'secondary.main',
+                                  }}
+                                />
+                              ) : (
+                                <ExpandMoreIcon
+                                  aira-label="Expand Less"
+                                  onClick={() => {
+                                    setShowMore(!showMore);
+                                  }}
+                                  // className={classes.helpicon}
+                                  style={{
+                                    cursor: 'pointer',
+                                    verticalAlign: 'bottom',
+                                    color: 'secondary.main',
+                                  }}
+                                />
+                              )}
                             </Typography>
-                          )}
+                          </>
+                        ) : (
+                          <Typography
+                            sx={{
+                              fontSize: '14px',
+                              fontFamily: 'Librefranklin-Regular !important',
+                            }}
+                          >
+                            ESTIMATED TAXES
+                          </Typography>
+                        )}
                       </div>
                     </Grid>
-                    {!showMore &&
+                    {!showMore && (
                       <Grid
                         item
                         xs={3}
@@ -1433,31 +1439,23 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                       >
                         ${calculateTaxAndFee(basketObj.basket)}
                       </Grid>
-                    }                      {showMore ? (
-                      <Grid
-                        container
-                        className={'taxes'}
-                        spacing={1}
-
-                      >
+                    )}{' '}
+                    {showMore ? (
+                      <Grid container className={'taxes'} spacing={1}>
                         <Grid item xs={9}>
                           <Typography
                             sx={{
                               lineHeight: '1.0',
                               fontFamily: "'Librefranklin-Regular' !important",
-                              fontSize: "14px !important",
+                              fontSize: '14px !important',
                               color: '#062C43 !important',
-                              marginLeft: "22px !important"
+                              marginLeft: '22px !important',
                             }}
                           >
                             SALES TAX:
                           </Typography>
                         </Grid>
-                        <Grid
-                          item
-                          xs={3}
-                          justifyContent={'flex-end'}
-                        >
+                        <Grid item xs={3} justifyContent={'flex-end'}>
                           <Typography
                             sx={{
                               lineHeight: '1.0',
@@ -1465,28 +1463,25 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                               fontFamily: "'Librefranklin-Regular' !important",
                               color: '#062C43 !important',
 
-                              fontSize: "14px !important",
+                              fontSize: '14px !important',
                             }}
-
-                            title={'$' +
-                              (
-                                basketObj?.basket?.taxes
-                                  .reduce(
-                                    (sum: number, tax: any) =>
-                                      sum + tax.tax,
-                                    0,
-                                  )
-                                  .toFixed(2))}
-                          >
-                            $
-                            {
+                            title={
+                              '$' +
                               basketObj?.basket?.taxes
                                 .reduce(
-                                  (sum: number, tax: any) =>
-                                    sum + tax.tax,
+                                  (sum: number, tax: any) => sum + tax.tax,
                                   0,
                                 )
-                                .toFixed(2)}
+                                .toFixed(2)
+                            }
+                          >
+                            $
+                            {basketObj?.basket?.taxes
+                              .reduce(
+                                (sum: number, tax: any) => sum + tax.tax,
+                                0,
+                              )
+                              .toFixed(2)}
                           </Typography>
                         </Grid>
                         <Grid item xs={9}>
@@ -1494,17 +1489,20 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                             sx={{
                               lineHeight: '1.0',
                               fontFamily: "'Librefranklin-Regular' !important",
-                              fontSize: "14px !important",
+                              fontSize: '14px !important',
                               color: '#062C43',
-                              marginBottom: "3px",
-                              marginLeft: "22px !important"
+                              marginBottom: '3px',
+                              marginLeft: '22px !important',
                             }}
                           >
-                            {
-                              basketObj?.basket?.fees?.length &&
-                                basketObj.basket.fees.filter((fee: any) => fee.description === 'UCSD Living Wage Surcharge').length > 0 ?
-                                'UCSD Living Wage Surcharge:' : 'SERVICE FEE:'
-                            }
+                            {basketObj?.basket?.fees?.length &&
+                            basketObj.basket.fees.filter(
+                              (fee: any) =>
+                                fee.description ===
+                                'UCSD Living Wage Surcharge',
+                            ).length > 0
+                              ? 'UCSD Living Wage Surcharge:'
+                              : 'SERVICE FEE:'}
                           </Typography>
                         </Grid>
                         <Grid item xs={3}>
@@ -1513,13 +1511,12 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                               lineHeight: '1.0',
                               textAlign: 'right',
                               fontFamily: "'Librefranklin-Regular' !important",
-                              fontSize: "14px !important",
+                              fontSize: '14px !important',
                               color: '#062C43',
                             }}
                             title={'$' + orderFees(basketObj?.basket)}
                           >
-                            $
-                            {orderFees(basketObj?.basket)}
+                            ${orderFees(basketObj?.basket)}
                           </Typography>
                         </Grid>
                       </Grid>
@@ -1577,44 +1574,39 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                     {/*    </Grid>*/}
                     {/*  </>*/}
                     {/*) : null}*/}
-
-                    {
-                      basketObj?.basket?.customerhandoffcharge > 0 ? (
-                        <>
-                          <Grid
-                            item
-                            xs={9}
-                            sx={{
-                              color: 'secondary.main',
-                              fontSize: '14px',
-                              fontFamily: "'Librefranklin-Regular' !important",
-                            }}
-                            title="DELIVERY FEE"
-                          >
-                            DELIVERY FEE
-                          </Grid>
-                          <Grid
-                            item
-                            xs={3}
-                            sx={{
-                              color: 'secondary.main',
-                              fontSize: '14px',
-                              textAlign: 'right',
-                              fontFamily: "'Librefranklin-Regular' !important",
-                            }}
-                            title={
-                              '$' +
-                              (basketObj?.basket?.customerhandoffcharge?.toFixed(
-                                2,
-                              ))
-                            }
-                          >
-                            $
-                            {basketObj?.basket?.customerhandoffcharge?.toFixed(2)}
-                          </Grid>
-                        </>
-                      ) : null}
-
+                    {basketObj?.basket?.customerhandoffcharge > 0 ? (
+                      <>
+                        <Grid
+                          item
+                          xs={9}
+                          sx={{
+                            color: 'secondary.main',
+                            fontSize: '14px',
+                            fontFamily: "'Librefranklin-Regular' !important",
+                          }}
+                          title="DELIVERY FEE"
+                        >
+                          DELIVERY FEE
+                        </Grid>
+                        <Grid
+                          item
+                          xs={3}
+                          sx={{
+                            color: 'secondary.main',
+                            fontSize: '14px',
+                            textAlign: 'right',
+                            fontFamily: "'Librefranklin-Regular' !important",
+                          }}
+                          title={
+                            '$' +
+                            basketObj?.basket?.customerhandoffcharge?.toFixed(2)
+                          }
+                        >
+                          $
+                          {basketObj?.basket?.customerhandoffcharge?.toFixed(2)}
+                        </Grid>
+                      </>
+                    ) : null}
                     <Grid item xs={12} sx={{ padding: '20px 0px' }}>
                       <Divider sx={{ borderColor: '#224c65' }} />
                     </Grid>
@@ -1637,24 +1629,24 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         fontFamily: "'Librefranklin-Bold' !important",
                         color: 'secondary.main',
                         fontSize: '15px',
-                        fontWeight: "bold",
+                        fontWeight: 'bold',
                         textAlign: 'right',
                       }}
-                      title={
-                        '$' +
-                        (basketObj?.basket?.total?.toFixed(2))
-                      }
+                      title={'$' + basketObj?.basket?.total?.toFixed(2)}
                     >
-                      $
-                      {basketObj?.basket?.total?.toFixed(2)}
+                      ${basketObj?.basket?.total?.toFixed(2)}
                     </Grid>
                   </Grid>
                 </Grid>
               )}
-              {!isLoginUser() &&
+              {!isLoginUser() && (
                 <Grid
                   item
-                  sx={{ display: 'flex', justifyContent: 'center', marginBottom: "20px" }}
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    marginBottom: '20px',
+                  }}
                 >
                   <Grid
                     item
@@ -1669,19 +1661,27 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                       aria-label="Sign in"
                       name="signin"
                       title="signin"
-                      sx={{ textTransform: "uppercase", color: '#122a41', fontSize: "1.1rem", fontFamily: "'Sunborn-Sansone' !important", width: '100%', height: '70px', border: '3px solid #122a41',letterSpacing: "0.25px !important" }}
-                      onClick={() => { 
+                      sx={{
+                        textTransform: 'uppercase',
+                        color: '#122a41',
+                        fontSize: '1.1rem',
+                        fontFamily: "'Sunborn-Sansone' !important",
+                        width: '100%',
+                        height: '70px',
+                        border: '3px solid #122a41',
+                        letterSpacing: '0.25px !important',
+                      }}
+                      onClick={() => {
                         showCart();
                         navigate('/login');
                       }}
                     >
-                      Sign In To Use Rewards 
+                      Sign In To Use Rewards
                     </Button>
                   </Grid>
                 </Grid>
-              }
+              )}
             </Grid>
-
           )}
         </Grid>
         <Grid container spacing={0}>
