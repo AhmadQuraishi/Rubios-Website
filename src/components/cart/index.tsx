@@ -196,11 +196,11 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   useEffect(() => {
     // debugger;
     if (runOnce && basketObj?.basket?.products.length > 0 && categories) {
-      console.log(1, '1');
       fireViewCartEvent(1);
       setRunOnce(false);
     }
   }, [basketObj?.basket?.products.length > 0 && categories]);
+  
   useEffect(() => {
     if (upsellsVendorId && upsellsVendorId !== restaurant?.id) {
       dispatch(getUpsellsRequest(restaurant?.id));
