@@ -46,19 +46,19 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
   const [runOnce, setRunOnce] = React.useState(true);
   const [tipLoading, setTipLoading] = React.useState(true);
   const [couponLoading, setCouponLoading] = React.useState(true);
-  const { orderType: selectedOrderType } =
-    useSelector((state: any) => state.restaurantInfoReducer);
+  const { orderType: selectedOrderType } = useSelector(
+    (state: any) => state.restaurantInfoReducer,
+  );
 
   const setDefaultBasketTip: any = () => {
     const defaultTipAmount = ((15 * basket.subtotal) / 100).toFixed(2);
     setTipCustomAmount(defaultTipAmount);
     setTipPercentage(15);
     updateTipAmountCall(defaultTipAmount);
-  }
-
+  };
 
   // First time set 15% tip selected and default tip true
-  // 
+  //
 
   useEffect(() => {
     if (basket) {
@@ -144,14 +144,12 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
   const IconTip = () => (
     <Button
       onClick={() => {
-        dispatch(setTipFalse())
+        dispatch(setTipFalse());
         updateTipAmountCall(tipCustomAmount);
         setTipPercentage(0);
       }}
-
       disabled={(loading && tipLoading) || !tipCustomAmount}
       aria-label="proceed"
-
     >
       <ArrowForwardIosIcon />
     </Button>
@@ -165,7 +163,6 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
     <Button
       onClick={() => updateCouponCodeCall(couponCode)}
       style={{
-
         fontSize:
           basket && basket.coupon && basket.coupon.couponcode
             ? '8px'
@@ -207,7 +204,7 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
                       selected={tipPercentage === 10}
                       value={10}
                       className="selected-btn"
-                      sx={{ backgroundColor: "#062C43 !important" }}
+                      sx={{ backgroundColor: '#062C43 !important' }}
                     >
                       10%
                     </ToggleButton>
@@ -217,7 +214,7 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
                       selected={tipPercentage === 15}
                       value={15}
                       className="selected-btn"
-                      sx={{ backgroundColor: "#062C43 !important" }}
+                      sx={{ backgroundColor: '#062C43 !important' }}
                     >
                       15%
                     </ToggleButton>
@@ -227,7 +224,7 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
                       selected={tipPercentage === 20}
                       value={20}
                       className="selected-btn"
-                      sx={{ backgroundColor: "#062C43 !important" }}
+                      sx={{ backgroundColor: '#062C43 !important' }}
                     >
                       20%
                     </ToggleButton>
@@ -241,6 +238,11 @@ const Tip = ({ basket, loading, updateOrderDetailTipPercent }: any) => {
                     value={tipCustomAmount || ''}
                     type="text"
                     onChange={handleTipCustomAmountChange}
+                    onBlur={() => {
+                      dispatch(setTipFalse());
+                      updateTipAmountCall(tipCustomAmount);
+                      setTipPercentage(0);
+                    }}
                     InputLabelProps={{
                       // shrink: tipCustomAmount === '' ? false : true,
                       classes: {
