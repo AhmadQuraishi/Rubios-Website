@@ -516,12 +516,13 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
             checkout: {
               actionField: {
                 step: step,
+                list: 'CART'
               },
             },
             products: productItems.map((pItem: any) => ({
               id: pItem.productId,
               name: pItem.name,
-              category: 'CART',
+              category: productCategoryMap[pItem.productId]?.name,
               quantity: pItem.quantity,
             })),
           },
