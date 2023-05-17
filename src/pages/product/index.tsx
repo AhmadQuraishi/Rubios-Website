@@ -193,13 +193,13 @@ const Product = () => {
         ecommerce: {
           add: {
             actionField: {
-              list: productDetails?.categoryInfo?.name
+              list: 'PRODUCT PAGE'
             }
           },
           products: [{
             id: productDetails?.id,
             name: productDetails?.name,
-            category: 'PRODUCT PAGE',
+            category: productDetails?.categoryInfo?.name,
             quantity: count
           }]
         }
