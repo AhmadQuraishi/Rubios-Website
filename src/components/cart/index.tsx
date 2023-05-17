@@ -521,7 +521,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
             products: productItems.map((pItem: any) => ({
               id: pItem.productId,
               name: pItem.name,
-              category: productCategoryMap[pItem.productId]?.name,
+              category: 'CART',
               quantity: pItem.quantity,
             })),
           },
