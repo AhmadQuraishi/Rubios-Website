@@ -199,7 +199,7 @@ const Product = () => {
           products: [{
             id: productDetails?.id,
             name: productDetails?.name,
-            category: productDetails?.categoryInfo?.name,
+            category: 'PRODUCT PAGE',
             quantity: count
           }]
         }
