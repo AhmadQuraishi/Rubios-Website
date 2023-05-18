@@ -184,7 +184,7 @@ const ProductListingCarousel = (props: any) => {
         ecommerce: {
           click: {
             actionField: {
-              list: product.categoryInfo?.name
+              list: 'PRODUCT CLICK'
             }
           },
           products: [{
