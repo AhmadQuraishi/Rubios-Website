@@ -495,7 +495,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
     setOpen(false);
   };
 
-  const fireViewCartEvent = (step: number) => {
+  const fireViewCartEvent = (stepValue: number) => {
     const productCategoryMap = categories.categories.reduce(
       (map: any, category: any) => {
         for (const product of category.products) {
@@ -509,15 +509,18 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
     const productItems = basketObj?.basket?.products;
 
     if (productItems?.length) {
+      let actionMap: { step: number, list?: String } = {step: stepValue}
+      
+      if (stepValue == 1) {
+        actionMap.list = 'CART';
+      }
+
       const tagManagerArgs: any = {
         dataLayer: {
           event: 'eec.checkout',
           ecommerce: {
             checkout: {
-              actionField: {
-                step: step,
-                list: 'CART'
-              },
+              actionField: actionMap,
             },
             products: productItems.map((pItem: any) => ({
               id: pItem.productId,
@@ -529,7 +532,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
         },
       };
 
-      console.log('Commerce Events: ', step , tagManagerArgs);
+      console.log('Commerce Events: ', stepValue, tagManagerArgs);
       TagManager.dataLayer(tagManagerArgs);
     }
   };
