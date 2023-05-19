@@ -222,43 +222,46 @@ export function GetRestaurantHoursRange(
 }
 
 const calculateMinutesDiff = (minutes: number): number => {
-  if ([0, 15, 30, 45].includes(minutes)) {
-    return minutes;
+  if (minutes % 15 === 0) {
+    return 0;
   } else {
-    let difference = Math.ceil(minutes / 15);
-    difference = difference * 15 - minutes;
-    minutes = difference + 15;
-    return minutes;
+    let difference = Math.trunc(minutes / 15);
+    difference = (difference + 1) * 15 - minutes;
+    return difference;
   }
 };
 
 export function generateNextAvailableTimeSlots(
   openingTime: string,
   closingTime: string,
-  isOpenAllDay: Boolean,
+  leadTime: number,
+  orderType: string,
 ) {
   let timeSlots = [];
   let currentTime = moment();
+  if (orderType === 'dispatch') {
+    currentTime = currentTime.add(leadTime, 'minutes');
+  }
   let startTime;
-
   let openAt = moment(openingTime, 'YYYYMMDD HH:mm');
   let closeAt = moment(closingTime, 'YYYYMMDD HH:mm');
-
-  let minutes = currentTime.minutes();
-  minutes = calculateMinutesDiff(minutes);
-
-  // if (isOpenAllDay) {
-  //   openAt.startOf('day');
-  //   closeAt.endOf('day');
-  // }
 
   if (currentTime.isAfter(closeAt)) {
     return [];
   } else if (currentTime.isBetween(openAt, closeAt)) {
-    startTime = currentTime.add(minutes, 'minute');
-  } else if (currentTime.isBefore(openAt)) {
-    startTime = openAt.add(15, 'm');
+    startTime = currentTime;
+  } else {
+    startTime = openAt;
+    if (orderType === 'dispatch') {
+      startTime.add(leadTime, 'minutes');
+    } else {
+      startTime.add(15, 'minutes');
+    }
   }
+
+  let minutes = startTime.minutes();
+  minutes = calculateMinutesDiff(minutes);
+  startTime = startTime.add(minutes, 'minutes');
 
   let count = 0;
   const maxAllowed = 100;
@@ -267,7 +270,6 @@ export function generateNextAvailableTimeSlots(
     startTime && startTime.add('m', 15);
     count++;
   }
-
   return timeSlots;
 }
 

@@ -85,9 +85,10 @@ const OrderTime = ({ orderType }: any) => {
   React.useEffect(() => {
     if (restaurantHours && restaurantHours.length) {
       const slots = generateNextAvailableTimeSlots(
-        restaurantHours[0].start,
-        restaurantHours[0].end,
-        restaurantHours[0].isOpenAllDay,
+        restaurantHours[0]?.start,
+        restaurantHours[0]?.end,
+        basketObj?.basket?.leadtimeestimateminutes,
+        orderType,
       );
       if (!slots.length) {
         setNotAvailableSlots(true);
