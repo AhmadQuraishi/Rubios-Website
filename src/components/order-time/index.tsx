@@ -106,12 +106,9 @@ const OrderTime = ({ orderType }: any) => {
   React.useEffect(() => {
     if (restaurantHours && restaurantHours.length) {
       const slots = generateNextAvailableTimeSlots(
-        restaurantHours[0].start,
-        restaurantHours[0].end,
-        restaurantHours[0].isOpenAllDay,
-        handleEstTime(time?.earliestreadytime, time?.leadtimeestimateminutes),
+        restaurantHours[0]?.start,
+        restaurantHours[0]?.end,
         time?.leadtimeestimateminutes,
-        time?.timemode,
         orderType,
       );
       if (!slots.length) {
