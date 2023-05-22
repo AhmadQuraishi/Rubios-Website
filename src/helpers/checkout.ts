@@ -272,9 +272,12 @@ export function generateNextAvailableTimeSlots(
   closingTime: string,
   leadTime: number,
   orderType: string,
+  timeWanted: string,
+  selectedDate: string,
 ) {
   let timeSlots = [];
   let currentTime = moment();
+  // Add leadtime only in dispatch case
   if (orderType === 'dispatch') {
     currentTime = currentTime.add(leadTime, 'minutes');
   }
@@ -301,10 +304,21 @@ export function generateNextAvailableTimeSlots(
 
   let count = 0;
   const maxAllowed = 100;
+  // Slots generation between open and close & time
   while (closeAt.diff(startTime, 'seconds') > 0 && count <= maxAllowed) {
     timeSlots.push(moment(startTime).format('YYYYMMDD HH:mm'));
     startTime && startTime.add(15, 'm');
     count++;
+  }
+  // In case if leadtime changed by the OLO, adding that selected time at the slots start
+  if (timeWanted && selectedDate && orderType === 'dispatch') {
+    const sameDay = moment(timeWanted, 'YYYYMMDD HH:mm').isSame(
+      selectedDate,
+      'day',
+    );
+    if (sameDay && !timeSlots.includes(timeWanted)) {
+      timeSlots.unshift(timeWanted);
+    }
   }
   return timeSlots;
 }
