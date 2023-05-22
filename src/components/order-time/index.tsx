@@ -92,15 +92,15 @@ const OrderTime = ({ orderType }: any) => {
     }
   };
 
-  const handleEstTime = (time: any, time2: any) => {
-    let localTime = moment(new Date());
-    let earlyReadyTime = moment(time, 'YYYYMMDD HH:mm');
+  // const handleEstTime = (time: any, time2: any) => {
+  //   let localTime = moment(new Date());
+  //   let earlyReadyTime = moment(time, 'YYYYMMDD HH:mm');
 
-    const minute = earlyReadyTime.diff(localTime, 'minutes');
-    const minutes = minute;
-    return minutes && minutes > 0 ? minutes : 0;
-    console.log(minutes, 'minutesminutesminutesminutes');
-  };
+  //   const minute = earlyReadyTime.diff(localTime, 'minutes');
+  //   const minutes = minute;
+  //   return minutes && minutes > 0 ? minutes : 0;
+  //   console.log(minutes, 'minutesminutesminutesminutes');
+  // };
 
   console.log('time.earliestreadytime', time?.earliestreadytime);
   React.useEffect(() => {
@@ -110,6 +110,8 @@ const OrderTime = ({ orderType }: any) => {
         restaurantHours[0]?.end,
         time?.leadtimeestimateminutes,
         orderType,
+        time?.timewanted,
+        selectedDate,
       );
       if (!slots.length) {
         setNotAvailableSlots(true);
