@@ -54,8 +54,11 @@ const GiftCards = ({ billingAccounts, loading }: any) => {
         }
         return e;
       });
-      console.log('giftCardsBalance', giftCardsBalance);
-      return giftCardsBalance;
+      const filtergiftcard = giftCardsBalance.filter(
+        (cardType: any) =>
+          cardType.accounttype === "Rubio's Gift Cards" && cardType.balance > 0,
+      );
+      return filtergiftcard;
     }
   };
   // useEffect(() => {
@@ -92,9 +95,14 @@ const GiftCards = ({ billingAccounts, loading }: any) => {
         handleDeleteFunction={() => handleDeleteFunction()}
       />
       <Grid item xs={12}>
-        <br/>
-        <Typography variant="h6"  sx={{fontFamily: "'Librefranklin-Regular' !important"}} title="To add a gift card to your account, place an order and enter the gift card information during checkout.">
-          To add a gift card to your account, place an order and enter the gift card information during checkout.
+        <br />
+        <Typography
+          variant="h6"
+          sx={{ fontFamily: "'Librefranklin-Regular' !important" }}
+          title="To add a gift card to your account, place an order and enter the gift card information during checkout."
+        >
+          To add a gift card to your account, place an order and enter the gift
+          card information during checkout.
         </Typography>
       </Grid>
       <Grid item xs={12}>
