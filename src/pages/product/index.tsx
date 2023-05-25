@@ -6,6 +6,7 @@ import {
   useMediaQuery,
   Switch,
   styled,
+  Box,
 } from '@mui/material';
 import './product.css';
 import * as React from 'react';
@@ -75,6 +76,7 @@ const Product = () => {
   );
   const [optionsSelectionArray, setOptionsSelectionArray] = useState<any>([]);
   const [basketType, setBasketType] = useState();
+  const [selectedItems, setSelectedItems] = useState<any>();
   const [count, setCount] = React.useState(1);
   // const [toggle, setToggle] = useState();
   const dispatch = useDispatch();
@@ -333,6 +335,8 @@ const Product = () => {
     );
   };
 
+
+
   useEffect(() => {
     if (dummyBasketObj.basket && basket == undefined && productDetails) {
       setBasket(dummyBasketObj.basket);
@@ -446,9 +450,7 @@ const Product = () => {
 
       itemMain.options.map((option: any) => {
         if (
-          (itemMain.description &&
-            itemMain.description.toLowerCase().indexOf('remove or modify') !==
-            -1) ||
+
           option.customDropDown || option.modifiers && option.modifiers.length
         ) {
           optionsArray.push({
@@ -563,6 +565,7 @@ const Product = () => {
     }
     return isExist;
   };
+
 
   const dropDownFilledValueForEdit = (options: any) => {
     let isExist = null;
@@ -876,13 +879,20 @@ const Product = () => {
           }
         } else {
           console.log('item:::::', item, optionId, parnetOptionID);
-          console.log('selected data:::::', item.selectedOptions.includes(optionId));
-          console.log('else called::::');
-
-          if (item.selectedOptions.length === Number(item.maxSelect)) {
+          console.log('selected data:::::', item.selectedOptions);
+          if (item.maxSelect && item.selectedOptions.length === Number(item.maxSelect)) {
+            console.log('selectedOptions:::::::', item.selectedOptions);
             item.selectedOptions = item.selectedOptions.splice(1, 1);
+
+            if (item.selectedOptions.includes(optionId)) {
+              item.selectedOptions = item.selectedOptions.filter((x: any) => x == optionId)
+              setSelectedItems(item.selectedOptions.filter((x: any) => x == optionId))
+            }
             item.setDisbaled = true
           }
+
+          console.log('selectedItems::::', selectedItems, optionId, parnetOptionID);
+
 
           if (item.selectedOptions.includes(optionId)) {
             const index = item.selectedOptions.indexOf(optionId);
@@ -1457,6 +1467,7 @@ const Product = () => {
                                       }}
                                     />
                                   )} */}
+
                                   <label
                                     htmlFor={itemChild.option.id}
                                     onClick={() => {
@@ -1499,6 +1510,7 @@ const Product = () => {
                                           L
                                         </div>
                                       </div>
+
                                       <Grid
                                         container
                                         spacing={1}
@@ -1639,6 +1651,7 @@ const Product = () => {
                                               </span>
                                             )}
                                           </div>
+
                                           {console.log('dropDownValues:::', itemChild.dropDownValues)
                                           }
                                           {itemChild.dropDownValues && (
@@ -1713,6 +1726,42 @@ const Product = () => {
                                                 )}
                                             </>
                                           )}
+                                          <Grid style={{ paddingBottom: '20px', paddingTop: '10px' }}>
+                                            {itemMain.selectedOptions.includes(itemChild.option.id) && itemMain.maxSelect &&
+                                              (
+                                                <div className="quantity2">
+                                                  <Button
+                                                    title=""
+                                                    aria-label="reduce"
+                                                  >
+                                                    {' '}
+                                                    -{' '}
+                                                  </Button>
+                                                  <input
+                                                    value={count}
+                                                    readOnly
+                                                    id="quantityfield"
+                                                    onChange={() => { }}
+                                                    className="input-quantity2"
+                                                    title="quantity"
+                                                  />
+                                                  <Button
+                                                    title=""
+                                                    className="add"
+                                                    aria-label="increase"
+                                                    sx={{
+                                                      marginRight: {
+                                                        xs: 'inherit',
+                                                      },
+                                                    }}
+                                                  >
+                                                    {' '}
+                                                    +{' '}
+                                                  </Button>
+                                                </div>
+                                              )}
+
+                                          </Grid>
                                         </Grid>
                                       </Grid>
                                     </Card>

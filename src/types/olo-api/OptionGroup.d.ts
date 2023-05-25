@@ -4,8 +4,6 @@ import { Option } from "./Option"
 
 interface OptionGroup {
 
-
-
     id: number,
     // Olo option group id (a.k.a. modifier id).
 

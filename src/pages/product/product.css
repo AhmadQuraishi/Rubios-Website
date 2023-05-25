@@ -4,7 +4,8 @@
   margin: auto;
 }
 
-legend.heading-ui, h2.heading-ui {
+legend.heading-ui,
+h2.heading-ui {
   font-size: 18px;
   font-family: 'GritSans-Bold' !important;
   color: #0075BF;
@@ -12,9 +13,9 @@ legend.heading-ui, h2.heading-ui {
 }
 
 fieldset.field-set {
-border: 0 !important;
-box-shadow: none !important;
-margin-bottom: 20px;
+  border: 0 !important;
+  box-shadow: none !important;
+  margin-bottom: 20px;
 }
 
 .product-detail h2.heading {
@@ -85,7 +86,8 @@ input[type='check']:checked+label {
   z-index: 1000;
 }
 
-.product-detail h3, legend.heading-ui.h3 {
+.product-detail h3,
+legend.heading-ui.h3 {
   text-transform: uppercase;
   color: #0069aa;
   font-weight: 500;
@@ -113,9 +115,27 @@ input[type='check']:checked+label {
   width: 200px;
 }
 
+.product-detail .quantity2 {
+  display: flex;
+  justify-content: space-between;
+  border-radius: 10px;
+  background: white;
+  box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.2);
+  margin: auto;
+  width: 140px;
+}
+
 .product-detail .quantity input,
 .product-detail .quantity button {
   height: 60px !important;
+  /* padding: 0px 5px !important; */
+  background: transparent;
+  box-shadow: none;
+}
+
+.product-detail .quantity2 input,
+.product-detail .quantity2 button {
+  height: 40px !important;
   /* padding: 0px 5px !important; */
   background: transparent;
   box-shadow: none;
@@ -132,10 +152,28 @@ input[type='check']:checked+label {
   border-radius: 0px !important;
 }
 
+.product-detail .quantity2 input {
+  text-align: center;
+  color: #0069aa;
+  font-weight: Bold;
+  border-left: 1px solid #e4e4e4;
+  border-right: 1px solid #e4e4e4;
+  -webkit-border-radius: 0px !important;
+  -moz-border-radius: 0px !important;
+  border-radius: 0px !important;
+}
+
 .product-detail .quantity button {
   font-family: 'Librefranklin-Regular' !important;
   font-size: 30px;
   color: #414141;
+}
+
+.product-detail .quantity2 button {
+  font-family: 'Librefranklin-Regular' !important;
+  font-size: 30px;
+  color: #414141;
+  min-width: 49px !important;
 }
 
 .product-detail .quantity fieldset {
@@ -308,6 +346,7 @@ input[type='check']:checked+label {
   .product-detail {
     padding: 40px 20px;
   }
+
   .product-detail .quantity {
     display: flex;
     justify-content: space-between;
@@ -317,6 +356,7 @@ input[type='check']:checked+label {
     margin: 0px 5px 0px 5px;
     width: 200px;
   }
+
   .product-detail .add-to-bag {
     width: 265px;
     height: 60px;
@@ -324,17 +364,15 @@ input[type='check']:checked+label {
     justify-content: flex-start;
     position: relative;
   }
+
   /* .quantity-label {
     padding-right: 10px;
     font-size: 16px !important;
   } */
-
-
-.sp-mobile {
-  display: none;
+  .sp-mobile {
+    display: none;
+  }
 }
-}
-
 
 @media screen and (max-width: 468px) {
   .action-panel .content-panel {
@@ -342,13 +380,13 @@ input[type='check']:checked+label {
   }
 
   .button-panel-sx {
-     width: 240px;
+    width: 240px;
     /*margin-bottom: 20px;*/
     margin-left: 18px;
     justify-content: flex-end;
   }
-  /* .product-detail .quantity input {
 
+  /* .product-detail .quantity input {
     color: #0069aa;
     font-weight: Bold;
     border-left: 1px solid #e4e4e4;
@@ -359,6 +397,7 @@ input[type='check']:checked+label {
     justify-content: center;
     align-items: center;
   }
+
   .product-detail .add-to-bag {
     width: 300px;
     font-size: 12px;
@@ -372,13 +411,17 @@ input[type='check']:checked+label {
   .sp-mobile {
     display: block;
   }
+
   #quantity-label-id {
     font-size: 13px !important;
   }
+
   .input-quantity {
     width: 40px !important;
   }
-  .product-detail .quantity input, .product-detail .quantity button {
+
+  .product-detail .quantity input,
+  .product-detail .quantity button {
     justify-content: center;
     text-align: center;
     align-items: center;
@@ -386,6 +429,7 @@ input[type='check']:checked+label {
     min-width: 25px !important;
     font-size: 22px;
   }
+
   .input-quantity {
     width: 70px;
     border: none;
@@ -394,7 +438,8 @@ input[type='check']:checked+label {
     font-size: 15px;
     font-family: 'Librefranklin-Regular' !important;
     font-weight: bold;
-}
+  }
+
   .quantity-label {
     display: inline;
   }
@@ -405,7 +450,7 @@ input[type='check']:checked+label {
   }
 
   .product-detail .action-panel {
-   padding: 20px 5px;
+    padding: 20px 5px;
     box-shadow: 0px 0px 10px rgb(0 0 0 / 20%);
   }
 
@@ -548,14 +593,13 @@ input[type='check']:checked+label {
   justify-content: center;
 }
 
-.product-detail .menu-items .content-panel .card-panel.no-image-class .name-img-panel .name-panel .options-cals-price .value  {
+.product-detail .menu-items .content-panel .card-panel.no-image-class .name-img-panel .name-panel .options-cals-price .value {
   margin-left: 0;
 }
 
 .product-detail .menu-items .content-panel .card-panel.no-image-class .name-img-panel {
   justify-content: center;
 }
-
 
 .product-detail .menu-items .content-panel .card-panel.no-image-class .name-img-panel .name-panel {
   position: absolute;
@@ -574,6 +618,16 @@ input[type='check']:checked+label {
 
 .input-quantity {
   width: 70px;
+  /* border: none; */
+  border-top: none;
+  border-bottom: none;
+  font-size: 15px;
+  font-family: 'Librefranklin-Regular' !important;
+  font-weight: bold;
+}
+
+.input-quantity2 {
+  width: 40px;
   /* border: none; */
   border-top: none;
   border-bottom: none;
