@@ -312,7 +312,7 @@ const Product = () => {
 
     }
     fireAddToBagEvent();
-    
+
     let userData: any = null;
 
     if (isLoginUser()) {
@@ -330,7 +330,7 @@ const Product = () => {
         userData,
         null,
       ),
-    );    
+    );
   };
 
   useEffect(() => {
@@ -414,11 +414,10 @@ const Product = () => {
       let defaultOptionID: any = null;
       let defaultOptionsID: any = null;
       if (itemMain.options) {
-        const item = itemMain.options.find(
+        const item = itemMain.options.filter(
           (item: any) => item.isdefault == true,
         );
-        console.log(item, 'item');
-        defaultOptionID = (item && item.id) || null;
+        defaultOptionID = (item.length > 0 && item.map((item: any) => item.id));
       }
       // console.log(defaultOptionID, 'defaultOptionID');
       // debugger;
@@ -444,12 +443,13 @@ const Product = () => {
       // console.log(defaultOptionID[0], 'defaultOptionID');
       let editOptions: any[] = [];
       let optionsArray: any[] = [];
+
       itemMain.options.map((option: any) => {
         if (
           (itemMain.description &&
             itemMain.description.toLowerCase().indexOf('remove or modify') !==
-              -1) ||
-          option.customDropDown
+            -1) ||
+          option.customDropDown || option.modifiers && option.modifiers.length
         ) {
           optionsArray.push({
             optionID: option.id,
@@ -467,9 +467,11 @@ const Product = () => {
             dropDownValues: null,
           });
         }
-        if (option.customDropDown) {
+        console.log('optionsArray:::::::::::::::', optionsArray);
+
+        if (option.customDropDown || option.modifiers && option.modifiers.length) {
           if (
-            selectCustomDropDownOptionIdIfExist(option.modifiers[0].options)
+            selectCustomDropDownOptionIdIfExist(option.modifiers)
           ) {
             editOptions.push(option.id);
           }
@@ -496,8 +498,8 @@ const Product = () => {
         editOptions.length > 0
           ? editOptions
           : defaultOptionID
-          ? [defaultOptionID]
-          : [];
+            ? defaultOptionID
+            : [];
       // if (itemMain.description === 'Pick your sides') {
       //   selectedOptions = selectedOptions.length < 3;
       // }
@@ -507,6 +509,7 @@ const Product = () => {
         {
           id: itemMain.id,
           name: itemMain.description,
+          maxSelect: itemMain.maxselects,
           mandatory: itemMain.mandatory,
           multiSelectOptions: !itemMain.mandatory,
           selectedOptions: selectedOptions,
@@ -516,18 +519,19 @@ const Product = () => {
           cost: itemMain.cost || 0,
           selected:
             (isParentSelected && parentDefaultOptionID.includes(parentID)) ||
-            parentID == null
+              parentID == null
               ? true
               : false,
         },
       ]);
-      console.log(parentDefaultOptionID, 'parentDefaultOptionID');
       if (
         itemMain.description &&
         itemMain.description.toLowerCase().indexOf('remove or modify') == -1
       ) {
         itemMain.options.map((item: any, index2: number) => {
-          if (item.customDropDown) {
+          console.log('item to check:::::::::', item.modifiers);
+
+          if (item.customDropDown || itemMain.maxselects) {
             return;
           } else {
             return (
@@ -538,7 +542,7 @@ const Product = () => {
                 selectedOptions,
                 (isParentSelected &&
                   parentDefaultOptionID.includes(parentID)) ||
-                  parentID == null,
+                parentID == null,
               )
             );
           }
@@ -603,6 +607,7 @@ const Product = () => {
     optionsDDL: any = null,
     optionsDDLSelectedID: any = null,
   ) => {
+
     setSelectionExecute(false);
     setTimeout(() => {
       setSelectionExecute(false);
@@ -870,8 +875,18 @@ const Product = () => {
             }
           }
         } else {
+          console.log('item:::::', item, optionId, parnetOptionID);
+          console.log('selected data:::::', item.selectedOptions.includes(optionId));
+          console.log('else called::::');
+
+          if (item.selectedOptions.length === Number(item.maxSelect)) {
+            item.selectedOptions = item.selectedOptions.splice(1, 1);
+            item.setDisbaled = true
+          }
+
           if (item.selectedOptions.includes(optionId)) {
             const index = item.selectedOptions.indexOf(optionId);
+            console.log('elsecase:::::', index, '---', optionId);
 
             if (index > -1) {
               let optionDDLE = null;
@@ -880,7 +895,6 @@ const Product = () => {
                   (option: any) => option.id == optionsDDLSelectedID,
                 );
               }
-
               item.selectedOptions.splice(index, 1);
               const option = item.options.find(
                 (option: any) => option.optionID == optionId,
@@ -988,169 +1002,6 @@ const Product = () => {
       ...optionsSelectionArray,
     ]);
   };
-  const showChildToggleOptions = (optionId: number, parnetOptionID: number) => {
-    setSelectionExecute(false);
-    setTimeout(() => {
-      setSelectionExecute(false);
-    }, 200);
-    let optionPrice = optionsCost;
-    let totalPrice = totalCost || 0;
-    optionsSelectionArray.map((item: any) => {
-      if (item.id === parnetOptionID) {
-        if (item.mandatory) {
-          if (!item.selectedOptions.includes(optionId)) {
-            const optionX = item.options.find(
-              (option: any) => option.optionID == item.selectedOptions[0],
-            );
-            let mainOptionCost = 0;
-            if (optionX) {
-              mainOptionCost = optionX.option.cost;
-            }
-            let elems = optionsSelectionArray.filter(
-              (x: any) => x.parentOptionID == item.selectedOptions[0],
-            );
-            if (elems) {
-              elems.map((x: any) => {
-                x.selected = false;
-                x.selectedOptions.map((mainChild: any) => {
-                  let elemSelected = optionsSelectionArray.filter(
-                    (i: any) => i.parentOptionID == mainChild,
-                  );
-                  let elemChildSelected = x.options.find(
-                    (i: any) => i.optionID == mainChild,
-                  );
-                  if (elemChildSelected) {
-                    mainOptionCost =
-                      mainOptionCost + elemChildSelected.option.cost;
-                    if (
-                      elemChildSelected.dropDownValues &&
-                      elemChildSelected.selectedValue
-                    ) {
-                      let ddl_op = elemChildSelected.dropDownValues.find(
-                        (i: any) => i.id == elemChildSelected.selectedValue,
-                      );
-                      if (ddl_op) {
-                        mainOptionCost = mainOptionCost + ddl_op.cost;
-                      }
-                    }
-                  }
-                  if (elemSelected && elemSelected.length > 0) {
-                    elemSelected.map((ss: any) => {
-                      ss.selected = false;
-                      if (ss.selectedOptions.length > 0) {
-                        let xelemChildSelected = optionsSelectionArray.filter(
-                          (i: any) => i.parentOptionID == ss.selectedOptions[0],
-                        );
-                        if (xelemChildSelected.length > 0) {
-                          xelemChildSelected.map((xc: any) => {
-                            xc.selected = false;
-                            xc.selectedOptions.map((child: any) => {
-                              let elemChildSelected = xc.options.find(
-                                (i: any) => i.optionID == child,
-                              );
-                              if (
-                                elemChildSelected &&
-                                xelemChildSelected.selected
-                              ) {
-                                mainOptionCost =
-                                  mainOptionCost +
-                                  elemChildSelected.option.cost;
-                                if (elemChildSelected.selectedValue) {
-                                  const ddlSelected =
-                                    elemChildSelected.dropDownValues.find(
-                                      (i: any) =>
-                                        i.id == elemChildSelected.selectedValue,
-                                    );
-                                  if (ddlSelected) {
-                                    mainOptionCost =
-                                      mainOptionCost + ddlSelected.cost;
-                                  }
-                                  elemChildSelected.selectedValue =
-                                    elemChildSelected.dropDownValues[0].id;
-                                }
-                              }
-                            });
-                          });
-                        } else {
-                          ss.selectedOptions.map((child: any) => {
-                            xelemChildSelected = ss.options.find(
-                              (i: any) => i.optionID == child,
-                            );
-                            if (xelemChildSelected) {
-                              mainOptionCost =
-                                mainOptionCost + xelemChildSelected.option.cost;
-                              if (xelemChildSelected.selectedValue) {
-                                const ddlSelected =
-                                  xelemChildSelected.dropDownValues.find(
-                                    (i: any) =>
-                                      i.id == xelemChildSelected.selectedValue,
-                                  );
-                                if (ddlSelected) {
-                                  mainOptionCost =
-                                    mainOptionCost + ddlSelected.cost;
-                                }
-                                xelemChildSelected.selectedValue =
-                                  xelemChildSelected.dropDownValues[0].id;
-                              }
-                            }
-                          });
-                        }
-                      }
-                      ss.selectedOptions = ss.defaultOption
-                        ? [ss.defaultOption]
-                        : [];
-                    });
-                  }
-                });
-                x.selectedOptions = x.defaultOption ? [x.defaultOption] : [];
-              });
-            }
-            item.selectedOptions = [optionId];
-            item.selected = true;
-            const option = item.options.find(
-              (option: any) => option.optionID == optionId,
-            );
-            if (option) {
-              const prc = option.option.cost * count;
-              optionPrice = optionPrice - mainOptionCost + option.option.cost;
-              totalPrice = totalPrice - mainOptionCost + prc;
-              // setOptionsCost(optionsCost - mainOptionCost + option.option.cost);
-              // setTotalCost((totalCost || 0) - mainOptionCost + prc);
-            }
-            elems = optionsSelectionArray.filter(
-              (x: any) => x.parentOptionID == optionId,
-            );
-            if (elems) {
-              elems.map((x: any) => {
-                x.selected = true;
-                let elemSelected = optionsSelectionArray.filter(
-                  (i: any) => i.parentOptionID == x.selectedOptions[0],
-                );
-                if (elemSelected && elemSelected.length > 0) {
-                  elemSelected.map((ss: any) => {
-                    ss.selected = true;
-                    if (ss.selectedOptions.length > 0) {
-                      let elemSelectedx = optionsSelectionArray.find(
-                        (i: any) => i.parentOptionID == ss.selectedOptions[0],
-                      );
-                      if (elemSelectedx) {
-                        elemSelectedx.selected = true;
-                      }
-                    }
-                  });
-                }
-              });
-            }
-          }
-        }
-      }
-    });
-    setOptionsCost(optionPrice);
-    setTotalCost(totalPrice);
-    setOptionsSelectionArray((optionsSelectionArray: any) => [
-      ...optionsSelectionArray,
-    ]);
-  };
   const checkOptionSelected = (
     optionId: number,
     parnetOptionID: number,
@@ -1159,6 +1010,9 @@ const Product = () => {
     optionsSelectionArray.map((item: any) => {
       if (item.id === parnetOptionID) {
         isSelected = item.selectedOptions.includes(optionId);
+      }
+      if (item.selectedOptions.includes(optionId)) {
+        isSelected = true
       }
       // debugger;
     });
@@ -1175,6 +1029,7 @@ const Product = () => {
     return isSelected;
   };
   const IsItemSelected = (parentOptionID: number) => {
+
     let isOptionsRequired = false;
     optionsSelectionArray.map((item: any) => {
       if (
@@ -1356,34 +1211,32 @@ const Product = () => {
                   <Grid container>
                     {(parseInt(productDetails.basecalories || '0') > 0 ||
                       parseInt(productDetails.maxcalories || '0') > 0) && (
-                      <Grid item xs={4.5} sx={{ marginRight: '15px' }}>
-                        <Typography
-                          variant="caption"
-                          className="label bold"
-                          aria-label={`${
-                            productDetails.caloriesseparator
+                        <Grid item xs={4.5} sx={{ marginRight: '15px' }}>
+                          <Typography
+                            variant="caption"
+                            className="label bold"
+                            aria-label={`${productDetails.caloriesseparator
                               ? productDetails.basecalories +
-                                productDetails.caloriesseparator +
-                                productDetails.maxcalories
-                              : productDetails.basecalories
-                          } Cal`}
-                          title={`${
-                            productDetails.caloriesseparator
-                              ? productDetails.basecalories +
-                                productDetails.caloriesseparator +
-                                productDetails.maxcalories
-                              : productDetails.basecalories
-                          } Cal`}
-                        >
-                          {productDetails.caloriesseparator
-                            ? productDetails.basecalories +
                               productDetails.caloriesseparator +
                               productDetails.maxcalories
-                            : productDetails.basecalories}{' '}
-                          Cal
-                        </Typography>
-                      </Grid>
-                    )}
+                              : productDetails.basecalories
+                              } Cal`}
+                            title={`${productDetails.caloriesseparator
+                              ? productDetails.basecalories +
+                              productDetails.caloriesseparator +
+                              productDetails.maxcalories
+                              : productDetails.basecalories
+                              } Cal`}
+                          >
+                            {productDetails.caloriesseparator
+                              ? productDetails.basecalories +
+                              productDetails.caloriesseparator +
+                              productDetails.maxcalories
+                              : productDetails.basecalories}{' '}
+                            Cal
+                          </Typography>
+                        </Grid>
+                      )}
                     {productDetails.cost > 0 && (
                       <Grid item xs={6}>
                         <Typography
@@ -1453,15 +1306,14 @@ const Product = () => {
                         boxShadow: 'none',
                         display:
                           itemMain.id == itemMain.parentOptionID ||
-                          selectedParentOption(itemMain.parentOptionID)
+                            selectedParentOption(itemMain.parentOptionID)
                             ? 'flex'
                             : 'none',
                       }}
                     >
                       <legend
-                        className={`heading-ui ${
-                          itemMain.parentOptionID == itemMain.id ? 'h2' : 'h3'
-                        }`}
+                        className={`heading-ui ${itemMain.parentOptionID == itemMain.id ? 'h2' : 'h3'
+                          }`}
                       >
                         {itemMain?.name?.replace('As is or Customize?', '')}
                         {IsItemSelected(itemMain.id) && (
@@ -1484,7 +1336,7 @@ const Product = () => {
                         sx={{
                           display:
                             itemMain.id == itemMain.parentOptionID ||
-                            selectedParentOption(itemMain.parentOptionID)
+                              selectedParentOption(itemMain.parentOptionID)
                               ? 'flex'
                               : 'none',
                         }}
@@ -1503,7 +1355,7 @@ const Product = () => {
                           <ProductToggle
                             // toggle={toggle}
                             // setToggle={setToggle}
-                            showChildToggleOptions={showChildToggleOptions}
+                            showChildOptions={showChildOptions}
                             main={itemMain}
                           />
                         ) : null}
@@ -1536,11 +1388,11 @@ const Product = () => {
                                   lg={4}
                                   sx={{ position: 'relative' }}
                                 >
-                                  {itemMain.mandatory ? (
+                                  {/* {itemMain.mandatory ? (
                                     <input
                                       aria-invalid={
                                         IsItemSelected(itemMain.id) &&
-                                        index1 == 0
+                                          index1 == 0
                                           ? 'true'
                                           : 'false'
                                       }
@@ -1574,7 +1426,7 @@ const Product = () => {
                                     <input
                                       aria-invalid={
                                         IsItemSelected(itemMain.id) &&
-                                        index1 == 0
+                                          index1 == 0
                                           ? 'true'
                                           : 'false'
                                       }
@@ -1604,7 +1456,7 @@ const Product = () => {
                                         );
                                       }}
                                     />
-                                  )}
+                                  )} */}
                                   <label
                                     htmlFor={itemChild.option.id}
                                     onClick={() => {
@@ -1626,16 +1478,15 @@ const Product = () => {
                                     }}
                                   >
                                     <Card
-                                      className={`card-panel ${
-                                        noWordpressImageFound(
-                                          optionImages,
-                                          itemChild.option.chainoptionid,
-                                          itemChild.option.name,
-                                          itemChild.option.isdefault,
-                                        )
-                                          ? 'no-image-class'
-                                          : ''
-                                      }`}
+                                      className={`card-panel ${noWordpressImageFound(
+                                        optionImages,
+                                        itemChild.option.chainoptionid,
+                                        itemChild.option.name,
+                                        itemChild.option.isdefault,
+                                      )
+                                        ? 'no-image-class'
+                                        : ''
+                                        }`}
                                       title={itemChild.option.name}
                                       is-mandatory={itemMain.mandatory.toString()}
                                       parent-option-id={itemMain.parentOptionID}
@@ -1684,12 +1535,12 @@ const Product = () => {
                                               ((categories &&
                                                 categories.imagepath) ||
                                                 '') +
-                                                changeImageSize(
-                                                  productDetails.imagefilename ||
-                                                    '',
-                                                  productDetails.images || '',
-                                                  'desktop-menu',
-                                                )
+                                              changeImageSize(
+                                                productDetails.imagefilename ||
+                                                '',
+                                                productDetails.images || '',
+                                                'desktop-menu',
+                                              )
                                             }
                                             index={index1}
                                             className="item-image"
@@ -1788,76 +1639,78 @@ const Product = () => {
                                               </span>
                                             )}
                                           </div>
+                                          {console.log('dropDownValues:::', itemChild.dropDownValues)
+                                          }
                                           {itemChild.dropDownValues && (
                                             <>
                                               {checkOptionSelected(
                                                 itemChild.option.id,
                                                 itemMain.id,
                                               ) == true && (
-                                                <div
-                                                  style={{
-                                                    position: 'relative',
-                                                  }}
-                                                >
-                                                  <select
-                                                    className="ss-panl"
-                                                    parent-select-option-id={
-                                                      itemChild.id
-                                                    }
-                                                    onClick={(e) =>
-                                                      e.stopPropagation()
-                                                    }
-                                                    value={
-                                                      itemChild.selectedValue ||
-                                                      '0'
-                                                    }
-                                                    data-select-id={
-                                                      itemChild.selectedValue ||
-                                                      '0'
-                                                    }
-                                                    onChange={(e) =>
-                                                      dropDownValue(
-                                                        itemChild.option.id,
-                                                        e.target.value,
-                                                        itemChild.dropDownValues,
-                                                        e.target,
-                                                      )
-                                                    }
+                                                  <div
+                                                    style={{
+                                                      position: 'relative',
+                                                    }}
                                                   >
-                                                    {itemChild.dropDownValues.map(
-                                                      (
-                                                        option: any,
-                                                        index: number,
-                                                      ) => (
-                                                        <option
-                                                          key={
-                                                            Math.random() +
-                                                            index
-                                                          }
-                                                          value={option.id}
-                                                          onClick={() => {
-                                                            setTotalCost(
-                                                              ((productDetails?.cost ||
-                                                                0) +
-                                                                option.cost) *
+                                                    <select
+                                                      className="ss-panl"
+                                                      parent-select-option-id={
+                                                        itemChild.id
+                                                      }
+                                                      onClick={(e) =>
+                                                        e.stopPropagation()
+                                                      }
+                                                      value={
+                                                        itemChild.selectedValue ||
+                                                        '0'
+                                                      }
+                                                      data-select-id={
+                                                        itemChild.selectedValue ||
+                                                        '0'
+                                                      }
+                                                      onChange={(e) =>
+                                                        dropDownValue(
+                                                          itemChild.option.id,
+                                                          e.target.value,
+                                                          itemChild.dropDownValues,
+                                                          e.target,
+                                                        )
+                                                      }
+                                                    >
+                                                      {itemChild.dropDownValues.map(
+                                                        (
+                                                          option: any,
+                                                          index: number,
+                                                        ) => (
+                                                          <option
+                                                            key={
+                                                              Math.random() +
+                                                              index
+                                                            }
+                                                            value={option.id}
+                                                            onClick={() => {
+                                                              setTotalCost(
+                                                                ((productDetails?.cost ||
+                                                                  0) +
+                                                                  option.cost) *
                                                                 count,
-                                                            );
-                                                          }}
-                                                        >
-                                                          {option.name +
-                                                            (option.cost > 0
-                                                              ? ' (+$' +
+                                                              );
+                                                            }}
+                                                          >
+                                                            {option.name +
+                                                              (option.cost > 0
+                                                                ? ' (+$' +
                                                                 option.cost.toFixed(
                                                                   2,
                                                                 ) +
                                                                 ')'
-                                                              : '')}
-                                                        </option>
-                                                      ),
-                                                    )}
-                                                  </select>
-                                                </div>
-                                              )}
+                                                                : '')}
+                                                          </option>
+                                                        ),
+                                                      )}
+                                                    </select>
+                                                  </div>
+                                                )}
                                             </>
                                           )}
                                         </Grid>
@@ -1874,7 +1727,7 @@ const Product = () => {
               <Grid container className="action-panel">
                 <Grid item xs={12} className="content-panel">
                   {productDetails &&
-                  productDetails.id !== utensilsReducer.utensilsProductId ? (
+                    productDetails.id !== utensilsReducer.utensilsProductId ? (
                     <div
                       style={{ display: 'flex', alignItems: 'center' }}
                       className="button-panel-sx"
@@ -1912,7 +1765,7 @@ const Product = () => {
                             setCount(Math.max(count - 1, 1));
                             setTotalCost(
                               ((productDetails?.cost || 0) + optionsCost) *
-                                Math.max(count - 1, 1),
+                              Math.max(count - 1, 1),
                             );
                           }}
                         >
@@ -1923,7 +1776,7 @@ const Product = () => {
                           value={count}
                           readOnly
                           id="quantityfield"
-                          onChange={() => {}}
+                          onChange={() => { }}
                           className="input-quantity"
                           title="quantity"
                         />
@@ -1940,7 +1793,7 @@ const Product = () => {
                             setCount(count + 1);
                             setTotalCost(
                               ((productDetails?.cost || 0) + optionsCost) *
-                                (count + 1),
+                              (count + 1),
                             );
                           }}
                         >
@@ -1951,10 +1804,10 @@ const Product = () => {
                     </div>
                   ) : null}
                   {productAddObj.loading ||
-                  basketObj.loading ||
-                  dummyBasketObj.loading ||
-                  productUpdateObj.loading ||
-                  !validateOptionsSelection() ? (
+                    basketObj.loading ||
+                    dummyBasketObj.loading ||
+                    productUpdateObj.loading ||
+                    !validateOptionsSelection() ? (
                     <Button
                       id="AddProductToBasket"
                       data-test-button="addToCart"
@@ -1977,15 +1830,14 @@ const Product = () => {
                       className="add-to-bag"
                       variant="contained"
                       data-product-name={`${productDetails?.name || ''}`}
-                      data-product-id={`${
-                        productDetails?.chainproductid || ''
-                      }`}
+                      data-product-id={`${productDetails?.chainproductid || ''
+                        }`}
                       data-product-price={`${totalCost?.toFixed(2)}`}
                       sx={{ letterSpacing: '0px !important' }}
                       disabled={checkDisable()}
                       onClick={() => {
                         addProductToBag();
-                        
+
                       }}
                     >
                       {edit ? 'UPDATE BAG' : 'ADD TO BAG'}

@@ -53,7 +53,7 @@ const ToggleSwitch = styled((props: SwitchProps) => (
 }));
 
 const ProductToggle = (props: any) => {
-  const { showChildToggleOptions, main } = props;
+  const { showChildOptions, main } = props;
   const [asIs, setAsIs] = useState<any>(null);
   const [customize, setCustomize] = useState<any>(null);
   const [toggle, setToggle] = useState(null);
@@ -108,10 +108,10 @@ const ProductToggle = (props: any) => {
           onChange={() => {
             if (checkOptionSelected(main?.options[0]?.option?.id, main?.id)) {
               // setToggle(checkOptionSelected(customize?.option?.id, main.id));
-              showChildToggleOptions(main?.options[1]?.option?.id, main?.id);
+              showChildOptions(main?.options[1]?.option?.id, main?.id, null, null);
             } else {
               // setToggle(checkOptionSelected(asIs?.option?.id, main.id));
-              showChildToggleOptions(main?.options[0]?.option?.id, main?.id);
+              showChildOptions(main?.options[0]?.option?.id, main?.id, null, null);
             }
           }}
         />
