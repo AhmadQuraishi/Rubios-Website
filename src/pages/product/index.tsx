@@ -1231,7 +1231,7 @@ const Product = () => {
                           itemMain.parentOptionID == itemMain.id ? 'h2' : 'h3'
                         }`}
                       >
-                        {itemMain.name}
+                        {itemMain?.name?.replace('As is or Customize?', '')}
                         {IsItemSelected(itemMain.id) && (
                           <span
                             role="alert"
