@@ -1069,7 +1069,6 @@ const Checkout = () => {
     <div>
       {openAuthenticationModal && (
         <LoginAuthDialog
-          placeOrder={placeOrder}
           openAuthenticationModal={openAuthenticationModal}
           setOpenAuthenticationModal={setOpenAuthenticationModal}
         />
