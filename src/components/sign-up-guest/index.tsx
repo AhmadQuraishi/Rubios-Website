@@ -97,6 +97,7 @@ const SignUpGuest = ({
               },
               marginTop: '10px',
               marginBottom: '5px',
+              margin: { sm: '0px', lg: '0px 80px 0px 80px' },
             }}
             variant="h6"
           >
