@@ -94,7 +94,7 @@ const OrderConfirmation = () => {
         msg = 'You’re all set!';
       }
     } else {
-      msg = 'GET $5 OFF YOUR NEXT ORDER';
+      msg = 'GET $5 OFF ANY ENTREE ON YOUR FIRST ORDER';
     }
     return msg;
   };
@@ -118,7 +118,7 @@ const OrderConfirmation = () => {
   return (
     <Page title={'Order Confirmation'} className="order-bg">
       <Fragment>
-        <Grid container component="main" className={classes.root }>
+        <Grid container component="main" className={classes.root}>
           <Grid item xs={12} sm={12} md={12} lg={12}>
             <Grid container className="order-confirmation">
               <Grid item xs={12} sm={12} md={12} lg={6}>
@@ -130,9 +130,7 @@ const OrderConfirmation = () => {
                 />
               </Grid>
               <Grid item xs={12} sm={12} md={12} lg={6}>
-                <Card
-                  className={isLoginUser() ? 'card ' : 'card next-order'}
-                >
+                <Card className={isLoginUser() ? 'card ' : 'card next-order'}>
                   <Grid container>
                     <Grid
                       item
@@ -142,7 +140,11 @@ const OrderConfirmation = () => {
                       lg={12}
                       className="earn-reward"
                     >
-                      <Typography variant="h2" sx={{  fontFamily: "'Sunborn-Sansone' !important"}} className="label white">
+                      <Typography
+                        variant="h2"
+                        sx={{ fontFamily: "'Sunborn-Sansone' !important" }}
+                        className="label white"
+                      >
                         {isLoginUser() ? 'YOUR REWARDS' : 'EARN REWARDS'}
                       </Typography>
                       <Typography
@@ -163,7 +165,9 @@ const OrderConfirmation = () => {
                       <Typography
                         variant="h6"
                         className="white"
-                        sx={{fontFamily: "'Librefranklin-Regular' !important"}}
+                        sx={{
+                          fontFamily: "'Librefranklin-Regular' !important",
+                        }}
                         title={composeDescriptionText()}
                       >
                         {composeDescriptionText()}
@@ -193,7 +197,10 @@ const OrderConfirmation = () => {
                           'TRUE' && (
                           <Typography
                             variant="h6"
-                            sx={{paddingBottom: '10px', fontFamily: "'Librefranklin-Regular' !important"}}
+                            sx={{
+                              paddingBottom: '10px',
+                              fontFamily: "'Librefranklin-Regular' !important",
+                            }}
                             className="white hours-text"
                             title="Please allow up to 24 hours for points to show up in your account."
                           >
