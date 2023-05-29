@@ -393,7 +393,12 @@ export function userLoginSuccess(data: any) {
     payload: data,
   };
 }
-
+export function updateAuthenticateRequest(authenticate: any) {
+  return {
+    type: Type.USER_AUTHENTICATION_REQUEST,
+    payload: authenticate,
+  };
+}
 export function userLoginFailure(error: any) {
   displayToast(
     'ERROR',
