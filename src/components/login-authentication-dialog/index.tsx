@@ -177,9 +177,9 @@ const LoginAuthDialog = (props: any) => {
 
                   console.log('obj', obj);
                   setButtonDisabled(true);
-                  // dispatch(
-                  //   userLogin(obj, basket ? basket.id : '', 'LOGIN_CHECKOUT'),
-                  // );
+                  dispatch(
+                    userLogin(obj, basket ? basket.id : '', 'LOGIN_CHECKOUT'),
+                  );
                 }}
               >
                 {({
