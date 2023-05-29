@@ -18,6 +18,8 @@ const providerReducer = (state = INITIAL_STATE, action: any) => {
     case userTypes.USER_LOGIN_SUCCESS:
     case userTypes.USER_REGISTER_SUCCESS:
       return { ...state, loading: false, providerToken: action.payload };
+      case userTypes.USER_AUTHENTICATION_REQUEST:
+        return { ...state, authenticate: false }; 
     case Type.GET_PROVIDER_FAILURE:
     case userTypes.USER_LOGIN_FAILURE:
     case userTypes.USER_REGISTER_FAILURE:
