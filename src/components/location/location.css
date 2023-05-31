@@ -11,11 +11,16 @@
 }
 .list-wrapper .MuiPaper-root {
   padding: 30px;
-  -webkit-border-radius: 30px;
-  -moz-border-radius: 30px;
+  /* -webkit-border-radius: 30px;
+  -moz-border-radius: 30px; */
   border-radius: 30px;
-  width: 55%;
   height: auto; /*calc(100vh - 80px); */
+    /* width: auto; */
+    max-width: 365px;
+    min-width: 200px;
+    margin-left: 32px;
+    margin-top: 15px;
+  
 }
 .list-wrapper .listing {
   padding: 0px;
@@ -93,6 +98,7 @@
   font-family: 'GritSans-Bold' !important;
   font-size: 13px !important;
   padding-bottom: 10px;
+  padding-top: 16px;
 }
 
 @media screen and (max-width: 2200) {
@@ -120,14 +126,27 @@
   .list-wrapper .MuiPaper-root {
     padding: 20px;
     border-radius: 30px;
-    width: calc(100% - 40px);
+    width: auto;
+    /* max-width: none;
+    min-width: none; */
     height: auto;
+    margin: 10px auto 10px auto;
   }
   .list-wrapper button {
     width: auto;
   }
 }
-
+@media screen and (max-width: 600px) {
+.list-wrapper .MuiPaper-root {
+  padding: 20px;
+  border-radius: 30px;
+  width: auto;
+  /* max-width: none;
+  min-width: none; */
+  height: auto;
+  margin: 10px 40px 10px 40px;
+}
+}
 .autocomplete-combo {
   position: absolute;
   top: 72px;
@@ -147,4 +166,8 @@
 }
 .autocomplete-combo .prg:hover {
   background-color: #eee;
+}
+
+.css-bhp9pd-MuiPaper-root-MuiCard-root {
+  box-shadow: none !important;
 }

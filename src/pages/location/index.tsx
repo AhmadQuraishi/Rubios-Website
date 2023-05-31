@@ -8,7 +8,7 @@ import {
   getResturantListRequest,
 } from '../../redux/actions/restaurant/list';
 import LoadingBar from '../../components/loading-bar';
-import { Theme } from '@mui/material';
+import { Grid, Theme, useMediaQuery, useTheme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { displayToast } from '../../helpers/toast';
 import './index.css';
@@ -19,6 +19,8 @@ import { getGeocode, getLatLng } from 'use-places-autocomplete';
 import { staticMapUrl } from 'static-google-map';
 import GoogleMapComponent from '../../components/location/google-map';
 import { isLoginUser } from '../../helpers/auth';
+import PromotionDesktop from '../../assets/imgs/PromotionDesktop.png';
+import PromotionMobile from '../../assets/imgs/PromotionMobile.png';
 import DeliveryAddressConfirmDialog from '../../components/dialogs/delivery-address-confirm';
 import { googleMapDigitalSignature } from '../../services/google';
 
@@ -52,6 +54,7 @@ const Location = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const markerRef: any = useRef([]);
+  const theme = useTheme();
 
   const [mapCenter, setMapCenter] = useState<any>();
   const [zoom, setZoom] = useState<number>(7);
@@ -67,7 +70,7 @@ const Location = () => {
   const [staticMapImageUrl, setStaticMapImageUrl] = useState('');
   const [loadDynamicMap, setLoadDynamicMap] = useState(false);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
-
+  const isDesktop = useMediaQuery(theme.breakpoints.up('sm'));
   const {
     restaurants,
     nearbyRestaurants,
@@ -128,7 +131,6 @@ const Location = () => {
       zoom: 5,
       markerGroups: markersStatic,
     });
-
 
     const response = await googleMapDigitalSignature(url);
     if (response?.path) {
@@ -445,81 +447,160 @@ const Location = () => {
     fitMapView();
   }, [fitMapView]);
   return (
-    <Page
-      title={'Location'}
-      description={
-        'Skip the line & order ahead for quick & easy pick-up or delivery.'
-      }
-      className=""
-    >
-      <DeliveryAddressConfirmDialog
-        open={open}
-        selectedAddress={selectedAddress}
-        handleClose={handleClose}
-        setSelectedAddress={setSelectedAddress}
-        handleLCloseConfirm={handleLCloseConfirm}
-      />
-      <div style={{ minHeight: '300px', zIndex: 1, height: 'auto' }}>
-        {(restaurantLoading || actionPerform) && (
-          <div className={classes.dummyBg}>
-            <LoadingBar />
-          </div>
-        )}
-        <div
-          style={{
-            backgroundImage: `url(${staticMapImageUrl})`,
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'right',
-            height: '100%',
-            width: 'auto',
-            backgroundColor: '#8ab4f8',
-          }}
-          role="region"
-          aria-label="map"
+    <>
+      {isDesktop && (
+        <Page
+          title={'Location'}
+          description={
+            'Skip the line & order ahead for quick & easy pick-up or delivery.'
+          }
+          className=""
         >
-          {orderType && loadDynamicMap && (
-            <div>
-              <GoogleMapComponent
-                zoom={zoom}
-                mapCenter={mapCenter}
-                markers={markers}
-                fitMapView={fitMapView}
-                setActionPerform={setActionPerform}
-                setIsMapLoaded={setIsMapLoaded}
-                action={action}
-                actionTypes={actionTypes}
-                currentLocation={currentLocation}
-                markerRef={markerRef}
-                filteredRestaurants={filteredRestaurants}
-              />
-            </div>
-          )}
-          <LocationCard
-            actionTypes={actionTypes}
-            setAction={setAction}
-            orderType={orderType}
-            changeOrderType={changeOrderType}
-            setLatLng={setLatLng}
-            setActionPerform={setActionPerform}
-            deliveryAddressString={deliveryAddressString}
-            setDeliveryAddressString={setDeliveryAddressString}
-            allRestaurants={restaurants?.restaurants || []}
-            setFilteredRestaurants={setFilteredRestaurants}
-            filteredRestaurants={filteredRestaurants}
-            loading={restaurantLoading}
-            addCustomAddressCheck={addCustomAddressCheck}
-            currentLocation={currentLocation}
-            setRestaurantNotFound={setRestaurantNotFound}
-            restaurantNotFound={restaurantNotFound}
-            hideCurrentLocation={hideCurrentLocation}
-            getNearByRestaurants={getNearByRestaurants}
-            loadDynamicMap={loadDynamicMap}
-            setLoadDynamicMap={setLoadDynamicMap}
-            isMapLoaded={isMapLoaded}
+          <DeliveryAddressConfirmDialog
+            open={open}
+            selectedAddress={selectedAddress}
+            handleClose={handleClose}
+            setSelectedAddress={setSelectedAddress}
+            handleLCloseConfirm={handleLCloseConfirm}
           />
-        </div>
-      </div>
-    </Page>
+          {/* {(restaurantLoading || actionPerform) && (
+        <Grid className={classes.dummyBg}>
+          <LoadingBar />
+        </Grid>
+      )} */}
+
+          <Grid lg={12} sx={{ display: 'flex', flexDirection: 'row' }}>
+            <Grid lg={5}>
+              <LocationCard
+                actionTypes={actionTypes}
+                setAction={setAction}
+                orderType={orderType}
+                changeOrderType={changeOrderType}
+                setLatLng={setLatLng}
+                setActionPerform={setActionPerform}
+                deliveryAddressString={deliveryAddressString}
+                setDeliveryAddressString={setDeliveryAddressString}
+                allRestaurants={restaurants?.restaurants || []}
+                setFilteredRestaurants={setFilteredRestaurants}
+                filteredRestaurants={filteredRestaurants}
+                loading={restaurantLoading}
+                addCustomAddressCheck={addCustomAddressCheck}
+                currentLocation={currentLocation}
+                setRestaurantNotFound={setRestaurantNotFound}
+                restaurantNotFound={restaurantNotFound}
+                hideCurrentLocation={hideCurrentLocation}
+                getNearByRestaurants={getNearByRestaurants}
+                loadDynamicMap={loadDynamicMap}
+                setLoadDynamicMap={setLoadDynamicMap}
+                isMapLoaded={isMapLoaded}
+              />
+            </Grid>
+            {orderType && !loadDynamicMap && (
+              <Grid
+                lg={7}
+                md={7}
+                sm={7}
+                style={{ display: 'flex', width: '100%' }}
+              >
+                <img style={{ width: '100%' }} alt="" src={PromotionDesktop} />
+              </Grid>
+            )}
+            {orderType && loadDynamicMap && (
+              <Grid lg={7} style={{ display: 'flex', width: '100%' }}>
+                <GoogleMapComponent
+                  zoom={zoom}
+                  mapCenter={mapCenter}
+                  markers={markers}
+                  fitMapView={fitMapView}
+                  setActionPerform={setActionPerform}
+                  setIsMapLoaded={setIsMapLoaded}
+                  action={action}
+                  actionTypes={actionTypes}
+                  currentLocation={currentLocation}
+                  markerRef={markerRef}
+                  filteredRestaurants={filteredRestaurants}
+                />
+              </Grid>
+            )}
+          </Grid>
+        </Page>
+      )}
+      {!isDesktop && (
+        <Page
+          title={'Location'}
+          description={
+            'Skip the line & order ahead for quick & easy pick-up or delivery.'
+          }
+          className=""
+        >
+          <DeliveryAddressConfirmDialog
+            open={open}
+            selectedAddress={selectedAddress}
+            handleClose={handleClose}
+            setSelectedAddress={setSelectedAddress}
+            handleLCloseConfirm={handleLCloseConfirm}
+          />
+          {/* {(restaurantLoading || actionPerform) && (
+              <Grid className={classes.dummyBg}>
+                <LoadingBar />
+              </Grid>
+            )} */}
+          <Grid xs={12} sx={{ display: 'flex', flexDirection: 'column' }}>
+            {orderType && loadDynamicMap ? (
+              <Grid
+                xs={12}
+                style={{ display: 'flex', width: '100%', height: '400px' }}
+              >
+                <GoogleMapComponent
+                  zoom={zoom}
+                  mapCenter={mapCenter}
+                  markers={markers}
+                  fitMapView={fitMapView}
+                  setActionPerform={setActionPerform}
+                  setIsMapLoaded={setIsMapLoaded}
+                  action={action}
+                  actionTypes={actionTypes}
+                  currentLocation={currentLocation}
+                  markerRef={markerRef}
+                  filteredRestaurants={filteredRestaurants}
+                />
+              </Grid>
+            ) : (
+              <Grid xs={12} style={{ display: 'flex', width: '100%' }}>
+                <img style={{ width: '100%' }} alt="" src={PromotionMobile} />
+              </Grid>
+            )}
+            <Grid xs={12} sx={{ display: 'flex', flexDirection: 'row' }}>
+              <Grid xs={12}>
+                <LocationCard
+                  actionTypes={actionTypes}
+                  setAction={setAction}
+                  orderType={orderType}
+                  changeOrderType={changeOrderType}
+                  setLatLng={setLatLng}
+                  setActionPerform={setActionPerform}
+                  deliveryAddressString={deliveryAddressString}
+                  setDeliveryAddressString={setDeliveryAddressString}
+                  allRestaurants={restaurants?.restaurants || []}
+                  setFilteredRestaurants={setFilteredRestaurants}
+                  filteredRestaurants={filteredRestaurants}
+                  loading={restaurantLoading}
+                  addCustomAddressCheck={addCustomAddressCheck}
+                  currentLocation={currentLocation}
+                  setRestaurantNotFound={setRestaurantNotFound}
+                  restaurantNotFound={restaurantNotFound}
+                  hideCurrentLocation={hideCurrentLocation}
+                  getNearByRestaurants={getNearByRestaurants}
+                  loadDynamicMap={loadDynamicMap}
+                  setLoadDynamicMap={setLoadDynamicMap}
+                  isMapLoaded={isMapLoaded}
+                />
+              </Grid>
+            </Grid>
+          </Grid>
+        </Page>
+      )}
+    </>
   );
 };
 
