@@ -230,7 +230,11 @@ const DeliveryAddresses = (props: any) => {
           editDeliveryAddress?.address1 !== '' ? (
             <>
               <Grid sx={{ paddingBottom: '150px' }} item xs={12}>
-                <Typography className={'delivery-heading-text'} variant="body2">
+                <Typography
+                  className={'delivery-heading-text'}
+                  variant="body2"
+                  sx={{ paddingTop: '30px' }}
+                >
                   DELIVERY IS AVAILABLE FOR THIS ADDRESS
                 </Typography>
 
