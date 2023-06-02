@@ -444,7 +444,7 @@ const Product = () => {
         defaultOptionID = (item.length > 0 && item.map((item: any) => item.id));
       }
 
-      if (isMergeSides(itemMain)) {
+      if (isMergeSides(itemMain) && !edit) {
         console.log('prepareProductOptionsArray called:::::', itemMain);
         setSelectedSides(itemMain.options.filter((it: any) => it.isdefault).map((item: any) => item.id))
       }
@@ -453,7 +453,7 @@ const Product = () => {
       let optionsArray: any[] = [];
 
       itemMain.options.map((option: any) => {
-        console.log('option.customDropDown::::;', option.customDropDown);
+        console.log('option.customDropDown::::;', option);
 
         if (option.customDropDown || isInline(option)) {
           optionsArray.push({
@@ -500,6 +500,11 @@ const Product = () => {
           : defaultOptionID
             ? defaultOptionID
             : [];
+
+      isMergeSides(itemMain) && edit && setSelectedSides(selectedOptions)
+
+      console.log('selectedOptions:::::', selectedOptions);
+
 
       setOptionsSelectionArray((optionsSelectionArray: any) => [
         ...optionsSelectionArray,
@@ -1237,10 +1242,7 @@ const Product = () => {
     }
     return check;
   };
-  const divStyle: React.CSSProperties = {
-    opacity: selectedSides.length < 2 ? 1 : 0.5,
-    pointerEvents: selectedSides.legnth < 2 ? 'auto' : 'none'
-  };
+
   return (
     <Page title={'Product Detail'} className="">
       <div style={{ minHeight: '500px' }}>
@@ -1463,9 +1465,11 @@ const Product = () => {
                                     sx={{ position: 'relative' }}
                                   >
                                     <div style={{
-                                      opacity: isMergeSides(itemMain) && _.union(selectedSides).length === 2 && !selectedSides?.includes(itemChild.option.id) ? 0.5 : 1,
-                                      pointerEvents: isMergeSides(itemMain) && _.union(selectedSides).length === 2 && !selectedSides?.includes(itemChild.option.id) ? 'none' : 'auto'
+                                      opacity: isMergeSides(itemMain) && edit ? (!itemMain.selectedOptions.includes(itemChild.option.id) && _.union(selectedSides).length === 2 && 0.5 || 1) : (isMergeSides(itemMain) && _.union(selectedSides).length === 2 && !selectedSides?.includes(itemChild.option.id) ? 0.5 : 1),
+                                      pointerEvents: isMergeSides(itemMain) && edit && !itemMain.selectedOptions.includes(itemChild.option.id) && _.union(selectedSides).length === 2 && 'none' || 'auto'
+                                        || isMergeSides(itemMain) && (_.union(selectedSides).length === 2 && !selectedSides?.includes(itemChild.option.id) && 'none' || 'auto')
                                     }}>
+                                      {console.log('itemMain:::::', itemMain)}
 
                                       {/* {itemMain.mandatory ? (
                                     <input
@@ -1793,8 +1797,41 @@ const Product = () => {
                                                     )}
                                                 </>
                                               )}
-
-                                              {isMergeSides(itemMain) && selectedSides?.includes(itemChild.option.id) &&
+                                              {edit && isMergeSides(itemMain) && (itemMain.selectedOptions.includes(itemChild.option.id) &&
+                                                (
+                                                  <div className="quantity2">
+                                                    <Button
+                                                      title=""
+                                                      aria-label="reduce"
+                                                    >
+                                                      {' '}
+                                                      -{' '}
+                                                    </Button>
+                                                    <input
+                                                      value={_.union(selectedSides).length === 1 && 2 || 1}
+                                                      readOnly
+                                                      id="quantityfield"
+                                                      onChange={() => { }}
+                                                      className="input-quantity2"
+                                                      title="quantity"
+                                                    />
+                                                    <Button
+                                                      title=""
+                                                      className="add"
+                                                      aria-label="increase"
+                                                      sx={{
+                                                        marginRight: {
+                                                          xs: 'inherit',
+                                                        },
+                                                      }}
+                                                    >
+                                                      {' '}
+                                                      +{' '}
+                                                    </Button>
+                                                  </div>
+                                                )
+                                              )}
+                                              {!edit && isMergeSides(itemMain) && selectedSides?.includes(itemChild.option.id) &&
                                                 (
                                                   <div className="quantity2">
                                                     <Button
