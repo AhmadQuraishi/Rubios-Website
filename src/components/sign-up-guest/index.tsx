@@ -101,7 +101,7 @@ const SignUpGuest = ({
             }}
             variant="h6"
           >
-            Join Rubio's Rewards and get $5 off any entree on your first order.
+            Join Rubio's Rewards and get $5 off any entree on your next order.
           </Typography>
           <br />
           <Formik
