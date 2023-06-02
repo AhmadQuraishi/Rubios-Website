@@ -6,7 +6,6 @@ import {
   useMediaQuery,
   Switch,
   styled,
-  Box,
 } from '@mui/material';
 import './product.css';
 import * as React from 'react';
@@ -45,6 +44,7 @@ import { SwitchProps } from '@mui/material/Switch';
 import TagManager from 'react-gtm-module';
 import ProductToggle from './product-toggle/productToggle';
 
+import _ from 'lodash'
 const Product = () => {
   const { id, edit } = useParams();
   const isMobile = useMediaQuery('(max-width:468px)');
@@ -76,8 +76,8 @@ const Product = () => {
   );
   const [optionsSelectionArray, setOptionsSelectionArray] = useState<any>([]);
   const [basketType, setBasketType] = useState();
-  const [selectedItems, setSelectedItems] = useState<any>();
   const [count, setCount] = React.useState(1);
+  const [selectedSides, setSelectedSides] = useState<any>([]);
   // const [toggle, setToggle] = useState();
   const dispatch = useDispatch();
 
@@ -101,6 +101,8 @@ const Product = () => {
       }
     }
     setOptionsSelectionArray([]);
+    console.log('IsEdIT-baseket::::', basketObj);
+
     setBasketType((basketObj && basketObj.basketType) || 'New');
   }, []);
 
@@ -132,10 +134,14 @@ const Product = () => {
     }
   }, [productDetails]);
   const setCountWithEdit = () => {
+
     if (edit && productDetails) {
       const product = basketObj?.basket?.products?.find(
         (item: any) => item.id == edit,
       );
+      console.log('IsEdIT-productDetails::::', productDetails);
+      console.log('IsEdIT-product::::', product);
+
       if (product) {
         setCount(product.quantity);
         getTotalCost(productDetails.cost + ptotalCost || 0 * product.quantity);
@@ -290,6 +296,7 @@ const Product = () => {
           option.selectedOptions.map((item: any) => {
             options = options + item + ',';
             const elem = option.options.find((x: any) => x.optionID == item);
+
             if (elem && elem.selectedValue) {
               options = options + elem.selectedValue + ',';
               if (elem.option && elem.option.customDropDown) {
@@ -334,8 +341,6 @@ const Product = () => {
       ),
     );
   };
-
-
 
   useEffect(() => {
     if (dummyBasketObj.basket && basket == undefined && productDetails) {
@@ -407,6 +412,20 @@ const Product = () => {
 
   let ptotalCost = 0;
 
+  const isInline = (option: any) => {
+    return (
+      option.metadata?.[0]?.key === 'navigation-style' &&
+      option.metadata?.[0]?.value === 'inline'
+    );
+  };
+
+  const isMergeSides = (option: any) => {
+    return (
+      option.metadata?.[0]?.key === 'quantity-choice-view' &&
+      option.metadata?.[0]?.value === 'input'
+    );
+  };
+
   const prepareProductOptionsArray = (
     options: any,
     parentID: any,
@@ -414,6 +433,8 @@ const Product = () => {
     isParentSelected: any = false,
     // products: option.products,
   ) => {
+
+
     options.map((itemMain: any, index0: number) => {
       let defaultOptionID: any = null;
       let defaultOptionsID: any = null;
@@ -423,36 +444,17 @@ const Product = () => {
         );
         defaultOptionID = (item.length > 0 && item.map((item: any) => item.id));
       }
-      // console.log(defaultOptionID, 'defaultOptionID');
-      // debugger;
-      // if (itemMain?.options) {
-      //   defaultOptionsID = itemMain.options
-      //     .filter((it: any) => it.isdefault)
-      //     .map((item: any) => item.id || null);
-      // }
 
-      // if (itemMain?.options) {
-      //   defaultOptionID = itemMain.options
-      //     .filter((it: any) => it.isdefault)
-      //     .map((item: any) => item.id || null);
-      // if (defaultOptionsID.length > 1) {
-      //   defaultOptionID = defaultOptionsID.map(
-      //     (item: any) => item.id || null,
-      //   );
-      // } else {
-      //   defaultOptionID = defaultOptionsID[0];
-      // }
-      // }
+      if (isMergeSides(itemMain)) {
+        console.log('prepareProductOptionsArray called:::::', itemMain);
+        setSelectedSides(itemMain.options.filter((it: any) => it.isdefault).map((item: any) => item.id))
+      }
 
-      // console.log(defaultOptionID[0], 'defaultOptionID');
       let editOptions: any[] = [];
       let optionsArray: any[] = [];
 
       itemMain.options.map((option: any) => {
-        if (
-
-          option.customDropDown || option.modifiers && option.modifiers.length
-        ) {
+        if (option.customDropDown || isInline(option)) {
           optionsArray.push({
             optionID: option.id,
             selectedValue: dropDownFilledValueForEdit(
@@ -469,9 +471,7 @@ const Product = () => {
             dropDownValues: null,
           });
         }
-        console.log('optionsArray:::::::::::::::', optionsArray);
-
-        if (option.customDropDown || option.modifiers && option.modifiers.length) {
+        if (option.customDropDown || isInline(option)) {
           if (
             selectCustomDropDownOptionIdIfExist(option.modifiers)
           ) {
@@ -492,20 +492,14 @@ const Product = () => {
           );
         }
       });
-      // let defaultOptions: any = null;
-      // console.log(defaultOptionID[0], 'defaultOptionID[0]');
-      // if ()
-      // debugger;
+
       let selectedOptions: any[] =
         editOptions.length > 0
           ? editOptions
           : defaultOptionID
             ? defaultOptionID
             : [];
-      // if (itemMain.description === 'Pick your sides') {
-      //   selectedOptions = selectedOptions.length < 3;
-      // }
-      // debugger;
+
       setOptionsSelectionArray((optionsSelectionArray: any) => [
         ...optionsSelectionArray,
         {
@@ -517,6 +511,7 @@ const Product = () => {
           selectedOptions: selectedOptions,
           defaultOption: defaultOptionID,
           options: optionsArray,
+          metadata: itemMain.metadata,
           parentOptionID: parentID || itemMain.id,
           cost: itemMain.cost || 0,
           selected:
@@ -526,13 +521,8 @@ const Product = () => {
               : false,
         },
       ]);
-      if (
-        itemMain.description &&
-        itemMain.description.toLowerCase().indexOf('remove or modify') == -1
-      ) {
+      if (!isInline(itemMain.options)) {
         itemMain.options.map((item: any, index2: number) => {
-          console.log('item to check:::::::::', item.modifiers);
-
           if (item.customDropDown || itemMain.maxselects) {
             return;
           } else {
@@ -559,13 +549,14 @@ const Product = () => {
       const product = basketObj.basket.products.find(
         (item: any) => item.id == edit,
       );
+      console.log('product::::::', product);
+
       product.choices.map((item: any, index: number) => {
         if (item.optionid == id) isExist = true;
       });
     }
     return isExist;
   };
-
 
   const dropDownFilledValueForEdit = (options: any) => {
     let isExist = null;
@@ -610,7 +601,6 @@ const Product = () => {
     optionsDDL: any = null,
     optionsDDLSelectedID: any = null,
   ) => {
-
     setSelectionExecute(false);
     setTimeout(() => {
       setSelectionExecute(false);
@@ -878,26 +868,73 @@ const Product = () => {
             }
           }
         } else {
-          console.log('item:::::', item, optionId, parnetOptionID);
-          console.log('selected data:::::', item.selectedOptions);
-          if (item.maxSelect && item.selectedOptions.length === Number(item.maxSelect)) {
-            console.log('selectedOptions:::::::', item.selectedOptions);
-            item.selectedOptions = item.selectedOptions.splice(1, 1);
+          console.log('ABK: ITEM', item);
+          console.log('ABK: isSelected', item.selectedOptions.includes(optionId));
+          const data = selectedSides;
+          if (isMergeSides(item)) {
+            const index = data.indexOf(optionId);
+            console.log('ABK: iindiex', index);
+            // let quantity = selectedItemList && Object.keys(selectedItemList).length && selectedItemList[optionId] ? selectedItemList.optionId.quantity : 0
+            if (index > -1) {
+              if (_.union(data).length == 1) return;
+              data.splice(index, 1); // Item exists, so remove it
+              // data.push(..._.union(data))
+              const option = item.options.find(
+                (option: any) => option.optionID == optionId,
+              );
+              // totalPrice -= option.option?.cost || 0
+              if (isMergeSides(item) && selectedSides.length === 1) {
+                let duplicate = selectedSides.filter((val: any) => val != optionId)
+                const option = item.options.find(
+                  (option: any) => option.optionID == duplicate[0],
+                );
+                data.push(duplicate[0]);
+                totalPrice += option.option?.cost || 0
+              }
+              // delete selectedItemList[optionId];
+              // selectedItemList[optionId] = { "id": optionId, "quantity": quantity - 1 }
 
-            if (item.selectedOptions.includes(optionId)) {
-              item.selectedOptions = item.selectedOptions.filter((x: any) => x == optionId)
-              setSelectedItems(item.selectedOptions.filter((x: any) => x == optionId))
+            } else {
+              // let quantity = Object.keys(selectedItemList).length && selectedItemList[optionId] ? selectedItemList.optionId.quantity : 0
+              // selectedItemList[optionId] = { "id": optionId, "quantity": quantity + 1 }
+              if (data.length >= 2) {
+                const option = item.options.find(
+                  (option: any) => option.optionID == data[0],
+                );
+                data.splice(0, 1);
+                totalPrice -= option.option?.cost || 0
+              }
+              const option = item.options.find(
+                (option: any) => option.optionID == optionId,
+              );
+              data.push(optionId); // Item doesn't exist, so add it
+              // totalPrice += option.option?.cost || 0
             }
-            item.setDisbaled = true
           }
 
-          console.log('selectedItems::::', selectedItems, optionId, parnetOptionID);
+          console.log('optionId11:::::', optionId, selectedSides);
+          // if (item.name === 'Pick your sides' && checkData.length === 1) {
+          //   const option = item.options.find(
+          //     (option: any) => option.optionID == selectedSides[0],
+          //   );
+          //   // selectedItemList[optionId] = { "id": optionId, "quantity": quantity + 1 }
+          //   totalPrice += option.option?.cost || 0
+          //   setSelectedSides(data)
+          // } else {
+          //   setSelectedSides(data)
+          // }
+          setSelectedSides(data)
 
+          // if (item.selectedOptions.length === Number(item.maxSelect)) {
+          //   item.selectedOptions = item.selectedOptions.splice(1, 1);
+          //   item.setDisbaled = true
+          // } else {
+
+          // }
 
           if (item.selectedOptions.includes(optionId)) {
             const index = item.selectedOptions.indexOf(optionId);
             console.log('elsecase:::::', index, '---', optionId);
-
             if (index > -1) {
               let optionDDLE = null;
               if (optionsDDL && optionsDDLSelectedID) {
@@ -952,7 +989,10 @@ const Product = () => {
                 });
               }
             }
+            // item.selectedOptions = selectedSides
+
           } else {
+
             item.selectedOptions.push(optionId);
             item.selected = true;
             // debugger;
@@ -1003,8 +1043,13 @@ const Product = () => {
               });
             }
           }
+          if (isMergeSides(item)) {
+            item.selectedOptions = [];
+            item.selectedOptions.push(...data);
+          }
         }
       }
+
     });
     setOptionsCost(optionPrice);
     setTotalCost(totalPrice);
@@ -1012,6 +1057,18 @@ const Product = () => {
       ...optionsSelectionArray,
     ]);
   };
+
+
+  const createDisableView = (
+    itemMain: any,
+  ): boolean => {
+    let isDisabled = true;
+    optionsSelectionArray.map((item: any) => {
+
+    });
+    return isDisabled;
+  };
+
   const checkOptionSelected = (
     optionId: number,
     parnetOptionID: number,
@@ -1178,6 +1235,10 @@ const Product = () => {
       });
     }
     return check;
+  };
+  const divStyle: React.CSSProperties = {
+    opacity: selectedSides.length < 2 ? 1 : 0.5,
+    pointerEvents: selectedSides.legnth < 2 ? 'auto' : 'none'
   };
   return (
     <Page title={'Product Detail'} className="">
@@ -1380,25 +1441,32 @@ const Product = () => {
                             )
                             .map((itemChild: any, index1: number) => (
                               <>
-                                <Grid
-                                  key={Math.random() + index1}
-                                  option-id={itemChild.option.id}
-                                  className={
-                                    checkOptionSelected(
-                                      itemChild.option.id,
-                                      itemMain.id,
-                                    ) == true
-                                      ? 'content-panel selected'
-                                      : 'content-panel'
-                                  }
-                                  item
-                                  xs={6}
-                                  sm={3}
-                                  md={3}
-                                  lg={4}
-                                  sx={{ position: 'relative' }}
-                                >
-                                  {/* {itemMain.mandatory ? (
+
+                                {
+                                  <Grid
+                                    key={Math.random() + index1}
+                                    option-id={itemChild.option.id}
+                                    className={
+                                      checkOptionSelected(
+                                        itemChild.option.id,
+                                        itemMain.id,
+                                      ) == true
+                                        ? 'content-panel selected'
+                                        : 'content-panel'
+                                    }
+                                    item
+                                    xs={6}
+                                    sm={3}
+                                    md={3}
+                                    lg={4}
+                                    sx={{ position: 'relative' }}
+                                  >
+                                    <div style={{
+                                      opacity: isMergeSides(itemMain) && _.union(selectedSides).length === 2 && !selectedSides?.includes(itemChild.option.id) ? 0.5 : 1,
+                                      pointerEvents: isMergeSides(itemMain) && _.union(selectedSides).length === 2 && !selectedSides?.includes(itemChild.option.id) ? 'none' : 'auto'
+                                    }}>
+
+                                      {/* {itemMain.mandatory ? (
                                     <input
                                       aria-invalid={
                                         IsItemSelected(itemMain.id) &&
@@ -1467,308 +1535,308 @@ const Product = () => {
                                       }}
                                     />
                                   )} */}
-
-                                  <label
-                                    htmlFor={itemChild.option.id}
-                                    onClick={() => {
-                                      showChildOptions(
-                                        itemChild.option.id,
-                                        itemMain.id,
-                                        itemChild.dropDownValues,
-                                        itemChild.selectedValue,
-                                      );
-                                    }}
-                                    onKeyUp={(e) => {
-                                      if (e.keyCode === 13)
-                                        showChildOptions(
-                                          itemChild.option.id,
-                                          itemMain.id,
-                                          itemChild.dropDownValues,
-                                          itemChild.selectedValue,
-                                        );
-                                    }}
-                                  >
-                                    <Card
-                                      className={`card-panel ${noWordpressImageFound(
-                                        optionImages,
-                                        itemChild.option.chainoptionid,
-                                        itemChild.option.name,
-                                        itemChild.option.isdefault,
-                                      )
-                                        ? 'no-image-class'
-                                        : ''
-                                        }`}
-                                      title={itemChild.option.name}
-                                      is-mandatory={itemMain.mandatory.toString()}
-                                      parent-option-id={itemMain.parentOptionID}
-                                    >
-                                      <div className="check-mark">
-                                        <div
-                                          aria-hidden="true"
-                                          className="checkmark"
-                                        >
-                                          L
-                                        </div>
-                                      </div>
-
-                                      <Grid
-                                        container
-                                        spacing={1}
-                                        style={{ width: '100%' }}
-                                        className="name-img-panel"
-                                        sx={{ padding: '0', marginTop: '0' }}
+                                      <label
+                                        htmlFor={itemChild.option.id}
+                                        onClick={() => {
+                                          showChildOptions(
+                                            itemChild.option.id,
+                                            itemMain.id,
+                                            itemChild.dropDownValues,
+                                            itemChild.selectedValue,
+                                          );
+                                        }}
+                                        onKeyUp={(e) => {
+                                          if (e.keyCode === 13)
+                                            showChildOptions(
+                                              itemChild.option.id,
+                                              itemMain.id,
+                                              itemChild.dropDownValues,
+                                              itemChild.selectedValue,
+                                            );
+                                        }}
                                       >
-                                        <Grid
-                                          item
-                                          xs={12}
-                                          lg={5}
-                                          sx={{
-                                            width: '120px',
-                                            maxWidth: {
-                                              lg: '120px',
-                                              xs: 'auto',
-                                            },
-                                            height: '120px',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            padding: '0px',
-                                            paddingLeft: {
-                                              xs: '0px !important',
-                                            },
-                                            paddingTop: {
-                                              xs: '0px !important',
-                                              lg: '0px !important',
-                                            },
-                                          }}
+                                        <Card
+                                          className={`card-panel ${noWordpressImageFound(
+                                            optionImages,
+                                            itemChild.option.chainoptionid,
+                                            itemChild.option.name,
+                                            itemChild.option.isdefault,
+                                          )
+                                            ? 'no-image-class'
+                                            : ''
+                                            }`}
+                                          title={itemChild.option.name}
+                                          is-mandatory={itemMain.mandatory.toString()}
+                                          parent-option-id={itemMain.parentOptionID}
                                         >
-                                          <ItemImage
-                                            productImageURL={
-                                              productDetails &&
-                                              ((categories &&
-                                                categories.imagepath) ||
-                                                '') +
-                                              changeImageSize(
-                                                productDetails.imagefilename ||
-                                                '',
-                                                productDetails.images || '',
-                                                'desktop-menu',
-                                              )
-                                            }
-                                            index={index1}
-                                            className="item-image"
-                                            name={itemChild.option.name}
-                                            id={itemChild.option.chainoptionid}
-                                            optionImages={optionImages}
-                                            isdefault={
-                                              itemChild.option.isdefault
-                                            }
-                                          />
-                                        </Grid>
-                                        <Grid
-                                          item
-                                          xs={12}
-                                          lg={7}
-                                          className="name-panel"
-                                        >
-                                          {itemChild.option.name}
-                                          <div
-                                            className={'options-cals-price'}
-                                            style={{ display: 'flex' }}
-                                          >
-                                            {itemChild.option.cost > 0 && (
-                                              <span
-                                                className={'value'}
-                                                title={`$${parseFloat(
-                                                  itemChild.option.cost,
-                                                ).toFixed(2)}`}
-                                                style={{
-                                                  fontSize: '11px',
-                                                  fontFamily:
-                                                    "'Sunborn-Sansone' !important",
-                                                  color: '#0075BF',
-                                                }}
-                                              >
-                                                +$
-                                                {parseFloat(
-                                                  itemChild.option.cost,
-                                                ).toFixed(2)}
-                                              </span>
-                                            )}
-                                            {itemChild.option.cost > 0 &&
-                                              itemChild.option.basecalories && (
-                                                <span
-                                                  style={{
-                                                    fontSize: '16px',
-                                                    fontFamily:
-                                                      "'Librefranklin-Regular' !important",
-                                                    color: '#AAA',
-                                                    marginTop: '-2%',
-                                                  }}
-                                                >
-                                                  &nbsp;|&nbsp;
-                                                </span>
-                                              )}
-                                            {itemChild.option.basecalories && (
-                                              <span
-                                                style={{
-                                                  fontSize: '11px',
-                                                  fontFamily:
-                                                    "'Sunborn-Sansone' !important",
-                                                  color: '#0075BF',
-                                                }}
-                                              >
-                                                +{' '}
-                                                {itemChild.option.basecalories +
-                                                  ' Cals'}
-                                              </span>
-                                            )}
-                                            {itemChild.option.maxcalories &&
-                                              itemChild.option.basecalories && (
-                                                <span
-                                                  style={{
-                                                    fontSize: '16px',
-                                                    fontFamily:
-                                                      "'Librefranklin-Regular' !important",
-                                                    color: '#AAA',
-                                                    marginTop: '-2%',
-                                                  }}
-                                                >
-                                                  &nbsp;|&nbsp;
-                                                </span>
-                                              )}
-                                            {itemChild.option.maxcalories && (
-                                              <span
-                                                style={{
-                                                  fontSize: '11px',
-                                                  fontFamily:
-                                                    "'Sunborn-Sansone' !important",
-                                                  color: '#0075BF',
-                                                }}
-                                              >
-                                                +
-                                                {itemChild.option.maxcalories +
-                                                  ' Cals'}
-                                              </span>
-                                            )}
+                                          <div className="check-mark">
+                                            <div
+                                              aria-hidden="true"
+                                              className="checkmark"
+                                            >
+                                              L
+                                            </div>
                                           </div>
-
-                                          {console.log('dropDownValues:::', itemChild.dropDownValues)
-                                          }
-                                          {itemChild.dropDownValues && (
-                                            <>
-                                              {checkOptionSelected(
-                                                itemChild.option.id,
-                                                itemMain.id,
-                                              ) == true && (
-                                                  <div
+                                          <Grid
+                                            container
+                                            spacing={1}
+                                            style={{ width: '100%' }}
+                                            className="name-img-panel"
+                                            sx={{ padding: '0', marginTop: '0' }}
+                                          >
+                                            <Grid
+                                              item
+                                              xs={12}
+                                              lg={5}
+                                              sx={{
+                                                width: '120px',
+                                                maxWidth: {
+                                                  lg: '120px',
+                                                  xs: 'auto',
+                                                },
+                                                height: '120px',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                padding: '0px',
+                                                paddingLeft: {
+                                                  xs: '0px !important',
+                                                },
+                                                paddingTop: {
+                                                  xs: '0px !important',
+                                                  lg: '0px !important',
+                                                },
+                                              }}
+                                            >
+                                              <ItemImage
+                                                productImageURL={
+                                                  productDetails &&
+                                                  ((categories &&
+                                                    categories.imagepath) ||
+                                                    '') +
+                                                  changeImageSize(
+                                                    productDetails.imagefilename ||
+                                                    '',
+                                                    productDetails.images || '',
+                                                    'desktop-menu',
+                                                  )
+                                                }
+                                                index={index1}
+                                                className="item-image"
+                                                name={itemChild.option.name}
+                                                id={itemChild.option.chainoptionid}
+                                                optionImages={optionImages}
+                                                isdefault={
+                                                  itemChild.option.isdefault
+                                                }
+                                              />
+                                            </Grid>
+                                            <Grid
+                                              item
+                                              xs={12}
+                                              lg={7}
+                                              className="name-panel"
+                                            >
+                                              {itemChild.option.name}
+                                              <div
+                                                className={'options-cals-price'}
+                                                style={{ display: 'flex' }}
+                                              >
+                                                {itemChild.option.cost > 0 && (
+                                                  <span
+                                                    className={'value'}
+                                                    title={`$${parseFloat(
+                                                      itemChild.option.cost,
+                                                    ).toFixed(2)}`}
                                                     style={{
-                                                      position: 'relative',
+                                                      fontSize: '11px',
+                                                      fontFamily:
+                                                        "'Sunborn-Sansone' !important",
+                                                      color: '#0075BF',
                                                     }}
                                                   >
-                                                    <select
-                                                      className="ss-panl"
-                                                      parent-select-option-id={
-                                                        itemChild.id
-                                                      }
-                                                      onClick={(e) =>
-                                                        e.stopPropagation()
-                                                      }
-                                                      value={
-                                                        itemChild.selectedValue ||
-                                                        '0'
-                                                      }
-                                                      data-select-id={
-                                                        itemChild.selectedValue ||
-                                                        '0'
-                                                      }
-                                                      onChange={(e) =>
-                                                        dropDownValue(
-                                                          itemChild.option.id,
-                                                          e.target.value,
-                                                          itemChild.dropDownValues,
-                                                          e.target,
-                                                        )
-                                                      }
-                                                    >
-                                                      {itemChild.dropDownValues.map(
-                                                        (
-                                                          option: any,
-                                                          index: number,
-                                                        ) => (
-                                                          <option
-                                                            key={
-                                                              Math.random() +
-                                                              index
-                                                            }
-                                                            value={option.id}
-                                                            onClick={() => {
-                                                              setTotalCost(
-                                                                ((productDetails?.cost ||
-                                                                  0) +
-                                                                  option.cost) *
-                                                                count,
-                                                              );
-                                                            }}
-                                                          >
-                                                            {option.name +
-                                                              (option.cost > 0
-                                                                ? ' (+$' +
-                                                                option.cost.toFixed(
-                                                                  2,
-                                                                ) +
-                                                                ')'
-                                                                : '')}
-                                                          </option>
-                                                        ),
-                                                      )}
-                                                    </select>
-                                                  </div>
+                                                    +$
+                                                    {parseFloat(
+                                                      itemChild.option.cost,
+                                                    ).toFixed(2)}
+                                                  </span>
                                                 )}
-                                            </>
-                                          )}
-                                          <Grid style={{ paddingBottom: '20px', paddingTop: '10px' }}>
-                                            {itemMain.selectedOptions.includes(itemChild.option.id) && itemMain.maxSelect &&
-                                              (
-                                                <div className="quantity2">
-                                                  <Button
-                                                    title=""
-                                                    aria-label="reduce"
-                                                  >
-                                                    {' '}
-                                                    -{' '}
-                                                  </Button>
-                                                  <input
-                                                    value={count}
-                                                    readOnly
-                                                    id="quantityfield"
-                                                    onChange={() => { }}
-                                                    className="input-quantity2"
-                                                    title="quantity"
-                                                  />
-                                                  <Button
-                                                    title=""
-                                                    className="add"
-                                                    aria-label="increase"
-                                                    sx={{
-                                                      marginRight: {
-                                                        xs: 'inherit',
-                                                      },
+                                                {itemChild.option.cost > 0 &&
+                                                  itemChild.option.basecalories && (
+                                                    <span
+                                                      style={{
+                                                        fontSize: '16px',
+                                                        fontFamily:
+                                                          "'Librefranklin-Regular' !important",
+                                                        color: '#AAA',
+                                                        marginTop: '-2%',
+                                                      }}
+                                                    >
+                                                      &nbsp;|&nbsp;
+                                                    </span>
+                                                  )}
+                                                {itemChild.option.basecalories && (
+                                                  <span
+                                                    style={{
+                                                      fontSize: '11px',
+                                                      fontFamily:
+                                                        "'Sunborn-Sansone' !important",
+                                                      color: '#0075BF',
                                                     }}
                                                   >
-                                                    {' '}
                                                     +{' '}
-                                                  </Button>
-                                                </div>
+                                                    {itemChild.option.basecalories +
+                                                      ' Cals'}
+                                                  </span>
+                                                )}
+                                                {itemChild.option.maxcalories &&
+                                                  itemChild.option.basecalories && (
+                                                    <span
+                                                      style={{
+                                                        fontSize: '16px',
+                                                        fontFamily:
+                                                          "'Librefranklin-Regular' !important",
+                                                        color: '#AAA',
+                                                        marginTop: '-2%',
+                                                      }}
+                                                    >
+                                                      &nbsp;|&nbsp;
+                                                    </span>
+                                                  )}
+                                                {itemChild.option.maxcalories && (
+                                                  <span
+                                                    style={{
+                                                      fontSize: '11px',
+                                                      fontFamily:
+                                                        "'Sunborn-Sansone' !important",
+                                                      color: '#0075BF',
+                                                    }}
+                                                  >
+                                                    +
+                                                    {itemChild.option.maxcalories +
+                                                      ' Cals'}
+                                                  </span>
+                                                )}
+                                              </div>
+                                              {
+                                                // console.log('dropDownValues:::', itemChild.option, selectedSides)
+                                              }
+                                              {itemChild.dropDownValues && (
+                                                <>
+                                                  {checkOptionSelected(
+                                                    itemChild.option.id,
+                                                    itemMain.id,
+                                                  ) == true && (
+                                                      <div
+                                                        style={{
+                                                          position: 'relative',
+                                                        }}
+                                                      >
+                                                        <select
+                                                          className="ss-panl"
+                                                          parent-select-option-id={
+                                                            itemChild.id
+                                                          }
+                                                          onClick={(e) =>
+                                                            e.stopPropagation()
+                                                          }
+                                                          value={
+                                                            itemChild.selectedValue ||
+                                                            '0'
+                                                          }
+                                                          data-select-id={
+                                                            itemChild.selectedValue ||
+                                                            '0'
+                                                          }
+                                                          onChange={(e) =>
+                                                            dropDownValue(
+                                                              itemChild.option.id,
+                                                              e.target.value,
+                                                              itemChild.dropDownValues,
+                                                              e.target,
+                                                            )
+                                                          }
+                                                        >
+                                                          {itemChild.dropDownValues.map(
+                                                            (
+                                                              option: any,
+                                                              index: number,
+                                                            ) => (
+                                                              <option
+                                                                key={
+                                                                  Math.random() +
+                                                                  index
+                                                                }
+                                                                value={option.id}
+                                                                onClick={() => {
+                                                                  setTotalCost(
+                                                                    ((productDetails?.cost ||
+                                                                      0) +
+                                                                      option.cost) *
+                                                                    count,
+                                                                  );
+                                                                }}
+                                                              >
+                                                                {option.name +
+                                                                  (option.cost > 0
+                                                                    ? ' (+$' +
+                                                                    option.cost.toFixed(
+                                                                      2,
+                                                                    ) +
+                                                                    ')'
+                                                                    : '')}
+                                                              </option>
+                                                            ),
+                                                          )}
+                                                        </select>
+                                                      </div>
+                                                    )}
+                                                </>
                                               )}
 
+                                              {isMergeSides(itemMain) && selectedSides?.includes(itemChild.option.id) &&
+                                                (
+                                                  <div className="quantity2">
+                                                    <Button
+                                                      title=""
+                                                      aria-label="reduce"
+                                                    >
+                                                      {' '}
+                                                      -{' '}
+                                                    </Button>
+                                                    <input
+                                                      value={_.union(selectedSides).length === 1 && 2 || 1}
+                                                      readOnly
+                                                      id="quantityfield"
+                                                      onChange={() => { }}
+                                                      className="input-quantity2"
+                                                      title="quantity"
+                                                    />
+                                                    <Button
+                                                      title=""
+                                                      className="add"
+                                                      aria-label="increase"
+                                                      sx={{
+                                                        marginRight: {
+                                                          xs: 'inherit',
+                                                        },
+                                                      }}
+                                                    >
+                                                      {' '}
+                                                      +{' '}
+                                                    </Button>
+                                                  </div>
+                                                )
+                                              }
+                                            </Grid>
                                           </Grid>
-                                        </Grid>
-                                      </Grid>
-                                    </Card>
-                                  </label>
-                                </Grid>
+                                        </Card>
+                                      </label>
+                                    </div>
+                                  </Grid>
+                                }
                               </>
                             ))}
+
                       </Grid>
                     </fieldset>
                   ))}

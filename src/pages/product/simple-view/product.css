@@ -27,15 +27,6 @@ fieldset.field-set {
   text-transform: uppercase;
 }
 
-.pro-head {
-  font-family: 'GritSans-Bold' !important;
-  padding-bottom: 15px;
-  font-size: 25px;
-  color: #0075BF;
-  margin-top: 14px;
-  text-transform: uppercase;
-}
-
 .product-detail .label.bold {
   font-family: 'Librefranklin-Regular' !important;
   font-size: 16px !important;
@@ -643,14 +634,4 @@ legend.heading-ui.h3 {
   font-size: 15px;
   font-family: 'Librefranklin-Regular' !important;
   font-weight: bold;
-}
-
-.content {
-  background-color: lightgray;
-  padding: 20px;
-}
-
-.content.disabled {
-  opacity: 0.5;
-  pointer-events: none;
 }

@@ -2,7 +2,7 @@ import { MenuItemAvailability } from "./MenuItemAvailability"
 import { MetadataItem } from "./MetadataItem"
 import { Option } from "./Option"
 
-interface OptionGroup {
+export interface OptionGroup {
 
     id: number,
     // Olo option group id (a.k.a. modifier id).
