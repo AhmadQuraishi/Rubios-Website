@@ -434,7 +434,6 @@ const Product = () => {
     // products: option.products,
   ) => {
 
-
     options.map((itemMain: any, index0: number) => {
       let defaultOptionID: any = null;
       let defaultOptionsID: any = null;
@@ -454,6 +453,8 @@ const Product = () => {
       let optionsArray: any[] = [];
 
       itemMain.options.map((option: any) => {
+        console.log('option.customDropDown::::;', option.customDropDown);
+
         if (option.customDropDown || isInline(option)) {
           optionsArray.push({
             optionID: option.id,
@@ -527,7 +528,7 @@ const Product = () => {
             return;
           } else {
             return (
-              item.modifiers &&
+              item.modifiers && !isInline(item) &&
               prepareProductOptionsArray(
                 item.modifiers,
                 item.id,
