@@ -94,7 +94,7 @@ const OrderConfirmation = () => {
         msg = 'You’re all set!';
       }
     } else {
-      msg = 'GET $5 OFF ANY ENTREE ON YOUR FIRST ORDER';
+      msg = 'GET $5 OFF ANY ENTREE ON YOUR NEXT ORDER';
     }
     return msg;
   };
