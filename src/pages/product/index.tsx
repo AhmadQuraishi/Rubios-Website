@@ -45,6 +45,7 @@ import TagManager from 'react-gtm-module';
 import ProductToggle from './product-toggle/productToggle';
 
 import _ from 'lodash'
+
 const Product = () => {
   const { id, edit } = useParams();
   const isMobile = useMediaQuery('(max-width:468px)');
