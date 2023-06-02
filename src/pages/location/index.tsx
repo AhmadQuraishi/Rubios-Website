@@ -496,13 +496,16 @@ const Location = () => {
               />
             </Grid>
             {orderType && !loadDynamicMap && (
-              <Grid
-                lg={7}
-                md={7}
-                sm={7}
-                style={{ display: 'flex', width: '100%' }}
-              >
-                <img style={{ width: '100%' }} alt="" src={PromotionDesktop} />
+              <Grid lg={7} md={7} sm={7} style={{ width: '100%' }}>
+                <img
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                  }}
+                  alt=""
+                  src={PromotionDesktop}
+                />
               </Grid>
             )}
             {orderType && loadDynamicMap && (
@@ -545,11 +548,19 @@ const Location = () => {
                 <LoadingBar />
               </Grid>
             )} */}
-          <Grid xs={12} sx={{ display: 'flex', flexDirection: 'column' }}>
+          <Grid
+            xs={12}
+            sm={12}
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
             {orderType && loadDynamicMap ? (
               <Grid
                 xs={12}
-                style={{ display: 'flex', width: '100%', height: '400px' }}
+                sm={12}
+                style={{ display: 'flex', width: '100%', height: '520px' }}
               >
                 <GoogleMapComponent
                   zoom={zoom}
@@ -566,12 +577,20 @@ const Location = () => {
                 />
               </Grid>
             ) : (
-              <Grid xs={12} style={{ display: 'flex', width: '100%' }}>
+              <Grid xs={12} sm={12} style={{ display: 'flex', width: '100%' }}>
                 <img style={{ width: '100%' }} alt="" src={PromotionMobile} />
               </Grid>
             )}
-            <Grid xs={12} sx={{ display: 'flex', flexDirection: 'row' }}>
-              <Grid xs={12}>
+            <Grid
+              xs={12}
+              sm={12}
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+              }}
+            >
+              <Grid xs={12} sm={12}>
                 <LocationCard
                   actionTypes={actionTypes}
                   setAction={setAction}
