@@ -5,6 +5,9 @@ const ItemImage = (props: any) => {
   const { name, id, className, productImageURL, optionImages, isdefault } =
     props;
 
+  // console.log('optionImages::::::', optionImages, 'id:::', id);
+
+
   const [imageURL, setImageURL] = useState<any>(null);
 
   useEffect(() => {
@@ -18,12 +21,12 @@ const ItemImage = (props: any) => {
     }
     optionImages.map((item: any) => {
       if (process.env.REACT_APP_NODE_ENV !== 'production') {
-        if (item.sandbox_plu_names.indexOf(id.toString()) != -1) {
+        if (item.sandbox_plu_names.indexOf(id?.toString()) != -1) {
           // setImageURL(item.yoast_head_json.schema['@graph'][1].contentUrl);
           setImageURL(item.fimg_url);
         }
       } else {
-        if (item.production_plu_names.indexOf(id.toString()) != -1) {
+        if (item.production_plu_names.indexOf(id?.toString()) != -1) {
           // setImageURL(item.yoast_head_json.schema['@graph'][1].contentUrl);
           setImageURL(item.fimg_url);
         }
@@ -36,13 +39,13 @@ const ItemImage = (props: any) => {
       {(name.toLowerCase() === 'as is' ||
         name.toLowerCase() === 'customize' ||
         checkTacoMatch(name, isdefault)) && (
-        <img
-          aria-hidden="true"
-          src={productImageURL}
-          alt=""
-          className={`${className}`}
-        />
-      )}
+          <img
+            aria-hidden="true"
+            src={productImageURL}
+            alt=""
+            className={`${className}`}
+          />
+        )}
 
       {name.toLowerCase() !== 'customize' &&
         name.toLowerCase() !== 'as is' &&
