@@ -70,7 +70,8 @@ const Location = () => {
   const [staticMapImageUrl, setStaticMapImageUrl] = useState('');
   const [loadDynamicMap, setLoadDynamicMap] = useState(false);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
-  const isDesktop = useMediaQuery(theme.breakpoints.up('sm'));
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+  const isTablet = useMediaQuery(theme.breakpoints.down('md'));
   const {
     restaurants,
     nearbyRestaurants,
@@ -528,7 +529,7 @@ const Location = () => {
           </Grid>
         </Page>
       )}
-      {!isDesktop && (
+      {isTablet && (
         <Page
           title={'Location'}
           description={
@@ -560,7 +561,7 @@ const Location = () => {
               <Grid
                 xs={12}
                 sm={12}
-                style={{ display: 'flex', width: '100%', height: '520px' }}
+                style={{ display: 'flex', width: '100%', height: '680px' }}
               >
                 <GoogleMapComponent
                   zoom={zoom}
