@@ -141,6 +141,7 @@ const Product = () => {
       );
       console.log('IsEdIT-productDetails::::', productDetails);
       console.log('IsEdIT-product::::', product);
+      const basketSum = _.sumBy(_.map(basket?.products, b => _.sumBy(b.choices, 'cost')))
 
       if (product) {
         setCount(product.quantity);
@@ -480,6 +481,9 @@ const Product = () => {
           }
         }
         if (isExistInEdit(option.id)) {
+          console.log('basket:::', _.sumBy(_.map(basket?.products, b => _.sumBy(b.choices, 'cost'))));
+
+
           ptotalCost = ptotalCost + option.cost;
           getTotalCost(
             productDetails?.cost || 0 + ptotalCost || 0 * count || 0,
@@ -555,9 +559,10 @@ const Product = () => {
       const product = basketObj.basket.products.find(
         (item: any) => item.id == edit,
       );
-      console.log('product::::::', product);
+      console.log('product::::::', product.totalcost);
 
       product.choices.map((item: any, index: number) => {
+        console.log('product::::::', item);
         if (item.optionid == id) isExist = true;
       });
     }
@@ -876,6 +881,7 @@ const Product = () => {
         } else {
           console.log('ABK: ITEM', item);
           console.log('ABK: isSelected', item.selectedOptions.includes(optionId));
+
           const data = selectedSides;
           if (isMergeSides(item)) {
             const index = data.indexOf(optionId);
@@ -903,18 +909,22 @@ const Product = () => {
             } else {
               // let quantity = Object.keys(selectedItemList).length && selectedItemList[optionId] ? selectedItemList.optionId.quantity : 0
               // selectedItemList[optionId] = { "id": optionId, "quantity": quantity + 1 }
+              debugger
               if (data.length >= 2) {
                 const option = item.options.find(
                   (option: any) => option.optionID == data[0],
                 );
                 data.splice(0, 1);
                 totalPrice -= option.option?.cost || 0
+                data.push(optionId);
               }
-              const option = item.options.find(
-                (option: any) => option.optionID == optionId,
-              );
-              data.push(optionId); // Item doesn't exist, so add it
-              // totalPrice += option.option?.cost || 0
+              if (data.length == 1) {
+                const option = item.options.find(
+                  (option: any) => option.optionID == data[0],
+                );
+                totalPrice -= option.option?.cost || 0
+              }
+              // data.push(optionId); // Item doesn't exist, so add it
             }
           }
 
@@ -1058,21 +1068,12 @@ const Product = () => {
 
     });
     setOptionsCost(optionPrice);
+    console.log('totalPrice:::::', totalPrice);
+
     setTotalCost(totalPrice);
     setOptionsSelectionArray((optionsSelectionArray: any) => [
       ...optionsSelectionArray,
     ]);
-  };
-
-
-  const createDisableView = (
-    itemMain: any,
-  ): boolean => {
-    let isDisabled = true;
-    optionsSelectionArray.map((item: any) => {
-
-    });
-    return isDisabled;
   };
 
   const checkOptionSelected = (
@@ -1188,11 +1189,17 @@ const Product = () => {
   const [optionsCost, setOptionsCost] = useState(0);
 
   const getTotalCost = (cost: any = null) => {
+    const basketSum = _.sumBy(_.map(basket?.products, b => _.sumBy(b.choices, 'cost')))
+
     if (cost) {
       setTotalCost(cost);
     } else {
-      setOptionsCost(ptotalCost);
-      setTotalCost(((productDetails?.cost || 0) + ptotalCost) * count);
+      // setOptionsCost(basketSum);
+      // setTotalCost(((productDetails?.cost || 0) + basketSum) * count);
+
+      setOptionsCost(edit && basketSum || ptotalCost);
+      setTotalCost(((productDetails?.cost || 0) + (edit && basketSum || ptotalCost)) * count);
+
     }
   };
 
