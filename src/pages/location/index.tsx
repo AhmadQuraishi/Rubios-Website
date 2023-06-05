@@ -501,10 +501,10 @@ const Location = () => {
                   style={{
                     width: '100%',
                     height: '100%',
-                    objectFit: 'cover',
+                    objectFit: 'contain',
                   }}
                   alt=""
-                  src={PromotionDesktop}
+                  src={process.env.REACT_APP_IMAGE_LOCATION_PAGE}
                 />
               </Grid>
             )}
@@ -578,7 +578,11 @@ const Location = () => {
               </Grid>
             ) : (
               <Grid xs={12} sm={12} style={{ display: 'flex', width: '100%' }}>
-                <img style={{ width: '100%' }} alt="" src={PromotionMobile} />
+                <img
+                  style={{ width: '100%' }}
+                  alt=""
+                  src={process.env.REACT_APP_IMAGE_LOCATION_PAGE}
+                />
               </Grid>
             )}
             <Grid
