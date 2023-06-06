@@ -230,7 +230,11 @@ const DeliveryAddresses = (props: any) => {
           editDeliveryAddress?.address1 !== '' ? (
             <>
               <Grid sx={{ paddingBottom: '150px' }} item xs={12}>
-                <Typography className={'delivery-heading-text'} variant="body2">
+                <Typography
+                  className={'delivery-heading-text'}
+                  variant="body2"
+                  sx={{ paddingTop: '30px' }}
+                >
                   DELIVERY IS AVAILABLE FOR THIS ADDRESS
                 </Typography>
 
@@ -313,7 +317,10 @@ const DeliveryAddresses = (props: any) => {
                 <Typography
                   className={'delivery-heading-text'}
                   variant="body2"
-                  sx={{ fontFamily: "'GritSans-Bold' !important" }}
+                  sx={{
+                    fontFamily: "'GritSans-Bold' !important",
+                    paddingTop: '32px',
+                  }}
                 >
                   DELIVERY ADDRESSES
                 </Typography>
@@ -346,6 +353,7 @@ const DeliveryAddresses = (props: any) => {
                             borderRadius: 'inherit',
                             boxShadow: 'none',
                             background: address.isdefault ? '#f2f6fb' : 'none',
+                            margin: '0px',
                           }}
                         >
                           <CardContent

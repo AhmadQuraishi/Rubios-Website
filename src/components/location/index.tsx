@@ -583,10 +583,14 @@ const LocationCard = (props: any) => {
       <Grid
         item
         xs={12}
-        sm={5}
-        md={4}
-        lg={4}
-        sx={{ zIndex: 1, margin: '20px 30px' }}
+        sm={12}
+        md={12}
+        lg={12}
+        sx={{
+          zIndex: 1,
+          // margin: '20px 0px'
+          backgroundColor: 'white',
+        }}
       >
         {showAllRestaurants && (
           <div
@@ -659,7 +663,7 @@ const LocationCard = (props: any) => {
           </div>
         )}
         <Card>
-          <Grid container spacing={2} className="location-sidebar">
+          <Grid container className="location-sidebar">
             <Grid item xs={12}>
               <Typography variant="h1" className="sr-only">
                 Choose your location
@@ -711,7 +715,11 @@ const LocationCard = (props: any) => {
                 </ToggleButton>
               </ToggleButtonGroup>
             </Grid>
-            <Grid item xs={12} style={{ position: 'relative', zIndex: 1 }}>
+            <Grid
+              item
+              xs={12}
+              style={{ position: 'relative', zIndex: 1, paddingTop: '16px' }}
+            >
               {orderType &&
                 orderType === 'dispatch' &&
                 !addCustomAddressCheck() && (
@@ -822,6 +830,7 @@ const LocationCard = (props: any) => {
                         textDecoration: 'none',
                         fontWeight: 500,
                         color: '#0075BF',
+                        paddingBottom: '16px',
                       }}
                       title="View All Resturants"
                       role="button"

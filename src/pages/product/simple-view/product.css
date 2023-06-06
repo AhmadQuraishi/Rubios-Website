@@ -27,15 +27,6 @@ fieldset.field-set {
   text-transform: uppercase;
 }
 
-.pro-head {
-  font-family: 'GritSans-Bold' !important;
-  padding-bottom: 15px;
-  font-size: 25px;
-  color: #0075BF;
-  margin-top: 14px;
-  text-transform: uppercase;
-}
-
 .product-detail .label.bold {
   font-family: 'Librefranklin-Regular' !important;
   font-size: 16px !important;
@@ -131,9 +122,7 @@ legend.heading-ui.h3 {
   background: white;
   box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.2);
   margin: auto;
-  margin-bottom: 5px;
-  margin-top: 5px;
-  width: 110px;
+  width: 140px;
 }
 
 .product-detail .quantity input,
@@ -146,7 +135,7 @@ legend.heading-ui.h3 {
 
 .product-detail .quantity2 input,
 .product-detail .quantity2 button {
-  height: 30px !important;
+  height: 40px !important;
   /* padding: 0px 5px !important; */
   background: transparent;
   box-shadow: none;
@@ -184,7 +173,7 @@ legend.heading-ui.h3 {
   font-family: 'Librefranklin-Regular' !important;
   font-size: 30px;
   color: #414141;
-  min-width: 35px !important;
+  min-width: 49px !important;
 }
 
 .product-detail .quantity fieldset {
@@ -645,14 +634,4 @@ legend.heading-ui.h3 {
   font-size: 15px;
   font-family: 'Librefranklin-Regular' !important;
   font-weight: bold;
-}
-
-.content {
-  background-color: lightgray;
-  padding: 20px;
-}
-
-.content.disabled {
-  opacity: 0.5;
-  pointer-events: none;
 }

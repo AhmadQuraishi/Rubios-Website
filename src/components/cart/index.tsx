@@ -509,8 +509,8 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
     const productItems = basketObj?.basket?.products;
 
     if (productItems?.length) {
-      let actionMap: { step: number, list?: String } = {step: stepValue}
-      
+      let actionMap: { step: number, list?: String } = { step: stepValue }
+
       if (stepValue == 1) {
         actionMap.list = 'CART';
       }
@@ -611,76 +611,76 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
           </Grid>
           {(basketObj?.basket?.products?.length == 0 ||
             basketObj.basket == null) && (
-            <Grid
-              id="cart-main-conatiner"
-              item
-              xs={12}
-              style={{
-                height: '220px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: 'column',
-                paddingRight: '25px',
-              }}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 512 512"
-                aria-label="Cart"
-                role="img"
-                style={{ width: '70px', marginBottom: '10px' }}
-              >
-                <path
-                  fill="none"
-                  stroke="#000"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="40"
-                  fill-rule="evenodd"
-                  d="M80,176a16,16,0,0,0-16,16V408c0,30.24,25.76,56,56,56H392c30.24,0,56-24.51,56-54.75V192a16,16,0,0,0-16-16Z"
-                />
-                <path
-                  fill="none"
-                  stroke="#000"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="40"
-                  fill-rule="evenodd"
-                  d="M160,176V144a96,96,0,0,1,96-96h0a96,96,0,0,1,96,96v32"
-                />
-              </svg>
-              {/*<svg*/}
-              {/*xmlns="http://www.w3.org/2000/svg"*/}
-              {/*viewBox="0 0 24 24"*/}
-              {/*aria-label="Cart"*/}
-              {/*role="img"*/}
-              {/*style={{ width: '60px', marginBottom: '10px' }}*/}
-              {/*>*/}
-              {/*<path fill="none" d="M0 0h24v24H0V0z"></path>*/}
-              {/*<path d="M15.55 13c.75 0 1.41-.41 1.75-1.03l3.58-6.49A.996.996 0 0020.01 4H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7l1.1-2h7.45zM6.16 6h12.15l-2.76 5H8.53L6.16 6zM7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"></path>*/}
-              {/*</svg>*/}
-              <p className={classes.emptyCart}>Your Bag Is Currently Empty</p>
-              <br />
-              <Button
-                variant="contained"
-                title="Add Another Menu Item"
-                sx={{ width: '100%', marginBottom: '15px' }}
-                onClick={() => {
-                  showCart();
-                  return false;
+              <Grid
+                id="cart-main-conatiner"
+                item
+                xs={12}
+                style={{
+                  height: '220px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexDirection: 'column',
+                  paddingRight: '25px',
                 }}
-                onKeyUp={(e) => {
-                  if (e.keyCode === 13) {
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 512 512"
+                  aria-label="Cart"
+                  role="img"
+                  style={{ width: '70px', marginBottom: '10px' }}
+                >
+                  <path
+                    fill="none"
+                    stroke="#000"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="40"
+                    fill-rule="evenodd"
+                    d="M80,176a16,16,0,0,0-16,16V408c0,30.24,25.76,56,56,56H392c30.24,0,56-24.51,56-54.75V192a16,16,0,0,0-16-16Z"
+                  />
+                  <path
+                    fill="none"
+                    stroke="#000"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="40"
+                    fill-rule="evenodd"
+                    d="M160,176V144a96,96,0,0,1,96-96h0a96,96,0,0,1,96,96v32"
+                  />
+                </svg>
+                {/*<svg*/}
+                {/*xmlns="http://www.w3.org/2000/svg"*/}
+                {/*viewBox="0 0 24 24"*/}
+                {/*aria-label="Cart"*/}
+                {/*role="img"*/}
+                {/*style={{ width: '60px', marginBottom: '10px' }}*/}
+                {/*>*/}
+                {/*<path fill="none" d="M0 0h24v24H0V0z"></path>*/}
+                {/*<path d="M15.55 13c.75 0 1.41-.41 1.75-1.03l3.58-6.49A.996.996 0 0020.01 4H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7l1.1-2h7.45zM6.16 6h12.15l-2.76 5H8.53L6.16 6zM7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"></path>*/}
+                {/*</svg>*/}
+                <p className={classes.emptyCart}>Your Bag Is Currently Empty</p>
+                <br />
+                <Button
+                  variant="contained"
+                  title="Add Another Menu Item"
+                  sx={{ width: '100%', marginBottom: '15px' }}
+                  onClick={() => {
                     showCart();
                     return false;
-                  }
-                }}
-              >
-                Start Your Order
-              </Button>
-            </Grid>
-          )}
+                  }}
+                  onKeyUp={(e) => {
+                    if (e.keyCode === 13) {
+                      showCart();
+                      return false;
+                    }
+                  }}
+                >
+                  Start Your Order
+                </Button>
+              </Grid>
+            )}
           {basketObj?.basket?.products?.length > 0 && (
             <Grid item xs={12} sx={{ padding: '0 20px 0 0' }}>
               <Typography
@@ -720,8 +720,8 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                       >
                         {item.productId !== utensilsReducer.utensilsProductId
                           ? item.quantity.toString() +
-                            ' x ' +
-                            item.name.toString()
+                          ' x ' +
+                          item.name.toString()
                           : item.name.toString()}
                       </Typography>
                     </Grid>
@@ -766,8 +766,8 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                           <ul className={`btnslist ${classes.btnsList}`}>
                             <li>
                               {productRemoveObj &&
-                              productRemoveObj.loading &&
-                              clickAction == item.id + '-remove' ? (
+                                productRemoveObj.loading &&
+                                clickAction == item.id + '-remove' ? (
                                 <Button
                                   key={Math.random() + 'disable-remove'}
                                   title="Remove"
@@ -799,7 +799,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                               {!checkItemIsUpsells(item.productId) && (
                                 <Grid item xs={3}>
                                   {productRemoveObj?.loading ||
-                                  productAddObj?.loading ? (
+                                    productAddObj?.loading ? (
                                     <Button
                                       key={Math.random() + 'disable-edit'}
                                       onClick={() => false}
@@ -815,14 +815,12 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                       onClick={() => {
                                         showCart();
                                         navigate(
-                                          `product/${item.productId}/${
-                                            item.id
-                                          }${
-                                            window.location.href
-                                              .toLowerCase()
-                                              .indexOf('product') == -1
-                                              ? '?edit=true'
-                                              : ''
+                                          `product/${item.productId}/${item.id
+                                          }${window.location.href
+                                            .toLowerCase()
+                                            .indexOf('product') == -1
+                                            ? '?edit=true'
+                                            : ''
                                           }`,
                                         );
                                       }}
@@ -840,7 +838,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                             </li>
                             <li>
                               {productAddObj?.loading &&
-                              clickAction == item.id + '-add' ? (
+                                clickAction == item.id + '-add' ? (
                                 <Button
                                   key={Math.random() + 'disable-duplicate'}
                                   onClick={() => false}
@@ -897,8 +895,8 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                       className="item-image"
                       style={{ height: '35px' }}
                       src={require(`../../assets/imgs/untensils.png`)}
-                      // alt={option.name}
-                      // title={option.name}
+                    // alt={option.name}
+                    // title={option.name}
                     />
                     <Typography
                       variant="body2"
@@ -993,21 +991,21 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                               tabIndex={0}
                               htmlFor={`${index}`}
                               style={{ width: '100%' }}
-                              // onKeyUp={(e) => {
-                              //   if (e.keyCode === 13)
-                              //     showChildOptions(
-                              //       itemChild.option.id,
-                              //       itemMain.id,
-                              //       itemChild.dropDownValues,
-                              //       itemChild.selectedValue,
-                              //     );
-                              // }}
+                            // onKeyUp={(e) => {
+                            //   if (e.keyCode === 13)
+                            //     showChildOptions(
+                            //       itemChild.option.id,
+                            //       itemMain.id,
+                            //       itemChild.dropDownValues,
+                            //       itemChild.selectedValue,
+                            //     );
+                            // }}
                             >
                               <Card
                                 className="card-panel card-item"
                                 title={type}
-                                // is-mandatory={itemMain.mandatory.toString()}
-                                // parent-option-id={itemMain.parentOptionID}
+                              // is-mandatory={itemMain.mandatory.toString()}
+                              // parent-option-id={itemMain.parentOptionID}
                               >
                                 <Grid
                                   container
@@ -1035,8 +1033,8 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                                       <img
                                         className="item-image"
                                         src={require(`../../assets/imgs/${type}.jpg`)}
-                                        // alt={option.name}
-                                        // title={option.name}
+                                      // alt={option.name}
+                                      // title={option.name}
                                       />
                                       <div className="check-mark">
                                         <div
@@ -1294,42 +1292,42 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                     </Grid>
                     {basketObj?.basket?.discounts?.length > 0
                       ? basketObj.basket.discounts.map((discount: any) => {
-                          return (
-                            <>
-                              <Grid
-                                item
-                                xs={9}
-                                sx={{
-                                  color: 'secondary.main',
-                                  fontSize: '14px',
-                                  paddingBottom: '2px',
-                                  fontFamily:
-                                    "'Librefranklin-Regular' !important",
-                                }}
-                              >
-                                {discount.type === 'Coupon'
-                                  ? 'Coupon Code: '
-                                  : 'REWARD: '}
-                                {discount.description}
-                              </Grid>
-                              <Grid
-                                item
-                                xs={3}
-                                sx={{
-                                  color: 'secondary.main',
-                                  fontSize: '14px',
-                                  textAlign: 'right',
-                                  paddingBottom: '2px',
-                                  fontFamily:
-                                    "'Librefranklin-Regular' !important",
-                                }}
-                              >
-                                -$
-                                {discount.amount && discount.amount.toFixed(2)}
-                              </Grid>
-                            </>
-                          );
-                        })
+                        return (
+                          <>
+                            <Grid
+                              item
+                              xs={9}
+                              sx={{
+                                color: 'secondary.main',
+                                fontSize: '14px',
+                                paddingBottom: '2px',
+                                fontFamily:
+                                  "'Librefranklin-Regular' !important",
+                              }}
+                            >
+                              {discount.type === 'Coupon'
+                                ? 'Coupon Code: '
+                                : 'REWARD: '}
+                              {discount.description}
+                            </Grid>
+                            <Grid
+                              item
+                              xs={3}
+                              sx={{
+                                color: 'secondary.main',
+                                fontSize: '14px',
+                                textAlign: 'right',
+                                paddingBottom: '2px',
+                                fontFamily:
+                                  "'Librefranklin-Regular' !important",
+                              }}
+                            >
+                              -$
+                              {discount.amount && discount.amount.toFixed(2)}
+                            </Grid>
+                          </>
+                        );
+                      })
                       : null}
                     {basketObj?.basket?.tip > 0 ? (
                       <>
@@ -1371,7 +1369,7 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                         fontFamily: "'Librefranklin-Regular' !important",
                         display: 'flex',
                       }}
-                      // title="ESTIMATED TAX AND FEES"
+                    // title="ESTIMATED TAX AND FEES"
                     >
                       <div>
                         {basketObj?.basket?.totalfees > 0 ? (
@@ -1501,11 +1499,11 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
                             }}
                           >
                             {basketObj?.basket?.fees?.length &&
-                            basketObj.basket.fees.filter(
-                              (fee: any) =>
-                                fee.description ===
-                                'UCSD Living Wage Surcharge',
-                            ).length > 0
+                              basketObj.basket.fees.filter(
+                                (fee: any) =>
+                                  fee.description ===
+                                  'UCSD Living Wage Surcharge',
+                              ).length > 0
                               ? 'UCSD Living Wage Surcharge:'
                               : 'SERVICE FEE:'}
                           </Typography>

@@ -4,7 +4,7 @@ import { MetadataItem } from "./MetadataItem"
 import { OptionAvailability } from "./OptionAvailability"
 import { OptionGroup } from "./OptionGroup"
 
-interface Option {
+export interface Option {
 
 
     id: number,
@@ -19,6 +19,8 @@ interface Option {
     name: string,
     //Name of the option.
 
+    description: string,
+
     isdefault: boolean,
     //Whether or not the option should be selected by default.
 
@@ -27,6 +29,8 @@ interface Option {
 
     children: boolean,
     //Whether or not the option has child option groups.
+
+    options: OptionGroup[],
 
     modifiers: OptionGroup[],
     // List of child option groups.

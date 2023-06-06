@@ -53,16 +53,17 @@ const ToggleSwitch = styled((props: SwitchProps) => (
 }));
 
 const ProductToggle = (props: any) => {
-  const { showChildToggleOptions, main } = props;
-  const [asIs, setAsIs] = useState<any>(null);
+  const { showChildOptions, main, toggleState } = props;
+  const [asIs, setAsIs] = useState<any>(true);
   const [customize, setCustomize] = useState<any>(null);
-  const [toggle, setToggle] = useState(null);
+  const [toggle, setToggle] = useState<boolean>(false);
+
 
   useEffect(() => {
     setAsIs(main?.options[0]);
     setCustomize(main?.options[1]);
   }, [main]);
-  console.log(toggle);
+  console.log('modifiermain:::::;', main);
   console.log(asIs, 'asIs');
   console.log(customize, 'customize');
   const checkOptionSelected = (
@@ -71,10 +72,17 @@ const ProductToggle = (props: any) => {
   ): boolean => {
     let isSelected = false;
     if (main.id === parnetOptionID) {
-      isSelected = main.selectedOptions.includes(optionId);
+      isSelected = main.selectedOptions?.includes(optionId);
     }
     return isSelected;
   };
+
+
+  const onChangeToggle = () => {
+    setToggle(!toggle);
+    // toggleState(!toggle)
+  }
+
 
   return (
     <>
@@ -100,22 +108,24 @@ const ProductToggle = (props: any) => {
           // id={asIs?.option?.id}
           // value={main.selectedOptions}
           // checked={toggle === 'As is' ? false : true}
+          // checked={toggle}
           checked={
             checkOptionSelected(main.selectedOptions, main?.id)
               ? checkOptionSelected(main?.options[0]?.option?.id, main.id)
               : checkOptionSelected(main?.options[1]?.option?.id, main?.id)
           }
+          // onChange={() => toggleState(!toggle)}
           onChange={() => {
             if (checkOptionSelected(main?.options[0]?.option?.id, main?.id)) {
               // setToggle(checkOptionSelected(customize?.option?.id, main.id));
-              showChildToggleOptions(main?.options[1]?.option?.id, main?.id);
+              showChildOptions(main?.options[1]?.option?.id, main?.id, null, null);
             } else {
               // setToggle(checkOptionSelected(asIs?.option?.id, main.id));
-              showChildToggleOptions(main?.options[0]?.option?.id, main?.id);
+              showChildOptions(main?.options[0]?.option?.id, main?.id, null, null);
             }
           }}
         />
-        <Typography
+        < Typography
           sx={{
             fontWeight: 'bold',
             display: 'flex',
@@ -131,7 +141,7 @@ const ProductToggle = (props: any) => {
         >
           Customize
         </Typography>
-      </div>
+      </div >
     </>
   );
 };
