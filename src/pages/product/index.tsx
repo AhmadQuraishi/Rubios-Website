@@ -4,8 +4,6 @@ import {
   Card,
   Button,
   useMediaQuery,
-  Switch,
-  styled,
 } from '@mui/material';
 import './product.css';
 import * as React from 'react';
@@ -102,8 +100,6 @@ const Product = () => {
       }
     }
     setOptionsSelectionArray([]);
-    console.log('IsEdIT-baseket::::', basketObj);
-
     setBasketType((basketObj && basketObj.basketType) || 'New');
   }, []);
 
@@ -140,10 +136,6 @@ const Product = () => {
       const product = basketObj?.basket?.products?.find(
         (item: any) => item.id == edit,
       );
-      console.log('IsEdIT-productDetails::::', productDetails);
-      console.log('IsEdIT-product::::', product);
-      const basketSum = _.sumBy(_.map(basket?.products, b => _.sumBy(b.choices, 'cost')))
-
       if (product) {
         setCount(product.quantity);
         getTotalCost(productDetails.cost + ptotalCost || 0 * product.quantity);
@@ -370,7 +362,6 @@ const Product = () => {
       setActionStatus(true);
       dispatch(addProductRequest(dummyBasketObj.basket.id || '', request));
     }
-    // debugger;
     // if (
     //   dummyBasketObj &&
     //   dummyBasketObj.basket &&
@@ -447,7 +438,6 @@ const Product = () => {
       }
 
       if (isMergeSides(itemMain) && !edit) {
-        console.log('prepareProductOptionsArray called:::::', itemMain);
         setSelectedSides(itemMain.options.filter((it: any) => it.isdefault).map((item: any) => item.id))
       }
 
@@ -455,8 +445,6 @@ const Product = () => {
       let optionsArray: any[] = [];
 
       itemMain.options.map((option: any) => {
-        console.log('option.customDropDown::::;', option);
-
         if (option.customDropDown || isInline(option)) {
           optionsArray.push({
             optionID: option.id,
@@ -482,9 +470,6 @@ const Product = () => {
           }
         }
         if (isExistInEdit(option.id)) {
-          console.log('basket:::', _.sumBy(_.map(basket?.products, b => _.sumBy(b.choices, 'cost'))));
-
-
           ptotalCost = ptotalCost + option.cost;
           getTotalCost(
             productDetails?.cost || 0 + ptotalCost || 0 * count || 0,
@@ -507,9 +492,6 @@ const Product = () => {
             : [];
 
       isMergeSides(itemMain) && edit && setSelectedSides(selectedOptions)
-
-      console.log('selectedOptions:::::', selectedOptions);
-
 
       setOptionsSelectionArray((optionsSelectionArray: any) => [
         ...optionsSelectionArray,
@@ -560,10 +542,7 @@ const Product = () => {
       const product = basketObj.basket.products.find(
         (item: any) => item.id == edit,
       );
-      console.log('product::::::', product.totalcost);
-
       product.choices.map((item: any, index: number) => {
-        console.log('product::::::', item);
         if (item.optionid == id) isExist = true;
       });
     }
@@ -880,22 +859,19 @@ const Product = () => {
             }
           }
         } else {
-          console.log('ABK: ITEM', item);
-          console.log('ABK: isSelected', item.selectedOptions.includes(optionId));
-
           const data = selectedSides;
           if (isMergeSides(item)) {
             const index = data.indexOf(optionId);
-            console.log('ABK: iindiex', index);
             // let quantity = selectedItemList && Object.keys(selectedItemList).length && selectedItemList[optionId] ? selectedItemList.optionId.quantity : 0
             if (index > -1) {
               if (_.union(data).length == 1) return;
-              data.splice(index, 1); // Item exists, so remove it
               // data.push(..._.union(data))
               const option = item.options.find(
-                (option: any) => option.optionID == optionId,
+                (option: any) => option.optionID == selectedSides[index],
               );
-              // totalPrice -= option.option?.cost || 0
+              totalPrice -= option.option?.cost || 0
+              data.splice(index, 1); // Item exists, so remove it
+
               if (isMergeSides(item) && selectedSides.length === 1) {
                 let duplicate = selectedSides.filter((val: any) => val != optionId)
                 const option = item.options.find(
@@ -910,26 +886,55 @@ const Product = () => {
             } else {
               // let quantity = Object.keys(selectedItemList).length && selectedItemList[optionId] ? selectedItemList.optionId.quantity : 0
               // selectedItemList[optionId] = { "id": optionId, "quantity": quantity + 1 }
-              debugger
-              if (data.length >= 2) {
-                const option = item.options.find(
-                  (option: any) => option.optionID == data[0],
-                );
-                data.splice(0, 1);
-                totalPrice -= option.option?.cost || 0
-                data.push(optionId);
-              }
-              if (data.length == 1) {
-                const option = item.options.find(
-                  (option: any) => option.optionID == data[0],
-                );
-                totalPrice -= option.option?.cost || 0
+              if (edit) {
+                if (data.length >= 2) {
+                  const option = item.options.find(
+                    (option: any) => option.optionID == data[0],
+                  );
+                  data.splice(0, 1);
+                  totalPrice -= option.option?.cost || 0
+
+                  const optionSecond = item.options.find(
+                    (optionSecond: any) => optionSecond.optionID == optionId,
+                  );
+                  totalPrice += optionSecond.option?.cost || 0
+                  data.push(optionId);
+                }
+                if (data.length == 1) {
+                  const option = item.options.find(
+                    (option: any) => option.optionID == data[0],
+                  );
+                  totalPrice -= option.option?.cost || 0
+                  data.push(optionId);
+                }
+              } else {
+
+                if (data.length >= 2) {
+                  const option = item.options.find(
+                    (option: any) => option.optionID == data[0],
+                  );
+                  data.splice(0, 1);
+                  totalPrice -= option.option?.cost || 0
+
+                  data.push(optionId);
+                  const optionSecond = item.options.find(
+                    (optionSecond: any) => optionSecond.optionID == optionId,
+                  );
+                  if (!edit) {
+                    totalPrice += optionSecond.option?.cost || 0
+                  }
+
+                }
+                if (data.length == 1) {
+                  const option = item.options.find(
+                    (option: any) => option.optionID == data[0],
+                  );
+                  totalPrice -= option.option?.cost || 0
+                }
               }
               // data.push(optionId); // Item doesn't exist, so add it
             }
           }
-
-          console.log('optionId11:::::', optionId, selectedSides);
           // if (item.name === 'Pick your sides' && checkData.length === 1) {
           //   const option = item.options.find(
           //     (option: any) => option.optionID == selectedSides[0],
@@ -949,9 +954,8 @@ const Product = () => {
 
           // }
 
-          if (item.selectedOptions.includes(optionId)) {
+          if (item.selectedOptions.includes(optionId) && !isMergeSides(item)) {
             const index = item.selectedOptions.indexOf(optionId);
-            console.log('elsecase:::::', index, '---', optionId);
             if (index > -1) {
               let optionDDLE = null;
               if (optionsDDL && optionsDDLSelectedID) {
@@ -975,8 +979,9 @@ const Product = () => {
                 //   optionsCost -
                 //     ((optionDDLE ? optionDDLE.cost : 0) + option.option.cost),
                 // );
-
-                totalPrice -= prc;
+                if (!isMergeSides(item)) {
+                  totalPrice -= prc;
+                }
                 // setTotalCost((totalCost || 0) - prc);
               }
 
@@ -1009,55 +1014,55 @@ const Product = () => {
             // item.selectedOptions = selectedSides
 
           } else {
-
-            item.selectedOptions.push(optionId);
-            item.selected = true;
-            // debugger;
-            const option = item.options.find(
-              (option: any) => option.optionID == optionId,
-            );
-            let optionDDLE = null;
-            if (optionsDDL && optionsDDLSelectedID) {
-              optionDDLE = optionsDDL.find(
-                (option: any) => option.id == optionsDDLSelectedID,
+            if (!isMergeSides(item)) {
+              item.selectedOptions.push(optionId);
+              item.selected = true;
+              const option = item.options.find(
+                (option: any) => option.optionID == optionId,
               );
-            }
-            if (option) {
-              const cc =
-                optionsCost +
-                (optionDDLE ? optionDDLE.cost : 0) +
-                option.option.cost;
-              optionPrice = cc;
-              // setOptionsCost(cc);
-              const opc =
-                ((optionDDLE ? optionDDLE.cost : 0) + option.option.cost) *
-                count;
-              totalPrice += opc;
-              // setTotalCost((totalCost || 0) + opc);
-            }
-            let elems = optionsSelectionArray.filter(
-              (x: any) => x.parentOptionID == optionId,
-            );
-            if (elems) {
-              elems.map((x: any) => {
-                x.selected = true;
-                if (x.defaultOption) {
-                  let elem = optionsSelectionArray.find(
-                    (i: any) => i.parentOptionID == x.defaultOption,
-                  );
-                  if (elem) {
-                    elem.selected = true;
-                    if (elem.defaultOption) {
-                      let elem1 = optionsSelectionArray.find(
-                        (i: any) => i.parentOptionID == elem.defaultOption,
-                      );
-                      if (elem1) {
-                        elem1.selected = true;
+              let optionDDLE = null;
+              if (optionsDDL && optionsDDLSelectedID) {
+                optionDDLE = optionsDDL.find(
+                  (option: any) => option.id == optionsDDLSelectedID,
+                );
+              }
+              if (option) {
+                const cc =
+                  optionsCost +
+                  (optionDDLE ? optionDDLE.cost : 0) +
+                  option.option.cost;
+                optionPrice = cc;
+                // setOptionsCost(cc);
+                const opc =
+                  ((optionDDLE ? optionDDLE.cost : 0) + option.option.cost) *
+                  count;
+                totalPrice += opc;
+                // setTotalCost((totalCost || 0) + opc);
+              }
+              let elems = optionsSelectionArray.filter(
+                (x: any) => x.parentOptionID == optionId,
+              );
+              if (elems) {
+                elems.map((x: any) => {
+                  x.selected = true;
+                  if (x.defaultOption) {
+                    let elem = optionsSelectionArray.find(
+                      (i: any) => i.parentOptionID == x.defaultOption,
+                    );
+                    if (elem) {
+                      elem.selected = true;
+                      if (elem.defaultOption) {
+                        let elem1 = optionsSelectionArray.find(
+                          (i: any) => i.parentOptionID == elem.defaultOption,
+                        );
+                        if (elem1) {
+                          elem1.selected = true;
+                        }
                       }
                     }
                   }
-                }
-              });
+                });
+              }
             }
           }
           if (isMergeSides(item)) {
@@ -1069,8 +1074,6 @@ const Product = () => {
 
     });
     setOptionsCost(optionPrice);
-    console.log('totalPrice:::::', totalPrice);
-
     setTotalCost(totalPrice);
     setOptionsSelectionArray((optionsSelectionArray: any) => [
       ...optionsSelectionArray,
@@ -1089,7 +1092,6 @@ const Product = () => {
       if (item.selectedOptions.includes(optionId)) {
         isSelected = true
       }
-      // debugger;
     });
     return isSelected;
   };
@@ -1190,14 +1192,13 @@ const Product = () => {
   const [optionsCost, setOptionsCost] = useState(0);
 
   const getTotalCost = (cost: any = null) => {
-    const basketSum = _.sumBy(_.map(basket?.products, b => _.sumBy(b.choices, 'cost')))
-
+    const firtItem = _.first(basket?.products)
+    const basketSum = _.sumBy(_.map(firtItem?.choices, (choice: any) => _.sumBy(choice, 'cost')))
     if (cost) {
       setTotalCost(cost);
     } else {
       // setOptionsCost(basketSum);
       // setTotalCost(((productDetails?.cost || 0) + basketSum) * count);
-
       setOptionsCost(edit && basketSum || ptotalCost);
       setTotalCost(((productDetails?.cost || 0) + (edit && basketSum || ptotalCost)) * count);
 
@@ -1473,12 +1474,13 @@ const Product = () => {
                                     sx={{ position: 'relative' }}
                                   >
                                     <div style={{
-                                      opacity: isMergeSides(itemMain) && edit ? (!itemMain.selectedOptions.includes(itemChild.option.id) && _.union(selectedSides).length === 2 && 0.5 || 1) : (isMergeSides(itemMain) && _.union(selectedSides).length === 2 && !selectedSides?.includes(itemChild.option.id) ? 0.5 : 1),
-                                      pointerEvents: isMergeSides(itemMain) && edit && !itemMain.selectedOptions.includes(itemChild.option.id) && _.union(selectedSides).length === 2 && 'none' || 'auto'
-                                        || isMergeSides(itemMain) && (_.union(selectedSides).length === 2 && !selectedSides?.includes(itemChild.option.id) && 'none' || 'auto')
+                                      opacity: isMergeSides(itemMain) && edit ? (!itemMain.selectedOptions.includes(itemChild.option.id) && _.union(selectedSides).length === 2 && 0.5 || 1)
+                                        : (isMergeSides(itemMain) && _.union(selectedSides).length === 2 && !selectedSides?.includes(itemChild.option.id) ? 0.5 : 1),
+                                      pointerEvents: isMergeSides(itemMain) && edit ?
+                                        (!itemMain.selectedOptions.includes(itemChild.option.id) && _.union(selectedSides).length === 2 && 'none' || 'auto')
+                                        :
+                                        (isMergeSides(itemMain) && _.union(selectedSides).length === 2 && !selectedSides?.includes(itemChild.option.id) ? 'none' : 'auto')
                                     }}>
-                                      {console.log('itemMain:::::', itemMain)}
-
                                       {/* {itemMain.mandatory ? (
                                     <input
                                       aria-invalid={
@@ -1730,9 +1732,6 @@ const Product = () => {
                                                   </span>
                                                 )}
                                               </div>
-                                              {
-                                                // console.log('dropDownValues:::', itemChild.option, selectedSides)
-                                              }
                                               {itemChild.dropDownValues && (
                                                 <>
                                                   {checkOptionSelected(
@@ -1811,6 +1810,18 @@ const Product = () => {
                                                     <Button
                                                       title=""
                                                       aria-label="reduce"
+                                                      style={{ fontSize: "22px", color: '#0069aa' }}
+                                                      onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        if (selectedSides.length === 2) {
+                                                          showChildOptions(
+                                                            itemChild.option.id,
+                                                            itemMain.id,
+                                                            itemChild.dropDownValues,
+                                                            itemChild.selectedValue,
+                                                          );
+                                                        }
+                                                      }}
                                                     >
                                                       {' '}
                                                       -{' '}
@@ -1827,6 +1838,10 @@ const Product = () => {
                                                       title=""
                                                       className="add"
                                                       aria-label="increase"
+                                                      onClick={(e) => {
+                                                        e.stopPropagation();
+                                                      }}
+                                                      style={{ fontSize: "22px", color: '#0069aa', paddingTop: '11px' }}
                                                       sx={{
                                                         marginRight: {
                                                           xs: 'inherit',
@@ -1841,10 +1856,23 @@ const Product = () => {
                                               )}
                                               {!edit && isMergeSides(itemMain) && selectedSides?.includes(itemChild.option.id) &&
                                                 (
-                                                  <div className="quantity2">
+                                                  <div className="quantity2" style={{ marginTop: '5px' }}>
                                                     <Button
                                                       title=""
                                                       aria-label="reduce"
+                                                      id='minusBtn'
+                                                      style={{ fontSize: "22px", color: '#0069aa' }}
+                                                      onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        if (selectedSides.length === 2) {
+                                                          showChildOptions(
+                                                            itemChild.option.id,
+                                                            itemMain.id,
+                                                            itemChild.dropDownValues,
+                                                            itemChild.selectedValue,
+                                                          );
+                                                        }
+                                                      }}
                                                     >
                                                       {' '}
                                                       -{' '}
@@ -1859,8 +1887,12 @@ const Product = () => {
                                                     />
                                                     <Button
                                                       title=""
-                                                      className="add"
                                                       aria-label="increase"
+                                                      // style={{ color: '#0069aa' }}
+                                                      onClick={(e) => {
+                                                        e.stopPropagation();
+                                                      }}
+                                                      style={{ fontSize: "22px", color: '#0069aa', paddingTop: '11px' }}
                                                       sx={{
                                                         marginRight: {
                                                           xs: 'inherit',
