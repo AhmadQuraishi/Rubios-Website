@@ -290,11 +290,22 @@ const Product = () => {
           option.selectedOptions.map((item: any) => {
             options = options + item + ',';
             const elem = option.options.find((x: any) => x.optionID == item);
-
             if (elem && elem.selectedValue) {
               options = options + elem.selectedValue + ',';
+
               if (elem.option && elem.option.customDropDown) {
                 options = options.replace(`${item},`, '');
+              }
+              if (isInline(elem.option) && isMergeSides(option)) {
+                const optionsArray = _.split(options, ',');
+                const filteredArray = optionsArray.filter((value, index, arr) => {
+                  if (value === elem.selectedValue.toString() && arr.indexOf(value) !== index) {
+                    // Skip the duplicate occurrence of the element
+                    return false;
+                  }
+                  return true;
+                });
+                options = filteredArray.toString();
               }
             }
           });
