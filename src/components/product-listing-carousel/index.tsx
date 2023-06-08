@@ -40,6 +40,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontWeight: 600,
     color: theme.palette.text.secondary,
   },
+  imageContainer: {
+    position: 'relative',
+    // display: "inline-block",
+  },
   title: {
     color: '#0075BF',
     padding: '0px 0 12px 0',
@@ -74,8 +78,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const ProductListingCarousel = (props: any) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { productList, shownItemsCount, imgPath, orderType } =
-    props;
+  const { productList, shownItemsCount, imgPath, orderType } = props;
   let products: [Product] = productList;
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -180,20 +183,22 @@ const ProductListingCarousel = (props: any) => {
         ecommerce: {
           click: {
             actionField: {
-              list: 'PRODUCT CLICK'
-            }
+              list: 'PRODUCT CLICK',
+            },
           },
-          products: [{
-            id: product.id,
-            name: product.name,
-            category: product.categoryInfo?.name
-          }]
-        }
+          products: [
+            {
+              id: product.id,
+              name: product.name,
+              category: product.categoryInfo?.name,
+            },
+          ],
+        },
       },
     };
-    
+
     TagManager.dataLayer(tagManagerArgs);
-  }
+  };
 
   const triggerFacebookEventOnViewContentProduct = () => {
     let userObj: any = null;
