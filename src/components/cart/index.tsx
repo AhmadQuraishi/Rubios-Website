@@ -496,10 +496,10 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   };
 
   const fireViewCartEvent = (stepValue: number) => {
-    const productCategoryMap = categories.categories.reduce(
+    const productCategoryMap = categories?.categories?.reduce(
       (map: any, category: any) => {
         for (const product of category.products) {
-          map[product.id] = { id: category.id, name: category.name };
+          map[product.id] = { id: category?.id, name: category?.name };
         }
         return map;
       },
@@ -509,8 +509,8 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
     const productItems = basketObj?.basket?.products;
 
     if (productItems?.length) {
-      let actionMap: { step: number, list?: String } = {step: stepValue}
-      
+      let actionMap: { step: number; list?: String } = { step: stepValue };
+
       if (stepValue == 1) {
         actionMap.list = 'CART';
       }
