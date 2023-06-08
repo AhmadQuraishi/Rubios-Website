@@ -207,7 +207,9 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
     } else if (!upsells && restaurant?.id) {
       dispatch(getUpsellsRequest(restaurant?.id));
     }
-    dispatch(getCategoriesRequest(restaurant.id));
+    if (restaurant) {
+      dispatch(getCategoriesRequest(restaurant.id));
+    }
   }, []);
 
   useEffect(() => {
@@ -496,10 +498,10 @@ const Cart = ({ upsellsType, showCart, handleUpsells }: any) => {
   };
 
   const fireViewCartEvent = (stepValue: number) => {
-    const productCategoryMap = categories?.categories?.reduce(
+    const productCategoryMap = categories.categories.reduce(
       (map: any, category: any) => {
         for (const product of category.products) {
-          map[product.id] = { id: category?.id, name: category?.name };
+          map[product.id] = { id: category.id, name: category.name };
         }
         return map;
       },
