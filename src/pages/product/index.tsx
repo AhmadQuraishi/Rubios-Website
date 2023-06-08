@@ -880,6 +880,7 @@ const Product = () => {
                 (option: any) => option.optionID == selectedSides[index],
               );
               totalPrice -= option.option?.cost || 0
+              optionPrice -= option.option?.cost || 0
               data.splice(index, 1); // Item exists, so remove it
 
               if (isMergeSides(item) && selectedSides.length === 1) {
@@ -889,6 +890,7 @@ const Product = () => {
                 );
                 data.push(duplicate[0]);
                 totalPrice += option.option?.cost || 0
+                optionPrice += option.option?.cost || 0
               }
               // delete selectedItemList[optionId];
               // selectedItemList[optionId] = { "id": optionId, "quantity": quantity - 1 }
@@ -903,11 +905,13 @@ const Product = () => {
                   );
                   data.splice(0, 1);
                   totalPrice -= option.option?.cost || 0
+                  optionPrice -= option.option?.cost || 0
 
                   const optionSecond = item.options.find(
                     (optionSecond: any) => optionSecond.optionID == optionId,
                   );
                   totalPrice += optionSecond.option?.cost || 0
+                  optionPrice += optionSecond.option?.cost || 0
                   data.push(optionId);
                 }
                 if (data.length == 1) {
@@ -915,6 +919,7 @@ const Product = () => {
                     (option: any) => option.optionID == data[0],
                   );
                   totalPrice -= option.option?.cost || 0
+                  optionPrice -= option.option?.cost || 0
                   data.push(optionId);
                 }
               } else {
@@ -925,6 +930,7 @@ const Product = () => {
                   );
                   data.splice(0, 1);
                   totalPrice -= option.option?.cost || 0
+                  optionPrice -= option.option?.cost || 0
 
                   data.push(optionId);
                   const optionSecond = item.options.find(
@@ -932,6 +938,7 @@ const Product = () => {
                   );
                   if (!edit) {
                     totalPrice += optionSecond.option?.cost || 0
+                    optionPrice += optionSecond.option?.cost || 0
                   }
 
                 }
@@ -940,6 +947,7 @@ const Product = () => {
                     (option: any) => option.optionID == data[0],
                   );
                   totalPrice -= option.option?.cost || 0
+                  optionPrice -= option.option?.cost || 0
                 }
               }
               // data.push(optionId); // Item doesn't exist, so add it
@@ -1202,8 +1210,11 @@ const Product = () => {
   const [optionsCost, setOptionsCost] = useState(0);
 
   const getTotalCost = (cost: any = null) => {
-    const firtItem = _.first(basket?.products)
-    const basketSum = _.sumBy(_.map(firtItem?.choices, (choice: any) => _.sumBy(choice, 'cost')))
+    const firtsItem = _.first(basket?.products)
+    const basketSum = _.sumBy(firtsItem?.choices, 'cost')
+    console.log('basketSum:::', basketSum);
+    console.log('basketSumCount:::', count);
+
     if (cost) {
       setTotalCost(cost);
     } else {
