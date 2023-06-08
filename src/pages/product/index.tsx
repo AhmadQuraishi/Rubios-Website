@@ -1212,9 +1212,6 @@ const Product = () => {
   const getTotalCost = (cost: any = null) => {
     const firtsItem = _.first(basket?.products)
     const basketSum = _.sumBy(firtsItem?.choices, 'cost')
-    console.log('basketSum:::', basketSum);
-    console.log('basketSumCount:::', count);
-
     if (cost) {
       setTotalCost(cost);
     } else {
