@@ -76,6 +76,7 @@ const Product = () => {
   const [basketType, setBasketType] = useState();
   const [count, setCount] = React.useState(1);
   const [selectedSides, setSelectedSides] = useState<any>([]);
+  const [IsRemoved, setIsRemoved] = useState<any>(false);
   // const [toggle, setToggle] = useState();
   const dispatch = useDispatch();
 
@@ -502,6 +503,11 @@ const Product = () => {
             : [];
 
       isMergeSides(itemMain) && edit && setSelectedSides(selectedOptions)
+      let data: any[] = []
+      if (edit && selectedOptions.length === 1 && isMergeSides(itemMain)) {
+        data = [...selectedOptions, ...selectedOptions]
+        setSelectedSides(data)
+      }
 
       setOptionsSelectionArray((optionsSelectionArray: any) => [
         ...optionsSelectionArray,
@@ -511,7 +517,7 @@ const Product = () => {
           maxSelect: itemMain.maxselects,
           mandatory: itemMain.mandatory,
           multiSelectOptions: !itemMain.mandatory,
-          selectedOptions: selectedOptions,
+          selectedOptions: edit && selectedOptions.length === 1 && isMergeSides(itemMain) ? data : selectedOptions,
           defaultOption: defaultOptionID,
           options: optionsArray,
           metadata: itemMain.metadata,
@@ -609,6 +615,7 @@ const Product = () => {
     let optionPrice = optionsCost;
     let totalPrice = totalCost || 0;
     optionsSelectionArray.map((item: any) => {
+
       if (item.id === parnetOptionID) {
         if (item.mandatory) {
           if (item.selectedOptions.includes(optionId)) {
@@ -870,17 +877,19 @@ const Product = () => {
           }
         } else {
           const data = selectedSides;
+          setIsRemoved(false)
           if (isMergeSides(item)) {
             const index = data.indexOf(optionId);
-            // let quantity = selectedItemList && Object.keys(selectedItemList).length && selectedItemList[optionId] ? selectedItemList.optionId.quantity : 0
             if (index > -1) {
-              if (_.union(data).length == 1) return;
-              // data.push(..._.union(data))
+              if (_.union(data).length == 1) {
+                setIsRemoved(true)
+                return;
+              }
               const option = item.options.find(
                 (option: any) => option.optionID == selectedSides[index],
               );
-              totalPrice -= option.option?.cost || 0
-              optionPrice -= option.option?.cost || 0
+              totalPrice -= (count * option.option?.cost) || 0
+              optionPrice -= (count * option.option?.cost) || 0
               data.splice(index, 1); // Item exists, so remove it
 
               if (isMergeSides(item) && selectedSides.length === 1) {
@@ -889,23 +898,18 @@ const Product = () => {
                   (option: any) => option.optionID == duplicate[0],
                 );
                 data.push(duplicate[0]);
-                totalPrice += option.option?.cost || 0
-                optionPrice += option.option?.cost || 0
+                totalPrice += (count * option.option?.cost) || 0
+                optionPrice += (count * option.option?.cost) || 0
               }
-              // delete selectedItemList[optionId];
-              // selectedItemList[optionId] = { "id": optionId, "quantity": quantity - 1 }
-
             } else {
-              // let quantity = Object.keys(selectedItemList).length && selectedItemList[optionId] ? selectedItemList.optionId.quantity : 0
-              // selectedItemList[optionId] = { "id": optionId, "quantity": quantity + 1 }
               if (edit) {
                 if (data.length >= 2) {
                   const option = item.options.find(
                     (option: any) => option.optionID == data[0],
                   );
                   data.splice(0, 1);
-                  totalPrice -= option.option?.cost || 0
-                  optionPrice -= option.option?.cost || 0
+                  totalPrice -= (count * option.option?.cost) || 0
+                  optionPrice -= (count * option.option?.cost) || 0
 
                   const optionSecond = item.options.find(
                     (optionSecond: any) => optionSecond.optionID == optionId,
@@ -914,12 +918,28 @@ const Product = () => {
                   optionPrice += optionSecond.option?.cost || 0
                   data.push(optionId);
                 }
-                if (data.length == 1) {
+                if (data.length == 1 && !edit) {
                   const option = item.options.find(
                     (option: any) => option.optionID == data[0],
                   );
-                  totalPrice -= option.option?.cost || 0
-                  optionPrice -= option.option?.cost || 0
+                  totalPrice -= (count * option.option?.cost) || 0
+                  optionPrice -= (count * option.option?.cost) || 0
+                  data.push(optionId);
+                }
+                if (data.length == 1 && edit) {
+                  if (data[0] === optionId) {
+                    const option = item.options.find(
+                      (option: any) => option.optionID == data[0],
+                    );
+                    totalPrice -= (count * option.option?.cost) || 0
+                    optionPrice -= (count * option.option?.cost) || 0
+                  }
+
+                  const option2 = item.options.find(
+                    (option: any) => option.optionID == optionId,
+                  );
+                  totalPrice += option2.option?.cost || 0
+                  optionPrice += option2.option?.cost || 0
                   data.push(optionId);
                 }
               } else {
@@ -929,8 +949,8 @@ const Product = () => {
                     (option: any) => option.optionID == data[0],
                   );
                   data.splice(0, 1);
-                  totalPrice -= option.option?.cost || 0
-                  optionPrice -= option.option?.cost || 0
+                  totalPrice -= (count * option.option?.cost) || 0
+                  optionPrice -= (count * option.option?.cost) || 0
 
                   data.push(optionId);
                   const optionSecond = item.options.find(
@@ -942,35 +962,20 @@ const Product = () => {
                   }
 
                 }
-                if (data.length == 1) {
+                if (data.length == 1 && !edit) {
                   const option = item.options.find(
-                    (option: any) => option.optionID == data[0],
+                    (option: any) => option.optionID == optionId,
                   );
-                  totalPrice -= option.option?.cost || 0
-                  optionPrice -= option.option?.cost || 0
+                  totalPrice += (count * option.option?.cost) || 0
+                  optionPrice += (count * option.option?.cost) || 0
+
+                  data.push(optionId); // Item doesn't exist, so add it
+
                 }
               }
-              // data.push(optionId); // Item doesn't exist, so add it
             }
           }
-          // if (item.name === 'Pick your sides' && checkData.length === 1) {
-          //   const option = item.options.find(
-          //     (option: any) => option.optionID == selectedSides[0],
-          //   );
-          //   // selectedItemList[optionId] = { "id": optionId, "quantity": quantity + 1 }
-          //   totalPrice += option.option?.cost || 0
-          //   setSelectedSides(data)
-          // } else {
-          //   setSelectedSides(data)
-          // }
           setSelectedSides(data)
-
-          // if (item.selectedOptions.length === Number(item.maxSelect)) {
-          //   item.selectedOptions = item.selectedOptions.splice(1, 1);
-          //   item.setDisbaled = true
-          // } else {
-
-          // }
 
           if (item.selectedOptions.includes(optionId) && !isMergeSides(item)) {
             const index = item.selectedOptions.indexOf(optionId);
@@ -1269,6 +1274,46 @@ const Product = () => {
     }
     return check;
   };
+
+  const onRemoveProduct = (id: any, itemMain: any) => {
+    debugger
+    setIsRemoved(true)
+    let optionPrice = optionsCost;
+    let totalPrice = totalCost || 0;
+    if (selectedSides.includes(id) && selectedSides.length > 1) {
+      const index = itemMain.selectedOptions.indexOf(id);
+      if (index > -1) {
+        const option = itemMain.options.find(
+          (option: any) => option.optionID == id,
+        );
+        itemMain.selectedOptions.splice(index, 1);
+
+        totalPrice -= option.option?.cost || 0
+        optionPrice -= option.option?.cost || 0
+      }
+      setOptionsCost(optionPrice);
+      setTotalCost(totalPrice);
+      setSelectedSides(itemMain.selectedOptions)
+    }
+  }
+
+  const onAddProduct = (id: any, itemMain: any) => {
+    let selectedData = []
+    let optionPrice = optionsCost;
+    let totalPrice = totalCost || 0;
+    const option = itemMain.options.find(
+      (option: any) => option.optionID == selectedSides[0],
+    );
+    totalPrice += option.option?.cost || 0
+    optionPrice += option.option?.cost || 0
+
+    selectedData = [...selectedSides, selectedSides[0]]
+    setOptionsCost(optionPrice);
+    setTotalCost(totalPrice);
+    itemMain.selectedOptions.push(...selectedData);
+    setSelectedSides(selectedData)
+    setIsRemoved(true)
+  }
 
   return (
     <Page title={'Product Detail'} className="">
@@ -1822,7 +1867,7 @@ const Product = () => {
                                                     )}
                                                 </>
                                               )}
-                                              {edit && isMergeSides(itemMain) && (itemMain.selectedOptions.includes(itemChild.option.id) &&
+                                              {edit && isMergeSides(itemMain) && itemMain.selectedOptions.includes(itemChild.option.id) &&
                                                 (
                                                   <div className="quantity2">
                                                     <Button
@@ -1831,21 +1876,34 @@ const Product = () => {
                                                       style={{ fontSize: "22px", color: '#0069aa' }}
                                                       onClick={(e) => {
                                                         e.stopPropagation();
-                                                        if (selectedSides.length === 2) {
-                                                          showChildOptions(
-                                                            itemChild.option.id,
-                                                            itemMain.id,
-                                                            itemChild.dropDownValues,
-                                                            itemChild.selectedValue,
-                                                          );
+                                                        // if (_.uniq(selectedSides).length > 1)
+                                                        //   onRemoveProduct(itemChild.option.id, itemMain)
+
+                                                        if (_.uniq(selectedSides).length == 1 && selectedSides.length == 2) {
+                                                          onRemoveProduct(itemChild.option.id, itemMain)
+                                                        }
+                                                        if (IsRemoved && selectedSides.length == 2) {
+                                                          onRemoveProduct(itemChild.option.id, itemMain)
                                                         }
                                                       }}
+                                                    // onClick={(e) => {
+                                                    //   e.stopPropagation();
+                                                    //   if (selectedSides.length === 2) {
+                                                    //     showChildOptions(
+                                                    //       itemChild.option.id,
+                                                    //       itemMain.id,
+                                                    //       itemChild.dropDownValues,
+                                                    //       itemChild.selectedValue,
+                                                    //     );
+                                                    //   }
+                                                    // }}
                                                     >
                                                       {' '}
                                                       -{' '}
                                                     </Button>
                                                     <input
-                                                      value={_.union(selectedSides).length === 1 && 2 || 1}
+                                                      // value={_.union(selectedSides).length === 1 && 2 || 1}
+                                                      value={IsRemoved && selectedSides.length || _.uniq(selectedSides).length === 2 && 1 || 2}
                                                       readOnly
                                                       id="quantityfield"
                                                       onChange={() => { }}
@@ -1856,8 +1914,14 @@ const Product = () => {
                                                       title=""
                                                       className="add"
                                                       aria-label="increase"
+                                                      // onClick={(e) => {
+                                                      //   e.stopPropagation();
+                                                      // }}
                                                       onClick={(e) => {
                                                         e.stopPropagation();
+                                                        if (_.uniq(selectedSides).length === 1 && selectedSides.length < 2) {
+                                                          onAddProduct(itemChild.option.id, itemMain)
+                                                        }
                                                       }}
                                                       style={{ fontSize: "22px", color: '#0069aa', paddingTop: '11px' }}
                                                       sx={{
@@ -1870,8 +1934,8 @@ const Product = () => {
                                                       +{' '}
                                                     </Button>
                                                   </div>
-                                                )
-                                              )}
+
+                                                )}
                                               {!edit && isMergeSides(itemMain) && selectedSides?.includes(itemChild.option.id) &&
                                                 (
                                                   <div className="quantity2" style={{ marginTop: '5px' }}>
@@ -1882,13 +1946,11 @@ const Product = () => {
                                                       style={{ fontSize: "22px", color: '#0069aa' }}
                                                       onClick={(e) => {
                                                         e.stopPropagation();
-                                                        if (selectedSides.length === 2) {
-                                                          showChildOptions(
-                                                            itemChild.option.id,
-                                                            itemMain.id,
-                                                            itemChild.dropDownValues,
-                                                            itemChild.selectedValue,
-                                                          );
+                                                        if (_.uniq(selectedSides).length == 1 && selectedSides.length == 2) {
+                                                          onRemoveProduct(itemChild.option.id, itemMain)
+                                                        }
+                                                        if (IsRemoved && selectedSides.length == 2) {
+                                                          onRemoveProduct(itemChild.option.id, itemMain)
                                                         }
                                                       }}
                                                     >
@@ -1896,7 +1958,7 @@ const Product = () => {
                                                       -{' '}
                                                     </Button>
                                                     <input
-                                                      value={_.union(selectedSides).length === 1 && 2 || 1}
+                                                      value={IsRemoved && selectedSides.length || _.uniq(selectedSides).length === 2 && 1 || 2}
                                                       readOnly
                                                       id="quantityfield"
                                                       onChange={() => { }}
@@ -1909,6 +1971,9 @@ const Product = () => {
                                                       // style={{ color: '#0069aa' }}
                                                       onClick={(e) => {
                                                         e.stopPropagation();
+                                                        if (_.uniq(selectedSides).length === 1 && selectedSides.length < 2) {
+                                                          onAddProduct(itemChild.option.id, itemMain)
+                                                        }
                                                       }}
                                                       style={{ fontSize: "22px", color: '#0069aa', paddingTop: '11px' }}
                                                       sx={{
@@ -2020,6 +2085,7 @@ const Product = () => {
                     basketObj.loading ||
                     dummyBasketObj.loading ||
                     productUpdateObj.loading ||
+                    selectedSides.length < 2 ||
                     !validateOptionsSelection() ? (
                     <Button
                       id="AddProductToBasket"
