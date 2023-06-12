@@ -88,6 +88,9 @@
 .view-all-panel-listing-oo {
   margin-left: 25%;
 }
+.pickup-address{
+  height: 50vh;
+}
 .current-location {
   text-align: left;
   display: block;

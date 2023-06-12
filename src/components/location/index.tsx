@@ -467,7 +467,30 @@ const LocationCard = (props: any) => {
       );
     }
   };
+  useEffect(() => {
+    let distance; // Declare the distance variable
 
+    setTimeout(() => {
+      const element1 = document.getElementById('Locationcard-id')?.clientHeight;
+      const element2 = document.getElementById('footer-id')?.clientHeight;
+
+      console.log(element2, 'element2?.clientHeight');
+      console.log(element1, 'element1?.clientHeight');
+
+      if (element2 && element1) {
+        // Calculate the distance between the elements
+        distance = element1 - 370;
+        console.log(distance, 'distance');
+
+        const content = document.getElementById('pickup-content');
+        if (content) {
+          // Set the height of the content based on the distance
+          content.style.height = distance + 'px';
+          console.log(content.style.height, 'element  content ');
+        }
+      }
+    }, 1000);
+  }, []);
   const gotoCategoryPage = async (storeID: number) => {
     console.log('storeId', storeID);
     if (orderType === undefined) {
@@ -930,8 +953,6 @@ const LocationCard = (props: any) => {
               style={{
                 overflow: 'hidden',
                 overflowY: 'auto',
-                maxHeight: '350px',
-                minHeight: '350px',
                 display:
                   orderType &&
                   orderType === 'dispatch' &&
@@ -939,6 +960,8 @@ const LocationCard = (props: any) => {
                     ? 'none'
                     : 'block',
               }}
+              id="pickup-content"
+              className="pickup-address"
             >
               {restaurantNotFound && (
                 <Typography

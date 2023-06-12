@@ -471,7 +471,7 @@ const Location = () => {
       )} */}
 
           <Grid lg={12} sx={{ display: 'flex', flexDirection: 'row' }}>
-            <Grid lg={5}>
+            <Grid lg={5} id="Locationcard-id">
               <LocationCard
                 actionTypes={actionTypes}
                 setAction={setAction}
