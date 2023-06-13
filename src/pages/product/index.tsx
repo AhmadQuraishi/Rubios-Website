@@ -43,6 +43,7 @@ import TagManager from 'react-gtm-module';
 import ProductToggle from './product-toggle/productToggle';
 
 import _ from 'lodash'
+
 const Product = () => {
   const { id, edit } = useParams();
   const isMobile = useMediaQuery('(max-width:468px)');
@@ -1216,16 +1217,14 @@ const Product = () => {
   const [optionsCost, setOptionsCost] = useState(0);
 
   const getTotalCost = (cost: any = null) => {
-    const firtsItem = _.first(basket?.products)
+    const keyByIdBaskets = _.keyBy(basket?.products, 'id')
+    const firtsItem = keyByIdBaskets[Number(edit)]
     const basketSum = _.sumBy(firtsItem?.choices, 'cost')
     if (cost) {
       setTotalCost(cost);
     } else {
-      // setOptionsCost(basketSum);
-      // setTotalCost(((productDetails?.cost || 0) + basketSum) * count);
       setOptionsCost(edit && basketSum || ptotalCost);
       setTotalCost(((productDetails?.cost || 0) + (edit && basketSum || ptotalCost)) * count);
-
     }
   };
 
