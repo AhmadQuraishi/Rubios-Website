@@ -2085,7 +2085,7 @@ const Product = () => {
                     basketObj.loading ||
                     dummyBasketObj.loading ||
                     productUpdateObj.loading ||
-                    selectedSides.length < 2 ||
+                    selectedSides.length > 0 && selectedSides.length < 2 ||
                     !validateOptionsSelection() ? (
                     <Button
                       id="AddProductToBasket"
