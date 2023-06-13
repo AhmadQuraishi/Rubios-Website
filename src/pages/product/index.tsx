@@ -612,16 +612,17 @@ const Product = () => {
     setTimeout(() => {
       setSelectionExecute(false);
     }, 200);
+
     let optionPrice = optionsCost;
     let totalPrice = totalCost || 0;
     optionsSelectionArray.map((item: any) => {
-
       if (item.id === parnetOptionID) {
         if (item.mandatory) {
           if (item.selectedOptions.includes(optionId)) {
             const option = item.options.find(
               (option: any) => option.optionID == item.selectedOptions[0],
             );
+
 
             let mainOptionCost = 0;
             if (option) {
@@ -845,8 +846,8 @@ const Product = () => {
             );
             if (option) {
               const prc = option.option.cost * count;
-              optionPrice = optionPrice - mainOptionCost + option.option.cost;
-              totalPrice = totalPrice - mainOptionCost + prc;
+              optionPrice = optionPrice - (mainOptionCost * count) + option.option.cost;
+              totalPrice = totalPrice - (mainOptionCost * count) + prc;
               // setOptionsCost(optionsCost - mainOptionCost + option.option.cost);
               // setTotalCost((totalCost || 0) - mainOptionCost + prc);
             }
@@ -1276,11 +1277,10 @@ const Product = () => {
   };
 
   const onRemoveProduct = (id: any, itemMain: any) => {
-    debugger
     setIsRemoved(true)
     let optionPrice = optionsCost;
     let totalPrice = totalCost || 0;
-    if (selectedSides.includes(id) && selectedSides.length > 1) {
+    if (selectedSides.includes(id) && itemMain.selectedOptions.length > 1) {
       const index = itemMain.selectedOptions.indexOf(id);
       if (index > -1) {
         const option = itemMain.options.find(
@@ -1293,7 +1293,7 @@ const Product = () => {
       }
       setOptionsCost(optionPrice);
       setTotalCost(totalPrice);
-      setSelectedSides(itemMain.selectedOptions)
+      itemMain.selectedOptions.length && setSelectedSides(itemMain.selectedOptions)
     }
   }
 
