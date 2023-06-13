@@ -847,11 +847,8 @@ const Product = () => {
             );
             if (option) {
               const prc = option.option.cost * count;
-              // optionPrice = optionPrice - (mainOptionCost * count) + option.option.cost;
-              // totalPrice = totalPrice - (mainOptionCost * count) + prc;
-
-              optionPrice = optionPrice - (mainOptionCost) + option.option.cost;
-              totalPrice = totalPrice - (mainOptionCost) + prc;
+              optionPrice = optionPrice - (mainOptionCost * count) + option.option.cost;
+              totalPrice = totalPrice - (mainOptionCost * count) + prc;
               // setOptionsCost(optionsCost - mainOptionCost + option.option.cost);
               // setTotalCost((totalCost || 0) - mainOptionCost + prc);
             }
