@@ -847,8 +847,11 @@ const Product = () => {
             );
             if (option) {
               const prc = option.option.cost * count;
-              optionPrice = optionPrice - (mainOptionCost * count) + option.option.cost;
-              totalPrice = totalPrice - (mainOptionCost * count) + prc;
+              // optionPrice = optionPrice - (mainOptionCost * count) + option.option.cost;
+              // totalPrice = totalPrice - (mainOptionCost * count) + prc;
+
+              optionPrice = optionPrice - (mainOptionCost) + option.option.cost;
+              totalPrice = totalPrice - (mainOptionCost) + prc;
               // setOptionsCost(optionsCost - mainOptionCost + option.option.cost);
               // setTotalCost((totalCost || 0) - mainOptionCost + prc);
             }
@@ -1217,16 +1220,14 @@ const Product = () => {
   const [optionsCost, setOptionsCost] = useState(0);
 
   const getTotalCost = (cost: any = null) => {
-    const firtsItem = _.first(basket?.products)
+    const keyByIdBaskets = _.keyBy(basket?.products, 'id')
+    const firtsItem = keyByIdBaskets[Number(edit)]
     const basketSum = _.sumBy(firtsItem?.choices, 'cost')
     if (cost) {
       setTotalCost(cost);
     } else {
-      // setOptionsCost(basketSum);
-      // setTotalCost(((productDetails?.cost || 0) + basketSum) * count);
       setOptionsCost(edit && basketSum || ptotalCost);
       setTotalCost(((productDetails?.cost || 0) + (edit && basketSum || ptotalCost)) * count);
-
     }
   };
 
