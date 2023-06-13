@@ -470,7 +470,7 @@ const LocationCard = (props: any) => {
   useEffect(() => {
     let distance; // Declare the distance variable
 
-    setTimeout(() => {
+    const updateContentHeight = () => {
       const element1 = document.getElementById('Locationcard-id')?.clientHeight;
       console.log(element1, 'element1?.clientHeight');
 
@@ -486,8 +486,27 @@ const LocationCard = (props: any) => {
           console.log(content.style.height, 'element  content ');
         }
       }
-    }, 1000);
+    };
+    // Initial setup
+
+    const handleResize = () => {
+      // Clear the previous resize timer
+
+      // Set a new resize timer
+      setTimeout(() => {
+        updateContentHeight();
+      }, 1000); // Adjust the timeout duration as per your requirement
+    };
+    handleResize();
+    // Update on window resize
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
+
   const gotoCategoryPage = async (storeID: number) => {
     console.log('storeId', storeID);
     if (orderType === undefined) {
