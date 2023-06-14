@@ -615,6 +615,7 @@ const Product = () => {
     }, 200);
 
     let optionPrice = optionsCost;
+
     let totalPrice = totalCost || 0;
     optionsSelectionArray.map((item: any) => {
       if (item.id === parnetOptionID) {
@@ -729,8 +730,8 @@ const Product = () => {
                 x.selectedOptions = x.defaultOption ? [x.defaultOption] : [];
               });
             }
-            optionPrice -= mainOptionCost;
-            totalPrice = totalPrice - mainOptionCost * count;
+            optionPrice -= mainOptionCost * count;
+            totalPrice = totalPrice - mainOptionCost;
             // setOptionsCost(optionsCost - mainOptionCost);
             // setTotalCost((totalCost || 0) - mainOptionCost * count);
           } else {
@@ -916,8 +917,8 @@ const Product = () => {
                   const optionSecond = item.options.find(
                     (optionSecond: any) => optionSecond.optionID == optionId,
                   );
-                  totalPrice += optionSecond.option?.cost || 0
-                  optionPrice += optionSecond.option?.cost || 0
+                  totalPrice += (count * optionSecond.option?.cost) || 0
+                  optionPrice += (count * optionSecond.option?.cost) || 0
                   data.push(optionId);
                 }
                 if (data.length == 1 && !edit) {
@@ -940,8 +941,8 @@ const Product = () => {
                   const option2 = item.options.find(
                     (option: any) => option.optionID == optionId,
                   );
-                  totalPrice += option2.option?.cost || 0
-                  optionPrice += option2.option?.cost || 0
+                  totalPrice += (count * option2.option?.cost) || 0
+                  optionPrice += (count * option2.option?.cost) || 0
                   data.push(optionId);
                 }
               } else {
@@ -958,10 +959,10 @@ const Product = () => {
                   const optionSecond = item.options.find(
                     (optionSecond: any) => optionSecond.optionID == optionId,
                   );
-                  if (!edit) {
-                    totalPrice += optionSecond.option?.cost || 0
-                    optionPrice += optionSecond.option?.cost || 0
-                  }
+                  // if (!edit) {
+                  totalPrice += (count * optionSecond.option?.cost) || 0
+                  optionPrice += (count * optionSecond.option?.cost) || 0
+                  // }
 
                 }
                 if (data.length == 1 && !edit) {
@@ -1287,8 +1288,8 @@ const Product = () => {
         );
         itemMain.selectedOptions.splice(index, 1);
 
-        totalPrice -= option.option?.cost || 0
-        optionPrice -= option.option?.cost || 0
+        totalPrice -= (count * option.option?.cost) || 0
+        optionPrice -= (count * option.option?.cost) || 0
       }
       setOptionsCost(optionPrice);
       setTotalCost(totalPrice);
@@ -2042,7 +2043,7 @@ const Product = () => {
                             setCount(Math.max(count - 1, 1));
                             setTotalCost(
                               ((productDetails?.cost || 0) + optionsCost) *
-                              Math.max(count - 1, 1),
+                              Math.max(count - 1, 1)
                             );
                           }}
                         >
