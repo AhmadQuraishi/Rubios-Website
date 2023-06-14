@@ -1304,8 +1304,8 @@ const Product = () => {
     const option = itemMain.options.find(
       (option: any) => option.optionID == selectedSides[0],
     );
-    totalPrice += option.option?.cost || 0
-    optionPrice += option.option?.cost || 0
+    totalPrice += (count * option.option?.cost) || 0
+    optionPrice += (count * option.option?.cost) || 0
 
     selectedData = [...selectedSides, selectedSides[0]]
     setOptionsCost(optionPrice);
